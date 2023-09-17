@@ -492,7 +492,10 @@ protected:
     // bool eventFilter(QObject * watched, QEvent * event);
 
     // Timer
+    void initializeTime();
+    void terminateOrResetTimer();
     void timerEvent(QTimerEvent *event) override;
+    void emitTimeSignals();
 
 private:
     // Data model of object

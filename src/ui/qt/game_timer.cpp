@@ -45,57 +45,60 @@
 
 using std::to_string;
 
-void Game::resetTimer()
+void Game::terminateOrResetTimer()
 {
     if (timeID != 0) {
         killTimer(timeID);
+        timeID = 0;
     }
+}
 
-    timeID = 0;
+void Game::initializeTime()
+{
+    timeLimit = 0; // Replace this with actual logic if needed
+    remainingTime[WHITE] = remainingTime[BLACK] = (timeLimit <= 0) ? 0 :
+                                                                     timeLimit;
+}
+
+void Game::emitTimeSignals()
+{
+    const QTime qtimeWhite =
+        QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
+    const QTime qtimeBlack =
+        QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+
+    emit time1Changed(qtimeWhite.toString("hh:mm:ss"));
+    emit time2Changed(qtimeBlack.toString("hh:mm:ss"));
+}
+
+void Game::resetTimer()
+{
+    terminateOrResetTimer();
 }
 
 void Game::resetAndUpdateTime()
 {
-    timeLimit = 0;
-    // gameOptions.getMoveTime();
-
-    if (timeLimit <= 0) {
-        remainingTime[WHITE] = remainingTime[BLACK] = 0;
-    } else {
-        remainingTime[WHITE] = remainingTime[BLACK] = timeLimit;
-    }
-
-    // Signal the main window to update the LCD display
-    const QTime qtime = QTime(0, 0, 0, 0)
-                            .addSecs(static_cast<int>(remainingTime[WHITE]));
-    emit time1Changed(qtime.toString("hh:mm:ss"));
-    emit time2Changed(qtime.toString("hh:mm:ss"));
+    initializeTime();
+    emitTimeSignals();
 }
 
 void Game::updateTime()
 {
     constexpr int timePoint = -1;
-    time_t *ourSeconds = &elapsedSeconds[sideToMove];
+    time_t &ourSeconds = elapsedSeconds[sideToMove];
     const time_t theirSeconds = elapsedSeconds[~sideToMove];
-
     currentTime = time(nullptr);
 
-    if (timePoint >= *ourSeconds) {
-        *ourSeconds = timePoint;
-        startTime = currentTime -
-                    (elapsedSeconds[WHITE] + elapsedSeconds[BLACK]);
-    } else {
-        *ourSeconds = currentTime - startTime - theirSeconds;
-    }
+    ourSeconds = (timePoint >= ourSeconds) ?
+                     timePoint :
+                     currentTime - startTime - theirSeconds;
 }
 
 void Game::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
-    static QTime qt1, qt2;
-
-    // Player's time spent
     updateTime();
+
     remainingTime[WHITE] = get_elapsed_time(WHITE);
     remainingTime[BLACK] = get_elapsed_time(BLACK);
 
@@ -106,22 +109,11 @@ void Game::timerEvent(QTimerEvent *event)
         remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
     }
 
-    qt1 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
-    qt2 = QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+    emitTimeSignals();
 
-    emit time1Changed(qt1.toString("hh:mm:ss"));
-    emit time2Changed(qt2.toString("hh:mm:ss"));
-
-    // If it's divided
     const Color winner = position.get_winner();
     if (winner != NOBODY) {
-        // Stop the clock
-        killTimer(timeID);
-
-        // Timer ID is 0
-        timeID = 0;
-
-        // Signal update status bar
+        terminateOrResetTimer();
         updateScene();
         message = QString::fromStdString(getTips());
         emit statusBarChanged(message);
@@ -170,7 +162,5 @@ void Game::resetElapsedSeconds()
 
 void Game::terminateTimer()
 {
-    if (timeID != 0) {
-        killTimer(timeID);
-    }
+    terminateOrResetTimer();
 }
