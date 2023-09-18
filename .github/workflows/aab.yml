@@ -14,7 +14,7 @@ jobs:
     - name: Set up Flutter
       uses: subosito/flutter-action@v2
       with:
-        flutter-version: '3.13.0'
+        flutter-version: '3.13.4'
     - run: bash -x ./flutter-init.sh
     - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
     - name: Analyze Flutter
@@ -41,7 +41,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'
+          flutter-version: '3.13.4'
 
       - name: Export environment valuables
         run: export
