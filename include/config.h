@@ -66,7 +66,9 @@
 
 // #define NNUE_GENERATE_TRAINING_DATA
 
-// #define DEBUG_MODE
+#ifdef _DEBUG
+#define DEBUG_MODE
+#endif
 
 constexpr auto DEFAULT_RULE_NUMBER = 0;
 

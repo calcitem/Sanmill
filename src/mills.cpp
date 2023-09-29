@@ -246,6 +246,7 @@ void adjacent_squares_init() noexcept
     }
 
 #ifdef DEBUG_MODE
+#if 0
     int sum = 0;
     for (int i = 0; i < SQUARE_EXT_NB; i++) {
         debugPrintf("/* %d */ {", i);
@@ -259,6 +260,7 @@ void adjacent_squares_init() noexcept
         debugPrintf("},\n");
     }
     debugPrintf("sum = %d\n", sum);
+#endif
 #endif
 }
 
