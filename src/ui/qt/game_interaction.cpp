@@ -52,7 +52,7 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
     }
 
     // When the computer is playing or searching, the click is invalid
-    if (isAiTurn() || aiThread[WHITE]->searching ||
+    if (isAiToMove() || aiThread[WHITE]->searching ||
         aiThread[BLACK]->searching) {
         return false;
     }

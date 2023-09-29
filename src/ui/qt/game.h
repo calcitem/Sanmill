@@ -380,7 +380,7 @@ public slots:
     static void rotateLeft(Position &position,
                            std::vector<std::string> &moveHistory);
 
-    [[nodiscard]] bool isAiTurn() const;
+    [[nodiscard]] bool isAiToMove() const;
 
     void threadsSetAi(Position *p) const
     {

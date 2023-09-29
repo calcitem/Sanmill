@@ -45,7 +45,7 @@
 
 using std::to_string;
 
-bool Game::isAiTurn() const
+bool Game::isAiToMove() const
 {
     return isAiPlayer[sideToMove];
 }
