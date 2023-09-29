@@ -466,9 +466,14 @@ public slots:
 
     // Command line execution of score
     bool command(const string &cmd, bool update = true);
+    GameSound identifySoundType(Action action);
+    void printStats();
+    void updateStatistics();
 
     // Historical situation and situation change
     bool phaseChange(int row, bool forceUpdate = false);
+    bool refreshMoveList(int row, const QStringList &mlist);
+    void updateGameScene();
 
     // Update the game display. Only after each step can the situation be
     // refreshed

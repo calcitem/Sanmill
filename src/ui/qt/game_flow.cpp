@@ -45,6 +45,25 @@
 
 using std::to_string;
 
+bool Game::refreshMoveList(int row, const QStringList &mlist)
+{
+    for (int i = 0; i <= row; i++) {
+        debugPrintf("%s\n", mlist.at(i).toStdString().c_str());
+        position.command(mlist.at(i).toStdString().c_str());
+    }
+
+    return true;
+}
+
+void Game::updateGameScene()
+{
+    // The key step is to let the penitent bear the loss of time
+    set_start_time(static_cast<int>(start_timeb()));
+
+    // Refresh the scene
+    updateScene(position);
+}
+
 // Browse the historical situation and refresh the situation display through the
 // command function
 bool Game::phaseChange(int row, bool forceUpdate)
@@ -55,21 +74,11 @@ bool Game::phaseChange(int row, bool forceUpdate)
 
     // Need to refresh
     currentRow = row;
-    const int rows = moveListModel.rowCount();
     const QStringList mlist = moveListModel.stringList();
+    debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
 
-    debugPrintf("rows: %d current: %d\n", rows, row);
-
-    for (int i = 0; i <= row; i++) {
-        debugPrintf("%s\n", mlist.at(i).toStdString().c_str());
-        position.command(mlist.at(i).toStdString().c_str());
-    }
-
-    // The key step is to let the penitent bear the loss of time
-    set_start_time(static_cast<int>(start_timeb()));
-
-    // Refresh the scene
-    updateScene(position);
+    refreshMoveList(row, mlist);
+    updateGameScene();
 
     return true;
 }
@@ -102,13 +111,25 @@ bool Game::resign()
     return result;
 }
 
+GameSound Game::identifySoundType(Action action)
+{
+    switch (action) {
+    case Action::select:
+    case Action::place:
+        return GameSound::drag;
+    case Action::remove:
+        return GameSound::remove;
+    case Action::none:
+        return GameSound::none;
+    }
+
+    return GameSound::none;
+}
+
 // Key slot function, command line execution of score, independent of
 // actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
 {
-    int total;
-    float blackWinRate, whiteWinRate, drawRate;
-
     Q_UNUSED(hasSound)
 
 #ifdef QT_GUI_LIB
@@ -120,19 +141,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         return false;
 #endif // QT_GUI_LIB
 
-    auto soundType = GameSound::none;
-
-    switch (position.get_action()) {
-    case Action::select:
-    case Action::place:
-        soundType = GameSound::drag;
-        break;
-    case Action::remove:
-        soundType = GameSound::remove;
-        break;
-    case Action::none:
-        break;
-    }
+    auto soundType = identifySoundType(position.get_action());
 
     if (position.get_phase() == Phase::ready) {
         gameStart();
@@ -221,60 +230,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         // If it's decided
         pauseThreads();
 
-        gameEndTime = now();
-        gameDurationTime = gameEndTime - gameStartTime;
-
-        gameEndCycle = stopwatch::rdtscp_clock::now();
-
-        debugPrintf("Game Duration Time: %lldms\n", gameDurationTime);
-
-#ifdef TIME_STAT
-        debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",
-                    aiThread[WHITE]->sortTime, aiThread[BLACK]->sortTime,
-                    (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
-        aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
-#endif // TIME_STAT
-
-#ifdef CYCLE_STAT
-        debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
-                    aiThread[BLACK]->sortCycle,
-                    (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
-        aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
-#endif // CYCLE_STAT
-
-#if 0
-            gameDurationCycle = gameEndCycle - gameStartCycle;
-            debugPrintf("Game Start Cycle: %u\n", gameStartCycle);
-            debugPrintf("Game End Cycle: %u\n", gameEndCycle);
-            debugPrintf("Game Duration Cycle: %u\n", gameDurationCycle);
-#endif
-
-#ifdef TRANSPOSITION_TABLE_DEBUG
-        size_t hashProbeCount_1 = aiThread[WHITE]->ttHitCount +
-                                  aiThread[WHITE]->ttMissCount;
-        size_t hashProbeCount_2 = aiThread[BLACK]->ttHitCount +
-                                  aiThread[BLACK]->ttMissCount;
-
-        debugPrintf("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                    "%llu%%\n",
-                    hashProbeCount_1, aiThread[WHITE]->ttHitCount,
-                    aiThread[WHITE]->ttMissCount,
-                    aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
-
-        debugPrintf("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                    "%llu%%\n",
-                    hashProbeCount_2, aiThread[BLACK]->ttHitCount,
-                    aiThread[BLACK]->ttMissCount,
-                    aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
-
-        debugPrintf(
-            "[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: %llu%%\n",
-            hashProbeCount_1 + hashProbeCount_2,
-            aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
-            aiThread[WHITE]->ttMissCount + aiThread[BLACK]->ttMissCount,
-            (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount) * 100 /
-                (hashProbeCount_1 + hashProbeCount_2));
-#endif // TRANSPOSITION_TABLE_DEBUG
+        printStats();
 
         if (gameOptions.getAutoRestart()) {
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -319,7 +275,78 @@ bool Game::command(const string &cmd, bool update /* = true */)
     }
 #endif // ANALYZE_POSITION
 
-    total = position.score[WHITE] + position.score[BLACK] + position.score_draw;
+    updateStatistics();
+
+#ifdef NNUE_GENERATE_TRAINING_DATA
+    position.nnueGenerateTrainingFen();
+#endif /* NNUE_GENERATE_TRAINING_DATA */
+
+    return true;
+}
+
+void Game::printStats()
+{
+    gameEndTime = now();
+    gameDurationTime = gameEndTime - gameStartTime;
+
+    gameEndCycle = stopwatch::rdtscp_clock::now();
+
+    debugPrintf("Game Duration Time: %lldms\n", gameDurationTime);
+
+#ifdef TIME_STAT
+    debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",
+                aiThread[WHITE]->sortTime, aiThread[BLACK]->sortTime,
+                (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
+    aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
+#endif // TIME_STAT
+
+#ifdef CYCLE_STAT
+    debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
+                aiThread[BLACK]->sortCycle,
+                (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
+    aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
+#endif // CYCLE_STAT
+
+#if 0
+            gameDurationCycle = gameEndCycle - gameStartCycle;
+            debugPrintf("Game Start Cycle: %u\n", gameStartCycle);
+            debugPrintf("Game End Cycle: %u\n", gameEndCycle);
+            debugPrintf("Game Duration Cycle: %u\n", gameDurationCycle);
+#endif
+
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    size_t hashProbeCount_1 = aiThread[WHITE]->ttHitCount +
+                              aiThread[WHITE]->ttMissCount;
+    size_t hashProbeCount_2 = aiThread[BLACK]->ttHitCount +
+                              aiThread[BLACK]->ttMissCount;
+
+    debugPrintf("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: "
+                "%llu%%\n",
+                hashProbeCount_1, aiThread[WHITE]->ttHitCount,
+                aiThread[WHITE]->ttMissCount,
+                aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
+
+    debugPrintf("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: "
+                "%llu%%\n",
+                hashProbeCount_2, aiThread[BLACK]->ttHitCount,
+                aiThread[BLACK]->ttMissCount,
+                aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
+
+    debugPrintf("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: "
+                "%llu%%\n",
+                hashProbeCount_1 + hashProbeCount_2,
+                aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
+                aiThread[WHITE]->ttMissCount + aiThread[BLACK]->ttMissCount,
+                (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount) *
+                    100 / (hashProbeCount_1 + hashProbeCount_2));
+#endif // TRANSPOSITION_TABLE_DEBUG
+}
+
+void Game::updateStatistics()
+{
+    int total = position.score[WHITE] + position.score[BLACK] +
+                position.score_draw;
+    float blackWinRate, whiteWinRate, drawRate;
 
     if (total == 0) {
         blackWinRate = 0;
@@ -337,10 +364,4 @@ bool Game::command(const string &cmd, bool update /* = true */)
     cout << std::fixed << std::setprecision(2) << blackWinRate
          << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
     cout.flags(flags);
-
-#ifdef NNUE_GENERATE_TRAINING_DATA
-    position.nnueGenerateTrainingFen();
-#endif /* NNUE_GENERATE_TRAINING_DATA */
-
-    return true;
 }
