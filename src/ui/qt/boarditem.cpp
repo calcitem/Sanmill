@@ -54,6 +54,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     drawBoard(painter);
     drawLines(painter);
+    drawCoordinates(painter);
 #ifdef PLAYER_DRAW_SEAT_NUMBER
     drawSeatNumbers(painter);
 #endif
@@ -132,6 +133,46 @@ void BoardItem::drawLines(QPainter *painter)
             painter->drawLine(position[r],
                               position[(FILE_NB - 1) * RANK_NB + r]);
         }
+    }
+}
+
+void BoardItem::drawCoordinates(QPainter *painter)
+{
+    const int FONT_SIZE = 12;
+
+    int offset_x = LINE_WEIGHT + FONT_SIZE / 4;
+    int offset_y = LINE_WEIGHT + FONT_SIZE / 4;
+
+    const int extra_offset_x = 4;
+    const int extra_offset_y = 1;
+
+    QPen fontPen(QBrush(Qt::darkRed), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
+                 Qt::BevelJoin);
+    painter->setPen(fontPen);
+
+    QFont font;
+    font.setPointSize(FONT_SIZE);
+    painter->setFont(font);
+
+    QFontMetrics fm(font);
+    int textWidth = fm.horizontalAdvance("A");
+
+    int origin_x = -size / 2 + (size / 8) - offset_x;
+    int origin_y = size / 2 - (size / 8) + offset_y;
+
+    int interval = size / 8;
+
+    for (int i = 0; i < 7; ++i) {
+        QString text = QString(QChar('A' + i));
+        painter->drawText(origin_x + interval * i - textWidth / 2 +
+                              2 * extra_offset_x,
+                          origin_y + 20 + extra_offset_x, text);
+    }
+
+    for (int i = 0; i < 7; ++i) {
+        QString text = QString::number(i + 1);
+        painter->drawText(origin_x - 20 - extra_offset_y,
+                          origin_y - interval * i, text);
     }
 }
 

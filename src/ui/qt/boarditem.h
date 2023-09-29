@@ -62,6 +62,7 @@ private:
     void initializePositions();
     void drawBoard(QPainter *painter);
     void drawLines(QPainter *painter);
+    void drawCoordinates(QPainter *painter);
     void drawSeatNumbers(QPainter *painter);
 
     int size {BOARD_SIZE};
