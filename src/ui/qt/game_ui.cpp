@@ -259,32 +259,32 @@ void Game::setTips()
         // TODO: Uncaught fun_call_w_exception:
         // Called function throws an exception of type
         // std::bad_array_new_length.
-        tips = turnStr + " to place, " +
+        tips = turnStr + " to place a piece. " +
                std::to_string(p.pieceInHandCount[WHITE]) +
-               " pieces are unplaced." + "  Score " +
-               to_string(p.score[WHITE]) + ":" + to_string(p.score[BLACK]) +
-               ", Draw " + to_string(p.score_draw);
+               " pieces remain unplaced. Score: " + to_string(p.score[WHITE]) +
+               ":" + to_string(p.score[BLACK]) +
+               ", Draws: " + to_string(p.score_draw);
         break;
 
     case Phase::placing:
         if (p.action == Action::place) {
-            tips = turnStr + " to place, " +
+            tips = turnStr + " to place a piece. " +
                    std::to_string(p.pieceInHandCount[p.sideToMove]) +
-                   " pieces are unplaced.";
+                   " pieces remain unplaced.";
         } else if (p.action == Action::remove) {
-            tips = turnStr + " to remove, " +
+            tips = turnStr + " to remove a piece. " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
-                   " pieces to remove.";
+                   " pieces can be removed.";
         }
         break;
 
     case Phase::moving:
         if (p.action == Action::place || p.action == Action::select) {
-            tips = turnStr + " to move.";
+            tips = turnStr + " to make a move.";
         } else if (p.action == Action::remove) {
-            tips = turnStr + " to remove, " +
+            tips = turnStr + " to remove a piece. " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
-                   " pieces to remove.";
+                   " pieces can be removed.";
         }
         break;
 
@@ -314,37 +314,37 @@ void Game::setTips()
         case GameOverReason::loseLessThanThree:
             break;
         case GameOverReason::loseNoWay:
-            reasonStr = turnStr + " is blocked.";
+            reasonStr = turnStr + " has no valid moves.";
             break;
         case GameOverReason::loseBoardIsFull:
-            reasonStr = turnStr + " lose because board is full.";
+            reasonStr = turnStr + " loses; board is full.";
             break;
         case GameOverReason::loseResign:
-            reasonStr = turnStr + " resigned.";
+            reasonStr = turnStr + " has resigned.";
             break;
         case GameOverReason::loseTimeOver:
-            reasonStr = "Time over." + turnStr + " lost.";
+            reasonStr = "Time is up; " + turnStr + " loses.";
             break;
         case GameOverReason::drawThreefoldRepetition:
-            reasonStr = "Draw because of threefold repetition.";
+            reasonStr = "Draw due to threefold repetition.";
             break;
         case GameOverReason::drawRule50:
-            reasonStr = "Draw because of rule 50.";
+            reasonStr = "Draw under the 50-move rule.";
             break;
         case GameOverReason::drawEndgameRule50:
-            reasonStr = "Draw because of endgame rule 50.";
+            reasonStr = "Draw under the endgame 50-move rule.";
             break;
         case GameOverReason::drawBoardIsFull:
-            reasonStr = "Draw because of board is full.";
+            reasonStr = "Draw; board is full.";
             break;
         case GameOverReason::drawNoWay:
-            reasonStr = "Draw because of stalemate.";
+            reasonStr = "Stalemate; game is a draw.";
             break;
         case GameOverReason::none:
             break;
         }
 
-        tips = reasonStr + resultStr + scoreStr;
+        tips = reasonStr + " " + resultStr + scoreStr;
         break;
 
     case Phase::none:
