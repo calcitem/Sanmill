@@ -103,13 +103,14 @@ void Game::playSound(GameSound soundType, Color c)
     std::string opponentStr = (c == BLACK) ? "W" : "B";
 
     std::string filename = buildFilename(soundType, sideStr, opponentStr);
+#ifndef DO_NOT_PLAY_SOUND
     performSoundPlay(filename);
+#endif
 }
 
 // Function to actually perform the sound play operation
 void Game::performSoundPlay(const std::string &filename)
 {
-#ifndef DO_NOT_PLAY_SOUND
     if (filename.empty()) {
         return;
     }
@@ -122,5 +123,4 @@ void Game::performSoundPlay(const std::string &filename)
         effect->setLoopCount(1);
         effect->play();
     }
-#endif
 }
