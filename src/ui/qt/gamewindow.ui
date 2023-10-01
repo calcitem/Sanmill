@@ -1004,7 +1004,7 @@
     <bool>true</bool>
    </property>
    <property name="enabled">
-    <bool>true</bool>
+    <bool>false</bool>
    </property>
    <property name="icon">
     <iconset resource="gamewindow.qrc">
@@ -1015,6 +1015,9 @@
    </property>
    <property name="toolTip">
     <string>Play via Network</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionEngine_E">
