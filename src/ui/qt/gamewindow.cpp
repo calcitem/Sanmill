@@ -291,7 +291,7 @@ void MillGameWindow::initialize()
             SLOT(display(QString)));
 
     connect(scene, SIGNAL(mouseReleased(QPointF)), game,
-            SLOT(actionPiece(QPointF)));
+            SLOT(handleClick(QPointF)));
 
     // Add a normal display label to the status bar
     auto *statusBarLabel = new QLabel(this);

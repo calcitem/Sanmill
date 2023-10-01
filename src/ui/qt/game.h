@@ -199,7 +199,7 @@ private:
     static void performSoundPlay(const std::string &filename);
 
     bool validateClick(QPointF p, File &f, Rank &r);
-    bool isRepentancePhase();
+    bool undoRecentMovesOnReview();
     void initiateGameIfReady();
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
@@ -441,7 +441,7 @@ public slots:
 
     // According to the signal and state of qgraphics scene, select, drop or
     // delete the sub objects
-    bool actionPiece(QPointF p);
+    bool handleClick(QPointF p);
 
     // Admit defeat
     bool resign();

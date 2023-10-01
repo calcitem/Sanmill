@@ -144,7 +144,7 @@ void Game::selectCurrentAndDeletedPieces(PieceItem *deletedPiece)
 
 // Key slot function, according to the signal and state of qgraphics scene to
 // select, drop or remove sub
-bool Game::actionPiece(QPointF p)
+bool Game::handleClick(QPointF p)
 {
     // Click non drop point, do not execute
     File f;
@@ -153,7 +153,7 @@ bool Game::actionPiece(QPointF p)
     if (!validateClick(p, f, r))
         return false;
 
-    if (!isRepentancePhase())
+    if (!undoRecentMovesOnReview())
         return false;
 
     initiateGameIfReady();
@@ -166,48 +166,55 @@ bool Game::actionPiece(QPointF p)
 }
 
 // TODO: Function name
-bool Game::isRepentancePhase()
+bool Game::undoRecentMovesOnReview()
 {
-    // When you click the board while browsing the move list, it is considered
-    // repentance
+    // Activated when the user clicks on the board while reviewing past moves.
+    // This action is considered as a request to undo moves.
     if (currentRow != moveListModel.rowCount() - 1) {
 #ifndef QT_MOBILE_APP_UI
-        // Define new dialog box
+        // Initialize a new dialog box for user confirmation
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Question);
         msgBox.setMinimumSize(600, 400);
-        msgBox.setText(tr("You are looking back at an old position."));
-        msgBox.setInformativeText(tr("Do you want to retract your moves?"));
+        msgBox.setText(tr("You're reviewing a previous board state."));
+        msgBox.setInformativeText(tr("Would you like to undo your recent "
+                                     "moves?"));
         msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
         msgBox.setDefaultButton(QMessageBox::Cancel);
         (msgBox.button(QMessageBox::Ok))->setText(tr("Yes"));
         (msgBox.button(QMessageBox::Cancel))->setText(tr("No"));
 
+        // If the user confirms, execute the following logic
         if (QMessageBox::Ok == msgBox.exec()) {
 #endif /* !QT_MOBILE_APP_UI */
+            // Determine the number of moves to be retracted
             const int rowCount = moveListModel.rowCount();
             const int removeCount = rowCount - currentRow - 1;
+            // Remove retracted moves from the model
             moveListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
+            // Update internal move list
             for (int i = 0; i < removeCount; i++) {
                 gameMoveList.pop_back();
             }
 
-            // If you regret the game, restart the timing
+            // If no winner has been determined, restart the timer
             if (position.get_winner() == NOBODY) {
-                // Restart timing
+                // Restart game timer
                 timeID = startTimer(100);
 
-                // Signal update status bar
+                // Trigger a status bar update
                 updateScene();
                 message = QString::fromStdString(getTips());
                 emit statusBarChanged(message);
 #ifndef QT_MOBILE_APP_UI
             }
         } else {
+            // If user cancels, exit function and return false
             return false;
 #endif /* !QT_MOBILE_APP_UI */
         }
     }
+    // If currentRow equals the last row in moveListModel, no action is taken
     return true;
 }
