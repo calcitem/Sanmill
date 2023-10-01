@@ -119,7 +119,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Hərəkət edin",
+  "move": "Hərəkət",
   "@move": {
     "description": "Move"
   },

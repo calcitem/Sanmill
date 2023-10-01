@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Μετακίνηση",
+  "move": "Μετα",
   "@move": {
     "description": "Move"
   },
@@ -584,7 +584,7 @@
   "@pick": {
     "description": "Pick "
   },
-  "info": "Πληροφορίες",
+  "info": "Πληρ.",
   "@info": {
     "description": "Info"
   },

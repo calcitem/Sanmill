@@ -308,7 +308,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Indstillinger",
+  "options": "Valg",
   "@options": {
     "description": "Options"
   },

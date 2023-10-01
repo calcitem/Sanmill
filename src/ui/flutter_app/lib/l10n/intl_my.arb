@@ -323,7 +323,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "ရွေးချယ်စရာများ",
+  "options": "ရွေးချယ်စရာ",
   "@options": {
     "description": "Options"
   },
@@ -1453,7 +1453,7 @@
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
-  "info": "အချက်အလက်",
+  "info": "အခ. အလ.",
   "@info": {
     "description": "Info"
   },

@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Движете се",
+  "move": "Потег",
   "@move": {
     "description": "Move"
   },

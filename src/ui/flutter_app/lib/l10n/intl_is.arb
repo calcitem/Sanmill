@@ -667,7 +667,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Valmöguleikar",
+  "options": "Valm.",
   "@options": {
     "description": "Options"
   },

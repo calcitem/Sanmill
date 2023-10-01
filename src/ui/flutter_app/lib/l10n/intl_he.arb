@@ -139,7 +139,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "מהלך \\ לזוז \\ לעבור",
+  "move": "מהלך",
   "@move": {
     "description": "Move"
   },
