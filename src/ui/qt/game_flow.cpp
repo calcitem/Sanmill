@@ -59,7 +59,7 @@ bool Game::applyPartialMoveList(int row)
     return true;
 }
 
-// Update the board state by applying moves up to a specific row in the history.
+// Update the board state by applying moves up to a specific row in the list.
 // Optionally force an update even if the current row matches the requested row.
 bool Game::updateBoardState(int row, bool forceUpdate)
 {

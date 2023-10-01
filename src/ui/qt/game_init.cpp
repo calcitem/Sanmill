@@ -77,7 +77,7 @@ void Game::terminateComponents()
     terminateTimer();
     terminateThreads();
     finalizeEndgameLearning();
-    clearMoveHistory();
+    clearMoveList();
     destroySettings();
 }
 
@@ -230,7 +230,7 @@ void Game::resetPositionState()
 
 void Game::resetGameState()
 {
-    resetMoveHistoryReserveFirst();
+    resetMoveListReserveFirst();
     resetPerfectAi();
     resetPositionState();
 }

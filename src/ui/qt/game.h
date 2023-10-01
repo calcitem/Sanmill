@@ -119,7 +119,7 @@ public:
 
     static char colorToChar(Color color);
     static std::string charToString(char ch);
-    void appendGameOverReasonToMoveHistory();
+    void appendGameOverReasonToMoveList();
     void setTips();
 
     [[nodiscard]] const std::vector<std::string> *getMoveList() const
@@ -157,7 +157,7 @@ private:
     void terminateTimer();
     void terminateThreads();
     void finalizeEndgameLearning();
-    void clearMoveHistory();
+    void clearMoveList();
     void destroySettings();
 
     static void createRuleEntries(std::map<int, QStringList> &actions);
@@ -168,13 +168,13 @@ private:
     void resetGameState();
     void resetUIElements();
     void resetAndUpdateTime();
-    void updateMoveHistory();
+    void updateMoveList();
     void updateStatusBar();
     void updateLcdDisplay();
     void updateMiscellaneous();
 
-    void resetMoveHistoryReserveFirst();
-    void appendRecordToMoveHistory(const char *format, ...);
+    void resetMoveListReserveFirst();
+    void appendRecordToMoveList(const char *format, ...);
     void resetPerfectAi();
     void resetPositionState();
 
@@ -185,7 +185,7 @@ private:
     void saveRuleSetting(int ruleNo);
 
     void reinitMoveListModel();
-    void updateMoveListModelFromHistory(); // TODO
+    void updateMoveListModelFromMoveList(); // TODO
     void handleGameOutcome();
     void handleWinOrLoss();
     void performAutoRestartActions();
@@ -353,7 +353,7 @@ public slots:
     // Function to update UI components
     void updateUIComponents();
 
-    // Function to synchronize the current scene based on move history
+    // Function to synchronize the current scene based on move list
     void syncScene(int row);
 
     // Transformation functions

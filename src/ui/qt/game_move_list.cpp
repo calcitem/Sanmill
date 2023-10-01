@@ -46,7 +46,7 @@
 using std::to_string;
 
 // Helper function to handle snprintf and append to gameMoveList
-void Game::appendRecordToMoveHistory(const char *format, ...)
+void Game::appendRecordToMoveList(const char *format, ...)
 {
     char record[64] = {0};
     va_list args;
@@ -60,7 +60,7 @@ void Game::appendRecordToMoveHistory(const char *format, ...)
     gameMoveList.emplace_back(record);
 }
 
-void Game::resetMoveHistoryReserveFirst()
+void Game::resetMoveListReserveFirst()
 {
     // Reset game history
     // WAR
@@ -71,7 +71,7 @@ void Game::resetMoveHistoryReserveFirst()
     }
 }
 
-void Game::appendGameOverReasonToMoveHistory()
+void Game::appendGameOverReasonToMoveList()
 {
     if (position.phase != Phase::gameOver) {
         return;
@@ -79,35 +79,35 @@ void Game::appendGameOverReasonToMoveHistory()
 
     switch (position.gameOverReason) {
     case GameOverReason::loseNoWay:
-        appendRecordToMoveHistory(loseReasonNoWayStr, position.sideToMove,
+        appendRecordToMoveList(loseReasonNoWayStr, position.sideToMove,
                                   position.winner);
         break;
     case GameOverReason::loseTimeOver:
-        appendRecordToMoveHistory(loseReasonTimeOverStr, position.winner);
+        appendRecordToMoveList(loseReasonTimeOverStr, position.winner);
         break;
     case GameOverReason::drawThreefoldRepetition:
-        appendRecordToMoveHistory(drawReasonThreefoldRepetitionStr);
+        appendRecordToMoveList(drawReasonThreefoldRepetitionStr);
         break;
     case GameOverReason::drawRule50:
-        appendRecordToMoveHistory(drawReasonRule50Str);
+        appendRecordToMoveList(drawReasonRule50Str);
         break;
     case GameOverReason::drawEndgameRule50:
-        appendRecordToMoveHistory(drawReasonEndgameRule50Str);
+        appendRecordToMoveList(drawReasonEndgameRule50Str);
         break;
     case GameOverReason::loseBoardIsFull:
-        appendRecordToMoveHistory(loseReasonBoardIsFullStr);
+        appendRecordToMoveList(loseReasonBoardIsFullStr);
         break;
     case GameOverReason::drawBoardIsFull:
-        appendRecordToMoveHistory(drawReasonBoardIsFullStr);
+        appendRecordToMoveList(drawReasonBoardIsFullStr);
         break;
     case GameOverReason::drawNoWay:
-        appendRecordToMoveHistory(drawReasonNoWayStr);
+        appendRecordToMoveList(drawReasonNoWayStr);
         break;
     case GameOverReason::loseLessThanThree:
-        appendRecordToMoveHistory(loseReasonlessThanThreeStr, position.winner);
+        appendRecordToMoveList(loseReasonlessThanThreeStr, position.winner);
         break;
     case GameOverReason::loseResign:
-        appendRecordToMoveHistory(loseReasonResignStr, ~position.winner);
+        appendRecordToMoveList(loseReasonResignStr, ~position.winner);
         break;
     case GameOverReason::none:
         debugPrintf("No Game Over Reason");
@@ -115,7 +115,7 @@ void Game::appendGameOverReasonToMoveHistory()
     }
 }
 
-void Game::clearMoveHistory()
+void Game::clearMoveList()
 {
     gameMoveList.clear();
 }

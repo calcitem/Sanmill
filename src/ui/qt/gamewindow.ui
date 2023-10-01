@@ -1143,7 +1143,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Move History</string>
+    <string>Move List</string>
    </property>
   </action>
   <action name="actionMusic_M">

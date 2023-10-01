@@ -60,7 +60,7 @@ void Game::updateLimits(int stepLimited, int timeLimited)
     }
 }
 
-// Record the rule info in move history.
+// Record the rule info in move list.
 void Game::recordRuleInfo(int ruleNo)
 {
     constexpr int bufferLen = 64;

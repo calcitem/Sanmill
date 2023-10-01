@@ -699,7 +699,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 void MillGameWindow::on_actionOpen_O_triggered()
 {
     const QString path = QFileDialog::getOpenFileName(
-        this, tr("Open the move history file"), QDir::currentPath(),
+        this, tr("Open the move list file"), QDir::currentPath(),
         "TXT(*.txt)");
 
     if (path.isEmpty()) {
@@ -731,11 +731,11 @@ void MillGameWindow::on_actionOpen_O_triggered()
     QTextStream textStream(&file);
     QString cmd = textStream.readLine();
 
-    // When reading and displaying the move history, there is no need to refresh
+    // When reading and displaying the move list, there is no need to refresh
     // the scene
     if (!game->command(cmd.toStdString(), false)) {
         QMessageBox msgBox(QMessageBox::Warning, tr("File error"),
-                           tr("Not the correct move history file"),
+                           tr("Not the correct move list file"),
                            QMessageBox::Ok);
         msgBox.exec();
         return;
@@ -773,8 +773,8 @@ void MillGameWindow::on_actionSave_S_triggered()
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
     const QString path = QFileDialog::getSaveFileName(
-        this, tr("Open the move history file"),
-        QDir::currentPath() + tr("MoveHistory_") +
+        this, tr("Open the move list file"),
+        QDir::currentPath() + tr("MoveList_") +
             QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt",
         "TXT(*.txt)");
 

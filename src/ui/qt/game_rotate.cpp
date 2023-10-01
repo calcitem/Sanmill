@@ -92,7 +92,7 @@ void Game::executeTransform(const TransformFunc &transform)
     startAiThreads();
 }
 
-// Update UI components like move history and scene
+// Update UI components like move list and scene
 void Game::updateUIComponents()
 {
     int row = 0;
@@ -102,7 +102,7 @@ void Game::updateUIComponents()
     syncScene(row - 1);
 }
 
-// Synchronize the current scene based on move history
+// Synchronize the current scene based on move list
 void Game::syncScene(int row)
 {
     if (currentRow == row) {

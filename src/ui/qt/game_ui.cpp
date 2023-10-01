@@ -278,7 +278,7 @@ void Game::setTips()
         break;
 
     case Phase::gameOver:
-        appendGameOverReasonToMoveHistory();
+        appendGameOverReasonToMoveList();
 
         scoreStr = "Score " + to_string(p.score[WHITE]) + " : " +
                    to_string(p.score[BLACK]) + ", Draw " +

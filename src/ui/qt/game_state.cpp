@@ -72,16 +72,16 @@ void Game::updateState(bool result)
     if (!result)
         return;
 
-    updateMoveHistory();
+    updateMoveList();
     updateStatusBar();
-    updateMoveListModelFromHistory();
+    updateMoveListModelFromMoveList();
     handleGameOutcome();
     sideToMove = position.side_to_move();
     updateScene();
 }
 
-// Update move and position history
-void Game::updateMoveHistory()
+// Update move and position list
+void Game::updateMoveList()
 {
     gameMoveList.emplace_back(position.record);
     if (strlen(position.record) > strlen("-(1,2)")) {
@@ -92,7 +92,7 @@ void Game::updateMoveHistory()
 }
 
 // Update the list model that holds the moves
-void Game::updateMoveListModelFromHistory()
+void Game::updateMoveListModelFromMoveList()
 {
     currentRow = moveListModel.rowCount() - 1;
     int k = 0;

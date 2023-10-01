@@ -168,7 +168,7 @@ bool Game::actionPiece(QPointF p)
 // TODO: Function name
 bool Game::isRepentancePhase()
 {
-    // When you click the board while browsing the history, it is considered
+    // When you click the board while browsing the move list, it is considered
     // repentance
     if (currentRow != moveListModel.rowCount() - 1) {
 #ifndef QT_MOBILE_APP_UI
