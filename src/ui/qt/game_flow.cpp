@@ -165,7 +165,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     if (!position.command(cmd.c_str())) {
         return false;
-    }        
+    }
 
     sideToMove = position.side_to_move();
 

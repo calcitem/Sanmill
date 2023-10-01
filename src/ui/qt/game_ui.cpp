@@ -66,11 +66,11 @@ void Game::updateStatusBar()
     emit statusBarChanged(message);
 }
 
-void Game::updateLCDDisplays(const Position &p)
+void Game::updateLCDDisplays()
 {
-    emit score1Changed(QString::number(p.score[WHITE], 10));
-    emit score2Changed(QString::number(p.score[BLACK], 10));
-    emit scoreDrawChanged(QString::number(p.score_draw, 10));
+    emit score1Changed(QString::number(position.score[WHITE], 10));
+    emit score2Changed(QString::number(position.score[BLACK], 10));
+    emit scoreDrawChanged(QString::number(position.score_draw, 10));
 
     // Update winning rate LCD display
     position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
@@ -139,18 +139,18 @@ bool Game::updateScene()
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
-    animatePieceMovement(position, board, animationGroup, deletedPiece);
+    animatePieceMovement(board, animationGroup, deletedPiece);
 
     // Handle banned locations
-    handleBannedLocations(position, board, nTotalPieces);
+    handleBannedLocations(board, nTotalPieces);
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(board, position, nTotalPieces, deletedPiece);
+    selectCurrentAndDeletedPieces(board, nTotalPieces, deletedPiece);
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Update LCD displays
-    updateLCDDisplays(position);
+    updateLCDDisplays();
 
     // Update tips
     setTips();
@@ -158,7 +158,7 @@ bool Game::updateScene()
     return true;
 }
 
-void Game::animatePieceMovement(const Position &p, const Piece *board,
+void Game::animatePieceMovement(const Piece *board,
                                 QParallelAnimationGroup *animationGroup,
                                 PieceItem *&deletedPiece)
 {
@@ -204,7 +204,7 @@ void Game::animatePieceMovement(const Position &p, const Piece *board,
 
         // If not, place the pieces outside the board
         if (j == RANK_NB * (FILE_NB + 1)) {
-            handleDeletedPiece(p, piece, key, animationGroup, deletedPiece);
+            handleDeletedPiece(piece, key, animationGroup, deletedPiece);
         }
 
         piece->setSelected(false); // TODO: Need?

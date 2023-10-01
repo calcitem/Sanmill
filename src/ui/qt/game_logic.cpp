@@ -45,7 +45,7 @@
 
 using std::to_string;
 
-void Game::handleDeletedPiece(const Position &p, PieceItem *piece, int key,
+void Game::handleDeletedPiece(PieceItem *piece, int key,
                               QParallelAnimationGroup *animationGroup,
                               PieceItem *&deletedPiece)
 {
@@ -53,11 +53,11 @@ void Game::handleDeletedPiece(const Position &p, PieceItem *piece, int key,
 
     // Judge whether it is a removing seed or an unplaced one
     if (key & W_PIECE) {
-        pos = (key - 0x11 < rule.pieceCount - p.count<IN_HAND>(WHITE)) ?
+        pos = (key - 0x11 < rule.pieceCount - position.count<IN_HAND>(WHITE)) ?
                   scene.pos_p2_g :
                   scene.pos_p1;
     } else {
-        pos = (key - 0x21 < rule.pieceCount - p.count<IN_HAND>(BLACK)) ?
+        pos = (key - 0x21 < rule.pieceCount - position.count<IN_HAND>(BLACK)) ?
                   scene.pos_p1_g :
                   scene.pos_p2;
     }
@@ -82,13 +82,13 @@ void Game::handleDeletedPiece(const Position &p, PieceItem *piece, int key,
     }
 }
 
-void Game::handleBannedLocations(const Position &p, const Piece *board,
+void Game::handleBannedLocations(const Piece *board,
                                  int &nTotalPieces)
 {
     QPointF pos;
 
     // Add banned points in placing phase
-    if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
+    if (rule.hasBannedLocations && position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
                 pos = scene.polarCoordinateToPoint(static_cast<File>(sq / RANK_NB),
@@ -109,7 +109,7 @@ void Game::handleBannedLocations(const Position &p, const Piece *board,
     }
 
     // Clear banned points in moving phase
-    if (rule.hasBannedLocations && p.get_phase() != Phase::placing) {
+    if (rule.hasBannedLocations && position.get_phase() != Phase::placing) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();
@@ -117,15 +117,15 @@ void Game::handleBannedLocations(const Position &p, const Piece *board,
     }
 }
 
-void Game::selectCurrentAndDeletedPieces(const Piece *board, const Position &p,
+void Game::selectCurrentAndDeletedPieces(const Piece *board,
                                          int nTotalPieces,
                                          PieceItem *deletedPiece)
 {
     // Select the current piece
-    int ipos = p.current_square();
+    int ipos = position.current_square();
     int key;
     if (ipos) {
-        key = board[p.current_square()];
+        key = board[position.current_square()];
         ipos = key & W_PIECE ? (key - W_PIECE_1) * 2 :
                                (key - B_PIECE_1) * 2 + 1;
         if (ipos >= 0 && ipos < nTotalPieces) {

@@ -91,7 +91,7 @@ public:
     ~Game() override;
 
     using TransformFunc =
-        std::function<void(Position &, std::vector<std::string> &)>;
+        std::function<void()>;
 
     //  Main window menu bar details
     static map<int, QStringList> getActions();
@@ -207,16 +207,16 @@ private:
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
 
-    void animatePieceMovement(const Position &p, const Piece *board,
+    void animatePieceMovement(const Piece *board,
                               QParallelAnimationGroup *animationGroup,
                               PieceItem *&deletedPiece);
-    void handleBannedLocations(const Position &p, const Piece *board,
+    void handleBannedLocations(const Piece *board,
                                int &nTotalPieces);
-    void handleDeletedPiece(const Position &p, PieceItem *piece, int key,
+    void handleDeletedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
-    void updateLCDDisplays(const Position &p);
-    void selectCurrentAndDeletedPieces(const Piece *board, const Position &p,
+    void updateLCDDisplays();
+    void selectCurrentAndDeletedPieces(const Piece *board,
                                        int nTotalPieces,
                                        PieceItem *deletedPiece);
 
@@ -371,22 +371,12 @@ public slots:
     void turnLeft();
 
     // Implementation of the transformation functions
-    static void mirrorAndRotate(Position &position,
-                                std::vector<std::string> &gameMoveList);
-    static void applyMirror(Position &position,
-                            std::vector<std::string> &gameMoveList);
-    static void rotateRight(Position &position,
-                            std::vector<std::string> &gameMoveList);
-    static void rotateLeft(Position &position,
-                           std::vector<std::string> &gameMoveList);
+    void mirrorAndRotate();
+    void applyMirror();
+    void rotateRight();
+    void rotateLeft();
 
     [[nodiscard]] bool isAiToMove() const;
-
-    void threadsSetAi(Position *p) const
-    {
-        aiThread[WHITE]->setAi(p);
-        aiThread[BLACK]->setAi(p);
-    }
 
     void resetAiPlayers()
     {

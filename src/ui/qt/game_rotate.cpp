@@ -83,7 +83,7 @@ void Game::executeTransform(const TransformFunc &transform)
     stopAndWaitAiThreads();
 
     // Apply transformation
-    transform(position, gameMoveList);
+    transform();
 
     // Update UI components
     updateUIComponents();
@@ -113,8 +113,7 @@ void Game::syncScene(int row)
 }
 
 // Transformation function implementations
-void Game::mirrorAndRotate(Position &position,
-                           std::vector<std::string> &gameMoveList)
+void Game::mirrorAndRotate()
 {
     position.mirror(gameMoveList);
     position.rotate(gameMoveList, 180);
@@ -124,34 +123,32 @@ void Game::mirrorAndRotate(Position &position,
 // Define transformation functions
 void Game::flip()
 {
-    executeTransform(mirrorAndRotate);
+    executeTransform([this]() { mirrorAndRotate(); });
 }
 void Game::mirror()
 {
-    executeTransform(applyMirror);
+    executeTransform([this]() { applyMirror(); });
 }
 void Game::turnRight()
 {
-    executeTransform(rotateRight);
+    executeTransform([this]() { rotateRight(); });
 }
 void Game::turnLeft()
 {
-    executeTransform(rotateLeft);
+    executeTransform([this]() { rotateLeft(); });
 }
 
-void Game::applyMirror(Position &position,
-                       std::vector<std::string> &gameMoveList)
+void Game::applyMirror()
 {
     position.mirror(gameMoveList);
 }
 
-void Game::rotateRight(Position &position,
-                       std::vector<std::string> &gameMoveList)
+void Game::rotateRight()
 {
     position.rotate(gameMoveList, -90);
 }
 
-void Game::rotateLeft(Position &position, std::vector<std::string> &gameMoveList)
+void Game::rotateLeft()
 {
     position.rotate(gameMoveList, 90);
 }
