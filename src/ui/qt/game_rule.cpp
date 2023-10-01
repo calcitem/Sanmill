@@ -60,19 +60,6 @@ void Game::updateLimits(int stepLimited, int timeLimited)
     }
 }
 
-// Record the rule info in move list.
-void Game::recordRuleInfo(int ruleNo)
-{
-    constexpr int bufferLen = 64;
-    char record[bufferLen] = {0};
-    if (snprintf(record, bufferLen, "r%1d s%03u t%02d", ruleNo + 1,
-                 rule.nMoveRule, 0) <= 0) {
-        assert(false); // Replace with proper error handling.
-    }
-    gameMoveList.clear();
-    gameMoveList.emplace_back(string(record));
-}
-
 // Set a new game rule.
 void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
 {
@@ -97,7 +84,6 @@ void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
     gameReset();
 
     // Record and save the new rule setting.
-    recordRuleInfo(ruleNo);
     saveRuleSetting(ruleNo);
 }
 

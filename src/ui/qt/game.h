@@ -181,7 +181,6 @@ private:
     bool isValidRuleIndex(int ruleNo);
     void updateLimits(int stepLimited, int timeLimited);
     void resetElapsedSeconds();
-    void recordRuleInfo(int ruleNo);
     void saveRuleSetting(int ruleNo);
 
     void reinitMoveListModel();

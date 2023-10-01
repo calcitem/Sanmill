@@ -664,11 +664,6 @@ bool Position::reset()
             break;
     }
 
-    if (snprintf(record, RECORD_LEN_MAX, "r%1d s%03u t%02d", r + 1,
-                 rule.nMoveRule, 0) > 0) {
-        return true;
-    }
-
     record[0] = '\0';
 
     return false;
@@ -1017,11 +1012,13 @@ bool Position::resign(Color loser)
 bool Position::command(const char *cmd)
 {
     char moveStr[64] = {0};
-    unsigned int ruleNo = 0;
     unsigned t = 0;
-    int step = 0;
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
+
+    if (strlen(cmd) == 0) { /* "" */
+        return reset();
+    }
 
 #ifdef _MSC_VER
     sscanf_s(cmd, "info score %d bestmove %63s", &bestvalue, moveStr,
@@ -1030,12 +1027,8 @@ bool Position::command(const char *cmd)
     sscanf(cmd, "info score %d bestmove %63s", &bestvalue, moveStr);
 #endif
 
-    if (sscanf(moveStr, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
-        if (set_rule(ruleNo - 1) == false) {
-            return false;
-        }
-
-        return reset();
+    if (strlen(moveStr) == 0 && strlen(cmd) > 0) {
+        strncpy(moveStr, cmd, 64);
     }
 
     int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
