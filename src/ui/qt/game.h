@@ -204,15 +204,13 @@ private:
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
 
-    void animatePieceMovement(QParallelAnimationGroup *animationGroup,
-                              PieceItem *&deletedPiece);
-    void handleBannedLocations(int &nTotalPieces);
+    void animatePieceMovement(PieceItem *&deletedPiece);
+    void handleBannedLocations();
     void handleDeletedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
     void updateLCDDisplays();
-    void selectCurrentAndDeletedPieces(int nTotalPieces,
-                                       PieceItem *deletedPiece);
+    void selectCurrentAndDeletedPieces(PieceItem *deletedPiece);
 
 
 signals:

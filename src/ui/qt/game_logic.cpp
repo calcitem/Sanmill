@@ -82,9 +82,10 @@ void Game::handleDeletedPiece(PieceItem *piece, int key,
     }
 }
 
-void Game::handleBannedLocations(int &nTotalPieces)
+void Game::handleBannedLocations()
 {
     QPointF pos;
+    int nTotalPieces = rule.pieceCount * 2;
     const Piece *board = position.get_board();
 
     // Add banned points in placing phase
@@ -117,10 +118,10 @@ void Game::handleBannedLocations(int &nTotalPieces)
     }
 }
 
-void Game::selectCurrentAndDeletedPieces(int nTotalPieces,
-                                         PieceItem *deletedPiece)
+void Game::selectCurrentAndDeletedPieces(PieceItem *deletedPiece)
 {
     const Piece *board = position.get_board();
+    int nTotalPieces = rule.pieceCount * 2;
 
     // Select the current piece
     int ipos = position.current_square();

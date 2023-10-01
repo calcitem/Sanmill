@@ -127,25 +127,18 @@ void Game::reinitMoveListModel()
 
 bool Game::updateScene()
 {
-    // Total number of pieces
-    int nTotalPieces = rule.pieceCount * 2;
-
-    // Animation group
-    auto *animationGroup = new QParallelAnimationGroup;
-
     // The deleted pieces are in place
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
-    animatePieceMovement(animationGroup, deletedPiece);
+    // TODO: Rename
+    animatePieceMovement(deletedPiece);
 
     // Handle banned locations
-    handleBannedLocations(nTotalPieces);
+    handleBannedLocations();
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(nTotalPieces, deletedPiece);
-
-    animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
+    selectCurrentAndDeletedPieces(deletedPiece);
 
     // Update LCD displays
     updateLCDDisplays();
@@ -156,12 +149,13 @@ bool Game::updateScene()
     return true;
 }
 
-void Game::animatePieceMovement(QParallelAnimationGroup *animationGroup,
-                                PieceItem *&deletedPiece)
+void Game::animatePieceMovement(PieceItem *&deletedPiece)
 {
     int key;
     QPointF pos;
     const Piece *board = position.get_board();
+    // Animation group
+    auto *animationGroup = new QParallelAnimationGroup;
 
     // Total number of pieces
     int nTotalPieces = rule.pieceCount * 2;
@@ -207,6 +201,8 @@ void Game::animatePieceMovement(QParallelAnimationGroup *animationGroup,
 
         piece->setSelected(false); // TODO: Need?
     }
+
+    animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 inline char Game::colorToChar(Color color)
