@@ -78,38 +78,39 @@ void Game::appendGameOverReasonToMoveList()
     }
 
     switch (position.gameOverReason) {
-    case GameOverReason::loseNoWay:
-        appendRecordToMoveList(loseReasonNoWayStr, position.sideToMove,
+    case GameOverReason::LoseNoLegalMoves:
+        appendRecordToMoveList(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
                                   position.winner);
         break;
-    case GameOverReason::loseTimeOver:
-        appendRecordToMoveList(loseReasonTimeOverStr, position.winner);
+    case GameOverReason::LoseTimeout:
+        appendRecordToMoveList(LOSE_REASON_TIMEOUT, position.winner);
         break;
-    case GameOverReason::drawThreefoldRepetition:
-        appendRecordToMoveList(drawReasonThreefoldRepetitionStr);
+    case GameOverReason::DrawThreefoldRepetition:
+        appendRecordToMoveList(DRAW_REASON_THREEFOLD_REPETITION);
         break;
-    case GameOverReason::drawRule50:
-        appendRecordToMoveList(drawReasonRule50Str);
+    case GameOverReason::DrawFiftyMove:
+        appendRecordToMoveList(DRAW_REASON_FIFTY_MOVE);
         break;
-    case GameOverReason::drawEndgameRule50:
-        appendRecordToMoveList(drawReasonEndgameRule50Str);
+    case GameOverReason::DrawEndgameFiftyMove:
+        appendRecordToMoveList(DRAW_REASON_ENDGAME_FIFTY_MOVE);
         break;
-    case GameOverReason::loseBoardIsFull:
-        appendRecordToMoveList(loseReasonBoardIsFullStr);
+    case GameOverReason::LoseFullBoard:
+        appendRecordToMoveList(LOSE_REASON_FULL_BOARD);
         break;
-    case GameOverReason::drawBoardIsFull:
-        appendRecordToMoveList(drawReasonBoardIsFullStr);
+    case GameOverReason::DrawFullBoard:
+        appendRecordToMoveList(DRAW_REASON_FULL_BOARD);
         break;
-    case GameOverReason::drawNoWay:
-        appendRecordToMoveList(drawReasonNoWayStr);
+    case GameOverReason::DrawStalemateCondition:
+        appendRecordToMoveList(DRAW_REASON_STALEMATE_CONDITION);
         break;
-    case GameOverReason::loseLessThanThree:
-        appendRecordToMoveList(loseReasonlessThanThreeStr, position.winner);
+    case GameOverReason::LoseFewerThanThree:
+        appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE,
+                               position.winner);
         break;
-    case GameOverReason::loseResign:
-        appendRecordToMoveList(loseReasonResignStr, ~position.winner);
+    case GameOverReason::LoseResign:
+        appendRecordToMoveList(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
         break;
-    case GameOverReason::none:
+    case GameOverReason::None:
         debugPrintf("No Game Over Reason");
         break;
     }

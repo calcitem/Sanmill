@@ -205,7 +205,7 @@ public:
     /// Mill Game
     Color them {NOCOLOR};
     Color winner;
-    GameOverReason gameOverReason {GameOverReason::none};
+    GameOverReason gameOverReason {GameOverReason::None};
 
     Phase phase {Phase::none};
     Action action;

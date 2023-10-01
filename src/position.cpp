@@ -630,7 +630,7 @@ bool Position::reset()
     action = Action::place;
 
     winner = NOBODY;
-    gameOverReason = GameOverReason::none;
+    gameOverReason = GameOverReason::None;
 
     memset(board, 0, sizeof(board));
     memset(byTypeBB, 0, sizeof(byTypeBB));
@@ -671,7 +671,7 @@ bool Position::reset()
 
 bool Position::start()
 {
-    gameOverReason = GameOverReason::none;
+    gameOverReason = GameOverReason::None;
 
     switch (phase) {
     case Phase::placing:
@@ -924,7 +924,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (pieceOnBoardCount[them] + pieceInHandCount[them] <
         rule.piecesAtLeastCount) {
-        set_gameover(sideToMove, GameOverReason::loseLessThanThree);
+        set_gameover(sideToMove, GameOverReason::LoseFewerThanThree);
         return true;
     }
 
@@ -1002,9 +1002,9 @@ bool Position::resign(Color loser)
         return false;
     }
 
-    set_gameover(~loser, GameOverReason::loseResign);
+    set_gameover(~loser, GameOverReason::LoseResign);
 
-    snprintf(record, RECORD_LEN_MAX, loseReasonResignStr, loser);
+    snprintf(record, RECORD_LEN_MAX, LOSE_REASON_PLAYER_RESIGNS, loser);
 
     return true;
 }
@@ -1012,7 +1012,7 @@ bool Position::resign(Color loser)
 bool Position::command(const char *cmd)
 {
     char moveStr[64] = {0};
-    unsigned t = 0;
+    unsigned char t = 0;
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
 
@@ -1058,21 +1058,21 @@ bool Position::command(const char *cmd)
         return put_piece(file1, rank1);
     }
 
-    args = sscanf(moveStr, "Player%1u give up!", &t);
+    args = sscanf(moveStr, "Player %hhu resigns!", &t);
 
     if (args == 1) {
         return resign(static_cast<Color>(t));
     }
 
     if (rule.threefoldRepetitionRule) {
-        if (!strcmp(moveStr, drawReasonThreefoldRepetitionStr)) {
+        if (!strcmp(moveStr, DRAW_REASON_THREEFOLD_REPETITION)) {
             return true;
         }
 
         if (!strcmp(moveStr, "draw")) {
-            set_gameover(DRAW, GameOverReason::drawThreefoldRepetition);
+            set_gameover(DRAW, GameOverReason::DrawThreefoldRepetition);
             // snprintf(record, RECORD_LEN_MAX,
-            // drawReasonThreefoldRepetitionStr);
+            // DRAW_REASON_THREEFOLD_REPETITION);
             return true;
         }
     }
@@ -1110,13 +1110,13 @@ bool Position::check_if_game_is_over()
 {
 #ifdef RULE_50
     if (rule.nMoveRule > 0 && posKeyHistory.size() >= rule.nMoveRule) {
-        set_gameover(DRAW, GameOverReason::drawRule50);
+        set_gameover(DRAW, GameOverReason::DrawFiftyMove);
         return true;
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame() &&
         posKeyHistory.size() >= rule.endgameNMoveRule) {
-        set_gameover(DRAW, GameOverReason::drawEndgameRule50);
+        set_gameover(DRAW, GameOverReason::DrawEndgameFiftyMove);
         return true;
     }
 #endif // RULE_50
@@ -1126,7 +1126,7 @@ bool Position::check_if_game_is_over()
         // TODO: BoardFullAction: Support other actions
         switch (rule.boardFullAction) {
         case BoardFullAction::firstPlayerLose:
-            set_gameover(BLACK, GameOverReason::loseBoardIsFull);
+            set_gameover(BLACK, GameOverReason::LoseFullBoard);
             return true;
         case BoardFullAction::firstAndSecondPlayerRemovePiece:
             pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 1;
@@ -1145,7 +1145,7 @@ bool Position::check_if_game_is_over()
             pieceToRemoveCount[sideToMove] = 1;
             return false;
         case BoardFullAction::agreeToDraw:
-            set_gameover(DRAW, GameOverReason::drawBoardIsFull);
+            set_gameover(DRAW, GameOverReason::DrawFullBoard);
             return true;
         };
     }
@@ -1154,7 +1154,7 @@ bool Position::check_if_game_is_over()
         is_all_surrounded(sideToMove)) {
         switch (rule.stalemateAction) {
         case StalemateAction::endWithStalemateLoss:
-            set_gameover(~sideToMove, GameOverReason::loseNoWay);
+            set_gameover(~sideToMove, GameOverReason::LoseNoLegalMoves);
             return true;
         case StalemateAction::changeSideToMove:
             change_side_to_move(); // TODO(calcitem): Need?
@@ -1169,7 +1169,7 @@ bool Position::check_if_game_is_over()
             action = Action::remove;
             return false;
         case StalemateAction::endWithStalemateDraw:
-            set_gameover(DRAW, GameOverReason::drawNoWay);
+            set_gameover(DRAW, GameOverReason::DrawStalemateCondition);
             return true;
         }
     }

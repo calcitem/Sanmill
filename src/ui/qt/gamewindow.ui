@@ -773,7 +773,7 @@
      <normaloff>:/icon/resources/icon/DocumentHS.png</normaloff>:/icon/resources/icon/DocumentHS.png</iconset>
    </property>
    <property name="text">
-    <string>New Game</string>
+    <string>New</string>
    </property>
    <property name="statusTip">
     <string/>
@@ -788,7 +788,7 @@
      <normaloff>:/icon/resources/icon/OpenHS.png</normaloff>:/icon/resources/icon/OpenHS.png</iconset>
    </property>
    <property name="text">
-    <string>Load Game...</string>
+    <string>Open...</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
@@ -800,7 +800,7 @@
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
-    <string>Save Game...</string>
+    <string>Save</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
@@ -812,7 +812,7 @@
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
    </property>
    <property name="text">
-    <string>Save Game As...</string>
+    <string>Save As...</string>
    </property>
   </action>
   <action name="actionExit_X">

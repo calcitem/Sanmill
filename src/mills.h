@@ -21,16 +21,19 @@
 #include "position.h"
 #include "types.h"
 
-#define loseReasonNoWayStr "Player%hhu no way to go. Player%hhu win!"
-#define loseReasonTimeOverStr "Time over. Player%hhu win!"
-#define drawReasonThreefoldRepetitionStr "Threefold Repetition. Draw!"
-#define drawReasonRule50Str "N-move rule. Draw!"
-#define drawReasonEndgameRule50Str "Endgame N-move rule. Draw!"
-#define loseReasonBoardIsFullStr "Full. Player2 win!"
-#define drawReasonBoardIsFullStr "Full. In draw!"
-#define drawReasonNoWayStr "Stalemate. In draw!"
-#define loseReasonlessThanThreeStr "Player%hhu win!"
-#define loseReasonResignStr "Player%hhu give up!"
+#define LOSE_REASON_NO_LEGAL_MOVES \
+    "Player %hhu has no legal moves. Player %hhu wins!"
+#define LOSE_REASON_TIMEOUT "Time's up. Player %hhu wins!"
+#define DRAW_REASON_THREEFOLD_REPETITION "Threefold repetition. It's a draw!"
+#define DRAW_REASON_FIFTY_MOVE "50-move rule reached. It's a draw!"
+#define DRAW_REASON_ENDGAME_FIFTY_MOVE \
+    "Endgame 50-move rule reached. It's a draw!"
+#define LOSE_REASON_FULL_BOARD "Board is full. Player 2 wins!"
+#define DRAW_REASON_FULL_BOARD "Board is full. It's a draw!"
+#define DRAW_REASON_STALEMATE_CONDITION "Stalemate. It's a draw!"
+#define LOSE_REASON_LESS_THAN_THREE \
+    "Player %hhu wins because the opponent has fewer than three pieces!"
+#define LOSE_REASON_PLAYER_RESIGNS "Player %hhu resigns!"
 
 namespace Mills {
 

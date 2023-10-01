@@ -452,9 +452,9 @@ string Thread::next_move() const
     if (gameOptions.getResignIfMostLose() == true) {
         if (bestvalue <= -VALUE_MATE) {
             rootPos->set_gameover(~rootPos->sideToMove,
-                                  GameOverReason::loseResign);
+                                  GameOverReason::LoseResign);
             snprintf(rootPos->record, Position::RECORD_LEN_MAX,
-                     loseReasonResignStr, rootPos->sideToMove);
+                     LOSE_REASON_PLAYER_RESIGNS, rootPos->sideToMove);
             return rootPos->record;
         }
     }
