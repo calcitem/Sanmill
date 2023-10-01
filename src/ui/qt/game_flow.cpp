@@ -153,6 +153,15 @@ bool Game::command(const string &cmd, bool update /* = true */)
     sscanf(cmd, "info score %d bestmove %63s", &bestvalue, moveStr);
 #endif
 
+    if (strlen(moveStr) == 0 && !cmd.empty()) {
+#ifdef _MSC_VER
+        strncpy_s(moveStr, sizeof(moveStr), cmd.c_str(), _TRUNCATE);
+#else
+        strncpy(moveStr, cmd.c_str(), sizeof(moveStr) - 1);
+        moveStr[sizeof(moveStr) - 1] = '\0';
+#endif
+    }
+
     debugPrintf("Computer: %s\n\n", cmd.c_str());
 
     gameMoveList.emplace_back(moveStr);
