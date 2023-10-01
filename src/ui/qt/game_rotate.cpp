@@ -115,32 +115,32 @@ void Game::syncScene(int row)
 // Transformation function implementations
 void Game::mirrorAndRotate()
 {
-    position.mirror(gameMoveList);
+    position.flipHorizontally(gameMoveList);
     position.rotate(gameMoveList, 180);
 }
 
 
 // Define transformation functions
-void Game::flip()
+void Game::flipVertically()
 {
     executeTransform([this]() { mirrorAndRotate(); });
 }
-void Game::mirror()
+void Game::flipHorizontally()
 {
     executeTransform([this]() { applyMirror(); });
 }
-void Game::turnRight()
+void Game::rotateClockwise()
 {
     executeTransform([this]() { rotateRight(); });
 }
-void Game::turnLeft()
+void Game::RotateCounterclockwise()
 {
     executeTransform([this]() { rotateLeft(); });
 }
 
 void Game::applyMirror()
 {
-    position.mirror(gameMoveList);
+    position.flipHorizontally(gameMoveList);
 }
 
 void Game::rotateRight()

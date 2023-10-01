@@ -29,16 +29,16 @@ void GameView::applyTransform(TransformType type)
     QTransform newTransform;
 
     switch (type) {
-    case TransformType::Flip:
+    case TransformType::FlipVertically:
         newTransform = QTransform(1, 0, 0, -1, 0, 0);
         break;
-    case TransformType::Mirror:
+    case TransformType::FlipHorizontally:
         newTransform = QTransform(-1, 0, 0, 1, 0, 0);
         break;
-    case TransformType::TurnRight:
+    case TransformType::RotateClockwise:
         newTransform = QTransform(0, 1, -1, 0, 0, 0);
         break;
-    case TransformType::TurnLeft:
+    case TransformType::RotateCounterclockwise:
         newTransform = QTransform(0, -1, 1, 0, 0, 0);
         break;
     }
@@ -46,24 +46,24 @@ void GameView::applyTransform(TransformType type)
     setTransform(transform() * newTransform);
 }
 
-void GameView::flip()
+void GameView::flipVertically()
 {
-    applyTransform(TransformType::Flip);
+    applyTransform(TransformType::FlipVertically);
 }
 
-void GameView::mirror()
+void GameView::flipHorizontally()
 {
-    applyTransform(TransformType::Mirror);
+    applyTransform(TransformType::FlipHorizontally);
 }
 
-void GameView::turnRight()
+void GameView::rotateClockwise()
 {
-    applyTransform(TransformType::TurnRight);
+    applyTransform(TransformType::RotateClockwise);
 }
 
-void GameView::turnLeft()
+void GameView::RotateCounterclockwise()
 {
-    applyTransform(TransformType::TurnLeft);
+    applyTransform(TransformType::RotateCounterclockwise);
 }
 
 void GameView::resizeEvent(QResizeEvent *event)

@@ -142,7 +142,7 @@ Hash::Hash(int the_w, int the_b, Sector *sec)
             we get back such positions. (this is what the line below is for)
 
             We call the sets obtained based on the above loop orbits. (we only
-            look at the white part of the positions) Below, the ws flip is
+            look at the white part of the positions) Below, the ws flipVertically is
             needed because the different elements of the set we get by
             supplementing an orbit with blacks (everywhere in the same way (in a
             collapsed sense)), may be in different partitions. The reason for

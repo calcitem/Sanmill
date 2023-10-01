@@ -60,8 +60,6 @@ private slots:
 
     void actionRules_triggered();
 
-    void ruleInfo() const;
-
     void onAutoRunTimeOut(QPrivateSignal signal) const;
 
     // The slot function for each action

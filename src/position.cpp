@@ -1651,7 +1651,7 @@ bool Position::is_stalemate_removal()
     return false;
 }
 
-void Position::mirror(vector<string> &gameMoveList, bool cmdChange /*= true*/)
+void Position::flipHorizontally(vector<string> &gameMoveList, bool cmdChange /*= true*/)
 {
     int f, r;
 

@@ -255,7 +255,7 @@
    </widget>
    <widget class="QMenu" name="menu_M">
     <property name="title">
-     <string>Step</string>
+     <string>Move</string>
     </property>
     <addaction name="actionBegin_S"/>
     <addaction name="actionPrevious_B"/>
@@ -268,7 +268,7 @@
    </widget>
    <widget class="QMenu" name="menu_E">
     <property name="title">
-     <string>Engines</string>
+     <string>Game</string>
     </property>
     <addaction name="actionEngine_E"/>
     <addaction name="actionLocal_L"/>
@@ -287,6 +287,7 @@
     <addaction name="actionSetting_O"/>
     <addaction name="separator"/>
     <addaction name="actionFixWindowSize"/>
+    <addaction name="separator"/>
     <addaction name="actionToolBar_T"/>
     <addaction name="actionDockBar_D"/>
     <addaction name="actionMusic_M"/>
@@ -335,12 +336,12 @@
     <addaction name="actionLearnEndgame_E"/>
    </widget>
    <addaction name="menu_F"/>
-   <addaction name="menu_C"/>
-   <addaction name="menu_M"/>
-   <addaction name="menu_R"/>
    <addaction name="menu_E"/>
-   <addaction name="menu_A"/>
+   <addaction name="menu_C"/>
    <addaction name="menu_O"/>
+   <addaction name="menu_R"/>
+   <addaction name="menu_A"/>
+   <addaction name="menu_M"/>
    <addaction name="menu_H"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -367,8 +368,6 @@
    <addaction name="separator"/>
    <addaction name="actionEngine1_T"/>
    <addaction name="actionEngine2_R"/>
-   <addaction name="actionLocal_L"/>
-   <addaction name="actionInternet_I"/>
   </widget>
   <widget class="QDockWidget" name="dockWidget">
    <property name="sizePolicy">
@@ -393,7 +392,7 @@
     <set>Qt::AllDockWidgetAreas</set>
    </property>
    <property name="windowTitle">
-    <string>Move History</string>
+    <string>Match Details</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -469,7 +468,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Player 1</string>
+              <string>White</string>
              </property>
             </widget>
            </item>
@@ -550,7 +549,7 @@
               </font>
              </property>
              <property name="text">
-              <string>Player 2</string>
+              <string>Black</string>
              </property>
             </widget>
            </item>
@@ -754,43 +753,7 @@
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="labelInfo">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>1</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/Help.png</pixmap>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="labelRule">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>8</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>AmdtSymbols</family>
-               <pointsize>7</pointsize>
-              </font>
-             </property>
-             <property name="text">
-              <string>rule</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <layout class="QHBoxLayout" name="horizontalLayout_2"/>
          </item>
          <item>
           <widget class="MoveListView" name="listView">
@@ -873,6 +836,9 @@
    <property name="text">
     <string>Set-up a Position</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionFlip_F">
    <property name="icon">
@@ -880,7 +846,7 @@
      <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset>
    </property>
    <property name="text">
-    <string>Flip</string>
+    <string>Flip Vertically</string>
    </property>
   </action>
   <action name="actionMirror_M">
@@ -889,7 +855,7 @@
      <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset>
    </property>
    <property name="text">
-    <string>Mirror</string>
+    <string>Flip Horizontally</string>
    </property>
   </action>
   <action name="actionTurnRight_R">
@@ -898,7 +864,7 @@
      <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset>
    </property>
    <property name="text">
-    <string>Turn Right</string>
+    <string>Rotate Clockwise</string>
    </property>
    <property name="toolTip">
     <string>Turn Left</string>
@@ -910,7 +876,7 @@
      <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>
    </property>
    <property name="text">
-    <string>Turn Left</string>
+    <string>Rotate Counterclockwise</string>
    </property>
    <property name="toolTip">
     <string>Turn Left</string>
@@ -928,7 +894,7 @@
      <normaloff>:/icon/resources/icon/Invert.png</normaloff>:/icon/resources/icon/Invert.png</iconset>
    </property>
    <property name="text">
-    <string>Invert</string>
+    <string>Invert Colors</string>
    </property>
   </action>
   <action name="actionBegin_S">
@@ -937,7 +903,7 @@
      <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
    </property>
    <property name="text">
-    <string>Back to Start</string>
+    <string>Take Back All</string>
    </property>
    <property name="toolTip">
     <string>Back to Start</string>
@@ -952,7 +918,7 @@
      <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
    </property>
    <property name="text">
-    <string>Backward</string>
+    <string>Tabke Back</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Left</string>
@@ -964,7 +930,7 @@
      <normaloff>:/icon/resources/icon/Next.png</normaloff>:/icon/resources/icon/Next.png</iconset>
    </property>
    <property name="text">
-    <string>Forward</string>
+    <string>Step Forward</string>
    </property>
    <property name="toolTip">
     <string>Forward</string>
@@ -979,7 +945,7 @@
      <normaloff>:/icon/resources/icon/Last.png</normaloff>:/icon/resources/icon/Last.png</iconset>
    </property>
    <property name="text">
-    <string>Forward to End</string>
+    <string>Step Forward All</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Down</string>
@@ -1014,7 +980,7 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>Step/Time Control...</string>
+    <string>Move/Time Control...</string>
    </property>
    <property name="toolTip">
     <string>Step/Time Control</string>
@@ -1132,7 +1098,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Tool Bar</string>
+    <string>Toolbar</string>
    </property>
   </action>
   <action name="actionDockBar_D">
@@ -1143,7 +1109,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Move List</string>
+    <string>Match Details</string>
    </property>
   </action>
   <action name="actionMusic_M">
@@ -1242,7 +1208,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Shuffle</string>
+    <string>Move Randomly</string>
    </property>
   </action>
   <action name="actionResignIfMostLose_G">
@@ -1365,7 +1331,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Lazy Mode</string>
+    <string>Passive</string>
    </property>
   </action>
   <action name="actionDrawOnHumanExperience">

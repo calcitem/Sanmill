@@ -21,10 +21,15 @@
 
 #include <QGraphicsView>
 
-enum class TransformType { Flip, Mirror, TurnRight, TurnLeft };
+enum class TransformType {
+    FlipVertically,
+    FlipHorizontally,
+    RotateClockwise,
+    RotateCounterclockwise
+};
 
 // This class is mainly derived to make the view adapt to the scene size and
-// image rotation mirror operation
+// image rotation flipHorizontally operation
 class GameView : public QGraphicsView
 {
     Q_OBJECT
@@ -34,10 +39,10 @@ public:
     ~GameView() override;
 
 public slots:
-    void flip();
-    void mirror();
-    void turnRight();
-    void turnLeft();
+    void flipVertically();
+    void flipHorizontally();
+    void rotateClockwise();
+    void RotateCounterclockwise();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

@@ -356,10 +356,10 @@ public slots:
     void syncScene(int row);
 
     // Transformation functions
-    void flip();
-    void mirror();
-    void turnRight();
-    void turnLeft();
+    void flipVertically();
+    void flipHorizontally();
+    void rotateClockwise();
+    void RotateCounterclockwise();
 
     // Implementation of the transformation functions
     void mirrorAndRotate();

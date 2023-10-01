@@ -255,13 +255,13 @@ void MillGameWindow::initialize()
     connect(ui.actionDeveloperMode, SIGNAL(toggled(bool)), game,
             SLOT(setDeveloperMode(bool)));
 
-    connect(ui.actionFlip_F, &QAction::triggered, game, &Game::flip);
+    connect(ui.actionFlip_F, &QAction::triggered, game, &Game::flipVertically);
 
-    connect(ui.actionMirror_M, &QAction::triggered, game, &Game::mirror);
+    connect(ui.actionMirror_M, &QAction::triggered, game, &Game::flipHorizontally);
 
-    connect(ui.actionTurnRight_R, &QAction::triggered, game, &Game::turnRight);
+    connect(ui.actionTurnRight_R, &QAction::triggered, game, &Game::rotateClockwise);
 
-    connect(ui.actionTurnLeft_L, &QAction::triggered, game, &Game::turnLeft);
+    connect(ui.actionTurnLeft_L, &QAction::triggered, game, &Game::RotateCounterclockwise);
 
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
             ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
@@ -305,9 +305,6 @@ void MillGameWindow::initialize()
 
     ruleActionList[game->getRuleIndex()]->setChecked(true);
     game->setRule(game->getRuleIndex());
-
-    // Update rule display
-    ruleInfo();
 
     // List of associated models and string views
     ui.listView->setModel(game->getMoveListModel());
@@ -470,38 +467,6 @@ void MillGameWindow::ctxMenu(const QPoint &pos)
 }
 #endif /* QT_MOBILE_APP_UI */
 
-void MillGameWindow::ruleInfo() const
-{
-#if 0
-    const int s = game->getStepsLimit();
-    const int t = game->getTimeLimit();
-
-    QString tl(" No Time limit");
-    QString sl(" No 50 moves rule");
-
-    if (s > 0)
-        sl = QString::number(s) + " Moves rule ";
-    if (t > 0)
-        tl = " Limit " + QString::number(t) + "s ";
-
-    // Rule display
-    ui.labelRule->setText(tl + sl);
-
-    // Rule tips
-    ui.labelInfo->setToolTip(QString(RULES[ruleNo].name) + "\n" +
-                             RULES[ruleNo].description);
-
-    ui.labelRule->setToolTip(ui.labelInfo->toolTip());
-
-#if 0
-    QString tip_Rule = QString("%1\n%2").arg(tr(RULES[ruleNo].name))
-        .arg(tr(RULES[ruleNo].info));
-#endif
-#else
-    ui.labelRule->setText("Move list");
-#endif
-}
-
 void MillGameWindow::saveBook(const QString &path)
 {
     if (path.isEmpty()) {
@@ -605,8 +570,6 @@ void MillGameWindow::on_actionLimited_T_triggered()
 
     dialog->disconnect();
     delete dialog;
-
-    ruleInfo();
 }
 
 void MillGameWindow::actionRules_triggered()
@@ -631,8 +594,6 @@ void MillGameWindow::actionRules_triggered()
     ui.actionEngine2_R->setChecked(false);
 
     game->setRule(ruleNo);
-
-    ruleInfo();
 }
 
 void MillGameWindow::on_actionNew_N_triggered()
