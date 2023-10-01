@@ -660,8 +660,7 @@ void MillGameWindow::on_actionNew_N_triggered()
 void MillGameWindow::on_actionOpen_O_triggered()
 {
     const QString path = QFileDialog::getOpenFileName(
-        this, tr("Open the move list file"), QDir::currentPath(),
-        "TXT(*.txt)");
+        this, tr("Open Move List File"), QDir::currentPath(), "TXT(*.txt)");
 
     if (path.isEmpty()) {
         return;
@@ -673,16 +672,16 @@ void MillGameWindow::on_actionOpen_O_triggered()
 
     file.setFileName(path);
 
-    // Files larger than 1MB are not supported
+    // Files larger than 1MB are not supported.
     if (file.size() > 0x100000) {
-        QMessageBox msgBox(QMessageBox::Warning, tr("The file is too large"),
-                           tr("Files larger than 1MB are not supported"),
+        QMessageBox msgBox(QMessageBox::Warning, tr("File Too Large"),
+                           tr("Files exceeding 1MB are not supported."),
                            QMessageBox::Ok);
         msgBox.exec();
         return;
     }
 
-    if (!file.open(QFileDevice::ReadOnly | QFileDevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return;
     }
 
@@ -692,12 +691,10 @@ void MillGameWindow::on_actionOpen_O_triggered()
     QTextStream textStream(&file);
     QString cmd = textStream.readLine();
 
-    // When reading and displaying the move list, there is no need to refresh
-    // the scene
+    // No need to refresh the scene when reading and displaying the move list.
     if (!game->command(cmd.toStdString(), false)) {
-        QMessageBox msgBox(QMessageBox::Warning, tr("File error"),
-                           tr("Not the correct move list file"),
-                           QMessageBox::Ok);
+        QMessageBox msgBox(QMessageBox::Warning, tr("File Error"),
+                           tr("Invalid move list file."), QMessageBox::Ok);
         msgBox.exec();
         return;
     }
@@ -707,7 +704,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
         game->command(cmd.toStdString(), false);
     }
 
-    // Finally, refresh the scene
+    // Refresh the scene after reading the file.
     game->updateScene();
 }
 
