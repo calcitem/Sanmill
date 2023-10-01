@@ -59,7 +59,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
     if (!item || item->type() == BoardItem::Type) {
         handleBoardClick(mouseEvent);
     } else if (item->type() == PieceItem::Type) {
-        handlePieceClick(mouseEvent);
+        handlePieceClick(item);
     }
 
     mouseEvent->accept();
@@ -75,11 +75,11 @@ void GameScene::handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent)
     }
 }
 
-void GameScene::handlePieceClick(QGraphicsSceneMouseEvent *mouseEvent)
+void GameScene::handlePieceClick(const QGraphicsItem *item)
 {
     // If it's a piece
     // Send out the position of the current piece in the scene
-    emit mouseReleased(mouseEvent->scenePos());
+    emit mouseReleased(item->scenePos());
 }
 
 QPointF GameScene::polarCoordinateToPoint(File f, Rank r) const

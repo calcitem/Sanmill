@@ -58,7 +58,7 @@ signals:
 private:
     std::unique_ptr<BoardItem> board;
     void handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent);
-    void handlePieceClick(QGraphicsSceneMouseEvent *mouseEvent);
+    void handlePieceClick(const QGraphicsItem *item);
 };
 
 #endif // GAMESCENE_H_INCLUDED
