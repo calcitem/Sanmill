@@ -699,6 +699,9 @@ void MillGameWindow::on_actionOpen_O_triggered()
         return;
     }
 
+    // Reset the game.
+    game->gameReset();
+
     while (!textStream.atEnd()) {
         cmd = textStream.readLine();
         game->command(cmd.toStdString(), false);
