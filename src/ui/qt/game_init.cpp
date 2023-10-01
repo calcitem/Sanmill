@@ -132,6 +132,7 @@ void Game::gameReset()
     waitForAiSearchCompletion();
     resetComponents();
     resetElapsedSeconds();
+    reinitMoveListModel();
 }
 
 void Game::initializeSceneBackground()

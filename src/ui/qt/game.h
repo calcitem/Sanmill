@@ -600,7 +600,7 @@ private:
     // String used to display the status bar of the main window
     QString message;
 
-    // String list model of score
+    // String list model
     QStringListModel moveListModel;
 
     // Hint
