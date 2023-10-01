@@ -176,7 +176,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     if (update) {
         playSound(soundType);
-        updateScene();
+        //updateScene();
     }
 
     // Signal update status bar

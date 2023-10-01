@@ -62,7 +62,7 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
 
 bool Game::performAction(File f, Rank r, QPointF p)
 {
-    // Judge whether to select, drop or remove the seed
+    // Judge whether to select, place or remove the piece
     bool result = false;
     PieceItem *piece;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
