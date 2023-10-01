@@ -43,6 +43,24 @@ AiSharedMemoryDialog::AiSharedMemoryDialog(QWidget *parent, QString k)
     , startButton(new QPushButton(tr("Start")))
     , stopButton(new QPushButton(tr("Stop")))
 {
+    const auto instructionLabel = new QLabel(tr("This feature is generally "
+                                                "used to test the AI's "
+                                                "performance locally. "
+                                                "\n"
+                                                "Open two instances of the "
+                                                "application. \n"
+                                                "To have them duel, set the "
+                                                "same Key on both sides and "
+                                                "click Start. \n"
+                                                "In one instance, set White "
+                                                "to be the AI and Black to be "
+                                                "non-AI; \n"
+                                                "do the opposite in the other "
+                                                "instance. \n"
+                                                "The two programs "
+                                                "can then duel using shared "
+                                                "memory."));
+
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     this->key = k;
@@ -111,11 +129,19 @@ AiSharedMemoryDialog::AiSharedMemoryDialog(QWidget *parent, QString k)
         mainLayout = new QGridLayout(this);
     }
 
-    mainLayout->addWidget(keyLabel, 0, 0);
-    mainLayout->addWidget(keyCombo, 0, 1);
-    mainLayout->addWidget(buttonBox, 3, 0, 1, 2);
+    mainLayout->setRowStretch(0, 1);
+    mainLayout->setRowStretch(1, 0);
+    mainLayout->setRowStretch(2, 0);
 
-    setWindowTitle(QGuiApplication::applicationDisplayName());
+    auto scrollArea = new QScrollArea;
+    scrollArea->setWidget(instructionLabel);
+    mainLayout->addWidget(scrollArea, 0, 0, 1, 2);
+
+    mainLayout->addWidget(keyLabel, 1, 0, 1, 1);
+    mainLayout->addWidget(keyCombo, 1, 1, 1, 1);
+    mainLayout->addWidget(buttonBox, 2, 0, 1, 2);
+
+    setWindowTitle(tr("AI Shared Memory Configuration"));
 }
 
 AiSharedMemoryDialog::~AiSharedMemoryDialog()
