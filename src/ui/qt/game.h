@@ -160,6 +160,7 @@ private:
     void clearMoveHistory();
     void destroySettings();
 
+    static void createRuleEntries(std::map<int, QStringList> &actions);
     static std::pair<int, QStringList> createRuleEntry(int index);
 
     void waitForAiSearchCompletion();
@@ -183,7 +184,6 @@ private:
     void recordRuleInfo(int ruleNo);
     void saveRuleSetting(int ruleNo);
 
-    static void createRuleEntries(std::map<int, QStringList> &actions);
     void reinitMoveListModel();
     void updateMoveListModelFromHistory(); // TODO
     void handleGameOutcome();
@@ -196,7 +196,6 @@ private:
                                bool isAi) const;
     void Game::writeGameStats(QTextStream &textStream) const;
 
-    static std::string buildSoundFilename(GameSound soundType, Color c);
     static void performSoundPlay(const std::string &filename);
 
     bool validateClick(QPointF p, File &f, Rank &r);
@@ -205,17 +204,14 @@ private:
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
 
-    void animatePieceMovement(const Piece *board,
-                              QParallelAnimationGroup *animationGroup,
+    void animatePieceMovement(QParallelAnimationGroup *animationGroup,
                               PieceItem *&deletedPiece);
-    void handleBannedLocations(const Piece *board,
-                               int &nTotalPieces);
+    void handleBannedLocations(int &nTotalPieces);
     void handleDeletedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
     void updateLCDDisplays();
-    void selectCurrentAndDeletedPieces(const Piece *board,
-                                       int nTotalPieces,
+    void selectCurrentAndDeletedPieces(int nTotalPieces,
                                        PieceItem *deletedPiece);
 
 

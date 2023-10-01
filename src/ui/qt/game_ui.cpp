@@ -127,8 +127,6 @@ void Game::reinitMoveListModel()
 
 bool Game::updateScene()
 {
-    const Piece *board = position.get_board();
-
     // Total number of pieces
     int nTotalPieces = rule.pieceCount * 2;
 
@@ -139,13 +137,13 @@ bool Game::updateScene()
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
-    animatePieceMovement(board, animationGroup, deletedPiece);
+    animatePieceMovement(animationGroup, deletedPiece);
 
     // Handle banned locations
-    handleBannedLocations(board, nTotalPieces);
+    handleBannedLocations(nTotalPieces);
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(board, nTotalPieces, deletedPiece);
+    selectCurrentAndDeletedPieces(nTotalPieces, deletedPiece);
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
@@ -158,12 +156,12 @@ bool Game::updateScene()
     return true;
 }
 
-void Game::animatePieceMovement(const Piece *board,
-                                QParallelAnimationGroup *animationGroup,
+void Game::animatePieceMovement(QParallelAnimationGroup *animationGroup,
                                 PieceItem *&deletedPiece)
 {
     int key;
     QPointF pos;
+    const Piece *board = position.get_board();
 
     // Total number of pieces
     int nTotalPieces = rule.pieceCount * 2;
