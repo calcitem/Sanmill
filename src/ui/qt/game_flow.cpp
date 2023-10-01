@@ -72,7 +72,7 @@ bool Game::updateBoardState(int row, bool forceUpdate)
     applyPartialMoveList(row);
 
     // Refresh the game scene to reflect the new board state.
-    updateScene(position);
+    updateScene();
 
     return true;
 }
@@ -176,7 +176,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     if (update) {
         playSound(soundType, position.side_to_move());
-        updateScene(position);
+        updateScene();
     }
 
     // Signal update status bar

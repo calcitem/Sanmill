@@ -127,12 +127,7 @@ void Game::reinitMoveListModel()
 
 bool Game::updateScene()
 {
-    return updateScene(position);
-}
-
-bool Game::updateScene(Position &pos)
-{
-    const Piece *board = pos.get_board();
+    const Piece *board = position.get_board();
 
     // Total number of pieces
     int nTotalPieces = rule.pieceCount * 2;
@@ -144,18 +139,18 @@ bool Game::updateScene(Position &pos)
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
-    animatePieceMovement(pos, board, animationGroup, deletedPiece);
+    animatePieceMovement(position, board, animationGroup, deletedPiece);
 
     // Handle banned locations
-    handleBannedLocations(pos, board, nTotalPieces);
+    handleBannedLocations(position, board, nTotalPieces);
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(board, pos, nTotalPieces, deletedPiece);
+    selectCurrentAndDeletedPieces(board, position, nTotalPieces, deletedPiece);
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Update LCD displays
-    updateLCDDisplays(pos);
+    updateLCDDisplays(position);
 
     // Update tips
     setTips();

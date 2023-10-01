@@ -477,7 +477,6 @@ public slots:
     // Update the game display. Only after each step can the situation be
     // refreshed
     bool updateScene();
-    bool updateScene(Position &pos);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
