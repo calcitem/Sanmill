@@ -208,7 +208,7 @@ void Game::initializeEndgameLearning()
 #endif
 }
 
-void Game::initiateGameIfReady()
+void Game::initGameIfReady()
 {
     if (position.get_phase() == Phase::ready) {
         gameStart();

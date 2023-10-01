@@ -101,7 +101,7 @@ bool Game::resign()
     }
 
     if (position.get_winner() != NOBODY) {
-        playSound(GameSound::resign, position.side_to_move());
+        playSound(GameSound::resign);
     }
 
     return result;
@@ -175,7 +175,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     }
 
     if (update) {
-        playSound(soundType, position.side_to_move());
+        playSound(soundType);
         updateScene();
     }
 
@@ -215,7 +215,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         moveListModel.data(moveListModel.index(currentRow - 1))
             .toString()
             .contains("Time over.")) {
-        playSound(GameSound::win, winner);
+        playSound(GameSound::win);
     }
 #endif
 

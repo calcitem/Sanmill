@@ -72,10 +72,10 @@ bool Game::performAction(File f, Rank r, QPointF p)
         if (position.put_piece(f, r)) {
             if (position.get_action() == Action::remove) {
                 // Play form mill sound effects
-                playSound(GameSound::mill, position.side_to_move());
+                playSound(GameSound::mill);
             } else {
                 // Playing the sound effect of moving pieces
-                playSound(GameSound::drag, position.side_to_move());
+                playSound(GameSound::drag);
             }
             result = true;
             break;
@@ -90,19 +90,19 @@ bool Game::performAction(File f, Rank r, QPointF p)
         if (!piece)
             break;
         if (position.select_piece(f, r)) {
-            playSound(GameSound::select, position.side_to_move());
+            playSound(GameSound::select);
             result = true;
         } else {
-            playSound(GameSound::banned, position.side_to_move());
+            playSound(GameSound::banned);
         }
         break;
 
     case Action::remove:
         if (position.remove_piece(f, r)) {
-            playSound(GameSound::remove, position.side_to_move());
+            playSound(GameSound::remove);
             result = true;
         } else {
-            playSound(GameSound::banned, position.side_to_move());
+            playSound(GameSound::banned);
         }
         break;
 

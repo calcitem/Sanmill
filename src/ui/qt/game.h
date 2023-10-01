@@ -200,7 +200,7 @@ private:
 
     bool validateClick(QPointF p, File &f, Rank &r);
     bool undoRecentMovesOnReview();
-    void initiateGameIfReady();
+    void initGameIfReady();
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
 
@@ -280,7 +280,7 @@ public slots:
     void setSound(bool arg = true) const noexcept;
 
     // Play the sound
-    static void playSound(GameSound soundType, Color c);
+    void playSound(GameSound soundType);
 
     // Skill Level
     void setSkillLevel(int val) const;
@@ -441,7 +441,7 @@ public slots:
 
     // According to the signal and state of qgraphics scene, select, drop or
     // delete the sub objects
-    bool handleClick(QPointF p);
+    bool handleClick(QPointF point);
 
     // Admit defeat
     bool resign();

@@ -119,7 +119,7 @@ void Game::timerEvent(QTimerEvent *event)
         emit statusBarChanged(message);
 
 #ifndef DO_NOT_PLAY_WIN_SOUND
-        playSound(GameSound::win, winner);
+        playSound(GameSound::win);
 #endif
     }
 

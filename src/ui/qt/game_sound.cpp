@@ -97,8 +97,14 @@ void Game::setSound(bool arg) const noexcept
 }
 
 // Function to play a particular sound based on game state
-void Game::playSound(GameSound soundType, Color c)
+void Game::playSound(GameSound soundType)
 {
+    Color c = position.side_to_move();
+
+    if (soundType == GameSound::win) {
+        c = position.get_winner();
+    }
+
     std::string sideStr = (c == WHITE) ? "W" : "B";
     std::string opponentStr = (c == BLACK) ? "W" : "B";
 

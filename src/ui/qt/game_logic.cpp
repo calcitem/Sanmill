@@ -144,21 +144,21 @@ void Game::selectCurrentAndDeletedPieces(PieceItem *deletedPiece)
 
 // Key slot function, according to the signal and state of qgraphics scene to
 // select, drop or remove sub
-bool Game::handleClick(QPointF p)
+bool Game::handleClick(QPointF point)
 {
     // Click non drop point, do not execute
     File f;
     Rank r;
 
-    if (!validateClick(p, f, r))
+    if (!validateClick(point, f, r))
         return false;
 
     if (!undoRecentMovesOnReview())
         return false;
 
-    initiateGameIfReady();
+    initGameIfReady();
 
-    bool result = performAction(f, r, p);
+    bool result = performAction(f, r, point);
 
     updateState(result);
 
