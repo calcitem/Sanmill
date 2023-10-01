@@ -1049,7 +1049,12 @@ bool Position::command(const char *cmd)
     File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
 
+#ifdef _MSC_VER
+    sscanf_s(cmd, "info score %d bestmove %63s", &bestvalue, moveStr,
+             (unsigned)_countof(moveStr));
+#else
     sscanf(cmd, "info score %d bestmove %63s", &bestvalue, moveStr);
+#endif
 
     if (sscanf(moveStr, "r%1u s%3d t%2u", &ruleNo, &step, &t) == 3) {
         if (set_rule(ruleNo - 1) == false) {
