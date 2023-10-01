@@ -45,40 +45,34 @@
 
 using std::to_string;
 
-bool Game::refreshMoveList(int row, const QStringList &mlist)
+bool Game::applyPartialMoveList(int row)
 {
+    currentRow = row;
+    const QStringList strList = moveListModel.stringList();
+    debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
+
     for (int i = 0; i <= row; i++) {
-        debugPrintf("%s\n", mlist.at(i).toStdString().c_str());
-        position.command(mlist.at(i).toStdString().c_str());
+        debugPrintf("%s\n", strList.at(i).toStdString().c_str());
+        position.command(strList.at(i).toStdString().c_str());
     }
 
     return true;
 }
 
-void Game::updateGameScene()
+// Update the board state by applying moves up to a specific row in the history.
+// Optionally force an update even if the current row matches the requested row.
+bool Game::updateBoardState(int row, bool forceUpdate)
 {
-    // The key step is to let the penitent bear the loss of time
-    set_start_time(static_cast<int>(start_timeb()));
-
-    // Refresh the scene
-    updateScene(position);
-}
-
-// Browse the historical situation and refresh the situation display through the
-// command function
-bool Game::phaseChange(int row, bool forceUpdate)
-{
-    // If row is the currently viewed score line, there is no need to refresh it
+    // Skip updating if the currently viewed row matches the requested row,
+    // unless forceUpdate is true.
     if (currentRow == row && !forceUpdate)
         return false;
 
-    // Need to refresh
-    currentRow = row;
-    const QStringList mlist = moveListModel.stringList();
-    debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
+    // Apply the moves from the move list up to the specified row.
+    applyPartialMoveList(row);
 
-    refreshMoveList(row, mlist);
-    updateGameScene();
+    // Refresh the game scene to reflect the new board state.
+    updateScene(position);
 
     return true;
 }
@@ -96,10 +90,12 @@ bool Game::resign()
     int k = 0;
 
     // Output command line
-    for (const auto &i : *move_history()) {
+    for (const auto &i : *getMoveList()) {
         // Skip added because the standard list container has no index
-        if (k++ <= currentRow)
+        if (k++ <= currentRow) {
             continue;
+        }
+            
         moveListModel.insertRow(++currentRow);
         moveListModel.setData(moveListModel.index(currentRow), i.c_str());
     }
@@ -126,19 +122,19 @@ GameSound Game::identifySoundType(Action action)
     return GameSound::none;
 }
 
-// Key slot function, command line execution of score, independent of
-// actionPiece
 bool Game::command(const string &cmd, bool update /* = true */)
 {
     Q_UNUSED(hasSound)
 
 #ifdef QT_GUI_LIB
     // Prevents receiving instructions sent by threads that end late
-    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE])
+    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE]) {
         return false;
+    }        
 
-    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK])
+    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK]) {
         return false;
+    }
 #endif // QT_GUI_LIB
 
     auto soundType = identifySoundType(position.get_action());
@@ -152,7 +148,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     // TODO: Distinguish these two cmds,
     // one starts with info and the other starts with (
     if (cmd[0] != 'i') {
-        moveHistory.emplace_back(cmd);
+        gameMoveList.emplace_back(cmd);
     }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -167,8 +163,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
         posKeyHistory.clear();
     }
 
-    if (!position.command(cmd.c_str()))
+    if (!position.command(cmd.c_str())) {
         return false;
+    }        
 
     sideToMove = position.side_to_move();
 
@@ -188,7 +185,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     emit statusBarChanged(message);
 
     // For opening
-    if (move_history()->size() <= 1) {
+    if (getMoveList()->size() <= 1) {
         moveListModel.removeRows(0, moveListModel.rowCount());
         moveListModel.insertRow(0);
         moveListModel.setData(moveListModel.index(0), position.get_record());
@@ -198,13 +195,13 @@ bool Game::command(const string &cmd, bool update /* = true */)
         currentRow = moveListModel.rowCount() - 1;
         // Skip the added rows. The iterator does not support the + operator and
         // can only skip one by one++
-        auto i = move_history()->begin();
-        for (int r = 0; i != move_history()->end(); ++i) {
+        auto i = getMoveList()->begin();
+        for (int r = 0; i != getMoveList()->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
         // Insert the new score line into list model
-        while (i != move_history()->end()) {
+        while (i != getMoveList()->end()) {
             moveListModel.insertRow(++currentRow);
             moveListModel.setData(moveListModel.index(currentRow),
                                   (*i++).c_str());

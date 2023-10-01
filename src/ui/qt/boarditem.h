@@ -36,38 +36,43 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
 
-    // Use UserType + 1 to represent mill pieces, and determines whether it is
-    // an object of the boarditem class Another way is to put the class name in
-    // the 0key position of data, SetData(0, "BoardItem"), and then use data(0)
-    // to judge
+    // Utilize UserType + 1 as a unique identifier for instances of the
+    // BoardItem class. An alternative approach would be to store the class name
+    // using setData(0, "BoardItem") and subsequently use data(0) for object
+    // identification.
     enum { Type = UserType + 1 };
 
     [[nodiscard]] int type() const noexcept override { return Type; }
 
-    // Set with or without diagonal
-    void setDiagonal(bool arg = true);
+     // Enable or disable diagonal lines on the board
+    void setDiagonal(bool enableDiagonal = true);
 
-    // Return to the nearest placing point
-    QPointF nearestPosition(QPointF pos);
+    // Get the nearest point on the board to the given point
+    QPointF getNearestPoint(QPointF targetPoint);
 
-    // The circle and position of the model are transformed into the point
-    // coordinates
-    [[nodiscard]] QPointF polar2pos(File file, Rank rank) const;
+    // Convert polar coordinates (File and Rank) to Cartesian point
+    [[nodiscard]] QPointF polarCoordinateToPoint(File f, Rank r) const;
 
-    // The coordinates of the falling point are transformed into circles and
-    // positions for the model
-    [[nodiscard]] bool pos2polar(QPointF pos, File &f, Rank &r) const;
+    // Convert Cartesian point to polar coordinates (File and Rank)
+    [[nodiscard]] bool pointToPolarCoordinate(QPointF point, File &f, Rank &r) const;
 
 private:
-    void initializePositions();
+    void initPoints();
     void drawBoard(QPainter *painter);
     void drawLines(QPainter *painter);
     void drawCoordinates(QPainter *painter);
-    void drawSeatNumbers(QPainter *painter);
+    void drawPolarCoordinates(QPainter *painter);
 
-    int size {BOARD_SIZE};
-    int sizeShadow {5};
-    QPointF position[SQUARE_NB]; // 24 points
+    // Side length of the square board
+    int boardSideLength {BOARD_SIDE_LENGTH};
+
+    // Size of the board's shadow
+    int boardShadowSize {BOARD_SHADOW_SIZE};
+
+    // Points representing board positions
+    QPointF points[SQUARE_NB]; // 24 points
+
+    // Flag to indicate if diagonal lines are enabled
     bool hasDiagonalLine {false};
 };
 

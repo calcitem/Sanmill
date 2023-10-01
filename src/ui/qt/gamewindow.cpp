@@ -65,8 +65,8 @@ MillGameWindow::MillGameWindow(QWidget *parent)
     scene = new GameScene(this);
 
     // Set the scene size to 1.08 times the board size
-    scene->setSceneRect(-BOARD_SIZE * 0.54, -BOARD_SIZE * 0.54,
-                        BOARD_SIZE * 1.08, BOARD_SIZE * 1.08);
+    scene->setSceneRect(-BOARD_SIDE_LENGTH * 0.54, -BOARD_SIDE_LENGTH * 0.54,
+                        BOARD_SIDE_LENGTH * 1.08, BOARD_SIDE_LENGTH * 1.08);
 
     // Initialize the controls
 
@@ -866,7 +866,7 @@ void MillGameWindow::on_actionRowChange() const
     }
 
     // Update phrase
-    game->phaseChange(currentRow);
+    game->updateBoardState(currentRow);
 }
 
 void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
@@ -915,7 +915,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
     }
 
     // Renew the situation
-    game->phaseChange(currentRow);
+    game->updateBoardState(currentRow);
 }
 
 void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)

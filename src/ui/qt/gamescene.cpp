@@ -68,7 +68,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void GameScene::handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF p = mouseEvent->scenePos();
-    p = board->nearestPosition(p);
+    p = board->getNearestPoint(p);
     if (p != QPointF(0, 0)) {
         // Send the nearest drop point of the mouse point
         emit mouseReleased(p);
@@ -82,14 +82,14 @@ void GameScene::handlePieceClick(QGraphicsSceneMouseEvent *mouseEvent)
     emit mouseReleased(mouseEvent->scenePos());
 }
 
-QPointF GameScene::polar2pos(File f, Rank r) const
+QPointF GameScene::polarCoordinateToPoint(File f, Rank r) const
 {
-    return board->polar2pos(f, r);
+    return board->polarCoordinateToPoint(f, r);
 }
 
-bool GameScene::pos2polar(QPointF pos, File &f, Rank &r) const
+bool GameScene::pointToPolarCoordinate(QPointF pos, File &f, Rank &r) const
 {
-    return board->pos2polar(pos, f, r);
+    return board->pointToPolarCoordinate(pos, f, r);
 }
 
 void GameScene::setDiagonal(bool arg) const

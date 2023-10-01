@@ -49,7 +49,7 @@ Game::Game(GameScene &scene, QObject *parent)
     : QObject(parent)
     , scene(scene)
     , timeLimit(0 /* TODO: gameOptions.getMoveTime() */)
-    , moveHistory(256)
+    , gameMoveList(256)
 {
     initializeComponents();
 }
@@ -107,7 +107,7 @@ void Game::resetComponents()
 
 void Game::gameStart()
 {
-    // moveHistory.clear();
+    // gameMoveList.clear();
     position.start();
     startTime = time(nullptr);
 

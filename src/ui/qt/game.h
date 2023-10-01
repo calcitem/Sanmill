@@ -122,14 +122,14 @@ public:
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
-    [[nodiscard]] const std::vector<std::string> *move_history() const
+    [[nodiscard]] const std::vector<std::string> *getMoveList() const
     {
-        return &moveHistory;
+        return &gameMoveList;
     }
 
     time_t get_elapsed_time(int us) const;
-    [[nodiscard]] time_t start_timeb() const;
-    void set_start_time(int time);
+    [[nodiscard]] time_t getStartTime() const;
+    void setStartTime(int time);
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
@@ -372,13 +372,13 @@ public slots:
 
     // Implementation of the transformation functions
     static void mirrorAndRotate(Position &position,
-                                std::vector<std::string> &moveHistory);
+                                std::vector<std::string> &gameMoveList);
     static void applyMirror(Position &position,
-                            std::vector<std::string> &moveHistory);
+                            std::vector<std::string> &gameMoveList);
     static void rotateRight(Position &position,
-                            std::vector<std::string> &moveHistory);
+                            std::vector<std::string> &gameMoveList);
     static void rotateLeft(Position &position,
-                           std::vector<std::string> &moveHistory);
+                           std::vector<std::string> &gameMoveList);
 
     [[nodiscard]] bool isAiToMove() const;
 
@@ -471,14 +471,13 @@ public slots:
     void updateStatistics();
 
     // Historical situation and situation change
-    bool phaseChange(int row, bool forceUpdate = false);
-    bool refreshMoveList(int row, const QStringList &mlist);
-    void updateGameScene();
+    bool updateBoardState(int row, bool forceUpdate = false);
+    bool applyPartialMoveList(int row);
 
     // Update the game display. Only after each step can the situation be
     // refreshed
     bool updateScene();
-    bool updateScene(Position &p);
+    bool updateScene(Position &pos);
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -627,15 +626,15 @@ private:
     // Hint
     string tips;
 
-    std::vector<std::string> moveHistory;
+    std::vector<std::string> gameMoveList;
 };
 
-inline time_t Game::start_timeb() const
+inline time_t Game::getStartTime() const
 {
     return startTime;
 }
 
-inline void Game::set_start_time(int time)
+inline void Game::setStartTime(int time)
 {
     startTime = time;
 }

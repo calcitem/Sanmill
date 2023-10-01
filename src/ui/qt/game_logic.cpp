@@ -91,7 +91,7 @@ void Game::handleBannedLocations(const Position &p, const Piece *board,
     if (rule.hasBannedLocations && p.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
-                pos = scene.polar2pos(static_cast<File>(sq / RANK_NB),
+                pos = scene.polarCoordinateToPoint(static_cast<File>(sq / RANK_NB),
                                       static_cast<Rank>(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
@@ -188,7 +188,7 @@ bool Game::isRepentancePhase()
             moveListModel.removeRows(currentRow + 1, rowCount - currentRow - 1);
 
             for (int i = 0; i < removeCount; i++) {
-                moveHistory.pop_back();
+                gameMoveList.pop_back();
             }
 
             // If you regret the game, restart the timing

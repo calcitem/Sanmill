@@ -83,7 +83,7 @@ void Game::updateState(bool result)
 // Update move and position history
 void Game::updateMoveHistory()
 {
-    moveHistory.emplace_back(position.record);
+    gameMoveList.emplace_back(position.record);
     if (strlen(position.record) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
@@ -96,7 +96,7 @@ void Game::updateMoveListModelFromHistory()
 {
     currentRow = moveListModel.rowCount() - 1;
     int k = 0;
-    for (const auto &i : *move_history()) {
+    for (const auto &i : *getMoveList()) {
         if (k++ <= currentRow)
             continue;
         moveListModel.insertRow(++currentRow);

@@ -83,7 +83,7 @@ void Game::executeTransform(const TransformFunc &transform)
     stopAndWaitAiThreads();
 
     // Apply transformation
-    transform(position, moveHistory);
+    transform(position, gameMoveList);
 
     // Update UI components
     updateUIComponents();
@@ -96,7 +96,7 @@ void Game::executeTransform(const TransformFunc &transform)
 void Game::updateUIComponents()
 {
     int row = 0;
-    for (const auto &str : *move_history()) {
+    for (const auto &str : *getMoveList()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
     syncScene(row - 1);
@@ -108,16 +108,16 @@ void Game::syncScene(int row)
     if (currentRow == row) {
         updateScene();
     } else {
-        phaseChange(currentRow, true);
+        updateBoardState(currentRow, true);
     }
 }
 
 // Transformation function implementations
 void Game::mirrorAndRotate(Position &position,
-                           std::vector<std::string> &moveHistory)
+                           std::vector<std::string> &gameMoveList)
 {
-    position.mirror(moveHistory);
-    position.rotate(moveHistory, 180);
+    position.mirror(gameMoveList);
+    position.rotate(gameMoveList, 180);
 }
 
 
@@ -140,18 +140,18 @@ void Game::turnLeft()
 }
 
 void Game::applyMirror(Position &position,
-                       std::vector<std::string> &moveHistory)
+                       std::vector<std::string> &gameMoveList)
 {
-    position.mirror(moveHistory);
+    position.mirror(gameMoveList);
 }
 
 void Game::rotateRight(Position &position,
-                       std::vector<std::string> &moveHistory)
+                       std::vector<std::string> &gameMoveList)
 {
-    position.rotate(moveHistory, -90);
+    position.rotate(gameMoveList, -90);
 }
 
-void Game::rotateLeft(Position &position, std::vector<std::string> &moveHistory)
+void Game::rotateLeft(Position &position, std::vector<std::string> &gameMoveList)
 {
-    position.rotate(moveHistory, 90);
+    position.rotate(gameMoveList, 90);
 }

@@ -47,7 +47,7 @@ using std::to_string;
 
 bool Game::validateClick(QPointF p, File &f, Rank &r)
 {
-    if (!scene.pos2polar(p, f, r)) {
+    if (!scene.pointToPolarCoordinate(p, f, r)) {
         return false;
     }
 

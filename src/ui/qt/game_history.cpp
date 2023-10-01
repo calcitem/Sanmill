@@ -45,7 +45,7 @@
 
 using std::to_string;
 
-// Helper function to handle snprintf and append to moveHistory
+// Helper function to handle snprintf and append to gameMoveList
 void Game::appendRecordToMoveHistory(const char *format, ...)
 {
     char record[64] = {0};
@@ -57,17 +57,17 @@ void Game::appendRecordToMoveHistory(const char *format, ...)
 
     debugPrintf("%s\n", record);
 
-    moveHistory.emplace_back(record);
+    gameMoveList.emplace_back(record);
 }
 
 void Game::resetMoveHistoryReserveFirst()
 {
     // Reset game history
     // WAR
-    if (moveHistory.size() > 1) {
-        string bak = moveHistory[0];
-        moveHistory.clear();
-        moveHistory.emplace_back(bak);
+    if (gameMoveList.size() > 1) {
+        string bak = gameMoveList[0];
+        gameMoveList.clear();
+        gameMoveList.emplace_back(bak);
     }
 }
 
@@ -117,5 +117,5 @@ void Game::appendGameOverReasonToMoveHistory()
 
 void Game::clearMoveHistory()
 {
-    moveHistory.clear();
+    gameMoveList.clear();
 }

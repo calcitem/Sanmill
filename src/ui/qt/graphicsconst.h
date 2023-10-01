@@ -20,10 +20,12 @@
 #include "config.h"
 
 #ifdef QT_MOBILE_APP_UI
-constexpr int16 BOARD_SIZE = 500;
+constexpr int16 BOARD_SIDE_LENGTH = 500;
 #else
-constexpr int16_t BOARD_SIZE = 550;
+constexpr int16_t BOARD_SIDE_LENGTH = 550;
 #endif /* QT_MOBILE_APP_UI */
+
+constexpr int16_t BOARD_SHADOW_SIZE = 5;
 
 // Minimum width and height, i.e. 1 / 4 Size
 constexpr int16_t BOARD_MINISIZE = 150;

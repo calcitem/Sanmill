@@ -130,9 +130,9 @@ public:
 
     bool is_stalemate_removal();
 
-    void mirror(std::vector<std::string> &moveHistory, bool cmdChange = true);
-    void turn(std::vector<std::string> &moveHistory, bool cmdChange = true);
-    void rotate(std::vector<std::string> &moveHistory, int degrees,
+    void mirror(std::vector<std::string> &gameMoveList, bool cmdChange = true);
+    void turn(std::vector<std::string> &gameMoveList, bool cmdChange = true);
+    void rotate(std::vector<std::string> &gameMoveList, int degrees,
                 bool cmdChange = true);
 
     void reset_bb();

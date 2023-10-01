@@ -69,8 +69,8 @@ void Game::recordRuleInfo(int ruleNo)
                  rule.nMoveRule, 0) <= 0) {
         assert(false); // Replace with proper error handling.
     }
-    moveHistory.clear();
-    moveHistory.emplace_back(string(record));
+    gameMoveList.clear();
+    gameMoveList.emplace_back(string(record));
 }
 
 // Set a new game rule.

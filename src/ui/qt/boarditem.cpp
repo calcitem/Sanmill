@@ -21,23 +21,45 @@
 #include "types.h"
 
 BoardItem::BoardItem(const QGraphicsItem *parent)
-    : size(BOARD_SIZE)
+    : boardSideLength(BOARD_SIDE_LENGTH)
 {
     Q_UNUSED(parent)
 
     // Put center of the board in the center of the scene
     setPos(0, 0);
 
-    initializePositions();
+    initPoints();
 }
 
 BoardItem::~BoardItem() = default;
 
+/**
+ * @brief Get the bounding rectangle of the board item.
+ *
+ * This function returns a QRectF that represents the bounding box
+ * around the board item. The bounding box is calculated based on
+ * the dimensions of the board and includes extra space for the shadow.
+ *
+ * @return QRectF - Bounding rectangle with dimensions adjusted for shadow.
+ */
 QRectF BoardItem::boundingRect() const
 {
-    return QRectF(-size / 2, -size / 2, size + sizeShadow, size + sizeShadow);
+    return QRectF(-boardSideLength / 2, -boardSideLength / 2,
+                  boardSideLength + boardShadowSize,
+                  boardSideLength + boardShadowSize);
 }
 
+/**
+ * @brief Get the shape of the board item for interaction.
+ *
+ * This function returns a QPainterPath that represents the interactive
+ * shape of the board item. The shape is used for interactive features.
+ *
+ * In the current implementation, the shape is the same as the bounding
+ * rectangle.
+ *
+ * @return QPainterPath - Shape of the board item.
+ */
 QPainterPath BoardItem::shape() const
 {
     QPainterPath path;
@@ -56,29 +78,31 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     drawLines(painter);
     drawCoordinates(painter);
 #ifdef PLAYER_DRAW_SEAT_NUMBER
-    drawSeatNumbers(painter);
+    drawPolarCoordinates(painter);
 #endif
 }
 
-void BoardItem::setDiagonal(bool arg)
+void BoardItem::setDiagonal(bool enableDiagonal)
 {
-    hasDiagonalLine = arg;
+    hasDiagonalLine = enableDiagonal;
     update(boundingRect());
 }
 
-void BoardItem::initializePositions()
+void BoardItem::initPoints()
 {
     // Initialize 24 points
     for (int f = 0; f < FILE_NB; f++) {
-        // The first position is the 12 o'clock direction of the inner ring,
-        // which is sorted clockwise Then there is the middle ring and the outer
-        // ring
-        const int p = (f + 1) * LINE_INTERVAL;
-        const int pt[][2] = {{0, -p}, {p, -p}, {p, 0},  {p, p},
-                             {0, p},  {-p, p}, {-p, 0}, {-p, -p}};
+        // The first point corresponds to the 12 o'clock position on the inner
+        // ring, followed by points arranged in a clockwise direction. This
+        // pattern is replicated for the middle and outer rings as well.
+        const int radius = (f + 1) * LINE_INTERVAL;
+        const int clockwiseRingCoordinates[][2] = {{0, -radius}, {radius, -radius},
+                                           {radius, 0},  {radius, radius},
+                                           {0, radius},  {-radius, radius},
+                                           {-radius, 0}, {-radius, -radius}};
         for (int r = 0; r < RANK_NB; r++) {
-            position[f * RANK_NB + r].rx() = pt[r][0];
-            position[f * RANK_NB + r].ry() = pt[r][1];
+            points[f * RANK_NB + r].rx() = clockwiseRingCoordinates[r][0];
+            points[f * RANK_NB + r].ry() = clockwiseRingCoordinates[r][1];
         }
     }
 }
@@ -95,9 +119,11 @@ void BoardItem::drawBoard(QPainter *painter)
 #ifdef QT_MOBILE_APP_UI
     painter->setPen(Qt::NoPen);
     painter->setBrush(QColor(239, 239, 239));
-    painter->drawRect(-size / 2, -size / 2, size, size);
+    painter->drawRect(-boardSideLength / 2, -boardSideLength / 2,
+                      boardSideLength, boardSideLength);
 #else
-    painter->drawPixmap(-size / 2, -size / 2, size, size,
+    painter->drawPixmap(-boardSideLength / 2, -boardSideLength / 2,
+                        boardSideLength, boardSideLength,
                         QPixmap(":/image/resources/image/board.png"));
 #endif /* QT_MOBILE_APP_UI */
 }
@@ -119,19 +145,18 @@ void BoardItem::drawLines(QPainter *painter)
 
     for (uint8_t f = 0; f < FILE_NB; f++) {
         // Draw three boxes
-        painter->drawPolygon(f * RANK_NB + position, RANK_NB);
+        painter->drawPolygon(f * RANK_NB + points, RANK_NB);
     }
 
     // Draw 4 vertical and horizontal lines
     for (int r = 0; r < RANK_NB; r += 2) {
-        painter->drawLine(position[r], position[(FILE_NB - 1) * RANK_NB + r]);
+        painter->drawLine(points[r], points[(FILE_NB - 1) * RANK_NB + r]);
     }
 
     if (hasDiagonalLine) {
         // Draw 4 diagonal lines
         for (int r = 1; r < RANK_NB; r += 2) {
-            painter->drawLine(position[r],
-                              position[(FILE_NB - 1) * RANK_NB + r]);
+            painter->drawLine(points[r], points[(FILE_NB - 1) * RANK_NB + r]);
         }
     }
 }
@@ -157,10 +182,10 @@ void BoardItem::drawCoordinates(QPainter *painter)
     QFontMetrics fm(font);
     int textWidth = fm.horizontalAdvance("A");
 
-    int origin_x = -size / 2 + (size / 8) - offset_x;
-    int origin_y = size / 2 - (size / 8) + offset_y;
+    int origin_x = -boardSideLength / 2 + (boardSideLength / 8) - offset_x;
+    int origin_y = boardSideLength / 2 - (boardSideLength / 8) + offset_y;
 
-    int interval = size / 8;
+    int interval = boardSideLength / 8;
 
     for (int i = 0; i < 7; ++i) {
         QString text = QString(QChar('A' + i));
@@ -176,7 +201,16 @@ void BoardItem::drawCoordinates(QPainter *painter)
     }
 }
 
-void BoardItem::drawSeatNumbers(QPainter *painter)
+/**
+ * @brief Draw polar coordinates on the board.
+ *
+ * This function sets up the pen and font, and then iteratively draws
+ * polar coordinates at specified points on the board. The coordinates
+ * are positioned in a manner similar to clock face numbers.
+ *
+ * @param painter Pointer to the QPainter object for drawing.
+ */
+void BoardItem::drawPolarCoordinates(QPainter *painter)
 {
     QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
                  Qt::BevelJoin);
@@ -187,43 +221,61 @@ void BoardItem::drawSeatNumbers(QPainter *painter)
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter->setFont(font);
 
-    for (int i = 0; i < RANK_NB; i++) {
-        char cSeat = '1' + i;
-        QString strSeat(cSeat);
-        painter->drawText(position[(FILE_NB - 1) * RANK_NB + i], strSeat);
+    for (int r = 0; r < RANK_NB; r++) {
+        QString text('1' + r);
+        painter->drawText(points[(FILE_NB - 1) * RANK_NB + r], text);
     }
 }
 
-QPointF BoardItem::nearestPosition(const QPointF pos)
+/**
+ * @brief Find the point closest to the provided target point among the board's
+ * predefined points.
+ *
+ * This function iterates through an array of predefined points (represented by
+ * the member variable 'points'). It returns the point that is closest to the
+ * provided target point, based on a set distance threshold (PIECE_SIZE / 2).
+ *
+ * @param targetPoint The point to which we are finding the closest point from
+ * the array 'points'.
+ * @return Returns the point closest to targetPoint based on the distance
+ * threshold.
+ */
+QPointF BoardItem::getNearestPoint(const QPointF targetPoint)
 {
-    // The initial closest point is set to (0,0) point
-    auto nearestPos = QPointF(0, 0);
+    // Initialize nearestPoint to the origin (0,0) as a starting point for
+    // comparison
+    auto nearestPoint = QPointF(0, 0);
 
-    // Look for the nearest spot
-    for (auto i : position) {
-        // If the distance between the mouse point and the falling point is
-        // within the radius of the piece
-        if (QLineF(pos, i).length() < PIECE_SIZE / 2) {
-            nearestPos = i;
+    // Iterate through the array of predefined points to find the nearest one to
+    // targetPoint
+    for (auto pt : points) {
+        // Check if the distance between targetPoint and the current point (pt)
+        // is within the radius of a piece (PIECE_SIZE / 2)
+        if (QLineF(targetPoint, pt).length() < PIECE_SIZE / 2) {
+            nearestPoint = pt;
             break;
         }
     }
 
-    return nearestPos;
+    return nearestPoint;
 }
 
-QPointF BoardItem::polar2pos(File f, Rank r) const
+QPointF BoardItem::polarCoordinateToPoint(File f, Rank r) const
 {
-    return position[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
+    return points[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
                     1];
 }
 
-bool BoardItem::pos2polar(QPointF pos, File &f, Rank &r) const
+bool BoardItem::pointToPolarCoordinate(QPointF point, File &f, Rank &r) const
 {
-    // Look for the nearest spot
+    // Iterate through all the points to find the closest one to the target
+    // point.
     for (int sq = 0; sq < SQUARE_NB; sq++) {
-        // If the pos point is near the placing point
-        if (QLineF(pos, position[sq]).length() < (qreal)PIECE_SIZE / 6) {
+        // If the target point is sufficiently close to one of the predefined
+        // points.
+        if (QLineF(point, points[sq]).length() < (qreal)PIECE_SIZE / 6) {
+            // Calculate the corresponding File and Rank based on the closest
+            // point's index.
             f = static_cast<File>(sq / RANK_NB + 1);
             r = static_cast<Rank>(sq % RANK_NB + 1);
             return true;

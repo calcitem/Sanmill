@@ -130,9 +130,9 @@ bool Game::updateScene()
     return updateScene(position);
 }
 
-bool Game::updateScene(Position &p)
+bool Game::updateScene(Position &pos)
 {
-    const Piece *board = p.get_board();
+    const Piece *board = pos.get_board();
 
     // Total number of pieces
     int nTotalPieces = rule.pieceCount * 2;
@@ -144,18 +144,18 @@ bool Game::updateScene(Position &p)
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
-    animatePieceMovement(p, board, animationGroup, deletedPiece);
+    animatePieceMovement(pos, board, animationGroup, deletedPiece);
 
     // Handle banned locations
-    handleBannedLocations(p, board, nTotalPieces);
+    handleBannedLocations(pos, board, nTotalPieces);
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(board, p, nTotalPieces, deletedPiece);
+    selectCurrentAndDeletedPieces(board, pos, nTotalPieces, deletedPiece);
 
     animationGroup->start(QAbstractAnimation::DeleteWhenStopped);
 
     // Update LCD displays
-    updateLCDDisplays(p);
+    updateLCDDisplays(pos);
 
     // Update tips
     setTips();
@@ -186,7 +186,7 @@ void Game::animatePieceMovement(const Position &p, const Piece *board,
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polar2pos(static_cast<File>(j / RANK_NB),
+                pos = scene.polarCoordinateToPoint(static_cast<File>(j / RANK_NB),
                                       static_cast<Rank>(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
                     // Let the moving pieces be at the top level
