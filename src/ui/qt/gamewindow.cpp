@@ -733,10 +733,11 @@ void MillGameWindow::on_actionSave_S_triggered()
 
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
+    QString dateTimeString = QDateTime::currentDateTime().toString("ddd_MMM_d_hh_mm_ss_yyyy");
     const QString path = QFileDialog::getSaveFileName(
         this, tr("Open the move list file"),
-        QDir::currentPath() + tr("MoveList_") +
-            QDateTime::currentDateTime().toString().replace(" ", "_") + ".txt",
+        QDir::currentPath() + tr("/MoveList_") +
+            dateTimeString + ".txt",
         "TXT(*.txt)");
 
     saveBook(path);
