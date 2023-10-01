@@ -230,22 +230,15 @@
      <height>22</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_F">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionNew_N"/>
-    <addaction name="actionOpen_O"/>
-    <addaction name="actionSave_S"/>
-    <addaction name="actionSaveAs_A"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit_X"/>
-   </widget>
    <widget class="QMenu" name="menu_C">
     <property name="title">
-     <string>Position</string>
+     <string>View</string>
     </property>
     <addaction name="actionEdit_E"/>
+    <addaction name="actionFixWindowSize"/>
+    <addaction name="separator"/>
+    <addaction name="actionToolBar_T"/>
+    <addaction name="actionDockBar_D"/>
     <addaction name="separator"/>
     <addaction name="actionFlip_F"/>
     <addaction name="actionMirror_M"/>
@@ -263,7 +256,6 @@
     <addaction name="actionEnd_E"/>
     <addaction name="actionAutoRun_A"/>
     <addaction name="separator"/>
-    <addaction name="actionResign_G"/>
     <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menu_E">
@@ -271,33 +263,35 @@
      <string>Game</string>
     </property>
     <addaction name="actionEngine_E"/>
+    <addaction name="actionNew_N"/>
+    <addaction name="actionOpen_O"/>
+    <addaction name="actionSave_S"/>
+    <addaction name="actionSaveAs_A"/>
+    <addaction name="separator"/>
     <addaction name="actionLocal_L"/>
     <addaction name="actionEngineFight_E"/>
     <addaction name="actionInternet_I"/>
     <addaction name="separator"/>
-    <addaction name="actionEngine1_T"/>
-    <addaction name="actionEngine2_R"/>
+    <addaction name="actionResign_G"/>
     <addaction name="separator"/>
     <addaction name="actionAutoChangeFirstMove_C"/>
+    <addaction name="actionExit_X"/>
    </widget>
    <widget class="QMenu" name="menu_O">
     <property name="title">
      <string>Options</string>
     </property>
     <addaction name="actionSetting_O"/>
-    <addaction name="separator"/>
-    <addaction name="actionFixWindowSize"/>
-    <addaction name="separator"/>
-    <addaction name="actionToolBar_T"/>
-    <addaction name="actionDockBar_D"/>
     <addaction name="actionMusic_M"/>
+    <addaction name="separator"/>
+    <addaction name="actionEngine1_T"/>
+    <addaction name="actionEngine2_R"/>
     <addaction name="separator"/>
     <addaction name="actionSound_S"/>
     <addaction name="actionAnimation_A"/>
     <addaction name="separator"/>
     <addaction name="actionResignIfMostLose_G"/>
     <addaction name="actionAutoRestart_A"/>
-    <addaction name="actionShuffling_R"/>
     <addaction name="separator"/>
     <addaction name="actionDeveloperMode"/>
    </widget>
@@ -321,6 +315,8 @@
     <property name="title">
      <string>AI</string>
     </property>
+    <addaction name="actionShuffling_R"/>
+    <addaction name="separator"/>
     <addaction name="actionAlphaBetaAlgorithm"/>
     <addaction name="actionPvsAlgorithm"/>
     <addaction name="actionMtdfAlgorithm"/>
@@ -329,13 +325,12 @@
     <addaction name="actionUsePerfectDatabase"/>
     <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionConsiderMobility"/>
+    <addaction name="actionAiIsLazy"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
-    <addaction name="actionAiIsLazy"/>
     <addaction name="actionOpeningBook_O"/>
     <addaction name="actionLearnEndgame_E"/>
    </widget>
-   <addaction name="menu_F"/>
    <addaction name="menu_E"/>
    <addaction name="menu_C"/>
    <addaction name="menu_O"/>
@@ -1028,10 +1023,13 @@
      <normaloff>:/icon/resources/icon/OptionsHS.png</normaloff>:/icon/resources/icon/OptionsHS.png</iconset>
    </property>
    <property name="text">
-    <string>...</string>
+    <string>Game Clock</string>
    </property>
    <property name="toolTip">
     <string>Engine Settings</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionEngine1_T">
@@ -1068,6 +1066,9 @@
    </property>
   </action>
   <action name="actionSetting_O">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="enabled">
     <bool>false</bool>
    </property>
@@ -1077,6 +1078,9 @@
    </property>
    <property name="text">
     <string>Options...</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionFixWindowSize">
@@ -1232,6 +1236,9 @@
    <property name="text">
     <string>Endgame Learning (WIP)</string>
    </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
   </action>
   <action name="actionEngineFight_E">
    <property name="text">
@@ -1250,6 +1257,9 @@
    </property>
    <property name="text">
     <string>Auto Change Who Play First (WIP)</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionIDS_I">
@@ -1280,6 +1290,9 @@
    </property>
    <property name="text">
     <string>Opening Book (WIP)</string>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
    </property>
   </action>
   <action name="actionAlphaBetaAlgorithm">
