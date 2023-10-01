@@ -126,6 +126,9 @@ bool Game::command(const string &cmd, bool update /* = true */)
 {
     Q_UNUSED(hasSound)
 
+    char moveStr[64] = {0};
+    int bestvalue = 0;
+
 #ifdef QT_GUI_LIB
     // Prevents receiving instructions sent by threads that end late
     if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE]) {
@@ -143,21 +146,24 @@ bool Game::command(const string &cmd, bool update /* = true */)
         gameStart();
     }
 
+#ifdef _MSC_VER
+    sscanf_s(cmd.c_str(), "info score %d bestmove %63s", &bestvalue, moveStr,
+             (unsigned)_countof(moveStr));
+#else
+    sscanf(cmd, "info score %d bestmove %63s", &bestvalue, moveStr);
+#endif
+
     debugPrintf("Computer: %s\n\n", cmd.c_str());
 
-    // TODO: Distinguish these two cmds,
-    // one starts with info and the other starts with (
-    if (cmd[0] != 'i') {
-        gameMoveList.emplace_back(cmd);
-    }
+    gameMoveList.emplace_back(moveStr);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     nnueTrainingDataBestMove = cmd;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-    // TODO: Distinguish these two cmds,
-    // one starts with info and the other starts with (
-    if (cmd[0] != 'i' && cmd.size() > strlen("-(1,2)")) {
+    // TODO: It means that the 50 rule is only calculated at the beginning of
+    // the moving phase, and it is not sure whether it complies with the rules.
+    if (strlen(moveStr) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
         posKeyHistory.clear();
@@ -253,9 +259,8 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
     }
 
-    if (cmd[0] != 'i') {
-        gameTest->writeToMemory(QString::fromStdString(cmd));
-    }
+    
+    gameTest->writeToMemory(QString::fromStdString(cmd));
 
 #ifdef NET_FIGHT_SUPPORT
     // Network: put the method in the server's send list
