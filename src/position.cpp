@@ -1028,7 +1028,12 @@ bool Position::command(const char *cmd)
 #endif
 
     if (strlen(moveStr) == 0 && strlen(cmd) > 0) {
-        strncpy(moveStr, cmd, 64);
+#ifdef _MSC_VER
+        strncpy_s(moveStr, sizeof(moveStr), cmd, _TRUNCATE);
+#else
+        strncpy(moveStr, cmd, sizeof(moveStr) - 1);
+        moveStr[sizeof(moveStr) - 1] = '\0';
+#endif
     }
 
     int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
