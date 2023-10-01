@@ -347,19 +347,19 @@ void MillGameWindow::initialize()
     // Set form size
 #ifdef QT_MOBILE_APP_UI
 #if 0
-    const int screen_iPhone_XS_Max[] = {1242, 2688};
-    const int screen_iPhone_XS[] = {1125, 2436};
-    const int screen_iPhone_XR[] = {828, 1792};
-    const int screen_iPhone_X[] = {1125, 2436};
-    const int screen_iPhone_8_Plus[] = {1242, 2208};
-    const int screen_iPhone_8[] = {750, 1334};
-    const int screen_iPhone_7_Plus[] = {1242, 2208};
-    const int screen_iPhone_7[] = {750, 1334};
-    const int screen_iPhone_6s_Plus[] = {1242, 2208};
-    const int screen_iPhone_6s[] = {750, 1334};
+    const int screen_iPfrome_XS_Max[] = {1242, 2688};
+    const int screen_iPfrome_XS[] = {1125, 2436};
+    const int screen_iPfrome_XR[] = {828, 1792};
+    const int screen_iPfrome_X[] = {1125, 2436};
+    const int screen_iPfrome_8_Plus[] = {1242, 2208};
+    const int screen_iPfrome_8[] = {750, 1334};
+    const int screen_iPfrome_7_Plus[] = {1242, 2208};
+    const int screen_iPfrome_7[] = {750, 1334};
+    const int screen_iPfrome_6s_Plus[] = {1242, 2208};
+    const int screen_iPfrome_6s[] = {750, 1334};
 #endif
-    const int screen_iPhone_SE[] = {640, 1136};
-    this->resize(QSize(screen_iPhone_SE[0], screen_iPhone_SE[1]));
+    const int screen_iPfrome_SE[] = {640, 1136};
+    this->resize(QSize(screen_iPfrome_SE[0], screen_iPfrome_SE[1]));
 #else  /* QT_MOBILE_APP_UI */
 
     // Fix window size

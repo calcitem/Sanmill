@@ -188,7 +188,7 @@ bool Rules::youCanMove(const GameState &s)
     return false;
 }
 
-bool Rules::mindenEllensegesKorongMalomban(GameState s)
+bool Rules::mindenEllensegesPieceMalomban(GameState s)
 {
     for (int i = 0; i <= 23; i++) {
         if (s.T[i] == 1 - s.sideToMove && malome(i, s) == -1)

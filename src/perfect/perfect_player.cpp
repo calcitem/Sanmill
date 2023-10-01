@@ -166,20 +166,20 @@ std::string PerfectPlayer::toHumanReadableEval(Wrappers::gui_eval_elem2 e)
     }
 }
 
-int PerfectPlayer::futureKorongCount(const GameState &s)
+int PerfectPlayer::futurePieceCount(const GameState &s)
 {
     return s.stoneCount[s.sideToMove] + Rules::maxKSZ -
            s.setStoneCount[s.sideToMove]; // TODO: refactor to call to
                                           // futureStoneCount
 }
 
-bool PerfectPlayer::makesMill(const GameState &s, int hon, int hov)
+bool PerfectPlayer::makesMill(const GameState &s, int from, int to)
 {
     GameState s2 = s;
-    if (hon != -1)
-        s2.T[hon] = -1;
-    s2.T[hov] = s.sideToMove;
-    return -1 != Rules::malome(hov, s2);
+    if (from != -1)
+        s2.T[from] = -1;
+    s2.T[to] = s.sideToMove;
+    return -1 != Rules::malome(to, s2);
 }
 
 bool PerfectPlayer::isMill(const GameState &s, int m)
@@ -205,7 +205,7 @@ std::vector<AdvancedMove> PerfectPlayer::slideMoves(const GameState &s)
     for (int i = 0; i < 24; ++i) {
         for (int j = 0; j < 24; ++j) {
             if (s.T[i] == s.sideToMove && s.T[j] == -1 &&
-                (futureKorongCount(s) == 3 || Rules::boardGraph[i][j])) {
+                (futurePieceCount(s) == 3 || Rules::boardGraph[i][j])) {
                 r.push_back(AdvancedMove {i, j, CMoveType::SlideMove,
                                           makesMill(s, i, j), false, 0});
             }
@@ -252,8 +252,8 @@ std::vector<AdvancedMove> PerfectPlayer::onlyTakingMoves(const GameState &s)
     for (int i = 0; i < 24; ++i) {
         if (s.T[i] == 1 - s.sideToMove && (!isMill(s, i) || everythingInMill)) {
             r.push_back(AdvancedMove {0, 0, CMoveType::SlideMove, false, true,
-                                      i}); // Assuming default values for hon
-                                           // and hov
+                                      i}); // Assuming default values for from
+                                           // and to
         }
     }
     return r;
@@ -314,14 +314,14 @@ GameState PerfectPlayer::makeMoveInState(const GameState &s, AdvancedMove &m)
     GameState s2(s);
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
-            s2.makeMove(new SetKorong(m.hov));
+            s2.makeMove(new SetPiece(m.to));
         } else {
-            s2.makeMove(new MoveKorong(m.hon, m.hov));
+            s2.makeMove(new MovePiece(m.from, m.to));
         }
         if (m.withTaking)
-            s2.makeMove(new LeveszKorong(m.takeHon));
+            s2.makeMove(new RemovePiece(m.takeHon));
     } else {
-        s2.makeMove(new LeveszKorong(m.takeHon));
+        s2.makeMove(new RemovePiece(m.takeHon));
     }
     return s2;
 }
@@ -386,12 +386,12 @@ void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
 {
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
-            g->makeMove(new SetKorong(m.hov));
+            g->makeMove(new SetPiece(m.to));
         } else {
-            g->makeMove(new MoveKorong(m.hon, m.hov));
+            g->makeMove(new MovePiece(m.from, m.to));
         }
     } else {
-        g->makeMove(new LeveszKorong(m.takeHon));
+        g->makeMove(new RemovePiece(m.takeHon));
     }
 }
 
@@ -412,8 +412,8 @@ void PerfectPlayer::toMove(const GameState &s)
 
 int PerfectPlayer::numGoodMoves(const GameState &s)
 {
-    if (futureKorongCount(s) < 3)
-        return 0; // Assuming futureKorongCount function is defined
+    if (futurePieceCount(s) < 3)
+        return 0; // Assuming futurePieceCount function is defined
     auto ma = Wrappers::gui_eval_elem2::min_value(getSec(s)); // Assuming getSec
                                                               // function is
                                                               // defined
@@ -454,7 +454,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
                          Rules::maxKSZ - s.setStoneCount[0],
                          Rules::maxKSZ - s.setStoneCount[1]);
 
-        if (futureKorongCount(s) < 3)
+        if (futurePieceCount(s) < 3)
             return Wrappers::gui_eval_elem2::virt_loss_val();
 
         int64_t a = 0;

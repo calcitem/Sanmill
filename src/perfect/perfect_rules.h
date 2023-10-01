@@ -71,7 +71,7 @@ public:
     // Tells whether the next player can move '(doesn't handle the kle case)
     static bool youCanMove(const GameState &s);
 
-    static bool mindenEllensegesKorongMalomban(GameState s);
+    static bool mindenEllensegesPieceMalomban(GameState s);
 
     // Checking if AlphaBeta is available
     static bool alphaBetaAvailable();

@@ -24,31 +24,31 @@
 #include "perfect_player.h"
 #include "perfect_rules.h"
 
-std::vector<int> SetKorong::getMezok()
+std::vector<int> SetPiece::getFields()
 {
-    return {hov};
+    return {to};
 }
 
-std::string SetKorong::toString()
+std::string SetPiece::toString()
 {
-    return mezoToString[hov];
+    return mezoToString[to];
 }
 
-std::vector<int> MoveKorong::getMezok()
+std::vector<int> MovePiece::getFields()
 {
-    return {hon, hov};
+    return {from, to};
 }
 
-std::string MoveKorong::toString()
+std::string MovePiece::toString()
 {
-    return mezoToString[hon] + "-" + mezoToString[hov];
+    return mezoToString[from] + "-" + mezoToString[to];
 }
 
-std::vector<int> LeveszKorong::getMezok()
+std::vector<int> RemovePiece::getFields()
 {
-    return {hon};
+    return {from};
 }
-std::string LeveszKorong::toString()
+std::string RemovePiece::toString()
 {
-    return "x" + mezoToString[hon];
+    return "x" + mezoToString[from];
 }

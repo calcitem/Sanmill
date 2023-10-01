@@ -52,7 +52,7 @@ enum class CMoveType {
 
 struct AdvancedMove
 {
-    int hon, hov;
+    int from, to;
     CMoveType moveType;
     bool withTaking, onlyTaking; // withTaking includes the steps in mill
                                  // closure, onlyTaking only includes removal
@@ -63,9 +63,9 @@ struct AdvancedMove
         if (onlyTaking) {
             return 1 << takeHon;
         }
-        int ret = 1 << hov;
+        int ret = 1 << to;
         if (moveType == CMoveType::SlideMove) {
-            ret += 1 << hon;
+            ret += 1 << from;
         }
         if (withTaking) {
             ret += 1 << takeHon;
@@ -143,9 +143,9 @@ public:
 
     std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
 
-    int futureKorongCount(const GameState &s);
+    int futurePieceCount(const GameState &s);
 
-    bool makesMill(const GameState &s, int hon, int hov);
+    bool makesMill(const GameState &s, int from, int to);
 
     bool isMill(const GameState &s, int m);
 

@@ -28,7 +28,7 @@
 class CMove
 {
 public:
-    virtual std::vector<int> getMezok() = 0; // Returns the fields included in
+    virtual std::vector<int> getFields() = 0; // Returns the fields included in
                                              // the step
     virtual ~CMove() = default;
 
@@ -39,37 +39,37 @@ protected:
                                     "d5", "e5", "e4", "e3", "d3", "c3"};
 };
 
-class SetKorong : public CMove
+class SetPiece : public CMove
 {
 public:
-    int hov;
-    SetKorong(int m)
-        : hov(m)
+    int to;
+    SetPiece(int m)
+        : to(m)
     { }
-    std::vector<int> getMezok() override;
+    std::vector<int> getFields() override;
     std::string toString();
 };
 
-class MoveKorong : public CMove
+class MovePiece : public CMove
 {
 public:
-    int hon, hov; // from, to
-    MoveKorong(int m1, int m2)
-        : hon(m1)
-        , hov(m2)
+    int from, to;
+    MovePiece(int m1, int m2)
+        : from(m1)
+        , to(m2)
     { }
-    std::vector<int> getMezok() override;
+    std::vector<int> getFields() override;
     std::string toString();
 };
 
-class LeveszKorong : public CMove
+class RemovePiece : public CMove
 {
 public:
-    int hon;
-    LeveszKorong(int m)
-        : hon(m)
+    int from;
+    RemovePiece(int m)
+        : from(m)
     { }
-    std::vector<int> getMezok() override;
+    std::vector<int> getFields() override;
     std::string toString();
 };
 

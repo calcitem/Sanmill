@@ -69,25 +69,25 @@ void GameState::makeMove(CMove *M)
 
     moveCount++;
 
-    SetKorong *sk = dynamic_cast<SetKorong *>(M);
-    MoveKorong *mk = dynamic_cast<MoveKorong *>(M);
-    LeveszKorong *lk = dynamic_cast<LeveszKorong *>(M);
+    SetPiece *sk = dynamic_cast<SetPiece *>(M);
+    MovePiece *mk = dynamic_cast<MovePiece *>(M);
+    RemovePiece *lk = dynamic_cast<RemovePiece *>(M);
 
     if (sk != nullptr) {
-        T[sk->hov] = sideToMove;
+        T[sk->to] = sideToMove;
         setStoneCount[sideToMove]++;
         stoneCount[sideToMove]++;
         lastIrrev = 0;
     } else if (mk != nullptr) {
-        T[mk->hon] = -1;
-        T[mk->hov] = sideToMove;
+        T[mk->from] = -1;
+        T[mk->to] = sideToMove;
         lastIrrev++;
         if (lastIrrev >= Rules::lastIrrevLimit) {
             over = true;
             winner = -1; // draw
         }
     } else if (lk != nullptr) {
-        T[lk->hon] = -1;
+        T[lk->from] = -1;
         stoneCount[1 - sideToMove]--;
         kle = false;
         if (stoneCount[1 - sideToMove] + Rules::maxKSZ -
@@ -99,9 +99,9 @@ void GameState::makeMove(CMove *M)
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr && Rules::malome(sk->hov, *this) > -1 &&
+    if ((sk != nullptr && Rules::malome(sk->to, *this) > -1 &&
          stoneCount[1 - sideToMove] > 0) ||
-        (mk != nullptr && Rules::malome(mk->hov, *this) > -1 &&
+        (mk != nullptr && Rules::malome(mk->to, *this) > -1 &&
          stoneCount[1 - sideToMove] > 0)) {
         kle = true;
     } else {
@@ -132,21 +132,21 @@ void GameState::checkValidMove(CMove *M)
     // because the previous makeMove may have already made it a draw.
     assert(!over || winner == -1);
 
-    SetKorong *sk = dynamic_cast<SetKorong *>(M);
-    MoveKorong *mk = dynamic_cast<MoveKorong *>(M);
-    LeveszKorong *lk = dynamic_cast<LeveszKorong *>(M);
+    SetPiece *sk = dynamic_cast<SetPiece *>(M);
+    MovePiece *mk = dynamic_cast<MovePiece *>(M);
+    RemovePiece *lk = dynamic_cast<RemovePiece *>(M);
 
     if (sk != nullptr) {
         assert(phase == 1);
-        assert(T[sk->hov] == -1);
+        assert(T[sk->to] == -1);
     }
     if (mk != nullptr) {
-        assert(T[mk->hon] == sideToMove);
-        assert(T[mk->hov] == -1);
+        assert(T[mk->from] == sideToMove);
+        assert(T[mk->to] == -1);
     }
     if (lk != nullptr) {
         assert(kle);
-        assert(T[lk->hon] == 1 - sideToMove);
+        assert(T[lk->from] == 1 - sideToMove);
     }
 }
 
