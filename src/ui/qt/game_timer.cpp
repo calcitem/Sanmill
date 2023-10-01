@@ -99,8 +99,8 @@ void Game::timerEvent(QTimerEvent *event)
     Q_UNUSED(event)
     updateTime();
 
-    remainingTime[WHITE] = get_elapsed_time(WHITE);
-    remainingTime[BLACK] = get_elapsed_time(BLACK);
+    remainingTime[WHITE] = getElapsedTime(WHITE);
+    remainingTime[BLACK] = getElapsedTime(BLACK);
 
     // If the rule requires a timer, time1 and time2 indicate a countdown
     if (timeLimit > 0) {
@@ -150,9 +150,9 @@ void Game::timerEvent(QTimerEvent *event)
 #endif
 }
 
-time_t Game::get_elapsed_time(int us) const
+time_t Game::getElapsedTime(int color) const
 {
-    return elapsedSeconds[us];
+    return elapsedSeconds[color];
 }
 
 void Game::resetElapsedSeconds()

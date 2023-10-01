@@ -211,12 +211,12 @@ void Game::animatePieceMovement(const Piece *board,
     }
 }
 
-inline char Game::color_to_char(Color color)
+inline char Game::colorToChar(Color color)
 {
     return static_cast<char>('0' + color);
 }
 
-inline std::string Game::char_to_string(char ch)
+inline std::string Game::charToString(char ch)
 {
     if (ch == '1') {
         return "White";
@@ -233,9 +233,9 @@ void Game::setTips()
     string turnStr;
 
     if (isInverted) {
-        turnStr = char_to_string(color_to_char(~p.sideToMove));
+        turnStr = charToString(colorToChar(~p.sideToMove));
     } else {
-        turnStr = char_to_string(color_to_char(p.sideToMove));
+        turnStr = charToString(colorToChar(p.sideToMove));
     }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -293,7 +293,7 @@ void Game::setTips()
         switch (p.winner) {
         case WHITE:
         case BLACK:
-            winnerStr = char_to_string(color_to_char(p.winner));
+            winnerStr = charToString(colorToChar(p.winner));
             resultStr = winnerStr + " won! ";
             break;
         case DRAW:

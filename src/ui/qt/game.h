@@ -117,8 +117,8 @@ public:
 
     Position *getPosition() noexcept { return &position; }
 
-    static char color_to_char(Color color);
-    static std::string char_to_string(char ch);
+    static char colorToChar(Color color);
+    static std::string charToString(char ch);
     void appendGameOverReasonToMoveHistory();
     void setTips();
 
@@ -127,9 +127,7 @@ public:
         return &gameMoveList;
     }
 
-    time_t get_elapsed_time(int us) const;
-    [[nodiscard]] time_t getStartTime() const;
-    void setStartTime(int time);
+    time_t getElapsedTime(int color) const;
     void updateTime();
 
 #ifdef NET_FIGHT_SUPPORT
@@ -617,15 +615,5 @@ private:
 
     std::vector<std::string> gameMoveList;
 };
-
-inline time_t Game::getStartTime() const
-{
-    return startTime;
-}
-
-inline void Game::setStartTime(int time)
-{
-    startTime = time;
-}
 
 #endif // GAME_H_INCLUDED
