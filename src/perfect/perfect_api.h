@@ -42,8 +42,6 @@ public:
 
     static std::string getLastError();
 
-    static int getBestMoveStr(std::string args);
-
     static void initializeIfNeeded();
     static void deinitializeIfNeeded();
 
