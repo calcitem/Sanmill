@@ -10,7 +10,7 @@
 1. Execute the batch file located at `src\ui\qt\build.bat` to prepare the build environment.
 2. Open Microsoft Visual Studio and load the solution file `mill-pro.sln`.
 3. Open the `option.h` file and specify the path to the Perfect Database by setting the `perfectDatabasePath` variable.
-4. Edit the `settings.int` file and update the `PerfectDatabasePath` field with the full directory path where you've downloaded the database. For example, you may set it to `E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted`. Note that backslashes `\` in the path should be escaped as double backslashes `\\`.
+4. Edit the `settings.ini` file and update the `PerfectDatabasePath` field with the full directory path where you've downloaded the database. For example, you may set it to `E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted`. Note that backslashes `\` in the path should be escaped as double backslashes `\\`.
 5. Build and run the project within Visual Studio.
 
 ## Game Setup
