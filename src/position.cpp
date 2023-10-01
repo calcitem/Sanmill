@@ -666,7 +666,7 @@ bool Position::reset()
 
     record[0] = '\0';
 
-    return false;
+    return true;
 }
 
 bool Position::start()
