@@ -83,6 +83,10 @@ void Game::updateState(bool result)
 // Update move and position list
 void Game::updateMoveList()
 {
+    if (position.get_phase() == Phase::moving &&
+        position.get_action() == Action::place) {
+        return;
+    }
     gameMoveList.emplace_back(position.record);
     if (strlen(position.record) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
