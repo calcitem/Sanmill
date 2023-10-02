@@ -1,4 +1,5 @@
 {
+  "@@locale": "zu",
   "aiVsAi": "I-AI vs. I-AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
@@ -1149,7 +1150,7 @@
   },
   "placingPhase": "Ukubeka isigaba",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Isigaba esinyakazayo",
   "@movingPhase": {

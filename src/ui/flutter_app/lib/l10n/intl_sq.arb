@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Faza e vendosjes",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Faza e lëvizjes",
   "@movingPhase": {

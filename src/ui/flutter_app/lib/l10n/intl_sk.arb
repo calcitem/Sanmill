@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Fáza umiestnenia",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Pohyblivá fáza",
   "@movingPhase": {

@@ -1,4 +1,5 @@
 {
+  "@@locale": "af",
   "thinking": "Dink…",
   "@thinking": {
     "description": "Thinking..."
@@ -1151,7 +1152,7 @@
   },
   "placingPhase": "Plaas fase",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Bewegende fase",
   "@movingPhase": {

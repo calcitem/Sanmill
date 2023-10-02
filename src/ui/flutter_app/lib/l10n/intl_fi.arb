@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Sijoitusvaihe",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Muuttovaihe",
   "@movingPhase": {

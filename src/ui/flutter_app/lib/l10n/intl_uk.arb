@@ -1168,7 +1168,7 @@
   },
   "placingPhase": "Фаза розміщення",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Фаза руху",
   "@movingPhase": {

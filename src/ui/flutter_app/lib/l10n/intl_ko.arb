@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "배치 단계",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "이동 단계",
   "@movingPhase": {

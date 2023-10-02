@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "فاز قرار دادن",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "فاز متحرک",
   "@movingPhase": {

@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Joylashtirish bosqichi",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Harakatlanish bosqichi",
   "@movingPhase": {

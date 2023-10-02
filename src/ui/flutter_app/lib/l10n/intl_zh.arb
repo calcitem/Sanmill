@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "摆子阶段",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "走子阶段",
   "@movingPhase": {

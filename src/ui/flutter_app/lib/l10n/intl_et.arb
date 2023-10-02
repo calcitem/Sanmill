@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Asetamise faas",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Liikuv faas",
   "@movingPhase": {

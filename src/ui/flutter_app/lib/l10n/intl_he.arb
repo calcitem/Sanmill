@@ -1,4 +1,5 @@
 {
+  "@@locale": "he",
   "difficulty": "קושי",
   "@difficulty": {
     "description": "Difficulty"
@@ -1169,7 +1170,7 @@
   },
   "placingPhase": "שלב ההשמה",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "שלב נע",
   "@movingPhase": {

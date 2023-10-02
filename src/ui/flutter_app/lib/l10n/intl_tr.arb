@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "yerleştirme aşaması",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Hareketli aşama",
   "@movingPhase": {

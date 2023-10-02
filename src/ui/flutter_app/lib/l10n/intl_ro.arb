@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Faza de plasare",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Faza în mișcare",
   "@movingPhase": {

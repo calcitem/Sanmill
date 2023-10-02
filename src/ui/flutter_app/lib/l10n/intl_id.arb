@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Menempatkan fase",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Fase bergerak",
   "@movingPhase": {

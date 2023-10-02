@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Φάση τοποθέτησης",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Μετακινούμενη φάση",
   "@movingPhase": {

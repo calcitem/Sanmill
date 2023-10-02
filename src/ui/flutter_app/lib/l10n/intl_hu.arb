@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Helyezési fázis",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Mozgó fázis",
   "@movingPhase": {

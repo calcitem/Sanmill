@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Plaatsingsfase",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Bewegende fase",
   "@movingPhase": {

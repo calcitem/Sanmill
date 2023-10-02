@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "مرحلة الوضع",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "مرحلة تحريك القطع",
   "@movingPhase": {

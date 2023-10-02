@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Placeringsfas",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Flyttfas",
   "@movingPhase": {

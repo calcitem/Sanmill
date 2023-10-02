@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "મૂકવાનો તબક્કો",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "ખસેડવાનો તબક્કો",
   "@movingPhase": {

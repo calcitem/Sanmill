@@ -1,4 +1,5 @@
 {
+  "@@locale": "my",
   "appName": "ကြိတ်",
   "@appName": {
     "description": "The app name"
@@ -1009,7 +1010,7 @@
   },
   "placingPhase": "နေရာယူခြင်းအဆင့်",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "ရွေ့လျားအဆင့်",
   "@movingPhase": {

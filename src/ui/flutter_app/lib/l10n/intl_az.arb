@@ -1,4 +1,5 @@
 {
+  "@@locale": "az",
   "aiResponseDelayTime": "AI cavab gecikmə vaxtı",
   "@aiResponseDelayTime": {},
   "stonyPath": "Daşlı yol",
@@ -1181,7 +1182,7 @@
   },
   "placingPhase": "Yerləşdirmə mərhələsi",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Hərəkət mərhələsi",
   "@movingPhase": {

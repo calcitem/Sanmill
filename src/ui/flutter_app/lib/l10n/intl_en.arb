@@ -1130,7 +1130,7 @@
   },
   "placingPhase": "Placing phase",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Moving phase",
   "@movingPhase": {

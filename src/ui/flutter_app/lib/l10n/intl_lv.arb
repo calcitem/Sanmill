@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Ievietošanas fāze",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Pārvietošanās fāze",
   "@movingPhase": {

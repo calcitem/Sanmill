@@ -1142,7 +1142,7 @@
   },
   "placingPhase": "配置段階",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "移動相",
   "@movingPhase": {

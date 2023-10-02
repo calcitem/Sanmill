@@ -1,4 +1,5 @@
 {
+  "@@locale": "be",
   "appName": "Млын",
   "@appName": {
     "description": "The app name"
@@ -1073,7 +1074,7 @@
   },
   "placingPhase": "Фаза размяшчэння",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Рухомая фаза",
   "@movingPhase": {

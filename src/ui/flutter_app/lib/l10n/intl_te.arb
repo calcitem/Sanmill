@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "ఉంచడం దశ",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "కదిలే దశ",
   "@movingPhase": {

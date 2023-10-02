@@ -1,4 +1,5 @@
 {
+  "@@locale": "ur",
   "appName": "چکی",
   "@appName": {
     "description": "The app name"
@@ -1213,7 +1214,7 @@
   },
   "placingPhase": "لگانے کا مرحلہ",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "متحرک مرحلہ",
   "@movingPhase": {

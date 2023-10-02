@@ -1036,7 +1036,7 @@
   },
   "placingPhase": "স্থাপন পর্ব",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "চলন্ত পর্ব",
   "@movingPhase": {

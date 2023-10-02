@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "चरण रखना",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "मूविंग फेज",
   "@movingPhase": {

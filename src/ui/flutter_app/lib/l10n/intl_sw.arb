@@ -1,4 +1,5 @@
 {
+  "@@locale": "sw",
   "appName": "Kinu",
   "@appName": {
     "description": "The app name"
@@ -1175,7 +1176,7 @@
   },
   "placingPhase": "Kuweka awamu",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Awamu ya kusonga",
   "@movingPhase": {

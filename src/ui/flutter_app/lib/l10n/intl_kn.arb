@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "ಇರಿಸುವ ಹಂತ",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "ಚಲಿಸುವ ಹಂತ",
   "@movingPhase": {

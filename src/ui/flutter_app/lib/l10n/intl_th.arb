@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "วางเฟส",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "ย้ายเฟส",
   "@movingPhase": {

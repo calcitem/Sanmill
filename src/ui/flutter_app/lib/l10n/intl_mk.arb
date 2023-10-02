@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Фаза на поставување",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Фаза на движење",
   "@movingPhase": {

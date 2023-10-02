@@ -1044,7 +1044,7 @@
   },
   "placingPhase": "Fáze umístění",
   "@placingPhase": {
-    "placingPhase": "Placing phase"
+    "description": "Placing phase"
   },
   "movingPhase": "Pohybující se fáze",
   "@movingPhase": {
