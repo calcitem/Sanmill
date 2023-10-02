@@ -44,9 +44,36 @@ BoardItem::~BoardItem() = default;
  */
 QRectF BoardItem::boundingRect() const
 {
-    return QRectF(-boardSideLength / 2, -boardSideLength / 2,
-                  boardSideLength + boardShadowSize,
-                  boardSideLength + boardShadowSize);
+    // See drawIndicatorBar() for the origin of the magic numbers
+    qreal left = std::min(-boardSideLength / 2, -boardSideLength / 2 - 15);
+    qreal top = std::min(-boardSideLength / 2,
+                         -static_cast<int>(boardSideLength * 0.8) / 2);
+    qreal right = boardSideLength / 2 + boardShadowSize;
+    qreal bottom = boardSideLength / 2 + boardShadowSize;
+
+    return QRectF(left, top, right - left, bottom - top);
+}
+
+
+void BoardItem::drawIndicatorBar(QPainter *painter)
+{
+    int barHeight = static_cast<int>(boardSideLength * 0.8);
+    int barWidth = 6;
+    int origin_x = -boardSideLength / 2 - 15; // Board left
+    int origin_y = -barHeight / 2;
+
+    // Draw the gray background of the bar
+    painter->setPen(Qt::NoPen);
+    painter->setBrush(QColor(200, 200, 200));
+    painter->drawRect(origin_x, origin_y, barWidth, barHeight);
+
+    // Draw the green fill of the bar
+    painter->setBrush(QColor(0, 128, 0)); // Green
+    int fillHeight = static_cast<int>(barHeight *
+                                      (advantageBarLength / 2 + 0.5));
+
+    painter->drawRect(origin_x, origin_y + barHeight - fillHeight, barWidth,
+                      fillHeight); // Green at the bottom
 }
 
 /**
@@ -76,6 +103,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
     drawBoard(painter);
     drawLines(painter);
+    drawIndicatorBar(painter);
     drawCoordinates(painter);
 #ifdef DRAW_POLAR_COORDINATES
     drawPolarCoordinates(painter);
@@ -105,6 +133,18 @@ void BoardItem::initPoints()
             points[f * RANK_NB + r].ry() = clockwiseRingCoordinates[r][1];
         }
     }
+}
+
+void BoardItem::updateAdvantageBar(qreal newAdvantage)
+{
+    int barHeight = static_cast<int>(boardSideLength * 0.8);
+    int barWidth = 10;
+    int origin_x = -boardSideLength / 2 - 20; // Board left
+    int origin_y = -barHeight / 2;
+
+    this->advantageBarLength = newAdvantage;
+    QRect indicatorBarRect(origin_x, origin_y, barWidth, barHeight);
+    update(indicatorBarRect);
 }
 
 void BoardItem::drawBoard(QPainter *painter)

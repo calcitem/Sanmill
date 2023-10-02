@@ -18,6 +18,7 @@
 #define BOARDITEM_H_INCLUDED
 
 #include <QGraphicsItem>
+#include <QPaintEvent>
 
 #include "graphicsconst.h"
 #include "config.h"
@@ -56,12 +57,15 @@ public:
     // Convert Cartesian point to polar coordinates (File and Rank)
     [[nodiscard]] bool pointToPolarCoordinate(QPointF point, File &f, Rank &r) const;
 
+    void updateAdvantageBar(qreal newAdvantage);
+
 private:
     void initPoints();
     void drawBoard(QPainter *painter);
     void drawLines(QPainter *painter);
     void drawCoordinates(QPainter *painter);
     void drawPolarCoordinates(QPainter *painter);
+    void drawIndicatorBar(QPainter *painter);
 
     // Side length of the square board
     int boardSideLength {BOARD_SIDE_LENGTH};
@@ -74,6 +78,8 @@ private:
 
     // Flag to indicate if diagonal lines are enabled
     bool hasDiagonalLine {false};
+
+    qreal advantageBarLength = 0; /* -1 ~ +1 */
 };
 
 #endif // BOARDITEM_H_INCLUDED

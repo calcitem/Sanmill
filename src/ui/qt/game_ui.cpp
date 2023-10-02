@@ -58,12 +58,34 @@ void Game::setAnimation(bool arg) noexcept
     settings->setValue("Options/Animation", arg);
 }
 
-void Game::updateStatusBar()
+void Game::updateStatusBar(bool reset)
 {
     // Signal update status bar
     updateScene();
     message = QString::fromStdString(getTips());
     emit statusBarChanged(message);
+
+    qreal advantage = (double)position.bestvalue /
+                      (VALUE_EACH_PIECE *
+                       (rule.pieceCount - rule.piecesAtLeastCount));
+    if (advantage < -1) {
+        advantage = -1;
+    }
+
+    if (advantage > 1) {
+        advantage = 1;
+    }
+
+    if (isAiPlayer[WHITE] && !isAiPlayer[BLACK]) {
+        advantage = -advantage;
+    }
+
+    if (reset) {
+        advantage = 0;
+    }
+
+    // TODO: updateStatusBar but also emit advantageChanged
+    emit advantageChanged(advantage); 
 }
 
 void Game::updateLCDDisplays()

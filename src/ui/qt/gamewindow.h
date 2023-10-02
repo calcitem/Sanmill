@@ -102,6 +102,8 @@ private slots:
     static void on_actionWeb_W_triggered();
     static void on_actionAbout_A_triggered();
 
+    void handleAdvantageChanged(qreal value);
+
 protected:
     void saveBook(const QString &path);
 

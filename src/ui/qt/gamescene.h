@@ -48,6 +48,8 @@ public:
     const QPointF pos_p2 {LINE_INTERVAL * (-4), LINE_INTERVAL * (-6)};
     const QPointF pos_p2_g {LINE_INTERVAL * 4, LINE_INTERVAL * (-6)};
 
+    std::unique_ptr<BoardItem> board;
+
 protected:
     // void keyPressEvent(QKeyEvent *keyEvent);
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *mouseEvent) override;
@@ -58,7 +60,6 @@ signals:
     void mouseReleased(QPointF);
 
 private:
-    std::unique_ptr<BoardItem> board;
     void handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent);
     void handlePieceClick(const QGraphicsItem *item);
 };

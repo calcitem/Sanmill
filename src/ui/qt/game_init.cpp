@@ -133,7 +133,7 @@ void Game::gameReset()
     resetComponents();
     resetElapsedSeconds();
     reinitMoveListModel();
-    updateStatusBar();
+    updateStatusBar(true);
 }
 
 void Game::initializeSceneBackground()

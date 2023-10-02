@@ -303,6 +303,9 @@ void MillGameWindow::initialize()
     connect(game, SIGNAL(statusBarChanged(QString)), statusBarLabel,
             SLOT(setText(QString)));
 
+    connect(game, &Game::advantageChanged, this,
+            &MillGameWindow::handleAdvantageChanged);
+
     ruleActionList[game->getRuleIndex()]->setChecked(true);
     game->setRule(game->getRuleIndex());
 
@@ -456,6 +459,11 @@ void MillGameWindow::initialize()
     ui.actionOpeningBook_O->setChecked(gameOptions.getOpeningBook());
     ui.actionLearnEndgame_E->setChecked(gameOptions.getLearnEndgameEnabled());
     ui.actionDeveloperMode->setChecked(gameOptions.getDeveloperMode());
+}
+
+void MillGameWindow::handleAdvantageChanged(qreal value)
+{
+    scene->board->updateAdvantageBar(value);
 }
 
 #ifdef QT_MOBILE_APP_UI

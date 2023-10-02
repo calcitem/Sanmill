@@ -169,7 +169,7 @@ private:
     void resetUIElements();
     void resetAndUpdateTime();
     void updateMoveList();
-    void updateStatusBar();
+    void updateStatusBar(bool reset = false);
     void updateLcdDisplay();
     void updateMiscellaneous();
 
@@ -214,8 +214,7 @@ private:
 
 signals:
 
-    // Signal of total disk number change
-
+    // Signal of total played games number change
     void nGamesPlayedChanged(const QString &score);
 
     // Player 1 (first hand) signal to change the number of winning sets
@@ -244,6 +243,9 @@ signals:
 
     // A signal that tells the main window to update the status bar
     void statusBarChanged(const QString &message);
+
+    // A signal that tells the main window to update the advantage bar
+    void advantageChanged(qreal value);
 
 public slots:
 
