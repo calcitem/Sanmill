@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cinttypes>
 #include <iomanip>
 #include <map>
 #include <string>
@@ -302,7 +303,8 @@ void Game::printStats()
 
     gameEndCycle = stopwatch::rdtscp_clock::now();
 
-    debugPrintf("Game Duration Time: %ldms\n", gameDurationTime);
+    debugPrintf("Game Duration Time: %" PRId64 "ms\n",
+                static_cast<int64_t>(gameDurationTime));
 
 #ifdef TIME_STAT
     debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",

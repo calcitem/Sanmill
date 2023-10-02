@@ -90,7 +90,7 @@ unsigned to_perfect_sq(Square sq)
 }
 #endif
 
-int countBits(int n)
+size_t countBits(int n)
 {
     int count = 0;
     while (n) {
@@ -106,7 +106,7 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
     std::vector<Move> moves;
     int usBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
     int themBitboard = playerToMove == 1 ? whiteBitboard : blackBitboard;
-    int count = countBits(moveBitboard);
+    size_t count = countBits(moveBitboard);
 
     int from = -1;
     int to = -1;
