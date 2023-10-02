@@ -52,6 +52,8 @@ bool Game::applyPartialMoveList(int row)
     const QStringList strList = moveListModel.stringList();
     debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
 
+    posKeyHistory.clear();
+
     for (int i = 0; i <= row; i++) {
         debugPrintf("%s\n", strList.at(i).toStdString().c_str());
         position.command(strList.at(i).toStdString().c_str());
