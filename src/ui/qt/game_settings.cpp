@@ -220,6 +220,24 @@ void Game::setAlgorithm(int val) const
 
 void Game::setUsePerfectDatabase(bool arg) noexcept
 {
+    // TODO: If it is checked,
+    // the box will still pop up once when opening the program.
+    if (gameOptions.getUsePerfectDatabase() == false && arg == true) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("Please visit the following link for detailed "
+                          "operating "
+                          "instructions:"));
+
+        QString url = "<a "
+                      "href='https://github.com/calcitem/Sanmill/blob/dev/src/"
+                      "perfect/README.md'>https://github.com/calcitem/Sanmill/"
+                      "blob/dev/src/perfect/README.md</a>";
+        msgBox.setInformativeText(url);
+        msgBox.setTextFormat(Qt::RichText);
+        msgBox.setTextInteractionFlags(Qt::TextBrowserInteraction);
+        msgBox.exec();
+    }
+
     gameOptions.setUsePerfectDatabase(arg);
     settings->setValue("Options/UsePerfectDatabase", arg);
 }
@@ -231,6 +249,7 @@ void Game::setPerfectDatabasePath(string val) const
                        QString::fromStdString(val));
 }
 
+// TODO: When call this? Same as setUsePerfectDatabase above?
 void Game::setUsePerfectDatabase(bool enabled) const
 {
 #if 0
