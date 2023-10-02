@@ -20,15 +20,15 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "AI와 대결",
+  "humanVsAi": "인간 대 AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "2인 대결",
+  "humanVsHuman": "인간 대 인간",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI끼리 대결",
+  "aiVsAi": "AI 대 AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },

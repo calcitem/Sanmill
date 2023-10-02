@@ -100,11 +100,11 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Con người vs. trí tuệ nhân tạo",
+  "humanVsAi": "Người vs AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Con người vs. Nhân loại",
+  "humanVsHuman": "Người vs Người",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
@@ -848,7 +848,7 @@
   "@none": {
     "description": "None"
   },
-  "aiVsAi": "AI vs. trí tuệ nhân tạo",
+  "aiVsAi": "AI vs AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },

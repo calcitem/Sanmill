@@ -323,7 +323,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "ရွေးချယ်စရာ",
+  "options": "ရွေးချယ်",
   "@options": {
     "description": "Options"
   },

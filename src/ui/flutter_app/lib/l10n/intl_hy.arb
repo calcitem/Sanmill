@@ -11,7 +11,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "options": "Ընտրանքներ",
+  "options": "Ընտրանք",
   "@options": {
     "description": "Options"
   },
