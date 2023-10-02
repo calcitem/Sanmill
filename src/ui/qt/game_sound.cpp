@@ -53,6 +53,10 @@ static std::string buildFilename(GameSound soundType,
 {
     std::string filename;
 
+    std::string sideStrUpper = sideStr;
+    std::transform(sideStrUpper.begin(), sideStrUpper.end(),
+                   sideStrUpper.begin(), ::toupper);
+
     // Map for handling sound types
     std::unordered_map<GameSound, std::string> soundMap = {
         {GameSound::blockMill, "BlockMill_" + sideStr},
@@ -77,7 +81,9 @@ static std::string buildFilename(GameSound soundType,
         {GameSound::vantage, "Vantage"},
         {GameSound::very, "Very"},
         {GameSound::warning, "warning"},
-        {GameSound::win, (sideStr == "DRAW" ? "Draw" : "Win_" + sideStr)},
+        {GameSound::win,
+         (sideStrUpper.find("DRAW") != std::string::npos ? "Draw" :
+                                                           "Win_" + sideStr)},
         {GameSound::winAndLossesAreObvious, "WinsAndLossesAreObvious"},
         {GameSound::none, ""}};
 
@@ -107,6 +113,10 @@ void Game::playSound(GameSound soundType)
 
     std::string sideStr = (c == WHITE) ? "W" : "B";
     std::string opponentStr = (c == BLACK) ? "W" : "B";
+
+    if (c == Color::DRAW) {
+        sideStr = opponentStr = "DRAW";
+    }
 
     std::string filename = buildFilename(soundType, sideStr, opponentStr);
 #ifndef DO_NOT_PLAY_SOUND
