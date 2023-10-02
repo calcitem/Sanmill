@@ -45,7 +45,7 @@ public:
 
     [[nodiscard]] int type() const noexcept override { return Type; }
 
-     // Enable or disable diagonal lines on the board
+    // Enable or disable diagonal lines on the board
     void setDiagonal(bool enableDiagonal = true);
 
     // Get the nearest point on the board to the given point
@@ -55,7 +55,8 @@ public:
     [[nodiscard]] QPointF polarCoordinateToPoint(File f, Rank r) const;
 
     // Convert Cartesian point to polar coordinates (File and Rank)
-    [[nodiscard]] bool pointToPolarCoordinate(QPointF point, File &f, Rank &r) const;
+    [[nodiscard]] bool pointToPolarCoordinate(QPointF point, File &f,
+                                              Rank &r) const;
 
     void updateAdvantageBar(qreal newAdvantage);
 

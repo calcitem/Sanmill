@@ -54,7 +54,6 @@ QRectF BoardItem::boundingRect() const
     return QRectF(left, top, right - left, bottom - top);
 }
 
-
 void BoardItem::drawIndicatorBar(QPainter *painter)
 {
     int barHeight = static_cast<int>(boardSideLength * 0.8);
@@ -124,10 +123,9 @@ void BoardItem::initPoints()
         // ring, followed by points arranged in a clockwise direction. This
         // pattern is replicated for the middle and outer rings as well.
         const int radius = (f + 1) * LINE_INTERVAL;
-        const int clockwiseRingCoordinates[][2] = {{0, -radius}, {radius, -radius},
-                                           {radius, 0},  {radius, radius},
-                                           {0, radius},  {-radius, radius},
-                                           {-radius, 0}, {-radius, -radius}};
+        const int clockwiseRingCoordinates[][2] = {
+            {0, -radius}, {radius, -radius}, {radius, 0},  {radius, radius},
+            {0, radius},  {-radius, radius}, {-radius, 0}, {-radius, -radius}};
         for (int r = 0; r < RANK_NB; r++) {
             points[f * RANK_NB + r].rx() = clockwiseRingCoordinates[r][0];
             points[f * RANK_NB + r].ry() = clockwiseRingCoordinates[r][1];
@@ -302,8 +300,7 @@ QPointF BoardItem::getNearestPoint(const QPointF targetPoint)
 
 QPointF BoardItem::polarCoordinateToPoint(File f, Rank r) const
 {
-    return points[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) -
-                    1];
+    return points[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) - 1];
 }
 
 bool BoardItem::pointToPolarCoordinate(QPointF point, File &f, Rank &r) const

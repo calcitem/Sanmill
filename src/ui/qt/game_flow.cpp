@@ -98,7 +98,7 @@ bool Game::resign()
         if (k++ <= currentRow) {
             continue;
         }
-            
+
         moveListModel.insertRow(++currentRow);
         moveListModel.setData(moveListModel.index(currentRow), i.c_str());
     }
@@ -136,7 +136,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     // Prevents receiving instructions sent by threads that end late
     if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE]) {
         return false;
-    }        
+    }
 
     if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK]) {
         return false;
@@ -194,7 +194,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     if (update) {
         playSound(soundType);
-        //updateScene();
+        // updateScene();
     }
 
     updateStatusBar();
@@ -268,7 +268,6 @@ bool Game::command(const string &cmd, bool update /* = true */)
 #endif
     }
 
-    
     gameTest->writeToMemory(QString::fromStdString(cmd));
 
 #ifdef NET_FIGHT_SUPPORT

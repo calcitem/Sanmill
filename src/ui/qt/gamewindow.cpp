@@ -257,11 +257,14 @@ void MillGameWindow::initialize()
 
     connect(ui.actionFlip_F, &QAction::triggered, game, &Game::flipVertically);
 
-    connect(ui.actionMirror_M, &QAction::triggered, game, &Game::flipHorizontally);
+    connect(ui.actionMirror_M, &QAction::triggered, game,
+            &Game::flipHorizontally);
 
-    connect(ui.actionTurnRight_R, &QAction::triggered, game, &Game::rotateClockwise);
+    connect(ui.actionTurnRight_R, &QAction::triggered, game,
+            &Game::rotateClockwise);
 
-    connect(ui.actionTurnLeft_L, &QAction::triggered, game, &Game::RotateCounterclockwise);
+    connect(ui.actionTurnLeft_L, &QAction::triggered, game,
+            &Game::RotateCounterclockwise);
 
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
             ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
@@ -741,11 +744,12 @@ void MillGameWindow::on_actionSave_S_triggered()
 
 void MillGameWindow::on_actionSaveAs_A_triggered()
 {
-    QString dateTimeString = QDateTime::currentDateTime().toString("ddd_MMM_d_hh_mm_ss_yyyy");
+    QString dateTimeString = QDateTime::currentDateTime().toString("ddd_MMM_d_"
+                                                                   "hh_mm_ss_"
+                                                                   "yyyy");
     const QString path = QFileDialog::getSaveFileName(
         this, tr("Open the move list file"),
-        QDir::currentPath() + tr("/MoveList_") +
-            dateTimeString + ".txt",
+        QDir::currentPath() + tr("/MoveList_") + dateTimeString + ".txt",
         "TXT(*.txt)");
 
     saveBook(path);
@@ -772,8 +776,8 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
     }
 
     // Let the controller change the color of the pieces
-    //game->invertPieceColor(arg1);
-    game->togglePieceColor();   // TODO: Right?
+    // game->invertPieceColor(arg1);
+    game->togglePieceColor(); // TODO: Right?
 }
 
 void MillGameWindow::on_actionRowChange() const

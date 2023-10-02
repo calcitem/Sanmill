@@ -90,8 +90,7 @@ public:
     explicit Game(GameScene &scene, QObject *parent = nullptr);
     ~Game() override;
 
-    using TransformFunc =
-        std::function<void()>;
+    using TransformFunc = std::function<void()>;
 
     //  Main window menu bar details
     static map<int, QStringList> getActions();
@@ -192,7 +191,7 @@ private:
 
     QString createSavePath() const;
     void writePlayerType(QTextStream &textStream, const QString &color,
-                               bool isAi) const;
+                         bool isAi) const;
     void writeGameStats(QTextStream &textStream) const;
 
     static void performSoundPlay(const std::string &filename);
@@ -210,7 +209,6 @@ private:
                             PieceItem *&deletedPiece);
     void updateLCDDisplays();
     void selectCurrentAndDeletedPieces(PieceItem *deletedPiece);
-
 
 signals:
 
@@ -263,7 +261,7 @@ public slots:
     void setEditing(bool arg = true) noexcept;
 
     // Set white and black inversion state
-    //void invertPieceColor(bool arg = true);
+    // void invertPieceColor(bool arg = true);
 
     // If Id is 1, let the computer take the lead; if Id is 2, let the computer
     // take the second place

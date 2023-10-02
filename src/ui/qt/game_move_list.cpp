@@ -48,7 +48,7 @@ using std::to_string;
 // Helper function to handle snprintf and append to gameMoveList
 void Game::appendRecordToMoveList(const char *format, ...)
 {
-    char record[64] = { 0 };
+    char record[64] = {0};
     va_list args;
 
     va_start(args, format);
@@ -58,9 +58,9 @@ void Game::appendRecordToMoveList(const char *format, ...)
     debugPrintf("%s\n", record);
 
     // WAR: Prevents appending game results after the last item is
-    // already a game result. Especially when browsing history. 
-    if (!gameMoveList.empty() && (gameMoveList.back()[0] == '-' ||
-        gameMoveList.back()[0] == '(')) {
+    // already a game result. Especially when browsing history.
+    if (!gameMoveList.empty() &&
+        (gameMoveList.back()[0] == '-' || gameMoveList.back()[0] == '(')) {
         gameMoveList.emplace_back(record);
     }
 }
@@ -85,7 +85,7 @@ void Game::appendGameOverReasonToMoveList()
     switch (position.gameOverReason) {
     case GameOverReason::LoseNoLegalMoves:
         appendRecordToMoveList(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
-                                  position.winner);
+                               position.winner);
         break;
     case GameOverReason::LoseTimeout:
         appendRecordToMoveList(LOSE_REASON_TIMEOUT, position.winner);
@@ -109,8 +109,7 @@ void Game::appendGameOverReasonToMoveList()
         appendRecordToMoveList(DRAW_REASON_STALEMATE_CONDITION);
         break;
     case GameOverReason::LoseFewerThanThree:
-        appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE,
-                               position.winner);
+        appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE, position.winner);
         break;
     case GameOverReason::LoseResign:
         appendRecordToMoveList(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);

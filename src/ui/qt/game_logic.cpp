@@ -92,8 +92,9 @@ void Game::handleBannedLocations()
     if (rule.hasBannedLocations && position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
-                pos = scene.polarCoordinateToPoint(static_cast<File>(sq / RANK_NB),
-                                      static_cast<Rank>(sq % RANK_NB + 1));
+                pos = scene.polarCoordinateToPoint(
+                    static_cast<File>(sq / RANK_NB),
+                    static_cast<Rank>(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
                     pieceList.at(static_cast<size_t>(nTotalPieces++))
                         ->setPos(pos);

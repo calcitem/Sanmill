@@ -85,7 +85,7 @@ void Game::updateStatusBar(bool reset)
     }
 
     // TODO: updateStatusBar but also emit advantageChanged
-    emit advantageChanged(advantage); 
+    emit advantageChanged(advantage);
 }
 
 void Game::updateLCDDisplays()
@@ -195,8 +195,9 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polarCoordinateToPoint(static_cast<File>(j / RANK_NB),
-                                      static_cast<Rank>(j % RANK_NB + 1));
+                pos = scene.polarCoordinateToPoint(
+                    static_cast<File>(j / RANK_NB),
+                    static_cast<Rank>(j % RANK_NB + 1));
                 if (piece->pos() != pos) {
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
@@ -435,4 +436,3 @@ void Game::setEditing(bool arg) noexcept
 {
     isEditing = arg;
 }
-

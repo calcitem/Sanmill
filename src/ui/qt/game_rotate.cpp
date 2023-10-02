@@ -119,7 +119,6 @@ void Game::mirrorAndRotate()
     position.rotate(gameMoveList, 180);
 }
 
-
 // Define transformation functions
 void Game::flipVertically()
 {
