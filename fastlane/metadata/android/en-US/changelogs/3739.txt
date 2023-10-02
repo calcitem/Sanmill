@@ -1,0 +1,6 @@
+v3.7.0
+
+* Improved translation for multiple languages.
+* Qt application now officially supports loading the Perfect Database.
+  Mobile applications currently do not support loading the Perfect Database.
+  To use the Perfect Database, please download the PC version of the program.
