@@ -23,6 +23,8 @@
 #include "graphicsconst.h"
 #include "types.h"
 
+#include "boarditem.h"
+
 class BoardItem;
 
 class GameScene : public QGraphicsScene

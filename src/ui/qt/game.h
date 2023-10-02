@@ -190,10 +190,10 @@ private:
     void performAutoRestartActions();
     void setEnginesForAiPlayers();
 
-    QString Game::createSavePath() const;
-    void Game::writePlayerType(QTextStream &textStream, const QString &color,
+    QString createSavePath() const;
+    void writePlayerType(QTextStream &textStream, const QString &color,
                                bool isAi) const;
-    void Game::writeGameStats(QTextStream &textStream) const;
+    void writeGameStats(QTextStream &textStream) const;
 
     static void performSoundPlay(const std::string &filename);
 

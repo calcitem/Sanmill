@@ -150,7 +150,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
     sscanf_s(cmd.c_str(), "info score %d bestmove %63s", &bestvalue, moveStr,
              (unsigned)_countof(moveStr));
 #else
-    sscanf(cmd, "info score %d bestmove %63s", &bestvalue, moveStr);
+    sscanf(cmd.c_str(), "info score %d bestmove %63s", &bestvalue, moveStr);
 #endif
 
     if (strlen(moveStr) == 0 && !cmd.empty()) {
@@ -302,7 +302,7 @@ void Game::printStats()
 
     gameEndCycle = stopwatch::rdtscp_clock::now();
 
-    debugPrintf("Game Duration Time: %lldms\n", gameDurationTime);
+    debugPrintf("Game Duration Time: %ldms\n", gameDurationTime);
 
 #ifdef TIME_STAT
     debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",

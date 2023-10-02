@@ -182,7 +182,10 @@ int Thread::search()
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
+#if defined(GABOR_MALOM_PERFECT_AI)
 next:
+#endif // GABOR_MALOM_PERFECT_AI
+
             debugPrintf("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
