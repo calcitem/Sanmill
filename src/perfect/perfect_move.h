@@ -29,7 +29,7 @@ class CMove
 {
 public:
     virtual std::vector<int> getFields() = 0; // Returns the fields included in
-                                             // the step
+                                              // the step
     virtual ~CMove() = default;
 
 protected:

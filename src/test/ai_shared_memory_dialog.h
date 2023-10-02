@@ -35,7 +35,8 @@ class AiSharedMemoryDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AiSharedMemoryDialog(QWidget *parent = nullptr, QString k = "Key0");
+    explicit AiSharedMemoryDialog(QWidget *parent = nullptr, QString k = "Key"
+                                                                         "0");
     ~AiSharedMemoryDialog() override;
 
     void setKey(const QString &k) noexcept { key = k; }

@@ -100,8 +100,10 @@ AiSharedMemoryDialog::AiSharedMemoryDialog(QWidget *parent, QString k)
     buttonBox->addButton(stopButton, QDialogButtonBox::ActionRole);
     buttonBox->addButton(closeButton, QDialogButtonBox::RejectRole);
 
-    connect(startButton, &QAbstractButton::clicked, this, &AiSharedMemoryDialog::startAction);
-    connect(stopButton, &QAbstractButton::clicked, this, &AiSharedMemoryDialog::stopAction);
+    connect(startButton, &QAbstractButton::clicked, this,
+            &AiSharedMemoryDialog::startAction);
+    connect(stopButton, &QAbstractButton::clicked, this,
+            &AiSharedMemoryDialog::stopAction);
     connect(closeButton, &QAbstractButton::clicked, this, &QWidget::close);
 
     QGridLayout *mainLayout;
