@@ -296,7 +296,7 @@ void MillGameWindow::initialize()
     // Add a normal display label to the status bar
     auto *statusBarLabel = new QLabel(this);
     QFont statusBarFont;
-    statusBarFont.setPointSize(16);
+    statusBarFont.setPointSize(12);
     statusBarLabel->setFont(statusBarFont);
     ui.statusBar->addWidget(statusBarLabel);
 
