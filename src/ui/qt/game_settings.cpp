@@ -229,9 +229,8 @@ void Game::setUsePerfectDatabase(bool arg) noexcept
                           "instructions:"));
 
         QString url = "<a "
-                      "href='https://github.com/calcitem/Sanmill/blob/dev/src/"
-                      "perfect/README.md'>https://github.com/calcitem/Sanmill/"
-                      "blob/dev/src/perfect/README.md</a>";
+                      "href='https://github.com/calcitem/Sanmill/blob/HEAD/src/"
+                      "perfect/README.md'>User Guide for Setting Up and Running Perfect AI</a>";
         msgBox.setInformativeText(url);
         msgBox.setTextFormat(Qt::RichText);
         msgBox.setTextInteractionFlags(Qt::TextBrowserInteraction);
