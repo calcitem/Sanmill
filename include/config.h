@@ -119,7 +119,7 @@ constexpr auto DEPTH_ADJUST = 0;
 #endif
 
 #ifdef DEBUG_MODE
-#define PLAYER_DRAW_SEAT_NUMBER
+#define DRAW_POLAR_COORDINATES
 #endif
 
 #ifndef QT_MOBILE_APP_UI

@@ -77,7 +77,7 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     drawBoard(painter);
     drawLines(painter);
     drawCoordinates(painter);
-#ifdef PLAYER_DRAW_SEAT_NUMBER
+#ifdef DRAW_POLAR_COORDINATES
     drawPolarCoordinates(painter);
 #endif
 }
