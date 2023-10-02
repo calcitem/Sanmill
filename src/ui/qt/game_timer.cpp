@@ -112,7 +112,7 @@ void Game::timerEvent(QTimerEvent *event)
     emitTimeSignals();
 
     const Color winner = position.get_winner();
-    if (winner != NOBODY) {
+    if (winner != NOBODY && timeID != 0) {
         terminateOrResetTimer();
         updateScene();
         message = QString::fromStdString(getTips());
