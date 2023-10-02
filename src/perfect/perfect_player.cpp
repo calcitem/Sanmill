@@ -440,8 +440,6 @@ struct MoveValuePair
     double val;
 };
 
-// const double WRGMInf = 2; // Is this good?
-
 std::mutex evalLock;
 
 Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
