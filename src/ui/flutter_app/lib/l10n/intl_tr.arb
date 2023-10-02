@@ -16,7 +16,7 @@
   "@no": {
     "description": "No"
   },
-  "game": "oyun",
+  "game": "Oyun",
   "@game": {
     "description": "Game"
   },
@@ -44,11 +44,11 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Hareket",
+  "move": "Hamle",
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Listeyi taşı",
+  "showMoveList": "Hamle Listesi",
   "@showMoveList": {
     "description": "Move list"
   },
@@ -60,15 +60,15 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "TAMAM MI",
+  "ok": "TAMAM",
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Onaylamak",
+  "confirm": "Onayla",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "İptal etmek",
+  "cancel": "İptal",
   "@cancel": {
     "description": "Cancel"
   },
@@ -76,7 +76,7 @@
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Parçalarınızı yerleştirin.",
+  "tipPlace": "Taşlarınızı yerleştirin.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -88,7 +88,7 @@
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Bir parçayı çıkarın.",
+  "tipRemove": "Bir taşı çıkarın.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -160,15 +160,15 @@
   "@blackWin": {
     "description": "Player 2 wins!"
   },
-  "won": "Kazandı",
+  "won": "Kazanan",
   "@won": {
     "description": "Won"
   },
-  "lost": "Kayıp",
+  "lost": "Kaybeden",
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "düşünmek…",
+  "thinking": "Düşünüyor...",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -228,11 +228,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "oyuncu 1",
+  "white": "Oyuncu 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "oyuncu 2",
+  "black": "Oyuncu 2",
   "@black": {
     "description": "Player 2"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Daha zor seviyeye meydan okumak mı? Yeni seviye {level} seviyesi olacak!",
+  "challengeHarderLevel": "Daha zor bir seviyeye meydan okumak istiyor musun? Yeni seviye {level} olacak.",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -364,11 +364,11 @@
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "İlk Hareketi Otomatik Değiştir",
+  "isAutoChangeFirstMove": "İlk Hamleyi Otomatik Değiştir",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "rastgele hareket",
+  "shufflingEnabled": "Rastgele Hamle",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -408,7 +408,7 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Parçaları çıkarmayı işaretleyin ve geciktirin",
+  "hasBannedLocations": "Taşları işaretleyin ve kaldırmayı geciktirin",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
@@ -436,7 +436,7 @@
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "Varsayılan olarak, oyuncular şekillendirilmiş bir değirmenden bir parça çıkarmadan önce diğer tüm parçaları çıkarmalıdır. Sınırlamayı devre dışı bırakmak için bu seçeneği etkinleştirin.",
+  "mayRemoveFromMillsAlways_Detail": "Varsayılan olarak, bir değirmeni oluşturan taşlar kaldırılmadan önce diğer tüm taşlar kaldırılmalıdır. Bu kısıtlamayı kaldırmak için bu seçeneği etkinleştirin.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -444,7 +444,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerleştirme aşamasının sonunda, tahta dolduğunda, ilk yerleştiren taraf oyunu kaybeder, aksi takdirde oyun berabere olur.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Yerleştirme aşamasının sonunda, eğer tahta dolarsa, ilk taşları yerleştiren taraf kaybeder; aksi halde oyun beraberlikle sonuçlanır.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
@@ -452,7 +452,7 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Rakibi onları hareket ettirilemeyecek şekilde bloke ederse oyuncu kaybeder. Bu seçenek devre dışıysa, taşımak için tarafı değiştirin.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Eğer bir oyuncu rakibini hareket edemez hale getirirse, o oyuncu kaybeder. Bu seçenek kapalıysa, hamle yapabilen taraf değişir.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
   },
@@ -520,15 +520,15 @@
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Kart çizgi rengi",
+  "lineColor": "Tahta çizgi rengi",
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "Oyuncu 1 adet renk",
+  "whitePieceColor": "Oyuncu 1'in parça rengi",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Oyuncu 2 parça renk",
+  "blackPieceColor": "Oyuncu 2'nin parça rengi",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
@@ -540,7 +540,7 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Notları gemide göster",
+  "isNotationsShown": "Notları tahtada göster",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
@@ -552,7 +552,7 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Pano sınır genişliği",
+  "boardBorderLineWidth": "Tahta sınır çizgisi kalınlığı",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
@@ -572,11 +572,11 @@
   "@standardNotation": {
     "description": "Standard notation"
   },
-  "restore": "Onarmak",
+  "restore": "Geri Yükle",
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "Ayarları varsayılan duruma getirmek",
+  "restoreDefaultSettings": "Varsayılan Ayarlara Geri Dön",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
@@ -608,7 +608,7 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Parçayı yerleştirmek için mevcut herhangi bir noktaya dokunun.",
+  "toPlacePiece": "Parçayı yerleştirmek için uygun bir noktaya dokunun.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
@@ -682,11 +682,11 @@
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "hepsini geri al",
+  "takeBackAll": "Tümünü Geri Al",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "Hepsini bir adım öne",
+  "stepForwardAll": "Tümünü İleri Taşı",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
@@ -702,7 +702,7 @@
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "Bir oyuncunun değirmenlerde sadece parçaları varsa, değirmenlerdeki parçalar çıkarmak için kilitlenmez.",
+  "crackMill_Detail": "Eğer bir oyuncunun tüm taşları değirmenlerdeyse, bu taşlar çıkartılmak üzere kilitlenmez.",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -718,7 +718,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Oyun, rakibi üçten az taşla veya yasal hamle olmadan bırakmayı amaçlar.\n\nÜçüncü kez bir pozisyon oluşursa veya son 100 (yapılandırılabilir) hamlede hiçbir kaldırma yapılmadıysa, oyun otomatik olarak çekilir.\n\nOyun üç aşamada ilerler:\n\n1. Boş noktalara taş yerleştirme\n2. Taşları bitişik noktalara taşımak\n3. (isteğe bağlı aşama) Oyuncu üç parçaya indirildiğinde taşları herhangi bir boş noktaya taşımak\n\nyerleştirme\n\nOyun, yirmi dört puanlık bir ızgaradan oluşan boş bir tahta ile başlar. Oyuncular sırayla tüm taşları tahtaya yerleştirene kadar taşlarını boş noktalara yerleştirir. Bir oyuncu üç taşını düz bir çizgiye yerleştirebilirse, bir \"değirmeni\" vardır ve rakibinin taşlarından birini tahtadan çıkarabilir.\n\nBazı kural türlerinde, oyuncular şekillendirilmiş bir değirmenden bir parça çıkarmadan önce diğer parçaları çıkarmalıdır.\n\nBazı kural türevlerinde, çıkarılan taşların tüm noktaları yerleştirme aşamasında tekrar yerleştirilmeyebilir.\n\nTüm parçalar kullanıldıktan sonra oyuncular sırayla hareket eder.\n\nHareketli\n\nHareket etmek için, bir oyuncu taşlarından birini bir tahta çizgisi boyunca boş bir bitişik noktaya taşır. Bunu yapamazsa, oyunu kaybetmiştir. Yerleştirme aşamasında olduğu gibi, üç taşını bir tahta çizgisine yerleştiren bir oyuncunun bir değirmeni vardır ve rakibinin taşlarından birini çıkarabilir. Herhangi bir oyuncu iki parçaya düşer ve yeni değirmenler oluşturma seçeneği yoktur ve bu nedenle oyunu kaybeder. Rakibi onları hareket ettirilemeyecek şekilde bloke ederse, bir oyuncu üçten fazla taşla da kaybedebilir.\n\nUçan\n\nKuralların bazı varyantlarında, bir oyuncunun yalnızca üç taşı kaldığında, taşları yalnızca bitişik olanlara değil, herhangi bir boş noktaya \"uçabilir\", \"zıplayabilir\" veya \"zıplayabilir\".",
+  "helpContent": "Oyun, rakibi üçten az taşla veya yasal hamle yapamayacak şekilde etkisiz hale getirmeyi amaçlar.\n\nÜçüncü kez aynı pozisyon oluşursa veya son 100 (yapılandırılabilir) hamlede hiçbir taş çıkarılmamışsa, oyun otomatik olarak sona erer.\n\nOyun üç aşamada ilerler:\n\n1. Boş noktalara taş yerleştirme\n2. Taşları bitişik noktalara taşıma\n3. (isteğe bağlı aşama) Oyuncu üç parçaya indirildiğinde taşları herhangi bir boş noktaya taşıyabilir\n\nYerleştirme\n\nOyun, yirmi dört noktalık bir ızgaradan oluşan boş bir tahta ile başlar. Oyuncular sırayla taşlarını boş noktalara yerleştirir, tüm taşlar yerleştirilene kadar. Bir oyuncu üç taşını düz bir çizgiye getirebilirse, bir 'değirmen' oluşturmuş olur ve rakibinin taşlarından birini tahtadan çıkarabilir.\n\nBazı kural varyasyonlarında, oyuncular şekillendirilmiş bir değirmeni bozmadan önce diğer taşları çıkarmalıdır.\n\nBazı kural varyasyonlarında, çıkarılan taşlar yerleştirme aşamasında tekrar konumlandırılmayabilir.\n\nTüm parçalar yerleştirildikten sonra, oyuncular sırayla hareket ederler.\n\nHareketli\n\nHareket etmek için, bir oyuncu taşlarından birini boş bir bitişik noktaya boyunca bir tahta çizgisi üzerinde taşır. Bunu yapamazsa, oyunu kaybetmiş olur. Yerleştirme aşamasında olduğu gibi, üç taşını bir tahta çizgisine getiren bir oyuncunun bir değirmeni vardır ve rakibinin taşlarından birini çıkarabilir. Eğer herhangi bir oyuncu iki parçaya düşerse ve yeni değirmenler oluşturamıyorsa, bu durumda oyunu kaybetmiş olur. Eğer rakibi onları hareket edemeyecek şekilde bloke ederse, bir oyuncu üçten fazla taşla da kaybedebilir.\n\nUçan\n\nKuralların bazı varyantlarında, eğer bir oyuncunun yalnızca üç taşı kalmışsa, taşlarını sadece bitişik noktalara değil, herhangi bir boş noktaya da 'uçabilir', 'zıplayabilir' veya 'gezebilir'.",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -754,7 +754,7 @@
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Hareketli",
+  "moving": "Hareket",
   "@moving": {
     "description": "Moving"
   },
@@ -798,7 +798,7 @@
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "gemide {player}: {count}",
+  "onBoard": "tahtada {player}: {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -830,7 +830,7 @@
   "@experimental": {
     "description": "This is an experimental feature."
   },
-  "experiments": "deneyler",
+  "experiments": "Deneysel Özellikler",
   "@experiments": {
     "description": "Experiments"
   },
@@ -850,7 +850,7 @@
   "@mayMoveInPlacingPhase": {
     "description": "The pieces can move in the placing phase"
   },
-  "mayMoveInPlacingPhase_Detail": "Belirgin bir yerleştirme ve taşıma aşamaları yoktur, yani oyuncular her hamlede tahtaya bir taş yerleştirmek mi yoksa taşlarından birini hareket ettirmek mi (yerleştirecekleri kalan taşları olduğu sürece) karar verebilirler.",
+  "mayMoveInPlacingPhase_Detail": "Ayrı yerleştirme ve hareket etme aşamaları yoktur; yani oyuncular her turda bir taş yerleştirmeyi veya mevcut bir taşı hareket ettirmeyi (yerleştirmeleri gereken taşlar kaldığı sürece) seçebilirler.",
   "@mayMoveInPlacingPhase_Detail": {
     "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
   },
@@ -862,7 +862,7 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerHighlightItemColor": "Menü vurgulama öğesi rengi",
+  "drawerHighlightItemColor": "Menüdeki vurgulanmış öğe rengi",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
   },
@@ -886,7 +886,7 @@
   "@autoHideToolbar": {
     "description": "Automatically hide the toolbar"
   },
-  "toolbarLocationOnScreen": "Ekrandaki araç çubuğu konumu",
+  "toolbarLocationOnScreen": "Ekrandaki araç çubuğunun konumu",
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
@@ -902,7 +902,7 @@
   "@center": {
     "description": "Center"
   },
-  "solidColor": "Koyu renk",
+  "solidColor": "Düz Renk",
   "@solidColor": {
     "description": "Solid color"
   },
@@ -918,7 +918,7 @@
   "@light": {
     "description": "Light"
   },
-  "dark": "karanlık",
+  "dark": "Karanlık",
   "@dark": {
     "description": "Dark"
   },
@@ -966,7 +966,7 @@
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "adet",
+  "pieces": "Taşlar",
   "@pieces": {
     "description": "Pieces"
   },
@@ -974,7 +974,7 @@
   "@showAnalysis": {
     "description": "Show analysis"
   },
-  "threads": "İş Parçacığı",
+  "threads": "İş Parçacıkları",
   "@threads": {
     "description": "Threads"
   },
@@ -982,7 +982,7 @@
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "helpImproveTranslate": "Çeviriyi iyileştirmeye yardımcı olun",
+  "helpImproveTranslate": "Çeviri İyileştirmeye Yardımcı Ol",
   "@helpImproveTranslate": {
     "description": "Help improve translate"
   },
@@ -1002,7 +1002,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "Değirmen kırılabilir ve tekrar tekrar tekrar üretilebilir",
+  "mayBreakAndRemakeMillRepeatedly": "Değirmen kırılabilir ve tekrar tekrar üretilebilir",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1030,7 +1030,7 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "yasak noktası",
+  "banPoint": "Yasak Nokta",
   "@banPoint": {
     "description": "Ban point"
   },
@@ -1078,7 +1078,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Çizmek",
+  "draw": "Berabere",
   "@draw": {
     "description": "Draw"
   },
@@ -1086,7 +1086,7 @@
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
-  "algorithm": "algoritma",
+  "algorithm": "Algoritma",
   "@algorithm": {
     "description": "Algorithm"
   },
@@ -1142,7 +1142,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Taşı}=1{{count} Hareket}other{{count} Hareket}}",
+  "moveNumber": "{count,plural, =0{Hamle Yok}=1{{count} Hamle}other{{count} Hamle}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "notPlacingPhase": "Faz koymamak, değiştiremez.",
+  "notPlacingPhase": "Yerleştirme aşaması değil, değiştirilemez.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
@@ -1242,7 +1242,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "Yapıştır yapılır.",
+  "pasteDone": "Yapıştırma tamamlandı.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1250,11 +1250,11 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "noMove": "Hareket yok.",
+  "noMove": "Hamle yok.",
   "@noMove": {
     "description": "No move."
   },
-  "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve kaldırılmış parçaları göster",
+  "isUnplacedAndRemovedPiecesShown": "Yerleştirilmemiş ve çıkarılmış parçaları göster",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
@@ -1262,7 +1262,7 @@
   "@fullScreen": {
     "description": "Full screen"
   },
-  "reopenToTakeEffect": "Ayarların geçerli olması için uygulamadan çıkın ve yeniden açın.",
+  "reopenToTakeEffect": "Ayarların etkili olabilmesi için uygulamayı kapatıp yeniden açın.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
@@ -1270,7 +1270,7 @@
   "@forest": {},
   "desktopImage": "Masaüstü Resmi",
   "@desktopImage": {},
-  "invalidPosition": "Geçersiz konum.",
+  "invalidPosition": "Geçersiz pozisyon.",
   "@invalidPosition": {},
   "shareGIF": "GIF paylaş",
   "@shareGIF": {},
@@ -1296,7 +1296,7 @@
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "Lütfen AI düşünme süresi ayarının tamamen kesin olmayabileceğini unutmayın. Gerçek düşünme süresi, zorluk seviyesi daha düşük bir değere ayarlandığında daha kısa olabilir ve süre dolduğunda yapay zeka orta düşüncede olduğunda daha uzun olabilir.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek ayarlarsanız ancak AI düşünme süresini artırmazsanız, gerçek zorluk seviyesi, düşünme süresi kısıtlaması nedeniyle daha düşük bir değerle sınırlandırılabilir. Gerçek değer, makinenin performansına bağlı olarak değişebilir.",
+  "noteActualDifficultyLevelMayBeLimited": "Zorluk seviyesini yüksek seçerseniz fakat AI'nin düşünme süresini artırmazsanız, gerçek zorluk seviyesi düşünme süresi kısıtlamaları nedeniyle daha düşük olabilir. Bu durum makinenin performansına bağlı olarak değişiklik gösterebilir.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f), ara arama sonuçlarını yeniden kullanarak ve arama alanını daraltmak için iyi bir ilk tahmin kullanarak verimliliği artırmayı amaçlayan alfa-beta arama algoritmasının değiştirilmiş bir biçimidir.",
   "@whatIsMtdf": {},
@@ -1330,11 +1330,11 @@
   "@firstAndSecondPlayerRemovePiece": {},
   "secondAndFirstPlayerRemovePiece": "İkinci ve birinci oyuncular rakibin taşlarından birini alır.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Şimdi uçma aşamasına girildi, rakibin taşları tahtadaki herhangi bir boş noktaya atlayabilir. Uçuş kuralını \"Kural Ayarları\"ndan kapatabilirsiniz.",
+  "enteredFlyingPhase": "Artık 'Uçma Aşaması'na geçildi, rakip taşlar tahtadaki herhangi bir boş yere atlayabilir. 'Kural Ayarları'ndan uçuş kuralını devre dışı bırakabilirsiniz.",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Çıkmaz olduğunda",
+  "whenStalemate": "Çıkmaza girildiğinde",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "Hiçbir parça hareket ettirilemediğinde hangi eylem izlenir?",
+  "whenStalemate_Detail": "Hiçbir taş hareket ettirilemiyorsa hangi aksiyon alınır?",
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "Çıkmaz kaybıyla bitirin.",
   "@endWithStalemateLoss": {},
@@ -1376,13 +1376,13 @@
   "@violetDream": {},
   "mintChocolate": "Naneli çikolata",
   "@mintChocolate": {},
-  "skyBlue": "Gökyüzü mavi",
+  "skyBlue": "Gökyüzü mavisi",
   "@skyBlue": {},
   "playfulGarden": "eğlenceli bahçe",
   "@playfulGarden": {},
   "darkMystery": "Karanlık Gizem",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, Ultra Güçlü çözümler kategorisine girer.",
+  "whatIsRetrogradeAnalysis": "Geriye Dönük Analiz algoritması, farklı başlangıç konumlarından bir oyunsonu veritabanı oluşturmak için çok değerli geriye dönük analizi kullanır ve ardından oyunu optimize etmek için bu veritabanını uygular. Bu yaklaşım, ultra güçlü çözüm kategorisine girer.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Bu algoritmanın kullanım kılavuzunu görüntülemek ister misiniz?",
   "@viewAlgorithmGuide": {},
@@ -1390,6 +1390,6 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Mükemmel Veritabanını Kullanın",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Bu seçeneği etkinleştirerek, keskin algoritmalar aracılığıyla üretilen kusursuz bir oyun veritabanı kullanın. Bu özellik, hem açılış hem de oyun sonu stratejilerini bütünleştirerek en uygun hamleleri önerir. Bu, oyun içinde en yüksek düzeyde hassasiyet arayan oyuncular için tercih edilen seçimdir. Titiz hesaplama teknikleri ile oluşturulan veritabanı, neredeyse mükemmel oyun çözümleri sunmayı amaçlar.\n\nNot: Eğer yapay zeka veritabanına erişemiyorsa, oyun kararları için geleneksel algoritmalara başvuracaktır. Veritabanı mevcut olduğunda, 'Zorluk Seviyesi' neredeyse yenilmez hale gelir ve 'Yapay Zeka Düşünme Süresi' büyük ölçüde azalır. 'Yapay Zeka'nın Oyun Tarzı' seçeneklerindeki birçok ayar, veritabanı sonuçlarının en yüksek önceliğe sahip olması nedeniyle geçersiz kılınacaktır.\n\nBu kusursuz veritabanından en iyi şekilde nasıl yararlanabileceğiniz konusunda rehberlik için buraya tıklayın.",
+  "perfectDatabaseDescription": "Bu seçeneği etkinleştirerek, keskin algoritmalar aracılığıyla üretilen kusursuz bir oyun veritabanı kullanın. Bu özellik, hem açılış hem de oyun sonu stratejilerini bütünleştirerek en uygun hamleleri önerir. Bu, oyun içinde en yüksek düzeyde hassasiyet arayan oyuncular için tercih edilen seçimdir. Titiz hesaplama teknikleri kullanılarak oluşturulan bu veritabanı, neredeyse kusursuz oyun çözümleri sunmayı hedefler.\n\nNot: Eğer yapay zeka veritabanına erişemiyorsa, oyun kararları için geleneksel algoritmalara başvuracaktır. Veritabanı mevcut olduğunda, 'Zorluk Seviyesi' neredeyse yenilmez hale gelir ve 'Yapay Zeka Düşünme Süresi' büyük ölçüde azalır. 'Yapay Zeka'nın Oyun Tarzı' seçeneklerindeki birçok ayar, veritabanı sonuçlarının en yüksek önceliğe sahip olması nedeniyle geçersiz kılınacaktır.\n\nBu kusursuz veritabanından en iyi şekilde nasıl yararlanabileceğiniz konusunda rehberlik için buraya tıklayın.",
   "@perfectDatabaseDescription": {}
 }
