@@ -115,10 +115,8 @@ constexpr auto DEPTH_ADJUST = 0;
 // #define MESSAGE_BOX_ENABLE
 
 #ifdef DEBUG_MODE
-#define DO_NOT_PLAY_SOUND
+//#define DO_NOT_PLAY_SOUND
 #endif
-
-// #define DO_NOT_PLAY_SOUND
 
 #ifdef DEBUG_MODE
 #define PLAYER_DRAW_SEAT_NUMBER
