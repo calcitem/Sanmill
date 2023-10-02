@@ -114,9 +114,7 @@ void Game::timerEvent(QTimerEvent *event)
     const Color winner = position.get_winner();
     if (winner != NOBODY && timeID != 0) {
         terminateOrResetTimer();
-        updateScene();
-        message = QString::fromStdString(getTips());
-        emit statusBarChanged(message);
+        updateStatusBar();
 
 #ifndef DO_NOT_PLAY_WIN_SOUND
         playSound(GameSound::win);

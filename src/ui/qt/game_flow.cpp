@@ -197,10 +197,7 @@ bool Game::command(const string &cmd, bool update /* = true */)
         //updateScene();
     }
 
-    // Signal update status bar
-    updateScene();
-    message = QString::fromStdString(getTips());
-    emit statusBarChanged(message);
+    updateStatusBar();
 
     // For opening
     if (getMoveList()->size() <= 1) {

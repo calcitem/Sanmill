@@ -202,11 +202,7 @@ bool Game::undoRecentMovesOnReview()
             if (position.get_winner() == NOBODY) {
                 // Restart game timer
                 timeID = startTimer(100);
-
-                // Trigger a status bar update
-                updateScene();
-                message = QString::fromStdString(getTips());
-                emit statusBarChanged(message);
+                updateStatusBar();
 #ifndef QT_MOBILE_APP_UI
             }
         } else {
