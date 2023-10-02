@@ -48,7 +48,7 @@ using std::to_string;
 // Helper function to handle snprintf and append to gameMoveList
 void Game::appendRecordToMoveList(const char *format, ...)
 {
-    char record[64] = {0};
+    char record[64] = { 0 };
     va_list args;
 
     va_start(args, format);
@@ -57,7 +57,12 @@ void Game::appendRecordToMoveList(const char *format, ...)
 
     debugPrintf("%s\n", record);
 
-    gameMoveList.emplace_back(record);
+    // WAR: Prevents appending game results after the last item is
+    // already a game result. Especially when browsing history. 
+    if (!gameMoveList.empty() && (gameMoveList.back()[0] == '-' ||
+        gameMoveList.back()[0] == '(')) {
+        gameMoveList.emplace_back(record);
+    }
 }
 
 void Game::resetMoveListReserveFirst()
