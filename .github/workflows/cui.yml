@@ -31,7 +31,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sanmill_cygwin-g++.exe
           path: src/sanmill.exe
@@ -57,7 +57,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sanmill_linux-g++
           path: src/sanmill
@@ -80,7 +80,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: sanmill_darwin-g++
           path: src/sanmill
