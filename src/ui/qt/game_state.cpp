@@ -73,9 +73,10 @@ void Game::updateState(bool result)
         return;
 
     updateMoveList();
+    handleGameOutcome();
     updateStatusBar();
     updateMoveListModelFromMoveList();
-    handleGameOutcome();
+
     sideToMove = position.side_to_move();
     updateScene();
 }

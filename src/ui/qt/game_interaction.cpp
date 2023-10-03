@@ -78,6 +78,12 @@ bool Game::performAction(File f, Rank r, QPointF p)
                 playSound(GameSound::drag);
             }
             result = true;
+
+            if (rule.threefoldRepetitionRule && position.has_game_cycle()) {
+                position.set_gameover(DRAW,
+                                      GameOverReason::DrawThreefoldRepetition);
+            }
+
             break;
         }
 
