@@ -390,17 +390,12 @@ class Position {
     return true;
   }
 
-  /// hasGameCycle() tests if the position has a move which draws by repetition.
   bool get _hasGameCycle {
-    int repetition = 0; // Note: Engine is global val
-    for (final int i in posKeyHistory) {
-      if (st.key == i) {
-        repetition++;
-        if (repetition == 3) {
-          logger.i("[position] Has game cycle.");
-          return true;
-        }
-      }
+    final int repetition = posKeyHistory.where((int i) => st.key == i).length;
+
+    if (repetition >= 3) {
+      logger.i("[position] Has game cycle.");
+      return true;
     }
 
     return false;
