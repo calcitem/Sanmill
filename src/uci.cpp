@@ -35,8 +35,6 @@ using std::vector;
 
 extern vector<string> setup_bench(Position *, istream &);
 
-extern int repetition;
-
 namespace {
 
 // FEN string of the initial position, normal mill game
@@ -70,7 +68,6 @@ void position(Position *pos, istringstream &is)
         return;
     }
 
-    repetition = 0;
     posKeyHistory.clear();
 
     pos->set(fen, Threads.main());
@@ -121,8 +118,6 @@ void go(Position *pos)
 #ifdef UCI_AUTO_RE_GO
 begin:
 #endif
-
-    repetition = 0;
 
     Threads.start_thinking(pos);
 

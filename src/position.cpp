@@ -571,8 +571,6 @@ Key Position::key_after(Move m) const
     return k;
 }
 
-int repetition;
-
 // Position::has_repeated() tests whether there has been at least one repetition
 // of positions since the last remove.
 
@@ -603,25 +601,20 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 
 bool Position::has_game_cycle() const
 {
-    for (const auto i : posKeyHistory) {
-        if (key() == i) {
-            repetition++;
-            if (repetition == 3) {
-                repetition = 0;
-                return true;
-            }
-        }
-    }
+    int count = std::count(posKeyHistory.begin(), posKeyHistory.end(), key());
 
-    return false;
+    // TODO: Maintain consistent interface behavior
+#ifdef QT_GUI_LIB
+    return count >= 2;
+#else
+    return count >= 3;
+#endif
 }
 
 /// Mill Game
 
 bool Position::reset()
 {
-    repetition = 0;
-
     gamePly = 0;
     st.rule50 = 0;
 
