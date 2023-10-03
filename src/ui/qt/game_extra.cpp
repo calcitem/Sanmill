@@ -14,30 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iomanip>
-#include <map>
+#ifdef OPENING_BOOK
+#include <deque>
+#endif
+
 #include <string>
 
-#include <QAbstractButton>
-#include <QApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QGraphicsSceneMouseEvent>
-#include <QGraphicsView>
-#include <QKeyEvent>
-#include <QMessageBox>
-#include <QParallelAnimationGroup>
-#include <QPropertyAnimation>
-#include <QSoundEffect>
-#include <QThread>
-#include <QTimer>
-
-#include "boarditem.h"
-#include "client.h"
 #include "game.h"
-#include "graphicsconst.h"
-#include "option.h"
-#include "server.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
