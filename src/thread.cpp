@@ -270,10 +270,11 @@ void sq2str(char *str)
 
 void Thread::analyze(Color c) const
 {
+#ifndef QT_GUI_LIB
     static float nWhiteWin = 0;
     static float nBlackWin = 0;
     static float nDraw = 0;
-#ifndef QT_GUI_LIB
+
     float total;
     float blackWinRate, whiteWinRate, drawRate;
 #endif // !QT_GUI_LIB
@@ -310,13 +311,19 @@ void Thread::analyze(Color c) const
     case Phase::gameOver:
         if (p->get_winner() == DRAW) {
             cout << "Draw" << std::endl;
+#ifndef QT_GUI_LIB
             nDraw += 0.5f; // TODO(calcitem)
+#endif
         } else if (p->get_winner() == WHITE) {
             cout << "White wins" << std::endl;
+#ifndef QT_GUI_LIB
             nBlackWin += 0.5f; // TODO(calcitem)
+#endif
         } else if (p->get_winner() == BLACK) {
             cout << "Black wins" << std::endl;
+#ifndef QT_GUI_LIB
             nWhiteWin += 0.5f; // TODO(calcitem)
+#endif
         }
         cout << std::endl << std::endl;
         return;

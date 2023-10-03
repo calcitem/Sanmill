@@ -30,9 +30,9 @@
 #define SPRINTF(buffer, buffer_size, format, ...) \
     sprintf_s(buffer, buffer_size, format, ##__VA_ARGS__)
 
-#define FOPEN(file, filename, mode) fopen_s(file, filename, mode)
-
 #define FSCANF(file, format, ...) fscanf_s(file, format, ##__VA_ARGS__)
+
+#define FOPEN(file, filename, mode) fopen_s(file, filename, mode)
 
 #define STRCPY(destination, destination_size, source) \
     strcpy_s(destination, destination_size, source)
@@ -41,11 +41,20 @@
 
 #else // _WIN32
 
+#if defined(__APPLE__) && defined(__MACH__)
+#define SPRINTF(buffer, buffer_size, format, ...) \
+    snprintf(buffer, buffer_size, format __VA_OPT__(,) __VA_ARGS__)
+
+#define FSCANF(file, format, ...) \
+    do { \
+        int ret = fscanf(file, format __VA_OPT__(,) __VA_ARGS__); \
+        if (ret == EOF) { \
+            assert(false); \
+        } \
+    } while (0)
+#else
 #define SPRINTF(buffer, buffer_size, format, ...) \
     snprintf(buffer, buffer_size, format, ##__VA_ARGS__)
-
-#define FOPEN(file, filename, mode) \
-    ((*file = fopen(filename, mode)) != NULL ? 0 : -1)
 
 #define FSCANF(file, format, ...) \
     do { \
@@ -54,6 +63,10 @@
             assert(false); \
         } \
     } while (0)
+#endif
+
+#define FOPEN(file, filename, mode) \
+    ((*file = fopen(filename, mode)) != NULL ? 0 : -1)
 
 #define STRCPY(destination, destination_size, source) \
     strncpy(destination, source, destination_size)
