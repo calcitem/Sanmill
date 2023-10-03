@@ -34,9 +34,9 @@ class GameScene : public QGraphicsScene
 public:
     explicit GameScene(QObject *parent = nullptr);
 
-    [[nodiscard]] QPointF polarCoordinateToPoint(File f, Rank r) const;
+    QPointF polarCoordinateToPoint(File f, Rank r) const;
 
-    [[nodiscard]] bool pointToPolarCoordinate(QPointF pos, File &f,
+    bool pointToPolarCoordinate(QPointF pos, File &f,
                                               Rank &r) const;
 
     void setDiagonal(bool arg = true) const;

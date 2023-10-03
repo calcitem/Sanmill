@@ -274,7 +274,7 @@ public:
                     static_cast<double>(nAfter) * 100 / hashSize);
     }
 
-    [[nodiscard]] size_t stat() const
+    size_t stat() const
     {
         size_t nEntries = 0;
 

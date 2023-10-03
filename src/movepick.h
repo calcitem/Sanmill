@@ -48,9 +48,9 @@ public:
     template <GenType>
     void score();
 
-    [[nodiscard]] ExtMove *begin() const noexcept { return cur; }
+    ExtMove *begin() const noexcept { return cur; }
 
-    [[nodiscard]] ExtMove *end() const noexcept { return endMoves; }
+    ExtMove *end() const noexcept { return endMoves; }
 
     Position &pos;
     Move ttMove {MOVE_NONE};
@@ -60,7 +60,7 @@ public:
 
     int moveCount {0};
 
-    [[nodiscard]] int move_count() const noexcept { return moveCount; }
+    int move_count() const noexcept { return moveCount; }
 };
 
 #endif // #ifndef MOVEPICK_H_INCLUDED

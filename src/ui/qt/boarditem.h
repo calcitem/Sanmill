@@ -30,9 +30,9 @@ public:
     explicit BoardItem(const QGraphicsItem *parent = nullptr);
     ~BoardItem() override;
 
-    [[nodiscard]] QRectF boundingRect() const override;
+    QRectF boundingRect() const override;
 
-    [[nodiscard]] QPainterPath shape() const override;
+    QPainterPath shape() const override;
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                QWidget *widget = nullptr) override;
@@ -43,7 +43,7 @@ public:
     // identification.
     enum { Type = UserType + 1 };
 
-    [[nodiscard]] int type() const noexcept override { return Type; }
+    int type() const noexcept override { return Type; }
 
     // Enable or disable diagonal lines on the board
     void setDiagonal(bool enableDiagonal = true);
@@ -52,10 +52,10 @@ public:
     QPointF getNearestPoint(QPointF targetPoint);
 
     // Convert polar coordinates (File and Rank) to Cartesian point
-    [[nodiscard]] QPointF polarCoordinateToPoint(File f, Rank r) const;
+    QPointF polarCoordinateToPoint(File f, Rank r) const;
 
     // Convert Cartesian point to polar coordinates (File and Rank)
-    [[nodiscard]] bool pointToPolarCoordinate(QPointF point, File &f,
+    bool pointToPolarCoordinate(QPointF point, File &f,
                                               Rank &r) const;
 
     void updateAdvantageBar(qreal newAdvantage);

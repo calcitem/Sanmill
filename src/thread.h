@@ -79,11 +79,11 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    [[nodiscard]] string next_move() const;
-    [[nodiscard]] string get_value() const;
-    [[nodiscard]] Depth get_depth() const;
+    string next_move() const;
+    string get_value() const;
+    Depth get_depth() const;
 
-    [[nodiscard]] int getTimeLimit() const { return timeLimit; }
+    int getTimeLimit() const { return timeLimit; }
 
     void analyze(Color c) const;
 

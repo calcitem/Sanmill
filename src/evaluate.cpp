@@ -31,7 +31,7 @@ public:
     { }
 
     Evaluation &operator=(const Evaluation &) = delete;
-    [[nodiscard]] Value value() const;
+    Value value() const;
 
 private:
     Position &pos;

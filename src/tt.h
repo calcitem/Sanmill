@@ -35,17 +35,17 @@ struct TTEntry
 {
     TTEntry() { }
 
-    [[nodiscard]] Value value() const noexcept
+    Value value() const noexcept
     {
         return static_cast<Value>(value8);
     }
 
-    [[nodiscard]] Depth depth() const noexcept
+    Depth depth() const noexcept
     {
         return static_cast<Depth>(depth8) + DEPTH_OFFSET;
     }
 
-    [[nodiscard]] Bound bound() const noexcept
+    Bound bound() const noexcept
     {
         return static_cast<Bound>(genBound8);
     }

@@ -28,26 +28,26 @@ public:
 
     void setSkillLevel(int val) noexcept { skillLevel = val; }
 
-    [[nodiscard]] int getSkillLevel() const noexcept { return skillLevel; }
+    int getSkillLevel() const noexcept { return skillLevel; }
 
     void setMoveTime(int val) noexcept { moveTime = val; }
 
-    [[nodiscard]] int getMoveTime() const noexcept { return moveTime; }
+    int getMoveTime() const noexcept { return moveTime; }
 
     void setAiIsLazy(bool enabled) noexcept { aiIsLazy = enabled; }
 
-    [[nodiscard]] bool getAiIsLazy() const noexcept { return aiIsLazy; }
+    bool getAiIsLazy() const noexcept { return aiIsLazy; }
 
     void setAutoRestart(bool enabled) noexcept { isAutoRestart = enabled; }
 
-    [[nodiscard]] bool getAutoRestart() const noexcept { return isAutoRestart; }
+    bool getAutoRestart() const noexcept { return isAutoRestart; }
 
     void setAutoChangeFirstMove(bool enabled) noexcept
     {
         isAutoChangeFirstMove = enabled;
     }
 
-    [[nodiscard]] bool getAutoChangeFirstMove() const noexcept
+    bool getAutoChangeFirstMove() const noexcept
     {
         return isAutoChangeFirstMove;
     }
@@ -57,7 +57,7 @@ public:
         resignIfMostLose = enabled;
     }
 
-    [[nodiscard]] bool getResignIfMostLose() const noexcept
+    bool getResignIfMostLose() const noexcept
     {
         return resignIfMostLose;
     }
@@ -68,7 +68,7 @@ public:
     // variation between different games against an opponent that tries to do
     // the same sequence of moves. By default, shuffling is enabled.
 
-    [[nodiscard]] bool getShufflingEnabled() const noexcept
+    bool getShufflingEnabled() const noexcept
     {
         return shufflingEnabled;
     }
@@ -78,7 +78,7 @@ public:
         shufflingEnabled = enabled;
     }
 
-    [[nodiscard]] bool getLearnEndgameEnabled() const noexcept
+    bool getLearnEndgameEnabled() const noexcept
     {
         return learnEndgame;
     }
@@ -92,7 +92,7 @@ public:
 #endif
     }
 
-    [[nodiscard]] bool isEndgameLearningEnabled() const noexcept
+    bool isEndgameLearningEnabled() const noexcept
     {
 #ifdef ENDGAME_LEARNING_FORCE
         return true;
@@ -103,13 +103,13 @@ public:
 
     void setIDSEnabled(bool enabled) noexcept { IDSEnabled = enabled; }
 
-    [[nodiscard]] bool getIDSEnabled() const noexcept { return IDSEnabled; }
+    bool getIDSEnabled() const noexcept { return IDSEnabled; }
 
     // DepthExtension
 
     void setDepthExtension(bool enabled) noexcept { depthExtension = enabled; }
 
-    [[nodiscard]] bool getDepthExtension() const noexcept
+    bool getDepthExtension() const noexcept
     {
         return depthExtension;
     }
@@ -118,7 +118,7 @@ public:
 
     void setOpeningBook(bool enabled) noexcept { openingBook = enabled; }
 
-    [[nodiscard]] bool getOpeningBook() const noexcept { return openingBook; }
+    bool getOpeningBook() const noexcept { return openingBook; }
 
     // Algorithm
 
@@ -129,7 +129,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool getAlphaBetaAlgorithm() const noexcept
+    bool getAlphaBetaAlgorithm() const noexcept
     {
         return algorithm == 0;
     }
@@ -141,7 +141,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool getPvsAlgorithm() const noexcept
+    bool getPvsAlgorithm() const noexcept
     {
         return algorithm == 1;
     }
@@ -153,7 +153,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool getMtdfAlgorithm() const noexcept
+    bool getMtdfAlgorithm() const noexcept
     {
         return algorithm == 2;
     }
@@ -165,7 +165,7 @@ public:
         }
     }
 
-    [[nodiscard]] bool getMctsAlgorithm() const noexcept
+    bool getMctsAlgorithm() const noexcept
     {
         return algorithm == 3;
     }
@@ -215,7 +215,7 @@ public:
 #endif
     }
 
-    [[nodiscard]] int getAlgorithm() const noexcept { return algorithm; }
+    int getAlgorithm() const noexcept { return algorithm; }
 
     // Perfect Database
 
@@ -224,7 +224,7 @@ public:
         usePerfectDatabase = enabled;
     }
 
-    [[nodiscard]] bool getUsePerfectDatabase() const noexcept
+    bool getUsePerfectDatabase() const noexcept
     {
         return usePerfectDatabase;
     }
@@ -234,7 +234,7 @@ public:
         perfectDatabasePath = val;
     }
 
-    [[nodiscard]] std::string getPerfectDatabasePath() const noexcept
+    std::string getPerfectDatabasePath() const noexcept
     {
         return perfectDatabasePath;
     }
@@ -246,7 +246,7 @@ public:
         drawOnHumanExperience = enabled;
     }
 
-    [[nodiscard]] bool getDrawOnHumanExperience() const noexcept
+    bool getDrawOnHumanExperience() const noexcept
     {
         return drawOnHumanExperience;
     }
@@ -258,7 +258,7 @@ public:
         considerMobility = enabled;
     }
 
-    [[nodiscard]] bool getConsiderMobility() const noexcept
+    bool getConsiderMobility() const noexcept
     {
         return considerMobility;
     }
@@ -267,7 +267,7 @@ public:
 
     void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
 
-    [[nodiscard]] bool getDeveloperMode() const noexcept
+    bool getDeveloperMode() const noexcept
     {
         return developerMode;
     }

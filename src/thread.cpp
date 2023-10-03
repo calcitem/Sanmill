@@ -16,6 +16,7 @@
 
 #include <iomanip>
 #include <sstream>
+#include <string>
 #include <utility>
 
 #include "mills.h"
@@ -36,6 +37,7 @@
 #endif
 
 using std::cout;
+using std::string;
 
 ThreadPool Threads; // Global object
 

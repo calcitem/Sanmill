@@ -95,17 +95,17 @@ public:
     //  Main window menu bar details
     static map<int, QStringList> getActions();
 
-    [[nodiscard]] int getRuleIndex() const noexcept { return ruleIndex; }
+    int getRuleIndex() const noexcept { return ruleIndex; }
 
-    [[nodiscard]] int getTimeLimit() const noexcept { return timeLimit; }
+    int getTimeLimit() const noexcept { return timeLimit; }
 
-    [[nodiscard]] int getStepsLimit() const noexcept { return stepsLimit; }
+    int getStepsLimit() const noexcept { return stepsLimit; }
 
-    [[nodiscard]] bool isAnimation() const noexcept { return hasAnimation; }
+    bool isAnimation() const noexcept { return hasAnimation; }
 
     void setDurationTime(int i) noexcept { durationTime = i; }
 
-    [[nodiscard]] int getDurationTime() const { return durationTime; }
+    int getDurationTime() const { return durationTime; }
 
     QStringListModel *getMoveListModel() { return &moveListModel; }
 
@@ -121,7 +121,7 @@ public:
     void appendGameOverReasonToMoveList();
     void setTips();
 
-    [[nodiscard]] const std::vector<std::string> *getMoveList() const
+    const std::vector<std::string> *getMoveList() const
     {
         return &gameMoveList;
     }
@@ -367,7 +367,7 @@ public slots:
     void rotateRight();
     void rotateLeft();
 
-    [[nodiscard]] bool isAiToMove() const;
+    bool isAiToMove() const;
 
     void resetAiPlayers()
     {
@@ -472,9 +472,9 @@ public slots:
 
     void saveScore();
 
-    [[nodiscard]] AiSharedMemoryDialog *getTest() const { return gameTest; }
+    AiSharedMemoryDialog *getTest() const { return gameTest; }
 
-    [[nodiscard]] DatabaseDialog *getDatabaseDialog() const
+    DatabaseDialog *getDatabaseDialog() const
     {
         return databaseDialog;
     }
@@ -526,11 +526,11 @@ public:
 
     void loadSettings();
 
-    [[nodiscard]] bool fixWindowSizeEnabled() const { return fixWindowSize; }
+    bool fixWindowSizeEnabled() const { return fixWindowSize; }
 
     static bool soundEnabled() { return hasSound; }
 
-    [[nodiscard]] bool animationEnabled() const { return hasAnimation; }
+    bool animationEnabled() const { return hasAnimation; }
 
     // True when the computer takes the lead
     bool isAiPlayer[COLOR_NB];

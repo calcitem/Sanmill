@@ -43,7 +43,7 @@ public:
         Q_UNUSED(parent)
     }
 
-    [[nodiscard]] QSize sizeHint() const override
+    QSize sizeHint() const override
     {
         QSize size = QListView::sizeHint();
 
