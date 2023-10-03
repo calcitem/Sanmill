@@ -149,19 +149,19 @@ enum class GameOverReason {
 
     // A player wins by reducing the opponent to two pieces
     // (where they could no longer form mills and thus be unable to win)
-    LoseFewerThanThree,
+    loseFewerThanThree,
 
     // A player wins by leaving them without a legal move.
-    LoseNoLegalMoves,
-    LoseFullBoard,
+    loseNoLegalMoves,
+    loseFullBoard,
 
-    LoseResign,
-    LoseTimeout,
-    DrawThreefoldRepetition,
-    DrawFiftyMove,
-    DrawEndgameFiftyMove,
-    DrawFullBoard,
-    DrawStalemateCondition,
+    loseResign,
+    loseTimeout,
+    drawThreefoldRepetition,
+    drawFiftyMove,
+    drawEndgameFiftyMove,
+    drawFullBoard,
+    drawStalemateCondition,
 };
 
 enum Bound : uint8_t {

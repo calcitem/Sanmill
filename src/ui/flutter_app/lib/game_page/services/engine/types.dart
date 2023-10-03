@@ -274,16 +274,16 @@ extension ActExtension on Act {
 
 // TODO: [Leptopoda] Throw this stuff to faster detect a game over
 enum GameOverReason {
-  loseLessThanThree,
-  loseNoWay,
-  loseBoardIsFull,
+  loseFewerThanThree,
+  loseNoLegalMoves,
+  loseFullBoard,
   loseResign,
-  loseTimeOver,
+  loseTimeout,
   drawThreefoldRepetition,
-  drawRule50,
-  drawEndgameRule50,
-  drawBoardIsFull,
-  drawNoWay,
+  drawFiftyMove,
+  drawEndgameFiftyMove,
+  drawFullBoard,
+  drawStalemateCondition,
 }
 
 extension GameOverReasonExtension on GameOverReason {
@@ -291,23 +291,23 @@ extension GameOverReasonExtension on GameOverReason {
     final String loserStr = winner.opponent.playerName(context);
 
     switch (this) {
-      case GameOverReason.loseLessThanThree:
+      case GameOverReason.loseFewerThanThree:
         return S.of(context).loseReasonlessThanThree(loserStr);
       case GameOverReason.loseResign:
         return S.of(context).loseReasonResign(loserStr);
-      case GameOverReason.loseNoWay:
+      case GameOverReason.loseNoLegalMoves:
         return S.of(context).loseReasonNoWay(loserStr);
-      case GameOverReason.loseBoardIsFull:
+      case GameOverReason.loseFullBoard:
         return S.of(context).loseReasonBoardIsFull(loserStr);
-      case GameOverReason.loseTimeOver:
+      case GameOverReason.loseTimeout:
         return S.of(context).loseReasonTimeOver(loserStr);
-      case GameOverReason.drawRule50:
+      case GameOverReason.drawFiftyMove:
         return S.of(context).drawReasonRule50;
-      case GameOverReason.drawEndgameRule50:
+      case GameOverReason.drawEndgameFiftyMove:
         return S.of(context).drawReasonEndgameRule50;
-      case GameOverReason.drawBoardIsFull:
+      case GameOverReason.drawFullBoard:
         return S.of(context).drawReasonBoardIsFull;
-      case GameOverReason.drawNoWay:
+      case GameOverReason.drawStalemateCondition:
         return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;

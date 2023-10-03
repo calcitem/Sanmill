@@ -83,35 +83,35 @@ void Game::appendGameOverReasonToMoveList()
     }
 
     switch (position.gameOverReason) {
-    case GameOverReason::LoseNoLegalMoves:
+    case GameOverReason::loseNoLegalMoves:
         appendRecordToMoveList(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
                                position.winner);
         break;
-    case GameOverReason::LoseTimeout:
+    case GameOverReason::loseTimeout:
         appendRecordToMoveList(LOSE_REASON_TIMEOUT, position.winner);
         break;
-    case GameOverReason::DrawThreefoldRepetition:
+    case GameOverReason::drawThreefoldRepetition:
         appendRecordToMoveList(DRAW_REASON_THREEFOLD_REPETITION);
         break;
-    case GameOverReason::DrawFiftyMove:
+    case GameOverReason::drawFiftyMove:
         appendRecordToMoveList(DRAW_REASON_FIFTY_MOVE);
         break;
-    case GameOverReason::DrawEndgameFiftyMove:
+    case GameOverReason::drawEndgameFiftyMove:
         appendRecordToMoveList(DRAW_REASON_ENDGAME_FIFTY_MOVE);
         break;
-    case GameOverReason::LoseFullBoard:
+    case GameOverReason::loseFullBoard:
         appendRecordToMoveList(LOSE_REASON_FULL_BOARD);
         break;
-    case GameOverReason::DrawFullBoard:
+    case GameOverReason::drawFullBoard:
         appendRecordToMoveList(DRAW_REASON_FULL_BOARD);
         break;
-    case GameOverReason::DrawStalemateCondition:
+    case GameOverReason::drawStalemateCondition:
         appendRecordToMoveList(DRAW_REASON_STALEMATE_CONDITION);
         break;
-    case GameOverReason::LoseFewerThanThree:
+    case GameOverReason::loseFewerThanThree:
         appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE, position.winner);
         break;
-    case GameOverReason::LoseResign:
+    case GameOverReason::loseResign:
         appendRecordToMoveList(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
         break;
     case GameOverReason::None:

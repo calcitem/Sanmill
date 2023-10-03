@@ -81,7 +81,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
 
             if (rule.threefoldRepetitionRule && position.has_game_cycle()) {
                 position.set_gameover(DRAW,
-                                      GameOverReason::DrawThreefoldRepetition);
+                                      GameOverReason::drawThreefoldRepetition);
             }
 
             break;

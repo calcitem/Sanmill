@@ -323,33 +323,33 @@ void Game::setTips()
         }
 
         switch (p.gameOverReason) {
-        case GameOverReason::LoseFewerThanThree:
+        case GameOverReason::loseFewerThanThree:
             break;
-        case GameOverReason::LoseNoLegalMoves:
+        case GameOverReason::loseNoLegalMoves:
             reasonStr = turnStr + " has no valid moves.";
             break;
-        case GameOverReason::LoseFullBoard:
+        case GameOverReason::loseFullBoard:
             reasonStr = turnStr + " loses; board is full.";
             break;
-        case GameOverReason::LoseResign:
+        case GameOverReason::loseResign:
             reasonStr = turnStr + " has resigned.";
             break;
-        case GameOverReason::LoseTimeout:
+        case GameOverReason::loseTimeout:
             reasonStr = "Time is up; " + turnStr + " loses.";
             break;
-        case GameOverReason::DrawThreefoldRepetition:
+        case GameOverReason::drawThreefoldRepetition:
             reasonStr = "Draw due to threefold repetition.";
             break;
-        case GameOverReason::DrawFiftyMove:
+        case GameOverReason::drawFiftyMove:
             reasonStr = "Draw under the 50-move rule.";
             break;
-        case GameOverReason::DrawEndgameFiftyMove:
+        case GameOverReason::drawEndgameFiftyMove:
             reasonStr = "Draw under the endgame 50-move rule.";
             break;
-        case GameOverReason::DrawFullBoard:
+        case GameOverReason::drawFullBoard:
             reasonStr = "Draw; board is full.";
             break;
-        case GameOverReason::DrawStalemateCondition:
+        case GameOverReason::drawStalemateCondition:
             reasonStr = "Stalemate; game is a draw.";
             break;
         case GameOverReason::None:
