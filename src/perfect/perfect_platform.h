@@ -43,11 +43,11 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 #define SPRINTF(buffer, buffer_size, format, ...) \
-    snprintf(buffer, buffer_size, format __VA_OPT__(,) __VA_ARGS__)
+    snprintf(buffer, buffer_size, format __VA_OPT__(, ) __VA_ARGS__)
 
 #define FSCANF(file, format, ...) \
     do { \
-        int ret = fscanf(file, format __VA_OPT__(,) __VA_ARGS__); \
+        int ret = fscanf(file, format __VA_OPT__(, ) __VA_ARGS__); \
         if (ret == EOF) { \
             assert(false); \
         } \
