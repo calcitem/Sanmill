@@ -17,7 +17,7 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:catcher/catcher.dart';
+import 'package:catcher_2/catcher_2.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 
-part 'package:sanmill/shared/services/catcher_service.dart';
+part 'package:sanmill/shared/services/catcher_2_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
 
 Future<void> main() async {
@@ -56,16 +56,16 @@ Future<void> main() async {
   _initUI();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    catcher = Catcher(
+    catcher_2 = Catcher2(
       rootWidget: const SanmillApp(),
       ensureInitialized: true,
     );
 
-    await _initCatcher(catcher);
+    await _initCatcher2(catcher_2);
 
     PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
       if (EnvironmentConfig.catcher == true) {
-        Catcher.reportCheckedError(error, stack);
+        Catcher2.reportCheckedError(error, stack);
       }
       return true;
     };
@@ -148,10 +148,10 @@ class SanmillApp extends StatelessWidget {
     }
 
     final MaterialApp materialApp = MaterialApp(
-      /// Add navigator key from Catcher.
+      /// Add navigator key from Catcher2.
       /// It will be used to navigate user to report page or to show dialog.
       navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
-          ? Catcher.navigatorKey
+          ? Catcher2.navigatorKey
           : navigatorStateKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,

@@ -16,7 +16,7 @@
 
 import 'dart:io';
 
-import 'package:catcher/core/catcher.dart';
+import 'package:catcher_2/core/catcher_2.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -294,8 +294,8 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
                 tapCount++;
                 if (tapCount >= 10 &&
                     DateTime.now().difference(startTime).inSeconds <= 10) {
-                  // Used to test whether the Catcher is working properly.
-                  Catcher.sendTestException();
+                  // Used to test whether the Catcher2 is working properly.
+                  Catcher2.sendTestException();
                 }
               });
             },

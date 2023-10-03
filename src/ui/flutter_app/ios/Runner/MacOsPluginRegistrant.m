@@ -11,10 +11,10 @@
 
 #import "MacOsPluginRegistrant.h"
 
-#if __has_include(<catcher/CatcherPlugin.h>)
-#import <catcher/CatcherPlugin.h>
+#if __has_include(<catcher_2/Catcher2Plugin.h>)
+#import <catcher_2/Catcher2Plugin.h>
 #else
-@import catcher;
+@import catcher_2;
 #endif
 
 #if __has_include(<device_info_plus/FLTDeviceInfoPlusPlugin.h>)
@@ -44,7 +44,7 @@
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
-  [CatcherPlugin registerWithRegistrar:[registry registrarForPlugin:@"CatcherPlugin"]];
+  [Catcher2Plugin registerWithRegistrar:[registry registrarForPlugin:@"Catcher2Plugin"]];
   [FlutterPlatformAlertPlugin registerWithRegistrar:[registry registrarForPlugin:@"FlutterPlatformAlertPlugin"]];
   [FLTPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTPackageInfoPlusPlugin"]];
 }

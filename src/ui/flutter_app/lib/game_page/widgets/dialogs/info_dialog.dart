@@ -159,7 +159,7 @@ class _InfoDialog extends StatelessWidget {
                 String content = "";
 
                 if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-                  final CatcherOptions options = catcher.getCurrentConfig()!;
+                  final Catcher2Options options = catcher_2.getCurrentConfig()!;
                   for (final dynamic value in options.customParameters.values) {
                     final String str = value
                         .toString()
