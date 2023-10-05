@@ -204,7 +204,8 @@ void AiSharedMemoryDialog::writeToMemory(const QString &record)
 #ifdef _MSC_VER
     strncpy_s(from, BUFSIZ, record.toStdString().c_str(), BUFSIZ);
 #else
-    strncpy(from, record.toStdString().c_str(), BUFSIZ);
+    strncpy(from, record.toStdString().c_str(), BUFSIZ - 1);
+    from[BUFSIZ - 1] = '\0';
 #endif // _MSC_VER
 
     while (true) {
