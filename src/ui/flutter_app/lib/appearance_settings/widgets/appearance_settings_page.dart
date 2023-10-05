@@ -23,6 +23,7 @@ import 'package:hive_flutter/hive_flutter.dart' show Box;
 
 import '../../../../shared/widgets/settings/settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
+import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
@@ -34,6 +35,7 @@ import '../models/color_settings.dart';
 import '../models/display_settings.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
+part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/ai_response_delay_time_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
@@ -106,6 +108,11 @@ class AppearanceSettingsPage extends StatelessWidget {
         context: context,
         builder: (_) => const _AiResponseDelayTimeSlider(),
       );
+
+  void setBackgroundImage(BuildContext context) => showModalBottomSheet(
+    context: context,
+    builder: (_) => const _BackgroundImagePicker(),
+  );
 
   void langCallback(
     BuildContext context,
@@ -371,6 +378,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).aiResponseDelayTime,
           onTap: () => setAiResponseDelayTime(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).backgroundImage,
+          onTap: () => setBackgroundImage(context),
         ),
       ],
     );
