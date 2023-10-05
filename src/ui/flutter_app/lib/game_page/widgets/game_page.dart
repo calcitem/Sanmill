@@ -83,55 +83,62 @@ class GamePage extends StatelessWidget {
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity,
-              errorBuilder: (BuildContext context, Object error, StackTrace? stackTrace) {
+              errorBuilder:
+                  (BuildContext context, Object error, StackTrace? stackTrace) {
                 return Container(
                   color: DB().colorSettings.darkBackgroundColor,
                 );
               },
             ),
           Align(
-            alignment: MediaQuery.of(context).orientation == Orientation.landscape
-                ? Alignment.center
-                : Alignment.topCenter,
+            alignment:
+                MediaQuery.of(context).orientation == Orientation.landscape
+                    ? Alignment.center
+                    : Alignment.topCenter,
             // ignore: always_specify_types
             child: FutureBuilder(
-            future: controller.startController(),
-            builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  //child: CircularProgressIndicator.adaptive(),
+              future: controller.startController(),
+              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                      //child: CircularProgressIndicator.adaptive(),
+                      );
+                }
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppTheme.boardMargin),
+                  child: LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      double toolbarHeight = GamePageToolbar.height +
+                          ButtonTheme.of(context).height;
+                      if (DB()
+                          .displaySettings
+                          .isHistoryNavigationToolbarShown) {
+                        toolbarHeight *= 2;
+                      }
+
+                      // Constraints of the game board but applied to the entire child
+                      final double maxWidth = constraints.maxWidth;
+                      final double maxHeight =
+                          constraints.maxHeight - toolbarHeight;
+                      final BoxConstraints constraint = BoxConstraints(
+                        maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                            ? maxHeight
+                            : maxWidth,
+                      );
+
+                      return ConstrainedBox(
+                        constraints: constraint,
+                        child: const _Game(),
+                      );
+                    },
+                  ),
                 );
-              }
-
-              return Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
-                child: LayoutBuilder(
-                  builder: (BuildContext context, BoxConstraints constraints) {
-                    double toolbarHeight =
-                        GamePageToolbar.height + ButtonTheme.of(context).height;
-                    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
-                      toolbarHeight *= 2;
-                    }
-
-                    // Constraints of the game board but applied to the entire child
-                    final double maxWidth = constraints.maxWidth;
-                    final double maxHeight = constraints.maxHeight - toolbarHeight;
-                    final BoxConstraints constraint = BoxConstraints(
-                      maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                          ? maxHeight
-                          : maxWidth,
-                    );
-
-                    return ConstrainedBox(
-                      constraints: constraint,
-                      child: const _Game(),
-                    );
-                  },
-                ),
-              );
-            },
-          ),),
+              },
+            ),
+          ),
           Align(
             alignment: AlignmentDirectional.topStart,
             child: SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),

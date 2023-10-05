@@ -55,7 +55,8 @@ class _BackgroundImagePicker extends StatelessWidget {
                 asset: asset,
                 isSelect: displaySettings.backgroundImagePath == asset,
                 onChanged: () {
-                  DB().displaySettings = displaySettings.copyWith(backgroundImagePath: asset);
+                  DB().displaySettings =
+                      displaySettings.copyWith(backgroundImagePath: asset);
                 },
               );
             },
@@ -95,9 +96,9 @@ class _BackgroundImageItem extends StatelessWidget {
               image: isDefault
                   ? null
                   : DecorationImage(
-                image: AssetImage(asset),
-                fit: BoxFit.cover,
-              ),
+                      image: AssetImage(asset),
+                      fit: BoxFit.cover,
+                    ),
               borderRadius: BorderRadius.circular(8),
             ),
           ),

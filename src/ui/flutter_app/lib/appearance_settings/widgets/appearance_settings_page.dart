@@ -110,9 +110,9 @@ class AppearanceSettingsPage extends StatelessWidget {
       );
 
   void setBackgroundImage(BuildContext context) => showModalBottomSheet(
-    context: context,
-    builder: (_) => const _BackgroundImagePicker(),
-  );
+        context: context,
+        builder: (_) => const _BackgroundImagePicker(),
+      );
 
   void langCallback(
     BuildContext context,
