@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Utilizar base de datos perfecta",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Activa esta opción para utilizar una base de datos de juego impecable generada a través de algoritmos de vanguardia. Esta característica integra tanto estrategias de apertura como de final de juego para sugerir los movimientos óptimos. Es la opción preferida para los jugadores que buscan el nivel más alto de precisión en el juego. Creada a través de meticulosas técnicas computacionales, la base de datos está diseñada para ofrecer soluciones de juego casi perfectas.\n\nNota: Si la IA no logra acceder a la base de datos, recurrirá a algoritmos convencionales para las decisiones de juego. Cuando la base de datos está disponible, el 'Nivel de dificultad' se vuelve prácticamente invencible y el 'Tiempo de pensamiento de la IA' experimenta una reducción drástica. Muchas configuraciones dentro de las opciones de 'Estilo de juego de la IA' serán anuladas, ya que los resultados de la base de datos tienen la máxima prioridad.\n\nPara obtener orientación sobre cómo aprovechar al máximo esta base de datos impecable, haga clic aquí.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Imagen de fondo",
+  "@backgroundImage": {}
 }

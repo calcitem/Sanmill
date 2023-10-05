@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Használjon tökéletes adatbázist",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Engedélyezze ezt az opciót a hibátlan játékadatbázis használatához, amelyet a legmodernebb algoritmusok generálnak. Ez a funkció integrálja a nyitó és záró stratégiákat az optimális lépések javaslatához. Ez az elsődleges választás azoknak a játékosoknak, akik a játékban a legnagyobb pontosságot keresik. Az adatbázis gondos számítási technikák segítségével készült, és közel tökéletes játékmegoldásokat kínál.\n\nMegjegyzés: Ha az MI nem tud hozzáférni az adatbázishoz, akkor hagyományos algoritmusokhoz fordul a játék döntések meghozatalához. Amikor az adatbázis elérhető, a 'Nehézségi Szint' gyakorlatilag legyőzhetetlenné válik, és az 'MI Gondolkodási Ideje' drasztikusan csökken. Az 'MI Játékstílusa' beállítások közül sokat felülír az adatbázis, mivel az eredményeknek a legmagasabb prioritása van.\n\nTovábbi útmutatóért arra vonatkozóan, hogy hogyan használja ki leginkább ezt a hibátlan adatbázist, kattintson ide.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Háttérkép",
+  "@backgroundImage": {}
 }

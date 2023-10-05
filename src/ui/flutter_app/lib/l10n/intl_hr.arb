@@ -1391,5 +1391,7 @@
   "perfectDatabaseDescription": "Omogućite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako AI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Difficulty Level' postaje gotovo nepobjediv, a 'AI Thinking Time' doživljava drastično smanjenje. Mnoge postavke unutar opcija 'AI's Playstyle' bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Koristite savršenu bazu podataka",
-  "@usePerfectDatabase": {}
+  "@usePerfectDatabase": {},
+  "backgroundImage": "Pozadinska slika",
+  "@backgroundImage": {}
 }

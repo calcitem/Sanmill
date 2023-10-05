@@ -1489,5 +1489,7 @@
   "perfectDatabaseDescription": "Washa chaguo hili ili kutumia hifadhidata isiyo na dosari ya mchezo inayozalishwa kupitia kanuni za kisasa. Kipengele hiki huunganisha mikakati ya kufungua na ya mwisho ili kupendekeza hatua bora. Hili ndilo chaguo linalopendelewa kwa wachezaji wanaotafuta kiwango cha juu cha usahihi katika uchezaji. Imeundwa kupitia mbinu za kimakinifu za kukokotoa, hifadhidata imeundwa ili kutoa suluhu zilizo karibu kabisa za mchezo.\n\nKumbuka: Iwapo AI itashindwa kufikia hifadhidata, itageuka kuwa kanuni za kawaida za maamuzi ya uchezaji mchezo. Hifadhidata inapopatikana, 'Kiwango cha Ugumu' huwa kisichoweza kushindwa, na 'Wakati wa Kufikiria wa AI' hupunguzwa sana. Mipangilio mingi ndani ya chaguo za 'AI's Playstyle' itabatilishwa, kwa kuwa matokeo ya hifadhidata yana kipaumbele cha juu zaidi.\n\nKwa mwongozo wa jinsi ya kufaidika zaidi na hifadhidata hii isiyo na dosari, bofya hapa.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Tumia hifadhidata kamili",
-  "@usePerfectDatabase": {}
+  "@usePerfectDatabase": {},
+  "backgroundImage": "Picha ya nyuma",
+  "@backgroundImage": {}
 }

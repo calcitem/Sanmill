@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Mukammal ma'lumotlar bazasidan foydalaning",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Eng zamonaviy algoritmlar orqali yaratilgan benuqson oʻyin maʼlumotlar bazasidan foydalanish uchun ushbu parametrni yoqing. Bu xususiyat optimal harakatlarni taklif qilish uchun ochilish va yakuniy strategiyalarni birlashtiradi. Bu o'yinda eng yuqori darajadagi aniqlikka intiladigan o'yinchilar uchun afzal qilingan tanlovdir. Puxta hisoblash texnikasi orqali yaratilgan ma'lumotlar bazasi deyarli mukammal o'yin echimlarini taklif qilish uchun mo'ljallangan.\n\nEslatma: Agar AI ma'lumotlar bazasiga kira olmasa, u o'yin qarorlari uchun an'anaviy algoritmlarga murojaat qiladi. Ma'lumotlar bazasi mavjud bo'lganda, \"Qiyinchilik darajasi\" deyarli engib bo'lmaydigan bo'lib qoladi va \"AI fikrlash vaqti\" keskin qisqaradi. \"AI's Playstyle\" opsiyalaridagi ko'plab sozlamalar bekor qilinadi, chunki ma'lumotlar bazasi natijalari eng yuqori ustuvorlikka ega.\n\nUshbu mukammal ma'lumotlar bazasidan qanday foydalanish bo'yicha ko'rsatmalar uchun bu yerni bosing.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Orqa fon rasmi",
+  "@backgroundImage": {}
 }

@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Gebruik een perfecte database",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Schakel deze optie in om een onberispelijke gamedatabase te gebruiken die is gegenereerd door middel van geavanceerde algoritmen. Deze functie integreert zowel openings- als eindspelstrategieën om optimale zetten voor te stellen. Dit is de voorkeurskeuze voor spelers die op zoek zijn naar het hoogste niveau van precisie in de gameplay. De database is gemaakt met nauwgezette computertechnieken en is ontworpen om bijna perfecte speloplossingen te bieden.\n\nOpmerking: mocht de AI er niet in slagen toegang te krijgen tot de database, dan zal hij zich tot conventionele algoritmen wenden voor gameplay-beslissingen. Wanneer de database beschikbaar is, wordt de 'Moeilijkheidsgraad' vrijwel onverslaanbaar en ervaart de 'AI Thinking Time' een drastische vermindering. Veel instellingen binnen de 'AI's speelstijl'-opties worden overschreven, omdat de databaseresultaten de hoogste prioriteit hebben.\n\nVoor richtlijnen over hoe u het beste uit deze onberispelijke database kunt halen, klik hier.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Achtergrondafbeelding",
+  "@backgroundImage": {}
 }
