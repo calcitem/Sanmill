@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Použijte perfektní databázi",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Povolte tuto možnost, chcete-li používat bezchybnou herní databázi generovanou pomocí nejmodernějších algoritmů. Tato funkce integruje strategie otevření i konce hry, aby navrhla optimální pohyby. Toto je preferovaná volba pro hráče, kteří hledají nejvyšší úroveň přesnosti při hraní. Databáze vytvořená pomocí pečlivých výpočetních technik je navržena tak, aby nabízela téměř dokonalá herní řešení.\n\nPoznámka: Pokud se AI nepodaří získat přístup k databázi, obrátí se při rozhodování o hře na konvenční algoritmy. Když je databáze dostupná, 'Úroveň obtížnosti' se stává prakticky nepřekonatelnou a 'Doba myšlení AI' zažívá drastické snížení. Mnoho nastavení v rámci možností „AI's Playstyle“ bude přepsáno, protože výsledky databáze mají nejvyšší prioritu.\n\nPro návod, jak co nejlépe využít tuto bezchybnou databázi, klikněte sem.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Pozadí obrazu",
+  "@backgroundImage": {}
 }

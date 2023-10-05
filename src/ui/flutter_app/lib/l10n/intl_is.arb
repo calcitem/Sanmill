@@ -1488,5 +1488,7 @@
   "usePerfectDatabase": "Notaðu fullkominn gagnagrunn",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Virkjaðu þennan valkost til að nota gallalausan leikjagagnagrunn sem er búinn til með nýjustu reikniritum. Þessi eiginleiki samþættir bæði opnunar- og lokaaðferðir til að stinga upp á bestu hreyfingum. Þetta er ákjósanlegur kostur fyrir leikmenn sem sækjast eftir hæsta stigi nákvæmni í spilun. Gagnagrunnurinn er búinn til með nákvæmri tölvutækni og er hannaður til að bjóða upp á næstum fullkomnar leikjalausnir.\n\nAthugið: Ef gervigreind nær ekki aðgangi að gagnagrunninum mun það snúa sér að hefðbundnum reikniritum fyrir ákvarðanir um spilun. Þegar gagnagrunnurinn er tiltækur verður „Erfiðleikastigið“ nánast óviðjafnanlegt og „AI Thinking Time“ minnkar verulega. Mörgum stillingum innan valmöguleika 'AI's Playstyle' verður hnekkt, þar sem niðurstöður gagnagrunnsins hafa hæsta forgang.\n\nTil að fá leiðbeiningar um hvernig á að nýta þennan gallalausa gagnagrunn sem best, smelltu hér.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Bakgrunnsmynd",
+  "@backgroundImage": {}
 }

@@ -1489,5 +1489,7 @@
   "usePerfectDatabase": "Mükəmməl verilənlər bazasından istifadə edin",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Ən müasir alqoritmlər vasitəsilə yaradılan qüsursuz oyun bazasından istifadə etmək üçün bu seçimi aktivləşdirin. Bu xüsusiyyət optimal hərəkətlər təklif etmək üçün həm açılış, həm də oyun sonu strategiyalarını birləşdirir. Bu, oyunda ən yüksək səviyyəli dəqiqliyə can atan oyunçular üçün üstünlük verilən seçimdir. Vasvası hesablama üsulları vasitəsilə yaradılmış verilənlər bazası mükəmməl oyun həlləri təklif etmək üçün nəzərdə tutulmuşdur.\n\nQeyd: Süni intellekt verilənlər bazasına daxil ola bilməsə, o, oyun qərarları üçün adi alqoritmlərə müraciət edəcək. Verilənlər bazası mövcud olduqda, \"Çətinlik Səviyyəsi\" faktiki olaraq məğlubedilməz olur və \"AI Thinking Time\" kəskin azalma ilə üzləşir. Verilənlər bazası nəticələri ən yüksək prioritetə malik olduğundan, \"AI-nin Playstyle\" seçimlərindəki bir çox parametr ləğv ediləcək.\n\nBu qüsursuz verilənlər bazasından maksimum yararlanmaq üçün bura klikləyin.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Fon şəkili",
+  "@backgroundImage": {}
 }

@@ -1489,5 +1489,7 @@
   "usePerfectDatabase": "Gebruik perfekte databasis",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's Playstyle'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Agtergrondbeeld",
+  "@backgroundImage": {}
 }

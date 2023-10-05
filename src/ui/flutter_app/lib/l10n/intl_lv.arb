@@ -1391,5 +1391,7 @@
   "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's Playstyle' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
-  "@usePerfectDatabase": {}
+  "@usePerfectDatabase": {},
+  "backgroundImage": "Fona attēls",
+  "@backgroundImage": {}
 }

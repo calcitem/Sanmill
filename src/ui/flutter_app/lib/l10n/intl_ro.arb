@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Utilizați baza de date perfectă",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Activați această opțiune pentru a folosi o bază de date de joc fără cusur, generată prin algoritmi de ultimă generație. Această funcție integrează atât strategiile de deschidere, cât și cele de final pentru a sugera mutări optime. Este alegerea preferată pentru jucătorii care caută cel mai înalt nivel de precizie în joc. Creată prin tehnici de calcul meticuloase, baza de date este concepută pentru a oferi soluții de joc aproape perfecte.\n\nNotă: Dacă inteligența artificială nu poate accesa baza de date, va recurge la algoritmi convenționali pentru deciziile de joc. Când baza de date este disponibilă, 'Nivelul de dificultate' devine practic de neînvins, iar 'Timpul de gândire al AI' experimentează o reducere drastică. Multe setări în opțiunile 'Stilul de joc al AI' vor fi suprascrise, deoarece rezultatele bazei de date au cea mai mare prioritate.\n\nPentru îndrumări despre cum să beneficiați la maximum de această bază de date fără cusur, faceți clic aici.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Imagine de fundal",
+  "@backgroundImage": {}
 }

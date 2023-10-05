@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "Benytt deg av den perfekte databasen",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Aktiver dette alternativet for å bruke en feilfri spilldatabase generert gjennom avanserte algoritmer. Denne funksjonen integrerer både åpnings- og sluttfasestrategier for å foreslå optimale trekk. Dette er det foretrukne valget for spillere som søker det høyeste nivået av presisjon i spillet. Databasen er skapt gjennom nitidige beregningsteknikker, og er designet for å tilby nesten perfekte spillløsninger.\n\nMerk: Hvis AI-en ikke får tilgang til databasen, vil den gå over til konvensjonelle algoritmer for spillbeslutninger. Når databasen er tilgjengelig, blir 'Vanskelighetsgrad' praktisk talt uslåelig, og 'AI Tenketid' reduseres drastisk. Mange innstillinger innen 'AIs Spillestil'-alternativene vil bli overstyrt, ettersom databasens resultater har høyest prioritet.\n\nFor veiledning om hvordan du får mest mulig ut av denne feilfrie databasen, klikk her.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Bakgrunnsbilde",
+  "@backgroundImage": {}
 }

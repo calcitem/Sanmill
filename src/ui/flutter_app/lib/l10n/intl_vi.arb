@@ -1489,5 +1489,7 @@
   "usePerfectDatabase": "Sử dụng cơ sở dữ liệu hoàn hảo",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Kích hoạt tùy chọn này để sử dụng cơ sở dữ liệu trò chơi không có khuyết điểm, được tạo ra thông qua các thuật toán tiên tiến. Tính năng này kết hợp cả chiến lược mở đầu và kết thúc trò chơi để đề xuất các bước đi tối ưu. Đây là lựa chọn ưa thích cho những người chơi muốn đạt độ chính xác cao nhất trong trò chơi. Được tạo ra thông qua các kỹ thuật tính toán tỉ mỉ, cơ sở dữ liệu được thiết kế để cung cấp các giải pháp trò chơi gần như hoàn hảo.\n\nLưu ý: Nếu AI không thể truy cập cơ sở dữ liệu, nó sẽ chuyển sang các thuật toán truyền thống để ra quyết định trong trò chơi. Khi cơ sở dữ liệu có sẵn, \"Mức độ khó\" trở nên hầu như không thể đánh bại, và \"Thời gian suy nghĩ của AI\" sẽ giảm mạnh. Nhiều cài đặt trong tùy chọn 'Phong cách chơi của AI' cũng sẽ bị ghi đè, vì kết quả từ cơ sở dữ liệu có ưu tiên cao nhất.\n\nĐể được hướng dẫn về cách tận dụng tối đa cơ sở dữ liệu hoàn hảo này, vui lòng nhấp vào đây.",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Hình nền",
+  "@backgroundImage": {}
 }

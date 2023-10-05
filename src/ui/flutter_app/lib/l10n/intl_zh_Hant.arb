@@ -1391,5 +1391,7 @@
   "usePerfectDatabase": "使用完美資料庫",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "開啟此選項以使用由先進演算法所生成的完美遊戲資料庫。此功能整合了開局與殘局策略，以推薦最優著法，是追求遊戲中極高準確度的玩家的首選。資料庫透過細緻的計算技術建立，目的在於提供幾乎完美的遊戲解法。\n\n注意：若機器無法存取資料庫，則會改用傳統演算法作遊戲決策。當資料庫可用時，「難度等級」實際上將變得極為挑戰性，而「機器思考時間」將大幅縮減。在「機器的棋風」的設定選項中，多數設定也會被覆蓋，因為資料庫結果擁有最高優先性。\n\n如需瞭解如何善用這個完美資料庫，請點此。",
-  "@perfectDatabaseDescription": {}
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "背景圖片",
+  "@backgroundImage": {}
 }
