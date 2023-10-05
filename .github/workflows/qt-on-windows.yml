@@ -5,10 +5,14 @@ on:
     branches: [release]
     paths:
       - 'src/ui/qt/**'
+      - 'src/*'
+      - 'src/perfect/**'
   pull_request:
     types: [review_requested, ready_for_review]
     paths:
       - 'src/ui/qt/**'
+      - 'src/*'
+      - 'src/perfect/**'
 
 jobs:
   build:
@@ -28,13 +32,11 @@ jobs:
           target: 'desktop'
           arch: 'win64_msvc2019_64'
           install-deps: 'true'
-          modules: 'qtcore qtwgui qtmultimedia'
-          cached: 'false'
           setup-python: 'true'
-          tools: 'tools_cmake,3.24.2,qt.tools.cmake.win64'
+          tools: 'tools_cmake'
           set-env: 'false'
           tools-only: 'false'
-          aqtversion: '==1.2.5'
+          aqtversion: '==3.1.7'
           py7zrversion: '==0.16.1'
           extra: '--external 7z'
 
