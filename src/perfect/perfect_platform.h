@@ -69,7 +69,8 @@
     ((*file = fopen(filename, mode)) != NULL ? 0 : -1)
 
 #define STRCPY(destination, destination_size, source) \
-    strncpy(destination, source, destination_size)
+    strncpy(destination, source, destination_size - 1); \
+    destination[destination_size - 1] = '\0'
 
 #define POPCNT(x) __builtin_popcount(x)
 
