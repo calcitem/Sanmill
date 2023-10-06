@@ -91,11 +91,11 @@ flutter:
     - assets/audios/remove.mp3
     - assets/audios/select.mp3
     - assets/audios/win.mp3
-    - assets/images/background_image_1.png
-    - assets/images/background_image_2.png
-    - assets/images/background_image_3.png
-    - assets/images/background_image_4.png
-    - assets/images/background_image_5.png
+    - assets/images/background_image_1.jpg
+    - assets/images/background_image_2.jpg
+    - assets/images/background_image_3.jpg
+    - assets/images/background_image_4.jpg
+    - assets/images/background_image_5.jpg
 
 flutter_intl:
   enabled: true
