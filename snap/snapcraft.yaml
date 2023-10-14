@@ -21,13 +21,13 @@ description: |
 
 grade: stable
 confinement: strict
-base: core18
+base: core22
 license: 'GPL-3.0'
 
 apps:
   mill:
     command: usr/local/bin/mill
-    extensions: [flutter-stable]
+    extensions: [gnome]
     plugs: [home, alsa, pulseaudio, desktop, desktop-legacy, audio-playback]
 
 layout:
@@ -41,10 +41,17 @@ layout:
 parts:
   mill:
     plugin: flutter
+    flutter-target: src/ui/flutter_app/lib/main.dart
     source: .
-    build-packages: [git, g++-8, libstdc++6, libasound2-dev]
-    stage-packages: [g++-8, libstdc++6, libasound2]
+    build-packages: [git, g++, libstdc++6, libasound2-dev, wget, clang, cmake, ninja-build, pkg-config, libgtk-3-dev]
+    stage-packages: [g++, libstdc++6, libasound2]
     override-build: |
+      set -x
+      wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.13.7-stable.tar.xz
+      tar xf flutter_linux_3.13.7-stable.tar.xz
+      export PATH=$PATH:`pwd`/flutter/bin
+      git config --global --add safe.directory /root/parts/mill/build/flutter
+      flutter doctor -v
       ./flutter-init.sh
       flutter config --enable-linux-desktop
       cd src/ui/flutter_app
