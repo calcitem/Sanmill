@@ -1,3 +1,6 @@
+# sudo apt install snapd
+# sudo snap install snapcraft --classic
+
 rm *.snap
 sudo snap remove mill
 snapcraft --use-lxd
