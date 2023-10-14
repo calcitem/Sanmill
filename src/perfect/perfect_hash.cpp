@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "perfect_common.h"
 #include "perfect_symmetries.h"
 
+#include <cstdint>
 #include <algorithm>
 #include <vector>
 
