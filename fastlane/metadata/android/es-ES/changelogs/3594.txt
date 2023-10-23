@@ -1,0 +1,3 @@
+v3.6.2
+
+Traducción al serbio mejorada.
