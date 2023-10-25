@@ -18,7 +18,7 @@ jobs:
     - run: bash -x ./flutter-init.sh
     - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
     - name: Analyze Flutter
-      uses: ValentinVignal/action-dart-analyze@v0.14
+      uses: ValentinVignal/action-dart-analyze@v0.15
       with:
         fail-on: 'format'
         working-directory: src/ui/flutter_app
