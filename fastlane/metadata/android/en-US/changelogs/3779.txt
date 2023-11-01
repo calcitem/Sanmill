@@ -1,0 +1,5 @@
+v3.8.0
+
+* Add support for Background Image Picker.
+* The AI is smarter on moves 5 and 6 when playing as White.
+* Improve Brazilian Portuguese localization.
