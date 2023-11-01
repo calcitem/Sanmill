@@ -57,10 +57,7 @@ public:
         resignIfMostLose = enabled;
     }
 
-    bool getResignIfMostLose() const noexcept
-    {
-        return resignIfMostLose;
-    }
+    bool getResignIfMostLose() const noexcept { return resignIfMostLose; }
 
     // Specify whether the successors of a given state should be shuffled if a
     // re-evaluation is required so that the AI algorithm is not favoring one
@@ -68,20 +65,14 @@ public:
     // variation between different games against an opponent that tries to do
     // the same sequence of moves. By default, shuffling is enabled.
 
-    bool getShufflingEnabled() const noexcept
-    {
-        return shufflingEnabled;
-    }
+    bool getShufflingEnabled() const noexcept { return shufflingEnabled; }
 
     void setShufflingEnabled(bool enabled) noexcept
     {
         shufflingEnabled = enabled;
     }
 
-    bool getLearnEndgameEnabled() const noexcept
-    {
-        return learnEndgame;
-    }
+    bool getLearnEndgameEnabled() const noexcept { return learnEndgame; }
 
     void setLearnEndgameEnabled(bool enabled) noexcept
     {
@@ -109,10 +100,7 @@ public:
 
     void setDepthExtension(bool enabled) noexcept { depthExtension = enabled; }
 
-    bool getDepthExtension() const noexcept
-    {
-        return depthExtension;
-    }
+    bool getDepthExtension() const noexcept { return depthExtension; }
 
     // OpeningBook
 
@@ -129,10 +117,7 @@ public:
         }
     }
 
-    bool getAlphaBetaAlgorithm() const noexcept
-    {
-        return algorithm == 0;
-    }
+    bool getAlphaBetaAlgorithm() const noexcept { return algorithm == 0; }
 
     void setPvsAlgorithm(bool enabled) noexcept
     {
@@ -141,10 +126,7 @@ public:
         }
     }
 
-    bool getPvsAlgorithm() const noexcept
-    {
-        return algorithm == 1;
-    }
+    bool getPvsAlgorithm() const noexcept { return algorithm == 1; }
 
     void setMtdfAlgorithm(bool enabled) noexcept
     {
@@ -153,10 +135,7 @@ public:
         }
     }
 
-    bool getMtdfAlgorithm() const noexcept
-    {
-        return algorithm == 2;
-    }
+    bool getMtdfAlgorithm() const noexcept { return algorithm == 2; }
 
     void setMctsAlgorithm(bool enabled) noexcept
     {
@@ -165,10 +144,7 @@ public:
         }
     }
 
-    bool getMctsAlgorithm() const noexcept
-    {
-        return algorithm == 3;
-    }
+    bool getMctsAlgorithm() const noexcept { return algorithm == 3; }
 
     void setAlgorithm(int val) noexcept
     {
@@ -224,10 +200,7 @@ public:
         usePerfectDatabase = enabled;
     }
 
-    bool getUsePerfectDatabase() const noexcept
-    {
-        return usePerfectDatabase;
-    }
+    bool getUsePerfectDatabase() const noexcept { return usePerfectDatabase; }
 
     void setPerfectDatabasePath(std::string val) noexcept
     {
@@ -258,19 +231,13 @@ public:
         considerMobility = enabled;
     }
 
-    bool getConsiderMobility() const noexcept
-    {
-        return considerMobility;
-    }
+    bool getConsiderMobility() const noexcept { return considerMobility; }
 
     // Developer Mode
 
     void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
 
-    bool getDeveloperMode() const noexcept
-    {
-        return developerMode;
-    }
+    bool getDeveloperMode() const noexcept { return developerMode; }
 
 private:
     int skillLevel {1};

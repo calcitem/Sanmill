@@ -55,8 +55,7 @@ public:
     QPointF polarCoordinateToPoint(File f, Rank r) const;
 
     // Convert Cartesian point to polar coordinates (File and Rank)
-    bool pointToPolarCoordinate(QPointF point, File &f,
-                                              Rank &r) const;
+    bool pointToPolarCoordinate(QPointF point, File &f, Rank &r) const;
 
     void updateAdvantageBar(qreal newAdvantage);
 

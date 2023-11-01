@@ -601,7 +601,8 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 
 bool Position::has_game_cycle() const
 {
-    ptrdiff_t count = std::count(posKeyHistory.begin(), posKeyHistory.end(), key());
+    ptrdiff_t count = std::count(posKeyHistory.begin(), posKeyHistory.end(),
+                                 key());
 
     // TODO: Maintain consistent interface behavior
 #ifdef QT_GUI_LIB

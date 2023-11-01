@@ -474,10 +474,7 @@ public slots:
 
     AiSharedMemoryDialog *getTest() const { return gameTest; }
 
-    DatabaseDialog *getDatabaseDialog() const
-    {
-        return databaseDialog;
-    }
+    DatabaseDialog *getDatabaseDialog() const { return databaseDialog; }
 
 protected:
     // bool eventFilter(QObject * watched, QEvent * event);

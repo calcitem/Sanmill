@@ -100,7 +100,7 @@ std::vector<Id> graph_func(Id u, bool elim_loops)
 
     std::set<Id> sr(r0.begin(), r0.end()); // parallel electric discharge
     if (elim_loops)
-        sr.erase(u); // kizurese of hurokel
+        sr.erase(u);                       // kizurese of hurokel
 
     return std::vector<Id>(sr.begin(), sr.end());
 }

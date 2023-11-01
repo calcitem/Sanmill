@@ -36,8 +36,7 @@ public:
 
     QPointF polarCoordinateToPoint(File f, Rank r) const;
 
-    bool pointToPolarCoordinate(QPointF pos, File &f,
-                                              Rank &r) const;
+    bool pointToPolarCoordinate(QPointF pos, File &f, Rank &r) const;
 
     void setDiagonal(bool arg = true) const;
 
