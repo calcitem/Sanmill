@@ -129,8 +129,11 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     switch (pos.get_action()) {
     case Action::select:
     case Action::place:
-        if (pos.get_phase() == Phase::placing ||
-            pos.get_phase() == Phase::ready) {
+        if (pos.get_phase() == Phase::placing) {
+            cur = generate<PLACE>(pos, moveList);
+            cur = generate<MOVE>(pos, cur);
+            return cur;
+        } else if (pos.get_phase() == Phase::ready) {
             return generate<PLACE>(pos, moveList);
         }
 

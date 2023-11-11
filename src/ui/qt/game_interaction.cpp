@@ -64,11 +64,22 @@ bool Game::performAction(File f, Rank r, QPointF p)
 {
     // Judge whether to select, place or remove the piece
     bool result = false;
-    PieceItem *piece;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
+    PieceItem *piece = qgraphicsitem_cast<PieceItem *>(item);
 
+begin:
     switch (position.get_action()) {
     case Action::place:
+          if (piece && piece->color() == position.side_to_move()) {
+            if (position.select_piece(f, r)) {
+                playSound(GameSound::select);
+                result = true;
+            } else {
+                playSound(GameSound::banned);
+            }
+            break;
+        }
+
         if (position.put_piece(f, r)) {
             if (position.get_action() == Action::remove) {
                 // Play form mill sound effects
@@ -92,9 +103,13 @@ bool Game::performAction(File f, Rank r, QPointF p)
         [[fallthrough]];
 
     case Action::select:
-        piece = qgraphicsitem_cast<PieceItem *>(item);
-        if (!piece)
-            break;
+        if (!piece) {
+            if (position.pieceInHandCount[position.side_to_move()] > 0) {
+                position.action = Action::place;
+                goto begin;
+            }
+        }
+ 
         if (position.select_piece(f, r)) {
             playSound(GameSound::select);
             result = true;

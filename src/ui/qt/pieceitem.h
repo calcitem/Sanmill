@@ -21,6 +21,7 @@
 #include <QObject>
 
 #include "config.h"
+#include "types.h"
 
 class PieceItem : public QObject, public QGraphicsItem
 {
@@ -75,6 +76,16 @@ public:
     }
 
     void setShowNum(bool show = true) noexcept { this->showNum = show; }
+
+    Color color() const noexcept
+    {
+        if (model == Models::whitePiece)
+            return Color::WHITE;
+        else if (model == Models::blackPiece)
+            return Color::BLACK;
+        else
+            return Color::NOCOLOR;
+    }
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *mouseEvent) override;

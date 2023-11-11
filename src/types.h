@@ -115,7 +115,7 @@ using Key = uint32_t;
 
 using Bitboard = uint32_t;
 
-constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
+constexpr int MAX_MOVES = 128; // (24 - 4 - 3) * 4 = 68
 constexpr int MAX_PLY = 48;
 
 enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
