@@ -29,9 +29,6 @@
 #define S4(a, b, c, d) \
     (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | \
      square_bb(SQ_##d))
-#define S4(a, b, c, d) \
-    (square_bb(SQ_##a) | square_bb(SQ_##b) | square_bb(SQ_##c) | \
-     square_bb(SQ_##d))
 
 namespace Bitboards {
 
