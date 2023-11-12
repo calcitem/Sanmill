@@ -74,7 +74,7 @@ class Constants {
   static final UrlHelper privacyPolicyUrl =
       wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
   static final UrlHelper helpImproveTranslateURL =
-      weblateUrl.fromSubPath("projects/$projectNameLower/flutter");
+      weblateUrl.fromSubPath("zen/$projectNameLower/flutter");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
   static final UrlHelper perfectDatabaseUrl =
       wikiURL.fromSubPath("Perfect-Database");
