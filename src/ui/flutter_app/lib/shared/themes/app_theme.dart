@@ -48,6 +48,7 @@ class AppTheme {
 
   /// Light theme
   static final ThemeData lightThemeData = ThemeData(
+    useMaterial3: false,
     brightness: Brightness.light,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
@@ -58,6 +59,7 @@ class AppTheme {
 
   /// Dark theme
   static final ThemeData darkThemeData = ThemeData(
+    useMaterial3: false,
     brightness: Brightness.dark,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
