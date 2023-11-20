@@ -183,7 +183,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         TextButton(
           child: Text(
             S.of(context).confirm,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             logger.v("[config] pickerColor.value: ${pickedColor.value}");
@@ -194,7 +194,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),

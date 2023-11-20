@@ -54,7 +54,6 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
           title: Text(
             S.of(context).skillLevel,
             style: AppTheme.dialogTitleTextStyle,
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
           content: ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 150),
@@ -73,7 +72,7 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               TextButton(
                 child: Text(
                   S.of(context).cancel,
-                  textScaleFactor: DB().displaySettings.fontScale,
+                  style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -90,7 +89,7 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             TextButton(
               child: Text(
                 S.of(context).confirm,
-                textScaleFactor: DB().displaySettings.fontScale,
+                style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () {
                 DB().generalSettings =

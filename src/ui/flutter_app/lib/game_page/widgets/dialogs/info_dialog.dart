@@ -140,8 +140,8 @@ class _InfoDialog extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppTheme.gamePageActionSheetTextColor,
                   fontWeight: FontWeight.normal,
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                 ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ),
         actions: <Widget>[
@@ -152,8 +152,8 @@ class _InfoDialog extends StatelessWidget {
                 key: const Key('infoDialogMoreButton'),
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.gamePageActionSheetTextColor,
+                      fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                     ),
-                textScaleFactor: DB().displaySettings.fontScale,
               ),
               onPressed: () async {
                 String content = "";
@@ -172,7 +172,7 @@ class _InfoDialog extends StatelessWidget {
                 final Widget copyButton = TextButton(
                   child: Text(
                     S.of(context).copy,
-                    textScaleFactor: DB().displaySettings.fontScale,
+                    style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                   ),
                   onPressed: () {
                     Clipboard.setData(
@@ -190,7 +190,7 @@ class _InfoDialog extends StatelessWidget {
                 final Widget okButton = TextButton(
                     child: Text(
                       S.of(context).ok,
-                      textScaleFactor: DB().displaySettings.fontScale,
+                      style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -199,7 +199,7 @@ class _InfoDialog extends StatelessWidget {
                 final AlertDialog alert = AlertDialog(
                   title: Text(
                     S.of(context).more,
-                    textScaleFactor: DB().displaySettings.fontScale,
+                    style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                   ),
                   content: Text(
                     content,
@@ -223,8 +223,8 @@ class _InfoDialog extends StatelessWidget {
               key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
+                    fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                   ),
-              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => Navigator.pop(context),
           ),

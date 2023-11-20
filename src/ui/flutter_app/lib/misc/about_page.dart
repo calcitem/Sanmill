@@ -26,7 +26,6 @@ import '../custom_drawer/custom_drawer.dart';
 import '../generated/flutter_version.dart';
 import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
-import '../shared/database/database.dart';
 import '../shared/services/environment_config.dart';
 import '../shared/services/git_info.dart';
 import '../shared/themes/app_theme.dart';
@@ -184,7 +183,6 @@ class _VersionDialog extends StatelessWidget {
       title: Text(
         S.of(context).appName,
         style: AppTheme.dialogTitleTextStyle,
-        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -192,7 +190,7 @@ class _VersionDialog extends StatelessWidget {
         children: <Widget>[
           Text(
             S.of(context).version(appVersion),
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           const CustomSpacer(),
           FutureBuilder<GitInfo>(
@@ -205,14 +203,14 @@ class _VersionDialog extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Branch: ${snapshot.data!.branch}',
-                        textScaleFactor: DB().displaySettings.fontScale,
+                        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                       ),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Revision: ${snapshot.data!.revision}',
-                        textScaleFactor: DB().displaySettings.fontScale,
+                        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                       ),
                     ),
                   ],
@@ -228,7 +226,7 @@ class _VersionDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).more,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -243,7 +241,7 @@ class _VersionDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).ok,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -282,7 +280,6 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
       title: Text(
         S.of(context).more,
         style: AppTheme.dialogTitleTextStyle,
-        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -309,7 +306,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
         TextButton(
           child: Text(
             S.of(context).ok,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),

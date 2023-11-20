@@ -169,7 +169,7 @@ class LoadService {
         return AlertDialog(
           title: Text(
             S.of(context).filename,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           content: TextField(
             controller: textFieldController,
@@ -181,7 +181,7 @@ class LoadService {
             ElevatedButton(
                 child: Text(
                   S.of(context).browse,
-                  textScaleFactor: DB().displaySettings.fontScale,
+                  style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                 ),
                 onPressed: () async {
                   final String? result = await pickFile(context);
@@ -194,14 +194,14 @@ class LoadService {
             ElevatedButton(
               child: Text(
                 S.of(context).cancel,
-                textScaleFactor: DB().displaySettings.fontScale,
+                style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(
               child: Text(
                 S.of(context).ok,
-                textScaleFactor: DB().displaySettings.fontScale,
+                style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),

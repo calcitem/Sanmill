@@ -134,7 +134,7 @@ class _GameOptionsModal extends StatelessWidget {
     final Widget yesButton = TextButton(
         child: Text(
           S.of(context).yes,
-          textScaleFactor: DB().displaySettings.fontScale,
+          style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
         ),
         onPressed: () {
           // ignore: unnecessary_statements
@@ -169,7 +169,7 @@ class _GameOptionsModal extends StatelessWidget {
     final Widget noButton = TextButton(
       child: Text(
         S.of(context).no,
-        textScaleFactor: DB().displaySettings.fontScale,
+        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),
       onPressed: () {
         Navigator.of(context, rootNavigator: true).pop(false);
@@ -180,11 +180,11 @@ class _GameOptionsModal extends StatelessWidget {
     final AlertDialog alert = AlertDialog(
       title: Text(
         S.of(context).restart,
-        textScaleFactor: DB().displaySettings.fontScale,
+        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),
       content: Text(
         S.of(context).restartGame,
-        textScaleFactor: DB().displaySettings.fontScale,
+        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),
       actions: <Widget>[
         yesButton,

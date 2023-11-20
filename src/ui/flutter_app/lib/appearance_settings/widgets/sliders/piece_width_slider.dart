@@ -36,7 +36,7 @@ class _PieceWidthSlider extends StatelessWidget {
             value: displaySettings.pieceWidth,
             min: 0.5,
             divisions: 50,
-            label: (displaySettings.pieceWidth).toStringAsFixed(1),
+            label: displaySettings.pieceWidth.toStringAsFixed(1),
             onChanged: (double value) {
               logger.v("[config] pieceWidth value: $value");
               DB().displaySettings =

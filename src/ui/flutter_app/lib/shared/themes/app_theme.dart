@@ -161,8 +161,8 @@ class AppTheme {
   );
 
   static final TextStyle notationTextStyle = TextStyle(
-    fontSize: 20,
     color: DB().colorSettings.boardLineColor,
+    fontSize: AppTheme.textScaler.scale(20),
   );
 
   static const TextStyle listTileSubtitleStyle = TextStyle(
@@ -180,6 +180,9 @@ class AppTheme {
   static const TextStyle helpTextStyle = TextStyle(
     color: helpTextColor,
   );
+
+  static const double defaultFontSize = 14.0;
+  static TextScaler textScaler = TextScaler.linear(DB().displaySettings.fontScale);
 
   static const double boardMargin = 10.0;
   static const double boardBorderRadius = 5.0;

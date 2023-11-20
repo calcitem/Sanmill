@@ -70,7 +70,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).yes,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () async {
             final GeneralSettings settings = DB().generalSettings;
@@ -94,7 +94,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).no,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             GameController().reset(force: true);
@@ -108,7 +108,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -118,7 +118,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).restart,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             GameController().reset(force: true);
@@ -132,7 +132,7 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            textScaleFactor: DB().displaySettings.fontScale,
+            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -143,11 +143,10 @@ class GameResultAlertDialog extends StatelessWidget {
       title: Text(
         dialogTitle,
         style: AppTheme.dialogTitleTextStyle,
-        textScaleFactor: DB().displaySettings.fontScale,
       ),
       content: Text(
         content.toString(),
-        textScaleFactor: DB().displaySettings.fontScale,
+        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),
       actions: actions,
     );

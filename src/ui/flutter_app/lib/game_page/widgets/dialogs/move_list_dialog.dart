@@ -29,7 +29,8 @@ class _MoveListDialog extends StatelessWidget {
     final TextStyle titleTextStyle = Theme.of(context)
         .textTheme
         .titleLarge!
-        .copyWith(color: AppTheme.gamePageActionSheetTextColor);
+        .copyWith(color: AppTheme.gamePageActionSheetTextColor,
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),);
     final TextStyle buttonTextStyle = titleTextStyle;
 
     if (DB().generalSettings.screenReaderSupport) {
@@ -40,15 +41,14 @@ class _MoveListDialog extends StatelessWidget {
       child: AlertDialog(
         title: Text(
           S.of(context).moveList,
-          style: titleTextStyle,
-          textScaleFactor: DB().displaySettings.fontScale,
+          style: titleTextStyle.copyWith(fontSize: AppTheme.textScaler.scale(titleTextStyle.fontSize ?? AppTheme.defaultFontSize)),
         ),
         content: SingleChildScrollView(
           child: Text(
             moveHistoryText,
             textDirection: TextDirection.ltr,
-            textScaleFactor: DB().displaySettings.fontScale,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                fontSize: AppTheme.textScaler.scale(titleTextStyle.fontSize ?? AppTheme.defaultFontSize),
                 color: AppTheme.gamePageActionSheetTextColor,
                 fontWeight: FontWeight.normal,
                 // ignore: always_specify_types
@@ -61,7 +61,6 @@ class _MoveListDialog extends StatelessWidget {
               child: Text(
                 S.of(context).rollback,
                 style: buttonTextStyle,
-                textScaleFactor: DB().displaySettings.fontScale,
               ),
               onPressed: () async => _rollback(context, end),
             ),
@@ -69,7 +68,6 @@ class _MoveListDialog extends StatelessWidget {
             child: Text(
               S.of(context).copy,
               style: buttonTextStyle,
-              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => GameController.export(context),
           ),
@@ -77,7 +75,6 @@ class _MoveListDialog extends StatelessWidget {
             child: Text(
               S.of(context).cancel,
               style: buttonTextStyle,
-              textScaleFactor: DB().displaySettings.fontScale,
             ),
             onPressed: () => Navigator.pop(context),
           ),

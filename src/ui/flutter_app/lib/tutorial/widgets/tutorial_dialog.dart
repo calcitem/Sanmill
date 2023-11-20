@@ -494,11 +494,10 @@ class _Step1 extends StatelessWidget {
           child: Text(
             "${S.of(context).appName}\n${S.of(context).howToPlay}",
             maxLines: 4,
-            style: const TextStyle(
-              fontSize: 32,
+            style: TextStyle(
               color: Colors.white,
+              fontSize: AppTheme.textScaler.scale(32.0),
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         )
       ],
@@ -519,11 +518,10 @@ class _Step2 extends StatelessWidget {
         children: <Widget>[
           Text(
             "${S.of(context).placingPhase}\n${S.of(context).toPlacePiece}",
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ],
       ),
@@ -545,11 +543,10 @@ class _Step3 extends StatelessWidget {
           child: Text(
             S.of(context).isPieceCountInHandShown,
             maxLines: 4,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         )
       ],
@@ -632,11 +629,10 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
           child: Text(
             "${S.of(context).movingPhase}\n${S.of(context).toSelectPiece}\n${S.of(context).toMovePiece}",
             maxLines: 4,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         )
       ],
@@ -664,11 +660,10 @@ class _Step5 extends StatelessWidget {
           child: Text(
             text,
             maxLines: 4,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         )
       ],
@@ -751,11 +746,10 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
           child: Text(
             S.of(context).mayFly_Detail,
             maxLines: 4,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         )
       ],
@@ -776,11 +770,10 @@ class _Step7 extends StatelessWidget {
         children: <Widget>[
           Text(
             S.of(context).youCanModifyRules,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(16),
               color: Colors.white,
             ),
-            textScaleFactor: DB().displaySettings.fontScale,
           ),
         ],
       ),

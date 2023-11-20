@@ -165,7 +165,7 @@ class SanmillApp extends StatelessWidget {
         _initializeScreenOrientation(context);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
-            textScaleFactor: displaySettings.fontScale,
+            textScaler: TextScaler.linear(displaySettings.fontScale),
           ),
           child: child!,
         );
