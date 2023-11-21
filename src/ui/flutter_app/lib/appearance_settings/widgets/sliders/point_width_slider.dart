@@ -33,16 +33,21 @@ class _PointWidthSlider extends StatelessWidget {
             defaultValue: const DisplaySettings(),
           )!;
 
-          return Slider(
-            value: displaySettings.pointWidth,
-            max: 30.0,
-            divisions: 30,
-            label: displaySettings.pointWidth.toStringAsFixed(1),
-            onChanged: (double value) {
-              logger.v("[config] pointWidth value: $value");
-              DB().displaySettings =
-                  displaySettings.copyWith(pointWidth: value);
-            },
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: displaySettings.pointWidth,
+                max: 30.0,
+                divisions: 30,
+                label: displaySettings.pointWidth.toStringAsFixed(1),
+                onChanged: (double value) {
+                  logger.v("[config] pointWidth value: $value");
+                  DB().displaySettings =
+                      displaySettings.copyWith(pointWidth: value);
+                },
+              ),
+            ),
           );
         },
       ),

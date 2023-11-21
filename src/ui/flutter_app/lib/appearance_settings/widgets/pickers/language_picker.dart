@@ -46,7 +46,8 @@ class _LanguagePickerState extends State<_LanguagePicker> {
         RadioListTile<Locale?>(
           title: Text(
             S.of(context).defaultLanguage,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           groupValue: _selectedLocale,
           value: null,
@@ -62,7 +63,9 @@ class _LanguagePickerState extends State<_LanguagePicker> {
           RadioListTile<Locale>(
             title: Text(
               localeToLanguageName[locale]!,
-              style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              style: TextStyle(
+                  fontSize:
+                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
             ),
             groupValue: _selectedLocale,
             value: locale,

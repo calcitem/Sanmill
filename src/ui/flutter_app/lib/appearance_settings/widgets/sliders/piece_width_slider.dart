@@ -32,16 +32,21 @@ class _PieceWidthSlider extends StatelessWidget {
           )!;
 
           // Divided by [MigrationValues.pieceWidth] To represent the old behavior
-          return Slider(
-            value: displaySettings.pieceWidth,
-            min: 0.5,
-            divisions: 50,
-            label: displaySettings.pieceWidth.toStringAsFixed(1),
-            onChanged: (double value) {
-              logger.v("[config] pieceWidth value: $value");
-              DB().displaySettings =
-                  displaySettings.copyWith(pieceWidth: value);
-            },
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: displaySettings.pieceWidth,
+                min: 0.5,
+                divisions: 50,
+                label: displaySettings.pieceWidth.toStringAsFixed(1),
+                onChanged: (double value) {
+                  logger.v("[config] pieceWidth value: $value");
+                  DB().displaySettings =
+                      displaySettings.copyWith(pieceWidth: value);
+                },
+              ),
+            ),
           );
         },
       ),

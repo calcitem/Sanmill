@@ -134,13 +134,14 @@ class _InfoDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return GamePageActionSheet(
       child: AlertDialog(
+        backgroundColor: UIColors.semiTransparentBlack,
         content: SingleChildScrollView(
           child: Text(
             _infoText(context),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppTheme.gamePageActionSheetTextColor,
                   fontWeight: FontWeight.normal,
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                  fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
                 ),
           ),
         ),
@@ -152,7 +153,8 @@ class _InfoDialog extends StatelessWidget {
                 key: const Key('infoDialogMoreButton'),
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.gamePageActionSheetTextColor,
-                      fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                      fontSize:
+                          AppTheme.textScaler.scale(AppTheme.largeFontSize),
                     ),
               ),
               onPressed: () async {
@@ -172,7 +174,9 @@ class _InfoDialog extends StatelessWidget {
                 final Widget copyButton = TextButton(
                   child: Text(
                     S.of(context).copy,
-                    style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    style: TextStyle(
+                        fontSize: AppTheme.textScaler
+                            .scale(AppTheme.largeFontSize)),
                   ),
                   onPressed: () {
                     Clipboard.setData(
@@ -190,7 +194,9 @@ class _InfoDialog extends StatelessWidget {
                 final Widget okButton = TextButton(
                     child: Text(
                       S.of(context).ok,
-                      style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                      style: TextStyle(
+                          fontSize: AppTheme.textScaler
+                              .scale(AppTheme.largeFontSize)),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -199,7 +205,9 @@ class _InfoDialog extends StatelessWidget {
                 final AlertDialog alert = AlertDialog(
                   title: Text(
                     S.of(context).more,
-                    style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    style: TextStyle(
+                        fontSize: AppTheme.textScaler
+                            .scale(AppTheme.largeFontSize)),
                   ),
                   content: Text(
                     content,
@@ -223,7 +231,8 @@ class _InfoDialog extends StatelessWidget {
               key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
-                    fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                    fontSize:
+                        AppTheme.textScaler.scale(AppTheme.largeFontSize),
                   ),
             ),
             onPressed: () => Navigator.pop(context),

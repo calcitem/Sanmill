@@ -19,6 +19,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import '../generated/assets/assets.gen.dart';
 import '../generated/intl/l10n.dart';
+import '../shared/themes/app_theme.dart';
 
 class LicenseAgreementPage extends StatelessWidget {
   const LicenseAgreementPage({super.key});
@@ -39,7 +40,10 @@ class LicenseAgreementPage extends StatelessWidget {
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
-              title: Text(S.of(context).license),
+              title: Text(
+                S.of(context).license,
+                style: AppTheme.appBarTheme.titleTextStyle,
+              ),
             ),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(16),

@@ -31,16 +31,21 @@ class _AiResponseDelayTimeSlider extends StatelessWidget {
             defaultValue: const DisplaySettings(),
           )!;
 
-          return Slider(
-            value: displaySettings.aiResponseDelayTime,
-            max: 15.0,
-            divisions: 15,
-            label: displaySettings.aiResponseDelayTime.toStringAsFixed(1),
-            onChanged: (double value) {
-              logger.v("[config] AiResponseDelayTime value: $value");
-              DB().displaySettings =
-                  displaySettings.copyWith(aiResponseDelayTime: value);
-            },
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: displaySettings.aiResponseDelayTime,
+                max: 15.0,
+                divisions: 15,
+                label: displaySettings.aiResponseDelayTime.toStringAsFixed(1),
+                onChanged: (double value) {
+                  logger.v("[config] AiResponseDelayTime value: $value");
+                  DB().displaySettings =
+                      displaySettings.copyWith(aiResponseDelayTime: value);
+                },
+              ),
+            ),
           );
         },
       ),

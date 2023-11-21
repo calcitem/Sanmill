@@ -51,7 +51,12 @@ class SettingsCard extends StatelessWidget {
                   i == children.length - 1
                       ? children[i]
                       : Column(
-                          children: <Widget>[children[i], const Divider()],
+                          children: <Widget>[
+                            children[i],
+                            const Divider(
+                              color: AppTheme.listItemDividerColor,
+                            )
+                          ],
                         ),
               ],
             ),

@@ -46,7 +46,9 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
           children: <Widget>[
             Text(
               S.of(context).perfectDatabaseDescription,
-              style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              style: TextStyle(
+                  fontSize:
+                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
             ),
             const SizedBox(height: 16),
             InkWell(
@@ -67,7 +69,8 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
           onPressed: () => _ok(context),
           child: Text(
             S.of(context).ok,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
         ),
       ],

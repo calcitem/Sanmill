@@ -83,6 +83,8 @@ class UIColors {
   static const Color seashell = Color(0xFFF1F1F1);
   static const Color seashell50 = Color(0x80F1F1F1);
 
+  static const Color semiTransparentBlack = Color(0x4D000000);
+
   static const Color spruce = Color(0xFF0A5F38);
 
   static const Color starDust = Color(0xFF9F9F9C);

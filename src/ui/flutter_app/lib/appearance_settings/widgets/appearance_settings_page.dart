@@ -395,7 +395,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(S.of(context).appearance),
+          title: Text(
+            S.of(context).appearance,
+            style: AppTheme.appBarTheme.titleTextStyle,
+          ),
         ),
         body: SettingsList(
           children: <Widget>[

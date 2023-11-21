@@ -72,7 +72,9 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
               TextButton(
                 child: Text(
                   S.of(context).cancel,
-                  style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                  style: TextStyle(
+                      fontSize:
+                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -89,7 +91,9 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             TextButton(
               child: Text(
                 S.of(context).confirm,
-                style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                style: TextStyle(
+                    fontSize:
+                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () {
                 DB().generalSettings =

@@ -26,11 +26,11 @@ class _MoveListDialog extends StatelessWidget {
     final String moveHistoryText = controller.gameRecorder.moveHistoryText;
     final int end = controller.gameRecorder.length - 1;
 
-    final TextStyle titleTextStyle = Theme.of(context)
-        .textTheme
-        .titleLarge!
-        .copyWith(color: AppTheme.gamePageActionSheetTextColor,
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),);
+    final TextStyle titleTextStyle =
+        Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: AppTheme.gamePageActionSheetTextColor,
+              fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+            );
     final TextStyle buttonTextStyle = titleTextStyle;
 
     if (DB().generalSettings.screenReaderSupport) {
@@ -39,16 +39,20 @@ class _MoveListDialog extends StatelessWidget {
 
     return GamePageActionSheet(
       child: AlertDialog(
+        backgroundColor: UIColors.semiTransparentBlack,
         title: Text(
           S.of(context).moveList,
-          style: titleTextStyle.copyWith(fontSize: AppTheme.textScaler.scale(titleTextStyle.fontSize ?? AppTheme.defaultFontSize)),
+          style: titleTextStyle.copyWith(
+              fontSize: AppTheme.textScaler
+                  .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize)),
         ),
         content: SingleChildScrollView(
           child: Text(
             moveHistoryText,
             textDirection: TextDirection.ltr,
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontSize: AppTheme.textScaler.scale(titleTextStyle.fontSize ?? AppTheme.defaultFontSize),
+                fontSize: AppTheme.textScaler
+                    .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize),
                 color: AppTheme.gamePageActionSheetTextColor,
                 fontWeight: FontWeight.normal,
                 // ignore: always_specify_types

@@ -31,25 +31,30 @@ class _MoveTimeSlider extends StatelessWidget {
             defaultValue: const GeneralSettings(),
           )!;
 
-          return Slider(
-            value: DB().generalSettings.moveTime.toDouble(),
-            max: 60,
-            divisions: 60,
-            label: DB().generalSettings.moveTime.toString(),
-            onChanged: (double value) {
-              DB().generalSettings =
-                  generalSettings.copyWith(moveTime: value.toInt());
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: DB().generalSettings.moveTime.toDouble(),
+                max: 60,
+                divisions: 60,
+                label: DB().generalSettings.moveTime.toString(),
+                onChanged: (double value) {
+                  DB().generalSettings =
+                      generalSettings.copyWith(moveTime: value.toInt());
 
-              if (DB().generalSettings.moveTime == 0) {
-                rootScaffoldMessengerKey.currentState!
-                    .showSnackBarClear(S.of(context).noTimeLimitForThinking);
-              } else {
-                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                    S.of(context).noteAiThinkingTimeMayNotBePrecise);
-              }
+                  if (DB().generalSettings.moveTime == 0) {
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).noTimeLimitForThinking);
+                  } else {
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).noteAiThinkingTimeMayNotBePrecise);
+                  }
 
-              logger.v("Move time Slider value: $value");
-            },
+                  logger.v("Move time Slider value: $value");
+                },
+              ),
+            ),
           );
         },
       ),

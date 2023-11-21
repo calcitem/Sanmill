@@ -70,7 +70,8 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).yes,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () async {
             final GeneralSettings settings = DB().generalSettings;
@@ -94,7 +95,8 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).no,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             GameController().reset(force: true);
@@ -108,7 +110,8 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -118,7 +121,8 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).restart,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             GameController().reset(force: true);
@@ -132,7 +136,8 @@ class GameResultAlertDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).cancel,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -146,7 +151,8 @@ class GameResultAlertDialog extends StatelessWidget {
       ),
       content: Text(
         content.toString(),
-        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+        style: TextStyle(
+            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),
       actions: actions,
     );

@@ -412,7 +412,10 @@ class RuleSettingsPage extends StatelessWidget {
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(S.of(context).ruleSettings),
+          title: Text(
+            S.of(context).ruleSettings,
+            style: AppTheme.appBarTheme.titleTextStyle,
+          ),
         ),
         body: ValueListenableBuilder<Box<RuleSettings>>(
           valueListenable: DB().listenRuleSettings,

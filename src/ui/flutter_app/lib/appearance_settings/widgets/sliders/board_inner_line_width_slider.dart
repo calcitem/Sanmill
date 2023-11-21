@@ -31,16 +31,21 @@ class _BoardInnerLineWidthSlider extends StatelessWidget {
             defaultValue: const DisplaySettings(),
           )!;
 
-          return Slider(
-            value: displaySettings.boardInnerLineWidth,
-            max: 20,
-            divisions: 200,
-            label: displaySettings.boardInnerLineWidth.toStringAsFixed(1),
-            onChanged: (double value) {
-              logger.v("[config] BoardInnerLineWidth value: $value");
-              DB().displaySettings =
-                  displaySettings.copyWith(boardInnerLineWidth: value);
-            },
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: displaySettings.boardInnerLineWidth,
+                max: 20,
+                divisions: 200,
+                label: displaySettings.boardInnerLineWidth.toStringAsFixed(1),
+                onChanged: (double value) {
+                  logger.v("[config] BoardInnerLineWidth value: $value");
+                  DB().displaySettings =
+                      displaySettings.copyWith(boardInnerLineWidth: value);
+                },
+              ),
+            ),
           );
         },
       ),

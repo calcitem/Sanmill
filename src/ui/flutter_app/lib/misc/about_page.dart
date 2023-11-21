@@ -142,7 +142,10 @@ class AboutPage extends StatelessWidget {
         backgroundColor: AppTheme.aboutPageBackgroundColor,
         appBar: AppBar(
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(S.of(context).about),
+          title: Text(
+            S.of(context).about,
+            style: AppTheme.appBarTheme.titleTextStyle,
+          ),
         ),
         body: ListView.separated(
           itemBuilder: (_, int index) => settingsItems[index],
@@ -190,7 +193,8 @@ class _VersionDialog extends StatelessWidget {
         children: <Widget>[
           Text(
             S.of(context).version(appVersion),
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           const CustomSpacer(),
           FutureBuilder<GitInfo>(
@@ -203,14 +207,18 @@ class _VersionDialog extends StatelessWidget {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Branch: ${snapshot.data!.branch}',
-                        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                        style: TextStyle(
+                            fontSize: AppTheme.textScaler
+                                .scale(AppTheme.defaultFontSize)),
                       ),
                     ),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Revision: ${snapshot.data!.revision}',
-                        style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                        style: TextStyle(
+                            fontSize: AppTheme.textScaler
+                                .scale(AppTheme.defaultFontSize)),
                       ),
                     ),
                   ],
@@ -226,7 +234,8 @@ class _VersionDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).more,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
             Navigator.pop(context);
@@ -241,7 +250,8 @@ class _VersionDialog extends StatelessWidget {
         TextButton(
           child: Text(
             S.of(context).ok,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),
@@ -306,7 +316,8 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
         TextButton(
           child: Text(
             S.of(context).ok,
-            style: TextStyle(fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () => Navigator.pop(context),
         ),

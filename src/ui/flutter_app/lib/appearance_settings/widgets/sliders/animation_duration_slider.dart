@@ -31,16 +31,21 @@ class _AnimationDurationSlider extends StatelessWidget {
             defaultValue: const DisplaySettings(),
           )!;
 
-          return Slider(
-            value: displaySettings.animationDuration,
-            max: 5.0,
-            divisions: 50,
-            label: displaySettings.animationDuration.toStringAsFixed(1),
-            onChanged: (double value) {
-              logger.v("[config] AnimationDuration value: $value");
-              DB().displaySettings =
-                  displaySettings.copyWith(animationDuration: value);
-            },
+          return Center(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              child: Slider(
+                value: displaySettings.animationDuration,
+                max: 5.0,
+                divisions: 50,
+                label: displaySettings.animationDuration.toStringAsFixed(1),
+                onChanged: (double value) {
+                  logger.v("[config] AnimationDuration value: $value");
+                  DB().displaySettings =
+                      displaySettings.copyWith(animationDuration: value);
+                },
+              ),
+            ),
           );
         },
       ),
