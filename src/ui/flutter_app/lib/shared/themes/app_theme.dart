@@ -48,18 +48,21 @@ class AppTheme {
 
   /// Light theme
   static final ThemeData lightThemeData = ThemeData(
-    useMaterial3: false,
+    useMaterial3: true,
     brightness: Brightness.light,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
     dividerColor: _listItemDividerColor,
     cardTheme: _cardTheme,
     dividerTheme: _dividerTheme,
+    switchTheme: _lightSwitchTheme,
+    appBarTheme: _appBarTheme,
+    textTheme: _textTheme,
   );
 
   /// Dark theme
   static final ThemeData darkThemeData = ThemeData(
-    useMaterial3: false,
+    useMaterial3: true,
     brightness: Brightness.dark,
     primarySwatch: _appPrimaryColor,
     sliderTheme: _sliderThemeData,
@@ -68,50 +71,31 @@ class AppTheme {
     dividerTheme: _dividerTheme,
     checkboxTheme: CheckboxThemeData(
       fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _appPrimaryColor;
-        }
-        return null;
-      }),
+              (Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return null;
+            }
+            if (states.contains(MaterialState.selected)) {
+              return _appPrimaryColor;
+            }
+            return null;
+          }),
     ),
     radioTheme: RadioThemeData(
       fillColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _appPrimaryColor;
-        }
-        return null;
-      }),
+              (Set<MaterialState> states) {
+            if (states.contains(MaterialState.disabled)) {
+              return null;
+            }
+            if (states.contains(MaterialState.selected)) {
+              return _appPrimaryColor;
+            }
+            return null;
+          }),
     ),
-    switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _appPrimaryColor;
-        }
-        return null;
-      }),
-      trackColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-        if (states.contains(MaterialState.disabled)) {
-          return null;
-        }
-        if (states.contains(MaterialState.selected)) {
-          return _appPrimaryColor;
-        }
-        return null;
-      }),
-    ),
+    switchTheme: _darkSwitchTheme,
+    appBarTheme: _appBarTheme,
+    textTheme: _textTheme,
   );
 
   // Color
@@ -150,6 +134,73 @@ class AppTheme {
   static const CardTheme _cardTheme = CardTheme(
     margin: EdgeInsets.symmetric(vertical: 4.0),
     color: _cardColor,
+  );
+
+  static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
+    thumbColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return _appPrimaryColor;
+      }
+      return Colors.grey;
+    }),
+    trackColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return _appPrimaryColor.withOpacity(0.5);
+      }
+      return Colors.grey.withOpacity(0.5);
+    }),
+    trackOutlineColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return _appPrimaryColor;
+      }
+      return Colors.transparent;
+    }),
+  );
+
+  static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
+    thumbColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return null;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return _appPrimaryColor;
+          }
+          return null;
+        }),
+    trackColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) {
+            return null;
+          }
+          if (states.contains(MaterialState.selected)) {
+            return _appPrimaryColor;
+          }
+          return null;
+        }),
+    trackOutlineColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+      if (states.contains(MaterialState.disabled)) {
+        return _appPrimaryColor;
+      }
+      return Colors.transparent;
+    }),
+  );
+
+  static const AppBarTheme _appBarTheme = AppBarTheme(
+    color: _appPrimaryColor,
+    titleTextStyle: TextStyle(
+      color: Colors.white,
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+    ),
+    elevation: 4.0,
+    iconTheme: IconThemeData(color: Colors.white),
+  );
+
+  static const TextTheme _textTheme = TextTheme(
+    headlineLarge: TextStyle(fontSize: 24.0),
+    labelMedium: TextStyle(fontSize: 16.0),
+    labelSmall: TextStyle(fontSize: 14.0),
   );
 
   static FeedbackThemeData feedbackTheme = FeedbackThemeData(
