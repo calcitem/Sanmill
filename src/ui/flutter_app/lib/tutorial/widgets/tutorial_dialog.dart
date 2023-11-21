@@ -71,10 +71,14 @@ class _TutorialDialogState extends State<TutorialDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) {
+          return;
+        }
         prevStep();
-        return false;
+        return;
       },
       child: OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {

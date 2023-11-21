@@ -17,6 +17,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 typedef WillBackCall = bool Function();
 
@@ -78,8 +79,9 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
     }());
 
     if (_isAndroid) {
-      return WillPopScope(
-        onWillPop: _handleWillPop,
+      return PopScope(
+        canPop: false,
+        onPopInvoked: _handleWillPop,
         child: widget.child,
       );
     } else {
@@ -87,13 +89,18 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
     }
   }
 
-  /// Handles [WillPopScope.onWillPop].
-  Future<bool> _handleWillPop() async {
+  /// Handles [PopScope.onPopInvoked].
+  Future<bool> _handleWillPop(bool didPop) async {
+    if (didPop) {
+      return false;
+    }
+
     if (widget.willBack != null && !widget.willBack!.call()) {
       return false;
     }
 
     if (_isSnackBarVisible || _willHandlePopInternally) {
+      SystemNavigator.pop();
       return true;
     } else {
       final ScaffoldMessengerState scaffoldMessenger =
