@@ -75,8 +75,7 @@ class GamePageDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     // The paddingScaleFactor is used to adjust the padding of Dialog
     // children.
-    final double paddingScaleFactor =
-        _paddingScaleFactor(MediaQuery.of(context).textScaleFactor);
+    final double paddingScaleFactor = _paddingScaleFactor(TextScaler.noScaling.scale(1.0));
 
     final Builder contentWidget = Builder(
       builder: (BuildContext context) => DefaultTextStyle(

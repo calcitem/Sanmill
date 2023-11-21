@@ -28,7 +28,7 @@ class TextSizeHelper {
     final TextPainter textSizePainter = TextPainter(
         textDirection: TextDirection.ltr,
         text: TextSpan(text: inputText, style: inputTextStyle),
-        textScaleFactor: MediaQuery.of(context).textScaleFactor,
+        textScaler: MediaQuery.of(context).textScaler,
         locale: Localizations.localeOf(context),
         maxLines: maxLines)
       ..layout(maxWidth: maxWidth);

@@ -295,11 +295,17 @@ class ToolbarItem extends ButtonStyleButton {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
 
+    const TextScaler scaler = TextScaler.noScaling;
+
+    const double fontSize = 1.0;
+    final double scaledFontSize = scaler.scale(fontSize);
+    final double scaleFactor = scaledFontSize / fontSize;
+
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsets.all(8),
       const EdgeInsets.symmetric(horizontal: 8),
       const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+      scaleFactor,
     );
 
     return styleFrom(
@@ -413,13 +419,18 @@ class _ToolbarItemWithIcon extends ToolbarItem {
           child: _ToolbarItemChild(icon: icon, label: label),
         );
 
+  static const TextScaler scaler = TextScaler.noScaling;
+
+  static const double fontSize = 1.0;
+  final double scaleFactor = scaler.scale(fontSize) / fontSize;
+
   @override
   ButtonStyle defaultStyleOf(BuildContext context) {
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsets.all(8),
       const EdgeInsets.symmetric(horizontal: 4),
       const EdgeInsets.symmetric(horizontal: 4),
-      MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
+      scaleFactor,
     );
     return super.defaultStyleOf(context).copyWith(
           padding: MaterialStateProperty.all<EdgeInsetsGeometry>(scaledPadding),
