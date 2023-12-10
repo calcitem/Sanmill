@@ -23,8 +23,9 @@ part of '../../../game_page/widgets/painters/painters.dart';
 class PiecePaintParam {
   const PiecePaintParam({
     required this.piece,
-    required this.pos,
-    required this.animated,
+    required this.startPos,
+    required this.endPos,
+    required this.animationProgress,
     required this.diameter,
   });
 
@@ -35,8 +36,9 @@ class PiecePaintParam {
   ///
   /// This represents the final position on the canvas.
   /// To extract this information from the board index use [pointFromIndex].
-  final Offset pos;
-  final bool animated;
+  final Offset startPos;
+  final Offset endPos;
+  final double animationProgress;
   final double diameter;
 }
 
@@ -57,6 +59,7 @@ class PiecePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
     final int? focusIndex = GameController().gameInstance.focusIndex;
+    final int? previousFocusIndex = GameController().gameInstance.previousFocusIndex;
     final int? blurIndex = GameController().gameInstance.blurIndex;
 
     final Paint paint = Paint();
@@ -67,7 +70,6 @@ class PiecePainter extends CustomPainter {
             DB().displaySettings.pieceWidth /
             6 -
         1;
-    final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
     for (int row = 0; row < 7; row++) {
@@ -82,22 +84,17 @@ class PiecePainter extends CustomPainter {
           continue;
         }
 
-        final Offset pos = pointFromIndex(index, size);
+        final Offset startPos = pointFromIndex(previousFocusIndex ?? index, size);
+        final Offset endPos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
 
         piecesToDraw.add(
           PiecePaintParam(
             piece: piece,
-            pos: pos,
-            animated: animated,
+            startPos: startPos,
+            endPos: endPos,
+            animationProgress: animated ? animationValue : 1.0,
             diameter: pieceWidth,
-          ),
-        );
-
-        shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: (animated ? animatedPieceWidth : pieceWidth) / 2,
           ),
         );
       }
@@ -116,26 +113,19 @@ class PiecePainter extends CustomPainter {
       );
       blurPositionColor = piece.piece.blurPositionColor;
 
-      final double pieceRadius = pieceWidth / 2;
-      final double pieceInnerRadius = pieceRadius * 0.99;
-
-      final double animatedPieceRadius = animatedPieceWidth / 2;
-      final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
+      final Offset currentPosition = Offset.lerp(
+          piece.startPos,
+          piece.endPos,
+          piece.animationProgress
+      )!;
 
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceRadius : pieceRadius,
-        paint,
-      );
+      canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
+
       // Draw the piece
       paint.color = piece.piece.pieceColor;
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
-        paint,
-      );
+      canvas.drawCircle(currentPosition, (piece.diameter / 2) * 0.99, paint);
     }
 
     // Draw focus and blur position
@@ -147,7 +137,7 @@ class PiecePainter extends CustomPainter {
 
       canvas.drawCircle(
         pointFromIndex(focusIndex, size),
-        animatedPieceWidth / 2,
+        pieceWidth / 2,
         paint,
       );
     }
@@ -159,7 +149,7 @@ class PiecePainter extends CustomPainter {
 
       canvas.drawCircle(
         pointFromIndex(blurIndex, size),
-        animatedPieceWidth / 2 * 0.8,
+        pieceWidth / 2 * 0.8,
         paint,
       );
     }

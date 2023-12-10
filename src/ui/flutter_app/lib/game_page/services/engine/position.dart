@@ -479,6 +479,7 @@ class Position {
             changeSideToMove();
           }
           GameController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.previousFocusIndex = null;
           SoundManager().playTone(Sound.place);
         } else {
           pieceToRemoveCount[sideToMove] =
@@ -516,6 +517,7 @@ class Position {
           }
 
           GameController().gameInstance.focusIndex = squareToIndex[s];
+          GameController().gameInstance.previousFocusIndex = null;
           SoundManager().playTone(Sound.mill);
         }
         break;
@@ -582,6 +584,8 @@ class Position {
             isNeedStalemateRemoval = true;
           }
 
+          GameController().gameInstance.previousFocusIndex =
+              GameController().gameInstance.focusIndex;
           GameController().gameInstance.focusIndex = squareToIndex[s];
 
           SoundManager().playTone(Sound.place);
@@ -590,6 +594,8 @@ class Position {
               DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
+          GameController().gameInstance.previousFocusIndex =
+              GameController().gameInstance.focusIndex;
           GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.mill);
         }
@@ -727,6 +733,9 @@ class Position {
     _currentSquare = sq;
     action = Act.place;
     GameController().gameInstance.blurIndex = squareToIndex[sq];
+
+    GameController().gameInstance.previousFocusIndex = GameController().gameInstance.focusIndex;
+    GameController().gameInstance.focusIndex = squareToIndex[sq];
 
     return const GameResponseOK();
   }

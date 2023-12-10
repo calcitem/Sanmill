@@ -64,9 +64,22 @@ class _GameBoardState extends State<GameBoard>
       ),
     );
 
-    // sqrt(1.618) = 1.272
-    GameController().animation = Tween<double>(begin: 1.27, end: 1.0)
+    GameController().animationController.addStatusListener((AnimationStatus status) {
+      if (status == AnimationStatus.completed) {
+        _onAnimationComplete();
+      }
+    });
+
+    GameController().animation = Tween<double>(begin: 0, end: 1)
         .animate(GameController().animationController);
+  }
+
+  void _onAnimationComplete() {
+    if (GameController().position.action == Act.remove) {
+      if (kDebugMode) {
+        print("$_logTag Remove animation completed.");
+      }
+    }
   }
 
   Future<void> _setReadyState() async {

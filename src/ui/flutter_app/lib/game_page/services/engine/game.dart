@@ -39,6 +39,7 @@ class Game {
   bool get isHumanToMove => !isAiToMove;
 
   int? focusIndex;
+  int? previousFocusIndex;
   int? blurIndex;
 
   final List<Player> players = <Player>[
@@ -100,6 +101,7 @@ class Game {
 
   void _select(int pos) {
     focusIndex = pos;
+    previousFocusIndex = null;
     blurIndex = null;
   }
 

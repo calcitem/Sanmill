@@ -75,6 +75,9 @@ class GameController {
   late AnimationController animationController;
   late Animation<double> animation;
 
+  Offset? animatedStartPos;
+  Offset? animatedEndPos;
+
   bool _isInitialized = false;
   bool get initialized => _isInitialized;
 
@@ -419,4 +422,11 @@ class GameController {
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
       ImportService.exportGame(context);
+
+  void startPieceMoveAnimation(int startIndex, int endIndex) {
+    animatedStartPos = pointFromIndex(startIndex, Size.zero);
+    animatedEndPos = pointFromIndex(endIndex, Size.zero);
+    animationController.reset();
+    animationController.forward();
+  }
 }
