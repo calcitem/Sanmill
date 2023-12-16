@@ -54,6 +54,7 @@ class TutorialPainter extends CustomPainter {
             piece: piece,
             startPos: pos,  // TODO:
             endPos: pos, // TODO:
+            animationType: PieceAnimationType.place,
             animationProgress: 50,  // TODO:
             diameter: pieceWidth,
           ),

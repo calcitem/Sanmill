@@ -16,6 +16,13 @@
 
 part of '../mill.dart';
 
+enum AnimationType {
+  none,
+  place,
+  remove,
+  move,
+}
+
 /// Game Controller
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
@@ -77,6 +84,7 @@ class GameController {
 
   Offset? animatedStartPos;
   Offset? animatedEndPos;
+  AnimationType currentAnimationType = AnimationType.none;
 
   bool _isInitialized = false;
   bool get initialized => _isInitialized;
@@ -422,11 +430,4 @@ class GameController {
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
       ImportService.exportGame(context);
-
-  void startPieceMoveAnimation(int startIndex, int endIndex) {
-    animatedStartPos = pointFromIndex(startIndex, Size.zero);
-    animatedEndPos = pointFromIndex(endIndex, Size.zero);
-    animationController.reset();
-    animationController.forward();
-  }
 }

@@ -16,6 +16,16 @@
 
 part of '../../../game_page/widgets/painters/painters.dart';
 
+/// Piece Animation Type
+///
+/// The type of animation to play when placing/moving/removing a piece.
+enum PieceAnimationType {
+  none,
+  place,
+  remove,
+  move,
+}
+
 /// Piece Information
 ///
 /// Holds parameters needed to paint each piece.
@@ -25,6 +35,7 @@ class PiecePaintParam {
     required this.piece,
     required this.startPos,
     required this.endPos,
+    required this.animationType,
     required this.animationProgress,
     required this.diameter,
   });
@@ -38,6 +49,7 @@ class PiecePaintParam {
   /// To extract this information from the board index use [pointFromIndex].
   final Offset startPos;
   final Offset endPos;
+  final PieceAnimationType animationType;
   final double animationProgress;
   final double diameter;
 }
@@ -67,8 +79,8 @@ class PiecePainter extends CustomPainter {
     final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
 
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
-            DB().displaySettings.pieceWidth /
-            6 -
+        DB().displaySettings.pieceWidth /
+        6 -
         1;
 
     // Draw pieces on board
@@ -88,11 +100,32 @@ class PiecePainter extends CustomPainter {
         final Offset endPos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
 
+        late PieceAnimationType pieceAnimationType;
+
+        if (GameController().position.phase == Phase.placing) {
+          if (GameController().position.action == Act.place) {
+            pieceAnimationType = PieceAnimationType.place;
+          } else if (GameController().position.action == Act.remove) {
+            pieceAnimationType = PieceAnimationType.remove;
+          } else {
+            pieceAnimationType = PieceAnimationType.none;
+          }
+        } else if (GameController().position.phase == Phase.moving) {
+          if (GameController().position.action == Act.remove) {
+            pieceAnimationType = PieceAnimationType.none;
+          } else {
+            pieceAnimationType = PieceAnimationType.move;
+          }
+        } else {
+          pieceAnimationType = PieceAnimationType.none;
+        }
+
         piecesToDraw.add(
           PiecePaintParam(
             piece: piece,
             startPos: startPos,
             endPos: endPos,
+            animationType: pieceAnimationType,
             animationProgress: animated ? animationValue : 1.0,
             diameter: pieceWidth,
           ),
@@ -107,9 +140,9 @@ class PiecePainter extends CustomPainter {
     late Color blurPositionColor;
     for (final PiecePaintParam piece in piecesToDraw) {
       assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
+      piece.piece == PieceColor.black ||
+          piece.piece == PieceColor.white ||
+          piece.piece == PieceColor.ban,
       );
       blurPositionColor = piece.piece.blurPositionColor;
 
@@ -124,8 +157,27 @@ class PiecePainter extends CustomPainter {
       canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
 
       // Draw the piece
+      double currentDiameter;
+      switch (piece.animationType) {
+        case PieceAnimationType.place:
+          currentDiameter = lerpDouble(1.1 * piece.diameter, piece.diameter, piece.animationProgress)!;
+          break;
+        case PieceAnimationType.remove:
+          currentDiameter = lerpDouble(piece.diameter, 0.9 * piece.diameter, piece.animationProgress)!;
+          break;
+        case PieceAnimationType.move:
+          currentDiameter = piece.diameter;
+          break;
+        case PieceAnimationType.none:
+          currentDiameter = piece.diameter;
+          break;
+      }
+
+      // Set the color of the piece
       paint.color = piece.piece.pieceColor;
-      canvas.drawCircle(currentPosition, (piece.diameter / 2) * 0.99, paint);
+
+      // Draw the piece with the current diameter
+      canvas.drawCircle(currentPosition, currentDiameter / 2, paint);
     }
 
     // Draw focus and blur position
