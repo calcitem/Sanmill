@@ -152,6 +152,11 @@ class PiecePainter extends CustomPainter {
           piece.animationProgress
       )!;
 
+      shadowPath.addOval(Rect.fromCircle(
+        center: currentPosition,
+        radius: piece.diameter / 2,
+      ));
+
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
       canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
@@ -166,8 +171,6 @@ class PiecePainter extends CustomPainter {
           currentDiameter = lerpDouble(piece.diameter, 0.9 * piece.diameter, piece.animationProgress)!;
           break;
         case PieceAnimationType.move:
-          currentDiameter = piece.diameter;
-          break;
         case PieceAnimationType.none:
           currentDiameter = piece.diameter;
           break;
@@ -175,23 +178,39 @@ class PiecePainter extends CustomPainter {
 
       // Set the color of the piece
       paint.color = piece.piece.pieceColor;
+      paint.style = PaintingStyle.fill; // Reset paint style to fill for the piece
 
       // Draw the piece with the current diameter
       canvas.drawCircle(currentPosition, currentDiameter / 2, paint);
-    }
 
-    // Draw focus and blur position
-    if (focusIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
+      // Draw focus circle
+      if (focusIndex != null &&
+          GameController().gameInstance.gameMode != GameMode.setupPosition &&
+          pointFromIndex(focusIndex, size) == piece.endPos) {
+        paint.color = DB().colorSettings.pieceHighlightColor;
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 2;
 
-      canvas.drawCircle(
-        pointFromIndex(focusIndex, size),
-        pieceWidth / 2,
-        paint,
-      );
+        // 计算聚焦圈的当前位置
+        final Offset focusPosition = Offset.lerp(
+          piece.startPos,
+          piece.endPos,
+          piece.animationProgress,
+        )!;
+
+        // 在计算出的位置绘制聚焦圈
+        canvas.drawCircle(focusPosition, currentDiameter / 2, paint);
+
+        // Reset paint style to fill for the next piece
+        paint.style = PaintingStyle.fill;
+      }
+
+
+      // Set the color of the piece
+      paint.color = piece.piece.pieceColor;
+
+      // Draw the piece with the current diameter
+      canvas.drawCircle(currentPosition, currentDiameter / 2, paint);
     }
 
     if (blurIndex != null &&
