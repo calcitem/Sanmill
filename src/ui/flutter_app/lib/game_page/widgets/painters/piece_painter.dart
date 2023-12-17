@@ -133,12 +133,23 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadow of piece
-    canvas.drawShadow(shadowPath, Colors.black, 2, true);
-    paint.style = PaintingStyle.fill;
+    // 首先绘制所有棋子的阴影
+    // TODO: 实际效果是只有一个有阴影
+    for (final PiecePaintParam piece in piecesToDraw) {
+      const Offset shadowOffset = Offset(3.0, 3.0); // 阴影偏移量
+      const double blurRadius = 3.0; // 阴影模糊半径
+      final Color shadowColor = Colors.black.withOpacity(0.3); // 阴影颜色
+
+      final Offset currentPosition = Offset.lerp(
+          piece.startPos, piece.endPos, piece.animationProgress
+      )!;
+    }
 
     late Color blurPositionColor;
     for (final PiecePaintParam piece in piecesToDraw) {
+      final Offset shadowOffset = const Offset(3.0, 3.0); // 根据需要调整阴影的偏移量
+      final double blurRadius = 3.0; // 根据需要调整阴影的模糊半径
+      final Color shadowColor = Colors.black.withOpacity(0.3); // 根据需要调整阴影颜色和透明度
       assert(
       piece.piece == PieceColor.black ||
           piece.piece == PieceColor.white ||
@@ -152,10 +163,8 @@ class PiecePainter extends CustomPainter {
           piece.animationProgress
       )!;
 
-      shadowPath.addOval(Rect.fromCircle(
-        center: currentPosition,
-        radius: piece.diameter / 2,
-      ));
+      // Draw shadow of each piece
+      canvas.drawShadow(shadowPath, shadowColor, blurRadius, true);
 
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
