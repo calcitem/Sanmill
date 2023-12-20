@@ -177,7 +177,8 @@ class PiecePainter extends CustomPainter {
           currentDiameter = lerpDouble(1.1 * piece.diameter, piece.diameter, piece.animationProgress)!;
           break;
         case PieceAnimationType.remove:
-          currentDiameter = lerpDouble(piece.diameter, 0.9 * piece.diameter, piece.animationProgress)!;
+          currentDiameter = lerpDouble(piece.diameter, 0, piece.animationProgress)!;
+          paint.color = paint.color.withOpacity(1 - piece.animationProgress);
           break;
         case PieceAnimationType.move:
         case PieceAnimationType.none:

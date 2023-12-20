@@ -95,15 +95,19 @@ class _GameBoardState extends State<GameBoard>
   }
 
   void _startRemoveAnimation() {
-    // 配置 remove 动画
-    // 根据需要修改动画持续时间或其他参数
+    // 设置动画持续时间
     GameController().animationController.duration = Duration(
       seconds: DB().displaySettings.animationDuration.toInt(),
     );
 
-    GameController().animationController.reset();
+    // 设置动画的开始值和结束值
+    GameController().animation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().animationController);
+
+    // 启动动画
     GameController().animationController.forward();
   }
+
 
   Future<void> _setReadyState() async {
     logger.i("$_logTag Check if need to set Ready state...");
