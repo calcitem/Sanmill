@@ -75,11 +75,34 @@ class _GameBoardState extends State<GameBoard>
   }
 
   void _onAnimationComplete() {
-    if (GameController().position.action == Act.remove) {
-      if (kDebugMode) {
-        print("$_logTag Remove animation completed.");
-      }
+    // 根据游戏动作执行相应的操作
+    switch (GameController().position.action) {
+      case Act.select:
+      case Act.place:
+        // 如果下一个动作是 remove，则启动 remove 动画
+        if (GameController().nextAction == Act.remove) {
+          GameController().position.action = Act.remove;
+          _startRemoveAnimation();
+        }
+        break;
+      case Act.remove:
+        if (kDebugMode) {
+          print("$_logTag Remove animation completed.");
+        }
+        // remove 动画完成后的逻辑处理
+        break;
     }
+  }
+
+  void _startRemoveAnimation() {
+    // 配置 remove 动画
+    // 根据需要修改动画持续时间或其他参数
+    GameController().animationController.duration = Duration(
+      seconds: DB().displaySettings.animationDuration.toInt(),
+    );
+
+    GameController().animationController.reset();
+    GameController().animationController.forward();
   }
 
   Future<void> _setReadyState() async {

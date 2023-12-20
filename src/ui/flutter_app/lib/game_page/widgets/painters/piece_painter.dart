@@ -147,8 +147,8 @@ class PiecePainter extends CustomPainter {
 
     late Color blurPositionColor;
     for (final PiecePaintParam piece in piecesToDraw) {
-      final Offset shadowOffset = const Offset(3.0, 3.0); // 根据需要调整阴影的偏移量
-      final double blurRadius = 3.0; // 根据需要调整阴影的模糊半径
+      const Offset shadowOffset = Offset(3.0, 3.0); // 根据需要调整阴影的偏移量
+      const double blurRadius = 3.0; // 根据需要调整阴影的模糊半径
       final Color shadowColor = Colors.black.withOpacity(0.3); // 根据需要调整阴影颜色和透明度
       assert(
       piece.piece == PieceColor.black ||

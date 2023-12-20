@@ -90,6 +90,31 @@ class GameController {
   bool get initialized => _isInitialized;
 
   bool get isPositionSetup => gameRecorder.setupPosition != null;
+
+  Act get nextAction {
+    if (gameInstance.gameMode == GameMode.setupPosition) {
+      return Act.place;
+    }
+
+    if (position.action == Act.select) {
+      return Act.place;
+    }
+
+    if (position.action == Act.place) {
+      if (position.pieceToRemoveCount[position.sideToMove]! > 0) {
+        return Act.remove;
+      } else {
+        if (position.phase == Phase.placing) {
+          return Act.place;
+        } else {
+          return Act.select;
+        }
+      }
+    }
+
+    return Act.place;
+  }
+
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   @visibleForTesting
