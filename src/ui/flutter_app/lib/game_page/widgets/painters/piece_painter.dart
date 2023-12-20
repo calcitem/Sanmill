@@ -139,10 +139,6 @@ class PiecePainter extends CustomPainter {
       const Offset shadowOffset = Offset(3.0, 3.0); // 阴影偏移量
       const double blurRadius = 3.0; // 阴影模糊半径
       final Color shadowColor = Colors.black.withOpacity(0.3); // 阴影颜色
-
-      final Offset currentPosition = Offset.lerp(
-          piece.startPos, piece.endPos, piece.animationProgress
-      )!;
     }
 
     late Color blurPositionColor;
@@ -170,28 +166,39 @@ class PiecePainter extends CustomPainter {
       paint.color = piece.piece.borderColor;
       canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
 
+      // 根据动画类型和进度计算棋子的透明度
+      double opacity = 1.0;
+
       // Draw the piece
-      double currentDiameter;
+      final double currentDiameter = piece.diameter;
+
+      if (kDebugMode) {
+        //print("Animation value: $animationValue");
+        //print("Piece animation progress: ${piece.animationProgress}");
+      }
+
       switch (piece.animationType) {
         case PieceAnimationType.place:
-          currentDiameter = lerpDouble(1.1 * piece.diameter, piece.diameter, piece.animationProgress)!;
+          // 淡入动画：动画开始时透明度为0，结束时为1
+          opacity = piece.animationProgress;
           break;
         case PieceAnimationType.remove:
-          currentDiameter = lerpDouble(piece.diameter, 0, piece.animationProgress)!;
-          paint.color = paint.color.withOpacity(1 - piece.animationProgress);
+          // 淡出动画：动画开始时透明度为1，结束时为0
+          opacity = 1.0 - piece.animationProgress;
           break;
         case PieceAnimationType.move:
         case PieceAnimationType.none:
-          currentDiameter = piece.diameter;
+          // 移动和无动画时透明度保持不变
+          opacity = 1.0;
           break;
       }
 
       // Set the color of the piece
-      paint.color = piece.piece.pieceColor;
+      paint.color = piece.piece.pieceColor.withOpacity(opacity);
       paint.style = PaintingStyle.fill; // Reset paint style to fill for the piece
 
-      // Draw the piece with the current diameter
-      canvas.drawCircle(currentPosition, currentDiameter / 2, paint);
+      // 使用当前透明度绘制棋子
+      canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
 
       // Draw focus circle
       if (focusIndex != null &&
@@ -217,7 +224,7 @@ class PiecePainter extends CustomPainter {
 
 
       // Set the color of the piece
-      paint.color = piece.piece.pieceColor;
+      paint.color = piece.piece.pieceColor.withOpacity(opacity);
 
       // Draw the piece with the current diameter
       canvas.drawCircle(currentPosition, currentDiameter / 2, paint);

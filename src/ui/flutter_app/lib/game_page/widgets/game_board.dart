@@ -31,7 +31,7 @@ class GameBoard extends StatefulWidget {
 }
 
 class _GameBoardState extends State<GameBoard>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   static const String _logTag = "[board]";
 
   @override
@@ -56,56 +56,88 @@ class _GameBoardState extends State<GameBoard>
     });
 
     // TODO: Check _initAnimation() on branch master.
+    if (mounted) {
+      GameController().movingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
 
-    GameController().animationController = AnimationController(
-      vsync: this,
-      duration: Duration(
-        seconds: DB().displaySettings.animationDuration.toInt(),
-      ),
-    );
+      GameController().placingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
 
-    GameController().animationController.addStatusListener((AnimationStatus status) {
-      if (status == AnimationStatus.completed) {
-        _onAnimationComplete();
-      }
-    });
+      GameController().removingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
 
-    GameController().animation = Tween<double>(begin: 0, end: 1)
-        .animate(GameController().animationController);
+      GameController().movingAnimationController.addStatusListener((
+          AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onMovingAnimationComplete();
+        }
+      });
+
+      GameController().placingAnimationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onPlacingAnimationComplete();
+        }
+      });
+
+      GameController().removingAnimationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onRemovingAnimationComplete();
+        }
+      });
+    }
+
+    GameController().movingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().movingAnimationController);
+    GameController().placingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().placingAnimationController);
+    GameController().removingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().removingAnimationController);
   }
 
-  void _onAnimationComplete() {
-    // 根据游戏动作执行相应的操作
-    switch (GameController().position.action) {
-      case Act.select:
-      case Act.place:
+  void _onMovingAnimationComplete() {
         // 如果下一个动作是 remove，则启动 remove 动画
         if (GameController().nextAction == Act.remove) {
-          GameController().position.action = Act.remove;
           _startRemoveAnimation();
         }
-        break;
-      case Act.remove:
-        if (kDebugMode) {
-          print("$_logTag Remove animation completed.");
-        }
-        // remove 动画完成后的逻辑处理
-        break;
+  }
+
+  void _onPlacingAnimationComplete() {
+    // 如果下一个动作是 remove，则启动 remove 动画
+    if (GameController().nextAction == Act.remove) {
+      _startRemoveAnimation();
     }
+  }
+
+  void _onRemovingAnimationComplete() {
+    return;
   }
 
   void _startRemoveAnimation() {
     // 设置动画持续时间
-    GameController().animationController.duration = Duration(
+    GameController().removingAnimationController.duration = Duration(
       seconds: DB().displaySettings.animationDuration.toInt(),
     );
 
     // 设置动画的开始值和结束值
-    GameController().animation = Tween<double>(begin: 0, end: 1)
-        .animate(GameController().animationController);
+    GameController().removingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().removingAnimationController);
+
+    GameController().removingAnimationController.reset();
 
     // 启动动画
-    GameController().animationController.forward();
+    GameController().removingAnimationController.forward();
   }
 
 
@@ -124,23 +156,57 @@ class _GameBoardState extends State<GameBoard>
       context: context,
     );
 
-    final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: GameController().animation,
-      builder: (_, Widget? child) {
-        return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: GameController().animation.value,
-          ),
-          child: child,
-        );
-      },
-      child: DB().generalSettings.screenReaderSupport
-          ? const _BoardSemantics()
-          : null,
-    );
+    late AnimatedBuilder customPaint;
 
-    GameController().animationController.forward();
+    if (GameController().position.action == Act.remove) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().movingAnimation,
+        builder: (_, Widget? child) {
+          return CustomPaint(
+            painter: BoardPainter(context),
+            foregroundPainter: PiecePainter(
+              animationValue: GameController().movingAnimation.value,
+            ),
+            child: child,
+          );
+        },
+        child: DB().generalSettings.screenReaderSupport
+            ? const _BoardSemantics()
+            : null,
+      );
+    } else if (GameController().position.action == Act.place) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().placingAnimation,
+        builder: (_, Widget? child) {
+          return CustomPaint(
+            painter: BoardPainter(context),
+            foregroundPainter: PiecePainter(
+              animationValue: GameController().placingAnimation.value,
+            ),
+            child: child,
+          );
+        },
+        child: DB().generalSettings.screenReaderSupport
+            ? const _BoardSemantics()
+            : null,
+      );
+    } else if (GameController().position.action == Act.select) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().movingAnimation,
+        builder: (_, Widget? child) {
+          return CustomPaint(
+            painter: BoardPainter(context),
+            foregroundPainter: PiecePainter(
+              animationValue: GameController().movingAnimation.value,
+            ),
+            child: child,
+          );
+        },
+        child: DB().generalSettings.screenReaderSupport
+            ? const _BoardSemantics()
+            : null,
+      );
+    }
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
@@ -249,7 +315,9 @@ class _GameBoardState extends State<GameBoard>
     GameController().isDisposed = true;
     GameController().engine.stopSearching();
     //MillController().engine.shutdown();
-    GameController().animationController.dispose();
+    GameController().movingAnimationController.dispose();
+    GameController().placingAnimationController.dispose();
+    GameController().removingAnimationController.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
     super.dispose();
   }

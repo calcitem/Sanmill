@@ -117,8 +117,8 @@ class TapHandler {
     switch (GameController().position.action) {
       case Act.place:
         if (GameController().position._putPiece(sq)) {
-          GameController().animationController.reset();
-          GameController().animationController.animateTo(1.0);
+          GameController().placingAnimationController.reset();
+          GameController().placingAnimationController.animateTo(1.0);
           if (GameController().position.action == Act.remove) {
             if (GameController()
                 .position
@@ -229,8 +229,8 @@ class TapHandler {
         final GameResponse removeRet =
             GameController().position._removePiece(sq);
 
-        GameController().animationController.reset();
-        GameController().animationController.animateTo(1.0);
+        GameController().removingAnimationController.reset();
+        GameController().removingAnimationController.animateTo(1.0);
 
         switch (removeRet) {
           case GameResponseOK():
