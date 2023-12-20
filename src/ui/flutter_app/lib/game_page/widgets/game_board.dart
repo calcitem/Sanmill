@@ -34,6 +34,9 @@ class _GameBoardState extends State<GameBoard>
     with TickerProviderStateMixin {
   static const String _logTag = "[board]";
 
+  bool _isMovingAnimationComplete = false;
+  bool _isPlacingAnimationComplete = false;
+
   @override
   void initState() {
     super.initState();
@@ -107,15 +110,15 @@ class _GameBoardState extends State<GameBoard>
   }
 
   void _onMovingAnimationComplete() {
-        // 如果下一个动作是 remove，则启动 remove 动画
-        if (GameController().nextAction == Act.remove) {
-          _startRemoveAnimation();
-        }
+    _isMovingAnimationComplete = true;
+    if (_isPlacingAnimationComplete) {
+      _startRemoveAnimation();
+    }
   }
 
   void _onPlacingAnimationComplete() {
-    // 如果下一个动作是 remove，则启动 remove 动画
-    if (GameController().nextAction == Act.remove) {
+    _isPlacingAnimationComplete = true;
+    if (_isMovingAnimationComplete) {
       _startRemoveAnimation();
     }
   }

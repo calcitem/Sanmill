@@ -183,7 +183,6 @@ class PiecePainter extends CustomPainter {
           opacity = piece.animationProgress;
           break;
         case PieceAnimationType.remove:
-          // 淡出动画：动画开始时透明度为1，结束时为0
           opacity = 1.0 - piece.animationProgress;
           break;
         case PieceAnimationType.move:
