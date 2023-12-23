@@ -26,11 +26,7 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
   Future<void> _launchURL() async {
     final String url = Constants.perfectDatabaseUrl.base;
     final Uri uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
-      throw Exception('Could not launch $url');
-    }
+    await launchUrl(uri,mode: LaunchMode.externalApplication);
   }
 
   @override

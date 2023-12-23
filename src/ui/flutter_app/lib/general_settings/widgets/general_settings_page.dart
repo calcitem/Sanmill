@@ -290,7 +290,8 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
-            if (Platform.isWindows || Platform.isMacOS || Platform.isLinux)
+            if (Platform.isAndroid || Platform.isWindows || Platform.isMacOS ||
+                Platform.isLinux)
               SettingsListTile.switchTile(
                 value: generalSettings.usePerfectDatabase,
                 onChanged: (bool val) {

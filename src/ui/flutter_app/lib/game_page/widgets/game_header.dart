@@ -72,12 +72,13 @@ class _GameHeaderState extends State<GameHeader> {
   Widget build(BuildContext context) {
     Widget divider;
 
-    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
-      const int valueLimit = 100;
+    int value = GameController().value == null
+        ? 0
+        : int.parse(GameController().value!);
 
-      int value = GameController().value == null
-          ? 0
-          : int.parse(GameController().value!);
+    if (abs(value) != valueMovePerfect &&
+        DB().displaySettings.isPositionalAdvantageIndicatorShown) {
+      const int valueLimit = 100;
 
       // TODO: Modify engine to return suitable value
       if ((value == valueUnique || value == -valueUnique) ||

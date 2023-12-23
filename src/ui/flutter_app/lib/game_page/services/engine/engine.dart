@@ -221,6 +221,13 @@ class Engine {
       "UsePerfectDatabase",
       generalSettings.usePerfectDatabase,
     );
+
+    final Directory? extDir = await getExternalStorageDirectory();
+    final String perfectDatabasePath = '${extDir?.path ?? ""}/strong';
+    await _sendOptions(
+      "PerfectDatabasePath",
+      perfectDatabasePath,
+    );
     await _sendOptions(
       "DrawOnHumanExperience",
       generalSettings.drawOnHumanExperience,
