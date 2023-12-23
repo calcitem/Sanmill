@@ -175,8 +175,8 @@ class _InfoDialog extends StatelessWidget {
                   child: Text(
                     S.of(context).copy,
                     style: TextStyle(
-                        fontSize: AppTheme.textScaler
-                            .scale(AppTheme.largeFontSize)),
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.largeFontSize)),
                   ),
                   onPressed: () {
                     Clipboard.setData(
@@ -206,8 +206,8 @@ class _InfoDialog extends StatelessWidget {
                   title: Text(
                     S.of(context).more,
                     style: TextStyle(
-                        fontSize: AppTheme.textScaler
-                            .scale(AppTheme.largeFontSize)),
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.largeFontSize)),
                   ),
                   content: Text(
                     content,
@@ -231,8 +231,7 @@ class _InfoDialog extends StatelessWidget {
               key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
-                    fontSize:
-                        AppTheme.textScaler.scale(AppTheme.largeFontSize),
+                    fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
                   ),
             ),
             onPressed: () => Navigator.pop(context),

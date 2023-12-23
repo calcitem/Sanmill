@@ -46,7 +46,7 @@ class LoadService {
     }
 
     final String filePath =
-    resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
+        resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
 
     return filePath;
   }
@@ -91,7 +91,7 @@ class LoadService {
       showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
       fileTileSelectMode:
-      FileTileSelectMode.checkButton, //  TODO: whole tile is better.
+          FileTileSelectMode.checkButton, //  TODO: whole tile is better.
     );
 
     if (result == null) {
@@ -187,7 +187,7 @@ class LoadService {
           .showTip(S.of(context).done); // TODO: "Game loaded." is better.
     } else {
       final String tip =
-      S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
@@ -218,7 +218,7 @@ class LoadService {
                   S.of(context).browse,
                   style: TextStyle(
                       fontSize:
-                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                 ),
                 onPressed: () async {
                   final String? result = await pickFile(context);
@@ -233,7 +233,7 @@ class LoadService {
                 S.of(context).cancel,
                 style: TextStyle(
                     fontSize:
-                    AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -242,7 +242,7 @@ class LoadService {
                 S.of(context).ok,
                 style: TextStyle(
                     fontSize:
-                    AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),

@@ -72,9 +72,8 @@ class _GameHeaderState extends State<GameHeader> {
   Widget build(BuildContext context) {
     Widget divider;
 
-    int value = GameController().value == null
-        ? 0
-        : int.parse(GameController().value!);
+    int value =
+        GameController().value == null ? 0 : int.parse(GameController().value!);
 
     if (abs(value) != valueMovePerfect &&
         DB().displaySettings.isPositionalAdvantageIndicatorShown) {
