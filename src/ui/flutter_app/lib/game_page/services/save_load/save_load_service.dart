@@ -26,8 +26,14 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    final Directory dir = await getApplicationDocumentsDirectory();
-    final String path = dir.path;
+    Directory? dir = await getExternalStorageDirectory();
+    final String path = '${dir?.path ?? ""}/records';
+
+    // Ensure the folder exists
+    dir = Directory(path);
+    if (!dir.existsSync()) {
+      await dir.create(recursive: true);
+    }
 
     String? resultLabel = await _showTextInputDialog(context);
 
@@ -40,14 +46,42 @@ class LoadService {
     }
 
     final String filePath =
-        resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
+    resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
 
     return filePath;
   }
 
   /// Picks file.
   static Future<String?> pickFile(BuildContext context) async {
-    final Directory dir = await getApplicationDocumentsDirectory();
+    Directory? dir = await getExternalStorageDirectory();
+    final String path = '${dir?.path ?? ""}/records';
+
+    // Ensure the folder exists
+    dir = Directory(path);
+    if (!dir.existsSync()) {
+      await dir.create(recursive: true);
+    }
+
+    // Copy PGN files recursively from ApplicationDocumentsDirectory to
+    // ExternalStorageDirectory without overwriting existing files.
+    // This is done for compatibility with version 3.x.
+    final Directory appDocDir = await getApplicationDocumentsDirectory();
+    final String appDocPath = appDocDir.path;
+    final List<FileSystemEntity> entities = appDocDir.listSync(recursive: true);
+
+    for (final FileSystemEntity entity in entities) {
+      if (entity is File && entity.path.endsWith('.pgn')) {
+        final String newPath = entity.path.replaceAll(appDocPath, path);
+        final File newFile = File(newPath);
+
+        if (!newFile.existsSync()) {
+          await newFile.create(recursive: true);
+          await entity.copy(newPath);
+        }
+
+        await entity.delete();
+      }
+    }
 
     final String? result = await FilesystemPicker.openDialog(
       context: context,
@@ -57,7 +91,7 @@ class LoadService {
       showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
       fileTileSelectMode:
-          FileTileSelectMode.checkButton, //  TODO: whole tile is better.
+      FileTileSelectMode.checkButton, //  TODO: whole tile is better.
     );
 
     if (result == null) {
@@ -153,7 +187,7 @@ class LoadService {
           .showTip(S.of(context).done); // TODO: "Game loaded." is better.
     } else {
       final String tip =
-          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
@@ -184,7 +218,7 @@ class LoadService {
                   S.of(context).browse,
                   style: TextStyle(
                       fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
                 ),
                 onPressed: () async {
                   final String? result = await pickFile(context);
@@ -199,7 +233,7 @@ class LoadService {
                 S.of(context).cancel,
                 style: TextStyle(
                     fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context),
             ),
@@ -208,7 +242,7 @@ class LoadService {
                 S.of(context).ok,
                 style: TextStyle(
                     fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                    AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
               ),
               onPressed: () => Navigator.pop(context, textFieldController.text),
             ),
