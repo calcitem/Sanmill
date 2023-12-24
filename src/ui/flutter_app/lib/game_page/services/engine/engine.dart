@@ -222,8 +222,10 @@ class Engine {
       generalSettings.usePerfectDatabase,
     );
 
-    final Directory? extDir = await getExternalStorageDirectory();
-    final String perfectDatabasePath = '${extDir?.path ?? ""}/strong';
+    final Directory? dir = Platform.isAndroid
+        ? await getExternalStorageDirectory()
+        : await getApplicationDocumentsDirectory();
+    final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
     await _sendOptions(
       "PerfectDatabasePath",
       perfectDatabasePath,
