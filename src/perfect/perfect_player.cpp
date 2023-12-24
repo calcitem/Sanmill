@@ -344,7 +344,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState &s,
 
 template <typename T, typename K>
 std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
-                                       const std::vector<T> &l, K minValue)
+                                       const std::vector<T> &l, K minValue, Value &value)
 {
     std::vector<T> r;
 
@@ -386,20 +386,31 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
         }
     }
 
+    char e = f(r.at(0)).toString().at(0);
+
+    if (e == 'L') {
+        value = -VALUE_MATE_PERFECT;
+    } else if (e == 'W') {
+        value = VALUE_MATE_PERFECT;
+    } else {
+        value = VALUE_DRAW_PERFECT;
+    }
+
     return r;
 }
 
 #if 1
 // Assuming the definition of gui_eval_elem2::min_value function
-std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s, Value &value)
 {
     return allMaxBy(std::function<Wrappers::gui_eval_elem2(AdvancedMove)>(
                         [this, &s](AdvancedMove m) { return moveValue(s, m); }),
                     getMoveList(s),
-                    Wrappers::gui_eval_elem2::min_value(getSec(s)));
+                    Wrappers::gui_eval_elem2::min_value(getSec(s)), value);
 }
 #else
-std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
+std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s,
+                                                   Value &value)
 {
     auto moveList = getMoveList(s);
     std::cout << "Move list size: " << moveList.size()
@@ -452,8 +463,10 @@ void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
 
 void PerfectPlayer::toMove(const GameState &s)
 {
+    Value value = VALUE_UNKNOWN;
+
     try {
-        AdvancedMove mh = chooseRandom(goodMoves(s));
+        AdvancedMove mh = chooseRandom(goodMoves(s, value));
         sendMoveToGUI(mh);
     } catch (const std::out_of_range &) {
         sendMoveToGUI(chooseRandom(getMoveList(s)));

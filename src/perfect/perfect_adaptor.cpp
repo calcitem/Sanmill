@@ -31,21 +31,24 @@
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
 
 static Move malom_remove_move = MOVE_NONE;
+static Value malom_remove_value = VALUE_UNKNOWN;
 
 static std::condition_variable cv;
 
 int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
-                int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
+                int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
+                Value &value)
 {
     return MalomSolutionAccess::getBestMove(whiteBitboard, blackBitboard,
                                             whiteStonesToPlace,
                                             blackStonesToPlace, playerToMove,
-                                            onlyStoneTaking);
+                                            onlyStoneTaking, value);
 }
 
 int perfect_init()
 {
     malom_remove_move = MOVE_NONE;
+    malom_remove_value = VALUE_UNKNOWN;
 
     return 0;
 }
@@ -53,6 +56,7 @@ int perfect_init()
 int perfect_exit()
 {
     malom_remove_move = MOVE_NONE;
+    malom_remove_value = VALUE_UNKNOWN;
 
     return 0;
 }
@@ -176,11 +180,15 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
 
 Value perfect_search(const Position *pos, Move &move)
 {
+    Value value = VALUE_UNKNOWN;
+
     if (malom_remove_move != MOVE_NONE) {
         Move ret = malom_remove_move;
+        value = malom_remove_value;
         malom_remove_move = MOVE_NONE;
+        malom_remove_value = VALUE_UNKNOWN;
         move = ret;
-        return VALUE_MOVE_PERFECT;
+        return value;
     }
 
     std::vector<Move> moves;
@@ -234,15 +242,17 @@ Value perfect_search(const Position *pos, Move &move)
     // If this increases the number of stones the player to move has,
     // then that player will have one less stone to place after the move.
     // TODO: Do not use -fexceptions
+
     try {
         int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
                                        whiteStonesToPlace, blackStonesToPlace,
-                                       playerToMove, onlyStoneTaking);
+                                       playerToMove, onlyStoneTaking, value);
         moves = convertBitboardMove(whiteBitboard, blackBitboard, playerToMove,
                                     moveBitboard);
 
         if (moves.size() == 2) {
             malom_remove_move = moves.at(1);
+            malom_remove_value = value;
         }
     } catch (const std::exception &) {
         move = MOVE_NONE;
@@ -251,8 +261,7 @@ Value perfect_search(const Position *pos, Move &move)
 
     move = Move(moves.at(0));
 
-    // TODO: Return the value of the position
-    return VALUE_MOVE_PERFECT;
+    return value;
 }
 
 #endif // GABOR_MALOM_PERFECT_AI

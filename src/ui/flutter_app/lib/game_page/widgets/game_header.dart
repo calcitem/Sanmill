@@ -75,8 +75,11 @@ class _GameHeaderState extends State<GameHeader> {
     int value =
         GameController().value == null ? 0 : int.parse(GameController().value!);
 
-    if (abs(value) != valueMovePerfect &&
-        DB().displaySettings.isPositionalAdvantageIndicatorShown) {
+    final bool perfect = abs(value) == valueDrawPerfect ||
+        abs(value) == valueMatePerfect;
+    final double opacity = perfect? 0.5 : 1;
+
+    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
       const int valueLimit = 100;
 
       // TODO: Modify engine to return suitable value
@@ -111,12 +114,12 @@ class _GameHeaderState extends State<GameHeader> {
             Container(
               height: 2,
               width: dividerWhiteLength.toDouble(),
-              color: DB().colorSettings.whitePieceColor,
+              color: DB().colorSettings.whitePieceColor.withOpacity(opacity),
             ),
             Container(
               height: 2,
               width: dividerBlackLength.toDouble(),
-              color: DB().colorSettings.blackPieceColor,
+              color: DB().colorSettings.blackPieceColor.withOpacity(opacity),
             ),
           ],
         ),
@@ -127,7 +130,7 @@ class _GameHeaderState extends State<GameHeader> {
         width: 180,
         margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
         decoration: BoxDecoration(
-          color: DB().colorSettings.boardBackgroundColor,
+          color: DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
           borderRadius: BorderRadius.circular(2),
         ),
       );

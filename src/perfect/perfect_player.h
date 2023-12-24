@@ -45,6 +45,8 @@
 #include <string>
 #include <vector>
 
+#include <types.h>
+
 enum class CMoveType {
     SetMove,
     SlideMove // should be renamed to SlideOrJumpMove
@@ -57,6 +59,8 @@ struct AdvancedMove
     bool withTaking, onlyTaking; // withTaking includes the steps in mill
                                  // closure, onlyTaking only includes removal
     int takeHon;
+
+    Value value {VALUE_DRAW_PERFECT};
 
     int toBitBoard()
     {
@@ -170,10 +174,10 @@ public:
 
     template <typename T, typename K>
     std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T> &l,
-                            K minValue);
+                            K minValue, Value &value);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<AdvancedMove> goodMoves(const GameState &s);
+    std::vector<AdvancedMove> goodMoves(const GameState &s, Value &value);
 
     int NGMAfterMove(const GameState &s, AdvancedMove &m);
 

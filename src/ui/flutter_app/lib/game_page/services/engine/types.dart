@@ -332,7 +332,8 @@ extension GameResultExtension on GameResult {
   }
 }
 
-const int valueMovePerfect = 1;
+const int valueDrawPerfect = 1;
+const int valueMatePerfect = 79;
 const int valueUnique = 100;
 const int valueEachPiece = 5;
 
