@@ -39,7 +39,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RULE_VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
 
-#define FULL_BOARD_IS_DRAW 1  // 0 or 1
+// 0 or 1
+#define FULL_BOARD_IS_DRAW 1
 
 // #define FULL_SECTOR_GRAPH //extended solution //comment or uncomment
 

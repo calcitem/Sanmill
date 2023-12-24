@@ -37,9 +37,9 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-#include <iostream>  // for std::cerr
+#include <iostream>
 #include <map>
-#include <mutex>     // for std::mutex and std::lock_guard
+#include <mutex>
 #include <stdexcept>
 #include <stdexcept> // for std::out_of_range
 #include <string>
