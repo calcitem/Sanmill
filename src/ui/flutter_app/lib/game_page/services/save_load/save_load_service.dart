@@ -53,7 +53,9 @@ class LoadService {
 
   /// Picks file.
   static Future<String?> pickFile(BuildContext context) async {
-    Directory? dir = await getExternalStorageDirectory();
+    late Directory? dir;
+
+    dir = await getExternalStorageDirectory();
     final String path = '${dir?.path ?? ""}/records';
 
     // Ensure the folder exists
@@ -65,21 +67,24 @@ class LoadService {
     // Copy PGN files recursively from ApplicationDocumentsDirectory to
     // ExternalStorageDirectory without overwriting existing files.
     // This is done for compatibility with version 3.x.
-    final Directory appDocDir = await getApplicationDocumentsDirectory();
-    final String appDocPath = appDocDir.path;
-    final List<FileSystemEntity> entities = appDocDir.listSync(recursive: true);
+    if (Platform.isAndroid) {
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final String appDocPath = appDocDir.path;
+      final List<FileSystemEntity> entities = appDocDir.listSync(
+          recursive: true);
 
-    for (final FileSystemEntity entity in entities) {
-      if (entity is File && entity.path.endsWith('.pgn')) {
-        final String newPath = entity.path.replaceAll(appDocPath, path);
-        final File newFile = File(newPath);
+      for (final FileSystemEntity entity in entities) {
+        if (entity is File && entity.path.endsWith('.pgn')) {
+          final String newPath = entity.path.replaceAll(appDocPath, path);
+          final File newFile = File(newPath);
 
-        if (!newFile.existsSync()) {
-          await newFile.create(recursive: true);
-          await entity.copy(newPath);
+          if (!newFile.existsSync()) {
+            await newFile.create(recursive: true);
+            await entity.copy(newPath);
+          }
+
+          await entity.delete();
         }
-
-        await entity.delete();
       }
     }
 
