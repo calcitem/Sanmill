@@ -43,6 +43,8 @@
 #include <string>
 #include <vector>
 
+#include "option.h"
+
 class GameState;
 
 std::map<Wrappers::WID, Wrappers::WSector> Sectors::sectors;
@@ -345,20 +347,49 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
                                        const std::vector<T> &l, K minValue)
 {
     std::vector<T> r;
-    K ma = minValue;
-    for (auto &m : l) {
-        K e = f(m);
-        if (e > ma) {
-            ma = e;
-            r.clear();
-            r.push_back(m);
-        } else if (e == ma) {
-            r.push_back(m);
+
+    if (gameOptions.getShufflingEnabled()) {
+        bool foundW = false;
+        bool foundD = false;
+
+        for (auto &m : l) {
+            K e = f(m);
+            std::string eStr = e.toString();
+
+            if (eStr[0] == 'W') {
+                if (!foundW) {
+                    r.clear();
+                    foundW = true;
+                }
+                r.push_back(m);
+            } else if (!foundW && eStr[0] != 'L') {
+                if (!foundD) {
+                    r.clear();
+                    foundD = true;
+                }
+                r.push_back(m);
+            } else if (!foundW && !foundD && eStr[0] == 'L') {
+                r.push_back(m);
+            }
+        }
+    } else {
+        K ma = minValue;
+        for (auto &m : l) {
+            K e = f(m);
+            if (e > ma) {
+                ma = e;
+                r.clear();
+                r.push_back(m);
+            } else if (e == ma) {
+                r.push_back(m);
+            }
         }
     }
+
     return r;
 }
 
+#if 1
 // Assuming the definition of gui_eval_elem2::min_value function
 std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
 {
@@ -367,6 +398,30 @@ std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
                     getMoveList(s),
                     Wrappers::gui_eval_elem2::min_value(getSec(s)));
 }
+#else
+std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s)
+{
+    auto moveList = getMoveList(s);
+    std::cout << "Move list size: " << moveList.size()
+              << std::endl;
+
+    std::function<Wrappers::gui_eval_elem2(AdvancedMove)> evalFunction =
+        [this, &s](AdvancedMove m) {
+            auto value = moveValue(s, m);
+            std::cout << "Evaluating move from " << m.from << " to " << m.to
+                      << " with score: " << value.toString()
+                      << std::endl;
+            return value;
+        };
+
+    auto bestMoves = allMaxBy(evalFunction, moveList,
+                              Wrappers::gui_eval_elem2::min_value(getSec(s)));
+
+    std::cout << "Number of best moves: " << bestMoves.size() << std::endl;
+
+    return bestMoves;
+}
+#endif
 
 int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
 {
