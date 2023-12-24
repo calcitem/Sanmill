@@ -70,8 +70,8 @@ class LoadService {
     if (Platform.isAndroid) {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final String appDocPath = appDocDir.path;
-      final List<FileSystemEntity> entities = appDocDir.listSync(
-          recursive: true);
+      final List<FileSystemEntity> entities =
+          appDocDir.listSync(recursive: true);
 
       for (final FileSystemEntity entity in entities) {
         if (entity is File && entity.path.endsWith('.pgn')) {

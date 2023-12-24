@@ -75,9 +75,9 @@ class _GameHeaderState extends State<GameHeader> {
     int value =
         GameController().value == null ? 0 : int.parse(GameController().value!);
 
-    final bool perfect = abs(value) == valueDrawPerfect ||
-        abs(value) == valueMatePerfect;
-    final double opacity = perfect? 0.5 : 1;
+    final bool perfect =
+        abs(value) == valueDrawPerfect || abs(value) == valueMatePerfect;
+    final double opacity = perfect ? 0.5 : 1;
 
     if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
       const int valueLimit = 100;

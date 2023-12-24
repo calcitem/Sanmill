@@ -344,7 +344,8 @@ Wrappers::gui_eval_elem2 PerfectPlayer::moveValue(const GameState &s,
 
 template <typename T, typename K>
 std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
-                                       const std::vector<T> &l, K minValue, Value &value)
+                                       const std::vector<T> &l, K minValue,
+                                       Value &value)
 {
     std::vector<T> r;
 
@@ -401,7 +402,8 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
 
 #if 1
 // Assuming the definition of gui_eval_elem2::min_value function
-std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s, Value &value)
+std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s,
+                                                   Value &value)
 {
     return allMaxBy(std::function<Wrappers::gui_eval_elem2(AdvancedMove)>(
                         [this, &s](AdvancedMove m) { return moveValue(s, m); }),
@@ -413,15 +415,13 @@ std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s,
                                                    Value &value)
 {
     auto moveList = getMoveList(s);
-    std::cout << "Move list size: " << moveList.size()
-              << std::endl;
+    std::cout << "Move list size: " << moveList.size() << std::endl;
 
     std::function<Wrappers::gui_eval_elem2(AdvancedMove)> evalFunction =
         [this, &s](AdvancedMove m) {
             auto value = moveValue(s, m);
             std::cout << "Evaluating move from " << m.from << " to " << m.to
-                      << " with score: " << value.toString()
-                      << std::endl;
+                      << " with score: " << value.toString() << std::endl;
             return value;
         };
 
