@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: sanmill-msix
-          path: src/ui/flutter_app/build/windows/runner/Release/sanmill.msix
+          path: src/ui/flutter_app/build/windows/x64/runner/Release/sanmill.msix
