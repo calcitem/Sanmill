@@ -23,12 +23,6 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
     Navigator.pop(context);
   }
 
-  Future<void> _launchURL() async {
-    final String url = Constants.perfectDatabaseUrl.base;
-    final Uri uri = Uri.parse(url);
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -40,15 +34,26 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            InkWell(
+              onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
+              child: Text(
+                S.of(context).usePerfectDatabase,
+                style: const TextStyle(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             Text(
               S.of(context).perfectDatabaseDescription,
               style: TextStyle(
                   fontSize:
-                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                  AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
             ),
             const SizedBox(height: 16),
             InkWell(
-              onTap: _launchURL,
+              onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
               child: Text(
                 S.of(context).usePerfectDatabase,
                 style: const TextStyle(

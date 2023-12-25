@@ -20,14 +20,13 @@ import 'package:catcher/core/catcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../custom_drawer/custom_drawer.dart';
 import '../generated/flutter_version.dart';
 import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
-import '../shared/services/environment_config.dart';
 import '../shared/services/git_info.dart';
+import '../shared/services/url.dart';
 import '../shared/themes/app_theme.dart';
 import '../shared/widgets/custom_spacer.dart';
 import '../shared/widgets/settings/settings.dart';
@@ -83,7 +82,7 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).feedback,
-        onTap: () => _launchURL(context, Constants.issuesURL),
+        onTap: () => launchURL(context, Constants.issuesURL),
       ),
       if (kIsWeb ||
           Platform.isAndroid ||
@@ -92,7 +91,7 @@ class AboutPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).eula,
           onTap: () =>
-              _launchURL(context, Constants.endUserLicenseAgreementUrl),
+              launchURL(context, Constants.endUserLicenseAgreementUrl),
         ),
       SettingsListTile(
         titleString: S.of(context).license,
@@ -107,12 +106,12 @@ class AboutPage extends StatelessWidget {
       ),
       SettingsListTile(
         titleString: S.of(context).sourceCode,
-        onTap: () => _launchURL(context, Constants.repositoryUrl),
+        onTap: () => launchURL(context, Constants.repositoryUrl),
       ),
       if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
         SettingsListTile(
           titleString: S.of(context).privacyPolicy,
-          onTap: () => _launchURL(context, Constants.privacyPolicyUrl),
+          onTap: () => launchURL(context, Constants.privacyPolicyUrl),
         ),
       SettingsListTile(
         titleString: S.of(context).ossLicenses,
@@ -127,12 +126,12 @@ class AboutPage extends StatelessWidget {
           final String locale = Localizations.localeOf(context).languageCode;
           final UrlHelper url =
               Constants.helpImproveTranslateURL.fromSubPath(locale);
-          _launchURL(context, url);
+          launchURL(context, url);
         },
       ),
       SettingsListTile(
         titleString: S.of(context).thanks,
-        onTap: () => _launchURL(context, Constants.thanksURL),
+        onTap: () => launchURL(context, Constants.thanksURL),
       ),
     ];
 
@@ -154,22 +153,6 @@ class AboutPage extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> _launchURL(BuildContext context, UrlHelper url) async {
-    if (EnvironmentConfig.test) {
-      return;
-    }
-
-    final String urlString =
-        Localizations.localeOf(context).languageCode.startsWith("zh_")
-            ? url.base.substring("https://".length)
-            : url.baseChinese.substring("https://".length);
-    final String authority = urlString.substring(0, urlString.indexOf('/'));
-    final String unencodedPath = urlString.substring(urlString.indexOf('/'));
-    final Uri uri = Uri.https(authority, unencodedPath);
-
-    await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 }
 
