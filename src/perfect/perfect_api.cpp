@@ -104,6 +104,14 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
                                  "from the starting position.");
     }
 
+    // TODO: Considering the performance-critical aspect of our applications,
+    // it is advised to reconsider the frequent invocation of
+    // deinitializeIfNeeded() within each getBestMove call. Such a practice
+    // necessitates the re-initialization by initializeIfNeeded() at every
+    // function start, leading to significant performance overheads. An
+    // optimized approach for initialization and deinitialization processes
+    // should be explored to mitigate these costs.
+    // https://github.com/ggevay/malom/pull/3#discussion_r1349745071
     deinitializeIfNeeded();
 
     return ret;
