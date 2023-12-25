@@ -444,9 +444,10 @@ int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
 template <typename T>
 T PerfectPlayer::chooseRandom(const std::vector<T> &l)
 {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+
     if (gameOptions.getShufflingEnabled()) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
         std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
         return l[dis(gen)];
     }
