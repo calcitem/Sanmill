@@ -195,12 +195,13 @@ class HeaderTipState extends State<HeaderTip> {
         return Semantics(
             enabled: true,
             child: SizedBox(
-              height: 20 * DB().displaySettings.fontScale,
+              height: 24 * DB().displaySettings.fontScale,
               child: Text(
                 value == "" ? S.of(context).welcome : value,
                 maxLines: 1,
                 style: TextStyle(
                   color: DB().colorSettings.messageColor,
+                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
                   // ignore: always_specify_types
                   fontFeatures: const [FontFeature.tabularFigures()],
                 ),

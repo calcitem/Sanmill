@@ -309,8 +309,13 @@ class AppTheme {
     fontSize: 20,
   );
 
+  static const double smallFontSize = 14.0;
   static const double defaultFontSize = 16.0;
   static const double largeFontSize = 20.0;
+  static const double extraLargeFontSize = 24.0;
+  static const double hugeFontSize = 28.0;
+  static const double giantFontSize = 32.0;
+
   static TextScaler textScaler =
       TextScaler.linear(DB().displaySettings.fontScale);
 
