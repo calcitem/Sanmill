@@ -203,9 +203,9 @@ public:
             if (key1 != o.key1)
                 return key1 < o.key1 ? -1 : 1;
             else if (key1 < 0)
-                return key2 < o.key2 ? -1 : 1;
+                return key2 == o.key2 ? 0 : (key2 < o.key2 ? -1 : 1);
             else if (key1 > 0)
-                return key2 > o.key2 ? -1 : 1;
+                return key2 == o.key2 ? 0 : (key2 < o.key2 ? -1 : 1);
             else
                 return 0;
         } else {
@@ -217,9 +217,9 @@ public:
             if (a1.key1 != a2.key1)
                 return a1.key1 < a2.key1 ? -1 : 1;
             else if (a1.key1 < 0)
-                return a1.key2 < a2.key2 ? -1 : 1;
+                return a1.key2 == a2.key2 ? 0 : (a1.key2 < a2.key2 ? -1 : 1);
             else if (a1.key1 > 0)
-                return a2.key2 < a1.key2 ? -1 : 1;
+                return a2.key2 == a1.key2 ? 0 : (a2.key2 < a1.key2 ? -1 : 1);
             else
                 return 0;
         }

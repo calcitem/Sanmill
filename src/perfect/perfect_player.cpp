@@ -349,7 +349,8 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
 {
     std::vector<T> r;
 
-    if (gameOptions.getShufflingEnabled()) {
+    // TODO: Right? Ref: https://github.com/ggevay/malom/pull/3
+    if (gameOptions.getSkillLevel() < 15) {
         bool foundW = false;
         bool foundD = false;
 
@@ -426,7 +427,8 @@ std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s,
         };
 
     auto bestMoves = allMaxBy(evalFunction, moveList,
-                              Wrappers::gui_eval_elem2::min_value(getSec(s)));
+                              Wrappers::gui_eval_elem2::min_value(getSec(s)),
+                              value);
 
     std::cout << "Number of best moves: " << bestMoves.size() << std::endl;
 
@@ -442,10 +444,14 @@ int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
 template <typename T>
 T PerfectPlayer::chooseRandom(const std::vector<T> &l)
 {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
-    return l[dis(gen)];
+    if (gameOptions.getShufflingEnabled()) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
+        return l[dis(gen)];
+    }
+
+    return l[0];
 }
 
 void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
