@@ -65,15 +65,20 @@ static_assert(false, "sec_val range");
 
 #ifdef DD
 #ifndef STONE_DIFF
-const int eval_struct_size = 3; // byte
+// byte
+const int eval_struct_size = 3;
 #if RULE_VARIANT == STANDARD
-const int field2_offset = 12;   // bit
+// bit
+const int field2_offset = 12;
 #else
-const int field2_offset = 14; // bit
+// bit
+const int field2_offset = 14;
 #endif
 #else
-const int eval_struct_size = 2; // byte
-const int field2_offset = 6;    // bit
+// byte
+const int eval_struct_size = 2;
+// bit
+const int field2_offset = 6;
 #endif
 const int field1_size = field2_offset;
 const int field2_size = 8 * eval_struct_size - field2_offset;
