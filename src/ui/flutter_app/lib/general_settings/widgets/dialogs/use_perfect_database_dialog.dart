@@ -49,7 +49,7 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
               S.of(context).perfectDatabaseDescription,
               style: TextStyle(
                   fontSize:
-                  AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                      AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
             ),
             const SizedBox(height: 16),
             InkWell(

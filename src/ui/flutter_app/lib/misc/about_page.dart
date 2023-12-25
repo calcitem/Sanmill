@@ -90,8 +90,7 @@ class AboutPage extends StatelessWidget {
           Platform.isLinux)
         SettingsListTile(
           titleString: S.of(context).eula,
-          onTap: () =>
-              launchURL(context, Constants.endUserLicenseAgreementUrl),
+          onTap: () => launchURL(context, Constants.endUserLicenseAgreementUrl),
         ),
       SettingsListTile(
         titleString: S.of(context).license,
