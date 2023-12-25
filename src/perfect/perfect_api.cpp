@@ -198,8 +198,6 @@ void MalomSolutionAccess::mustBeBetween(std::string paramName, int value,
 
 void MalomSolutionAccess::setVariantStripped()
 {
-    // copy-paste from Rules.cpp, but references to Main stripped
-
     switch (Wrappers::Constants::variant) {
     case (int)Wrappers::Constants::Variants::std:
         std::memcpy(Rules::millPos, Rules::stdLaskerMillPos,
