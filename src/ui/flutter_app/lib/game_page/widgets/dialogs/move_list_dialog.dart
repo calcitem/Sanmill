@@ -27,22 +27,15 @@ class _MoveListDialog extends StatelessWidget {
     final int end = controller.gameRecorder.length - 1;
 
     final TextStyle titleTextStyle =
-    Theme
-        .of(context)
-        .textTheme
-        .titleLarge!
-        .copyWith(
-      color: AppTheme.gamePageActionSheetTextColor,
-      fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-    );
-    final TextStyle buttonTextStyle = Theme
-        .of(context)
-        .textTheme
-        .titleMedium!
-        .copyWith(
-      color: AppTheme.gamePageActionSheetTextColor,
-      fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-    );
+        Theme.of(context).textTheme.titleLarge!.copyWith(
+              color: AppTheme.gamePageActionSheetTextColor,
+              fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+            );
+    final TextStyle buttonTextStyle =
+        Theme.of(context).textTheme.titleMedium!.copyWith(
+              color: AppTheme.gamePageActionSheetTextColor,
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            );
 
     if (DB().generalSettings.screenReaderSupport) {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
@@ -52,9 +45,7 @@ class _MoveListDialog extends StatelessWidget {
       child: AlertDialog(
         backgroundColor: UIColors.semiTransparentBlack,
         title: Text(
-          S
-              .of(context)
-              .moveList,
+          S.of(context).moveList,
           style: titleTextStyle.copyWith(
               fontSize: AppTheme.textScaler
                   .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize)),
@@ -63,11 +54,7 @@ class _MoveListDialog extends StatelessWidget {
           child: Text(
             moveHistoryText,
             textDirection: TextDirection.ltr,
-            style: Theme
-                .of(context)
-                .textTheme
-                .titleLarge!
-                .copyWith(
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                 fontSize: AppTheme.textScaler
                     .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize),
                 color: AppTheme.gamePageActionSheetTextColor,
@@ -77,33 +64,28 @@ class _MoveListDialog extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          Row( // Wrap the buttons with a Row widget
+          Row(
+            // Wrap the buttons with a Row widget
             mainAxisSize: MainAxisSize.min, // Use min to fit the content size
             children: <Widget>[
               if (end > 0)
                 TextButton(
                   child: Text(
-                    S
-                        .of(context)
-                        .rollback,
+                    S.of(context).rollback,
                     style: buttonTextStyle,
                   ),
                   onPressed: () async => _rollback(context, end),
                 ),
               TextButton(
                 child: Text(
-                  S
-                      .of(context)
-                      .copy,
+                  S.of(context).copy,
                   style: buttonTextStyle,
                 ),
                 onPressed: () => GameController.export(context),
               ),
               TextButton(
                 child: Text(
-                  S
-                      .of(context)
-                      .cancel,
+                  S.of(context).cancel,
                   style: buttonTextStyle,
                 ),
                 onPressed: () => Navigator.pop(context),
