@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 // This file is part of Sanmill.
 // Copyright (C) 2019-2023 The Sanmill developers (see AUTHORS file)
 //
@@ -15,6 +13,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// ignore_for_file: use_build_context_synchronously
 
 part of '../mill.dart';
 
