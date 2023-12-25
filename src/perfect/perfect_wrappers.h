@@ -72,30 +72,7 @@ struct WID
 
     int GetHashCode() { return (W << 0) | (B << 4) | (WF << 8) | (BF << 12); }
 
-private:
-    static int64_t factorial(int n)
-    {
-        if (n == 0)
-            return 1;
-        else
-            return n * factorial(n - 1);
-    }
-
-    static int64_t nCr(int n, int r)
-    {
-        return factorial(n) / (factorial(r) * factorial(n - r));
-    }
-
 public:
-    int size()
-    {
-        auto tn = tonat();
-        if (sector_sizes.count(tn) == 0) {
-            sector_sizes[tn] = static_cast<int>(nCr(24 - W, B)) *
-                               f_inv_count[W];
-        }
-        return sector_sizes[tn];
-    }
 
     bool operator==(const WID &other) const
     {
@@ -143,8 +120,8 @@ public:
 struct gui_eval_elem2
 {
 private:
-    // azert cannot be valid, because it cannot contain a count (as asserted by
-    // the ctor)
+    // could not be simply val instead of sec_val, because val cannot contain
+    // a count (as asserted by the ctor)
     sec_val key1;
     int key2;
     ::Sector *s; // this is zero if there is a virtual win/loss or KLE
@@ -154,7 +131,7 @@ private:
     eval_elem2 to_eval_elem2() const { return eval_elem2 {key1, key2}; }
 
 public:
-    // The nezo point of key1 is s. However, if s is null, then
+    // The viewpoint of key1 is s. However, if s is null, then
     // virt_unique_sec_val.
     gui_eval_elem2(sec_val key_1, int key_2, Sector *sec)
         : key1 {key_1}
