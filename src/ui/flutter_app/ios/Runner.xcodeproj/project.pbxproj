@@ -34,6 +34,24 @@
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */; };
 		4355E12EB823C74EB13931BE /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E48CB320551468B631DF5259 /* Pods_Runner.framework */; };
+		69D563A52B3986D80044F1F9 /* perfect_symmetries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563932B3986D80044F1F9 /* perfect_symmetries.cpp */; };
+		69D563A62B3986D80044F1F9 /* perfect_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563942B3986D80044F1F9 /* perfect_player.cpp */; };
+		69D563A72B3986D80044F1F9 /* perfect_move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563952B3986D80044F1F9 /* perfect_move.cpp */; };
+		69D563A82B3986D80044F1F9 /* perfect_sector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563962B3986D80044F1F9 /* perfect_sector.cpp */; };
+		69D563A92B3986D80044F1F9 /* perfect_log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563972B3986D80044F1F9 /* perfect_log.cpp */; };
+		69D563AA2B3986D80044F1F9 /* perfect_symmetries_slow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563982B3986D80044F1F9 /* perfect_symmetries_slow.cpp */; };
+		69D563AB2B3986D80044F1F9 /* perfect_wrappers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563992B3986D80044F1F9 /* perfect_wrappers.cpp */; };
+		69D563AC2B3986D80044F1F9 /* perfect_eval_elem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639A2B3986D80044F1F9 /* perfect_eval_elem.cpp */; };
+		69D563AD2B3986D80044F1F9 /* perfect_game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639B2B3986D80044F1F9 /* perfect_game.cpp */; };
+		69D563AE2B3986D80044F1F9 /* perfect_api.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639C2B3986D80044F1F9 /* perfect_api.cpp */; };
+		69D563AF2B3986D80044F1F9 /* perfect_game_state.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639D2B3986D80044F1F9 /* perfect_game_state.cpp */; };
+		69D563B02B3986D80044F1F9 /* perfect_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639E2B3986D80044F1F9 /* perfect_common.cpp */; };
+		69D563B12B3986D80044F1F9 /* perfect_debug.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D5639F2B3986D80044F1F9 /* perfect_debug.cpp */; };
+		69D563B22B3986D80044F1F9 /* perfect_hash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563A02B3986D80044F1F9 /* perfect_hash.cpp */; };
+		69D563B32B3986D80044F1F9 /* perfect_rules.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563A12B3986D80044F1F9 /* perfect_rules.cpp */; };
+		69D563B42B3986D80044F1F9 /* perfect_sector_graph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563A22B3986D80044F1F9 /* perfect_sector_graph.cpp */; };
+		69D563B52B3986D80044F1F9 /* perfect_sec_val.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563A32B3986D80044F1F9 /* perfect_sec_val.cpp */; };
+		69D563B62B3986D80044F1F9 /* perfect_adaptor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563A42B3986D80044F1F9 /* perfect_adaptor.cpp */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
@@ -157,6 +175,43 @@
 		2E549282966A6E2458D7920F /* Pods-Runner.profile.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.profile.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.profile.xcconfig"; sourceTree = "<group>"; };
 		349228A5990D5CD0357DB713 /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
 		3B3967151E833CAA004F5970 /* AppFrameworkInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = AppFrameworkInfo.plist; path = Flutter/AppFrameworkInfo.plist; sourceTree = "<group>"; };
+		69D563932B3986D80044F1F9 /* perfect_symmetries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_symmetries.cpp; path = ../../../../../perfect/perfect_symmetries.cpp; sourceTree = "<group>"; };
+		69D563942B3986D80044F1F9 /* perfect_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_player.cpp; path = ../../../../../perfect/perfect_player.cpp; sourceTree = "<group>"; };
+		69D563952B3986D80044F1F9 /* perfect_move.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_move.cpp; path = ../../../../../perfect/perfect_move.cpp; sourceTree = "<group>"; };
+		69D563962B3986D80044F1F9 /* perfect_sector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_sector.cpp; path = ../../../../../perfect/perfect_sector.cpp; sourceTree = "<group>"; };
+		69D563972B3986D80044F1F9 /* perfect_log.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_log.cpp; path = ../../../../../perfect/perfect_log.cpp; sourceTree = "<group>"; };
+		69D563982B3986D80044F1F9 /* perfect_symmetries_slow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_symmetries_slow.cpp; path = ../../../../../perfect/perfect_symmetries_slow.cpp; sourceTree = "<group>"; };
+		69D563992B3986D80044F1F9 /* perfect_wrappers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_wrappers.cpp; path = ../../../../../perfect/perfect_wrappers.cpp; sourceTree = "<group>"; };
+		69D5639A2B3986D80044F1F9 /* perfect_eval_elem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_eval_elem.cpp; path = ../../../../../perfect/perfect_eval_elem.cpp; sourceTree = "<group>"; };
+		69D5639B2B3986D80044F1F9 /* perfect_game.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_game.cpp; path = ../../../../../perfect/perfect_game.cpp; sourceTree = "<group>"; };
+		69D5639C2B3986D80044F1F9 /* perfect_api.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_api.cpp; path = ../../../../../perfect/perfect_api.cpp; sourceTree = "<group>"; };
+		69D5639D2B3986D80044F1F9 /* perfect_game_state.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_game_state.cpp; path = ../../../../../perfect/perfect_game_state.cpp; sourceTree = "<group>"; };
+		69D5639E2B3986D80044F1F9 /* perfect_common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_common.cpp; path = ../../../../../perfect/perfect_common.cpp; sourceTree = "<group>"; };
+		69D5639F2B3986D80044F1F9 /* perfect_debug.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_debug.cpp; path = ../../../../../perfect/perfect_debug.cpp; sourceTree = "<group>"; };
+		69D563A02B3986D80044F1F9 /* perfect_hash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_hash.cpp; path = ../../../../../perfect/perfect_hash.cpp; sourceTree = "<group>"; };
+		69D563A12B3986D80044F1F9 /* perfect_rules.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_rules.cpp; path = ../../../../../perfect/perfect_rules.cpp; sourceTree = "<group>"; };
+		69D563A22B3986D80044F1F9 /* perfect_sector_graph.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_sector_graph.cpp; path = ../../../../../perfect/perfect_sector_graph.cpp; sourceTree = "<group>"; };
+		69D563A32B3986D80044F1F9 /* perfect_sec_val.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_sec_val.cpp; path = ../../../../../perfect/perfect_sec_val.cpp; sourceTree = "<group>"; };
+		69D563A42B3986D80044F1F9 /* perfect_adaptor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_adaptor.cpp; path = ../../../../../perfect/perfect_adaptor.cpp; sourceTree = "<group>"; };
+		69D563B72B398B510044F1F9 /* perfect_move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_move.h; path = ../../../../../perfect/perfect_move.h; sourceTree = "<group>"; };
+		69D563B82B398B510044F1F9 /* perfect_game_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_game_state.h; path = ../../../../../perfect/perfect_game_state.h; sourceTree = "<group>"; };
+		69D563B92B398B510044F1F9 /* perfect_rules.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_rules.h; path = ../../../../../perfect/perfect_rules.h; sourceTree = "<group>"; };
+		69D563BA2B398B510044F1F9 /* perfect_game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_game.h; path = ../../../../../perfect/perfect_game.h; sourceTree = "<group>"; };
+		69D563BB2B398B510044F1F9 /* perfect_sector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_sector.h; path = ../../../../../perfect/perfect_sector.h; sourceTree = "<group>"; };
+		69D563BC2B398B510044F1F9 /* perfect_symmetries.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_symmetries.h; path = ../../../../../perfect/perfect_symmetries.h; sourceTree = "<group>"; };
+		69D563BD2B398B510044F1F9 /* perfect_hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_hash.h; path = ../../../../../perfect/perfect_hash.h; sourceTree = "<group>"; };
+		69D563BE2B398B510044F1F9 /* perfect_symmetries_slow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_symmetries_slow.h; path = ../../../../../perfect/perfect_symmetries_slow.h; sourceTree = "<group>"; };
+		69D563BF2B398B510044F1F9 /* perfect_adaptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_adaptor.h; path = ../../../../../perfect/perfect_adaptor.h; sourceTree = "<group>"; };
+		69D563C02B398B510044F1F9 /* perfect_sec_val.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_sec_val.h; path = ../../../../../perfect/perfect_sec_val.h; sourceTree = "<group>"; };
+		69D563C12B398B510044F1F9 /* perfect_log.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_log.h; path = ../../../../../perfect/perfect_log.h; sourceTree = "<group>"; };
+		69D563C22B398B510044F1F9 /* perfect_wrappers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_wrappers.h; path = ../../../../../perfect/perfect_wrappers.h; sourceTree = "<group>"; };
+		69D563C32B398B510044F1F9 /* perfect_api.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_api.h; path = ../../../../../perfect/perfect_api.h; sourceTree = "<group>"; };
+		69D563C42B398B510044F1F9 /* perfect_platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_platform.h; path = ../../../../../perfect/perfect_platform.h; sourceTree = "<group>"; };
+		69D563C52B398B510044F1F9 /* perfect_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_player.h; path = ../../../../../perfect/perfect_player.h; sourceTree = "<group>"; };
+		69D563C62B398B510044F1F9 /* perfect_eval_elem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_eval_elem.h; path = ../../../../../perfect/perfect_eval_elem.h; sourceTree = "<group>"; };
+		69D563C72B398B510044F1F9 /* perfect_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_common.h; path = ../../../../../perfect/perfect_common.h; sourceTree = "<group>"; };
+		69D563C82B398B510044F1F9 /* perfect_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_debug.h; path = ../../../../../perfect/perfect_debug.h; sourceTree = "<group>"; };
+		69D563C92B398B510044F1F9 /* perfect_sector_graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_sector_graph.h; path = ../../../../../perfect/perfect_sector_graph.h; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -184,6 +239,43 @@
 		0017434C296080BD00F72763 /* engine */ = {
 			isa = PBXGroup;
 			children = (
+				69D563BF2B398B510044F1F9 /* perfect_adaptor.h */,
+				69D563C32B398B510044F1F9 /* perfect_api.h */,
+				69D563C72B398B510044F1F9 /* perfect_common.h */,
+				69D563C82B398B510044F1F9 /* perfect_debug.h */,
+				69D563C62B398B510044F1F9 /* perfect_eval_elem.h */,
+				69D563B82B398B510044F1F9 /* perfect_game_state.h */,
+				69D563BA2B398B510044F1F9 /* perfect_game.h */,
+				69D563BD2B398B510044F1F9 /* perfect_hash.h */,
+				69D563C12B398B510044F1F9 /* perfect_log.h */,
+				69D563B72B398B510044F1F9 /* perfect_move.h */,
+				69D563C42B398B510044F1F9 /* perfect_platform.h */,
+				69D563C52B398B510044F1F9 /* perfect_player.h */,
+				69D563B92B398B510044F1F9 /* perfect_rules.h */,
+				69D563C02B398B510044F1F9 /* perfect_sec_val.h */,
+				69D563C92B398B510044F1F9 /* perfect_sector_graph.h */,
+				69D563BB2B398B510044F1F9 /* perfect_sector.h */,
+				69D563BE2B398B510044F1F9 /* perfect_symmetries_slow.h */,
+				69D563BC2B398B510044F1F9 /* perfect_symmetries.h */,
+				69D563C22B398B510044F1F9 /* perfect_wrappers.h */,
+				69D563A42B3986D80044F1F9 /* perfect_adaptor.cpp */,
+				69D5639C2B3986D80044F1F9 /* perfect_api.cpp */,
+				69D5639E2B3986D80044F1F9 /* perfect_common.cpp */,
+				69D5639F2B3986D80044F1F9 /* perfect_debug.cpp */,
+				69D5639A2B3986D80044F1F9 /* perfect_eval_elem.cpp */,
+				69D5639D2B3986D80044F1F9 /* perfect_game_state.cpp */,
+				69D5639B2B3986D80044F1F9 /* perfect_game.cpp */,
+				69D563A02B3986D80044F1F9 /* perfect_hash.cpp */,
+				69D563972B3986D80044F1F9 /* perfect_log.cpp */,
+				69D563952B3986D80044F1F9 /* perfect_move.cpp */,
+				69D563942B3986D80044F1F9 /* perfect_player.cpp */,
+				69D563A12B3986D80044F1F9 /* perfect_rules.cpp */,
+				69D563A32B3986D80044F1F9 /* perfect_sec_val.cpp */,
+				69D563A22B3986D80044F1F9 /* perfect_sector_graph.cpp */,
+				69D563962B3986D80044F1F9 /* perfect_sector.cpp */,
+				69D563982B3986D80044F1F9 /* perfect_symmetries_slow.cpp */,
+				69D563932B3986D80044F1F9 /* perfect_symmetries.cpp */,
+				69D563992B3986D80044F1F9 /* perfect_wrappers.cpp */,
 				0011EECD2A02A3CC00E4431D /* mcts.cpp */,
 				0011EECE2A02A3CC00E4431D /* mcts.h */,
 				001743922960818200F72763 /* config.h */,
@@ -338,7 +430,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1300;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					97C146ED1CF9000F007C117D = {
@@ -429,6 +521,7 @@
 			files = (
 			);
 			inputPaths = (
+				"${TARGET_BUILD_DIR}/${INFOPLIST_PATH}",
 			);
 			name = "Thin Binary";
 			outputPaths = (
@@ -498,27 +591,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				69D563B02B3986D80044F1F9 /* perfect_common.cpp in Sources */,
+				69D563B62B3986D80044F1F9 /* perfect_adaptor.cpp in Sources */,
+				69D563A92B3986D80044F1F9 /* perfect_log.cpp in Sources */,
 				001743962960957700F72763 /* AppDelegate.m in Sources */,
 				001743812960813200F72763 /* ucioption.cpp in Sources */,
+				69D563B32B3986D80044F1F9 /* perfect_rules.cpp in Sources */,
+				69D563AF2B3986D80044F1F9 /* perfect_game_state.cpp in Sources */,
+				69D563AD2B3986D80044F1F9 /* perfect_game.cpp in Sources */,
+				69D563AE2B3986D80044F1F9 /* perfect_api.cpp in Sources */,
 				001743872960813200F72763 /* endgame.cpp in Sources */,
+				69D563B12B3986D80044F1F9 /* perfect_debug.cpp in Sources */,
 				001743892960813200F72763 /* position.cpp in Sources */,
 				00174359296080FA00F72763 /* engine_main.cpp in Sources */,
 				0017438F2960813200F72763 /* main.cpp in Sources */,
 				001743802960813200F72763 /* evaluate.cpp in Sources */,
+				69D563A52B3986D80044F1F9 /* perfect_symmetries.cpp in Sources */,
 				001743832960813200F72763 /* movegen.cpp in Sources */,
+				69D563AA2B3986D80044F1F9 /* perfect_symmetries_slow.cpp in Sources */,
 				0011EECF2A02A3CC00E4431D /* mcts.cpp in Sources */,
 				00174357296080FA00F72763 /* command_channel.cpp in Sources */,
+				69D563AB2B3986D80044F1F9 /* perfect_wrappers.cpp in Sources */,
+				69D563A82B3986D80044F1F9 /* perfect_sector.cpp in Sources */,
 				00174358296080FA00F72763 /* command_queue.cpp in Sources */,
 				001743982960A3E200F72763 /* main.m in Sources */,
 				001743852960813200F72763 /* tt.cpp in Sources */,
+				69D563B22B3986D80044F1F9 /* perfect_hash.cpp in Sources */,
 				001743862960813200F72763 /* mills.cpp in Sources */,
 				0017438B2960813200F72763 /* misc.cpp in Sources */,
 				0017438A2960813200F72763 /* bitboard.cpp in Sources */,
 				0017438D2960813200F72763 /* rule.cpp in Sources */,
 				001743882960813200F72763 /* search.cpp in Sources */,
 				001743822960813200F72763 /* uci.cpp in Sources */,
+				69D563AC2B3986D80044F1F9 /* perfect_eval_elem.cpp in Sources */,
+				69D563A72B3986D80044F1F9 /* perfect_move.cpp in Sources */,
 				001743842960813200F72763 /* movepick.cpp in Sources */,
+				69D563B42B3986D80044F1F9 /* perfect_sector_graph.cpp in Sources */,
+				69D563B52B3986D80044F1F9 /* perfect_sec_val.cpp in Sources */,
 				0017438E2960813200F72763 /* option.cpp in Sources */,
+				69D563A62B3986D80044F1F9 /* perfect_player.cpp in Sources */,
 				0017438C2960813200F72763 /* thread.cpp in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
 				0017435A296080FA00F72763 /* mill_engine.mm in Sources */,
@@ -669,7 +780,6 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
-					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -822,7 +932,6 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
-					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
@@ -860,7 +969,6 @@
 					"COCOAPODS=1",
 					FLUTTER_UI,
 					"TARGET_OS_OSX=0",
-					"DISABLE_PERFECT_AI=1",
 				);
 				INFOPLIST_FILE = "Runner/Info-$(CONFIGURATION).plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Mill;
