@@ -36,7 +36,7 @@ jobs:
         run: bash -x ./flutter-windows-init.sh
 
       - name: Build msix
-        run: cd src/ui/flutter_app; dart run msix:create
+        run: cd src/ui/flutter_app; flutter build windows --release -v; dart run msix:create
 
       - name: Archive msix
         uses: actions/upload-artifact@v3
