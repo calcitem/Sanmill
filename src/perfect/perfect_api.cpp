@@ -167,11 +167,11 @@ void MalomSolutionAccess::initializeIfNeeded()
 
 void MalomSolutionAccess::deinitializeIfNeeded()
 {
-    Rules::cleanup();
-
     if (pp == nullptr) {
         return;
     }
+
+    Rules::cleanup();
 
     delete pp;
 
