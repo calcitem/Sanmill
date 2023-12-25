@@ -546,7 +546,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::eval(GameState s)
 
         auto it = secs.find(Id);
         if (it == secs.end()) {
-            throw std::runtime_error("Key not found in map");
+            throw std::out_of_range("Database file for the key not found");
         }
 
         Wrappers::WSector &sec = it->second;
