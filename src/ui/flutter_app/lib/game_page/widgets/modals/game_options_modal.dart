@@ -110,9 +110,10 @@ class _GameOptionsModal extends StatelessWidget {
             onPressed: () => GameController.export(context),
             child: Text(S.of(context).exportGame),
           ),
-        if (DB().generalSettings.gameScreenRecorderSupport)
+        // TODO: Fix iOS bug
+        if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
           const CustomSpacer(),
-        if (DB().generalSettings.gameScreenRecorderSupport)
+        if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
           SimpleDialogOption(
             onPressed: () {
               GameController().gifShare(context);

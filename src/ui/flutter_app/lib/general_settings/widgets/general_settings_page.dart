@@ -371,7 +371,8 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+        // TODO: Fix iOS bug
+        if (!kIsWeb && (Platform.isAndroid))
           SettingsCard(
             title: Text(S.of(context).gameScreenRecorder),
             children: <Widget>[
