@@ -182,13 +182,19 @@ Value perfect_search(const Position *pos, Move &move)
 {
     Value value = VALUE_UNKNOWN;
 
+    // TODO: Now always return only the first move
+    // from the engine, whether it's two moves or one. This means the action
+    // for 'removing' is recalculated, which might reduce performance but
+    // ensures accuracy. Additionally, when two moves are returned, the result
+    // of 'removing' from the second move might differ from that obtained
+    // through a new search.
     if (malom_remove_move != MOVE_NONE) {
-        Move ret = malom_remove_move;
+        // Move ret = malom_remove_move;
         value = malom_remove_value;
         malom_remove_move = MOVE_NONE;
         malom_remove_value = VALUE_UNKNOWN;
-        move = ret;
-        return value;
+        // move = ret;
+        // return value;
     }
 
     std::vector<Move> moves;

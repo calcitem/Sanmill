@@ -73,7 +73,6 @@ struct WID
     int GetHashCode() { return (W << 0) | (B << 4) | (WF << 8) | (BF << 12); }
 
 public:
-
     bool operator==(const WID &other) const
     {
         return W == other.W && B == other.B && WF == other.WF && BF == other.BF;
