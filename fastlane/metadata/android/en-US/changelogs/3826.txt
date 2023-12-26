@@ -1,0 +1,5 @@
+v4.0.0
+
+- Introduced support for Perfect AI, enhancing challenge and engagement levels. Acknowledgments to Gábor Gévay and Gábor Danner.
+- Enabled the transfer of PGN files from phones to PCs.
+- Updated to Material3 design.
