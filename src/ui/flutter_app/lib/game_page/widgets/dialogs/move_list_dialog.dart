@@ -65,30 +65,35 @@ class _MoveListDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           Row(
-            // Wrap the buttons with a Row widget
-            mainAxisSize: MainAxisSize.min, // Use min to fit the content size
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               if (end > 0)
-                TextButton(
+                Expanded(
+                  child: TextButton(
+                    child: Text(
+                      S.of(context).rollback,
+                      style: buttonTextStyle,
+                    ),
+                    onPressed: () async => _rollback(context, end),
+                  ),
+                ),
+              Expanded(
+                child: TextButton(
                   child: Text(
-                    S.of(context).rollback,
+                    S.of(context).copy,
                     style: buttonTextStyle,
                   ),
-                  onPressed: () async => _rollback(context, end),
+                  onPressed: () => GameController.export(context),
                 ),
-              TextButton(
-                child: Text(
-                  S.of(context).copy,
-                  style: buttonTextStyle,
-                ),
-                onPressed: () => GameController.export(context),
               ),
-              TextButton(
-                child: Text(
-                  S.of(context).cancel,
-                  style: buttonTextStyle,
+              Expanded(
+                child: TextButton(
+                  child: Text(
+                    S.of(context).cancel,
+                    style: buttonTextStyle,
+                  ),
+                  onPressed: () => Navigator.pop(context),
                 ),
-                onPressed: () => Navigator.pop(context),
               ),
             ],
           ),
