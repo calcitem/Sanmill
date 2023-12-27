@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.4.1)
+project(sanmill LANGUAGES CXX)
 
 add_definitions(-g -O2 -std=c++17 -D FLUTTER_UI)
 #add_definitions(-DDISABLE_PERFECT_AI)
@@ -18,7 +19,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-	    ../../../../mcts.cpp
+	../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp
