@@ -23,6 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "perfect_wrappers.h"
 
+int ruleVariant;
+
 std::unordered_map<Id, int> sector_sizes;
 
 // This manages the lookup tables of the hash function: it keeps them in memory

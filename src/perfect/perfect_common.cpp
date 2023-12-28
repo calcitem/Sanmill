@@ -24,12 +24,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "perfect_common.h"
 
 #include <stdexcept>
+#include <string>
 
 std::string sec_val_path = ".";
 std::string sec_val_fname = "";
 FILE *f = nullptr;
 
+int field2_offset;
+int field1_size;
+int field2_size;
+int max_ksz;
+sec_val sec_val_min_value;
+std::string ruleVariantName;
+
 void failwith(std::string s)
 {
-    throw std::runtime_error(std::string(VARIANT_NAME) + ": " + s);
+    throw std::runtime_error(ruleVariantName + ": " + s);
 }

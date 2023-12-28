@@ -28,6 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <sstream>
 #include <vector>
 
+extern int ruleVariant;
+extern int field2_offset;
+extern int max_ksz;
+
 const char *toclp(board b)
 {
     board mask = 1;

@@ -56,6 +56,7 @@ std::map<Wrappers::WID, Wrappers::WSector> Sectors::getSectors()
         if (!created) {
             Wrappers::Init::init_sym_lookuptables();
             Wrappers::Init::init_sec_vals();
+            // sectors.clear();
 
             for (int w = 0; w <= Rules::maxKSZ; ++w) {
                 for (int b = 0; b <= Rules::maxKSZ; ++b) {
@@ -272,10 +273,8 @@ std::vector<AdvancedMove> PerfectPlayer::getMoveList(const GameState &s)
 {
     std::vector<AdvancedMove> ms0, ms;
     if (!s.kle) {
-        if (Wrappers::Constants::variant ==
-                (int)Wrappers::Constants::Variants::std ||
-            Wrappers::Constants::variant ==
-                (int)Wrappers::Constants::Variants::mora) {
+        if (ruleVariant == (int)Wrappers::Constants::Variants::std ||
+            ruleVariant == (int)Wrappers::Constants::Variants::mora) {
             if (s.setStoneCount[s.sideToMove] < Rules::maxKSZ) {
                 ms0 = setMoves(s);
             } else {

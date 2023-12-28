@@ -30,6 +30,8 @@
 #include <filesystem>
 #endif
 
+extern int perfect_init();
+
 PerfectPlayer *MalomSolutionAccess::pp = nullptr;
 std::exception *MalomSolutionAccess::lastError = nullptr;
 
@@ -147,6 +149,8 @@ void MalomSolutionAccess::initializeIfNeeded()
         return;
     }
 
+    perfect_init();
+
     sec_val_path = gameOptions.getPerfectDatabasePath();
 
     Rules::initRules();
@@ -198,7 +202,7 @@ void MalomSolutionAccess::mustBeBetween(std::string paramName, int value,
 
 void MalomSolutionAccess::setVariantStripped()
 {
-    switch (Wrappers::Constants::variant) {
+    switch (ruleVariant) {
     case (int)Wrappers::Constants::Variants::std:
         std::memcpy(Rules::millPos, Rules::stdLaskerMillPos,
                     sizeof(Rules::stdLaskerMillPos));

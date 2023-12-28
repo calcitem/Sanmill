@@ -113,8 +113,8 @@ void GameState::makeMove(CMove *M)
             over = true;
             block = true;
             winner = 1 - sideToMove;
-            if (Wrappers::Constants::FBD && stoneCount[0] == 12 &&
-                stoneCount[1] == 12) {
+            if (rule.boardFullAction == BoardFullAction::agreeToDraw &&
+                stoneCount[0] == 12 && stoneCount[1] == 12) {
                 winner = -1;
             }
         }
@@ -192,8 +192,7 @@ std::string GameState::setOverAndCheckValidSetup()
     assert(!(phase == 1 && toBePlaced0 == 0 && toBePlaced1 == 0));
     assert(!(phase == 2 && (toBePlaced0 > 0 || toBePlaced1 > 0)));
 
-    if (Wrappers::Constants::variant !=
-            (int)Wrappers::Constants::Variants::lask &&
+    if (ruleVariant != (int)Wrappers::Constants::Variants::lask &&
         !Wrappers::Constants::extended) {
         if (phase == 1) {
             if (toBePlaced0 !=
@@ -252,8 +251,8 @@ std::string GameState::setOverAndCheckValidSetup()
         over = true;
         block = true;
         winner = 1 - sideToMove;
-        if (Wrappers::Constants::FBD && stoneCount[0] == 12 &&
-            stoneCount[1] == 12) {
+        if (rule.boardFullAction == BoardFullAction::agreeToDraw &&
+            stoneCount[0] == 12 && stoneCount[1] == 12) {
             winner = -1;
         }
     }

@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <cstdio>
 #include <vector>
 
-Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
+std::vector<std::vector<std::vector<std::vector<Sector *>>>> sectors;
 
 std::vector<Sector *> sector_objs;
 
@@ -207,8 +207,13 @@ eval_elem2 Sector::get_eval(int i)
 
 eval_elem_sym2 Sector::get_eval_inner(int i)
 {
+#ifdef DD
+    field2_t spec_field2 = -(1 << (field2_size - 1));
+    // field2_t max_field2 = -(spec_field2 + 1);
+#endif
+
     std::pair<sec_val, field2_t> resi = extract(i);
-    if (resi.second == eval_elem_sym2::spec_field2) {
+    if (resi.second == spec_field2) {
         assert(em_set.count(i));
         return eval_elem_sym2 {resi.first, em_set[i]};
     } else {
@@ -253,8 +258,8 @@ eval_elem_sym2 Sector::get_eval_inner(int i)
 
 #ifdef DD
 
-template <int b, class T>
-T sign_extend(T x)
+template <class T>
+T sign_extend(T x, int b)
 {
     if ((1 << (b - 1)) & x)
         return x | ((-1) ^ ((1 << b) - 1));
@@ -288,10 +293,9 @@ std::pair<sec_val, field2_t> Sector::extract(int i)
 #endif
 
     auto r = std::make_pair(
-        sign_extend<field1_size, sec_val>(
-            static_cast<sec_val>(a & ((1 << field1_size) - 1))),
-        sign_extend<field2_size, field2_t>(
-            static_cast<field2_t>(a >> field2_offset)));
+        sign_extend(static_cast<sec_val>(a & ((1 << field1_size) - 1)),
+                    field1_size),
+        sign_extend(static_cast<field2_t>(a >> field2_offset), field2_size));
 
     return r;
 }

@@ -40,12 +40,14 @@ void init_sec_vals()
 #ifndef STONE_DIFF
     FILE *f = nullptr;
 #ifdef _WIN32
-    sec_val_fname = sec_val_path + "\\" + (std::string)VARIANT_NAME + ".secval";
+    sec_val_fname = sec_val_path + "\\" + (std::string)ruleVariantName +
+                    ".secval";
 #else
-    sec_val_fname = sec_val_path + "/" + (std::string)VARIANT_NAME + ".secval";
+    sec_val_fname = sec_val_path + "/" + (std::string)ruleVariantName +
+                    ".secval";
 #endif
     if (FOPEN(&f, sec_val_fname.c_str(), "rt") != 0) {
-        failwith(VARIANT_NAME ".secval file not found.");
+        failwith(ruleVariantName + ".secval file not found.");
         return;
     }
     FSCANF(f, "virt_loss_val: %hd\nvirt_win_val: %hd\n", &virt_loss_val,

@@ -28,6 +28,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <algorithm>
 #include <queue>
 
+extern int ruleVariant;
+extern int field2_offset;
+extern int max_ksz;
+
 std::vector<Id> std_mora_graph_func(Id u)
 {
     std::vector<Id> v;
@@ -93,7 +97,17 @@ std::vector<Id> lask_graph_func(Id u)
 
 std::vector<Id> graph_func(Id u, bool elim_loops)
 {
-    std::vector<Id> r0 = GRAPH_FUNC_NOTNEG(u);
+    std::vector<Id> r0;
+
+    if (ruleVariant == STANDARD) {
+        r0 = std_mora_graph_func(u);
+    } else if (ruleVariant == MORABARABA) {
+        r0 = std_mora_graph_func(u);
+    } else if (ruleVariant == LASKER) {
+        r0 = lask_graph_func(u);
+    } else {
+        assert(false);
+    }
 
     for (auto it = r0.begin(); it != r0.end(); it++)
         it->negate();
@@ -116,7 +130,7 @@ std::vector<Id> sector_list;
 
 void init_sector_graph()
 {
-    LOG("init_sector_graph %s", VARIANT_NAME);
+    LOG("init_sector_graph %s", ruleVariantName.c_str());
 
     std::queue<Id> q;
     std::set<Id> volt;

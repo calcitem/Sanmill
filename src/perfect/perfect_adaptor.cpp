@@ -25,10 +25,14 @@
 #include "option.h"
 #include "perfect_adaptor.h"
 #include "perfect_api.h"
+#include "perfect_wrappers.h"
 #include "position.h"
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
+
+extern int ruleVariant;
+extern int max_ksz;
 
 static Move malom_remove_move = MOVE_NONE;
 static Value malom_remove_value = VALUE_UNKNOWN;
@@ -50,6 +54,57 @@ int perfect_init()
     malom_remove_move = MOVE_NONE;
     malom_remove_value = VALUE_UNKNOWN;
 
+    if (rule.pieceCount == 9) {
+        ruleVariant = (int)Wrappers::Constants::Variants::std;
+    } else if (rule.pieceCount == 12) {
+        ruleVariant = (int)Wrappers::Constants::Variants::mora;
+    } else if (rule.pieceCount == 10) {
+        ruleVariant = (int)Wrappers::Constants::Variants::lask;
+    } else {
+        // TODO: Throw exception
+        ruleVariant = (int)Wrappers::Constants::Variants::std;
+    }
+
+    switch (ruleVariant) {
+    case (int)Wrappers::Constants::Variants::std:
+        ruleVariantName = "std";
+        max_ksz = 9;
+        field2_offset = 12;
+        break;
+    case (int)Wrappers::Constants::Variants::mora:
+        ruleVariantName = "mora";
+        max_ksz = 12;
+        field2_offset = 14;
+        break;
+    case (int)Wrappers::Constants::Variants::lask:
+        ruleVariantName = "lasker";
+        max_ksz = 10;
+        field2_offset = 14;
+        break;
+    default:
+        assert(false);
+        break;
+    }
+
+#ifdef FULL_SECTOR_GRAPH
+    int max_ksz = 12;
+#endif
+
+    field1_size = field2_offset;
+    field2_size = 8 * eval_struct_size - field2_offset;
+    sec_val_min_value = -(1 << (field1_size - 1));
+
+    sectors.resize(max_ksz + 1);
+    for (int i = 0; i <= max_ksz; ++i) {
+        sectors[i].resize(max_ksz + 1);
+        for (int j = 0; j <= max_ksz; ++j) {
+            sectors[i][j].resize(max_ksz + 1);
+            for (int k = 0; k <= max_ksz; ++k) {
+                sectors[i][j][k].resize(max_ksz + 1);
+            }
+        }
+    }
+
     return 0;
 }
 
@@ -63,9 +118,7 @@ int perfect_exit()
 
 int perfect_reset()
 {
-    perfect_init();
-
-    return 0;
+    return perfect_init();
 }
 
 Square from_perfect_sq(uint32_t sq)

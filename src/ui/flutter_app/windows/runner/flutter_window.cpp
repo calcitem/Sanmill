@@ -75,8 +75,6 @@ bool FlutterWindow::OnCreate()
     run_loop_->RegisterFlutterInstance(flutter_controller_->engine());
     SetChildContent(flutter_controller_->view()->GetNativeWindow());
 
-    perfect_reset();  // TODO
-
     return true;
 }
 

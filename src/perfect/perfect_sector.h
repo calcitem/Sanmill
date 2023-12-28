@@ -33,6 +33,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "movegen.h"
 #endif
 
+extern int ruleVariant;
+extern int field2_offset;
+extern int max_ksz;
+
 class Hash;
 class Sector;
 
@@ -83,7 +87,8 @@ public:
     sec_val sval;
 };
 
-extern Sector *sectors[max_ksz + 1][max_ksz + 1][max_ksz + 1][max_ksz + 1];
+extern std::vector<std::vector<std::vector<std::vector<Sector *>>>> sectors;
+
 #define sectors(Id) (sectors[(Id).W][(Id).B][(Id).WF][(Id).BF])
 
 extern std::vector<Sector *> sector_objs;

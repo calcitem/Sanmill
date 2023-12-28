@@ -34,13 +34,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define MORABARABA 2
 #define LASKER 3
 
+extern int ruleVariant;
+
 //-------------------------------------
 // Settings:
-
-#define RULE_VARIANT STANDARD // STANDARD, MORABARABA, or LASKER
-
-// 0 or 1
-#define FULL_BOARD_IS_DRAW 1
 
 // #define FULL_SECTOR_GRAPH //extended solution //comment or uncomment
 
@@ -67,21 +64,15 @@ static_assert(false, "sec_val range");
 #ifndef STONE_DIFF
 // byte
 const int eval_struct_size = 3;
-#if RULE_VARIANT == STANDARD
-// bit
-const int field2_offset = 12;
-#else
-// bit
-const int field2_offset = 14;
-#endif
+extern int field2_offset;
+extern int field1_size;
+extern int field2_size;
 #else
 // byte
 const int eval_struct_size = 2;
 // bit
 const int field2_offset = 6;
 #endif
-const int field1_size = field2_offset;
-const int field2_size = 8 * eval_struct_size - field2_offset;
 using field2_t = int16_t;
 #endif
 
@@ -100,7 +91,7 @@ const char stone_diff_flag = 0;
 using sec_val = int16_t;
 
 #ifdef DD
-const sec_val sec_val_min_value = -(1 << (field1_size - 1));
+extern sec_val sec_val_min_value;
 #endif
 
 #ifndef DD
@@ -114,37 +105,7 @@ const sec_val sec_val_min_value = -(1 << (field1_size - 1));
 
 const int version = 2;
 
-#if RULE_VARIANT == STANDARD
-#define VARIANT_NAME "std"
-#define GRAPH_FUNC_NOTNEG std_mora_graph_func
-#define MILL_POS_CNT 16
-#ifndef FULL_SECTOR_GRAPH
-const int max_ksz = 9;
-#endif
-#endif
-
-#if RULE_VARIANT == LASKER
-#define VARIANT_NAME "lask"
-#define GRAPH_FUNC_NOTNEG lask_graph_func
-#define MILL_POS_CNT 16
-#ifndef FULL_SECTOR_GRAPH
-const int max_ksz = 10;
-#endif
-#endif
-
-#if RULE_VARIANT == MORABARABA
-#define VARIANT_NAME "mora"
-#define GRAPH_FUNC_NOTNEG std_mora_graph_func
-#define MILL_POS_CNT 20
-#ifndef FULL_SECTOR_GRAPH
-const int max_ksz = 12;
-#endif
-#endif
-
-#ifdef FULL_SECTOR_GRAPH
-const int max_ksz = 12;
-// #pragma message ("Warning: max_ksz leveve")
-#endif
+extern std::string ruleVariantName;
 
 extern std::string sec_val_path;
 extern std::string sec_val_fname;
@@ -154,7 +115,7 @@ extern std::string sec_val_fname;
 // The Controller automatically makes
 // this, if the file doesn't exist.
 const std::string movegen_file = (std::string) "C:\\malom_data_aux\\" +
-                                 VARIANT_NAME + ".movegen";
+                                 ruleVariantName + ".movegen";
 
 typedef int64_t board;
 
@@ -266,11 +227,13 @@ struct Id
 
     bool transient() const
     {
-#if RULE_VARIANT == STANDARD || RULE_VARIANT == MORABARABA
-        return !(WF == 0 && BF == 0);
-#else
-        return !(W != 0 && B != 0);
-#endif
+        if (ruleVariant == STANDARD || ruleVariant == MORABARABA) {
+            return !(WF == 0 && BF == 0);
+        } else {
+            return !(W != 0 && B != 0);
+        }
+
+        return false;
     }
 
     bool twine() const { return !eks() && !transient(); }
@@ -278,8 +241,8 @@ struct Id
     std::string file_name()
     {
         char b[255];
-        SPRINTF(b, sizeof(b), "%s_%d_%d_%d_%d.sec%s", VARIANT_NAME, W, B, WF,
-                BF, FNAME_SUFFIX);
+        SPRINTF(b, sizeof(b), "%s_%d_%d_%d_%d.sec%s", ruleVariantName.c_str(),
+                W, B, WF, BF, FNAME_SUFFIX);
         std::string r = std::string(b);
         return r;
     }
@@ -306,7 +269,8 @@ struct Id
     std::string to_string()
     {
         char buf[255];
-        SPRINTF(buf, sizeof(buf), "%s_%d_%d_%d_%d", VARIANT_NAME, W, B, WF, BF);
+        SPRINTF(buf, sizeof(buf), "%s_%d_%d_%d_%d", ruleVariantName.c_str(), W,
+                B, WF, BF);
         return std::string(buf);
     }
 };

@@ -24,6 +24,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef PERFECT_WRAPPER_H_INCLUDED
 #define PERFECT_WRAPPER_H_INCLUDED
 
+#include "rule.h"
+
 #include "perfect_common.h"
 #include "perfect_debug.h"
 #include "perfect_hash.h"
@@ -305,7 +307,6 @@ public:
 class Constants
 {
 public:
-    static const int variant = RULE_VARIANT;
     inline static const std::string fname_suffix = FNAME_SUFFIX;
     const std::string movegenFname = movegen_file;
 
@@ -316,8 +317,6 @@ public:
 #else
     static const bool dd = false;
 #endif
-
-    static const bool FBD = FULL_BOARD_IS_DRAW;
 
 #ifdef FULL_SECTOR_GRAPH
     static const bool extended = true;

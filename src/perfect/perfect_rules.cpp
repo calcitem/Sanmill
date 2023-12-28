@@ -142,12 +142,84 @@ void Rules::initRules()
             }
         }
     }
+
+    for (int i = 0; i <= 15; i++) {
+        for (int j = 0; j <= 2; j++) {
+            moraMillPos[i][j] = stdLaskerMillPos[i][j];
+        }
+    }
+
+    moraMillPos[16][0] = 1;
+    moraMillPos[16][1] = 9;
+    moraMillPos[16][2] = 17;
+    moraMillPos[17][0] = 3;
+    moraMillPos[17][1] = 11;
+    moraMillPos[17][2] = 19;
+    moraMillPos[18][0] = 5;
+    moraMillPos[18][1] = 13;
+    moraMillPos[18][2] = 21;
+    moraMillPos[19][0] = 7;
+    moraMillPos[19][1] = 15;
+    moraMillPos[19][2] = 23;
+
+    for (int i = 0; i <= 23; i++) {
+        std::vector<int> l;
+        for (int j = 0; j <= 19; j++) {
+            bool needed = false;
+            for (int k = 0; k <= 2; k++) {
+                if (moraMillPos[j][k] == i) {
+                    needed = true;
+                    break;
+                }
+            }
+            if (needed) {
+                l.push_back(j);
+            }
+        }
+        moraInvMillPos[i] = new int[l.size()];
+        std::copy(l.begin(), l.end(), moraInvMillPos[i]);
+    }
+
+    for (int i = 0; i <= 23; i++) {
+        for (int j = 0; j <= 23; j++) {
+            moraBoardGraph[i][j] = stdLaskerBoardGraph[i][j];
+        }
+    }
+
+    for (int i = 0; i <= 15; i++) {
+        moraBoardGraph[i][i + 8] = true;
+    }
+
+    for (int i = 0; i <= 23; i++) {
+        for (int j = 0; j <= 23; j++) {
+            if (moraBoardGraph[i][j] == true) {
+                moraBoardGraph[j][i] = true;
+            }
+        }
+    }
+
+    for (int i = 0; i <= 23; i++) {
+        moraALBoardGraph[i][0] = 0;
+    }
+
+    for (int i = 0; i <= 23; i++) {
+        for (uint8_t j = 0; j <= 23; j++) {
+            if (moraBoardGraph[i][j] == true) {
+                moraALBoardGraph[i][moraALBoardGraph[i][0] + 1] = j;
+                moraALBoardGraph[i][0] += 1;
+            }
+        }
+    }
 }
 
 void Rules::cleanup()
 {
     for (int i = 0; i < 24; ++i) {
         delete[] stdLaskerInvMillPos[i];
+    }
+
+    for (int i = 0; i < 24; ++i) {
+        delete[] moraInvMillPos[i];
     }
 }
 
@@ -200,8 +272,7 @@ bool Rules::mindenEllensegesPieceMalomban(GameState s)
 // Checking if AlphaBeta is available
 bool Rules::alphaBetaAvailable()
 {
-    return Wrappers::Constants::variant ==
-               (int)Wrappers::Constants::Variants::std &&
+    return ruleVariant == (int)Wrappers::Constants::Variants::std &&
            !Wrappers::Constants::extended;
 }
 
@@ -213,8 +284,7 @@ bool Rules::alphaBetaAvailable()
 void Rules::setVariant()
 {
     // Part of this is copy-pasted in MalomAPI
-    if (Wrappers::Constants::variant ==
-        (int)Wrappers::Constants::Variants::std) {
+    if (ruleVariant == (int)Wrappers::Constants::Variants::std) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
@@ -225,8 +295,7 @@ void Rules::setVariant()
                     sizeof(stdLaskerALBoardGraph));
         maxKSZ = 9;
         variantName = "std";
-    } else if (Wrappers::Constants::variant ==
-               (int)Wrappers::Constants::Variants::lask) {
+    } else if (ruleVariant == (int)Wrappers::Constants::Variants::lask) {
         std::memcpy(millPos, stdLaskerMillPos, sizeof(stdLaskerMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = stdLaskerInvMillPos[i];
@@ -237,8 +306,7 @@ void Rules::setVariant()
                     sizeof(stdLaskerALBoardGraph));
         maxKSZ = 10;
         variantName = "lask";
-    } else if (Wrappers::Constants::variant ==
-               (int)Wrappers::Constants::Variants::mora) {
+    } else if (ruleVariant == (int)Wrappers::Constants::Variants::mora) {
         std::memcpy(millPos, moraMillPos, sizeof(moraMillPos));
         for (int i = 0; i < 24; ++i) {
             invMillPos[i] = moraInvMillPos[i];
