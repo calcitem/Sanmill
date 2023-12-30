@@ -102,6 +102,11 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMcts);
           break;
+        // TODO: Add whatIsRandom
+        case SearchAlgorithm.random:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear("Random");
+          break;
         case null:
           break;
       }

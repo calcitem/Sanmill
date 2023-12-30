@@ -41,12 +41,12 @@ static std::condition_variable cv;
 
 int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
                 int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
-                Value &value)
+                Value &value, const Move &refMove)
 {
     return MalomSolutionAccess::getBestMove(whiteBitboard, blackBitboard,
                                             whiteStonesToPlace,
                                             blackStonesToPlace, playerToMove,
-                                            onlyStoneTaking, value);
+                                            onlyStoneTaking, value, refMove);
 }
 
 int perfect_init()
@@ -131,8 +131,7 @@ Square from_perfect_sq(uint32_t sq)
     return map[sq];
 }
 
-#if 0
-unsigned to_perfect_sq(Square sq)
+int to_perfect_sq(Square sq)
 {
     constexpr int map[] = {
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -144,7 +143,6 @@ unsigned to_perfect_sq(Square sq)
 
     return map[sq];
 }
-#endif
 
 size_t countBits(int n)
 {
@@ -305,7 +303,7 @@ Value perfect_search(const Position *pos, Move &move)
     try {
         int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
                                        whiteStonesToPlace, blackStonesToPlace,
-                                       playerToMove, onlyStoneTaking, value);
+                                       playerToMove, onlyStoneTaking, value, move);
         moves = convertBitboardMove(whiteBitboard, blackBitboard, playerToMove,
                                     moveBitboard);
 

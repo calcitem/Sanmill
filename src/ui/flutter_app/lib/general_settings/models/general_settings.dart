@@ -31,6 +31,8 @@ enum SearchAlgorithm {
   mtdf,
   @HiveField(3)
   mcts,
+  @HiveField(4)
+  random,
 }
 
 extension SearchAlgorithmName on SearchAlgorithm {
@@ -44,6 +46,8 @@ extension SearchAlgorithmName on SearchAlgorithm {
         return 'MTD(f)';
       case SearchAlgorithm.mcts:
         return 'MCTS';
+      case SearchAlgorithm.random:
+        return 'Random';
     }
   }
 }

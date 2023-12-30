@@ -56,6 +56,12 @@ class _AlgorithmModal extends StatelessWidget {
             value: SearchAlgorithm.mcts,
             onChanged: onChanged,
           ),
+          RadioListTile<SearchAlgorithm>(
+            title: Text(SearchAlgorithm.random.name),
+            groupValue: algorithm,
+            value: SearchAlgorithm.random,
+            onChanged: onChanged,
+          ),
         ],
       ),
     );

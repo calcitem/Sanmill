@@ -19,6 +19,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include "perfect_adaptor.h"
 #include "perfect_api.h"
 #include "perfect_player.h"
 #include "perfect_game_state.h"
@@ -440,20 +441,6 @@ int PerfectPlayer::NGMAfterMove(const GameState &s, AdvancedMove &m)
     return numGoodMoves(makeMoveInState(s, m));
 }
 
-template <typename T>
-T PerfectPlayer::chooseRandom(const std::vector<T> &l)
-{
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-
-    if (gameOptions.getShufflingEnabled()) {
-        std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
-        return l[dis(gen)];
-    }
-
-    return l[0];
-}
-
 void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
 {
     if (!m.onlyTaking) {
@@ -464,23 +451,6 @@ void PerfectPlayer::sendMoveToGUI(AdvancedMove m)
         }
     } else {
         g->makeMove(new RemovePiece(m.takeHon));
-    }
-}
-
-void PerfectPlayer::toMove(const GameState &s)
-{
-    Value value = VALUE_UNKNOWN;
-
-    try {
-        AdvancedMove mh = chooseRandom(goodMoves(s, value));
-        sendMoveToGUI(mh);
-    } catch (const std::out_of_range &) {
-        sendMoveToGUI(chooseRandom(getMoveList(s)));
-    } catch (const std::exception &ex) {
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
     }
 }
 

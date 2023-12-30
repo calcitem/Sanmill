@@ -413,6 +413,7 @@ void MillGameWindow::initialize()
     alignmentGroup->addAction(ui.actionPvsAlgorithm);
     alignmentGroup->addAction(ui.actionMtdfAlgorithm);
     alignmentGroup->addAction(ui.actionMctsAlgorithm);
+    alignmentGroup->addAction(ui.actionRandomAlgorithm);
 
     switch (gameOptions.getAlgorithm()) {
     case 0:
@@ -420,6 +421,7 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(false);
+        ui.actionRandomAlgorithm->setChecked(false);
         debugPrintf("Algorithm is Alpha-Beta.\n");
         break;
     case 1:
@@ -427,6 +429,7 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(true);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(false);
+        ui.actionRandomAlgorithm->setChecked(false);
         debugPrintf("Algorithm is PVS.\n");
         break;
     case 2:
@@ -434,6 +437,7 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(true);
         ui.actionMctsAlgorithm->setChecked(false);
+        ui.actionRandomAlgorithm->setChecked(false);
         debugPrintf("Algorithm is MTD(f).\n");
         break;
     case 3:
@@ -441,7 +445,16 @@ void MillGameWindow::initialize()
         ui.actionPvsAlgorithm->setChecked(false);
         ui.actionMtdfAlgorithm->setChecked(false);
         ui.actionMctsAlgorithm->setChecked(true);
+        ui.actionRandomAlgorithm->setChecked(false);
         debugPrintf("Algorithm is MCTS.\n");
+        break;
+    case 4:
+        ui.actionAlphaBetaAlgorithm->setChecked(false);
+        ui.actionPvsAlgorithm->setChecked(false);
+        ui.actionMtdfAlgorithm->setChecked(false);
+        ui.actionMctsAlgorithm->setChecked(false);
+        ui.actionRandomAlgorithm->setChecked(true);
+        debugPrintf("Algorithm is Random.\n");
         break;
     default:
         assert(false);

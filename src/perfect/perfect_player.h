@@ -22,6 +22,7 @@
 #ifndef PERFECT_PERFECT_PLAYER_H_INCLUDED
 #define PERFECT_PERFECT_PLAYER_H_INCLUDED
 
+#include "perfect_adaptor.h"
 #include "perfect_common.h"
 #include "perfect_game.h"
 #include "perfect_move.h"
@@ -40,11 +41,13 @@
 #include <iostream>
 #include <map>
 #include <mutex>
+#include <random>
 #include <stdexcept>
 #include <stdexcept> // for std::out_of_range
 #include <string>
 #include <vector>
 
+#include "option.h"
 #include "types.h"
 
 enum class CMoveType {
@@ -104,10 +107,6 @@ public:
 
     // The object is informed to exit from the game
     virtual void quit();
-
-    // The object is informed that it is its turn to move
-    virtual void toMove(const GameState &s) = 0; // Assuming GameState is a
-                                                 // pre-defined class
 
     // Notifies about the opponent's move
     virtual void followMove(CMove *) { } // Assuming Object is a pre-defined
@@ -182,11 +181,38 @@ public:
     int NGMAfterMove(const GameState &s, AdvancedMove &m);
 
     template <typename T>
-    T chooseRandom(const std::vector<T> &l);
+    T chooseRandom(const std::vector<T> &l, const Move &refMove)
+    {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        int ref = 0;
+        auto it  = l.end();
+
+        if (refMove == MOVE_NONE) {
+            goto out;
+        }  
+
+        ref = to_perfect_sq((Square)refMove);
+        it = std::find_if(l.begin(), l.end(),
+                            [&ref](const auto &elem) { return elem.to == ref; });
+
+        // If the reference move is not in the list, we choose a random move.
+        if (it == l.end()) {
+            goto out;
+        } else {
+            return *it;
+        }
+
+    out:
+        if (gameOptions.getShufflingEnabled()) {
+            std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
+            return l[dis(gen)];
+        }
+
+        return l[0];
+    }
 
     void sendMoveToGUI(AdvancedMove m);
-
-    void toMove(const GameState &s) override;
 
     int numGoodMoves(const GameState &s);
 

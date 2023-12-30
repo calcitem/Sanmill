@@ -146,6 +146,15 @@ public:
 
     bool getMctsAlgorithm() const noexcept { return algorithm == 3; }
 
+    void setRandomAlgorithm(bool enabled) noexcept
+    {
+        if (enabled) {
+            algorithm = 4;
+        }
+    }
+
+    bool getRandomAlgorithm() const noexcept { return algorithm == 4; }
+
     void setAlgorithm(int val) noexcept
     {
         algorithm = val;
@@ -158,6 +167,7 @@ public:
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
             setMctsEnabled(false);
+            setRandomEnabled(false);
             break;
         case 1:
             setAlphaBetaAlgorithm(false);
@@ -165,6 +175,7 @@ public:
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
             setMctsEnabled(false);
+            setRandomEnabled(false);
             break;
         case 2:
             setAlphaBetaAlgorithm(false);
@@ -172,13 +183,23 @@ public:
             setMtdfAlgorithm(true);
             setPerfectAiEnabled(false);
             setMctsEnabled(false);
+            setRandomEnabled(false);
             break;
-         case 3:
+        case 3:
             setAlphaBetaAlgorithm(false);
             setPvsAlgorithm(false);
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(false);
             setMctsEnabled(true);
+            setRandomEnabled(false);
+            break;
+        case 4:
+            setAlphaBetaAlgorithm(false);
+            setPvsAlgorithm(false);
+            setMtdfAlgorithm(false);
+            setPerfectAiEnabled(false);
+            setMctsEnabled(false);
+            setRandomEnabled(true);
             break;
         default:
             setAlphaBetaAlgorithm(false);
@@ -186,6 +207,7 @@ public:
             setMtdfAlgorithm(false);
             setPerfectAiEnabled(true);
             setMctsEnabled(false);
+            setRandomEnabled(false);
             break;
         }
 #endif

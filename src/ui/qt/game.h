@@ -292,6 +292,7 @@ public slots:
     void setPvsAlgorithm(bool enabled) const;
     void setMtdfAlgorithm(bool enabled) const;
     void setMctsAlgorithm(bool enabled) const;
+    void setRandomAlgorithm(bool enabled) const;
     void setAlgorithm(int val) const;
 
     // Perfect Database

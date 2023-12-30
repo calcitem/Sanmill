@@ -18,6 +18,7 @@
 #include "evaluate.h"
 #include "mcts.h"
 #include "option.h"
+#include "uci.h"
 #include "thread.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -32,6 +33,8 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
 
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+Value random_search(Position *pos, Move &bestMove);
 
 bool is_timeout(TimePoint startTime);
 
@@ -62,6 +65,7 @@ extern Value nnueTrainingDataBestValue;
 int Thread::search()
 {
     Sanmill::Stack<Position> ss;
+    Move fallbackMove = MOVE_NONE;
 
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
@@ -159,28 +163,49 @@ int Thread::search()
             TranspositionTable::clear();
 #endif
 #endif
-
-#if defined(GABOR_MALOM_PERFECT_AI)
-            if (gameOptions.getUsePerfectDatabase() == true) {
-                value = perfect_search(rootPos, bestMove);
-                if (value != VALUE_UNKNOWN) {
-                    debugPrintf("perfect_search OK.\n");
-                    goto next;
-                } else {
-                    debugPrintf("perfect_search failed.\n");
-                }
+            if (gameOptions.getUsePerfectDatabase() == true &&
+                rootPos->get_phase() == Phase::moving) {
+                bestMove = MOVE_NONE;
+                goto db1;
             }
-            value = VALUE_ZERO;
-#endif // GABOR_MALOM_PERFECT_AI
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
                 // debugPrintf("Algorithm: MTD(f).\n");
                 value = MTDF(rootPos, ss, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
+            } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
+                if (gameOptions.getUsePerfectDatabase() == true) {
+                    bestMove = MOVE_NONE;
+                } else {
+                    value = random_search(rootPos, bestMove);
+                }
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
+
+            fallbackMove = bestMove;
+
+            debugPrintf("Algorithm bestMove = %s\n",
+                        UCI::move(bestMove).c_str());
+
+db1:
+
+#if defined(GABOR_MALOM_PERFECT_AI)
+            if (gameOptions.getUsePerfectDatabase() == true) {
+                value = perfect_search(rootPos, bestMove);
+                if (value != VALUE_UNKNOWN) {
+                    debugPrintf("perfect_search OK.\n");
+                    debugPrintf("DB bestMove = %s\n",
+                                UCI::move(bestMove).c_str());
+                    goto next;
+                } else {
+                    debugPrintf("perfect_search failed.\n");
+                    bestMove = fallbackMove;
+                }
+            }
+            value = VALUE_ZERO;
+#endif // GABOR_MALOM_PERFECT_AI
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 next:
@@ -210,32 +235,54 @@ next:
 #endif
 #endif
 
-#if defined(GABOR_MALOM_PERFECT_AI)
-    if (gameOptions.getUsePerfectDatabase() == true) {
-        value = perfect_search(rootPos, bestMove);
-        if (value != VALUE_UNKNOWN) {
-            debugPrintf("perfect_search OK.\n");
-            goto out;
-        } else {
-            debugPrintf("perfect_search failed.\n");
-        }
-    }
-    value = VALUE_ZERO;
-#endif                                  // GABOR_MALOM_PERFECT_AI
-
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
         && gameOptions.getIDSEnabled()) {
         alpha = -VALUE_INFINITE;
         beta = VALUE_INFINITE;
     }
 
+    if (gameOptions.getUsePerfectDatabase() == true &&
+        rootPos->get_phase() == Phase::moving) {
+        bestMove = MOVE_NONE;
+        goto db2;
+    }
+
     if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
         value = monte_carlo_tree_search(rootPos, bestMove);
+    } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
+        if (gameOptions.getUsePerfectDatabase() == true) {
+            bestMove = MOVE_NONE;
+        } else {
+            value = random_search(rootPos, bestMove);
+        }
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
+
+    fallbackMove = bestMove;
+    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());
+
+db2:
+
+#if defined(GABOR_MALOM_PERFECT_AI)
+    if (gameOptions.getUsePerfectDatabase() == true) {
+        if ((int)bestMove < 0) {
+            bestMove = (Move)(-(int)bestMove);
+        }
+        value = perfect_search(rootPos, bestMove);
+        if (value != VALUE_UNKNOWN) {
+            debugPrintf("perfect_search OK.\n");
+            debugPrintf("DB bestMove = %s\n", UCI::move(bestMove).c_str());
+            goto out;
+        } else {
+            debugPrintf("perfect_search failed.\n");
+            bestMove = fallbackMove; 
+        }
+    }
+    value = VALUE_ZERO;
+#endif // GABOR_MALOM_PERFECT_AI
 
 out:
 
@@ -250,6 +297,28 @@ out:
     bestvalue = value;
 
     return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+Value random_search(Position *pos, Move &bestMove)
+{
+    if (gameOptions.getUsePerfectDatabase() == true) {
+        return VALUE_ZERO;
+    }
+
+    MoveList<LEGAL> ml(*pos);
+
+    if (ml.size() == 0) {
+        return VALUE_DRAW;
+    }
+
+    ml.shuffle();
+
+    const int index = rand() % ml.size();
+    bestMove = ml.getMove(index);
+
+    return VALUE_ZERO;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

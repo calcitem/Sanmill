@@ -69,6 +69,11 @@ struct MoveList
         return std::find(begin(), end(), move) != end();
     }
 
+    ExtMove getMove(int index)
+    {
+        return moveList[index];
+    }
+
     static void create();
     static void shuffle();
 

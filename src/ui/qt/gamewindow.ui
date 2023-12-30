@@ -321,6 +321,7 @@
     <addaction name="actionPvsAlgorithm"/>
     <addaction name="actionMtdfAlgorithm"/>
     <addaction name="actionMctsAlgorithm"/>
+    <addaction name="actionRandomAlgorithm"/>
     <addaction name="separator"/>
     <addaction name="actionUsePerfectDatabase"/>
     <addaction name="actionDrawOnHumanExperience"/>
@@ -1340,6 +1341,17 @@
    </property>
    <property name="text">
     <string>MCTS Algorithm</string>
+   </property>
+  </action>
+  <action name="actionRandomAlgorithm">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Random Algorithm</string>
    </property>
   </action>
   <action name="actionAiIsLazy">

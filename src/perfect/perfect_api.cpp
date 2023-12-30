@@ -38,7 +38,8 @@ std::exception *MalomSolutionAccess::lastError = nullptr;
 int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
                                      int whiteStonesToPlace,
                                      int blackStonesToPlace, int playerToMove,
-                                     bool onlyStoneTaking, Value &value)
+                                     bool onlyStoneTaking, Value &value,
+                                     const Move &refMove)
 {
     initializeIfNeeded();
 
@@ -97,7 +98,7 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
     int ret = 0;
 
     try {
-        ret = pp->chooseRandom(pp->goodMoves(s, value)).toBitBoard();
+        ret = pp->chooseRandom(pp->goodMoves(s, value), refMove).toBitBoard();
     } catch (std::out_of_range &) {
         throw std::runtime_error("We don't have a database entry for this "
                                  "position. This can happen either if the "
@@ -122,13 +123,13 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
 int MalomSolutionAccess::getBestMoveNoException(
     int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
     int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
-    Value &value)
+    Value &value, const Move &refMove)
 {
     try {
         lastError = nullptr;
         return getBestMove(whiteBitboard, blackBitboard, whiteStonesToPlace,
                            blackStonesToPlace, playerToMove, onlyStoneTaking,
-                           value);
+                           value, refMove);
     } catch (std::exception &e) {
         lastError = &e;
         return 0;

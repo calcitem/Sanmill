@@ -34,12 +34,13 @@ public:
     static int getBestMove(int whiteBitboard, int blackBitboard,
                            int whiteStonesToPlace, int blackStonesToPlace,
                            int playerToMove, bool onlyStoneTaking,
-                           Value &value);
+                           Value &value, const Move &refMove);
 
     static int getBestMoveNoException(int whiteBitboard, int blackBitboard,
                                       int whiteStonesToPlace,
                                       int blackStonesToPlace, int playerToMove,
-                                      bool onlyStoneTaking, Value &value);
+                                      bool onlyStoneTaking, Value &value,
+                                      const Move &refMove);
 
     static std::string getLastError();
 

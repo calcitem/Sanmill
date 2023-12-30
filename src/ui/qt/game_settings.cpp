@@ -212,6 +212,15 @@ void Game::setMctsAlgorithm(bool enabled) const
     }
 }
 
+void Game::setRandomAlgorithm(bool enabled) const
+{
+    if (enabled) {
+        gameOptions.setAlgorithm(4);
+        settings->setValue("Options/Algorithm", 4);
+        debugPrintf("Algorithm is changed to Random.\n");
+    }
+}
+
 void Game::setAlgorithm(int val) const
 {
     gameOptions.setAlgorithm(val);

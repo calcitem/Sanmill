@@ -24,7 +24,7 @@ int perfect_init();
 int perfect_exit();
 int perfect_reset();
 Square from_perfect_sq(uint32_t sq);
-unsigned to_perfect_sq(Square sq);
+int to_perfect_sq(Square sq);
 
 Value perfect_search(const Position *pos, Move &bestMove);
 
