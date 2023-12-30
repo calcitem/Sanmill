@@ -25,6 +25,12 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String description = S.of(context).perfectDatabaseDescription;
+
+    if (DB().ruleSettings.piecesCount != 9) {
+      description = '${S.of(context).experimental}\n\n$description';
+    }
+
     return AlertDialog(
       title: Text(
         S.of(context).appName,
@@ -46,7 +52,7 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              S.of(context).perfectDatabaseDescription,
+              description,
               style: TextStyle(
                   fontSize:
                       AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
