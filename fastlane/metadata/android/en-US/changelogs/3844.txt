@@ -1,0 +1,3 @@
+v4.0.2
+
+Combine traditional AI and perfect database.
