@@ -56,6 +56,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
     final List<Widget> actions;
     if (_gameResult == GameResult.win &&
+        DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi) {
       content.writeln();
