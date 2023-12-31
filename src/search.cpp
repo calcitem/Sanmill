@@ -66,6 +66,7 @@ int Thread::search()
 {
     Sanmill::Stack<Position> ss;
     Move fallbackMove = MOVE_NONE;
+    Value fallbackValue = VALUE_UNKNOWN;
 
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
@@ -176,8 +177,6 @@ int Thread::search()
                 value = monte_carlo_tree_search(rootPos, bestMove);
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 if (gameOptions.getUsePerfectDatabase() == true) {
-                    bestMove = MOVE_NONE;
-                } else {
                     value = random_search(rootPos, bestMove);
                 }
             } else {
@@ -185,6 +184,7 @@ int Thread::search()
             }
 
             fallbackMove = bestMove;
+            fallbackValue = value;
 
             debugPrintf("Algorithm bestMove = %s\n",
                         UCI::move(bestMove).c_str());
@@ -202,9 +202,9 @@ db1:
                 } else {
                     debugPrintf("perfect_search failed.\n");
                     bestMove = fallbackMove;
+                    value = fallbackValue;
                 }
             }
-            value = VALUE_ZERO;
 #endif // GABOR_MALOM_PERFECT_AI
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -253,8 +253,6 @@ next:
         value = monte_carlo_tree_search(rootPos, bestMove);
     } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
         if (gameOptions.getUsePerfectDatabase() == true) {
-            bestMove = MOVE_NONE;
-        } else {
             value = random_search(rootPos, bestMove);
         }
     } else {
@@ -262,6 +260,7 @@ next:
     }
 
     fallbackMove = bestMove;
+    fallbackValue = value;
     debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());
 
 db2:
@@ -278,10 +277,10 @@ db2:
             goto out;
         } else {
             debugPrintf("perfect_search failed.\n");
-            bestMove = fallbackMove; 
+            bestMove = fallbackMove;
+            value = fallbackValue;
         }
     }
-    value = VALUE_ZERO;
 #endif // GABOR_MALOM_PERFECT_AI
 
 out:
@@ -303,10 +302,6 @@ out:
 
 Value random_search(Position *pos, Move &bestMove)
 {
-    if (gameOptions.getUsePerfectDatabase() == true) {
-        return VALUE_ZERO;
-    }
-
     MoveList<LEGAL> ml(*pos);
 
     if (ml.size() == 0) {
