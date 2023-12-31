@@ -122,6 +122,8 @@ enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
 
 enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 
+enum class AiMoveType { unknown, traditional, perfect, consensus };
+
 enum Color : uint8_t {
     NOCOLOR = 0,
     WHITE = 1,
@@ -174,14 +176,12 @@ enum Bound : uint8_t {
 enum Value : int8_t {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
-    VALUE_DRAW_PERFECT = 1,
 
 #ifdef ENDGAME_LEARNING
     VALUE_KNOWN_WIN = 25,
 #endif
 
     VALUE_MATE = 80,
-    VALUE_MATE_PERFECT = 79,
     VALUE_UNIQUE = 100,
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = INT8_MIN,

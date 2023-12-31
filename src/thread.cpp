@@ -196,10 +196,29 @@ void Thread::setAi(Position *p, int time)
 void Thread::emitCommand()
 {
     std::ostringstream ss;
+    std::string aiMoveTypeStr;
+
     if (rootPos->sideToMove == BLACK) {
         bestvalue = -bestvalue;
     }
-    ss << "info score " << (int)bestvalue << " bestmove " << bestMoveString;
+
+    switch (aiMoveType)
+    {
+    case AiMoveType::traditional:
+        aiMoveTypeStr = "";
+        break;
+    case AiMoveType::perfect:
+        aiMoveTypeStr = " aimovetype perfect";
+        break;
+    case AiMoveType::consensus:
+        aiMoveTypeStr = " aimovetype consensus";
+        break;
+    default:
+        break;
+    }
+
+    ss << "info score " << (int)bestvalue << aiMoveTypeStr << " bestmove "
+       << bestMoveString;
 
 #ifdef QT_GUI_LIB
     emit command(ss.str()); // Origin: bestMoveString

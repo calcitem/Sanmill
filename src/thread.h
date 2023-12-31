@@ -121,6 +121,7 @@ public:
     Move bestMove {MOVE_NONE};
     Value bestvalue {VALUE_ZERO};
     Value lastvalue {VALUE_ZERO};
+    AiMoveType aiMoveType {AiMoveType::unknown};
 
     Color us {WHITE};
 

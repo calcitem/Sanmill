@@ -129,17 +129,28 @@ class Engine {
     logger.v("$_logTag response: $response");
 
     if (response.contains("bestmove")) {
-      final RegExp regex = RegExp(r"info score (-?\d+) bestmove (.*)");
+      final RegExp regex = RegExp(r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)");
       final Match? match = regex.firstMatch(response);
       String value = "";
+      String aiMoveTypeStr = "";
       String best = "";
+      AiMoveType aiMoveType = AiMoveType.unknown;
 
       if (match != null) {
         value = match.group(1)!;
-        best = match.group(2)!;
+        aiMoveTypeStr = match.group(2) ?? "";
+        best = match.group(3)!;
       }
 
-      return EngineRet(value, ExtMove(best));
+      if (aiMoveTypeStr == "" || aiMoveTypeStr == "traditional") {
+        aiMoveType = AiMoveType.traditional;
+      } else if (aiMoveTypeStr == "perfect") {
+        aiMoveType = AiMoveType.perfect;
+      } else if (aiMoveTypeStr == "consensus") {
+        aiMoveType = AiMoveType.consensus;
+      }
+
+      return EngineRet(value, aiMoveType, ExtMove(best));
     }
 
     if (response.contains("nobestmove")) {
@@ -348,19 +359,28 @@ enum GameMode {
   testViaLAN,
 }
 
+Map<AiMoveType, IconData> aiMoveTypeIcons = {
+  AiMoveType.traditional: FluentIcons.bot_24_filled,
+  AiMoveType.perfect: FluentIcons.database_24_filled,
+  AiMoveType.consensus: FluentIcons.bot_add_24_filled,
+  AiMoveType.unknown: FluentIcons.bot_24_regular,
+};
+
 extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
+    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ?? FluentIcons.bot_24_filled;
+
     switch (this) {
       case GameMode.humanVsAi:
         if (DB().generalSettings.aiMovesFirst) {
-          return FluentIcons.bot_24_filled;
+          return botIcon;
         } else {
           return FluentIcons.person_24_filled;
         }
       case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
-        return FluentIcons.bot_24_filled;
+        return botIcon;
       case GameMode.setupPosition:
         if (DB().generalSettings.aiMovesFirst) {
           return FluentIcons.bot_24_regular;
@@ -377,17 +397,19 @@ extension GameModeExtension on GameMode {
   }
 
   IconData get rightHeaderIcon {
+    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ?? FluentIcons.bot_24_filled;
+
     switch (this) {
       case GameMode.humanVsAi:
         if (DB().generalSettings.aiMovesFirst) {
           return FluentIcons.person_24_filled;
         } else {
-          return FluentIcons.bot_24_filled;
+          return botIcon;
         }
       case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
       case GameMode.aiVsAi:
-        return FluentIcons.bot_24_filled;
+        return botIcon;
       case GameMode.setupPosition:
         if (DB().generalSettings.aiMovesFirst) {
           return FluentIcons.person_24_regular;

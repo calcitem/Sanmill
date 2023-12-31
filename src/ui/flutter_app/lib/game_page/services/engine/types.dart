@@ -215,6 +215,8 @@ extension PieceColorExtension on PieceColor {
   Color get blurPositionColor => pieceColor.withOpacity(0.1);
 }
 
+enum AiMoveType { unknown, traditional, perfect, consensus }
+
 enum Phase { ready, placing, moving, gameOver }
 
 extension PhaseExtension on Phase {
@@ -332,8 +334,6 @@ extension GameResultExtension on GameResult {
   }
 }
 
-const int valueDrawPerfect = 1;
-const int valueMatePerfect = 79;
 const int valueUnique = 100;
 const int valueEachPiece = 5;
 

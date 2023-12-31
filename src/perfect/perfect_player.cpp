@@ -391,11 +391,11 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
     char e = f(r.at(0)).toString().at(0);
 
     if (e == 'L') {
-        value = -VALUE_MATE_PERFECT;
+        value = -VALUE_MATE;
     } else if (e == 'W') {
-        value = VALUE_MATE_PERFECT;
+        value = VALUE_MATE;
     } else {
-        value = VALUE_DRAW_PERFECT;
+        value = VALUE_DRAW;
     }
 
     return r;

@@ -63,7 +63,7 @@ struct AdvancedMove
                                  // closure, onlyTaking only includes removal
     int takeHon;
 
-    Value value {VALUE_DRAW_PERFECT};
+    Value value {VALUE_DRAW};
 
     int toBitBoard()
     {
@@ -185,16 +185,38 @@ public:
     {
         static std::random_device rd;
         static std::mt19937 gen(rd());
-        int ref = 0;
+
+        AdvancedMove advMoveRef;
+        auto m = refMove;
+        const Square from = from_sq(m);
+        const Square to = to_sq(m);
+        
         auto it  = l.end();
 
         if (refMove == MOVE_NONE) {
             goto out;
-        }  
+        }
 
-        ref = to_perfect_sq((Square)refMove);
-        it = std::find_if(l.begin(), l.end(),
-                            [&ref](const auto &elem) { return elem.to == ref; });
+        if (m < 0) {
+            advMoveRef.takeHon = to_perfect_sq(to);
+        } else if (m & 0x7f00) {
+            advMoveRef.from = to_perfect_sq(from);
+            advMoveRef.to = to_perfect_sq(to);
+        } else {
+            advMoveRef.to = to_perfect_sq(to);
+        }
+
+       it = std::find_if(l.begin(), l.end(),
+                          [&advMoveRef, m](const auto &elem) {
+                              if (m < 0) {
+                                  return advMoveRef.takeHon == elem.takeHon;
+                              } else if (m & 0x7f00) {
+                                  return advMoveRef.from == elem.from &&
+                                         advMoveRef.to == elem.to;
+                              } else {
+                                  return advMoveRef.to == elem.to;
+                              }
+                          });
 
         // If the reference move is not in the list, we choose a random move.
         if (it == l.end()) {

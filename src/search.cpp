@@ -164,11 +164,6 @@ int Thread::search()
             TranspositionTable::clear();
 #endif
 #endif
-            if (gameOptions.getUsePerfectDatabase() == true &&
-                rootPos->get_phase() == Phase::moving) {
-                bestMove = MOVE_NONE;
-                goto db1;
-            }
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
                 // debugPrintf("Algorithm: MTD(f).\n");
@@ -185,11 +180,10 @@ int Thread::search()
 
             fallbackMove = bestMove;
             fallbackValue = value;
+            aiMoveType = AiMoveType::traditional;
 
             debugPrintf("Algorithm bestMove = %s\n",
                         UCI::move(bestMove).c_str());
-
-db1:
 
 #if defined(GABOR_MALOM_PERFECT_AI)
             if (gameOptions.getUsePerfectDatabase() == true) {
@@ -198,11 +192,17 @@ db1:
                     debugPrintf("perfect_search OK.\n");
                     debugPrintf("DB bestMove = %s\n",
                                 UCI::move(bestMove).c_str());
+                    if (bestMove == fallbackMove) {
+                        aiMoveType = AiMoveType::consensus;
+                    } else {
+                        aiMoveType = AiMoveType::perfect;
+                    }
                     goto next;
                 } else {
                     debugPrintf("perfect_search failed.\n");
                     bestMove = fallbackMove;
                     value = fallbackValue;
+                    aiMoveType = AiMoveType::traditional;
                 }
             }
 #endif // GABOR_MALOM_PERFECT_AI
@@ -241,12 +241,6 @@ next:
         beta = VALUE_INFINITE;
     }
 
-    if (gameOptions.getUsePerfectDatabase() == true &&
-        rootPos->get_phase() == Phase::moving) {
-        bestMove = MOVE_NONE;
-        goto db2;
-    }
-
     if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
         value = MTDF(rootPos, ss, value, originDepth, originDepth, bestMove);
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
@@ -261,24 +255,27 @@ next:
 
     fallbackMove = bestMove;
     fallbackValue = value;
-    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());
+    aiMoveType = AiMoveType::traditional;
 
-db2:
+    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());
 
 #if defined(GABOR_MALOM_PERFECT_AI)
     if (gameOptions.getUsePerfectDatabase() == true) {
-        if ((int)bestMove < 0) {
-            bestMove = (Move)(-(int)bestMove);
-        }
         value = perfect_search(rootPos, bestMove);
         if (value != VALUE_UNKNOWN) {
             debugPrintf("perfect_search OK.\n");
             debugPrintf("DB bestMove = %s\n", UCI::move(bestMove).c_str());
+            if (bestMove == fallbackMove) {
+                aiMoveType = AiMoveType::consensus;
+            } else {
+                aiMoveType = AiMoveType::perfect;
+            }
             goto out;
         } else {
             debugPrintf("perfect_search failed.\n");
             bestMove = fallbackMove;
             value = fallbackValue;
+            aiMoveType = AiMoveType::traditional;
         }
     }
 #endif // GABOR_MALOM_PERFECT_AI

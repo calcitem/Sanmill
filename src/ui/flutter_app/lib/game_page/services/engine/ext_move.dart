@@ -206,7 +206,8 @@ class ExtMove {
 }
 
 class EngineRet {
-  EngineRet(this.value, this.extMove);
+  EngineRet(this.value, this.aiMoveType, this.extMove);
   String? value;
   ExtMove? extMove;
+  AiMoveType? aiMoveType;
 }

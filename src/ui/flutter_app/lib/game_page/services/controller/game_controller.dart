@@ -55,6 +55,7 @@ class GameController {
   bool isPositionSetupBanPiece = false; // TODO: isPieceBannedInPositionSetup?
 
   String? value;
+  AiMoveType? aiMoveType;
 
   late Game gameInstance;
   late Position position;
@@ -104,6 +105,7 @@ class GameController {
     final bool isPositionSetup = GameController().isPositionSetup;
 
     value = "0";
+    aiMoveType = AiMoveType.unknown;
 
     GameController().engine.stopSearching();
 
@@ -286,6 +288,7 @@ class GameController {
       }
 
       GameController().value = engineRet.value;
+      GameController().aiMoveType = engineRet.aiMoveType;
 
       if (GameController().position.winner != PieceColor.nobody) {
         if (DB().generalSettings.isAutoRestart == true) {
