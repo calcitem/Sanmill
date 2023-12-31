@@ -125,12 +125,13 @@ GameSound Game::identifySoundType(Action action)
     return GameSound::none;
 }
 
-bool Game::command(const string &cmd, bool update /* = true */)
+bool Game::command(const string &command, bool update /* = true */)
 {
     Q_UNUSED(hasSound)
 
     char moveStr[64] = {0};
     int bestvalue = 0;
+    std::string cmd = command; 
 
 #ifdef QT_GUI_LIB
     // Prevents receiving instructions sent by threads that end late
@@ -147,6 +148,18 @@ bool Game::command(const string &cmd, bool update /* = true */)
 
     if (position.get_phase() == Phase::ready) {
         gameStart();
+    }
+
+    // TODO: Deal with aimovetype. Now remove it for WAR.
+    size_t aimovetype_pos = cmd.find("aimovetype");
+    if (aimovetype_pos != std::string::npos) {
+        size_t bestmove_pos = cmd.find("bestmove", aimovetype_pos);
+
+        if (bestmove_pos != std::string::npos) {
+            cmd.erase(aimovetype_pos, bestmove_pos - aimovetype_pos);
+        } else {
+            cmd.erase(aimovetype_pos);
+        }
     }
 
 #ifdef _MSC_VER

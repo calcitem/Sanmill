@@ -447,7 +447,7 @@ public slots:
     bool resign();
 
     // Command line execution of score
-    bool command(const string &cmd, bool update = true);
+    bool command(const string &command, bool update = true);
     GameSound identifySoundType(Action action);
     void printStats();
     void updateStatistics();
