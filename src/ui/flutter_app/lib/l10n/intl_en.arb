@@ -1491,5 +1491,7 @@
   "perfectDatabaseDescription": "Enable this option to use a flawless game database generated through cutting-edge algorithms. This feature integrates both opening and endgame strategies to suggest optimal moves. This is the preferred choice for players who seek the highest level of precision in gameplay. Created through meticulous computational techniques, the database is designed to offer near-perfect game solutions.\n\nNote: Should the AI fail to access the database, it will turn to conventional algorithms for gameplay decisions. When the database is available, the 'Difficulty Level' becomes virtually unbeatable, and 'AI Thinking Time' experiences a drastic reduction. Many settings within 'AI's Playstyle' options will be overridden, as the database outcomes hold the highest priority.\n\nFor guidance on how to make the most of this flawless database, click here.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Background image",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "When the 'Use perfect database' option is not enabled, the 'Random' setting causes the AI to move pieces randomly without using any algorithms for move selection. This typically results in significantly weaker gameplay. Conversely, when 'Use perfect database' is enabled, the AI exclusively relies on the 'Perfect Database' for making decisions, instead of blending it with traditional AI algorithms. In this mode, the AI's moves are entirely based on the database's content, eschewing reliance on real-time calculations or search algorithms.",
+  "@whatIsRandom": {}
 }
