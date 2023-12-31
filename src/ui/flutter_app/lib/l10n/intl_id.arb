@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Aktifkan opsi ini untuk menggunakan database game sempurna yang dihasilkan melalui algoritma mutakhir. Fitur ini mengintegrasikan strategi pembukaan dan akhir permainan untuk menyarankan gerakan optimal. Ini adalah pilihan yang lebih disukai bagi pemain yang mencari tingkat presisi tertinggi dalam gameplay. Dibuat melalui teknik komputasi yang cermat, database ini dirancang untuk menawarkan solusi permainan yang hampir sempurna.\n\nCatatan: Jika AI gagal mengakses database, AI akan beralih ke algoritma konvensional untuk mengambil keputusan gameplay. Ketika database tersedia, 'Tingkat Kesulitan' menjadi tidak ada duanya, dan 'Waktu Berpikir AI' mengalami pengurangan drastis. Banyak pengaturan dalam opsi 'Gaya Bermain AI' akan diganti, karena hasil database memiliki prioritas tertinggi.\n\nUntuk panduan tentang cara memanfaatkan database sempurna ini, klik di sini.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Gambar latar belakang",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Jika opsi 'Gunakan database sempurna' tidak diaktifkan, pengaturan 'Acak' menyebabkan AI memindahkan bidak secara acak tanpa menggunakan algoritme apa pun untuk memilih gerakan. Hal ini biasanya menghasilkan gameplay yang jauh lebih lemah. Sebaliknya, ketika 'Gunakan database sempurna' diaktifkan, AI secara eksklusif mengandalkan 'Database Sempurna' untuk mengambil keputusan, alih-alih memadukannya dengan algoritma AI tradisional. Dalam mode ini, pergerakan AI sepenuhnya didasarkan pada konten database, menghindari ketergantungan pada perhitungan real-time atau algoritma pencarian.",
+  "@whatIsRandom": {}
 }

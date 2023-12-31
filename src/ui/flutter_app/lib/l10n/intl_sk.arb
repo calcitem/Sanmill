@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Povoľte túto možnosť, ak chcete používať bezchybnú databázu hier vygenerovanú pomocou špičkových algoritmov. Táto funkcia integruje stratégie otvárania a konca hry, aby navrhla optimálne ťahy. Toto je preferovaná voľba pre hráčov, ktorí hľadajú najvyššiu úroveň presnosti v hre. Databáza vytvorená pomocou precíznych výpočtových techník je navrhnutá tak, aby ponúkala takmer dokonalé herné riešenia.\n\nPoznámka: Ak sa AI nepodarí získať prístup k databáze, pri rozhodovaní o hre sa obráti na konvenčné algoritmy. Keď je databáza dostupná, „úroveň obtiažnosti“ sa stáva prakticky neprekonateľnou a „doba myslenia AI“ zažije drastické zníženie. Mnohé nastavenia v rámci možností „AI's Playstyle“ budú prepísané, pretože výsledky databázy majú najvyššiu prioritu.\n\nPre návod, ako čo najlepšie využiť túto bezchybnú databázu, kliknite sem.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Pozadie obrazu",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Keď nie je povolená možnosť „Použiť dokonalú databázu“, nastavenie „Náhodné“ spôsobí, že AI bude pohybovať figúrkami náhodne bez použitia akýchkoľvek algoritmov na výber pohybu. To zvyčajne vedie k výrazne slabšej hrateľnosti. Naopak, keď je povolená možnosť „Použiť perfektnú databázu“, AI sa pri rozhodovaní spolieha výlučne na „Perfektnú databázu“ namiesto toho, aby ju spájala s tradičnými algoritmami AI. V tomto režime sú pohyby AI úplne založené na obsahu databázy, čím sa vyhýbajú spoliehaniu sa na výpočty v reálnom čase alebo vyhľadávacie algoritmy.",
+  "@whatIsRandom": {}
 }

@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's Playstyle' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Taustakuva",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Kun 'Käytä täydellistä tietokantaa' -vaihtoehto ei ole käytössä, 'Satunnainen'-asetus saa tekoälyn siirtämään nappuloita satunnaisesti käyttämättä siirtovalinnan algoritmeja. Tämä johtaa yleensä huomattavasti heikompaan peliin. Toisaalta, kun \"Käytä täydellistä tietokantaa\" on käytössä, tekoäly luottaa yksinomaan \"Täydelliseen tietokantaan\" päätösten tekemisessä sen sijaan, että se yhdisteisi sitä perinteisten tekoälyalgoritmien kanssa. Tässä tilassa tekoälyn liikkeet perustuvat täysin tietokannan sisältöön välttäen luottamuksen reaaliaikaisiin laskelmiin tai hakualgoritmeihin.",
+  "@whatIsRandom": {}
 }

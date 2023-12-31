@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Aktiver dette alternativet for å bruke en feilfri spilldatabase generert gjennom avanserte algoritmer. Denne funksjonen integrerer både åpnings- og sluttfasestrategier for å foreslå optimale trekk. Dette er det foretrukne valget for spillere som søker det høyeste nivået av presisjon i spillet. Databasen er skapt gjennom nitidige beregningsteknikker, og er designet for å tilby nesten perfekte spillløsninger.\n\nMerk: Hvis AI-en ikke får tilgang til databasen, vil den gå over til konvensjonelle algoritmer for spillbeslutninger. Når databasen er tilgjengelig, blir 'Vanskelighetsgrad' praktisk talt uslåelig, og 'AI Tenketid' reduseres drastisk. Mange innstillinger innen 'AIs Spillestil'-alternativene vil bli overstyrt, ettersom databasens resultater har høyest prioritet.\n\nFor veiledning om hvordan du får mest mulig ut av denne feilfrie databasen, klikk her.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Bakgrunnsbilde",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Når 'Bruk perfekt database'-alternativet ikke er aktivert, fører 'Tilfeldig'-innstillingen til at AI flytter brikker tilfeldig uten å bruke noen algoritmer for trekkvalg. Dette resulterer vanligvis i betydelig svakere spill. På den annen side, når 'Bruk perfekt database' er aktivert, stoler AI utelukkende på 'Perfekt Database' for å ta beslutninger, i stedet for å blande den med tradisjonelle AI-algoritmer. I denne modusen er AI's trekk helt basert på databasens innhold, og unngår avhengighet av sanntidsberegninger eller søkealgoritmer.",
+  "@whatIsRandom": {}
 }

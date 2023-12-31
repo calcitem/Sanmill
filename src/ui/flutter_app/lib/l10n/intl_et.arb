@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Lubage see suvand, et kasutada tipptasemel algoritmide abil loodud veatut mängude andmebaasi. See funktsioon integreerib nii mängu ava- kui ka lõpustrateegiad, et soovitada optimaalseid käike. See on eelistatud valik mängijatele, kes otsivad mängus kõrgeimat täpsust. Põhjalike arvutustehnikate abil loodud andmebaas on loodud pakkuma peaaegu täiuslikke mängulahendusi.\n\nMärkus. Kui AI-l ei õnnestu andmebaasile juurde pääseda, kasutab see mänguotsuste tegemiseks tavalisi algoritme. Kui andmebaas on saadaval, muutub raskusaste peaaegu ületamatuks ja AI mõtlemisaeg väheneb drastiliselt. Paljud AI's Playstyle'i valikute sätted tühistatakse, kuna andmebaasi tulemused on kõige olulisemad.\n\nJuhiste saamiseks selle veatu andmebaasi maksimaalse kasutamise kohta klõpsake siin.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Taustapilt",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Kui suvand \"Kasuta täiuslikku andmebaasi\" pole lubatud, paneb seade \"Juhuslik\" AI-l tükke juhuslikult liigutama, kasutamata käiguvalikuks mingeid algoritme. Selle tulemuseks on tavaliselt oluliselt nõrgem mäng. Ja vastupidi, kui „Kasuta täiuslikku andmebaasi” on lubatud, tugineb AI otsuste tegemisel eranditult „Täiuslikule andmebaasile”, selle asemel, et seda traditsiooniliste AI-algoritmidega segada. Selles režiimis põhinevad AI käigud täielikult andmebaasi sisul, vältides reaalajas arvutusi või otsingualgoritme.",
+  "@whatIsRandom": {}
 }
