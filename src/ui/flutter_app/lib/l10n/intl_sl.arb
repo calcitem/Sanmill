@@ -1393,5 +1393,7 @@
   "usePerfectDatabase": "Uporabite popolno bazo podatkov",
   "@usePerfectDatabase": {},
   "backgroundImage": "Ozadna slika",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Ko možnost »Uporabi popolno bazo podatkov« ni omogočena, nastavitev »Naključno« povzroči, da umetna inteligenca premakne kose naključno brez uporabe algoritmov za izbiro potez. To običajno povzroči občutno šibkejše igranje. Nasprotno, ko je omogočena možnost »Uporabi popolno bazo podatkov«, se umetna inteligenca za sprejemanje odločitev zanaša izključno na »popolno bazo podatkov«, namesto da bi jo mešala s tradicionalnimi algoritmi umetne inteligence. V tem načinu poteze umetne inteligence v celoti temeljijo na vsebini baze podatkov, pri čemer se izogibajo zanašanju na izračune v realnem času ali algoritme iskanja.",
+  "@whatIsRandom": {}
 }

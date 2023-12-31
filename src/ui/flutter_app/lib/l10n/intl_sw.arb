@@ -1491,5 +1491,7 @@
   "usePerfectDatabase": "Tumia hifadhidata kamili",
   "@usePerfectDatabase": {},
   "backgroundImage": "Picha ya nyuma",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Wakati chaguo la 'Tumia hifadhidata kamili' halijawashwa, mpangilio wa 'Nasibu' husababisha AI kusogeza vipande bila mpangilio bila kutumia kanuni zozote za uteuzi wa kusogeza. Hii kwa kawaida husababisha uchezaji dhaifu zaidi. Kinyume chake, 'Tumia hifadhidata kamili' inapowezeshwa, AI hutegemea pekee 'Hifadhi Database Kamili' kwa kufanya maamuzi, badala ya kuichanganya na algoriti za jadi za AI. Katika hali hii, hatua za AI zinategemea kabisa maudhui ya hifadhidata, ikiepuka kutegemea hesabu za wakati halisi au algoriti za utafutaji.",
+  "@whatIsRandom": {}
 }

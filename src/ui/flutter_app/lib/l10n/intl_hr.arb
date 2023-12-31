@@ -1393,5 +1393,7 @@
   "usePerfectDatabase": "Koristite savršenu bazu podataka",
   "@usePerfectDatabase": {},
   "backgroundImage": "Pozadinska slika",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Kada opcija 'Upotrijebi savršenu bazu podataka' nije omogućena, postavka 'Nasumično' uzrokuje da AI pomiče dijelove nasumično bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Nasuprot tome, kada je omogućena opcija \"Koristi savršenu bazu podataka\", AI se isključivo oslanja na \"Savršenu bazu podataka\" za donošenje odluka, umjesto da je miješa s tradicionalnim algoritmima umjetne inteligencije. U ovom načinu rada, potezi umjetne inteligencije u potpunosti se temelje na sadržaju baze podataka, izbjegavajući oslanjanje na izračune u stvarnom vremenu ili algoritme pretraživanja.",
+  "@whatIsRandom": {}
 }

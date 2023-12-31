@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Aktivera det här alternativet för att använda en felfri speldatabas genererad genom banbrytande algoritmer. Denna funktion integrerar både öppnings- och slutspelsstrategier för att föreslå optimala drag. Detta är det föredragna valet för spelare som söker högsta precision i spelet. Skapat genom noggranna beräkningstekniker, är databasen designad för att erbjuda nästan perfekta spellösningar.\n\nObs: Om AI misslyckas med att komma åt databasen kommer den att vända sig till konventionella algoritmer för spelbeslut. När databasen är tillgänglig blir 'svårighetsnivån' praktiskt taget oslagbar, och 'AI Thinking Time' upplever en drastisk minskning. Många inställningar inom 'AI's Playstyle'-alternativ kommer att åsidosättas, eftersom databasresultaten har högsta prioritet.\n\nFör vägledning om hur du får ut det mesta av denna felfria databas, klicka här.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Bakgrundsbild",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "När alternativet \"Använd perfekt databas\" inte är aktiverat, gör inställningen \"Slumpmässig\" att AI:n flyttar pjäser slumpmässigt utan att använda några algoritmer för val av drag. Detta resulterar vanligtvis i betydligt svagare spelupplägg. Omvänt, när \"Använd perfekt databas\" är aktiverat, förlitar sig AI enbart på den \"Perfekta databasen\" för att fatta beslut, istället för att blanda den med traditionella AI-algoritmer. I det här läget är AI:s rörelser helt baserade på databasens innehåll, utan att lita på realtidsberäkningar eller sökalgoritmer.",
+  "@whatIsRandom": {}
 }

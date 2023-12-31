@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Įjunkite šią parinktį, kad galėtumėte naudoti nepriekaištingą žaidimų duomenų bazę, sukurtą naudojant pažangiausius algoritmus. Ši funkcija integruoja ir žaidimo pradžios, ir pabaigos strategijas, kad pasiūlytų optimalius judesius. Tai yra tinkamiausias pasirinkimas žaidėjams, kurie siekia aukščiausio lygio žaidimo tikslumo. Sukurta naudojant kruopščius skaičiavimo metodus, duomenų bazė skirta pasiūlyti beveik tobulus žaidimo sprendimus.\n\nPastaba: jei AI nepavyks pasiekti duomenų bazės, jis priims įprastinius žaidimo sprendimų algoritmus. Kai duomenų bazė yra prieinama, „Sunkumo lygis“ tampa beveik neįveikiamas, o „AI mąstymo laikas“ smarkiai sumažėja. Daugelis „AI's Playstyle“ parinkčių nustatymų bus nepaisyti, nes duomenų bazės rezultatai turi didžiausią prioritetą.\n\nNorėdami gauti patarimų, kaip maksimaliai išnaudoti šią nepriekaištingą duomenų bazę, spustelėkite čia.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Fono paveikslėlis",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Kai parinktis „Naudoti tobulą duomenų bazę“ neįjungta, „Atsitiktinis“ nustatymas priverčia AI atsitiktinai perkelti gabalus, nenaudodamas perkėlimo pasirinkimo algoritmų. Tai paprastai lemia žymiai silpnesnį žaidimo eigą. Ir atvirkščiai, kai įjungta parinktis „Naudoti tobulą duomenų bazę“, AI priimdamas sprendimus pasikliauja tik „Tobula duomenų baze“, o ne derina ją su tradiciniais AI algoritmais. Šiuo režimu AI judesiai yra visiškai pagrįsti duomenų bazės turiniu, vengiant pasikliauti realaus laiko skaičiavimais ar paieškos algoritmais.",
+  "@whatIsRandom": {}
 }

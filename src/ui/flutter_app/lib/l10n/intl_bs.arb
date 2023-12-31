@@ -1393,5 +1393,7 @@
   "perfectDatabaseDescription": "Omogućite ovu opciju da koristite besprijekornu bazu podataka igara generiranu pomoću vrhunskih algoritama. Ova funkcija integrira i strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je poželjan izbor za igrače koji traže najviši nivo preciznosti u igri. Kreirana kroz precizne računarske tehnike, baza podataka je dizajnirana da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako AI ne uspije pristupiti bazi podataka, okrenut će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Nivo poteškoće' postaje gotovo nepobjediv, a 'Vrijeme razmišljanja AI' doživljava drastično smanjenje. Mnoga podešavanja unutar opcija 'AI's Playstyle' će biti poništena, jer rezultati baze podataka imaju najveći prioritet.\n\nZa upute o tome kako maksimalno iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Pozadinska slika",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Kada opcija 'Koristi savršenu bazu podataka' nije omogućena, postavka 'Random' uzrokuje da AI pomiče komade nasumično bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Suprotno tome, kada je omogućeno 'Koristi savršenu bazu podataka', AI se isključivo oslanja na 'Savršenu bazu podataka' za donošenje odluka, umjesto da je miješa s tradicionalnim AI algoritmima. U ovom režimu, potezi veštačke inteligencije su u potpunosti zasnovani na sadržaju baze podataka, izbegavajući oslanjanje na proračune u realnom vremenu ili algoritme pretraživanja.",
+  "@whatIsRandom": {}
 }

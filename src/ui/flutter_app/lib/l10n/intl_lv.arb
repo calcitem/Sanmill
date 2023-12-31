@@ -1393,5 +1393,7 @@
   "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
   "@usePerfectDatabase": {},
   "backgroundImage": "Fona attēls",
-  "@backgroundImage": {}
+  "@backgroundImage": {},
+  "whatIsRandom": "Ja opcija “Izmantot perfektu datu bāzi” nav iespējota, iestatījums “Nejaušs” liek AI nejauši pārvietot gabalus, neizmantojot pārvietošanas atlases algoritmus. Tas parasti rada ievērojami vājāku spēli. Un otrādi, ja ir iespējota opcija “Izmantot perfektu datu bāzi”, AI lēmumu pieņemšanā paļaujas tikai uz ideālo datu bāzi, nevis sajauc to ar tradicionālajiem AI algoritmiem. Šajā režīmā AI darbības ir pilnībā balstītas uz datu bāzes saturu, izvairoties no paļaušanās uz reāllaika aprēķiniem vai meklēšanas algoritmiem.",
+  "@whatIsRandom": {}
 }
