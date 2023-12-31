@@ -131,7 +131,7 @@ bool Game::command(const string &command, bool update /* = true */)
 
     char moveStr[64] = {0};
     int bestvalue = 0;
-    std::string cmd = command; 
+    std::string cmd = command;
 
 #ifdef QT_GUI_LIB
     // Prevents receiving instructions sent by threads that end late
