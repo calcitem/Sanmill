@@ -432,6 +432,22 @@ std::vector<AdvancedMove> PerfectPlayer::goodMoves(const GameState &s,
 
     std::cout << "Number of best moves: " << bestMoves.size() << std::endl;
 
+    #if 0
+    // Filter bestMoves based on Mill condition
+    std::vector<AdvancedMove> filteredMoves;
+    for (const auto &move : bestMoves) {
+        if (!isMill(s, move.to)) {
+            filteredMoves.push_back(move);
+        }
+    }
+
+    if (filteredMoves.size() > 0) {
+        bestMoves = filteredMoves;
+        std::cout << "Number of best moves after filtering: "
+                  << bestMoves.size() << std::endl;
+    }
+    #endif
+
     return bestMoves;
 }
 #endif
