@@ -104,8 +104,7 @@ class GeneralSettingsPage extends StatelessWidget {
           break;
         // TODO: Add whatIsRandom
         case SearchAlgorithm.random:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear("Random");
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear("Random");
           break;
         case null:
           break;

@@ -202,8 +202,7 @@ void Thread::emitCommand()
         bestvalue = -bestvalue;
     }
 
-    switch (aiMoveType)
-    {
+    switch (aiMoveType) {
     case AiMoveType::traditional:
         aiMoveTypeStr = "";
         break;

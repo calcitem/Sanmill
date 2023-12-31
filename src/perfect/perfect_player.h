@@ -190,8 +190,8 @@ public:
         auto m = refMove;
         const Square from = from_sq(m);
         const Square to = to_sq(m);
-        
-        auto it  = l.end();
+
+        auto it = l.end();
 
         if (refMove == MOVE_NONE) {
             goto out;
@@ -206,7 +206,7 @@ public:
             advMoveRef.to = to_perfect_sq(to);
         }
 
-       it = std::find_if(l.begin(), l.end(),
+        it = std::find_if(l.begin(), l.end(),
                           [&advMoveRef, m](const auto &elem) {
                               if (m < 0) {
                                   return advMoveRef.takeHon == elem.takeHon;
@@ -225,9 +225,10 @@ public:
             return *it;
         }
 
-    out:
+out:
         if (gameOptions.getShufflingEnabled()) {
-            std::uniform_int_distribution<> dis(0, static_cast<int>(l.size() - 1));
+            std::uniform_int_distribution<> dis(0,
+                                                static_cast<int>(l.size() - 1));
             return l[dis(gen)];
         }
 

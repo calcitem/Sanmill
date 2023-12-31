@@ -52,8 +52,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.v("[config] piecesCount = $piecesCount");
 
-      if (DB().generalSettings.usePerfectDatabase &&
-          piecesCount != 9) {
+      if (DB().generalSettings.usePerfectDatabase && piecesCount != 9) {
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).reopenToTakeEffect);
       }

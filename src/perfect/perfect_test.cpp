@@ -43,10 +43,10 @@ int perfect_test(int argc, char *argv[])
     }
 
     // int res = MalomSolutionAccess::getBestMove(0, 0, 9, 9, 0, false, move);
-    int res = MalomSolutionAccess::getBestMove(1, 2, 8, 8, 0, false,
-                                               value, move); // Correct
-                                                       // output:
-                                                       // 16384
+    int res = MalomSolutionAccess::getBestMove(1, 2, 8, 8, 0, false, value,
+                                               move); // Correct
+                                                      // output:
+                                                      // 16384
     // int res = MalomSolutionAccess::getBestMove(1 + 2 + 4, 8 + 16 + 32, 100,
     // 0, 0, false, value, move); // tests exception
     //  int res = MalomSolutionAccess::getBestMove(1 + 2 + 4, 1 + 8 + 16 + 32,

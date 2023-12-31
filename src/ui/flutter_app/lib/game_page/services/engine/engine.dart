@@ -129,7 +129,8 @@ class Engine {
     logger.v("$_logTag response: $response");
 
     if (response.contains("bestmove")) {
-      final RegExp regex = RegExp(r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)");
+      final RegExp regex =
+          RegExp(r"info score (-?\d+)(?: aimovetype (\w+))? bestmove (.*)");
       final Match? match = regex.firstMatch(response);
       String value = "";
       String aiMoveTypeStr = "";
@@ -359,7 +360,7 @@ enum GameMode {
   testViaLAN,
 }
 
-Map<AiMoveType, IconData> aiMoveTypeIcons = {
+Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{
   AiMoveType.traditional: FluentIcons.bot_24_filled,
   AiMoveType.perfect: FluentIcons.database_24_filled,
   AiMoveType.consensus: FluentIcons.bot_add_24_filled,
@@ -368,7 +369,8 @@ Map<AiMoveType, IconData> aiMoveTypeIcons = {
 
 extension GameModeExtension on GameMode {
   IconData get leftHeaderIcon {
-    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ?? FluentIcons.bot_24_filled;
+    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ??
+        FluentIcons.bot_24_filled;
 
     switch (this) {
       case GameMode.humanVsAi:
@@ -397,7 +399,8 @@ extension GameModeExtension on GameMode {
   }
 
   IconData get rightHeaderIcon {
-    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ?? FluentIcons.bot_24_filled;
+    final IconData botIcon = aiMoveTypeIcons[GameController().aiMoveType] ??
+        FluentIcons.bot_24_filled;
 
     switch (this) {
       case GameMode.humanVsAi:
