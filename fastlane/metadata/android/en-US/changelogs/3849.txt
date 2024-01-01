@@ -1,0 +1,3 @@
+v4.0.3
+
+* Adjust DB strategy to avoid maximizing AI pieces in mixed mode.
