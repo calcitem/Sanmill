@@ -67,7 +67,7 @@ class PointedList<E> extends DelegatingList<E> {
   }
 
   void addAndDeduplicate(E value) {
-    if (current != value) {
+    if (globalIterator.index != -1 && current != value) {
       add(value);
     }
   }
