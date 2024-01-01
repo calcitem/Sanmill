@@ -41,6 +41,20 @@ class GameResultAlertDialog extends StatelessWidget {
     // TODO: Why sometimes _gameResult is null?
     position.result = _gameResult;
 
+    switch (position.result) {
+      case GameResult.win:
+        SoundManager().playTone(Sound.win);
+        break;
+      case GameResult.draw:
+        SoundManager().playTone(Sound.draw);
+        break;
+      case GameResult.lose:
+        SoundManager().playTone(Sound.lose);
+        break;
+      case null:
+        break;
+    }
+
     final String dialogTitle = _gameResult!.winString(context);
 
     final bool isTopLevel =
