@@ -350,7 +350,9 @@ std::vector<T> PerfectPlayer::allMaxBy(std::function<K(T)> f,
     std::vector<T> r;
 
     // TODO: Right? Ref: https://github.com/ggevay/malom/pull/3
-    if (gameOptions.getAiIsLazy() == true) {
+    if (gameOptions.getAlgorithm() != 4 ||
+        (gameOptions.getAlgorithm() == 4 &&
+         gameOptions.getAiIsLazy() == true)) {
         bool foundW = false;
         bool foundD = false;
 
