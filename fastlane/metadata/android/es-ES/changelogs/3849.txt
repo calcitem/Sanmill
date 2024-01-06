@@ -1,0 +1,3 @@
+v4.0.3
+
+* Ajustar la estrategia DB para evitar maximizar piezas AI en modo mixto.

@@ -1,0 +1,3 @@
+v4.0.2
+
+Combina la IA tradicional y la base de datos perfecta.
