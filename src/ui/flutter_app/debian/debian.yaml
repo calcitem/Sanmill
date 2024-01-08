@@ -1,0 +1,18 @@
+flutter_app: 
+  command: mill
+  arch: x64
+  parent: /usr/local/bin
+  nonInteractive: true
+
+control:
+  Package: mill
+  Version: 4.0.3
+  Architecture: amd64
+  Priority: optional
+  Depends:
+  Maintainer: Calcitem Studio <calcitem@outlook.com>
+  Homepage: https://github.com/calcitem/Sanmill
+  Description: A Mill Game which supports many rule variants.
+  
+#options:
+#  exec_out_dir: debian/packages

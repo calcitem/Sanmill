@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=4.0.3
+Encoding=UTF-8
+Name=Mill
+Comment=A Mill Game which supports many rule variants.
+Exec=mill
+Terminal=false
+Type=Application
+Categories=Game;BoardGame;
+Icon=mill.png
