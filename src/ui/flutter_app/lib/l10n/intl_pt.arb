@@ -1316,7 +1316,7 @@
   "@moveRandomlyDetail": {},
   "whenBoardIsFull": "Quando o tabuleiro está cheio",
   "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "No final da fase de colocação, antes do início da fase de movimento, a ação segue se o tabuleiro estiver cheio de peças.",
+  "whenBoardIsFull_Detail": "No final da fase de preparação, antes do início da fase de movimento, segue uma ação se o tabuleiro estiver cheio de figuras.",
   "@whenBoardIsFull_Detail": {},
   "sideToMoveRemovePiece": "O jogador que se move primeiro na fase de movimento remove uma das peças do adversário.",
   "@sideToMoveRemovePiece": {},

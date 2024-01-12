@@ -131,7 +131,8 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     case Action::place:
         if (pos.get_phase() == Phase::placing ||
             pos.get_phase() == Phase::ready) {
-            return generate<PLACE>(pos, moveList);
+            ExtMove *endOfMoves = generate<MOVE>(pos, moveList);
+            return std::max(endOfMoves, generate<PLACE>(pos, moveList));
         }
 
         if (pos.get_phase() == Phase::moving) {

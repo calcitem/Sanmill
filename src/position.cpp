@@ -480,7 +480,7 @@ bool Position::legal(Move m) const
         return false;
     }
 
-    if (phase == Phase::moving && type_of(move) != MOVETYPE_REMOVE) {
+    if (type_of(move) == MOVETYPE_MOVE) {
         if (color_of(moved_piece(m)) != us) {
             return false;
         }
@@ -700,72 +700,63 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (phase == Phase::placing) {
-        const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
-                                              rule.pieceCount -
-                                              pieceInHandCount[us]);
-        pieceInHandCount[us]--;
-        pieceOnBoardCount[us]++;
+        // If currentSquare is selected and different from the target position,
+        // perform the move operation.
+        if (currentSquare != SQ_0 && currentSquare != s &&
+            board[currentSquare]) {
+            // Move piece
+            const Piece pc = board[currentSquare];
+            board[s] = pc;
+            board[currentSquare] = NO_PIECE;
 
-        const Piece pc = board[s] = piece;
-        byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
-        byColorBB[color_of(pc)] |= s; // TODO(calcitem): Put ban?
+            CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare);
+            CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare);
+            CLEAR_BIT(byColorBB[color_of(pc)], currentSquare);
 
-        update_key(s);
+            SET_BIT(byTypeBB[ALL_PIECES], s);
+            SET_BIT(byTypeBB[type_of(pc)], s);
+            SET_BIT(byColorBB[color_of(pc)], s);
 
-        updateMobility(MOVETYPE_PLACE, s);
+            update_key(s);
+            revert_key(currentSquare);
+            updateMobility(MOVETYPE_MOVE, s);
 
-        if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
-                     rank_of(s));
-        }
-
-        currentSquare = s;
-
-        const int n = mills_count(currentSquare);
-
-        if (n == 0) {
-            if (pieceInHandCount[WHITE] < 0 || pieceInHandCount[BLACK] < 0) {
-                return false;
+            if (updateRecord) {
+                snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
+                         file_of(currentSquare), rank_of(currentSquare),
+                         file_of(s), rank_of(s));
             }
 
-            if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
-                if (check_if_game_is_over()) {
-                    return true;
-                }
+            currentSquare = s;
+            action = Action::select;
+            change_side_to_move();
 
-                if (pieceToRemoveCount[sideToMove] > 0) {
-                    action = Action::remove;
-                    update_key_misc();
-                } else {
-                    phase = Phase::moving;
-                    action = Action::select;
-
-                    if (rule.hasBannedLocations) {
-                        remove_ban_pieces();
-                    }
-
-                    if (!rule.isDefenderMoveFirst) {
-                        change_side_to_move();
-                    }
-
-                    if (check_if_game_is_over()) {
-                        return true;
-                    }
-                }
-            } else {
-                change_side_to_move();
-            }
+            return true;
         } else {
-            pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
-            update_key_misc();
+            // Place new piece
+            const auto piece = static_cast<Piece>(
+                (0x01 | make_piece(sideToMove)) + rule.pieceCount -
+                pieceInHandCount[us]);
+            pieceInHandCount[us]--;
+            pieceOnBoardCount[us]++;
 
-            if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                pieceInHandCount[them] -= 1; // Or pieceToRemoveCount?;
+            const Piece pc = board[s] = piece;
+            byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
+            byColorBB[color_of(pc)] |= s; // TODO: Put ban?
 
-                if (pieceInHandCount[them] < 0) {
-                    pieceInHandCount[them] = 0;
-                }
+            update_key(s);
+            updateMobility(MOVETYPE_PLACE, s);
 
+            if (updateRecord) {
+                snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
+                         rank_of(s));
+            }
+
+            currentSquare = s;
+
+            const int n = mills_count(currentSquare);
+
+            if (n == 0) {
                 if (pieceInHandCount[WHITE] < 0 ||
                     pieceInHandCount[BLACK] < 0) {
                     return false;
@@ -777,19 +768,64 @@ bool Position::put_piece(Square s, bool updateRecord)
                         return true;
                     }
 
-                    phase = Phase::moving;
-                    action = Action::select;
+                    if (pieceToRemoveCount[sideToMove] > 0) {
+                        action = Action::remove;
+                        update_key_misc();
+                    } else {
+                        phase = Phase::moving;
+                        action = Action::select;
 
-                    if (rule.isDefenderMoveFirst) {
-                        change_side_to_move();
-                    }
+                        if (rule.hasBannedLocations) {
+                            remove_ban_pieces();
+                        }
 
-                    if (check_if_game_is_over()) {
-                        return true;
+                        if (!rule.isDefenderMoveFirst) {
+                            change_side_to_move();
+                        }
+
+                        if (check_if_game_is_over()) {
+                            return true;
+                        }
                     }
+                } else {
+                    change_side_to_move();
                 }
             } else {
-                action = Action::remove;
+                pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
+                update_key_misc();
+
+                if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+                    pieceInHandCount[them] -= 1; // Or pieceToRemoveCount?;
+
+                    if (pieceInHandCount[them] < 0) {
+                        pieceInHandCount[them] = 0;
+                    }
+
+                    if (pieceInHandCount[WHITE] < 0 ||
+                        pieceInHandCount[BLACK] < 0) {
+                        return false;
+                    }
+
+                    if (pieceInHandCount[WHITE] == 0 &&
+                        pieceInHandCount[BLACK] == 0) {
+                        if (check_if_game_is_over()) {
+                            return true;
+                        }
+
+                        phase = Phase::moving;
+                        action = Action::select;
+
+                        if (rule.isDefenderMoveFirst) {
+                            change_side_to_move();
+                        }
+
+                        if (check_if_game_is_over()) {
+                            return true;
+                        }
+                    }
+                } else {
+                    action = Action::remove;
+                }
             }
         }
 
@@ -1529,8 +1565,15 @@ void Position::updateMobility(MoveType mt, Square s)
         } else {
             mobilityDiff += adjacentNoColorBBCount;
         }
-    } else {
-        assert(0);
+    } else if (mt == MOVETYPE_MOVE) {
+        mobilityDiff -= adjacentWhiteBBCount;
+        mobilityDiff -= adjacentBlackBBCount;
+
+        if (color_of(board[s]) == WHITE) {
+            mobilityDiff += adjacentNoColorBBCount;
+        } else {
+            mobilityDiff -= adjacentNoColorBBCount;
+        }
     }
 }
 

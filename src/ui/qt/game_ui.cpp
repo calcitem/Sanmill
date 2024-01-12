@@ -287,6 +287,8 @@ void Game::setTips()
             tips = turnStr + " to remove a piece. " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
                    " pieces can be removed.";
+        } else if (p.action == Action::select) {
+            tips = turnStr + " to select a piece.";
         }
         break;
 

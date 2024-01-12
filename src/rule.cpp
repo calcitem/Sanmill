@@ -38,7 +38,7 @@ Rule rule = {"Nine Men's Morris",
              true};
 
 const Rule RULES[N_RULES] = {
-    {"Nine Men's Morris", "Nine Men's Morris", 9, 3, 3, false, false, false,
+    {"Nine Men's Morris", "Nine Men's Morris", 9, 3, 3, false, false, true,
      false, false, false, false, BoardFullAction::firstPlayerLose,
      StalemateAction::endWithStalemateLoss, true, 100, 100, true},
     {"Twelve Men's morris", "Twelve Men's Morris", 12, 3, 3, true, false, false,

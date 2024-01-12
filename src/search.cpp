@@ -120,12 +120,7 @@ int Thread::search()
         assert(posKeyHistory.size() < 256);
     }
 
-    if (rootPos->get_phase() == Phase::placing) {
-        posKeyHistory.clear();
-        rootPos->st.rule50 = 0;
-    } else if (rootPos->get_phase() == Phase::moving) {
-        rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
-    }
+    rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
 
     MoveList<LEGAL>::shuffle();
 
