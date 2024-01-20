@@ -65,8 +65,11 @@ extern Value nnueTrainingDataBestValue;
 int Thread::search()
 {
     Sanmill::Stack<Position> ss;
+
+#if defined(GABOR_MALOM_PERFECT_AI)
     Move fallbackMove = MOVE_NONE;
     Value fallbackValue = VALUE_UNKNOWN;
+#endif // GABOR_MALOM_PERFECT_AI
 
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
@@ -178,8 +181,10 @@ int Thread::search()
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
+#if defined(GABOR_MALOM_PERFECT_AI)
             fallbackMove = bestMove;
             fallbackValue = value;
+#endif // GABOR_MALOM_PERFECT_AI
             aiMoveType = AiMoveType::traditional;
 
             debugPrintf("Algorithm bestMove = %s\n",
