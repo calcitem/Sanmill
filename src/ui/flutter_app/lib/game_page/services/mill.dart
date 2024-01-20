@@ -27,11 +27,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:soundpool/soundpool.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../general_settings/models/general_settings.dart';
-import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../main.dart';
 import '../../rule_settings/models/rule_settings.dart';

@@ -112,7 +112,7 @@ void Sector::write_header(FILE *file)
     fwrite1(eval_struct_size, file);
     fwrite1(field2_offset, file);
     fwrite1(stone_diff_flag, file);
-    int ffu_size = header_size - ftell(file);
+    long ffu_size = header_size - ftell(file);
     char *dummy = new char[ffu_size];
     memset(dummy, 0, ffu_size);
     fwrite(dummy, 1, ffu_size, file);

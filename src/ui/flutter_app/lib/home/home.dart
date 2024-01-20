@@ -21,9 +21,6 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../appearance_settings/widgets/appearance_settings_page.dart';
 import '../custom_drawer/custom_drawer.dart';
@@ -39,7 +36,6 @@ import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
 import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
-import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/environment_config.dart';
@@ -391,28 +387,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Drafts an email and sends it to the developer
   static Future<void> _launchFeedback(UserFeedback feedback) async {
-    final String screenshotFilePath =
-        await _saveFeedbackImage(feedback.screenshot);
-    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    final String version =
-        "${packageInfo.version} (${packageInfo.buildNumber})";
 
-    final Email email = Email(
-      body: feedback.text,
-      subject: Constants.feedbackSubjectPrefix +
-          version +
-          Constants.feedbackSubjectSuffix,
-      recipients: Constants.recipientEmails,
-      attachmentPaths: <String>[screenshotFilePath],
-    );
-    await FlutterEmailSender.send(email);
-  }
 
-  static Future<String> _saveFeedbackImage(Uint8List screenshot) async {
-    final Directory output = await getTemporaryDirectory();
-    final String screenshotFilePath = "${output.path}/sanmill-feedback.png";
-    final File screenshotFile = File(screenshotFilePath);
-    await screenshotFile.writeAsBytes(screenshot);
-    return screenshotFilePath;
   }
 }
