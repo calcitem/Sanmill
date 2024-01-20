@@ -26,7 +26,7 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 #endif
 
-    [GeneratedPluginRegistrant registerWithRegistry:self];
+    [GeneratedPluginRegistrant registerWithRegistry:(NSObject<FlutterPluginRegistry> *)self];
 
     [self setupMethodChannel];
 
@@ -56,23 +56,35 @@
 
     [channel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
 
+        MillEngine* strongEngine = weakEngine;
+        if (strongEngine == nil) {
+            result(FlutterMethodNotImplemented);
+            return;
+        }
+
         if ([@"startup" isEqualToString:call.method]) {
-            result(@([weakEngine startup: controller]));
+            result(@([strongEngine startup: controller]));
         }
         else if ([@"send" isEqualToString:call.method]) {
-          result(@([weakEngine send: call.arguments]));
+            if ([call.arguments isKindOfClass:[NSString class]]) {
+                NSString *arguments = (NSString *)call.arguments;
+                result(@([strongEngine send:arguments]));
+            } else {
+                result(FlutterMethodNotImplemented);
+                return;
+            }
         }
         else if ([@"read" isEqualToString:call.method]) {
-            result([weakEngine read]);
+            result([strongEngine read]);
         }
         else if ([@"shutdown" isEqualToString:call.method]) {
-            result(@([weakEngine shutdown]));
+            result(@([strongEngine shutdown]));
         }
         else if ([@"isReady" isEqualToString:call.method]) {
-            result(@([weakEngine isReady]));
+            result(@([strongEngine isReady]));
         }
         else if ([@"isThinking" isEqualToString:call.method]) {
-            result(@([weakEngine isThinking]));
+            result(@([strongEngine isThinking]));
         }
         else {
             result(FlutterMethodNotImplemented);

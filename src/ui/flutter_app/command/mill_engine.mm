@@ -54,15 +54,24 @@
     CommandChannel::getInstance();
     usleep(10);
 
-    [operationQueue addOperation:[[NSInvocationOperation alloc]
-                                  initWithTarget:self
-                                  selector:@selector(engineThread:)
-                                  object:nil]];
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc]
+                                        initWithTarget:self
+                                        selector:@selector(engineThread:)
+                                        object:nil];
+
+    if (operation) {
+        [operationQueue addOperation:operation];
+    } else {
+        NSLog(@"Failed to create NSInvocationOperation");
+        return -1;
+    }
 
     [self send:@"uci"];
 
     return 0;
 }
+
+
 
 -(int) send: (NSString *) command {
     CommandChannel *channel = CommandChannel::getInstance();
