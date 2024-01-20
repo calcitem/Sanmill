@@ -2,14 +2,19 @@ import Cocoa
 import FlutterMacOS
 
 class MainFlutterWindow: NSWindow {
-  override func awakeFromNib() {
-    let flutterViewController = FlutterViewController.init()
-    let windowFrame = self.frame
-    self.contentViewController = flutterViewController
-    self.setFrame(windowFrame, display: true)
+    override func awakeFromNib() {
+        let flutterViewController = FlutterViewController.init()
 
-    RegisterGeneratedPlugins(registry: flutterViewController)
+        let initialSize = NSRect(x: 0, y: 0, width: 800, height: 600)
+        self.setContentSize(NSSize(width: initialSize.width, height: initialSize.height))
+        self.setFrame(initialSize, display: true)
 
-    super.awakeFromNib()
-  }
+        self.contentViewController = flutterViewController
+
+        RegisterGeneratedPlugins(registry: flutterViewController)
+
+        super.awakeFromNib()
+
+        self.makeKeyAndOrderFront(nil)
+    }
 }
