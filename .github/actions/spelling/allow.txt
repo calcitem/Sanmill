@@ -53,6 +53,7 @@ Unregister
 Unregisters
 alignas
 alignof
+aimovetype
 appium
 args
 asm
