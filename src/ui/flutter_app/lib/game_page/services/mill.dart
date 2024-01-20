@@ -20,18 +20,15 @@ library mill;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:catcher/model/catcher_options.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
-import '../../main.dart';
 import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';

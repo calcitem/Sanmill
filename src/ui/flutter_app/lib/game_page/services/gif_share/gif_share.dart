@@ -14,12 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../../shared/database/database.dart';
 import 'widgets_to_image_controller.dart';
@@ -96,13 +93,6 @@ class GifShare {
     if (DB().generalSettings.gameScreenRecorderSupport == false) {
       return false;
     }
-
-    final String time = DateTime.now().millisecondsSinceEpoch.toString();
-    final String gifFileName = "Mill-$time.gif";
-    final Directory docDir = await getApplicationDocumentsDirectory();
-    final File imgGif = File('${docDir.path}/$gifFileName');
-    await imgGif.writeAsBytes(gif);
-    Share.shareXFiles(<XFile>[XFile('${docDir.path}/$gifFileName')]);
     return true;
   }
 }

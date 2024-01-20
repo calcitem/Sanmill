@@ -53,11 +53,6 @@ class Engine {
 
     final String command = "setoption name $name value $option";
     await _send(command);
-
-    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
-      options.customParameters[name] = command;
-    }
   }
 
   Future<String?> _read() async {
@@ -234,9 +229,7 @@ class Engine {
       generalSettings.usePerfectDatabase,
     );
 
-    final Directory? dir = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
+    final Directory? dir = "." as Directory?;
     final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
     await _sendOptions(
       "PerfectDatabasePath",
@@ -333,11 +326,6 @@ class Engine {
       if (GameController().position.action == Act.remove) {
         ret = ret.replaceFirst(" s ", " r ");
       }
-    }
-
-    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
-      options.customParameters["PositionFen"] = ret;
     }
 
     return ret;

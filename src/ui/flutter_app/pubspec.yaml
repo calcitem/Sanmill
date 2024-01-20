@@ -8,9 +8,9 @@ environment:
 
 dependencies:
   animated_text_kit: 4.1.1
-  catcher:
-    git:
-      url: https://gitlab.com/calcitem/catcher.git
+  #catcher:
+  #  git:
+  #    url: https://gitlab.com/calcitem/catcher.git
   collection: 1.18.0
   copy_with_extension: 5.0.4
   cupertino_icons: 1.0.6
@@ -25,10 +25,10 @@ dependencies:
   #flutter_email_sender: 6.0.2
   flutter_localizations:
     sdk: flutter
-  flutter_platform_alert:
-    git:
-      url: https://gitlab.com/calcitem/flutter_platform_alert.git
-      ref: main
+  #flutter_platform_alert:
+  #  git:
+  #    url: https://gitlab.com/calcitem/flutter_platform_alert.git
+  #    ref: main
   flutter_picker: 2.1.0
   hive: 2.2.3
   hive_flutter: 1.1.0
@@ -37,8 +37,8 @@ dependencies:
   json_annotation: 4.8.1
   logger: 1.4.0
   marquee: 2.2.3
-  package_info_plus: 4.1.0
-  path_provider: 2.1.1
+  #package_info_plus: 4.1.0
+  #path_provider: 2.1.1
   share_plus: 7.1.0
   sliver_tools: 0.2.12
   #soundpool:

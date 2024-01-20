@@ -26,9 +26,7 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    Directory? dir = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
+    Directory? dir = "." as Directory?;
     final String path = '${dir?.path ?? ""}/records';
 
     // Ensure the folder exists
@@ -57,9 +55,7 @@ class LoadService {
   static Future<String?> pickFile(BuildContext context) async {
     late Directory? dir;
 
-    dir = Platform.isAndroid
-        ? await getExternalStorageDirectory()
-        : await getApplicationDocumentsDirectory();
+    dir = "." as Directory?;
     final String path = '${dir?.path ?? ""}/records';
 
     // Ensure the folder exists
@@ -72,7 +68,7 @@ class LoadService {
     // ExternalStorageDirectory without overwriting existing files.
     // This is done for compatibility with version 3.x.
     if (Platform.isAndroid) {
-      final Directory appDocDir = await getApplicationDocumentsDirectory();
+      final Directory appDocDir = "." as Directory;
       final String appDocPath = appDocDir.path;
       final List<FileSystemEntity> entities =
           appDocDir.listSync(recursive: true);
