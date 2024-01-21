@@ -16,15 +16,19 @@
 
 import 'dart:io';
 
+import 'package:catcher/core/catcher.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import '../custom_drawer/custom_drawer.dart';
 import '../generated/flutter_version.dart';
 import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
+import '../shared/services/git_info.dart';
 import '../shared/services/url.dart';
 import '../shared/themes/app_theme.dart';
+import '../shared/widgets/custom_spacer.dart';
 import '../shared/widgets/settings/settings.dart';
 import 'license_agreement_page.dart';
 
@@ -46,6 +50,36 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Widget> settingsItems = <Widget>[
+      FutureBuilder<PackageInfo>(
+        future: PackageInfo.fromPlatform(),
+        builder: (_, AsyncSnapshot<PackageInfo> data) {
+          final String version;
+          if (!data.hasData) {
+            return Container();
+          } else {
+            final PackageInfo packageInfo = data.data!;
+            if (kIsWeb ||
+                Platform.isWindows ||
+                Platform.isLinux ||
+                Platform.isMacOS) {
+              version = packageInfo.version;
+            } else {
+              version = "${packageInfo.version} (${packageInfo.buildNumber})";
+            }
+          }
+          return SettingsListTile(
+            titleString: S.of(context).versionInfo,
+            subtitleString: "${Constants.projectName} $version $mode",
+            onTap: () => showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => _VersionDialog(
+                appVersion: version,
+              ),
+            ),
+          );
+        },
+      ),
       SettingsListTile(
         titleString: S.of(context).feedback,
         onTap: () => launchURL(context, Constants.issuesURL),
@@ -121,6 +155,93 @@ class AboutPage extends StatelessWidget {
   }
 }
 
+class _VersionDialog extends StatelessWidget {
+  const _VersionDialog({
+    required this.appVersion,
+  });
+
+  final String appVersion;
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        S.of(context).appName,
+        style: AppTheme.dialogTitleTextStyle,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            S.of(context).version(appVersion),
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          ),
+          const CustomSpacer(),
+          FutureBuilder<GitInfo>(
+            future: gitInfo,
+            builder: (BuildContext context, AsyncSnapshot<GitInfo> snapshot) {
+              if (snapshot.hasData) {
+                return Column(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Branch: ${snapshot.data!.branch}',
+                        style: TextStyle(
+                            fontSize: AppTheme.textScaler
+                                .scale(AppTheme.defaultFontSize)),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Revision: ${snapshot.data!.revision}',
+                        style: TextStyle(
+                            fontSize: AppTheme.textScaler
+                                .scale(AppTheme.defaultFontSize)),
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(
+            S.of(context).more,
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (_) => const FlutterVersionAlert(),
+            );
+          },
+        ),
+        TextButton(
+          child: Text(
+            S.of(context).ok,
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
+    );
+  }
+}
+
 class FlutterVersionAlert extends StatefulWidget {
   const FlutterVersionAlert({super.key});
 
@@ -162,6 +283,8 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
                 tapCount++;
                 if (tapCount >= 10 &&
                     DateTime.now().difference(startTime).inSeconds <= 10) {
+                  // Used to test whether the Catcher is working properly.
+                  Catcher.sendTestException();
                 }
               });
             },

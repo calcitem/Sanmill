@@ -17,6 +17,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:catcher/catcher.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
 import 'game_page/widgets/painters/painters.dart';
@@ -53,7 +55,23 @@ Future<void> main() async {
 
   _initUI();
 
-  runApp(const SanmillApp());
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+    catcher = Catcher(
+      rootWidget: const SanmillApp(),
+      ensureInitialized: true,
+    );
+
+    await _initCatcher(catcher);
+
+    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
+      if (EnvironmentConfig.catcher == true) {
+        Catcher.reportCheckedError(error, stack);
+      }
+      return true;
+    };
+  } else {
+    runApp(const SanmillApp());
+  }
 }
 
 class SanmillApp extends StatelessWidget {
@@ -132,7 +150,9 @@ class SanmillApp extends StatelessWidget {
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: navigatorStateKey,
+      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          ? Catcher.navigatorKey
+          : navigatorStateKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,

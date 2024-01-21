@@ -16,11 +16,7 @@ int main(int argc, char* argv[]) {
 
 #else
 
-#if TARGET_OS_OSX
-#import <FlutterMacOS/FlutterMacOS.h>
-#else
 #import <Flutter/Flutter.h>
-#endif
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 

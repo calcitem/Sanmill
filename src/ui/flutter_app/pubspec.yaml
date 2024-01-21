@@ -8,9 +8,9 @@ environment:
 
 dependencies:
   animated_text_kit: 4.1.1
-  #catcher:
-  #  git:
-  #    url: https://gitlab.com/calcitem/catcher.git
+  catcher:
+    git:
+      url: https://gitlab.com/calcitem/catcher.git
   collection: 1.18.0
   copy_with_extension: 5.0.4
   cupertino_icons: 1.0.6
@@ -22,13 +22,13 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_colorpicker: 1.0.3
-  #flutter_email_sender: 6.0.2
+  flutter_email_sender: 6.0.2
   flutter_localizations:
     sdk: flutter
-  #flutter_platform_alert:
-  #  git:
-  #    url: https://gitlab.com/calcitem/flutter_platform_alert.git
-  #    ref: main
+  flutter_platform_alert:
+    git:
+      url: https://gitlab.com/calcitem/flutter_platform_alert.git
+      ref: main
   flutter_picker: 2.1.0
   hive: 2.2.3
   hive_flutter: 1.1.0
@@ -37,20 +37,20 @@ dependencies:
   json_annotation: 4.8.1
   logger: 1.4.0
   marquee: 2.2.3
-  #package_info_plus: 4.1.0
+  package_info_plus: 4.1.0
   path_provider: 2.1.1
   share_plus: 7.1.0
   sliver_tools: 0.2.12
-  #soundpool:
-  #  git:
-  #    url: https://gitlab.com/calcitem/soundpool.git
-  #   ref: master
-  #   path: soundpool
-  #soundpool_windux:
-  #  git:
-  #    url: https://gitlab.com/calcitem/soundpool.git
-  #    ref: windows_linux_support
-  #    path: soundpool_windux
+  soundpool:
+    git:
+      url: https://gitlab.com/calcitem/soundpool.git
+      ref: master
+      path: soundpool
+  soundpool_windux:
+    git:
+      url: https://gitlab.com/calcitem/soundpool.git
+      ref: windows_linux_support
+      path: soundpool_windux
   url_launcher: 6.1.14
   uuid: 3.0.7
 
@@ -61,7 +61,7 @@ dev_dependencies:
   flutter_driver:
     sdk: flutter
   flutter_gen_runner: 5.3.2
-  #flutter_native_splash: 2.3.3
+  flutter_native_splash: 2.3.3
   flutter_test:
     sdk: flutter
   hive_generator: 2.0.1

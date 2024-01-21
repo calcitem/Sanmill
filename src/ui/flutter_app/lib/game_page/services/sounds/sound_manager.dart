@@ -30,6 +30,21 @@ class SoundManager {
   @visibleForTesting
   static SoundManager instance = SoundManager._();
 
+  late Soundpool _soundpool;
+  int _alarmSoundStreamId = 0;
+  final Map<Sound, String> _soundFiles = <Sound, String>{
+    Sound.draw: Assets.audios.draw,
+    Sound.fly: Assets.audios.fly,
+    Sound.go: Assets.audios.go,
+    Sound.illegal: Assets.audios.illegal,
+    Sound.lose: Assets.audios.lose,
+    Sound.mill: Assets.audios.mill,
+    Sound.place: Assets.audios.place,
+    Sound.remove: Assets.audios.remove,
+    Sound.select: Assets.audios.select,
+    Sound.win: Assets.audios.win,
+  };
+  final Map<Sound, int> _soundIds = <Sound, int>{};
   bool _isTemporaryMute = false;
 
   static const String _logTag = "[audio]";
@@ -41,15 +56,27 @@ class SoundManager {
       logger.w("$_logTag Audio Player does not support Web.");
       return;
     }
+
+    _soundpool = Soundpool.fromOptions();
+
+    for (final Sound sound in Sound.values) {
+      _soundIds[sound] = await _soundpool.load(
+        await rootBundle.load(_soundFiles[sound]!),
+      );
+    }
   }
 
   Future<void> _playSound(Sound sound) async {
-
+    _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
   }
 
   Future<void> _stopSound() async {
     if (kIsWeb) {
       return;
+    }
+
+    if (_alarmSoundStreamId > 0) {
+      await _soundpool.stop(_alarmSoundStreamId);
     }
   }
 
@@ -58,7 +85,7 @@ class SoundManager {
       return;
     }
 
-
+    _soundpool.dispose();
   }
 
   Future<void> playTone(Sound sound) async {

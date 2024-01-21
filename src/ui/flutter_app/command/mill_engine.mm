@@ -71,8 +71,6 @@
     return 0;
 }
 
-
-
 -(int) send: (NSString *) command {
     CommandChannel *channel = CommandChannel::getInstance();
 
