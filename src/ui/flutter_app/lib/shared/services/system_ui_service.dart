@@ -49,9 +49,11 @@ void _initializeScreenOrientation(BuildContext context) {
 const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
 
 Future<void> setWindowTitle(String title) async {
-  if (!Platform.isMacOS) { // TODO: Support other desktop platforms.
+  if (!Platform.isMacOS) {
+    // TODO: Support other desktop platforms.
     return;
   }
 
-  await uiMethodChannel.invokeMethod('setWindowTitle', <String, String>{'title': title});
+  await uiMethodChannel
+      .invokeMethod('setWindowTitle', <String, String>{'title': title});
 }
