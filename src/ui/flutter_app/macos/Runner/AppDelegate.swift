@@ -18,13 +18,18 @@ class AppDelegate: FlutterAppDelegate {
 
     override func applicationDidFinishLaunching(_ aNotification: Notification) {
         //GeneratedPluginRegistrant.register(with: self)
-        setupMethodChannel()
+        //setupMethodChannel()
     }
 
     private func setupMethodChannel() {
+        print("Setting up method channel")
+
         guard let controller = NSApp.mainWindow?.contentViewController as? FlutterViewController else {
+            print("Failed to get FlutterViewController. mainWindow: \(String(describing: NSApp.mainWindow)), contentViewController: \(String(describing: NSApp.mainWindow?.contentViewController))")
             return
         }
+
+        print("Successfully obtained FlutterViewController")
 
         let channel = FlutterMethodChannel(name: "com.calcitem.sanmill/engine",
                                           binaryMessenger: controller.engine.binaryMessenger)

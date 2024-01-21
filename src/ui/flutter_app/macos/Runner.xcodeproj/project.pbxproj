@@ -45,7 +45,6 @@
 		69B1D06A2B5D15D0008BE811 /* option.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0582B5D15D0008BE811 /* option.cpp */; };
 		69B1D06B2B5D15D0008BE811 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D05A2B5D15D0008BE811 /* main.cpp */; };
 		69B1D0782B5D15F1008BE811 /* command_queue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D06D2B5D15F1008BE811 /* command_queue.cpp */; };
-		69B1D0792B5D15F1008BE811 /* mill_engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0712B5D15F1008BE811 /* mill_engine.cpp */; };
 		69B1D07A2B5D15F1008BE811 /* command_channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0732B5D15F1008BE811 /* command_channel.cpp */; };
 		69B1D07B2B5D15F1008BE811 /* mill_engine.mm in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0752B5D15F1008BE811 /* mill_engine.mm */; };
 		69B1D07C2B5D15F1008BE811 /* engine_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0762B5D15F1008BE811 /* engine_main.cpp */; };
@@ -164,7 +163,6 @@
 		69B1D06D2B5D15F1008BE811 /* command_queue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = command_queue.cpp; path = ../../../../command/command_queue.cpp; sourceTree = "<group>"; };
 		69B1D06F2B5D15F1008BE811 /* base.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base.h; path = ../../../../command/base.h; sourceTree = "<group>"; };
 		69B1D0702B5D15F1008BE811 /* engine_state.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = engine_state.h; path = ../../../../command/engine_state.h; sourceTree = "<group>"; };
-		69B1D0712B5D15F1008BE811 /* mill_engine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mill_engine.cpp; path = ../../../../command/mill_engine.cpp; sourceTree = "<group>"; };
 		69B1D0722B5D15F1008BE811 /* command_channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = command_channel.h; path = ../../../../command/command_channel.h; sourceTree = "<group>"; };
 		69B1D0732B5D15F1008BE811 /* command_channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = command_channel.cpp; path = ../../../../command/command_channel.cpp; sourceTree = "<group>"; };
 		69B1D0742B5D15F1008BE811 /* command_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = command_queue.h; path = ../../../../command/command_queue.h; sourceTree = "<group>"; };
@@ -426,7 +424,6 @@
 				69B1D06C2B5D15F1008BE811 /* engine_main.h */,
 				69B1D0702B5D15F1008BE811 /* engine_state.h */,
 				69B1D0772B5D15F1008BE811 /* mill_engine_ios.h */,
-				69B1D0712B5D15F1008BE811 /* mill_engine.cpp */,
 				69B1D0752B5D15F1008BE811 /* mill_engine.mm */,
 			);
 			path = command;
@@ -719,7 +716,6 @@
 				69B1D0AC2B5D1614008BE811 /* perfect_symmetries_slow.cpp in Sources */,
 				69B1D0642B5D15D0008BE811 /* evaluate.cpp in Sources */,
 				69B1D05E2B5D15D0008BE811 /* rule.cpp in Sources */,
-				69B1D0792B5D15F1008BE811 /* mill_engine.cpp in Sources */,
 				69B1D0A42B5D1614008BE811 /* perfect_test.cpp in Sources */,
 				69B1D0A32B5D1614008BE811 /* perfect_log.cpp in Sources */,
 				69B1D06B2B5D15D0008BE811 /* main.cpp in Sources */,
