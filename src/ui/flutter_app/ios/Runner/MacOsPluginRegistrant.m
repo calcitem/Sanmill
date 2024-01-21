@@ -4,7 +4,7 @@
 
 // clang-format off
 
-#import "GeneratedPluginRegistrant.h"
+#import "MacOsPluginRegistrant.h"
 
 #if __has_include(<catcher/CatcherPlugin.h>)
 #import <catcher/CatcherPlugin.h>
