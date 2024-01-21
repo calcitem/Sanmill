@@ -55,7 +55,7 @@ class _DatabaseMigration {
   /// When [_currentVersion] is smaller than [_newVersion] all migrations between will be run.
   /// Migrations are called once and only once thus they should complete fast and everything should be awaited.
   static Future<bool> migrate() async {
-    if (kIsWeb) {
+    if (kIsWeb || Platform.isMacOS) {
       return false;
     }
 

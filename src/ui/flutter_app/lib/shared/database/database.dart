@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:convert' show jsonDecode;
-import 'dart:io' show Directory, File;
+import 'dart:io' show Directory, File, Platform;
 
 import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
