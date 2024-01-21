@@ -7,6 +7,12 @@ import url_launcher_macos
 
 class MainFlutterWindow: NSWindow {
     var engine: MillEngine?
+    
+    private func setTitle(title: String) {
+        DispatchQueue.main.async {
+            self.title = title
+        }
+    }
 
     private func setupMethodChannel( controller: FlutterViewController) {
 
@@ -41,7 +47,25 @@ class MainFlutterWindow: NSWindow {
             }
         }
     }
+    
+    private func setupUIMethodChannel(controller: FlutterViewController) {
+            let uiChannel = FlutterMethodChannel(name: "com.calcitem.sanmill/ui",
+                                                binaryMessenger: controller.engine.binaryMessenger)
 
+            uiChannel.setMethodCallHandler { [weak self] (call, result) in
+                switch call.method {
+                case "setWindowTitle":
+                    if let arguments = call.arguments as? [String: Any],
+                       let title = arguments["title"] as? String {
+                        self?.setTitle(title: title)
+                    }
+                    result(nil)
+                default:
+                    result(FlutterMethodNotImplemented)
+                }
+            }
+        }
+    
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
     let windowFrame = self.frame
@@ -57,5 +81,6 @@ class MainFlutterWindow: NSWindow {
     self.engine = MillEngine()
 
     setupMethodChannel(controller: flutterViewController)
+    setupUIMethodChannel(controller: flutterViewController)
   }
 }

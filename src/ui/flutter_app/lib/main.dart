@@ -108,6 +108,7 @@ class SanmillApp extends StatelessWidget {
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (BuildContext context, Widget? child) {
           _initializeScreenOrientation(context);
+          setWindowTitle(S.of(context).appName);
           return MediaQuery(
             data: MediaQuery.of(context).copyWith(),
             child: child!,
@@ -163,6 +164,7 @@ class SanmillApp extends StatelessWidget {
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
         _initializeScreenOrientation(context);
+        setWindowTitle(S.of(context).appName);
         return MediaQuery(
           data: MediaQuery.of(context).copyWith(
             textScaler: TextScaler.linear(displaySettings.fontScale),
