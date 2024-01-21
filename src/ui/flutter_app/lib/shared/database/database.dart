@@ -21,6 +21,7 @@ import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
 import 'package:flutter/material.dart' show Color, Locale;
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../appearance_settings/models/display_settings.dart';

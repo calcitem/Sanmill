@@ -68,7 +68,7 @@ class LoadService {
     // ExternalStorageDirectory without overwriting existing files.
     // This is done for compatibility with version 3.x.
     if (Platform.isAndroid) {
-      final Directory appDocDir = "." as Directory;
+      final Directory appDocDir = await getApplicationDocumentsDirectory();
       final String appDocPath = appDocDir.path;
       final List<FileSystemEntity> entities =
           appDocDir.listSync(recursive: true);

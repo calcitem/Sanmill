@@ -229,8 +229,8 @@ class Engine {
       generalSettings.usePerfectDatabase,
     );
 
-    final Directory? dir = "." as Directory?;
-    final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
+    final Directory dir = await getApplicationDocumentsDirectory();
+    final String perfectDatabasePath = '${dir.path}/strong';
     await _sendOptions(
       "PerfectDatabasePath",
       perfectDatabasePath,

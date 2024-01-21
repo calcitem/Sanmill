@@ -178,7 +178,7 @@ class _DatabaseV1 {
 
   static Future<File?> _getFile() async {
     final String fileName = Constants.settingsFile;
-    final Directory docDir = "." as Directory;
+    final Directory docDir = await getApplicationDocumentsDirectory();
 
     final File file = File("${docDir.path}/$fileName");
     // ignore: avoid_slow_async_io
