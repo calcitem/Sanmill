@@ -5,8 +5,6 @@ import path_provider_foundation
 import share_plus
 import url_launcher_macos
 
-
-
 @NSApplicationMain
 class AppDelegate: FlutterAppDelegate {
     var engine: MillEngine?
@@ -64,6 +62,10 @@ class AppDelegate: FlutterAppDelegate {
     }
 
     override func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true
+    }
+
+    override func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         return true
     }
 }
