@@ -53,12 +53,14 @@ Sector::Sector(::Id the_id)
     , sval(
 #endif
 #ifdef DD
-          (assert(sec_vals.count(id)), sec_vals[id])
+          sec_vals[id]
 #else
           0
 #endif
       )
 {
+    assert(sec_vals.count(id) > 0);
+
     sector_objs.push_back(this);
 
     STRCPY(fname, sizeof(fname), id.file_name().c_str());
