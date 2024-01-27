@@ -94,7 +94,7 @@
     bool got_response = channel->popupResponse(buffer);
 
     if (!got_response) {
-        return nil;
+        return @"";
     }
 
     NSString *line = [NSString stringWithFormat:@"%s", buffer];
