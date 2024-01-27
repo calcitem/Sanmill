@@ -176,7 +176,8 @@ public:
 
         if (nullptr == node) { // Key not found, nothing to be done
             return;
-        } else {               // Remove the node from the bucket
+        } else {
+            // Remove the node from the bucket
             if (head == node) {
                 head = node->next;
             } else {
