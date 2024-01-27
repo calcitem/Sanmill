@@ -234,7 +234,7 @@ class Engine {
       generalSettings.usePerfectDatabase,
     );
 
-    final Directory? dir = Platform.isAndroid
+    final Directory? dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     final String perfectDatabasePath = '${dir?.path ?? ""}/strong';

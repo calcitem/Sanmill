@@ -26,7 +26,7 @@ class LoadService {
 
   /// Retrieves the file path.
   static Future<String?> getFilePath(BuildContext context) async {
-    Directory? dir = Platform.isAndroid
+    Directory? dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     final String path = '${dir?.path ?? ""}/records';
@@ -57,7 +57,7 @@ class LoadService {
   static Future<String?> pickFile(BuildContext context) async {
     late Directory? dir;
 
-    dir = Platform.isAndroid
+    dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
     final String path = '${dir?.path ?? ""}/records';
@@ -71,7 +71,7 @@ class LoadService {
     // Copy PGN files recursively from ApplicationDocumentsDirectory to
     // ExternalStorageDirectory without overwriting existing files.
     // This is done for compatibility with version 3.x.
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       final Directory appDocDir = await getApplicationDocumentsDirectory();
       final String appDocPath = appDocDir.path;
       final List<FileSystemEntity> entities =
