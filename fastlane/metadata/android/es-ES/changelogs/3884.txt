@@ -1,0 +1,3 @@
+v4.0.4
+
+Mejorada la traducción al español.
