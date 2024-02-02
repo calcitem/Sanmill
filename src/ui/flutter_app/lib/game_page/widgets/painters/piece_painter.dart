@@ -22,22 +22,17 @@ part of '../../../game_page/widgets/painters/painters.dart';
 @immutable
 class PiecePaintParam {
   const PiecePaintParam({
-    required this.piece,
-    required this.pos,
-    required this.animated,
-    required this.diameter,
+    required this.gamePiece,
   });
 
-  /// The color of the piece.
-  final PieceColor piece;
+  /// Direct reference to the GamePiece instance.
+  final GamePiece gamePiece;
 
-  /// The position the piece is placed at.
-  ///
-  /// This represents the final position on the canvas.
-  /// To extract this information from the board index use [pointFromIndex].
-  final Offset pos;
-  final bool animated;
-  final double diameter;
+  /// Convenience getters to access GamePiece properties.
+  PieceColor get piece => gamePiece.pieceColor;
+  Offset get pos => gamePiece.position;
+  bool get animated => gamePiece.animated;
+  double get diameter => gamePiece.diameter;
 }
 
 /// Custom Piece Painter
@@ -50,7 +45,6 @@ class PiecePainter extends CustomPainter {
     required this.animationValue,
   });
 
-  /// The value representing the piece animation when placing.
   final double animationValue;
 
   @override
@@ -63,80 +57,63 @@ class PiecePainter extends CustomPainter {
     final Path shadowPath = Path();
     final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
 
-    final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
-            DB().displaySettings.pieceWidth /
-            6 -
-        1;
-    final double animatedPieceWidth = pieceWidth * animationValue;
-
     // Draw pieces on board
-    for (int row = 0; row < 7; row++) {
-      for (int col = 0; col < 7; col++) {
-        final int index = row * 7 + col;
-
-        final PieceColor piece = GameController()
-            .position
-            .pieceOnGrid(index); // No Pieces when initial
-
-        if (piece == PieceColor.none) {
-          continue;
-        }
-
-        final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
-
-        piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
-            pos: pos,
-            animated: animated,
-            diameter: pieceWidth,
-          ),
-        );
-
-        shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: (animated ? animatedPieceWidth : pieceWidth) / 2,
-          ),
-        );
+    GameController().forEachPiece((int index, GamePiece gamePiece) {
+      final Offset pos = pointFromIndex(index, size);
+      final bool animated = focusIndex == index;
+      if (animated) {
+        gamePiece.updateAnimation(animationValue);
+      } else {
+        gamePiece.resetAnimation();
       }
-    }
+
+      piecesToDraw.add(
+        PiecePaintParam(
+          gamePiece: gamePiece,
+        ),
+      );
+
+      shadowPath.addOval(
+        Rect.fromCircle(
+          center: pos,
+          radius: (gamePiece.animated ? gamePiece.diameter * gamePiece.animationValue : gamePiece.diameter) / 2,
+        ),
+      );
+    });
 
     // Draw shadow of piece
     canvas.drawShadow(shadowPath, Colors.black, 2, true);
     paint.style = PaintingStyle.fill;
 
-    late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
-      );
-      blurPositionColor = piece.piece.blurPositionColor;
+    const Color blurPositionColor = Colors.transparent; // Adjust this as necessary
 
-      final double pieceRadius = pieceWidth / 2;
+    for (final PiecePaintParam pieceParam in piecesToDraw) {
+      final GamePiece piece = pieceParam.gamePiece;
+
+      final double pieceRadius = piece.diameter / 2;
+      final double animatedPieceRadius = pieceRadius * piece.animationValue;
       final double pieceInnerRadius = pieceRadius * 0.99;
-
-      final double animatedPieceRadius = animatedPieceWidth / 2;
       final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
       // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
+      paint.color = piece.borderColor;
       canvas.drawCircle(
-        piece.pos,
+        piece.position,
         piece.animated ? animatedPieceRadius : pieceRadius,
         paint,
       );
       // Draw the piece
-      paint.color = piece.piece.pieceColor;
+      paint.color = piece.fillColor;
       canvas.drawCircle(
-        piece.pos,
+        piece.position,
         piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
         paint,
       );
     }
+
+    // For focus and blur positions, compute a generic width for illustration
+    final double genericPieceWidth = size.width / 7; // Assuming a 7x7 grid for simplicity
+    final double animatedPieceWidth = genericPieceWidth * animationValue;
 
     // Draw focus and blur position
     if (focusIndex != null &&
@@ -166,6 +143,5 @@ class PiecePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(PiecePainter oldDelegate) =>
-      animationValue != oldDelegate.animationValue;
+  bool shouldRepaint(PiecePainter oldDelegate) => animationValue != oldDelegate.animationValue;
 }

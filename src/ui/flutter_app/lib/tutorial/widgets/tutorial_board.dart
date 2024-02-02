@@ -17,20 +17,21 @@
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
+import '../../game_page/widgets/game_page.dart';
 import '../../game_page/widgets/painters/painters.dart';
 import '../painters/tutorial_painter.dart';
 
 class TutorialBoard extends StatelessWidget {
   const TutorialBoard({
     super.key,
-    required this.pieceList,
+    required this.pieces,
     this.focusIndex,
     this.blurIndex,
   });
 
   final int? focusIndex;
   final int? blurIndex;
-  final List<PieceColor> pieceList;
+  final List<GamePiece> pieces;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class TutorialBoard extends StatelessWidget {
             foregroundPainter: TutorialPainter(
               focusIndex: focusIndex,
               blurIndex: blurIndex,
-              pieceList: pieceList,
+              pieces: pieces,
             ),
           ),
         );

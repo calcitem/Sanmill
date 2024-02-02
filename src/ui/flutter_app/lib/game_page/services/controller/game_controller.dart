@@ -72,6 +72,8 @@ class GameController {
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
+  final List<GamePiece> pieces = <GamePiece>[];
+
   late AnimationController animationController;
   late Animation<double> animation;
 
@@ -133,12 +135,37 @@ class GameController {
     // TODO: [Leptopoda] Reimplement this and clean onBoardTap()
   }
 
+  void createOrUpdatePiece(int index, PieceColor color, Offset position, double diameter) {
+    final GamePiece piece = pieces.firstWhere(
+          (GamePiece p) => p.position == position,
+      orElse: () => GamePiece(
+        pieceColor: color,
+        position: position,
+        diameter: diameter,
+      ),
+    );
+
+    piece.pieceColor = color;
+    piece.position = position;
+    piece.diameter = diameter;
+
+    if (!pieces.contains(piece)) {
+      pieces.add(piece);
+    }
+  }
+  void forEachPiece(Function(int index, GamePiece piece) callback) {
+    for (int i = 0; i < pieces.length; i++) {
+      callback(i, pieces[i]);
+    }
+  }
+
   /// Initializes the controller.
   void _init() {
     position = Position();
     gameInstance = Game(gameMode: GameMode.humanVsAi);
     engine = Engine();
     gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
+    pieces.clear();
 
     _startGame();
   }

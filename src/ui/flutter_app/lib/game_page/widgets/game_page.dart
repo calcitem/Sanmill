@@ -51,6 +51,7 @@ part 'dialogs/info_dialog.dart';
 part 'dialogs/move_list_dialog.dart';
 part 'game_board.dart';
 part 'game_header.dart';
+part 'game_piece.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/game_options_modal.dart';
 part 'modals/move_options_modal.dart';

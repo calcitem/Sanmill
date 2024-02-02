@@ -18,6 +18,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
+import '../../game_page/widgets/game_page.dart';
 import '../../game_page/widgets/painters/painters.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
@@ -36,7 +37,7 @@ class TutorialDialog extends StatefulWidget {
 class _TutorialDialogState extends State<TutorialDialog> {
   int? _focusIndex;
   int? _blurIndex;
-  List<PieceColor> _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
+  late List<GamePiece> _pieces = <GamePiece>[];
 
   int _curIndex = 0;
   final int _maxIndex = 6;
@@ -65,8 +66,8 @@ class _TutorialDialogState extends State<TutorialDialog> {
   @override
   void initState() {
     super.initState();
-    _pieceList[getPieceIndex(3, 1)] = PieceColor.black;
-    _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
+    setPieceColor(3, 1, PieceColor.black);
+    setPieceColor(3, 5, PieceColor.white);
   }
 
   @override
@@ -99,7 +100,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                             child: TutorialBoard(
                               focusIndex: _focusIndex,
                               blurIndex: _blurIndex,
-                              pieceList: _pieceList,
+                              pieces: _pieces,
                             ),
                           ),
                         ),
@@ -200,7 +201,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                           child: TutorialBoard(
                             focusIndex: _focusIndex,
                             blurIndex: _blurIndex,
-                            pieceList: _pieceList,
+                            pieces: _pieces,
                           ),
                         ),
                       ),
@@ -353,13 +354,19 @@ class _TutorialDialogState extends State<TutorialDialog> {
     return child ?? const SizedBox.shrink();
   }
 
+  void setPieceColor(int row, int col, PieceColor color) {
+    final int index = getPieceIndex(row, col); // 计算索引
+    // 假设有一种方式可以根据索引找到对应的GamePiece，这里只是一个示例
+    _pieces[index].pieceColor = color;
+  }
+
   void setPiece() {
     pieceReset();
     switch (_curIndex) {
       case 1: // Placing phase
         {
           _maskOffset = getMaskOffset(3, 5);
-          _pieceList[getPieceIndex(3, 5)] = PieceColor.white;
+          setPieceColor(3, 5, PieceColor.white);
           break;
         }
       case 2: // Counter
@@ -370,36 +377,36 @@ class _TutorialDialogState extends State<TutorialDialog> {
       case 3: // Moving phase
         {
           _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(2, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(2, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(3, 4)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.white;
+          setPieceColor(4, 2, PieceColor.white);
+          setPieceColor(4, 4, PieceColor.white);
+          setPieceColor(2, 4, PieceColor.black);
+          setPieceColor(2, 3, PieceColor.black);
+          setPieceColor(3, 4, PieceColor.black);
+          setPieceColor(5, 3, PieceColor.white);
           break;
         }
       case 4: // Mill
         {
           _maskOffset = getMaskOffset(5, 3);
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
+          setPieceColor(4, 2, PieceColor.white);
+          setPieceColor(4, 3, PieceColor.white);
+          setPieceColor(4, 4, PieceColor.white);
+          setPieceColor(5, 1, PieceColor.black);
+          setPieceColor(5, 3, PieceColor.black);
+          setPieceColor(5, 5, PieceColor.black);
           _focusIndex = getPieceIndex(5, 3);
           break;
         }
       case 5: // Flying
         {
           _maskOffset = getMaskOffset(4, 2);
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 2)] = PieceColor.white;
-          _pieceList[getPieceIndex(4, 4)] = PieceColor.white;
-          _pieceList[getPieceIndex(5, 1)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.black;
-          _pieceList[getPieceIndex(5, 5)] = PieceColor.black;
-          _pieceList[getPieceIndex(6, 3)] = PieceColor.black;
+          setPieceColor(3, 2, PieceColor.white);
+          setPieceColor(4, 3, PieceColor.white);
+          setPieceColor(4, 4, PieceColor.white);
+          setPieceColor(5, 1, PieceColor.black);
+          setPieceColor(5, 3, PieceColor.black);
+          setPieceColor(5, 5, PieceColor.black);
+          setPieceColor(6, 3, PieceColor.black);
           break;
         }
     }
@@ -409,20 +416,20 @@ class _TutorialDialogState extends State<TutorialDialog> {
     switch (_curIndex) {
       case 2:
         {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          setPieceColor(5, 3, PieceColor.none);
+          setPieceColor(4, 3, PieceColor.white);
           break;
         }
       case 3:
         {
-          _pieceList[getPieceIndex(5, 3)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          setPieceColor(5, 3, PieceColor.none);
+          setPieceColor(4, 3, PieceColor.white);
           break;
         }
       case 5:
         {
-          _pieceList[getPieceIndex(3, 2)] = PieceColor.none;
-          _pieceList[getPieceIndex(4, 3)] = PieceColor.white;
+          setPieceColor(3, 2, PieceColor.none);
+          setPieceColor(4, 3, PieceColor.white);
           break;
         }
     }
@@ -430,7 +437,14 @@ class _TutorialDialogState extends State<TutorialDialog> {
   }
 
   void pieceReset() {
-    _pieceList = List<PieceColor>.filled(7 * 7, PieceColor.none);
+    _pieces = List<GamePiece>.generate(
+      7 * 7,
+      (int index) => GamePiece(
+        pieceColor: PieceColor.none,
+        position: pointFromIndex(index, _size),
+        diameter: pieceWidth,
+      ),
+    );
     _maskOffset = null;
     _focusIndex = null;
     _blurIndex = null;

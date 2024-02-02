@@ -14,19 +14,37 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-/// Although marked as a library this package is tightly integrated into the app
-library painters;
+part of 'game_page.dart';
 
-import 'package:flutter/material.dart';
+class GamePiece {
+  GamePiece({
+    required this.pieceColor,
+    required this.position,
+    required this.diameter,
+    this.animated = false,
+    this.animationValue = 1.0, // 1.0 means no animation
+  });
 
-import '../../../appearance_settings/models/color_settings.dart';
-import '../../../appearance_settings/models/display_settings.dart';
-import '../../../shared/database/database.dart';
-import '../../../shared/services/environment_config.dart';
-import '../../../shared/themes/app_theme.dart';
-import '../../services/mill.dart';
-import '../game_page.dart';
+  late final PieceColor pieceColor;
+  late final Offset position;
+  late final double diameter;
+  bool animated;
+  double animationValue;
 
-part 'board_painter.dart';
-part 'board_utils.dart';
-part 'piece_painter.dart';
+  // Border color
+  Color get borderColor => pieceColor.borderColor;
+
+  Color get fillColor => pieceColor.pieceColor;
+
+  // Draw the piece
+  void updateAnimation(double value) {
+    animationValue = value;
+    animated = true;
+  }
+
+  // Reset the animation
+  void resetAnimation() {
+    animationValue = 1.0;
+    animated = false;
+  }
+}

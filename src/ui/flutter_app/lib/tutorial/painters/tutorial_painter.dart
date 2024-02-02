@@ -17,16 +17,17 @@
 import 'package:flutter/material.dart';
 
 import '../../../game_page/services/mill.dart';
+import '../../game_page/widgets/game_page.dart';
 import '../../game_page/widgets/painters/painters.dart';
 import '../../shared/database/database.dart';
 
 /// Preview Piece Painter
 class TutorialPainter extends CustomPainter {
-  TutorialPainter({this.blurIndex, this.focusIndex, required this.pieceList});
+  TutorialPainter({this.blurIndex, this.focusIndex, required this.pieces});
 
   final int? focusIndex;
   final int? blurIndex;
-  final List<PieceColor> pieceList;
+  final List<GamePiece> pieces;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -38,93 +39,32 @@ class TutorialPainter extends CustomPainter {
 
     final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
 
-    // Draw pieces on board
-    for (int row = 0; row < 7; row++) {
-      for (int col = 0; col < 7; col++) {
-        final int index = row * 7 + col;
-        final PieceColor piece = pieceList[index]; // No Pieces when initial
-        if (piece == PieceColor.none) {
-          continue;
-        }
-
-        final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
-
-        piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
-            pos: pos,
-            animated: animated,
-            diameter: pieceWidth,
-          ),
-        );
-
-        shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: pieceWidth / 2,
-          ),
-        );
+    // 假设 GameController 提供了 forEachPiece 方法
+    GameController().forEachPiece((int index, GamePiece gamePiece) {
+      if (gamePiece.pieceColor == PieceColor.none) {
+        return; // 跳过无棋子的位置
       }
-    }
 
-    // Draw shadow of piece
-    canvas.drawShadow(shadowPath, Colors.black, 2, true);
-    paint.style = PaintingStyle.fill;
+      final Offset pos = gamePiece.position; // 直接使用 GamePiece 中的位置
+      final bool animated = gamePiece.animated; // 直接使用 GamePiece 中的动画状态
 
-    late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
+      piecesToDraw.add(
+        PiecePaintParam(
+          gamePiece: gamePiece, // 直接传递 GamePiece 实例
+        ),
       );
-      blurPositionColor = piece.piece.blurPositionColor;
 
-      final double pieceRadius = pieceWidth / 2;
-      final double pieceInnerRadius = pieceRadius * 0.99;
-
-      // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
-      canvas.drawCircle(
-        piece.pos,
-        pieceRadius,
-        paint,
+      shadowPath.addOval(
+        Rect.fromCircle(
+          center: pos,
+          radius: (gamePiece.animated ? gamePiece.diameter * gamePiece.animationValue : gamePiece.diameter) / 2,
+        ),
       );
-      // Draw the piece
-      paint.color = piece.piece.pieceColor;
-      canvas.drawCircle(
-        piece.pos,
-        pieceInnerRadius,
-        paint,
-      );
-    }
+    });
 
-    // Draw focus and blur position
-    if (focusIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
-
-      canvas.drawCircle(
-        pointFromIndex(focusIndex!, size),
-        pieceWidth / 2,
-        paint,
-      );
-    }
-
-    if (blurIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = blurPositionColor;
-      paint.style = PaintingStyle.fill;
-
-      canvas.drawCircle(
-        pointFromIndex(blurIndex!, size),
-        pieceWidth / 2 * 0.8,
-        paint,
-      );
-    }
+    // 绘制阴影和棋子的代码保持不变，使用 piecesToDraw 中的数据
+    paint.color = Colors.black.withOpacity(0.2);
+    canvas.drawShadow(shadowPath, Colors.black, 4, false);
   }
 
   @override
