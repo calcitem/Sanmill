@@ -98,7 +98,7 @@ $SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $SNAP_YAML_FILE
 $SED -i "s/Version=${OLD_VERSION}/Version=${NEW_VERSION}/g" $SNAP_DESKTOP_FILE
 
 # Modify Debain
-$SED -i "s/version: ${OLD_VERSION}/version: ${NEW_VERSION}/g" $DEBIAN_YAML_FILE
+$SED -i "s/Version: ${OLD_VERSION}/Version: ${NEW_VERSION}/g" $DEBIAN_YAML_FILE
 $SED -i "s/Version=${OLD_VERSION}/Version=${NEW_VERSION}/g" $DEBIAN_DESKTOP_FILE
 
 # Modify Qt
