@@ -76,9 +76,9 @@ class PiecePainter extends CustomPainter {
 
     final Paint paint = Paint();
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) * DB().displaySettings.pieceWidth / 6 - 1;
-    const double shadowBlurRadius = 3.0;  // 阴影模糊半径
-    final Color shadowColor = Colors.black.withOpacity(0.3);  // 阴影颜色
-    const Offset shadowOffset = Offset(3.0, 3.0);  // 阴影偏移量
+    const double shadowBlurRadius = 2.0;  // 阴影模糊半径
+    const Color shadowColor = Colors.black;  // 阴影颜色
+    const Offset shadowOffset = Offset(1.0, 1.0);  // 阴影偏移量
 
     // 绘制棋子及其阴影
     late Color blurPositionColor;
@@ -101,10 +101,16 @@ class PiecePainter extends CustomPainter {
         shadowPath.addOval(Rect.fromCircle(center: currentPosition + shadowOffset, radius: pieceWidth / 2));
         canvas.drawShadow(shadowPath, shadowColor, shadowBlurRadius, true);
 
-        // 绘制棋子的边界和主体
-        paint.color = piece.pieceColor;
+        // 绘制棋子边框
+        paint.color = piece.borderColor; // 边框颜色
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(currentPosition, pieceWidth / 2, paint);
+
+        // 绘制棋子的主体
+        //paint.strokeWidth = 2; // 边框宽度
+        paint.color = piece.pieceColor;
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(currentPosition, pieceWidth / 2 * 0.99 , paint);
       }
     }
 
