@@ -76,11 +76,10 @@ class PiecePainter extends CustomPainter {
 
     final Paint paint = Paint();
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) * DB().displaySettings.pieceWidth / 6 - 1;
-    const double shadowBlurRadius = 2.0;  // 阴影模糊半径
-    const Color shadowColor = Colors.black;  // 阴影颜色
-    const Offset shadowOffset = Offset(1.0, 1.0);  // 阴影偏移量
+    const double shadowBlurRadius = 2.0;
+    final Color shadowColor = Colors.black.withOpacity(0.618);
+    const Offset shadowOffset = Offset(1.0, 1.0);
 
-    // 绘制棋子及其阴影
     late Color blurPositionColor;
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
@@ -94,33 +93,29 @@ class PiecePainter extends CustomPainter {
 
         final Offset startPos = pointFromIndex(previousFocusIndex ?? index, size);
         final Offset endPos = pointFromIndex(index, size);
-        final Offset currentPosition = Offset.lerp(startPos, endPos, focusIndex == index ? animationValue : 1.0)!;
 
-        // 绘制棋子的阴影
+        final Offset currentPosition =
+          Offset.lerp(startPos, endPos, (focusIndex == index)? animationValue : 1.0)!;
+
         final Path shadowPath = Path();
         shadowPath.addOval(Rect.fromCircle(center: currentPosition + shadowOffset, radius: pieceWidth / 2));
         canvas.drawShadow(shadowPath, shadowColor, shadowBlurRadius, true);
 
-        // 绘制棋子边框
-        paint.color = piece.borderColor; // 边框颜色
+        paint.color = piece.borderColor;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(currentPosition, pieceWidth / 2, paint);
 
-        // 绘制棋子的主体
-        //paint.strokeWidth = 2; // 边框宽度
         paint.color = piece.pieceColor;
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(currentPosition, pieceWidth / 2 * 0.99 , paint);
-      }
-    }
 
-    // 其他绘制代码，例如焦点圈和模糊圈
-    if (focusIndex != null && GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
-      final Offset focusPosition = pointFromIndex(focusIndex, size);
-      canvas.drawCircle(focusPosition, pieceWidth / 2, paint);
+        if (focusIndex != null && focusIndex == index && GameController().gameInstance.gameMode != GameMode.setupPosition) {
+          paint.color = DB().colorSettings.pieceHighlightColor;
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 2;
+          canvas.drawCircle(currentPosition, pieceWidth / 2, paint);
+        }
+      }
     }
 
     if (blurIndex != null && GameController().gameInstance.gameMode != GameMode.setupPosition) {

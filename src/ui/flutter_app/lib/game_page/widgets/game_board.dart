@@ -163,12 +163,12 @@ class _GameBoardState extends State<GameBoard>
 
     if (GameController().position.action == Act.remove) {
       customPaint = AnimatedBuilder(
-        animation: GameController().movingAnimation,
+        animation: GameController().removingAnimation,
         builder: (_, Widget? child) {
           return CustomPaint(
             painter: BoardPainter(context),
             foregroundPainter: PiecePainter(
-              animationValue: GameController().movingAnimation.value,
+              animationValue: GameController().removingAnimation.value,
             ),
             child: child,
           );
