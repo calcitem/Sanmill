@@ -154,7 +154,6 @@ class TapHandler {
               }
             }
           }
-
           ret = true;
           logger.v("$_logTag putPiece: [$sq]");
           break;

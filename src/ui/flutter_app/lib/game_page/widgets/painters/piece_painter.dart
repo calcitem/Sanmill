@@ -75,170 +75,53 @@ class PiecePainter extends CustomPainter {
     final int? blurIndex = GameController().gameInstance.blurIndex;
 
     final Paint paint = Paint();
-    final Path shadowPath = Path();
-    final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
+    final double pieceWidth = (size.width - AppTheme.boardPadding * 2) * DB().displaySettings.pieceWidth / 6 - 1;
+    const double shadowBlurRadius = 3.0;  // 阴影模糊半径
+    final Color shadowColor = Colors.black.withOpacity(0.3);  // 阴影颜色
+    const Offset shadowOffset = Offset(3.0, 3.0);  // 阴影偏移量
 
-    final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
-        DB().displaySettings.pieceWidth /
-        6 -
-        1;
-
-    // Draw pieces on board
+    // 绘制棋子及其阴影
+    late Color blurPositionColor;
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
-
-        final PieceColor piece = GameController()
-            .position
-            .pieceOnGrid(index); // No Pieces when initial
-
+        final PieceColor piece = GameController().position.pieceOnGrid(index);
         if (piece == PieceColor.none) {
           continue;
         }
 
+        blurPositionColor = piece.blurPositionColor;
+
         final Offset startPos = pointFromIndex(previousFocusIndex ?? index, size);
         final Offset endPos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
+        final Offset currentPosition = Offset.lerp(startPos, endPos, focusIndex == index ? animationValue : 1.0)!;
 
-        late PieceAnimationType pieceAnimationType;
+        // 绘制棋子的阴影
+        final Path shadowPath = Path();
+        shadowPath.addOval(Rect.fromCircle(center: currentPosition + shadowOffset, radius: pieceWidth / 2));
+        canvas.drawShadow(shadowPath, shadowColor, shadowBlurRadius, true);
 
-        if (GameController().position.phase == Phase.placing) {
-          if (GameController().position.action == Act.place) {
-            pieceAnimationType = PieceAnimationType.place;
-          } else if (GameController().position.action == Act.remove) {
-            pieceAnimationType = PieceAnimationType.remove;
-          } else {
-            pieceAnimationType = PieceAnimationType.none;
-          }
-        } else if (GameController().position.phase == Phase.moving) {
-          if (GameController().position.action == Act.remove) {
-            pieceAnimationType = PieceAnimationType.none;
-          } else {
-            pieceAnimationType = PieceAnimationType.move;
-          }
-        } else {
-          pieceAnimationType = PieceAnimationType.none;
-        }
-
-        piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
-            startPos: startPos,
-            endPos: endPos,
-            animationType: pieceAnimationType,
-            animationProgress: animated ? animationValue : 1.0,
-            diameter: pieceWidth,
-          ),
-        );
-      }
-    }
-
-    // 首先绘制所有棋子的阴影
-    // TODO: 实际效果是只有一个有阴影
-    for (final PiecePaintParam piece in piecesToDraw) {
-      const Offset shadowOffset = Offset(3.0, 3.0); // 阴影偏移量
-      const double blurRadius = 3.0; // 阴影模糊半径
-      final Color shadowColor = Colors.black.withOpacity(0.3); // 阴影颜色
-    }
-
-    late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      const Offset shadowOffset = Offset(3.0, 3.0); // 根据需要调整阴影的偏移量
-      const double blurRadius = 3.0; // 根据需要调整阴影的模糊半径
-      final Color shadowColor = Colors.black.withOpacity(0.3); // 根据需要调整阴影颜色和透明度
-      assert(
-      piece.piece == PieceColor.black ||
-          piece.piece == PieceColor.white ||
-          piece.piece == PieceColor.ban,
-      );
-      blurPositionColor = piece.piece.blurPositionColor;
-
-      final Offset currentPosition = Offset.lerp(
-          piece.startPos,
-          piece.endPos,
-          piece.animationProgress
-      )!;
-
-      // Draw shadow of each piece
-      canvas.drawShadow(shadowPath, shadowColor, blurRadius, true);
-
-      // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
-      canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
-
-      // 根据动画类型和进度计算棋子的透明度
-      double opacity = 1.0;
-
-      // Draw the piece
-      final double currentDiameter = piece.diameter;
-
-      if (kDebugMode) {
-        //print("Animation value: $animationValue");
-        //print("Piece animation progress: ${piece.animationProgress}");
-      }
-
-      switch (piece.animationType) {
-        case PieceAnimationType.place:
-          // 淡入动画：动画开始时透明度为0，结束时为1
-          opacity = piece.animationProgress;
-          break;
-        case PieceAnimationType.remove:
-          opacity = 1.0 - piece.animationProgress;
-          break;
-        case PieceAnimationType.move:
-        case PieceAnimationType.none:
-          // 移动和无动画时透明度保持不变
-          opacity = 1.0;
-          break;
-      }
-
-      // Set the color of the piece
-      paint.color = piece.piece.pieceColor.withOpacity(opacity);
-      paint.style = PaintingStyle.fill; // Reset paint style to fill for the piece
-
-      // 使用当前透明度绘制棋子
-      canvas.drawCircle(currentPosition, piece.diameter / 2, paint);
-
-      // Draw focus circle
-      if (focusIndex != null &&
-          GameController().gameInstance.gameMode != GameMode.setupPosition &&
-          pointFromIndex(focusIndex, size) == piece.endPos) {
-        paint.color = DB().colorSettings.pieceHighlightColor;
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 2;
-
-        // 计算聚焦圈的当前位置
-        final Offset focusPosition = Offset.lerp(
-          piece.startPos,
-          piece.endPos,
-          piece.animationProgress,
-        )!;
-
-        // 在计算出的位置绘制聚焦圈
-        canvas.drawCircle(focusPosition, currentDiameter / 2, paint);
-
-        // Reset paint style to fill for the next piece
+        // 绘制棋子的边界和主体
+        paint.color = piece.pieceColor;
         paint.style = PaintingStyle.fill;
+        canvas.drawCircle(currentPosition, pieceWidth / 2, paint);
       }
-
-
-      // Set the color of the piece
-      paint.color = piece.piece.pieceColor.withOpacity(opacity);
-
-      // Draw the piece with the current diameter
-      canvas.drawCircle(currentPosition, currentDiameter / 2, paint);
     }
 
-    if (blurIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
+    // 其他绘制代码，例如焦点圈和模糊圈
+    if (focusIndex != null && GameController().gameInstance.gameMode != GameMode.setupPosition) {
+      paint.color = DB().colorSettings.pieceHighlightColor;
+      paint.style = PaintingStyle.stroke;
+      paint.strokeWidth = 2;
+      final Offset focusPosition = pointFromIndex(focusIndex, size);
+      canvas.drawCircle(focusPosition, pieceWidth / 2, paint);
+    }
+
+    if (blurIndex != null && GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
-
-      canvas.drawCircle(
-        pointFromIndex(blurIndex, size),
-        pieceWidth / 2 * 0.8,
-        paint,
-      );
+      final Offset blurPosition = pointFromIndex(blurIndex, size);
+      canvas.drawCircle(blurPosition, pieceWidth / 2 * 0.8, paint);
     }
   }
 
