@@ -99,11 +99,11 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "මිනිස්සු එරෙහිව කෘත්‍රිම බුද්ධිය",
+  "humanVsAi": "මමිනිස් විරුද්ධ AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "aiVsAi": "කෘත්‍රිම බුද්ධිය එරෙහිව කෘත්‍රිම බුද්ධිය",
+  "aiVsAi": "AI විරුද්ධ AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -147,7 +147,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "cancel": "අවලංගු කරන්න",
+  "cancel": "අවලංගු",
   "@cancel": {
     "description": "Cancel"
   },
@@ -565,7 +565,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "පිටපත් කරන්න",
+  "copy": "පිටපත්",
   "@copy": {
     "description": "Copy"
   },
@@ -821,11 +821,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "තැන්පත් කිරීම",
+  "placing": "තැන්පත්",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "චලනය කිරීම",
+  "moving": "චලනය",
   "@moving": {
     "description": "Moving"
   },
@@ -1271,7 +1271,7 @@
   "@restoredPosition": {
     "description": "Restored initial position."
   },
-  "clean": "පිරිසිදු කරන්න",
+  "clean": "පිරිසිදු",
   "@clean": {
     "description": "Clean"
   },
@@ -1279,7 +1279,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "remove": "ඉවත් කරන්න",
+  "remove": "ඉවත්",
   "@remove": {
     "description": "Remove"
   },

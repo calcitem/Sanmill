@@ -75,6 +75,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("pt"): const PtFeedbackLocalizations(), // Portuguese
     const Locale("ro"): const RoFeedbackLocalizations(), // Romanian
     const Locale("ru"): const RuFeedbackLocalizations(), // Russian
+    const Locale("si"): const SiFeedbackLocalizations(), // Sinhala
     const Locale("sk"): const SkFeedbackLocalizations(), // Slovak
     const Locale("sl"): const SlFeedbackLocalizations(), // Slovenian
     const Locale("sq"): const SqFeedbackLocalizations(), // Albanian
@@ -940,6 +941,28 @@ class RuFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'Навигация';
+}
+
+class SiFeedbackLocalizations extends FeedbackLocalizations {
+  const SiFeedbackLocalizations();
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const SiFeedbackLocalizations(),
+    );
+  }
+
+  @override
+  String get submitButtonText => 'යොමු කරන්න';
+
+  @override
+  String get feedbackDescriptionText => 'ඔබේ ගැටළුව විස්තර කරන්න';
+
+  @override
+  String get draw => 'අඳින්න';
+
+  @override
+  String get navigate => 'ගමන් කරන්න';
 }
 
 class SkFeedbackLocalizations extends FeedbackLocalizations {

@@ -56,6 +56,7 @@ import '../../generated/intl/l10n_pl.dart';
 import '../../generated/intl/l10n_pt.dart';
 import '../../generated/intl/l10n_ro.dart';
 import '../../generated/intl/l10n_ru.dart';
+import '../../generated/intl/l10n_si.dart';
 import '../../generated/intl/l10n_sk.dart';
 import '../../generated/intl/l10n_sl.dart';
 import '../../generated/intl/l10n_sq.dart';
@@ -114,6 +115,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("pt"): SPt().languageName, // Portuguese
   const Locale("ro"): SRo().languageName, // Romanian
   const Locale("ru"): SRu().languageName, // Russian
+  const Locale("si"): SSi().languageName, // Sinhala
   const Locale("sk"): SSk().languageName, // Slovak
   const Locale("sl"): SSl().languageName, // Slovenian
   const Locale("sq"): SSq().languageName, // Albanian
