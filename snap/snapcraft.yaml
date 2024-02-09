@@ -47,8 +47,8 @@ parts:
     stage-packages: [g++, libstdc++6, libasound2]
     override-build: |
       set -x
-      wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.5-stable.tar.xz
-      tar xf flutter_linux_3.16.5-stable.tar.xz
+      wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.16.9-stable.tar.xz
+      tar xf flutter_linux_3.16.9-stable.tar.xz
       export PATH=$PATH:`pwd`/flutter/bin
       git config --global --add safe.directory /root/parts/mill/build/flutter
       flutter doctor -v
