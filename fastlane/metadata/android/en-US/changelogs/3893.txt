@@ -1,0 +1,4 @@
+v4.0.5
+
+* Added Sinhala support.
+* Updated Spanish translation.
