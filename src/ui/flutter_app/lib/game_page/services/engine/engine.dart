@@ -216,6 +216,7 @@ class Engine {
 
   Future<void> setGeneralOptions() async {
     final GeneralSettings generalSettings = DB().generalSettings;
+    final RuleSettings ruleSettings = DB().ruleSettings;
 
     // First Move
     // No need to tell engine.
@@ -229,9 +230,30 @@ class Engine {
         "Algorithm",
         generalSettings.searchAlgorithm?.index ??
             SearchAlgorithm.mtdf.index); // TODO: enum
+
+    bool usePerfectDatabase = false;
+
+    // TODO: WAR: Perfect Database only support standard 9mm and 12mm.
+    if ((ruleSettings.piecesCount == 9 && !ruleSettings.hasDiagonalLines) ||
+        (ruleSettings.piecesCount == 12 && ruleSettings.hasDiagonalLines) &&
+        ruleSettings.flyPieceCount == 3 &&
+        ruleSettings.piecesAtLeastCount == 3 &&
+        ruleSettings.hasBannedLocations == false &&
+        ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
+        ruleSettings.stalemateAction == StalemateAction.endWithStalemateLoss &&
+        ruleSettings.mayFly  == true &&
+        ruleSettings.mayRemoveFromMillsAlways == false &&
+        ruleSettings.mayRemoveMultiple == false &&
+        ruleSettings.mayMoveInPlacingPhase == false &&
+        ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase == false) {
+      usePerfectDatabase = generalSettings.usePerfectDatabase;
+    } else {
+      usePerfectDatabase = false;
+    }
+
     await _sendOptions(
       "UsePerfectDatabase",
-      generalSettings.usePerfectDatabase,
+      usePerfectDatabase,
     );
 
     final Directory? dir = (!kIsWeb && Platform.isAndroid)
