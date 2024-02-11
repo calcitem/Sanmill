@@ -84,11 +84,18 @@ class SettingsListTile extends StatelessWidget {
           subtitle: subTitle,
         );
       case _SettingsTileType.standard:
-        final Widget trailing;
+        Widget trailing;
         if (trailingString != null) {
-          trailing = Text(
-            trailingString!,
-            style: AppTheme.listTileSubtitleStyle,
+          // Use IntrinsicWidth to make the text auto size
+          trailing = IntrinsicWidth(
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: Text(
+                trailingString!,
+                style: AppTheme.listTileSubtitleStyle,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           );
         } else {
           trailing = const Icon(
