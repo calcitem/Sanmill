@@ -212,6 +212,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
       switch (countryCode) {
         case "fa": // Iran
+        case "si": // Sri Lanka
           DB().ruleSettings = DB()
               .ruleSettings
               .copyWith(piecesCount: 12, hasDiagonalLines: true);

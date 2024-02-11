@@ -22,6 +22,7 @@ SGu
 SHe
 SHu
 SId
+Sinhala
 SIs
 SJa
 SKn
@@ -34,6 +35,7 @@ SNb
 SNl
 SRo
 SRu
+SSi
 SSk
 SSq
 SSr
