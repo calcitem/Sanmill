@@ -17,6 +17,7 @@
 /// Although marked as a library this package is tightly integrated into the app
 library painters;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../appearance_settings/models/color_settings.dart';

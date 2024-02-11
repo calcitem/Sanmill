@@ -107,7 +107,7 @@ class PiecePainter extends CustomPainter {
     canvas.drawShadow(shadowPath, Colors.black, 2, true);
     paint.style = PaintingStyle.fill;
 
-    late Color blurPositionColor;
+    Color blurPositionColor = Colors.transparent;
     for (final PiecePaintParam piece in piecesToDraw) {
       assert(
         piece.piece == PieceColor.black ||
@@ -154,6 +154,12 @@ class PiecePainter extends CustomPainter {
 
     if (blurIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
+
+      if (kDebugMode) {
+        if (blurPositionColor == Colors.transparent) {
+          throw Exception('Blur position color is transparent');
+        }
+      }
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
