@@ -1,6 +1,6 @@
 {
   "@@locale": "ko",
-  "appName": "모리스",
+  "appName": "참고누",
   "@appName": {
     "description": "The app name"
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mill! 상대방의 말을 제거하세요.",
+  "tipMill": "곤! 상대방의 말을 제거하세요.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -124,7 +124,7 @@
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Mill 상태의 말은 먹을 수 없습니다.",
+  "tipCannotRemovePieceFromMill": "곤 상태의 말은 먹을 수 없습니다.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -256,7 +256,7 @@
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
-  "drawReasonRule50": "현재 상황에서는 말을 이동해도 Mill을 만들 수 없습니다.",
+  "drawReasonRule50": "이동 단계에서 지정된 연속된 수의 움직임 동안 아무 말도 제거되지 않았으므로, 규정에 따라 무승부로 판정됩니다.",
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
@@ -412,7 +412,7 @@
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "말을 처음 배치할 때에는 Mill로 인해 지워진 말이 있던 장소에는 둘 수 없습니다. (배치 후 이동을 할 때는 둘 수 있습니다.)",
+  "hasBannedLocations_Detail": "배치 단계에서, 상대방 말을 제거하여 표시된 위치에는 이동 단계가 시작될 때까지 다시 말을 둘 수 없습니다. 양측이 말을 번갈아 가며 놓은 후, 모든 표시된 말을 제거하고 이동 단계로 넘어갑니다.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
@@ -428,15 +428,15 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Mill이 교차되어 여러 개가 한 번에 생겼을 때, Mill의 숫자만큼 상대의 말도 여러 개 제거합니다.",
+  "mayRemoveMultiple_Detail": "플레이어가 한 번에 여러 개의 '곤'을 완성할 경우, 그 플레이어는 완성한 '곤'의 수만큼 상대방의 말을 제거할 수 있습니다.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Mill 파괴",
+  "mayRemoveFromMillsAlways": "곤을 파괴하다",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "기본 설정에서는 Mill을 이루는 말을 제거하기 위해서는 일단 Mill이 아닌 다른 말들을 먼저 제거해야하지만, 이 설정을 켜면 그 제한이 없어집니다.",
+  "mayRemoveFromMillsAlways_Detail": "기본 설정에 따르면, 상대방의 모든 말이 '곤'에 위치해 있지 않는 한 '곤'에 있는 말을 잡을 수 없습니다. 이 옵션을 활성화하면 이러한 제한이 해제됩니다.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -990,23 +990,23 @@
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "클래식 밀",
+  "classicMill": "클래식 참고누",
   "@classicMill": {
     "description": "Classic Mill"
   },
-  "mixedMill": "혼합 밀",
+  "mixedMill": "혼합 참고누",
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "실론 밀",
+  "ceylonMill": "실론 참고누",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "밀은 부서지고 반복적으로 다시 만들어질 수 있습니다",
+  "mayBreakAndRemakeMillRepeatedly": "'꼰' 부서지고 반복적으로 다시 만들어질 수 있습니다",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 공장을 만들기 위해 공장을 부수는 경우, 그러한 플레이어는 새 공장을 만드는 경우 다음 이동에서 그러한 조각을 원래 접합으로 다시 이동할 수 있습니다.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 '꼰'을 만들기 위해 '꼰'을 부수는 경우, 그러한 플레이어는 새 '꼰'을 만드는 경우 다음 이동에서 그러한 말을 원래 위치로 다시 이동할 수 있습니다.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
@@ -1094,7 +1094,7 @@
   "@removeUnplacedPiece": {
     "description": "Remove unplaced piece"
   },
-  "removeUnplacedPiece_Detail": "플레이어가 배치 단계에서 밀을 형성하면 상대의 배치되지 않은 조각을 제거하고 계속 이동합니다.",
+  "removeUnplacedPiece_Detail": "플레이어가 배치 단계에서 '꼰'을 형성하면 상대방의 배치되지 않은 말을 제거하고 계속 이동합니다.",
   "@removeUnplacedPiece_Detail": {
     "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
   },
@@ -1118,7 +1118,7 @@
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "밀! 계속 움직이세요.",
+  "continueToMakeMove": "꼰! 계속 움직이세요.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
@@ -1352,7 +1352,7 @@
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "인접하지 않은 부분은 제거할 수 없습니다.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "교착 상태인 경우 밀 형성에 관계없이 상대방의 인접한 말을 제거할 수 있습니다.",
+  "stalemateRemovalRegardlessOfMillFormation": "교착 상태인 경우 '꼰' 형성에 관계없이 상대방의 인접한 말을 제거할 수 있습니다.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS는 시뮬레이션을 통해 다양한 동작을 탐색하고 평가하여 결정을 내리는 초보자 친화적인 알고리즘입니다.",
   "@whatIsMcts": {},
