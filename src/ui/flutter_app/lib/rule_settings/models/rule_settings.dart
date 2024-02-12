@@ -109,8 +109,11 @@ class RuleSettings {
   /// Creates a Rules object based on the given locale
   factory RuleSettings.fromLocale(Locale? locale) {
     switch (locale?.languageCode) {
-      case "fa":
+      case "fa":  // Iran
+      case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
+      case "ko": // Korea
+        return const ChamGonuRuleSettings();
       default:
         return const RuleSettings();
     }
@@ -167,5 +170,19 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
       : super(
           piecesCount: 12,
           hasDiagonalLines: true,
+        );
+}
+
+/// Cham Gonu Rules
+///
+/// Those rules are the Cham Gonu rules.
+class ChamGonuRuleSettings extends RuleSettings {
+  const ChamGonuRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          mayFly: false,
+          hasBannedLocations: true,
+          mayRemoveFromMillsAlways: true
         );
 }
