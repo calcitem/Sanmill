@@ -1,6 +1,6 @@
 {
   "@@locale": "id",
-  "appName": "Mill",
+  "appName": "Mul-mulan",
   "@appName": {
     "description": "The app name"
   },
@@ -112,9 +112,9 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mill! Ambil bagian lawan.",
+  "tipMill": "Mul! Ambil bagian lawan.",
   "@tipMill": {
-    "description": "Mill! Take your opponent's piece."
+    "description": "Mul! Take your opponent's piece."
   },
   "tipContinueMill": "Lanjutkan untuk mengambil bagian lawan.",
   "@tipContinueMill": {
@@ -432,7 +432,7 @@
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Hancurkan pabrik",
+  "mayRemoveFromMillsAlways": "Hancurkan mul",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
@@ -718,7 +718,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Permainan ini bertujuan untuk meninggalkan lawan dengan kurang dari tiga potong atau tidak ada gerakan hukum.\n\nPermainan secara otomatis menarik jika posisi terjadi untuk ketiga kalinya atau tidak menghapus dalam 100 gerakan terakhir (yang dapat dikonfigurasi).\n\nPermainan berlangsung dalam tiga fase:\n\n1. Menempatkan potongan di titik kosong\n2. Memindahkan potongan ke titik yang berdekatan\n3. (fase opsional) Memindahkan bidak ke titik kosong mana pun saat mengurangi pemain menjadi tiga bidak\n\nPenempatan\n\nPermainan dimulai dengan papan kosong, yang terdiri dari kotak dengan dua puluh empat poin. Pemain bergiliran menempatkan bidak mereka di titik kosong sampai setiap pemain menempatkan semua bidak di papan. Jika seorang pemain dapat menempatkan tiga bidaknya secara lurus, ia memiliki \"mill\" dan dapat mengeluarkan salah satu bidak lawannya dari papan.\n\nDalam beberapa aturan, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk.\n\nAnda tidak dapat menempatkan potongan ke titik potongan yang dihapus lagi dalam fase penempatan dalam beberapa aturan.\n\nSetelah menggunakan semua bidak, pemain bergiliran bergerak.\n\nBergerak\n\nUntuk bergerak, seorang pemain memindahkan salah satu bidaknya di sepanjang garis papan ke titik kosong yang berdekatan. Jika dia tidak bisa melakukannya, dia kalah dalam permainan. Seperti pada fase penempatan, seorang pemain yang menyejajarkan tiga bidaknya pada garis papan memiliki gilingan dan boleh mengeluarkan salah satu bidak lawannya. Setiap pemain mengurangi menjadi dua bagian, tidak memiliki pilihan untuk membentuk pabrik baru, dan dengan demikian kehilangan permainan. Seorang pemain juga bisa kalah ketika lebih dari tiga buah jika lawannya menghalangi mereka untuk bergerak.\n\nPenerbangan\n\nDalam beberapa varian aturan, setelah pemain hanya memiliki tiga bidak yang tersisa, bidaknya dapat terbang, melompat, atau melompat ke titik kosong mana pun, tidak hanya yang berdekatan.",
+  "helpContent": "Permainan ini bertujuan untuk meninggalkan lawan dengan kurang dari tiga potong atau tidak ada gerakan hukum.\n\nPermainan secara otomatis menarik jika posisi terjadi untuk ketiga kalinya atau tidak menghapus dalam 100 gerakan terakhir (yang dapat dikonfigurasi).\n\nPermainan berlangsung dalam tiga fase:\n\n1. Menempatkan potongan di titik kosong\n2. Memindahkan potongan ke titik yang berdekatan\n3. (fase opsional) Memindahkan bidak ke titik kosong mana pun saat mengurangi pemain menjadi tiga bidak\n\nPenempatan\n\nPermainan dimulai dengan papan kosong, yang terdiri dari kotak dengan dua puluh empat poin. Pemain bergiliran menempatkan bidak mereka di titik kosong sampai setiap pemain menempatkan semua bidak di papan. Jika seorang pemain dapat menempatkan tiga bidaknya secara lurus, ia memiliki \"mill\" dan dapat mengeluarkan salah satu bidak lawannya dari papan.\n\nDalam beberapa aturan, pemain harus mengeluarkan bidak lain terlebih dahulu sebelum mengeluarkan bidak dari penggilingan yang terbentuk.\n\nAnda tidak dapat menempatkan potongan ke titik potongan yang dihapus lagi dalam fase penempatan dalam beberapa aturan.\n\nSetelah menggunakan semua bidak, pemain bergiliran bergerak.\n\nBergerak\n\nUntuk bergerak, seorang pemain memindahkan salah satu bidaknya di sepanjang garis papan ke titik kosong yang berdekatan. Jika dia tidak bisa melakukannya, dia kalah dalam permainan. Seperti pada fase penempatan, seorang pemain yang menyejajarkan tiga bidaknya pada garis papan memiliki gilingan dan boleh mengeluarkan salah satu bidak lawannya. Setiap pemain mengurangi menjadi dua bagian, tidak memiliki pilihan untuk membentuk mul baru, dan dengan demikian kehilangan permainan. Seorang pemain juga bisa kalah ketika lebih dari tiga buah jika lawannya menghalangi mereka untuk bergerak.\n\nPenerbangan\n\nDalam beberapa varian aturan, setelah pemain hanya memiliki tiga bidak yang tersisa, bidaknya dapat terbang, melompat, atau melompat ke titik kosong mana pun, tidak hanya yang berdekatan.",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -990,19 +990,19 @@
   "@tutorial": {
     "description": "Tutorial"
   },
-  "classicMill": "Pabrik Klasik",
+  "classicMill": "Pabrik mul",
   "@classicMill": {
     "description": "Classic Mill"
   },
-  "mixedMill": "Pabrik Campuran",
+  "mixedMill": "mul Campuran",
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "Pabrik Ceylon",
+  "ceylonMill": "mul Ceylon",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "Pabrik mungkin rusak dan dibuat ulang berulang kali",
+  "mayBreakAndRemakeMillRepeatedly": "Mul mungkin rusak dan dibuat ulang berulang kali",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1118,7 +1118,7 @@
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "Pabrik! Terus lakukan gerakan.",
+  "continueToMakeMove": "Mul! Terus lakukan gerakan.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
