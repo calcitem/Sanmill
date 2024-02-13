@@ -24,11 +24,11 @@
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "인간 대 인간",
+  "humanVsHuman": "두 인 대결",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI 대 AI",
+  "aiVsAi": "AI끼리 대결",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -36,11 +36,11 @@
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "온라인 배틀",
+  "humanVsLAN": "온라인 대결",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "네트워크 테스트",
+  "testViaLAN": "LAN을 통한 테스트",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
@@ -48,15 +48,15 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "이동 기록",
+  "showMoveList": "기보 보기",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "이동 기록",
+  "moveList": "기보",
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "아직 트릭이 없습니다",
+  "noGameRecord": "아직 기록이 없습니다",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "이미 말을 배치했습니다.",
+  "tipPlaced": "이미 습니다.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "곤! 상대방의 말을 제거하세요.",
+  "tipMill": "곤! 상대의 말을 제거하세요",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -140,7 +140,7 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "3 개만 남음.",
+  "tipHaveThreePiecesLeft": "말이 세 개 남았습니다.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -164,7 +164,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "부정",
+  "lost": "패배",
   "@lost": {
     "description": "Lost"
   },
@@ -192,7 +192,7 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "불러온 게임이 현재 규칙과 맞지 않습니다.",
+  "movesAndRulesNotMatch": "불러온 게임이 현재 규칙과 지 않습니다.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "다시 시작?",
+  "restartGame": "현재 게임을 다시 시작하시겠습니까?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -236,11 +236,11 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} 의 말 개수가 3개보다 적습니다.",
+  "loseReasonlessThanThree": "{player} 의 말 개수가 3개 미만입보다 적습니다.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} 사임했습니다.",
+  "loseReasonResign": "{player}가 기권했습니다.",
   "@loseReasonResign": {
     "description": " resign."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "시간은 끝났습니다. {player}를 잃었습니다.",
+  "loseReasonTimeOver": "시간이 초과되어 {player}가 졌습니다.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -264,7 +264,7 @@
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "삼중 반복으로 비겼습니다.",
+  "drawReasonThreefoldRepetition": "삼중 반복으로 인해 무승부입니다.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
@@ -292,7 +292,7 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "의 위에",
+  "about": "소개",
   "@about": {
     "description": "About"
   },
@@ -340,7 +340,7 @@
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
-  "tone": "신속한 사운드",
+  "tone": "톤",
   "@tone": {
     "description": "Tone"
   },
@@ -356,7 +356,7 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "번갈아",
+  "alternate": "번갈아 가며",
   "@alternate": {
     "description": "Alternate"
   },
@@ -364,7 +364,7 @@
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "시작시 손 자동 교환",
+  "isAutoChangeFirstMove": "첫 수 자동 변경",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
@@ -376,7 +376,7 @@
   "@misc": {
     "description": "Miscellaneous"
   },
-  "rules": "체스 규칙",
+  "rules": "규칙",
   "@rules": {
     "description": "Rules"
   },
@@ -384,11 +384,11 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "몇 개의 말을 가지고 게임을 시작할 지를 설정합니다.",
+  "piecesCount_Detail": "각 플레이어가 시작할 때 가지는 말의 개수를 설정합니다.",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
-  "flyPieceCount": "플라잉을 활성화시킬 말 개수",
+  "flyPieceCount": "플라잉을 활성화 시킬 말 개수",
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
@@ -396,7 +396,7 @@
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "몇 조각 미만, 게임에서 패배",
+  "piecesAtLeastCount": "최소 말의 수, 이하면 게임에서 패배",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -408,11 +408,11 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "묘지 세우기",
+  "hasBannedLocations": "표식말 세우기",
   "@hasBannedLocations": {
     "description": "Mark and delay removing pieces"
   },
-  "hasBannedLocations_Detail": "배치 단계에서, 상대방 말을 제거하여 표시된 위치에는 이동 단계가 시작될 때까지 다시 말을 둘 수 없습니다. 양측이 말을 번갈아 가며 놓은 후, 모든 표시된 말을 제거하고 이동 단계로 넘어갑니다.",
+  "hasBannedLocations_Detail": "말을 처음 배치할 때에는 곤으로 인해 지워진 말이 있던 장소에는 둘 수 없습니다. (배치 후 이동을 할 때는 둘 수 있습니다.)",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
   },
@@ -420,7 +420,7 @@
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "isDefenderMoveFirst_Detail": "말이 전부 배치되고 이동시킬 때, 말을 두 번째로 배치하기 시작한 사람이 먼저 이동하도록 합니다.",
+  "isDefenderMoveFirst_Detail": "말이 전부 배치되고 이동시킬 때, 말을 두 번째로 배치하기 시작한 사람이 먼저 이동하도록 합.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
@@ -428,19 +428,19 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "플레이어가 한 번에 여러 개의 '곤'을 완성할 경우, 그 플레이어는 완성한 '곤'의 수만큼 상대방의 말을 제거할 수 있습니다.",
+  "mayRemoveMultiple_Detail": "곤이 교차되어 여러 개가 한 번에 생겼을 때, 곤의 숫자만큼 상대의 말도 여러 개 제거합니다.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "곤을 파괴하다",
+  "mayRemoveFromMillsAlways": "곤 파괴",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "기본 설정에 따르면, 상대방의 모든 말이 '곤'에 위치해 있지 않는 한 '곤'에 있는 말을 잡을 수 없습니다. 이 옵션을 활성화하면 이러한 제한이 해제됩니다.",
+  "mayRemoveFromMillsAlways_Detail": "기본설정에서는 곤을 이루는 말을 제거하기 위해서는 일단 곤이 아닌 다른 말들을 먼저 제거해야하지만, 이 설정을 켜면 그 제한이 없어집니다.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull": "판이 가득찰 시 패배",
+  "isWhiteLoseButNotDrawWhenBoardFull": "판이 가득찰 시 두 번째 플레이어 패배",
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
@@ -448,7 +448,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "정당한 이동",
+  "isLoseButNotChangeSideWhenNoWay": "의미 있는 수가 없을 시 패배",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
@@ -460,15 +460,15 @@
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "플레이어가 3개 혹은 4개의 말만을 가지고 있을 때, 말을 어느 위치로든 이동시킬 수 있습니다.",
+  "mayFly_Detail": "플레이어가 3 개 혹은 4 개의 말만을 가지고 있을 때, 말을 어느 위치로든 이동시킬 수 있습니다.",
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "nMoveRule": "N-이동 규칙",
+  "nMoveRule": "N--이동 규칙",
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "이동을 특정 수만큼 반복했을 때 지워지는 말이 없다면 게임을 비기는 것으로 합니다.",
+  "nMoveRule_Detail": "특정 수의 이동 후에 어떤 말도 제거되지 않으면 게임은 무승부로 합니다.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
@@ -484,7 +484,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "이동 기록이 클립보드에 복사되었습니다.",
+  "moveHistoryCopied": "이동 기록이 클립 보드에 복사되었습니다.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -496,7 +496,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "그만두 다",
+  "exit": "종료",
   "@exit": {
     "description": "Exit"
   },
@@ -504,7 +504,7 @@
   "@ruleSettings": {
     "description": "Rule Settings"
   },
-  "color": "색깔",
+  "color": "색상",
   "@color": {
     "description": "Color"
   },
@@ -520,7 +520,7 @@
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "선 색상",
+  "lineColor": "보드 선 색상",
   "@lineColor": {
     "description": "Board line color"
   },
@@ -576,7 +576,7 @@
   "@restore": {
     "description": "Restore"
   },
-  "restoreDefaultSettings": "기본 설정으로 복원하시겠습니까",
+  "restoreDefaultSettings": "기본 설정으로 복원",
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
@@ -608,27 +608,27 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "체스 말을 놓으려면 보드의 교차점을 클릭하십시오.",
+  "toPlacePiece": "보드의 빈 교차점을 탭하여 말을 놓으세요.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
-  "toSelectPiece": "이동하려는 조각을 선택하십시오.",
+  "toSelectPiece": "이동할 말을 탭하세요.",
   "@toSelectPiece": {
     "description": "Tap on a piece to move it."
   },
-  "toMovePiece": "조각을 이동하려면이 조각에 인접한 지점을 클릭하십시오.",
+  "toMovePiece": "말을 이동하려면 해당 말에 연결된 점을 탭하세요.",
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "상대방의 말 중 하나를 클릭하여 조각을 가져옵니다.",
+  "toRemovePiece": "상대방의 말 중 하나를 탭하여 제거하세요.",
   "@toRemovePiece": {
     "description": "Tap on the opponent's one piece to remove."
   },
-  "needToCreateMillFirst": "상대방의 말을 가져 가기 전에 먼저 3 경기를 구성해야합니다.",
+  "needToCreateMillFirst": "말을 제거하기 전에 먼저 곤을 만들어야 합니다.",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "자신의 폰을 가져 가야합니다.",
+  "needToPlayWithOwnPieces": "자신의 말로 플레이해야 합니다.",
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
@@ -636,7 +636,7 @@
   "@statistics": {
     "description": "Statistics"
   },
-  "totalGames": "디스크 수",
+  "totalGames": "전체 게임 수",
   "@totalGames": {
     "description": "Total games"
   },
@@ -644,7 +644,7 @@
   "@results": {
     "description": "Results"
   },
-  "left": "남은",
+  "left": "남음",
   "@left": {
     "description": "left"
   },
@@ -660,57 +660,57 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " \"와\" ",
+  "and": " \"및\" ",
   "@and": {},
-  "accept": "동의하다",
+  "accept": "동의하기",
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "물러서",
+  "takeBack": "되돌리기",
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "롤백…",
+  "takingBack": "되돌리는 중…",
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "기다려주세요…",
+  "waiting": "기다리는 중…",
   "@waiting": {
     "description": "Waiting..."
   },
-  "stepForward": "한 걸음 앞으로",
+  "stepForward": "한 단계 앞으로",
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "끝으로 돌아 가기",
+  "takeBackAll": "모두 되돌리기",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "끝으로 이동",
+  "stepForwardAll": "모두 앞으로 가기",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
-  "moveNow": "지금 체스 플레이",
+  "moveNow": "지금 이동하기",
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "수행하다.",
+  "done": "완료.",
   "@done": {
     "description": "Done."
   },
-  "crackMill": "세 개를 연속으로 먹을 수 없습니다",
+  "crackMill": "연속된 곤을 파괴할 수 없습니다",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "상대방의 아들이 모두 세 번째 회사에 있으면 아들을 먹을 수 없습니다.",
+  "crackMill_Detail": "플레이어가 곤에 있는 말만 가지고 있다면, 그 곤의 말들은 제거가 안됩니다.",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
-  "animationDuration": "애니메이션 기간",
+  "animationDuration": "애니메이션 지속 시간",
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "아니",
+  "none": "없음",
   "@none": {
     "description": "None"
   },
@@ -726,11 +726,11 @@
   "@versionInfo": {
     "description": "Version info"
   },
-  "eula": "사용자 동의",
+  "eula": "최종 사용자 사용권 계약",
   "@eula": {
     "description": "EULA"
   },
-  "license": "특허",
+  "license": "라이선스",
   "@license": {
     "description": "License"
   },
@@ -742,35 +742,35 @@
   "@appVersion": {
     "description": "App Version"
   },
-  "general": "전통적인",
+  "general": "일반",
   "@general": {
     "description": "General"
   },
-  "advanced": "많은",
+  "advanced": "고급",
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "흔들리는 추",
+  "placing": "말 놓기",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "보행",
+  "moving": "이동",
   "@moving": {
     "description": "Moving"
   },
-  "removing": "아이를 먹어",
+  "removing": "말 제거",
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "최종 조건",
+  "gameOverCondition": "게임 종료 조건",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "기계의 체스 스타일",
+  "aisPlayStyle": "AI의 플레이 스타일",
   "@aisPlayStyle": {
     "description": "AI's playstyle"
   },
-  "passive": "수동태",
+  "passive": "수동적",
   "@passive": {
     "description": "Passive"
   },
@@ -778,59 +778,59 @@
   "@timeout": {
     "description": "Timeout"
   },
-  "appearance": "모습",
+  "appearance": "외관 설정",
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "인간의 경험을 바탕으로",
+  "drawOnHumanExperience": "인간 경험을 바탕으로",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "체스 말의 능력 향상을 고려하십시오",
+  "considerMobility": "말의 이동성 고려",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "체스 말의 수:",
+  "pieceCount": "말의 수:",
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "{player} 손에: {count}",
+  "inHand": "{player}의 손에: {count}",
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "{player} 기내: {count}",
+  "onBoard": "{player} 보드 위에: {count}",
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "보드와 상단 가장자리 사이의 거리",
+  "boardTop": "보드 상단으로부터의 오프셋",
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "이제 컴퓨터가 체스를 할 차례가 아닙니다.",
+  "notAIsTurn": "AI의 차례가 아닙니다.",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "컴퓨터는 생각하지 않습니다.",
+  "aiIsNotThinking": "AI가 생각하고 있지 않습니다.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "atEnd": "끝이다.",
+  "atEnd": "기보의 끝입니다.",
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "애플리케이션을 종료하려면 리턴 키를 다시 누르십시오.",
+  "tapBackAgainToLeave": "뒤로 버튼을 한 번 더 탭하여 나가기.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
   },
-  "more": "더",
+  "more": "더 보기",
   "@more": {
     "description": "More"
   },
-  "experimental": "이것은 아직 실험적인 기능입니다.",
+  "experimental": "실험적인 기능입니다.",
   "@experimental": {
     "description": "This is an experimental feature."
   },
-  "experiments": "실험적 기능",
+  "experiments": "실험",
   "@experiments": {
     "description": "Experiments"
   },
@@ -838,7 +838,7 @@
   "@ossLicenses": {
     "description": "Open source licenses"
   },
-  "language": "표시 언어",
+  "language": "언어",
   "@language": {
     "description": "Languages"
   },
@@ -846,7 +846,7 @@
   "@defaultLanguage": {
     "description": "Default language"
   },
-  "mayMoveInPlacingPhase": "진자 단계에서 걸을 수 있습니다",
+  "mayMoveInPlacingPhase": "말은 놓는 단계에서도 움직일 수 있습니다",
   "@mayMoveInPlacingPhase": {
     "description": "The pieces can move in the placing phase"
   },
@@ -862,31 +862,31 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerHighlightItemColor": "메뉴 하이라이트 항목 색상",
+  "drawerHighlightItemColor": "메뉴 강조 항목 색상",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
   },
-  "mainToolbarBackgroundColor": "기본 도구 모음 배경색",
+  "mainToolbarBackgroundColor": "주 도구모음 배경색",
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "기본 도구 모음 아이콘 색상",
+  "mainToolbarIconColor": "주 도구모음 아이콘 색상",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },
-  "navigationToolbarBackgroundColor": "탐색 도구 모음 배경색",
+  "navigationToolbarBackgroundColor": "탐색 도구모음 배경색",
   "@navigationToolbarBackgroundColor": {
     "description": "Navigation toolbar background color"
   },
-  "navigationToolbarIconColor": "탐색 도구 모음 아이콘 색상",
+  "navigationToolbarIconColor": "탐색 도구모음 아이콘 색상",
   "@navigationToolbarIconColor": {
     "description": "Navigation toolbar icon color"
   },
-  "autoHideToolbar": "도구 모음 자동 숨기기",
+  "autoHideToolbar": "도구모음 자동 숨김",
   "@autoHideToolbar": {
     "description": "Automatically hide the toolbar"
   },
-  "toolbarLocationOnScreen": "화면의 도구 모음 위치",
+  "toolbarLocationOnScreen": "화면 상의 도구모음 위치",
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
@@ -894,11 +894,11 @@
   "@top": {
     "description": "Top"
   },
-  "bottom": "바닥",
+  "bottom": "하단",
   "@bottom": {
     "description": "Bottom"
   },
-  "center": "센터",
+  "center": "중앙",
   "@center": {
     "description": "Center"
   },
@@ -910,11 +910,11 @@
   "@picture": {
     "description": "Picture"
   },
-  "chooseYourPicture": "사진을 선택하세요",
+  "chooseYourPicture": "사진 선택",
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "빛",
+  "light": "밝은",
   "@light": {
     "description": "Light"
   },
@@ -934,7 +934,7 @@
   "@saveTheme": {
     "description": "Save theme"
   },
-  "showAnalysisGraph": "분석 그래프 표시",
+  "showAnalysisGraph": "분석 그래프 보기",
   "@showAnalysisGraph": {
     "description": "Show analysis graph"
   },
@@ -942,7 +942,7 @@
   "@analysis": {
     "description": "Analysis"
   },
-  "saveGame": "게임을 저장",
+  "saveGame": "게임 저장",
   "@saveGame": {
     "description": "Save game"
   },
@@ -950,11 +950,11 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "설정 위치",
+  "setupPosition": "배치 설정",
   "@setupPosition": {
     "description": "Setup position"
   },
-  "showLegalMoves": "합법적인 움직임 표시",
+  "showLegalMoves": "합법적 움직임 표시",
   "@showLegalMoves": {
     "description": "Show legal moves"
   },
@@ -962,15 +962,15 @@
   "@showLastMove": {
     "description": "Show last move"
   },
-  "showArrows": "화살표 표시",
+  "showArrows": "화살표 보기",
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "조각",
+  "pieces": "말들",
   "@pieces": {
     "description": "Pieces"
   },
-  "showAnalysis": "분석 표시",
+  "showAnalysis": "분석 보기",
   "@showAnalysis": {
     "description": "Show analysis"
   },
@@ -978,15 +978,15 @@
   "@threads": {
     "description": "Threads"
   },
-  "getInvolved": "참여하다",
+  "getInvolved": "참여하기",
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "helpImproveTranslate": "번역 개선에 참여",
+  "helpImproveTranslate": "번역 개선 돕기",
   "@helpImproveTranslate": {
     "description": "Help improve translate"
   },
-  "tutorial": "지도 시간",
+  "tutorial": "튜토리얼",
   "@tutorial": {
     "description": "Tutorial"
   },
@@ -998,11 +998,11 @@
   "@mixedMill": {
     "description": "Mixed Mill"
   },
-  "ceylonMill": "실론 참고누",
+  "ceylonMill": "셀론 참고누",
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "'꼰' 부서지고 반복적으로 다시 만들어질 수 있습니다",
+  "mayBreakAndRemakeMillRepeatedly": "'곤'이 부서졌다가 반복적으로 다시 만들어질 수 있습니다",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1010,39 +1010,39 @@
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "플레이어가 3개의 피스를 가지고 있고 10번의 이동 후에 어느 플레이어도 상대방의 피스를 제거하지 않으면 게임이 무승부입니다",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "10번의 이동 후 양쪽 플레이어 모두 상대방 말을 제거하지 못하고 플레이어가 3개의 말을 가지고 있으면 게임은 무승부입니다",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어의 기물이 세 개로 줄어들고 두 플레이어 모두 10번의 이동 이내에 상대방의 말을 제거할 수 없는 경우 게임은 무승부입니다.",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "플레이어가 말이 3개로 줄어들고 양쪽 모두 10번의 이동 안에 상대 말을 제거할 수 없는 경우, 게임은 무승부입니다.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "닫다",
+  "close": "닫기",
   "@close": {
     "description": "Close"
   },
-  "whitePiece": "흰색 조각",
+  "whitePiece": "흰색 말",
   "@whitePiece": {
     "description": "White piece"
   },
-  "blackPiece": "검은 조각",
+  "blackPiece": "검은 말",
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "금지 포인트",
+  "banPoint": "표시된 점",
   "@banPoint": {
     "description": "Ban point"
   },
-  "emptyPoint": "빈 점",
+  "emptyPoint": "비어 있는 점",
   "@emptyPoint": {
     "description": "Empty point"
   },
-  "noPoint": "포인트 없음",
+  "noPoint": "점 없음",
   "@noPoint": {
     "description": "No point"
   },
-  "placingPhase": "배치 단계",
+  "placingPhase": "말 놓기 단계",
   "@placingPhase": {
     "description": "Placing phase"
   },
@@ -1050,11 +1050,11 @@
   "@movingPhase": {
     "description": "Moving phase"
   },
-  "flyingPhase": "비행 단계",
+  "flyingPhase": "날아다니기 단계",
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "이동할 측면: {player}",
+  "sideToMove": "이동할 차례: {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
@@ -1062,7 +1062,7 @@
   "@lastMove": {
     "description": "Last move"
   },
-  "selected": "선택된",
+  "selected": "선택됨",
   "@selected": {
     "description": "Selected"
   },
@@ -1074,27 +1074,27 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "추첨입니다!",
+  "isDraw": "무승부입니다!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "그리다",
+  "draw": "무승부",
   "@draw": {
     "description": "Draw"
   },
-  "pieceHighlightColor": "체크 하이라이트 색상",
+  "pieceHighlightColor": "말 하이라이트 색상",
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
-  "algorithm": "연산",
+  "algorithm": "알고리즘",
   "@algorithm": {
     "description": "Algorithm"
   },
-  "removeUnplacedPiece": "배치되지 않은 조각 제거",
+  "removeUnplacedPiece": "놓이지 않은 말 제거",
   "@removeUnplacedPiece": {
     "description": "Remove unplaced piece"
   },
-  "removeUnplacedPiece_Detail": "플레이어가 배치 단계에서 '꼰'을 형성하면 상대방의 배치되지 않은 말을 제거하고 계속 이동합니다.",
+  "removeUnplacedPiece_Detail": "플레이어가 말 놓기 단계에서 곤을 형성하면 상대방의 놓이지 않은 말을 제거하고 계속 움직일 수 있습니다.",
   "@removeUnplacedPiece_Detail": {
     "description": "If a player forms the mill in the placing phase, she will remove the opponent's unplaced piece and continue to make a move."
   },
@@ -1102,11 +1102,11 @@
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "endgameNMoveRule_Detail": "한 플레이어가 3개의 말만 가지고 있고 두 플레이어 모두 특정 이동 내에서 말을 제거하지 않으면 게임이 무승부입니다.",
+  "endgameNMoveRule_Detail": "최소 한 편이 말이 세 개만 남았을 때, 양측이 연속으로 여러 번 움직여도 아무 말도 잡지 않으면, 무승부로 판정한다.",
   "@endgameNMoveRule_Detail": {
     "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
   },
-  "drawReasonEndgameRule50": "어느 플레이어든 3개의 말만 가지고 있고 어느 플레이어도 특정 이동 내에서 말을 제거하지 않습니다.",
+  "drawReasonEndgameRule50": "최소한 한 쪽이 말이 세 개만 남고, 양측이 여러 차례 연속으로 움직여도 아무 말도 잡지 않았다.",
   "@drawReasonEndgameRule50": {
     "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
   },
@@ -1114,19 +1114,19 @@
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "threefoldRepetitionRule_Detail": "위치가 세 번째 발생하면 게임이 무승부입니다.",
+  "threefoldRepetitionRule_Detail": "같은 배치가 세 번 발생하면 게임은 무승부로 선언됩니다.",
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "꼰! 계속 움직이세요.",
+  "continueToMakeMove": "곤! 계속해서 움직임을 실행하세요.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
-  "pointStyle": "포인트 스타일",
+  "pointStyle": "교차점 스타일",
   "@pointStyle": {
     "description": "Point style"
   },
-  "pointWidth": "포인트 너비",
+  "pointWidth": "교차점의 크기",
   "@pointWidth": {
     "description": "Point width"
   },
@@ -1142,7 +1142,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{이동하다}=1{{count} 이동하다}other{{count} 움직임}}",
+  "moveNumber": "{count,plural, =0{이동 없음}=1{{count} 이동}other{{count} 이동}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1152,7 +1152,7 @@
       }
     }
   },
-  "loadFailed": "로드에 실패했습니다.",
+  "loadFailed": "불러오기 실패.",
   "@loadFailed": {
     "description": "Load failed."
   },
@@ -1160,7 +1160,7 @@
   "@filename": {
     "description": "File name"
   },
-  "gameSavedTo": "게임이 저장됩니다",
+  "gameSavedTo": "게임이 저장됨",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
@@ -1168,15 +1168,15 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "browse": "검색…",
+  "browse": "찾아보기…",
   "@browse": {
     "description": "Browse…"
   },
-  "empty": "비어 있는",
+  "empty": "비어 있음",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "noPiecesCanBeRemoved": "어떤 조각도 제거할 수 없습니다.",
+  "noPiecesCanBeRemoved": "말을 제거할 수 없습니다.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
@@ -1190,15 +1190,15 @@
       }
     }
   },
-  "ban": "반",
+  "ban": "표시된",
   "@ban": {
     "description": "Ban point, used in setup position toolbar."
   },
-  "noMove": "움직임이 없습니다.",
+  "noMove": "이동 없음.",
   "@noMove": {
     "description": "No move."
   },
-  "restoredPosition": "초기 위치를 복원했습니다.",
+  "restoredPosition": "초기 위치 복원됨.",
   "@restoredPosition": {
     "description": "Restored initial position."
   },
@@ -1206,7 +1206,7 @@
   "@clean": {
     "description": "Clean"
   },
-  "cleanedUp": "정리했습니다.",
+  "cleanedUp": "정돈됨.",
   "@cleanedUp": {
     "description": "Cleaned up."
   },
@@ -1214,7 +1214,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count}개}} 제거해야 합니다.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count}개의 말}other{{count}개의 말}}을 제거해야 합니다.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1224,11 +1224,11 @@
       }
     }
   },
-  "placedPieceCount": "배치 단계에서 배치된 조각 수입니다.",
+  "placedPieceCount": "놓기 단계에서 놓인 말의 수입니다.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "현재 플레이어는 {count}개의 조각을 배치했습니다.",
+  "hasPlacedPieceCount": "현재 플레이어가 놓은 말의 수: {count}",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
@@ -1238,27 +1238,27 @@
       }
     }
   },
-  "notPlacingPhase": "단계를 배치하지 않고 변경할 수 없습니다.",
+  "notPlacingPhase": "말 놓기 단계가 아니므로 변경할 수 없습니다.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
-  "paste": "반죽",
+  "paste": "붙여넣기",
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "붙여넣기가 완료되었습니다.",
+  "pasteDone": "붙여넣기 완료.",
   "@pasteDone": {
     "description": "The paste is done."
   },
-  "cannotPaste": "붙여넣을 수 없습니다.",
+  "cannotPaste": "붙여넣기 불가능.",
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "isUnplacedAndRemovedPiecesShown": "배치되지 않은 조각과 제거된 조각 표시",
+  "isUnplacedAndRemovedPiecesShown": "놓이지 않은 말과 제거된 말 표시",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
-  "reopenToTakeEffect": "설정을 적용하려면 앱을 종료했다가 다시 엽니다.",
+  "reopenToTakeEffect": "설정을 적용하려면 앱을 종료한 후 다시 시작하세요.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
@@ -1270,91 +1270,91 @@
   "@forest": {},
   "desktopImage": "데스크탑 이미지",
   "@desktopImage": {},
-  "invalidPosition": "잘못된 위치입니다.",
+  "invalidPosition": "유효하지 않은 위치입니다.",
   "@invalidPosition": {},
-  "shareGIF": "GIF 공유",
+  "shareGIF": "GIF 공유하기",
   "@shareGIF": {},
-  "duration": "지속",
+  "duration": "지속 시간",
   "@duration": {},
   "pixelRatio": "픽셀 비율",
   "@pixelRatio": {},
-  "gameScreenRecorder": "게임 스크린 레코더",
+  "gameScreenRecorder": "게임 화면 녹화기",
   "@gameScreenRecorder": {},
-  "previous": "이전의",
+  "previous": "이전",
   "@previous": {},
   "next": "다음",
   "@next": {},
-  "skip": "건너뛰다",
+  "skip": "건너뛰기",
   "@skip": {},
-  "gotIt": "알았어요",
+  "gotIt": "이해했습니다",
   "@gotIt": {},
   "youCanModifyRules": "규칙 설정에서 게임 규칙을 수정할 수 있습니다.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "선택기에서 마우스 휠을 사용하여 값을 변경할 수 있습니다.",
+  "youCanUseMouseWheelInPicker": "선택기에서 마우스 휠로 값을 변경할 수 있습니다.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "AI 생각 시간을 0으로 설정하면 생각하는 데 시간 제한이 없음을 의미합니다.",
+  "noTimeLimitForThinking": "AI 생각 시간을 0으로 설정하면 생각할 시간 제한이 없습니다.",
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "AI 사고 시간 조정이 완전히 정확하지 않을 수 있음을 유의하십시오. 실제 생각하는 시간은 난이도가 낮은 값으로 설정되어 있을 때 더 짧을 수 있고 시간이 다 되어 AI가 중간 생각일 때 더 길어질 수 있습니다.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
   "noteActualDifficultyLevelMayBeLimited": "난이도를 높게 설정했지만 AI 생각 시간을 늘리지 않으면 생각 시간 제약으로 인해 실제 난이도가 더 낮은 값으로 제한될 수 있습니다. 실제 값은 기계의 성능에 따라 다를 수 있습니다.",
   "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추측을 사용하여 검색 공간을 좁혀 효율성을 향상시키는 것을 목표로 하는 알파-베타 검색 알고리즘의 수정된 형태입니다.",
+  "whatIsMtdf": "MTD(f)는 중간 검색 결과를 재사용하고 좋은 초기 추정을 사용하여 검색 범위를 좁힘으로써 효율성을 향상시키려는 알파-베타 검색 알고리즘의 변형입니다.",
   "@whatIsMtdf": {},
-  "whatIsPvs": "PVS(Principal Variation Search)는 주어진 위치에서 최상의 움직임을 찾는 검색 알고리즘입니다. 이것은 알파-베타 알고리즘의 향상이며 null 또는 0 창 검색을 사용하여 이동이 기본 변동에서 이미 안전한 점수보다 더 나쁜지 또는 나쁘지 않은지 확인합니다. PVS는 가장 유망한 움직임에 집중하고 최적이 아닌 분기의 불필요한 검색을 피하여 검색의 효율성을 향상시킵니다.",
+  "whatIsPvs": "PVS (Principal Variation Search) 는 주어진 위치에서 최상의 움직임을 찾는 검색 알고리즘입니다. 이것은 알파-베타 알고리즘의 향상이며 null 또는 0 창 검색을 사용하여 이동이 기본 변동에서 이미 안전한 점수보다 더 나쁜지 또는 나쁘지 않은지 확인합니다. PVS는 가장 유망한 움직임에 집중하고 최적이 아닌 분기의 불필요한 검색을 피하여 검색의 효율성을 향상시킵니다.",
   "@whatIsPvs": {},
-  "whatIsAlphaBeta": "알파-베타 알고리즘은 최상의 움직임을 찾는 검색 알고리즘입니다. 검색 트리를 가지치기하고 효율성을 높이기 위해 minimax 원리와 두 값(알파와 베타)을 사용합니다. 알파는 컴퓨터가 얻을 수 있다고 확신하는 최소 점수를 나타내고 베타는 상대방이 얻을 수 있는 최대 점수를 나타냅니다. 알고리즘은 컴퓨터가 게임에서 현명하고 효율적인 결정을 내리는 데 도움이 됩니다.",
+  "whatIsAlphaBeta": "Alpha-beta 알고리즘은 최상의 움직임을 찾는 검색 알고리즘입니다. 검색 트리를 가지치기하고 효율성을 높이기 위해 minimax 원리와 두 값(alpha와 beta)을 사용합니다. Alpha는 컴퓨터가 얻을 수 있다고 확신하는 최소 점수를 나타내고, beta는 상대방이 얻을 수 있는 최대 점수를 나타냅니다. 이 알고리즘은 컴퓨터가 게임에서 현명하고 효율적인 결정을 내리는 데 도움이 됩니다.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "이 게임에서는 첫 번째 플레이어에 비해 두 번째 플레이어가 이기기가 더 쉽습니다.",
+  "firstMoveDetail": "이 게임에서 선수에 비해 후수가 승리하기가 더 쉽습니다.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "인간의 경험에 따르면 이기려고 하면 지게 됩니다. 대신 무승부를 목표로 삼고 게임에서 지지 않도록 하십시오. 상대방을 관찰하고 실수할 수 있는 위치로 부드럽게 유인합니다. 그들이 약점을 보일 때 기회를 잡고 부드럽게 승리를 위해 밀어붙입니다. 이런 식으로 게임에서 이길 수 있습니다.",
   "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "패시브 옵션을 활성화하면 AI가 가능한 한 빨리 이기기 위해 적극적으로 노력하는 대신 위치에서 이점이 있을 때 긴장을 풀게 됩니다.",
+  "passiveDetail": "패시브 옵션을 활성화하면 AI가 유리한 위치에 있을 때 서두르기보다는 여유를 가지게 됩니다.",
   "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "AI가 말의 이동성을 고려한다면 최대한 빨리 상대방의 말을 잡는 것을 목표로 할 뿐만 아니라 상대방의 움직임을 차단하고 방지하는 것도 고려합니다.",
+  "considerMobilityOfPiecesDetail": "AI가 자신의 말의 이동성을 고려하면 상대 말을 빠르게 잡으려고만 하는 것이 아니라 상대의 움직임을 차단하고 상대가 같은 것을 하는 것을 방지하는 것도 고려합니다.",
   "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "이 옵션을 활성화하면 게임의 무작위성과 재미가 증가하고 비활성화하면 AI를 이길 수 있는 방법을 연구하는 데 도움이 될 수 있습니다.",
+  "moveRandomlyDetail": "이 옵션을 활성화하면 게임의 임의성과 재미가 증가하지만, 비활성화하면 AI를 이기는 방법을 연구하는 데 도움이 됩니다.",
   "@moveRandomlyDetail": {},
-  "whenBoardIsFull": "보드가 꽉 찼을 때",
+  "whenBoardIsFull": "보드가 가득 차 있을 때",
   "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "배치 단계가 끝나고 이동 단계가 시작되기 전에 보드가 조각으로 가득 차 있으면 작업이 이어집니다.",
+  "whenBoardIsFull_Detail": "말 놓기 단계가 끝나고 이동 단계가 시작되기 전에 보드가 말로 가득 차 있다면, 다음 단계가 이어집니다.",
   "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "이동 단계에서 먼저 이동하는 플레이어는 상대방의 말 중 하나를 제거합니다.",
+  "sideToMoveRemovePiece": "이동 단계에서 먼저 움직이는 플레이어가 상대의 말 하나를 제거합니다.",
   "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "양측은 무승부에 동의합니다.",
+  "agreeToDraw": "양쪽 모두 무승부에 동의합니다.",
   "@agreeToDraw": {},
-  "takeOpponentsPiece": "상대방의 조각 중 하나를 가져옵니다.",
+  "takeOpponentsPiece": "상대방의 말 하나를 가져옵니다.",
   "@takeOpponentsPiece": {},
-  "firstPlayerLose": "첫 번째 플레이어가 게임에서 집니다.",
+  "firstPlayerLose": "첫 번째 플레이어가 게임에서 졌습니다.",
   "@firstPlayerLose": {},
-  "firstAndSecondPlayerRemovePiece": "첫 번째와 두 번째 플레이어는 상대방의 조각 중 하나를 제거합니다.",
+  "firstAndSecondPlayerRemovePiece": "선수와 후수 모두 상대방의 말 하나를 제거합니다.",
   "@firstAndSecondPlayerRemovePiece": {},
-  "secondAndFirstPlayerRemovePiece": "두 번째와 첫 번째 플레이어는 상대방의 조각 중 하나를 제거합니다.",
+  "secondAndFirstPlayerRemovePiece": "후수와 선수 모두 상대방의 말 하나를 제거합니다.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "이제 비행 단계에 접어들면 상대방의 말은 보드의 빈 지점으로 이동할 수 있습니다. \"규칙 설정\"에서 비행 규칙을 끌 수 있습니다.",
+  "enteredFlyingPhase": "비행 단계에 접어들어 상대방의 말은 보드 어디든 빈 자리로 점프할 수 있습니다. \"규칙 설정\"에서 비행 규칙을 비활성화할 수 있습니다.",
   "@enteredFlyingPhase": {},
   "whenStalemate": "교착 상태일 때",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "어떤 조각도 움직일 수 없을 때 뒤따르는 행동은 무엇입니까?",
+  "whenStalemate_Detail": "말을 움직일 수 없을 때 어떤 조치가 이어지나요?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "막힌 쪽의 교착 상태에서 패배로 끝납니다.",
+  "endWithStalemateLoss": "막힌 쪽은 교착 상태로 인해 패배로 끝납니다.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "이동할 면을 변경합니다.",
   "@changeSideToMove": {},
-  "removeOpponentsPieceAndMakeNextMove": "상대방의 조각 중 하나를 제거하고 다음 이동을 합니다.",
+  "removeOpponentsPieceAndMakeNextMove": "상대방의 말 하나를 제거하고 다음 수를 둡니다.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "무승부로 종료합니다.",
+  "endWithStalemateDraw": "무승부로 끝납니다.",
   "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "상대방의 조각 중 하나를 제거하고 이동할 측면을 변경하십시오.",
+  "removeOpponentsPieceAndChangeSideToMove": "상대방의 말 하나를 제거한 다음 상대방이 계속해서 말을 움직입니다.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI 응답 지연 시간",
   "@aiResponseDelayTime": {},
-  "aiIsDelaying": "AI는 현재 지연된 응답 단계에 있습니다. 계속하기 전에 잠시 기다리십시오.",
+  "aiIsDelaying": "AI가 현재 응답 지연 단계에 있으니, 진행하기 전에 잠시 기다려 주십시오.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "인접하지 않은 부분은 제거할 수 없습니다.",
+  "tipCanNotRemoveNonadjacent": "인접하지 않은 말은 제거할 수 없습니다.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "교착 상태인 경우 '꼰' 형성에 관계없이 상대방의 인접한 말을 제거할 수 있습니다.",
+  "stalemateRemovalRegardlessOfMillFormation": "교착 상태일 경우, 곤 형성 여부와 상관없이 당신의 말과 인접한 상대 말을 제거할 수 있습니다.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
-  "whatIsMcts": "MCTS는 시뮬레이션을 통해 다양한 동작을 탐색하고 평가하여 결정을 내리는 초보자 친화적인 알고리즘입니다.",
+  "whatIsMcts": "MCTS는 시뮬레이션을 통해 다양한 수를 탐색하고 평가하여 결정을 내리는 초보자에게 친화적인 알고리즘입니다.",
   "@whatIsMcts": {},
   "goldenJade": "골든 제이드",
   "@goldenJade": {},
@@ -1362,15 +1362,15 @@
   "@forestWood": {},
   "greenMeadow": "녹색 초원",
   "@greenMeadow": {},
-  "stonyPath": "스토니 패스",
+  "stonyPath": "돌길",
   "@stonyPath": {},
   "midnightBlue": "자정 블루",
   "@midnightBlue": {},
-  "greenForest": "초록숲",
+  "greenForest": "초록 숲",
   "@greenForest": {},
   "pastelPink": "파스텔 핑크",
   "@pastelPink": {},
-  "turquoiseSea": "청록색 바다",
+  "turquoiseSea": "터키석 바다",
   "@turquoiseSea": {},
   "violetDream": "바이올렛 드림",
   "@violetDream": {},
@@ -1378,15 +1378,15 @@
   "@mintChocolate": {},
   "skyBlue": "하늘색",
   "@skyBlue": {},
-  "playfulGarden": "장난스러운 정원",
+  "playfulGarden": "장난기 많은 정원",
   "@playfulGarden": {},
-  "darkMystery": "다크 미스터리",
+  "darkMystery": "다크 미스테리",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "역행 분석 알고리즘은 다중 값 역행 분석을 사용하여 다양한 시작 위치에서 최종 게임 데이터베이스를 구축한 다음 이 데이터베이스를 적용하여 게임 플레이를 최적화합니다. 이 접근 방식은 Ultra-Strong 솔루션 범주에 속합니다.",
+  "whatIsRetrogradeAnalysis": "역행 분석 알고리즘은 다중 값 역행 분석을 사용하여 다양한 시작 위치에서 최종 게임 데이터베이스를 구축한 다음 이 데이터베이스를 적용하여 게임 플레이를 최적화합니다. 이 접근 방식은 울트라 스트롱 솔루션 범주에 속합니다.",
   "@whatIsRetrogradeAnalysis": {},
-  "viewAlgorithmGuide": "이 알고리즘에 대한 사용자 가이드를 보시겠습니까?",
+  "viewAlgorithmGuide": "이 알고리즘의 사용자 가이드를 보시겠습니까?",
   "@viewAlgorithmGuide": {},
-  "showPositionalAdvantageIndicator": "위치 우위 표시기 표시",
+  "showPositionalAdvantageIndicator": "위치 우위 지시기 보기",
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "완벽한 데이터베이스 사용",
   "@usePerfectDatabase": {},
