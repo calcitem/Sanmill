@@ -154,7 +154,6 @@ class PiecePainter extends CustomPainter {
 
     if (blurIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
-
       if (kDebugMode) {
         if (blurPositionColor == Colors.transparent) {
           throw Exception('Blur position color is transparent');

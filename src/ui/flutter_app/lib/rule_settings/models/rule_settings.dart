@@ -109,7 +109,7 @@ class RuleSettings {
   /// Creates a Rules object based on the given locale
   factory RuleSettings.fromLocale(Locale? locale) {
     switch (locale?.languageCode) {
-      case "fa":  // Iran
+      case "fa": // Iran
       case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
       case "ko": // Korea
@@ -179,10 +179,9 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
 class ChamGonuRuleSettings extends RuleSettings {
   const ChamGonuRuleSettings()
       : super(
-          piecesCount: 12,
-          hasDiagonalLines: true,
-          mayFly: false,
-          hasBannedLocations: true,
-          mayRemoveFromMillsAlways: true
-        );
+            piecesCount: 12,
+            hasDiagonalLines: true,
+            mayFly: false,
+            hasBannedLocations: true,
+            mayRemoveFromMillsAlways: true);
 }

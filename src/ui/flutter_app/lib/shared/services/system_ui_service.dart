@@ -68,4 +68,3 @@ void safePop() {
     logger.w('Cannot pop');
   }
 }
-
