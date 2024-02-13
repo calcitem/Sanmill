@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI끼리 대결",
+  "aiVsAi": "AI 끼리 대결",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
