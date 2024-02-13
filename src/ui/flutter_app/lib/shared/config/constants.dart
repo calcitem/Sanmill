@@ -14,7 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:io';
+
+import 'package:catcher/core/catcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../services/environment_config.dart';
 
 class UrlHelper {
   const UrlHelper({
@@ -98,3 +105,14 @@ class Constants {
 
 // TODO: Move to navigation folder
 final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
+
+GlobalKey<NavigatorState> get currentNavigatorKey {
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+    if (Catcher.navigatorKey == null) {
+      return navigatorStateKey;
+    }
+    return Catcher.navigatorKey!;
+  } else {
+    return navigatorStateKey;
+  }
+}

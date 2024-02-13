@@ -127,7 +127,7 @@ class LoadService {
     final String? filename = await getFilePath(context);
 
     if (filename == null) {
-      Navigator.pop(context);
+      safePop();
       return;
     }
 
@@ -139,7 +139,7 @@ class LoadService {
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
 
-    Navigator.pop(context);
+    safePop();
   }
 
   /// Read the game from the file.

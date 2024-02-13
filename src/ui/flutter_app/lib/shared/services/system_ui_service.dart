@@ -57,3 +57,15 @@ Future<void> setWindowTitle(String title) async {
   await uiMethodChannel
       .invokeMethod('setWindowTitle', <String, String>{'title': title});
 }
+
+// This function should only be used when necessary,
+// as it has been found that unexpected results may occur
+// when calling InfoDialog.
+void safePop() {
+  if (currentNavigatorKey.currentState?.canPop() ?? false) {
+    currentNavigatorKey.currentState?.pop();
+  } else {
+    logger.w('Cannot pop');
+  }
+}
+
