@@ -75,6 +75,7 @@ enum
 equired
 extern
 foreach
+Gonu
 goto
 https
 int
