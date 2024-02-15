@@ -259,3 +259,10 @@ void Win32Window::OnDestroy()
 {
     // No-op; provided for subclasses.
 }
+
+void Win32Window::SetTitle(const std::wstring &title)
+{
+    if (window_handle_) {
+        SetWindowTextW(window_handle_, title.c_str());
+    }
+}

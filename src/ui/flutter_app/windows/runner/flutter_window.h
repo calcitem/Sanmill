@@ -62,6 +62,9 @@ private:
     // Called when a method is called on plugin channel;
     void HandleMethodCall(const flutter::MethodCall<> &method_call,
                           std::unique_ptr<flutter::MethodResult<>> result);
+
+    // Initializes the method channels for this window.
+    void InitializeMethodChannels();
 };
 
 #endif // RUNNER_FLUTTER_WINDOW_H_

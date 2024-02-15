@@ -26,6 +26,20 @@
 
 #include "flutter/generated_plugin_registrant.h"
 
+static std::wstring Utf8ToUtf16(const std::string &utf8Str)
+{
+    if (utf8Str.empty()) {
+        return std::wstring();
+    }
+
+    int count = MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, nullptr,
+                                    0);
+    std::wstring utf16Str(count - 1, 0);
+    MultiByteToWideChar(CP_UTF8, 0, utf8Str.c_str(), -1, &utf16Str[0], count);
+
+    return utf16Str;
+}
+
 FlutterWindow::FlutterWindow(RunLoop *run_loop,
                              const flutter::DartProject &project)
     : run_loop_(run_loop)
@@ -59,18 +73,7 @@ bool FlutterWindow::OnCreate()
     }
     RegisterPlugins(flutter_controller_->engine());
 
-    if (engine == nullptr) {
-        engine = new MillEngine();
-
-        auto channel = std::make_unique<flutter::MethodChannel<>>(
-            flutter_controller_->engine()->messenger(),
-            "com.calcitem.sanmill/engine",
-            &flutter::StandardMethodCodec::GetInstance());
-
-        channel->SetMethodCallHandler([this](const auto &call, auto result) {
-            HandleMethodCall(call, std::move(result));
-        });
-    }
+    InitializeMethodChannels();
 
     run_loop_->RegisterFlutterInstance(flutter_controller_->engine());
     SetChildContent(flutter_controller_->view()->GetNativeWindow());
@@ -135,4 +138,57 @@ FlutterWindow::MessageHandler(HWND hwnd, UINT const message,
     }
 
     return Win32Window::MessageHandler(hwnd, message, wparam, lparam);
+}
+
+void FlutterWindow::InitializeMethodChannels()
+{
+    // Set up a method channel for the engine.
+    if (engine == nullptr) {
+        engine = new MillEngine();
+
+        auto channel = std::make_unique<flutter::MethodChannel<>>(
+            flutter_controller_->engine()->messenger(),
+            "com.calcitem.sanmill/engine",
+            &flutter::StandardMethodCodec::GetInstance());
+
+        channel->SetMethodCallHandler([this](const auto &call, auto result) {
+            HandleMethodCall(call, std::move(result));
+        });
+    }
+
+    // Set up a method channel for the UI.
+    auto binary_messenger = flutter_controller_->engine()->messenger();
+
+    auto ui_channel =
+        std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
+            binary_messenger, "com.calcitem.sanmill/ui",
+            &flutter::StandardMethodCodec::GetInstance());
+
+    ui_channel->SetMethodCallHandler(
+        [this](const flutter::MethodCall<flutter::EncodableValue> &call,
+               std::unique_ptr<flutter::MethodResult<flutter::EncodableValue>>
+                   result) {
+            if (call.method_name() == "setWindowTitle") {
+                const auto *arguments = std::get_if<flutter::EncodableMap>(
+                    call.arguments());
+                if (arguments) {
+                    auto title_it = arguments->find(
+                        flutter::EncodableValue("title"));
+                    if (title_it != arguments->end()) {
+                        const auto *title_ptr = std::get_if<std::string>(
+                            &title_it->second);
+                        if (title_ptr) {
+                            std::wstring titleUtf16 = Utf8ToUtf16(*title_ptr);
+                            Win32Window::SetTitle(titleUtf16);
+                            result->Success();
+                            return;
+                        }
+                    }
+                }
+                result->Error("Invalid arguments", "Expected string value for "
+                                                   "'title'.");
+            } else {
+                result->NotImplemented();
+            }
+        });
 }

@@ -49,7 +49,7 @@ void _initializeScreenOrientation(BuildContext context) {
 const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
 
 Future<void> setWindowTitle(String title) async {
-  if (kIsWeb || !Platform.isMacOS) {
+  if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) {
     // TODO: Support other desktop platforms.
     return;
   }

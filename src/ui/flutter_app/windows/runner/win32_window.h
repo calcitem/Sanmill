@@ -76,6 +76,9 @@ protected:
     // Called when Destroy is called.
     virtual void OnDestroy();
 
+    // Called when create window is called to set the title of the window.
+    void SetTitle(const std::wstring &title);
+
 private:
     friend class WindowClassRegistrar;
 
