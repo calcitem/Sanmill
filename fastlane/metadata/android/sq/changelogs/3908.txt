@@ -1,0 +1,3 @@
+v4.0.6
+
+Kjo përditësim përfshin përmirësime të ndryshme dhe rregullime të gabimeve për të bërë aplikacionin më të mirë për ju.

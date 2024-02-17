@@ -1,0 +1,25 @@
+Aturan:
+
+* Seorang pemain yang menyelaraskan tiga bidaknya pada garis papan memiliki mul dan dapat menyingkirkan bidak lawannya.
+* Setiap pemain dikurangi menjadi dua bagian dan tidak memiliki opsi untuk membentuk mul baru dan dengan demikian kalah dalam permainan.
+* Jika pemain tidak dapat memindahkan salah satu bidaknya (terkunci), ia kalah dalam permainan.
+
+Fitur:
+
+* Mendukung varian aturan, seperti Nine Men's Morris, Twelve Men's Morris, "flying" aturan, atau tidak ada "terbang" aturan.
+* Bermain melawan AI, atau bermain di kedua sisi.
+* Kekuatan bermain yang dapat disesuaikan.
+* Impor/ekspor daftar pindah.
+* Sangat dapat dikonfigurasi.
+* Tema warna.
+* Mendukung aksesibilitas.
+* Mendukung lebih dari 45 bahasa, termasuk Bahasa Indonesia.
+
+Beberapa tips strategi untuk pemula:
+
+* Bermain di titik silang karena mereka menawarkan lebih banyak mobilitas ke bidak.
+* Sudutnya lemah karena pemain hanya bisa bergerak ke arah yang lebih sedikit.
+* Memberikan ruang bidak untuk bergerak.
+* Jangan langsung membuat mul. Biasanya, pemain pertama yang membuat mul dalam fase penempatan akan mudah diblokir.
+* Hitam memiliki keunggulan karena dapat menempatkan bidak terakhir secara strategis.
+* Serangan ganda - ketahuilah bahwa pemain dapat menyerang dua titik pada saat yang sama.

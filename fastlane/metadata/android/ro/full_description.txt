@@ -1,0 +1,24 @@
+Reguli de joc:
+
+* Jocul își propune să lase adversarul cu mai puțin de trei piese sau fără posibilitatea de mutări legale.
+
+* Jocul este automat suspendat dacă o mutare se repetă de trei ori, sau dacă pe parcursul a 100 de mutări consecutive nu se îndepărtează nici o piesă, adică nu se realizează moară.
+
+Caracteristici:
+
+* Suportă multe variante de reguli, cum ar fi "Nine Men's Morris" și "Twelve Men's Morris", cu și fără zbor/salt.
+* Jocuri împotriva computerului sau a unui adversar uman
+* Nivel de joc reglabil
+* Extrem de configurabil
+* Teme de culoare
+* Cod sursă complet disponibil
+* Traducere în limba Română
+
+Câteva sfaturi de strategie pentru începători:
+
+* Jucând pe punctele de cruce, deoarece acestea oferă mai multă mobilitate de drum la piese.
+* Colțurile sunt slabe, deoarece jucătorul se poate deplasa doar în mai puține direcții.
+* Oferind piesei spațiu pentru a se mișca.
+* De obicei, primul jucător care face o moară în faza de plasare va fi blocat cu ușurință.
+* Negrul are un avantaj pentru că are posibilitatea de a plasa ultima piesă în mod strategic.
+* Atacuri duble - fiți conștienți că jucătorii pot ataca două puncte în același timp.

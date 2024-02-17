@@ -1,0 +1,5 @@
+v3.4.0
+
+1. Lägg till en inställning för AI-svarsfördröjning. Om du upptäcker att AI:n rör sig för snabbt och det är svårt att se rörelserna tydligt, kan du öka detta värde.
+
+2. Fixade ett problem där draget som bildar kvarnen inte alltid visas först, utan visas tillsammans med borttagningsdraget, vilket gör det oklart hur AI:n bildade kvarnen.

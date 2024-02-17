@@ -1,0 +1,23 @@
+Reglur:
+
+* Ef leikmaður raðar þremur af sínum töflum í beina línu á borði, þá hefur hann myllu og má taka töflu/mögulega töflur frá andstæðingi sínum.
+* Leikmaður sem tapar töflum sínum niður í tvo getur ekki myndað fleiri myllur og tapar því leiknum.
+* Ef leikmaður getur ekki fært töflu sína (er læstur), hefur hann tapað leiknum.
+
+Eiginleikar:
+
+* Styður reglubreytingar, eins og Nine Men's Morris, Twelve Men's Morris, "flugreglu" eða enga "flugreglu".
+* Spilaðu á móti gervigreindinni, eða spilaðu hvort tveggja lið.
+* Stillanlegt erfiðleikastig.
+* Flytja inn/út hreyfingalisti.
+* Mjög stillanlegt.
+* Litþemu.
+
+Strategíutips fyrir byrjendur:
+
+* Að spila á skerupunktum því þeir bjóða upp á fleiri mögulega færslur fyrir töflurnar.
+* Hornin eru veik þar sem leikmaðurinn getur bara fært sig í færri áttir.
+* Að veita töflunni pláss til að hreyfa sig.
+* Ekki mynda myllur strax. Venjulega er fyrsti leikmaðurinn sem myndar myllu í staðsetningarfásinni auðveldlega stöðvaður.
+* Svartur hefur yfirburði því hann getur sett síðustu töfluna strategískt.
+* Tvöföld árás - vertu meðvituð um að leikmenn geta ráðist á tvo punkta í einu.
