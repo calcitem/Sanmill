@@ -1,0 +1,5 @@
+v3.4.0
+
+1. Adicione uma configuração para o tempo de atraso de resposta AI. Se você achar que o AI se move muito rapidamente e é difícil ver os movimentos com clareza, você pode aumentar esse valor.
+
+2. Corrigido um problema em que, ao formar um moinho, o movimento que forma o moinho nem sempre é exibido primeiro, mas é mostrado junto com o movimento de remoção, deixando claro como o AI formou o moinho.

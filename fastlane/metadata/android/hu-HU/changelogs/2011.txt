@@ -1,6 +1,3 @@
 v1.1.10
 
-* Javítsa ki a beállítások nyilakkal kapcsolatos problémákat az RTL nyelveken.
-* A perzsa (perzsa nyelv) fordítás (WIP) javítása.
-* Az angol fordítások javítása.
-* Bolgár/bengáli/dán/görög/észt/finn/gudzsaráti/horvát/indonéz/litván/lett/macedón/maláj/holland/szlovén/szlovén/albán/szerb/svéd/telugu/thai gépi fordítás hozzáadása.
+* Bolgár/bengáli/dán/görög/észt/finn/gudzsaráti/horvát/indonéz/litván/lett/macedón/maláj/holland/szlovén/albán/szerb/svéd/telugu/thai gépi fordítás hozzáadása.

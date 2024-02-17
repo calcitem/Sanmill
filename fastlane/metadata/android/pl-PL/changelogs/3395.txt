@@ -1,0 +1,5 @@
+v3.4.0
+
+1. Dodaj ustawienie czasu opóźnienia odpowiedzi AI. Jeśli stwierdzisz, że AI porusza się zbyt szybko i trudno jest wyraźnie zobaczyć ruchy, możesz zwiększyć tę wartość.
+
+2. Naprawiono problem polegający na tym, że podczas tworzenia młyna ruch, który tworzy młyn, nie zawsze jest wyświetlany jako pierwszy, ale jest pokazywany razem z ruchem usuwającym, przez co nie jest jasne, w jaki sposób sztuczna inteligencja utworzyła młyn.

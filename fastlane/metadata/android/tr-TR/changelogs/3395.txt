@@ -1,0 +1,5 @@
+v3.4.0
+
+1. AI yanıt gecikme süresi için bir ayar ekleyin. AI'nın çok hızlı hareket ettiğini ve hareketleri net bir şekilde görmenin zor olduğunu fark ederseniz, bu değeri artırabilirsiniz.
+
+2. Bir değirmen oluştururken, değirmeni oluşturan hareketin her zaman önce görüntülenmeyip, çıkarma hareketiyle birlikte gösterilmesi sorunu giderildi, bu da AI'nın değirmeni nasıl oluşturduğunu belirsiz hale getirdi.

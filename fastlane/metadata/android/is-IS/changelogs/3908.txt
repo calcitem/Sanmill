@@ -1,0 +1,3 @@
+v4.0.6
+
+Þessi uppfærsla inniheldur ýmsar endurbætur og villuleiðréttingar til að gera appið betra fyrir þig.

@@ -1,0 +1,1 @@
+Un program de joc de masă cu Moară, care suportă multe variante de reguli

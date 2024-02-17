@@ -1,0 +1,23 @@
+Rregullat:
+
+* Një lojtar që vendos tre prej figurave të tij në një vijë të drejtë ka një mulli dhe mund të hiqë figurën (figurat) të kundërshtarit.
+* Çdo lojtar që zvogëlohet në dy figura dhe nuk ka mundësi të formojë mulli të ri, humb lojën.
+* Nëse një lojtar nuk mund të lëvizë një prej figurave të tij (është i bllokuar), ai ka humbur lojën.
+
+Karakteristikat:
+
+* Mbështet variante të rregullave, të tilla si Nine Men's Morris, Twelve Men's Morris, rregulli "fluturues" ose pa rregull "fluturues".
+* Luaj kundër AI-së, ose luaj për të dyja palët.
+* Niveli i aftësive i rregullueshëm.
+* Importo/eksporto listën e lëvizjeve.
+* Shumë i konfigurueshëm.
+* Tema të ngjyrave.
+
+Disa këshilla strategjike për fillestarët:
+
+* Luani në pikat e kryqeve sepse ato ofrojnë më shumë lëvizshmëri për figurat.
+* Kendet janë të dobëta pasi lojtari mund të lëvizë vetëm në drejtime më të pakta.
+* Jepi hapësirë figurave për të lëvizur.
+* Mos bëni mulli menjëherë. Zakonisht, lojtari i parë që bën një mulli në fazën e vendosjes do të bllokohet lehtësisht.
+* I zi ka një përparësi sepse ai mund të vendosë figurën e fundit strategjikisht.
+* Sulmet e dyfishta - kini parasysh që lojtarët mund të sulmojnë dy pika në të njëjtën kohë.

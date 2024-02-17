@@ -1,0 +1,5 @@
+v3.4.0
+
+1. Dodajte postavku za vrijeme odgode odgovora umjetne inteligencije. Ako ustanovite da se AI kreće prebrzo i teško je jasno vidjeti pokrete, možete povećati ovu vrijednost.
+
+2. Riješen je problem gdje se, prilikom formiranja mlina, potez koji formira mlin ne prikazuje uvijek prvi, ali se prikazuje zajedno s potezom uklanjanja, zbog čega nije jasno kako je AI formirao mlin.
