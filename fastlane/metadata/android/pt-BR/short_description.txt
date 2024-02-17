@@ -1,1 +1,1 @@
-Um Mill Game que suporta muitas variantes de regras, escrito em Flutter
+Um jogo de Trilha que suporta muitas variantes de regras, escrito em Flutter
