@@ -20,23 +20,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Άνθρωπος Vs. AI",
+  "humanVsAi": "Άνθρωπος vs AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Άνθρωπος Vs. Άνθρωπος",
+  "humanVsHuman": "Δύο άνθρωποι",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs. AI",
+  "aiVsAi": "AI vs AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Human Vs Cloud",
+  "humanVsCloud": "Άνθρωπος vs Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Human Vs LAN",
+  "humanVsLAN": "Άνθρωπος vs LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -312,7 +312,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Γενικές Ρυθμίσεις",
+  "generalSettings": "Γενικές ρυθμίσεις",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -500,7 +500,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Ρυθμίσεις κανόνα",
+  "ruleSettings": "Κανόνες (ρυθμίσεις)",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -950,7 +950,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Θέση εγκατάστασης",
+  "setupPosition": "Ορισμός διάταξης",
   "@setupPosition": {
     "description": "Setup position"
   },
