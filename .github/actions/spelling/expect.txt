@@ -2,7 +2,6 @@ APARTMENTTHREADED
 APIENTRY
 APSTUDIO
 ARGB
-ARGS
 AVX
 Arial
 BUFSIZ
@@ -37,7 +36,6 @@ HUGEPAGE
 INHAND
 JNICALL
 JNIEXPORT
-Json
 LOGD
 LOGF
 LOGI
@@ -69,7 +67,6 @@ NOMINMAX
 NOZORDER
 NTotal
 OVERLAPPEDWINDOW
-PATCHLEVEL
 PDWORD
 PGROUP
 POSIXALIGNEDALLOC
@@ -87,11 +84,8 @@ SYMED
 SYSMENU
 TODO
 Texel
-UCT
 USERDATA
 Uninitialize
-Unregister
-Unregisters
 VNNI
 VREDRAW
 Validator
@@ -99,8 +93,6 @@ WINAPI
 WINNT
 WNDCLASS
 Wnd
-XFile
-XFiles
 ZValue
 Zhi
 alloc
@@ -185,7 +177,6 @@ highlighter
 hsl
 html
 http
-https
 hwnd
 idx
 ifdef
@@ -266,7 +257,6 @@ pid
 pieceitem
 playok
 plugin
-plugins
 png
 pngs
 ponderhit
