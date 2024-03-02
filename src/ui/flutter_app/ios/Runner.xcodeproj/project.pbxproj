@@ -212,6 +212,7 @@
 		69D563C72B398B510044F1F9 /* perfect_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_common.h; path = ../../../../../perfect/perfect_common.h; sourceTree = "<group>"; };
 		69D563C82B398B510044F1F9 /* perfect_debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_debug.h; path = ../../../../../perfect/perfect_debug.h; sourceTree = "<group>"; };
 		69D563C92B398B510044F1F9 /* perfect_sector_graph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = perfect_sector_graph.h; path = ../../../../../perfect/perfect_sector_graph.h; sourceTree = "<group>"; };
+		69E6535E2B938A7E00839000 /* si */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = si; path = si.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
@@ -487,6 +488,7 @@
 				sl,
 				sq,
 				sr,
+				si,
 			);
 			mainGroup = 97C146E51CF9000F007C117D;
 			productRefGroup = 97C146EF1CF9000F007C117D /* Products */;
@@ -684,6 +686,7 @@
 				00E13E582961EC89006A659E /* sl */,
 				00E13E592961ECA2006A659E /* sq */,
 				00E13E5A2961ECBA006A659E /* sr */,
+				69E6535E2B938A7E00839000 /* si */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
