@@ -258,7 +258,6 @@ pieceitem
 playok
 plugin
 png
-pngs
 ponderhit
 popcnt
 popcount
@@ -362,7 +361,6 @@ vsync
 wav
 wifi
 wiki
-wikis
 wmd
 wparam
 writeln
