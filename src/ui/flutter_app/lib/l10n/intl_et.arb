@@ -20,15 +20,15 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Inimene vs AI",
+  "humanVsAi": "Inimene vs. AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Inimene vs. inimene",
+  "humanVsHuman": "Inimene vs. Inimene",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI vs AI",
+  "aiVsAi": "AI vs. AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
