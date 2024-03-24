@@ -1,6 +1,6 @@
 {
   "@@locale": "sw",
-  "appName": "Pande zote mbili zinakubali kutoka sare.",
+  "appName": "Kinu",
   "@appName": {
     "description": "The app name"
   },
@@ -1428,7 +1428,7 @@
   "@whenBoardIsFull_Detail": {},
   "sideToMoveRemovePiece": "Mchezaji anayesonga kwanza katika hatua ya kusonga huondoa moja ya vipande vya mpinzani.",
   "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Pande zote mbili zinakubali sare.",
+  "agreeToDraw": "Pande zote mbili zinakubali kutoka sare.",
   "@agreeToDraw": {},
   "takeOpponentsPiece": "Chukua moja ya vipande vya mpinzani wako.",
   "@takeOpponentsPiece": {},
