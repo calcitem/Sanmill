@@ -43,8 +43,8 @@ parts:
     plugin: flutter
     flutter-target: src/ui/flutter_app/lib/main.dart
     source: .
-    build-packages: [git, g++, libstdc++6, libasound2-dev, wget, clang, cmake, ninja-build, pkg-config, libgtk-3-dev]
-    stage-packages: [g++, libstdc++6, libasound2]
+    build-packages: [git, g++, libstdc++6, libasound2-dev, wget, clang, cmake, ninja-build, pkg-config, libgtk-3-dev, libgstreamer1.0-dev, libgstreamer-plugins-base1.0-dev]
+    stage-packages: [g++, libstdc++6, libasound2, gstreamer1.0-plugins-base, gstreamer1.0-plugins-good]
     override-build: |
       set -x
       wget https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_3.19.4-stable.tar.xz
@@ -62,7 +62,7 @@ parts:
       cp -r build/linux/x64/release/bundle/* ${SNAPCRAFT_PART_INSTALL}/usr/local/bin/
     after:
       - alsa
-      
+
   alsa:
     plugin: nil
     source: https://github.com/diddledan/snapcraft-alsa.git
