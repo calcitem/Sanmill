@@ -24,14 +24,13 @@ enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 /// Service providing a unified abstraction to call different audio backend on our supported platforms.
 class SoundManager {
   factory SoundManager() => instance;
+  static bool booted = false;
 
   SoundManager._();
 
   @visibleForTesting
   static SoundManager instance = SoundManager._();
 
-  late Soundpool _soundpool;
-  int _alarmSoundStreamId = 0;
   final Map<Sound, String> _soundFiles = <Sound, String>{
     Sound.draw: Assets.audios.draw,
     Sound.fly: Assets.audios.fly,
@@ -44,65 +43,40 @@ class SoundManager {
     Sound.select: Assets.audios.select,
     Sound.win: Assets.audios.win,
   };
-  final Map<Sound, int> _soundIds = <Sound, int>{};
+
+  kplayer.PlayerController? _currentTonePlayer;
   bool _isTemporaryMute = false;
 
   static const String _logTag = "[audio]";
 
   Future<void> loadSounds() async {
-    assert(!GameController().initialized);
-
-    if (kIsWeb) {
-      logger.w("$_logTag Audio Player does not support Web.");
+    // Initialization is done in the Player.boot() method, called once, typically in your main() function.
+    // No need to load sounds in advance with kplayer, as they are loaded on demand.
+    if (booted == true) {
       return;
     }
 
-    _soundpool = Soundpool.fromOptions();
-
-    for (final Sound sound in Sound.values) {
-      _soundIds[sound] = await _soundpool.load(
-        await rootBundle.load(_soundFiles[sound]!),
-      );
-    }
-  }
-
-  Future<void> _playSound(Sound sound) async {
-    _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
-  }
-
-  Future<void> _stopSound() async {
-    if (kIsWeb) {
-      return;
-    }
-
-    if (_alarmSoundStreamId > 0) {
-      await _soundpool.stop(_alarmSoundStreamId);
-    }
-  }
-
-  void disposePool() {
-    if (kIsWeb) {
-      return;
-    }
-
-    _soundpool.dispose();
+    kplayer.Player.boot();
+    booted = true;
   }
 
   Future<void> playTone(Sound sound) async {
-    if (kIsWeb) {
+    if (_isTemporaryMute || !DB().generalSettings.toneEnabled || DB().generalSettings.screenReaderSupport) {
       return;
     }
 
-    assert(GameController().initialized);
+    final String fileName = _soundFiles[sound]!;
+    try {
+      // Dispose of the current tone player before playing a new sound
+      _currentTonePlayer?.dispose();
 
-    if (!DB().generalSettings.toneEnabled ||
-        _isTemporaryMute ||
-        DB().generalSettings.screenReaderSupport) {
-      return;
+      // Play the sound
+      _currentTonePlayer = kplayer.Player.asset(fileName);
+    } catch (e) {
+      if (kDebugMode) {
+        print("$_logTag Error playing sound: $e");
+      }
     }
-
-    await _stopSound();
-    await _playSound(sound);
   }
 
   void mute() {
@@ -111,5 +85,10 @@ class SoundManager {
 
   void unMute() {
     _isTemporaryMute = false;
+  }
+
+  void disposePool() {
+    _currentTonePlayer?.dispose();
+    _currentTonePlayer = null;
   }
 }
