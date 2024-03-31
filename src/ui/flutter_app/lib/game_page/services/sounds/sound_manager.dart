@@ -46,7 +46,7 @@ class SoundManager {
 
   // Change to maintain a map of PlayerController instances for each sound.
   final Map<Sound, kplayer.PlayerController> _players =
-    <Sound, kplayer.PlayerController>{};
+      <Sound, kplayer.PlayerController>{};
 
   final Map<Sound, int> _soundIds = <Sound, int>{};
 
@@ -154,8 +154,8 @@ class SoundManager {
     }
 
     if (Platform.isIOS) {
-      _players.forEach((_, kplayer.PlayerController player) =>
-          player.dispose());
+      _players
+          .forEach((_, kplayer.PlayerController player) => player.dispose());
       _players.clear();
     } else {
       _soundpool.dispose();
