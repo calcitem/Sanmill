@@ -174,9 +174,7 @@ int Thread::search()
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
-                if (gameOptions.getUsePerfectDatabase() == true) {
-                    value = random_search(rootPos, bestMove);
-                }
+                value = random_search(rootPos, bestMove);
             } else {
                 value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
             }
@@ -251,9 +249,7 @@ next:
     } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
         value = monte_carlo_tree_search(rootPos, bestMove);
     } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
-        if (gameOptions.getUsePerfectDatabase() == true) {
-            value = random_search(rootPos, bestMove);
-        }
+        value = random_search(rootPos, bestMove);
     } else {
         value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
