@@ -1,0 +1,3 @@
+v4.1.0
+
+* Fix Random algorithm didn't work with Perfect Database disabled.
