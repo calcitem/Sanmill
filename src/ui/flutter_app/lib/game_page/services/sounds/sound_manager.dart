@@ -19,19 +19,18 @@ part of '../mill.dart';
 /// Sounds the [SoundManager] can play through [SoundManager.playTone].
 enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
 
-/// Sound Manager
-///
-/// Service providing a unified abstraction to call different audio backend on our supported platforms.
 class SoundManager {
   factory SoundManager() => instance;
 
   SoundManager._();
+  static bool booted = false;
 
   @visibleForTesting
   static SoundManager instance = SoundManager._();
 
   late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
+
   final Map<Sound, String> _soundFiles = <Sound, String>{
     Sound.draw: Assets.audios.draw,
     Sound.fly: Assets.audios.fly,
@@ -44,7 +43,13 @@ class SoundManager {
     Sound.select: Assets.audios.select,
     Sound.win: Assets.audios.win,
   };
+
+  // Change to maintain a map of PlayerController instances for each sound.
+  final Map<Sound, kplayer.PlayerController> _players =
+    <Sound, kplayer.PlayerController>{};
+
   final Map<Sound, int> _soundIds = <Sound, int>{};
+
   bool _isTemporaryMute = false;
 
   static const String _logTag = "[audio]";
@@ -57,35 +62,44 @@ class SoundManager {
       return;
     }
 
-    _soundpool = Soundpool.fromOptions();
+    if (Platform.isIOS) {
+      if (booted == true) {
+        return;
+      }
 
-    for (final Sound sound in Sound.values) {
-      _soundIds[sound] = await _soundpool.load(
-        await rootBundle.load(_soundFiles[sound]!),
-      );
+      kplayer.Player.boot();
+
+      // Initialize a PlayerController for each sound
+      _soundFiles.forEach((Sound sound, String fileName) {
+        _players[sound] = kplayer.Player.asset(fileName, autoPlay: false);
+      });
+
+      booted = true;
+    } else {
+      _soundpool = Soundpool.fromOptions();
+
+      for (final Sound sound in Sound.values) {
+        _soundIds[sound] = await _soundpool.load(
+          await rootBundle.load(_soundFiles[sound]!),
+        );
+      }
     }
   }
 
   Future<void> _playSound(Sound sound) async {
-    _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
+    if (!Platform.isIOS) {
+      _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
+    }
   }
 
   Future<void> _stopSound() async {
-    if (kIsWeb) {
+    if (kIsWeb || Platform.isIOS) {
       return;
     }
 
     if (_alarmSoundStreamId > 0) {
       await _soundpool.stop(_alarmSoundStreamId);
     }
-  }
-
-  void disposePool() {
-    if (kIsWeb) {
-      return;
-    }
-
-    _soundpool.dispose();
   }
 
   Future<void> playTone(Sound sound) async {
@@ -101,8 +115,29 @@ class SoundManager {
       return;
     }
 
-    await _stopSound();
-    await _playSound(sound);
+    if (Platform.isIOS) {
+      await _stopAllSounds();
+
+      final kplayer.PlayerController? player = _players[sound];
+      try {
+        await player?.play();
+      } catch (e) {
+        logger.e("$_logTag Error playing sound: $e");
+      }
+    } else {
+      await _stopSound();
+      await _playSound(sound);
+    }
+  }
+
+  Future<void> _stopAllSounds() async {
+    if (Platform.isIOS) {
+      final List<Future<void>> stopFutures = <Future<void>>[];
+      _players.forEach((_, kplayer.PlayerController player) {
+        stopFutures.add(player.stop());
+      });
+      await Future.wait(stopFutures);
+    }
   }
 
   void mute() {
@@ -111,5 +146,19 @@ class SoundManager {
 
   void unMute() {
     _isTemporaryMute = false;
+  }
+
+  void disposePool() {
+    if (kIsWeb) {
+      return;
+    }
+
+    if (Platform.isIOS) {
+      _players.forEach((_, kplayer.PlayerController player) =>
+          player.dispose());
+      _players.clear();
+    } else {
+      _soundpool.dispose();
+    }
   }
 }
