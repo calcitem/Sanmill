@@ -17,6 +17,8 @@
 #ifndef GAMESCENE_H_INCLUDED
 #define GAMESCENE_H_INCLUDED
 
+#include <memory>
+
 #include <QGraphicsScene>
 
 #include "config.h"
