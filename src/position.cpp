@@ -756,36 +756,33 @@ bool Position::put_piece(Square s, bool updateRecord)
                 change_side_to_move();
             }
         } else {
-            pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
+            int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
             update_key_misc();
 
             if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
-                pieceInHandCount[them] -= 1; // Or pieceToRemoveCount?;
+                for (int i = 0; i < rm; i++) {
+                    if (pieceInHandCount[them] == 0) {
+                        pieceToRemoveCount[sideToMove] = rm - i;
+                        update_key_misc();
+                        action = Action::remove;
+                        return true;
+                    } else {
+                        pieceInHandCount[them]--;
+                        pieceToRemoveCount[sideToMove]--;
+                        update_key_misc();
+                    }
 
-                if (pieceInHandCount[them] < 0) {
-                    pieceInHandCount[them] = 0;
-                }
-
-                if (pieceInHandCount[WHITE] < 0 ||
-                    pieceInHandCount[BLACK] < 0) {
-                    return false;
+                    assert(pieceInHandCount[WHITE] >= 0 &&
+                           pieceInHandCount[BLACK] >= 0); 
                 }
 
                 if (pieceInHandCount[WHITE] == 0 &&
                     pieceInHandCount[BLACK] == 0) {
-                    if (check_if_game_is_over()) {
-                        return true;
-                    }
-
                     phase = Phase::moving;
                     action = Action::select;
 
                     if (rule.isDefenderMoveFirst) {
                         change_side_to_move();
-                    }
-
-                    if (check_if_game_is_over()) {
-                        return true;
                     }
                 }
             } else {

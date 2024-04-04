@@ -481,34 +481,36 @@ class Position {
           GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.place);
         } else {
-          pieceToRemoveCount[sideToMove] =
-              DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          int rm = pieceToRemoveCount[sideToMove] =
+          DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
           if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
               pieceInHandCount[_them] != null) {
-            pieceInHandCount[_them] =
-                pieceInHandCount[_them]! - 1; // Or pieceToRemoveCount?
+            for (int i = 0; i < rm; i++) {
+              if (pieceInHandCount[_them] == 0) {
+                pieceToRemoveCount[sideToMove] = rm - i;
+                _updateKeyMisc();
+                action = Act.remove;
+                return true;
+              } else {
+                pieceInHandCount[_them] = pieceInHandCount[_them]! - 1;
+                pieceToRemoveCount[sideToMove] =
+                    pieceToRemoveCount[sideToMove]! - 1;
+                _updateKeyMisc();
+              }
 
-            if (pieceInHandCount[_them]! < 0) {
-              pieceInHandCount[_them] = 0;
+              assert(pieceInHandCount[PieceColor.white]! >= 0 &&
+                  pieceInHandCount[PieceColor.black]! >= 0);
             }
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (_checkIfGameIsOver()) {
-                return true;
-              }
-
               phase = Phase.moving;
               action = Act.select;
 
               if (DB().ruleSettings.isDefenderMoveFirst) {
                 changeSideToMove();
-              }
-
-              if (_checkIfGameIsOver()) {
-                return true;
               }
             }
           } else {

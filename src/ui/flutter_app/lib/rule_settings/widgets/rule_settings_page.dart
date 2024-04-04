@@ -189,11 +189,6 @@ class RuleSettingsPage extends StatelessWidget {
         ruleSettings.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
 
     logger.v("[config] mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
-
-    if (value) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).experimental);
-    }
   }
 
   // Moving
