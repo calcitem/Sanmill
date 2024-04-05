@@ -43,7 +43,7 @@ const Rule RULES[N_RULES] = {
     {"Twelve Men's morris", "Twelve Men's Morris", 12, 3, 3, true, MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
      false, false, false, BoardFullAction::firstPlayerLose,
      StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Dooz", "Dooz", 12, 3, 3, true, MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenYourTurn, false, false, false, false,
+    {"Dooz", "Dooz", 12, 3, 3, true, MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn, false, false, false, false,
      BoardFullAction::firstPlayerLose, StalemateAction::endWithStalemateLoss,
      true, 100, 100, true},
     {"Lasker Morris (WIP)", "Lasker Morris", 10, 3, 3, false, MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, true,

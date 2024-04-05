@@ -33,9 +33,9 @@ class Position {
   GameResult? result;
 
   final List<PieceColor> _board =
-      List<PieceColor>.filled(sqNumber, PieceColor.none);
+  List<PieceColor>.filled(sqNumber, PieceColor.none);
   final List<PieceColor> _grid =
-      List<PieceColor>.filled(7 * 7, PieceColor.none);
+  List<PieceColor>.filled(7 * 7, PieceColor.none);
 
   final Map<PieceColor, int> pieceInHandCount = <PieceColor, int>{
     PieceColor.white: DB().ruleSettings.piecesCount,
@@ -83,7 +83,7 @@ class Position {
       "${score[PieceColor.white]} - ${score[PieceColor.draw]} - ${score[PieceColor.black]}";
 
   static void resetScore() => score[PieceColor.white] =
-      score[PieceColor.black] = score[PieceColor.draw] = 0;
+  score[PieceColor.black] = score[PieceColor.draw] = 0;
 
   int _currentSquare = 0;
 
@@ -149,7 +149,7 @@ class Position {
     for (int file = 1; file <= fileNumber; file++) {
       for (int rank = 1; rank <= rankNumber; rank++) {
         final PieceColor piece =
-            pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
+        pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
         buffer.write(piece.string);
       }
 
@@ -311,7 +311,7 @@ class Position {
           posKeyHistory.length >= DB().ruleSettings.nMoveRule - 1) {
         gameOverReason = GameOverReason.drawFiftyMove;
       } else if (DB().ruleSettings.endgameNMoveRule <
-              DB().ruleSettings.nMoveRule &&
+          DB().ruleSettings.nMoveRule &&
           _isThreeEndgame &&
           posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule - 1) {
         gameOverReason = GameOverReason.drawEndgameFiftyMove;
@@ -360,7 +360,7 @@ class Position {
       case MoveType.draw:
         return false; // TODO
       case MoveType.none:
-        // ignore: only_throw_errors
+      // ignore: only_throw_errors
         throw const EngineNoBestMove();
       case null:
         assert(false);
@@ -444,50 +444,58 @@ class Position {
         final int n = _millsCount(_currentSquare);
 
         if (n == 0) {
-          if (!(pieceInHandCount[PieceColor.white]! >= 0 &&
-              pieceInHandCount[PieceColor.black]! >= 0)) {
+          if (pieceInHandCount[PieceColor.white]! < 0 ||
+              pieceInHandCount[PieceColor.black]! < 0) {
             // TODO: Maybe setup invalid position and tap the board.
+            assert(false);
             return false;
           }
 
+          if (pieceToRemoveCount[PieceColor.white]! > 0 ||
+              pieceToRemoveCount[PieceColor.black]! > 0) {
+            assert(false);
+            return false;
+          }
+
+          GameController().gameInstance.focusIndex = squareToIndex[s];
+          SoundManager().playTone(Sound.place);
+
+          changeSideToMove();
+
           if (pieceInHandCount[PieceColor.white] == 0 &&
               pieceInHandCount[PieceColor.black] == 0) {
+            if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+              _removeMarkedStones();
+            }
+
+            if (DB().ruleSettings.isDefenderMoveFirst == true) {
+              setSideToMove(PieceColor.black);
+            }
+          }
+
+          if (pieceInHandCount[sideToMove] == 0) {
+            phase = Phase.moving;
+            action = Act.select;
+
             if (_checkIfGameIsOver()) {
               return true;
             }
-
-            if (pieceToRemoveCount[sideToMove]! > 0) {
-              action = Act.remove;
-              _updateKeyMisc();
-            } else {
-              phase = Phase.moving;
-              action = Act.select;
-
-              if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-                  MillFormationActionInPlacingPhase
-                      .markAndDelayRemovingPieces) {
-                _removeMarkedStones();
-              }
-
-              if (!DB().ruleSettings.isDefenderMoveFirst) {
-                changeSideToMove();
-              }
-
-              if (_checkIfGameIsOver()) {
-                return true;
-              }
-            }
-          } else {
-            changeSideToMove();
           }
-          GameController().gameInstance.focusIndex = squareToIndex[s];
-          SoundManager().playTone(Sound.place);
         } else {
           final int rm = pieceToRemoveCount[sideToMove] =
-              DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
-          if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+          GameController().gameInstance.focusIndex = squareToIndex[s];
+          SoundManager().playTone(Sound.mill);
+
+          if ((DB().ruleSettings.millFormationActionInPlacingPhase ==
+              MillFormationActionInPlacingPhase
+                  .removeOpponentsPieceFromHandThenYourTurn ||
+              DB().ruleSettings.millFormationActionInPlacingPhase ==
+                  MillFormationActionInPlacingPhase
+                      .removeOpponentsPieceFromHandThenOpponentsTurn) &&
               pieceInHandCount[_them] != null) {
             for (int i = 0; i < rm; i++) {
               if (pieceInHandCount[_them] == 0) {
@@ -506,21 +514,31 @@ class Position {
                   pieceInHandCount[PieceColor.black]! >= 0);
             }
 
+            if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase
+                    .removeOpponentsPieceFromHandThenOpponentsTurn) {
+              changeSideToMove();
+            }
+
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
+              if (DB().ruleSettings.isDefenderMoveFirst == true) {
+                setSideToMove(PieceColor.black);
+              }
+            }
+
+            if (pieceInHandCount[sideToMove] == 0) {
               phase = Phase.moving;
               action = Act.select;
 
-              if (DB().ruleSettings.isDefenderMoveFirst) {
-                changeSideToMove();
+              if (_checkIfGameIsOver()) {
+                return true;
               }
             }
           } else {
             action = Act.remove;
+            return true;
           }
-
-          GameController().gameInstance.focusIndex = squareToIndex[s];
-          SoundManager().playTone(Sound.mill);
         }
         break;
       case Phase.moving:
@@ -566,24 +584,28 @@ class Position {
           return false;
         }
         _board[_currentSquare] =
-            _grid[squareToIndex[_currentSquare]!] = PieceColor.none;
+        _grid[squareToIndex[_currentSquare]!] = PieceColor.none;
 
         _currentSquare = s;
         final int n = _millsCount(_currentSquare);
 
         // midgame
         if (n == 0) {
-          action = Act.select;
           changeSideToMove();
+
+          if (pieceInHandCount[sideToMove]! > 0) {
+            phase = Phase.placing;
+            action = Act.place;
+          } else {
+            action = Act.select;
+          }
 
           if (_checkIfGameIsOver()) {
             return true;
           }
 
           if (pieceToRemoveCount[sideToMove] == 1) {
-            _updateKeyMisc();
-            action = Act.remove;
-            isNeedStalemateRemoval = true;
+            assert(false);
           }
 
           GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -591,7 +613,7 @@ class Position {
           SoundManager().playTone(Sound.place);
         } else {
           pieceToRemoveCount[sideToMove] =
-              DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
           action = Act.remove;
           GameController().gameInstance.focusIndex = squareToIndex[s];
@@ -637,7 +659,7 @@ class Position {
     _revertKey(s);
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces &&
+        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces &&
         phase == Phase.placing) {
       // Remove and mark
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.marked;
@@ -666,6 +688,7 @@ class Position {
     pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! - 1;
     _updateKeyMisc();
 
+    // Need to remove rest pieces.
     if (pieceToRemoveCount[sideToMove] != 0) {
       SoundManager().playTone(Sound.remove);
       return const GameResponseOK();
@@ -682,33 +705,28 @@ class Position {
       return const GameResponseOK();
     }
 
-    if (phase == Phase.placing) {
-      if (pieceInHandCount[PieceColor.white] == 0 &&
-          pieceInHandCount[PieceColor.black] == 0) {
-        phase = Phase.moving;
-        action = Act.select;
-
-        if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
-          _removeMarkedStones();
-        }
-
-        if (DB().ruleSettings.isDefenderMoveFirst) {
-          _sideToMove = PieceColor.black;
-          _checkIfGameIsOver();
-          SoundManager().playTone(Sound.remove);
-          return const GameResponseOK();
-        } else {
-          _sideToMove = PieceColor.white;
-        }
-      } else {
-        action = Act.place;
+    if (pieceInHandCount[PieceColor.white] == 0 && pieceInHandCount[PieceColor.black] == 0) {
+      if (DB().ruleSettings.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+        _removeMarkedStones();
       }
-    } else {
-      action = Act.select;
+
+      if (DB().ruleSettings.isDefenderMoveFirst == true) {
+        setSideToMove(PieceColor.black);
+      }
     }
 
-    _checkIfGameIsOver();
+    if (pieceInHandCount[sideToMove] == 0) {
+      phase = Phase.moving;
+      action = Act.select;
+
+      if (_checkIfGameIsOver()) {
+        SoundManager().playTone(Sound.remove);
+        return const GameResponseOK();
+      }
+    } else {
+      phase = Phase.placing;
+      action = Act.place;
+    }
 
     SoundManager().playTone(Sound.remove);
     return const GameResponseOK();
@@ -799,7 +817,7 @@ class Position {
 
     if (DB().ruleSettings.piecesCount == 12 &&
         (pieceOnBoardCount[PieceColor.white]! +
-                pieceOnBoardCount[PieceColor.black]! >=
+            pieceOnBoardCount[PieceColor.black]! >=
             rankNumber * fileNumber)) {
       // TODO: BoardFullAction: Support other actions
       switch (DB().ruleSettings.boardFullAction) {
@@ -808,12 +826,12 @@ class Position {
           return true;
         case BoardFullAction.firstAndSecondPlayerRemovePiece:
           pieceToRemoveCount[PieceColor.white] =
-              pieceToRemoveCount[PieceColor.black] = 1;
+          pieceToRemoveCount[PieceColor.black] = 1;
           changeSideToMove();
           return false;
         case BoardFullAction.secondAndFirstPlayerRemovePiece:
           pieceToRemoveCount[PieceColor.white] =
-              pieceToRemoveCount[PieceColor.black] = 1;
+          pieceToRemoveCount[PieceColor.black] = 1;
           return false;
         case BoardFullAction.sideToMoveRemovePiece:
           if (DB().ruleSettings.isDefenderMoveFirst) {
@@ -883,9 +901,19 @@ class Position {
     }
   }
 
+  void setSideToMove(PieceColor c) {
+    if (sideToMove != c) {
+      sideToMove = c;
+      // us = c;
+      st.key ^= _Zobrist.side;
+    }
+
+    _them = sideToMove.opponent;
+  }
+
   void changeSideToMove() {
-    sideToMove = _sideToMove.opponent;
-    st.key ^= _Zobrist.side;
+    setSideToMove(_sideToMove.opponent);
+
     logger.v("[position] $_sideToMove to move.");
   }
 
@@ -1026,7 +1054,7 @@ class Position {
   bool _isAllSurrounded(PieceColor c) {
     // Full
     if (pieceOnBoardCount[PieceColor.white]! +
-            pieceOnBoardCount[PieceColor.black]! >=
+        pieceOnBoardCount[PieceColor.black]! >=
         rankNumber * fileNumber) {
       return true;
     }
@@ -1148,19 +1176,19 @@ extension SetupPosition on Position {
     _gamePly = pos._gamePly;
 
     pieceOnBoardCount[PieceColor.white] =
-        pos.pieceOnBoardCount[PieceColor.white]!;
+    pos.pieceOnBoardCount[PieceColor.white]!;
     pieceOnBoardCount[PieceColor.black] =
-        pos.pieceOnBoardCount[PieceColor.black]!;
+    pos.pieceOnBoardCount[PieceColor.black]!;
 
     pieceInHandCount[PieceColor.white] =
-        pos.pieceInHandCount[PieceColor.white]!;
+    pos.pieceInHandCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
-        pos.pieceInHandCount[PieceColor.black]!;
+    pos.pieceInHandCount[PieceColor.black]!;
 
     pieceToRemoveCount[PieceColor.white] =
-        pos.pieceToRemoveCount[PieceColor.white]!;
+    pos.pieceToRemoveCount[PieceColor.white]!;
     pieceToRemoveCount[PieceColor.black] =
-        pos.pieceToRemoveCount[PieceColor.black]!;
+    pos.pieceToRemoveCount[PieceColor.black]!;
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
@@ -1315,9 +1343,9 @@ extension SetupPosition on Position {
     }
 
     if ((DB().ruleSettings.stalemateAction ==
-                StalemateAction.removeOpponentsPieceAndChangeSideToMove ||
-            DB().ruleSettings.stalemateAction ==
-                StalemateAction.removeOpponentsPieceAndMakeNextMove) ==
+        StalemateAction.removeOpponentsPieceAndChangeSideToMove ||
+        DB().ruleSettings.stalemateAction ==
+            StalemateAction.removeOpponentsPieceAndMakeNextMove) ==
         false) {
       return false;
     }

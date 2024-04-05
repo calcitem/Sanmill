@@ -725,35 +725,34 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         if (n == 0) {
             if (pieceInHandCount[WHITE] < 0 || pieceInHandCount[BLACK] < 0) {
+                assert(false);
                 return false;
             }
 
+            if (pieceToRemoveCount[WHITE] > 0 || pieceToRemoveCount[BLACK] > 0) {
+                assert(false);
+                return false;
+            }
+
+            change_side_to_move();
+
             if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
-                if (check_if_game_is_over()) {
-                    return true;
+                if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
+                    remove_marked_pieces();
                 }
 
-                if (pieceToRemoveCount[sideToMove] > 0) {
-                    action = Action::remove;
-                    update_key_misc();
-                } else {
-                    phase = Phase::moving;
-                    action = Action::select;
-
-                    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
-                        remove_marked_pieces();
-                    }
-
-                    if (!rule.isDefenderMoveFirst) {
-                        change_side_to_move();
-                    }
-
-                    if (check_if_game_is_over()) {
-                        return true;
-                    }
+                if (rule.isDefenderMoveFirst == true) {
+                    set_side_to_move(BLACK);
                 }
-            } else {
-                change_side_to_move();
+            }
+
+            if (pieceInHandCount[sideToMove] == 0) {
+                 phase = Phase::moving;
+                 action = Action::select;
+
+                 if (check_if_game_is_over()) {
+                     return true;
+                 }
             }
         } else {
             int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
@@ -761,7 +760,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                                                           1;
             update_key_misc();
 
-            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenYourTurn) {
+            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenYourTurn ||
+                rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn) {
                 for (int i = 0; i < rm; i++) {
                     if (pieceInHandCount[them] == 0) {
                         pieceToRemoveCount[sideToMove] = rm - i;
@@ -778,21 +778,32 @@ bool Position::put_piece(Square s, bool updateRecord)
                            pieceInHandCount[BLACK] >= 0);
                 }
 
-                if (pieceInHandCount[WHITE] == 0 &&
-                    pieceInHandCount[BLACK] == 0) {
+                if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn) {
+                    change_side_to_move();
+                }
+
+                if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
+                    if (rule.isDefenderMoveFirst == true) {
+                        set_side_to_move(BLACK);
+                    }
+                }
+
+                if (pieceInHandCount[sideToMove] == 0) {
                     phase = Phase::moving;
                     action = Action::select;
 
-                    if (rule.isDefenderMoveFirst) {
-                        change_side_to_move();
+                    if (check_if_game_is_over()) {
+                        return true;
                     }
                 }
             } else {
                 action = Action::remove;
+                return true;
             }
         }
 
     } else if (phase == Phase::moving) {
+
         if (check_if_game_is_over()) {
             return true;
         }
@@ -838,17 +849,21 @@ bool Position::put_piece(Square s, bool updateRecord)
         const int n = mills_count(currentSquare);
 
         if (n == 0) {
-            action = Action::select;
             change_side_to_move();
+
+            if (pieceInHandCount[sideToMove] > 0) {
+                 phase = Phase::placing;
+                 action = Action::place;
+            } else {
+                 action = Action::select;
+            }
 
             if (check_if_game_is_over()) {
                 return true;
             }
 
             if (pieceToRemoveCount[sideToMove] == 1) {
-                update_key_misc();
-                action = Action::remove;
-                isNeedStalemateRemoval = true;
+                assert(false);
             }
         } else {
             pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
@@ -926,6 +941,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     pieceToRemoveCount[sideToMove]--;
     update_key_misc();
 
+    // Need to remove rest pieces.
     if (pieceToRemoveCount[sideToMove] > 0) {
         return true;
     }
@@ -940,31 +956,26 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
-    if (phase == Phase::placing) {
-        if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
-            phase = Phase::moving;
-            action = Action::select;
-
-            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
-                remove_marked_pieces();
-            }
-
-            if (rule.isDefenderMoveFirst) {
-                set_side_to_move(BLACK);
-                goto check;
-            } else {
-                set_side_to_move(WHITE);
-            }
-        } else {
-            action = Action::place;
+    if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
+        if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
+            remove_marked_pieces();
         }
-    } else {
-        action = Action::select;
+
+        if (rule.isDefenderMoveFirst == true) {
+            set_side_to_move(BLACK);
+        }
     }
 
-check:
-    if (check_if_game_is_over()) {
-        return true;
+    if (pieceInHandCount[sideToMove] == 0) {
+        phase = Phase::moving;
+        action = Action::select;
+
+        if (check_if_game_is_over()) {
+            return true;
+        }
+    } else {
+        phase = Phase::placing;
+        action = Action::place;
     }
 
     return true;
@@ -1216,15 +1227,18 @@ void Position::remove_marked_pieces()
 
 inline void Position::set_side_to_move(Color c)
 {
-    sideToMove = c;
-    // us = c;
+    if (sideToMove != c) {
+        sideToMove = c;
+        // us = c;
+        st.key ^= Zobrist::side;
+    }
+
     them = ~sideToMove;
 }
 
 inline void Position::change_side_to_move()
 {
     set_side_to_move(~sideToMove);
-    st.key ^= Zobrist::side;
 }
 
 inline Key Position::update_key(Square s)
