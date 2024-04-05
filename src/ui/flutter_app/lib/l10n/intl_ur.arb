@@ -622,10 +622,6 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "hasBannedLocations_Detail": "رکھنے کے مرحلے میں، ہٹائے گئے ٹکڑوں کے پوائنٹس کو مزید نہیں رکھا جا سکے گا۔",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "دوسرا کھلاڑی پہلے چلتا ہے۔",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

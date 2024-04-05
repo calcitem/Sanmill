@@ -534,10 +534,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "配置フェーズでは、削除されたピースのポイントは配置できなくなります。",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "2番目のプレーヤーが最初に移動します",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

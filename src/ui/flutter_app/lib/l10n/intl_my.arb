@@ -396,10 +396,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "နေရာယူသည့်အဆင့်တွင်၊ ဖယ်ရှားထားသော အပိုင်းအစများကို ထားရှိနိုင်တော့မည်မဟုတ်ပါ။",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst_Detail": "နေရာယူသည့်အဆင့်တွင် ဒုတိယရွေ့သောကစားသမားသည် ရွေ့လျားသည့်အဆင့်တွင် ပထမရွေ့သည်။",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."

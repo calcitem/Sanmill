@@ -540,10 +540,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "Yerləşdirmə mərhələsində, çıxarılan parçaların nöqtələri artıq yerləşdirilə bilməyəcək.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst_Detail": "Yerləşdirmə mərhələsində ikinci hərəkət edən oyunçu hərəkət mərhələsində birinci olur.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
