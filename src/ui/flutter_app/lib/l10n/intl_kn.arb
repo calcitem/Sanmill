@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕುವುದನ್ನು ಗುರುತಿಸಿ ಮತ್ತು ವಿಳಂಬಗೊಳಿಸಿ",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ, ತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳನ್ನು ಇನ್ನು ಮುಂದೆ ಇರಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1176,10 +1172,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "ನಿಷೇಧಿಸಿ",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "ಖಾಲಿ",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "ಕಾಯಿಗಳನ್ನು ಗುರುತಿಸಿ ಮತ್ತು ತೆಗೆದುಹಾಕುವುದನ್ನು ವಿಳಂಬಗೊಳಿಸಿ.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "ಸ್ಥಾಪನಾ ಹಂತದಲ್ಲಿ, ತೆಗೆದುಹಾಕಬೇಕಾದ ಕಾಯಿಗಳನ್ನು ಗುರುತಿಸಲಾಗುತ್ತದೆ, ಮತ್ತು ಎರಡೂ ಆಟಗಾರರು ಈ ಬಿಂದುಗಳಲ್ಲಿ ಹೊಸ ಕಾಯಿಗಳನ್ನು ಇಡಲು ಸಾಧ್ಯವಿಲ್ಲ. ಚಲನೆಯ ಹಂತಕ್ಕೆ ಪ್ರವೇಶಿಸಿದಾಗ, ಈ ಗುರುತಿಸಲಾದ ಕಾಯಿಗಳನ್ನು ಎಲ್ಲವನ್ನೂ ಒಟ್ಟಾಗಿ ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ, ಮತ್ತು ಆಟಗಾರರು ನಂತರ ಈಗ ಖಾಲಿಯಾದ ಬಿಂದುಗಳಿಗೆ ತಮ್ಮ ಕಾಯಿಗಳನ್ನು ಸರಿಸಬಹುದು.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "ಜಾಗದ ಹಂತದಲ್ಲಿ ಗಿರಣಿಗಳನ್ನು ರೂಪಿಸುವಾಗ ಕೈಗೊಳ್ಳಬಹುದಾದ ಕ್ರಿಯೆಗಳು.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "ಗುರುತಿಸಲಾಗಿದೆ",
+  "@marked": {}
 }

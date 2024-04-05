@@ -546,10 +546,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Weka alama na ucheleweshe kuondoa vipande",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Katika awamu ya kuweka, pointi za vipande vilivyoondolewa hazitaweza tena kuwekwa.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1304,10 +1300,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Piga marufuku",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Tupu",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Weka alama na chelewesha kuondoa vipande.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Wakati wa awamu ya kuweka, vipande vya kuondolewa vinawekwa alama, na kwa wachezaji wote wawili, hakuna vipande vipya vinavyoweza kuwekwa kwenye pointi hizi. Baada ya kuingia katika awamu ya kusonga, vipande hivi vilivyo na alama huondolewa kabisa, na wachezaji wanaweza kuhamisha vipande vyao kwenye pointi hizi ambazo sasa ziko wazi.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Hatua zinazoweza kuchukuliwa wakati wa kuunda viwanda wakati wa hatua ya kuweka.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Imewekwa alama",
+  "@marked": {}
 }

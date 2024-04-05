@@ -116,10 +116,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Merktu og fresta því að fjarlægja bita",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "mayRemoveFromMillsAlways": "Eyðileggja myllur",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
@@ -1364,10 +1360,6 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "ban": "Bann",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Tómt",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Merktu seinkaða fjarlægingu bríka.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Í uppsetningarlotunni eru bríkur sem á að fjarlægja merktar og hvorugur leikmaður getur sett niður nýjar bríkur á þessum stöðum. Þegar komið er í færslulotuna eru þessar merktar bríkur fjarlægðar að fullu og leikmenn geta þá færst með bríkur sínar á þessar nú tómu stöður.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Aðgerðir sem hægt er að grípa til þegar mylla er mynduð á staðsetningarstigi.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Merkt",
+  "@marked": {}
 }

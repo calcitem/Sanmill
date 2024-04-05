@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "禁点",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "摆子阶段，被吃的子都被标记起来，暂不移除。双方摆完棋子后，再统一将被标记的棋子全部移除，然后进入走子阶段。",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "被压",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "空点",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "标记并延迟移除棋子。",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "在摆子阶段，要吃掉的棋子被标记起来，双方都不能在这些点上摆新子。进入走子阶段后，这些被标记的子会一起被移除，接下来双方便可将自己的棋子走到这些点上。",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "在摆子阶段形成三连时，可以采取的行动。",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "标记",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Markera och fördröja borttagandet av pjäser",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "I placeringsfasen kommer punkterna för borttagna pjäser inte längre att kunna placeras.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "ban": "Förbjuda",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noMove": "Ingen rörelse.",
   "@noMove": {
     "description": "No move."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Markera och fördröj borttagning av pjäser.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Under placeringsfasen markeras pjäserna som ska tas bort, och för båda spelarna kan inga nya pjäser placeras på dessa punkter. Vid inträde i flyttfasen tas dessa markerade pjäser bort helt och hållet, och spelare kan sedan flytta sina pjäser till dessa nu tomma punkter.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Åtgärder som kan vidtas när kvarnar bildas under placeringsfasen.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Markant",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Označte a odložte odstraňování kusů",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Ve fázi umisťování již nebude možné umisťovat body odstraněných kusů.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1180,10 +1176,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Zákaz",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Počet umístěných kusů ve fázi umístění.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Označit a odložit odstranění kamenů.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Během fáze umisťování se kameny, které mají být odstraněny, označí a žádný z hráčů nemůže na tato místa umístit nové kameny. Po vstupu do pohybové fáze jsou tyto označené kameny zcela odstraněny a hráči pak mohou své kameny přesunout na tato nyní prázdná místa.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Akce, které lze podniknout při tvorbě mlýnů ve fázi umisťování.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Označeno",
+  "@marked": {}
 }

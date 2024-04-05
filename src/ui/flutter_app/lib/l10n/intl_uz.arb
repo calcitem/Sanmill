@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Parchalarni olib tashlashni belgilang va kechiktiring",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Joylashtirish bosqichida olib tashlangan qismlarning nuqtalari endi joylashtirilmaydi.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1178,10 +1174,6 @@
       }
     }
   },
-  "ban": "Taqiqlash",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Bo'sh",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Donalarni olib tashlashni belgilang va kechiktiring.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Joylashtirish bosqichida olib tashlanadigan donalar belgilanadi va ikkala o'yinchi uchun ham ushbu nuqtalarga yangi donalarni joylashtirish mumkin emas. Harakatlanish bosqichiga kirgandan so'ng, bu belgilangan donalar butunlay olib tashlanadi va o'yinchilar o'z donalarini bu bo'sh joylarga ko'chira oladilar.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Joylashtirish bosqichida tegirmonlar shakllantirilganda amalga oshirilishi mumkin bo‘lgan harakatlar.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Белгиланган",
+  "@marked": {}
 }

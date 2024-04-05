@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Označte a odložte odstránenie figúrok",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Vo fáze umiestňovania už nebude možné umiestniť body odstránených figúrok.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Zákaz",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Prázdny",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Označte a odložte odstraňovanie figúrok.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Počas fázy rozmiestňovania sú figúrky, ktoré sa majú odstrániť, označené a ani jeden hráč nemôže na tieto body umiestňovať nové figúrky. Po vstupe do fázy ťahu sa tieto označené figúrky úplne odstránia a hráči potom môžu presunúť svoje figúrky na tieto teraz prázdne body.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Akcie, ktoré možno vykonať pri tvorbe mlynov počas fázy umiestňovania.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Označené",
+  "@marked": {}
 }

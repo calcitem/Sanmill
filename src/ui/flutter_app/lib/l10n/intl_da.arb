@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Markér og forsinke fjernelsen af brikker",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "I placeringsfasen vil punkterne for fjernede brikker ikke længere kunne placeres.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1176,10 +1172,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Forbyde",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Placeret styktal i placeringsfasen.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Markér og udsæt fjernelse af brikker.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "I løbet af placeringsfasen markeres de brikker, der skal fjernes, og for begge spillere kan der ikke placeres nye brikker på disse felter. Når man går ind i flyttefasen, fjernes disse markerede brikker helt, og spillerne kan derefter flytte deres brikker til disse nu tomme felter.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "De handlinger, der kan træffes, når der dannes møller i placeringsfasen.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Markeret",
+  "@marked": {}
 }

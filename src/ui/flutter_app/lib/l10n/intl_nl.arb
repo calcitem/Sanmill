@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Markeer en vertraag het verwijderen van stukken",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "In de plaatsingsfase kunnen de punten van verwijderde stukken niet meer geplaatst worden.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1180,10 +1176,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Ban",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "restoredPosition": "Herstelde beginpositie.",
   "@restoredPosition": {
     "description": "Restored initial position."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Markeer en vertraag het verwijderen van stukken.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Tijdens de plaatsingsfase worden de te verwijderen stukken gemarkeerd en kunnen beide spelers geen nieuwe stukken op deze punten plaatsen. Bij het ingaan van de bewegingsfase worden deze gemarkeerde stukken volledig verwijderd en kunnen spelers hun stukken naar deze nu lege punten verplaatsen.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "De acties die ondernomen kunnen worden bij het vormen van molens tijdens de plaatsingsfase.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Gemarkeerd",
+  "@marked": {}
 }

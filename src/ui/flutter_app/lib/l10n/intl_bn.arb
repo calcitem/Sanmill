@@ -404,10 +404,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "টুকরো অপসারণ চিহ্নিত করুন এবং বিলম্ব করুন",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "স্থাপনের পর্যায়ে, সরানো টুকরোগুলির পয়েন্টগুলি আর স্থাপন করা সক্ষম হবে না।",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1180,10 +1176,6 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "ban": "নিষেধাজ্ঞা",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noPiecesCanBeRemoved": "কোন টুকরা অপসারণ করা যাবে না.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "ঘুঁটি মার্ক করুন এবং অপসারণে বিলম্ব করুন।",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "প্লেসিং ফেজের সময়, সরানো যাবে এমন ঘুঁটিগুলি চিহ্নিত করা হয়, এবং উভয় খেলোয়াড়ের জন্য, এই পয়েন্টগুলিতে কোনও নতুন ঘুঁটি স্থাপন করা যায় না। চলন্ত ফেজে প্রবেশ করার পরে, এই চিহ্নিত ঘুঁটিগুলি একসাথে সরানো হয়, এবং খেলোয়াড়রা তাদের ঘুঁটিগুলি এই এখন-খালি পয়েন্টে সরাতে পারে।",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "স্থাপন পর্যায়ে মিল গঠনের সময় গৃহীত হতে পারে এমন ক্রিয়াকলাপ।",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "চিহ্নিত",
+  "@marked": {}
 }

@@ -184,10 +184,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "پابندی",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "paste": "چسپاں کریں۔",
   "@paste": {
     "description": "Paste"
@@ -621,10 +617,6 @@
   "hasDiagonalLines_Detail": "بورڈ میں چار ترچھی لائنیں شامل کریں۔",
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
-  },
-  "hasBannedLocations": "نشان زد کریں اور ٹکڑوں کو ہٹانے میں تاخیر کریں۔",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
   },
   "isDefenderMoveFirst_Detail": "پلیسنگ فیز میں دوسرے نمبر پر آنے والا کھلاڑی موونگ فیز میں پہلے آتا ہے۔",
   "@isDefenderMoveFirst_Detail": {
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "ٹکڑوں کو ہٹانے کو نشان زد کریں اور تاخیر کریں۔",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "پلانگ کے مرحلے کے دوران ، ہٹائے جانے والے ٹکڑوں کو نشان زد کیا جاتا ہے ، اور دونوں کھلاڑیوں کے لیے ، ان نکات پر کوئی نیا ٹکڑا نہیں رکھا جا سکتا۔ حرکت کے مرحلے میں داخل ہونے پر ، ان نشان زدہ ٹکڑوں کو بالکل ہٹا دیا جاتا ہے ، اور کھلاڑی اب اپنے ٹکڑوں کو ان اب خالی مقامات پر منتقل کر سکتے ہیں۔",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "جب پلیسنگ مرحلے کے دوران چکیاں بنائی جاتی ہیں تو کی جانے والی کارروائیاں۔",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "نشان زدہ",
+  "@marked": {}
 }

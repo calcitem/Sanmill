@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Shënoni dhe vononi heqjen e pjesëve",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Në fazën e vendosjes, pikat e pjesëve të hequra nuk do të mund të vendosen më.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1172,10 +1168,6 @@
   "@paste": {
     "description": "Paste"
   },
-  "ban": "Ndalimi",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Bosh",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Shënoni dhe vononi heqjen e figurave.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Gjatë fazës së vendosjes, figurat që do të hiqen shënohen dhe për të dy lojtarët, asnjë figurë e re nuk mund të vendoset në këto pika. Pas hyrjes në fazën e lëvizjes, këto figura të shënuara hiqen krejtësisht dhe lojtarët pastaj mund t'i lëvizin figurat e tyre në këto pika tani të zbrazëta.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Veprimet që mund të merren gjatë formimit të mullinjve në fazën e vendosjes.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Shënuar",
+  "@marked": {}
 }

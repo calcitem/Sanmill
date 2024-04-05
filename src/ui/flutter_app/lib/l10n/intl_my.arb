@@ -396,10 +396,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "အပိုင်းများကို အမှတ်အသားပြုပြီး နှောင့်နှေးစေပါသည်",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "နေရာယူသည့်အဆင့်တွင်၊ ဖယ်ရှားထားသော အပိုင်းအစများကို ထားရှိနိုင်တော့မည်မဟုတ်ပါ။",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1134,10 +1130,6 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "ban": "ပိတ်ပင်ထားမှု",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "ဗလာ",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "အရာဝတ္ထုများကို မှတ်သားပြီး ဖယ်ရှားခြင်းကို နောက်ဆုတ်ပါ။",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "တည်ဆောက်ခြင်း အဆင့်တွင်၊ ဖယ်ရှားရမည့် အရာဝတ္ထုများကို မှတ်သားပြီး၊ အားလုံးသော ကစားသမားများအတွက် ထိုနေရာများတွင် အသစ်တစ်ခုမှ ထားရှိခွင့်မရှိပါ။ ရွေ့လျားခြင်း အဆင့်သို့ ဝင်ရောက်သည့်အခါ၊ ထိုမှတ်သားထားသည့် အရာဝတ္ထုများကို အားလုံးဖယ်ရှားပြီး၊ ကစားသမားများသည် ယခုဗလာနေရာများသို့ သူတို့၏ အရာဝတ္ထုများကို ရွေ့လျားနိုင်သည်။",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "အဆင့်တွင်ကစားပွဲအတွင်း၌အတူတကွတည်ဆောက်ကြသည့်အခါယူဆောင်နိုင်သောလုပ်ဆောင်ချက်များ။",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "မှတ်သားထားသည်",
+  "@marked": {}
 }

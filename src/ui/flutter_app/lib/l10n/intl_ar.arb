@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "وضع علامة وتأخير إزالة القطع",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "في مرحلة الوضع ، لن يكون من الممكن وضع نقاط القطع التي تم إزالتها.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1178,10 +1174,6 @@
       }
     }
   },
-  "ban": "المنع",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "فارغة",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "ضع علامة على القطع وتأخير إزالتها.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "أثناء مرحلة الوضع، يتم وضع علامة على القطع المراد إزالتها، وبالنسبة لكلا اللاعبين، لا يمكن وضع قطع جديدة على هذه النقاط. عند الدخول في مرحلة التحرك، يتم إزالة هذه القطع المعلمة معًا، ويمكن للاعبين بعد ذلك تحريك قطعهم إلى هذه النقاط الفارغة الآن.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "الإجراءات التي يمكن اتخاذها عند تشكيل المطاحن خلال مرحلة الوضع.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "مُعلَم",
+  "@marked": {}
 }

@@ -36,10 +36,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Maka futhi ubambezele ukukhipha izingcezu",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Esigabeni sokubeka, amaphuzu ezicucu ezisusiwe ngeke esakwazi ukubekwa.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1274,10 +1270,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Vimbela",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Akunalutho",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Maka bese unqanda ukususa izingcezu.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Ngesikhathi sokubeka, izingcezu ezizosuswa ziyophawulwa, futhi kokubili abadlali, akukho zingcezu ezintsha ezingabekwa kula maphuzu. Lapho ungena esigabeni sokuhambisa, lezi zingcezu ezimakiwe ziyasuswa ngokuphelele, futhi abadlali bangakwazi ukuhambisa izingcezu zabo kula maphuzu manje angenalutho.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Izinyathelo ezingathathwa lapho kwenziwa amakhaya ngesikhathi sesigaba sokubeka.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Uphawulwe",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Маркирайте и забавете премахването на фигури",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Във фазата на поставяне точките на премахнатите фигури вече няма да могат да бъдат поставяни.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1198,10 +1194,6 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "ban": "забрана",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Броят поставени фигури във фазата на поставяне.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Маркирайте и забавете премахването на фигурите.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "По време на фазата на поставяне, фигурите, които трябва да бъдат премахнати, се маркират и за двамата играчи не могат да се поставят нови фигури на тези точки. При влизане във фазата на преместване, тези маркирани фигури се премахват заедно и играчите могат да преместят своите фигури на тези вече празни точки.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Действията, които могат да бъдат предприети при формиране на мелници по време на фазата на поставяне.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Маркирано",
+  "@marked": {}
 }

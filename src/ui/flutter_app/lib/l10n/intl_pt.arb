@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Marcação e atraso na remoção de peças",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Na fase de colocação, os pontos das peças removidas não podem mais ser colocados.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1180,10 +1176,6 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "ban": "Banimento",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "restoredPosition": "Posição inicial restaurada.",
   "@restoredPosition": {
     "description": "Restored initial position."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Marque e atrase a remoção de peças.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Durante a fase de colocação, as peças a serem removidas são marcadas, e para ambos os jogadores, novas peças não podem ser colocadas nesses pontos. Ao entrar na fase de movimento, essas peças marcadas são removidas juntas, e os jogadores podem então mover suas peças para esses pontos agora vazios.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "As ações que podem ser tomadas ao formar moinhos durante a fase de colocação.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Marcado",
+  "@marked": {}
 }

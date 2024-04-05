@@ -506,10 +506,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Merk en vertraag die verwydering van stukke",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "In die plasingsfase sal die punte van verwyderde stukke nie meer geplaas kan word nie.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1280,10 +1276,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Verbied",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Leeg",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Merk en vertraag die verwydering van stukke.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Gedurende die plasing fase word die stukke wat verwyder moet word gemerk, en vir beide spelers kan geen nuwe stukke op hierdie punte geplaas word nie. Wanneer die skuif fase betree word, word hierdie gemerkte stukke heeltemal verwyder, en spelers kan dan hul stukke skuif na hierdie nou-leë punte.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Die aksies wat geneem kan word tydens die vorming van meulens in die plasingsfase.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Gemarkeerd",
+  "@marked": {}
 }

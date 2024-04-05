@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Märkige ja lükake tükikeste eemaldamine edasi",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Paigutamisfaasis ei saa eemaldatud tükikeste punkte enam paigutada.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1176,10 +1172,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Keela",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Paigutatud tükkide arv paigutusfaasis.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Märgi ja viivita nuppude eemaldamisega.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Paigutusfaasi ajal märgitakse eemaldatavad nupud ära ja mõlemad mängijad ei saa nendele punktidele uusi nuppe paigutada. Liikumisfaasi sisenedes eemaldatakse need märgitud nupud täielikult ja seejärel saavad mängijad oma nuppe nendele nüüd tühjadele punktidele liigutada.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Tegevused, mida saab võtta veskite moodustamisel paigutamise faasis.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Märgitud",
+  "@marked": {}
 }

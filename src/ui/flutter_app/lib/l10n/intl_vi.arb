@@ -588,10 +588,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Đánh dấu và trì hoãn loại bỏ các mảnh",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Trong giai đoạn đặt, điểm của các quân bị loại bỏ sẽ không thể đặt được nữa.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1278,10 +1274,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Lệnh cấm",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Trống",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Đánh dấu và trì hoãn việc loại bỏ các quân cờ.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Trong giai đoạn đặt quân, các quân cờ sẽ được loại bỏ sẽ được đánh dấu và cả hai người chơi không thể đặt các quân cờ mới vào các điểm này. Sau khi bước vào giai đoạn di chuyển, các quân cờ được đánh dấu này sẽ bị loại bỏ hoàn toàn và người chơi có thể di chuyển các quân cờ của họ đến các điểm hiện đang trống này.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Các hành động có thể thực hiện khi hình thành cối xay trong giai đoạn đặt cược.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Đã đánh dấu",
+  "@marked": {}
 }
