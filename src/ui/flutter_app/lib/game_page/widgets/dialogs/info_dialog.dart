@@ -35,7 +35,7 @@ class _InfoDialog extends StatelessWidget {
         us = S.of(context).player2;
         them = S.of(context).player1;
         break;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:

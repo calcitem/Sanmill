@@ -40,7 +40,7 @@ string PieceToChar(Piece p)
         return "*";
     }
 
-    if (p == BAN_PIECE) {
+    if (p == MARKED_PIECE) {
         return "X";
     }
 
@@ -70,14 +70,14 @@ Piece CharToPiece(char ch) noexcept
     }
 
     if (ch == 'X') {
-        return BAN_PIECE;
+        return MARKED_PIECE;
     }
 
     return NO_PIECE;
 }
 
 constexpr PieceType PieceTypes[] = {NO_PIECE_TYPE, WHITE_PIECE, BLACK_PIECE,
-                                    BAN};
+                                    MARKED};
 } // namespace
 
 /// operator<<(Position) returns an ASCII representation of the position
@@ -281,7 +281,7 @@ Position &Position::set(const string &fenStr, Thread *th)
        each square are described from file A through file C. Following the
        Standard Algebraic Notation (SAN), each piece is identified by a single
        letter taken from the standard English names. White pieces are designated
-       using "O" whilst Black uses "@". Blank uses "*". Banned uses "X". noted
+       using "O" whilst Black uses "@". Blank uses "*". Marked uses "X". noted
        using digits 1 through 8 (the number of blank squares), and "/" separates
        ranks.
 
@@ -556,7 +556,7 @@ Key Position::key_after(Move m) const
         k ^= Zobrist::psq[~side_to_move()][s];
 
         if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
-            k ^= Zobrist::psq[BAN][s];
+            k ^= Zobrist::psq[MARKED][s];
         }
     } else {
         k ^= Zobrist::psq[side_to_move()][s];
@@ -708,7 +708,7 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const Piece pc = board[s] = piece;
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
-        byColorBB[color_of(pc)] |= s; // TODO(calcitem): Put ban?
+        byColorBB[color_of(pc)] |= s; // TODO(calcitem): Put Marked?
 
         update_key(s);
 
@@ -741,7 +741,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                     action = Action::select;
 
                     if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
-                        remove_ban_pieces();
+                        remove_marked_pieces();
                     }
 
                     if (!rule.isDefenderMoveFirst) {
@@ -892,14 +892,14 @@ bool Position::remove_piece(Square s, bool updateRecord)
     Piece pc = board[s];
 
     CLEAR_BIT(byTypeBB[type_of(pc)],
-              s); // TODO(calcitem): rule.hasBannedLocations and placing need?
+              s); // TODO(calcitem): MillFormationActionInPlacingPhase::markAndDelayRemovingPieces and placing need?
     CLEAR_BIT(byColorBB[color_of(pc)], s);
 
     updateMobility(MOVETYPE_REMOVE, s);
 
     if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
-        // Remove and put ban
-        pc = board[s] = BAN_PIECE;
+        // Remove and put marked
+        pc = board[s] = MARKED_PIECE;
         update_key(s);
         SET_BIT(byTypeBB[type_of(pc)], s);
     } else {
@@ -946,7 +946,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
             action = Action::select;
 
             if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
-                remove_ban_pieces();
+                remove_marked_pieces();
             }
 
             if (rule.isDefenderMoveFirst) {
@@ -1172,12 +1172,12 @@ bool Position::check_if_game_is_over()
 
 int Position::calculate_mobility_diff()
 {
-    // TODO(calcitem): Deal with rule is no ban location
+    // TODO(calcitem): Deal with rule is no marked pieces
     int mobilityWhite = 0;
     int mobilityBlack = 0;
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-        if (board[s] == NO_PIECE || board[s] == BAN_PIECE) {
+        if (board[s] == NO_PIECE || board[s] == MARKED_PIECE) {
             for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
                 const Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
                 if (moveSquare) {
@@ -1195,7 +1195,7 @@ int Position::calculate_mobility_diff()
     return mobilityWhite - mobilityBlack;
 }
 
-void Position::remove_ban_pieces()
+void Position::remove_marked_pieces()
 {
     assert(rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces);
 
@@ -1203,7 +1203,7 @@ void Position::remove_ban_pieces()
         for (int r = 0; r < RANK_NB; r++) {
             const auto s = static_cast<Square>(f * RANK_NB + r);
 
-            if (board[s] == BAN_PIECE) {
+            if (board[s] == MARKED_PIECE) {
                 const Piece pc = board[s];
                 byTypeBB[ALL_PIECES] ^= s;
                 byTypeBB[type_of(pc)] ^= s;
@@ -1388,7 +1388,7 @@ bool Position::is_all_in_mills(Color c)
 }
 
 void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
-                                       int &theirPieceCount, int &bannedCount,
+                                       int &theirPieceCount, int &markedCount,
                                        int &emptyCount) const
 {
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
@@ -1402,8 +1402,8 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
         case NO_PIECE:
             emptyCount++;
             break;
-        case BAN_PIECE:
-            bannedCount++;
+        case MARKED_PIECE:
+            markedCount++;
             break;
         default:
             if (color_of(pieceType) == sideToMove) {

@@ -49,8 +49,8 @@ class Game {
   Player getPlayerByColor(PieceColor color) {
     if (color == PieceColor.draw) {
       return Player(color: PieceColor.draw, isAi: false);
-    } else if (color == PieceColor.ban) {
-      return Player(color: PieceColor.ban, isAi: false);
+    } else if (color == PieceColor.marked) {
+      return Player(color: PieceColor.marked, isAi: false);
     } else if (color == PieceColor.nobody) {
       return Player(color: PieceColor.nobody, isAi: false);
     } else if (color == PieceColor.none) {

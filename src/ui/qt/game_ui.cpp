@@ -156,8 +156,8 @@ bool Game::updateScene()
     // TODO: Rename
     animatePieceMovement(deletedPiece);
 
-    // Handle banned locations
-    handleBannedLocations();
+    // Handle marked locations
+    handleMarkedLocations();
 
     // Select the current and recently deleted pieces
     selectCurrentAndDeletedPieces(deletedPiece);

@@ -259,7 +259,7 @@ class ImportService {
       case PieceColor.draw:
         result = "1/2-1/2";
         break;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.none:
       case PieceColor.nobody:
         result = "*";

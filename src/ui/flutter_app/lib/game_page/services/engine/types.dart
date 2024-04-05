@@ -18,7 +18,7 @@ part of '../mill.dart';
 
 int abs(int value) => value > 0 ? value : -value;
 
-enum PieceColor { none, white, black, ban, nobody, draw }
+enum PieceColor { none, white, black, marked, nobody, draw }
 
 Color getAverageColor(Color a, Color b) {
   return Color.fromARGB(
@@ -42,7 +42,7 @@ extension PieceColorExtension on PieceColor {
         return "O";
       case PieceColor.black:
         return "@";
-      case PieceColor.ban:
+      case PieceColor.marked:
         return "X";
       case PieceColor.nobody:
         return "-";
@@ -61,7 +61,7 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).none;
       case PieceColor.draw:
         return S.of(context).draw;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.nobody:
         throw UnimplementedError("Player has no name");
     }
@@ -73,8 +73,8 @@ extension PieceColorExtension on PieceColor {
         return S.of(context).whitePiece;
       case PieceColor.black:
         return S.of(context).blackPiece;
-      case PieceColor.ban:
-        return S.of(context).banPoint;
+      case PieceColor.marked:
+        return S.of(context).marked;
       case PieceColor.none:
         return S.of(context).emptyPoint;
       case PieceColor.nobody:
@@ -89,7 +89,7 @@ extension PieceColorExtension on PieceColor {
         return PieceColor.white;
       case PieceColor.white:
         return PieceColor.black;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -108,7 +108,7 @@ extension PieceColorExtension on PieceColor {
       case PieceColor.nobody:
         return GameController().position.phase.getTip(context);
       case PieceColor.none:
-      case PieceColor.ban:
+      case PieceColor.marked:
         return null;
     }
   }
@@ -134,7 +134,7 @@ extension PieceColorExtension on PieceColor {
         }
       case PieceColor.draw:
         return GameResult.draw;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.none:
       case PieceColor.nobody:
         return null;
@@ -153,7 +153,7 @@ extension PieceColorExtension on PieceColor {
         return FluentIcons.chevron_left_24_regular;
       case PieceColor.black:
         return FluentIcons.chevron_right_24_regular;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -167,7 +167,7 @@ extension PieceColorExtension on PieceColor {
         return FluentIcons.toggle_left_24_regular;
       case PieceColor.black:
         return FluentIcons.toggle_right_24_regular;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -182,7 +182,7 @@ extension PieceColorExtension on PieceColor {
         return colorSettings.whitePieceColor;
       case PieceColor.black:
         return colorSettings.blackPieceColor;
-      case PieceColor.ban:
+      case PieceColor.marked:
         return getTranslucentColor(
             getAverageColor(
                 colorSettings.whitePieceColor, colorSettings.blackPieceColor),
@@ -200,7 +200,7 @@ extension PieceColorExtension on PieceColor {
         return AppTheme.whitePieceBorderColor;
       case PieceColor.black:
         return AppTheme.blackPieceBorderColor;
-      case PieceColor.ban:
+      case PieceColor.marked:
         return getTranslucentColor(
             getAverageColor(
                 AppTheme.whitePieceBorderColor, AppTheme.blackPieceBorderColor),

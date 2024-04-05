@@ -52,7 +52,8 @@ class GameController {
   bool isControllerActive = false;
   bool isEngineRunning = false;
   bool isEngineInDelay = false;
-  bool isPositionSetupBanPiece = false; // TODO: isPieceBannedInPositionSetup?
+  bool isPositionSetupMarkedPiece =
+      false; // TODO: isPieceMarkedInPositionSetup?
 
   String? value;
   AiMoveType? aiMoveType;

@@ -203,7 +203,7 @@ private:
     void updateState(bool result);
 
     void animatePieceMovement(PieceItem *&deletedPiece);
-    void handleBannedLocations();
+    void handleMarkedLocations();
     void handleDeletedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);

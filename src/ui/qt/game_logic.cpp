@@ -82,16 +82,16 @@ void Game::handleDeletedPiece(PieceItem *piece, int key,
     }
 }
 
-void Game::handleBannedLocations()
+void Game::handleMarkedLocations()
 {
     QPointF pos;
     int nTotalPieces = rule.pieceCount * 2;
     const Piece *board = position.get_board();
 
-    // Add banned points in placing phase
+    // Add marked points in placing phase
     if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
-            if (board[sq] == BAN_PIECE) {
+            if (board[sq] == MARKED_PIECE) {
                 pos = scene.polarCoordinateToPoint(
                     static_cast<File>(sq / RANK_NB),
                     static_cast<Rank>(sq % RANK_NB + 1));
@@ -110,7 +110,7 @@ void Game::handleBannedLocations()
         }
     }
 
-    // Clear banned points in moving phase
+    // Clear marked points in moving phase
     if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() != Phase::placing) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);

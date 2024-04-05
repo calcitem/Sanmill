@@ -239,7 +239,7 @@ enum PieceType : uint16_t {
     NO_PIECE_TYPE = 0,
     WHITE_PIECE = 1,
     BLACK_PIECE = 2,
-    BAN = 3,
+    MARKED = 3,
     ALL_PIECES = 0,
     PIECE_TYPE_NB = 4,
 
@@ -249,7 +249,7 @@ enum PieceType : uint16_t {
 
 enum Piece : uint8_t {
     NO_PIECE = 0x00,
-    BAN_PIECE = 0x0F,
+    MARKED_PIECE = 0x0F,
 
     W_PIECE = 0x10,
     W_PIECE_1 = 0x11,
@@ -490,8 +490,8 @@ constexpr Piece make_piece(Color c, PieceType pt)
         return make_piece(c);
     }
 
-    if (pt == BAN) {
-        return BAN_PIECE;
+    if (pt == MARKED) {
+        return MARKED_PIECE;
     }
 
     return NO_PIECE;
@@ -504,8 +504,8 @@ constexpr Color color_of(Piece pc)
 
 constexpr PieceType type_of(Piece pc)
 {
-    if (pc == BAN_PIECE) {
-        return BAN;
+    if (pc == MARKED_PIECE) {
+        return MARKED;
     }
 
     if (color_of(pc) == WHITE) {

@@ -46,7 +46,7 @@ void MovePicker::score()
     int theirMillsCount;
     int ourPieceCount = 0;
     int theirPiecesCount = 0;
-    int bannedCount = 0;
+    int markedCount = 0;
     int emptyCount = 0;
 
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
@@ -77,11 +77,11 @@ void MovePicker::score()
                     to, ~pos.side_to_move());
 
                 if (theirMillsCount) {
-                    ourPieceCount = theirPiecesCount = bannedCount =
+                    ourPieceCount = theirPiecesCount = markedCount =
                         emptyCount = 0;
 
                     pos.surrounded_pieces_count(to, ourPieceCount,
-                                                theirPiecesCount, bannedCount,
+                                                theirPiecesCount, markedCount,
                                                 emptyCount);
 
                     if (to % 2 == 0 && theirPiecesCount == 3) {
@@ -92,7 +92,7 @@ void MovePicker::score()
                 }
             }
 
-            // cur->value += bannedCount;  // placing phrase, place nearby ban
+            // cur->value += markedCount;  // placing phrase, place nearby marked
             // point
 
             // If has Diagonal Lines, black 2nd move place star point is as
@@ -105,10 +105,10 @@ void MovePicker::score()
             }
         } else {
             // Remove
-            ourPieceCount = theirPiecesCount = bannedCount = emptyCount = 0;
+            ourPieceCount = theirPiecesCount = markedCount = emptyCount = 0;
 
             pos.surrounded_pieces_count(to, ourPieceCount, theirPiecesCount,
-                                        bannedCount, emptyCount);
+                                        markedCount, emptyCount);
 
             if (ourMillsCount > 0) {
                 // remove point is in our mill

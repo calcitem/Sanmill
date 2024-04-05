@@ -112,7 +112,7 @@ class PiecePainter extends CustomPainter {
       assert(
         piece.piece == PieceColor.black ||
             piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.ban,
+            piece.piece == PieceColor.marked,
       );
       blurPositionColor = piece.piece.blurPositionColor;
 

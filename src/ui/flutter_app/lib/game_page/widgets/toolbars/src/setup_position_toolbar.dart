@@ -122,18 +122,20 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   void setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
-    GameController().isPositionSetupBanPiece = false; // WAR
+    GameController().isPositionSetupMarkedPiece = false; // WAR
 
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
     } else if (pieceColor == PieceColor.black) {
-      if (DB().ruleSettings.hasBannedLocations && newPhase == Phase.placing) {
-        newPieceColor = PieceColor.ban;
-        GameController().isPositionSetupBanPiece = true;
+      if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces &&
+          newPhase == Phase.placing) {
+        newPieceColor = PieceColor.marked;
+        GameController().isPositionSetupMarkedPiece = true;
       } else {
         newPieceColor = PieceColor.none;
       }
-    } else if (pieceColor == PieceColor.ban) {
+    } else if (pieceColor == PieceColor.marked) {
       newPieceColor = PieceColor.none;
     } else if (pieceColor == PieceColor.none) {
       newPieceColor = PieceColor.white;
@@ -169,7 +171,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     if (phase == Phase.placing) {
       newPhase = Phase.moving;
 
-      if (newPieceColor == PieceColor.ban) {
+      if (newPieceColor == PieceColor.marked) {
         setSetupPositionPiece(context, newPieceColor); // Jump to next
       }
 
@@ -321,9 +323,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // TODO: Not accurate enough.
     //  If the difference between the number of pieces on the two sides is large,
     //  then it means that more values should be subtracted.
-    if (DB().ruleSettings.hasBannedLocations) {
-      //int ban = MillController().position.countPieceOnBoard(PieceColor.ban);
-      begin = max(white, black); // TODO: How to use ban?
+    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+      //int marked = MillController().position.countPieceOnBoard(PieceColor.marked);
+      begin = max(white, black); // TODO: How to use marked?
     } else {
       begin = max(white, black);
     }
@@ -369,7 +372,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         us = S.of(context).player2;
         them = S.of(context).player1;
         break;
-      case PieceColor.ban:
+      case PieceColor.marked:
       case PieceColor.draw:
       case PieceColor.none:
       case PieceColor.nobody:
@@ -604,8 +607,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         overflow: TextOverflow.ellipsis,
       ),
     );
-    final ToolbarItem banPointButton = ToolbarItem.icon(
-      onPressed: () => setSetupPositionPiece(context, PieceColor.ban),
+    final ToolbarItem markedPointButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.marked),
       icon: const Icon(FluentIcons.prohibited_24_regular),
       label: Text(
         S.of(context).ban,
@@ -745,7 +748,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         <PieceColor, ToolbarItem>{
       PieceColor.white: whitePieceButton,
       PieceColor.black: blackPieceButton,
-      PieceColor.ban: banPointButton,
+      PieceColor.marked: markedPointButton,
       PieceColor.none: emptyPointButton,
     };
 

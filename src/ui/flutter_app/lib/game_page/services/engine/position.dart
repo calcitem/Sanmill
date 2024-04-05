@@ -128,7 +128,7 @@ class Position {
   /// @ - Black piece
   /// O - White piece
   /// * - Empty point
-  /// X - Ban point
+  /// X - Marked point
   ///
   /// Side to move
   /// w - White to Move
@@ -196,7 +196,7 @@ class Position {
       "*": PieceColor.none,
       "O": PieceColor.white,
       "@": PieceColor.black,
-      "X": PieceColor.ban,
+      "X": PieceColor.marked,
     };
 
     // Piece placement data
@@ -463,8 +463,10 @@ class Position {
               phase = Phase.moving;
               action = Act.select;
 
-              if (DB().ruleSettings.hasBannedLocations) {
-                _removeBanStones();
+              if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                  MillFormationActionInPlacingPhase
+                      .markAndDelayRemovingPieces) {
+                _removeMarkedStones();
               }
 
               if (!DB().ruleSettings.isDefenderMoveFirst) {
@@ -634,9 +636,11 @@ class Position {
 
     _revertKey(s);
 
-    if (DB().ruleSettings.hasBannedLocations && phase == Phase.placing) {
-      // Remove and put ban
-      _board[s] = _grid[squareToIndex[s]!] = PieceColor.ban;
+    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces &&
+        phase == Phase.placing) {
+      // Remove and mark
+      _board[s] = _grid[squareToIndex[s]!] = PieceColor.marked;
       _updateKey(s);
     } else {
       // Remove only
@@ -684,8 +688,9 @@ class Position {
         phase = Phase.moving;
         action = Act.select;
 
-        if (DB().ruleSettings.hasBannedLocations) {
-          _removeBanStones();
+        if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
+          _removeMarkedStones();
         }
 
         if (DB().ruleSettings.isDefenderMoveFirst) {
@@ -860,8 +865,9 @@ class Position {
     return false;
   }
 
-  void _removeBanStones() {
-    assert(DB().ruleSettings.hasBannedLocations);
+  void _removeMarkedStones() {
+    assert(DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces);
 
     int s = 0;
 
@@ -869,7 +875,7 @@ class Position {
       for (int r = 0; r < rankNumber; r++) {
         s = f * rankNumber + r;
 
-        if (_board[s] == PieceColor.ban) {
+        if (_board[s] == PieceColor.marked) {
           _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
           _revertKey(s);
         }
@@ -1179,8 +1185,9 @@ extension SetupPosition on Position {
   }
 
   bool _putPieceForSetupPosition(int s) {
-    final PieceColor piece =
-        GameController().isPositionSetupBanPiece ? PieceColor.ban : sideToMove;
+    final PieceColor piece = GameController().isPositionSetupMarkedPiece
+        ? PieceColor.marked
+        : sideToMove;
     //final us = _sideToMove;
 
     // TODO: Allow to overwrite.
@@ -1194,7 +1201,8 @@ extension SetupPosition on Position {
       return false;
     }
 
-    if (DB().ruleSettings.hasBannedLocations == true) {
+    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
       if (countTotalPieceOnBoard() >= DB().ruleSettings.piecesCount * 2) {
         SoundManager().playTone(Sound.illegal);
         return false;
@@ -1216,8 +1224,9 @@ extension SetupPosition on Position {
     _board[s] = piece;
 
     //MillController().gameInstance.focusIndex = squareToIndex[s];
-    SoundManager().playTone(
-        GameController().isPositionSetupBanPiece ? Sound.remove : Sound.place);
+    SoundManager().playTone(GameController().isPositionSetupMarkedPiece
+        ? Sound.remove
+        : Sound.place);
 
     GameController().setupPositionNotifier.updateIcons();
 
@@ -1272,7 +1281,7 @@ extension SetupPosition on Position {
   int countTotalPieceOnBoard() {
     return countPieceOnBoard(PieceColor.white) +
         countPieceOnBoard(PieceColor.black) +
-        countPieceOnBoard(PieceColor.ban);
+        countPieceOnBoard(PieceColor.marked);
   }
 
   bool isBoardFullRemovalAtPlacingPhaseEnd() {

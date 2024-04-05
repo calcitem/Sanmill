@@ -63,7 +63,7 @@ TEST(TypesTest, makePiece)
 
     EXPECT_EQ(make_piece(WHITE, WHITE_PIECE), W_PIECE);
     EXPECT_EQ(make_piece(BLACK, WHITE_PIECE), B_PIECE);
-    EXPECT_EQ(make_piece(NOCOLOR, BAN), BAN_PIECE);
+    EXPECT_EQ(make_piece(NOCOLOR, MARKED), MARKED_PIECE);
 }
 
 TEST(TypesTest, colorOf)
