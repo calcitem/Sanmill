@@ -611,7 +611,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       onPressed: () => setSetupPositionPiece(context, PieceColor.marked),
       icon: const Icon(FluentIcons.prohibited_24_regular),
       label: Text(
-        S.of(context).ban,
+        S.of(context).marked,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

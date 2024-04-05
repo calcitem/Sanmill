@@ -222,7 +222,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               piecesCount: 12,
               hasDiagonalLines: true,
               mayFly: false,
-              hasBannedLocations: true,
+              millFormationActionInPlacingPhase:
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
               mayRemoveFromMillsAlways: true);
           break;
         default:

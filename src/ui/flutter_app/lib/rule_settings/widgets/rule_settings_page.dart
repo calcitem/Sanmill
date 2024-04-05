@@ -314,8 +314,7 @@ class RuleSettingsPage extends StatelessWidget {
               onTap: () =>
                   _setMillFormationActionInPlacingPhase(context, ruleSettings),
               titleString: S.of(context).whenFormingMillsDuringPlacingPhase,
-              // TODO: whenFormingMillsDuringPlacingPhase_Detail
-              subtitleString: S.of(context).whenFormingMillsDuringPlacingPhase,
+              subtitleString: S.of(context).whenFormingMillsDuringPlacingPhase_Detail,
             ),
             SettingsListTile(
               onTap: () => _setBoardFullAction(context, ruleSettings),
