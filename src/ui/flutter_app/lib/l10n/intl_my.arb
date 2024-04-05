@@ -1000,10 +1000,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "တားမြစ်ချက်",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "noPoint": "အမှတ်မရှိ",
   "@noPoint": {
     "description": "No point"

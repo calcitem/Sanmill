@@ -1208,10 +1208,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "بان پوائنٹ",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "placingPhase": "لگانے کا مرحلہ",
   "@placingPhase": {
     "description": "Placing phase"

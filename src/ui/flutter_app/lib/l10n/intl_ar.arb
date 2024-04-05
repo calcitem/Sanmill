@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "نقطة الحظر",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "نقطة فارغة",
   "@emptyPoint": {
     "description": "Empty point"

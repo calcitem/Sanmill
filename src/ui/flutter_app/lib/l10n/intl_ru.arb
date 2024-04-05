@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Точка запрета",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Пустая точка",
   "@emptyPoint": {
     "description": "Empty point"

@@ -1101,10 +1101,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "තහනම් ලකුණ",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "හිස් ලකුණ",
   "@emptyPoint": {
     "description": "Empty point"

@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Tiltási pont",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Üres pont",
   "@emptyPoint": {
     "description": "Empty point"

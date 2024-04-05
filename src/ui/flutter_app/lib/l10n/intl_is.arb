@@ -1251,10 +1251,6 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "banPoint": "Bannpunktur",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Tómur punktur",
   "@emptyPoint": {
     "description": "Empty point"
