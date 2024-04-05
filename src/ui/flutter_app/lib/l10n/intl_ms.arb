@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Tandakan dan tunda mengeluarkan kepingan",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Pada fasa penempatan, titik-titik kepingan yang dikeluarkan tidak lagi dapat diletakkan.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1176,10 +1172,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Larangan",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "kosong",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Tandakan dan lengahkan pengalihan keluar bidak.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Semasa fasa meletakkan, bidak yang akan dialihkan keluar ditandakan, dan bagi kedua-dua pemain, tiada bidak baharu boleh diletakkan pada titik ini. Apabila memasuki fasa bergerak, bidak yang ditanda ini dialihkan keluar sekaligus, dan pemain kemudiannya boleh mengalihkan bidak mereka ke titik yang kini kosong ini.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Tindakan yang boleh diambil semasa membentuk kilang semasa fasa penempatan.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Ditandai",
+  "@marked": {}
 }

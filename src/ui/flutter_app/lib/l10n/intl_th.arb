@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "ทำเครื่องหมายและชะลอการถอดชิ้นส่วน",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "ในขั้นตอนการวางจะไม่สามารถวางจุดของชิ้นส่วนที่ถูกถอดออกได้อีกต่อไป",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@filename": {
     "description": "File name"
   },
-  "ban": "ห้าม",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noMove": "ไม่มีการเคลื่อนไหว",
   "@noMove": {
     "description": "No move."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "ทำเครื่องหมายและหน่วงการนำชิ้นส่วนออก",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "ในระหว่างขั้นตอนการวาง ชิ้นส่วนที่จะลบออกจะถูกทำเครื่องหมาย และสำหรับผู้เล่นทั้งสอง จะไม่มีการวางชิ้นส่วนใหม่ในจุดเหล่านี้ เมื่อเข้าสู่เฟสการเคลื่อนที่ ชิ้นส่วนที่ทำเครื่องหมายไว้เหล่านี้จะถูกลบออกทั้งหมด และผู้เล่นสามารถย้ายชิ้นส่วนของตนไปยังจุดที่ว่างเหล่านี้ได้",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "การกระทำที่สามารถทำได้เมื่อกำลังจัดวางโรงสีในช่วงขั้นตอนการวาง.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "ทำเครื่องหมาย",
+  "@marked": {}
 }

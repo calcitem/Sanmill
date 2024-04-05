@@ -526,10 +526,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Позначте та відкладіть видалення частин",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "На етапі розміщення точки вилучених фігур більше не можна буде розмістити.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1274,10 +1270,6 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "ban": "Забанити",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Порожній",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Позначте і відкладіть видалення фішок.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Під час фази розстановки фішки, які потрібно видалити, позначаються, і обидва гравці не можуть ставити нові фішки на ці позиції. При переході у фазу переміщення ці позначені фішки видаляються разом, і гравці можуть переміщувати свої фішки на ці тепер порожні позиції.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Дії, які можна виконати під час формування млинів у фазі розміщення.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Позначено",
+  "@marked": {}
 }

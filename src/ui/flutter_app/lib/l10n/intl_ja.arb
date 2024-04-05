@@ -534,10 +534,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "ピースの削除をマークして遅らせる",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "配置フェーズでは、削除されたピースのポイントは配置できなくなります。",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1274,10 +1270,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "禁止",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "空",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "コマの取り除きをマークして遅延させる。",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "配置フェーズの間、取り除かれるコマにはマークが付けられ、両方のプレイヤーはこれらのポイントに新しいコマを配置できなくなる。移動フェーズに入ると、マークされたコマはすべて取り除かれ、プレイヤーはその空いたポイントにコマを移動できるようになる。",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "配置フェーズでミルを形成する際に取ることができるアクション。",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "マークされた",
+  "@marked": {}
 }

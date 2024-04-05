@@ -456,10 +456,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Адзначце і адтэрмінуйце выдаленне частак",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "На этапе размяшчэння акуляры выдаленых фігур больш не змогуць быць размешчаны.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1206,10 +1202,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Забараніць",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Пусты",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Пазначыць і адкласці выдаленне штук.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Падчас этапу размяшчэння фігуры, якія трэба выдаліць, пазначаюцца, і для абодвух гульцоў на гэтыя пункты нельга размяшчаць новыя фігуры. Пасля ўваходу ў фазу руху гэтыя пазначаныя фігуры выдаляюцца цалкам, а потым гульцы могуць перамяшчаць свае фігуры на гэтыя цяпер пустыя пункты.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Дзеянні, якія могуць быць прыняты пры фарміраванні млыноў на этапе размяшчэння.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Пазначаны",
+  "@marked": {}
 }

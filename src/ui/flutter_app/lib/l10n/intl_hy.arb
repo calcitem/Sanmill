@@ -518,10 +518,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Նշեք և հետաձգեք կտորների հեռացումը",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Տեղադրման փուլում հեռացված կտորների կետերն այլևս չեն կարող տեղադրվել:",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1272,10 +1268,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "արգելել",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Դատարկ",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Նշեք և հետաձգեք խաղաքարերի հեռացումը:",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Տեղադրման փուլի ընթացքում նշվում են հեռացվելիք խաղաքարերը, և երկու խաղացողների համար էլ այդ կետերում նոր խաղաքարեր չեն կարող տեղադրվել: Մտնելով շարժման փուլ՝ այդ նշված խաղաքարերը միասին հեռացվում են, և խաղացողները կարող են իրենց խաղաքարերը տեղափոխել այդ դատարկված կետերը:",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Միլլեր ձևավորելու ընթացքում տեղադրման փուլում կարող ենթակա լինելու գործողությունները։",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Նշված",
+  "@marked": {}
 }

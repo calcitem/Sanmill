@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Atzīmē un aizkavē figūru izņemšanu",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Izvietošanas fāzē noņemto figūru punktus vairs nevarēs izvietot.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1246,10 +1242,6 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "ban": "Aizliegt",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "isUnplacedAndRemovedPiecesShown": "Rādīt nenovietotos un noņemtos gabalus",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Atzīmēt un aizkavēt figūru noņemšanu.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Izvietošanas fāzes laikā noņemamās figūras tiek atzīmētas, un abi spēlētāji nevar novietot jaunas figūras uz šiem punktiem. Sākoties kustību fāzei, šīs atzīmētās figūras tiek noņemtas visas uzreiz, un spēlētāji pēc tam var pārvietot savas figūras uz šiem tagad tukšajiem punktiem.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Darbības, kas veicamas, veidojot dzirnavas izvietošanas posmā.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Označeno",
+  "@marked": {}
 }

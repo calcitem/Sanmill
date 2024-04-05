@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Pažymėkite ir atidėkite figūrų pašalinimą",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Dėliojimo etape pašalintų figūrų taškai nebegalės būti dedami.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1200,10 +1196,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Uždrausti",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Tuščia",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Pažymėkite figūras ir atidėkite jų pašalinimą.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Statymo fazės metu pašalinamos figūros yra pažymimos ir joks žaidėjas negali statyti naujų figūrų ant šių taškų. Prasidedant ėjimo fazei, šios pažymėtos figūros yra pašalinamos vienu metu, o žaidėjai savo figūras gali perkelti į dabar tuščius taškus.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Veiksmai, kuriuos galima atlikti formuojant malūnus išdėstymo etape.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Pažymėtas",
+  "@marked": {}
 }

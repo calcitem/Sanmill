@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Σημειώστε και καθυστερήστε την αφαίρεση κομματιών",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Στη φάση τοποθέτησης, τα σημεία των κομματιών που έχουν αφαιρεθεί δεν θα μπορούν πλέον να τοποθετηθούν.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1172,10 +1168,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Απαγόρευση",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Καταμέτρηση τοποθετημένων κομματιών στη φάση τοποθέτησης.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Σημαδέψτε και καθυστερήστε την αφαίρεση των κομματιών.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Κατά τη διάρκεια της φάσης τοποθέτησης, τα κομμάτια που πρόκειται να αφαιρεθούν επισημαίνονται και κανένας από τους δύο παίκτες δεν μπορεί να τοποθετήσει νέα κομμάτια σε αυτά τα σημεία. Κατά την είσοδο στη φάση κίνησης, αυτά τα σημειωμένα κομμάτια αφαιρούνται εντελώς και στη συνέχεια οι παίκτες μπορούν να μετακινήσουν τα κομμάτια τους σε αυτά τα πλέον κενά σημεία.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Οι ενέργειες που μπορούν να ληφθούν κατά τη διάρκεια της δημιουργίας μύλων στη φάση τοποθέτησης.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Σημειωμένο",
+  "@marked": {}
 }

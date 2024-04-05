@@ -468,10 +468,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Mark and delay removing pieces",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "In the placing phase, the points of removed pieces will no longer be able to be placed.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1266,10 +1262,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Ban",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Empty",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Mark and delay removing pieces.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "During the placing phase, the pieces to be removed are marked, and for both players, no new pieces can be placed on these points. Upon entering the moving phase, these marked pieces are removed altogether, and players can then move their pieces to these now-empty points.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "The actions that can be taken when forming mills during the placing phase.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Marked",
+  "@marked": {}
 }

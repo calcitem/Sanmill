@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Oznaczanie i opóźnianie usuwania elementów",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "W fazie umieszczania, punkty usuniętych elementów nie będą już mogły być umieszczane.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Zakaz",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "pieceCountNeedToRemove": "{count,plural, =0{sztuka}=1{{count} sztuka}other{{count} sztuki}} należy usunąć.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Zaznacz i opóźnij usuwanie pionków.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "W fazie umieszczania pionki do usunięcia są zaznaczane i obaj gracze nie mogą umieszczać nowych pionków na tych polach. Po wejściu w fazę ruchu te zaznaczone pionki są całkowicie usuwane, a gracze mogą następnie przenieść swoje pionki na te teraz puste pola.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Działania, które można podjąć podczas formowania młynów w fazie umieszczania.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Oznaczone",
+  "@marked": {}
 }

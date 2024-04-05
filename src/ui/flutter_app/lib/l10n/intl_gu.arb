@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "ટુકડાઓ દૂર કરવા માટે માર્ક કરો અને વિલંબ કરો",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "પ્લેસિંગ તબક્કામાં, દૂર કરેલા ટુકડાઓના પોઇન્ટ હવે મૂકવામાં સમર્થ હશે નહીં.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1182,10 +1178,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "પ્રતિબંધ",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "ખાલી",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "ટુકડાઓને ચિહ્નિત કરો અને તેમને દૂર કરવામાં વિલંબ કરો.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "સ્થાપન તબક્કામાં, દૂર કરવાના ટુકડાઓને ચિહ્નિત કરવામાં આવે છે, અને બંને ખેલાડીઓ માટે, આ બિંદુઓ પર કોઈ નવા ટુકડાઓ મૂકી શકાતા નથી. ચલણ તબક્કામાં પ્રવેશીને, આ ચિહ્નિત ટુકડાઓને સમૂહમાં દૂર કરવામાં આવે છે, અને પછી ખેલાડીઓ તેમના ટુકડાઓને આ હવે ખાલી બિંદુઓ પર ખસેડી શકે છે.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "પ્લેસિંગ ફેઝ દરમિયાન મિલ્સ બનાવતી વખતે લેવાયેલા પગલાં.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "ચિહ્નિત",
+  "@marked": {}
 }

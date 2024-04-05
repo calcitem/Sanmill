@@ -510,10 +510,6 @@
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "hasBannedLocations": "කැබලි සලකුණු කර ඉවත් කිරීම කල් තබන්න",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "isDefenderMoveFirst": "දෙවන ක්‍රීඩකයා පළමුව චලනය කරයි",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
@@ -1252,10 +1248,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "තහනම් කරන්න",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "හිස්",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "කැබලි ලකුණු කර ඉවත් කිරීම පමා කරන්න.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "තැබීමේ අවධියේදී, ඉවත් කිරීමට නියමිත කැබලි ලකුණු කරන ලදී, සහ දෙපාර්ශවයම මෙම ලකුණු කරන ලද ලක්ෂ්‍යයන් මත නව කැබලි තැබීමට නොහැකියි. චලන අවධියට ප්‍රවේශ වීමේදී, මෙම ලකුණු කරන ලද කැබලි සම්පූර්ණයෙන්ම ඉවත් කරන ලදී, එවිට ක්‍රීඩකයෝ දැන් හිස් වූ ලක්ෂ්‍යයන්ට තමන්ගේ කැබලි චලනය කළ හැකිය.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "තැනීමේ අවධියේදී නෙරෙන්චි සාදන විට කළ හැකි ක්‍රියාකාරකම්.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "සලකුණු කර ඇත",
+  "@marked": {}
 }

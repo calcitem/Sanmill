@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "ముక్కలు తొలగించడాన్ని గుర్తించండి మరియు ఆలస్యం చేయండి",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "ఉంచే దశలో, తొలగించబడిన ముక్కల పాయింట్లు ఇకపై ఉంచబడవు.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@loadFailed": {
     "description": "Load failed."
   },
-  "ban": "నిషేధించండి",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "restoredPosition": "ప్రారంభ స్థానం పునరుద్ధరించబడింది.",
   "@restoredPosition": {
     "description": "Restored initial position."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "పావులను తొలగించడాన్ని గుర్తించండి మరియు ఆలస్యం చేయండి.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "ప్లేసింగ్ దశలో, తొలగించాల్సిన పావులను గుర్తించబడతాయి మరియు ఇద్దరు ఆటగాళ్ల కోసం, ఈ పాయింట్లలో కొత్త పావులను ఉంచలేరు. కదిలే దశలోకి ప్రవేశించిన తర్వాత, ఈ గుర్తించబడిన పావులు పూర్తిగా తీసివేయబడతాయి మరియు ఆటగాళ్ళు తమ పావులను ఈ ఖాళీ పాయింట్లకు తరలించవచ్చు.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "ప్లేసింగ్ దశలో ఆటగాళ్ళు మిల్లులను ఏర్పరిచినప్పుడు చేపట్టగల చర్యలు.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "గుర్తించబడింది",
+  "@marked": {}
 }

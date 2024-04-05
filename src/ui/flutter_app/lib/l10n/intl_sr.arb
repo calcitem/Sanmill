@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Означите и одложите уклањање комада",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "У фази постављања, тачке уклоњених комада више неће моћи да се постављају.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1188,10 +1184,6 @@
       }
     }
   },
-  "ban": "Бан",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Празан",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Obeležite i odložite uklanjanje figura.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Tokom faze postavljanja, figure koje treba ukloniti se obeležavaju i ni jedan igrač ne može da postavi nove figure na ove tačke. Po ulasku u fazu pomeranja, ove označene figure se u potpunosti uklanjaju, a igrači tada mogu da pomere svoje figure na ove sada prazne tačke.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Akcije koje se mogu preduzeti prilikom formiranja mlinova u fazi postavljanja.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Означено",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Пометить и отложить удаление фигур",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "В фазе расстановки точки удаленных фигур больше не могут быть расставлены.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1242,10 +1238,6 @@
       }
     }
   },
-  "ban": "Бан",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "restoredPosition": "Восстановлено исходное положение.",
   "@restoredPosition": {
     "description": "Restored initial position."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Отметьте и задержите удаление фигур.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Во время фазы размещения фигуры, которые должны быть убраны, отмечаются, и оба игрока не могут размещать новые фигуры на этих точках. При входе в фазу перемещения эти отмеченные фигуры убираются полностью, и игроки могут затем перемещать свои фигуры на эти теперь пустые точки.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Действия, которые можно предпринять во время формирования мельниц на этапе размещения.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Отмечено",
+  "@marked": {}
 }

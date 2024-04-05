@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Marquer et retarder le retrait des pièces",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Lors de la phase de placement, les points des pièces retirées ne pourront plus être placés.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "ban": "Interdire",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noPiecesCanBeRemoved": "Aucune pièce ne peut être retirée.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Marquez et retardez le retrait des pièces.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Pendant la phase de placement, les pièces à retirer sont marquées et, pour les deux joueurs, aucune nouvelle pièce ne peut être placée sur ces points. En entrant dans la phase de déplacement, ces pièces marquées sont retirées ensemble, et les joueurs peuvent alors déplacer leurs pièces sur ces points maintenant vides.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Les actions qui peuvent être prises lors de la formation des moulins pendant la phase de placement.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Marqué",
+  "@marked": {}
 }

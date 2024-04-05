@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Merkitse ja viivytä nappuloiden poistamista",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Sijoitusvaiheessa poistettujen nappuloiden pisteitä ei voi enää sijoittaa.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1182,10 +1178,6 @@
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "ban": "Kieltää",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noPiecesCanBeRemoved": "Mitään osia ei voi poistaa.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Merkitse ja viivytä nappuloiden poistamista.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Sijoitusvaiheen aikana poistettavat nappulat merkitään, ja kumpikaan pelaaja ei voi sijoittaa uusia nappuloita näihin kohtiin. Liikkumisvaiheeseen siirryttäessä nämä merkityt nappulat poistetaan kokona, ja pelaajat voivat sitten siirtää nappuloitaan näihin nyt tyhjiin kohtiin.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Toimenpiteet, jotka voidaan ottaa myllyjen muodostamisen aikana sijoitusvaiheessa.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Merkitty",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Taşları işaretleyin ve kaldırmayı geciktirin",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Yerleştirme aşamasında, kaldırılan parçaların noktaları artık yerleştirilemeyecek.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "ban": "yasakla",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Boş",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Parçaları işaretle ve çıkarmayı geciktir.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Yerleştirme aşamasında çıkarılacak parçalar işaretlenir ve her iki oyuncu için de bu noktalara yeni parçalar yerleştirilemez. Hareket aşamasına girildiğinde, bu işaretli parçalar tamamen çıkarılır ve oyuncular ardından parçalarını şimdi boş olan bu noktalara taşıyabilirler.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Yerleştirme aşamasında değirmenler oluşturulurken yapılabilecek eylemler.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "İşaretli",
+  "@marked": {}
 }

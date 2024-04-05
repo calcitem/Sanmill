@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Segna e ritarda la rimozione dei pezzi",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Nella fase di piazzamento, i punti dei pezzi rimossi non potranno più essere piazzati.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1168,10 +1164,6 @@
   "@filename": {
     "description": "File name"
   },
-  "ban": "Bandire",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "noPiecesCanBeRemoved": "Nessun pezzo può essere rimosso.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Contrassegna e ritarda la rimozione delle pedine.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Durante la fase di piazzamento, le pedine da rimuovere vengono contrassegnate e, per entrambi i giocatori, nessun nuovo pezzo può essere piazzato su questi punti. All'inizio della fase di movimento, queste pedine contrassegnate vengono rimosse completamente e i giocatori possono quindi spostare le loro pedine su questi punti ora vuoti.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Le azioni che possono essere intraprese durante la formazione dei mulini nella fase di posizionamento.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Contrassegnato",
+  "@marked": {}
 }

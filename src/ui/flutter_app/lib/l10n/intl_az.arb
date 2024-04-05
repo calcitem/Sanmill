@@ -540,10 +540,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Parçaların çıxarılmasını qeyd edin və gecikdirin",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "Yerləşdirmə mərhələsində, çıxarılan parçaların nöqtələri artıq yerləşdirilə bilməyəcək.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1306,10 +1302,6 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "ban": "Qadağa",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "Boş nöqtə",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1511,5 +1503,9 @@
   "markAndDelayRemovingPieces": "Daşları işarələyin və götürməyi gecikdirin.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Yerləşdirmə fazasında götürüləcək daşlar işarələnir və hər iki oyunçu üçün bu nöqtələrə yeni daşlar qoyula bilməz. Hərəkət fazasına keçdikdə, bu işarələnmiş daşlar tamamilə götürülür və oyunçular öz daşlarını bu boş qalmış nöqtələrə hərəkət etdirə bilərlər.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Yerləşdirmə mərhələsində dəyirmanların formalaşdırılması zamanı həyata keçirilə bilən fəaliyyətlər.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "İşarələnib",
+  "@marked": {}
 }

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Marchează ca interzis pentru replasare",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "În faza de plasare, punctele eliminate nu mai pot plasa piese.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1176,10 +1172,6 @@
   "@restoredPosition": {
     "description": "Restored initial position."
   },
-  "ban": "Interzice",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "clean": "Curat",
   "@clean": {
     "description": "Clean"
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Marcați și întârziați eliminarea pieselor.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "În faza de plasare, piesele ce urmează să fie eliminate sunt marcate, și pentru ambii jucători, nu se pot plasa piese noi pe aceste puncte. La intrarea în faza de mișcare, aceste piese marcate sunt eliminate în totalitate, și jucătorii pot apoi să-și mute piesele pe aceste puncte acum goale.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Acțiunile care pot fi luate în timpul formării morilor în faza de plasare.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Marcat",
+  "@marked": {}
 }

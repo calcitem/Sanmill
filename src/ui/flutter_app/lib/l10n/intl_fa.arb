@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "برداشتن(حذف) مهره‌ها را علامت گذاشته و به تأخیر بیندازید",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "در مرحله جای‌گذاری مهره‌ها ، نقاط مهره‌های برداشته شده دیگر قادر به پذیرش مهره جدید نخواهند بود.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1182,10 +1178,6 @@
       }
     }
   },
-  "ban": "ممنوع کردن",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "تعداد قطعات قرار داده شده در مرحله قرار دادن.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "مهره‌ها را علامت‌گذاری کرده و تاخیر در برداشتن آن‌ها ایجاد کنید.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "در مرحله قرار دادن، مهره‌هایی که قرار است برداشته شوند علامت‌گذاری می‌شوند و برای هر دو بازیکن، امکان قرار دادن مهره‌های جدید در این نقاط وجود ندارد. هنگام ورود به مرحله حرکت، این مهره‌های علامت‌دار به طور کامل برداشته می‌شوند و بازیکنان سپس می‌توانند مهره‌های خود را به این نقاط اکنون خالی حرکت دهند.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "اقداماتی که هنگام تشکیل دوزها در فاز قرار دادن می‌توان انجام داد.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "علامت‌گذاری شده",
+  "@marked": {}
 }

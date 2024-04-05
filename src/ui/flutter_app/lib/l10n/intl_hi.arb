@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "टुकड़ों को हटाने और हटाने में देरी करें",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "रखने के चरण में, हटाए गए टुकड़ों के बिंदु अब नहीं रखे जा सकेंगे।",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1186,10 +1182,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "बन",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "empty": "खाली",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "मोहरों को हटाने में देरी और उन्हें चिह्नित करें।",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "मोहरोंको रखने के फ़ेज़ के दौरान,आने वाले मोहरों को हटाने के लिए चिह्नित किया जाता है, और दोनों खिलाड़ियों केलिए, इन पॉइंट्स पर कोई नया मोहरा नहीं रखा जा सकता है। चलने के फ़ेज़ में प्रवेश करने पर, इन चिह्नितमोहरों को पूरी तरह से हटा दिया जाता है, और फिर खिलाड़ी अपने मोहरों को इन खाली पॉइंट्स पर動か सकते हैं।",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "स्थापना चरण के दौरान मिल्स बनाते समय किए जा सकने वाले कार्य।",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "चिह्नित",
+  "@marked": {}
 }

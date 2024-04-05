@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations": "Punkte entfernter Steine sperren",
-  "@hasBannedLocations": {
-    "description": "Mark and delay removing pieces"
-  },
   "hasBannedLocations_Detail": "In der Setzphase können keine Steine auf Punkte von entfernten Steinen gesetzt werden.",
   "@hasBannedLocations_Detail": {
     "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
@@ -1172,10 +1168,6 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "ban": "Verbot",
-  "@ban": {
-    "description": "Ban point, used in setup position toolbar."
-  },
   "placedPieceCount": "Platzierte Stückzahl in der Platzierungsphase.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
@@ -1413,5 +1405,9 @@
   "markAndDelayRemovingPieces": "Markiere und verzögere das Entfernen von Spielsteinen.",
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Während der Platzierungsphase werden die zu entfernenden Spielsteine markiert, und für beide Spieler können auf diesen Punkten keine neuen Spielsteine platziert werden. Beim Eintritt in die Zugphase werden diese markierten Spielsteine zusammen entfernt, und die Spieler können dann ihre Spielsteine auf diese nun leeren Punkte setzen.",
-  "@markAndDelayRemovingPieces_Detail": {}
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Die Maßnahmen, die beim Bilden von Mühlen in der Platzierungsphase ergriffen werden können.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Markiert",
+  "@marked": {}
 }
