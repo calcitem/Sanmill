@@ -756,7 +756,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                 change_side_to_move();
             }
         } else {
-            int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
+            int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
+                                                          n :
+                                                          1;
             update_key_misc();
 
             if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
@@ -773,7 +775,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                     }
 
                     assert(pieceInHandCount[WHITE] >= 0 &&
-                           pieceInHandCount[BLACK] >= 0); 
+                           pieceInHandCount[BLACK] >= 0);
                 }
 
                 if (pieceInHandCount[WHITE] == 0 &&

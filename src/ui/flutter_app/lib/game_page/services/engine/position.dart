@@ -481,8 +481,8 @@ class Position {
           GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.place);
         } else {
-          int rm = pieceToRemoveCount[sideToMove] =
-          DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          final int rm = pieceToRemoveCount[sideToMove] =
+              DB().ruleSettings.mayRemoveMultiple ? n : 1;
           _updateKeyMisc();
 
           if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase &&

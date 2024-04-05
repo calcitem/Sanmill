@@ -55,39 +55,41 @@ class _DatabaseMigration {
   /// When [_currentVersion] is smaller than [_newVersion] all migrations between will be run.
   /// Migrations are called once and only once thus they should complete fast and everything should be awaited.
   static Future<bool> migrate() async {
-    if (kIsWeb || Platform.isMacOS) {
+    if (kIsWeb) {
       return false;
     }
 
-    assert(_migrations.length == _newVersion);
-
     bool migrated = false;
 
-    _databaseBox = await Hive.openBox(_databaseBoxName);
+    if (!Platform.isMacOS) {
+      assert(_migrations.length == _newVersion);
 
-    _currentVersion = _databaseBox.get(_versionKey) as int?;
+      _databaseBox = await Hive.openBox(_databaseBoxName);
 
-    if (_currentVersion == null) {
-      if (await _DatabaseV1.usesV1) {
-        _currentVersion = 0;
-      } else if (DB().generalSettings.usesHiveDB) {
-        _currentVersion = 1;
-      }
-      logger.v("$_logTag: Current version is $_currentVersion");
+      _currentVersion = _databaseBox.get(_versionKey) as int?;
 
-      if (_currentVersion != null) {
-        for (int i = _currentVersion!; i < _newVersion; i++) {
-          await _migrations[i].call();
+      if (_currentVersion == null) {
+        if (await _DatabaseV1.usesV1) {
+          _currentVersion = 0;
+        } else if (DB().generalSettings.usesHiveDB) {
+          _currentVersion = 1;
         }
+        logger.v("$_logTag: Current version is $_currentVersion");
 
-        migrated = true;
+        if (_currentVersion != null) {
+          for (int i = _currentVersion!; i < _newVersion; i++) {
+            await _migrations[i].call();
+          }
+
+          migrated = true;
+        }
       }
+
+      await _databaseBox.put(_versionKey, _newVersion);
+      _databaseBox.close();
     }
 
     await _migrateFromDeprecation();
-
-    await _databaseBox.put(_versionKey, _newVersion);
-    _databaseBox.close();
 
     return migrated;
   }
@@ -144,7 +146,7 @@ class _DatabaseMigration {
   /// execute the migration operation and set the deprecated setting item
   /// to the default value.
   static Future<void> _migrateFromDeprecation() async {
-    // Migrates isWhiteLoseButNotDrawWhenBoardFull to boardFullAction
+    // Migrates isWhiteLoseButNotDrawWhenBoardFull to boardFullAction (v3.3.2+)
     if (DB().ruleSettings.isWhiteLoseButNotDrawWhenBoardFull == false) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             boardFullAction: BoardFullAction.agreeToDraw,
@@ -152,9 +154,11 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             isWhiteLoseButNotDrawWhenBoardFull: true,
           );
+      logger.v(
+          "$_logTag Migrated from isWhiteLoseButNotDrawWhenBoardFull to boardFullAction.");
     }
 
-    // Migrates isLoseButNotChangeSideWhenNoWay to stalemateAction
+    // Migrates isLoseButNotChangeSideWhenNoWay to stalemateAction (v3.3.2+)
     if (DB().ruleSettings.isLoseButNotChangeSideWhenNoWay == false) {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             stalemateAction: StalemateAction.changeSideToMove,
@@ -162,9 +166,33 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             isLoseButNotChangeSideWhenNoWay: true,
           );
+      logger.v(
+          "$_logTag Migrated from isLoseButNotChangeSideWhenNoWay to stalemateAction.");
     }
 
-    logger.v("$_logTag Migrated from deprecation");
+    // Migrates to millFormationActionInPlacingPhase (v4.2.0+)
+    if (DB().ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase == true) {
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
+                .removeOpponentsPieceFromHandThenYourTurn,
+          );
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            mayOnlyRemoveUnplacedPieceInPlacingPhase: false,
+          );
+      logger.v(
+          "$_logTag Migrated from mayOnlyRemoveUnplacedPieceInPlacingPhase to millFormationActionInPlacingPhase.");
+    }
+    if (DB().ruleSettings.hasBannedLocations == true) {
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            millFormationActionInPlacingPhase:
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          );
+      DB().ruleSettings = DB().ruleSettings.copyWith(
+            hasBannedLocations: false,
+          );
+      logger.v(
+          "$_logTag Migrated from hasBannedLocations to millFormationActionInPlacingPhase.");
+    }
   }
 }
 

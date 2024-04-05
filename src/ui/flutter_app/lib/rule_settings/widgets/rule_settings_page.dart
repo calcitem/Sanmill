@@ -31,6 +31,7 @@ import '../models/rule_settings.dart';
 part 'modals/board_full_action_modal.dart';
 part 'modals/endgame_n_move_rule_modal.dart';
 part 'modals/fly_piece_count_modal.dart';
+part 'modals/mill_formation_action_in_placing_phase_modal.dart';
 part 'modals/n_move_rule_modal.dart';
 part 'modals/piece_count_modal.dart';
 part 'modals/stalemate_action_modal.dart';
@@ -148,12 +149,6 @@ class RuleSettingsPage extends StatelessWidget {
   }
 
   // Placing
-  void _setHasBannedLocations(RuleSettings ruleSettings, bool value) {
-    DB().ruleSettings = ruleSettings.copyWith(hasBannedLocations: value);
-
-    logger.v("[config] hasBannedLocations: $value");
-  }
-
   void _setBoardFullAction(BuildContext context, RuleSettings ruleSettings) {
     void callback(BoardFullAction? boardFullAction) {
       Navigator.pop(context);
@@ -180,15 +175,27 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  void _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
-    BuildContext context,
-    RuleSettings ruleSettings,
-    bool value,
-  ) {
-    DB().ruleSettings =
-        ruleSettings.copyWith(mayOnlyRemoveUnplacedPieceInPlacingPhase: value);
+  void _setMillFormationActionInPlacingPhase(
+      BuildContext context, RuleSettings ruleSettings) {
+    void callback(
+        MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase) {
+      Navigator.pop(context);
 
-    logger.v("[config] mayOnlyRemoveUnplacedPieceInPlacingPhase: $value");
+      DB().ruleSettings = ruleSettings.copyWith(
+          millFormationActionInPlacingPhase: millFormationActionInPlacingPhase);
+
+      logger.v(
+          "[config] millFormationActionInPlacingPhase = $millFormationActionInPlacingPhase");
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _MillFormationActionInPlacingPhaseModal(
+        millFormationActionInPlacingPhase:
+            ruleSettings.millFormationActionInPlacingPhase!,
+        onChanged: callback,
+      ),
+    );
   }
 
   // Moving
@@ -303,28 +310,17 @@ class RuleSettingsPage extends StatelessWidget {
         SettingsCard(
           title: Text(S.of(context).placing),
           children: <Widget>[
-            SettingsListTile.switchTile(
-              value: ruleSettings.hasBannedLocations,
-              onChanged: (bool val) =>
-                  _setHasBannedLocations(ruleSettings, val),
-              titleString: S.of(context).hasBannedLocations,
-              subtitleString: S.of(context).hasBannedLocations_Detail,
+            SettingsListTile(
+              onTap: () =>
+                  _setMillFormationActionInPlacingPhase(context, ruleSettings),
+              titleString: S.of(context).whenFormingMillsDuringPlacingPhase,
+              // TODO: whenFormingMillsDuringPlacingPhase_Detail
+              subtitleString: S.of(context).whenFormingMillsDuringPlacingPhase,
             ),
             SettingsListTile(
               onTap: () => _setBoardFullAction(context, ruleSettings),
               titleString: S.of(context).whenBoardIsFull,
               subtitleString: S.of(context).whenBoardIsFull_Detail,
-            ),
-            SettingsListTile.switchTile(
-              value: ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
-              onChanged: (bool val) =>
-                  _setMayOnlyRemoveUnplacedPieceInPlacingPhase(
-                context,
-                ruleSettings,
-                val,
-              ),
-              titleString: S.of(context).removeUnplacedPiece,
-              subtitleString: S.of(context).removeUnplacedPiece_Detail,
             ),
           ],
         ),

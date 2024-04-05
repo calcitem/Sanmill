@@ -140,6 +140,8 @@ class Database {
 
   /// Initializes the [RuleSettings] reference
   static Future<void> _initRuleSettings() async {
+    Hive.registerAdapter<MillFormationActionInPlacingPhase>(
+        MillFormationActionInPlacingPhaseAdapter());
     Hive.registerAdapter<BoardFullAction>(BoardFullActionAdapter());
     Hive.registerAdapter<StalemateAction>(StalemateActionAdapter());
     Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());

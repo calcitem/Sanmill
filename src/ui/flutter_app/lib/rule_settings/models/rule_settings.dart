@@ -37,6 +37,20 @@ enum BoardFullAction {
   agreeToDraw,
 }
 
+@HiveType(typeId: 10)
+enum MillFormationActionInPlacingPhase {
+  @HiveField(0)
+  removeOpponentsPieceFromBoard,
+  @HiveField(1)
+  removeOpponentsPieceFromHandThenOpponentsTurn,
+  @HiveField(2)
+  removeOpponentsPieceFromHandThenYourTurn,
+  @HiveField(3)
+  opponentRemovesOwnPiece,
+  @HiveField(4)
+  markAndDelayRemovingPieces,
+}
+
 @HiveType(typeId: 8)
 enum StalemateAction {
   @HiveField(0)
@@ -84,11 +98,13 @@ class RuleSettings {
     this.flyPieceCount = 3,
     this.piecesAtLeastCount = 3,
     this.hasDiagonalLines = false,
+    @Deprecated('Use [millFormationActionInPlacingPhase] instead')
     this.hasBannedLocations = false,
     this.mayMoveInPlacingPhase = false,
     this.isDefenderMoveFirst = false,
     this.mayRemoveMultiple = false,
     this.mayRemoveFromMillsAlways = false,
+    @Deprecated('Use [millFormationActionInPlacingPhase] instead')
     this.mayOnlyRemoveUnplacedPieceInPlacingPhase = false,
     @Deprecated('Use [boardFullAction] instead')
     this.isWhiteLoseButNotDrawWhenBoardFull = true,
@@ -100,6 +116,8 @@ class RuleSettings {
     this.nMoveRule = 100,
     this.endgameNMoveRule = 100,
     this.threefoldRepetitionRule = true,
+    this.millFormationActionInPlacingPhase =
+        MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -127,6 +145,7 @@ class RuleSettings {
   final int piecesAtLeastCount;
   @HiveField(3)
   final bool hasDiagonalLines;
+  @Deprecated('Use [millFormationActionInPlacingPhase] instead')
   @HiveField(4)
   final bool hasBannedLocations;
   @HiveField(5)
@@ -137,6 +156,7 @@ class RuleSettings {
   final bool mayRemoveMultiple;
   @HiveField(8)
   final bool mayRemoveFromMillsAlways;
+  @Deprecated('Use [millFormationActionInPlacingPhase] instead')
   @HiveField(9)
   final bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
   @Deprecated('Use [boardFullAction] instead')
@@ -157,6 +177,10 @@ class RuleSettings {
   final BoardFullAction? boardFullAction;
   @HiveField(17, defaultValue: StalemateAction.endWithStalemateLoss)
   final StalemateAction? stalemateAction;
+  @HiveField(18,
+      defaultValue:
+          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard)
+  final MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
@@ -182,6 +206,7 @@ class ChamGonuRuleSettings extends RuleSettings {
             piecesCount: 12,
             hasDiagonalLines: true,
             mayFly: false,
-            hasBannedLocations: true,
+            millFormationActionInPlacingPhase:
+                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
             mayRemoveFromMillsAlways: true);
 }

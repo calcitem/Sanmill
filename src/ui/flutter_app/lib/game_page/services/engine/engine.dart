@@ -238,15 +238,16 @@ class Engine {
         (ruleSettings.piecesCount == 12 && ruleSettings.hasDiagonalLines) &&
             ruleSettings.flyPieceCount == 3 &&
             ruleSettings.piecesAtLeastCount == 3 &&
-            ruleSettings.hasBannedLocations == false &&
+            ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase
+                    .removeOpponentsPieceFromBoard &&
             ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
             ruleSettings.stalemateAction ==
                 StalemateAction.endWithStalemateLoss &&
             ruleSettings.mayFly == true &&
             ruleSettings.mayRemoveFromMillsAlways == false &&
             ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.mayMoveInPlacingPhase == false &&
-            ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase == false) {
+            ruleSettings.mayMoveInPlacingPhase == false) {
       usePerfectDatabase = generalSettings.usePerfectDatabase;
     } else {
       usePerfectDatabase = false;
@@ -293,15 +294,15 @@ class Engine {
     await _sendOptions("PiecesAtLeastCount", ruleSettings.piecesAtLeastCount);
 
     // Placing
-    await _sendOptions("HasBannedLocations", ruleSettings.hasBannedLocations);
     await _sendOptions(
         "BoardFullAction",
         ruleSettings.boardFullAction?.index ??
             BoardFullAction.firstPlayerLose.index); // TODO: enum
     await _sendOptions(
-      "MayOnlyRemoveUnplacedPieceInPlacingPhase",
-      ruleSettings.mayOnlyRemoveUnplacedPieceInPlacingPhase,
-    );
+        "MillFormationActionInPlacingPhase",
+        ruleSettings.millFormationActionInPlacingPhase?.index ??
+            MillFormationActionInPlacingPhase
+                .removeOpponentsPieceFromBoard.index); // TODO: enum
     await _sendOptions(
       "MayMoveInPlacingPhase",
       ruleSettings.mayMoveInPlacingPhase,
