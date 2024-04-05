@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Σημείο απαγόρευσης",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Κενό σημείο",
   "@emptyPoint": {
     "description": "Empty point"

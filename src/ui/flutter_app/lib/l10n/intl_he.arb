@@ -1156,10 +1156,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "נקודת איסור",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "נקודה ריקה",
   "@emptyPoint": {
     "description": "Empty point"

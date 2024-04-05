@@ -1168,10 +1168,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Qadağa nöqtəsi",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Boş nöqtə",
   "@emptyPoint": {
     "description": "Empty point"

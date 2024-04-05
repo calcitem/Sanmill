@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Draudimo taškas",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Tuščias taškas",
   "@emptyPoint": {
     "description": "Empty point"

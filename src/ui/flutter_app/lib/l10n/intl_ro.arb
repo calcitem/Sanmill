@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Punct de interzicere",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Punct gol",
   "@emptyPoint": {
     "description": "Empty point"

@@ -1030,10 +1030,6 @@
   "@blackPiece": {
     "description": "Black piece"
   },
-  "banPoint": "Förbudspunkt",
-  "@banPoint": {
-    "description": "Ban point"
-  },
   "emptyPoint": "Tom punkt",
   "@emptyPoint": {
     "description": "Empty point"
