@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "ಇರಿಸುವ ಹಂತದಲ್ಲಿ, ತೆಗೆದ ತುಣುಕುಗಳ ಬಿಂದುಗಳನ್ನು ಇನ್ನು ಮುಂದೆ ಇರಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "ಎರಡನೇ ಆಟಗಾರನು ಮೊದಲು ಚಲಿಸುತ್ತಾನೆ",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

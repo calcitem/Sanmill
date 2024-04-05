@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "Във фазата на поставяне точките на премахнатите фигури вече няма да могат да бъдат поставяни.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "Вторият играч се движи първи",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

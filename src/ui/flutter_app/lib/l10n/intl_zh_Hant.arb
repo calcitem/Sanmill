@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "擺子階段，被吃的子都被標記起來，暫不移除。雙方擺完棋子後，再統一將被標記的棋子全部移除，然後進入走子階段。",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "後擺子的先走子",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

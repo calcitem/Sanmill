@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "પ્લેસિંગ તબક્કામાં, દૂર કરેલા ટુકડાઓના પોઇન્ટ હવે મૂકવામાં સમર્થ હશે નહીં.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "બીજો ખેલાડી પહેલા આગળ વધે છે",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

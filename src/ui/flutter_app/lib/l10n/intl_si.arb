@@ -514,10 +514,6 @@
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "hasBannedLocations_Detail": "තැන්පත් කිරීමේ අවධියේදී, ඉවත් කළ කැබලි ලකුණු නැවත තැන්පත් කළ නොහැකි වේ.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst_Detail": "තැන්පත් කිරීමේ අවධියේ දෙවනුව චලනය කරන ක්‍රීඩකයා, චලන අවධියේ පළමුව චලනය කරයි.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."

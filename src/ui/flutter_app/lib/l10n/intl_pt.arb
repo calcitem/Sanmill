@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "Na fase de colocação, os pontos das peças removidas não podem mais ser colocados.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "O segundo jogador se move primeiro",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

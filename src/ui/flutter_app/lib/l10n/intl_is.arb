@@ -728,10 +728,6 @@
   "@hasDiagonalLines": {
     "description": "Diagonal lines"
   },
-  "hasBannedLocations_Detail": "Í staðsetningarfasanum er ekki lengur hægt að setja punkta á fjarlægðum stykki.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "Annar leikmaður færir sig fyrstur",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

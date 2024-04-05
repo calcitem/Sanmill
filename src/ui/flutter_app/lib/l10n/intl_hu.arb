@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "Az elhelyezési fázisban az eltávolított pontok már nem tudnak darabokat elhelyezni.",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "A második játékos lép először",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

@@ -408,10 +408,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "말을 처음 배치할 때에는 곤으로 인해 지워진 말이 있던 장소에는 둘 수 없습니다. (배치 후 이동을 할 때는 둘 수 있습니다.)",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst": "첫 이동 순서 교차",
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"

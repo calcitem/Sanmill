@@ -514,10 +514,6 @@
   "@hasDiagonalLines_Detail": {
     "description": "Add four diagonal lines to the board."
   },
-  "hasBannedLocations_Detail": "Տեղադրման փուլում հեռացված կտորների կետերն այլևս չեն կարող տեղադրվել:",
-  "@hasBannedLocations_Detail": {
-    "description": "In the placing phase, the points of removed pieces will no longer be able to be placed unless the moving phase is entered."
-  },
   "isDefenderMoveFirst_Detail": "Խաղացողը, ով տեղափոխվում է երկրորդը տեղակայման փուլում, շարժվում է առաջինը շարժման փուլում:",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
