@@ -21,6 +21,7 @@ DWORD
 Deduplicate
 Diagnosticable
 Dieharder
+Dooz
 FONTCHANGE
 FRE
 Func
@@ -36,6 +37,7 @@ HUGEPAGE
 INHAND
 JNICALL
 JNIEXPORT
+kplayer
 LOGD
 LOGF
 LOGI
