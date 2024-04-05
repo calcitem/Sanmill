@@ -121,9 +121,9 @@ static void on_hasDiagonalLines(const Option &o)
     rule.hasDiagonalLines = static_cast<bool>(o);
 }
 
-static void on_hasBannedLocations(const Option &o)
+static void on_millFormationActionInPlacingPhase(const Option &o)
 {
-    rule.hasBannedLocations = static_cast<bool>(o);
+    rule.millFormationActionInPlacingPhase = static_cast<MillFormationActionInPlacingPhase>(static_cast<int>(o));
 }
 
 static void on_mayMoveInPlacingPhase(const Option &o)
@@ -144,11 +144,6 @@ static void on_mayRemoveMultiple(const Option &o)
 static void on_mayRemoveFromMillsAlways(const Option &o)
 {
     rule.mayRemoveFromMillsAlways = static_cast<bool>(o);
-}
-
-static void on_mayOnlyRemoveUnplacedPieceInPlacingPhase(const Option &o)
-{
-    rule.mayOnlyRemoveUnplacedPieceInPlacingPhase = static_cast<bool>(o);
 }
 
 static void on_boardFullAction(const Option &o)
@@ -228,13 +223,14 @@ void init(OptionsMap &o)
     o["flyPieceCount"] << Option(3, 3, 4, on_flyPieceCount);
     o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["HasDiagonalLines"] << Option(false, on_hasDiagonalLines);
-    o["HasBannedLocations"] << Option(false, on_hasBannedLocations);
+    o["MillFormationActionInPlacingPhase"] << Option(
+        static_cast<int>(MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
+        static_cast<int>(MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
+        static_cast<int>(MillFormationActionInPlacingPhase::markAndDelayRemovingPieces), on_millFormationActionInPlacingPhase);
     o["MayMoveInPlacingPhase"] << Option(false, on_mayMoveInPlacingPhase);
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
-    o["MayOnlyRemoveUnplacedPieceInPlacingPhase"]
-        << Option(false, on_mayOnlyRemoveUnplacedPieceInPlacingPhase);
     o["BoardFullAction"] << Option(
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),

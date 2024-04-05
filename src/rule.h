@@ -19,6 +19,14 @@
 
 #include "types.h"
 
+enum class MillFormationActionInPlacingPhase {
+  removeOpponentsPieceFromBoard = 0,
+  removeOpponentsPieceFromHandThenOpponentsTurn = 1,
+  removeOpponentsPieceFromHandThenYourTurn = 2,
+  opponentRemovesOwnPiece = 3,
+  markAndDelayRemovingPieces = 4,
+};
+
 enum class BoardFullAction {
     firstPlayerLose = 0,
     firstAndSecondPlayerRemovePiece = 1,
@@ -54,9 +62,8 @@ struct Rule
     // Add four diagonal lines to the board.
     bool hasDiagonalLines;
 
-    // In the placing phase, the points of removed pieces will no longer be able
-    // to place.
-    bool hasBannedLocations;
+    // The actions that can be taken when forming mills during the placing phase.
+    MillFormationActionInPlacingPhase millFormationActionInPlacingPhase;
 
     // The pieces can move in the placing phase.
     bool mayMoveInPlacingPhase;
@@ -72,10 +79,6 @@ struct Rule
     // By default, players must remove any other pieces first before removing a
     // piece from a formed mill. Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
-
-    // If a player forms the mill in the placing phase, she will remove the
-    // opponent's unplaced piece and continue to make a move.
-    bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
 
     // At the end of the placing phase, before the moving phase begins,
     // the action follows if the board is full of pieces.

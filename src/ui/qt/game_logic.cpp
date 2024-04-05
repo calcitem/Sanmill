@@ -89,7 +89,7 @@ void Game::handleBannedLocations()
     const Piece *board = position.get_board();
 
     // Add banned points in placing phase
-    if (rule.hasBannedLocations && position.get_phase() == Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == BAN_PIECE) {
                 pos = scene.polarCoordinateToPoint(
@@ -111,7 +111,7 @@ void Game::handleBannedLocations()
     }
 
     // Clear banned points in moving phase
-    if (rule.hasBannedLocations && position.get_phase() != Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() != Phase::placing) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();

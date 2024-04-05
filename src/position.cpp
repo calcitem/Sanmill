@@ -555,7 +555,7 @@ Key Position::key_after(Move m) const
     if (mt == MOVETYPE_REMOVE) {
         k ^= Zobrist::psq[~side_to_move()][s];
 
-        if (rule.hasBannedLocations && phase == Phase::placing) {
+        if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
             k ^= Zobrist::psq[BAN][s];
         }
     } else {
@@ -740,7 +740,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                     phase = Phase::moving;
                     action = Action::select;
 
-                    if (rule.hasBannedLocations) {
+                    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
                         remove_ban_pieces();
                     }
 
@@ -761,7 +761,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                                                           1;
             update_key_misc();
 
-            if (rule.mayOnlyRemoveUnplacedPieceInPlacingPhase) {
+            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenYourTurn) {
                 for (int i = 0; i < rm; i++) {
                     if (pieceInHandCount[them] == 0) {
                         pieceToRemoveCount[sideToMove] = rm - i;
@@ -897,7 +897,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     updateMobility(MOVETYPE_REMOVE, s);
 
-    if (rule.hasBannedLocations && phase == Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
         // Remove and put ban
         pc = board[s] = BAN_PIECE;
         update_key(s);
@@ -945,7 +945,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
             phase = Phase::moving;
             action = Action::select;
 
-            if (rule.hasBannedLocations) {
+            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
                 remove_ban_pieces();
             }
 
@@ -1197,7 +1197,7 @@ int Position::calculate_mobility_diff()
 
 void Position::remove_ban_pieces()
 {
-    assert(rule.hasBannedLocations);
+    assert(rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces);
 
     for (int f = 1; f <= FILE_NB; f++) {
         for (int r = 0; r < RANK_NB; r++) {
