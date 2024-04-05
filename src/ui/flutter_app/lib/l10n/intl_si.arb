@@ -1,4 +1,5 @@
 {
+  "@@locale": "si",
   "loseReasonTimeOver": "කාලය අවසන්, {player} පරාජය විය.",
   "@loseReasonTimeOver": {
     "description": "Time Over",
@@ -1488,5 +1489,27 @@
         "example": "5"
       }
     }
-  }
+  },
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "ප්‍රතිවාදීන්ගේ කැබලි(ය) ඔවුන්ගේ අතින් ඉවත් කරන්න; ඉන්පසු එය ප්‍රතිවාදීන්ගේ තැබීමේ වරයි.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "තැබීමේ අවධියේදී නෙරෙන්චි නිර්මාණය කිරීමේදී",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "ප්‍රතිවාදීන්ගේ කැබලි(ය) පුවරුවෙන් ඉවත් කරන්න.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "ප්‍රතිවාදීන්ගේ කැබලි(ය) පුවරුවෙන් ඉවත් කරන්න; ඉන්පසු එය ප්‍රතිවාදීන්ගේ තැබීමේ වරයි.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "ප්‍රතිවාදීන් තමන්ගේම කැබලි(ය) පුවරුවෙන් ඉවත් කරගනී.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "ඔබ ක්‍රියා කිරීමට වෙනුවට, ප්‍රතිවාදීන් තමන්ගේම කැබලි(ය) තෝරාගෙන පුවරුවෙන් ඉවත් කරගනී, තමන්ටම හානිකර ක්‍රියාවක් ගෙන එයි.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "ප්‍රතිවාදීන්ගේ කැබලි(ය) ඔවුන්ගේ අතින් ඉවත් කරන්න; ඉන්පසු ඔබේ වාරය ඔබ චලනය කිරීමට.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "ප්‍රතිවාදීන්ගේ අතින් කැබලි(ය) ඉවත් කරන්න. Multi-remove සැකසුම අනුව, කැබලි කීපයක් ඉවත් කළ යුතු නම් සහ ප්‍රතිවාදීන්ගේ අතේ කැබලි නොමැති වී ඇත්නම්, ප්‍රතිවාදීන්ගේ කැබලි පුවරුවෙන් ඉවත් කිරීම ඉදිරියට ගන්න. ඉන්පසු, ඔබේ වාරය ඔබ චලනය කිරීමට. ඔබ නෙරෙන්චි නිර්මාණය කිරීම ඉදිරියටත් ඉවත් කරන්නේ නම්, ඔබට ප්‍රතිවාදීන්ගේ කැබලි ඉවත් කිරීම තවදුරටත් කල හැකිය.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ප්‍රතිවාදීන්ගේ අතින් කැබලි(ය) ඉවත් කරන්න. Multi-remove සැකසුම අනුව, කැබලි කීපයක් ඉවත් කළ යුතු නම් සහ ප්‍රතිවාදීන්ගේ අතේ කැබලි නොමැති වී ඇත්නම්, ප්‍රතිවාදීන්ගේ කැබලි පුවරුවෙන් ඉවත් කිරීම ඉදිරියට ගන්න. ඉන්පසු, ප්‍රතිවාදීන්ගේ වාරය ඔවුන් චලනය කිරීමට.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "කැබලි ලකුණු කර ඉවත් කිරීම පමා කරන්න.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "තැබීමේ අවධියේදී, ඉවත් කිරීමට නියමිත කැබලි ලකුණු කරන ලදී, සහ දෙපාර්ශවයම මෙම ලකුණු කරන ලද ලක්ෂ්‍යයන් මත නව කැබලි තැබීමට නොහැකියි. චලන අවධියට ප්‍රවේශ වීමේදී, මෙම ලකුණු කරන ලද කැබලි සම්පූර්ණයෙන්ම ඉවත් කරන ලදී, එවිට ක්‍රීඩකයෝ දැන් හිස් වූ ලක්ෂ්‍යයන්ට තමන්ගේ කැබලි චලනය කළ හැකිය.",
+  "@markAndDelayRemovingPieces_Detail": {}
 }

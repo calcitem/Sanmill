@@ -1,4 +1,5 @@
 {
+  "@@locale": "is",
   "yes": "Já",
   "@yes": {
     "description": "Yes"
@@ -1488,5 +1489,27 @@
   "backgroundImage": "Bakgrunnsmynd",
   "@backgroundImage": {},
   "whatIsRandom": "Þegar valÞegar valmöguleikinn „Notaðu fullkominn gagnagrunn“ er ekki virkur, veldur „Random“ stillingin gervigreind til að færa stykki af handahófi án þess að nota nokkur reiknirit fyrir val á hreyfingu. Þetta leiðir venjulega til verulega veikara spilunar. Aftur á móti, þegar „Notaðu fullkominn gagnagrunn“ er virkt, treystir gervigreindin eingöngu á „fullkomna gagnagrunninn“ til að taka ákvarðanir, í stað þess að blanda honum saman við hefðbundin gervigreind reiknirit. Í þessum ham eru hreyfingar gervigreindar algjörlega byggðar á innihaldi gagnagrunnsins og forðast að treysta á rauntímaútreikninga eða leitarreiknirit.möguleikinn „Notaðu fullkominn gagnagrunn“ er ekki virkur, veldur „Random“ stillingin gervigreind til að færa stykki af handahófi án þess að nota nokkur reiknirit fyrir val á hreyfingu. Þetta leiðir venjulega til verulega veikara spilunar. Aftur á móti, þegar „Notaðu fullkominn gagnagrunn“ er virkt, treystir gervigreindin eingöngu á „fullkomna gagnagrunninn“ til að taka ákvarðanir, í stað þess að blanda honum saman við hefðbundin gervigreind reiknirit. Í þessum ham eru hreyfingar gervigreindar algjörlega byggðar á innihaldi gagnagrunnsins og forðast að treysta á rauntímaútreikninga eða leitarreiknirit.",
-  "@whatIsRandom": {}
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Fjarlægðu bríki andstæðingsins úr hendinni á þeim; þá er það kominn að andstæðingnum að setja niður.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Þegar mylla er mynduð í uppsetningarlotunni",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Fjarlægðu bríki andstæðingsins af spilaborðinu.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Fjarlægðu bríki andstæðingsins af spilaborðinu; þá er það kominn að andstæðingnum að setja niður.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "Andstæðingurinn fjarlægir eigin bríki af spilaborðinu.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "Í stað þess að þú grípir til aðgerða, þá velur andstæðingurinn að fjarlægja eigin bríki af spilaborðinu, sem er í reynd aðgerð sem er skaðleg fyrir hann sjálfan.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Fjarlægðu bríki andstæðingsins úr hendinni á þeim; þá er það þinn tími til að hreyfa þig.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Fjarlægðu bríki af hendi andstæðingsins. Ef samkvæmt stillingunni fyrir fjölda til að fjarlægja skal fjarlægja margar bríkur og andstæðingurinn hefur engar bríkur eftir í hendi, skaltu halda áfram að fjarlægja bríkur andstæðingsins af spilaborðinu. Þá er það þinn tími til að hreyfa þig. Ef þú heldur áfram að mynda myllur, þá geturðu haldið áfram að fjarlægja bríkur andstæðingsins.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Fjarlægðu bríki af hendi andstæðingsins. Ef samkvæmt stillingunni fyrir fjölda til að fjarlægja skal fjarlægja margar bríkur og andstæðingurinn hefur engar bríkur eftir í hendi, skaltu halda áfram að fjarlægja bríkur andstæðingsins af spilaborðinu. Þá er það kominn að andstæðingnum að hreyfa sig.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Merktu seinkaða fjarlægingu bríka.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Í uppsetningarlotunni eru bríkur sem á að fjarlægja merktar og hvorugur leikmaður getur sett niður nýjar bríkur á þessum stöðum. Þegar komið er í færslulotuna eru þessar merktar bríkur fjarlægðar að fullu og leikmenn geta þá færst með bríkur sínar á þessar nú tómu stöður.",
+  "@markAndDelayRemovingPieces_Detail": {}
 }
