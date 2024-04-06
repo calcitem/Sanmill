@@ -186,24 +186,27 @@ class RuleSettingsPage extends StatelessWidget {
 
       switch (millFormationActionInPlacingPhase) {
         case MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).removeOpponentsPieceFromBoard_Detail);
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+              S.of(context).removeOpponentsPieceFromBoard_Detail);
           break;
-        case MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenOpponentsTurn:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).removeOpponentsPieceFromHandThenOpponentsTurn_Detail);
+        case MillFormationActionInPlacingPhase
+              .removeOpponentsPieceFromHandThenOpponentsTurn:
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(S
+              .of(context)
+              .removeOpponentsPieceFromHandThenOpponentsTurn_Detail);
           break;
-        case MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenYourTurn:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).removeOpponentsPieceFromHandThenYourTurn_Detail);
+        case MillFormationActionInPlacingPhase
+              .removeOpponentsPieceFromHandThenYourTurn:
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+              S.of(context).removeOpponentsPieceFromHandThenYourTurn_Detail);
           break;
         case MillFormationActionInPlacingPhase.opponentRemovesOwnPiece:
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).opponentRemovesOwnPiece_Detail);
           break;
         case MillFormationActionInPlacingPhase.markAndDelayRemovingPieces:
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear(S.of(context).markAndDelayRemovingPieces_Detail);
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+              S.of(context).markAndDelayRemovingPieces_Detail);
           break;
         case null:
           break;
@@ -339,7 +342,8 @@ class RuleSettingsPage extends StatelessWidget {
               onTap: () =>
                   _setMillFormationActionInPlacingPhase(context, ruleSettings),
               titleString: S.of(context).whenFormingMillsDuringPlacingPhase,
-              subtitleString: S.of(context).whenFormingMillsDuringPlacingPhase_Detail,
+              subtitleString:
+                  S.of(context).whenFormingMillsDuringPlacingPhase_Detail,
             ),
             SettingsListTile(
               onTap: () => _setBoardFullAction(context, ruleSettings),

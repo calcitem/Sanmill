@@ -20,11 +20,11 @@
 #include "types.h"
 
 enum class MillFormationActionInPlacingPhase {
-  removeOpponentsPieceFromBoard = 0,
-  removeOpponentsPieceFromHandThenOpponentsTurn = 1,
-  removeOpponentsPieceFromHandThenYourTurn = 2,
-  opponentRemovesOwnPiece = 3,
-  markAndDelayRemovingPieces = 4,
+    removeOpponentsPieceFromBoard = 0,
+    removeOpponentsPieceFromHandThenOpponentsTurn = 1,
+    removeOpponentsPieceFromHandThenYourTurn = 2,
+    opponentRemovesOwnPiece = 3,
+    markAndDelayRemovingPieces = 4,
 };
 
 enum class BoardFullAction {
@@ -62,7 +62,8 @@ struct Rule
     // Add four diagonal lines to the board.
     bool hasDiagonalLines;
 
-    // The actions that can be taken when forming mills during the placing phase.
+    // The actions that can be taken when forming mills during the placing
+    // phase.
     MillFormationActionInPlacingPhase millFormationActionInPlacingPhase;
 
     // The pieces can move in the placing phase.

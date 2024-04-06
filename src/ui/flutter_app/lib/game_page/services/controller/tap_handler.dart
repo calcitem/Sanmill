@@ -125,23 +125,31 @@ class TapHandler {
                 .isStalemateRemoval(GameController().position.sideToMove)) {
               showTip(S.of(context).tipRemove);
             } else {
-              if ((DB().ruleSettings.boardFullAction == BoardFullAction.firstAndSecondPlayerRemovePiece ||
-                  DB().ruleSettings.boardFullAction == BoardFullAction.secondAndFirstPlayerRemovePiece ||
-                  DB().ruleSettings.boardFullAction == BoardFullAction.sideToMoveRemovePiece) &&
+              if ((DB().ruleSettings.boardFullAction ==
+                          BoardFullAction.firstAndSecondPlayerRemovePiece ||
+                      DB().ruleSettings.boardFullAction ==
+                          BoardFullAction.secondAndFirstPlayerRemovePiece ||
+                      DB().ruleSettings.boardFullAction ==
+                          BoardFullAction.sideToMoveRemovePiece) &&
                   GameController()
-                      .position.pieceOnBoardCount[PieceColor.white]! > 10 && GameController()
-                  .position.pieceOnBoardCount[PieceColor.black]! > 10) {
+                          .position
+                          .pieceOnBoardCount[PieceColor.white]! >
+                      10 &&
+                  GameController()
+                          .position
+                          .pieceOnBoardCount[PieceColor.black]! >
+                      10) {
                 // TODO: Change conditions
                 showTip(S.of(context).tipRemove);
               } else {
-                showTip(S
-                    .of(context)
-                    .tipMill);
+                showTip(S.of(context).tipMill);
               }
             }
           } else {
             if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
-              if (DB().ruleSettings.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenYourTurn) {
+              if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                  MillFormationActionInPlacingPhase
+                      .removeOpponentsPieceFromHandThenYourTurn) {
                 showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
                 if (GameController().position.phase == Phase.placing) {
@@ -152,8 +160,12 @@ class TapHandler {
               }
             } else if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
-              if (DB().ruleSettings.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenYourTurn ||
-                  DB().ruleSettings.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenOpponentsTurn) {
+              if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                      MillFormationActionInPlacingPhase
+                          .removeOpponentsPieceFromHandThenYourTurn ||
+                  DB().ruleSettings.millFormationActionInPlacingPhase ==
+                      MillFormationActionInPlacingPhase
+                          .removeOpponentsPieceFromHandThenOpponentsTurn) {
                 // TODO: HumanVsHuman - Change tip
                 if (GameController().position.phase == Phase.placing) {
                   showTip(S.of(context).tipPlaced, snackBar: false);

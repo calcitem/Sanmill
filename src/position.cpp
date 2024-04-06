@@ -555,7 +555,9 @@ Key Position::key_after(Move m) const
     if (mt == MOVETYPE_REMOVE) {
         k ^= Zobrist::psq[~side_to_move()][s];
 
-        if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
+        if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
+            phase == Phase::placing) {
             k ^= Zobrist::psq[MARKED][s];
         }
     } else {
@@ -731,7 +733,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                 return false;
             }
 
-            if (pieceToRemoveCount[WHITE] > 0 || pieceToRemoveCount[BLACK] > 0) {
+            if (pieceToRemoveCount[WHITE] > 0 ||
+                pieceToRemoveCount[BLACK] > 0) {
                 assert(false);
                 return false;
             }
@@ -740,47 +743,44 @@ bool Position::put_piece(Square s, bool updateRecord)
 
             // Board is full at the end of Placing phase
             if (rule.pieceCount == 12 &&
-                (pieceOnBoardCount[WHITE] +
-                    pieceOnBoardCount[BLACK] >=
-                    SQUARE_NB)) {
-              // TODO: BoardFullAction: Support other actions
-              switch (rule.boardFullAction) {
+                (pieceOnBoardCount[WHITE] + pieceOnBoardCount[BLACK] >=
+                 SQUARE_NB)) {
+                // TODO: BoardFullAction: Support other actions
+                switch (rule.boardFullAction) {
                 case BoardFullAction::firstPlayerLose:
-                  set_gameover(BLACK, GameOverReason::loseFullBoard);
-                  return true;
+                    set_gameover(BLACK, GameOverReason::loseFullBoard);
+                    return true;
                 case BoardFullAction::firstAndSecondPlayerRemovePiece:
-                  pieceToRemoveCount[WHITE] =
-                  pieceToRemoveCount[BLACK] = 1;
-                  change_side_to_move();
-                  break;
+                    pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 1;
+                    change_side_to_move();
+                    break;
                 case BoardFullAction::secondAndFirstPlayerRemovePiece:
-                  pieceToRemoveCount[WHITE] =
-                  pieceToRemoveCount[BLACK] = 1;
-                  keep_side_to_move();
-                  break;
+                    pieceToRemoveCount[WHITE] = pieceToRemoveCount[BLACK] = 1;
+                    keep_side_to_move();
+                    break;
                 case BoardFullAction::sideToMoveRemovePiece:
-                  if (rule.isDefenderMoveFirst) {
-                    set_side_to_move(BLACK);
-                  } else {
-                    set_side_to_move(WHITE);
-                  }
-                  pieceToRemoveCount[sideToMove] = 1;
-                  keep_side_to_move();
-                  break;
+                    if (rule.isDefenderMoveFirst) {
+                        set_side_to_move(BLACK);
+                    } else {
+                        set_side_to_move(WHITE);
+                    }
+                    pieceToRemoveCount[sideToMove] = 1;
+                    keep_side_to_move();
+                    break;
                 case BoardFullAction::agreeToDraw:
-                  set_gameover(DRAW, GameOverReason::drawFullBoard);
-                  return true;
-              }
+                    set_gameover(DRAW, GameOverReason::drawFullBoard);
+                    return true;
+                }
             } else {
-              // Board is not full at the end of Placing phase
-              change_side_to_move();
+                // Board is not full at the end of Placing phase
+                change_side_to_move();
 
-              handle_placing_phase_end();
+                handle_placing_phase_end();
 
-              // Check if Stalemate and change side to move if needed
-              if (check_if_game_is_over()) {
-                return true;
-              }
+                // Check if Stalemate and change side to move if needed
+                if (check_if_game_is_over()) {
+                    return true;
+                }
             }
             // End of set side to move
         } else {
@@ -790,8 +790,12 @@ bool Position::put_piece(Square s, bool updateRecord)
                                                           1;
             update_key_misc();
 
-            if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenYourTurn ||
-                rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn) {
+            if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenYourTurn ||
+                rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenOpponentsTurn) {
                 for (int i = 0; i < rm; i++) {
                     if (pieceInHandCount[them] == 0) {
                         pieceToRemoveCount[sideToMove] = rm - i;
@@ -808,7 +812,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                            pieceInHandCount[BLACK] >= 0);
                 }
 
-                if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn) {
+                if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenOpponentsTurn) {
                     change_side_to_move();
                 }
 
@@ -824,7 +830,6 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
     } else if (phase == Phase::moving) {
-
         if (check_if_game_is_over()) {
             return true;
         }
@@ -919,12 +924,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
     Piece pc = board[s];
 
     CLEAR_BIT(byTypeBB[type_of(pc)],
-              s); // TODO(calcitem): MillFormationActionInPlacingPhase::markAndDelayRemovingPieces and placing need?
+              s); // TODO(calcitem):
+                  // MillFormationActionInPlacingPhase::markAndDelayRemovingPieces
+                  // and placing need?
     CLEAR_BIT(byColorBB[color_of(pc)], s);
 
     updateMobility(MOVETYPE_REMOVE, s);
 
-    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && phase == Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
+        phase == Phase::placing) {
         // Remove and put marked
         pc = board[s] = MARKED_PIECE;
         update_key(s);
@@ -1000,29 +1009,28 @@ bool Position::select_piece(Square s)
 
 void Position::handle_placing_phase_end()
 {
-  if (placingPhaseEndHandled == true ||
-      pieceInHandCount[WHITE] > 0 ||
-      pieceInHandCount[BLACK] > 0 ||
-      pieceToRemoveCount[WHITE] > 0 ||
-      pieceToRemoveCount[BLACK] > 0) {
-    return;
-  }
-
-  if (rule.millFormationActionInPlacingPhase ==
-      MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
-    remove_marked_pieces();
-  }
-
-  if (rule.millFormationActionInPlacingPhase ==
-      MillFormationActionInPlacingPhase::removeOpponentsPieceFromHandThenOpponentsTurn) {
-    if (rule.isDefenderMoveFirst == true) {
-      // TODO: Fix it and let as same as others.
-      set_side_to_move(BLACK);
+    if (placingPhaseEndHandled == true || pieceInHandCount[WHITE] > 0 ||
+        pieceInHandCount[BLACK] > 0 || pieceToRemoveCount[WHITE] > 0 ||
+        pieceToRemoveCount[BLACK] > 0) {
+        return;
     }
-  } else {
-    set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
-  }
-  placingPhaseEndHandled = true;
+
+    if (rule.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
+        remove_marked_pieces();
+    }
+
+    if (rule.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase::
+            removeOpponentsPieceFromHandThenOpponentsTurn) {
+        if (rule.isDefenderMoveFirst == true) {
+            // TODO: Fix it and let as same as others.
+            set_side_to_move(BLACK);
+        }
+    } else {
+        set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
+    }
+    placingPhaseEndHandled = true;
 }
 
 bool Position::resign(Color loser)
@@ -1151,7 +1159,6 @@ bool Position::check_if_game_is_over()
     }
 #endif // RULE_50
 
-
     // Stalemate.
     if (phase == Phase::moving && action == Action::select &&
         is_all_surrounded(sideToMove)) {
@@ -1176,7 +1183,7 @@ bool Position::check_if_game_is_over()
     }
 
     if (pieceToRemoveCount[sideToMove] > 0) {
-      action = Action::remove;
+        action = Action::remove;
     }
 
     return false;
@@ -1209,7 +1216,8 @@ int Position::calculate_mobility_diff()
 
 void Position::remove_marked_pieces()
 {
-    assert(rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces);
+    assert(rule.millFormationActionInPlacingPhase ==
+           MillFormationActionInPlacingPhase::markAndDelayRemovingPieces);
 
     for (int f = 1; f <= FILE_NB; f++) {
         for (int r = 0; r < RANK_NB; r++) {
@@ -1237,19 +1245,20 @@ inline void Position::set_side_to_move(Color c)
     them = ~sideToMove;
 
     if (pieceInHandCount[sideToMove] == 0) {
-      phase = Phase::moving;
-      action = Action::select;
+        phase = Phase::moving;
+        action = Action::select;
     } else {
-      phase = Phase::placing;
-      action = Action::place;
+        phase = Phase::placing;
+        action = Action::place;
     }
 
     if (pieceToRemoveCount[sideToMove] > 0) {
-      action = Action::remove;
+        action = Action::remove;
     }
 }
 
-inline void Position::keep_side_to_move() {
+inline void Position::keep_side_to_move()
+{
     set_side_to_move(sideToMove);
 }
 

@@ -598,7 +598,9 @@ Depth get_search_depth(const Position *pos)
             d = placingDepthTable_9[index];
         } else {
             assert(0 <= index && index <= rule.pieceCount * 2);
-            if (rule.millFormationActionInPlacingPhase != MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && !rule.hasDiagonalLines) {
+            if (rule.millFormationActionInPlacingPhase !=
+                    MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
+                !rule.hasDiagonalLines) {
                 d = placingDepthTable_12_special[index];
             } else {
                 d = placingDepthTable_12[index];

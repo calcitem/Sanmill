@@ -89,7 +89,9 @@ void Game::handleMarkedLocations()
     const Piece *board = position.get_board();
 
     // Add marked points in placing phase
-    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() == Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
+        position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == MARKED_PIECE) {
                 pos = scene.polarCoordinateToPoint(
@@ -111,7 +113,9 @@ void Game::handleMarkedLocations()
     }
 
     // Clear marked points in moving phase
-    if (rule.millFormationActionInPlacingPhase == MillFormationActionInPlacingPhase::markAndDelayRemovingPieces && position.get_phase() != Phase::placing) {
+    if (rule.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
+        position.get_phase() != Phase::placing) {
         while (nTotalPieces < static_cast<int>(pieceList.size())) {
             delete pieceList.at(pieceList.size() - 1);
             pieceList.pop_back();

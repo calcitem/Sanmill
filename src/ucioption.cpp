@@ -123,7 +123,8 @@ static void on_hasDiagonalLines(const Option &o)
 
 static void on_millFormationActionInPlacingPhase(const Option &o)
 {
-    rule.millFormationActionInPlacingPhase = static_cast<MillFormationActionInPlacingPhase>(static_cast<int>(o));
+    rule.millFormationActionInPlacingPhase =
+        static_cast<MillFormationActionInPlacingPhase>(static_cast<int>(o));
 }
 
 static void on_mayMoveInPlacingPhase(const Option &o)
@@ -224,9 +225,13 @@ void init(OptionsMap &o)
     o["PiecesAtLeastCount"] << Option(3, 3, 5, on_piecesAtLeastCount);
     o["HasDiagonalLines"] << Option(false, on_hasDiagonalLines);
     o["MillFormationActionInPlacingPhase"] << Option(
-        static_cast<int>(MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
-        static_cast<int>(MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
-        static_cast<int>(MillFormationActionInPlacingPhase::markAndDelayRemovingPieces), on_millFormationActionInPlacingPhase);
+        static_cast<int>(
+            MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
+        static_cast<int>(
+            MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
+        static_cast<int>(
+            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces),
+        on_millFormationActionInPlacingPhase);
     o["MayMoveInPlacingPhase"] << Option(false, on_mayMoveInPlacingPhase);
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);

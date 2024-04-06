@@ -92,8 +92,8 @@ void MovePicker::score()
                 }
             }
 
-            // cur->value += markedCount;  // placing phrase, place nearby marked
-            // point
+            // cur->value += markedCount;  // placing phrase, place nearby
+            // marked point
 
             // If has Diagonal Lines, black 2nd move place star point is as
             // important as close mill (TODO)

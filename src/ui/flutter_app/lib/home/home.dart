@@ -223,7 +223,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               hasDiagonalLines: true,
               mayFly: false,
               millFormationActionInPlacingPhase:
-                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
               mayRemoveFromMillsAlways: true);
           break;
         default:

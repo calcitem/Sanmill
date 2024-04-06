@@ -466,7 +466,7 @@ class Position {
           // Board is full at the end of Placing phase
           if (DB().ruleSettings.piecesCount == 12 &&
               (pieceOnBoardCount[PieceColor.white]! +
-                  pieceOnBoardCount[PieceColor.black]! >=
+                      pieceOnBoardCount[PieceColor.black]! >=
                   rankNumber * fileNumber)) {
             // TODO: BoardFullAction: Support other actions
             switch (DB().ruleSettings.boardFullAction) {
@@ -475,12 +475,12 @@ class Position {
                 return true;
               case BoardFullAction.firstAndSecondPlayerRemovePiece:
                 pieceToRemoveCount[PieceColor.white] =
-                pieceToRemoveCount[PieceColor.black] = 1;
+                    pieceToRemoveCount[PieceColor.black] = 1;
                 changeSideToMove();
                 break;
               case BoardFullAction.secondAndFirstPlayerRemovePiece:
                 pieceToRemoveCount[PieceColor.white] =
-                pieceToRemoveCount[PieceColor.black] = 1;
+                    pieceToRemoveCount[PieceColor.black] = 1;
                 keepSideToMove();
                 break;
               case BoardFullAction.sideToMoveRemovePiece:
@@ -753,8 +753,7 @@ class Position {
     return const GameResponseOK();
   }
 
-  void handlePlacingPhaseEnd()
-  {
+  void handlePlacingPhaseEnd() {
     if (_placingPhaseEndHandled == true ||
         pieceInHandCount[PieceColor.white]! > 0 ||
         pieceInHandCount[PieceColor.black]! > 0 ||
@@ -769,13 +768,16 @@ class Position {
     }
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase.removeOpponentsPieceFromHandThenOpponentsTurn) {
+        MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn) {
       if (DB().ruleSettings.isDefenderMoveFirst == true) {
         // TODO: Fix it and let as same as others.
         setSideToMove(PieceColor.black);
       }
     } else {
-      setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true ? PieceColor.black : PieceColor.white);
+      setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true
+          ? PieceColor.black
+          : PieceColor.white);
     }
     _placingPhaseEndHandled = true;
   }
