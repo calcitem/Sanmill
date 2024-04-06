@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package com.calcitem.sanmill;
+package com.calcitem.sanmill41;
 
 import android.os.Bundle;
 
@@ -39,7 +39,7 @@ import xcrash.ICrashCallback;
 
 public class MainActivity extends FlutterActivity {
 
-    private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
+    private static final String ENGINE_CHANNEL = "com.calcitem.sanmill41/engine";
 
     private final String TAG_XCRASH = "xCrash";
 

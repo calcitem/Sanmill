@@ -45,7 +45,7 @@
 #endif
 
     FlutterMethodChannel* channel = [FlutterMethodChannel
-       methodChannelWithName:@"com.calcitem.sanmill/engine"
+       methodChannelWithName:@"com.calcitem.sanmill41/engine"
 #if TARGET_OS_OSX
        binaryMessenger:controller.engine.binaryMessenger];
 #else

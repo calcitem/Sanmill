@@ -29,7 +29,7 @@ class AppDelegate: FlutterAppDelegate {
 
         print("Successfully obtained FlutterViewController")
 
-        let channel = FlutterMethodChannel(name: "com.calcitem.sanmill/engine",
+        let channel = FlutterMethodChannel(name: "com.calcitem.sanmill41/engine",
                                           binaryMessenger: controller.engine.binaryMessenger)
 
         channel.setMethodCallHandler { [weak self] (call, result) in
