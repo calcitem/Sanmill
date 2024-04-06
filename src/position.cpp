@@ -1020,16 +1020,13 @@ void Position::handle_placing_phase_end()
         remove_marked_pieces();
     }
 
-    if (rule.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase::
-            removeOpponentsPieceFromHandThenOpponentsTurn) {
-        if (rule.isDefenderMoveFirst == true) {
-            // TODO: Fix it and let as same as others.
-            set_side_to_move(BLACK);
-        }
-    } else {
-        set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
+    if (rule.isDefenderMoveFirst == true) {
+        // TODO: if
+        // set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
+        // Will change 9mm's self play move list. Why?
+        set_side_to_move(BLACK);
     }
+
     placingPhaseEndHandled = true;
 }
 

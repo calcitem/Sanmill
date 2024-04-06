@@ -767,18 +767,13 @@ class Position {
       _removeMarkedStones();
     }
 
-    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase
-            .removeOpponentsPieceFromHandThenOpponentsTurn) {
-      if (DB().ruleSettings.isDefenderMoveFirst == true) {
-        // TODO: Fix it and let as same as others.
-        setSideToMove(PieceColor.black);
-      }
-    } else {
-      setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true
-          ? PieceColor.black
-          : PieceColor.white);
+    if (DB().ruleSettings.isDefenderMoveFirst == true) {
+      // TODO: if
+      // set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
+      // Will change 9mm's self play move list. Why?
+      setSideToMove(PieceColor.black);
     }
+
     _placingPhaseEndHandled = true;
   }
 
