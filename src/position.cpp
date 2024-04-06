@@ -625,6 +625,7 @@ bool Position::reset()
 
     winner = NOBODY;
     gameOverReason = GameOverReason::None;
+    defenderMoveFirstSetted = false;
 
     memset(board, 0, sizeof(board));
     memset(byTypeBB, 0, sizeof(byTypeBB));
@@ -741,8 +742,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                     remove_marked_pieces();
                 }
 
-                if (rule.isDefenderMoveFirst == true) {
+                if (rule.isDefenderMoveFirst == true && !defenderMoveFirstSetted) {
                     set_side_to_move(BLACK);
+                    defenderMoveFirstSetted = true;
                 }
             }
 
@@ -783,8 +785,9 @@ bool Position::put_piece(Square s, bool updateRecord)
                 }
 
                 if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
-                    if (rule.isDefenderMoveFirst == true) {
+                    if (rule.isDefenderMoveFirst == true && !defenderMoveFirstSetted) {
                         set_side_to_move(BLACK);
+                        defenderMoveFirstSetted = true;
                     }
                 }
 
@@ -961,8 +964,9 @@ bool Position::remove_piece(Square s, bool updateRecord)
             remove_marked_pieces();
         }
 
-        if (rule.isDefenderMoveFirst == true) {
+        if (rule.isDefenderMoveFirst == true && !defenderMoveFirstSetted) {
             set_side_to_move(BLACK);
+            defenderMoveFirstSetted = true;
         }
     }
 
@@ -1142,7 +1146,10 @@ bool Position::check_if_game_is_over()
             return false;
         case BoardFullAction::sideToMoveRemovePiece:
             if (rule.isDefenderMoveFirst) {
-                set_side_to_move(BLACK);
+                if (!defenderMoveFirstSetted) {
+                    set_side_to_move(BLACK);
+                    defenderMoveFirstSetted = true;
+                }
             } else {
                 set_side_to_move(WHITE);
             }

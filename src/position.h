@@ -207,6 +207,7 @@ public:
     Color them {NOCOLOR};
     Color winner;
     GameOverReason gameOverReason {GameOverReason::None};
+    bool defenderMoveFirstSetted {false};
 
     Phase phase {Phase::none};
     Action action;

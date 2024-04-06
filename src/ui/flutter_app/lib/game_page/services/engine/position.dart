@@ -70,6 +70,8 @@ class Position {
 
   GameOverReason? gameOverReason;
 
+  bool _defenderMoveFirstSetted = false;
+
   Phase phase = Phase.placing;
   Act action = Act.place;
 
@@ -469,8 +471,9 @@ class Position {
               _removeMarkedStones();
             }
 
-            if (DB().ruleSettings.isDefenderMoveFirst == true) {
+            if (DB().ruleSettings.isDefenderMoveFirst == true && !_defenderMoveFirstSetted) {
               setSideToMove(PieceColor.black);
+              _defenderMoveFirstSetted = true;
             }
           }
 
@@ -522,8 +525,9 @@ class Position {
 
             if (pieceInHandCount[PieceColor.white] == 0 &&
                 pieceInHandCount[PieceColor.black] == 0) {
-              if (DB().ruleSettings.isDefenderMoveFirst == true) {
+              if (DB().ruleSettings.isDefenderMoveFirst == true && !_defenderMoveFirstSetted) {
                 setSideToMove(PieceColor.black);
+                _defenderMoveFirstSetted = true;
               }
             }
 
@@ -710,8 +714,9 @@ class Position {
         _removeMarkedStones();
       }
 
-      if (DB().ruleSettings.isDefenderMoveFirst == true) {
+      if (DB().ruleSettings.isDefenderMoveFirst == true && !_defenderMoveFirstSetted) {
         setSideToMove(PieceColor.black);
+        _defenderMoveFirstSetted = true;
       }
     }
 
@@ -1128,6 +1133,7 @@ extension SetupPosition on Position {
     result = null;
     winner = PieceColor.nobody;
     gameOverReason = null;
+    _defenderMoveFirstSetted = false;
 
     _record = null;
     _currentSquare = 0;
