@@ -123,6 +123,7 @@ public:
     bool check_if_game_is_over();
     void remove_marked_pieces();
     void set_side_to_move(Color c);
+    void keep_side_to_move();
 
     void change_side_to_move();
     Color get_winner() const noexcept;
@@ -188,6 +189,8 @@ public:
     bool is_board_full_removal_at_placing_phase_end();
     bool is_adjacent_to(Square s, Color c);
 
+    void handle_placing_phase_end();
+
     // Data members
     Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
@@ -207,7 +210,7 @@ public:
     Color them {NOCOLOR};
     Color winner;
     GameOverReason gameOverReason {GameOverReason::None};
-    bool defenderMoveFirstSetted {false};
+    bool placingPhaseEndHandled {false};
 
     Phase phase {Phase::none};
     Action action;

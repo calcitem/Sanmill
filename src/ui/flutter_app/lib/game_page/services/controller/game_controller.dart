@@ -175,13 +175,6 @@ class GameController {
       if (GameController().position._checkIfGameIsOver() == true) {
         return const EngineNoBestMove();
       }
-
-      if (GameController()
-              .position
-              .pieceToRemoveCount[GameController().position.sideToMove]! >
-          0) {
-        GameController().position.action = Act.remove;
-      }
     }
 
     if (GameController().isEngineRunning == true && isMoveNow == false) {
