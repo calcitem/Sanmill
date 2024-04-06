@@ -56,6 +56,7 @@ Value Evaluation::value() const
         break;
 
     case Phase::placing:
+    case Phase::moving:
         if (gameOptions.getConsiderMobility()) {
             value += pos.get_mobility_diff();
         }
@@ -73,30 +74,7 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_PLACING_NEEDREMOVE *
-                     pieceToRemoveDiffCount;
-            break;
-        case Action::none:
-            break;
-        }
-
-        break;
-
-    case Phase::moving:
-        if (gameOptions.getConsiderMobility()) {
-            value += pos.get_mobility_diff();
-        }
-
-        value += (pos.piece_on_board_count(WHITE) -
-                  pos.piece_on_board_count(BLACK)) *
-                 VALUE_EACH_PIECE_ONBOARD;
-
-        switch (pos.get_action()) {
-        case Action::select:
-        case Action::place:
-            break;
-        case Action::remove:
-            value += VALUE_EACH_PIECE_MOVING_NEEDREMOVE *
+            value += VALUE_EACH_PIECE_NEEDREMOVE *
                      pieceToRemoveDiffCount;
             break;
         case Action::none:
