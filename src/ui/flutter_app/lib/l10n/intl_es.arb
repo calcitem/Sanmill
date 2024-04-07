@@ -1394,7 +1394,7 @@
   "@markAndDelayRemovingPieces": {},
   "markAndDelayRemovingPieces_Detail": "Durante la fase de colocación, las piezas a ser removidas se marcan, y para ambos jugadores, no se pueden colocar nuevas piezas en estos puntos. Al entrar en la fase de movimiento, estas piezas marcadas se quitan todas juntas, y los jugadores pueden entonces mover sus piezas a estos puntos ahora vacíos.",
   "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Las acciones que se pueden tomar al formar molinos durante la fase de colocación.",
+  "whenFormingMillsDuringPlacingPhase_Detail": "Las medidas que pueden adoptarse al encofrar molinos durante la fase de colocación.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marcado",
   "@marked": {}
