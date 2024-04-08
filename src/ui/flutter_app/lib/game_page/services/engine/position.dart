@@ -70,8 +70,6 @@ class Position {
 
   GameOverReason? gameOverReason;
 
-  bool _placingPhaseEndHandled = false;
-
   Phase phase = Phase.placing;
   Act action = Act.place;
 
@@ -501,9 +499,9 @@ class Position {
             }
           } else {
             // Board is not full at the end of Placing phase
-            changeSideToMove();
-
-            handlePlacingPhaseEnd();
+            if (handlePlacingPhaseEnd() == false) {
+              changeSideToMove();
+            }
 
             // Check if Stalemate and change side to move if needed
             if (_checkIfGameIsOver()) {
@@ -544,13 +542,13 @@ class Position {
                   pieceInHandCount[PieceColor.black]! >= 0);
             }
 
-            if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-                MillFormationActionInPlacingPhase
-                    .removeOpponentsPieceFromHandThenOpponentsTurn) {
-              changeSideToMove();
+            if (handlePlacingPhaseEnd() == false) {
+              if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                  MillFormationActionInPlacingPhase
+                      .removeOpponentsPieceFromHandThenOpponentsTurn) {
+                changeSideToMove();
+              }
             }
-
-            handlePlacingPhaseEnd();
 
             if (_checkIfGameIsOver()) {
               return true;
@@ -704,19 +702,19 @@ class Position {
       return const GameResponseOK();
     }
 
-    if (isStalemateRemoving) {
-      isStalemateRemoving = false;
-      keepSideToMove();
-    } else {
-      changeSideToMove();
+    if (handlePlacingPhaseEnd() == false) {
+      if (isStalemateRemoving) {
+        isStalemateRemoving = false;
+        keepSideToMove();
+      } else {
+        changeSideToMove();
+      }
     }
 
     if (pieceToRemoveCount[sideToMove] != 0) {
       // Audios().playTone(Sound.remove);
       return const GameResponseOK();
     }
-
-    handlePlacingPhaseEnd();
 
     if (pieceInHandCount[sideToMove] == 0) {
       if (_checkIfGameIsOver()) {
@@ -753,13 +751,13 @@ class Position {
     return const GameResponseOK();
   }
 
-  void handlePlacingPhaseEnd() {
-    if (_placingPhaseEndHandled == true ||
+  bool handlePlacingPhaseEnd() {
+    if (phase != Phase.placing ||
         pieceInHandCount[PieceColor.white]! > 0 ||
         pieceInHandCount[PieceColor.black]! > 0 ||
         pieceToRemoveCount[PieceColor.white]! > 0 ||
         pieceToRemoveCount[PieceColor.black]! > 0) {
-      return;
+      return false;
     }
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -772,9 +770,10 @@ class Position {
       // set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
       // Will change 9mm's self play move list. Why?
       setSideToMove(PieceColor.black);
+      return true;
     }
 
-    _placingPhaseEndHandled = true;
+    return false;
   }
 
   bool _resign(PieceColor loser) {
@@ -1132,7 +1131,6 @@ extension SetupPosition on Position {
     result = null;
     winner = PieceColor.nobody;
     gameOverReason = null;
-    _placingPhaseEndHandled = false;
 
     _record = null;
     _currentSquare = 0;

@@ -627,7 +627,6 @@ bool Position::reset()
 
     winner = NOBODY;
     gameOverReason = GameOverReason::None;
-    placingPhaseEndHandled = false;
 
     memset(board, 0, sizeof(board));
     memset(byTypeBB, 0, sizeof(byTypeBB));
@@ -773,9 +772,10 @@ bool Position::put_piece(Square s, bool updateRecord)
                 }
             } else {
                 // Board is not full at the end of Placing phase
-                change_side_to_move();
 
-                handle_placing_phase_end();
+                if (handle_placing_phase_end() == false) {
+                    change_side_to_move();
+                }
 
                 // Check if Stalemate and change side to move if needed
                 if (check_if_game_is_over()) {
@@ -812,13 +812,13 @@ bool Position::put_piece(Square s, bool updateRecord)
                            pieceInHandCount[BLACK] >= 0);
                 }
 
-                if (rule.millFormationActionInPlacingPhase ==
-                    MillFormationActionInPlacingPhase::
-                        removeOpponentsPieceFromHandThenOpponentsTurn) {
-                    change_side_to_move();
+                if (handle_placing_phase_end() == false) {
+                    if (rule.millFormationActionInPlacingPhase ==
+                        MillFormationActionInPlacingPhase::
+                            removeOpponentsPieceFromHandThenOpponentsTurn) {
+                        change_side_to_move();
+                    }
                 }
-
-                handle_placing_phase_end();
 
                 if (check_if_game_is_over()) {
                     return true;
@@ -967,18 +967,18 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
-    if (isStalemateRemoving) {
-        isStalemateRemoving = false;
-        keep_side_to_move();
-    } else {
-        change_side_to_move();
+    if (handle_placing_phase_end() == false) {
+        if (isStalemateRemoving) {
+            isStalemateRemoving = false;
+            keep_side_to_move();
+        } else {
+            change_side_to_move();
+        }
     }
 
     if (pieceToRemoveCount[sideToMove] > 0) {
         return true;
     }
-
-    handle_placing_phase_end();
 
     if (pieceInHandCount[sideToMove] == 0) {
         if (check_if_game_is_over()) {
@@ -1007,12 +1007,12 @@ bool Position::select_piece(Square s)
     return false;
 }
 
-void Position::handle_placing_phase_end()
+bool Position::handle_placing_phase_end()
 {
-    if (placingPhaseEndHandled == true || pieceInHandCount[WHITE] > 0 ||
+    if (phase != Phase::placing || pieceInHandCount[WHITE] > 0 ||
         pieceInHandCount[BLACK] > 0 || pieceToRemoveCount[WHITE] > 0 ||
         pieceToRemoveCount[BLACK] > 0) {
-        return;
+        return false;
     }
 
     if (rule.millFormationActionInPlacingPhase ==
@@ -1025,9 +1025,10 @@ void Position::handle_placing_phase_end()
         // set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
         // Will change 9mm's self play move list. Why?
         set_side_to_move(BLACK);
+        return true;
     }
 
-    placingPhaseEndHandled = true;
+    return false;
 }
 
 bool Position::resign(Color loser)

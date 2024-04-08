@@ -189,7 +189,7 @@ public:
     bool is_board_full_removal_at_placing_phase_end();
     bool is_adjacent_to(Square s, Color c);
 
-    void handle_placing_phase_end();
+    bool handle_placing_phase_end();
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -210,7 +210,6 @@ public:
     Color them {NOCOLOR};
     Color winner;
     GameOverReason gameOverReason {GameOverReason::None};
-    bool placingPhaseEndHandled {false};
 
     Phase phase {Phase::none};
     Action action;
