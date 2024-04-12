@@ -763,9 +763,21 @@ class Position {
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
       _removeMarkedStones();
+    } else if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn) {
+      if (DB().ruleSettings.isDefenderMoveFirst == true) {
+          setSideToMove(PieceColor.black);
+          return true;
+      } else {
+        // Ignore
+        return false;
+      }
     }
 
-    setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true ? PieceColor.black : PieceColor.white);
+    setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true
+        ? PieceColor.black
+        : PieceColor.white);
 
     return true;
   }

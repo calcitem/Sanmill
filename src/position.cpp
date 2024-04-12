@@ -923,10 +923,11 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     Piece pc = board[s];
 
-    CLEAR_BIT(byTypeBB[type_of(pc)],
-              s); // TODO(calcitem):
-                  // MillFormationActionInPlacingPhase::markAndDelayRemovingPieces
-                  // and placing need?
+    CLEAR_BIT(
+        byTypeBB[type_of(pc)],
+        s); // TODO(calcitem):
+            // MillFormationActionInPlacingPhase::markAndDelayRemovingPieces
+            // and placing need?
     CLEAR_BIT(byColorBB[color_of(pc)], s);
 
     updateMobility(MOVETYPE_REMOVE, s);
@@ -1018,6 +1019,16 @@ bool Position::handle_placing_phase_end()
     if (rule.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
         remove_marked_pieces();
+    } else if (rule.millFormationActionInPlacingPhase ==
+               MillFormationActionInPlacingPhase::
+                   removeOpponentsPieceFromHandThenOpponentsTurn) {
+        if (rule.isDefenderMoveFirst == true) {
+            set_side_to_move(BLACK);
+            return true;
+        } else {
+            // Ignore
+            return false;
+        }
     }
 
     set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);

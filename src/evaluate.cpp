@@ -74,8 +74,7 @@ Value Evaluation::value() const
         case Action::place:
             break;
         case Action::remove:
-            value += VALUE_EACH_PIECE_NEEDREMOVE *
-                     pieceToRemoveDiffCount;
+            value += VALUE_EACH_PIECE_NEEDREMOVE * pieceToRemoveDiffCount;
             break;
         case Action::none:
             break;
