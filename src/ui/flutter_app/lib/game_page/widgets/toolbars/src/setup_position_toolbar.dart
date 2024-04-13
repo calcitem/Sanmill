@@ -153,7 +153,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         newPieceColor == PieceColor.black) {
       // TODO: Duplicate: position/gameInstance.sideToMove
       GameController().position.sideToSetup = newPieceColor;
-      GameController().gameInstance.sideToMove = newPieceColor;
+      GameController().position.sideToMove = newPieceColor;
     }
 
     _updateSetupPositionIcons();
@@ -555,9 +555,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       newPieceColor = PieceColor.white; // TODO: Right?
     }
 
-    // TODO: Two sideToMove
-    GameController().gameInstance.sideToMove =
-        GameController().position.sideToMove = newPieceColor;
+    GameController().position.sideToMove = newPieceColor;
 
     updateSetupPositionPiecesCount();
 

@@ -319,8 +319,8 @@ class GameController {
     }
 
     // TODO: WAR
-    if ((GameController().gameInstance.sideToMove == PieceColor.white ||
-            GameController().gameInstance.sideToMove == PieceColor.black) ==
+    if ((GameController().position.sideToMove == PieceColor.white ||
+            GameController().position.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return rootScaffoldMessengerKey.currentState!

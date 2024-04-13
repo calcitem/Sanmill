@@ -218,7 +218,6 @@ class Position {
 
     _sideToMove = sideToMoveMap[sideToMoveStr]!;
     _them = _sideToMove.opponent;
-    GameController().gameInstance.sideToMove = _sideToMove; // Note
 
     final String phaseStr = l[2];
 
@@ -767,8 +766,8 @@ class Position {
         MillFormationActionInPlacingPhase
             .removeOpponentsPieceFromHandThenOpponentsTurn) {
       if (DB().ruleSettings.isDefenderMoveFirst == true) {
-          setSideToMove(PieceColor.black);
-          return true;
+        setSideToMove(PieceColor.black);
+        return true;
       } else {
         // Ignore
         return false;

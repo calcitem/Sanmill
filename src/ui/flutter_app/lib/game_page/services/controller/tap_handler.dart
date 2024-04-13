@@ -80,8 +80,8 @@ class TapHandler {
     }
 
     // TODO: WAR
-    if ((GameController().gameInstance.sideToMove == PieceColor.white ||
-            GameController().gameInstance.sideToMove == PieceColor.black) ==
+    if ((GameController().position.sideToMove == PieceColor.white ||
+            GameController().position.sideToMove == PieceColor.black) ==
         false) {
       // If modify sideToMove, not take effect, I don't know why.
       return const EngineResponseSkip();
@@ -173,8 +173,8 @@ class TapHandler {
                   showTip(S.of(context).tipMove, snackBar: false);
                 }
               } else {
-                final String side = controller.position.sideToMove
-                    .playerName(context);
+                final String side =
+                    controller.position.sideToMove.playerName(context);
                 showTip(S.of(context).tipToMove(side), snackBar: false);
               }
             }
@@ -213,7 +213,7 @@ class TapHandler {
 
             final int? pieceOnBoardCount = GameController()
                 .position
-                .pieceOnBoardCount[controller.gameInstance.sideToMove];
+                .pieceOnBoardCount[controller.position.sideToMove];
             if (GameController().position.phase == Phase.moving &&
                 DB().ruleSettings.mayFly &&
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
@@ -290,9 +290,8 @@ class TapHandler {
                   //  which player's turn to move.
                   showTip(S.of(context).tipMove, snackBar: false);
                 } else {
-                  final String side = controller
-                      .position.sideToMove
-                      .playerName(context);
+                  final String side =
+                      controller.position.sideToMove.playerName(context);
                   showTip(S.of(context).tipToMove(side), snackBar: false);
                 }
               }
@@ -325,8 +324,6 @@ class TapHandler {
     }
 
     if (ret) {
-      controller.gameInstance.sideToMove = GameController().position.sideToMove;
-
       // TODO: Need Others?
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
@@ -378,8 +375,6 @@ class TapHandler {
     } else {
       SoundManager().playTone(Sound.illegal);
     }
-
-    controller.gameInstance.sideToMove = GameController().position.sideToMove;
 
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();

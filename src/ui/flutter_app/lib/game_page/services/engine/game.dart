@@ -29,11 +29,10 @@ class Game {
 
   static const String _logTag = "[game]";
 
-  PieceColor sideToMove = PieceColor.white;
-
   bool get isAiToMove {
-    assert(sideToMove == PieceColor.white || sideToMove == PieceColor.black);
-    return getPlayerByColor(sideToMove).isAi;
+    assert(GameController().position.sideToMove == PieceColor.white ||
+        GameController().position.sideToMove == PieceColor.black);
+    return getPlayerByColor(GameController().position.sideToMove).isAi;
   }
 
   bool get isHumanToMove => !isAiToMove;
@@ -127,8 +126,6 @@ class Game {
       options.customParameters["MoveList"] =
           GameController().gameRecorder.moveHistoryText;
     }
-
-    sideToMove = GameController().position.sideToMove;
 
     _logStat();
 

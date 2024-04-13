@@ -226,10 +226,10 @@ class HeaderIcons extends StatefulWidget {
 
 class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
-      ValueNotifier<IconData>(GameController().gameInstance.sideToMove.icon);
+      ValueNotifier<IconData>(GameController().position.sideToMove.icon);
 
   void showIcons() {
-    _iconDataNotifier.value = GameController().gameInstance.sideToMove.icon;
+    _iconDataNotifier.value = GameController().position.sideToMove.icon;
   }
 
   @override
