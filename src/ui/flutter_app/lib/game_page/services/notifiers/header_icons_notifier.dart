@@ -20,6 +20,10 @@ class HeaderIconsNotifier with ChangeNotifier {
   HeaderIconsNotifier();
 
   void showIcons() {
-    notifyListeners();
+    Future<void>.delayed(Duration.zero, () {
+      Future<void>.delayed(Duration.zero, () {
+        notifyListeners();
+      });
+    });
   }
 }

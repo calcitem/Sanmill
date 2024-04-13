@@ -20,6 +20,8 @@ class SetupPositionNotifier with ChangeNotifier {
   SetupPositionNotifier();
 
   void updateIcons() {
-    notifyListeners();
+    Future<void>.delayed(Duration.zero, () {
+      notifyListeners();
+    });
   }
 }

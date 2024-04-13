@@ -28,6 +28,8 @@ class HeaderTipNotifier with ChangeNotifier {
     logger.v("[tip] $tip");
     showSnackBar = DB().generalSettings.screenReaderSupport && snackBar;
     _message = tip;
-    notifyListeners();
+    Future<void>.delayed(Duration.zero, () {
+      notifyListeners();
+    });
   }
 }
