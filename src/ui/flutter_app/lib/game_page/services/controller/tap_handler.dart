@@ -166,11 +166,12 @@ class TapHandler {
                   DB().ruleSettings.millFormationActionInPlacingPhase ==
                       MillFormationActionInPlacingPhase
                           .removeOpponentsPieceFromHandThenOpponentsTurn) {
-                // TODO: HumanVsHuman - Change tip
                 if (GameController().position.phase == Phase.placing) {
                   showTip(S.of(context).tipPlaced, snackBar: false);
                 } else {
-                  showTip(S.of(context).tipMove, snackBar: false);
+                  final String side =
+                      controller.position.sideToMove.playerName(context);
+                  showTip(S.of(context).tipToMove(side), snackBar: false);
                 }
               } else {
                 final String side =
@@ -285,10 +286,9 @@ class TapHandler {
                                 .pieceOnBoardCount[PieceColor.white] ==
                             11) ||
                     GameController().position.isNeedStalemateRemoval == true) {
-                  // TODO: boardFullAction & StalemateAction: Judging condition is not perfect.
-                  //  Causes under this condition and can not prompt exactly
-                  //  which player's turn to move.
-                  showTip(S.of(context).tipMove, snackBar: false);
+                  final String side =
+                      controller.position.sideToMove.playerName(context);
+                  showTip(S.of(context).tipToMove(side), snackBar: false);
                 } else {
                   final String side =
                       controller.position.sideToMove.playerName(context);
