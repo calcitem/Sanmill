@@ -183,9 +183,13 @@ class _GameBoardState extends State<GameBoard>
 
     if (message != null && (force == true || winner != PieceColor.nobody)) {
       if (GameController().position.action == Act.remove) {
-        GameController()
-            .headerTipNotifier
-            .showTip(S.of(context).tipRemove, snackBar: false);
+        // Fix sometimes tip show "Please place" when action is remove
+        // Commit e9884ea
+        //GameController()
+        //    .headerTipNotifier
+        //    .showTip(S.of(context).tipRemove, snackBar: false);
+        // Because delayed(Duration.zero), so revert it.
+        GameController().headerTipNotifier.showTip(message, snackBar: false);
       } else {
         GameController().headerTipNotifier.showTip(message, snackBar: false);
       }
