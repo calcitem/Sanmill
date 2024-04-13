@@ -148,7 +148,7 @@ class BoardPainter extends CustomPainter {
         position.pieceOnBoardCount[PieceColor.black] == 0) {
       pieceInHandCount = DB().ruleSettings.piecesCount;
     } else {
-      pieceInHandCount = position.pieceInHandCount[PieceColor.black]!;
+      pieceInHandCount = position.pieceInHandCount[position.sideToMove]!;
     }
 
     final TextSpan textSpan = TextSpan(
