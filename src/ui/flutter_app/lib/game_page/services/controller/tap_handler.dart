@@ -123,7 +123,18 @@ class TapHandler {
             if (GameController()
                 .position
                 .isStalemateRemoval(GameController().position.sideToMove)) {
-              showTip(S.of(context).tipRemove);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S.of(context).tipToMove(side)} ${S
+                    .of(context)
+                    .tipRemove}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipRemove);
+              }
             } else {
               if ((DB().ruleSettings.boardFullAction ==
                           BoardFullAction.firstAndSecondPlayerRemovePiece ||
@@ -140,9 +151,31 @@ class TapHandler {
                           .pieceOnBoardCount[PieceColor.black]! >
                       10) {
                 // TODO: Change conditions
-                showTip(S.of(context).tipRemove);
+                if (GameController().gameInstance.gameMode ==
+                    GameMode.humanVsHuman) {
+                  final String side =
+                  controller.position.sideToMove.playerName(context);
+                  showTip("${S.of(context).tipToMove(side)} ${S
+                      .of(context)
+                      .tipRemove}");
+                } else {
+                  showTip(S
+                      .of(context)
+                      .tipRemove);
+                }
               } else {
-                showTip(S.of(context).tipMill);
+                if (GameController().gameInstance.gameMode ==
+                    GameMode.humanVsHuman) {
+                  final String side =
+                  controller.position.sideToMove.playerName(context);
+                  showTip("${S.of(context).tipToMove(side)} ${S
+                      .of(context)
+                      .tipMill}");
+                } else {
+                  showTip(S
+                      .of(context)
+                      .tipMill);
+                }
               }
             }
           } else {
@@ -153,9 +186,31 @@ class TapHandler {
                 showTip(S.of(context).continueToMakeMove, snackBar: false);
               } else {
                 if (GameController().position.phase == Phase.placing) {
-                  showTip(S.of(context).tipPlaced, snackBar: false);
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.humanVsHuman) {
+                    final String side =
+                    controller.position.sideToMove.playerName(context);
+                    showTip("${S
+                        .of(context)
+                        .tipPlaced} ${S.of(context).tipToMove(side)}");
+                  } else {
+                    showTip(S
+                        .of(context)
+                        .tipPlaced);
+                  }
                 } else {
-                  showTip(S.of(context).tipMove, snackBar: false);
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.humanVsHuman) {
+                    final String side =
+                    controller.position.sideToMove.playerName(context);
+                    showTip("${S.of(context).tipToMove(side)} ${S
+                        .of(context)
+                        .tipMove}");
+                  } else {
+                    showTip(S
+                        .of(context)
+                        .tipMove);
+                  }
                 }
               }
             } else if (GameController().gameInstance.gameMode ==
@@ -167,7 +222,11 @@ class TapHandler {
                       MillFormationActionInPlacingPhase
                           .removeOpponentsPieceFromHandThenOpponentsTurn) {
                 if (GameController().position.phase == Phase.placing) {
-                  showTip(S.of(context).tipPlaced, snackBar: false);
+                  final String side =
+                  controller.position.sideToMove.playerName(context);
+                  showTip("${S
+                      .of(context)
+                      .tipPlaced} ${S.of(context).tipToMove(side)}");
                 } else {
                   final String side =
                       controller.position.sideToMove.playerName(context);
@@ -188,7 +247,18 @@ class TapHandler {
           if (!(GameController().position.phase == Phase.moving &&
               GameController().position._board[sq] ==
                   GameController().position.sideToMove)) {
-            showTip(S.of(context).tipBanPlace);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipBanPlace} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipBanPlace);
+            }
           }
         }
 
@@ -198,7 +268,18 @@ class TapHandler {
       select:
       case Act.select:
         if (GameController().position.phase == Phase.placing) {
-          showTip(S.of(context).tipCannotPlace);
+          if (GameController().gameInstance.gameMode ==
+              GameMode.humanVsHuman) {
+            final String side =
+            controller.position.sideToMove.playerName(context);
+            showTip("${S
+                .of(context)
+                .tipCannotPlace} ${S.of(context).tipToMove(side)}");
+          } else {
+            showTip(S
+                .of(context)
+                .tipCannotPlace);
+          }
           break;
         }
 
@@ -220,9 +301,31 @@ class TapHandler {
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
                     pieceOnBoardCount >= 3)) {
               logger.v("$_logTag May fly.");
-              showTip(S.of(context).tipCanMoveToAnyPoint);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S
+                    .of(context)
+                    .tipCanMoveToAnyPoint} ${S.of(context).tipToMove(side)}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipCanMoveToAnyPoint);
+              }
             } else {
-              showTip(S.of(context).tipPlace, snackBar: false);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S.of(context).tipToMove(side)} ${S
+                    .of(context)
+                    .tipPlace}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipPlace);
+              }
               if (DB().generalSettings.screenReaderSupport) {
                 showTip(S.of(context).selected);
               }
@@ -230,17 +333,61 @@ class TapHandler {
             break;
           case IllegalPhase():
             if (GameController().position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipCannotMove);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S
+                    .of(context)
+                    .tipCannotMove} ${S.of(context).tipToMove(side)}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipCannotMove);
+              }
             }
             break;
           case CanOnlyMoveToAdjacentEmptyPoints():
-            showTip(S.of(context).tipCanMoveOnePoint);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipCanMoveOnePoint} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipCanMoveOnePoint);
+            }
             break;
           case SelectOurPieceToMove():
-            showTip(S.of(context).tipSelectPieceToMove);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipSelectPieceToMove} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipSelectPieceToMove);
+            }
             break;
           case IllegalAction():
-            showTip(S.of(context).tipSelectWrong);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipSelectWrong} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipSelectWrong);
+            }
             break;
           default:
             SoundManager().playTone(Sound.illegal);
@@ -264,7 +411,18 @@ class TapHandler {
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
-              showTip(S.of(context).tipContinueMill);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S.of(context).tipToMove(side)} ${S
+                    .of(context)
+                    .tipContinueMill}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipContinueMill);
+              }
             } else {
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsAi) {
@@ -300,24 +458,68 @@ class TapHandler {
           case CanNotRemoveSelf():
             logger.i(
                 "$_logTag removePiece: Cannot Remove our pieces, skip [$sq]");
-            showTip(S.of(context).tipSelectOpponentsPiece);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipSelectOpponentsPiece} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipSelectOpponentsPiece);
+            }
             break;
           case CanNotRemoveMill():
             logger.i(
               "$_logTag removePiece: Cannot remove piece from Mill, skip [$sq]",
             );
-            showTip(S.of(context).tipCannotRemovePieceFromMill);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipCannotRemovePieceFromMill} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipCannotRemovePieceFromMill);
+            }
             break;
           case CanNotRemoveNonadjacent():
             logger.i(
               "$_logTag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
             );
-            showTip(S.of(context).tipCanNotRemoveNonadjacent);
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+              controller.position.sideToMove.playerName(context);
+              showTip("${S
+                  .of(context)
+                  .tipCanNotRemoveNonadjacent} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S
+                  .of(context)
+                  .tipCanNotRemoveNonadjacent);
+            }
             break;
           default:
             logger.v("$_logTag removePiece: skip [$sq]");
             if (GameController().position.phase != Phase.gameOver) {
-              showTip(S.of(context).tipBanRemove);
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.humanVsHuman) {
+                final String side =
+                controller.position.sideToMove.playerName(context);
+                showTip("${S
+                    .of(context)
+                    .tipBanRemove} ${S.of(context).tipToMove(side)}");
+              } else {
+                showTip(S
+                    .of(context)
+                    .tipBanRemove);
+              }
             }
             break;
         }
