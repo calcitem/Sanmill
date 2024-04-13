@@ -173,7 +173,7 @@ class TapHandler {
                   showTip(S.of(context).tipMove, snackBar: false);
                 }
               } else {
-                final String side = controller.gameInstance.sideToMove.opponent
+                final String side = controller.position.sideToMove
                     .playerName(context);
                 showTip(S.of(context).tipToMove(side), snackBar: false);
               }
@@ -290,10 +290,10 @@ class TapHandler {
                   //  which player's turn to move.
                   showTip(S.of(context).tipMove, snackBar: false);
                 } else {
-                  final String them = controller
-                      .gameInstance.sideToMove.opponent
+                  final String side = controller
+                      .position.sideToMove
                       .playerName(context);
-                  showTip(S.of(context).tipToMove(them), snackBar: false);
+                  showTip(S.of(context).tipToMove(side), snackBar: false);
                 }
               }
             }
