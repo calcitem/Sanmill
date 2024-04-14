@@ -1395,5 +1395,7 @@
   "markAndDelayRemovingPieces_Detail": "За време на фазата на поставување, фигурите што треба да се отстранат се означени и двајцата играчи не можат да постават нови фигури на овие точки. По влегувањето во фазата на движење, овие обележани фигури се отстрануваат сосема, а потоа играчите можат да ги преместат своите фигури на овие сега празни точки.",
   "@markAndDelayRemovingPieces_Detail": {},
   "whenFormingMillsDuringPlacingPhase_Detail": "Акциите што може да се преземат при формирање на мелници за време на фазата на поставување.",
-  "@whenFormingMillsDuringPlacingPhase_Detail": {}
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "menu": "Мени",
+  "@menu": {}
 }

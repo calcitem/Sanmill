@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "ಜಾಗದ ಹಂತದಲ್ಲಿ ಗಿರಣಿಗಳನ್ನು ರೂಪಿಸುವಾಗ ಕೈಗೊಳ್ಳಬಹುದಾದ ಕ್ರಿಯೆಗಳು.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "ಗುರುತಿಸಲಾಗಿದೆ",
-  "@marked": {}
+  "@marked": {},
+  "menu": "ಮೆನು",
+  "@menu": {}
 }

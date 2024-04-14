@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Дзеянні, якія могуць быць прыняты пры фарміраванні млыноў на этапе размяшчэння.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Пазначаны",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Меню",
+  "@menu": {}
 }

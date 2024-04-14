@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Les actions qui peuvent être prises lors de la formation des moulins pendant la phase de placement.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marqué",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

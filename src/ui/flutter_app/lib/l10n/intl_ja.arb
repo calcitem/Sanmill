@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "配置フェーズでミルを形成する際に取ることができるアクション。",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "マークされた",
-  "@marked": {}
+  "@marked": {},
+  "menu": "メニュー",
+  "@menu": {}
 }

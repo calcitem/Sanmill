@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Joylashtirish bosqichida tegirmonlar shakllantirilganda amalga oshirilishi mumkin bo‘lgan harakatlar.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Белгиланган",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menyu",
+  "@menu": {}
 }

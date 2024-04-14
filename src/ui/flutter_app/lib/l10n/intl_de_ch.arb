@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Die Aktionen, die beim Formen von Mühlen während der Platzierungsphase unternommen werden können.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Markiert",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menü",
+  "@menu": {}
 }

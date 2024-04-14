@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Darbības, kas veicamas, veidojot dzirnavas izvietošanas posmā.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Označeno",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Izvēlne",
+  "@menu": {}
 }

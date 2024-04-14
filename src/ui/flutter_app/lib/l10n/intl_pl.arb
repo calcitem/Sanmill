@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Działania, które można podjąć podczas formowania młynów w fazie umieszczania.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Oznaczone",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

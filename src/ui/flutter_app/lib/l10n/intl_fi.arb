@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Toimenpiteet, jotka voidaan ottaa myllyjen muodostamisen aikana sijoitusvaiheessa.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Merkitty",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Valikko",
+  "@menu": {}
 }

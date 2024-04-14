@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "הפעולות שניתן לבצע בעת יצירת טחנות בשלב ההנחה.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "מסומן",
-  "@marked": {}
+  "@marked": {},
+  "menu": "תַפְרִיט",
+  "@menu": {}
 }

@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Le azioni che possono essere intraprese durante la formazione dei mulini nella fase di posizionamento.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Contrassegnato",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

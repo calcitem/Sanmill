@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "الإجراءات التي يمكن اتخاذها عند تشكيل المطاحن خلال مرحلة الوضع.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "مُعلَم",
-  "@marked": {}
+  "@marked": {},
+  "menu": "قائمة",
+  "@menu": {}
 }

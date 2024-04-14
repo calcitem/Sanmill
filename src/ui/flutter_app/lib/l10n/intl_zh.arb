@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "在摆子阶段形成三连时，可以采取的行动。",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "标记",
-  "@marked": {}
+  "@marked": {},
+  "menu": "菜单",
+  "@menu": {}
 }

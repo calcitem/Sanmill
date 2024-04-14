@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Åtgärder som kan vidtas när kvarnar bildas under placeringsfasen.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Markant",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Meny",
+  "@menu": {}
 }

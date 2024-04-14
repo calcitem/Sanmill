@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Izinyathelo ezingathathwa lapho kwenziwa amakhaya ngesikhathi sesigaba sokubeka.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Uphawulwe",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Imenyu",
+  "@menu": {}
 }

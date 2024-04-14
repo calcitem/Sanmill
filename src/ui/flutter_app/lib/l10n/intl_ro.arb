@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Acțiunile care pot fi luate în timpul formării morilor în faza de plasare.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marcat",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Meniu",
+  "@menu": {}
 }

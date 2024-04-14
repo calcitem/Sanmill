@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "As ações que podem ser tomadas ao formar moinhos durante a fase de colocação.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marcado",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

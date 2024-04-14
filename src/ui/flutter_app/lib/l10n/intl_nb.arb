@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Handlingene som kan tas når møller dannes under plasseringsfasen.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Merket",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Meny",
+  "@menu": {}
 }

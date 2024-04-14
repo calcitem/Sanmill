@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "තැනීමේ අවධියේදී නෙරෙන්චි සාදන විට කළ හැකි ක්‍රියාකාරකම්.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "සලකුණු කර ඇත",
-  "@marked": {}
+  "@marked": {},
+  "menu": "මෙනුව",
+  "@menu": {}
 }

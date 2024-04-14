@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "အဆင့်တွင်ကစားပွဲအတွင်း၌အတူတကွတည်ဆောက်ကြသည့်အခါယူဆောင်နိုင်သောလုပ်ဆောင်ချက်များ။",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "မှတ်သားထားသည်",
-  "@marked": {}
+  "@marked": {},
+  "menu": "မီနူး",
+  "@menu": {}
 }

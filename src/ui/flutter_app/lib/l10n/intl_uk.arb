@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Дії, які можна виконати під час формування млинів у фазі розміщення.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Позначено",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Меню",
+  "@menu": {}
 }

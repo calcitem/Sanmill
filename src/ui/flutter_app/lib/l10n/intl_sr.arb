@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Акције које се могу предузети приликом формирања млинова у фази постављања.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Означено",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Мени",
+  "@menu": {}
 }

@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "배치 단계에서 참고누를 형성할 때 취할 수 있는 조치들.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "표시됨",
-  "@marked": {}
+  "@marked": {},
+  "menu": "메뉴",
+  "@menu": {}
 }

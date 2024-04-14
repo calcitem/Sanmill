@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "স্থাপন পর্যায়ে মিল গঠনের সময় গৃহীত হতে পারে এমন ক্রিয়াকলাপ।",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "চিহ্নিত",
-  "@marked": {}
+  "@marked": {},
+  "menu": "মেনু",
+  "@menu": {}
 }
