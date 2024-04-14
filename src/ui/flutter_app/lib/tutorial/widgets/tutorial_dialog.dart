@@ -130,24 +130,22 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                     ),
                                   ),
                                   const Spacer(),
-                                  Semantics(
-                                    label: isFinally
+                                  IconButton(
+                                    tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        _finishTutorial(context);
-                                      },
-                                      icon: isFinally
-                                          ? const Icon(
-                                              Icons.done_outline,
-                                              color: Colors.black,
-                                            )
-                                          : const Icon(
-                                              FluentIcons.arrow_exit_20_regular,
-                                              color: Colors.black,
-                                            ),
-                                    ),
+                                    onPressed: () {
+                                      _finishTutorial(context);
+                                    },
+                                    icon: isFinally
+                                        ? const Icon(
+                                            Icons.done_outline,
+                                            color: Colors.black,
+                                          )
+                                        : const Icon(
+                                            FluentIcons.arrow_exit_20_regular,
+                                            color: Colors.black,
+                                          ),
                                   ),
                                   const Spacer(),
                                   Semantics(
@@ -232,24 +230,22 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                     ),
                                   ),
                                   const Spacer(),
-                                  Semantics(
-                                    label: isFinally
+                                  IconButton(
+                                    tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        _finishTutorial(context);
-                                      },
-                                      icon: isFinally
-                                          ? const Icon(
-                                              Icons.done_outline,
-                                              color: Colors.black,
-                                            )
-                                          : const Icon(
-                                              FluentIcons.arrow_exit_20_regular,
-                                              color: Colors.black,
-                                            ),
-                                    ),
+                                    onPressed: () {
+                                      _finishTutorial(context);
+                                    },
+                                    icon: isFinally
+                                        ? const Icon(
+                                            Icons.done_outline,
+                                            color: Colors.black,
+                                          )
+                                        : const Icon(
+                                            FluentIcons.arrow_exit_20_regular,
+                                            color: Colors.black,
+                                          ),
                                   ),
                                   const Spacer(),
                                   Semantics(
@@ -622,6 +618,7 @@ class _Step4State extends State<_Step4> with SingleTickerProviderStateMixin {
                 FluentIcons.arrow_circle_up_24_regular,
                 color: Colors.red,
               ),
+              tooltip: "Move piece up",
               onPressed: () {},
             ),
           ),
@@ -739,6 +736,7 @@ class _Step6State extends State<_Step6> with SingleTickerProviderStateMixin {
                 FluentIcons.arrow_circle_down_right_24_regular,
                 color: Colors.red,
               ),
+              tooltip: "Move piece diagonally down",
               onPressed: () {},
             ),
           ),
