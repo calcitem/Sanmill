@@ -759,12 +759,19 @@ class Position {
       return false;
     }
 
+    final bool invariant =
+        DB().ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase
+                    .removeOpponentsPieceFromHandThenOpponentsTurn ||
+            (DB().ruleSettings.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase
+                        .removeOpponentsPieceFromHandThenYourTurn &&
+                DB().ruleSettings.mayRemoveMultiple == true);
+
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
       _removeMarkedStones();
-    } else if (DB().ruleSettings.millFormationActionInPlacingPhase ==
-        MillFormationActionInPlacingPhase
-            .removeOpponentsPieceFromHandThenOpponentsTurn) {
+    } else if (invariant) {
       if (DB().ruleSettings.isDefenderMoveFirst == true) {
         setSideToMove(PieceColor.black);
         return true;

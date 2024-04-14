@@ -1016,12 +1016,19 @@ bool Position::handle_placing_phase_end()
         return false;
     }
 
+    const bool invariant =
+        rule.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase ::
+                removeOpponentsPieceFromHandThenOpponentsTurn ||
+        (rule.millFormationActionInPlacingPhase ==
+             MillFormationActionInPlacingPhase ::
+                 removeOpponentsPieceFromHandThenYourTurn &&
+         rule.mayRemoveMultiple == true);
+
     if (rule.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
         remove_marked_pieces();
-    } else if (rule.millFormationActionInPlacingPhase ==
-               MillFormationActionInPlacingPhase::
-                   removeOpponentsPieceFromHandThenOpponentsTurn) {
+    } else if (invariant) {
         if (rule.isDefenderMoveFirst == true) {
             set_side_to_move(BLACK);
             return true;
