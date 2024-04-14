@@ -394,10 +394,16 @@ class AppearanceSettingsPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
-          leading: CustomDrawerIcon.of(context)?.drawerIcon,
-          title: Text(
-            S.of(context).appearance,
-            style: AppTheme.appBarTheme.titleTextStyle,
+          leading: Semantics(
+            label: S.of(context).menu,
+            child: CustomDrawerIcon.of(context)?.drawerIcon,
+          ),
+          title: Semantics(
+            header: true,
+            child: Text(
+              S.of(context).appearance,
+              style: AppTheme.appBarTheme.titleTextStyle,
+            ),
           ),
         ),
         body: SettingsList(
