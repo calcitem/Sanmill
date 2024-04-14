@@ -31,32 +31,32 @@ class _PieceCountModal extends StatelessWidget {
       label: S.of(context).piecesCount,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<int>(
-            title: const Text("9"),
-            groupValue: piecesCount,
-            value: 9,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("10"),
-            groupValue: piecesCount,
-            value: 10,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("11"),
-            groupValue: piecesCount,
-            value: 11,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("12"),
-            groupValue: piecesCount,
-            value: 12,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(context, "9", 9),
+      _buildRadioListTile(context, "10", 10),
+      _buildRadioListTile(context, "11", 11),
+      _buildRadioListTile(context, "12", 12),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    int value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<int>(
+        title: Text(title),
+        groupValue: piecesCount,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

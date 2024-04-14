@@ -31,20 +31,30 @@ class _FlyPieceCountModal extends StatelessWidget {
       label: S.of(context).flyPieceCount,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<int>(
-            title: const Text("3"),
-            groupValue: flyPieceCount,
-            value: 3,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("4"),
-            groupValue: flyPieceCount,
-            value: 4,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(context, "3", 3),
+      _buildRadioListTile(context, "4", 4),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    int value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<int>(
+        title: Text(title),
+        groupValue: flyPieceCount,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

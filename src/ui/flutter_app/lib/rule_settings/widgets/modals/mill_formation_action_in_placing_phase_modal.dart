@@ -32,48 +32,59 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            RadioListTile<MillFormationActionInPlacingPhase>(
-              title: Text(S.of(context).removeOpponentsPieceFromBoard),
-              groupValue: millFormationActionInPlacingPhase,
-              value: MillFormationActionInPlacingPhase
-                  .removeOpponentsPieceFromBoard,
-              onChanged: onChanged,
-            ),
-            RadioListTile<MillFormationActionInPlacingPhase>(
-              title: Text(
-                  S.of(context).removeOpponentsPieceFromHandThenOpponentsTurn),
-              groupValue: millFormationActionInPlacingPhase,
-              value: MillFormationActionInPlacingPhase
-                  .removeOpponentsPieceFromHandThenOpponentsTurn,
-              onChanged: onChanged,
-            ),
-            RadioListTile<MillFormationActionInPlacingPhase>(
-              title:
-                  Text(S.of(context).removeOpponentsPieceFromHandThenYourTurn),
-              groupValue: millFormationActionInPlacingPhase,
-              value: MillFormationActionInPlacingPhase
-                  .removeOpponentsPieceFromHandThenYourTurn,
-              onChanged: onChanged,
-            ),
-            /*
-            // TODO: Implement
-            RadioListTile<MillFormationActionInPlacingPhase>(
-              title: Text(S.of(context).opponentRemovesOwnPiece),
-              groupValue: millFormationActionInPlacingPhase,
-              value: MillFormationActionInPlacingPhase.opponentRemovesOwnPiece,
-              onChanged: onChanged,
-            ),
-            */
-            RadioListTile<MillFormationActionInPlacingPhase>(
-              title: Text(S.of(context).markAndDelayRemovingPieces),
-              groupValue: millFormationActionInPlacingPhase,
-              value:
-                  MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-              onChanged: onChanged,
-            ),
-          ],
+          children: _buildRadioListTiles(context),
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(
+        context,
+        S.of(context).removeOpponentsPieceFromBoard,
+        MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removeOpponentsPieceFromHandThenOpponentsTurn,
+        MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenOpponentsTurn,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removeOpponentsPieceFromHandThenYourTurn,
+        MillFormationActionInPlacingPhase
+            .removeOpponentsPieceFromHandThenYourTurn,
+      ),
+      /*
+      // TODO: Implement
+      _buildRadioListTile(
+        context,
+        S.of(context).opponentRemovesOwnPiece,
+        MillFormationActionInPlacingPhase.opponentRemovesOwnPiece,
+      ),
+      */
+      _buildRadioListTile(
+        context,
+        S.of(context).markAndDelayRemovingPieces,
+        MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+      ),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    MillFormationActionInPlacingPhase value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<MillFormationActionInPlacingPhase>(
+        title: Text(title),
+        groupValue: millFormationActionInPlacingPhase,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

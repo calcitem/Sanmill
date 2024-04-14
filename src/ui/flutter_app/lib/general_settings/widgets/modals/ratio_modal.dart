@@ -28,35 +28,35 @@ class _RatioModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: S.of(context).pixelRatio, // TODO: ratio
+      label: S.of(context).pixelRatio, // TODO: Ratio
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<int>(
-            title: const Text("25%"),
-            groupValue: ratio,
-            value: 25,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("50%"),
-            groupValue: ratio,
-            value: 50,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("75%"),
-            groupValue: ratio,
-            value: 75,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("100%"),
-            groupValue: ratio,
-            value: 100,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(context, "25%", 25),
+      _buildRadioListTile(context, "50%", 50),
+      _buildRadioListTile(context, "75%", 75),
+      _buildRadioListTile(context, "100%", 100),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    int value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<int>(
+        title: Text(title),
+        groupValue: ratio,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

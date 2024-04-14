@@ -31,20 +31,38 @@ class _PointPaintingStyleModal extends StatelessWidget {
       label: S.of(context).pointStyle,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<PointPaintingStyle>(
-            title: Text(S.of(context).none),
-            groupValue: pointPaintingStyle,
-            value: PointPaintingStyle.none,
-            onChanged: onPointPaintingStyleChanged,
-          ),
-          RadioListTile<PointPaintingStyle>(
-            title: Text(S.of(context).solid),
-            groupValue: pointPaintingStyle,
-            value: PointPaintingStyle.fill,
-            onChanged: onPointPaintingStyleChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(
+        context,
+        S.of(context).none,
+        PointPaintingStyle.none,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).solid,
+        PointPaintingStyle.fill,
+      ),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    PointPaintingStyle value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<PointPaintingStyle>(
+        title: Text(title),
+        groupValue: pointPaintingStyle,
+        value: value,
+        onChanged: onPointPaintingStyleChanged,
       ),
     );
   }

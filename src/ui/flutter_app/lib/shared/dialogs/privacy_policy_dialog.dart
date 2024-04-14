@@ -42,18 +42,18 @@ class PrivacyPolicyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(
-    Localizations.localeOf(context).languageCode.startsWith("zh"),
-    "The current locale must start with 'zh'",
+      Localizations.localeOf(context).languageCode.startsWith("zh"),
+      "The current locale must start with 'zh'",
     );
     assert(
-    !DB().generalSettings.isPrivacyPolicyAccepted,
-    "The privacy policy must not be accepted",
+      !DB().generalSettings.isPrivacyPolicyAccepted,
+      "The privacy policy must not be accepted",
     );
 
     final ThemeData currentTheme = Theme.of(context);
     final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
     final TextStyle linkTextStyle =
-    bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
+        bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
 
     return AlertDialog(
       title: Text(S.of(context).privacyPolicy),
@@ -116,7 +116,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final ThemeData themeData = Theme.of(context);
   final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;
   final TextStyle linkStyle =
-  aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
+      aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
   final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
       ? Constants.appleStandardEulaUrl

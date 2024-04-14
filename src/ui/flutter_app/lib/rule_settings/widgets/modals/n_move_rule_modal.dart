@@ -31,38 +31,33 @@ class _NMoveRuleModal extends StatelessWidget {
       label: S.of(context).nMoveRule,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<int>(
-            title: const Text("30"),
-            groupValue: nMoveRule,
-            value: 30,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("50"),
-            groupValue: nMoveRule,
-            value: 50,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("60"),
-            groupValue: nMoveRule,
-            value: 60,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("100"),
-            groupValue: nMoveRule,
-            value: 100,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("200"),
-            groupValue: nMoveRule,
-            value: 200,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(context, "30", 30),
+      _buildRadioListTile(context, "50", 50),
+      _buildRadioListTile(context, "60", 60),
+      _buildRadioListTile(context, "100", 100),
+      _buildRadioListTile(context, "200", 200),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    int value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<int>(
+        title: Text(title),
+        groupValue: nMoveRule,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

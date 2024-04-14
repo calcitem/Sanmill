@@ -31,38 +31,33 @@ class _DurationModal extends StatelessWidget {
       label: S.of(context).duration,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<int>(
-            title: const Text("1"),
-            groupValue: duration,
-            value: 1,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("2"),
-            groupValue: duration,
-            value: 2,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("3"),
-            groupValue: duration,
-            value: 3,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("5"),
-            groupValue: duration,
-            value: 5,
-            onChanged: onChanged,
-          ),
-          RadioListTile<int>(
-            title: const Text("10"),
-            groupValue: duration,
-            value: 10,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(context, "1", 1),
+      _buildRadioListTile(context, "2", 2),
+      _buildRadioListTile(context, "3", 3),
+      _buildRadioListTile(context, "5", 5),
+      _buildRadioListTile(context, "10", 10),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    int value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<int>(
+        title: Text(title),
+        groupValue: duration,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

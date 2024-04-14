@@ -31,38 +31,53 @@ class _AlgorithmModal extends StatelessWidget {
       label: S.of(context).algorithm,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.alphaBeta.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.alphaBeta,
-            onChanged: onChanged,
-          ),
-          RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.pvs.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.pvs,
-            onChanged: onChanged,
-          ),
-          RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.mtdf.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.mtdf,
-            onChanged: onChanged,
-          ),
-          RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.mcts.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.mcts,
-            onChanged: onChanged,
-          ),
-          RadioListTile<SearchAlgorithm>(
-            title: Text(SearchAlgorithm.random.name),
-            groupValue: algorithm,
-            value: SearchAlgorithm.random,
-            onChanged: onChanged,
-          ),
-        ],
+        children: _buildRadioListTiles(context),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(
+        context,
+        SearchAlgorithm.alphaBeta.name,
+        SearchAlgorithm.alphaBeta,
+      ),
+      _buildRadioListTile(
+        context,
+        SearchAlgorithm.pvs.name,
+        SearchAlgorithm.pvs,
+      ),
+      _buildRadioListTile(
+        context,
+        SearchAlgorithm.mtdf.name,
+        SearchAlgorithm.mtdf,
+      ),
+      _buildRadioListTile(
+        context,
+        SearchAlgorithm.mcts.name,
+        SearchAlgorithm.mcts,
+      ),
+      _buildRadioListTile(
+        context,
+        SearchAlgorithm.random.name,
+        SearchAlgorithm.random,
+      ),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    SearchAlgorithm value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<SearchAlgorithm>(
+        title: Text(title),
+        groupValue: algorithm,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

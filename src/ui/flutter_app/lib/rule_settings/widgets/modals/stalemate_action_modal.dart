@@ -32,40 +32,54 @@ class _StalemateActionModal extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            RadioListTile<StalemateAction>(
-              title: Text(S.of(context).endWithStalemateLoss),
-              groupValue: stalemateAction,
-              value: StalemateAction.endWithStalemateLoss,
-              onChanged: onChanged,
-            ),
-            RadioListTile<StalemateAction>(
-              title: Text(S.of(context).changeSideToMove),
-              groupValue: stalemateAction,
-              value: StalemateAction.changeSideToMove,
-              onChanged: onChanged,
-            ),
-            RadioListTile<StalemateAction>(
-              title: Text(S.of(context).removeOpponentsPieceAndMakeNextMove),
-              groupValue: stalemateAction,
-              value: StalemateAction.removeOpponentsPieceAndMakeNextMove,
-              onChanged: onChanged,
-            ),
-            RadioListTile<StalemateAction>(
-              title:
-                  Text(S.of(context).removeOpponentsPieceAndChangeSideToMove),
-              groupValue: stalemateAction,
-              value: StalemateAction.removeOpponentsPieceAndChangeSideToMove,
-              onChanged: onChanged,
-            ),
-            RadioListTile<StalemateAction>(
-              title: Text(S.of(context).endWithStalemateDraw),
-              groupValue: stalemateAction,
-              value: StalemateAction.endWithStalemateDraw,
-              onChanged: onChanged,
-            ),
-          ],
+          children: _buildRadioListTiles(context),
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(
+        context,
+        S.of(context).endWithStalemateLoss,
+        StalemateAction.endWithStalemateLoss,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).changeSideToMove,
+        StalemateAction.changeSideToMove,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removeOpponentsPieceAndMakeNextMove,
+        StalemateAction.removeOpponentsPieceAndMakeNextMove,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removeOpponentsPieceAndChangeSideToMove,
+        StalemateAction.removeOpponentsPieceAndChangeSideToMove,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).endWithStalemateDraw,
+        StalemateAction.endWithStalemateDraw,
+      ),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    StalemateAction value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<StalemateAction>(
+        title: Text(title),
+        groupValue: stalemateAction,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }

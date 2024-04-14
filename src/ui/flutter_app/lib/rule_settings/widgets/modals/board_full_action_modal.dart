@@ -32,39 +32,54 @@ class _BoardFullActionModal extends StatelessWidget {
       child: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            RadioListTile<BoardFullAction>(
-              title: Text(S.of(context).firstPlayerLose),
-              groupValue: boardFullAction,
-              value: BoardFullAction.firstPlayerLose,
-              onChanged: onChanged,
-            ),
-            RadioListTile<BoardFullAction>(
-              title: Text(S.of(context).firstAndSecondPlayerRemovePiece),
-              groupValue: boardFullAction,
-              value: BoardFullAction.firstAndSecondPlayerRemovePiece,
-              onChanged: onChanged,
-            ),
-            RadioListTile<BoardFullAction>(
-              title: Text(S.of(context).secondAndFirstPlayerRemovePiece),
-              groupValue: boardFullAction,
-              value: BoardFullAction.secondAndFirstPlayerRemovePiece,
-              onChanged: onChanged,
-            ),
-            RadioListTile<BoardFullAction>(
-              title: Text(S.of(context).sideToMoveRemovePiece),
-              groupValue: boardFullAction,
-              value: BoardFullAction.sideToMoveRemovePiece,
-              onChanged: onChanged,
-            ),
-            RadioListTile<BoardFullAction>(
-              title: Text(S.of(context).agreeToDraw),
-              groupValue: boardFullAction,
-              value: BoardFullAction.agreeToDraw,
-              onChanged: onChanged,
-            ),
-          ],
+          children: _buildRadioListTiles(context),
         ),
+      ),
+    );
+  }
+
+  List<Widget> _buildRadioListTiles(BuildContext context) {
+    return <Widget>[
+      _buildRadioListTile(
+        context,
+        S.of(context).firstPlayerLose,
+        BoardFullAction.firstPlayerLose,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).firstAndSecondPlayerRemovePiece,
+        BoardFullAction.firstAndSecondPlayerRemovePiece,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).secondAndFirstPlayerRemovePiece,
+        BoardFullAction.secondAndFirstPlayerRemovePiece,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).sideToMoveRemovePiece,
+        BoardFullAction.sideToMoveRemovePiece,
+      ),
+      _buildRadioListTile(
+        context,
+        S.of(context).agreeToDraw,
+        BoardFullAction.agreeToDraw,
+      ),
+    ];
+  }
+
+  Widget _buildRadioListTile(
+    BuildContext context,
+    String title,
+    BoardFullAction value,
+  ) {
+    return Semantics(
+      label: title,
+      child: RadioListTile<BoardFullAction>(
+        title: Text(title),
+        groupValue: boardFullAction,
+        value: value,
+        onChanged: onChanged,
       ),
     );
   }
