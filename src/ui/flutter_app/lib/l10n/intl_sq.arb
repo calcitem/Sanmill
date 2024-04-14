@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Veprimet që mund të merren gjatë formimit të mullinjve në fazën e vendosjes.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Shënuar",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

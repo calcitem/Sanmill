@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "The actions that can be taken when forming mills during the placing phase.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marked",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

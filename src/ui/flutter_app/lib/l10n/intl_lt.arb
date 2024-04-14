@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Veiksmai, kuriuos galima atlikti formuojant malūnus išdėstymo etape.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Pažymėtas",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Meniu",
+  "@menu": {}
 }

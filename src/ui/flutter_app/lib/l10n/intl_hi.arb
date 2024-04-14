@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "स्थापना चरण के दौरान मिल्स बनाते समय किए जा सकने वाले कार्य।",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "चिह्नित",
-  "@marked": {}
+  "@marked": {},
+  "menu": "मेन्यू",
+  "@menu": {}
 }

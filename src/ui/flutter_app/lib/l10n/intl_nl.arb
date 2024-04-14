@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "De acties die ondernomen kunnen worden bij het vormen van molens tijdens de plaatsingsfase.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Gemarkeerd",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

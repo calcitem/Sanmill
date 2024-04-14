@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Միլլեր ձևավորելու ընթացքում տեղադրման փուլում կարող ենթակա լինելու գործողությունները։",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Նշված",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Ցանկ",
+  "@menu": {}
 }

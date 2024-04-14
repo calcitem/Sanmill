@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Die aksies wat geneem kan word tydens die vorming van meulens in die plasingsfase.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Gemarkeerd",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Kieslys",
+  "@menu": {}
 }

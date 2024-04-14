@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Akce, které lze podniknout při tvorbě mlýnů ve fázi umisťování.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Označeno",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Nabídka",
+  "@menu": {}
 }

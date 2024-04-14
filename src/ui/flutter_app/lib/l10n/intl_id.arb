@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Tindakan yang dapat diambil saat membentuk Mul-mulan selama fase penempatan.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Ditandai",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

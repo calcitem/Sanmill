@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Las acciones que se pueden tomar al formar molinos durante la fase de colocación.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Marcado",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menú",
+  "@menu": {}
 }

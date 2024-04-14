@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Οι ενέργειες που μπορούν να ληφθούν κατά τη διάρκεια της δημιουργίας μύλων στη φάση τοποθέτησης.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Σημειωμένο",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Μενού",
+  "@menu": {}
 }

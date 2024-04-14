@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Die Maßnahmen, die beim Bilden von Mühlen in der Platzierungsphase ergriffen werden können.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Markiert",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menü",
+  "@menu": {}
 }

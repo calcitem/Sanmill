@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "การกระทำที่สามารถทำได้เมื่อกำลังจัดวางโรงสีในช่วงขั้นตอนการวาง.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "ทำเครื่องหมาย",
-  "@marked": {}
+  "@marked": {},
+  "menu": "เมนู",
+  "@menu": {}
 }

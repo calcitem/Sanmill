@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Yerleştirme aşamasında değirmenler oluşturulurken yapılabilecek eylemler.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "İşaretli",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menü",
+  "@menu": {}
 }

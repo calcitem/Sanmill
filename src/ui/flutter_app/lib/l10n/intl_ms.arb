@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Tindakan yang boleh diambil semasa membentuk kilang semasa fasa penempatan.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Ditandai",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menu",
+  "@menu": {}
 }

@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Hatua zinazoweza kuchukuliwa wakati wa kuunda viwanda wakati wa hatua ya kuweka.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Imewekwa alama",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menyu",
+  "@menu": {}
 }

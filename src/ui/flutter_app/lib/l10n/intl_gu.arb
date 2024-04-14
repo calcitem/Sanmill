@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "પ્લેસિંગ ફેઝ દરમિયાન મિલ્સ બનાવતી વખતે લેવાયેલા પગલાં.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "ચિહ્નિત",
-  "@marked": {}
+  "@marked": {},
+  "menu": "મેનૂ",
+  "@menu": {}
 }

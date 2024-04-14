@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "在擺子階段形成三連時，可以採取的行動。",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "標記",
-  "@marked": {}
+  "@marked": {},
+  "menu": "菜單",
+  "@menu": {}
 }

@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Tegevused, mida saab võtta veskite moodustamisel paigutamise faasis.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Märgitud",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menüü",
+  "@menu": {}
 }

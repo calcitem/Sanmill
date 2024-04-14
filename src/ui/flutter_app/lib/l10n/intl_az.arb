@@ -1495,5 +1495,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Yerləşdirmə mərhələsində dəyirmanların formalaşdırılması zamanı həyata keçirilə bilən fəaliyyətlər.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "İşarələnib",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Menyu",
+  "@menu": {}
 }

@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Действия, которые можно предпринять во время формирования мельниц на этапе размещения.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Отмечено",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Меню",
+  "@menu": {}
 }

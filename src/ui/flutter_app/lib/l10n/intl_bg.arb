@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Действията, които могат да бъдат предприети при формиране на мелници по време на фазата на поставяне.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Маркирано",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Меню",
+  "@menu": {}
 }

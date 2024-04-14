@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Dejanja, ki jih je mogoče sprejeti med oblikovanjem mlinov v fazi postavljanja.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Označeno",
-  "@marked": {}
+  "@marked": {},
+  "menu": "Meni",
+  "@menu": {}
 }

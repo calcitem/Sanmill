@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "اقداماتی که هنگام تشکیل دوزها در فاز قرار دادن می‌توان انجام داد.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "علامت‌گذاری شده",
-  "@marked": {}
+  "@marked": {},
+  "menu": "منو",
+  "@menu": {}
 }

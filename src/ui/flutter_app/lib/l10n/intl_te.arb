@@ -1397,5 +1397,7 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "ప్లేసింగ్ దశలో ఆటగాళ్ళు మిల్లులను ఏర్పరిచినప్పుడు చేపట్టగల చర్యలు.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "గుర్తించబడింది",
-  "@marked": {}
+  "@marked": {},
+  "menu": "మెనూ",
+  "@menu": {}
 }
