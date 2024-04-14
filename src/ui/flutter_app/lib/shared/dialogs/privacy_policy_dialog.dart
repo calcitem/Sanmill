@@ -42,47 +42,51 @@ class PrivacyPolicyDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(
-      Localizations.localeOf(context).languageCode.startsWith("zh"),
-      "The current locale must start with 'zh'",
+    Localizations.localeOf(context).languageCode.startsWith("zh"),
+    "The current locale must start with 'zh'",
     );
     assert(
-      !DB().generalSettings.isPrivacyPolicyAccepted,
-      "The privacy policy must not be accepted",
+    !DB().generalSettings.isPrivacyPolicyAccepted,
+    "The privacy policy must not be accepted",
     );
 
     final ThemeData currentTheme = Theme.of(context);
     final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
     final TextStyle linkTextStyle =
-        bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
+    bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
 
     return AlertDialog(
       title: Text(S.of(context).privacyPolicy),
-      content: RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              style: bodyLargeTextStyle,
-              text: S.of(context).privacyPolicy_Detail_1,
-            ),
-            LinkTextSpan(
-              style: linkTextStyle,
-              text: S.of(context).eula,
-              url: Constants.endUserLicenseAgreementUrl.baseChinese,
-            ),
-            TextSpan(
-              style: bodyLargeTextStyle,
-              text: S.of(context).and,
-            ),
-            LinkTextSpan(
-              style: linkTextStyle,
-              text: S.of(context).privacyPolicy,
-              url: Constants.privacyPolicyUrl.baseChinese,
-            ),
-            TextSpan(
-              style: bodyLargeTextStyle,
-              text: S.of(context).privacyPolicy_Detail_2,
-            ),
-          ],
+      contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: RichText(
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                style: bodyLargeTextStyle,
+                text: S.of(context).privacyPolicy_Detail_1,
+              ),
+              LinkTextSpan(
+                style: linkTextStyle,
+                text: S.of(context).eula,
+                url: Constants.endUserLicenseAgreementUrl.baseChinese,
+              ),
+              TextSpan(
+                style: bodyLargeTextStyle,
+                text: S.of(context).and,
+              ),
+              LinkTextSpan(
+                style: linkTextStyle,
+                text: S.of(context).privacyPolicy,
+                url: Constants.privacyPolicyUrl.baseChinese,
+              ),
+              TextSpan(
+                style: bodyLargeTextStyle,
+                text: S.of(context).privacyPolicy_Detail_2,
+              ),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
@@ -112,7 +116,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final ThemeData themeData = Theme.of(context);
   final TextStyle aboutTextStyle = themeData.textTheme.bodyLarge!;
   final TextStyle linkStyle =
-      aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
+  aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
   final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
       ? Constants.appleStandardEulaUrl
@@ -131,32 +135,36 @@ Future<void> showPrivacyDialog(BuildContext context) async {
     barrierDismissible: false,
     builder: (BuildContext context) => AlertDialog(
       title: Text(S.of(context).privacyPolicy),
-      content: RichText(
-        text: TextSpan(
-          children: <TextSpan>[
-            TextSpan(
-              style: aboutTextStyle,
-              text: S.of(context).privacyPolicy_Detail_1,
-            ),
-            LinkTextSpan(
-              style: linkStyle,
-              text: S.of(context).eula,
-              url: eulaURL,
-            ),
-            TextSpan(
-              style: aboutTextStyle,
-              text: S.of(context).and,
-            ),
-            LinkTextSpan(
-              style: linkStyle,
-              text: S.of(context).privacyPolicy,
-              url: privacyPolicyURL,
-            ),
-            TextSpan(
-              style: aboutTextStyle,
-              text: S.of(context).privacyPolicy_Detail_2,
-            ),
-          ],
+      contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(minHeight: 48),
+        child: RichText(
+          text: TextSpan(
+            children: <TextSpan>[
+              TextSpan(
+                style: aboutTextStyle,
+                text: S.of(context).privacyPolicy_Detail_1,
+              ),
+              LinkTextSpan(
+                style: linkStyle,
+                text: S.of(context).eula,
+                url: eulaURL,
+              ),
+              TextSpan(
+                style: aboutTextStyle,
+                text: S.of(context).and,
+              ),
+              LinkTextSpan(
+                style: linkStyle,
+                text: S.of(context).privacyPolicy,
+                url: privacyPolicyURL,
+              ),
+              TextSpan(
+                style: aboutTextStyle,
+                text: S.of(context).privacyPolicy_Detail_2,
+              ),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
