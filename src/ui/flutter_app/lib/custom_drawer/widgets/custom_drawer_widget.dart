@@ -157,9 +157,9 @@ class CustomDrawerState extends State<CustomDrawer>
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
         progress: ReverseAnimation(_drawerAnimationController),
+        semanticLabel: S.of(context).menu,
         color: Colors.white,
       ),
-      tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       onPressed: () => _drawerController.toggleDrawer(),
     );
 

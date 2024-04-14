@@ -23,6 +23,7 @@ import 'package:extended_sliver/extended_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
+import '../generated/intl/l10n.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/themes/app_theme.dart';
