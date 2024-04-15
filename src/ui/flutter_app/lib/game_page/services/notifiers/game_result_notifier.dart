@@ -24,8 +24,6 @@ class GameResultNotifier with ChangeNotifier {
 
   void showResult({required bool force}) {
     _force = force;
-    Future<void>.delayed(Duration.zero, () {
-      notifyListeners();
-    });
+    notifyListeners();
   }
 }
