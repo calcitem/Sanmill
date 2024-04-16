@@ -16,10 +16,7 @@ class HowToPlayScreen extends StatelessWidget {
         appBar: AppBar(
           elevation: 0.0,
           backgroundColor: DB().colorSettings.darkBackgroundColor,
-          leading: Semantics(
-            label: S.of(context).menu,
-            child: CustomDrawerIcon.of(context)?.drawerIcon,
-          ),
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).howToPlay,
             style: AppTheme.helpTextStyle,

@@ -136,10 +136,7 @@ class AboutPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.aboutPageBackgroundColor,
         appBar: AppBar(
-          leading: Semantics(
-            label: S.of(context).menu,
-            child: CustomDrawerIcon.of(context)?.drawerIcon,
-          ),
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).about,
             style: AppTheme.appBarTheme.titleTextStyle,

@@ -440,10 +440,7 @@ class GeneralSettingsPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
-          leading: Semantics(
-            label: S.of(context).menu,
-            child: CustomDrawerIcon.of(context)?.drawerIcon,
-          ),
+          leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).generalSettings,
             style: AppTheme.appBarTheme.titleTextStyle,
