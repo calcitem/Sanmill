@@ -137,6 +137,44 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   /// as user need with passing DrawerIndex (Enum index)
   void _changeIndex(_DrawerIndex index) {
     _controller.hideDrawer();
+
+    // Print the name of the screen being switched to (in English)
+    switch (index) {
+      case _DrawerIndex.humanVsAi:
+        logger.i('Switching to Human vs AI');
+        break;
+      case _DrawerIndex.humanVsHuman:
+        logger.i('Switching to Human vs Human');
+        break;
+      case _DrawerIndex.aiVsAi:
+        logger.i('Switching to AI vs AI');
+        break;
+      case _DrawerIndex.setupPosition:
+        logger.i('Switching to Setup Position');
+        break;
+      case _DrawerIndex.generalSettings:
+        logger.i('Switching to General Settings');
+        break;
+      case _DrawerIndex.ruleSettings:
+        logger.i('Switching to Rule Settings');
+        break;
+      case _DrawerIndex.appearance:
+        logger.i('Switching to Appearance');
+        break;
+      case _DrawerIndex.howToPlay:
+        logger.i('Switching to How To Play');
+        break;
+      case _DrawerIndex.feedback:
+        logger.i('Switching to Feedback'); // Assuming feedback is handled separately
+        break;
+      case _DrawerIndex.about:
+        logger.i('Switching to About');
+        break;
+      case _DrawerIndex.exit:
+        logger.i('Exiting...');
+        break;
+    }
+
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
       return;
     }

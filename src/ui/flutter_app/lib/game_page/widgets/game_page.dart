@@ -174,29 +174,41 @@ class _GameState extends State<_Game> {
     setState(() {}); // TODO: Only refresh PieceIndicator.
   }
 
-  void _showGameModalBottomSheet(BuildContext context) => showModalBottomSheet(
-        context: context,
-        backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
-        builder: (_) => const _GameOptionsModal(),
-      );
+  void _showGameModalBottomSheet(BuildContext context) {
+    logger.i("Game modal bottom sheet opened");
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
+      builder: (_) => const _GameOptionsModal(),
+    );
+  }
 
-  void _showGeneralSettings(BuildContext context) => Navigator.push(
-        context,
-        MaterialPageRoute<GeneralSettingsPage>(
-            builder: (_) => const GeneralSettingsPage()),
-      );
+  void _showGeneralSettings(BuildContext context) {
+    logger.i("General settings page opened");
+    Navigator.push(
+      context,
+      MaterialPageRoute<GeneralSettingsPage>(
+          builder: (_) => const GeneralSettingsPage()),
+    );
+  }
 
-  void _showMoveModalBottomSheet(BuildContext context) => showModalBottomSheet(
-        context: context,
-        backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
-        builder: (_) => _MoveOptionsModal(mainContext: context),
-      );
+  void _showMoveModalBottomSheet(BuildContext context) {
+    logger.i("Move modal bottom sheet opened");
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
+      builder: (_) => _MoveOptionsModal(mainContext: context),
+    );
+  }
 
-  void _showInfoDialog(BuildContext context) => showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (_) => const _InfoDialog(),
-      );
+  void _showInfoDialog(BuildContext context) {
+    logger.i("Info dialog opened");
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (_) => const _InfoDialog(),
+    );
+  }
 
   // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
 

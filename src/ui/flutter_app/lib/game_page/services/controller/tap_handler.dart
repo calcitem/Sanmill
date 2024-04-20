@@ -224,10 +224,10 @@ class TapHandler {
             }
           }
           ret = true;
-          logger.v("$_logTag putPiece: [$sq]");
+          logger.i("$_logTag putPiece: [$sq]");
           break;
         } else {
-          logger.v("$_logTag putPiece: skip [$sq]");
+          logger.i("$_logTag putPiece: skip [$sq]");
           if (!(GameController().position.phase == Phase.moving &&
               GameController().position._board[sq] ==
                   GameController().position.sideToMove)) {
@@ -268,7 +268,7 @@ class TapHandler {
             SoundManager().playTone(Sound.select);
             controller.gameInstance._select(squareToIndex[sq]!);
             ret = true;
-            logger.v("$_logTag selectPiece: [$sq]");
+            logger.i("$_logTag selectPiece: [$sq]");
 
             final int? pieceOnBoardCount = GameController()
                 .position
@@ -277,7 +277,7 @@ class TapHandler {
                 DB().ruleSettings.mayFly &&
                 (pieceOnBoardCount! <= DB().ruleSettings.flyPieceCount &&
                     pieceOnBoardCount >= 3)) {
-              logger.v("$_logTag May fly.");
+              logger.i("$_logTag May fly.");
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
                 final String side =
@@ -350,7 +350,7 @@ class TapHandler {
             break;
           default:
             SoundManager().playTone(Sound.illegal);
-            logger.v("$_logTag selectPiece: skip [$sq]");
+            logger.i("$_logTag selectPiece: skip [$sq]");
             break;
         }
 
@@ -366,7 +366,7 @@ class TapHandler {
         switch (removeRet) {
           case GameResponseOK():
             ret = true;
-            logger.v("$_logTag removePiece: [$sq]");
+            logger.i("$_logTag removePiece: [$sq]");
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
@@ -453,7 +453,7 @@ class TapHandler {
             }
             break;
           default:
-            logger.v("$_logTag removePiece: skip [$sq]");
+            logger.i("$_logTag removePiece: skip [$sq]");
             if (GameController().position.phase != Phase.gameOver) {
               if (GameController().gameInstance.gameMode ==
                   GameMode.humanVsHuman) {
