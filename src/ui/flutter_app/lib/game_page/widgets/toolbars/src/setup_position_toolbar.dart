@@ -521,8 +521,18 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
         assert(false);
       }
     } else if (newPhase == Phase.moving) {
-      GameController().position.pieceInHandCount[PieceColor.white] =
-          GameController().position.pieceInHandCount[PieceColor.black] = 0;
+      if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+              MillFormationActionInPlacingPhase
+                  .removeOpponentsPieceFromHandThenYourTurn ||
+          DB().ruleSettings.millFormationActionInPlacingPhase ==
+              MillFormationActionInPlacingPhase
+                  .removeOpponentsPieceFromHandThenOpponentsTurn) {
+        // TODO: Right?
+        GameController().position.pieceInHandCount[newPieceColor] = 0;
+      } else {
+        GameController().position.pieceInHandCount[PieceColor.white] =
+            GameController().position.pieceInHandCount[PieceColor.black] = 0;
+      }
     } else {
       assert(false);
     }

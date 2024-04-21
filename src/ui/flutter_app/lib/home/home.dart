@@ -318,13 +318,20 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
-      CustomDrawerItem<_DrawerIndex>(
-        itemValue: _DrawerIndex.setupPosition,
-        itemTitle: S.of(context).setupPosition,
-        itemIcon: const Icon(FluentIcons.drafts_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
+      // TODO: Support removeOpponentsPieceFromHand
+      if (DB().ruleSettings.millFormationActionInPlacingPhase !=
+              MillFormationActionInPlacingPhase
+                  .removeOpponentsPieceFromHandThenYourTurn &&
+          DB().ruleSettings.millFormationActionInPlacingPhase !=
+              MillFormationActionInPlacingPhase
+                  .removeOpponentsPieceFromHandThenOpponentsTurn)
+        CustomDrawerItem<_DrawerIndex>(
+          itemValue: _DrawerIndex.setupPosition,
+          itemTitle: S.of(context).setupPosition,
+          itemIcon: const Icon(FluentIcons.drafts_24_regular),
+          currentSelectedValue: _drawerIndex,
+          onSelectionChanged: _changeIndex,
+        ),
       CustomDrawerItem<_DrawerIndex>(
         itemValue: _DrawerIndex.generalSettings,
         itemTitle: S.of(context).generalSettings,
