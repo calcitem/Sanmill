@@ -832,12 +832,20 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   @override
-  void dispose() {
+  void deactivate() {
     GameController()
         .setupPositionNotifier
         .addListener(_updateSetupPositionIcons);
-    setSetupPositionDone();
+    if (setSetupPositionDone() == false) {
+      logger.e("Invalid Position.");
+    }
     logger.i("FEN: ${GameController().position.fen}");
+
+    super.deactivate();
+  }
+
+  @override
+  void dispose() {
     super.dispose();
   }
 }
