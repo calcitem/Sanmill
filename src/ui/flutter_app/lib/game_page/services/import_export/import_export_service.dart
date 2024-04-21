@@ -303,7 +303,7 @@ class ImportService {
   @visibleForTesting
   static void import(String moveList) {
     String ml = moveList;
-    final String fen = GameController().position.fen;
+    final String? fen = GameController().position.fen;
     String? setupFen;
 
     logger.v("Clipboard text: $moveList");

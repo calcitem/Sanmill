@@ -142,7 +142,7 @@ class Position {
   /// p - Place Action
   /// s - Select Action
   /// r - Remove Action
-  String get fen {
+  String? get fen {
     final StringBuffer buffer = StringBuffer();
 
     // Piece placement data

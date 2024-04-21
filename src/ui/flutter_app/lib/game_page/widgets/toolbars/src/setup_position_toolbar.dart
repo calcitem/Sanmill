@@ -266,12 +266,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   Future<void> setSetupPositionCopy(BuildContext context) async {
     setSetupPositionDone();
 
-    final String fen = GameController().position.fen;
+    final String? fen = GameController().position.fen;
     final String copyStr = S.of(context).copy;
 
-    await Clipboard.setData(
-      ClipboardData(text: GameController().position.fen),
-    );
+    if (fen != null) {
+      await Clipboard.setData(
+        ClipboardData(text: fen),
+      );
+    } else {
+      logger.e("FEN is null.");
+    }
 
     if (mounted) {
       setState(() {});
@@ -603,7 +607,12 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     }
 
     //MillController().recorder.clear(); // TODO: Set and parse fen.
-    final String fen = position.fen;
+    final String? fen = position.fen;
+    if (fen == null) {
+      logger.e("FEN is null.");
+      return false;
+    }
+
     GameController().gameRecorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
