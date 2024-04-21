@@ -708,7 +708,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         if (pieceInHandCount[us] > 0) {
             pieceInHandCount[us]--;
         } else {
-            assert(false);
+            // TODO: Deal with invalid position
+            // assert(false);
             return false;
         }
 
