@@ -562,14 +562,20 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // TODO: WAR patch. Specifically for the initial position.
     //  The position is illegal after switching to the Setup Position
     //  and then switching back.
-    if (GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        GameController().position.pieceOnBoardCount[PieceColor.black] == 0 &&
-        GameController().position.pieceInHandCount[PieceColor.white] == 0 &&
-        GameController().position.pieceInHandCount[PieceColor.black] == 0) {
+    if (GameController().position.pieceOnBoardCount[PieceColor.white]! <= 0 &&
+        GameController().position.pieceOnBoardCount[PieceColor.black]! <= 0 &&
+        GameController().position.pieceInHandCount[PieceColor.white]! <= 0 &&
+        GameController().position.pieceInHandCount[PieceColor.black]! <= 0) {
       newPlaced = 0;
       newPhase = Phase.placing;
       newPieceCountNeedRemove[PieceColor.white] =
           newPieceCountNeedRemove[PieceColor.black] = 0;
+
+      GameController().position.pieceOnBoardCount[PieceColor.white] = GameController().position.pieceOnBoardCount[PieceColor.black] = 0;
+      GameController().position.pieceInHandCount[PieceColor.white] = GameController().position.pieceInHandCount[PieceColor.black] = DB().ruleSettings.piecesCount;
+      // Note: _updateSetupPositionIcons -> setSetupPositionNeedRemove use newPieceCountNeedRemove to update pieceCountNeedRemove before, so maybe it it not need to do this.
+      GameController().position.pieceToRemoveCount[PieceColor.white] = GameController().position.pieceToRemoveCount[PieceColor.black] = 0;
+
       GameController().reset(force: true);
     }
 
