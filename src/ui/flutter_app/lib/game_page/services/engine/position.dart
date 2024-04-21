@@ -337,6 +337,50 @@ class Position {
       return false;
     }
 
+    // Part 4: White piece on board
+    final int whitePieceOnBoard = int.parse(parts[4]);
+    if (phrase == 'm' && whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+      logger.e('Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+      return false;
+    }
+    if (whitePieceOnBoard < 0 || whitePieceOnBoard > DB().ruleSettings.piecesCount) {
+      logger.e('Invalid white piece on board. Must be between 0 and 12.');
+      return false;
+    }
+
+    // Part 5: White piece in hand
+    final int whitePieceInHand = int.parse(parts[5]);
+    if (whitePieceInHand < 0 || whitePieceInHand > DB().ruleSettings.piecesCount) {
+      logger.e('Invalid white piece in hand. Must be between 0 and 12.');
+      return false;
+    }
+    if (activeColor == 'w' && phrase == 'p' && whitePieceInHand == 0) {
+      logger.e('Invalid white piece in hand. Must be greater than 0.');
+      return false;
+    }
+
+    // Part 6: Black piece on board
+    final int blackPieceOnBoard = int.parse(parts[6]);
+    if (phrase == 'm' && blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+      logger.e('Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+      return false;
+    }
+    if (blackPieceOnBoard < 0 || blackPieceOnBoard > DB().ruleSettings.piecesCount) {
+      logger.e('Invalid black piece on board. Must be between 0 and 12.');
+      return false;
+    }
+
+    // Part 7: Black piece in hand
+    final int blackPieceInHand = int.parse(parts[7]);
+    if (blackPieceInHand < 0 || blackPieceInHand > DB().ruleSettings.piecesCount) {
+      logger.e('Invalid black piece in hand. Must be between 0 and 12.');
+      return false;
+    }
+    if (activeColor == 'b' && phrase == 'p' && blackPieceInHand == 0) {
+      logger.e('Invalid black piece in hand. Must be greater than 0.');
+      return false;
+    }
+
     // Parts 4-7: Counts on and off board
     List<int> counts = parts.getRange(4, 8).map(int.parse).toList();
     if (counts.any((int count) =>
