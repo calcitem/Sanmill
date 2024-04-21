@@ -498,16 +498,25 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     final int piecesCount = DB().ruleSettings.piecesCount;
 
-    // TODO: Update dynamically
+    // TODO: Update dynamically and adapt BoardFullAction = 1
     if (newPhase == Phase.placing) {
       GameController().position.pieceInHandCount[PieceColor.black] =
           piecesCount - newPlaced;
+      if (GameController().position.pieceInHandCount[PieceColor.black]! < 0) {
+        GameController().position.pieceInHandCount[PieceColor.black] = 0;
+      }
       if (GameController().position.sideToMove == PieceColor.white) {
         GameController().position.pieceInHandCount[PieceColor.white] =
             GameController().position.pieceInHandCount[PieceColor.black]!;
+        if (GameController().position.pieceInHandCount[PieceColor.white]! < 0) {
+          GameController().position.pieceInHandCount[PieceColor.white] = 0;
+        }
       } else if (GameController().position.sideToMove == PieceColor.black) {
         GameController().position.pieceInHandCount[PieceColor.white] =
             GameController().position.pieceInHandCount[PieceColor.black]! - 1;
+        if (GameController().position.pieceInHandCount[PieceColor.white]! < 0) {
+          GameController().position.pieceInHandCount[PieceColor.white] = 0;
+        }
       } else {
         assert(false);
       }
