@@ -164,9 +164,25 @@ class Position {
     buffer.writeSpace(_sideToMove == PieceColor.white ? "w" : "b");
 
     // Phrase
+    if (pieceInHandCount[_sideToMove] == 0 && phase == Phase.placing) {
+      logger.e("Invalid FEN: No piece to place in placing phase.");
+      assert(false);
+    }
     buffer.writeSpace(phase.fen);
 
     // Action
+    if (action == Act.remove) {
+      if (pieceToRemoveCount[_sideToMove] == 0) {
+        logger.e("Invalid FEN: No piece to remove.");
+        assert(false);
+      }
+      if (pieceOnBoardCount[_sideToMove.opponent] == 0 &&
+          DB().ruleSettings.millFormationActionInPlacingPhase !=
+              MillFormationActionInPlacingPhase.opponentRemovesOwnPiece) {
+        logger.e("Invalid FEN: No piece to remove.");
+        assert(false);
+      }
+    }
     buffer.writeSpace(action.fen);
 
     buffer.writeSpace(pieceOnBoardCount[PieceColor.white]);
@@ -182,7 +198,14 @@ class Position {
 
     logger.v("FEN is $buffer");
 
-    return buffer.toString();
+    final String fen = buffer.toString();
+
+    if (validateFen(fen) == false) {
+      logger.e("Invalid FEN: $fen");
+      assert(false);
+    }
+
+    return fen;
   }
 
   bool setFen(String fen) {
@@ -273,6 +296,78 @@ class Position {
     _record = null;
 
     return ret;
+  }
+
+  // TODO: Implement with C++ in engine
+  bool validateFen(String fen) {
+    final List<String> parts = fen.split(' ');
+    if (parts.length < 12) {
+      logger.e('FEN does not contain enough parts.');
+      return false;
+    }
+
+    // Part 0: Piece placement
+    final String board = parts[0];
+    if (board.length != 26 ||
+        board[8] != '/' ||
+        board[17] != '/' ||
+        !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
+      logger.e('Invalid piece placement format.');
+      return false;
+    }
+
+    // Part 1: Active color
+    final String activeColor = parts[1];
+    if (activeColor != 'w' && activeColor != 'b') {
+      logger.e('Invalid active color. Must be "w" or "b".');
+      return false;
+    }
+
+    // Part 2: Phrase
+    final String phrase = parts[2];
+    if (!RegExp(r'^[rpmo]$').hasMatch(phrase)) {
+      logger.e('Invalid phrase. Must be one of "r", "p", "m", "o".');
+      return false;
+    }
+
+    // Part 3: Action
+    final String action = parts[3];
+    if (!RegExp(r'^[psr]$').hasMatch(action)) {
+      logger.e('Invalid action. Must be one of "p", "s", "r".');
+      return false;
+    }
+
+    // Parts 4-7: Counts on and off board
+    List<int> counts = parts.getRange(4, 8).map(int.parse).toList();
+    if (counts.any((int count) =>
+            count < 0 || count > DB().ruleSettings.piecesCount) ||
+        counts.every((int count) => count == 0)) {
+      logger.e('Invalid counts. Must be between 0 and 12 and not all zero.');
+      return false;
+    }
+
+    // Parts 8-9: Need to remove
+    counts = parts.getRange(8, 10).map(int.parse).toList();
+    if (counts.any((int count) => count < 0 || count > 3)) {
+      logger.e('Invalid need to remove count. Must be 0, 1, 2, or 3.');
+      return false;
+    }
+
+    // Part 10: Half-move clock
+    final int halfMoveClock = int.parse(parts[10]);
+    if (halfMoveClock < 0) {
+      logger.e('Invalid half-move clock. Cannot be negative.');
+      return false;
+    }
+
+    // Part 11: Full move number
+    final int fullMoveNumber = int.parse(parts[11]);
+    if (fullMoveNumber < 1) {
+      logger.e('Invalid full move number. Must start at 1.');
+      return false;
+    }
+
+    return true;
   }
 
   @visibleForTesting
@@ -526,9 +621,23 @@ class Position {
                 action = Act.remove;
                 return true;
               } else {
+                if (pieceInHandCount[_them] == 0) {
+                  logger.e(
+                    "[position] putPiece: pieceInHandCount[_them] is 0.",
+                  );
+                  assert(false);
+                }
                 pieceInHandCount[_them] = pieceInHandCount[_them]! - 1;
+
+                if (pieceToRemoveCount[sideToMove] == 0) {
+                  logger.e(
+                    "[position] putPiece: pieceToRemoveCount[sideToMove] is 0.",
+                  );
+                  assert(false);
+                }
                 pieceToRemoveCount[sideToMove] =
                     pieceToRemoveCount[sideToMove]! - 1;
+
                 _updateKeyMisc();
               }
 
@@ -906,13 +1015,17 @@ class Position {
     if (pieceInHandCount[sideToMove]! == 0) {
       phase = Phase.moving;
       action = Act.select;
-    } else {
+    } else if (pieceInHandCount[sideToMove]! > 0) {
       phase = Phase.placing;
       action = Act.place;
+    } else {
+      assert(false);
     }
 
     if (pieceToRemoveCount[sideToMove]! > 0) {
       action = Act.remove;
+    } else if (pieceToRemoveCount[sideToMove]! < 0) {
+      assert(false);
     }
   }
 
@@ -1190,15 +1303,39 @@ extension SetupPosition on Position {
     pieceOnBoardCount[PieceColor.black] =
         pos.pieceOnBoardCount[PieceColor.black]!;
 
+    if (pieceOnBoardCount[PieceColor.white]! < 0 ||
+        pieceOnBoardCount[PieceColor.black]! < 0) {
+      logger.e(
+        "[position] copyWith: pieceOnBoardCount is less than 0.",
+      );
+      assert(false);
+    }
+
     pieceInHandCount[PieceColor.white] =
         pos.pieceInHandCount[PieceColor.white]!;
     pieceInHandCount[PieceColor.black] =
         pos.pieceInHandCount[PieceColor.black]!;
 
+    if (pieceInHandCount[PieceColor.white]! < 0 ||
+        pieceInHandCount[PieceColor.black]! < 0) {
+      logger.e(
+        "[position] copyWith: pieceInHandCount is less than 0.",
+      );
+      assert(false);
+    }
+
     pieceToRemoveCount[PieceColor.white] =
         pos.pieceToRemoveCount[PieceColor.white]!;
     pieceToRemoveCount[PieceColor.black] =
         pos.pieceToRemoveCount[PieceColor.black]!;
+
+    if (pieceToRemoveCount[PieceColor.white]! < 0 ||
+        pieceToRemoveCount[PieceColor.black]! < 0) {
+      logger.e(
+        "[position] copyWith: pieceToRemoveCount is less than 0.",
+      );
+      assert(false);
+    }
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
