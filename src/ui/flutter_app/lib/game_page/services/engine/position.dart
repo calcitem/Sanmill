@@ -418,6 +418,7 @@ class Position {
       case Phase.placing:
         if (pieceInHandCount[us] != null) {
           if (pieceInHandCount[us] == 0) {
+            // TODO: Maybe setup invalid position and tap the board.
             rootScaffoldMessengerKey.currentState!
                 .showSnackBarClear("FEN: ${GameController().position.fen}");
             return false;
@@ -442,12 +443,6 @@ class Position {
 
         if (n == 0) {
           // If no Mill
-          if (pieceInHandCount[PieceColor.white]! < 0 ||
-              pieceInHandCount[PieceColor.black]! < 0) {
-            // TODO: Maybe setup invalid position and tap the board.
-            assert(false);
-            return false;
-          }
 
           if (pieceToRemoveCount[PieceColor.white]! > 0 ||
               pieceToRemoveCount[PieceColor.black]! > 0) {

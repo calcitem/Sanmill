@@ -705,7 +705,13 @@ bool Position::put_piece(Square s, bool updateRecord)
         const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
                                               rule.pieceCount -
                                               pieceInHandCount[us]);
-        pieceInHandCount[us]--;
+        if (pieceInHandCount[us] > 0) {
+            pieceInHandCount[us]--;
+        } else {
+            assert(false);
+            return false;
+        }
+
         pieceOnBoardCount[us]++;
 
         const Piece pc = board[s] = piece;
@@ -727,10 +733,6 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         if (n == 0) {
             // If no Mill
-            if (pieceInHandCount[WHITE] < 0 || pieceInHandCount[BLACK] < 0) {
-                assert(false);
-                return false;
-            }
 
             if (pieceToRemoveCount[WHITE] > 0 ||
                 pieceToRemoveCount[BLACK] > 0) {
