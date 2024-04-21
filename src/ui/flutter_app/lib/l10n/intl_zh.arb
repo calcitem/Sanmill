@@ -1246,7 +1246,7 @@
   "@forest": {},
   "desktopImage": "桌面图片",
   "@desktopImage": {},
-  "invalidPosition": "局面是不合法的。",
+  "invalidPosition": "局面是不合法的",
   "@invalidPosition": {},
   "shareGIF": "动图分享",
   "@shareGIF": {},

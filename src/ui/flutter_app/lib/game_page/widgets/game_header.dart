@@ -43,6 +43,11 @@ class _GameHeaderState extends State<GameHeader> {
     if (_scrollNotificationObserver != null) {
       _scrollNotificationObserver!.addListener(_handleScrollNotification);
     }
+
+    final String? fen = GameController().position.fen;
+    if (fen == null || GameController().position.validateFen(fen) == false) {
+      GameController().headerTipNotifier.showTip(S.of(context).invalidPosition);
+    }
   }
 
   @override
