@@ -166,7 +166,6 @@ class Position {
     // Phrase
     if (pieceInHandCount[_sideToMove] == 0 && phase == Phase.placing) {
       logger.e("Invalid FEN: No piece to place in placing phase.");
-      assert(false);
     }
     buffer.writeSpace(phase.fen);
 
@@ -174,13 +173,11 @@ class Position {
     if (action == Act.remove) {
       if (pieceToRemoveCount[_sideToMove] == 0) {
         logger.e("Invalid FEN: No piece to remove.");
-        assert(false);
       }
       if (pieceOnBoardCount[_sideToMove.opponent] == 0 &&
           DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase.opponentRemovesOwnPiece) {
         logger.e("Invalid FEN: No piece to remove.");
-        assert(false);
       }
     }
     buffer.writeSpace(action.fen);
@@ -202,7 +199,6 @@ class Position {
 
     if (validateFen(fen) == false) {
       logger.e("Invalid FEN: $fen");
-      assert(false);
     }
 
     return fen;
@@ -339,18 +335,22 @@ class Position {
 
     // Part 4: White piece on board
     final int whitePieceOnBoard = int.parse(parts[4]);
-    if (phrase == 'm' && whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
-      logger.e('Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+    if (phrase == 'm' &&
+        whitePieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+      logger.e(
+          'Invalid white piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
       return false;
     }
-    if (whitePieceOnBoard < 0 || whitePieceOnBoard > DB().ruleSettings.piecesCount) {
+    if (whitePieceOnBoard < 0 ||
+        whitePieceOnBoard > DB().ruleSettings.piecesCount) {
       logger.e('Invalid white piece on board. Must be between 0 and 12.');
       return false;
     }
 
     // Part 5: White piece in hand
     final int whitePieceInHand = int.parse(parts[5]);
-    if (whitePieceInHand < 0 || whitePieceInHand > DB().ruleSettings.piecesCount) {
+    if (whitePieceInHand < 0 ||
+        whitePieceInHand > DB().ruleSettings.piecesCount) {
       logger.e('Invalid white piece in hand. Must be between 0 and 12.');
       return false;
     }
@@ -361,18 +361,22 @@ class Position {
 
     // Part 6: Black piece on board
     final int blackPieceOnBoard = int.parse(parts[6]);
-    if (phrase == 'm' && blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
-      logger.e('Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
+    if (phrase == 'm' &&
+        blackPieceOnBoard < DB().ruleSettings.piecesAtLeastCount) {
+      logger.e(
+          'Invalid black piece on board. Must be at least ${DB().ruleSettings.piecesAtLeastCount}.');
       return false;
     }
-    if (blackPieceOnBoard < 0 || blackPieceOnBoard > DB().ruleSettings.piecesCount) {
+    if (blackPieceOnBoard < 0 ||
+        blackPieceOnBoard > DB().ruleSettings.piecesCount) {
       logger.e('Invalid black piece on board. Must be between 0 and 12.');
       return false;
     }
 
     // Part 7: Black piece in hand
     final int blackPieceInHand = int.parse(parts[7]);
-    if (blackPieceInHand < 0 || blackPieceInHand > DB().ruleSettings.piecesCount) {
+    if (blackPieceInHand < 0 ||
+        blackPieceInHand > DB().ruleSettings.piecesCount) {
       logger.e('Invalid black piece in hand. Must be between 0 and 12.');
       return false;
     }
