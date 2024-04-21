@@ -580,10 +580,14 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       newPieceCountNeedRemove[PieceColor.white] =
           newPieceCountNeedRemove[PieceColor.black] = 0;
 
-      GameController().position.pieceOnBoardCount[PieceColor.white] = GameController().position.pieceOnBoardCount[PieceColor.black] = 0;
-      GameController().position.pieceInHandCount[PieceColor.white] = GameController().position.pieceInHandCount[PieceColor.black] = DB().ruleSettings.piecesCount;
+      GameController().position.pieceOnBoardCount[PieceColor.white] =
+          GameController().position.pieceOnBoardCount[PieceColor.black] = 0;
+      GameController().position.pieceInHandCount[PieceColor.white] =
+          GameController().position.pieceInHandCount[PieceColor.black] =
+              DB().ruleSettings.piecesCount;
       // Note: _updateSetupPositionIcons -> setSetupPositionNeedRemove use newPieceCountNeedRemove to update pieceCountNeedRemove before, so maybe it it not need to do this.
-      GameController().position.pieceToRemoveCount[PieceColor.white] = GameController().position.pieceToRemoveCount[PieceColor.black] = 0;
+      GameController().position.pieceToRemoveCount[PieceColor.white] =
+          GameController().position.pieceToRemoveCount[PieceColor.black] = 0;
 
       GameController().reset(force: true);
     }

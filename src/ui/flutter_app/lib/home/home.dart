@@ -165,7 +165,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         logger.i('Switching to How To Play');
         break;
       case _DrawerIndex.feedback:
-        logger.i('Switching to Feedback'); // Assuming feedback is handled separately
+        logger.i(
+            'Switching to Feedback'); // Assuming feedback is handled separately
         break;
       case _DrawerIndex.about:
         logger.i('Switching to About');
