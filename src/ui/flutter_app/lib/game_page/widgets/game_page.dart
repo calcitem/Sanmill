@@ -18,7 +18,6 @@ import 'dart:async';
 import 'dart:io' show Platform;
 import 'dart:ui';
 
-import 'package:catcher/catcher.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,12 +30,12 @@ import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
-import '../../main.dart';
+
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/dialogs/number_picker_dialog.dart';
-import '../../shared/services/environment_config.dart';
+
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/ui_colors.dart';

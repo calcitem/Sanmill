@@ -54,10 +54,7 @@ class Engine {
     final String command = "setoption name $name value $option";
     await _send(command);
 
-    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
-      options.customParameters[name] = command;
-    }
+
   }
 
   Future<String?> _read() async {
@@ -359,10 +356,7 @@ class Engine {
       }
     }
 
-    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
-      options.customParameters["PositionFen"] = ret;
-    }
+
 
     return ret;
   }

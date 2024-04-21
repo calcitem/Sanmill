@@ -8,9 +8,6 @@ environment:
 
 dependencies:
   animated_text_kit: 4.1.1
-  catcher:
-    git:
-      url: https://gitlab.com/calcitem/catcher.git
   collection: 1.18.0
   copy_with_extension: 5.0.4
   cupertino_icons: 1.0.6
@@ -42,16 +39,6 @@ dependencies:
   path_provider: 2.1.1
   share_plus: 7.1.0
   sliver_tools: 0.2.12
-  soundpool:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: master
-      path: soundpool
-  soundpool_windux:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: windows_linux_support
-      path: soundpool_windux
   url_launcher: 6.1.14
   uuid: 3.0.7
 

@@ -26,11 +26,6 @@ class EnvironmentConfig {
   /// Gets whether we build for devMode
   static const bool devMode = bool.fromEnvironment('dev_mode');
 
-  /// Gets whether we want catcher to be enabled
-  /// Defaults to true
-  static const bool catcher =
-      bool.fromEnvironment("catcher", defaultValue: true);
-
   /// Gets log level
   /// Defaults to 4
   static const int logLevel = int.fromEnvironment("log_level", defaultValue: 4);

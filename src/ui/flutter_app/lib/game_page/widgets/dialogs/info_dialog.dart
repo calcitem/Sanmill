@@ -146,7 +146,7 @@ class _InfoDialog extends StatelessWidget {
           ),
         ),
         actions: <Widget>[
-          if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
+          if (!kIsWeb && !Platform.isIOS)
             TextButton(
               child: Text(
                 S.of(context).more,
@@ -158,18 +158,8 @@ class _InfoDialog extends StatelessWidget {
                     ),
               ),
               onPressed: () async {
-                String content = "";
+                const String content = "";
 
-                if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-                  final CatcherOptions options = catcher.getCurrentConfig()!;
-                  for (final dynamic value in options.customParameters.values) {
-                    final String str = value
-                        .toString()
-                        .replaceAll("setoption name ", "")
-                        .replaceAll("value", "=");
-                    content += "$str\n";
-                  }
-                }
 
                 final Widget copyButton = TextButton(
                   child: Text(
@@ -180,7 +170,7 @@ class _InfoDialog extends StatelessWidget {
                   ),
                   onPressed: () {
                     Clipboard.setData(
-                      ClipboardData(text: content),
+                      const ClipboardData(text: content),
                     );
 
                     rootScaffoldMessengerKey.currentState!
@@ -209,7 +199,7 @@ class _InfoDialog extends StatelessWidget {
                         fontSize:
                             AppTheme.textScaler.scale(AppTheme.largeFontSize)),
                   ),
-                  content: Text(
+                  content: const Text(
                     content,
                     textDirection: TextDirection.ltr,
                   ),

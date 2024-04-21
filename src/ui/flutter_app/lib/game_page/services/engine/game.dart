@@ -120,12 +120,7 @@ class Game {
 
     GifShare().captureView();
 
-    // TODO: moveHistoryText is not lightweight.
-    if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
-      options.customParameters["MoveList"] =
-          GameController().gameRecorder.moveHistoryText;
-    }
+
 
     _logStat();
 

@@ -28,9 +28,6 @@ class SoundManager {
   @visibleForTesting
   static SoundManager instance = SoundManager._();
 
-  late Soundpool _soundpool;
-  int _alarmSoundStreamId = 0;
-
   final Map<Sound, String> _soundFiles = <Sound, String>{
     Sound.draw: Assets.audios.draw,
     Sound.fly: Assets.audios.fly,
@@ -47,8 +44,6 @@ class SoundManager {
   // Change to maintain a map of PlayerController instances for each sound.
   final Map<Sound, kplayer.PlayerController> _players =
       <Sound, kplayer.PlayerController>{};
-
-  final Map<Sound, int> _soundIds = <Sound, int>{};
 
   bool _isTemporaryMute = false;
 
@@ -76,20 +71,14 @@ class SoundManager {
 
       booted = true;
     } else {
-      _soundpool = Soundpool.fromOptions();
 
-      for (final Sound sound in Sound.values) {
-        _soundIds[sound] = await _soundpool.load(
-          await rootBundle.load(_soundFiles[sound]!),
-        );
-      }
+
+
     }
   }
 
   Future<void> _playSound(Sound sound) async {
-    if (!Platform.isIOS) {
-      _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
-    }
+
   }
 
   Future<void> _stopSound() async {
@@ -97,9 +86,7 @@ class SoundManager {
       return;
     }
 
-    if (_alarmSoundStreamId > 0) {
-      await _soundpool.stop(_alarmSoundStreamId);
-    }
+
   }
 
   Future<void> playTone(Sound sound) async {
@@ -158,7 +145,7 @@ class SoundManager {
           .forEach((_, kplayer.PlayerController player) => player.dispose());
       _players.clear();
     } else {
-      _soundpool.dispose();
+
     }
   }
 }

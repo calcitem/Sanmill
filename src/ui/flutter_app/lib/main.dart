@@ -17,7 +17,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:catcher/catcher.dart';
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,6 @@ import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
-import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
 import 'game_page/widgets/painters/painters.dart';
@@ -39,11 +37,9 @@ import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 
-part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
 
 Future<void> main() async {
-  logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
   logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
   logger.i('Environment [test]: ${EnvironmentConfig.test}');
 
@@ -55,23 +51,7 @@ Future<void> main() async {
 
   _initUI();
 
-  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    catcher = Catcher(
-      rootWidget: const SanmillApp(),
-      ensureInitialized: true,
-    );
-
-    await _initCatcher(catcher);
-
-    PlatformDispatcher.instance.onError = (Object error, StackTrace stack) {
-      if (EnvironmentConfig.catcher == true) {
-        Catcher.reportCheckedError(error, stack);
-      }
-      return true;
-    };
-  } else {
-    runApp(const SanmillApp());
-  }
+  runApp(const SanmillApp());
 }
 
 class SanmillApp extends StatelessWidget {
@@ -151,9 +131,7 @@ class SanmillApp extends StatelessWidget {
     final MaterialApp materialApp = MaterialApp(
       /// Add navigator key from Catcher.
       /// It will be used to navigate user to report page or to show dialog.
-      navigatorKey: (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
-          ? Catcher.navigatorKey
-          : navigatorStateKey,
+      navigatorKey: navigatorStateKey,
       key: GlobalKey<ScaffoldState>(),
       scaffoldMessengerKey: rootScaffoldMessengerKey,
       localizationsDelegates: S.localizationsDelegates,
