@@ -104,7 +104,6 @@ class Engine {
       await stopSearching();
     } else if (moveNow) {
       // TODO: Check why go here.
-      // assert(false);
       await stopSearching();
       final String? fen = _getPositionFen();
       if (fen == null) {

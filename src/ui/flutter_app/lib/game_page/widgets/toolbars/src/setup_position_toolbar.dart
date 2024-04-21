@@ -140,7 +140,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     } else if (pieceColor == PieceColor.none) {
       newPieceColor = PieceColor.white;
     } else {
-      assert(false);
+      logger.e("Invalid pieceColor: $pieceColor");
     }
 
     if (newPieceColor == PieceColor.none) {
@@ -529,7 +529,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           GameController().position.pieceInHandCount[PieceColor.white] = 0;
         }
       } else {
-        assert(false);
+        logger.e("Error: sideToMove is not white or black");
       }
     } else if (newPhase == Phase.moving) {
       if (DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -545,7 +545,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
             GameController().position.pieceInHandCount[PieceColor.black] = 0;
       }
     } else {
-      assert(false);
+      logger.e("Error: Invalid phase");
     }
 
     // TODO: Verify count in placing phase.

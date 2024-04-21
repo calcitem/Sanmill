@@ -180,7 +180,6 @@ class GameController {
     if (GameController().isEngineRunning == true && isMoveNow == false) {
       // TODO: Monkey test trigger
       logger.v("$tag engineToGo() is still running, skip.");
-      //assert(false);
       return const EngineResponseSkip();
     }
 
@@ -369,7 +368,7 @@ class GameController {
         GameController().headerTipNotifier.showTip("Error: Skip"); // TODO
         break;
       default:
-        assert(false);
+        logger.e("$tag Unknown engine response type.");
         break;
     }
 

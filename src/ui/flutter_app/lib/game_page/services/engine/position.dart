@@ -505,7 +505,7 @@ class Position {
         // ignore: only_throw_errors
         throw const EngineNoBestMove();
       case null:
-        assert(false);
+        logger.e("Invalid MoveType");
         break;
     }
 
@@ -589,7 +589,7 @@ class Position {
 
           if (pieceToRemoveCount[PieceColor.white]! > 0 ||
               pieceToRemoveCount[PieceColor.black]! > 0) {
-            assert(false);
+            logger.e("[position] putPiece: pieceToRemoveCount is not 0.");
             return false;
           }
 
@@ -631,7 +631,7 @@ class Position {
                 _setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
                 return true;
               case null:
-                assert(false);
+                logger.e("[position] putPiece: Invalid BoardFullAction.");
                 break;
             }
           } else {
@@ -673,7 +673,6 @@ class Position {
                   logger.e(
                     "[position] putPiece: pieceInHandCount[_them] is 0.",
                   );
-                  assert(false);
                 }
                 pieceInHandCount[_them] = pieceInHandCount[_them]! - 1;
 
@@ -681,7 +680,6 @@ class Position {
                   logger.e(
                     "[position] putPiece: pieceToRemoveCount[sideToMove] is 0.",
                   );
-                  assert(false);
                 }
                 pieceToRemoveCount[sideToMove] =
                     pieceToRemoveCount[sideToMove]! - 1;
@@ -689,8 +687,10 @@ class Position {
                 _updateKeyMisc();
               }
 
-              assert(pieceInHandCount[PieceColor.white]! >= 0 &&
-                  pieceInHandCount[PieceColor.black]! >= 0);
+              if (!(pieceInHandCount[PieceColor.white]! >= 0 &&
+                  pieceInHandCount[PieceColor.black]! >= 0)) {
+                logger.e("[position] putPiece: pieceInHandCount is negative.");
+              }
             }
 
             if (handlePlacingPhaseEnd() == false) {
@@ -782,7 +782,8 @@ class Position {
         break;
       case Phase.ready:
       case Phase.gameOver:
-        assert(false);
+        logger.e("[position] putPiece: Invalid phase.");
+        return false;
     }
     return true;
   }
@@ -1021,7 +1022,7 @@ class Position {
           _setGameOver(PieceColor.draw, GameOverReason.drawStalemateCondition);
           return true;
         case null:
-          assert(false);
+          logger.e("[position] _checkIfGameIsOver: Invalid StalemateAction.");
           break;
       }
     }
@@ -1067,13 +1068,13 @@ class Position {
       phase = Phase.placing;
       action = Act.place;
     } else {
-      assert(false);
+      logger.e("[position] setSideToMove: Invalid pieceInHandCount.");
     }
 
     if (pieceToRemoveCount[sideToMove]! > 0) {
       action = Act.remove;
     } else if (pieceToRemoveCount[sideToMove]! < 0) {
-      assert(false);
+      logger.e("[position] setSideToMove: Invalid pieceToRemoveCount.");
     }
   }
 
@@ -1356,7 +1357,6 @@ extension SetupPosition on Position {
       logger.e(
         "[position] copyWith: pieceOnBoardCount is less than 0.",
       );
-      assert(false);
     }
 
     pieceInHandCount[PieceColor.white] =
@@ -1369,7 +1369,6 @@ extension SetupPosition on Position {
       logger.e(
         "[position] copyWith: pieceInHandCount is less than 0.",
       );
-      assert(false);
     }
 
     pieceToRemoveCount[PieceColor.white] =
@@ -1382,7 +1381,6 @@ extension SetupPosition on Position {
       logger.e(
         "[position] copyWith: pieceToRemoveCount is less than 0.",
       );
-      assert(false);
     }
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;

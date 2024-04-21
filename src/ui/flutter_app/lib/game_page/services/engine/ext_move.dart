@@ -73,7 +73,7 @@ class ExtMove {
         toRank = -1;
         break;
       case null:
-        assert(false);
+        logger.e("Invalid MoveType");
         toFile = -2;
         toRank = -2;
         break;
@@ -142,7 +142,7 @@ class ExtMove {
       case MoveType.none:
         return _squareToWmdNotation[to]!; // TODO: Can parse?
       case null:
-        assert(false);
+        logger.e("notation: Invalid MoveType");
         return "";
     }
   }

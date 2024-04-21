@@ -47,7 +47,7 @@ class TapHandler {
     } else if (GameController().position.action == Act.remove) {
       GameController().position._removePieceForSetupPosition(sq);
     } else {
-      assert(false);
+      logger.e("$_logTag Invalid action: ${GameController().position.action}");
     }
 
     GameController().setupPositionNotifier.updateIcons();
