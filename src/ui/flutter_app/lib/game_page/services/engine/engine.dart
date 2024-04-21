@@ -106,13 +106,23 @@ class Engine {
       // TODO: Check why go here.
       // assert(false);
       await stopSearching();
-      await _send(_getPositionFen());
+      final String? fen = _getPositionFen();
+      if (fen == null) {
+        // ignore: only_throw_errors
+        throw const EngineNoBestMove();
+      }
+      await _send(fen);
       await _send("go");
       await stopSearching();
     }
 
     if (!moveNow) {
-      await _send(_getPositionFen());
+      final String? fen = _getPositionFen();
+      if (fen == null) {
+        // ignore: only_throw_errors
+        throw const EngineNoBestMove();
+      }
+      await _send(fen);
       await _send("go");
     } else {
       logger.v("$_logTag Move now");
@@ -337,10 +347,15 @@ class Engine {
     await setRuleOptions();
   }
 
-  String _getPositionFen() {
-    // TODO: Check position
+  String? _getPositionFen() {
     final String? startPosition =
         GameController().gameRecorder.lastPositionWithRemove;
+
+    if (startPosition == null || validateFen(startPosition) == false) {
+      logger.e("Invalid FEN: $startPosition");
+      return null;
+    }
+
     final String? moves = GameController().position.movesSinceLastRemove;
 
     final StringBuffer posFenStr = StringBuffer("position fen $startPosition");
@@ -366,6 +381,77 @@ class Engine {
 
     return ret;
   }
+}
+
+bool validateFen(String fen) {
+  final List<String> parts = fen.split(' ');
+  if (parts.length < 12) {
+    logger.e('FEN does not contain enough parts.');
+    return false;
+  }
+
+  // Part 0: Piece placement
+  final String board = parts[0];
+  if (board.length != 26 ||
+      board[8] != '/' ||
+      board[17] != '/' ||
+      !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
+    logger.e('Invalid piece placement format.');
+    return false;
+  }
+
+  // Part 1: Active color
+  final String activeColor = parts[1];
+  if (activeColor != 'w' && activeColor != 'b') {
+    logger.e('Invalid active color. Must be "w" or "b".');
+    return false;
+  }
+
+  // Part 2: Phrase
+  final String phrase = parts[2];
+  if (!RegExp(r'^[rpmo]$').hasMatch(phrase)) {
+    logger.e('Invalid phrase. Must be one of "r", "p", "m", "o".');
+    return false;
+  }
+
+  // Part 3: Action
+  final String action = parts[3];
+  if (!RegExp(r'^[psr]$').hasMatch(action)) {
+    logger.e('Invalid action. Must be one of "p", "s", "r".');
+    return false;
+  }
+
+  // Parts 4-7: Counts on and off board
+  List<int> counts = parts.getRange(4, 8).map(int.parse).toList();
+  if (counts.any(
+          (int count) => count < 0 || count > DB().ruleSettings.piecesCount) ||
+      counts.every((int count) => count == 0)) {
+    logger.e('Invalid counts. Must be between 0 and 12 and not all zero.');
+    return false;
+  }
+
+  // Parts 8-9: Need to remove
+  counts = parts.getRange(8, 10).map(int.parse).toList();
+  if (counts.any((int count) => count < 0 || count > 3)) {
+    logger.e('Invalid need to remove count. Must be 0, 1, 2, or 3.');
+    return false;
+  }
+
+  // Part 10: Half-move clock
+  final int halfMoveClock = int.parse(parts[10]);
+  if (halfMoveClock < 0) {
+    logger.e('Invalid half-move clock. Cannot be negative.');
+    return false;
+  }
+
+  // Part 11: Full move number
+  final int fullMoveNumber = int.parse(parts[11]);
+  if (fullMoveNumber < 1) {
+    logger.e('Invalid full move number. Must start at 1.');
+    return false;
+  }
+
+  return true;
 }
 
 enum GameMode {
