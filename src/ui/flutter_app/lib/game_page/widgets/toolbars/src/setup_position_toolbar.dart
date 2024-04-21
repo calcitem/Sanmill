@@ -264,7 +264,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   }
 
   Future<void> setSetupPositionCopy(BuildContext context) async {
-    setSetupPositionDone();
+    if (setSetupPositionDone() == false) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).invalidPosition);
+      return;
+    }
 
     final String? fen = GameController().position.fen;
     final String copyStr = S.of(context).copy;
@@ -544,7 +548,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // TODO: Verify count in placing phase.
   }
 
-  void setSetupPositionDone() {
+  bool setSetupPositionDone() {
     // TODO: set position fen, such as piece etc.
     //MillController().gameInstance.gameMode = gameModeBackup;
 
@@ -613,11 +617,18 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       return false;
     }
 
+    if (GameController().position.validateFen(fen) == false) {
+      logger.e("Invalid FEN: $fen");
+      return false;
+    }
+
     GameController().gameRecorder =
         GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
 
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
+
+    return true;
   }
 
   @override
