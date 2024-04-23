@@ -348,54 +348,70 @@ class _GameState extends State<_Game> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          getPiecesText(
-                              GameController().position.pieceInHandCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.black
-                                      : PieceColor.white]!),
-                          style: TextStyle(
-                            color: !DB().generalSettings.aiMovesFirst
-                                ? DB().colorSettings.blackPieceColor
-                                : DB().colorSettings.whitePieceColor,
-                            shadows: const <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Color.fromARGB(255, 128, 128, 128),
-                              ),
-                            ],
+                        Semantics(
+                          label: S.of(context).inHand(
+                                !DB().generalSettings.aiMovesFirst
+                                    ? S.of(context).player2
+                                    : S.of(context).player1,
+                                GameController().position.pieceInHandCount[
+                                    !DB().generalSettings.aiMovesFirst
+                                        ? PieceColor.black
+                                        : PieceColor.white]!,
+                              ), // Or a more descriptive label
+                          child: Text(
+                            getPiecesText(
+                                GameController().position.pieceInHandCount[
+                                    !DB().generalSettings.aiMovesFirst
+                                        ? PieceColor.black
+                                        : PieceColor.white]!),
+                            style: TextStyle(
+                              color: !DB().generalSettings.aiMovesFirst
+                                  ? DB().colorSettings.blackPieceColor
+                                  : DB().colorSettings.whitePieceColor,
+                              shadows: const <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                  color: Color.fromARGB(255, 128, 128, 128),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                        Text(
-                          getPiecesText(DB().ruleSettings.piecesCount -
-                              GameController().position.pieceInHandCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.white
-                                      : PieceColor.black]! -
-                              GameController().position.pieceOnBoardCount[
-                                  !DB().generalSettings.aiMovesFirst
-                                      ? PieceColor.white
-                                      : PieceColor.black]!),
-                          style: TextStyle(
-                            color: !DB().generalSettings.aiMovesFirst
-                                ? DB()
-                                    .colorSettings
-                                    .whitePieceColor
-                                    .withOpacity(0.8)
-                                : DB()
-                                    .colorSettings
-                                    .blackPieceColor
-                                    .withOpacity(0.8),
-                            shadows: const <Shadow>[
-                              Shadow(
-                                offset: Offset(1.0, 1.0),
-                                blurRadius: 3.0,
-                                color: Color.fromARGB(255, 128, 128, 128),
-                              ),
-                            ],
+                        Semantics(
+                          label: S
+                              .of(context)
+                              .welcome, // TODO: Removed pieces count
+                          child: Text(
+                            getPiecesText(DB().ruleSettings.piecesCount -
+                                GameController().position.pieceInHandCount[
+                                    !DB().generalSettings.aiMovesFirst
+                                        ? PieceColor.white
+                                        : PieceColor.black]! -
+                                GameController().position.pieceOnBoardCount[
+                                    !DB().generalSettings.aiMovesFirst
+                                        ? PieceColor.white
+                                        : PieceColor.black]!),
+                            style: TextStyle(
+                              color: !DB().generalSettings.aiMovesFirst
+                                  ? DB()
+                                      .colorSettings
+                                      .whitePieceColor
+                                      .withOpacity(0.8)
+                                  : DB()
+                                      .colorSettings
+                                      .blackPieceColor
+                                      .withOpacity(0.8),
+                              shadows: const <Shadow>[
+                                Shadow(
+                                  offset: Offset(1.0, 1.0),
+                                  blurRadius: 3.0,
+                                  color: Color.fromARGB(255, 128, 128, 128),
+                                ),
+                              ],
+                            ),
                           ),
-                        )
+                        ),
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
@@ -408,7 +424,11 @@ class _GameState extends State<_Game> {
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
+                        Semantics(
+                          label: S
+                              .of(context)
+                              .welcome, // TODO: Removed pieces count
+                          child: Text(
                             getPiecesText(DB().ruleSettings.piecesCount -
                                 GameController().position.pieceInHandCount[
                                     !DB().generalSettings.aiMovesFirst
@@ -435,17 +455,29 @@ class _GameState extends State<_Game> {
                                   color: Color.fromARGB(255, 128, 128, 128),
                                 ),
                               ],
-                            )),
-                        Text(
+                            ),
+                          ),
+                        ),
+                        Semantics(
+                          label: S.of(context).inHand(
+                                !DB().generalSettings.aiMovesFirst
+                                    ? S.of(context).player1
+                                    : S.of(context).player2,
+                                GameController().position.pieceInHandCount[
+                                    !DB().generalSettings.aiMovesFirst
+                                        ? PieceColor.white
+                                        : PieceColor.black]!,
+                              ), // Or a more descriptive label
+                          child: Text(
                             getPiecesText(
                                 GameController().position.pieceInHandCount[
                                     !DB().generalSettings.aiMovesFirst
                                         ? PieceColor.white
                                         : PieceColor.black]!),
                             style: TextStyle(
-                              color: DB().generalSettings.aiMovesFirst
-                                  ? DB().colorSettings.blackPieceColor
-                                  : DB().colorSettings.whitePieceColor,
+                              color: !DB().generalSettings.aiMovesFirst
+                                  ? DB().colorSettings.whitePieceColor
+                                  : DB().colorSettings.blackPieceColor,
                               shadows: const <Shadow>[
                                 Shadow(
                                   offset: Offset(1.0, 1.0),
@@ -453,7 +485,9 @@ class _GameState extends State<_Game> {
                                   color: Color.fromARGB(255, 128, 128, 128),
                                 ),
                               ],
-                            ))
+                            ),
+                          ),
+                        ),
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
