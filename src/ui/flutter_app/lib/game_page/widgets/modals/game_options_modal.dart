@@ -74,7 +74,10 @@ class _GameOptionsModal extends StatelessWidget {
               await showRestartGameAlertDialog(context);
             }
           },
-          child: Text(S.of(context).newGame),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).newGame),
+          ),
         ),
         const CustomSpacer(),
         if (!kIsWeb &&
@@ -82,7 +85,10 @@ class _GameOptionsModal extends StatelessWidget {
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => GameController.save(context),
-            child: Text(S.of(context).saveGame),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).saveGame),
+            ),
           ),
         if (!kIsWeb &&
             (GameController().gameRecorder.hasPrevious == true ||
@@ -91,13 +97,19 @@ class _GameOptionsModal extends StatelessWidget {
         if (!kIsWeb)
           SimpleDialogOption(
             onPressed: () => GameController.load(context),
-            child: Text(S.of(context).loadGame),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).loadGame),
+            ),
           ),
         const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
             onPressed: () => GameController.import(context),
-            child: Text(S.of(context).importGame),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).importGame),
+            ),
           ),
         if (!kIsWeb &&
             (GameController().gameRecorder.hasPrevious == true ||
@@ -108,7 +120,10 @@ class _GameOptionsModal extends StatelessWidget {
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             onPressed: () => GameController.export(context),
-            child: Text(S.of(context).exportGame),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).exportGame),
+            ),
           ),
         // TODO: Fix iOS bug
         if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
@@ -119,13 +134,19 @@ class _GameOptionsModal extends StatelessWidget {
               GameController().gifShare(context);
               Navigator.pop(context);
             },
-            child: Text(S.of(context).shareGIF),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).shareGIF),
+            ),
           ),
         if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
             onPressed: () => Navigator.pop(context),
-            child: Text(S.of(context).close),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).close),
+            ),
           ),
       ],
     );

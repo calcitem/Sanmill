@@ -39,22 +39,34 @@ class _MoveOptionsModal extends StatelessWidget {
         if (!DB().displaySettings.isHistoryNavigationToolbarShown) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBack(context),
-            child: Text(S.of(context).takeBack),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).takeBack),
+            ),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.stepForward(context),
-            child: Text(S.of(context).stepForward),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).stepForward),
+            ),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.takeBackAll(context),
-            child: Text(S.of(context).takeBackAll),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).takeBackAll),
+            ),
           ),
           const CustomSpacer(),
           SimpleDialogOption(
             onPressed: () => HistoryNavigator.stepForwardAll(context),
-            child: Text(S.of(context).stepForwardAll),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).stepForwardAll),
+            ),
           ),
           const CustomSpacer(),
         ],
@@ -62,7 +74,10 @@ class _MoveOptionsModal extends StatelessWidget {
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             onPressed: () => _showMoveList(context),
-            child: Text(S.of(context).showMoveList),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).showMoveList),
+            ),
           ),
           const CustomSpacer(),
         ],
@@ -71,12 +86,18 @@ class _MoveOptionsModal extends StatelessWidget {
             GameController().moveNow(context);
             Navigator.pop(context);
           },
-          child: Text(S.of(context).moveNow),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Text(S.of(context).moveNow),
+          ),
         ),
         const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
-            child: Text(S.of(context).close),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).close),
+            ),
             onPressed: () => Navigator.pop(context),
           ),
       ],
