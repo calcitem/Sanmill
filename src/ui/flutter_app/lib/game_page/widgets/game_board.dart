@@ -97,7 +97,11 @@ class _GameBoardState extends State<GameBoard>
       },
       child: DB().generalSettings.screenReaderSupport
           ? const _BoardSemantics()
-          : null,
+          :  Semantics(
+        // TODO: Indicate how to enable accessibility.
+        label: S.of(context).welcome,
+        container: true,
+      ),
     );
 
     GameController().animationController.forward();
