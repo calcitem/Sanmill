@@ -136,6 +136,31 @@ class PiecePainter extends CustomPainter {
         piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
         paint,
       );
+
+      // Text Drawing:
+      final TextPainter textPainter = TextPainter(
+        text: TextSpan(
+          text: GameController()
+              .position
+              .placedPieceNumber[GameController().position.sideToMove]
+              .toString(),
+          style: TextStyle(
+            color: Colors.yellow,
+            fontSize: piece.diameter * 0.3, // Adjust font size as needed
+          ),
+        ),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+
+      // Calculate offset for centering the text
+      final Offset textOffset = Offset(
+        piece.pos.dx - textPainter.width / 2,
+        piece.pos.dy - textPainter.height / 2,
+      );
+
+      textPainter.paint(canvas, textOffset);
     }
 
     // Draw focus and blur position

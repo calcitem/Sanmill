@@ -60,6 +60,11 @@ class Position {
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 
+  final Map<PieceColor, int> placedPieceNumber = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
@@ -595,6 +600,8 @@ class Position {
 
           GameController().gameInstance.focusIndex = squareToIndex[s];
           SoundManager().playTone(Sound.place);
+
+          placedPieceNumber[sideToMove] = placedPieceNumber[sideToMove]! + 1;
 
           // Begin of set side to move
 
@@ -1318,6 +1325,9 @@ extension SetupPosition on Position {
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
 
+    placedPieceNumber[PieceColor.white] = 0;
+    placedPieceNumber[PieceColor.black] = 0;
+
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = PieceColor.none;
     }
@@ -1385,6 +1395,11 @@ extension SetupPosition on Position {
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
+
+    placedPieceNumber[PieceColor.white] =
+        pos.placedPieceNumber[PieceColor.white]!;
+    placedPieceNumber[PieceColor.black] =
+        pos.placedPieceNumber[PieceColor.black]!;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];
