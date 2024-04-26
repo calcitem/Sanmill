@@ -370,8 +370,11 @@ class GeneralSettingsPage extends StatelessWidget {
             children: <Widget>[
               SettingsListTile.switchTile(
                 value: generalSettings.screenReaderSupport,
-                onChanged: (bool val) =>
-                    _setScreenReaderSupport(generalSettings, val),
+                onChanged: (bool val) {
+                  _setScreenReaderSupport(generalSettings, val);
+                  rootScaffoldMessengerKey.currentState!
+                      .showSnackBarClear(S.of(context).reopenToTakeEffect);
+                },
                 titleString: S.of(context).screenReaderSupport,
               ),
             ],
