@@ -62,6 +62,7 @@ asm
 async
 bitand
 bitor
+bmf
 bool
 compl
 const
@@ -96,10 +97,12 @@ patchlevel
 plugins
 pngs
 prt
+psr
 qreal
 reflexpr
 reinit
 rethrow
+rpmo
 sizeof
 snackbars
 stdeula
