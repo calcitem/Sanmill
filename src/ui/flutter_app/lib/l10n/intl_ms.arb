@@ -1399,5 +1399,11 @@
   "marked": "Ditandai",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Anda boleh mengaktifkan sokongan pembaca skrin dalam konfigurasi Aksesibiliti di Tetapan Umum.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Paparkan nombor pada kepingan",
+  "@showNumbersOnPieces": {}
 }

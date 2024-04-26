@@ -1399,5 +1399,11 @@
   "marked": "Gemarkeerd",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochroom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "U kunt ondersteuning voor schermlezers inschakelen in de toegankelijkheidsinstellingen onder Algemene instellingen.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Toon nummers op stukken",
+  "@showNumbersOnPieces": {}
 }

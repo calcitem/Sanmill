@@ -1399,5 +1399,11 @@
   "marked": "Σημειωμένο",
   "@marked": {},
   "menu": "Μενού",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Εμφάνιση αριθμών στα κομμάτια",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Μονόχρωμο",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Μπορείτε να ενεργοποιήσετε την υποστήριξη αναγνώστη οθόνης στις ρυθμίσεις προσβασιμότητας στις Γενικές Ρυθμίσεις.",
+  "@youCanEnableScreenReaderSupport": {}
 }

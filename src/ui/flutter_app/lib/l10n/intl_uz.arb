@@ -1399,5 +1399,11 @@
   "marked": "Белгиланган",
   "@marked": {},
   "menu": "Menyu",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Dasturxonlarda raqamlarni ko'rsatish",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Monoxrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Siz Umumiy sozlamalar ichidagi Yordamchi vositalar sozlamalarida ekran o'quvchisi yordamini yoqishingiz mumkin.",
+  "@youCanEnableScreenReaderSupport": {}
 }

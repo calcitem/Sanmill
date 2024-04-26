@@ -1399,5 +1399,11 @@
   "marked": "Oznaczone",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochromatyczny",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Możesz włączyć wsparcie dla czytnika ekranu w ustawieniach dostępności w Ustawieniach ogólnych.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Pokaż numery na pionkach",
+  "@showNumbersOnPieces": {}
 }

@@ -1399,5 +1399,11 @@
   "marked": "Маркирано",
   "@marked": {},
   "menu": "Меню",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Показване на номерата на фигурите",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Монохром",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Можете да активирате поддръжката на екранен четец в настройките за достъпност в Общи настройки.",
+  "@youCanEnableScreenReaderSupport": {}
 }

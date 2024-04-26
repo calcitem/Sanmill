@@ -1399,5 +1399,11 @@
   "marked": "علامت‌گذاری شده",
   "@marked": {},
   "menu": "منو",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "تک‌رنگ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "شما می‌توانید پشتیبانی از خواننده صفحه را در تنظیمات دسترس‌پذیری در تنظیمات عمومی فعال کنید.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "نمایش اعداد روی مهره‌ها",
+  "@showNumbersOnPieces": {}
 }

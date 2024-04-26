@@ -1497,5 +1497,11 @@
   "marked": "Đã đánh dấu",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Đen và trắng",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Bạn có thể bật hỗ trợ đọc màn hình trong cài đặt Trợ năng trong Cài đặt chung.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Hiển thị số trên các quân cờ",
+  "@showNumbersOnPieces": {}
 }

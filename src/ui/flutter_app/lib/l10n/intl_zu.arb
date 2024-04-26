@@ -1497,5 +1497,11 @@
   "marked": "Uphawulwe",
   "@marked": {},
   "menu": "Imenyu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "I-Monochrome",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ungavula ukusekelwa kwesikrini esifundi ku-General Settings kuzilungiselelo zokufinyelela.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Khombisa izinombolo kumaphuzu",
+  "@showNumbersOnPieces": {}
 }

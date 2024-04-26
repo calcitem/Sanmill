@@ -1399,5 +1399,11 @@
   "marked": "Označeno",
   "@marked": {},
   "menu": "Izvēlne",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monohroms",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Jūs varat iespējot ekrāna lasītāja atbalstu pieejamības iestatījumos Vispārīgajos iestatījumos.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Rādīt numurus uz figūrām",
+  "@showNumbersOnPieces": {}
 }

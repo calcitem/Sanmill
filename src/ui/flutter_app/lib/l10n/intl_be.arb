@@ -1497,5 +1497,11 @@
   "marked": "Пазначаны",
   "@marked": {},
   "menu": "Меню",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Манахром",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Вы можаце ўключыць падтрымку экраннага чытальніка ў наладах даступнасці ў агульных наладах.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Паказаць нумары на фігурах",
+  "@showNumbersOnPieces": {}
 }

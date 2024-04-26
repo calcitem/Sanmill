@@ -1399,5 +1399,11 @@
   "marked": "Marqué",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochrome",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Vous pouvez activer le support du lecteur d'écran dans les réglages d'Accessibilité des Paramètres généraux.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Afficher les numéros sur les pièces",
+  "@showNumbersOnPieces": {}
 }

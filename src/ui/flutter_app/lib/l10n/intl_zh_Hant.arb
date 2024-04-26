@@ -1399,5 +1399,11 @@
   "marked": "標記",
   "@marked": {},
   "menu": "菜單",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "在棋子上顯示數字",
+  "@showNumbersOnPieces": {},
+  "monochrome": "黑白世界",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "您可以在「常規設定」中的「輔助功能」配置中打開「螢幕閱讀器支持」開關。",
+  "@youCanEnableScreenReaderSupport": {}
 }

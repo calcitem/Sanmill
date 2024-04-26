@@ -1399,5 +1399,11 @@
   "marked": "ಗುರುತಿಸಲಾಗಿದೆ",
   "@marked": {},
   "menu": "ಮೆನು",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "ಕಾಯಿಗಳಲ್ಲಿ ಸಂಖ್ಯೆಗಳನ್ನು ತೋರಿಸಿ",
+  "@showNumbersOnPieces": {},
+  "monochrome": "ಏಕವರ್ಣ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "ನೀವು ಸಾಮಾನ್ಯ ಸೆಟ್ಟಿಂಗ್ಗಳಲ್ಲಿ ಪ್ರಾಪ್ಯತೆ ಸಂರಚನೆಯಲ್ಲಿ ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲವನ್ನು ಆನ್ ಮಾಡಬಹುದು.",
+  "@youCanEnableScreenReaderSupport": {}
 }

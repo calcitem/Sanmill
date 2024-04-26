@@ -1399,5 +1399,11 @@
   "marked": "ચિહ્નિત",
   "@marked": {},
   "menu": "મેનૂ",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "મોનોક્રોમ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "તમે સામાન્ય સેટિંગ્સમાં એક્સેસિબિલિટી કન્ફિગ્યુરેશનમાં સ્ક્રીન રીડર સપોર્ટ ચાલુ કરી શકો છો.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "પીસ પર નંબરો બતાવો",
+  "@showNumbersOnPieces": {}
 }

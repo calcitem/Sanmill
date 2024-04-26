@@ -1497,5 +1497,11 @@
   "marked": "မှတ်သားထားသည်",
   "@marked": {},
   "menu": "မီနူး",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "တစ်ရောင်",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "သင့်သည် အထွေထွေဆက်တင်များ၏ ရရှိနိုင်ချက်ပြုလုပ်မှုများတွင် စကရင်ဖတ်သူပံ့ပိုးမှုကို ဖွင့်နိုင်သည်။",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "အစိတ်အပိုင်းများပေါ်တွင်နံပါတ်များပြသည်",
+  "@showNumbersOnPieces": {}
 }

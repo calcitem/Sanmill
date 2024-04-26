@@ -1497,5 +1497,11 @@
   "marked": "Gemarkeerd",
   "@marked": {},
   "menu": "Kieslys",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochroom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "U kan skermleserondersteuning inskakel in die toeganklikheidinstellings onder Algemene Instellings.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Toon getalle op stukke",
+  "@showNumbersOnPieces": {}
 }

@@ -1497,5 +1497,11 @@
   "marked": "සලකුණු කර ඇත",
   "@marked": {},
   "menu": "මෙනුව",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "කැබලි මත අංක පෙන්වන්න",
+  "@showNumbersOnPieces": {},
+  "monochrome": "එකාබද්ධ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "ඔබට පොදු සැකසුම් වල ප්‍රවේශය සැකසුම් තුළ තිර කියවන සහය ස්විචය සක්‍රීය කළ හැකිය.",
+  "@youCanEnableScreenReaderSupport": {}
 }
