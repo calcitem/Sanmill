@@ -98,8 +98,7 @@ class _GameBoardState extends State<GameBoard>
       child: DB().generalSettings.screenReaderSupport
           ? const _BoardSemantics()
           : Semantics(
-              // TODO: Indicate how to enable accessibility.
-              label: S.of(context).welcome,
+              label: S.of(context).youCanEnableScreenReaderSupport,
               container: true,
             ),
     );
