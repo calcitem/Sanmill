@@ -124,12 +124,21 @@ class PiecePainter extends CustomPainter {
 
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
+
+      if (DB().colorSettings.boardBackgroundColor == Colors.white) {
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = 4.0;
+      } else {
+        paint.style = PaintingStyle.fill;
+      }
+
       canvas.drawCircle(
         piece.pos,
         piece.animated ? animatedPieceRadius : pieceRadius,
         paint,
       );
       // Draw the piece
+      paint.style = PaintingStyle.fill;
       paint.color = piece.piece.pieceColor;
       canvas.drawCircle(
         piece.pos,
