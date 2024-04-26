@@ -1399,5 +1399,11 @@
   "marked": "Označeno",
   "@marked": {},
   "menu": "Izbornik",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Prikaz brojeva na figurama",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Monokromatski",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač zaslona u postavkama pristupačnosti unutar Općih postavki.",
+  "@youCanEnableScreenReaderSupport": {}
 }

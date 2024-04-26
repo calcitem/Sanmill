@@ -1399,5 +1399,11 @@
   "marked": "Markeret",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Vis numre på brikker",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Du kan aktivere skærmoplæserstøtte i indstillingerne for Generelle indstillinger under Tilgængelighed.",
+  "@youCanEnableScreenReaderSupport": {}
 }

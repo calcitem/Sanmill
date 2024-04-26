@@ -1399,5 +1399,11 @@
   "marked": "Отмечено",
   "@marked": {},
   "menu": "Меню",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Показать номера на фигурах",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Монохром",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Вы можете включить поддержку экранного диктора в настройках доступности в общих настройках.",
+  "@youCanEnableScreenReaderSupport": {}
 }

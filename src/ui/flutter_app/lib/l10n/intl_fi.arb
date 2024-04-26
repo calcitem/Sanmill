@@ -1399,5 +1399,11 @@
   "marked": "Merkitty",
   "@marked": {},
   "menu": "Valikko",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokromaattinen",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Voit ottaa näytönlukijatuen käyttöön Yleiset asetukset -osion Saavutettavuus-asetuksista.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Näytä numerot nappuloissa",
+  "@showNumbersOnPieces": {}
 }

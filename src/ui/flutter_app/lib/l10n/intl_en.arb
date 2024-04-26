@@ -1497,5 +1497,11 @@
   "marked": "Marked",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochrome",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "You can enable the Screen reader support switch in the Accessibility configuration in General Settings.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Show numbers on pieces",
+  "@showNumbersOnPieces": {}
 }

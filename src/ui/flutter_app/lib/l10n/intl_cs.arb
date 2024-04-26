@@ -1399,5 +1399,11 @@
   "marked": "Označeno",
   "@marked": {},
   "menu": "Nabídka",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochromatický",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ve Všeobecných nastaveních v nastavení Přístupnosti můžete zapnout podporu čtečky obrazovky.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Zobrazit čísla na figurkách",
+  "@showNumbersOnPieces": {}
 }

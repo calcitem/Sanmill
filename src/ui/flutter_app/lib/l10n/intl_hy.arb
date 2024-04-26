@@ -1497,5 +1497,11 @@
   "marked": "Նշված",
   "@marked": {},
   "menu": "Ցանկ",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Ցուցադրել թվերը քարերի վրա",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Մոնոխրոմ",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Դուք կարող եք միացնել էկրանի ընթերցիչի աջակցությունը Ընդհանուր կարգավորումների մեջ Անհատականության կոնֆիգուրացիայում։",
+  "@youCanEnableScreenReaderSupport": {}
 }

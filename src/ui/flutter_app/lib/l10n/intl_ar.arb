@@ -1399,5 +1399,11 @@
   "marked": "مُعلَم",
   "@marked": {},
   "menu": "قائمة",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "أحادي اللون",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "يمكنك تفعيل دعم قارئ الشاشة في إعدادات الوصول في الإعدادات العامة.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "عرض الأرقام على القطع",
+  "@showNumbersOnPieces": {}
 }

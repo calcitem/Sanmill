@@ -1399,5 +1399,11 @@
   "marked": "గుర్తించబడింది",
   "@marked": {},
   "menu": "మెనూ",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "మోనోక్రోమ్",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "మీరు జనరల్ సెట్టింగ్స్‌లో యాక్సెసిబిలిటీ కాన్ఫిగరేషన్‌లో స్క్రీన్ రీడర్ సపోర్ట్ స్విచ్‌ను ఆన్ చేయవచ్చు.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "ముక్కలపై సంఖ్యలను చూపించు",
+  "@showNumbersOnPieces": {}
 }

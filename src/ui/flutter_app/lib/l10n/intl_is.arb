@@ -1497,5 +1497,11 @@
   "marked": "Merkt",
   "@marked": {},
   "menu": "Valmynd",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "Sýna númer á peðum",
+  "@showNumbersOnPieces": {},
+  "monochrome": "Einslitur",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Þú getur virkjað stuðning við skjálesara í aðgengisstillingum í Almennar stillingar.",
+  "@youCanEnableScreenReaderSupport": {}
 }

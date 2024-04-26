@@ -1497,5 +1497,11 @@
   "marked": "マークされた",
   "@marked": {},
   "menu": "メニュー",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "黒と白",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "一般設定のアクセシビリティ設定でスクリーンリーダーサポートをオンにすることができます。",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "駒に番号を表示",
+  "@showNumbersOnPieces": {}
 }

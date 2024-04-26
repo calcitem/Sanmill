@@ -1497,5 +1497,11 @@
   "marked": "İşarələnib",
   "@marked": {},
   "menu": "Menyu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monoxrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Siz Ümumi Ayarlar bölməsindəki Əlçatanlıq konfiqurasiyasında ekran oxuyucusu dəstəyini aktivləşdirə bilərsiniz.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Fişlərdə nömrələri göstərin",
+  "@showNumbersOnPieces": {}
 }

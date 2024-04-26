@@ -1399,5 +1399,11 @@
   "marked": "Markant",
   "@marked": {},
   "menu": "Meny",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Du kan aktivera stöd för skärmläsare i tillgänglighetsinställningarna under Allmänna inställningar.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Visa nummer på pjäserna",
+  "@showNumbersOnPieces": {}
 }

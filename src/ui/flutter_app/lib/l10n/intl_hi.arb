@@ -1399,5 +1399,11 @@
   "marked": "चिह्नित",
   "@marked": {},
   "menu": "मेन्यू",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "मोहरों पर संख्याएँ दिखाएँ",
+  "@showNumbersOnPieces": {},
+  "monochrome": "एकरंगी",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "आप सामान्य सेटिंग्स की एक्सेसिबिलिटी कॉन्फ़िगरेशन में स्क्रीन रीडर सपोर्ट को चालू कर सकते हैं।",
+  "@youCanEnableScreenReaderSupport": {}
 }

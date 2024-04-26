@@ -1399,5 +1399,11 @@
   "marked": "Megjelölt",
   "@marked": {},
   "menu": "Menü",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokróm",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "A Képernyőolvasó támogatását az Általános beállításoknál a Hozzáférhetőségi beállítások között kapcsolhatja be.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Számok megjelenítése a korongokon",
+  "@showNumbersOnPieces": {}
 }

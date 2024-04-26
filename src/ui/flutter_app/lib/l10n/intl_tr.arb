@@ -1399,5 +1399,11 @@
   "marked": "İşaretli",
   "@marked": {},
   "menu": "Menü",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Ekran okuyucu desteğini Genel Ayarlar'daki Erişilebilirlik yapılandırmasında açabilirsiniz.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Taşlarda numaraları göster",
+  "@showNumbersOnPieces": {}
 }

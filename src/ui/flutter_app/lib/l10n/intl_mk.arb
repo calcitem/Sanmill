@@ -1397,5 +1397,11 @@
   "whenFormingMillsDuringPlacingPhase_Detail": "Акциите што може да се преземат при формирање на мелници за време на фазата на поставување.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "menu": "Мени",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Монокром",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Можете да активирате поддршка за читач на екран во поставките за пристапност во Општите поставки.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Прикажи броеви на фигурите",
+  "@showNumbersOnPieces": {}
 }

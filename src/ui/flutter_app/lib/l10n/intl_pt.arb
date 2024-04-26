@@ -1399,5 +1399,11 @@
   "marked": "Marcado",
   "@marked": {},
   "menu": "Menu",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monocromático",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Você pode ativar o suporte para leitor de tela nas configurações de Acessibilidade em Configurações Gerais.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Mostrar números nas peças",
+  "@showNumbersOnPieces": {}
 }

@@ -1497,5 +1497,11 @@
   "marked": "מסומן",
   "@marked": {},
   "menu": "תַפְרִיט",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "הצג מספרים על הקלטות",
+  "@showNumbersOnPieces": {},
+  "monochrome": "מונוכרום",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "תוכל להפעיל את תמיכת קורא המסך בהגדרות הנגישות בהגדרות הכלליות.",
+  "@youCanEnableScreenReaderSupport": {}
 }

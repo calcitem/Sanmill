@@ -1497,5 +1497,11 @@
   "marked": "نشان زدہ",
   "@marked": {},
   "menu": "مینو",
-  "@menu": {}
+  "@menu": {},
+  "showNumbersOnPieces": "مہروں پر نمبر دکھائیں",
+  "@showNumbersOnPieces": {},
+  "monochrome": "مونوکروم",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "آپ عمومی ترتیبات میں معذوری کی سہولت ترتیبات میں اسکرین ریڈر سپورٹ کو آن کر سکتے ہیں۔",
+  "@youCanEnableScreenReaderSupport": {}
 }

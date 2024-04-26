@@ -1399,5 +1399,11 @@
   "marked": "Merket",
   "@marked": {},
   "menu": "Meny",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monokrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Du kan aktivere støtte for skjermleser i tilgjengelighetsinnstillingene under Generelle innstillinger.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Vis numre på brikkene",
+  "@showNumbersOnPieces": {}
 }

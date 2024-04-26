@@ -1399,5 +1399,11 @@
   "marked": "Markiert",
   "@marked": {},
   "menu": "Menü",
-  "@menu": {}
+  "@menu": {},
+  "monochrome": "Monochrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Sie können die Unterstützung für Screenreader in den Zugänglichkeitseinstellungen unter Allgemeine Einstellungen aktivieren.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Zahlen auf Steinen anzeigen",
+  "@showNumbersOnPieces": {}
 }
