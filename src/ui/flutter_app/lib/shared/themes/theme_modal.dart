@@ -20,6 +20,7 @@ enum ColorTheme {
   current,
   light,
   dark,
+  monochrome,
   goldenJade,
   forestWood,
   greenMeadow,
@@ -68,6 +69,12 @@ class _ThemeModal extends StatelessWidget {
               title: Text(S.of(context).dark),
               groupValue: theme,
               value: ColorTheme.dark,
+              onChanged: onChanged,
+            ),
+            RadioListTile<ColorTheme>(
+              title: Text(S.of(context).monochrome),
+              groupValue: theme,
+              value: ColorTheme.monochrome,
               onChanged: onChanged,
             ),
             RadioListTile<ColorTheme>(

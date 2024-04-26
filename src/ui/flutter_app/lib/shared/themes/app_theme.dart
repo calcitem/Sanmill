@@ -378,6 +378,22 @@ class AppTheme {
       navigationToolbarBackgroundColor: Colors.black,
       navigationToolbarIconColor: UIColors.tahitiGold60,
     ),
+    ColorTheme.monochrome: ColorSettings(
+      boardLineColor: Colors.black,
+      darkBackgroundColor: Colors.white,
+      boardBackgroundColor: Colors.white,
+      whitePieceColor: Colors.white,
+      blackPieceColor: Colors.black,
+      pieceHighlightColor: Colors.black,
+      messageColor: Colors.black,
+      drawerColor: Colors.black,
+      drawerTextColor: Colors.white,
+      drawerHighlightItemColor: Color(0xFFA4A293),
+      mainToolbarBackgroundColor: Colors.white,
+      mainToolbarIconColor: Colors.black,
+      navigationToolbarBackgroundColor: Colors.white,
+      navigationToolbarIconColor: Colors.black,
+    ),
     ColorTheme.goldenJade: ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42), // golden
       darkBackgroundColor: Color(0xFFE9E7D7), // light beige
