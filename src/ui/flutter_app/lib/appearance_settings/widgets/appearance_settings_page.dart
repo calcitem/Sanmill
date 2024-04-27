@@ -359,6 +359,12 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).pointWidth,
           onTap: () => setPointWidth(context),
         ),
+        SettingsListTile.switchTile(
+          value: displaySettings.isNumbersOnPiecesShown,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(isNumbersOnPiecesShown: val),
+          titleString: S.of(context).showNumbersOnPieces,
+        ),
         SettingsListTile(
           titleString: S.of(context).pieceWidth,
           onTap: () => setPieceWidth(context),

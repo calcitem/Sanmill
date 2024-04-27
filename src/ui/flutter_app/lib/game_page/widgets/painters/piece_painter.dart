@@ -26,6 +26,7 @@ class PiecePaintParam {
     required this.pos,
     required this.animated,
     required this.diameter,
+    this.squareAttribute,
   });
 
   /// The color of the piece.
@@ -38,6 +39,7 @@ class PiecePaintParam {
   final Offset pos;
   final bool animated;
   final double diameter;
+  final SquareAttribute? squareAttribute;
 }
 
 /// Custom Piece Painter
@@ -82,6 +84,10 @@ class PiecePainter extends CustomPainter {
           continue;
         }
 
+        final int sq = indexToSquare[index]!;
+        final SquareAttribute squareAttribute =
+            GameController().position.sqAttrList[sq];
+
         final Offset pos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
 
@@ -91,6 +97,7 @@ class PiecePainter extends CustomPainter {
             pos: pos,
             animated: animated,
             diameter: pieceWidth,
+            squareAttribute: squareAttribute,
           ),
         );
 
@@ -145,6 +152,33 @@ class PiecePainter extends CustomPainter {
         piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
         paint,
       );
+
+      if (DB().displaySettings.isNumbersOnPiecesShown &&
+          piece.squareAttribute?.placedPieceNumber != null) {
+        // Text Drawing:
+        final TextPainter textPainter = TextPainter(
+          text: TextSpan(
+            text: piece.squareAttribute?.placedPieceNumber.toString(),
+            style: TextStyle(
+              color: piece.piece.pieceColor.computeLuminance() > 0.5
+                  ? Colors.black
+                  : Colors.white,
+              fontSize: piece.diameter * 0.5, // Adjust font size as needed
+            ),
+          ),
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        );
+        textPainter.layout();
+
+        // Calculate offset for centering the text
+        final Offset textOffset = Offset(
+          piece.pos.dx - textPainter.width / 2,
+          piece.pos.dy - textPainter.height / 2,
+        );
+
+        textPainter.paint(canvas, textOffset);
+      }
     }
 
     // Draw focus and blur position

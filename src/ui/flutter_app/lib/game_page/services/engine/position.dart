@@ -18,6 +18,14 @@ part of '../mill.dart';
 
 List<int> posKeyHistory = <int>[];
 
+class SquareAttribute {
+  SquareAttribute({
+    required this.placedPieceNumber,
+  });
+
+  int placedPieceNumber;
+}
+
 class StateInfo {
   // Copied when making a move
   int rule50 = 0;
@@ -36,6 +44,12 @@ class Position {
       List<PieceColor>.filled(sqNumber, PieceColor.none);
   final List<PieceColor> _grid =
       List<PieceColor>.filled(7 * 7, PieceColor.none);
+
+  int placedPieceNumber = 0;
+  final List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
+    sqNumber,
+    (int index) => SquareAttribute(placedPieceNumber: 0),
+  );
 
   final Map<PieceColor, int> pieceInHandCount = <PieceColor, int>{
     PieceColor.white: DB().ruleSettings.piecesCount,
@@ -581,6 +595,10 @@ class Position {
         _updateKey(s);
 
         _currentSquare = s;
+
+        // Set square number
+        placedPieceNumber++;
+        sqAttrList[s].placedPieceNumber = placedPieceNumber;
 
         final int n = _millsCount(_currentSquare);
 
@@ -1318,6 +1336,11 @@ extension SetupPosition on Position {
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
 
+    placedPieceNumber = 0;
+    for (int i = 0; i < sqNumber; i++) {
+      sqAttrList[i].placedPieceNumber = 0;
+    }
+
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = PieceColor.none;
     }
@@ -1385,6 +1408,11 @@ extension SetupPosition on Position {
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;
+
+    placedPieceNumber = pos.placedPieceNumber;
+    for (int i = 0; i < sqNumber; i++) {
+      sqAttrList[i].placedPieceNumber = pos.sqAttrList[i].placedPieceNumber;
+    }
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];
