@@ -151,6 +151,10 @@ class AppearanceSettingsPage extends StatelessWidget {
             AppTheme.colorThemes[theme]!.navigationToolbarBackgroundColor,
         navigationToolbarIconColor:
             AppTheme.colorThemes[theme]!.navigationToolbarIconColor,
+        analysisToolbarBackgroundColor:
+            AppTheme.colorThemes[theme]!.analysisToolbarBackgroundColor,
+        analysisToolbarIconColor:
+            AppTheme.colorThemes[theme]!.analysisToolbarIconColor,
       );
     }
 
@@ -264,6 +268,20 @@ class AppearanceSettingsPage extends StatelessWidget {
             navigationToolbarIconColor: val,
           ),
         ),
+        SettingsListTile.color(
+          titleString: S.of(context).analysisToolbarBackgroundColor,
+          value: DB().colorSettings.analysisToolbarBackgroundColor,
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            analysisToolbarBackgroundColor: val,
+          ),
+        ),
+        SettingsListTile.color(
+          titleString: S.of(context).analysisToolbarIconColor,
+          value: DB().colorSettings.analysisToolbarIconColor,
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            analysisToolbarIconColor: val,
+          ),
+        ),
       ],
     );
   }
@@ -336,6 +354,12 @@ class AppearanceSettingsPage extends StatelessWidget {
           onChanged: (bool val) => DB().displaySettings =
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
+        ),
+        SettingsListTile.switchTile(
+          value: displaySettings.isAnalysisToolbarShown,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(isAnalysisToolbarShown: val),
+          titleString: S.of(context).isAnalysisToolbarShown,
         ),
         SettingsListTile.switchTile(
           value: displaySettings.isPositionalAdvantageIndicatorShown,

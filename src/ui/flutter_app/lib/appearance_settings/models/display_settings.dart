@@ -67,6 +67,7 @@ class DisplaySettings {
     this.isPositionalAdvantageIndicatorShown = false,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
+    this.isAnalysisToolbarShown = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -148,6 +149,9 @@ class DisplaySettings {
 
   @HiveField(21, defaultValue: false)
   final bool isNumbersOnPiecesShown;
+
+  @HiveField(22, defaultValue: false)
+  final bool isAnalysisToolbarShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

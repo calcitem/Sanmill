@@ -118,6 +118,8 @@ class GamePage extends StatelessWidget {
                           .displaySettings
                           .isHistoryNavigationToolbarShown) {
                         toolbarHeight *= 2;
+                      } else if (DB().displaySettings.isAnalysisToolbarShown) {
+                        toolbarHeight *= 3;
                       }
 
                       // Constraints of the game board but applied to the entire child
@@ -312,6 +314,21 @@ class _GameState extends State<_Game> {
     ];
   }
 
+  List<Widget> analysisToolbarItems(BuildContext context) {
+    final ToolbarItem captureBoardImageButton = ToolbarItem(
+      child: Icon(
+        FluentIcons.arrow_previous_24_regular,
+        // TODO
+        semanticLabel: S.of(context).takeBackAll,
+      ),
+      onPressed: () => HistoryNavigator.takeBackAll(context, pop: false),
+    );
+
+    return <Widget>[
+      Expanded(child: captureBoardImageButton),
+    ];
+  }
+
   String getPiecesText(int count) {
     String ret = "";
     for (int i = 0; i < count; i++) {
@@ -502,6 +519,13 @@ class _GameState extends State<_Game> {
                         DB().colorSettings.navigationToolbarBackgroundColor,
                     itemColor: DB().colorSettings.navigationToolbarIconColor,
                     children: historyNavToolbarItems(context),
+                  ),
+                if (DB().displaySettings.isAnalysisToolbarShown)
+                  GamePageToolbar(
+                    backgroundColor:
+                        DB().colorSettings.analysisToolbarBackgroundColor,
+                    itemColor: DB().colorSettings.analysisToolbarIconColor,
+                    children: analysisToolbarItems(context),
                   ),
                 if (GameController().gameInstance.gameMode !=
                     GameMode.setupPosition)

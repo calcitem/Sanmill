@@ -377,6 +377,8 @@ class AppTheme {
       mainToolbarIconColor: UIColors.tahitiGold60,
       navigationToolbarBackgroundColor: Colors.black,
       navigationToolbarIconColor: UIColors.tahitiGold60,
+      analysisToolbarBackgroundColor: Colors.black,
+      analysisToolbarIconColor: UIColors.tahitiGold60,
     ),
     ColorTheme.monochrome: ColorSettings(
       boardLineColor: Colors.black,
@@ -393,6 +395,8 @@ class AppTheme {
       mainToolbarIconColor: Colors.black,
       navigationToolbarBackgroundColor: Colors.white,
       navigationToolbarIconColor: Colors.black,
+      analysisToolbarBackgroundColor: Colors.white,
+      analysisToolbarIconColor: Colors.black,
     ),
     ColorTheme.goldenJade: ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42), // golden
@@ -410,6 +414,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFFE9E7D7), // light beige
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFFE9E7D7), // light beige
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.forestWood: ColorSettings(
       boardBackgroundColor: Color(0xFFC19A6B), // wood brown
@@ -427,6 +433,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF8B5A2B), // dark wood brown
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF8B5A2B), // dark wood brown
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.greenMeadow: ColorSettings(
       boardBackgroundColor: Color(0xFF9ACD32), // yellow-green
@@ -444,6 +452,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF006400), // dark green
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF006400), // dark green
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.stonyPath: ColorSettings(
       boardBackgroundColor: Color(0xFFC0C0C0), // silver
@@ -460,6 +470,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF808080), // gray
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF808080), // gray
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.midnightBlue: ColorSettings(
       boardBackgroundColor: Color(0xFF162447), // midnight blue
@@ -477,6 +489,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF1f4068), // deep blue
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF1f4068), // deep blue
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.greenForest: ColorSettings(
       boardBackgroundColor: Color(0xFFa9eec2), // light green
@@ -493,6 +507,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF4DAA4C), // forest green
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF4DAA4C), // forest green
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.pastelPink: ColorSettings(
       boardBackgroundColor: Color(0xFFf7bacf), // pastel pink
@@ -509,6 +525,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFFefc3e6), // light pink
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFFefc3e6), // light pink
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.turquoiseSea: ColorSettings(
       boardBackgroundColor: Color(0xFFc9ada1), // beige
@@ -525,6 +543,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF1f7a8c), // dark turquoise
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF1f7a8c), // dark turquoise
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.violetDream: ColorSettings(
       boardBackgroundColor: Color(0xFF8b77a9), // violet
@@ -542,6 +562,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF583d72), // dark violet
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF583d72), // dark violet
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.mintChocolate: ColorSettings(
       boardBackgroundColor: Color(0xFFA1E8AF), // mint
@@ -559,6 +581,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF0B3D0B), // dark green
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF0B3D0B), // dark green
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.skyBlue: ColorSettings(
       boardBackgroundColor: Color(0xFFD0E1F9), // light sky blue
@@ -575,6 +599,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF4B89AC), // steel blue
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF4B89AC), // steel blue
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.playfulGarden: ColorSettings(
       boardBackgroundColor: Color(0xFFFBE9A6), // light yellow
@@ -591,6 +617,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFFB8DCAC), // light green
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFFB8DCAC), // light green
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
     ColorTheme.darkMystery: ColorSettings(
       boardBackgroundColor: Color(0xFF5C5C5C), // dark silver
@@ -609,6 +637,8 @@ class AppTheme {
       mainToolbarIconColor: Color(0xFFA4A293), // warm gray
       navigationToolbarBackgroundColor: Color(0xFF0F0F0F), // almost black
       navigationToolbarIconColor: Color(0xFFA4A293), // warm gray
+      analysisToolbarBackgroundColor: Color(0xFF0F0F0F), // almost black
+      analysisToolbarIconColor: Color(0xFFA4A293), // warm gray
     ),
   };
 }

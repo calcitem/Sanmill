@@ -1503,5 +1503,11 @@
   "youCanEnableScreenReaderSupport": "You can enable the Screen reader support switch in the Accessibility configuration in General Settings.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Show numbers on pieces",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "isAnalysisToolbarShown": "Show analysis toolbar",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analysis toolbar background color",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analysis toolbar icon color",
+  "@analysisToolbarIconColor": {}
 }

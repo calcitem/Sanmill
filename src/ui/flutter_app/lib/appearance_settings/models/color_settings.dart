@@ -50,6 +50,8 @@ class ColorSettings {
     this.mainToolbarIconColor = UIColors.cocoaBean60,
     this.navigationToolbarBackgroundColor = UIColors.burlyWood,
     this.navigationToolbarIconColor = UIColors.cocoaBean60,
+    this.analysisToolbarBackgroundColor = UIColors.burlyWood,
+    this.analysisToolbarIconColor = UIColors.cocoaBean60,
   });
 
   /// Encodes a Json style map Color a [ColorSettings] object
@@ -161,6 +163,20 @@ class ColorSettings {
   )
   @HiveField(14)
   final Color navigationToolbarIconColor;
+
+  @JsonKey(
+    fromJson: ColorAdapter.colorFromJson,
+    toJson: ColorAdapter.colorToJson,
+  )
+  @HiveField(15)
+  final Color analysisToolbarBackgroundColor;
+
+  @JsonKey(
+    fromJson: ColorAdapter.colorFromJson,
+    toJson: ColorAdapter.colorToJson,
+  )
+  @HiveField(16)
+  final Color analysisToolbarIconColor;
 
   /// Decodes a Json from a [ColorSettings] object
   Map<String, dynamic> toJson() => _$ColorSettingsToJson(this);
