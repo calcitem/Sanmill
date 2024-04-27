@@ -9,7 +9,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
@@ -19,7 +19,7 @@ jobs:
 
       - name: Export environment valuables
         run: export
-        
+
       - name: Install gsed
         run: brew install gnu-sed
 
@@ -38,7 +38,7 @@ jobs:
 
       # Archive ipa
       - name: Archive ipa
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ios-app-release
           path: src/ui/flutter_app/build/ios/iphoneos/Runner.app

@@ -17,7 +17,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Cygwin
         uses: cygwin/cygwin-install-action@master
@@ -31,7 +31,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sanmill_cygwin-g++.exe
           path: src/sanmill.exe
@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Export environment valuables
         run: export
@@ -57,7 +57,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sanmill_linux-g++
           path: src/sanmill
@@ -66,7 +66,7 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Export environment valuables
         run: export
@@ -80,7 +80,7 @@ jobs:
 
       # Archive
       - name: Archive
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sanmill_darwin-g++
           path: src/sanmill

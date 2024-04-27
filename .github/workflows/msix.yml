@@ -17,7 +17,7 @@ jobs:
           git config --global core.autocrlf input
           git config --global core.eol lf
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: subosito/flutter-action@v2
         with:
@@ -39,7 +39,7 @@ jobs:
         run: cd src/ui/flutter_app; flutter build windows --release -v; dart run msix:create
 
       - name: Archive msix
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: sanmill-msix
           path: src/ui/flutter_app/build/windows/x64/runner/Release/sanmill.msix
