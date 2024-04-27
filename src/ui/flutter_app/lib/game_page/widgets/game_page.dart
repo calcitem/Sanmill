@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:async';
-import 'dart:io' show Platform;
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:catcher/catcher.dart';
@@ -24,6 +24,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
+import 'package:screenshot/screenshot.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -160,6 +164,63 @@ class _Game extends StatefulWidget {
 }
 
 class _GameState extends State<_Game> {
+  final ScreenshotController screenshotController = ScreenshotController();
+
+  Future<void> triggerScreenshot() async {
+    await _takeScreenshot();
+  }
+
+  Future<void> _takeScreenshot() async {
+    logger.i("Attempting to capture screenshot...");
+    final Uint8List? image = await screenshotController.capture(
+        delay: const Duration(milliseconds: 100));
+    if (image == null) {
+      logger.e("Failed to capture screenshot: Image is null.");
+      return;
+    }
+    logger.i("Screenshot captured, proceeding to save...");
+    await saveImage(image, 'screenshot.png');
+  }
+
+  Future<void> saveImage(Uint8List image, String filename) async {
+    try {
+      // ignore: always_specify_types
+      final result = await ImageGallerySaver.saveImage(image, name: filename);
+
+      if (result is Map) {
+        final Map<String, dynamic> resultMap =
+            Map<String, dynamic>.from(result);
+
+        if (resultMap['isSuccess'] == true) {
+          logger.i("Image saved to Gallery with path ${resultMap['filePath']}");
+        } else {
+          logger.e("Failed to save image to Gallery");
+        }
+      } else {
+        logger.e("Unexpected result type");
+      }
+    } catch (e) {
+      logger.e("Failed to save image: $e");
+    }
+  }
+
+  Future<String?> getFilePath(String filename) async {
+    Directory? directory;
+    // TODO: Change to correct path
+    if (Platform.isAndroid) {
+      directory = await getExternalStorageDirectory();
+    } else {
+      directory = await getApplicationDocumentsDirectory();
+    }
+
+    // Ensure directory exists
+    if (directory != null) {
+      return path.join(directory.path, filename);
+    } else {
+      return null;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -317,11 +378,11 @@ class _GameState extends State<_Game> {
   List<Widget> analysisToolbarItems(BuildContext context) {
     final ToolbarItem captureBoardImageButton = ToolbarItem(
       child: Icon(
-        FluentIcons.arrow_previous_24_regular,
+        FluentIcons.camera_24_regular,
         // TODO
-        semanticLabel: S.of(context).takeBackAll,
+        semanticLabel: S.of(context).welcome,
       ),
-      onPressed: () => HistoryNavigator.takeBackAll(context, pop: false),
+      onPressed: () => triggerScreenshot(),
     );
 
     return <Widget>[
@@ -432,7 +493,13 @@ class _GameState extends State<_Game> {
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
-                const GameBoard(),
+                Screenshot(
+                  controller: screenshotController,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: const GameBoard(),
+                  ),
+                ),
                 if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                         GameController().gameInstance.gameMode ==
                             GameMode.setupPosition) &&
