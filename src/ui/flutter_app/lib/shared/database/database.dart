@@ -199,13 +199,34 @@ class Database {
       _displaySettingsBox.get(displaySettingsKey) ?? const DisplaySettings();
 
   /// ColorSettings
-
-  /// Initializes the [ColorSettings] reference
   static Future<void> _initColorSettings() async {
-    Hive.registerAdapter<Color>(ColorAdapter());
-    Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
-    _colorSettingsBox =
-        await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
+    try {
+      Hive.registerAdapter<Color>(ColorAdapter());
+      Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
+      _colorSettingsBox =
+          await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
+    } catch (e) {
+      logger.e('Initialization failed: $e');
+      // If the initialization fails, try to delete and recreate the box
+      await _deleteAndRecreateColorSettingsBox();
+    }
+  }
+
+  static Future<void> _deleteAndRecreateColorSettingsBox() async {
+    try {
+      // Close the box if it is open
+      if (Hive.isBoxOpen(_colorSettingsBoxName)) {
+        await Hive.box<ColorSettings>(_colorSettingsBoxName).close();
+      }
+      // Delete the box from disk
+      await Hive.deleteBoxFromDisk(_colorSettingsBoxName);
+      // Recreate the box
+      _colorSettingsBox =
+          await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
+      logger.i('Box has been recreated successfully.');
+    } catch (e) {
+      logger.e('Failed to delete or recreate box: $e');
+    }
   }
 
   /// Listens to changes inside the settings Box
