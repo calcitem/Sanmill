@@ -1402,8 +1402,8 @@
   "@menu": {},
   "monochrome": "Monocromo",
   "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Puede activar el soporte para lector de pantalla en la configuración de Accesibilidad en Configuración general.",
+  "youCanEnableScreenReaderSupport": "Puede habilitar el botón de compatibilidad con lectores de pantalla en la configuración de Accesibilidad en Configuración general.",
   "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "Mostrar números en las piezas",
+  "showNumbersOnPieces": "Mostrar números en piezas",
   "@showNumbersOnPieces": {}
 }
