@@ -1,0 +1,7 @@
+v4.2.0
+
+Esta actualización incluye varias mejoras y correcciones de errores para hacer la aplicación mejor para usted.
+
+- IA mejorada.
+- Soporta las reglas del juego Dooz.
+- Añadido el tema en blanco y negro.
