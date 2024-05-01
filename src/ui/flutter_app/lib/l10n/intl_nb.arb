@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Du kan aktivere støtte for skjermleser i tilgjengelighetsinnstillingene under Generelle innstillinger.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Vis numre på brikkene",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Lagre bilde",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Voit ottaa näytönlukijatuen käyttöön Yleiset asetukset -osion Saavutettavuus-asetuksista.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Näytä numerot nappuloissa",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Tallenna kuva",
+  "@saveImage": {}
 }

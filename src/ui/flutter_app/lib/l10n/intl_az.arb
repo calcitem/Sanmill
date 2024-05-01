@@ -1503,5 +1503,7 @@
   "youCanEnableScreenReaderSupport": "Siz Ümumi Ayarlar bölməsindəki Əlçatanlıq konfiqurasiyasında ekran oxuyucusu dəstəyini aktivləşdirə bilərsiniz.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Fişlərdə nömrələri göstərin",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Şəkil saxla",
+  "@saveImage": {}
 }

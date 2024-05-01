@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "일반 설정의 접근성 구성에서 화면 읽기 지원을 켤 수 있습니다。",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "조각에 숫자 표시",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "이미지 저장",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Ekran okuyucu desteğini Genel Ayarlar'daki Erişilebilirlik yapılandırmasında açabilirsiniz.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Taşlarda numaraları göster",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Resmi kaydet",
+  "@saveImage": {}
 }

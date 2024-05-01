@@ -1503,5 +1503,7 @@
   "monochrome": "Монохром",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Ви можете увімкнути підтримку зчитувача екрану в налаштуваннях загальних налаштувань в розділі Доступність.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Зберегти зображення",
+  "@saveImage": {}
 }

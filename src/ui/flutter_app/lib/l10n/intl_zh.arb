@@ -1405,5 +1405,7 @@
   "monochrome": "黑白",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "您可以在“常规设置”中的“辅助功能”配置中打开“屏幕阅读器支持”开关。",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "保存图像",
+  "@saveImage": {}
 }

@@ -1503,5 +1503,7 @@
   "youCanEnableScreenReaderSupport": "一般設定のアクセシビリティ設定でスクリーンリーダーサポートをオンにすることができます。",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "駒に番号を表示",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "画像を保存",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "คุณสามารถเปิดใช้งานการสนับสนุนตัวอ่านหน้าจอในการตั้งค่าการเข้าถึงในการตั้งค่าทั่วไป。",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "แสดงตัวเลขบนชิ้นส่วน",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "บันทึกภาพ",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "monochrome": "Monokrom",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Du kan aktivere skærmoplæserstøtte i indstillingerne for Generelle indstillinger under Tilgængelighed.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Gem billede",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Ekraanilugeja tuge saate sisse lülitada Üldseadete all Otsipääsetavuse seadetes.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Näita numbreid nuppudel",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Salvesta pilt",
+  "@saveImage": {}
 }

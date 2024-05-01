@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Możesz włączyć wsparcie dla czytnika ekranu w ustawieniach dostępności w Ustawieniach ogólnych.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Pokaż numery na pionkach",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Zapisz obraz",
+  "@saveImage": {}
 }

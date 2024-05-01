@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "U kunt ondersteuning voor schermlezers inschakelen in de toegankelijkheidsinstellingen onder Algemene instellingen.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Toon nummers op stukken",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Afbeelding opslaan",
+  "@saveImage": {}
 }

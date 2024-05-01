@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "A Képernyőolvasó támogatását az Általános beállításoknál a Hozzáférhetőségi beállítások között kapcsolhatja be.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Számok megjelenítése a korongokon",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Kép mentése",
+  "@saveImage": {}
 }

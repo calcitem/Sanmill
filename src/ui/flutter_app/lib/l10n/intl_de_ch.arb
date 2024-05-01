@@ -1405,5 +1405,7 @@
   "monochrome": "Monochrom",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Sie können die Unterstützung für den Bildschirmleser in den Barrierefreiheitseinstellungen unter Allgemeine Einstellungen aktivieren.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Bild speichern",
+  "@saveImage": {}
 }

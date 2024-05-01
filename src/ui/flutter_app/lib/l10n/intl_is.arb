@@ -1503,5 +1503,7 @@
   "monochrome": "Einslitur",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Þú getur virkjað stuðning við skjálesara í aðgengisstillingum í Almennar stillingar.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Vista mynd",
+  "@saveImage": {}
 }

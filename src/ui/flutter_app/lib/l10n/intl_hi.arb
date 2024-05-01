@@ -1405,5 +1405,7 @@
   "monochrome": "एकरंगी",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "आप सामान्य सेटिंग्स की एक्सेसिबिलिटी कॉन्फ़िगरेशन में स्क्रीन रीडर सपोर्ट को चालू कर सकते हैं।",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "छवि सहेजें",
+  "@saveImage": {}
 }

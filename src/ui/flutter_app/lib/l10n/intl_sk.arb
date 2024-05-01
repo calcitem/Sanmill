@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "V časti Všeobecné nastavenia v nastaveniach Prístupnosť môžete zapnúť podporu čítačky obrazovky.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Zobraziť čísla na figúrkach",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Uložiť obrázok",
+  "@saveImage": {}
 }

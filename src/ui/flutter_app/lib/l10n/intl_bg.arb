@@ -1405,5 +1405,7 @@
   "monochrome": "Монохром",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Можете да активирате поддръжката на екранен четец в настройките за достъпност в Общи настройки.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Запази изображението",
+  "@saveImage": {}
 }

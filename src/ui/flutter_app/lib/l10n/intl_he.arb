@@ -1503,5 +1503,7 @@
   "monochrome": "מונוכרום",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "תוכל להפעיל את תמיכת קורא המסך בהגדרות הנגישות בהגדרות הכלליות.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "שמור תמונה",
+  "@saveImage": {}
 }

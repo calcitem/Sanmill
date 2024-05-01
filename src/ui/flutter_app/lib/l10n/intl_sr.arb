@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač ekrana u podešavanjima pristupačnosti unutar Opštih podešavanja.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Приказ бројева на фигурама",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Сачувај слику",
+  "@saveImage": {}
 }

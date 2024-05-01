@@ -1503,5 +1503,7 @@
   "monochrome": "مونوکروم",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "آپ عمومی ترتیبات میں معذوری کی سہولت ترتیبات میں اسکرین ریڈر سپورٹ کو آن کر سکتے ہیں۔",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "تصویر محفوظ کریں",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "আপনি সাধারণ সেটিংসের অ্যাক্সেসিবিলিটি কনফিগারেশনে স্ক্রিন রিডার সাপোর্ট চালু করতে পারেন।",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "টুকরোগুলিতে সংখ্যা প্রদর্শন",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "চিত্র সংরক্ষণ করুন",
+  "@saveImage": {}
 }
