@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Khombisa izinombolo kumaphuzu",
   "@showNumbersOnPieces": {},
   "saveImage": "Hlela Isithombe",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Khombisa iziqu zokusekela ukuhlaziywa",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Umbala wesikali sesibhakabhakhi seziqu zokusekela ukuhlaziywa",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Umbala wesithonjana seziqu zokusekela ukuhlaziywa",
+  "@analysisToolbarIconColor": {}
 }

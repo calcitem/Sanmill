@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Visa nummer på pjäserna",
   "@showNumbersOnPieces": {},
   "saveImage": "Spara bild",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Visa analysverktygsfältet",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Bakgrundsfärg för analysverktygsfältet",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ikonfärg för analysverktygsfältet",
+  "@analysisToolbarIconColor": {}
 }

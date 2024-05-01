@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "תוכל להפעיל את תמיכת קורא המסך בהגדרות הנגישות בהגדרות הכלליות.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "שמור תמונה",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "הצג סרגל כלים לניתוח",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "צבע רקע של סרגל הכלים לניתוח",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "צבע הסמל של סרגל הכלים לניתוח",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Zobraziť čísla na figúrkach",
   "@showNumbersOnPieces": {},
   "saveImage": "Uložiť obrázok",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Zobraziť panel nástrojov analýzy",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Farba pozadia panela nástrojov analýzy",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Farba ikony panela nástrojov analýzy",
+  "@analysisToolbarIconColor": {}
 }

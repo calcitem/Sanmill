@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "조각에 숫자 표시",
   "@showNumbersOnPieces": {},
   "saveImage": "이미지 저장",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "분석 툴바 표시",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "분석 툴바 배경색",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "분석 툴바 아이콘 색상",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Вы можете включить поддержку экранного диктора в настройках доступности в общих настройках.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Сохранить изображение",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Показать панель инструментов анализа",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Цвет фона панели инструментов анализа",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Цвет иконки панели инструментов анализа",
+  "@analysisToolbarIconColor": {}
 }

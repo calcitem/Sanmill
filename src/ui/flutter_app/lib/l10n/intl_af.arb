@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Toon getalle op stukke",
   "@showNumbersOnPieces": {},
   "saveImage": "Stoor beeld",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Wys ontledingsnutsbalk",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Agtergrondkleur van ontledingsnutsbalk",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ikoonkleur van ontledingsnutsbalk",
+  "@analysisToolbarIconColor": {}
 }

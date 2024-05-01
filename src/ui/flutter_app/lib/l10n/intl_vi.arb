@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Hiển thị số trên các quân cờ",
   "@showNumbersOnPieces": {},
   "saveImage": "Lưu hình ảnh",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Hiển thị thanh công cụ phân tích",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Màu nền của thanh công cụ phân tích",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Màu biểu tượng của thanh công cụ phân tích",
+  "@analysisToolbarIconColor": {}
 }

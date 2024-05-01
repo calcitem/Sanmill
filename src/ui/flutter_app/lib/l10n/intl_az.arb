@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Fişlərdə nömrələri göstərin",
   "@showNumbersOnPieces": {},
   "saveImage": "Şəkil saxla",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Analiz panelini göstər",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analiz panelinin arxa fon rəngi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analiz panelinin ikonu rəngi",
+  "@analysisToolbarIconColor": {}
 }

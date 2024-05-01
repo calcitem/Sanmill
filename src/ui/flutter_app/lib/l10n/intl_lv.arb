@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Rādīt numurus uz figūrām",
   "@showNumbersOnPieces": {},
   "saveImage": "Saglabāt attēlu",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Parādīt analīzes rīkjoslu",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analīzes rīkjoslas fona krāsa",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analīzes rīkjoslas ikonas krāsa",
+  "@analysisToolbarIconColor": {}
 }

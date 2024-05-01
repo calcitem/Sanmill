@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Rodyti numerius ant figūrų",
   "@showNumbersOnPieces": {},
   "saveImage": "Įrašyti paveikslėlį",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Rodyti analizės įrankių juostą",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analizės įrankių juostos fono spalva",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analizės įrankių juostos piktogramos spalva",
+  "@analysisToolbarIconColor": {}
 }

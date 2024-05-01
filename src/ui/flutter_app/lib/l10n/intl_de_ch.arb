@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Sie können die Unterstützung für den Bildschirmleser in den Barrierefreiheitseinstellungen unter Allgemeine Einstellungen aktivieren.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Bild speichern",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Analysetools anzeigen",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Hintergrundfarbe der Analysetools",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Symbolfarbe der Analysetools",
+  "@analysisToolbarIconColor": {}
 }

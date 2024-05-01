@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "แสดงตัวเลขบนชิ้นส่วน",
   "@showNumbersOnPieces": {},
   "saveImage": "บันทึกภาพ",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "แสดงแถบเครื่องมือการวิเคราะห์",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือการวิเคราะห์",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "สีไอคอนของแถบเครื่องมือการวิเคราะห์",
+  "@analysisToolbarIconColor": {}
 }

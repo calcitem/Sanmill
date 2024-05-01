@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "Ви можете увімкнути підтримку зчитувача екрану в налаштуваннях загальних налаштувань в розділі Доступність.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Зберегти зображення",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Показати панель інструментів аналізу",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Колір фону панелі інструментів аналізу",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Колір піктограми панелі інструментів аналізу",
+  "@analysisToolbarIconColor": {}
 }

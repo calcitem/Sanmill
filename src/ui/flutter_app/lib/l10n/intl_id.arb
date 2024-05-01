@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Tampilkan angka pada bidak",
   "@showNumbersOnPieces": {},
   "saveImage": "Simpan gambar",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Tampilkan Toolbar Analisis",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Warna Latar Belakang Toolbar Analisis",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Warna Ikon Toolbar Analisis",
+  "@analysisToolbarIconColor": {}
 }

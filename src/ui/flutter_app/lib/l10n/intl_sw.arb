@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Onyesha nambari kwenye vipande",
   "@showNumbersOnPieces": {},
   "saveImage": "Hifadhi Picha",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Onyesha upau wa zana za uchambuzi",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": " rangi ya asili ya upau wa zana za uchambuzi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Rangi ya ikoni ya upau wa zana za uchambuzi",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Vis numre på brikkene",
   "@showNumbersOnPieces": {},
   "saveImage": "Lagre bilde",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Vis analyseverktøylinjen",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Bakgrunnsfarge for analyseverktøylinjen",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ikonfarge for analyseverktøylinjen",
+  "@analysisToolbarIconColor": {}
 }

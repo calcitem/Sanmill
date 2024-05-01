@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "आप सामान्य सेटिंग्स की एक्सेसिबिलिटी कॉन्फ़िगरेशन में स्क्रीन रीडर सपोर्ट को चालू कर सकते हैं।",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "छवि सहेजें",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "विश्लेषण टूलबार दिखाई दे रहा है",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "विश्लेषण टूलबार का पृष्ठभूमि रंग",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "विश्लेषण टूलबार आइकन रंग",
+  "@analysisToolbarIconColor": {}
 }

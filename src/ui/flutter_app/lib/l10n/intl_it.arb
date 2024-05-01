@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Mostra numeri sui pezzi",
   "@showNumbersOnPieces": {},
   "saveImage": "Salva immagine",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Mostra barra degli strumenti di analisi",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti di analisi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Colore dell'icona della barra degli strumenti di analisi",
+  "@analysisToolbarIconColor": {}
 }

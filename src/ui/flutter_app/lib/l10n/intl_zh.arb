@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "您可以在“常规设置”中的“辅助功能”配置中打开“屏幕阅读器支持”开关。",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "保存图像",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "显示分析工具栏",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "分析工具栏背景色",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "分析工具栏图标颜色",
+  "@analysisToolbarIconColor": {}
 }

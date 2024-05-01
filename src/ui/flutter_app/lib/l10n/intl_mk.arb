@@ -1396,6 +1396,8 @@
   "@markAndDelayRemovingPieces_Detail": {},
   "whenFormingMillsDuringPlacingPhase_Detail": "Акциите што може да се преземат при формирање на мелници за време на фазата на поставување.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Маркиран",
+  "@marked": {},
   "menu": "Мени",
   "@menu": {},
   "monochrome": "Монокром",
@@ -1405,5 +1407,11 @@
   "showNumbersOnPieces": "Прикажи броеви на фигурите",
   "@showNumbersOnPieces": {},
   "saveImage": "Зачувај слика",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Прикажи алатник за анализа",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Позадинска боја на алатникот за анализа",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Боја на иконата на алатникот за анализа",
+  "@analysisToolbarIconColor": {}
 }

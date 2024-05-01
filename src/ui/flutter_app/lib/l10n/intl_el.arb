@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Μπορείτε να ενεργοποιήσετε την υποστήριξη αναγνώστη οθόνης στις ρυθμίσεις προσβασιμότητας στις Γενικές Ρυθμίσεις.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Αποθήκευση εικόνας",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Εμφάνιση γραμμής εργαλείων ανάλυσης",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Χρώμα φόντου γραμμής εργαλείων ανάλυσης",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Χρώμα εικονιδίου γραμμής εργαλείων ανάλυσης",
+  "@analysisToolbarIconColor": {}
 }

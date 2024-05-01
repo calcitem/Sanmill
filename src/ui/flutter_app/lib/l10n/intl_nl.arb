@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Toon nummers op stukken",
   "@showNumbersOnPieces": {},
   "saveImage": "Afbeelding opslaan",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Toon analysetoolbalk",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Achtergrondkleur van analysetoolbalk",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Pictogramkleur van analysetoolbalk",
+  "@analysisToolbarIconColor": {}
 }

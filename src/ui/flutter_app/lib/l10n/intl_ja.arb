@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "駒に番号を表示",
   "@showNumbersOnPieces": {},
   "saveImage": "画像を保存",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "解析ツールバーを表示する",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "解析ツールバーの背景色",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "解析ツールバーのアイコンの色",
+  "@analysisToolbarIconColor": {}
 }

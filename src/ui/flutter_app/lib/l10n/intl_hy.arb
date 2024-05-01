@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "Դուք կարող եք միացնել էկրանի ընթերցիչի աջակցությունը Ընդհանուր կարգավորումների մեջ Անհատականության կոնֆիգուրացիայում։",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Պահպանել պատկերը",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Անալիզիզիայի գործիքային գոտին ցուցադրվում է",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Անալիզիզիայի գործիքային գոտի ետնագույն գույնը",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Անալիզիզիայի գործիքային գոտին նշանակի գույնը",
+  "@analysisToolbarIconColor": {}
 }

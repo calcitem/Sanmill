@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "ముక్కలపై సంఖ్యలను చూపించు",
   "@showNumbersOnPieces": {},
   "saveImage": "చిత్రాన్ని భద్రపరచండి",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "విశ్లేషణ టూల్‌బార్ ప్రదర్శించు",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "విశ్లేషణ టూల్‌బార్ నేపథ్యం రంగు",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "విశ్లేషణ టూల్‌బార్ చిహ్నం రంగు",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Näytä numerot nappuloissa",
   "@showNumbersOnPieces": {},
   "saveImage": "Tallenna kuva",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Näytä analyysityökalupalkki",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analyysityökalupalkin taustaväri",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analyysityökalupalkin kuvakkeen väri",
+  "@analysisToolbarIconColor": {}
 }

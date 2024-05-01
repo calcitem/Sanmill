@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Számok megjelenítése a korongokon",
   "@showNumbersOnPieces": {},
   "saveImage": "Kép mentése",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Elemzési eszköztár megjelenítése",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Elemzési eszköztár hátterének színe",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Elemzési eszköztár ikonjának színe",
+  "@analysisToolbarIconColor": {}
 }

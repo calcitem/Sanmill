@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "টুকরোগুলিতে সংখ্যা প্রদর্শন",
   "@showNumbersOnPieces": {},
   "saveImage": "চিত্র সংরক্ষণ করুন",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "বিশ্লেষণ টুলবার দেখান",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "বিশ্লেষণ টুলবারের পটভূমি রঙ",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "বিশ্লেষণ টুলবারের আইকন রঙ",
+  "@analysisToolbarIconColor": {}
 }

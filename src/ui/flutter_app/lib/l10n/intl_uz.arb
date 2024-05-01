@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Siz Umumiy sozlamalar ichidagi Yordamchi vositalar sozlamalarida ekran o'quvchisi yordamini yoqishingiz mumkin.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Rasmni saqlash",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Tahlil vositasi panelini ko'rsating",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Tahlil vositasi panelining orqa fon rangi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Tahlil vositasi panelining ikon rangi",
+  "@analysisToolbarIconColor": {}
 }

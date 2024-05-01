@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Du kan aktivere skærmoplæserstøtte i indstillingerne for Generelle indstillinger under Tilgængelighed.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Gem billede",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Vis analyseværktøjslinje",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Baggrundsfarve for analyseværktøjslinje",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ikonfarve for analyseværktøjslinje",
+  "@analysisToolbarIconColor": {}
 }

@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "ඔබට පොදු සැකසුම් වල ප්‍රවේශය සැකසුම් තුළ තිර කියවන සහය ස්විචය සක්‍රීය කළ හැකිය.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "පින්තූරය සුරකින්න",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "ප්‍රාදේශීය විද්‍යා තීරුව පෙන්වන්න",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "ප්‍රාදේශීය විද්‍යා තීරුවේ පසුබිම් වර්ණය",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "ප්‍රාදේශීය විද්‍යා තීරුවේ අයිකන් වර්ණය",
+  "@analysisToolbarIconColor": {}
 }

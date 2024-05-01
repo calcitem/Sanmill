@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Paparkan nombor pada kepingan",
   "@showNumbersOnPieces": {},
   "saveImage": "Simpan imej",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Tunjukkan Bar Alat Analisis",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Warna Latar Belakang Bar Alat Analisis",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Warna Ikon Bar Alat Analisis",
+  "@analysisToolbarIconColor": {}
 }

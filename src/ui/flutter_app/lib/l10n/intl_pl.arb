@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Pokaż numery na pionkach",
   "@showNumbersOnPieces": {},
   "saveImage": "Zapisz obraz",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Pokaż pasek narzędzi analizy",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Kolor tła paska narzędzi analizy",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Kolor ikony paska narzędzi analizy",
+  "@analysisToolbarIconColor": {}
 }

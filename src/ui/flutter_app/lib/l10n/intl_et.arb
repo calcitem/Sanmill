@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Näita numbreid nuppudel",
   "@showNumbersOnPieces": {},
   "saveImage": "Salvesta pilt",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Kuva analüüsiriistariba",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analüüsiriistariba taustavärv",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analüüsiriistariba ikooni värv",
+  "@analysisToolbarIconColor": {}
 }

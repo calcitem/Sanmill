@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "عرض الأرقام على القطع",
   "@showNumbersOnPieces": {},
   "saveImage": "حفظ الصورة",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "إظهار شريط أدوات التحليل",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "لون خلفية شريط أدوات التحليل",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "لون أيقونة شريط أدوات التحليل",
+  "@analysisToolbarIconColor": {}
 }

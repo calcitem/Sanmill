@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač zaslona u postavkama pristupačnosti unutar Općih postavki.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Spremi sliku",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Prikazana je alatna traka za analizu",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Boja pozadine alatne trake za analizu",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Boja ikone alatne trake za analizu",
+  "@analysisToolbarIconColor": {}
 }

@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "အစိတ်အပိုင်းများပေါ်တွင်နံပါတ်များပြသည်",
   "@showNumbersOnPieces": {},
   "saveImage": "ဓာတ်ပုံ သိမ်းဆည်းပါ",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲ",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲနောက်ပိုင်းအရောင်အဝယ်",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲအင်္ဂါအရောင်",
+  "@analysisToolbarIconColor": {}
 }

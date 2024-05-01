@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Taşlarda numaraları göster",
   "@showNumbersOnPieces": {},
   "saveImage": "Resmi kaydet",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Analiz araç çubuğunu göster",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Analiz araç çubuğu arka plan rengi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Analiz araç çubuğu simge rengi",
+  "@analysisToolbarIconColor": {}
 }

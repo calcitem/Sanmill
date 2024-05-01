@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "آپ عمومی ترتیبات میں معذوری کی سہولت ترتیبات میں اسکرین ریڈر سپورٹ کو آن کر سکتے ہیں۔",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "تصویر محفوظ کریں",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "تجزیہ ٹولبار دکھائیں",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "تجزیہ ٹولبار کا پس منظر رنگ",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "تجزیہ ٹولبار آئکن کا رنگ",
+  "@analysisToolbarIconColor": {}
 }

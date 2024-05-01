@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Prikaz brojeva na figurama",
   "@showNumbersOnPieces": {},
   "saveImage": "Sačuvaj sliku",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Prikaži traku za analizu",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Boja pozadine trake za analizu",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Boja ikone trake za analizu",
+  "@analysisToolbarIconColor": {}
 }

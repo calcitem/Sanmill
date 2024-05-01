@@ -1408,10 +1408,10 @@
   "@showNumbersOnPieces": {},
   "saveImage": "Guardar imagen",
   "@saveImage": {},
-  "analysisToolbarIconColor": "Color del icono de la barra de herramientas de análisis",
-  "@analysisToolbarIconColor": {},
   "isAnalysisToolbarShown": "Mostrar la barra de análisis",
   "@isAnalysisToolbarShown": {},
   "analysisToolbarBackgroundColor": "Color de fondo de la barra de herramientas de análisis",
-  "@analysisToolbarBackgroundColor": {}
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Color del icono de la barra de herramientas de análisis",
+  "@analysisToolbarIconColor": {}
 }

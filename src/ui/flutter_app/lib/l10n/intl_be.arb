@@ -1505,5 +1505,11 @@
   "showNumbersOnPieces": "Паказаць нумары на фігурах",
   "@showNumbersOnPieces": {},
   "saveImage": "Захаваць малюнак",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Паказаць панэль аналізу",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Колер фону панэлі аналізу",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Колер іконкі панэлі аналізу",
+  "@analysisToolbarIconColor": {}
 }

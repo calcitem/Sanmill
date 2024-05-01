@@ -1505,5 +1505,11 @@
   "youCanEnableScreenReaderSupport": "Þú getur virkjað stuðning við skjálesara í aðgengisstillingum í Almennar stillingar.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Vista mynd",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Sýna greiningartækni",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Bakgrunnslitur greiningartækni",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Litir ikóna greiningartækni",
+  "@analysisToolbarIconColor": {}
 }

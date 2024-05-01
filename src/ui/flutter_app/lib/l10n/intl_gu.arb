@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "પીસ પર નંબરો બતાવો",
   "@showNumbersOnPieces": {},
   "saveImage": "છબી સાચવો",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "વિશ્લેષણ ટૂલબાર બતાવો",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "વિશ્લેષણ ટૂલબારની બેકગ્રાઉન્ડ કલર",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "વિશ્લેષણ ટૂલબારની આઇકન કલર",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "您可以在「常規設定」中的「輔助功能」配置中打開「螢幕閱讀器支持」開關。",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "儲存圖片",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "顯示分析工具列",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "分析工具列背景顏色",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "分析工具列圖示顏色",
+  "@analysisToolbarIconColor": {}
 }

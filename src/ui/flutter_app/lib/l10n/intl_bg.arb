@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "Можете да активирате поддръжката на екранен четец в настройките за достъпност в Общи настройки.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Запази изображението",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Покажете лентата за анализ",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Цвят на фона на лентата за анализ",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Цвят на иконата на лентата за анализ",
+  "@analysisToolbarIconColor": {}
 }

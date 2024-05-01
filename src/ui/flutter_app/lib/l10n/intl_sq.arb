@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Shfaq numrat në copa",
   "@showNumbersOnPieces": {},
   "saveImage": "Ruaj imazhin",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Shfaq shiritin e veglave të analizës",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Ngjyra e sfondit të shiritit të veglave të analizës",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Ngjyra e ikonës së shiritit të veglave të analizës",
+  "@analysisToolbarIconColor": {}
 }

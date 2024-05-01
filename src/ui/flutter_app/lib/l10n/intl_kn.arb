@@ -1407,5 +1407,11 @@
   "youCanEnableScreenReaderSupport": "ನೀವು ಸಾಮಾನ್ಯ ಸೆಟ್ಟಿಂಗ್ಗಳಲ್ಲಿ ಪ್ರಾಪ್ಯತೆ ಸಂರಚನೆಯಲ್ಲಿ ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲವನ್ನು ಆನ್ ಮಾಡಬಹುದು.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "ಚಿತ್ರವನ್ನು ಉಳಿಸಿ",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "ವಿಶ್ಲೇಷಣೆ ಟೂಲ್‌ಬಾರ್ ತೋರಿಸಲಾಗುತ್ತಿದೆ",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "ವಿಶ್ಲೇಷಣೆ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "ವಿಶ್ಲೇಷಣೆ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
+  "@analysisToolbarIconColor": {}
 }

@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "نمایش اعداد روی مهره‌ها",
   "@showNumbersOnPieces": {},
   "saveImage": "تصویر را ذخیره کنید",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "نمایش نوار ابزار تحلیل",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "رنگ پس زمینه نوار ابزار تحلیل",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "رنگ آیکون نوار ابزار تحلیل",
+  "@analysisToolbarIconColor": {}
 }

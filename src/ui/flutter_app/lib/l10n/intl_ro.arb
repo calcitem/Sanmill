@@ -1407,5 +1407,11 @@
   "showNumbersOnPieces": "Afișează numerele pe piese",
   "@showNumbersOnPieces": {},
   "saveImage": "Salvați imaginea",
-  "@saveImage": {}
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Afișează bara de instrumente de analiză",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente de analiză",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Culoarea pictogramei barei de instrumente de analiză",
+  "@analysisToolbarIconColor": {}
 }
