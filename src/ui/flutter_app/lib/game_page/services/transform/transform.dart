@@ -19,300 +19,127 @@
 
 part of '../mill.dart';
 
-String funcIdString(String s) {
-  return s;
-}
-
-// Rotate 90 degrees Transformation
-
-String rot90String(String s) {
+void _validateInput(String s) {
   if (s.length != 24) {
     throw ArgumentError('Input string must be exactly 24 characters long.');
   }
+}
 
-  final List<int> newPosition = <int>[
-    6,
-    7,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    14,
-    15,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    22,
-    23,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21
-  ];
-
+String _transformString(String s, List<int> newPosition) {
+  _validateInput(s);
   final List<String> result = List<String>.filled(24, '');
-
   for (int i = 0; i < 24; i++) {
     result[newPosition[i]] = s[i];
   }
-
   return result.join();
 }
 
-String rot180String(String s) {
-  return rot90String(rot90String(s));
+// Identity Transformation
+String identityTransform(String s) {
+  return s; // This function directly returns the input as it is.
 }
 
-String rot270String(String s) {
-  return rot90String(rot180String(s));
-}
-
-// Vertical Flip Transformation
-
-String ttFuggolegesString(String s) {
-  if (s.length != 24) {
-    throw ArgumentError('Input string must be exactly 24 characters long.');
-  }
-
+// Rotate 90 Degrees
+String rotate90Degrees(String s) {
   final List<int> newPosition = <int>[
-    4,
-    3,
-    2,
-    1,
-    0,
-    7,
-    6,
-    5,
-    12,
-    11,
-    10,
-    9,
-    8,
-    15,
-    14,
-    13,
-    20,
-    19,
-    18,
-    17,
-    16,
-    23,
-    22,
-    21
+    6, 7, 0, 1, 2, 3, 4, 5,
+    14, 15, 8, 9, 10, 11, 12, 13,
+    22, 23, 16, 17, 18, 19, 20, 21
   ];
-
-  final List<String> result = List<String>.filled(24, '');
-
-  for (int i = 0; i < 24; i++) {
-    result[newPosition[i]] = s[i];
-  }
-
-  return result.join();
+  return _transformString(s, newPosition);
 }
 
-// Horizontal Flip Transformation
-
-String ttVizszintesString(String s) {
-  if (s.length != 24) {
-    throw ArgumentError('Input string must be exactly 24 characters long.');
-  }
-
-  final List<int> newPosition = <int>[
-    0,
-    7,
-    6,
-    5,
-    4,
-    3,
-    2,
-    1,
-    8,
-    15,
-    14,
-    13,
-    12,
-    11,
-    10,
-    9,
-    16,
-    23,
-    22,
-    21,
-    20,
-    19,
-    18,
-    17
-  ];
-
-  final List<String> result = List<String>.filled(24, '');
-
-  for (int i = 0; i < 24; i++) {
-    result[newPosition[i]] = s[i];
-  }
-
-  return result.join();
+// Rotate 180 Degrees
+String rotate180Degrees(String s) {
+  return rotate90Degrees(rotate90Degrees(s));
 }
 
-// Backslash Diagonal Flip Transformation
-
-String ttBSlashString(String s) {
-  if (s.length != 24) {
-    throw ArgumentError('Input string must be exactly 24 characters long.');
-  }
-
-  final List<int> newPosition = <int>[
-    2,
-    1,
-    0,
-    7,
-    6,
-    5,
-    4,
-    3,
-    10,
-    9,
-    8,
-    15,
-    14,
-    13,
-    12,
-    11,
-    18,
-    17,
-    16,
-    23,
-    22,
-    21,
-    20,
-    19
-  ];
-
-  final List<String> result = List<String>.filled(24, '');
-
-  for (int i = 0; i < 24; i++) {
-    result[newPosition[i]] = s[i];
-  }
-
-  return result.join();
+// Rotate 270 Degrees
+String rotate270Degrees(String s) {
+  return rotate90Degrees(rotate180Degrees(s));
 }
 
-// Forward Slash Diagonal Flip Transformation
-
-String ttSlashString(String s) {
-  if (s.length != 24) {
-    throw ArgumentError('Input string must be exactly 24 characters long.');
-  }
-
+// Vertical Flip
+String verticalFlip(String s) {
   final List<int> newPosition = <int>[
-    6,
-    5,
-    4,
-    3,
-    2,
-    1,
-    0,
-    7,
-    14,
-    13,
-    12,
-    11,
-    10,
-    9,
-    8,
-    15,
-    22,
-    21,
-    20,
-    19,
-    18,
-    17,
-    16,
-    23
+    4, 3, 2, 1, 0, 7, 6, 5,
+    12, 11, 10, 9, 8, 15, 14, 13,
+    20, 19, 18, 17, 16, 23, 22, 21
   ];
+  return _transformString(s, newPosition);
+}
 
-  final List<String> result = List<String>.filled(24, '');
+// Horizontal Flip
+String horizontalFlip(String s) {
+  final List<int> newPosition = <int>[
+    0, 7, 6, 5, 4, 3, 2, 1,
+    8, 15, 14, 13, 12, 11, 10, 9,
+    16, 23, 22, 21, 20, 19, 18, 17
+  ];
+  return _transformString(s, newPosition);
+}
 
-  for (int i = 0; i < 24; i++) {
-    result[newPosition[i]] = s[i];
-  }
+// Diagonal Flip (Backslash)
+String diagonalFlipBackslash(String s) {
+  final List<int> newPosition = <int>[
+    2, 1, 0, 7, 6, 5, 4, 3,
+    10, 9, 8, 15, 14, 13, 12, 11,
+    18, 17, 16, 23, 22, 21, 20, 19
+  ];
+  return _transformString(s, newPosition);
+}
 
-  return result.join();
+// Diagonal Flip (Forward Slash)
+String diagonalFlipForwardSlash(String s) {
+  final List<int> newPosition = <int>[
+    6, 5, 4, 3, 2, 1, 0, 7,
+    14, 13, 12, 11, 10, 9, 8, 15,
+    22, 21, 20, 19, 18, 17, 16, 23
+  ];
+  return _transformString(s, newPosition);
 }
 
 // Swap Upper and Lower Half
-
-String swapString(String s) {
-  if (s.length != 24) {
-    throw ArgumentError('Input string must be exactly 24 characters long.');
-  }
-
+String swapUpperLowerHalf(String s) {
   final List<int> newPosition = <int>[
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
+    16, 17, 18, 19, 20, 21, 22, 23,
+    8, 9, 10, 11, 12, 13, 14, 15,
+    0, 1, 2, 3, 4, 5, 6, 7
   ];
-
-  final List<String> result = List<String>.filled(24, '');
-
-  for (int i = 0; i < 24; i++) {
-    result[newPosition[i]] = s[i];
-  }
-
-  return result.join();
+  return _transformString(s, newPosition);
 }
 
-String swapRot90String(String s) {
-  return swapString(rot90String(s));
+// Combined Transformations, e.g., Swap and Rotate 90 Degrees
+String swapAndRotate90Degrees(String s) {
+  return swapUpperLowerHalf(rotate90Degrees(s));
 }
 
-String swapRot180String(String s) {
-  return swapString(rot180String(s));
+// Swap and Rotate 180 Degrees
+String swapAndRotate180Degrees(String s) {
+  return swapUpperLowerHalf(rotate180Degrees(s));
 }
 
-String swapRot270String(String s) {
-  return swapString(rot270String(s));
+// Swap and Rotate 270 Degrees
+String swapAndRotate270Degrees(String s) {
+  return swapUpperLowerHalf(rotate270Degrees(s));
 }
 
-String swapTtFuggolegesString(String s) {
-  return swapString(ttFuggolegesString(s));
+// Swap and Vertical Flip
+String swapAndVerticalFlip(String s) {
+  return swapUpperLowerHalf(verticalFlip(s));
 }
 
-String swapTtVizszintesString(String s) {
-  return swapString(ttVizszintesString(s));
+// Swap and Horizontal Flip
+String swapAndHorizontalFlip(String s) {
+  return swapUpperLowerHalf(horizontalFlip(s));
 }
 
-String swapTtBSlashString(String s) {
-  return swapString(ttBSlashString(s));
+// Swap and Diagonal Flip (Backslash)
+String swapAndDiagonalFlipBackslash(String s) {
+  return swapUpperLowerHalf(diagonalFlipBackslash(s));
 }
 
-String swapTtSlashString(String s) {
-  return swapString(ttSlashString(s));
+// Swap and Diagonal Flip (Forward Slash)
+String swapAndDiagonalFlipForwardSlash(String s) {
+  return swapUpperLowerHalf(diagonalFlipForwardSlash(s));
 }
