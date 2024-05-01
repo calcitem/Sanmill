@@ -199,6 +199,9 @@ class _GameState extends State<_Game> {
 
         if (resultMap['isSuccess'] == true) {
           logger.i("Image saved to Gallery with path ${resultMap['filePath']}");
+          rootScaffoldMessengerKey.currentState!.showSnackBar(
+            CustomSnackBar(filename),
+          );
         } else {
           logger.e("Failed to save image to Gallery");
         }
