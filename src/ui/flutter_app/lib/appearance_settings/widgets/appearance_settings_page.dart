@@ -268,20 +268,24 @@ class AppearanceSettingsPage extends StatelessWidget {
             navigationToolbarIconColor: val,
           ),
         ),
-        SettingsListTile.color(
-          titleString: S.of(context).analysisToolbarBackgroundColor,
-          value: DB().colorSettings.analysisToolbarBackgroundColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            analysisToolbarBackgroundColor: val,
+        if (kDebugMode)
+          SettingsListTile.color(
+            titleString: S.of(context).analysisToolbarBackgroundColor,
+            value: DB().colorSettings.analysisToolbarBackgroundColor,
+            onChanged: (Color val) =>
+                DB().colorSettings = colorSettings.copyWith(
+              analysisToolbarBackgroundColor: val,
+            ),
           ),
-        ),
-        SettingsListTile.color(
-          titleString: S.of(context).analysisToolbarIconColor,
-          value: DB().colorSettings.analysisToolbarIconColor,
-          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
-            analysisToolbarIconColor: val,
+        if (kDebugMode)
+          SettingsListTile.color(
+            titleString: S.of(context).analysisToolbarIconColor,
+            value: DB().colorSettings.analysisToolbarIconColor,
+            onChanged: (Color val) =>
+                DB().colorSettings = colorSettings.copyWith(
+              analysisToolbarIconColor: val,
+            ),
           ),
-        ),
       ],
     );
   }
