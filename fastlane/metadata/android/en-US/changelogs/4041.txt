@@ -1,0 +1,7 @@
+v4.3.0
+
+This update includes various improvements and bug fixes to make the app better for you.
+
+* Support displaying numbers on pieces.
+* Support saving board images to the gallery (Android 10 and later only).
+* Improve AI.
