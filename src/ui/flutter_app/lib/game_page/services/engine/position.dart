@@ -774,6 +774,10 @@ class Position {
             _grid[squareToIndex[_currentSquare]!] = PieceColor.none;
 
         _currentSquare = s;
+
+        // Set square number
+        sqAttrList[s].placedPieceNumber = placedPieceNumber;
+
         final int n = _millsCount(_currentSquare);
 
         if (n == 0) {
@@ -917,6 +921,9 @@ class Position {
     _currentSquare = sq;
     action = Act.place;
     GameController().gameInstance.blurIndex = squareToIndex[sq];
+
+    // Set square number
+    placedPieceNumber = sqAttrList[sq].placedPieceNumber;
 
     return const GameResponseOK();
   }
