@@ -457,3 +457,41 @@ String transformString(String s, TransformationType transformationType) {
       List<int>.generate(24, (int i) => i);
   return _transformString(s, newPosition);
 }
+
+String transformFEN(String fen, TransformationType transformationType) {
+  // Extract the first 26 characters, which include the board description part of the FEN string
+  final String boardPart = fen.substring(0, 26);
+  // Extract the remainder of the FEN string
+  final String otherPart = fen.substring(26);
+
+  // Record the positions of each '/' character
+  final List<int> slashPositions = <int>[];
+  for (int i = 0; i < boardPart.length; i++) {
+    if (boardPart[i] == '/') {
+      slashPositions.add(i);
+    }
+  }
+
+  // Remove all '/' characters
+  final String transformedInput = boardPart.replaceAll('/', '');
+
+  // Transform the string using the given transformation type
+  final String transformedOutput =
+      transformString(transformedInput, transformationType);
+
+  // Insert '/' back into their original positions
+  final StringBuffer newBoardPart = StringBuffer();
+  int slashIndex = 0;
+  for (int i = 0; i < transformedOutput.length; i++) {
+    // When the current index reaches a position where '/' should be reinserted, insert it
+    if (slashIndex < slashPositions.length &&
+        i == slashPositions[slashIndex] - slashIndex) {
+      newBoardPart.write('/');
+      slashIndex++;
+    }
+    newBoardPart.write(transformedOutput[i]);
+  }
+
+  // Combine the transformed board string with the rest of the original FEN string
+  return '$newBoardPart$otherPart';
+}
