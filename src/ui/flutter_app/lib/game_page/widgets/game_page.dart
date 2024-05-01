@@ -164,7 +164,8 @@ class _Game extends StatefulWidget {
 }
 
 class _GameState extends State<_Game> {
-  final NativeScreenshotController screenshotController = NativeScreenshotController();
+  final NativeScreenshotController screenshotController =
+      NativeScreenshotController();
 
   Future<void> triggerScreenshot() async {
     await _takeScreenshot();
@@ -177,8 +178,14 @@ class _GameState extends State<_Game> {
       logger.e("Failed to capture screenshot: Image is null.");
       return;
     }
+
+    // Generate a unique filename based on current date and time
+    final DateTime now = DateTime.now();
+    final String filename =
+        'sanmill-screenshot_${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour}${now.minute}${now.second}.jpg';
+
     logger.i("Screenshot captured, proceeding to save...");
-    await saveImage(image, 'screenshot.jpg');
+    await saveImage(image, filename);
   }
 
   Future<void> saveImage(Uint8List image, String filename) async {
