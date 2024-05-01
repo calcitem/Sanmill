@@ -57,7 +57,7 @@ dependencies:
       url: https://gitlab.com/calcitem/soundpool.git
       ref: windows_linux_support
       path: soundpool_windux
-  screenshot: 2.3.0
+  native_screenshot_widget: 0.0.8
   url_launcher: 6.1.14
   uuid: 3.0.7
 

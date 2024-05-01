@@ -25,9 +25,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:screenshot/screenshot.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -164,7 +164,7 @@ class _Game extends StatefulWidget {
 }
 
 class _GameState extends State<_Game> {
-  final ScreenshotController screenshotController = ScreenshotController();
+  final NativeScreenshotController screenshotController = NativeScreenshotController();
 
   Future<void> triggerScreenshot() async {
     await _takeScreenshot();
@@ -172,14 +172,13 @@ class _GameState extends State<_Game> {
 
   Future<void> _takeScreenshot() async {
     logger.i("Attempting to capture screenshot...");
-    final Uint8List? image = await screenshotController.capture(
-        delay: const Duration(milliseconds: 100));
+    final Uint8List? image = await screenshotController.takeScreenshot();
     if (image == null) {
       logger.e("Failed to capture screenshot: Image is null.");
       return;
     }
     logger.i("Screenshot captured, proceeding to save...");
-    await saveImage(image, 'screenshot.png');
+    await saveImage(image, 'screenshot.jpg');
   }
 
   Future<void> saveImage(Uint8List image, String filename) async {
@@ -493,7 +492,7 @@ class _GameState extends State<_Game> {
                       ])
                 else
                   const SizedBox(height: AppTheme.boardMargin),
-                Screenshot(
+                NativeScreenshot(
                   controller: screenshotController,
                   child: Container(
                     alignment: Alignment.center,
