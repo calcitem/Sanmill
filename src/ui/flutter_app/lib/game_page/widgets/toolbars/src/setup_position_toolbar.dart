@@ -678,10 +678,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Piece
     final ToolbarItem transformButton = ToolbarItem.icon(
-      onPressed: () => setSetupPositionPiece(context, PieceColor.white), // TODO: Transform
+      onPressed: () =>
+          setSetupPositionPiece(context, PieceColor.white), // TODO: Transform
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: const Text(
-        "Transform",   // TODO: S.of(context).transform,
+        "Transform", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

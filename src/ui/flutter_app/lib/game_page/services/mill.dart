@@ -66,5 +66,6 @@ part 'notifiers/header_tip_notifier.dart';
 part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
+part "transform/transform.dart";
 
 // TODO: [Leptopoda] Separate the ui from the logic
