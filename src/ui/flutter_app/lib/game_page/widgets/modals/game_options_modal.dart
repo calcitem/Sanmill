@@ -19,7 +19,8 @@
 part of '../game_page.dart';
 
 class _GameOptionsModal extends StatelessWidget {
-  const _GameOptionsModal();
+  const _GameOptionsModal({required this.onTriggerScreenshot});
+  final VoidCallback onTriggerScreenshot;
 
   static const String _logTag = "[GameOptionsModal]";
 
@@ -139,11 +140,17 @@ class _GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
-        if (Constants.isAndroid10Plus == true)
-          const CustomSpacer(),
+        if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
-            onPressed: () => Navigator.pop(context),
+            onPressed: () async {
+              Navigator.pop(context);
+
+              // Adding a short delay to ensure the modal has time to close before capturing the screenshot
+              await Future<void>.delayed(const Duration(milliseconds: 500));
+
+              onTriggerScreenshot();
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).saveImage),

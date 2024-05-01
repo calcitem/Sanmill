@@ -173,6 +173,7 @@ class _GameState extends State<_Game> {
 
   Future<void> _takeScreenshot() async {
     logger.i("Attempting to capture screenshot...");
+
     final Uint8List? image = await screenshotController.takeScreenshot();
     if (image == null) {
       logger.e("Failed to capture screenshot: Image is null.");
@@ -193,6 +194,7 @@ class _GameState extends State<_Game> {
       // ignore: always_specify_types
       final result = await ImageGallerySaver.saveImage(image, name: filename);
 
+      // TODO: Locale support
       if (result is Map) {
         final Map<String, dynamic> resultMap =
             Map<String, dynamic>.from(result);
@@ -257,7 +259,9 @@ class _GameState extends State<_Game> {
     showModalBottomSheet(
       context: context,
       backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
-      builder: (_) => const _GameOptionsModal(),
+      builder: (_) => _GameOptionsModal(
+        onTriggerScreenshot: triggerScreenshot,
+      ),
     );
   }
 

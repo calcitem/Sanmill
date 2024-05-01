@@ -85,7 +85,7 @@ Future<int?> getAndroidSDKVersion() async {
 Future<bool> isAndroidAtLeastVersion10() async {
   final int? sdkInt = await getAndroidSDKVersion();
   if (sdkInt != null && sdkInt > 28) {
-    return true;  // Android 10 corresponds to SDK version 29
+    return true; // Android 10 corresponds to SDK version 29
   }
   return false;
 }
