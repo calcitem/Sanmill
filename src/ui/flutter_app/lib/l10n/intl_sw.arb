@@ -1503,5 +1503,7 @@
   "youCanEnableScreenReaderSupport": "Unaweza kuwasha msaada wa kisomaji skrini katika mipangilio ya Ufikiaji chini ya Mipangilio ya Jumla.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Onyesha nambari kwenye vipande",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Hifadhi Picha",
+  "@saveImage": {}
 }

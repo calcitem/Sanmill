@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "شما می‌توانید پشتیبانی از خواننده صفحه را در تنظیمات دسترس‌پذیری در تنظیمات عمومی فعال کنید.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "نمایش اعداد روی مهره‌ها",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "تصویر را ذخیره کنید",
+  "@saveImage": {}
 }

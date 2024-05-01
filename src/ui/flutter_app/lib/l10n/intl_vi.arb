@@ -1503,5 +1503,7 @@
   "youCanEnableScreenReaderSupport": "Bạn có thể bật hỗ trợ đọc màn hình trong cài đặt Trợ năng trong Cài đặt chung.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Hiển thị số trên các quân cờ",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Lưu hình ảnh",
+  "@saveImage": {}
 }

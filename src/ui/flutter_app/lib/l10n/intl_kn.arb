@@ -1405,5 +1405,7 @@
   "monochrome": "ಏಕವರ್ಣ",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "ನೀವು ಸಾಮಾನ್ಯ ಸೆಟ್ಟಿಂಗ್ಗಳಲ್ಲಿ ಪ್ರಾಪ್ಯತೆ ಸಂರಚನೆಯಲ್ಲಿ ಸ್ಕ್ರೀನ್ ರೀಡರ್ ಬೆಂಬಲವನ್ನು ಆನ್ ಮಾಡಬಹುದು.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "ಚಿತ್ರವನ್ನು ಉಳಿಸಿ",
+  "@saveImage": {}
 }

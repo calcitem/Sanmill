@@ -1503,5 +1503,7 @@
   "monochrome": "Մոնոխրոմ",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Դուք կարող եք միացնել էկրանի ընթերցիչի աջակցությունը Ընդհանուր կարգավորումների մեջ Անհատականության կոնֆիգուրացիայում։",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Պահպանել պատկերը",
+  "@saveImage": {}
 }

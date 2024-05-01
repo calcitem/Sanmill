@@ -1503,5 +1503,7 @@
   "monochrome": "එකාබද්ධ",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "ඔබට පොදු සැකසුම් වල ප්‍රවේශය සැකසුම් තුළ තිර කියවන සහය ස්විචය සක්‍රීය කළ හැකිය.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "පින්තූරය සුරකින්න",
+  "@saveImage": {}
 }

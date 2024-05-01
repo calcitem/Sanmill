@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Sie können die Unterstützung für Screenreader in den Zugänglichkeitseinstellungen unter Allgemeine Einstellungen aktivieren.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Zahlen auf Steinen anzeigen",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Bild speichern",
+  "@saveImage": {}
 }

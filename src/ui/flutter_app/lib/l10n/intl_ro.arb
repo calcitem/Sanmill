@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Puteți activa suportul pentru cititorul de ecran în configurațiile de accesibilitate din Setările generale.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Afișează numerele pe piese",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Salvați imaginea",
+  "@saveImage": {}
 }

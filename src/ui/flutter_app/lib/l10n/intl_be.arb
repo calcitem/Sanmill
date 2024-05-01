@@ -1503,5 +1503,7 @@
   "youCanEnableScreenReaderSupport": "Вы можаце ўключыць падтрымку экраннага чытальніка ў наладах даступнасці ў агульных наладах.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Паказаць нумары на фігурах",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Захаваць малюнак",
+  "@saveImage": {}
 }

@@ -1405,5 +1405,7 @@
   "monochrome": "Μονόχρωμο",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Μπορείτε να ενεργοποιήσετε την υποστήριξη αναγνώστη οθόνης στις ρυθμίσεις προσβασιμότητας στις Γενικές Ρυθμίσεις.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Αποθήκευση εικόνας",
+  "@saveImage": {}
 }

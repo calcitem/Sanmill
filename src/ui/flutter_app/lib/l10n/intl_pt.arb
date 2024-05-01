@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Você pode ativar o suporte para leitor de tela nas configurações de Acessibilidade em Configurações Gerais.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Mostrar números nas peças",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Guardar imagem",
+  "@saveImage": {}
 }

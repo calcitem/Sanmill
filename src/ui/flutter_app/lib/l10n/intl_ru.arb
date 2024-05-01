@@ -1405,5 +1405,7 @@
   "monochrome": "Монохром",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Вы можете включить поддержку экранного диктора в настройках доступности в общих настройках.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Сохранить изображение",
+  "@saveImage": {}
 }

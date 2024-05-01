@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "يمكنك تفعيل دعم قارئ الشاشة في إعدادات الوصول في الإعدادات العامة.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "عرض الأرقام على القطع",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "حفظ الصورة",
+  "@saveImage": {}
 }

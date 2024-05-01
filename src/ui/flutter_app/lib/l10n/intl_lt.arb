@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Ekrano skaitytuvo palaikymą galite įjungti Prieinamumo nustatymuose, esančiuose Bendruosiuose nustatymuose.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Rodyti numerius ant figūrų",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Įrašyti paveikslėlį",
+  "@saveImage": {}
 }

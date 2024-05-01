@@ -1405,5 +1405,7 @@
   "monochrome": "Monokromatski",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač zaslona u postavkama pristupačnosti unutar Općih postavki.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Spremi sliku",
+  "@saveImage": {}
 }

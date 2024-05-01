@@ -1405,5 +1405,7 @@
   "monochrome": "Monoxrom",
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "Siz Umumiy sozlamalar ichidagi Yordamchi vositalar sozlamalarida ekran o'quvchisi yordamini yoqishingiz mumkin.",
-  "@youCanEnableScreenReaderSupport": {}
+  "@youCanEnableScreenReaderSupport": {},
+  "saveImage": "Rasmni saqlash",
+  "@saveImage": {}
 }

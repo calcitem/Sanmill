@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Ju mund të aktivizoni mbështetjen e lexuesit të ekranit në konfigurimet e Aksesueshmërisë në Cilësimet e Përgjithshme.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Shfaq numrat në copa",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Ruaj imazhin",
+  "@saveImage": {}
 }

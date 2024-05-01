@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Jūs varat iespējot ekrāna lasītāja atbalstu pieejamības iestatījumos Vispārīgajos iestatījumos.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Rādīt numurus uz figūrām",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Saglabāt attēlu",
+  "@saveImage": {}
 }

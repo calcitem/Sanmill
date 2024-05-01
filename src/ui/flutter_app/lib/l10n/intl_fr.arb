@@ -1405,5 +1405,7 @@
   "youCanEnableScreenReaderSupport": "Vous pouvez activer le support du lecteur d'écran dans les réglages d'Accessibilité des Paramètres généraux.",
   "@youCanEnableScreenReaderSupport": {},
   "showNumbersOnPieces": "Afficher les numéros sur les pièces",
-  "@showNumbersOnPieces": {}
+  "@showNumbersOnPieces": {},
+  "saveImage": "Enregistrer l'image",
+  "@saveImage": {}
 }

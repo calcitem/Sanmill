@@ -1509,5 +1509,7 @@
   "analysisToolbarBackgroundColor": "Analysis toolbar background color",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analysis toolbar icon color",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "saveImage": "Save Image",
+  "@saveImage": {}
 }
