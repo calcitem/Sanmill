@@ -19,12 +19,429 @@
 
 part of '../mill.dart';
 
+enum TransformationType {
+  identity,
+  rotate90Degrees,
+  rotate180Degrees,
+  rotate270Degrees,
+  verticalFlip,
+  horizontalFlip,
+  diagonalFlipBackslash,
+  diagonalFlipForwardSlash,
+  rotate90VerticalFlip,
+  rotate90HorizontalFlip,
+  rotate90DiagonalFlipBackslash,
+  rotate90DiagonalFlipForwardSlash,
+  rotate180VerticalFlip,
+  rotate180HorizontalFlip,
+  rotate270VerticalFlip,
+  rotate270HorizontalFlip
+}
+
+// Transformation mapping configuration
+final Map<TransformationType, List<int>> transformationMap =
+    <TransformationType, List<int>>{
+  TransformationType.identity: List<int>.generate(24, (int i) => i),
+  TransformationType.rotate90Degrees: <int>[
+    6,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    14,
+    15,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    22,
+    23,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21
+  ],
+  TransformationType.rotate180Degrees: <int>[
+    22,
+    23,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    14,
+    15,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    6,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  TransformationType.rotate270Degrees: <int>[
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    16,
+    17,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    8,
+    9,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0,
+    1
+  ],
+  TransformationType.verticalFlip: <int>[
+    4,
+    3,
+    2,
+    1,
+    0,
+    7,
+    6,
+    5,
+    12,
+    11,
+    10,
+    9,
+    8,
+    15,
+    14,
+    13,
+    20,
+    19,
+    18,
+    17,
+    16,
+    23,
+    22,
+    21
+  ],
+  TransformationType.horizontalFlip: <int>[
+    0,
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1,
+    8,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9,
+    16,
+    23,
+    22,
+    21,
+    20,
+    19,
+    18,
+    17
+  ],
+  TransformationType.diagonalFlipBackslash: <int>[
+    2,
+    1,
+    0,
+    7,
+    6,
+    5,
+    4,
+    3,
+    10,
+    9,
+    8,
+    15,
+    14,
+    13,
+    12,
+    11,
+    18,
+    17,
+    16,
+    23,
+    22,
+    21,
+    20,
+    19
+  ],
+  TransformationType.diagonalFlipForwardSlash: <int>[
+    6,
+    5,
+    4,
+    3,
+    2,
+    1,
+    0,
+    7,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9,
+    8,
+    15,
+    22,
+    21,
+    20,
+    19,
+    18,
+    17,
+    16,
+    23
+  ],
+  TransformationType.rotate90VerticalFlip: <int>[
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0,
+    1,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    8,
+    9,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    16,
+    17
+  ],
+  TransformationType.rotate90HorizontalFlip: <int>[
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    16,
+    17,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    8,
+    9,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    0,
+    1
+  ],
+  TransformationType.rotate90DiagonalFlipBackslash: <int>[
+    20,
+    19,
+    18,
+    23,
+    22,
+    21,
+    16,
+    17,
+    12,
+    11,
+    10,
+    15,
+    14,
+    13,
+    8,
+    9,
+    4,
+    3,
+    2,
+    7,
+    6,
+    5,
+    0,
+    1
+  ],
+  TransformationType.rotate90DiagonalFlipForwardSlash: <int>[
+    4,
+    5,
+    6,
+    7,
+    2,
+    3,
+    0,
+    1,
+    12,
+    13,
+    14,
+    15,
+    10,
+    11,
+    8,
+    9,
+    20,
+    21,
+    22,
+    23,
+    18,
+    19,
+    16,
+    17
+  ],
+  TransformationType.rotate180VerticalFlip: <int>[
+    20,
+    19,
+    18,
+    17,
+    16,
+    23,
+    22,
+    21,
+    12,
+    11,
+    10,
+    9,
+    8,
+    15,
+    14,
+    13,
+    4,
+    3,
+    2,
+    1,
+    0,
+    7,
+    6,
+    5
+  ],
+  TransformationType.rotate180HorizontalFlip: <int>[
+    16,
+    23,
+    22,
+    21,
+    20,
+    19,
+    18,
+    17,
+    8,
+    15,
+    14,
+    13,
+    12,
+    11,
+    10,
+    9,
+    0,
+    7,
+    6,
+    5,
+    4,
+    3,
+    2,
+    1
+  ],
+  TransformationType.rotate270VerticalFlip: <int>[
+    6,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    22,
+    23,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    14,
+    15,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  TransformationType.rotate270HorizontalFlip: <int>[
+    14,
+    15,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    22,
+    23,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    6,
+    7,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ]
+};
+
+// Validator to ensure correct string length
 void _validateInput(String s) {
   if (s.length != 24) {
     throw ArgumentError('Input string must be exactly 24 characters long.');
   }
 }
 
+// Core transformation function using mapping
 String _transformString(String s, List<int> newPosition) {
   _validateInput(s);
   final List<String> result = List<String>.filled(24, '');
@@ -34,112 +451,9 @@ String _transformString(String s, List<int> newPosition) {
   return result.join();
 }
 
-// Identity Transformation
-String identityTransform(String s) {
-  return s; // This function directly returns the input as it is.
-}
-
-// Rotate 90 Degrees
-String rotate90Degrees(String s) {
-  final List<int> newPosition = <int>[
-    6, 7, 0, 1, 2, 3, 4, 5,
-    14, 15, 8, 9, 10, 11, 12, 13,
-    22, 23, 16, 17, 18, 19, 20, 21
-  ];
+// Public function to perform transformation based on the type
+String transformString(String s, TransformationType transformationType) {
+  final List<int> newPosition = transformationMap[transformationType] ??
+      List<int>.generate(24, (int i) => i);
   return _transformString(s, newPosition);
-}
-
-// Rotate 180 Degrees
-String rotate180Degrees(String s) {
-  return rotate90Degrees(rotate90Degrees(s));
-}
-
-// Rotate 270 Degrees
-String rotate270Degrees(String s) {
-  return rotate90Degrees(rotate180Degrees(s));
-}
-
-// Vertical Flip
-String verticalFlip(String s) {
-  final List<int> newPosition = <int>[
-    4, 3, 2, 1, 0, 7, 6, 5,
-    12, 11, 10, 9, 8, 15, 14, 13,
-    20, 19, 18, 17, 16, 23, 22, 21
-  ];
-  return _transformString(s, newPosition);
-}
-
-// Horizontal Flip
-String horizontalFlip(String s) {
-  final List<int> newPosition = <int>[
-    0, 7, 6, 5, 4, 3, 2, 1,
-    8, 15, 14, 13, 12, 11, 10, 9,
-    16, 23, 22, 21, 20, 19, 18, 17
-  ];
-  return _transformString(s, newPosition);
-}
-
-// Diagonal Flip (Backslash)
-String diagonalFlipBackslash(String s) {
-  final List<int> newPosition = <int>[
-    2, 1, 0, 7, 6, 5, 4, 3,
-    10, 9, 8, 15, 14, 13, 12, 11,
-    18, 17, 16, 23, 22, 21, 20, 19
-  ];
-  return _transformString(s, newPosition);
-}
-
-// Diagonal Flip (Forward Slash)
-String diagonalFlipForwardSlash(String s) {
-  final List<int> newPosition = <int>[
-    6, 5, 4, 3, 2, 1, 0, 7,
-    14, 13, 12, 11, 10, 9, 8, 15,
-    22, 21, 20, 19, 18, 17, 16, 23
-  ];
-  return _transformString(s, newPosition);
-}
-
-// Swap Upper and Lower Half
-String swapUpperLowerHalf(String s) {
-  final List<int> newPosition = <int>[
-    16, 17, 18, 19, 20, 21, 22, 23,
-    8, 9, 10, 11, 12, 13, 14, 15,
-    0, 1, 2, 3, 4, 5, 6, 7
-  ];
-  return _transformString(s, newPosition);
-}
-
-// Combined Transformations, e.g., Swap and Rotate 90 Degrees
-String swapAndRotate90Degrees(String s) {
-  return swapUpperLowerHalf(rotate90Degrees(s));
-}
-
-// Swap and Rotate 180 Degrees
-String swapAndRotate180Degrees(String s) {
-  return swapUpperLowerHalf(rotate180Degrees(s));
-}
-
-// Swap and Rotate 270 Degrees
-String swapAndRotate270Degrees(String s) {
-  return swapUpperLowerHalf(rotate270Degrees(s));
-}
-
-// Swap and Vertical Flip
-String swapAndVerticalFlip(String s) {
-  return swapUpperLowerHalf(verticalFlip(s));
-}
-
-// Swap and Horizontal Flip
-String swapAndHorizontalFlip(String s) {
-  return swapUpperLowerHalf(horizontalFlip(s));
-}
-
-// Swap and Diagonal Flip (Backslash)
-String swapAndDiagonalFlipBackslash(String s) {
-  return swapUpperLowerHalf(diagonalFlipBackslash(s));
-}
-
-// Swap and Diagonal Flip (Forward Slash)
-String swapAndDiagonalFlipForwardSlash(String s) {
-  return swapUpperLowerHalf(diagonalFlipForwardSlash(s));
 }
