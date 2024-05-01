@@ -355,12 +355,13 @@ class AppearanceSettingsPage extends StatelessWidget {
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
-        SettingsListTile.switchTile(
-          value: displaySettings.isAnalysisToolbarShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isAnalysisToolbarShown: val),
-          titleString: S.of(context).isAnalysisToolbarShown,
-        ),
+        if (kDebugMode)
+          SettingsListTile.switchTile(
+            value: displaySettings.isAnalysisToolbarShown,
+            onChanged: (bool val) => DB().displaySettings =
+                displaySettings.copyWith(isAnalysisToolbarShown: val),
+            titleString: S.of(context).isAnalysisToolbarShown,
+          ),
         SettingsListTile.switchTile(
           value: displaySettings.isPositionalAdvantageIndicatorShown,
           onChanged: (bool val) => DB().displaySettings = displaySettings

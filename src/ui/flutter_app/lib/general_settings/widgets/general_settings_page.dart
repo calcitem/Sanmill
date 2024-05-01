@@ -420,7 +420,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (EnvironmentConfig.devMode || EnvironmentConfig.test)
+        if (EnvironmentConfig.devMode || EnvironmentConfig.test || kDebugMode)
           SettingsCard(
             title: Text(S.of(context).experiments),
             children: <Widget>[
