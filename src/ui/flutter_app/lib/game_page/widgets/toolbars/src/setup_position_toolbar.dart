@@ -676,6 +676,17 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
 
+    // Piece
+    final ToolbarItem transformButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionPiece(context, PieceColor.white), // TODO: Transform
+      icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
+      label: const Text(
+        "Transform",   // TODO: S.of(context).transform,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
     // Clear
     final ToolbarItem clearButton = ToolbarItem.icon(
       onPressed: () {
@@ -816,7 +827,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       3: removeThreeButton,
     };
 
-    final List<Widget> rowOne = <Widget>[
+    final List<Widget> row1 = <Widget>[
       Expanded(child: colorButtonMap[newPieceColor]!),
       Expanded(child: phaseButtonMap[newPhase]!),
       Expanded(
@@ -827,7 +838,15 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(child: placedButton),
     ];
 
+    // TODO: Other buttons
     final List<Widget> row2 = <Widget>[
+      Expanded(child: transformButton),
+      Expanded(child: transformButton),
+      Expanded(child: transformButton),
+      Expanded(child: transformButton),
+    ];
+
+    final List<Widget> row3 = <Widget>[
       Expanded(child: copyButton),
       Expanded(child: pasteButton),
       Expanded(child: clearButton),
@@ -841,7 +860,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           margin: _margin,
           padding: _padding,
           itemColor: itemColor,
-          child: rowOne,
+          child: row1,
         ),
         SetupPositionButtonsContainer(
           backgroundColor: backgroundColor,
@@ -849,6 +868,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           padding: _padding,
           itemColor: itemColor,
           child: row2,
+        ),
+        SetupPositionButtonsContainer(
+          backgroundColor: backgroundColor,
+          margin: _margin,
+          padding: _padding,
+          itemColor: itemColor,
+          child: row3,
         ),
       ],
     );
