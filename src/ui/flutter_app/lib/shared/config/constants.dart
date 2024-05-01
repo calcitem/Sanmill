@@ -101,6 +101,8 @@ class Constants {
   }
 
   static const int highestSkillLevel = 30;
+
+  static bool isAndroid10Plus = false;
 }
 
 // TODO: Move to navigation folder

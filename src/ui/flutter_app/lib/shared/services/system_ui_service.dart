@@ -17,7 +17,7 @@
 part of 'package:sanmill/main.dart';
 
 /// Initializes the given [SystemChrome] ui
-void _initUI() {
+Future<void> _initUI() async {
   // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
   if (DB().displaySettings.isFullScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -33,6 +33,8 @@ void _initUI() {
       ),
     );
   }
+
+  Constants.isAndroid10Plus = await isAndroidAtLeastVersion10();
 }
 
 void _initializeScreenOrientation(BuildContext context) {
@@ -67,4 +69,23 @@ void safePop() {
   } else {
     logger.w('Cannot pop');
   }
+}
+
+Future<int?> getAndroidSDKVersion() async {
+  if (!Platform.isAndroid) {
+    return null;
+  }
+
+  final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  final AndroidDeviceInfo androidDeviceInfo =
+      await deviceInfoPlugin.androidInfo;
+  return androidDeviceInfo.version.sdkInt;
+}
+
+Future<bool> isAndroidAtLeastVersion10() async {
+  final int? sdkInt = await getAndroidSDKVersion();
+  if (sdkInt != null && sdkInt > 28) {
+    return true;  // Android 10 corresponds to SDK version 29
+  }
+  return false;
 }

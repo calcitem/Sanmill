@@ -139,6 +139,16 @@ class _GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
+        if (Constants.isAndroid10Plus == true)
+          const CustomSpacer(),
+        if (Constants.isAndroid10Plus == true)
+          SimpleDialogOption(
+            onPressed: () => Navigator.pop(context),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2.0),
+              child: Text(S.of(context).saveImage),
+            ),
+          ),
         if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(

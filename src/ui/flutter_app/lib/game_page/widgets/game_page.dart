@@ -204,18 +204,18 @@ class _GameState extends State<_Game> {
           );
         } else {
           logger.e("Failed to save image to Gallery");
-          rootScaffoldMessengerKey.currentState!.showSnackBar(
-              CustomSnackBar("Failed to save image to Gallery"));
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
         }
       } else {
         logger.e("Unexpected result type");
-        rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar("Unexpected result type"));
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBar(CustomSnackBar("Unexpected result type"));
       }
     } catch (e) {
       logger.e("Failed to save image: $e");
-      rootScaffoldMessengerKey.currentState!.showSnackBar(
-          CustomSnackBar("Failed to save image: $e"));
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBar(CustomSnackBar("Failed to save image: $e"));
     }
   }
 
