@@ -719,18 +719,6 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
 
-    // Vertical Flip
-    final ToolbarItem verticalFlipButton = ToolbarItem.icon(
-      onPressed: () =>
-          setSetupPositionTransform(context, TransformationType.verticalFlip),
-      icon: const Icon(FluentIcons.flip_vertical_24_regular),
-      label: Text(
-        S.of(context).verticalFlip,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-    );
-
     // Horizontal Flip
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
       onPressed: () =>
@@ -738,6 +726,18 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
       label: Text(
         S.of(context).horizontalFlip,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    // Vertical Flip
+    final ToolbarItem verticalFlipButton = ToolbarItem.icon(
+      onPressed: () =>
+          setSetupPositionTransform(context, TransformationType.verticalFlip),
+      icon: const Icon(FluentIcons.flip_vertical_24_regular),
+      label: Text(
+        S.of(context).verticalFlip,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -909,8 +909,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // TODO: Other buttons
     final List<Widget> row2 = <Widget>[
       Expanded(child: rotateButton),
-      Expanded(child: verticalFlipButton),
       Expanded(child: horizontalFlipButton),
+      Expanded(child: verticalFlipButton),
       Expanded(child: innerOuterFlipButton),
     ];
 
