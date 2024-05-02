@@ -317,6 +317,44 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     return;
   }
 
+  Future<void> setSetupPositionTransform(
+      BuildContext context, TransformationType transformationType) async {
+    final String? fen = GameController().position.fen;
+
+    if (fen == null) {
+      logger.e("FEN is null.");
+      GameController()
+          .headerTipNotifier
+          .showTip("Cannot transform."); // TODO: Localize
+      return;
+    }
+
+    final String transformedFen = transformFEN(fen, transformationType);
+
+    try {
+      if (GameController().position.setFen(transformedFen) == true) {
+        GameController()
+            .headerTipNotifier
+            .showTip("Transformed."); // TODO: Localize
+        initContext();
+        _updateSetupPositionIcons();
+        //rootScaffoldMessengerKey.currentState!.showSnackBarClear("FEN: $transformedFen");
+      } else {
+        GameController()
+            .headerTipNotifier
+            .showTip("Cannot transform."); // TODO: Localize
+      }
+    } catch (e) {
+      GameController()
+          .headerTipNotifier
+          .showTip("Cannot transform."); // TODO: Localize
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
   int setSetupPositionPlacedGetBegin() {
     if (newPhase == Phase.moving) {
       return DB().ruleSettings.piecesCount;
@@ -676,13 +714,49 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
 
-    // Piece
-    final ToolbarItem transformButton = ToolbarItem.icon(
-      onPressed: () =>
-          setSetupPositionPiece(context, PieceColor.white), // TODO: Transform
+    // Rotate
+    final ToolbarItem rotateButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionTransform(
+          context, TransformationType.rotate90Degrees), // TODO: Transform
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: const Text(
-        "Transform", // TODO: S.of(context).transform,
+        "Rotate", // TODO: S.of(context).transform,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    // Vertical Flip
+    final ToolbarItem verticalFlipButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionTransform(
+          context, TransformationType.verticalFlip), // TODO: Transform
+      icon: const Icon(FluentIcons.flip_vertical_24_regular),
+      label: const Text(
+        "Vertical Flip", // TODO: S.of(context).transform,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    // Horizontal Flip
+    final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionTransform(
+          context, TransformationType.horizontalFlip), // TODO: Transform
+      icon: const Icon(FluentIcons.flip_horizontal_24_regular),
+      label: const Text(
+        "Horizontal Flip", // TODO: S.of(context).transform,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+    );
+
+    // Diagonal Flip Forward Slash
+    final ToolbarItem diagonalFlipForwardSlashButton = ToolbarItem.icon(
+      onPressed: () => setSetupPositionTransform(
+          context, TransformationType.rotate90DiagonalFlipBackslash), // TODO: Transform
+      icon: const Icon(FluentIcons.access_time_24_regular),
+      label: const Text(
+        "Diagonal Flip Forward Slash", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -841,10 +915,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // TODO: Other buttons
     final List<Widget> row2 = <Widget>[
-      Expanded(child: transformButton),
-      Expanded(child: transformButton),
-      Expanded(child: transformButton),
-      Expanded(child: transformButton),
+      Expanded(child: rotateButton),
+      Expanded(child: verticalFlipButton),
+      Expanded(child: horizontalFlipButton),
+      Expanded(child: diagonalFlipForwardSlashButton),
     ];
 
     final List<Widget> row3 = <Widget>[
