@@ -203,6 +203,17 @@ class ImportService {
       return false;
     }
 
+    if (noTag == "" ||
+        noTag.contains("A") ||
+        noTag.contains("B") ||
+        noTag.contains("C") ||
+        noTag.contains("D") ||
+        noTag.contains("E") ||
+        noTag.contains("F") ||
+        noTag.contains("G")) {
+      return false;
+    }
+
     return true;
   }
 
@@ -302,6 +313,7 @@ class ImportService {
 
   @visibleForTesting
   static void import(String moveList) {
+    moveList = moveList.replaceAll(RegExp(r'^\s*[\r\n]+'), '');
     String ml = moveList;
     final String? fen = GameController().position.fen;
     String? setupFen;
