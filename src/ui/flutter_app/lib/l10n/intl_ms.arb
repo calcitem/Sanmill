@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Warna Latar Belakang Bar Alat Analisis",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Warna Ikon Bar Alat Analisis",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformed.",
+  "@transformed": {},
+  "cannotTransform": "Tidak boleh mengubah.",
+  "@cannotTransform": {},
+  "rotate": "Putar",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

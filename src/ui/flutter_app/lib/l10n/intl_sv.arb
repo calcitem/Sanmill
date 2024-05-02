@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Bakgrundsfärg för analysverktygsfältet",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Ikonfärg för analysverktygsfältet",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformeras.",
+  "@transformed": {},
+  "cannotTransform": "Kan inte transformeras.",
+  "@cannotTransform": {},
+  "rotate": "Rotera",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

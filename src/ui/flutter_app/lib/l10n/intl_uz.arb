@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Tahlil vositasi panelining orqa fon rangi",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Tahlil vositasi panelining ikon rangi",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "O'zgartirildi.",
+  "@transformed": {},
+  "cannotTransform": "O'zgartirib bo'lmaydi.",
+  "@cannotTransform": {},
+  "rotate": "Aylantirish",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

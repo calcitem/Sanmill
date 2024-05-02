@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲနောက်ပိုင်းအရောင်အဝယ်",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "စစ်ဆင်ရေးကွန်ယက်ပရောင်းသောစားပွဲအင်္ဂါအရောင်",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "အပြောင်းအလဲပြုလုပ်လျှင်",
+  "@transformed": {},
+  "cannotTransform": "မဆုံးအပြောင်းအလဲပြုပြီးပါးစပ်ပါးသောက်ကျသွားပါပြီ",
+  "@cannotTransform": {},
+  "rotate": "တွင်ရှိတည်ရှိခြင်း",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

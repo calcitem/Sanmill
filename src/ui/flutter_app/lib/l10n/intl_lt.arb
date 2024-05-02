@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Analizės įrankių juostos fono spalva",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analizės įrankių juostos piktogramos spalva",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Paversta.",
+  "@transformed": {},
+  "cannotTransform": "Negalima transformuoti.",
+  "@cannotTransform": {},
+  "rotate": "Pasukti",
+  "@rotate": {},
+  "horizontalFlip": "H Apsvertimas",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Apsvertimas",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Apsvertimas",
+  "@innerOuterFlip": {}
 }

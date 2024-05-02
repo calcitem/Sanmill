@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Màu nền của thanh công cụ phân tích",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Màu biểu tượng của thanh công cụ phân tích",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Đã biến đổi.",
+  "@transformed": {},
+  "cannotTransform": "Không thể biến đổi.",
+  "@cannotTransform": {},
+  "rotate": "Xoay",
+  "@rotate": {},
+  "horizontalFlip": "H Lật",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Lật",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Lật",
+  "@innerOuterFlip": {}
 }

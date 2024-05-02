@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "ප්‍රාදේශීය විද්‍යා තීරුවේ පසුබිම් වර්ණය",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "ප්‍රාදේශීය විද්‍යා තීරුවේ අයිකන් වර්ණය",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "පරිවර්තනය කරන ලදි.",
+  "@transformed": {},
+  "cannotTransform": "පරිවර්තනය කළ නොහැකි.",
+  "@cannotTransform": {},
+  "rotate": "කරත්තුව",
+  "@rotate": {},
+  "horizontalFlip": "H වක්‍රීයක්",
+  "@horizontalFlip": {},
+  "verticalFlip": "V වක්‍රීයක්",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO වක්‍රීයක්",
+  "@innerOuterFlip": {}
 }

@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "分析工具列背景顏色",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "分析工具列圖示顏色",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "已轉換。",
+  "@transformed": {},
+  "cannotTransform": "無法轉換。",
+  "@cannotTransform": {},
+  "rotate": "旋轉",
+  "@rotate": {},
+  "horizontalFlip": "左右",
+  "@horizontalFlip": {},
+  "verticalFlip": "上下",
+  "@verticalFlip": {},
+  "innerOuterFlip": "内外",
+  "@innerOuterFlip": {}
 }

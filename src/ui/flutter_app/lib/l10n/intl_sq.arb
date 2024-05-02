@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Ngjyra e sfondit të shiritit të veglave të analizës",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Ngjyra e ikonës së shiritit të veglave të analizës",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformuar.",
+  "@transformed": {},
+  "cannotTransform": "Nuk mund të transformohet.",
+  "@cannotTransform": {},
+  "rotate": "Rrotullo",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

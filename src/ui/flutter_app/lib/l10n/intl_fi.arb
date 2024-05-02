@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Analyysityökalupalkin taustaväri",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analyysityökalupalkin kuvakkeen väri",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Muunnettu.",
+  "@transformed": {},
+  "cannotTransform": "Ei voi muuntaa.",
+  "@cannotTransform": {},
+  "rotate": "Kierrä",
+  "@rotate": {},
+  "horizontalFlip": "H Kääntö",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Kääntö",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Kääntö",
+  "@innerOuterFlip": {}
 }

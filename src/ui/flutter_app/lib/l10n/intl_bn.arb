@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "বিশ্লেষণ টুলবারের পটভূমি রঙ",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "বিশ্লেষণ টুলবারের আইকন রঙ",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "পরিবর্তিত।",
+  "@transformed": {},
+  "cannotTransform": "পরিবর্তন করা যায় না।",
+  "@cannotTransform": {},
+  "rotate": "ঘোরানো",
+  "@rotate": {},
+  "horizontalFlip": "হরইজন্টাল ফ্লিপ",
+  "@horizontalFlip": {},
+  "verticalFlip": "ভার্টিক্যাল ফ্লিপ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "আইও ফ্লিপ",
+  "@innerOuterFlip": {}
 }

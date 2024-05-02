@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Позадинска боја на алатникот за анализа",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Боја на иконата на алатникот за анализа",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Трансформирано.",
+  "@transformed": {},
+  "cannotTransform": "Не може да се трансформира.",
+  "@cannotTransform": {},
+  "rotate": "Ротирај",
+  "@rotate": {},
+  "horizontalFlip": "Х Флип",
+  "@horizontalFlip": {},
+  "verticalFlip": "В Флип",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Флип",
+  "@innerOuterFlip": {}
 }

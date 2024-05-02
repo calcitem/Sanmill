@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "رنگ پس زمینه نوار ابزار تحلیل",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "رنگ آیکون نوار ابزار تحلیل",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "تبدیل شد.",
+  "@transformed": {},
+  "cannotTransform": "نمی‌توان تبدیل کرد.",
+  "@cannotTransform": {},
+  "rotate": "چرخش",
+  "@rotate": {},
+  "horizontalFlip": "افقی فلیپ",
+  "@horizontalFlip": {},
+  "verticalFlip": "عمودی فلیپ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO فلیپ",
+  "@innerOuterFlip": {}
 }

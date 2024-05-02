@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Kolor tła paska narzędzi analizy",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Kolor ikony paska narzędzi analizy",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Przekształcone.",
+  "@transformed": {},
+  "cannotTransform": "Nie można przekształcić.",
+  "@cannotTransform": {},
+  "rotate": "Obróć",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

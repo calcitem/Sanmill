@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Barva ozadja orodne vrstice za analizo",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Barva ikone orodne vrstice za analizo",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Pretvorjeno.",
+  "@transformed": {},
+  "cannotTransform": "Ni mogoče pretvoriti.",
+  "@cannotTransform": {},
+  "rotate": "Zavrti",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

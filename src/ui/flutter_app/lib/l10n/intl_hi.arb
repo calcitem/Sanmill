@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "विश्लेषण टूलबार का पृष्ठभूमि रंग",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "विश्लेषण टूलबार आइकन रंग",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "परिवर्तित किया गया।",
+  "@transformed": {},
+  "cannotTransform": "परिवर्तन नहीं किया जा सकता।",
+  "@cannotTransform": {},
+  "rotate": "घुमाएँ",
+  "@rotate": {},
+  "horizontalFlip": "एच फ्लिप",
+  "@horizontalFlip": {},
+  "verticalFlip": "वी फ्लिप",
+  "@verticalFlip": {},
+  "innerOuterFlip": "आईओ फ्लिप",
+  "@innerOuterFlip": {}
 }

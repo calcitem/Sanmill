@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Analiz araç çubuğu arka plan rengi",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analiz araç çubuğu simge rengi",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Dönüştürüldü.",
+  "@transformed": {},
+  "cannotTransform": "Dönüştürülemez.",
+  "@cannotTransform": {},
+  "rotate": "Döndür",
+  "@rotate": {},
+  "horizontalFlip": "H Çevir",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Çevir",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Çevir",
+  "@innerOuterFlip": {}
 }

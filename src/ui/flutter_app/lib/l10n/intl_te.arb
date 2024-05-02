@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "విశ్లేషణ టూల్‌బార్ నేపథ్యం రంగు",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "విశ్లేషణ టూల్‌బార్ చిహ్నం రంగు",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "పరివర్తితం.",
+  "@transformed": {},
+  "cannotTransform": "పరివర్తన చేయలేము.",
+  "@cannotTransform": {},
+  "rotate": "పరిసరాలను తిరిగించు",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

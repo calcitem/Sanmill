@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Колер фону панэлі аналізу",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Колер іконкі панэлі аналізу",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Трансф.",
+  "@transformed": {},
+  "cannotTransform": "Немагчыма трансфармацыі.",
+  "@cannotTransform": {},
+  "rotate": "Рухаць",
+  "@rotate": {},
+  "horizontalFlip": "Гарызонт.",
+  "@horizontalFlip": {},
+  "verticalFlip": "Верт.",
+  "@verticalFlip": {},
+  "innerOuterFlip": "І/З Паварот",
+  "@innerOuterFlip": {}
 }

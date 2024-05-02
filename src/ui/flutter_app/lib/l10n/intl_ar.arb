@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "لون خلفية شريط أدوات التحليل",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "لون أيقونة شريط أدوات التحليل",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "تحول",
+  "@transformed": {},
+  "cannotTransform": "لا يمكن التحويل",
+  "@cannotTransform": {},
+  "rotate": "دوران",
+  "@rotate": {},
+  "horizontalFlip": "أفقي",
+  "@horizontalFlip": {},
+  "verticalFlip": "عمودي",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO فليب",
+  "@innerOuterFlip": {}
 }

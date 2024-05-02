@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "ವಿಶ್ಲೇಷಣೆ ಟೂಲ್‌ಬಾರ್ ಹಿನ್ನೆಲೆ ಬಣ್ಣ",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "ವಿಶ್ಲೇಷಣೆ ಟೂಲ್‌ಬಾರ್ ಐಕಾನ್ ಬಣ್ಣ",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "ಬದಲಾಗಿದ.",
+  "@transformed": {},
+  "cannotTransform": "ಬದಲಾಯಿಸಲಾಗದು.",
+  "@cannotTransform": {},
+  "rotate": "ತಿರುಗು",
+  "@rotate": {},
+  "horizontalFlip": "ಹಾರಿಜಾಂತರ ತಿರುಗು",
+  "@horizontalFlip": {},
+  "verticalFlip": "ವರ್ಟಿಕಲ್ ತಿರುಗು",
+  "@verticalFlip": {},
+  "innerOuterFlip": "ಆಂತರಿಕ/ಬಾಹ್ಯ ತಿರುಗು",
+  "@innerOuterFlip": {}
 }

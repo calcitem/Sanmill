@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Cor de fundo da barra de ferramentas de análise",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Cor do ícone da barra de ferramentas de análise",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformado.",
+  "@transformed": {},
+  "cannotTransform": "Não é possível transformar.",
+  "@cannotTransform": {},
+  "rotate": "Girar",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

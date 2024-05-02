@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "વિશ્લેષણ ટૂલબારની બેકગ્રાઉન્ડ કલર",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "વિશ્લેષણ ટૂલબારની આઇકન કલર",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "ફેરફાર થયું.",
+  "@transformed": {},
+  "cannotTransform": "ફેરફાર કરી શકાતું નથી.",
+  "@cannotTransform": {},
+  "rotate": "ઘૂમાવો",
+  "@rotate": {},
+  "horizontalFlip": "H ફ્લિપ",
+  "@horizontalFlip": {},
+  "verticalFlip": "V ફ્લિપ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO ફ્લિપ",
+  "@innerOuterFlip": {}
 }

@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Agtergrondkleur van ontledingsnutsbalk",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Ikoonkleur van ontledingsnutsbalk",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Omskep.",
+  "@transformed": {},
+  "cannotTransform": "Kan nie omskep nie.",
+  "@cannotTransform": {},
+  "rotate": "Draai",
+  "@rotate": {},
+  "horizontalFlip": "H Draai",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Draai",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Draai",
+  "@innerOuterFlip": {}
 }

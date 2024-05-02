@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Boja pozadine trake alatki za analizu",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Boja ikone trake alatki za analizu",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformisano.",
+  "@transformed": {},
+  "cannotTransform": "Ne može da se transformiše.",
+  "@cannotTransform": {},
+  "rotate": "Rotacija",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

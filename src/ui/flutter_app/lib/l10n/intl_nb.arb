@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Bakgrunnsfarge for analyseverktøylinjen",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Ikonfarge for analyseverktøylinjen",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformert.",
+  "@transformed": {},
+  "cannotTransform": "Kan ikke transformere.",
+  "@cannotTransform": {},
+  "rotate": "Roter",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

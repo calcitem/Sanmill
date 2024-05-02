@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Цвет фона панели инструментов анализа",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Цвет иконки панели инструментов анализа",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Трансформировано.",
+  "@transformed": {},
+  "cannotTransform": "Невозможно трансформировать.",
+  "@cannotTransform": {},
+  "rotate": "Повернуть",
+  "@rotate": {},
+  "horizontalFlip": "H Перев",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Перев",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Перев",
+  "@innerOuterFlip": {}
 }

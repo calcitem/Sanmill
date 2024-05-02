@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "สีพื้นหลังของแถบเครื่องมือการวิเคราะห์",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "สีไอคอนของแถบเครื่องมือการวิเคราะห์",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "ผ่านการแปลง",
+  "@transformed": {},
+  "cannotTransform": "ไม่สามารถแปลง",
+  "@cannotTransform": {},
+  "rotate": "หมุน",
+  "@rotate": {},
+  "horizontalFlip": "พลิกแนวนอน",
+  "@horizontalFlip": {},
+  "verticalFlip": "พลิกแนวตั้ง",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO พลิก",
+  "@innerOuterFlip": {}
 }

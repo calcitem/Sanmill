@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Elemzési eszköztár hátterének színe",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Elemzési eszköztár ikonjának színe",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Átalakítva.",
+  "@transformed": {},
+  "cannotTransform": "Nem lehet átalakítani.",
+  "@cannotTransform": {},
+  "rotate": "Forgat",
+  "@rotate": {},
+  "horizontalFlip": "H Fordítás",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Fordítás",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Fordítás",
+  "@innerOuterFlip": {}
 }

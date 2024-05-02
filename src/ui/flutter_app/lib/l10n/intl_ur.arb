@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "تجزیہ ٹولبار کا پس منظر رنگ",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "تجزیہ ٹولبار آئکن کا رنگ",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "تبدیل شدہ۔",
+  "@transformed": {},
+  "cannotTransform": "تبدیل نہیں کر سکتا۔",
+  "@cannotTransform": {},
+  "rotate": "گھومیں",
+  "@rotate": {},
+  "horizontalFlip": "H فلپ",
+  "@horizontalFlip": {},
+  "verticalFlip": "V فلپ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO فلپ",
+  "@innerOuterFlip": {}
 }

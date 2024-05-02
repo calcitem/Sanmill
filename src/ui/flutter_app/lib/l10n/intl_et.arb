@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Analüüsiriistariba taustavärv",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analüüsiriistariba ikooni värv",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformeeritud.",
+  "@transformed": {},
+  "cannotTransform": "Ei saa transformeerida.",
+  "@cannotTransform": {},
+  "rotate": "Pööra",
+  "@rotate": {},
+  "horizontalFlip": "H Pööre",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Pööre",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Pööre",
+  "@innerOuterFlip": {}
 }

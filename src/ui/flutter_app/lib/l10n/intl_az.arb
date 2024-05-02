@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Analiz panelinin arxa fon rəngi",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analiz panelinin ikonu rəngi",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Dönüşdürüldü.",
+  "@transformed": {},
+  "cannotTransform": "Dönüşdürmək mümkün deyil.",
+  "@cannotTransform": {},
+  "rotate": "Döndür",
+  "@rotate": {},
+  "horizontalFlip": "Y-Fli",
+  "@horizontalFlip": {},
+  "verticalFlip": "D-Fli",
+  "@verticalFlip": {},
+  "innerOuterFlip": "İ/O Fli",
+  "@innerOuterFlip": {}
 }

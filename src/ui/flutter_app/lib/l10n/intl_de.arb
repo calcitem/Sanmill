@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Hintergrundfarbe der Analysetools",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Symbolfarbe der Analysetools",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformiert.",
+  "@transformed": {},
+  "cannotTransform": "Kann nicht transformieren.",
+  "@cannotTransform": {},
+  "rotate": "Rotieren",
+  "@rotate": {},
+  "horizontalFlip": "H Kippen",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Kippen",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Kippen",
+  "@innerOuterFlip": {}
 }

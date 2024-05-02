@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Culoarea de fundal a barei de instrumente de analiză",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Culoarea pictogramei barei de instrumente de analiză",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformed.",
+  "@transformed": {},
+  "cannotTransform": "Nu se poate transforma.",
+  "@cannotTransform": {},
+  "rotate": "Rotire",
+  "@rotate": {},
+  "horizontalFlip": "H. Oriz.",
+  "@horizontalFlip": {},
+  "verticalFlip": "V. Vert.",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "צבע רקע של סרגל הכלים לניתוח",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "צבע הסמל של סרגל הכלים לניתוח",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "הופך",
+  "@transformed": {},
+  "cannotTransform": "לא ניתן להפוך",
+  "@cannotTransform": {},
+  "rotate": "סובב",
+  "@rotate": {},
+  "horizontalFlip": "היפוך אופקי",
+  "@horizontalFlip": {},
+  "verticalFlip": "היפוך אנכי",
+  "@verticalFlip": {},
+  "innerOuterFlip": "היפוך פנים/חוץ",
+  "@innerOuterFlip": {}
 }

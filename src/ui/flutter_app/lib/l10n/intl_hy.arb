@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Անալիզիզիայի գործիքային գոտի ետնագույն գույնը",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Անալիզիզիայի գործիքային գոտին նշանակի գույնը",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Վերևում է",
+  "@transformed": {},
+  "cannotTransform": "Անհնար է փոխել",
+  "@cannotTransform": {},
+  "rotate": "Շրջել",
+  "@rotate": {},
+  "horizontalFlip": "H Փոխել",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Փոխել",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Փոխել",
+  "@innerOuterFlip": {}
 }

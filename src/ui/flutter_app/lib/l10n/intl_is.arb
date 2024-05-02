@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Bakgrunnslitur greiningartækni",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Litir ikóna greiningartækni",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Breytist.",
+  "@transformed": {},
+  "cannotTransform": "Ekki hægt að breyta.",
+  "@cannotTransform": {},
+  "rotate": "Snúa",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

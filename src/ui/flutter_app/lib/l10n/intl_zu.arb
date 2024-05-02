@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Umbala wesikali sesibhakabhakhi seziqu zokusekela ukuhlaziywa",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Umbala wesithonjana seziqu zokusekela ukuhlaziywa",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Ihlanganiswe.",
+  "@transformed": {},
+  "cannotTransform": "Ngikwazi ukungahlukaniswa.",
+  "@cannotTransform": {},
+  "rotate": "Hlela",
+  "@rotate": {},
+  "horizontalFlip": "H Ibhlophu",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Ibhlophu",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Ibhlophu",
+  "@innerOuterFlip": {}
 }

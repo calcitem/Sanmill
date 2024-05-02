@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "Колір фону панелі інструментів аналізу",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Колір піктограми панелі інструментів аналізу",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Трансформовано.",
+  "@transformed": {},
+  "cannotTransform": "Не можна трансформувати.",
+  "@cannotTransform": {},
+  "rotate": "Обертати",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

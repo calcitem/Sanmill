@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Achtergrondkleur van analysetoolbalk",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Pictogramkleur van analysetoolbalk",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Getransformeerd.",
+  "@transformed": {},
+  "cannotTransform": "Kan niet transformeren.",
+  "@cannotTransform": {},
+  "rotate": "Roteer",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

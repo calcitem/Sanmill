@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": "解析ツールバーの背景色",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "解析ツールバーのアイコンの色",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "変換されました。",
+  "@transformed": {},
+  "cannotTransform": "変換できません。",
+  "@cannotTransform": {},
+  "rotate": "回転",
+  "@rotate": {},
+  "horizontalFlip": "H フリップ",
+  "@horizontalFlip": {},
+  "verticalFlip": "V フリップ",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO フリップ",
+  "@innerOuterFlip": {}
 }

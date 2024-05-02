@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Barva pozadí panelu nástrojů pro analýzu",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Barva ikony panelu nástrojů pro analýzu",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transform.",
+  "@transformed": {},
+  "cannotTransform": "Nelze transformovat.",
+  "@cannotTransform": {},
+  "rotate": "Rotace",
+  "@rotate": {},
+  "horizontalFlip": "Hor. Obrácení",
+  "@horizontalFlip": {},
+  "verticalFlip": "Vert. Obrácení",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Obrácení",
+  "@innerOuterFlip": {}
 }

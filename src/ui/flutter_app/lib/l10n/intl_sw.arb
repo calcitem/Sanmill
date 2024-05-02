@@ -1511,5 +1511,17 @@
   "analysisToolbarBackgroundColor": " rangi ya asili ya upau wa zana za uchambuzi",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Rangi ya ikoni ya upau wa zana za uchambuzi",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Imebadilishwa.",
+  "@transformed": {},
+  "cannotTransform": "Haiwezi kubadilishwa.",
+  "@cannotTransform": {},
+  "rotate": "Pindua",
+  "@rotate": {},
+  "horizontalFlip": "H Flip",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Flip",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Flip",
+  "@innerOuterFlip": {}
 }

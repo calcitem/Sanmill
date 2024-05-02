@@ -1413,5 +1413,17 @@
   "analysisToolbarBackgroundColor": "Analīzes rīkjoslas fona krāsa",
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "Analīzes rīkjoslas ikonas krāsa",
-  "@analysisToolbarIconColor": {}
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformēts.",
+  "@transformed": {},
+  "cannotTransform": "Nevar pārveidot.",
+  "@cannotTransform": {},
+  "rotate": "Pagriezt",
+  "@rotate": {},
+  "horizontalFlip": "H Apgriezt",
+  "@horizontalFlip": {},
+  "verticalFlip": "V Apgriezt",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO Apgriezt",
+  "@innerOuterFlip": {}
 }
