@@ -720,7 +720,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           context, TransformationType.rotate90Degrees), // TODO: Transform
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
       label: const Text(
-        "Rotate", // TODO: S.of(context).transform,
+        "Rot.", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -732,7 +732,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           context, TransformationType.verticalFlip), // TODO: Transform
       icon: const Icon(FluentIcons.flip_vertical_24_regular),
       label: const Text(
-        "Vertical Flip", // TODO: S.of(context).transform,
+        "V. Flip", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -744,19 +744,19 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           context, TransformationType.horizontalFlip), // TODO: Transform
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
       label: const Text(
-        "Horizontal Flip", // TODO: S.of(context).transform,
+        "H. Flip", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
     );
 
-    // Diagonal Flip Forward Slash
-    final ToolbarItem diagonalFlipForwardSlashButton = ToolbarItem.icon(
+    // Inner Outer Flip
+    final ToolbarItem innerOuterFlipButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionTransform(
-          context, TransformationType.rotate90DiagonalFlipBackslash), // TODO: Transform
-      icon: const Icon(FluentIcons.access_time_24_regular),
+          context, TransformationType.innerOuterFlip), // TODO: Transform
+      icon: const Icon(FluentIcons.arrow_expand_24_regular),
       label: const Text(
-        "Diagonal Flip Forward Slash", // TODO: S.of(context).transform,
+        "I/O Flip", // TODO: S.of(context).transform,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -918,7 +918,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(child: rotateButton),
       Expanded(child: verticalFlipButton),
       Expanded(child: horizontalFlipButton),
-      Expanded(child: diagonalFlipForwardSlashButton),
+      Expanded(child: innerOuterFlipButton),
     ];
 
     final List<Widget> row3 = <Widget>[
