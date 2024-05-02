@@ -1,0 +1,6 @@
+v4.4.0
+
+This update includes various improvements and bug fixes to make the app better for you.
+
+* Support transforming board.
+* Nine Men's Morris: Built-in Perfect Database files for the first 8 moves.
