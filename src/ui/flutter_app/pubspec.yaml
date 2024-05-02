@@ -104,6 +104,23 @@ flutter:
     - assets/images/background_image_3.jpg
     - assets/images/background_image_4.jpg
     - assets/images/background_image_5.jpg
+    - assets/databases/std.secval
+    - assets/databases/std_0_0_9_9.sec2
+    - assets/databases/std_0_1_9_8.sec2
+    - assets/databases/std_1_1_8_8.sec2
+    - assets/databases/std_1_2_8_7.sec2
+    - assets/databases/std_1_3_7_6.sec2
+    - assets/databases/std_2_2_7_7.sec2
+    - assets/databases/std_2_3_6_6.sec2
+    - assets/databases/std_2_3_7_6.sec2
+    - assets/databases/std_2_4_6_5.sec2
+    - assets/databases/std_3_3_5_5.sec2
+    - assets/databases/std_3_3_6_5.sec2
+    - assets/databases/std_3_3_6_6.sec2
+    - assets/databases/std_3_4_5_5.sec2
+    - assets/databases/std_3_4_6_5.sec2
+    - assets/databases/std_4_3_5_5.sec2
+    - assets/databases/std_4_4_5_5.sec2
 
 flutter_intl:
   enabled: true

@@ -29,6 +29,7 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/perfect_database_service.dart';
 import '../../shared/services/url.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -129,6 +130,10 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings = generalSettings.copyWith(usePerfectDatabase: value);
 
     logger.v("$_logTag usePerfectDatabase: $value");
+
+    if (value == true) {
+      copyPerfectDatabaseFiles();
+    }
   }
 
   void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
