@@ -323,9 +323,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     if (fen == null) {
       logger.e("FEN is null.");
-      GameController()
-          .headerTipNotifier
-          .showTip("Cannot transform."); // TODO: Localize
+      GameController().headerTipNotifier.showTip(S.of(context).cannotTransform);
       return;
     }
 
@@ -333,21 +331,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     try {
       if (GameController().position.setFen(transformedFen) == true) {
-        GameController()
-            .headerTipNotifier
-            .showTip("Transformed."); // TODO: Localize
+        GameController().headerTipNotifier.showTip(S.of(context).transformed);
         initContext();
         _updateSetupPositionIcons();
-        //rootScaffoldMessengerKey.currentState!.showSnackBarClear("FEN: $transformedFen");
       } else {
         GameController()
             .headerTipNotifier
-            .showTip("Cannot transform."); // TODO: Localize
+            .showTip(S.of(context).cannotTransform);
       }
     } catch (e) {
-      GameController()
-          .headerTipNotifier
-          .showTip("Cannot transform."); // TODO: Localize
+      GameController().headerTipNotifier.showTip(S.of(context).cannotTransform);
     }
 
     if (mounted) {
@@ -717,10 +710,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Rotate
     final ToolbarItem rotateButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionTransform(
-          context, TransformationType.rotate90Degrees), // TODO: Transform
+          context, TransformationType.rotate90Degrees),
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
-      label: const Text(
-        "Rot.", // TODO: S.of(context).transform,
+      label: Text(
+        S.of(context).rotate,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -728,11 +721,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Vertical Flip
     final ToolbarItem verticalFlipButton = ToolbarItem.icon(
-      onPressed: () => setSetupPositionTransform(
-          context, TransformationType.verticalFlip), // TODO: Transform
+      onPressed: () =>
+          setSetupPositionTransform(context, TransformationType.verticalFlip),
       icon: const Icon(FluentIcons.flip_vertical_24_regular),
-      label: const Text(
-        "V. Flip", // TODO: S.of(context).transform,
+      label: Text(
+        S.of(context).verticalFlip,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -740,11 +733,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Horizontal Flip
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
-      onPressed: () => setSetupPositionTransform(
-          context, TransformationType.horizontalFlip), // TODO: Transform
+      onPressed: () =>
+          setSetupPositionTransform(context, TransformationType.horizontalFlip),
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
-      label: const Text(
-        "H. Flip", // TODO: S.of(context).transform,
+      label: Text(
+        S.of(context).horizontalFlip,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
@@ -752,11 +745,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Inner Outer Flip
     final ToolbarItem innerOuterFlipButton = ToolbarItem.icon(
-      onPressed: () => setSetupPositionTransform(
-          context, TransformationType.innerOuterFlip), // TODO: Transform
+      onPressed: () =>
+          setSetupPositionTransform(context, TransformationType.innerOuterFlip),
       icon: const Icon(FluentIcons.arrow_expand_24_regular),
-      label: const Text(
-        "I/O Flip", // TODO: S.of(context).transform,
+      label: Text(
+        S.of(context).innerOuterFlip,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
