@@ -1,0 +1,7 @@
+v4.5.0
+
+Esta actualización incluye varias mejoras y correcciones de errores para hacer esta aplicación más usable.
+
+* Android: Soporte para abrir archivos PGN desde el explorador de archivos del teléfono.
+* Corregido el problema de confusión del número de disco al girar y voltear el tablero.
+* Mostrar el número de pieza sólo cuando el número de pieza no es 0.
