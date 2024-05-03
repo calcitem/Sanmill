@@ -40,7 +40,7 @@ class _AiResponseDelayTimeSlider extends StatelessWidget {
                 divisions: 15,
                 label: displaySettings.aiResponseDelayTime.toStringAsFixed(1),
                 onChanged: (double value) {
-                  logger.v("[config] AiResponseDelayTime value: $value");
+                  logger.t("[config] AiResponseDelayTime value: $value");
                   DB().displaySettings =
                       displaySettings.copyWith(aiResponseDelayTime: value);
                 },

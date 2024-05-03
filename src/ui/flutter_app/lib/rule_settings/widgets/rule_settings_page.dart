@@ -51,7 +51,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       DB().ruleSettings = ruleSettings.copyWith(piecesCount: piecesCount);
 
-      logger.v("[config] piecesCount = $piecesCount");
+      logger.t("[config] piecesCount = $piecesCount");
 
       if (DB().generalSettings.usePerfectDatabase && piecesCount != 9) {
         rootScaffoldMessengerKey.currentState!
@@ -74,7 +74,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       DB().ruleSettings = ruleSettings.copyWith(nMoveRule: nMoveRule);
 
-      logger.v("[config] nMoveRule = $nMoveRule");
+      logger.t("[config] nMoveRule = $nMoveRule");
     }
 
     showModalBottomSheet(
@@ -100,7 +100,7 @@ class RuleSettingsPage extends StatelessWidget {
       DB().ruleSettings =
           ruleSettings.copyWith(endgameNMoveRule: endgameNMoveRule);
 
-      logger.v("[config] endgameNMoveRule = $endgameNMoveRule");
+      logger.t("[config] endgameNMoveRule = $endgameNMoveRule");
     }
 
     showModalBottomSheet(
@@ -118,7 +118,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       DB().ruleSettings = ruleSettings.copyWith(flyPieceCount: flyPieceCount);
 
-      logger.v("[config] flyPieceCount = $flyPieceCount");
+      logger.t("[config] flyPieceCount = $flyPieceCount");
     }
 
     showModalBottomSheet(
@@ -133,19 +133,19 @@ class RuleSettingsPage extends StatelessWidget {
   void _setHasDiagonalLines(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(hasDiagonalLines: value);
 
-    logger.v("[config] hasDiagonalLines: $value");
+    logger.t("[config] hasDiagonalLines: $value");
   }
 
   void _setAllowFlyingAllowed(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(mayFly: value);
 
-    logger.v("[config] mayFly: $value");
+    logger.t("[config] mayFly: $value");
   }
 
   void _setThreefoldRepetitionRule(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(threefoldRepetitionRule: value);
 
-    logger.v("[config] threefoldRepetitionRule: $value");
+    logger.t("[config] threefoldRepetitionRule: $value");
   }
 
   // Placing
@@ -156,7 +156,7 @@ class RuleSettingsPage extends StatelessWidget {
       DB().ruleSettings =
           ruleSettings.copyWith(boardFullAction: boardFullAction);
 
-      logger.v("[config] boardFullAction = $boardFullAction");
+      logger.t("[config] boardFullAction = $boardFullAction");
 
       // TODO: BoardFullAction: experimental
       if (boardFullAction != BoardFullAction.firstPlayerLose &&
@@ -212,7 +212,7 @@ class RuleSettingsPage extends StatelessWidget {
           break;
       }
 
-      logger.v(
+      logger.t(
           "[config] millFormationActionInPlacingPhase = $millFormationActionInPlacingPhase");
     }
 
@@ -234,7 +234,7 @@ class RuleSettingsPage extends StatelessWidget {
   ) {
     DB().ruleSettings = ruleSettings.copyWith(mayMoveInPlacingPhase: value);
 
-    logger.v("[config] mayMoveInPlacingPhase: $value");
+    logger.t("[config] mayMoveInPlacingPhase: $value");
 
     if (value) {
       rootScaffoldMessengerKey.currentState!
@@ -245,7 +245,7 @@ class RuleSettingsPage extends StatelessWidget {
   void _setIsDefenderMoveFirst(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(isDefenderMoveFirst: value);
 
-    logger.v("[config] isDefenderMoveFirst: $value");
+    logger.t("[config] isDefenderMoveFirst: $value");
   }
 
   void _setStalemateAction(BuildContext context, RuleSettings ruleSettings) {
@@ -255,7 +255,7 @@ class RuleSettingsPage extends StatelessWidget {
       DB().ruleSettings =
           ruleSettings.copyWith(stalemateAction: stalemateAction);
 
-      logger.v("[config] stalemateAction = $stalemateAction");
+      logger.t("[config] stalemateAction = $stalemateAction");
 
       // TODO: StalemateAction: experimental
       if (stalemateAction != StalemateAction.endWithStalemateLoss &&
@@ -278,7 +278,7 @@ class RuleSettingsPage extends StatelessWidget {
   void _setAllowRemovePieceInMill(RuleSettings ruleSettings, bool value) {
     DB().ruleSettings = ruleSettings.copyWith(mayRemoveFromMillsAlways: value);
 
-    logger.v("[config] mayRemoveFromMillsAlways: $value");
+    logger.t("[config] mayRemoveFromMillsAlways: $value");
   }
 
   void _setAllowRemoveMultiPiecesWhenCloseMultiMill(
@@ -287,7 +287,7 @@ class RuleSettingsPage extends StatelessWidget {
   ) {
     DB().ruleSettings = ruleSettings.copyWith(mayRemoveMultiple: value);
 
-    logger.v("[config] mayRemoveMultiple: $value");
+    logger.t("[config] mayRemoveMultiple: $value");
   }
 
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {

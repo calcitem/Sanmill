@@ -42,7 +42,7 @@ class Engine {
       return;
     }
 
-    logger.v("$_logTag send: $command");
+    logger.t("$_logTag send: $command");
     await _platform.invokeMethod("send", command);
   }
 
@@ -124,7 +124,7 @@ class Engine {
       await _send(fen);
       await _send("go");
     } else {
-      logger.v("$_logTag Move now");
+      logger.t("$_logTag Move now");
     }
 
     final String? response =
@@ -135,7 +135,7 @@ class Engine {
       throw const EngineTimeOut();
     }
 
-    logger.v("$_logTag response: $response");
+    logger.t("$_logTag response: $response");
 
     if (response.contains("bestmove")) {
       final RegExp regex =
@@ -187,7 +187,7 @@ class Engine {
     }
 
     if (times > timeLimit) {
-      logger.v("$_logTag Timeout. sleep = $sleep, times = $times");
+      logger.t("$_logTag Timeout. sleep = $sleep, times = $times");
 
       // Note:
       // Do not throw exception in the production environment here.

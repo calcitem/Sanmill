@@ -40,7 +40,7 @@ Future<void> _initCatcher(Catcher2 catcher) async {
   }
 
   final String path = "$externalDirStr/${Constants.crashLogsFile}";
-  logger.v("[env] ExternalStorageDirectory: $externalDirStr");
+  logger.t("[env] ExternalStorageDirectory: $externalDirStr");
 
   final Catcher2Options debugOptions = Catcher2Options(
       kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS

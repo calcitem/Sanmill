@@ -51,7 +51,7 @@ class _MoveTimeSlider extends StatelessWidget {
                         S.of(context).noteAiThinkingTimeMayNotBePrecise);
                   }
 
-                  logger.v("Move time Slider value: $value");
+                  logger.t("Move time Slider value: $value");
                 },
               ),
             ),

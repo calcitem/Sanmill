@@ -110,7 +110,7 @@ class StackList<T> {
   /// Print stack
   void print() {
     List<T>.from(_list).reversed.toList().forEach((T element) {
-      logger.v(element.toString());
+      logger.t(element.toString());
     });
   }
 }

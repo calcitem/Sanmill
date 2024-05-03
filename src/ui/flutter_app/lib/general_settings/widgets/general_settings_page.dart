@@ -72,13 +72,13 @@ class GeneralSettingsPage extends StatelessWidget {
 
     Position.resetScore();
 
-    logger.v("$_logTag aiMovesFirst: $value");
+    logger.t("$_logTag aiMovesFirst: $value");
   }
 
   void _setAiIsLazy(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(aiIsLazy: value);
 
-    logger.v("$_logTag aiIsLazy: $value");
+    logger.t("$_logTag aiIsLazy: $value");
   }
 
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
@@ -112,7 +112,7 @@ class GeneralSettingsPage extends StatelessWidget {
           break;
       }
 
-      logger.v("$_logTag algorithm = $searchAlgorithm");
+      logger.t("$_logTag algorithm = $searchAlgorithm");
 
       Navigator.pop(context);
     }
@@ -129,7 +129,7 @@ class GeneralSettingsPage extends StatelessWidget {
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(usePerfectDatabase: value);
 
-    logger.v("$_logTag usePerfectDatabase: $value");
+    logger.t("$_logTag usePerfectDatabase: $value");
 
     if (value == true) {
       copyPerfectDatabaseFiles();
@@ -145,31 +145,31 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(drawOnHumanExperience: value);
 
-    logger.v("$_logTag drawOnHumanExperience: $value");
+    logger.t("$_logTag drawOnHumanExperience: $value");
   }
 
   void _setConsiderMobility(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(considerMobility: value);
 
-    logger.v("$_logTag considerMobility: $value");
+    logger.t("$_logTag considerMobility: $value");
   }
 
   void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
 
-    logger.v("$_logTag isAutoRestart: $value");
+    logger.t("$_logTag isAutoRestart: $value");
   }
 
   void _setShufflingEnabled(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(shufflingEnabled: value);
 
-    logger.v("$_logTag shufflingEnabled: $value");
+    logger.t("$_logTag shufflingEnabled: $value");
   }
 
   void _setTone(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
-    logger.v("$_logTag toneEnabled: $value");
+    logger.t("$_logTag toneEnabled: $value");
   }
 
   void _setKeepMuteWhenTakingBack(
@@ -179,13 +179,13 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(keepMuteWhenTakingBack: value);
 
-    logger.v("$_logTag keepMuteWhenTakingBack: $value");
+    logger.t("$_logTag keepMuteWhenTakingBack: $value");
   }
 
   void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(screenReaderSupport: value);
 
-    logger.v("$_logTag screenReaderSupport: $value");
+    logger.t("$_logTag screenReaderSupport: $value");
   }
 
   void _setGameScreenRecorderSupport(
@@ -193,7 +193,7 @@ class GeneralSettingsPage extends StatelessWidget {
     DB().generalSettings =
         generalSettings.copyWith(gameScreenRecorderSupport: value);
 
-    logger.v("$_logTag gameScreenRecorderSupport: $value");
+    logger.t("$_logTag gameScreenRecorderSupport: $value");
   }
 
   void _setGameScreenRecorderDuration(
@@ -206,7 +206,7 @@ class GeneralSettingsPage extends StatelessWidget {
       DB().generalSettings =
           generalSettings.copyWith(gameScreenRecorderDuration: duration);
 
-      logger.v("[config] gameScreenRecorderDuration = $duration");
+      logger.t("[config] gameScreenRecorderDuration = $duration");
     }
 
     showModalBottomSheet(
@@ -232,7 +232,7 @@ class GeneralSettingsPage extends StatelessWidget {
       DB().generalSettings =
           generalSettings.copyWith(gameScreenRecorderPixelRatio: ratio);
 
-      logger.v("[config] gameScreenRecorderPixelRatio = $ratio");
+      logger.t("[config] gameScreenRecorderPixelRatio = $ratio");
     }
 
     showModalBottomSheet(

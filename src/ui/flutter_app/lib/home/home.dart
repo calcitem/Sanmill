@@ -234,7 +234,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         if (_drawerIndex.screen != null) {
           _screenView = _drawerIndex.screen!;
         }
-        logger.v('_drawerIndex: $_drawerIndex');
+        logger.t('_drawerIndex: $_drawerIndex');
       });
       return true;
     } else {

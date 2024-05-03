@@ -181,7 +181,7 @@ class GameController {
 
     if (GameController().isEngineRunning == true && isMoveNow == false) {
       // TODO: Monkey test trigger
-      logger.v("$tag engineToGo() is still running, skip.");
+      logger.t("$tag engineToGo() is still running, skip.");
       return const EngineResponseSkip();
     }
 
@@ -190,7 +190,7 @@ class GameController {
     GameController().isControllerActive = true;
 
     // TODO
-    logger.v("$tag engine type is $gameMode");
+    logger.t("$tag engine type is $gameMode");
 
     if (gameMode == GameMode.humanVsAi &&
         GameController().position.phase == Phase.moving &&
@@ -233,7 +233,7 @@ class GameController {
       GameController().boardSemanticsNotifier.updateSemantics();
 
       try {
-        logger.v("$tag Searching..., isMoveNow: $isMoveNow");
+        logger.t("$tag Searching..., isMoveNow: $isMoveNow");
 
         if (GameController().position.pieceOnBoardCount[PieceColor.black]! >
             0) {

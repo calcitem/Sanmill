@@ -207,7 +207,7 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (_gamePly - sideIsBlack) ~/ 2}");
 
-    logger.v("FEN is $buffer");
+    logger.t("FEN is $buffer");
 
     final String fen = buffer.toString();
 
@@ -1105,13 +1105,13 @@ class Position {
 
   void keepSideToMove() {
     setSideToMove(_sideToMove);
-    logger.v("[position] Keep $_sideToMove to move.");
+    logger.t("[position] Keep $_sideToMove to move.");
   }
 
   void changeSideToMove() {
     setSideToMove(_sideToMove.opponent);
 
-    logger.v("[position] $_sideToMove to move.");
+    logger.t("[position] $_sideToMove to move.");
   }
 
   /// Updates square if it hasn't been updated yet.

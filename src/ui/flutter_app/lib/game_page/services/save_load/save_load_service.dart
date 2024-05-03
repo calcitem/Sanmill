@@ -166,7 +166,7 @@ class LoadService {
       } else {
         // Assume original file reading logic if not 'content'
         final String fileContent = await readFileContent(filePath);
-        logger.v('$_logTag File Content: $fileContent');
+        logger.t('$_logTag File Content: $fileContent');
         final bool importSuccess = await importGameData(context, fileContent);
         if (importSuccess) {
           await handleHistoryNavigation(context);
@@ -201,7 +201,7 @@ class LoadService {
       BuildContext context, String fileContent) async {
     try {
       ImportService.import(fileContent);
-      logger.v('$_logTag File Content: $fileContent');
+      logger.t('$_logTag File Content: $fileContent');
       final String tagPairs = ImportService.getTagPairs(fileContent);
 
       if (tagPairs.isNotEmpty) {

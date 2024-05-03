@@ -194,7 +194,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            logger.v("[config] pickerColor.value: ${pickedColor.value}");
+            logger.t("[config] pickerColor.value: ${pickedColor.value}");
             widget.onChanged(pickedColor);
             Navigator.pop(context);
           },

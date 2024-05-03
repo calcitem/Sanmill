@@ -67,7 +67,7 @@ class AppearanceSettingsPage extends StatelessWidget {
       DB().displaySettings =
           displaySettings.copyWith(pointPaintingStyle: pointPaintingStyle);
 
-      logger.v("[config] pointPaintingStyle: $pointPaintingStyle");
+      logger.t("[config] pointPaintingStyle: $pointPaintingStyle");
     }
 
     showModalBottomSheet(
@@ -121,7 +121,7 @@ class AppearanceSettingsPage extends StatelessWidget {
   ]) {
     DB().displaySettings = displaySettings.copyWith(locale: locale);
 
-    logger.v("[config] locale = $locale");
+    logger.t("[config] locale = $locale");
   }
 
   void _setTheme(BuildContext context, ColorSettings colorSettings) {

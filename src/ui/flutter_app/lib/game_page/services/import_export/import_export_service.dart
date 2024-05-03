@@ -316,7 +316,7 @@ class ImportService {
     final String? fen = GameController().position.fen;
     String? setupFen;
 
-    logger.v("Clipboard text: $moveList");
+    logger.t("Clipboard text: $moveList");
 
     if (_isPlayOkMoveList(moveList)) {
       return _importPlayOk(moveList);

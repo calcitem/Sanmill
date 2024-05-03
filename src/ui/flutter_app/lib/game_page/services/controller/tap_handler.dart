@@ -64,18 +64,18 @@ class TapHandler {
     }
 
     if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
-      logger.v("$_logTag Setup position.");
+      logger.t("$_logTag Setup position.");
       await setupPosition(sq);
       return const EngineResponseSkip();
     }
 
     if (GameController().gameInstance.gameMode == GameMode.testViaLAN) {
-      logger.v("$_logTag Engine type is no human, ignore tapping.");
+      logger.t("$_logTag Engine type is no human, ignore tapping.");
       return const EngineResponseSkip();
     }
 
     if (GameController().position.phase == Phase.gameOver) {
-      logger.v("$_logTag Phase is gameOver, ignore tapping.");
+      logger.t("$_logTag Phase is gameOver, ignore tapping.");
       return const EngineResponseSkip();
     }
 

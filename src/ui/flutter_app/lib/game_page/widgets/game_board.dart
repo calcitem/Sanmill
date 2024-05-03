@@ -135,12 +135,12 @@ class _GameBoardState extends State<GameBoard>
                       pointFromOffset(d.localPosition, dimension));
 
                   if (square == null) {
-                    return logger.v(
+                    return logger.t(
                       "${GameBoard._logTag} Tap not on a square $square (ignored).",
                     );
                   }
 
-                  logger.v("${GameBoard._logTag} Tap on square <$square>");
+                  logger.t("${GameBoard._logTag} Tap on square <$square>");
 
                   final String strTimeout = S.of(context).timeout;
                   final String strNoBestMoveErr =

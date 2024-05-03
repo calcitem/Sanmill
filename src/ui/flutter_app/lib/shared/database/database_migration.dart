@@ -74,7 +74,7 @@ class _DatabaseMigration {
         } else if (DB().generalSettings.usesHiveDB) {
           _currentVersion = 1;
         }
-        logger.v("$_logTag: Current version is $_currentVersion");
+        logger.t("$_logTag: Current version is $_currentVersion");
 
         if (_currentVersion != null) {
           for (int i = _currentVersion!; i < _newVersion; i++) {
@@ -138,7 +138,7 @@ class _DatabaseMigration {
       )?.withAlpha(0xFF),
     );
 
-    logger.v("$_logTag Migrated from v1");
+    logger.t("$_logTag Migrated from v1");
   }
 
   /// Migration  - Sanmill version 3.3.2+
@@ -154,7 +154,7 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             isWhiteLoseButNotDrawWhenBoardFull: true,
           );
-      logger.v(
+      logger.t(
           "$_logTag Migrated from isWhiteLoseButNotDrawWhenBoardFull to boardFullAction.");
     }
 
@@ -166,7 +166,7 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             isLoseButNotChangeSideWhenNoWay: true,
           );
-      logger.v(
+      logger.t(
           "$_logTag Migrated from isLoseButNotChangeSideWhenNoWay to stalemateAction.");
     }
 
@@ -179,7 +179,7 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             mayOnlyRemoveUnplacedPieceInPlacingPhase: false,
           );
-      logger.v(
+      logger.t(
           "$_logTag Migrated from mayOnlyRemoveUnplacedPieceInPlacingPhase to millFormationActionInPlacingPhase.");
     }
     if (DB().ruleSettings.hasBannedLocations == true) {
@@ -190,7 +190,7 @@ class _DatabaseMigration {
       DB().ruleSettings = DB().ruleSettings.copyWith(
             hasBannedLocations: false,
           );
-      logger.v(
+      logger.t(
           "$_logTag Migrated from hasBannedLocations to millFormationActionInPlacingPhase.");
     }
   }
@@ -226,13 +226,13 @@ class _DatabaseV1 {
   /// Loads the generalSettings from the old data store
   static Future<Map<String, dynamic>?> _loadFile(File file) async {
     assert(await usesV1);
-    logger.v("$_logTag Loading $file ...");
+    logger.t("$_logTag Loading $file ...");
 
     try {
       final String contents = await file.readAsString();
       final Map<String, dynamic>? values =
           jsonDecode(contents) as Map<String, dynamic>?;
-      logger.v(values.toString());
+      logger.t(values.toString());
       return values;
     } catch (e) {
       logger.e("$_logTag error loading file $e");
@@ -260,7 +260,7 @@ class _DatabaseV1 {
   /// Deletes the old settings file
   static Future<void> _deleteFile(File file) async {
     assert(await usesV1);
-    logger.v("$_logTag Deleting old settings file...");
+    logger.t("$_logTag Deleting old settings file...");
 
     await file.delete();
     logger.i("$_logTag $file Deleted");

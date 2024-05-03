@@ -127,7 +127,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
     DB().generalSettings =
         DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
 
-    logger.v("[config] isPrivacyPolicyAccepted: $value");
+    logger.t("[config] isPrivacyPolicyAccepted: $value");
   }
 
   showDialog(

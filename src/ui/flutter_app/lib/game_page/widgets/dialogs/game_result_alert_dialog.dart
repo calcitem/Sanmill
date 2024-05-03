@@ -66,7 +66,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
     final StringBuffer content = StringBuffer(reason);
 
-    logger.v("$_logTag Game over reason string: $content");
+    logger.t("$_logTag Game over reason string: $content");
 
     final List<Widget> actions;
     if (_gameResult == GameResult.win &&
@@ -95,7 +95,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
             GameController().engine.setGeneralOptions();
 
-            logger.v(
+            logger.t(
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );
 
