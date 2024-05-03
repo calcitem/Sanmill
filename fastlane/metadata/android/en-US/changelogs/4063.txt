@@ -1,0 +1,7 @@
+v4.5.0
+
+This update includes various improvements and bug fixes to make the app better for you.
+
+* Android: Support opening PGN files from the phone's file explorer.
+* Fix piece number cannot be transformed.
+* Display the piece number only when it is not 0.
