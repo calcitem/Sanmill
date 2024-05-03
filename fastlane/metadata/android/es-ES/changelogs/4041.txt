@@ -1,0 +1,7 @@
+v4.3.0
+
+Esta actualización incluye varias mejoras y correcciones de errores para hacer la aplicación mejor para usted.
+
+* Soporte para mostrar números en las piezas.
+* Soporte para guardar imágenes del tablero en la galería (sólo Android 10 y versiones posteriores).
+* Mejora de la IA.

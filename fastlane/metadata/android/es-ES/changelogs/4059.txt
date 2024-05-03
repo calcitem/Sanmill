@@ -1,0 +1,6 @@
+v4.4.0
+
+Esta actualización incluye varias mejoras y correcciones de errores para mejorar el uso de la aplicación.
+
+* Admite girar y voltear el tablero.
+* El programa incorpora una base de datos perfecta de las primeras cuatro rondas de Nine Pieces.
