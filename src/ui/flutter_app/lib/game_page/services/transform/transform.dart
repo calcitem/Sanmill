@@ -198,3 +198,18 @@ String transformFEN(String fen, TransformationType transformationType) {
   // Combine the transformed board string with the rest of the original FEN string
   return '$newBoardPart$otherPart';
 }
+
+void transformSquareSquareAttributeList(TransformationType transformationType) {
+  final List<SquareAttribute> newSqAttrList = List<SquareAttribute>.generate(
+    sqNumber,
+    (int index) => SquareAttribute(placedPieceNumber: 0),
+  );
+
+  for (int i = sqBegin; i < sqEnd; i++) {
+    final int newPosition =
+        transformationMap[transformationType]![i - rankNumber] + rankNumber;
+    newSqAttrList[newPosition] = GameController().position.sqAttrList[i];
+  }
+
+  GameController().position.sqAttrList = newSqAttrList;
+}

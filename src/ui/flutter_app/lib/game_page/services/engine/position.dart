@@ -46,7 +46,7 @@ class Position {
       List<PieceColor>.filled(7 * 7, PieceColor.none);
 
   int placedPieceNumber = 0;
-  final List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
+  late List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
     sqNumber,
     (int index) => SquareAttribute(placedPieceNumber: 0),
   );

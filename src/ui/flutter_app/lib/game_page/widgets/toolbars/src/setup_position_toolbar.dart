@@ -327,6 +327,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       return;
     }
 
+    transformSquareSquareAttributeList(transformationType);
+
     final String transformedFen = transformFEN(fen, transformationType);
 
     try {
