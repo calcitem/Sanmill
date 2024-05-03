@@ -19,7 +19,6 @@
 part of '../mill.dart';
 
 // TODO: [Leptopoda] Clean up the file
-@visibleForTesting
 class ImportService {
   const ImportService._();
 
@@ -311,7 +310,6 @@ class ImportService {
     return ret;
   }
 
-  @visibleForTesting
   static void import(String moveList) {
     moveList = moveList.replaceAll(RegExp(r'^\s*[\r\n]+'), '');
     String ml = moveList;

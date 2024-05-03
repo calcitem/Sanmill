@@ -39,6 +39,7 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/native_methods.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/array_helpers/array_helper.dart';
 import '../../shared/utils/helpers/list_helpers/pointed_list.dart';

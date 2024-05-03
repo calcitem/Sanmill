@@ -73,6 +73,8 @@ class GameController {
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
+  String? initialSharingMoveList;
+
   late AnimationController animationController;
   late Animation<double> animation;
 
@@ -403,7 +405,7 @@ class GameController {
 
   /// Starts a game load.
   static Future<void> load(BuildContext context) async =>
-      LoadService.loadGame(context);
+      LoadService.loadGame(context, null);
 
   /// Starts a game import.
   static Future<void> import(BuildContext context) async =>

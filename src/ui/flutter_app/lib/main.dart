@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 
@@ -25,10 +26,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_driver/driver_extension.dart';
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
+import 'game_page/services/mill.dart';
 import 'game_page/widgets/painters/painters.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
@@ -75,8 +79,20 @@ Future<void> main() async {
   }
 }
 
-class SanmillApp extends StatelessWidget {
+class SanmillApp extends StatefulWidget {
   const SanmillApp({super.key});
+  @override
+  SanmillAppState createState() => SanmillAppState();
+}
+
+class SanmillAppState extends State<SanmillApp> {
+  StreamSubscription<List<SharedFile>>? _intentDataStreamSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _setupSharingIntent();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -200,5 +216,54 @@ class SanmillApp extends StatelessWidget {
       resizeToAvoidBottomInset: false,
       body: Home(),
     );
+  }
+
+  void _setupSharingIntent() {
+    // Listening for shared files when the app is already running
+    _intentDataStreamSubscription =
+        FlutterSharingIntent.instance.getMediaStream().listen(
+      (List<SharedFile> value) {
+        if (value.isNotEmpty && value.first.value != null) {
+          final String filePath = value.first.value!;
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear("Setup Sharing Intent: $filePath");
+        }
+      },
+      onError: (dynamic err) {
+        logger.e("Error receiving intent data stream: $err");
+      },
+    );
+
+    // Handling initial share when the app is launched from a closed state
+    FlutterSharingIntent.instance.getInitialSharing().then(
+      (List<SharedFile> value) {
+        if (value.isNotEmpty && value.first.value != null) {
+          final String filePath = value.first.value!;
+          //rootScaffoldMessengerKey.currentState!.showSnackBarClear(filePath);
+
+          // Call the loadGame function with the file path
+          LoadService.loadGame(context, filePath).then((_) {
+            logger.i("Game loaded successfully from shared file.");
+            //rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            //    "Game loaded successfully from shared file.");
+          }).catchError((dynamic error) {
+            logger.e("Error loading game from shared file: $error");
+            rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                "Error loading game from shared file: $error"); // TODO: l10n
+          });
+        }
+      },
+      onError: (dynamic err) {
+        logger.e("Error getting initial sharing: $err");
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            "Error getting initial sharing: $err"); // TODO: l10n
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    _intentDataStreamSubscription?.cancel();
+    super.dispose();
   }
 }

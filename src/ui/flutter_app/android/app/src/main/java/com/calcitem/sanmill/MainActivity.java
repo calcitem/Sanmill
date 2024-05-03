@@ -28,10 +28,15 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 import org.json.JSONObject;
 import android.app.Application;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
+
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import xcrash.TombstoneManager;
 import xcrash.TombstoneParser;
 import xcrash.XCrash;
@@ -40,6 +45,7 @@ import xcrash.ICrashCallback;
 public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
+    private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
 
     private final String TAG_XCRASH = "xCrash";
 
@@ -79,6 +85,23 @@ public class MainActivity extends FlutterActivity {
                                 break;
                         }
                 }
+        );
+
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), NATIVE_CHANNEL)
+            .setMethodCallHandler(
+              (call, result) -> {
+                  if (call.method.equals("readContentUri")) {
+                      String uri = call.argument("uri");
+                      String data = readContentUri(Uri.parse(uri), this);
+                      if (data != null) {
+                          result.success(data);
+                      } else {
+                          result.error("UNAVAILABLE", "Data not available.", null);
+                      }
+                  } else {
+                      result.notImplemented();
+                  }
+            }
         );
     }
 
@@ -197,6 +220,18 @@ public class MainActivity extends FlutterActivity {
                 } catch (Exception ignored) {
                 }
             }
+        }
+    }
+
+    public String readContentUri(Uri uri, Context context) {
+        try {
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

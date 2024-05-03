@@ -50,9 +50,16 @@ class _GameBoardState extends State<GameBoard>
 
     GameController().engine.startup();
 
-    // ignore: always_specify_types
-    Future.delayed(const Duration(microseconds: 100), () {
+    Future<void>.delayed(const Duration(microseconds: 100), () {
       _setReadyState();
+
+      if (GameController().initialSharingMoveList != null) {
+        ImportService.import(GameController().initialSharingMoveList!);
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(GameController().initialSharingMoveList!);
+        LoadService.handleHistoryNavigation(context);
+        GameController().initialSharingMoveList = null;
+      }
     });
 
     // TODO: Check _initAnimation() on branch master.

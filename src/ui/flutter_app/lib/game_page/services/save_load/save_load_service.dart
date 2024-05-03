@@ -18,7 +18,7 @@
 
 part of '../mill.dart';
 
-@visibleForTesting
+//@visibleForTesting
 class LoadService {
   LoadService._();
 
@@ -142,66 +142,103 @@ class LoadService {
     safePop();
   }
 
-  /// Read the game from the file.
-  static Future<void> loadGame(BuildContext context) async {
-    if (EnvironmentConfig.test == true) {
+  /// Main function to load game from a file.
+  static Future<void> loadGame(BuildContext context, String? filePath) async {
+    filePath ??= await pickFileIfNeeded(context);
+
+    if (filePath == null) {
+      logger.e('$_logTag File path is null');
       return;
     }
-
-    rootScaffoldMessengerKey.currentState!.clearSnackBars();
-
-    final String? result = await pickFile(context);
-    if (result == null) {
-      return;
-    }
-
-    final File file = File(result);
-
-    late String fileContent;
 
     try {
-      fileContent = await file.readAsString();
+      // Check for 'content' prefix in the filePath
+      if (filePath.startsWith('content')) {
+        final String? fileContent =
+            await readFileContentFromUri(Uri.parse(filePath));
+        GameController().initialSharingMoveList = fileContent;
+      } else {
+        // Assume original file reading logic if not 'content'
+        final String fileContent = await readFileContent(filePath);
+        logger.v('$_logTag File Content: $fileContent');
+        final bool importSuccess = await importGameData(context, fileContent);
+        if (importSuccess) {
+          await handleHistoryNavigation(context);
+        }
+        Navigator.pop(context);
+      }
     } catch (exception) {
       GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
       Navigator.pop(context);
       return;
     }
+  }
 
-    logger.v('$_logTag File Content: $fileContent');
+  /// Handles user interaction to pick a file.
+  static Future<String?> pickFileIfNeeded(BuildContext context) async {
+    if (EnvironmentConfig.test == true) {
+      return null;
+    }
 
+    rootScaffoldMessengerKey.currentState!.clearSnackBars();
+    return pickFile(context);
+  }
+
+  /// Reads content from a file at the provided path.
+  static Future<String> readFileContent(String filePath) async {
+    final File file = File(filePath);
+    return file.readAsString();
+  }
+
+  /// Import game data from file content.
+  static Future<bool> importGameData(
+      BuildContext context, String fileContent) async {
     try {
-      ImportService.import(
-          fileContent); // MillController().newRecorder = newHistory;
+      ImportService.import(fileContent);
+      logger.v('$_logTag File Content: $fileContent');
+      final String tagPairs = ImportService.getTagPairs(fileContent);
+
+      if (tagPairs.isNotEmpty) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBar(CustomSnackBar(tagPairs));
+      }
+
+      return true;
     } catch (exception) {
       final String tip = S.of(context).cannotImport(fileContent);
       GameController().headerTipNotifier.showTip(tip);
       Navigator.pop(context);
-      return;
+      return false;
     }
+  }
 
-    final String tagPairs = ImportService.getTagPairs(fileContent);
-
-    if (tagPairs.isNotEmpty) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar(tagPairs));
-    }
-
-    // TODO: Duplicate
+  /// Handle game history navigation.
+  static Future<void> handleHistoryNavigation(BuildContext context) async {
     await HistoryNavigator.takeBackAll(context, pop: false);
 
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
       GameController()
           .headerTipNotifier
-          .showTip(S.of(context).done); // TODO: "Game loaded." is better.
+          .showTip(S.of(context).done); // "Game loaded."
     } else {
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
       HistoryNavigator.importFailedStr = "";
     }
+  }
 
-    Navigator.pop(context);
+  /// Reads content from a file at the provided content URI.
+  static Future<String?> readFileContentFromUri(Uri uri) async {
+    String? str;
+    try {
+      str = await NativeMethods.readContentUri(uri);
+    } catch (e) {
+      logger.e('Error reading file at $uri: $e');
+      rethrow;
+    }
+    return str;
   }
 
   static Future<String?> _showTextInputDialog(BuildContext context) async {
