@@ -154,7 +154,8 @@ class PiecePainter extends CustomPainter {
       );
 
       if (DB().displaySettings.isNumbersOnPiecesShown &&
-          piece.squareAttribute?.placedPieceNumber != null) {
+          piece.squareAttribute?.placedPieceNumber != null &&
+          piece.squareAttribute!.placedPieceNumber > 0) {
         // Text Drawing:
         final TextPainter textPainter = TextPainter(
           text: TextSpan(
