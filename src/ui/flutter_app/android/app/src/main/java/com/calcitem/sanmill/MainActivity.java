@@ -33,6 +33,7 @@ import android.os.Build;
 import android.util.Log;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -91,8 +92,16 @@ public class MainActivity extends FlutterActivity {
             .setMethodCallHandler(
               (call, result) -> {
                   if (call.method.equals("readContentUri")) {
-                      String uri = call.argument("uri");
-                      String data = readContentUri(Uri.parse(uri), this);
+                      String uriString = call.argument("uri");
+                      Uri uri = Uri.parse(uriString);
+                      String data;
+                      if ("content".equals(uri.getScheme())) {
+                          data = readContentUri(uri, this);
+                      } else if ("file".equals(uri.getScheme())) {
+                          data = readFileUri(uri, this);
+                      } else {
+                          data = null;
+                      }
                       if (data != null) {
                           result.success(data);
                       } else {
@@ -228,6 +237,18 @@ public class MainActivity extends FlutterActivity {
             InputStream inputStream = context.getContentResolver().openInputStream(uri);
             byte[] bytes = new byte[inputStream.available()];
             inputStream.read(bytes);
+            return new String(bytes, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String readFileUri(Uri uri, Context context) {
+        File file = new File(uri.getPath());
+        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+            byte[] bytes = new byte[fileInputStream.available()];
+            fileInputStream.read(bytes);
             return new String(bytes, StandardCharsets.UTF_8);
         } catch (Exception e) {
             e.printStackTrace();

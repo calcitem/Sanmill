@@ -152,10 +152,16 @@ class LoadService {
     }
 
     try {
-      // Check for 'content' prefix in the filePath
-      if (filePath.startsWith('content')) {
+      // Check for 'content' and 'file' prefix in the filePath
+      if (filePath.startsWith('content') || filePath.startsWith('file://')) {
         final String? fileContent =
             await readFileContentFromUri(Uri.parse(filePath));
+        if (fileContent == null) {
+          final Directory? dir = await getExternalStorageDirectory();
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+              "You should put files in the right place: $dir");
+          return;
+        }
         GameController().initialSharingMoveList = fileContent;
       } else {
         // Assume original file reading logic if not 'content'
