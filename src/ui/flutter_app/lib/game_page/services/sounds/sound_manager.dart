@@ -68,6 +68,7 @@ class SoundManager {
       }
 
       kplayer.Player.boot();
+      kplayer.PlayerController.enableLog = false;
 
       // Initialize a PlayerController for each sound
       _soundFiles.forEach((Sound sound, String fileName) {
