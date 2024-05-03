@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Movimento",
+  "move": "Mov.",
   "@move": {
     "description": "Move"
   },
@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Colocação",
+  "placing": "Coloc.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Movimento",
+  "moving": "Mov.",
   "@moving": {
     "description": "Moving"
   },
@@ -1184,7 +1184,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedCount": "Colocado ({count})",
+  "placedCount": "Coloc. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Girar",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Inv. H.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Inv. V.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Inv. I/E",
   "@innerOuterFlip": {}
 }

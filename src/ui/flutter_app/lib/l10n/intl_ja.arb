@@ -78,7 +78,7 @@
   "@loadFailed": {
     "description": "Load failed."
   },
-  "paste": "ペースト",
+  "paste": "貼付",
   "@paste": {
     "description": "Paste"
   },
@@ -106,23 +106,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "人機戦",
+  "humanVsAi": "人間対機",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "対人戦",
+  "humanVsHuman": "人対人戦",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "機械戰",
+  "aiVsAi": "機対機戦",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "人間対。雲",
+  "humanVsCloud": "人間対雲",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "人間対。 LAN",
+  "humanVsLAN": "人間対LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -154,7 +154,7 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "キャンセル",
+  "cancel": "取り消し",
   "@cancel": {
     "description": "Cancel"
   },
@@ -324,11 +324,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "プレーヤー 1",
+  "white": "プレ1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "プレーヤー 2",
+  "black": "プレ2",
   "@black": {
     "description": "Player 2"
   },
@@ -420,7 +420,7 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "約",
+  "about": "情報",
   "@about": {
     "description": "About"
   },
@@ -598,7 +598,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "コピー",
+  "copy": "複写",
   "@copy": {
     "description": "Copy"
   },
@@ -716,11 +716,11 @@
   "@player": {
     "description": "player"
   },
-  "player1": "プレーヤー 1",
+  "player1": "プレ1",
   "@player1": {
     "description": "Player 1"
   },
-  "player2": "プレーヤー 2",
+  "player2": "プレ2",
   "@player2": {
     "description": "Player 2"
   },
@@ -848,11 +848,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "配置する",
+  "placing": "配置段階",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "移動中",
+  "moving": "移動段階",
   "@moving": {
     "description": "Moving"
   },
@@ -1518,10 +1518,10 @@
   "@cannotTransform": {},
   "rotate": "回転",
   "@rotate": {},
-  "horizontalFlip": "H フリップ",
+  "horizontalFlip": "横反",
   "@horizontalFlip": {},
-  "verticalFlip": "V フリップ",
+  "verticalFlip": "縦反",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO フリップ",
+  "innerOuterFlip": "内外反",
   "@innerOuterFlip": {}
 }

@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Ruota",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Cap. O.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Cap. V.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Cap. I/E",
   "@innerOuterFlip": {}
 }

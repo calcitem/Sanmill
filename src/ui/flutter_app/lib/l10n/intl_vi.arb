@@ -378,11 +378,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "Người chơi 1",
+  "white": "Người 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Người chơi 2",
+  "black": "Người 2",
   "@black": {
     "description": "Player 2"
   },

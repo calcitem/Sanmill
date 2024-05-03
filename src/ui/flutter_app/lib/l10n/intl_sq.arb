@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rrotullo",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Pas H",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Pas V",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Pas B/J",
   "@innerOuterFlip": {}
 }

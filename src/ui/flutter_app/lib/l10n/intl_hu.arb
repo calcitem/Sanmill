@@ -228,11 +228,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "1-es játékos",
+  "white": "J1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "2-es játékos",
+  "black": "J2",
   "@black": {
     "description": "Player 2"
   },
@@ -1186,11 +1186,11 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "remove": "Távolítsa el",
+  "remove": "Távolít.",
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Elhelyezve ({count})",
+  "placedCount": "Elhz. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Forgat",
   "@rotate": {},
-  "horizontalFlip": "H Fordítás",
+  "horizontalFlip": "HF",
   "@horizontalFlip": {},
-  "verticalFlip": "V Fordítás",
+  "verticalFlip": "VF",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Fordítás",
+  "innerOuterFlip": "IOF",
   "@innerOuterFlip": {}
 }

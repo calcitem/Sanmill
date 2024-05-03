@@ -1518,10 +1518,10 @@
   "@cannotTransform": {},
   "rotate": "Snúa",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "L.S.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V.S.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "I/Y S.",
   "@innerOuterFlip": {}
 }

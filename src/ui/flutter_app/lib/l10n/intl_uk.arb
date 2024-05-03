@@ -126,7 +126,7 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Скасувати",
+  "cancel": "Сксв.",
   "@cancel": {
     "description": "Cancel"
   },
@@ -426,7 +426,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Параметри",
+  "options": "Опції",
   "@options": {
     "description": "Options"
   },
@@ -692,7 +692,7 @@
       }
     }
   },
-  "info": "Інформація",
+  "info": "Інф.",
   "@info": {
     "description": "Info"
   },
@@ -850,11 +850,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Розміщення",
+  "placing": "Розм.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Переміщення",
+  "moving": "Перм.",
   "@moving": {
     "description": "Moving"
   },
@@ -1296,7 +1296,7 @@
       }
     }
   },
-  "placedCount": "Розміщено ({count})",
+  "placedCount": "Розм. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1516,12 +1516,12 @@
   "@transformed": {},
   "cannotTransform": "Не можна трансформувати.",
   "@cannotTransform": {},
-  "rotate": "Обертати",
+  "rotate": "Об.",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "ГП",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "ВП",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "В/ЗП",
   "@innerOuterFlip": {}
 }

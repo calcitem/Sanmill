@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Aylantirish",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Gor. ayl.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Tik ayl.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "I/T Ayl.",
   "@innerOuterFlip": {}
 }

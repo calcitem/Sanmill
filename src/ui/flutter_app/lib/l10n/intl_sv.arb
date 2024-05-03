@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotera",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "H. vänd",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V. vänd",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "I/U vänd",
   "@innerOuterFlip": {}
 }

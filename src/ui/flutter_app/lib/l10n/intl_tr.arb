@@ -308,7 +308,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Seçenekler",
+  "options": "Seç.",
   "@options": {
     "description": "Options"
   },
@@ -742,7 +742,7 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "yerleştirme",
+  "placing": "Yrlş.",
   "@placing": {
     "description": "Placing"
   },
@@ -1186,7 +1186,7 @@
       }
     }
   },
-  "placedCount": "Yerleştirildi ({count})",
+  "placedCount": "Yrl. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1214,7 +1214,7 @@
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
-  "paste": "Yapıştırmak",
+  "paste": "Ypş.",
   "@paste": {
     "description": "Paste"
   },
@@ -1424,6 +1424,6 @@
   "@horizontalFlip": {},
   "verticalFlip": "V Çevir",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Çevir",
+  "innerOuterFlip": "İç Dış",
   "@innerOuterFlip": {}
 }

@@ -1302,7 +1302,7 @@
       }
     }
   },
-  "placedCount": "Geplaas ({count})",
+  "placedCount": "Gpl ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

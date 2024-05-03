@@ -1518,10 +1518,10 @@
   "@cannotTransform": {},
   "rotate": "Pindua",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Pind. M.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Pind. W.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Pind. N/NJE",
   "@innerOuterFlip": {}
 }

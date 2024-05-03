@@ -742,7 +742,7 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Postavljanje",
+  "placing": "Post.",
   "@placing": {
     "description": "Placing"
   },
@@ -1180,7 +1180,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Postavljeno ({count})",
+  "placedCount": "Post. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotiraj",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "H.Z.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V.Z.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "U/V Z.",
   "@innerOuterFlip": {}
 }

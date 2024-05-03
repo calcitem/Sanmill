@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotire",
   "@rotate": {},
-  "horizontalFlip": "H. Oriz.",
+  "horizontalFlip": "Oglin. O",
   "@horizontalFlip": {},
-  "verticalFlip": "V. Vert.",
+  "verticalFlip": "Oglin. V",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Oglin. I/E",
   "@innerOuterFlip": {}
 }

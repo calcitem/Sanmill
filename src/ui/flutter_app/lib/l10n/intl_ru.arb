@@ -308,7 +308,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Параметры",
+  "options": "Опции",
   "@options": {
     "description": "Options"
   },
@@ -472,7 +472,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Копировать",
+  "copy": "Копир.",
   "@copy": {
     "description": "Copy"
   },
@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Размещение",
+  "placing": "Разм.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Перемещение",
+  "moving": "Перем.",
   "@moving": {
     "description": "Moving"
   },
@@ -1194,7 +1194,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedCount": "Размещено ({count})",
+  "placedCount": "Разм. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1418,7 +1418,7 @@
   "@transformed": {},
   "cannotTransform": "Невозможно трансформировать.",
   "@cannotTransform": {},
-  "rotate": "Повернуть",
+  "rotate": "Поверн.",
   "@rotate": {},
   "horizontalFlip": "H Перев",
   "@horizontalFlip": {},

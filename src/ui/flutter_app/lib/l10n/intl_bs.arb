@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotiraj",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "H okret.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V okret.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "U/V okret.",
   "@innerOuterFlip": {}
 }

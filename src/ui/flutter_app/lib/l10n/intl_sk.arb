@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotovať",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "H. prev.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V. prev.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Prev. V/V",
   "@innerOuterFlip": {}
 }

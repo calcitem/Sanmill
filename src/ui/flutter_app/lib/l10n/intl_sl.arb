@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Zavrti",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "H. Obr.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "V. Obr.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "N/Z Obr.",
   "@innerOuterFlip": {}
 }

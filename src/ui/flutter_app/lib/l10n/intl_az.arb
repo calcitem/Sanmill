@@ -600,7 +600,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Kopyalayın",
+  "copy": "Kopy",
   "@copy": {
     "description": "Copy"
   },
@@ -1328,7 +1328,7 @@
       }
     }
   },
-  "placedCount": "Yerləşdirildi ({count})",
+  "placedCount": "Yrlşd ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

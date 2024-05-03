@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Mouvement",
+  "move": "Mvt.",
   "@move": {
     "description": "Move"
   },
@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Placement",
+  "placing": "Plac.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Déplacement",
+  "moving": "Dépl.",
   "@moving": {
     "description": "Moving"
   },
@@ -1420,10 +1420,10 @@
   "@cannotTransform": {},
   "rotate": "Rotation",
   "@rotate": {},
-  "horizontalFlip": "H Flip",
+  "horizontalFlip": "Ret. H",
   "@horizontalFlip": {},
-  "verticalFlip": "V Flip",
+  "verticalFlip": "Ret. V",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Flip",
+  "innerOuterFlip": "Ret. I/E",
   "@innerOuterFlip": {}
 }
