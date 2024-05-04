@@ -672,8 +672,14 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     // Piece
     final ToolbarItem whitePieceButton = ToolbarItem.icon(
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
-      icon: Icon(FluentIcons.circle_24_filled,
-          color: DB().colorSettings.whitePieceColor),
+      icon: Icon(
+        FluentIcons.circle_24_filled,
+        color: (DB().colorSettings.mainToolbarBackgroundColor == Colors.white &&
+                DB().colorSettings.whitePieceColor == Colors.white)
+            ? Colors.grey[
+                300] // Set to grey for better visibility if background is white
+            : DB().colorSettings.whitePieceColor,
+      ),
       label: Text(
         S.of(context).white,
         maxLines: 1,
