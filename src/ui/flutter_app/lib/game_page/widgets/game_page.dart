@@ -190,6 +190,10 @@ class _GameState extends State<_Game> {
   }
 
   Future<void> saveImage(Uint8List image, String filename) async {
+    if (EnvironmentConfig.test == true) {
+      return;
+    }
+
     try {
       // ignore: always_specify_types
       final result = await ImageGallerySaver.saveImage(image, name: filename);
