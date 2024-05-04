@@ -204,11 +204,13 @@ class LoadService {
         extractPgnFilenamePrefix(filePath);
 
     // Delay to show the tip after the navigation tip is shown
-    Future<void>.delayed(Duration.zero, () {
-      GameController()
-          .headerTipNotifier
-          .showTip(GameController().loadedGameFilenamePrefix!);
-    });
+    if (GameController().loadedGameFilenamePrefix != null) {
+      Future<void>.delayed(Duration.zero, () {
+        GameController()
+            .headerTipNotifier
+            .showTip(GameController().loadedGameFilenamePrefix!);
+      });
+    }
   }
 
   static String? extractPgnFilenamePrefix(String path) {
@@ -236,6 +238,7 @@ class LoadService {
       }
     } else {
       // Return null if the path does not start with 'content:' or does not end with '.pgn'
+      // Sometimes legal URI is not contain file name, so return null.
       return null;
     }
   }
