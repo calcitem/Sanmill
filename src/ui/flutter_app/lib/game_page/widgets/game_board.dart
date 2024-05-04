@@ -54,10 +54,16 @@ class _GameBoardState extends State<GameBoard>
       _setReadyState();
 
       if (GameController().initialSharingMoveList != null) {
-        ImportService.import(GameController().initialSharingMoveList!);
+        try {
+          ImportService.import(GameController().initialSharingMoveList!);
+          LoadService.handleHistoryNavigation(context);
+        } catch (e) {
+          logger.e("$_logTag Error importing initial sharing move list: $e");
+          GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
+        }
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(GameController().initialSharingMoveList!);
-        LoadService.handleHistoryNavigation(context);
+
         GameController().initialSharingMoveList = null;
       }
     });

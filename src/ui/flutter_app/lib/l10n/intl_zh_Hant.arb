@@ -1136,7 +1136,7 @@
   "@filename": {
     "description": "File name"
   },
-  "loadFailed": "加載失敗。",
+  "loadFailed": "加載失敗",
   "@loadFailed": {
     "description": "Load failed."
   },
