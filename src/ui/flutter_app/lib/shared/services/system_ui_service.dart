@@ -72,7 +72,7 @@ void safePop() {
 }
 
 Future<int?> getAndroidSDKVersion() async {
-  if (!Platform.isAndroid) {
+  if (kIsWeb || !Platform.isAndroid) {
     return null;
   }
 

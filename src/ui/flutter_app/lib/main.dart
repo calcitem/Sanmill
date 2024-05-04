@@ -219,7 +219,7 @@ class SanmillAppState extends State<SanmillApp> {
   }
 
   void _setupSharingIntent() {
-    if (!(Platform.isAndroid || Platform.isIOS)) {
+    if (kIsWeb || !(Platform.isAndroid || Platform.isIOS)) {
       return;
     }
 
@@ -267,7 +267,7 @@ class SanmillAppState extends State<SanmillApp> {
 
   @override
   void dispose() {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       _intentDataStreamSubscription?.cancel();
     }
     super.dispose();

@@ -224,6 +224,10 @@ class Engine {
   }
 
   Future<void> setGeneralOptions() async {
+    if (kIsWeb) {
+      return;
+    }
+
     final GeneralSettings generalSettings = DB().generalSettings;
     final RuleSettings ruleSettings = DB().ruleSettings;
 
