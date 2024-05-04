@@ -74,6 +74,7 @@ class GameController {
   GameRecorder? newGameRecorder;
 
   String? initialSharingMoveList;
+  String? loadedGameFilenamePrefix;
 
   late AnimationController animationController;
   late Animation<double> animation;
@@ -313,6 +314,8 @@ class GameController {
   Future<void> moveNow(BuildContext context) async {
     const String tag = "[engineToGo]";
     bool reversed = false;
+
+    loadedGameFilenamePrefix = null;
 
     if (isEngineInDelay == true) {
       return rootScaffoldMessengerKey.currentState!

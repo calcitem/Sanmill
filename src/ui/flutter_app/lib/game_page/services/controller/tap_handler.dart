@@ -63,6 +63,8 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    GameController().loadedGameFilenamePrefix = null;
+
     if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
       logger.t("$_logTag Setup position.");
       await setupPosition(sq);

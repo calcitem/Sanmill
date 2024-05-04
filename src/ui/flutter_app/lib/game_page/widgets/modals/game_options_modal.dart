@@ -37,6 +37,8 @@ class _GameOptionsModal extends StatelessWidget {
             //  restarting the game may cause two or three pieces to appear on the board,
             //  sometimes it will keep displaying Thinking...
 
+            GameController().loadedGameFilenamePrefix = null;
+
             GameController().engine.stopSearching();
 
             if (GameController().position.phase == Phase.ready ||
@@ -97,7 +99,10 @@ class _GameOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
-            onPressed: () => GameController.load(context),
+            onPressed: () {
+              GameController().loadedGameFilenamePrefix = null;
+              GameController.load(context);
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).loadGame),
@@ -106,7 +111,10 @@ class _GameOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
-            onPressed: () => GameController.import(context),
+            onPressed: () {
+              GameController().loadedGameFilenamePrefix = null;
+              GameController.import(context);
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).importGame),

@@ -278,7 +278,8 @@ class _GameState extends State<_Game> {
         FluentIcons.arrow_previous_24_regular,
         semanticLabel: S.of(context).takeBackAll,
       ),
-      onPressed: () => HistoryNavigator.takeBackAll(context, pop: false),
+      onPressed: () =>
+          HistoryNavigator.takeBackAll(context, pop: false, toolbar: true),
     );
 
     final ToolbarItem takeBackButton = ToolbarItem(
@@ -286,7 +287,8 @@ class _GameState extends State<_Game> {
         FluentIcons.chevron_left_24_regular,
         semanticLabel: S.of(context).takeBack,
       ),
-      onPressed: () => HistoryNavigator.takeBack(context, pop: false),
+      onPressed: () =>
+          HistoryNavigator.takeBack(context, pop: false, toolbar: true),
     );
 
     final ToolbarItem moveNowButton = ToolbarItem(
@@ -302,7 +304,8 @@ class _GameState extends State<_Game> {
         FluentIcons.chevron_right_24_regular,
         semanticLabel: S.of(context).stepForward,
       ),
-      onPressed: () => HistoryNavigator.stepForward(context, pop: false),
+      onPressed: () =>
+          HistoryNavigator.stepForward(context, pop: false, toolbar: true),
     );
 
     final ToolbarItem stepForwardAllButton = ToolbarItem(
@@ -310,7 +313,8 @@ class _GameState extends State<_Game> {
         FluentIcons.arrow_next_24_regular,
         semanticLabel: S.of(context).stepForwardAll,
       ),
-      onPressed: () => HistoryNavigator.stepForwardAll(context, pop: false),
+      onPressed: () =>
+          HistoryNavigator.stepForwardAll(context, pop: false, toolbar: true),
     );
 
     return <Widget>[

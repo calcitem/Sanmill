@@ -61,6 +61,16 @@ class _GameBoardState extends State<GameBoard>
           logger.e("$_logTag Error importing initial sharing move list: $e");
           GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
         }
+
+        if (GameController().loadedGameFilenamePrefix != null) {
+          // Delay to show the tip after the navigation tip is shown
+          Future<void>.delayed(Duration.zero, () {
+            GameController()
+                .headerTipNotifier
+                .showTip(GameController().loadedGameFilenamePrefix!);
+          });
+        }
+
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(GameController().initialSharingMoveList!);
 

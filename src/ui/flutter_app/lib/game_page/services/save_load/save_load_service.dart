@@ -43,6 +43,8 @@ class LoadService {
       return null;
     }
 
+    GameController().loadedGameFilenamePrefix = resultLabel;
+
     if (resultLabel.endsWith(".pgn") == false) {
       resultLabel = "$resultLabel.pgn";
     }
@@ -143,6 +145,12 @@ class LoadService {
     // Wait for the dialog to disappear before taking a screenshot
     Future<void>.delayed(const Duration(milliseconds: 500), () {
       ScreenshotService.takeScreenshot("records", "$filename.jpg");
+
+      if (GameController().loadedGameFilenamePrefix != null) {
+        GameController()
+            .headerTipNotifier
+            .showTip(GameController().loadedGameFilenamePrefix!);
+      }
     });
 
     return filename;
@@ -183,6 +191,44 @@ class LoadService {
       GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
       Navigator.pop(context);
       return;
+    }
+    GameController().loadedGameFilenamePrefix =
+        extractPgnFilenamePrefix(filePath);
+
+    // Delay to show the tip after the navigation tip is shown
+    Future<void>.delayed(Duration.zero, () {
+      GameController()
+          .headerTipNotifier
+          .showTip(GameController().loadedGameFilenamePrefix!);
+    });
+  }
+
+  static String? extractPgnFilenamePrefix(String path) {
+    // Check if the string ends with '.pgn'
+    if (path.endsWith('.pgn')) {
+      try {
+        // Decode the entire URI before extraction
+        final String decodedPath;
+        if (path.startsWith("/")) {
+          decodedPath = path;
+        } else {
+          decodedPath = Uri.decodeComponent(path);
+        }
+
+        // Find the last index of '/'
+        final int lastIndex = decodedPath.lastIndexOf('/');
+        if (lastIndex == -1) {
+          return null;
+        }
+        // Extract the substring from the character after '/' to the start of '.pgn'
+        return decodedPath.substring(lastIndex + 1, decodedPath.length - 4);
+      } catch (e) {
+        // In case of any error, return null
+        return null;
+      }
+    } else {
+      // Return null if the path does not start with 'content:' or does not end with '.pgn'
+      return null;
     }
   }
 

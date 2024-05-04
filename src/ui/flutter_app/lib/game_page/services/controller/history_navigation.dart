@@ -35,9 +35,14 @@ class HistoryNavigator {
     BuildContext context,
     HistoryNavMode navMode, {
     bool pop = true,
+    bool toolbar = false,
     int? number,
   }) async {
     assert(navMode != HistoryNavMode.takeBackN || number != null);
+
+    if (pop == true || toolbar == true) {
+      GameController().loadedGameFilenamePrefix = null;
+    }
 
     if (GameController().isEngineInDelay == true) {
       rootScaffoldMessengerKey.currentState!
@@ -115,45 +120,55 @@ class HistoryNavigator {
     return resp;
   }
 
-  static Future<HistoryResponse?> takeBack(BuildContext context,
-      {bool pop = true}) async {
+  static Future<HistoryResponse?> takeBack(
+    BuildContext context, {
+    bool pop = true,
+    bool toolbar = false,
+  }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.takeBack,
       pop: pop,
+      toolbar: toolbar,
     );
   }
 
   static Future<HistoryResponse?> stepForward(
     BuildContext context, {
     bool pop = true,
+    bool toolbar = false,
   }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.stepForward,
       pop: pop,
+      toolbar: toolbar,
     );
   }
 
   static Future<HistoryResponse?> takeBackAll(
     BuildContext context, {
     bool pop = true,
+    bool toolbar = false,
   }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.takeBackAll,
       pop: pop,
+      toolbar: toolbar,
     );
   }
 
   static Future<HistoryResponse?> stepForwardAll(
     BuildContext context, {
     bool pop = true,
+    bool toolbar = false,
   }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.stepForwardAll,
       pop: pop,
+      toolbar: toolbar,
     );
   }
 
@@ -161,12 +176,14 @@ class HistoryNavigator {
     BuildContext context,
     int n, {
     bool pop = true,
+    bool toolbar = false,
   }) async {
     return _gotoHistory(
       context,
       HistoryNavMode.takeBackN,
       number: n,
       pop: pop,
+      toolbar: toolbar,
     );
   }
 

@@ -23,6 +23,7 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../../game_page/services/mill.dart';
 import '../widgets/snackbars/scaffold_messenger.dart';
 import 'environment_config.dart';
 import 'logger.dart';
@@ -37,28 +38,43 @@ class ScreenshotService {
 
   static Future<void> takeScreenshot(String storageLocation,
       [String? filename]) async {
-    if (kIsWeb || Platform.isAndroid == false) {
+    if (!isSupportedPlatform()) {
       logger.i("Taking screenshots is not supported on this platform");
       return;
     }
 
     logger.i("Attempting to capture screenshot...");
-
     final Uint8List? image = await screenshotController.takeScreenshot();
     if (image == null) {
       logger.e("Failed to capture screenshot: Image is null.");
       return;
     }
 
-    // Generate a unique filename based on current date and time if no filename is provided
-    if (filename == null || storageLocation == 'gallery') {
-      final DateTime now = DateTime.now();
-      filename =
-          'sanmill-screenshot_${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour}${now.minute}${now.second}.jpg';
-    }
-
+    filename = determineFilename(filename, storageLocation);
     logger.i("Screenshot captured, proceeding to save...");
     await saveImage(image, filename);
+  }
+
+  static bool isSupportedPlatform() => !kIsWeb && Platform.isAndroid;
+
+  static String determineFilename(String? filename, String storageLocation) {
+    if (filename != null && storageLocation != 'gallery') {
+      return filename;
+    }
+
+    final DateTime now = DateTime.now();
+    final String? prefix = GameController().loadedGameFilenamePrefix;
+    // Use the prefix if it's not null; otherwise, default to 'sanmill'
+    if (prefix != null) {
+      return 'sanmill-screenshot_${prefix}_${formatDateTime(now)}.jpg';
+    } else {
+      return 'sanmill-screenshot_${formatDateTime(now)}.jpg';
+    }
+  }
+
+  static String formatDateTime(DateTime dateTime) {
+    return '${dateTime.year}${dateTime.month.toString().padLeft(2, '0')}${dateTime.day.toString().padLeft(2, '0')}_'
+        '${dateTime.hour}${dateTime.minute}${dateTime.second}';
   }
 
   static Future<void> saveImage(Uint8List image, String filename) async {
