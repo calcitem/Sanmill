@@ -57,12 +57,14 @@ OLD_PATCH_NUMBER=$PATCH_NUMBER
 echo "OLD_PATCH_NUMBER = $OLD_PATCH_NUMBER"
 
 # 7
+arg=${1#-}
+arg=${arg#-}
 
-if [ "$1" == "x" ]; then
+if [ "$arg" == "x" ]; then
   let "MAJOR_NUMBER+=1"
   MINOR_NUMBER=0
   PATCH_NUMBER=0
-elif [ "$1" == "y" ]; then
+elif [ "$arg" == "y" ]; then
   let "MINOR_NUMBER+=1"
   PATCH_NUMBER=0
 else
