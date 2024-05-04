@@ -4,7 +4,7 @@ YAML_FILE=src/ui/flutter_app/pubspec.yaml
 SNAP_YAML_FILE=snap/snapcraft.yaml
 SNAP_DESKTOP_FILE=snap/gui/mill.desktop
 DEBIAN_YAML_FILE=src/ui/flutter_app/debian/debian.yaml
-DEBIAN_DESKTOP_FILE=rc/ui/flutter_app/debian/gui/mill.desktop
+DEBIAN_DESKTOP_FILE=src/ui/flutter_app/debian/gui/mill.desktop
 QT_RC_FILE=src/ui/qt/mill-pro.rc
 
 EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
