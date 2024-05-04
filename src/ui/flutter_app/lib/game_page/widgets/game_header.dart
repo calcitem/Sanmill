@@ -133,7 +133,9 @@ class _GameHeaderState extends State<GameHeader> {
         width: 180,
         margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
         decoration: BoxDecoration(
-          color: DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
+          color: DB().colorSettings.darkBackgroundColor == Colors.white
+              ? DB().colorSettings.messageColor.withOpacity(opacity)
+              : DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
           borderRadius: BorderRadius.circular(2),
         ),
       );
