@@ -400,8 +400,9 @@ class GameController {
   }
 
   /// Starts a game save.
-  static Future<void> save(BuildContext context) async =>
-      LoadService.saveGame(context);
+  static Future<String?> save(BuildContext context) async {
+    return LoadService.saveGame(context);
+  }
 
   /// Starts a game load.
   static Future<void> load(BuildContext context) async =>

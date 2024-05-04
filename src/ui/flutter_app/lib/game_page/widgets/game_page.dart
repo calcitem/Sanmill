@@ -24,10 +24,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -42,6 +39,7 @@ import '../../shared/database/database.dart';
 import '../../shared/dialogs/number_picker_dialog.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
+import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
@@ -164,82 +162,9 @@ class _Game extends StatefulWidget {
 }
 
 class _GameState extends State<_Game> {
-  final NativeScreenshotController screenshotController =
-      NativeScreenshotController();
-
-  Future<void> triggerScreenshot() async {
-    await _takeScreenshot();
-  }
-
-  Future<void> _takeScreenshot() async {
-    logger.i("Attempting to capture screenshot...");
-
-    final Uint8List? image = await screenshotController.takeScreenshot();
-    if (image == null) {
-      logger.e("Failed to capture screenshot: Image is null.");
-      return;
-    }
-
-    // Generate a unique filename based on current date and time
-    final DateTime now = DateTime.now();
-    final String filename =
-        'sanmill-screenshot_${now.year}${now.month.toString().padLeft(2, '0')}${now.day.toString().padLeft(2, '0')}_${now.hour}${now.minute}${now.second}.jpg';
-
-    logger.i("Screenshot captured, proceeding to save...");
-    await saveImage(image, filename);
-  }
-
-  Future<void> saveImage(Uint8List image, String filename) async {
-    if (EnvironmentConfig.test == true) {
-      return;
-    }
-
-    try {
-      // ignore: always_specify_types
-      final result = await ImageGallerySaver.saveImage(image, name: filename);
-
-      // TODO: Locale support
-      if (result is Map) {
-        final Map<String, dynamic> resultMap =
-            Map<String, dynamic>.from(result);
-
-        if (resultMap['isSuccess'] == true) {
-          logger.i("Image saved to Gallery with path ${resultMap['filePath']}");
-          rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar(filename),
-          );
-        } else {
-          logger.e("Failed to save image to Gallery");
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
-        }
-      } else {
-        logger.e("Unexpected result type");
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar("Unexpected result type"));
-      }
-    } catch (e) {
-      logger.e("Failed to save image: $e");
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBar(CustomSnackBar("Failed to save image: $e"));
-    }
-  }
-
-  Future<String?> getFilePath(String filename) async {
-    Directory? directory;
-    // TODO: Change to correct path
-    if (Platform.isAndroid) {
-      directory = await getExternalStorageDirectory();
-    } else {
-      directory = await getApplicationDocumentsDirectory();
-    }
-
-    // Ensure directory exists
-    if (directory != null) {
-      return path.join(directory.path, filename);
-    } else {
-      return null;
-    }
+  Future<void> triggerScreenshot(String storageLocation,
+      [String? filename]) async {
+    await ScreenshotService.takeScreenshot(storageLocation, filename);
   }
 
   @override
@@ -264,7 +189,7 @@ class _GameState extends State<_Game> {
       context: context,
       backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
       builder: (_) => _GameOptionsModal(
-        onTriggerScreenshot: triggerScreenshot,
+        onTriggerScreenshot: () => triggerScreenshot("gallery"),
       ),
     );
   }
@@ -405,7 +330,7 @@ class _GameState extends State<_Game> {
         // TODO
         semanticLabel: S.of(context).welcome,
       ),
-      onPressed: () => triggerScreenshot(),
+      onPressed: () => triggerScreenshot("gallery"),
     );
 
     return <Widget>[
@@ -517,7 +442,7 @@ class _GameState extends State<_Game> {
                 else
                   const SizedBox(height: AppTheme.boardMargin),
                 NativeScreenshot(
-                  controller: screenshotController,
+                  controller: ScreenshotService.screenshotController,
                   child: Container(
                     alignment: Alignment.center,
                     child: const GameBoard(),

@@ -111,9 +111,9 @@ class LoadService {
   }
 
   /// Saves the game to the file.
-  static Future<void> saveGame(BuildContext context) async {
+  static Future<String?> saveGame(BuildContext context) async {
     if (EnvironmentConfig.test == true) {
-      return;
+      return null;
     }
 
     final String strGameSavedTo = S.of(context).gameSavedTo;
@@ -121,18 +121,17 @@ class LoadService {
     if (!(GameController().gameRecorder.hasPrevious == true ||
         GameController().isPositionSetup == true)) {
       Navigator.pop(context);
-      return;
+      return null;
     }
 
     final String? filename = await getFilePath(context);
 
     if (filename == null) {
       safePop();
-      return;
+      return null;
     }
 
     final File file = File(filename);
-
     file.writeAsString(ImportService.addTagPairs(
         GameController().gameRecorder.moveHistoryText));
 
@@ -140,6 +139,13 @@ class LoadService {
         .showSnackBarClear("$strGameSavedTo $filename");
 
     safePop();
+
+    // Wait for the dialog to disappear before taking a screenshot
+    Future<void>.delayed(const Duration(milliseconds: 500), () {
+      ScreenshotService.takeScreenshot("records", "$filename.jpg");
+    });
+
+    return filename;
   }
 
   /// Main function to load game from a file.

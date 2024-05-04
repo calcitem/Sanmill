@@ -140,6 +140,7 @@ class _GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
+        // TODO: Support other platforms (Depend on native_screenshot package)
         if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
