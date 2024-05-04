@@ -219,6 +219,10 @@ class SanmillAppState extends State<SanmillApp> {
   }
 
   void _setupSharingIntent() {
+    if (!(Platform.isAndroid || Platform.isIOS)) {
+      return;
+    }
+
     // Listening for shared files when the app is already running
     _intentDataStreamSubscription =
         FlutterSharingIntent.instance.getMediaStream().listen(
@@ -263,7 +267,9 @@ class SanmillAppState extends State<SanmillApp> {
 
   @override
   void dispose() {
-    _intentDataStreamSubscription?.cancel();
+    if (Platform.isAndroid || Platform.isIOS) {
+      _intentDataStreamSubscription?.cancel();
+    }
     super.dispose();
   }
 }
