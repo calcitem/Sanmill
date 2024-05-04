@@ -1,0 +1,5 @@
+v4.5.1
+
+This update includes various improvements and bug fixes to make the app better for you.
+
+* Save the image when saving the game to PGN.
