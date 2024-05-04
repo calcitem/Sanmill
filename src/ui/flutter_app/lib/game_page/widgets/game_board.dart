@@ -87,19 +87,28 @@ class _GameBoardState extends State<GameBoard>
   }
 
   void processInitialSharingMoveList() {
+    if (!mounted) {
+      return;
+    }
+
     if (GameController().initialSharingMoveListNotifier.value == null) {
       return;
     }
 
     try {
       ImportService.import(GameController().initialSharingMoveList!);
-      LoadService.handleHistoryNavigation(context);
+      if (mounted) {
+        LoadService.handleHistoryNavigation(context);
+      }
     } catch (e) {
       logger.e("$_logTag Error importing initial sharing move list: $e");
-      GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
+      if (mounted) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear("Error importing initial sharing move list: $e");
+      }
     }
 
-    if (GameController().loadedGameFilenamePrefix != null) {
+    if (mounted && GameController().loadedGameFilenamePrefix != null) {
       // Delay to show the tip after the navigation tip is shown
       Future<void>.delayed(Duration.zero, () {
         GameController()
@@ -108,8 +117,10 @@ class _GameBoardState extends State<GameBoard>
       });
     }
 
-    rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear(GameController().initialSharingMoveList!);
+    if (mounted) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(GameController().initialSharingMoveList!);
+    }
 
     GameController().initialSharingMoveList = null;
   }
