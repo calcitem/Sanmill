@@ -219,50 +219,52 @@ class SanmillAppState extends State<SanmillApp> {
   }
 
   void _setupSharingIntent() {
+    // Skip setting up sharing intent for web or unsupported platforms
     if (kIsWeb || !(Platform.isAndroid || Platform.isIOS)) {
       return;
     }
 
-    // Listening for shared files when the app is already running
+    // Listen for shared files when the app is already running
     _intentDataStreamSubscription =
         FlutterSharingIntent.instance.getMediaStream().listen(
-      (List<SharedFile> value) {
-        if (value.isNotEmpty && value.first.value != null) {
-          final String filePath = value.first.value!;
-          rootScaffoldMessengerKey.currentState!
-              .showSnackBarClear("Setup Sharing Intent: $filePath");
-        }
+      (List<SharedFile> files) {
+        _handleSharedFiles(files, isRunning: true);
       },
-      onError: (dynamic err) {
-        logger.e("Error receiving intent data stream: $err");
-      },
-    );
-
-    // Handling initial share when the app is launched from a closed state
-    FlutterSharingIntent.instance.getInitialSharing().then(
-      (List<SharedFile> value) {
-        if (value.isNotEmpty && value.first.value != null) {
-          final String filePath = value.first.value!;
-          //rootScaffoldMessengerKey.currentState!.showSnackBarClear(filePath);
-
-          // Call the loadGame function with the file path
-          LoadService.loadGame(context, filePath).then((_) {
-            logger.i("Game loaded successfully from shared file.");
-            //rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            //    "Game loaded successfully from shared file.");
-          }).catchError((dynamic error) {
-            logger.e("Error loading game from shared file: $error");
-            rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                "Error loading game from shared file: $error"); // TODO: l10n
-          });
-        }
-      },
-      onError: (dynamic err) {
-        logger.e("Error getting initial sharing: $err");
+      onError: (dynamic error) {
+        logger.e("Error receiving intent data stream: $error");
         rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            "Error getting initial sharing: $err"); // TODO: l10n
+            "Error receiving intent data stream: $error"); // Consider localization
       },
     );
+
+    // Handle initial sharing when the app is launched from a closed state
+    FlutterSharingIntent.instance.getInitialSharing().then(
+      (List<SharedFile> files) {
+        _handleSharedFiles(files, isRunning: false);
+      },
+      onError: (dynamic error) {
+        logger.e("Error getting initial sharing: $error");
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            "Error getting initial sharing: $error"); // Consider localization
+      },
+    );
+  }
+
+  // Helper method to process shared files
+  void _handleSharedFiles(List<SharedFile> files, {required bool isRunning}) {
+    if (files.isNotEmpty && files.first.value != null) {
+      final String filePath = files.first.value!;
+      // Show notification to user about the shared file path
+      logger.i("Setup Sharing Intent: $filePath");
+      // Load the game from the shared file
+      LoadService.loadGame(context, filePath, isRunning: isRunning).then((_) {
+        logger.i("Game loaded successfully from shared file.");
+      }).catchError((dynamic error) {
+        logger.e("Error loading game from shared file: $error");
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+            "Error loading game from shared file: $error"); // Consider localization
+      });
+    }
   }
 
   @override

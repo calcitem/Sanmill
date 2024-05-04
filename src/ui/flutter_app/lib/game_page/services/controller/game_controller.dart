@@ -73,7 +73,16 @@ class GameController {
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
-  String? initialSharingMoveList;
+  String? _initialSharingMoveList;
+  ValueNotifier<String?> initialSharingMoveListNotifier =
+      ValueNotifier<String?>(null);
+
+  String? get initialSharingMoveList => _initialSharingMoveList;
+  set initialSharingMoveList(String? list) {
+    _initialSharingMoveList = list;
+    initialSharingMoveListNotifier.value = list;
+  }
+
   String? loadedGameFilenamePrefix;
 
   late AnimationController animationController;
@@ -409,7 +418,7 @@ class GameController {
 
   /// Starts a game load.
   static Future<void> load(BuildContext context) async =>
-      LoadService.loadGame(context, null);
+      LoadService.loadGame(context, null, isRunning: true);
 
   /// Starts a game import.
   static Future<void> import(BuildContext context) async =>

@@ -157,7 +157,8 @@ class LoadService {
   }
 
   /// Main function to load game from a file.
-  static Future<void> loadGame(BuildContext context, String? filePath) async {
+  static Future<void> loadGame(BuildContext context, String? filePath,
+      {required bool isRunning}) async {
     filePath ??= await pickFileIfNeeded(context);
 
     if (filePath == null) {
@@ -177,6 +178,13 @@ class LoadService {
           return;
         }
         GameController().initialSharingMoveList = fileContent;
+        if (isRunning == true) {
+          // Delay 1s and refresh Game Board
+          Future<void>.delayed(const Duration(seconds: 1), () {
+            GameController().headerIconsNotifier.showIcons();
+            GameController().boardSemanticsNotifier.updateSemantics();
+          });
+        }
       } else {
         // Assume original file reading logic if not 'content'
         final String fileContent = await readFileContent(filePath);

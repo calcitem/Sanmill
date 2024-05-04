@@ -50,32 +50,11 @@ class _GameBoardState extends State<GameBoard>
 
     GameController().engine.startup();
 
+    _setupValueNotifierListener();
+
     Future<void>.delayed(const Duration(microseconds: 100), () {
       _setReadyState();
-
-      if (GameController().initialSharingMoveList != null) {
-        try {
-          ImportService.import(GameController().initialSharingMoveList!);
-          LoadService.handleHistoryNavigation(context);
-        } catch (e) {
-          logger.e("$_logTag Error importing initial sharing move list: $e");
-          GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
-        }
-
-        if (GameController().loadedGameFilenamePrefix != null) {
-          // Delay to show the tip after the navigation tip is shown
-          Future<void>.delayed(Duration.zero, () {
-            GameController()
-                .headerTipNotifier
-                .showTip(GameController().loadedGameFilenamePrefix!);
-          });
-        }
-
-        rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(GameController().initialSharingMoveList!);
-
-        GameController().initialSharingMoveList = null;
-      }
+      processInitialSharingMoveList();
     });
 
     // TODO: Check _initAnimation() on branch master.
@@ -99,6 +78,40 @@ class _GameBoardState extends State<GameBoard>
       logger.i("$_logTag Set Ready State...");
       GameController().isControllerReady = true;
     }
+  }
+
+  void _setupValueNotifierListener() {
+    GameController().initialSharingMoveListNotifier.addListener(() {
+      processInitialSharingMoveList();
+    });
+  }
+
+  void processInitialSharingMoveList() {
+    if (GameController().initialSharingMoveListNotifier.value == null) {
+      return;
+    }
+
+    try {
+      ImportService.import(GameController().initialSharingMoveList!);
+      LoadService.handleHistoryNavigation(context);
+    } catch (e) {
+      logger.e("$_logTag Error importing initial sharing move list: $e");
+      GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
+    }
+
+    if (GameController().loadedGameFilenamePrefix != null) {
+      // Delay to show the tip after the navigation tip is shown
+      Future<void>.delayed(Duration.zero, () {
+        GameController()
+            .headerTipNotifier
+            .showTip(GameController().loadedGameFilenamePrefix!);
+      });
+    }
+
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear(GameController().initialSharingMoveList!);
+
+    GameController().initialSharingMoveList = null;
   }
 
   @override
@@ -241,6 +254,9 @@ class _GameBoardState extends State<GameBoard>
     //MillController().engine.shutdown();
     GameController().animationController.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
+    GameController()
+        .initialSharingMoveListNotifier
+        .removeListener(_setupValueNotifierListener);
     super.dispose();
   }
 }
