@@ -792,6 +792,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LLVM_LTO = YES;
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -981,6 +982,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LLVM_LTO = YES;
 				MACH_O_TYPE = mh_execute;
 				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill;
 				PRODUCT_NAME = "$(TARGET_NAME)";
