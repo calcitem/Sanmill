@@ -53,5 +53,46 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>PGN Files</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>pgn</string>
+			</array>
+			<key>CFBundleTypeMIMETypes</key>
+			<array>
+				<string>application/x-chess-pgn</string>
+			</array>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.calcitem.sanmill.pgn</string>
+			</array>
+		</dict>
+	</array>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeIdentifier</key>
+			<string>com.calcitem.sanmill.pgn</string>
+			<key>UTTypeDescription</key>
+			<string>Portable Game Notation File</string>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>pgn</string>
+				<key>public.mime-type</key>
+				<string>application/x-chess-pgn</string>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>

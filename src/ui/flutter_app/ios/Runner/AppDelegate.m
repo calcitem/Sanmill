@@ -90,6 +90,39 @@
             result(FlutterMethodNotImplemented);
         }
     }];
+    
+    FlutterMethodChannel* nativeChannel = [FlutterMethodChannel
+                                           methodChannelWithName:@"com.calcitem.sanmill/native"
+                                           binaryMessenger:controller.binaryMessenger];
+    
+    [nativeChannel setMethodCallHandler:^(FlutterMethodCall* call, FlutterResult result) {
+        if ([@"readContentUri" isEqualToString:call.method]) {
+            NSString* uriString = call.arguments[@"uri"];
+            NSURL* url = [NSURL URLWithString:uriString];
+            if ([url.scheme isEqualToString:@"content"] || [url.scheme isEqualToString:@"file"]) {
+                [self readContentFromURL:url completion:result];
+            } else {
+                result([FlutterError errorWithCode:@"UNAVAILABLE"
+                                           message:@"URL scheme not supported."
+                                           details:nil]);
+            }
+        } else {
+            result(FlutterMethodNotImplemented);
+        }
+    }];
 }
-
+    
+    - (void)readContentFromURL:(NSURL*)url completion:(FlutterResult)completion {
+        NSError* error;
+        NSData* data = [NSData dataWithContentsOfURL:url options:0 error:&error];
+        if (error) {
+            completion([FlutterError errorWithCode:@"ERROR"
+                                           message:@"Failed to read content"
+                                           details:error.localizedDescription]);
+        } else {
+            NSString* content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            completion(content);
+        }
+    }
+    
 @end
