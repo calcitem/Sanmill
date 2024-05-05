@@ -70,6 +70,7 @@ using std::setfill;
 using std::setw;
 using std::streambuf;
 using std::stringstream;
+using namespace std;
 
 namespace {
 
@@ -528,6 +529,113 @@ void aligned_large_pages_free(void *mem)
 #endif
 #endif // ALIGNED_LARGE_PAGES
 
+
+namespace WinProcGroup {
+
+#ifndef _WIN32
+
+void bindThisThread(size_t) {}
+
+#else
+
+/// best_group() retrieves logical processor information using Windows specific
+/// API and returns the best group id for the thread with index idx. Original
+/// code from Texel by Peter Österlund.
+
+int best_group(size_t idx) {
+
+  int threads = 0;
+  int nodes = 0;
+  int cores = 0;
+  DWORD returnLength = 0;
+  DWORD byteOffset = 0;
+
+  // Early exit if the needed API is not available at runtime
+  HMODULE k32 = GetModuleHandle("Kernel32.dll");
+  auto fun1 = (fun1_t)(void(*)())GetProcAddress(k32, "GetLogicalProcessorInformationEx");
+  if (!fun1)
+      return -1;
+
+  // First call to get returnLength. We expect it to fail due to null buffer
+  if (fun1(RelationAll, nullptr, &returnLength))
+      return -1;
+
+  // Once we know returnLength, allocate the buffer
+  SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX *buffer, *ptr;
+  ptr = buffer = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)malloc(returnLength);
+
+  // Second call, now we expect to succeed
+  if (!fun1(RelationAll, buffer, &returnLength))
+  {
+      free(buffer);
+      return -1;
+  }
+
+  while (byteOffset < returnLength)
+  {
+      if (ptr->Relationship == RelationNumaNode)
+          nodes++;
+
+      else if (ptr->Relationship == RelationProcessorCore)
+      {
+          cores++;
+          threads += (ptr->Processor.Flags == LTP_PC_SMT) ? 2 : 1;
+      }
+
+      assert(ptr->Size);
+      byteOffset += ptr->Size;
+      ptr = (SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX*)(((char*)ptr) + ptr->Size);
+  }
+
+  free(buffer);
+
+  std::vector<int> groups;
+
+  // Run as many threads as possible on the same node until core limit is
+  // reached, then move on filling the next node.
+  for (int n = 0; n < nodes; n++)
+      for (int i = 0; i < cores / nodes; i++)
+          groups.push_back(n);
+
+  // In case a core has more than one logical processor (we assume 2) and we
+  // have still threads to allocate, then spread them evenly across available
+  // nodes.
+  for (int t = 0; t < threads - cores; t++)
+      groups.push_back(t % nodes);
+
+  // If we still have more threads than the total number of logical processors
+  // then return -1 and let the OS to decide what to do.
+  return idx < groups.size() ? groups[idx] : -1;
+}
+
+
+/// bindThisThread() set the group affinity of the current thread
+
+void bindThisThread(size_t idx) {
+
+  // Use only local variables to be thread-safe
+  int group = best_group(idx);
+
+  if (group == -1)
+      return;
+
+  // Early exit if the needed API are not available at runtime
+  HMODULE k32 = GetModuleHandle("Kernel32.dll");
+  auto fun2 = (fun2_t)(void(*)())GetProcAddress(k32, "GetNumaNodeProcessorMaskEx");
+  auto fun3 = (fun3_t)(void(*)())GetProcAddress(k32, "SetThreadGroupAffinity");
+
+  if (!fun2 || !fun3)
+      return;
+
+  GROUP_AFFINITY affinity;
+  if (fun2(group, &affinity))
+      fun3(GetCurrentThread(), &affinity, nullptr);
+}
+
+#endif
+
+} // namespace WinProcGroup
+
 #ifdef _WIN32
 #include <direct.h>
 #define GETCWD _getcwd
@@ -535,3 +643,52 @@ void aligned_large_pages_free(void *mem)
 #include <unistd.h>
 #define GETCWD getcwd
 #endif
+
+namespace CommandLine {
+
+string argv0;            // path+name of the executable binary, as given by argv[0]
+string binaryDirectory;  // path of the executable directory
+string workingDirectory; // path of the working directory
+
+void init(int argc, char* argv[]) {
+    (void)argc;
+    string pathSeparator;
+
+    // extract the path+name of the executable binary
+    argv0 = argv[0];
+
+#ifdef _WIN32
+    pathSeparator = "\\";
+  #ifdef _MSC_VER
+    // Under windows argv[0] may not have the extension. Also _get_pgmptr() had
+    // issues in some windows 10 versions, so check returned values carefully.
+    char* pgmptr = nullptr;
+    if (!_get_pgmptr(&pgmptr) && pgmptr != nullptr && *pgmptr)
+        argv0 = pgmptr;
+  #endif
+#else
+    pathSeparator = "/";
+#endif
+
+    // extract the working directory
+    workingDirectory = "";
+    char buff[40000];
+    char* cwd = GETCWD(buff, 40000);
+    if (cwd)
+        workingDirectory = cwd;
+
+    // extract the binary directory path from argv0
+    binaryDirectory = argv0;
+    size_t pos = binaryDirectory.find_last_of("\\/");
+    if (pos == std::string::npos)
+        binaryDirectory = "." + pathSeparator;
+    else
+        binaryDirectory.resize(pos + 1);
+
+    // pattern replacement: "./" at the start of path is replaced by the working directory
+    if (binaryDirectory.find("." + pathSeparator) == 0)
+        binaryDirectory.replace(0, 1, workingDirectory);
+}
+
+
+} // namespace CommandLine

@@ -164,7 +164,7 @@ int Thread::search()
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            TranspositionTable::clear();
+            //TranspositionTable::clear();
 #endif
 #endif
 
@@ -234,7 +234,7 @@ next:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
+    //TranspositionTable::clear();
 #endif
 #endif
 
@@ -323,6 +323,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
+    Move ttMove;
 
     Depth epsilon;
 
@@ -382,37 +383,34 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-
-    // check transposition-table
-
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
-                                  // and no available moves
-
-    Bound type = BOUND_NONE;
-
-    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta,
-                                                     type
-#ifdef TT_MOVE_ENABLE
-                                                     ,
-                                                     ttMove
-#endif // TT_MOVE_ENABLE
-    );
-
-    if (probeVal != VALUE_UNKNOWN) {
+    Bound type = BOUND_NONE;                              // and no available moves
+    // Transposition table lookup
+    TTEntry* tte;
+    bool found;
+    tte = TT.probe(pos->key(), found);
+    if (found) {
+        if (tte->value() != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
-        Threads.main()->ttHitCount++;
+            Threads.main()->ttHitCount++;
 #endif
 
-        bestValue = probeVal;
+            bestValue = tte->value();
 
-        return bestValue;
-    }
+            if (tte->move() != MOVE_NONE)
+                ttMove = tte->move();
+
+            if (bestValue >= beta)
+                return bestValue;
+            if (bestValue > alpha)
+                alpha = bestValue;
+        }
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    if (probeVal == VALUE_UNKNOWN) {
-        Threads.main()->ttMissCount++;
-    }
+        else {
+            Threads.main()->ttMissCount++;
+        }
 #endif
-
+    }
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // process leaves
@@ -473,7 +471,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
     for (int i = 0; i < moveCount; i++) {
-        TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
+        //TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
     }
 
 #ifdef PREFETCH_DEBUG
@@ -578,15 +576,20 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(
-        bestValue, depth,
-        TranspositionTable::boundType(bestValue, oldAlpha, beta), posKey
-#ifdef TT_MOVE_ENABLE
-        ,
-        bestMove
-#endif // TT_MOVE_ENABLE
-    );
+    // Save to transposition table
+    if (bestValue <= oldAlpha)
+        type = BOUND_UPPER;
+    else if (bestValue >= beta)
+        type = BOUND_LOWER;
+    else
+        type = BOUND_EXACT;
+
+    bool isPVNode = (bestValue > oldAlpha) && (depth == originDepth);
+    Value evalValue = bestValue; // Simplified assumption, use actual eval if available
+
+    tte->save(pos->key(), bestValue, isPVNode, type, depth, bestMove, evalValue);
 #endif /* TRANSPOSITION_TABLE_ENABLE */
+
 
     // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 

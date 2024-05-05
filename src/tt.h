@@ -1,103 +1,102 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+/*
+  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
+  Copyright (C) 2004-2022 The Stockfish developers (see AUTHORS file)
+
+  Stockfish is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  Stockfish is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 #ifndef TT_H_INCLUDED
 #define TT_H_INCLUDED
 
-#include "hashmap.h"
-#include "types.h"
+#include "misc.h"
 
-using CTSL::HashMap;
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-
-/// TTEntry struct is the 4 bytes transposition table entry, defined as below:
+/// TTEntry struct is the 12 bytes transposition table entry, defined as below:
 ///
-/// value               8 bit
-/// depth               8 bit
-/// bound type          8 bit
-/// age                 8 bit
+/// key        16 bit
+/// depth       8 bit
+/// generation  5 bit
+/// pv node     1 bit
+/// bound type  2 bit
+/// move       32 bit (official SF: 16 bit)
+/// value      16 bit
+/// eval value 16 bit
 
-struct TTEntry
-{
-    TTEntry() { }
+struct TTEntry {
 
-    Value value() const noexcept { return static_cast<Value>(value8); }
-
-    Depth depth() const noexcept
-    {
-        return static_cast<Depth>(depth8) + DEPTH_OFFSET;
-    }
-
-    Bound bound() const noexcept { return static_cast<Bound>(genBound8); }
-
-#ifdef TT_MOVE_ENABLE
-    Move tt_move() const noexcept { return (Move)(ttMove); }
-#endif // TT_MOVE_ENABLE
+  Move  move()  const { return (Move )move32; }
+  Value value() const { return (Value)value16; }
+  Value eval()  const { return (Value)eval16; }
+  Depth depth() const { return (Depth)depth8 + DEPTH_OFFSET; }
+  bool is_pv()  const { return (bool)(genBound8 & 0x4); }
+  Bound bound() const { return (Bound)(genBound8 & 0x3); }
+  void save(Key k, Value v, bool pv, Bound b, Depth d, Move m, Value ev);
 
 private:
-    friend class TranspositionTable;
+  friend class TranspositionTable;
 
-    int8_t value8 {0};
-    int8_t depth8 {0};
-    uint8_t genBound8 {0};
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age8 {0};
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-#ifdef TT_MOVE_ENABLE
-    Move ttMove {MOVE_NONE};
-#endif // TT_MOVE_ENABLE
+  uint16_t key16;
+  uint8_t  depth8;
+  uint8_t  genBound8;
+  uint32_t move32;
+  int16_t  value16;
+  int16_t  eval16;
 };
 
-class TranspositionTable
-{
+
+/// A TranspositionTable is an array of Cluster, of size clusterCount. Each
+/// cluster consists of ClusterSize number of TTEntry. Each non-empty TTEntry
+/// contains information on exactly one position. The size of a Cluster should
+/// divide the size of a cache line for best performance, as the cacheline is
+/// prefetched when possible.
+
+class TranspositionTable {
+
+  static constexpr int ClusterSize = 5;
+
+  struct Cluster {
+    TTEntry entry[ClusterSize];
+    char padding[4]; // Pad to 64 bytes
+  };
+
+  static_assert(sizeof(Cluster) == 64, "Unexpected Cluster size");
+
+  // Constants used to refresh the hash table periodically
+  static constexpr unsigned GENERATION_BITS  = 3;                                // nb of bits reserved for other things
+  static constexpr int      GENERATION_DELTA = (1 << GENERATION_BITS);           // increment for generation field
+  static constexpr int      GENERATION_CYCLE = 255 + (1 << GENERATION_BITS);     // cycle length
+  static constexpr int      GENERATION_MASK  = (0xFF << GENERATION_BITS) & 0xFF; // mask to pull out generation number
+
 public:
-    static bool search(Key key, TTEntry &tte);
+ ~TranspositionTable() { aligned_large_pages_free(table); }
+  void new_search() { generation8 += GENERATION_DELTA; } // Lower bits are used for other things
+  TTEntry* probe(const Key key, bool& found) const;
+  int hashfull() const;
+  void resize(size_t mbSize);
+  void clear();
 
-    static Value probe(Key key, Depth depth, Value alpha, Value beta,
-                       Bound &type
-#ifdef TT_MOVE_ENABLE
-                       ,
-                       Move &ttMove
-#endif // TT_MOVE_ENABLE
-    );
-
-    static int save(Value value, Depth depth, Bound type, Key key
-#ifdef TT_MOVE_ENABLE
-                    ,
-                    const Move &ttMove
-#endif // TT_MOVE_ENABLE
-    );
-
-    static Bound boundType(Value value, Value alpha, Value beta);
-
-    static void clear();
-
-    static void prefetch(Key key);
+  TTEntry* first_entry(const Key key) const {
+    return &table[mul_hi64(key, clusterCount)].entry[0];
+  }
 
 private:
-    friend struct TTEntry;
+  friend struct TTEntry;
+
+  size_t clusterCount;
+  Cluster* table;
+  uint8_t generation8; // Size must be not bigger than TTEntry::genBound8
 };
 
-extern HashMap<Key, TTEntry> TT;
-
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-extern uint8_t transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-
-#endif // TRANSPOSITION_TABLE_ENABLE
+extern TranspositionTable TT;
 
 #endif // #ifndef TT_H_INCLUDED

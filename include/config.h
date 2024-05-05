@@ -90,6 +90,8 @@ constexpr auto DEPTH_ADJUST = 0;
 // #define TRANSPOSITION_TABLE_DEBUG
 #endif
 
+#define ALIGNED_LARGE_PAGES
+
 // #define DISABLE_PREFETCH
 
 // #define BITBOARD_DEBUG

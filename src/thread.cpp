@@ -181,7 +181,7 @@ void Thread::setAi(Position *p)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
+    //TranspositionTable::clear();
 #endif
 #endif
 }
