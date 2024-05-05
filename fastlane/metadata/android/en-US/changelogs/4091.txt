@@ -1,0 +1,3 @@
+v4.7.0
+
+Enhanced AI engine performance by 23%.
