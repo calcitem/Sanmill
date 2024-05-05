@@ -41,7 +41,7 @@
 
 #else // _WIN32
 
-#if defined(__APPLE__) && defined(__MACH__)
+#if defined(__APPLE__) && defined(__MACH__) || defined(__ANDROID__)
 #define SPRINTF(buffer, buffer_size, format, ...) \
     snprintf(buffer, buffer_size, format __VA_OPT__(, ) __VA_ARGS__)
 

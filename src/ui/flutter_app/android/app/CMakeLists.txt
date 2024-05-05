@@ -1,8 +1,20 @@
-cmake_minimum_required(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.22.1)
+cmake_policy(SET CMP0069 NEW)
+
 project(sanmill LANGUAGES CXX)
 
-add_definitions(-g -O2 -std=c++17 -D FLUTTER_UI)
+add_definitions(-DNDEBUG -O3 -std=c++17 -flto -D FLUTTER_UI)
 #add_definitions(-DDISABLE_PERFECT_AI)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wcast-qual -pedantic -Wextra -Wshadow -fexceptions -DUSE_POPCNT")
+#set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+
+include(CheckIPOSupported)
+check_ipo_supported(RESULT result)
+if(result)
+	set_property(TARGET sanmill PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
 
 add_library( # Sets the name of the library.
         sanmill
@@ -19,7 +31,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-	../../../../mcts.cpp
+		../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp
