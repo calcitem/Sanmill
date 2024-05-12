@@ -352,9 +352,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 #endif // THREEFOLD_REPETITION
 
-#ifdef TT_MOVE_ENABLE
     Move ttMove = MOVE_NONE;
-#endif // TT_MOVE_ENABLE
 
     // Transposition table lookup
 
@@ -407,7 +405,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif
 
         bestValue = probeVal;
-
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
@@ -448,7 +445,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Initialize a MovePicker object for the current position, and prepare
     // to search the moves.
-    MovePicker mp(*pos);
+    MovePicker mp(*pos, ttMove);
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
@@ -459,19 +456,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return bestValue;
     }
 #endif /* !NNUE_GENERATE_TRAINING_DATA */
-
-#if 0
-    // TODO(calcitem): Weak
-    if (bestMove != MOVE_NONE) {
-        for (int i = 0; i < moveCount; i++) {
-            if (mp.moves[i].move == bestMove) {
-                // TODO(calcitem): need to write value?
-                std::swap(mp.moves[0], mp.moves[i]);
-                break;
-            }
-        }
-    }
-#endif // TT_MOVE_ENABLE
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH

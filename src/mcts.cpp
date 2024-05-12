@@ -185,7 +185,7 @@ Node *expand(Node *node)
 {
     Position *pos = node->position;
 
-    MovePicker mp(*pos);
+    MovePicker mp(*pos, MOVE_NONE);
     mp.next_move(); // Sort moves
     // const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR,
     // 1);
@@ -381,7 +381,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         }
     }
 
-    MovePicker mp(*pos);
+    MovePicker mp(*pos, MOVE_NONE);
     mp.next_move();
 
     int best_move_index = 0;
