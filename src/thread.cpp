@@ -279,9 +279,9 @@ void sq2str(char *str)
     rank = rank_of(sq);
 
     if (sig == 1) {
-        snprintf(str, Position::RECORD_LEN_MAX, 16, "(%d,%d)", file, rank);
+        snprintf(str, Position::RECORD_LEN_MAX, 16, "(%d,%d)", rank, file);
     } else {
-        snprintf(str, Position::RECORD_LEN_MAX, "-(%d,%d)", file, rank);
+        snprintf(str, Position::RECORD_LEN_MAX, "-(%d,%d)", rank, file);
     }
 }
 #endif // OPENING_BOOK

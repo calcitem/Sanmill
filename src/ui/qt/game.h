@@ -196,10 +196,10 @@ private:
 
     static void performSoundPlay(const std::string &filename);
 
-    bool validateClick(QPointF p, File &f, Rank &r);
+    bool validateClick(QPointF p, Rank &r, File &f);
     bool undoRecentMovesOnReview();
     void initGameIfReady();
-    bool performAction(File f, Rank r, QPointF p);
+    bool performAction(Rank r, File f, QPointF p);
     void updateState(bool result);
 
     void animatePieceMovement(PieceItem *&deletedPiece);

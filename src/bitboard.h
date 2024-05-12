@@ -39,18 +39,18 @@ std::string pretty(Bitboard b);
 
 constexpr Bitboard AllSquares = ~static_cast<Bitboard>(0);
 
-constexpr Bitboard FileABB = 0x0000FF00;
-constexpr Bitboard FileBBB = FileABB << (8 * 1);
-constexpr Bitboard FileCBB = FileABB << (8 * 2);
+constexpr Bitboard FileABB = 0x01010100;
+constexpr Bitboard FileBBB = FileABB << 1;
+constexpr Bitboard FileCBB = FileABB << 2;
+constexpr Bitboard FileDBB = FileABB << 3;
+constexpr Bitboard FileEBB = FileABB << 4;
+constexpr Bitboard FileFBB = FileABB << 5;
+constexpr Bitboard FileGBB = FileABB << 6;
+constexpr Bitboard FileHBB = FileABB << 7;
 
-constexpr Bitboard Rank1BB = 0x01010100;
-constexpr Bitboard Rank2BB = Rank1BB << 1;
-constexpr Bitboard Rank3BB = Rank1BB << 2;
-constexpr Bitboard Rank4BB = Rank1BB << 3;
-constexpr Bitboard Rank5BB = Rank1BB << 4;
-constexpr Bitboard Rank6BB = Rank1BB << 5;
-constexpr Bitboard Rank7BB = Rank1BB << 6;
-constexpr Bitboard Rank8BB = Rank1BB << 7;
+constexpr Bitboard Rank1BB = 0x0000FF00;
+constexpr Bitboard Rank2BB = Rank1BB << (FILE_NB * 1);
+constexpr Bitboard Rank3BB = Rank1BB << (FILE_NB * 2);
 
 extern uint8_t PopCnt16[1 << 16];
 

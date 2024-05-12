@@ -45,7 +45,7 @@
 
 using std::to_string;
 
-bool Game::validateClick(QPointF p, File &f, Rank &r)
+bool Game::validateClick(QPointF p, Rank &r, File &f)
 {
     if (!scene.pointToPolarCoordinate(p, f, r)) {
         return false;
@@ -60,7 +60,7 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
     return true;
 }
 
-bool Game::performAction(File f, Rank r, QPointF p)
+bool Game::performAction(Rank r, File f, QPointF p)
 {
     // Judge whether to select, place or remove the piece
     bool result = false;
@@ -69,7 +69,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
 
     switch (position.get_action()) {
     case Action::place:
-        if (position.put_piece(f, r)) {
+        if (position.put_piece(r, f)) {
             if (position.get_action() == Action::remove) {
                 // Play form mill sound effects
                 playSound(GameSound::mill);
@@ -95,7 +95,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
         piece = qgraphicsitem_cast<PieceItem *>(item);
         if (!piece)
             break;
-        if (position.select_piece(f, r)) {
+        if (position.select_piece(r, f)) {
             playSound(GameSound::select);
             result = true;
         } else {
@@ -104,7 +104,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
         break;
 
     case Action::remove:
-        if (position.remove_piece(f, r)) {
+        if (position.remove_piece(r, f)) {
             playSound(GameSound::remove);
             result = true;
         } else {

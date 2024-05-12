@@ -155,7 +155,7 @@ bool Game::handleClick(QPointF point)
     File f;
     Rank r;
 
-    if (!validateClick(point, f, r))
+    if (!validateClick(point, r, f))
         return false;
 
     if (!undoRecentMovesOnReview())
@@ -163,7 +163,7 @@ bool Game::handleClick(QPointF point)
 
     initGameIfReady();
 
-    bool result = performAction(f, r, point);
+    bool result = performAction(r, f, point);
 
     updateState(result);
 

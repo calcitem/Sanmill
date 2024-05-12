@@ -173,16 +173,16 @@ public:
 
     // Other helpers
     bool select_piece(Square s);
-    bool select_piece(File f, Rank r);
+    bool select_piece(Rank r, File f);
 
     void put_piece(Piece pc, Square s);
-    bool put_piece(File f, Rank r);
+    bool put_piece(Rank r, File f);
     bool put_piece(Square s, bool updateRecord = false);
 
-    bool remove_piece(File f, Rank r);
+    bool remove_piece(Rank r, File f);
     bool remove_piece(Square s, bool updateRecord = false);
 
-    bool move_piece(File f1, Rank r1, File f2, Rank r2);
+    bool move_piece(Rank r1, File f1, Rank r2, File f2);
     bool move_piece(Square from, Square to);
 
     int total_mills_count(Color c);
@@ -292,7 +292,7 @@ inline Thread *Position::this_thread() const
     return thisThread;
 }
 
-inline bool Position::select_piece(File f, Rank r)
+inline bool Position::select_piece(Rank r, File f)
 {
     return select_piece(make_square(f, r));
 }
@@ -304,19 +304,19 @@ inline void Position::put_piece(Piece pc, Square s)
     byColorBB[color_of(pc)] |= s;
 }
 
-inline bool Position::put_piece(File f, Rank r)
+inline bool Position::put_piece(Rank r, File f)
 {
     const bool ret = put_piece(make_square(f, r), true);
 
     return ret;
 }
 
-inline bool Position::move_piece(File f1, Rank r1, File f2, Rank r2)
+inline bool Position::move_piece(Rank r1, File f1, Rank r2, File f2)
 {
     return move_piece(make_square(f1, r1), make_square(f2, r2));
 }
 
-inline bool Position::remove_piece(File f, Rank r)
+inline bool Position::remove_piece(Rank r, File f)
 {
     const bool ret = remove_piece(make_square(f, r), true);
 

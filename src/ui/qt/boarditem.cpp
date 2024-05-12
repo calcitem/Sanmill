@@ -118,11 +118,11 @@ void BoardItem::setDiagonal(bool enableDiagonal)
 void BoardItem::initPoints()
 {
     // Initialize 24 points
-    for (int f = 0; f < FILE_NB; f++) {
+    for (int r = 1; r < FILE_NB; r++) {
         // The first point corresponds to the 12 o'clock position on the inner
         // ring, followed by points arranged in a clockwise direction. This
         // pattern is replicated for the middle and outer rings as well.
-        const int radius = (f + 1) * LINE_INTERVAL;
+        const int radius = (r + 1) * LINE_INTERVAL;
         const int clockwiseRingCoordinates[][2] = {
             {0, -radius}, {radius, -radius}, {radius, 0},  {radius, radius},
             {0, radius},  {-radius, radius}, {-radius, 0}, {-radius, -radius}};

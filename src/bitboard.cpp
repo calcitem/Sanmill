@@ -29,8 +29,8 @@ std::string Bitboards::pretty(Bitboard b)
 {
     std::string str = "+---+---+---+---+---+---+---+---+\n";
 
-    for (File f = FILE_A; f <= FILE_C; ++f) {
-        for (Rank r = RANK_1; r <= RANK_8; ++r) {
+    for (Rank r = RANK_1; r <= RANK_3; ++r) {
+        for (File f = FILE_A; f <= FILE_H; ++f) {
             str += (b & make_square(f, r)) ? "| X " : "|   ";
         }
 

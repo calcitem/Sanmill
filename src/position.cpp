@@ -276,14 +276,14 @@ Position &Position::set(const string &fenStr, Thread *th)
 
        A FEN string contains six fields separated by a space. The fields are:
 
-       1) Piece placement. Each rank is described, starting
-          with rank 1 and ending with rank 8. Within each rank, the contents of
-       each square are described from file A through file C. Following the
+       1) Piece placement. Each file is described, starting
+          with file A and ending with file H. Within each file, the contents of
+       each square are described from rank 1 through rank 3. Following the
        Standard Algebraic Notation (SAN), each piece is identified by a single
        letter taken from the standard English names. White pieces are designated
        using "O" whilst Black uses "@". Blank uses "*". Marked uses "X". noted
        using digits 1 through 8 (the number of blank squares), and "/" separates
-       ranks.
+       files.
 
        2) Active color. "w" means white moves next, "b" means black.
 
@@ -401,12 +401,12 @@ string Position::fen() const
     std::ostringstream ss;
 
     // Piece placement data
-    for (File f = FILE_A; f <= FILE_C; ++f) {
-        for (Rank r = RANK_1; r <= RANK_8; ++r) {
+    for (Rank r = RANK_1; r <= RANK_3; ++r) {
+        for (File f = FILE_A; f <= FILE_H; ++f) {
             ss << PieceToChar(piece_on(make_square(f, r)));
         }
 
-        if (f == FILE_C) {
+        if (r == RANK_3) {
             ss << " ";
         } else {
             ss << "/";
@@ -724,8 +724,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         updateMobility(MOVETYPE_PLACE, s);
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
-                     rank_of(s));
+            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", rank_of(s),
+                     file_of(s));
         }
 
         currentSquare = s;
@@ -848,8 +848,8 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         if (updateRecord) {
             snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
-                     file_of(currentSquare), rank_of(currentSquare), file_of(s),
-                     rank_of(s));
+                     rank_of(currentSquare), file_of(currentSquare), rank_of(s),
+                     file_of(s));
             st.rule50++;
         }
 
@@ -949,7 +949,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", rank_of(s), file_of(s));
         st.rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
@@ -1064,8 +1064,8 @@ bool Position::command(const char *cmd)
 {
     char moveStr[64] = {0};
     unsigned char t = 0;
-    File file1 = FILE_A, file2 = FILE_A;
     Rank rank1 = RANK_1, rank2 = RANK_1;
+    File file1 = FILE_A, file2 = FILE_A;
 
     if (strlen(cmd) == 0) { /* "" */
         return reset();
@@ -1088,25 +1088,25 @@ bool Position::command(const char *cmd)
     }
 
     int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
-                      reinterpret_cast<unsigned *>(&file1),
                       reinterpret_cast<unsigned *>(&rank1),
                       reinterpret_cast<unsigned *>(&file2),
-                      reinterpret_cast<unsigned *>(&rank2));
+                      reinterpret_cast<unsigned *>(&rank2),
+                      reinterpret_cast<unsigned *>(&file2));
 
     if (args >= 4) {
-        return move_piece(file1, rank1, file2, rank2);
+        return move_piece(rank1, file1, rank2, file2);
     }
 
-    args = sscanf(moveStr, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
+    args = sscanf(moveStr, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&rank1),
+                  reinterpret_cast<unsigned *>(&file1));
     if (args >= 2) {
-        return remove_piece(file1, rank1);
+        return remove_piece(rank1, file1);
     }
 
-    args = sscanf(moveStr, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
+    args = sscanf(moveStr, "(%1u,%1u)", reinterpret_cast<unsigned *>(&rank1),
+                  reinterpret_cast<unsigned *>(&file1));
     if (args >= 2) {
-        return put_piece(file1, rank1);
+        return put_piece(rank1, file1);
     }
 
     args = sscanf(moveStr, "Player %hhu resigns!", &t);
@@ -1232,9 +1232,9 @@ void Position::remove_marked_pieces()
     assert(rule.millFormationActionInPlacingPhase ==
            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces);
 
-    for (int f = 1; f <= FILE_NB; f++) {
-        for (int r = 0; r < RANK_NB; r++) {
-            const auto s = static_cast<Square>(f * RANK_NB + r);
+    for (int r = 1; r <= RANK_NB; r++) {
+        for (int f = 0; f < FILE_NB; f++) {
+            const auto s = static_cast<Square>(r * FILE_NB + f);
 
             if (board[s] == MARKED_PIECE) {
                 const Piece pc = board[s];
@@ -1700,23 +1700,23 @@ bool Position::is_stalemate_removal()
 void Position::flipHorizontally(vector<string> &gameMoveList,
                                 bool cmdChange /*= true*/)
 {
-    int f, r;
+    int r, f;
 
-    for (f = 1; f <= FILE_NB; f++) {
-        for (r = 1; r < RANK_NB / 2; r++) {
-            const Piece ch = board[f * RANK_NB + r];
-            board[f * RANK_NB + r] = board[(f + 1) * RANK_NB - r];
-            board[(f + 1) * RANK_NB - r] = ch;
+    for (r = 1; r <= RANK_NB; r++) {
+        for (f = 1; f < FILE_NB / 2; f++) {
+            const Piece ch = board[r * FILE_NB + f];
+            board[r * FILE_NB + f] = board[(r + 1) * FILE_NB - f];
+            board[(r + 1) * FILE_NB - f] = ch;
         }
     }
 
     reset_bb();
 
     if (move < 0) {
-        f = (-move) / RANK_NB;
-        r = (-move) % RANK_NB;
-        r = (RANK_NB - r) % RANK_NB;
-        move = static_cast<Move>(-(f * RANK_NB + r));
+        r = (-move) / FILE_NB;
+        f = (-move) % FILE_NB;
+        f = (FILE_NB - f) % FILE_NB;
+        move = static_cast<Move>(-(r * FILE_NB + f));
     } else {
         uint64_t llp[3] = {0};
 
@@ -1724,63 +1724,63 @@ void Position::flipHorizontally(vector<string> &gameMoveList,
         llp[1] = to_sq(move);
 
         for (int i = 0; i < 2; i++) {
-            f = static_cast<int>(llp[i]) / RANK_NB;
-            r = static_cast<int>(llp[i]) % RANK_NB;
-            r = (RANK_NB - r) % RANK_NB;
-            llp[i] = static_cast<uint64_t>(f) * RANK_NB + r;
+            r = static_cast<int>(llp[i]) / FILE_NB;
+            f = static_cast<int>(llp[i]) % FILE_NB;
+            f = (FILE_NB - f) % FILE_NB;
+            llp[i] = static_cast<uint64_t>(r) * FILE_NB + f;
         }
 
         move = static_cast<Move>((llp[0] << 8) | llp[1]);
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
-        r = (RANK_NB - r) % RANK_NB;
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        r = currentSquare / static_cast<Square>(FILE_NB);
+        f = currentSquare % static_cast<Square>(FILE_NB);
+        f = (FILE_NB - f) % FILE_NB;
+        currentSquare = static_cast<Square>(r * FILE_NB + f);
     }
 
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        unsigned f1, s1, f2, s2;
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2, &s2);
         if (args >= 4) {
-            s1 = (RANK_NB - s1 + 1) % RANK_NB;
-            s2 = (RANK_NB - s2 + 1) % RANK_NB;
-            record[3] = '1' + static_cast<char>(s1);
-            record[10] = '1' + static_cast<char>(s2);
+            s1 = (FILE_NB - s1 + 1) % FILE_NB;
+            s2 = (FILE_NB - s2 + 1) % FILE_NB;
+            record[3] = 'A' + static_cast<char>(s1 - 1);
+            record[10] = 'A' + static_cast<char>(s2 - 1);
         } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &f1, &s1);
             if (args >= 2) {
-                s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                record[4] = '1' + static_cast<char>(s1);
+                s1 = (FILE_NB - s1 + 1) % FILE_NB;
+                record[4] = 'A' + static_cast<char>(s1 - 1);
             } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &f1, &s1);
                 if (args >= 2) {
-                    s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                    record[3] = '1' + static_cast<char>(s1);
+                    s1 = (FILE_NB - s1 + 1) % FILE_NB;
+                    record[3] = 'A' + static_cast<char>(s1 - 1);
                 }
             }
         }
 
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2,
                           &s2);
             if (args >= 4) {
-                s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                s2 = (RANK_NB - s2 + 1) % RANK_NB;
-                iter[3] = '1' + static_cast<char>(s1);
-                iter[10] = '1' + static_cast<char>(s2);
+                s1 = (FILE_NB - s1 + 1) % FILE_NB;
+                s2 = (FILE_NB - s2 + 1) % FILE_NB;
+                iter[3] = 'A' + static_cast<char>(s1 - 1);
+                iter[10] = 'A' + static_cast<char>(s2 - 1);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &f1, &s1);
                 if (args >= 2) {
-                    s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                    iter[4] = '1' + static_cast<char>(s1);
+                    s1 = (FILE_NB - s1 + 1) % FILE_NB;
+                    iter[4] = 'A' + static_cast<char>(s1 - 1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &f1, &s1);
                     if (args >= 2) {
-                        s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                        iter[3] = '1' + static_cast<char>(s1);
+                        s1 = (FILE_NB - s1 + 1) % FILE_NB;
+                        iter[3] = 'A' + static_cast<char>(s1 - 1);
                     }
                 }
             }
@@ -1790,12 +1790,12 @@ void Position::flipHorizontally(vector<string> &gameMoveList,
 
 void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
 {
-    int f, r;
+    int r, f;
 
-    for (r = 0; r < RANK_NB; r++) {
-        const Piece ch = board[RANK_NB + r];
-        board[RANK_NB + r] = board[SQUARE_NB + r];
-        board[SQUARE_NB + r] = ch;
+    for (f = 0; f < FILE_NB; f++) {
+        const Piece ch = board[FILE_NB + f];
+        board[FILE_NB + f] = board[SQUARE_NB + f];
+        board[SQUARE_NB + f] = ch;
     }
 
     reset_bb();
@@ -1803,119 +1803,119 @@ void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
     uint64_t llp[3] = {0};
 
     if (move < 0) {
-        f = (-move) / RANK_NB;
-        r = (-move) % RANK_NB;
+        r = (-move) / FILE_NB;
+        f = (-move) % FILE_NB;
 
-        if (f == 1)
-            f = FILE_NB;
-        else if (f == FILE_NB)
-            f = 1;
+        if (r == 1)
+            r = RANK_NB;
+        else if (r == RANK_NB)
+            r = 1;
 
-        move = static_cast<Move>(-(f * RANK_NB + r));
+        move = static_cast<Move>(-(r * FILE_NB + f));
     } else {
         llp[0] = static_cast<uint64_t>(from_sq(move));
         llp[1] = to_sq(move);
 
         for (int i = 0; i < 2; i++) {
-            f = static_cast<int>(llp[i]) / RANK_NB;
-            r = static_cast<int>(llp[i]) % RANK_NB;
+            r = static_cast<int>(llp[i]) / FILE_NB;
+            f = static_cast<int>(llp[i]) % FILE_NB;
 
-            if (f == 1)
-                f = FILE_NB;
-            else if (f == FILE_NB)
-                f = 1;
+            if (r == 1)
+                r = RANK_NB;
+            else if (r == RANK_NB)
+                r = 1;
 
-            llp[i] = static_cast<uint64_t>(f * RANK_NB + r);
+            llp[i] = static_cast<uint64_t>(r * FILE_NB + f);
         }
 
         move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
+        r = currentSquare / static_cast<Square>(FILE_NB);
+        f = currentSquare % static_cast<Square>(FILE_NB);
 
-        if (f == 1)
-            f = FILE_NB;
-        else if (f == FILE_NB)
-            f = 1;
+        if (r == 1)
+            r = RANK_NB;
+        else if (r == RANK_NB)
+            r = 1;
 
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        currentSquare = static_cast<Square>(r * FILE_NB + f);
     }
 
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        unsigned f1, s1, f2, s2;
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2, &s2);
 
         if (args >= 4) {
-            if (r1 == 1)
-                r1 = FILE_NB;
-            else if (r1 == FILE_NB)
-                r1 = 1;
+            if (f1 == 1)
+                f1 = RANK_NB;
+            else if (f1 == RANK_NB)
+                f1 = 1;
 
-            if (r2 == 1)
-                r2 = FILE_NB;
-            else if (r2 == FILE_NB)
-                r2 = 1;
+            if (f2 == 1)
+                f2 = RANK_NB;
+            else if (f2 == RANK_NB)
+                f2 = 1;
 
-            record[1] = '0' + static_cast<char>(r1);
-            record[8] = '0' + static_cast<char>(r2);
+            record[1] = 'A' + static_cast<char>(f1 - 1);
+            record[8] = 'A' + static_cast<char>(f2 - 1);
         } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &f1, &s1);
             if (args >= 2) {
-                if (r1 == 1)
-                    r1 = FILE_NB;
-                else if (r1 == FILE_NB)
-                    r1 = 1;
-                record[2] = '0' + static_cast<char>(r1);
+                if (f1 == 1)
+                    f1 = RANK_NB;
+                else if (f1 == RANK_NB)
+                    f1 = 1;
+                record[2] = 'A' + static_cast<char>(f1 - 1);
             } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &f1, &s1);
                 if (args >= 2) {
-                    if (r1 == 1)
-                        r1 = FILE_NB;
-                    else if (r1 == FILE_NB)
-                        r1 = 1;
-                    record[1] = '0' + static_cast<char>(r1);
+                    if (f1 == 1)
+                        f1 = RANK_NB;
+                    else if (f1 == RANK_NB)
+                        f1 = 1;
+                    record[1] = 'A' + static_cast<char>(f1 - 1);
                 }
             }
         }
 
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2,
                           &s2);
 
             if (args >= 4) {
-                if (r1 == 1)
-                    r1 = FILE_NB;
-                else if (r1 == FILE_NB)
-                    r1 = 1;
+                if (f1 == 1)
+                    f1 = RANK_NB;
+                else if (f1 == RANK_NB)
+                    f1 = 1;
 
-                if (r2 == 1)
-                    r2 = FILE_NB;
-                else if (r2 == FILE_NB)
-                    r2 = 1;
+                if (f2 == 1)
+                    f2 = RANK_NB;
+                else if (f2 == RANK_NB)
+                    f2 = 1;
 
-                iter[1] = '0' + static_cast<char>(r1);
-                iter[8] = '0' + static_cast<char>(r2);
+                iter[1] = 'A' + static_cast<char>(f1 - 1);
+                iter[8] = 'A' + static_cast<char>(f2 - 1);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &f1, &s1);
                 if (args >= 2) {
-                    if (r1 == 1)
-                        r1 = FILE_NB;
-                    else if (r1 == FILE_NB)
-                        r1 = 1;
+                    if (f1 == 1)
+                        f1 = RANK_NB;
+                    else if (f1 == RANK_NB)
+                        f1 = 1;
 
-                    iter[2] = '0' + static_cast<char>(r1);
+                    iter[2] = 'A' + static_cast<char>(f1 - 1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &f1, &s1);
                     if (args >= 2) {
-                        if (r1 == 1)
-                            r1 = FILE_NB;
-                        else if (r1 == FILE_NB)
-                            r1 = 1;
+                        if (f1 == 1)
+                            f1 = RANK_NB;
+                        else if (f1 == RANK_NB)
+                            f1 = 1;
 
-                        iter[1] = '0' + static_cast<char>(r1);
+                        iter[1] = 'A' + static_cast<char>(f1 - 1);
                     }
                 }
             }
@@ -1937,38 +1937,38 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
     degrees /= 45;
 
     Piece ch1, ch2;
-    int f, r;
+    int r, f;
 
     if (degrees == 2) {
-        for (f = 1; f <= FILE_NB; f++) {
-            ch1 = board[f * RANK_NB];
-            ch2 = board[f * RANK_NB + 1];
+        for (r = 1; r <= RANK_NB; r++) {
+            ch1 = board[r * FILE_NB];
+            ch2 = board[r * FILE_NB + 1];
 
-            for (r = 0; r < RANK_NB - 2; r++) {
-                board[f * RANK_NB + r] = board[f * RANK_NB + r + 2];
+            for (f = 0; f < FILE_NB - 2; f++) {
+                board[r * FILE_NB + f] = board[r * FILE_NB + f + 2];
             }
 
-            board[f * RANK_NB + 6] = ch1;
-            board[f * RANK_NB + 7] = ch2;
+            board[r * FILE_NB + 6] = ch1;
+            board[r * FILE_NB + 7] = ch2;
         }
     } else if (degrees == 6) {
-        for (f = 1; f <= FILE_NB; f++) {
-            ch1 = board[f * RANK_NB + 7];
-            ch2 = board[f * RANK_NB + 6];
+        for (r = 1; r <= RANK_NB; r++) {
+            ch1 = board[r * FILE_NB + 7];
+            ch2 = board[r * FILE_NB + 6];
 
-            for (r = RANK_NB - 1; r >= 2; r--) {
-                board[f * RANK_NB + r] = board[f * RANK_NB + r - 2];
+            for (f = FILE_NB - 1; f >= 2; f--) {
+                board[r * FILE_NB + f] = board[r * FILE_NB + f - 2];
             }
 
-            board[f * RANK_NB + 1] = ch1;
-            board[f * RANK_NB] = ch2;
+            board[r * FILE_NB + 1] = ch1;
+            board[r * FILE_NB] = ch2;
         }
     } else if (degrees == 4) {
-        for (f = 1; f <= FILE_NB; f++) {
-            for (r = 0; r < RANK_NB / 2; r++) {
-                ch1 = board[f * RANK_NB + r];
-                board[f * RANK_NB + r] = board[f * RANK_NB + r + 4];
-                board[f * RANK_NB + r + 4] = ch1;
+        for (r = 1; r <= RANK_NB; r++) {
+            for (f = 0; f < FILE_NB / 2; f++) {
+                ch1 = board[r * FILE_NB + f];
+                board[r * FILE_NB + f] = board[r * FILE_NB + f + 4];
+                board[r * FILE_NB + f + 4] = ch1;
             }
         }
     } else {
@@ -1978,79 +1978,79 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
     reset_bb();
 
     if (move < 0) {
-        f = (-move) / RANK_NB;
-        r = (-move) % RANK_NB;
-        r = (r + RANK_NB - degrees) % RANK_NB;
-        move = static_cast<Move>(-(f * RANK_NB + r));
+        r = (-move) / FILE_NB;
+        f = (-move) % FILE_NB;
+        f = (f + FILE_NB - degrees) % FILE_NB;
+        move = static_cast<Move>(-(r * FILE_NB + f));
     } else {
         uint64_t llp[3] = {0};
 
         llp[0] = static_cast<uint64_t>(from_sq(move));
         llp[1] = to_sq(move);
-        f = static_cast<int>(llp[0]) / RANK_NB;
-        r = static_cast<int>(llp[0]) % RANK_NB;
-        r = (r + RANK_NB - degrees) % RANK_NB;
-        llp[0] = static_cast<uint64_t>(f * RANK_NB + r);
-        f = static_cast<int>(llp[1]) / RANK_NB;
-        r = static_cast<int>(llp[1]) % RANK_NB;
-        r = (r + RANK_NB - degrees) % RANK_NB;
-        llp[1] = static_cast<uint64_t>(f * RANK_NB + r);
+        r = static_cast<int>(llp[0]) / FILE_NB;
+        f = static_cast<int>(llp[0]) % FILE_NB;
+        f = (f + FILE_NB - degrees) % FILE_NB;
+        llp[0] = static_cast<uint64_t>(r * FILE_NB + f);
+        r = static_cast<int>(llp[1]) / FILE_NB;
+        f = static_cast<int>(llp[1]) % FILE_NB;
+        f = (f + FILE_NB - degrees) % FILE_NB;
+        llp[1] = static_cast<uint64_t>(r * FILE_NB + f);
         move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
     if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
-        r = (r + RANK_NB - degrees) % RANK_NB;
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        r = currentSquare / static_cast<Square>(FILE_NB);
+        f = currentSquare % static_cast<Square>(FILE_NB);
+        f = (f + FILE_NB - degrees) % FILE_NB;
+        currentSquare = static_cast<Square>(r * FILE_NB + f);
     }
 
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        unsigned f1, s1, f2, s2;
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2, &s2);
 
         if (args >= 4) {
-            s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-            s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
-            record[3] = '1' + static_cast<char>(s1);
-            record[10] = '1' + static_cast<char>(s2);
+            s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+            s2 = (s2 - 1 + FILE_NB - degrees) % FILE_NB;
+            record[3] = 'A' + static_cast<char>(s1);
+            record[10] = 'A' + static_cast<char>(s2);
         } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
+            args = sscanf(record, "-(%1u,%1u)", &f1, &s1);
 
             if (args >= 2) {
-                s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                record[4] = '1' + static_cast<char>(s1);
+                s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+                record[4] = 'A' + static_cast<char>(s1);
             } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
+                args = sscanf(record, "(%1u,%1u)", &f1, &s1);
 
                 if (args >= 2) {
-                    s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                    record[3] = '1' + static_cast<char>(s1);
+                    s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+                    record[3] = 'A' + static_cast<char>(s1);
                 }
             }
         }
 
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
+            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &f1, &s1, &f2,
                           &s2);
 
             if (args >= 4) {
-                s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
-                iter[3] = '1' + static_cast<char>(s1);
-                iter[10] = '1' + static_cast<char>(s2);
+                s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+                s2 = (s2 - 1 + FILE_NB - degrees) % FILE_NB;
+                iter[3] = 'A' + static_cast<char>(s1);
+                iter[10] = 'A' + static_cast<char>(s2);
             } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
+                args = sscanf(iter.c_str(), "-(%1u,%1u)", &f1, &s1);
 
                 if (args >= 2) {
-                    s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                    iter[4] = '1' + static_cast<char>(s1);
+                    s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+                    iter[4] = 'A' + static_cast<char>(s1);
                 } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
+                    args = sscanf(iter.c_str(), "(%1u,%1u)", &f1, &s1);
                     if (args >= 2) {
-                        s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                        iter[3] = '1' + static_cast<char>(s1);
+                        s1 = (s1 - 1 + FILE_NB - degrees) % FILE_NB;
+                        iter[3] = 'A' + static_cast<char>(s1);
                     }
                 }
             }
