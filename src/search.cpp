@@ -67,6 +67,8 @@ extern Value nnueTrainingDataBestValue;
 
 int Thread::search()
 {
+    TT.resize(static_cast<size_t>(128));
+
     Sanmill::Stack<Position> ss;
 
 #if defined(GABOR_MALOM_PERFECT_AI)
