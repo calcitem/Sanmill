@@ -325,9 +325,6 @@ Option::Option(const char *v, const char *cur, OnChange f)
 
 Option::operator double() const
 {
-    if (!(type == "check" || type == "spin")) {
-        int iii = 0;
-    }
     assert(type == "check" || type == "spin");
     return (type == "spin" ? stod(currentValue) : currentValue == "true");
 }

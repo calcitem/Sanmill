@@ -166,14 +166,14 @@ enum class GameOverReason {
     drawStalemateCondition,
 };
 
-enum Bound : uint8_t {
+enum Bound {
     BOUND_NONE,
     BOUND_UPPER,
     BOUND_LOWER,
     BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
 };
 
-enum Value : int8_t {
+enum Value : int16_t {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
 

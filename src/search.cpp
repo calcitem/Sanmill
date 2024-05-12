@@ -566,8 +566,9 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     bool pv = true; // TODO
+    Value ev = bestValue; // TODO
     Bound bound = TT.boundType(bestValue, oldAlpha, beta);
-    tte->save(posKey, bestValue, pv, bound, depth, bestMove);
+    tte->save(posKey, bestValue, pv, bound, depth, bestMove, ev);
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);

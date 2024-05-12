@@ -22,31 +22,33 @@
 
 /// TTEntry struct is the 12 bytes transposition table entry, defined as below:
 ///
-/// key        32 bit
-/// move       32 bit
+/// key        16 bit
 /// depth       8 bit
 /// generation  5 bit
 /// pv node     1 bit
 /// bound type  2 bit
-/// value       8 bit
-
+/// move       32 bit (official SF: 16 bit)
+/// value      16 bit
+/// eval value 16 bit
 struct TTEntry {
 
   Move  move()  const { return (Move )move32; }
-  Value value() const { return (Value)value8; }
+  Value value() const { return (Value)value16; }
+  Value eval()  const { return (Value)eval16; }
   Depth depth() const { return (Depth)depth8 + DEPTH_OFFSET; }
   bool is_pv()  const { return (bool)(genBound8 & 0x4); }
   Bound bound() const { return (Bound)(genBound8 & 0x3); }
-  void save(Key k, Value v, bool pv, Bound b, Depth d, Move m);
+  void save(Key k, Value v, bool pv, Bound b, Depth d, Move m, Value ev);
 
 private:
   friend class TranspositionTable;
 
-  Key key32;
-  Depth depth8;
-  uint8_t genBound8;
-  Move move32;
-  Value value8;
+  uint16_t key16;
+  uint8_t  depth8;
+  uint8_t  genBound8;
+  uint32_t move32;
+  int16_t  value16;
+  int16_t  eval16;
 };
 
 
@@ -58,11 +60,11 @@ private:
 
 class TranspositionTable {
 
-  static constexpr int ClusterSize = 4;
+  static constexpr int ClusterSize = 5;
 
   struct Cluster {
     TTEntry entry[ClusterSize];
-    //char padding[0]; // Pad to 64 bytes
+    char padding[4]; // Pad to 64 bytes
   };
 
   static_assert(sizeof(Cluster) == 64, "Unexpected Cluster size");
