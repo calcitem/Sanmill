@@ -19,38 +19,31 @@
 
 #include <cassert>
 #include <chrono>
-#include <cstdint>
 #include <ostream>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 #include "types.h"
 
 std::string engine_info(bool to_uci = false);
 std::string compiler_info();
 void prefetch(void *addr);
-void prefetch_range(void *addr, size_t len);
 void start_logger(const std::string &fname);
 void *std_aligned_alloc(size_t alignment, size_t size);
 void std_aligned_free(void *ptr);
-#ifdef ALIGNED_LARGE_PAGES
-// memory aligned by page size, min alignment: 4096 bytes
-void *aligned_large_pages_alloc(size_t allocSize);
-
-// nop if mem == nullptr
-void aligned_large_pages_free(void *mem);
-#endif // ALIGNED_LARGE_PAGES
+void *aligned_large_pages_alloc(size_t size); // memory aligned by page size,
+                                              // min alignment: 4096 bytes
+void aligned_large_pages_free(void *mem);     // nop if mem == nullptr
 
 void dbg_hit_on(bool b) noexcept;
 void dbg_hit_on(bool c, bool b) noexcept;
 void dbg_mean_of(int v) noexcept;
 void dbg_print();
 
-using TimePoint = std::chrono::milliseconds::rep; // A value in milliseconds
-
+typedef std::chrono::milliseconds::rep TimePoint; // A value in milliseconds
 static_assert(sizeof(TimePoint) == sizeof(int64_t), "TimePoint should be 64 "
                                                     "bits");
-
 inline TimePoint now()
 {
     return std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -61,22 +54,21 @@ inline TimePoint now()
 template <class Entry, int Size>
 struct HashTable
 {
-    Entry *operator[](Key key) { return &table[key & (Size - 1)]; }
+    Entry *operator[](Key key) { return &table[(uint32_t)key & (Size - 1)]; }
 
 private:
     std::vector<Entry> table = std::vector<Entry>(Size); // Allocate on the heap
 };
 
 enum SyncCout { IO_LOCK, IO_UNLOCK };
-
 std::ostream &operator<<(std::ostream &, SyncCout);
 
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
 
-// `ptr` must point to an array of size at least
-// `sizeof(T) * N + alignment` bytes, where `N` is the
-// number of elements in the array.
+// align_ptr_up() : get the first aligned element of an array.
+// ptr must point to an array of size at least `sizeof(T) * N + alignment`
+// bytes, where N is the number of elements in the array.
 template <uintptr_t Alignment, typename T>
 T *align_ptr_up(T *ptr)
 {
@@ -87,6 +79,62 @@ T *align_ptr_up(T *ptr)
     return reinterpret_cast<T *>(reinterpret_cast<char *>(
         (ptrint + (Alignment - 1)) / Alignment * Alignment));
 }
+
+// IsLittleEndian : true if and only if the binary is compiled on a little
+// endian machine
+static inline const union {
+    uint32_t i;
+    char c[4];
+} Le = {0x01020304};
+static inline const bool IsLittleEndian = (Le.c[0] == 4);
+
+template <typename T>
+class ValueListInserter
+{
+public:
+    ValueListInserter(T *v, std::size_t &s)
+        : values(v)
+        , size(&s)
+    { }
+
+    void push_back(const T &value) { values[(*size)++] = value; }
+
+private:
+    T *values;
+    std::size_t *size;
+};
+
+template <typename T, std::size_t MaxSize>
+class ValueList
+{
+public:
+    std::size_t size() const { return size_; }
+    void resize(std::size_t newSize) { size_ = newSize; }
+    void push_back(const T &value) { values_[size_++] = value; }
+    T &operator[](std::size_t index) { return values_[index]; }
+    T *begin() { return values_; }
+    T *end() { return values_ + size_; }
+    const T &operator[](std::size_t index) const { return values_[index]; }
+    const T *begin() const { return values_; }
+    const T *end() const { return values_ + size_; }
+    operator ValueListInserter<T>()
+    {
+        return ValueListInserter(values_, size_);
+    }
+
+    void swap(ValueList &other)
+    {
+        const std::size_t maxSize = std::max(size_, other.size_);
+        for (std::size_t i = 0; i < maxSize; ++i) {
+            std::swap(values_[i], other.values_[i]);
+        }
+        std::swap(size_, other.size_);
+    }
+
+private:
+    T values_[MaxSize];
+    std::size_t size_ = 0;
+};
 
 /// xorshift64star Pseudo-Random Number Generator
 /// This class is based on original code written and dedicated
@@ -109,14 +157,12 @@ class PRNG
 
     uint64_t rand64()
     {
-        s ^= s >> 12;
-        s ^= s << 25;
-        s ^= s >> 27;
+        s ^= s >> 12, s ^= s << 25, s ^= s >> 27;
         return s * 2685821657736338717LL;
     }
 
 public:
-    explicit PRNG(uint64_t seed)
+    PRNG(uint64_t seed)
         : s(seed)
     {
         assert(seed);
@@ -137,17 +183,17 @@ public:
     }
 };
 
-constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
+inline uint64_t mul_hi64(uint64_t a, uint64_t b)
 {
 #if defined(__GNUC__) && defined(IS_64BIT)
     __extension__ typedef unsigned __int128 uint128;
     return ((uint128)a * (uint128)b) >> 64;
 #else
-    const uint64_t aL = static_cast<uint32_t>(a), aH = a >> 32;
-    const uint64_t bL = static_cast<uint32_t>(b), bH = b >> 32;
-    const uint64_t c1 = (aL * bL) >> 32;
-    const uint64_t c2 = aH * bL + c1;
-    const uint64_t c3 = aL * bH + static_cast<uint32_t>(c2);
+    uint64_t aL = (uint32_t)a, aH = a >> 32;
+    uint64_t bL = (uint32_t)b, bH = b >> 32;
+    uint64_t c1 = (aL * bL) >> 32;
+    uint64_t c2 = aH * bL + c1;
+    uint64_t c3 = aL * bH + (uint32_t)c2;
     return aH * bH + (c2 >> 32) + (c3 >> 32);
 #endif
 }
@@ -156,10 +202,17 @@ constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
 /// logical processor group. This usually means to be limited to use max 64
 /// cores. To overcome this, some special platform specific API should be
 /// called to set group affinity for each thread. Original code from Texel by
-/// Peter A-terlund.
+/// Peter Österlund.
 
 namespace WinProcGroup {
 void bindThisThread(size_t idx);
 }
+
+namespace CommandLine {
+void init(int argc, char *argv[]);
+
+extern std::string binaryDirectory;  // path of the executable directory
+extern std::string workingDirectory; // path of the working directory
+} // namespace CommandLine
 
 #endif // #ifndef MISC_H_INCLUDED
