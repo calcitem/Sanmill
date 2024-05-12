@@ -41,7 +41,7 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    explicit MovePicker(Position &p) noexcept;
+    explicit MovePicker(Position &p, Move ttm) noexcept;
 
     Move next_move();
 
