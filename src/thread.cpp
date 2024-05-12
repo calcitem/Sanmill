@@ -18,6 +18,7 @@
 #include <sstream>
 #include <string>
 #include <utility>
+#include <iostream>
 
 #include "mills.h"
 #include "option.h"
@@ -181,7 +182,7 @@ void Thread::setAi(Position *p)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
+    TT.clear();
 #endif
 #endif
 }

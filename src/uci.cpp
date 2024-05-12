@@ -16,9 +16,11 @@
 
 #include <sstream>
 #include <vector>
+#include <iostream>
 
 #include "thread.h"
 #include "uci.h"
+#include "misc.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"
