@@ -92,7 +92,7 @@ constexpr auto DEPTH_ADJUST = 0;
 // #define TRANSPOSITION_TABLE_DEBUG
 #endif
 
-// #define DISABLE_PREFETCH
+#define DISABLE_PREFETCH
 
 // #define BITBOARD_DEBUG
 #ifndef USE_POPCNT

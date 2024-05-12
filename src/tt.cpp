@@ -113,6 +113,7 @@ void TranspositionTable::clear() {
 /// minus 8 times its relative age. TTEntry t1 is considered more valuable than
 /// TTEntry t2 if its replace value is greater than that of t2.
 
+#if 0
 TTEntry* TranspositionTable::probe(const Key key, bool& found) const {
 
   TTEntry* const tte = first_entry(key);
@@ -140,7 +141,67 @@ TTEntry* TranspositionTable::probe(const Key key, bool& found) const {
 
   return found = false, replace;
 }
+#else
+TTEntry* TranspositionTable::probe(Key key, bool& found, Depth depth, Value alpha, Value beta, Bound &type, Value &retValue)
+{
+    TTEntry* tte = first_entry(key);
+    uint16_t key16 = (uint16_t)key;  // Use the low 16 bits as key inside the cluster
 
+    // 查找匹配的条目或者一个可被替换的条目
+    TTEntry* replace = tte;
+    int replaceIndex = -1;
+    for (int i = 0; i < ClusterSize; ++i) {
+        if (tte[i].key16 == key16 || !tte[i].depth()) {
+            if (tte[i].depth()) {
+                // 找到匹配的有效条目
+                type = tte[i].bound();
+                switch (tte[i].bound()) {
+                case BOUND_EXACT:
+                    found = true;
+                    retValue = tte[i].value();
+                    return replace;
+                case BOUND_UPPER:
+                    if (tte[i].value() <= alpha) {
+                        retValue = alpha;
+                        return replace;
+                    }
+                    break;
+                case BOUND_LOWER:
+                    if (tte[i].value() >= beta) {
+                        retValue = beta;
+                        return replace;
+                    }
+                    break;
+                case BOUND_NONE:
+                    break;
+                }
+            }
+            replace = &tte[i];
+            replaceIndex = i;
+            break;
+        }
+
+        // 使用更复杂的替换策略
+        if (i > 0 && replace->depth() - depth_score(replace) > tte[i].depth() - depth_score(&tte[i])) {
+            replace = &tte[i];
+            replaceIndex = i;
+        }
+    }
+
+    if (replaceIndex != -1) {
+        // 如果需要，初始化一个新的条目
+        // 这里可以添加初始化逻辑
+    }
+
+    retValue = VALUE_UNKNOWN;
+    return replace;
+}
+
+// 计算条目的替换得分
+int TranspositionTable::depth_score(const TTEntry* entry) const {
+    return entry->depth() - ((GENERATION_CYCLE + generation8 - entry->genBound8) & GENERATION_MASK);
+}
+#endif
 
 /// TranspositionTable::hashfull() returns an approximation of the hashtable
 /// occupation during a search. The hash is x permill full, as per UCI protocol.

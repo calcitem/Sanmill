@@ -78,7 +78,8 @@ class TranspositionTable {
 public:
  ~TranspositionTable() { aligned_large_pages_free(table); }
   void new_search() { generation8 += GENERATION_DELTA; } // Lower bits are used for other things
-  TTEntry* probe(const Key key, bool& found) const;
+  //TTEntry* probe(const Key key, bool& found) const;
+  TTEntry* probe(Key key, bool& found, Depth depth, Value alpha, Value beta, Bound &type, Value &retValue);
   int hashfull() const;
   void resize(size_t mbSize);
   void clear();
@@ -88,6 +89,7 @@ public:
   }
 
   Bound boundType(Value value, Value alpha, Value beta);
+  int depth_score(const TTEntry* entry) const;
 
 private:
   friend struct TTEntry;

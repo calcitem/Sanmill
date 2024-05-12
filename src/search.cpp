@@ -68,6 +68,7 @@ extern Value nnueTrainingDataBestValue;
 int Thread::search()
 {
     TT.resize(static_cast<size_t>(128));
+    TT.clear();
 
     Sanmill::Stack<Position> ss;
 
@@ -329,7 +330,7 @@ vector<Key> posKeyHistory;
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
-    TTEntry* tte;
+    TTEntry* tte = nullptr;
     Value value;
     Value bestValue = -VALUE_INFINITE;
 
@@ -395,13 +396,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
                                   // and no available moves
 
-    Value probeVal = VALUE_NONE;
     bool found = false;
-    tte = TT.probe(posKey, found);
-    probeVal = tte->value();
-    ttMove = tte->move();
+    Bound type = BOUND_NONE;
+    Value probeVal;
+    tte = TT.probe(posKey, found, depth, alpha, beta, type, probeVal);
 
-    if (found) {
+    if (probeVal != VALUE_UNKNOWN) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
         Threads.main()->ttHitCount++;
 #endif
@@ -410,7 +410,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return bestValue;
     }
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    if (!found) {
+    if (probeVal == VALUE_UNKNOWN) {
         Threads.main()->ttMissCount++;
     }
 #endif
@@ -570,7 +570,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     bool pv = true; // TODO
     Value ev = bestValue; // TODO
     Bound bound = TT.boundType(bestValue, oldAlpha, beta);
-    tte->save(posKey, bestValue, pv, bound, depth, bestMove, ev);
+    tte->save(posKey, bestValue, pv, bound, depth, MOVE_NONE /* TODO */, ev);
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
