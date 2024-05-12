@@ -34,10 +34,12 @@ void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
 /// Constructors of the MovePicker class.
 
 /// MovePicker constructor for the main search
-MovePicker::MovePicker(Position &p, Move ttm) noexcept
+MovePicker::MovePicker(Position &p, Move ttm, Move killer1, Move killer2) noexcept
     : pos(p)
     , ttMove(ttm)
-{ }
+{
+    killers[0] = killers[1] = MOVE_NONE;
+}
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
 /// for sorting.
@@ -59,6 +61,12 @@ void MovePicker::score()
             continue;
         }
 #endif // TT_MOVE_ENABLE
+
+        if (m == killers[0]) {
+            cur->value += RATING_KILLER_1ST;
+        } else if (m == killers[1]) {
+            cur->value += RATING_KILLER_2ND;
+        }
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);

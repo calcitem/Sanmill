@@ -353,6 +353,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif // THREEFOLD_REPETITION
 
     Move ttMove = MOVE_NONE;
+    Move killers[2];
 
     // Transposition table lookup
 
@@ -445,7 +446,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Initialize a MovePicker object for the current position, and prepare
     // to search the moves.
-    MovePicker mp(*pos, ttMove);
+    MovePicker mp(*pos, ttMove, killers[0], killers[1]);
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
@@ -558,6 +559,10 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high
+                    if (killers[0] != move)    {
+                        killers[1] = killers[0];
+                        killers[0] = move;
+                    }
                     break;                 // Fail high
                 }
             }
