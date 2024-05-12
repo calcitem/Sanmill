@@ -29,7 +29,7 @@ using CTSL::HashMap;
 /// value               8 bit
 /// depth               8 bit
 /// bound type          8 bit
-/// age                 8 bit
+/// padding             8 bit
 
 struct TTEntry
 {
@@ -54,12 +54,11 @@ private:
     int8_t value8 {0};
     int8_t depth8 {0};
     uint8_t genBound8 {0};
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age8 {0};
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
     Move ttMove {MOVE_NONE};
 #endif // TT_MOVE_ENABLE
+
+    uint8_t padding;
 };
 
 class TranspositionTable
@@ -93,10 +92,6 @@ private:
 };
 
 extern HashMap<Key, TTEntry> TT;
-
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-extern uint8_t transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
 #endif // TRANSPOSITION_TABLE_ENABLE
 

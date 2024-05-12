@@ -22,10 +22,6 @@
 static constexpr int TRANSPOSITION_TABLE_SIZE = 0x1000000;
 HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-uint8_t transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-
 Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
                                 Bound &type
 #ifdef TT_MOVE_ENABLE
@@ -39,18 +35,6 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
     if (!TT.find(key, tte)) {
         return VALUE_UNKNOWN;
     }
-
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    if (tte.type != BOUND_EXACT) {
-#endif
-        if (tte.age8 != transpositionTableAge) {
-            return VALUE_UNKNOWN;
-        }
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    }
-#endif
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     if (depth > tte.depth()) {
         goto out;
@@ -104,15 +88,9 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
     TTEntry tte {};
 
     if (search(key, tte)) {
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-        if (tte.age8 == transpositionTableAge) {
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (tte.genBound8 != BOUND_NONE && tte.depth() > depth) {
-                return -1;
-            }
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+        if (tte.genBound8 != BOUND_NONE && tte.depth() > depth) {
+            return -1;
         }
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
     tte.value8 = value;
@@ -122,10 +100,6 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 #ifdef TT_MOVE_ENABLE
     tte.ttMove = ttMove;
 #endif // TT_MOVE_ENABLE
-
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    tte.age8 = transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     TT.insert(key, tte);
 
