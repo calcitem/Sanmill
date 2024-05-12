@@ -33,17 +33,28 @@ using CTSL::HashMap;
 
 struct TTEntry
 {
-    TTEntry() { }
+    TTEntry()
+        : data(0)
+    { }
 
-    Value value() const noexcept { return static_cast<Value>(value8); }
-
-    Depth depth() const noexcept
+    inline Value value() const noexcept
     {
-        return static_cast<Depth>(depth8) + DEPTH_OFFSET;
+        return static_cast<Value>((data >> 0) & 0xFF);
     }
-
-    Bound bound() const noexcept { return static_cast<Bound>(genBound8); }
-
+    inline Depth depth() const noexcept
+    {
+        return static_cast<Depth>((data >> 8) & 0xFF) + DEPTH_OFFSET;
+    }
+    inline Bound bound() const noexcept
+    {
+        return static_cast<Bound>((data >> 16) & 0xFF);
+    }
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    inline uint8_t age() const noexcept
+    {
+        return static_cast<uint8_t>((data >> 24) & 0xFF);
+    }
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TT_MOVE_ENABLE
     Move tt_move() const noexcept { return (Move)(ttMove); }
 #endif // TT_MOVE_ENABLE
@@ -51,12 +62,7 @@ struct TTEntry
 private:
     friend class TranspositionTable;
 
-    int8_t value8 {0};
-    int8_t depth8 {0};
-    uint8_t genBound8 {0};
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    uint8_t age8 {0};
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+    uint32_t data;
 #ifdef TT_MOVE_ENABLE
     Move ttMove {MOVE_NONE};
 #endif // TT_MOVE_ENABLE

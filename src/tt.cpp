@@ -42,9 +42,9 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    if (tte.type != BOUND_EXACT) {
+    if (tte.bound() != BOUND_EXACT) {
 #endif
-        if (tte.age8 != transpositionTableAge) {
+        if (tte.age() != transpositionTableAge) {
             return VALUE_UNKNOWN;
         }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
@@ -62,7 +62,7 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
     case BOUND_EXACT:
         return tte.value();
     case BOUND_UPPER:
-        if (tte.value8 <= alpha) {
+        if (tte.value() <= alpha) {
             return alpha;
         }
         break;
@@ -78,7 +78,7 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
 out:
 
 #ifdef TT_MOVE_ENABLE
-    ttMove = tte.ttMove;
+    ttMove = tte.tt_move();
 #endif // TT_MOVE_ENABLE
 
     return VALUE_UNKNOWN;
@@ -105,9 +105,9 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 
     if (search(key, tte)) {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-        if (tte.age8 == transpositionTableAge) {
+        if (tte.age() == transpositionTableAge) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (tte.genBound8 != BOUND_NONE && tte.depth() > depth) {
+            if (tte.bound() != BOUND_NONE && tte.depth() > depth) {
                 return -1;
             }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -115,17 +115,14 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
-    tte.value8 = value;
-    tte.depth8 = depth;
-    tte.genBound8 = type;
+    tte.data = (value & 0xFF) | ((depth & 0xFF) << 8) | ((type & 0xFF) << 16);
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    tte.data |= (transpositionTableAge & 0xFF) << 24;
+#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
 #ifdef TT_MOVE_ENABLE
     tte.ttMove = ttMove;
 #endif // TT_MOVE_ENABLE
-
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    tte.age8 = transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
     TT.insert(key, tte);
 
