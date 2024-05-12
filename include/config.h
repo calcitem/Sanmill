@@ -74,8 +74,10 @@ constexpr auto DEFAULT_RULE_NUMBER = 0;
 
 constexpr auto DEPTH_ADJUST = 0;
 
-// #define TIME_STAT
+#ifdef DEBUG
+#define TIME_STAT
 // #define CYCLE_STAT
+#endif
 
 // #define SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
 

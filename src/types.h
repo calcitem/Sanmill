@@ -382,7 +382,13 @@ enum LineDirection : int {
     LD_NB = 3
 };
 
-enum File : int { FILE_A = 1, FILE_B = 2, FILE_C = 3, FILE_NB = 3, FILE_MAX = FILE_C};
+enum File : int {
+    FILE_A = 1,
+    FILE_B = 2,
+    FILE_C = 3,
+    FILE_NB = 3,
+    FILE_MAX = FILE_C
+};
 
 enum Rank : int {
     RANK_1 = 1,

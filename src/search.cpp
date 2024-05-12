@@ -95,12 +95,12 @@ int Thread::search()
     srand(static_cast<unsigned int>(time0));
 
 #ifdef TIME_STAT
-    auto timeStart = chrono::steady_clock::now();
-    chrono::steady_clock::time_point timeEnd;
+    auto timeStart = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point timeEnd;
 #endif
 #ifdef CYCLE_STAT
     auto cycleStart = stopwatch::rdtscp_clock::now();
-    chrono::steady_clock::time_point cycleEnd;
+    std::chrono::steady_clock::time_point cycleEnd;
 #endif
 
     if (rootPos->get_phase() == Phase::moving) {
@@ -225,10 +225,12 @@ next:
         }
 
 #ifdef TIME_STAT
-        timeEnd = chrono::steady_clock::now();
-        debugPrintf(
-            "\nIDS Time: %llds\n",
-            chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        timeEnd = std::chrono::steady_clock::now();
+        sync_cout << "\nIDS Time: "
+                  << std::chrono::duration_cast<std::chrono::seconds>(timeEnd -
+                                                                      timeStart)
+                         .count()
+                  << "s\n";
 #endif
     }
 
@@ -284,10 +286,11 @@ next:
 out:
 
 #ifdef TIME_STAT
-    timeEnd = chrono::steady_clock::now();
+    timeEnd = std::chrono::steady_clock::now();
     debugPrintf(
         "Total Time: %llus\n",
-        chrono::duration_cast<chrono::seconds>(timeEnd - timeStart).count());
+        std::chrono::duration_cast<std::chrono::seconds>(timeEnd - timeStart)
+            .count());
 #endif
 
     lastvalue = bestvalue;
