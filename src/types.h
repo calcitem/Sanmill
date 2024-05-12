@@ -382,7 +382,7 @@ enum LineDirection : int {
     LD_NB = 3
 };
 
-enum File : int { FILE_A = 1, FILE_B = 2, FILE_C = 3, FILE_NB = 3 };
+enum File : int { FILE_A = 1, FILE_B = 2, FILE_C = 3, FILE_NB = 3, FILE_MAX = FILE_C};
 
 enum Rank : int {
     RANK_1 = 1,
@@ -393,7 +393,8 @@ enum Rank : int {
     RANK_6 = 6,
     RANK_7 = 7,
     RANK_8 = 8,
-    RANK_NB = 8
+    RANK_NB = 8,
+    RANK_MAX = RANK_8
 };
 
 #define ENABLE_BASE_OPERATORS_ON(T) \
