@@ -217,7 +217,8 @@ class Database {
     try {
       // Close the box if it is open
       if (Hive.isBoxOpen(_colorSettingsBoxName)) {
-        var box = Hive.box<ColorSettings>(_colorSettingsBoxName);
+        final Box<ColorSettings> box =
+            Hive.box<ColorSettings>(_colorSettingsBoxName);
         await box.close();
         logger.i('Box closed successfully.');
       }
