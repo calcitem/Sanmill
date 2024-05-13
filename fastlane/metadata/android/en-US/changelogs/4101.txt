@@ -1,0 +1,3 @@
+v4.7.3
+
+Fixed an issue where upgrading from v4.2.0 to the latest version would cause an error on first launch if colors had previously been set: `LateInitializationError: Field '_colorSettingsBox@859236735' has not been initialized.`
