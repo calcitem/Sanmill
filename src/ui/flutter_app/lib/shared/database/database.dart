@@ -200,9 +200,10 @@ class Database {
 
   /// ColorSettings
   static Future<void> _initColorSettings() async {
+    Hive.registerAdapter<Color>(ColorAdapter());
+    Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
+
     try {
-      Hive.registerAdapter<Color>(ColorAdapter());
-      Hive.registerAdapter<ColorSettings>(ColorSettingsAdapter());
       _colorSettingsBox =
           await Hive.openBox<ColorSettings>(_colorSettingsBoxName);
     } catch (e) {
@@ -216,10 +217,20 @@ class Database {
     try {
       // Close the box if it is open
       if (Hive.isBoxOpen(_colorSettingsBoxName)) {
-        await Hive.box<ColorSettings>(_colorSettingsBoxName).close();
+        var box = Hive.box<ColorSettings>(_colorSettingsBoxName);
+        await box.close();
+        logger.i('Box closed successfully.');
       }
+      // Wait for the file system to release all handles
+      await Future<void>.delayed(const Duration(seconds: 1));
+
       // Delete the box from disk
       await Hive.deleteBoxFromDisk(_colorSettingsBoxName);
+      logger.i('Box deleted from disk.');
+
+      // Wait before recreating the box
+      await Future<void>.delayed(const Duration(seconds: 1));
+
       // Recreate the box
       _colorSettingsBox =
           await Hive.openBox<ColorSettings>(_colorSettingsBoxName);

@@ -168,14 +168,14 @@ class ColorSettings {
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
-  @HiveField(15)
+  @HiveField(15, defaultValue: UIColors.burlyWood)
   final Color analysisToolbarBackgroundColor;
 
   @JsonKey(
     fromJson: ColorAdapter.colorFromJson,
     toJson: ColorAdapter.colorToJson,
   )
-  @HiveField(16)
+  @HiveField(16, defaultValue: UIColors.cocoaBean60)
   final Color analysisToolbarIconColor;
 
   /// Decodes a Json from a [ColorSettings] object
