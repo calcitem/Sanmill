@@ -1,0 +1,3 @@
+v4.8.0
+
+Allow auto restart after game over.
