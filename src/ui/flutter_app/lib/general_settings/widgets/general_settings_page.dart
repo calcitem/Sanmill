@@ -417,6 +417,16 @@ class GeneralSettingsPage extends StatelessWidget {
             ],
           ),
         SettingsCard(
+          title: Text(S.of(context).misc),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              value: generalSettings.isAutoRestart,
+              onChanged: (bool val) => _setIsAutoRestart(generalSettings, val),
+              titleString: S.of(context).isAutoRestart,
+            ),
+          ],
+        ),
+        SettingsCard(
           title: Text(S.of(context).restore),
           children: <Widget>[
             SettingsListTile(
@@ -425,18 +435,6 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (EnvironmentConfig.devMode || EnvironmentConfig.test || kDebugMode)
-          SettingsCard(
-            title: Text(S.of(context).experiments),
-            children: <Widget>[
-              SettingsListTile.switchTile(
-                value: generalSettings.isAutoRestart,
-                onChanged: (bool val) =>
-                    _setIsAutoRestart(generalSettings, val),
-                titleString: S.of(context).isAutoRestart,
-              ),
-            ],
-          ),
       ],
     );
   }
