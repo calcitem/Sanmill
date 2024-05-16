@@ -69,7 +69,6 @@ class AboutPage extends StatelessWidget {
             subtitleString: "${Constants.projectName} $version $mode",
             onTap: () => showDialog(
               context: context,
-              barrierDismissible: true,
               builder: (_) => _VersionDialog(
                 appVersion: version,
               ),
@@ -221,7 +220,6 @@ class _VersionDialog extends StatelessWidget {
 
             showDialog(
               context: context,
-              barrierDismissible: true,
               builder: (_) => const FlutterVersionAlert(),
             );
           },

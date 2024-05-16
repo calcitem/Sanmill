@@ -65,9 +65,7 @@ class AppTheme {
     onSecondaryContainer: Colors
         .white, // Color that contrasts significantly with secondaryContainer
     surface: Colors.white, // Surface color, used for cards, backgrounds, etc.
-    onSurface: Colors.black, // Text or icon color on the surface
-    background: Colors.white, // background color
-    onBackground: Colors.black, // Text or icon color on the background
+    onSurface: Colors.black, // Text or icon color on the background
     error: Colors.red, // Error color
     onError: Colors.white, // Text or icon color in error state
     // Other required colors can continue to be defined
@@ -175,16 +173,16 @@ class AppTheme {
 
   static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
     thumbColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
+        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.selected)) {
         return _colorScheme.primary; // Use primary color when enabled
       }
       return _colorScheme.onSurface
           .withOpacity(0.5); // Use softer colors in off state
     }),
     trackColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.selected)) {
+        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.selected)) {
         return _colorScheme.primary
             .withOpacity(0.5); // Use translucent primary color in on state
       }
@@ -192,8 +190,8 @@ class AppTheme {
           .withOpacity(0.3); // Use a more transparent color in the closed state
     }),
     trackOutlineColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
         return _colorScheme.onSurface
             .withOpacity(0.5); // Use soft colors in disabled state
       }
@@ -203,32 +201,32 @@ class AppTheme {
 
   static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
     thumbColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
             .withOpacity(0.5); // Color in disabled state
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return _darkColorScheme
             .primary; // Use the primary color in the on state
       }
       return _darkColorScheme.onSurface.withOpacity(0.5); // Closed state color
     }),
     trackColor:
-        MaterialStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
             .withOpacity(0.3); // Track color in disabled state
       }
-      if (states.contains(MaterialState.selected)) {
+      if (states.contains(WidgetState.selected)) {
         return _darkColorScheme.primary.withOpacity(0.5); // On track color
       }
       return _darkColorScheme.onSurface
           .withOpacity(0.1); // Track color in off state
     }),
     trackOutlineColor:
-        MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled)) {
+        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
+      if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
             .withOpacity(0.5); // Outer line color in disabled state
       }

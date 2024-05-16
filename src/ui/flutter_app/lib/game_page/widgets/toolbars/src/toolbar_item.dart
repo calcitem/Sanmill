@@ -148,7 +148,7 @@ class ToolbarItem extends ButtonStyleButton {
   /// parameters are used to construct [ButtonStyle.mouseCursor].
   ///
   /// All of the other parameters are either used directly or used to
-  /// create a [MaterialStateProperty] with a single value for all
+  /// create a [WidgetStateProperty] with a single value for all
   /// states.
   ///
   /// All parameters default to null. By default this method returns
@@ -186,13 +186,13 @@ class ToolbarItem extends ButtonStyleButton {
     AlignmentGeometry? alignment,
     InteractiveInkFeatureFactory? splashFactory,
   }) {
-    final MaterialStateProperty<Color?>? foregroundColor =
+    final WidgetStateProperty<Color?>? foregroundColor =
         (onSurface == null && primary == null)
             ? null
             : _ToolbarItemDefaultForeground(primary, onSurface);
-    final MaterialStateProperty<Color?>? overlayColor =
+    final WidgetStateProperty<Color?>? overlayColor =
         (primary == null) ? null : _ToolbarItemDefaultOverlay(primary);
-    final MaterialStateProperty<MouseCursor>? mouseCursor =
+    final WidgetStateProperty<MouseCursor>? mouseCursor =
         (enabledMouseCursor == null && disabledMouseCursor == null)
             ? null
             : _ToolbarItemDefaultMouseCursor(
@@ -236,7 +236,7 @@ class ToolbarItem extends ButtonStyleButton {
   /// In this list "Theme.foo" is shorthand for
   /// `Theme.of(context).foo`. Color scheme values like
   /// "onSurface(0.38)" are shorthand for
-  /// `onSurface.withOpacity(0.38)`. [MaterialStateProperty] valued
+  /// `onSurface.withOpacity(0.38)`. [WidgetStateProperty] valued
   /// properties that are not followed by a subList have the same
   /// value for all states, otherwise the values are as specified for
   /// each state and "others" means all other states.
@@ -341,15 +341,15 @@ class ToolbarItem extends ButtonStyleButton {
 }
 
 @immutable
-class _ToolbarItemDefaultForeground extends MaterialStateProperty<Color?> {
+class _ToolbarItemDefaultForeground extends WidgetStateProperty<Color?> {
   _ToolbarItemDefaultForeground(this.primary, this.onSurface);
 
   final Color? primary;
   final Color? onSurface;
 
   @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+  Color? resolve(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
       return onSurface?.withOpacity(0.38);
     }
     return primary;
@@ -362,18 +362,18 @@ class _ToolbarItemDefaultForeground extends MaterialStateProperty<Color?> {
 }
 
 @immutable
-class _ToolbarItemDefaultOverlay extends MaterialStateProperty<Color?> {
+class _ToolbarItemDefaultOverlay extends WidgetStateProperty<Color?> {
   _ToolbarItemDefaultOverlay(this.primary);
 
   final Color primary;
 
   @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered)) {
+  Color? resolve(Set<WidgetState> states) {
+    if (states.contains(WidgetState.hovered)) {
       return primary.withOpacity(0.04);
     }
-    if (states.contains(MaterialState.focused) ||
-        states.contains(MaterialState.pressed)) {
+    if (states.contains(WidgetState.focused) ||
+        states.contains(WidgetState.pressed)) {
       return primary.withOpacity(0.12);
     }
     return null;
@@ -386,7 +386,7 @@ class _ToolbarItemDefaultOverlay extends MaterialStateProperty<Color?> {
 }
 
 @immutable
-class _ToolbarItemDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
+class _ToolbarItemDefaultMouseCursor extends WidgetStateProperty<MouseCursor>
     with Diagnosticable {
   _ToolbarItemDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
@@ -394,8 +394,8 @@ class _ToolbarItemDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
   final MouseCursor disabledCursor;
 
   @override
-  MouseCursor resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.disabled)) {
+  MouseCursor resolve(Set<WidgetState> states) {
+    if (states.contains(WidgetState.disabled)) {
       return disabledCursor;
     }
     return enabledCursor;
@@ -433,7 +433,7 @@ class _ToolbarItemWithIcon extends ToolbarItem {
       scaleFactor,
     );
     return super.defaultStyleOf(context).copyWith(
-          padding: MaterialStateProperty.all<EdgeInsetsGeometry>(scaledPadding),
+          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(scaledPadding),
         );
   }
 }

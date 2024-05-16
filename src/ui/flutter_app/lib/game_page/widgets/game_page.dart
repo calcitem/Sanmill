@@ -216,7 +216,6 @@ class _GameState extends State<_Game> {
     logger.i("Info dialog opened");
     showDialog(
       context: context,
-      barrierDismissible: true,
       builder: (_) => const _InfoDialog(),
     );
   }

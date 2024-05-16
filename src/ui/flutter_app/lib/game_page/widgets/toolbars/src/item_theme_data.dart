@@ -22,7 +22,7 @@ part of '../game_toolbar.dart';
 /// The [style]'s properties override [ToolbarItem]'s default style,
 /// i.e.  the [ButtonStyle] returned by [ToolbarItem.defaultStyleOf]. Only
 /// the style's non-null property values or resolved non-null
-/// [MaterialStateProperty] values are used.
+/// [WidgetStateProperty] values are used.
 ///
 /// See also:
 ///
@@ -31,8 +31,8 @@ part of '../game_toolbar.dart';
 ///    for toolbar buttons.
 ///  * [ToolbarItem.styleFrom], which converts simple values into a
 ///    [ButtonStyle] that's consistent with [ToolbarItem]'s defaults.
-///  * [MaterialStateProperty.resolve], "resolve" a material state property
-///    to a simple value based on a set of [MaterialState]s.
+///  * [WidgetStateProperty.resolve], "resolve" a material state property
+///    to a simple value based on a set of [WidgetState]s.
 @immutable
 class ToolbarItemThemeData with Diagnosticable {
   /// Creates a [ToolbarItemThemeData].
@@ -42,7 +42,7 @@ class ToolbarItemThemeData with Diagnosticable {
 
   /// Overrides for [ToolbarItem]'s default style.
   ///
-  /// Non-null properties or non-null resolved [MaterialStateProperty]
+  /// Non-null properties or non-null resolved [WidgetStateProperty]
   /// values override the [ButtonStyle] returned by
   /// [ToolbarItem.defaultStyleOf].
   ///
