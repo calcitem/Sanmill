@@ -36,7 +36,6 @@ import '../../main.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
-import '../../shared/dialogs/number_picker_dialog.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/screenshot_service.dart';

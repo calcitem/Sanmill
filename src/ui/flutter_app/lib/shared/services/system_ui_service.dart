@@ -60,6 +60,48 @@ Future<void> setWindowTitle(String title) async {
       .invokeMethod('setWindowTitle', <String, String>{'title': title});
 }
 
+TextStyle getMonospaceTitleTextStyle(BuildContext context) {
+  String fontFamily = 'monospace';
+
+  if (kIsWeb) {
+    fontFamily = 'monospace';
+  } else {
+    switch (defaultTargetPlatform) {
+      case TargetPlatform.android:
+      case TargetPlatform.linux:
+      case TargetPlatform.fuchsia:
+        fontFamily = 'monospace';
+        break;
+      case TargetPlatform.iOS:
+      case TargetPlatform.macOS:
+        fontFamily = 'Menlo';
+        break;
+      case TargetPlatform.windows:
+        fontFamily = 'Consolas';
+        break;
+    }
+  }
+
+  return Theme.of(context).textTheme.titleLarge!.copyWith(
+        color: AppTheme.gamePageActionSheetTextColor,
+        fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+        fontFamily: fontFamily,
+      );
+}
+
+double calculateNCharWidth(BuildContext context, int width) {
+  final TextPainter textPainter = TextPainter(
+    text: TextSpan(
+      text: 'A' * width,
+      style: getMonospaceTitleTextStyle(context),
+    ),
+    maxLines: 1,
+    textDirection: TextDirection.ltr,
+  )..layout();
+
+  return textPainter.size.width;
+}
+
 // This function should only be used when necessary,
 // as it has been found that unexpected results may occur
 // when calling InfoDialog.

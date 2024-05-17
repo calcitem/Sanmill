@@ -22,20 +22,8 @@ class _MoveListDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GameController controller = GameController();
-
-    final String moveHistoryText = controller.gameRecorder.moveHistoryText;
-    final int end = controller.gameRecorder.length - 1;
-
-    final TextStyle titleTextStyle =
-        Theme.of(context).textTheme.titleLarge!.copyWith(
-              color: AppTheme.gamePageActionSheetTextColor,
-              fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
-            );
-    final TextStyle buttonTextStyle =
-        Theme.of(context).textTheme.titleMedium!.copyWith(
-              color: AppTheme.gamePageActionSheetTextColor,
-              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-            );
+    final List<String> mergedMoves = _getMergedMoves(controller);
+    final int movesCount = (mergedMoves.length + 1) ~/ 2;
 
     if (DB().generalSettings.screenReaderSupport) {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
@@ -46,42 +34,29 @@ class _MoveListDialog extends StatelessWidget {
         backgroundColor: UIColors.semiTransparentBlack,
         title: Text(
           S.of(context).moveList,
-          style: titleTextStyle.copyWith(
-              fontSize: AppTheme.textScaler
-                  .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize)),
+          style: _getTitleTextStyle(context),
         ),
-        content: SingleChildScrollView(
-          child: Text(
-            moveHistoryText,
-            textDirection: TextDirection.ltr,
-            style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                fontSize: AppTheme.textScaler
-                    .scale(titleTextStyle.fontSize ?? AppTheme.largeFontSize),
-                color: AppTheme.gamePageActionSheetTextColor,
-                fontWeight: FontWeight.normal,
-                // ignore: always_specify_types
-                fontFeatures: [const FontFeature.tabularFigures()]),
+        content: SizedBox(
+          width: calculateNCharWidth(context, 32),
+          height: calculateNCharWidth(context, mergedMoves.length * 2 + 1),
+          child: ListView(
+            shrinkWrap: false,
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: List<Widget>.generate(
+              movesCount,
+              (int index) => _buildMoveListItem(context, mergedMoves, index),
+            ),
           ),
         ),
         actions: <Widget>[
           Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              if (end > 0)
-                Expanded(
-                  child: TextButton(
-                    child: Text(
-                      S.of(context).rollback,
-                      style: buttonTextStyle,
-                    ),
-                    onPressed: () async => _rollback(context, end),
-                  ),
-                ),
               Expanded(
                 child: TextButton(
                   child: Text(
                     S.of(context).copy,
-                    style: buttonTextStyle,
+                    style: _getButtonTextStyle(context),
                   ),
                   onPressed: () => GameController.export(context),
                 ),
@@ -90,7 +65,7 @@ class _MoveListDialog extends StatelessWidget {
                 child: TextButton(
                   child: Text(
                     S.of(context).cancel,
-                    style: buttonTextStyle,
+                    style: _getButtonTextStyle(context),
                   ),
                   onPressed: () => Navigator.pop(context),
                 ),
@@ -102,20 +77,135 @@ class _MoveListDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _rollback(BuildContext context, int end) async {
-    final int? selectValue = await showDialog<int?>(
-      context: context,
-      builder: (BuildContext context) => NumberPickerDialog(
-          endNumber: end,
-          dialogTitle: S.of(context).pleaseSelect,
-          displayMoveText: true),
-    );
+  List<String> _getMergedMoves(GameController controller) {
+    final List<String> moves = controller.gameRecorder.moveHistoryText
+        .split(RegExp(r'\s+'))
+        .where((String s) => s.isNotEmpty && !s.contains('.'))
+        .toList();
 
-    if (selectValue == null) {
-      return;
+    final List<String> mergedMoves = <String>[];
+    for (final String move in moves) {
+      if (move.startsWith('x') && mergedMoves.isNotEmpty) {
+        mergedMoves[mergedMoves.length - 1] += move;
+      } else {
+        mergedMoves.add(move);
+      }
     }
 
-    // ignore: use_build_context_synchronously
-    await HistoryNavigator.takeBackN(context, selectValue);
+    return mergedMoves;
+  }
+
+  Widget _buildMoveListItem(
+      BuildContext context, List<String> mergedMoves, int index) {
+    final int moveIndex = index * 2;
+    final List<InlineSpan> spans = <InlineSpan>[];
+
+    spans.add(
+      WidgetSpan(
+        child: Text(
+          '${(index + 1).toString().padLeft(3)}.  ',
+          style: _getTitleTextStyle(context),
+        ),
+      ),
+    );
+
+    for (int i = 0; i < 2; i++) {
+      if (moveIndex + i >= mergedMoves.length) {
+        break;
+      }
+
+      final String moveText = mergedMoves[moveIndex + i];
+      spans.add(
+        WidgetSpan(
+          child: InkWell(
+            onTap: () => _importGame(context, mergedMoves, moveIndex + i),
+            child: Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: Text(
+                moveText,
+                style: _getTitleTextStyle(context),
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.zero,
+      child: ListTile(
+        dense: true,
+        title: Text.rich(
+          TextSpan(
+            children: spans,
+            style: const TextStyle(height: 1.2),
+          ),
+        ),
+        contentPadding: EdgeInsets.zero,
+      ),
+    );
+  }
+
+  Future<void> _importGame(
+      BuildContext context, List<String> mergedMoves, int clickedIndex) async {
+    final String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
+    final SnackBar snackBar = SnackBar(
+      content: Text(ml),
+      duration: const Duration(seconds: 2),
+    );
+    if (!ScaffoldMessenger.of(context).mounted) {
+      return;
+    }
+    if (EnvironmentConfig.devMode) {
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+    try {
+      ImportService.import(ml);
+    } catch (exception) {
+      if (!context.mounted) {
+        return;
+      }
+      final String tip = S.of(context).cannotImport(ml);
+      GameController().headerTipNotifier.showTip(tip);
+      Navigator.pop(context);
+      return;
+    }
+    if (!context.mounted) {
+      return;
+    }
+    await HistoryNavigator.takeBackAll(context, pop: false);
+    if (!context.mounted) {
+      return;
+    }
+    if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
+        const HistoryOK()) {
+      if (!context.mounted) {
+        return;
+      }
+      GameController().headerTipNotifier.showTip(S.of(context).gameImported);
+    } else {
+      if (!context.mounted) {
+        return;
+      }
+      final String tip =
+          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
+      GameController().headerTipNotifier.showTip(tip);
+      HistoryNavigator.importFailedStr = "";
+    }
+  }
+
+  TextStyle _getTitleTextStyle(BuildContext context) {
+    return Theme.of(context).textTheme.titleLarge!.copyWith(
+          color: AppTheme.gamePageActionSheetTextColor,
+          fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+          fontFamily: getMonospaceTitleTextStyle(context).fontFamily,
+        );
+  }
+
+  TextStyle _getButtonTextStyle(BuildContext context) {
+    return Theme.of(context).textTheme.titleMedium!.copyWith(
+          color: AppTheme.gamePageActionSheetTextColor,
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        );
   }
 }
