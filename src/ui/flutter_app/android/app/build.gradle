@@ -32,7 +32,7 @@ android {
 
     defaultConfig {
         applicationId "com.calcitem.sanmill"
-        minSdkVersion 19
+        minSdkVersion flutter.minSdkVersion
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
