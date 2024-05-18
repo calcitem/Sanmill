@@ -40,7 +40,6 @@ class _MoveListDialog extends StatelessWidget {
           width: calculateNCharWidth(context, 32),
           height: calculateNCharWidth(context, mergedMoves.length * 2 + 1),
           child: ListView(
-            shrinkWrap: false,
             physics: const AlwaysScrollableScrollPhysics(),
             children: List<Widget>.generate(
               movesCount,
