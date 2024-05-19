@@ -266,7 +266,7 @@
   "@importGame": {
     "description": "Import game"
   },
-  "gameImported": "ක්ලිප්බෝඩ් එකෙන් ක්‍රීඩාව ආයාත කර ගත්තා.",
+  "gameImported": "ක්‍රීඩාව ආනයනය කරන ලදී.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

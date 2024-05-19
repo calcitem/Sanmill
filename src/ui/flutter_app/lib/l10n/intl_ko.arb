@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "클립보드에서 게임을 불러왔습니다.",
+  "gameImported": "게임을 수입했습니다.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Игра е увезена од таблата со исечоци.",
+  "gameImported": "Играта е увезена.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

@@ -326,7 +326,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Trò chơi được nhập từ clipboard.",
+  "gameImported": "Trò chơi được nhập khẩu.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

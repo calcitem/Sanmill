@@ -244,7 +244,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Խաղը ներմուծվել է clipboard-ից:",
+  "gameImported": "Խաղը ներմուծված է.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

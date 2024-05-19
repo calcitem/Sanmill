@@ -242,7 +242,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Speletjie ingevoer vanaf die knipbord.",
+  "gameImported": "Speletjie ingevoer.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

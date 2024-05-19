@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "રમત ક્લિપબોર્ડથી આયાત કરી.",
+  "gameImported": "રમત આયાત કરી.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

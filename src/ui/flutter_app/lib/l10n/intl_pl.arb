@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Gra zaimportowana z schowka.",
+  "gameImported": "Gra zaimportowana.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

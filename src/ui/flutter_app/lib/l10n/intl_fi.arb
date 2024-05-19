@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Leikepöydältä tuotu peli.",
+  "gameImported": "Peli tuotu.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

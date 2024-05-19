@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Panodan içe aktarılan oyun.",
+  "gameImported": "Oyun içe aktarıldı.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

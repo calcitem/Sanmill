@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "เกมนำเข้าจากคลิปบอร์ด",
+  "gameImported": "นำเข้าเกมแล้ว",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

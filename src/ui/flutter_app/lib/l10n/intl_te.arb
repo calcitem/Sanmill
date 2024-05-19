@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "క్లిప్‌బోర్డ్ నుండి గేమ్ దిగుమతి చేయబడింది.",
+  "gameImported": "గేమ్ దిగుమతి చేయబడింది.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
