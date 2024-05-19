@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Permainan diimport dari papan keratan.",
+  "gameImported": "Permainan diimport.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

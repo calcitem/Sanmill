@@ -24,7 +24,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "کھیل کلپ بورڈ سے درآمد کیا گیا۔",
+  "gameImported": "گیم امپورٹڈ۔",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

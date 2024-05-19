@@ -286,7 +286,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "משחק מיובא מהלוח.",
+  "gameImported": "המשחק מיובא.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

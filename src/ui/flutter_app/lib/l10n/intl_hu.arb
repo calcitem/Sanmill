@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Játék vágólapról importálva.",
+  "gameImported": "Játék importálva.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

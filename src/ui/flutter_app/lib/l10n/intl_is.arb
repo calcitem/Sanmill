@@ -546,7 +546,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Leikur fluttur inn af klemmuspjaldinu.",
+  "gameImported": "Leikur fluttur inn.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

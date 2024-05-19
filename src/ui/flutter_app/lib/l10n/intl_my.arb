@@ -178,7 +178,7 @@
   "@importGame": {
     "description": "Import game"
   },
-  "gameImported": "ဂိမ်းကို ကလစ်ဘုတ်မှ တင်သွင်းသည်။",
+  "gameImported": "ဂိမ်းကို တင်သွင်းခဲ့သည်။",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

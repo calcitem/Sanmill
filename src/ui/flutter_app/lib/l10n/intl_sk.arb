@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Import hry zo schránky.",
+  "gameImported": "Hra bola importovaná.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

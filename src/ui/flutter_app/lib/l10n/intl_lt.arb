@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Žaidimas importuojamas iš iškarpinės.",
+  "gameImported": "Žaidimas importuotas.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

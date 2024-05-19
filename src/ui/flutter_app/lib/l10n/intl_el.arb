@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Παιχνίδι που εισάγεται από το πρόχειρο.",
+  "gameImported": "Εισαγωγή παιχνιδιού.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Открыта игра из буфера обмена.",
+  "gameImported": "Игра импортированная.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "No starpliktuves importēta spēle.",
+  "gameImported": "Spēle importēta.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },

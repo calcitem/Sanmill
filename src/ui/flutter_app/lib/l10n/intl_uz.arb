@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "Bufer buferdan import qilingan.",
+  "gameImported": "O'yin import qilingan.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
