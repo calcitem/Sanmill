@@ -121,6 +121,7 @@ chrono
 cin
 climits
 colorpicker
+Consolas
 config
 constexpr
 cout
@@ -338,6 +339,7 @@ tolower
 toolbar
 tooltip
 tte
+ttm
 ttmem
 uci
 ucinewgame
