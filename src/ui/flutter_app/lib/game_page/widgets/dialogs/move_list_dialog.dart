@@ -132,7 +132,10 @@ class _MoveListDialog extends StatelessWidget {
 
     // Process each move and merge if necessary
     for (final String move in moves) {
-      if (move.startsWith('x') && mergedMoves.isNotEmpty) {
+      if (move.startsWith('x') &&
+          mergedMoves.isNotEmpty &&
+          !mergedMoves[mergedMoves.length - 1].contains('[') &&
+          !mergedMoves[mergedMoves.length - 1].contains(']')) {
         mergedMoves[mergedMoves.length - 1] += move;
       } else {
         mergedMoves.add(move);
