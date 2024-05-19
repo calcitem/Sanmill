@@ -34,7 +34,7 @@ class _MoveListDialog extends StatelessWidget {
       }
     }
     final int movesCount = (mergedMoves.length + 1) ~/ 2;
-    final int fenHeight = fen == null ? 1 : 10;
+    final int fenHeight = fen == null ? 2 : 14;
 
     if (DB().generalSettings.screenReaderSupport) {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
