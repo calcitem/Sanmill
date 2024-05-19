@@ -236,7 +236,6 @@ class _MoveListDialog extends StatelessWidget {
       if (!context.mounted) {
         return;
       }
-      GameController().headerTipNotifier.showTip(S.of(context).gameImported);
     } else {
       if (!context.mounted) {
         return;
