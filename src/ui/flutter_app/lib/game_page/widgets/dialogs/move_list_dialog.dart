@@ -64,6 +64,7 @@ class _MoveListDialog extends StatelessWidget {
                         text: "$fen\r\n",
                         style: _getTitleTextStyle(context),
                       ),
+                      textDirection: TextDirection.ltr,
                     ),
                   ),
                 ),
@@ -151,6 +152,7 @@ class _MoveListDialog extends StatelessWidget {
         child: Text(
           '${(index + 1).toString().padLeft(3)}.  ',
           style: _getTitleTextStyle(context),
+          textDirection: TextDirection.ltr,
         ),
       ),
     );
@@ -170,6 +172,7 @@ class _MoveListDialog extends StatelessWidget {
               child: Text(
                 moveText,
                 style: _getTitleTextStyle(context),
+                textDirection: TextDirection.ltr,
               ),
             ),
           ),
@@ -186,6 +189,7 @@ class _MoveListDialog extends StatelessWidget {
             children: spans,
             style: const TextStyle(height: 1.2),
           ),
+          textDirection: TextDirection.ltr,
         ),
         contentPadding: EdgeInsets.zero,
       ),
