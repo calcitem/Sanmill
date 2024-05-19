@@ -22,8 +22,19 @@ class _MoveListDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final GameController controller = GameController();
-    final List<String> mergedMoves = _getMergedMoves(controller);
+    String? fen;
+    List<String> mergedMoves = _getMergedMoves(controller);
+    if (mergedMoves.isNotEmpty) {
+      if (mergedMoves[0].isNotEmpty) {
+        final String firstMove = mergedMoves[0];
+        if (firstMove.startsWith('[')) {
+          fen = firstMove;
+          mergedMoves = mergedMoves.sublist(1);
+        }
+      }
+    }
     final int movesCount = (mergedMoves.length + 1) ~/ 2;
+    final int fenHeight = fen == null ? 1 : 10;
 
     if (DB().generalSettings.screenReaderSupport) {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
@@ -38,13 +49,30 @@ class _MoveListDialog extends StatelessWidget {
         ),
         content: SizedBox(
           width: calculateNCharWidth(context, 32),
-          height: calculateNCharWidth(context, mergedMoves.length * 2 + 1),
+          height:
+              calculateNCharWidth(context, mergedMoves.length * 2 + fenHeight),
           child: ListView(
             physics: const AlwaysScrollableScrollPhysics(),
-            children: List<Widget>.generate(
-              movesCount,
-              (int index) => _buildMoveListItem(context, mergedMoves, index),
-            ),
+            children: <Widget>[
+              if (fen != null)
+                InkWell(
+                  onTap: () => _importGame(context, mergedMoves, fen, -1),
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 24.0),
+                    child: Text.rich(
+                      TextSpan(
+                        text: "$fen\r\n",
+                        style: _getTitleTextStyle(context),
+                      ),
+                    ),
+                  ),
+                ),
+              ...List<Widget>.generate(
+                movesCount,
+                (int index) =>
+                    _buildMoveListItem(context, mergedMoves, fen, index),
+              ),
+            ],
           ),
         ),
         actions: <Widget>[
@@ -77,12 +105,31 @@ class _MoveListDialog extends StatelessWidget {
   }
 
   List<String> _getMergedMoves(GameController controller) {
-    final List<String> moves = controller.gameRecorder.moveHistoryText
+    // Retrieve the move history text
+    final String moveHistoryText = controller.gameRecorder.moveHistoryText;
+
+    final List<String> mergedMoves = <String>[];
+    String remainingText = moveHistoryText;
+
+    // Check if the first character is '['
+    if (moveHistoryText.startsWith('[')) {
+      // Find the position of the last ']'
+      final int endIndex = moveHistoryText.lastIndexOf(']') + 1;
+      if (endIndex > 0) {
+        // Add the part from '[' to ']' as the first merged move
+        mergedMoves.add(moveHistoryText.substring(0, endIndex));
+        // Update the remaining text to be processed
+        remainingText = moveHistoryText.substring(endIndex).trim();
+      }
+    }
+
+    // Split the remaining text by whitespace, filter, and process
+    final List<String> moves = remainingText
         .split(RegExp(r'\s+'))
         .where((String s) => s.isNotEmpty && !s.contains('.'))
         .toList();
 
-    final List<String> mergedMoves = <String>[];
+    // Process each move and merge if necessary
     for (final String move in moves) {
       if (move.startsWith('x') && mergedMoves.isNotEmpty) {
         mergedMoves[mergedMoves.length - 1] += move;
@@ -95,7 +142,7 @@ class _MoveListDialog extends StatelessWidget {
   }
 
   Widget _buildMoveListItem(
-      BuildContext context, List<String> mergedMoves, int index) {
+      BuildContext context, List<String> mergedMoves, String? fen, int index) {
     final int moveIndex = index * 2;
     final List<InlineSpan> spans = <InlineSpan>[];
 
@@ -117,7 +164,7 @@ class _MoveListDialog extends StatelessWidget {
       spans.add(
         WidgetSpan(
           child: InkWell(
-            onTap: () => _importGame(context, mergedMoves, moveIndex + i),
+            onTap: () => _importGame(context, mergedMoves, fen, moveIndex + i),
             child: Padding(
               padding: const EdgeInsets.only(right: 24.0),
               child: Text(
@@ -145,9 +192,13 @@ class _MoveListDialog extends StatelessWidget {
     );
   }
 
-  Future<void> _importGame(
-      BuildContext context, List<String> mergedMoves, int clickedIndex) async {
-    final String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
+  Future<void> _importGame(BuildContext context, List<String> mergedMoves,
+      String? fen, int clickedIndex) async {
+    String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
+    // If fen is not null, prepend it to ml with a space
+    if (fen != null) {
+      ml = '$fen $ml';
+    }
     final SnackBar snackBar = SnackBar(
       content: Text(ml),
       duration: const Duration(seconds: 2),

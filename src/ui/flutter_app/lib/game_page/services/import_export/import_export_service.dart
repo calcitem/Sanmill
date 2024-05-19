@@ -296,15 +296,33 @@ class ImportService {
   }
 
   static String removeTagPairs(String pgn) {
+    // If the string does not start with '[', return it as is
     if (pgn.startsWith("[") == false) {
       return pgn;
     }
 
-    String ret = pgn.substring(pgn.lastIndexOf("]"));
-    final int begin = ret.indexOf("1.");
-    if (begin == -1) {
+    // Find the position of the last ']'
+    final int lastBracketPos = pgn.lastIndexOf("]");
+    if (lastBracketPos == -1) {
+      return pgn; // Return as is if there is no ']'
+    }
+
+    // Get the substring after the last ']'
+    String ret = pgn.substring(lastBracketPos + 1);
+
+    // Find the first position that is not a space or newline after the last ']'
+    int begin = 0;
+    while (begin < ret.length &&
+        (ret[begin] == ' ' || ret[begin] == '\r' || ret[begin] == '\n')) {
+      begin++;
+    }
+
+    // If no valid position is found, return an empty string
+    if (begin == ret.length) {
       return "";
     }
+
+    // Get the substring from the first non-space and non-newline character
     ret = ret.substring(begin);
 
     return ret;
