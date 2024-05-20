@@ -1,0 +1,3 @@
+v4.10.0
+
+Visually indicate the currently active selection in the move list.
