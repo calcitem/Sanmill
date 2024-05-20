@@ -40,6 +40,9 @@ class _MoveListDialog extends StatelessWidget {
       rootScaffoldMessengerKey.currentState!.clearSnackBars();
     }
 
+    // ValueNotifier to track the selected index
+    final ValueNotifier<int?> selectedIndex = ValueNotifier<int?>(null);
+
     return GamePageActionSheet(
       child: AlertDialog(
         backgroundColor: UIColors.semiTransparentBlack,
@@ -70,8 +73,13 @@ class _MoveListDialog extends StatelessWidget {
                 ),
               ...List<Widget>.generate(
                 movesCount,
-                (int index) =>
-                    _buildMoveListItem(context, mergedMoves, fen, index),
+                (int index) => _buildMoveListItem(
+                  context,
+                  mergedMoves,
+                  fen,
+                  index,
+                  selectedIndex,
+                ),
               ),
             ],
           ),
@@ -145,8 +153,8 @@ class _MoveListDialog extends StatelessWidget {
     return mergedMoves;
   }
 
-  Widget _buildMoveListItem(
-      BuildContext context, List<String> mergedMoves, String? fen, int index) {
+  Widget _buildMoveListItem(BuildContext context, List<String> mergedMoves,
+      String? fen, int index, ValueNotifier<int?> selectedIndex) {
     final int moveIndex = index * 2;
     final List<InlineSpan> spans = <InlineSpan>[];
 
@@ -168,16 +176,32 @@ class _MoveListDialog extends StatelessWidget {
       final String moveText = mergedMoves[moveIndex + i];
       spans.add(
         WidgetSpan(
-          child: InkWell(
-            onTap: () => _importGame(context, mergedMoves, fen, moveIndex + i),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 24.0),
-              child: Text(
-                moveText,
-                style: _getTitleTextStyle(context),
-                textDirection: TextDirection.ltr,
-              ),
-            ),
+          child: ValueListenableBuilder<int?>(
+            valueListenable: selectedIndex,
+            builder: (BuildContext context, int? value, Widget? child) {
+              final bool isSelected = value == moveIndex + i;
+              return InkWell(
+                onTap: () {
+                  selectedIndex.value = moveIndex + i;
+                  _importGame(context, mergedMoves, fen, moveIndex + i);
+                },
+                child: Container(
+                  padding: const EdgeInsets.only(right: 24.0),
+                  color: isSelected
+                      ? AppTheme.gamePageActionSheetTextBackgroundColor
+                      : null,
+                  child: Text(
+                    moveText,
+                    style: _getTitleTextStyle(context).copyWith(
+                      color: isSelected
+                          ? AppTheme.gamePageActionSheetTextColor
+                          : AppTheme.gamePageActionSheetTextColor,
+                    ),
+                    textDirection: TextDirection.ltr,
+                  ),
+                ),
+              );
+            },
           ),
         ),
       );
@@ -202,7 +226,6 @@ class _MoveListDialog extends StatelessWidget {
   Future<void> _importGame(BuildContext context, List<String> mergedMoves,
       String? fen, int clickedIndex) async {
     String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
-    // If fen is not null, prepend it to ml with a space
     if (fen != null) {
       ml = '$fen $ml';
     }

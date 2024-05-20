@@ -333,6 +333,8 @@ class AppTheme {
   static const Color infoDialogBackgroundColor = Colors.transparent;
   static const Color modalBottomSheetBackgroundColor = Colors.transparent;
   static const Color gamePageActionSheetTextColor = Colors.yellow;
+  static Color gamePageActionSheetTextBackgroundColor =
+      Colors.deepPurple.withOpacity(0.8);
 
   /// Settings page
   static const Color listItemDividerColor = UIColors.rosewood20;
