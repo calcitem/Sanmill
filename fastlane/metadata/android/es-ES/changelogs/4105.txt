@@ -1,0 +1,3 @@
+v4.8.0
+
+Permitir el reinicio automático después del juego.
