@@ -1,0 +1,3 @@
+v4.7.2
+
+Se ha corregido un problema por el que la actualización de v4.2.0 a la última versión provocaba un error en el primer inicio si previamente se habían establecido los colores: `LateInitializationError: El campo '_colorSettingsBox@859236735' no ha sido inicializado.`
