@@ -18,17 +18,6 @@ part of '../../../game_page/widgets/painters/painters.dart';
 
 /// The names of the rows
 const List<String> verticalNotations = <String>[
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g'
-];
-
-/// The names of the columns
-const List<String> horizontalNotations = <String>[
   '7',
   '6',
   '5',
@@ -36,6 +25,17 @@ const List<String> horizontalNotations = <String>[
   '3',
   '2',
   '1'
+];
+
+/// The names of the columns
+const List<String> horizontalNotations = <String>[
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g'
 ];
 
 /// The padding applied to the actual mill field

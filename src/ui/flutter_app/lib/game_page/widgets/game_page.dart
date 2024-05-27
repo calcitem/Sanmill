@@ -63,86 +63,20 @@ class GamePage extends StatelessWidget {
 
   final GameMode gameMode;
 
-  final bool isSettingsPosition = true;
-
   @override
   Widget build(BuildContext context) {
     final GameController controller = GameController();
-
     controller.gameInstance.gameMode = gameMode;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
-          if (DB().displaySettings.backgroundImagePath.isEmpty)
-            Container(
-              color: DB().colorSettings.darkBackgroundColor,
-            )
-          else
-            Image.asset(
-              DB().displaySettings.backgroundImagePath,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
-              errorBuilder:
-                  (BuildContext context, Object error, StackTrace? stackTrace) {
-                return Container(
-                  color: DB().colorSettings.darkBackgroundColor,
-                );
-              },
-            ),
-          Align(
-            alignment:
-                MediaQuery.of(context).orientation == Orientation.landscape
-                    ? Alignment.center
-                    : Alignment.topCenter,
-            // ignore: always_specify_types
-            child: FutureBuilder(
-              future: controller.startController(),
-              builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                      //child: CircularProgressIndicator.adaptive(),
-                      );
-                }
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppTheme.boardMargin),
-                  child: LayoutBuilder(
-                    builder:
-                        (BuildContext context, BoxConstraints constraints) {
-                      double toolbarHeight = GamePageToolbar.height +
-                          ButtonTheme.of(context).height;
-                      if (DB()
-                          .displaySettings
-                          .isHistoryNavigationToolbarShown) {
-                        toolbarHeight *= 2;
-                      } else if (DB().displaySettings.isAnalysisToolbarShown) {
-                        toolbarHeight *= 3;
-                      }
-
-                      // Constraints of the game board but applied to the entire child
-                      final double maxWidth = constraints.maxWidth;
-                      final double maxHeight =
-                          constraints.maxHeight - toolbarHeight;
-                      final BoxConstraints constraint = BoxConstraints(
-                        maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                            ? maxHeight
-                            : maxWidth,
-                      );
-
-                      return ConstrainedBox(
-                        constraints: constraint,
-                        child: const _Game(),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
-          ),
+          // Background image or color
+          _buildBackground(),
+          // Game board
+          _buildGameBoard(context, controller),
+          // Drawer icon
           Align(
             alignment: AlignmentDirectional.topStart,
             child: SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
@@ -151,21 +85,88 @@ class GamePage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _buildBackground() {
+    if (DB().displaySettings.backgroundImagePath.isEmpty) {
+      return Container(
+        color: DB().colorSettings.darkBackgroundColor,
+      );
+    } else {
+      return Image.asset(
+        DB().displaySettings.backgroundImagePath,
+        fit: BoxFit.cover,
+        width: double.infinity,
+        height: double.infinity,
+        errorBuilder:
+            (BuildContext context, Object error, StackTrace? stackTrace) {
+          return Container(
+            color: DB().colorSettings.darkBackgroundColor,
+          );
+        },
+      );
+    }
+  }
+
+  Widget _buildGameBoard(BuildContext context, GameController controller) {
+    return Align(
+      alignment: MediaQuery.of(context).orientation == Orientation.landscape
+          ? Alignment.center
+          : Alignment.topCenter,
+      child: FutureBuilder<void>(
+        future: controller.startController(),
+        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center();
+          }
+
+          return Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                final double toolbarHeight = _calculateToolbarHeight(context);
+
+                // Constraints of the game board but applied to the entire child
+                final double maxWidth = constraints.maxWidth;
+                final double maxHeight = constraints.maxHeight - toolbarHeight;
+                final BoxConstraints constraint = BoxConstraints(
+                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                      ? maxHeight
+                      : maxWidth,
+                );
+
+                return ConstrainedBox(
+                  constraints: constraint,
+                  child: const _Game(),
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  double _calculateToolbarHeight(BuildContext context) {
+    double toolbarHeight =
+        GamePageToolbar.height + ButtonTheme.of(context).height;
+    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+      toolbarHeight *= 2;
+    } else if (DB().displaySettings.isAnalysisToolbarShown) {
+      toolbarHeight *= 3;
+    }
+    return toolbarHeight;
+  }
 }
 
-// TODO: [Leptopoda] Change layout (landscape mode, padding on small devices)
 class _Game extends StatefulWidget {
   const _Game();
+
   @override
-  State<_Game> createState() => _GameState();
+  _GameState createState() => _GameState();
 }
 
 class _GameState extends State<_Game> {
-  Future<void> triggerScreenshot(String storageLocation,
-      [String? filename]) async {
-    await ScreenshotService.takeScreenshot(storageLocation, filename);
-  }
-
   @override
   void initState() {
     super.initState();
@@ -179,7 +180,12 @@ class _GameState extends State<_Game> {
   }
 
   void _showPieceIndicator() {
-    setState(() {}); // TODO: Only refresh PieceIndicator.
+    setState(() {});
+  }
+
+  Future<void> _triggerScreenshot(String storageLocation,
+      [String? filename]) async {
+    await ScreenshotService.takeScreenshot(storageLocation, filename);
   }
 
   void _showGameModalBottomSheet(BuildContext context) {
@@ -188,7 +194,7 @@ class _GameState extends State<_Game> {
       context: context,
       backgroundColor: AppTheme.modalBottomSheetBackgroundColor,
       builder: (_) => _GameOptionsModal(
-        onTriggerScreenshot: () => triggerScreenshot("gallery"),
+        onTriggerScreenshot: () => _triggerScreenshot("gallery"),
       ),
     );
   }
@@ -219,9 +225,7 @@ class _GameState extends State<_Game> {
     );
   }
 
-  // Icons: https://github.com/microsoft/fluentui-system-icons/blob/main/icons_regular.md
-
-  List<Widget> mainToolbarItems(BuildContext context) {
+  List<Widget> _buildMainToolbarItems(BuildContext context) {
     final ToolbarItem gameButton = ToolbarItem.icon(
       onPressed: () => _showGameModalBottomSheet(context),
       icon: const Icon(FluentIcons.table_simple_24_regular),
@@ -270,7 +274,7 @@ class _GameState extends State<_Game> {
     ];
   }
 
-  List<Widget> historyNavToolbarItems(BuildContext context) {
+  List<Widget> _buildHistoryNavToolbarItems(BuildContext context) {
     final ToolbarItem takeBackAllButton = ToolbarItem(
       child: Icon(
         FluentIcons.arrow_previous_24_regular,
@@ -325,14 +329,13 @@ class _GameState extends State<_Game> {
     ];
   }
 
-  List<Widget> analysisToolbarItems(BuildContext context) {
+  List<Widget> _buildAnalysisToolbarItems(BuildContext context) {
     final ToolbarItem captureBoardImageButton = ToolbarItem(
       child: Icon(
         FluentIcons.camera_24_regular,
-        // TODO
-        semanticLabel: S.of(context).welcome,
+        semanticLabel: S.of(context).welcome, // TODO: Update semantic label
       ),
-      onPressed: () => triggerScreenshot("gallery"),
+      onPressed: () => _triggerScreenshot("gallery"),
     );
 
     return <Widget>[
@@ -340,224 +343,221 @@ class _GameState extends State<_Game> {
     ];
   }
 
-  String getPiecesText(int count) {
-    String ret = "";
-    for (int i = 0; i < count; i++) {
-      ret = "$ret●";
-    }
-    return ret;
+  String _getPiecesText(int count) {
+    return "●" * count;
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constrains) {
-      final double dimension = (constrains.maxWidth) *
-          (MediaQuery.of(context).orientation == Orientation.portrait
-              ? 1.0
-              : 0.65);
+      builder: (BuildContext context, BoxConstraints constraints) {
+        final double dimension = (constraints.maxWidth) *
+            (MediaQuery.of(context).orientation == Orientation.portrait
+                ? 1.0
+                : 0.65);
 
-      return SizedBox(
-        width: dimension,
-        child: SafeArea(
-          top: MediaQuery.of(context).orientation == Orientation.portrait,
-          bottom: false,
-          right: false,
-          left: false,
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                GameHeader(),
-                if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        GameController().gameInstance.gameMode ==
-                            GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen(context) == true &&
-                        DB().ruleSettings.piecesCount > 9))
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Semantics(
-                          label: S.of(context).inHand(
-                                !DB().generalSettings.aiMovesFirst
-                                    ? S.of(context).player2
-                                    : S.of(context).player1,
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]!,
-                              ), // Or a more descriptive label
-                          child: Text(
-                            getPiecesText(
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]!),
-                            style: TextStyle(
-                              color: !DB().generalSettings.aiMovesFirst
-                                  ? DB().colorSettings.blackPieceColor
-                                  : DB().colorSettings.whitePieceColor,
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Semantics(
-                          label: S
-                              .of(context)
-                              .welcome, // TODO: Removed pieces count
-                          child: Text(
-                            getPiecesText(DB().ruleSettings.piecesCount -
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]! -
-                                GameController().position.pieceOnBoardCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]!),
-                            style: TextStyle(
-                              color: !DB().generalSettings.aiMovesFirst
-                                  ? DB()
-                                      .colorSettings
-                                      .whitePieceColor
-                                      .withOpacity(0.8)
-                                  : DB()
-                                      .colorSettings
-                                      .blackPieceColor
-                                      .withOpacity(0.8),
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ])
-                else
-                  const SizedBox(height: AppTheme.boardMargin),
-                NativeScreenshot(
-                  controller: ScreenshotService.screenshotController,
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: const GameBoard(),
+        return SizedBox(
+          width: dimension,
+          child: SafeArea(
+            top: MediaQuery.of(context).orientation == Orientation.portrait,
+            bottom: false,
+            right: false,
+            left: false,
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  GameHeader(),
+                  if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                          GameController().gameInstance.gameMode ==
+                              GameMode.setupPosition) &&
+                      !(Constants.isSmallScreen(context) == true &&
+                          DB().ruleSettings.piecesCount > 9))
+                    _buildPieceCountRow()
+                  else
+                    const SizedBox(height: AppTheme.boardMargin),
+                  NativeScreenshot(
+                    controller: ScreenshotService.screenshotController,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: const GameBoard(),
+                    ),
                   ),
+                  if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
+                          GameController().gameInstance.gameMode ==
+                              GameMode.setupPosition) &&
+                      !(Constants.isSmallScreen(context) == true &&
+                          DB().ruleSettings.piecesCount > 9))
+                    _buildRemovedPieceCountRow()
+                  else
+                    const SizedBox(height: AppTheme.boardMargin),
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.setupPosition)
+                    const SetupPositionToolbar(),
+                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+                      GameController().gameInstance.gameMode !=
+                          GameMode.setupPosition)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.navigationToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.navigationToolbarIconColor,
+                      children: _buildHistoryNavToolbarItems(context),
+                    ),
+                  if (DB().displaySettings.isAnalysisToolbarShown)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.analysisToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.analysisToolbarIconColor,
+                      children: _buildAnalysisToolbarItems(context),
+                    ),
+                  if (GameController().gameInstance.gameMode !=
+                      GameMode.setupPosition)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.mainToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.mainToolbarIconColor,
+                      children: _buildMainToolbarItems(context),
+                    ),
+                  const SizedBox(height: AppTheme.boardMargin),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPieceCountRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Semantics(
+          label: S.of(context).inHand(
+                !DB().generalSettings.aiMovesFirst
+                    ? S.of(context).player2
+                    : S.of(context).player1,
+                GameController().position.pieceInHandCount[
+                    !DB().generalSettings.aiMovesFirst
+                        ? PieceColor.black
+                        : PieceColor.white]!,
+              ),
+          child: Text(
+            _getPiecesText(
+              GameController().position.pieceInHandCount[
+                  !DB().generalSettings.aiMovesFirst
+                      ? PieceColor.black
+                      : PieceColor.white]!,
+            ),
+            style: TextStyle(
+              color: !DB().generalSettings.aiMovesFirst
+                  ? DB().colorSettings.blackPieceColor
+                  : DB().colorSettings.whitePieceColor,
+              shadows: const <Shadow>[
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 3.0,
+                  color: Color.fromARGB(255, 128, 128, 128),
                 ),
-                if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
-                        GameController().gameInstance.gameMode ==
-                            GameMode.setupPosition) &&
-                    !(Constants.isSmallScreen(context) == true &&
-                        DB().ruleSettings.piecesCount > 9))
-                  Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Semantics(
-                          label: S
-                              .of(context)
-                              .welcome, // TODO: Removed pieces count
-                          child: Text(
-                            getPiecesText(DB().ruleSettings.piecesCount -
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]! -
-                                GameController().position.pieceOnBoardCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.black
-                                        : PieceColor.white]!),
-                            style: TextStyle(
-                              color: !DB().generalSettings.aiMovesFirst
-                                  ? DB()
-                                      .colorSettings
-                                      .blackPieceColor
-                                      .withOpacity(0.8)
-                                  : DB()
-                                      .colorSettings
-                                      .whitePieceColor
-                                      .withOpacity(0.8),
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Semantics(
-                          label: S.of(context).inHand(
-                                !DB().generalSettings.aiMovesFirst
-                                    ? S.of(context).player1
-                                    : S.of(context).player2,
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]!,
-                              ), // Or a more descriptive label
-                          child: Text(
-                            getPiecesText(
-                                GameController().position.pieceInHandCount[
-                                    !DB().generalSettings.aiMovesFirst
-                                        ? PieceColor.white
-                                        : PieceColor.black]!),
-                            style: TextStyle(
-                              color: !DB().generalSettings.aiMovesFirst
-                                  ? DB().colorSettings.whitePieceColor
-                                  : DB().colorSettings.blackPieceColor,
-                              shadows: const <Shadow>[
-                                Shadow(
-                                  offset: Offset(1.0, 1.0),
-                                  blurRadius: 3.0,
-                                  color: Color.fromARGB(255, 128, 128, 128),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ])
-                else
-                  const SizedBox(height: AppTheme.boardMargin),
-                if (GameController().gameInstance.gameMode ==
-                    GameMode.setupPosition)
-                  const SetupPositionToolbar(),
-                if (DB().displaySettings.isHistoryNavigationToolbarShown &&
-                    GameController().gameInstance.gameMode !=
-                        GameMode.setupPosition)
-                  GamePageToolbar(
-                    backgroundColor:
-                        DB().colorSettings.navigationToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.navigationToolbarIconColor,
-                    children: historyNavToolbarItems(context),
-                  ),
-                if (DB().displaySettings.isAnalysisToolbarShown)
-                  GamePageToolbar(
-                    backgroundColor:
-                        DB().colorSettings.analysisToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.analysisToolbarIconColor,
-                    children: analysisToolbarItems(context),
-                  ),
-                if (GameController().gameInstance.gameMode !=
-                    GameMode.setupPosition)
-                  GamePageToolbar(
-                    backgroundColor:
-                        DB().colorSettings.mainToolbarBackgroundColor,
-                    itemColor: DB().colorSettings.mainToolbarIconColor,
-                    children: mainToolbarItems(context),
-                  ),
-                const SizedBox(height: AppTheme.boardMargin),
               ],
             ),
           ),
         ),
-      );
-    });
+        Semantics(
+          label: S.of(context).welcome, // TODO: Removed pieces count
+          child: Text(
+            _getPiecesText(
+              DB().ruleSettings.piecesCount -
+                  GameController().position.pieceInHandCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.white
+                          : PieceColor.black]! -
+                  GameController().position.pieceOnBoardCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.white
+                          : PieceColor.black]!,
+            ),
+            style: TextStyle(
+              color: !DB().generalSettings.aiMovesFirst
+                  ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
+                  : DB().colorSettings.blackPieceColor.withOpacity(0.8),
+              shadows: const <Shadow>[
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 3.0,
+                  color: Color.fromARGB(255, 128, 128, 128),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRemovedPieceCountRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Semantics(
+          label: S.of(context).welcome, // TODO: Removed pieces count
+          child: Text(
+            _getPiecesText(
+              DB().ruleSettings.piecesCount -
+                  GameController().position.pieceInHandCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.black
+                          : PieceColor.white]! -
+                  GameController().position.pieceOnBoardCount[
+                      !DB().generalSettings.aiMovesFirst
+                          ? PieceColor.black
+                          : PieceColor.white]!,
+            ),
+            style: TextStyle(
+              color: !DB().generalSettings.aiMovesFirst
+                  ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
+                  : DB().colorSettings.whitePieceColor.withOpacity(0.8),
+              shadows: const <Shadow>[
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 3.0,
+                  color: Color.fromARGB(255, 128, 128, 128),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Semantics(
+          label: S.of(context).inHand(
+                !DB().generalSettings.aiMovesFirst
+                    ? S.of(context).player1
+                    : S.of(context).player2,
+                GameController().position.pieceInHandCount[
+                    !DB().generalSettings.aiMovesFirst
+                        ? PieceColor.white
+                        : PieceColor.black]!,
+              ),
+          child: Text(
+            _getPiecesText(
+              GameController().position.pieceInHandCount[
+                  !DB().generalSettings.aiMovesFirst
+                      ? PieceColor.white
+                      : PieceColor.black]!,
+            ),
+            style: TextStyle(
+              color: !DB().generalSettings.aiMovesFirst
+                  ? DB().colorSettings.whitePieceColor
+                  : DB().colorSettings.blackPieceColor,
+              shadows: const <Shadow>[
+                Shadow(
+                  offset: Offset(1.0, 1.0),
+                  blurRadius: 3.0,
+                  color: Color.fromARGB(255, 128, 128, 128),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

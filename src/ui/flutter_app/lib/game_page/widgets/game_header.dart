@@ -36,6 +36,11 @@ class _GameHeaderState extends State<GameHeader> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    _updateScrollObserver();
+    _validatePosition();
+  }
+
+  void _updateScrollObserver() {
     if (_scrollNotificationObserver != null) {
       _scrollNotificationObserver!.removeListener(_handleScrollNotification);
     }
@@ -43,20 +48,26 @@ class _GameHeaderState extends State<GameHeader> {
     if (_scrollNotificationObserver != null) {
       _scrollNotificationObserver!.addListener(_handleScrollNotification);
     }
+  }
 
+  void _validatePosition() {
     final String? fen = GameController().position.fen;
-    if (fen == null || GameController().position.validateFen(fen) == false) {
+    if (fen == null || !GameController().position.validateFen(fen)) {
       GameController().headerTipNotifier.showTip(S.of(context).invalidPosition);
     }
   }
 
   @override
   void dispose() {
+    _removeScrollObserver();
+    super.dispose();
+  }
+
+  void _removeScrollObserver() {
     if (_scrollNotificationObserver != null) {
       _scrollNotificationObserver!.removeListener(_handleScrollNotification);
       _scrollNotificationObserver = null;
     }
-    super.dispose();
   }
 
   void _handleScrollNotification(ScrollNotification notification) {
@@ -75,90 +86,86 @@ class _GameHeaderState extends State<GameHeader> {
 
   @override
   Widget build(BuildContext context) {
-    Widget divider;
-
-    int value =
-        GameController().value == null ? 0 : int.parse(GameController().value!);
-
-    const double opacity = 1;
-
-    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
-      const int valueLimit = 100;
-
-      // TODO: Modify engine to return suitable value
-      if ((value == valueUnique || value == -valueUnique) ||
-          GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
-        value = valueEachPiece * GameController().position.pieceCountDiff();
-      }
-
-      value *= 2;
-
-      if (value > valueLimit) {
-        value = valueLimit;
-      }
-
-      if (value < -valueLimit) {
-        value = -valueLimit;
-      }
-
-      final num dividerWhiteLength = valueLimit + value;
-      final num dividerBlackLength = valueLimit - value;
-
-      divider = Container(
-        height: 2,
-        width: valueLimit * 2,
-        margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              height: 2,
-              width: dividerWhiteLength.toDouble(),
-              color: DB().colorSettings.whitePieceColor.withOpacity(opacity),
+    return Align(
+      alignment: Alignment.topCenter,
+      child: BlockSemantics(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
+            child: Column(
+              children: <Widget>[
+                const HeaderIcons(),
+                _buildDivider(),
+                const HeaderTip(),
+              ],
             ),
-            Container(
-              height: 2,
-              width: dividerBlackLength.toDouble(),
-              color: DB().colorSettings.blackPieceColor.withOpacity(opacity),
-            ),
-          ],
-        ),
-      );
-    } else {
-      divider = Container(
-        height: 2,
-        width: 180,
-        margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
-        decoration: BoxDecoration(
-          color: DB().colorSettings.darkBackgroundColor == Colors.white
-              ? DB().colorSettings.messageColor.withOpacity(opacity)
-              : DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
-          borderRadius: BorderRadius.circular(2),
-        ),
-      );
-    }
-
-    final BlockSemantics appBar = BlockSemantics(
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
-          child: Column(
-            children: <Widget>[
-              const HeaderIcons(),
-              divider,
-              const HeaderTip(),
-            ],
           ),
         ),
       ),
     );
+  }
 
-    return Align(
-      alignment: Alignment.topCenter,
-      child: appBar,
+  Widget _buildDivider() {
+    if (DB().displaySettings.isPositionalAdvantageIndicatorShown) {
+      return _buildPositionalAdvantageDivider();
+    } else {
+      return _buildDefaultDivider();
+    }
+  }
+
+  Widget _buildPositionalAdvantageDivider() {
+    int value =
+        GameController().value == null ? 0 : int.parse(GameController().value!);
+    const double opacity = 1;
+    const int valueLimit = 100;
+
+    if ((value == valueUnique || value == -valueUnique) ||
+        GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
+      value = valueEachPiece * GameController().position.pieceCountDiff();
+    }
+
+    value = (value * 2).clamp(-valueLimit, valueLimit);
+
+    final num dividerWhiteLength = valueLimit + value;
+    final num dividerBlackLength = valueLimit - value;
+
+    return Container(
+      height: 2,
+      width: valueLimit * 2,
+      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Container(
+            height: 2,
+            width: dividerWhiteLength.toDouble(),
+            color: DB().colorSettings.whitePieceColor.withOpacity(opacity),
+          ),
+          Container(
+            height: 2,
+            width: dividerBlackLength.toDouble(),
+            color: DB().colorSettings.blackPieceColor.withOpacity(opacity),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDefaultDivider() {
+    const double opacity = 1;
+    return Container(
+      height: 2,
+      width: 180,
+      margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
+      decoration: BoxDecoration(
+        color: DB().colorSettings.darkBackgroundColor == Colors.white
+            ? DB().colorSettings.messageColor.withOpacity(opacity)
+            : DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
+        borderRadius: BorderRadius.circular(2),
+      ),
     );
   }
 }
@@ -174,7 +181,13 @@ class HeaderTip extends StatefulWidget {
 class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
-  void showTip() {
+  @override
+  void initState() {
+    super.initState();
+    GameController().headerTipNotifier.addListener(_showTip);
+  }
+
+  void _showTip() {
     final HeaderTipNotifier headerTipNotifier =
         GameController().headerTipNotifier;
 
@@ -187,38 +200,32 @@ class HeaderTipState extends State<HeaderTip> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    GameController().headerTipNotifier.addListener(showTip);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<String>(
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String value, Widget? child) {
         return Semantics(
-            enabled: true,
-            child: SizedBox(
-              height: 24 * DB().displaySettings.fontScale,
-              child: Text(
-                value == "" ? S.of(context).welcome : value,
-                maxLines: 1,
-                style: TextStyle(
-                  color: DB().colorSettings.messageColor,
-                  fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                  // ignore: always_specify_types
-                  fontFeatures: const [FontFeature.tabularFigures()],
-                ),
+          enabled: true,
+          child: SizedBox(
+            height: 24 * DB().displaySettings.fontScale,
+            child: Text(
+              value.isEmpty ? S.of(context).welcome : value,
+              maxLines: 1,
+              style: TextStyle(
+                color: DB().colorSettings.messageColor,
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
               ),
-            ));
+            ),
+          ),
+        );
       },
     );
   }
 
   @override
   void dispose() {
-    GameController().headerTipNotifier.removeListener(showTip);
+    GameController().headerTipNotifier.removeListener(_showTip);
     super.dispose();
   }
 }
@@ -235,14 +242,14 @@ class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
       ValueNotifier<IconData>(GameController().position.sideToMove.icon);
 
-  void showIcons() {
-    _iconDataNotifier.value = GameController().position.sideToMove.icon;
-  }
-
   @override
   void initState() {
     super.initState();
-    GameController().headerIconsNotifier.addListener(showIcons);
+    GameController().headerIconsNotifier.addListener(_updateIcons);
+  }
+
+  void _updateIcons() {
+    _iconDataNotifier.value = GameController().position.sideToMove.icon;
   }
 
   @override
@@ -258,7 +265,6 @@ class HeaderStateIcons extends State<HeaderIcons> {
             key: const Key("HeaderIconRow"),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // Header Icons
               Icon(GameController().gameInstance.gameMode.leftHeaderIcon),
               Icon(value),
               Icon(GameController().gameInstance.gameMode.rightHeaderIcon),
@@ -271,7 +277,7 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   @override
   void dispose() {
-    GameController().headerIconsNotifier.removeListener(showIcons);
+    GameController().headerIconsNotifier.removeListener(_updateIcons);
     super.dispose();
   }
 }

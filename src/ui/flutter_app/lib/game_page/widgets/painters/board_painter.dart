@@ -31,10 +31,22 @@ class BoardPainter extends CustomPainter {
 
     final Position position = GameController().position;
     final ColorSettings colorSettings = DB().colorSettings;
-    final Paint paint = Paint();
-
     final double boardBorderLineWidth =
         DB().displaySettings.boardBorderLineWidth;
+    final Paint paint = _createPaint(colorSettings, boardBorderLineWidth, size);
+
+    _drawBackground(canvas, size);
+    _drawOptionalElements(canvas, size, position);
+
+    final List<Offset> offset =
+        points.map((Offset e) => offsetFromPoint(e, size)).toList();
+    _drawLines(offset, canvas, paint, size);
+    _drawPoints(offset, canvas, paint);
+  }
+
+  Paint _createPaint(
+      ColorSettings colorSettings, double boardBorderLineWidth, Size size) {
+    final Paint paint = Paint();
     paint.strokeWidth =
         boardBorderLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
     paint.color = Color.lerp(
@@ -44,29 +56,29 @@ class BoardPainter extends CustomPainter {
     )!
         .withOpacity(1);
     paint.style = PaintingStyle.stroke;
+    return paint;
+  }
 
-    _drawBackground(canvas, size);
-
-    if (DB().displaySettings.isPieceCountInHandShown &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition &&
-        position.phase == Phase.placing) {
+  void _drawOptionalElements(Canvas canvas, Size size, Position position) {
+    if (_shouldDrawPieceCount(position)) {
       _drawPieceCount(position, canvas, size);
     }
 
-    if (DB().displaySettings.isNotationsShown || EnvironmentConfig.devMode) {
+    if (_shouldDrawNotations()) {
       _drawNotations(canvas, size);
     }
-
-    final List<Offset> offset =
-        points.map((Offset e) => offsetFromPoint(e, size)).toList();
-
-    _drawLines(offset, canvas, paint, size);
-
-    // Point
-    _drawPoints(offset, canvas, paint);
   }
 
-  /// Draws the background of the Board.
+  bool _shouldDrawPieceCount(Position position) {
+    return DB().displaySettings.isPieceCountInHandShown &&
+        GameController().gameInstance.gameMode != GameMode.setupPosition &&
+        position.phase == Phase.placing;
+  }
+
+  bool _shouldDrawNotations() {
+    return DB().displaySettings.isNotationsShown || EnvironmentConfig.devMode;
+  }
+
   static void _drawBackground(Canvas canvas, Size size) {
     final Paint paint = Paint();
     paint.color = DB().colorSettings.boardBackgroundColor;
@@ -80,82 +92,77 @@ class BoardPainter extends CustomPainter {
     );
   }
 
-  /// Draws the lines of the Board.
   void _drawLines(List<Offset> offset, Canvas canvas, Paint paint, Size size) {
-    // File C
-    canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
+    _drawOuterRectangle(canvas, offset, paint);
 
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
 
-    final Path path = Path();
-    // File B
-    path.addRect(Rect.fromPoints(offset[3], offset[20]));
-
-    // File A
-    path.addRect(Rect.fromPoints(offset[6], offset[17]));
-
-    // Middle horizontal lines (offsetX to Right)
-    path.addLine(offset[1], offset[7]);
-    path.addLine(offset[16], offset[22]);
-
-    // Middle horizontal lines (offsetY to Bottom)
-    path.addLine(offset[9], offset[11]);
-    path.addLine(offset[12], offset[14]);
-
-    if (DB().ruleSettings.hasDiagonalLines) {
-      // offsetY offsetX diagonal line
-      path.addLine(offset[0], offset[6]);
-
-      // Lower right diagonal line
-      path.addLine(offset[17], offset[23]);
-
-      // offsetY right diagonal line
-      path.addLine(offset[21], offset[15]);
-
-      // Lower offsetX diagonal line
-      path.addLine(offset[8], offset[2]);
-    }
-
+    final Path path = _createLinePath(offset);
     canvas.drawPath(path, paint);
   }
 
-  /// Draws the points representing each field.
+  void _drawOuterRectangle(Canvas canvas, List<Offset> offset, Paint paint) {
+    canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
+  }
+
+  Path _createLinePath(List<Offset> offset) {
+    final Path path = Path();
+    path.addRect(Rect.fromPoints(offset[3], offset[20])); // File B
+    path.addRect(Rect.fromPoints(offset[6], offset[17])); // File A
+    _addMiddleHorizontalLines(path, offset);
+    _addDiagonalLinesIfNeeded(path, offset);
+    return path;
+  }
+
+  void _addMiddleHorizontalLines(Path path, List<Offset> offset) {
+    path.addLine(offset[1], offset[7]);
+    path.addLine(offset[16], offset[22]);
+    path.addLine(offset[9], offset[11]);
+    path.addLine(offset[12], offset[14]);
+  }
+
+  void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset) {
+    if (DB().ruleSettings.hasDiagonalLines) {
+      path.addLine(offset[0], offset[6]);
+      path.addLine(offset[17], offset[23]);
+      path.addLine(offset[21], offset[15]);
+      path.addLine(offset[8], offset[2]);
+    }
+  }
+
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
-    switch (DB().displaySettings.pointPaintingStyle) {
-      case PointPaintingStyle.fill:
-        paint.style = PaintingStyle.fill;
-        break;
-      case PointPaintingStyle.stroke:
-        paint.style = PaintingStyle.stroke;
-        break;
-      case PointPaintingStyle.none:
-        return;
+    final PaintingStyle? style = _getPointPaintingStyle();
+
+    if (style == null) {
+      return;
     }
 
-    final double pointRadius = DB().displaySettings.pointWidth;
+    paint.style = style;
 
+    final double pointRadius = DB().displaySettings.pointWidth;
     for (final Offset point in points) {
       canvas.drawCircle(point, pointRadius, paint);
     }
   }
 
-  /// Draws the [position.pieceOnBoardCount] in the middle of the Board.
-  static void _drawPieceCount(Position position, Canvas canvas, Size size) {
-    final int pieceInHandCount;
-    if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
-        position.pieceOnBoardCount[PieceColor.black] == 0) {
-      pieceInHandCount = DB().ruleSettings.piecesCount;
-    } else {
-      pieceInHandCount = position.pieceInHandCount[position.sideToMove]!;
+  static PaintingStyle? _getPointPaintingStyle() {
+    switch (DB().displaySettings.pointPaintingStyle) {
+      case PointPaintingStyle.fill:
+        return PaintingStyle.fill;
+      case PointPaintingStyle.stroke:
+        return PaintingStyle.stroke;
+      case PointPaintingStyle.none:
+        return null;
     }
+  }
+
+  static void _drawPieceCount(Position position, Canvas canvas, Size size) {
+    final int pieceInHandCount = _calculatePieceInHandCount(position);
 
     final TextSpan textSpan = TextSpan(
-      style: TextStyle(
-        fontSize: 48,
-        color: DB().colorSettings.boardLineColor,
-      ), // TODO
+      style: TextStyle(fontSize: 48, color: DB().colorSettings.boardLineColor),
       text: pieceInHandCount.toString(),
     );
 
@@ -166,65 +173,63 @@ class BoardPainter extends CustomPainter {
     );
 
     textPainter.layout();
-
-    textPainter.paint(
-      canvas,
-      size.center(
-        -Offset(textPainter.width, textPainter.height) / 2,
-      ),
-    );
+    textPainter.paint(canvas,
+        size.center(-Offset(textPainter.width, textPainter.height) / 2));
   }
 
-  /// Draws the numbering of the fields displayed at the side.
+  static int _calculatePieceInHandCount(Position position) {
+    if (position.pieceOnBoardCount[PieceColor.white] == 0 &&
+        position.pieceOnBoardCount[PieceColor.black] == 0) {
+      return DB().ruleSettings.piecesCount;
+    } else {
+      return position.pieceInHandCount[position.sideToMove]!;
+    }
+  }
+
   static void _drawNotations(Canvas canvas, Size size) {
     for (int i = 0; i < verticalNotations.length; i++) {
-      final TextSpan notationSpanV = TextSpan(
-        style: AppTheme.notationTextStyle, // TODO
-        text: verticalNotations[i],
-      );
-
-      final TextSpan notationSpanH = TextSpan(
-        style: AppTheme.notationTextStyle, // TODO
-        text: horizontalNotations[i],
-      );
-
-      final TextPainter notationPainterH = TextPainter(
-        text: notationSpanV,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      );
-
-      final TextPainter notationPainterV = TextPainter(
-        text: notationSpanH,
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      );
-
-      notationPainterH.layout();
-      notationPainterV.layout();
-
-      final double horizontalOffset =
-          size.height - (boardMargin + notationPainterH.height) / 2;
-      final double verticalOffset = (boardMargin - notationPainterV.width) / 2;
-
-      // Show notations "a b c d e f" on board
-      notationPainterH.paint(
-        canvas,
-        Offset(
-          offsetFromInt(i, size) - notationPainterH.width / 2,
-          horizontalOffset,
-        ),
-      );
-
-      // Show notations "1 2 3 4 5 6 7" on board
-      notationPainterV.paint(
-        canvas,
-        Offset(
-          verticalOffset,
-          offsetFromInt(i, size) - notationPainterV.height / 2,
-        ),
-      );
+      _drawVerticalNotation(canvas, size, i);
+      _drawHorizontalNotation(canvas, size, i);
     }
+  }
+
+  static void _drawVerticalNotation(Canvas canvas, Size size, int index) {
+    final TextSpan notationSpan = TextSpan(
+      style: AppTheme.notationTextStyle,
+      text: verticalNotations[index],
+    );
+
+    final TextPainter notationPainter = TextPainter(
+      text: notationSpan,
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    notationPainter.layout();
+    final double offset = (boardMargin - notationPainter.width) / 2;
+    notationPainter.paint(
+        canvas,
+        Offset(
+            offset, offsetFromInt(index, size) - notationPainter.height / 2));
+  }
+
+  static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
+    final TextSpan notationSpan = TextSpan(
+      style: AppTheme.notationTextStyle,
+      text: horizontalNotations[index],
+    );
+
+    final TextPainter notationPainter = TextPainter(
+      text: notationSpan,
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
+    notationPainter.layout();
+    final double offset =
+        size.height - (boardMargin + notationPainter.height) / 2;
+    notationPainter.paint(canvas,
+        Offset(offsetFromInt(index, size) - notationPainter.width / 2, offset));
   }
 
   @override
