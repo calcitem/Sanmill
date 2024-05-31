@@ -62,7 +62,7 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       if (booted == true) {
         return;
       }
@@ -88,13 +88,13 @@ class SoundManager {
   }
 
   Future<void> _playSound(Sound sound) async {
-    if (!Platform.isIOS) {
+    if (!(Platform.isIOS || Platform.isLinux)) {
       _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
     }
   }
 
   Future<void> _stopSound() async {
-    if (kIsWeb || Platform.isIOS) {
+    if (kIsWeb || Platform.isIOS || Platform.isLinux) {
       return;
     }
 
@@ -116,7 +116,7 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       await _stopAllSounds();
 
       final kplayer.PlayerController? player = _players[sound];
@@ -132,7 +132,7 @@ class SoundManager {
   }
 
   Future<void> _stopAllSounds() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       final List<Future<void>> stopFutures = <Future<void>>[];
       _players.forEach((_, kplayer.PlayerController player) {
         stopFutures.add(player.stop());
@@ -154,7 +154,7 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       _players
           .forEach((_, kplayer.PlayerController player) => player.dispose());
       _players.clear();
