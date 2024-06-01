@@ -25,92 +25,101 @@ class _SkillLevelPicker extends StatefulWidget {
 
 class _SkillLevelPickerState extends State<_SkillLevelPicker> {
   late FixedExtentScrollController _controller;
-
   late int _level;
 
   @override
   void initState() {
     super.initState();
+    // Initialize skill level and scroll controller
     _level = DB().generalSettings.skillLevel;
     _controller = FixedExtentScrollController(initialItem: _level - 1);
   }
 
   @override
   void dispose() {
+    // Clean up the controller when the widget is disposed
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Box<GeneralSettings>>(
-      valueListenable: DB().listenGeneralSettings,
-      builder: (BuildContext context, Box<GeneralSettings> box, _) {
-        final GeneralSettings generalSettings = box.get(
-          DB.generalSettingsKey,
-          defaultValue: const GeneralSettings(),
-        )!;
-        return AlertDialog(
-          title: Text(
-            S.of(context).skillLevel,
-            style: AppTheme.dialogTitleTextStyle,
-          ),
-          content: ConstrainedBox(
-            constraints: const BoxConstraints(maxHeight: 150),
-            child: CupertinoPicker(
-              scrollController: _controller,
-              itemExtent: 44,
-              children: List<Widget>.generate(Constants.highestSkillLevel,
-                  (int level) => Center(child: Text('${level + 1}'))),
-              onSelectedItemChanged: (int value) {
-                _level = value + 1;
-              },
-            ),
-          ),
-          actions: <Widget>[
-            if (EnvironmentConfig.test == false)
-              TextButton(
-                child: Text(
-                  S.of(context).cancel,
-                  style: TextStyle(
-                      fontSize:
-                          AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
+    // Adjusting the overall background color of the dialog based on theme
+    final Color? backgroundColor =
+        MediaQuery.of(context).platformBrightness == Brightness.dark
+            ? Colors.grey[900] // Dark mode background color
+            : Colors.white; // Light mode background color
 
-                  if (!kIsWeb &&
-                      (Platform.isWindows ||
-                          Platform.isLinux ||
-                          Platform.isMacOS)) {
-                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                        S.of(context).youCanUseMouseWheelInPicker);
-                  }
-                },
-              ),
-            TextButton(
+    final Color textColor =
+        MediaQuery.of(context).platformBrightness == Brightness.dark
+            ? Colors.white // Text color in dark mode
+            : Colors.black; // Text color in light mode
+
+    return AlertDialog(
+      backgroundColor: backgroundColor, // Set the AlertDialog's background
+      title: Text(
+        S.of(context).skillLevel,
+        style: AppTheme.dialogTitleTextStyle,
+      ),
+      content: ConstrainedBox(
+        constraints: const BoxConstraints(maxHeight: 150),
+        child: CupertinoPicker(
+          backgroundColor: backgroundColor, // Consistent with the AlertDialog
+          scrollController: _controller,
+          itemExtent: 44,
+          children: List<Widget>.generate(
+            Constants.highestSkillLevel,
+            (int level) => Center(
               child: Text(
-                S.of(context).confirm,
-                style: TextStyle(
-                    fontSize:
-                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+                '${level + 1}',
+                style: TextStyle(color: textColor),
               ),
-              onPressed: () {
-                DB().generalSettings =
-                    generalSettings.copyWith(skillLevel: _level);
-
-                if (DB().generalSettings.skillLevel > 15 &&
-                    DB().generalSettings.moveTime < 10) {
-                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).noteActualDifficultyLevelMayBeLimited);
-                }
-
-                Navigator.of(context).pop();
-              },
             ),
-          ],
-        );
-      },
+          ),
+          onSelectedItemChanged: (int value) {
+            _level = value + 1;
+          },
+        ),
+      ),
+      actions: <Widget>[
+        if (EnvironmentConfig.test == false)
+          TextButton(
+            child: Text(
+              S.of(context).cancel,
+              style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              if (!kIsWeb &&
+                  (Platform.isWindows ||
+                      Platform.isLinux ||
+                      Platform.isMacOS)) {
+                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                    S.of(context).youCanUseMouseWheelInPicker);
+              }
+            },
+          ),
+        TextButton(
+          child: Text(
+            S.of(context).confirm,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
+          ),
+          onPressed: () {
+            DB().generalSettings =
+                DB().generalSettings.copyWith(skillLevel: _level);
+            if (DB().generalSettings.skillLevel > 15 &&
+                DB().generalSettings.moveTime < 10) {
+              rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                  S.of(context).noteActualDifficultyLevelMayBeLimited);
+            }
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
     );
   }
 }
