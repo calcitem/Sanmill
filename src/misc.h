@@ -71,8 +71,18 @@ enum SyncCout { IO_LOCK, IO_UNLOCK };
 
 std::ostream &operator<<(std::ostream &, SyncCout);
 
+// TODO: Revisit the synchronization mechanism for output handling. Current
+// workaround bypasses synchronization on Apple devices due to unresolved
+// hanging issues in debug mode on iPad. Consider investigating the root
+// cause and implementing a more robust synchronization strategy that
+// works uniformly across all platforms.
+#ifdef __APPLE__
+#define sync_cout std::cout
+#define sync_endl std::endl
+#else
 #define sync_cout std::cout << IO_LOCK
 #define sync_endl std::endl << IO_UNLOCK
+#endif
 
 // `ptr` must point to an array of size at least
 // `sizeof(T) * N + alignment` bytes, where `N` is the
