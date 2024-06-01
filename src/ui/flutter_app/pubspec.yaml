@@ -21,7 +21,7 @@ dependencies:
     sdk: flutter
 
   flutter_colorpicker: 1.1.0
-  flutter_email_sender: 6.0.3
+  flutter_email_sender: 6.0.2
   flutter_localizations:
     sdk: flutter
   flutter_platform_alert:
