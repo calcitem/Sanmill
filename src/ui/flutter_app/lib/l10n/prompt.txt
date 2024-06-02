@@ -1,0 +1,80 @@
+Please translate the following contents of the arb file:
+
+```json
+"transparentCanvas": "Transparent Canvas",
+"@transparentCanvas": {},
+```
+
+into:
+
+```
+intl_af.arb
+intl_ar.arb
+intl_az.arb
+intl_be.arb
+intl_bg.arb
+intl_bn.arb
+intl_bs.arb
+intl_cs.arb
+intl_da.arb
+intl_de.arb
+intl_de_ch.arb
+intl_el.arb
+intl_en.arb
+intl _es.arb
+intl_et.arb
+intl_fa.arb
+intl_fi.arb
+intl_fr.arb
+intl_gu.arb
+intl_he.arb
+intl_hi.arb
+intl_hr.arb
+intl_hu.arb
+intl_hy.arb
+intl_id.arb
+intl_is.arb
+intl_it.arb
+intl_ja.arb
+intl_kn. arb
+intl_ko.arb
+intl_lt.arb
+intl_lv.arb
+intl_mk.arb
+intl_ms.arb
+intl_my.arb
+intl_nb.arb
+intl_nl.arb
+intl_pl.arb
+intl_pt.arb
+intl_ro.arb
+intl_ru.arb
+intl_si.arb
+intl_sk.arb
+intl_sl.arb
+intl_sq.arb
+intl_sr.arb
+intl_sv.arb
+intl_sw.arb
+intl_te.arb
+intl_th.arb
+intl_tr.arb
+intl_uk.arb
+intl_ur.arb
+intl_uz.arb
+intl_vi.arb
+intl_zh.arb
+intl_zh_Hant.arb
+intl_zu.arb
+```
+
+The corresponding content. The format is as follows:
+
+```json
+// intl_en.arb
+
+"transparentCanvas": "Transparent Canvas",
+
+"@transparentCanvas": {},
+```
+

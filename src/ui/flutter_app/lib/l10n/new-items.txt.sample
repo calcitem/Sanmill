@@ -1,0 +1,232 @@
+// intl_af.arb
+  "transparentCanvas": "Deursigtige Doek",
+  "@transparentCanvas": {},
+
+// intl_ar.arb
+  "transparentCanvas": "قماش شفاف",
+  "@transparentCanvas": {},
+
+// intl_az.arb
+  "transparentCanvas": "Şəffaf Kanvas",
+  "@transparentCanvas": {},
+
+// intl_be.arb
+  "transparentCanvas": "Празрыстае Палатно",
+  "@transparentCanvas": {},
+
+// intl_bg.arb
+  "transparentCanvas": "Прозрачно Платно",
+  "@transparentCanvas": {},
+
+// intl_bn.arb
+  "transparentCanvas": "স্বচ্ছ ক্যানভাস",
+  "@transparentCanvas": {},
+
+// intl_bs.arb
+  "transparentCanvas": "Prozirno Platno",
+  "@transparentCanvas": {},
+
+// intl_cs.arb
+  "transparentCanvas": "Průhledné Plátno",
+  "@transparentCanvas": {},
+
+// intl_da.arb
+  "transparentCanvas": "Gennemsigtigt Lærred",
+  "@transparentCanvas": {},
+
+// intl_de.arb
+  "transparentCanvas": "Transparente Leinwand",
+  "@transparentCanvas": {},
+
+// intl_de_ch.arb
+  "transparentCanvas": "Transparente Leinwand",
+  "@transparentCanvas": {},
+
+// intl_el.arb
+  "transparentCanvas": "Διαφανής Καμβάς",
+  "@transparentCanvas": {},
+
+// intl_en.arb
+  "transparentCanvas": "Transparent Canvas",
+  "@transparentCanvas": {},
+
+// intl_es.arb
+  "transparentCanvas": "Lienzo Transparente",
+  "@transparentCanvas": {},
+
+// intl_et.arb
+  "transparentCanvas": "Läbipaistev Lõuend",
+  "@transparentCanvas": {},
+
+// intl_fa.arb
+  "transparentCanvas": "بوم شفاف",
+  "@transparentCanvas": {},
+
+// intl_fi.arb
+  "transparentCanvas": "Läpinäkyvä Kangas",
+  "@transparentCanvas": {},
+
+// intl_fr.arb
+  "transparentCanvas": "Toile Transparente",
+  "@transparentCanvas": {},
+
+// intl_gu.arb
+  "transparentCanvas": "પારદર્શક કેનવાસ",
+  "@transparentCanvas": {},
+
+// intl_he.arb
+  "transparentCanvas": "בד שקוף",
+  "@transparentCanvas": {},
+
+// intl_hi.arb
+  "transparentCanvas": "पारदर्शी कैनवस",
+  "@transparentCanvas": {},
+
+// intl_hr.arb
+  "transparentCanvas": "Prozirno Platno",
+  "@transparentCanvas": {},
+
+// intl_hu.arb
+  "transparentCanvas": "Átlátszó Vászon",
+  "@transparentCanvas": {},
+
+// intl_hy.arb
+  "transparentCanvas": "Թափանցիկ կտոր",
+  "@transparentCanvas": {},
+
+// intl_id.arb
+  "transparentCanvas": "Kanvas Transparan",
+  "@transparentCanvas": {},
+
+// intl_is.arb
+  "transparentCanvas": "Gegnsætt Striga",
+  "@transparentCanvas": {},
+
+// intl_it.arb
+  "transparentCanvas": "Tela Trasparente",
+  "@transparentCanvas": {},
+
+// intl_ja.arb
+  "transparentCanvas": "透明キャンバス",
+  "@transparentCanvas": {},
+
+// intl_kn.arb
+  "transparentCanvas": "ಪಾರದರ್ಶಕ ಕ್ಯಾನ್ವಾಸ್",
+  "@transparentCanvas": {},
+
+// intl_ko.arb
+  "transparentCanvas": "투명 캔버스",
+  "@transparentCanvas": {},
+
+// intl_lt.arb
+  "transparentCanvas": "Permatomas Drobė",
+  "@transparentCanvas": {},
+
+// intl_lv.arb
+  "transparentCanvas": "Caurspīdīgs Audekls",
+  "@transparentCanvas": {},
+
+// intl_mk.arb
+  "transparentCanvas": "Транспарентно Платно",
+  "@transparentCanvas": {},
+
+// intl_ms.arb
+  "transparentCanvas": "Kanvas Lutsinar",
+  "@transparentCanvas": {},
+
+// intl_my.arb
+  "transparentCanvas": "ကြည်လင်ကန်ဗတ်",
+  "@transparentCanvas": {},
+
+// intl_nb.arb
+  "transparentCanvas": "Gjennomsiktig Lerret",
+  "@transparentCanvas": {},
+
+// intl_nl.arb
+  "transparentCanvas": "Transparant Canvas",
+  "@transparentCanvas": {},
+
+// intl_pl.arb
+  "transparentCanvas": "Przezroczyste Płótno",
+  "@transparentCanvas": {},
+
+// intl_pt.arb
+  "transparentCanvas": "Tela Transparente",
+  "@transparentCanvas": {},
+
+// intl_ro.arb
+  "transparentCanvas": "Pânză Transparentă",
+  "@transparentCanvas": {},
+
+// intl_ru.arb
+  "transparentCanvas": "Прозрачное Полотно",
+  "@transparentCanvas": {},
+
+// intl_si.arb
+  "transparentCanvas": "විනිවිද තිරය",
+  "@transparentCanvas": {},
+
+// intl_sk.arb
+  "transparentCanvas": "Priehľadné Plátno",
+  "@transparentCanvas": {},
+
+// intl_sl.arb
+  "transparentCanvas": "Prosojno Platno",
+  "@transparentCanvas": {},
+
+// intl_sq.arb
+  "transparentCanvas": "Pëlhurë Transparente",
+  "@transparentCanvas": {},
+
+// intl_sr.arb
+  "transparentCanvas": "Прозирно Платно",
+  "@transparentCanvas": {},
+
+// intl_sv.arb
+  "transparentCanvas": "Genomskinlig Duk",
+  "@transparentCanvas": {},
+
+// intl_sw.arb
+  "transparentCanvas": "Kitambaa Kipitishi",
+  "@transparentCanvas": {},
+
+// intl_te.arb
+  "transparentCanvas": "పారదర్శక క్యాన్వాస్",
+  "@transparentCanvas": {},
+
+// intl_th.arb
+  "transparentCanvas": "ผืนผ้าใส",
+  "@transparentCanvas": {},
+
+// intl_tr.arb
+  "transparentCanvas": "Şeffaf Tuval",
+  "@transparentCanvas": {},
+
+// intl_uk.arb
+  "transparentCanvas": "Прозоре Полотно",
+  "@transparentCanvas": {},
+
+// intl_ur.arb
+  "transparentCanvas": "شفاف کینوس",
+  "@transparentCanvas": {},
+
+// intl_uz.arb
+  "transparentCanvas": "Shaffof Kanvas",
+  "@transparentCanvas": {},
+
+// intl_vi.arb
+  "transparentCanvas": "Vải Trong Suốt",
+  "@transparentCanvas": {},
+
+// intl_zh.arb
+  "transparentCanvas": "透明画布",
+  "@transparentCanvas": {},
+
+// intl_zh_Hant.arb
+  "transparentCanvas": "透明畫布",
+  "@transparentCanvas": {},
+
+// intl_zu.arb
+  "transparentCanvas": "I-Canvas Esobala",
+  "@transparentCanvas": {},
+
