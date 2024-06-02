@@ -19,6 +19,8 @@ find . -name "*.dart" |  xargs dart format --fix
 
 cd ../../../../
 
-git add .
-git commit -m "Format"
+if [ "$1" != "s" ]; then
+    git add .
+    git commit -m "Format"
+fi
 
