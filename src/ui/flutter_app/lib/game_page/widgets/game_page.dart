@@ -247,7 +247,18 @@ class _GameState extends State<_Game> {
     );
 
     final ToolbarItem moveButton = ToolbarItem.icon(
-      onPressed: () => _showMoveModalBottomSheet(context),
+      onPressed: () {
+        if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+          Future<void>.delayed(const Duration(milliseconds: 100), () {
+            showDialog<void>(
+              context: context,
+              builder: (BuildContext context) => const _MoveListDialog(),
+            );
+          });
+        } else {
+          _showMoveModalBottomSheet(context);
+        }
+      },
       icon: const Icon(FluentIcons.calendar_agenda_24_regular),
       label: Text(
         S.of(context).move,
