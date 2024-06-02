@@ -1,0 +1,7 @@
+v4.11.0
+
+- Added the ability to directly display the game moves when the "Moves" button is clicked, if the history navigation toolbar is shown.
+- Added a paste button to the game moves dialog.
+- Ensured the color picker dialog remains open when tapped outside the dialog area.
+- Fixed an issue where the coordinate text color did not change when switching themes.
+- Added the Transparent Canvas color theme to color settings, which is useful when a background image is set.
