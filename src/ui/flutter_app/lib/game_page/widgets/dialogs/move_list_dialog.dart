@@ -100,6 +100,15 @@ class _MoveListDialog extends StatelessWidget {
               Expanded(
                 child: TextButton(
                   child: Text(
+                    S.of(context).paste,
+                    style: _getButtonTextStyle(context),
+                  ),
+                  onPressed: () => GameController.import(context),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  child: Text(
                     S.of(context).cancel,
                     style: _getButtonTextStyle(context),
                   ),
