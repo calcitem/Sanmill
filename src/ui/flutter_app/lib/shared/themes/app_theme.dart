@@ -398,6 +398,20 @@ class AppTheme {
       analysisToolbarBackgroundColor: Colors.white,
       analysisToolbarIconColor: Colors.black,
     ),
+    ColorTheme.transparentCanvas: ColorSettings(
+      boardLineColor: Colors.black,
+      // Background color with minimal opacity (1/255) to prevent saved images
+      // from being completely black
+      darkBackgroundColor: Color.fromARGB(1, 255, 255, 255),
+      boardBackgroundColor: Color.fromARGB(1, 255, 255, 255),
+      messageColor: Colors.black,
+      mainToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
+      mainToolbarIconColor: Colors.black,
+      navigationToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
+      navigationToolbarIconColor: Colors.black,
+      analysisToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
+      analysisToolbarIconColor: Colors.black,
+    ),
     ColorTheme.goldenJade: ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42), // golden
       darkBackgroundColor: Color(0xFFE9E7D7), // light beige
