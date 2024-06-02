@@ -284,11 +284,6 @@ class AppTheme {
     color: _appPrimaryColor,
   );
 
-  static final TextStyle notationTextStyle = TextStyle(
-    color: DB().colorSettings.boardLineColor,
-    fontSize: AppTheme.textScaler.scale(20),
-  );
-
   static const TextStyle listTileSubtitleStyle = TextStyle(
     color: listTileSubtitleColor,
     fontSize: 16,

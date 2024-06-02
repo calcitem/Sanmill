@@ -194,8 +194,13 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _drawVerticalNotation(Canvas canvas, Size size, int index) {
+    final TextStyle notationTextStyle = TextStyle(
+      color: DB().colorSettings.boardLineColor,
+      fontSize: AppTheme.textScaler.scale(20),
+    );
+
     final TextSpan notationSpan = TextSpan(
-      style: AppTheme.notationTextStyle,
+      style: notationTextStyle,
       text: verticalNotations[index],
     );
 
@@ -214,8 +219,13 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
+    final TextStyle notationTextStyle = TextStyle(
+      color: DB().colorSettings.boardLineColor,
+      fontSize: AppTheme.textScaler.scale(20),
+    );
+
     final TextSpan notationSpan = TextSpan(
-      style: AppTheme.notationTextStyle,
+      style: notationTextStyle,
       text: horizontalNotations[index],
     );
 
