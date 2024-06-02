@@ -122,6 +122,7 @@ class SettingsListTile extends StatelessWidget {
           ),
           onTap: () => showDialog(
             context: context,
+            barrierDismissible: EnvironmentConfig.test == true,
             builder: (_) => _ColorPickerAlert(
               title: titleString,
               value: _colorValue!,
