@@ -16,8 +16,37 @@
 
 part of '../game_page.dart';
 
-class _MoveListDialog extends StatelessWidget {
+class _MoveListDialog extends StatefulWidget {
   const _MoveListDialog();
+
+  @override
+  _MoveListDialogState createState() => _MoveListDialogState();
+}
+
+class _MoveListDialogState extends State<_MoveListDialog> {
+  double _left = 0;
+  double _top = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the dialog position to the center of the screen
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final Size screenSize = MediaQuery.of(context).size;
+      final Size dialogSize = _getDialogSize(context);
+      setState(() {
+        _left = (screenSize.width - dialogSize.width) / 2;
+        _top = (screenSize.height - dialogSize.height) / 2;
+      });
+    });
+  }
+
+  void _handlePanUpdate(DragUpdateDetails details) {
+    setState(() {
+      _left += details.delta.dx;
+      _top += details.delta.dy;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,78 +73,90 @@ class _MoveListDialog extends StatelessWidget {
     final ValueNotifier<int?> selectedIndex = ValueNotifier<int?>(null);
 
     return GamePageActionSheet(
-      child: AlertDialog(
-        backgroundColor: UIColors.semiTransparentBlack,
-        title: Text(
-          S.of(context).moveList,
-          style: _getTitleTextStyle(context),
-        ),
-        content: SizedBox(
-          width: calculateNCharWidth(context, 32),
-          height:
-              calculateNCharWidth(context, mergedMoves.length * 2 + fenHeight),
-          child: ListView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            children: <Widget>[
-              if (fen != null)
-                InkWell(
-                  onTap: () => _importGame(context, mergedMoves, fen, -1),
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 24.0),
-                    child: Text.rich(
-                      TextSpan(
-                        text: "$fen\r\n",
-                        style: _getTitleTextStyle(context),
+      child: Stack(
+        children: <Widget>[
+          Positioned(
+            left: _left,
+            top: _top,
+            child: GestureDetector(
+              onPanUpdate: _handlePanUpdate,
+              child: AlertDialog(
+                backgroundColor: UIColors.semiTransparentBlack,
+                title: Text(
+                  S.of(context).moveList,
+                  style: _getTitleTextStyle(context),
+                ),
+                content: SizedBox(
+                  width: calculateNCharWidth(context, 32),
+                  height: calculateNCharWidth(
+                      context, mergedMoves.length * 2 + fenHeight),
+                  child: ListView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    children: <Widget>[
+                      if (fen != null)
+                        InkWell(
+                          onTap: () =>
+                              _importGame(context, mergedMoves, fen, -1),
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: Text.rich(
+                              TextSpan(
+                                text: "$fen\r\n",
+                                style: _getTitleTextStyle(context),
+                              ),
+                              textDirection: TextDirection.ltr,
+                            ),
+                          ),
+                        ),
+                      ...List<Widget>.generate(
+                        movesCount,
+                        (int index) => _buildMoveListItem(
+                          context,
+                          mergedMoves,
+                          fen,
+                          index,
+                          selectedIndex,
+                        ),
                       ),
-                      textDirection: TextDirection.ltr,
-                    ),
+                    ],
                   ),
                 ),
-              ...List<Widget>.generate(
-                movesCount,
-                (int index) => _buildMoveListItem(
-                  context,
-                  mergedMoves,
-                  fen,
-                  index,
-                  selectedIndex,
-                ),
-              ),
-            ],
-          ),
-        ),
-        actions: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Expanded(
-                child: TextButton(
-                  child: Text(
-                    S.of(context).copy,
-                    style: _getButtonTextStyle(context),
+                actions: <Widget>[
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Expanded(
+                        child: TextButton(
+                          child: Text(
+                            S.of(context).copy,
+                            style: _getButtonTextStyle(context),
+                          ),
+                          onPressed: () => GameController.export(context),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          child: Text(
+                            S.of(context).paste,
+                            style: _getButtonTextStyle(context),
+                          ),
+                          onPressed: () => GameController.import(context),
+                        ),
+                      ),
+                      Expanded(
+                        child: TextButton(
+                          child: Text(
+                            S.of(context).cancel,
+                            style: _getButtonTextStyle(context),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                      ),
+                    ],
                   ),
-                  onPressed: () => GameController.export(context),
-                ),
+                ],
               ),
-              Expanded(
-                child: TextButton(
-                  child: Text(
-                    S.of(context).paste,
-                    style: _getButtonTextStyle(context),
-                  ),
-                  onPressed: () => GameController.import(context),
-                ),
-              ),
-              Expanded(
-                child: TextButton(
-                  child: Text(
-                    S.of(context).cancel,
-                    style: _getButtonTextStyle(context),
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),
@@ -295,5 +336,15 @@ class _MoveListDialog extends StatelessWidget {
           color: AppTheme.gamePageActionSheetTextColor,
           fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
         );
+  }
+
+  Size _getDialogSize(BuildContext context) {
+    return Size(
+      calculateNCharWidth(context, 32),
+      calculateNCharWidth(
+          context,
+          _getMergedMoves(GameController()).length * 2 +
+              (DB().generalSettings.screenReaderSupport ? 14 : 2)),
+    );
   }
 }
