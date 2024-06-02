@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Çevir",
   "@verticalFlip": {},
   "innerOuterFlip": "İç Dış",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Şeffaf Tuval",
+  "@transparentCanvas": {}
 }

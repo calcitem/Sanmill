@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Kääntö",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Kääntö",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Läpinäkyvä Kangas",
+  "@transparentCanvas": {}
 }

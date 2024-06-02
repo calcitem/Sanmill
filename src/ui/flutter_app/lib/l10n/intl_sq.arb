@@ -1425,5 +1425,7 @@
   "verticalFlip": "Pas V",
   "@verticalFlip": {},
   "innerOuterFlip": "Pas B/J",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Pëlhurë Transparente",
+  "@transparentCanvas": {}
 }

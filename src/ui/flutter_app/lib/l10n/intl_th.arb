@@ -1425,5 +1425,7 @@
   "verticalFlip": "พลิกแนวตั้ง",
   "@verticalFlip": {},
   "innerOuterFlip": "IO พลิก",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "ผืนผ้าใส",
+  "@transparentCanvas": {}
 }

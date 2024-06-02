@@ -1425,5 +1425,7 @@
   "verticalFlip": "ভার্টিক্যাল ফ্লিপ",
   "@verticalFlip": {},
   "innerOuterFlip": "আইও ফ্লিপ",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "স্বচ্ছ ক্যানভাস",
+  "@transparentCanvas": {}
 }

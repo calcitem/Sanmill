@@ -1425,5 +1425,7 @@
   "verticalFlip": "Cap. V.",
   "@verticalFlip": {},
   "innerOuterFlip": "Cap. I/E",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Tela Trasparente",
+  "@transparentCanvas": {}
 }

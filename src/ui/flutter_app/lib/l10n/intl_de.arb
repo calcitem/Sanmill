@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Kippen",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Kippen",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Transparente Leinwand",
+  "@transparentCanvas": {}
 }

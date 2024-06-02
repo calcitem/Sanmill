@@ -1425,5 +1425,7 @@
   "verticalFlip": "Vert. Obrácení",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Obrácení",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Průhledné Plátno",
+  "@transparentCanvas": {}
 }

@@ -1425,5 +1425,7 @@
   "verticalFlip": "Inv. V.",
   "@verticalFlip": {},
   "innerOuterFlip": "Inv. I/E",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Tela Transparente",
+  "@transparentCanvas": {}
 }

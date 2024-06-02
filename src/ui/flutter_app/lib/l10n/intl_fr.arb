@@ -1425,5 +1425,7 @@
   "verticalFlip": "Ret. V",
   "@verticalFlip": {},
   "innerOuterFlip": "Ret. I/E",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Toile Transparente",
+  "@transparentCanvas": {}
 }

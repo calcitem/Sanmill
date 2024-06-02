@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Pööre",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Pööre",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Läbipaistev Lõuend",
+  "@transparentCanvas": {}
 }

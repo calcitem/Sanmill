@@ -1425,5 +1425,7 @@
   "verticalFlip": "Volteo V",
   "@verticalFlip": {},
   "innerOuterFlip": "Volteo IO",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Lienzo Transparente",
+  "@transparentCanvas": {}
 }

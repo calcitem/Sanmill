@@ -1425,5 +1425,7 @@
   "verticalFlip": "V ફ્લિપ",
   "@verticalFlip": {},
   "innerOuterFlip": "IO ફ્લિપ",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "પારદર્શક કેનવાસ",
+  "@transparentCanvas": {}
 }

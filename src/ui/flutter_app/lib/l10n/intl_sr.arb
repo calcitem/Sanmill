@@ -1425,5 +1425,7 @@
   "verticalFlip": "В. прев.",
   "@verticalFlip": {},
   "innerOuterFlip": "У/С прев.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Прозирно Платно",
+  "@transparentCanvas": {}
 }

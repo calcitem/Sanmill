@@ -1425,5 +1425,7 @@
   "verticalFlip": "Верт. Обръщане",
   "@verticalFlip": {},
   "innerOuterFlip": "Вътр.Външ. Обръщане",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Прозрачно Платно",
+  "@transparentCanvas": {}
 }

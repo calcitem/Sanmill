@@ -1425,5 +1425,7 @@
   "verticalFlip": "عمودی فلیپ",
   "@verticalFlip": {},
   "innerOuterFlip": "IO فلیپ",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "بوم شفاف",
+  "@transparentCanvas": {}
 }

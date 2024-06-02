@@ -1425,5 +1425,7 @@
   "verticalFlip": "عمودي",
   "@verticalFlip": {},
   "innerOuterFlip": "IO فليب",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "قماش شفاف",
+  "@transparentCanvas": {}
 }

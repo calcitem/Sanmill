@@ -1425,5 +1425,7 @@
   "verticalFlip": "Tik ayl.",
   "@verticalFlip": {},
   "innerOuterFlip": "I/T Ayl.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Shaffof Kanvas",
+  "@transparentCanvas": {}
 }

@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Balik",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Balik",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Kanvas Transparan",
+  "@transparentCanvas": {}
 }

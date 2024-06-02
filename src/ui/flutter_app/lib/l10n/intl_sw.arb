@@ -1523,5 +1523,7 @@
   "verticalFlip": "Pind. W.",
   "@verticalFlip": {},
   "innerOuterFlip": "Pind. N/NJE",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Kitambaa Kipitishi",
+  "@transparentCanvas": {}
 }

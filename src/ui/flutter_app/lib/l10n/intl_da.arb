@@ -1425,5 +1425,7 @@
   "verticalFlip": "L.S.",
   "@verticalFlip": {},
   "innerOuterFlip": "I/U S.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Gennemsigtigt Lærred",
+  "@transparentCanvas": {}
 }

@@ -1425,5 +1425,7 @@
   "verticalFlip": "Flip V.",
   "@verticalFlip": {},
   "innerOuterFlip": "Flip D/L",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Kanvas Lutsinar",
+  "@transparentCanvas": {}
 }

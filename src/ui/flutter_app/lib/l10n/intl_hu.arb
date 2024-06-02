@@ -1425,5 +1425,7 @@
   "verticalFlip": "VF",
   "@verticalFlip": {},
   "innerOuterFlip": "IOF",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Átlátszó Vászon",
+  "@transparentCanvas": {}
 }

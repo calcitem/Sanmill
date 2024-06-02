@@ -1523,5 +1523,7 @@
   "verticalFlip": "היפוך אנכי",
   "@verticalFlip": {},
   "innerOuterFlip": "היפוך פנים/חוץ",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "בד שקוף",
+  "@transparentCanvas": {}
 }

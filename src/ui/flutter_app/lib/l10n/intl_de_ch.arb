@@ -1425,5 +1425,7 @@
   "verticalFlip": "V.S.",
   "@verticalFlip": {},
   "innerOuterFlip": "I/A S.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Transparente Leinwand",
+  "@transparentCanvas": {}
 }

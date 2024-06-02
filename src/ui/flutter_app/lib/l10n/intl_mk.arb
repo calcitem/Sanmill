@@ -1425,5 +1425,7 @@
   "verticalFlip": "В Флип",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Флип",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Транспарентно Платно",
+  "@transparentCanvas": {}
 }

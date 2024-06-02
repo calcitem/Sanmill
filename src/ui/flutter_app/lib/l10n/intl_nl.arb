@@ -1425,5 +1425,7 @@
   "verticalFlip": "V.S.",
   "@verticalFlip": {},
   "innerOuterFlip": "B/B S.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Transparant Canvas",
+  "@transparentCanvas": {}
 }

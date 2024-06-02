@@ -1425,5 +1425,7 @@
   "verticalFlip": "上下",
   "@verticalFlip": {},
   "innerOuterFlip": "内外",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "透明",
+  "@transparentCanvas": {}
 }

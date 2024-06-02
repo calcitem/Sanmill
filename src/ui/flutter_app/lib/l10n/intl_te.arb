@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Flip",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Flip",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "పారదర్శక క్యాన్వాస్",
+  "@transparentCanvas": {}
 }

@@ -1523,5 +1523,7 @@
   "verticalFlip": "D-Fli",
   "@verticalFlip": {},
   "innerOuterFlip": "İ/O Fli",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Şəffaf Kanvas",
+  "@transparentCanvas": {}
 }

@@ -1425,5 +1425,7 @@
   "verticalFlip": "V. prev.",
   "@verticalFlip": {},
   "innerOuterFlip": "Prev. V/V",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Priehľadné Plátno",
+  "@transparentCanvas": {}
 }

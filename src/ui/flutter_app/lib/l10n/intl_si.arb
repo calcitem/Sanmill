@@ -1523,5 +1523,7 @@
   "verticalFlip": "V වක්‍රීයක්",
   "@verticalFlip": {},
   "innerOuterFlip": "IO වක්‍රීයක්",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "විනිවිද තිරය",
+  "@transparentCanvas": {}
 }

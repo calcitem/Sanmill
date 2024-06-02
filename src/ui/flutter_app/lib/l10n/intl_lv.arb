@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Apgriezt",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Apgriezt",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Caurspīdīgs Audekls",
+  "@transparentCanvas": {}
 }

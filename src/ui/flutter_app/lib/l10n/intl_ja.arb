@@ -1523,5 +1523,7 @@
   "verticalFlip": "縦反",
   "@verticalFlip": {},
   "innerOuterFlip": "内外反",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "透明キャンバス",
+  "@transparentCanvas": {}
 }

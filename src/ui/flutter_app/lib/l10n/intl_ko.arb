@@ -1425,5 +1425,7 @@
   "verticalFlip": "좌우",
   "@verticalFlip": {},
   "innerOuterFlip": "내외",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "투명 캔버스",
+  "@transparentCanvas": {}
 }

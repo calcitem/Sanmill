@@ -1425,5 +1425,7 @@
   "verticalFlip": "Κατακόρυφη Αναστροφή",
   "@verticalFlip": {},
   "innerOuterFlip": "Εσωτερική/Εξωτερική Αναστροφή",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Διαφανής Καμβάς",
+  "@transparentCanvas": {}
 }

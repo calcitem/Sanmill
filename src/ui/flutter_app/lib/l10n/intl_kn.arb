@@ -1425,5 +1425,7 @@
   "verticalFlip": "ವರ್ಟಿಕಲ್ ತಿರುಗು",
   "@verticalFlip": {},
   "innerOuterFlip": "ಆಂತರಿಕ/ಬಾಹ್ಯ ತಿರುಗು",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "ಪಾರದರ್ಶಕ ಕ್ಯಾನ್ವಾಸ್",
+  "@transparentCanvas": {}
 }

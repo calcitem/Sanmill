@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Apsvertimas",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Apsvertimas",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Permatomas Drobė",
+  "@transparentCanvas": {}
 }

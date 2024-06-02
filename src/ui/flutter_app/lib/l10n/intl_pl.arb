@@ -1425,5 +1425,7 @@
   "verticalFlip": "Pion.",
   "@verticalFlip": {},
   "innerOuterFlip": "W/Z",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Przezroczyste Płótno",
+  "@transparentCanvas": {}
 }

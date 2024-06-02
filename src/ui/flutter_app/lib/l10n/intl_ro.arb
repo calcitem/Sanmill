@@ -1425,5 +1425,7 @@
   "verticalFlip": "Oglin. V",
   "@verticalFlip": {},
   "innerOuterFlip": "Oglin. I/E",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Pânză Transparentă",
+  "@transparentCanvas": {}
 }

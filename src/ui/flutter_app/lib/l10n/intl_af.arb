@@ -1523,5 +1523,7 @@
   "verticalFlip": "V Draai",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Draai",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Deursigtige Doek",
+  "@transparentCanvas": {}
 }

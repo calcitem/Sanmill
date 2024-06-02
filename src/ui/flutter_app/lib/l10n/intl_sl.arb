@@ -1425,5 +1425,7 @@
   "verticalFlip": "V. Obr.",
   "@verticalFlip": {},
   "innerOuterFlip": "N/Z Obr.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Prosojno Platno",
+  "@transparentCanvas": {}
 }

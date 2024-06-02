@@ -1523,5 +1523,7 @@
   "verticalFlip": "V Flip",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Flip",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "ကြည်လင်ကန်ဗတ်",
+  "@transparentCanvas": {}
 }

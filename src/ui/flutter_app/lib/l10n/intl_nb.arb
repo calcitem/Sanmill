@@ -1425,5 +1425,7 @@
   "verticalFlip": "V. Snu",
   "@verticalFlip": {},
   "innerOuterFlip": "I/U Snu",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Gjennomsiktig Lerret",
+  "@transparentCanvas": {}
 }

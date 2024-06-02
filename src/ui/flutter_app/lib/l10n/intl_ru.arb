@@ -1425,5 +1425,7 @@
   "verticalFlip": "V Перев",
   "@verticalFlip": {},
   "innerOuterFlip": "IO Перев",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Прозрачное Полотно",
+  "@transparentCanvas": {}
 }

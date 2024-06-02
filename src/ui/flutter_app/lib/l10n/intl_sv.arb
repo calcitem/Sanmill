@@ -1425,5 +1425,7 @@
   "verticalFlip": "V. vänd",
   "@verticalFlip": {},
   "innerOuterFlip": "I/U vänd",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Genomskinlig Duk",
+  "@transparentCanvas": {}
 }

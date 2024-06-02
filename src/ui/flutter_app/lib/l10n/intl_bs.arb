@@ -1425,5 +1425,7 @@
   "verticalFlip": "V okret.",
   "@verticalFlip": {},
   "innerOuterFlip": "U/V okret.",
-  "@innerOuterFlip": {}
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Prozirno Platno",
+  "@transparentCanvas": {}
 }
