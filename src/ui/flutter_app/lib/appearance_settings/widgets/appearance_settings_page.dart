@@ -177,6 +177,10 @@ class AppearanceSettingsPage extends StatelessWidget {
       title: Text(S.of(context).color),
       children: <Widget>[
         SettingsListTile(
+          titleString: S.of(context).backgroundImage,
+          onTap: () => setBackgroundImage(context),
+        ),
+        SettingsListTile(
           titleString: S.of(context).theme,
           onTap: () => _setTheme(context, colorSettings),
         ),
@@ -413,10 +417,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).aiResponseDelayTime,
           onTap: () => setAiResponseDelayTime(context),
-        ),
-        SettingsListTile(
-          titleString: S.of(context).backgroundImage,
-          onTap: () => setBackgroundImage(context),
         ),
       ],
     );
