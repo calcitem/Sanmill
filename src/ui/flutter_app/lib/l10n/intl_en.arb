@@ -1525,5 +1525,7 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparent Canvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "transparentCanvasTip": "When you set the Theme to Transparent Canvas, it is recommended to set a Background image for an enhanced visual experience.",
+  "@transparentCanvasTip": {}
 }
