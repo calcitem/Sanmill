@@ -1,0 +1,3 @@
+v4.10.1
+
+Corregida la visibilidad del selector de números en modo oscuro.
