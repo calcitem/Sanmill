@@ -645,7 +645,7 @@ bool Position::reset()
 
     MoveList<LEGAL>::create();
     create_mill_table();
-    currentSquare = SQ_0;
+    currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -690,8 +690,12 @@ bool Position::put_piece(Square s, bool updateRecord)
 {
     const Color us = sideToMove;
 
-    if (phase == Phase::gameOver || action != Action::place ||
-        !(SQ_BEGIN <= s && s < SQ_END) || board[s]) {
+    if (phase == Phase::gameOver || !(SQ_BEGIN <= s && s < SQ_END) ||
+        board[s] & make_piece(~us)) {
+        return false;
+    }
+
+    if (!can_move_during_placing_phase() && board[s]) {
         return false;
     }
 
@@ -701,7 +705,19 @@ bool Position::put_piece(Square s, bool updateRecord)
         start();
     }
 
-    if (phase == Phase::placing) {
+    if (phase == Phase::placing && action == Action::place) {
+        if (can_move_during_placing_phase()) {
+            if (board[s] == NO_PIECE) {
+                if (currentSquare[us] != SQ_NONE) {
+                    return handle_moving_phase_for_put_piece(s, updateRecord);
+                }
+            } else {
+                // Select piece
+                currentSquare[us] = currentSquare[us] == s ? SQ_NONE : s;
+                return true;
+            }
+        }
+
         const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
                                               rule.pieceCount -
                                               pieceInHandCount[us]);
@@ -717,20 +733,20 @@ bool Position::put_piece(Square s, bool updateRecord)
 
         const Piece pc = board[s] = piece;
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
-        byColorBB[color_of(pc)] |= s; // TODO(calcitem): Put Marked?
+        byColorBB[color_of(pc)] |= s; // TODO: Put Marked?
 
         update_key(s);
 
         updateMobility(MOVETYPE_PLACE, s);
+
+        currentSquare[sideToMove] = SQ_NONE;
 
         if (updateRecord) {
             snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
                      rank_of(s));
         }
 
-        currentSquare = s;
-
-        const int n = mills_count(currentSquare);
+        const int n = mills_count(s);
 
         if (n == 0) {
             // If no Mill
@@ -761,11 +777,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                     keep_side_to_move();
                     break;
                 case BoardFullAction::sideToMoveRemovePiece:
-                    if (rule.isDefenderMoveFirst) {
-                        set_side_to_move(BLACK);
-                    } else {
-                        set_side_to_move(WHITE);
-                    }
+                    set_side_to_move(rule.isDefenderMoveFirst ? BLACK : WHITE);
                     pieceToRemoveCount[sideToMove] = 1;
                     keep_side_to_move();
                     break;
@@ -776,7 +788,7 @@ bool Position::put_piece(Square s, bool updateRecord)
             } else {
                 // Board is not full at the end of Placing phase
 
-                if (handle_placing_phase_end() == false) {
+                if (!handle_placing_phase_end()) {
                     change_side_to_move();
                 }
 
@@ -815,7 +827,7 @@ bool Position::put_piece(Square s, bool updateRecord)
                            pieceInHandCount[BLACK] >= 0);
                 }
 
-                if (handle_placing_phase_end() == false) {
+                if (!handle_placing_phase_end()) {
                     if (rule.millFormationActionInPlacingPhase ==
                         MillFormationActionInPlacingPhase::
                             removeOpponentsPieceFromHandThenOpponentsTurn) {
@@ -833,65 +845,72 @@ bool Position::put_piece(Square s, bool updateRecord)
         }
 
     } else if (phase == Phase::moving) {
+        return handle_moving_phase_for_put_piece(s, updateRecord);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
+bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
+{
+    if (check_if_game_is_over()) {
+        return true;
+    }
+
+    // If illegal
+    if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount || !rule.mayFly ||
+        pieceInHandCount[sideToMove] > 0 || pieceInHandCount[~sideToMove] > 0) {
+        if ((square_bb(s) &
+             MoveList<LEGAL>::adjacentSquaresBB[currentSquare[sideToMove]]) ==
+            0) {
+            return false;
+        }
+    }
+
+    if (updateRecord) {
+        snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
+                 file_of(currentSquare[sideToMove]),
+                 rank_of(currentSquare[sideToMove]), file_of(s), rank_of(s));
+        st.rule50++;
+    }
+
+    const Piece pc = board[currentSquare[sideToMove]];
+
+    CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare[sideToMove]);
+    CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare[sideToMove]);
+    CLEAR_BIT(byColorBB[color_of(pc)], currentSquare[sideToMove]);
+
+    updateMobility(MOVETYPE_REMOVE, currentSquare[sideToMove]);
+
+    SET_BIT(byTypeBB[ALL_PIECES], s);
+    SET_BIT(byTypeBB[type_of(pc)], s);
+    SET_BIT(byColorBB[color_of(pc)], s);
+
+    updateMobility(MOVETYPE_PLACE, s);
+
+    board[s] = pc;
+    update_key(s);
+    revert_key(currentSquare[sideToMove]);
+
+    board[currentSquare[sideToMove]] = NO_PIECE;
+    currentSquare[sideToMove] = SQ_NONE;
+
+    const int n = mills_count(s);
+
+    if (n == 0) {
+        // If no mill during Moving phase
+        change_side_to_move();
+
         if (check_if_game_is_over()) {
             return true;
         }
-
-        // If illegal
-        if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount ||
-            !rule.mayFly) {
-            if ((square_bb(s) &
-                 MoveList<LEGAL>::adjacentSquaresBB[currentSquare]) == 0) {
-                return false;
-            }
-        }
-
-        if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
-                     file_of(currentSquare), rank_of(currentSquare), file_of(s),
-                     rank_of(s));
-            st.rule50++;
-        }
-
-        const Piece pc = board[currentSquare];
-
-        CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare);
-        CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare);
-        CLEAR_BIT(byColorBB[color_of(pc)], currentSquare);
-
-        updateMobility(MOVETYPE_REMOVE, currentSquare);
-
-        SET_BIT(byTypeBB[ALL_PIECES], s);
-        SET_BIT(byTypeBB[type_of(pc)], s);
-        SET_BIT(byColorBB[color_of(pc)], s);
-
-        updateMobility(MOVETYPE_PLACE, s);
-
-        board[s] = pc;
-        update_key(s);
-        revert_key(currentSquare);
-
-        board[currentSquare] = NO_PIECE;
-
-        currentSquare = s;
-
-        const int n = mills_count(currentSquare);
-
-        if (n == 0) {
-            // If no mill during Moving phase
-            change_side_to_move();
-
-            if (check_if_game_is_over()) {
-                return true;
-            }
-        } else {
-            // If forming mill during Moving phase
-            pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
-            update_key_misc();
-            action = Action::remove;
-        }
     } else {
-        return false;
+        // If forming mill during Moving phase
+        pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
+        update_key_misc();
+        action = Action::remove;
     }
 
     return true;
@@ -961,7 +980,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
         return true;
     }
 
-    currentSquare = SQ_0;
+    currentSquare[sideToMove] = SQ_0;
 
     pieceToRemoveCount[sideToMove]--;
     update_key_misc();
@@ -995,14 +1014,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
 bool Position::select_piece(Square s)
 {
-    if (phase != Phase::moving)
+    // Allow selecting pieces during placing phase if allowed
+    if (phase != Phase::moving &&
+        !(phase == Phase::placing && can_move_during_placing_phase()))
         return false;
 
     if (action != Action::select && action != Action::place)
         return false;
 
     if (board[s] & make_piece(sideToMove)) {
-        currentSquare = s;
+        currentSquare[sideToMove] = s;
         action = Action::place;
 
         return true;
@@ -1026,7 +1047,8 @@ bool Position::handle_placing_phase_end()
         (rule.millFormationActionInPlacingPhase ==
              MillFormationActionInPlacingPhase ::
                  removeOpponentsPieceFromHandThenYourTurn &&
-         rule.mayRemoveMultiple == true);
+         rule.mayRemoveMultiple == true) ||
+        rule.mayMoveInPlacingPhase == true;
 
     if (rule.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
@@ -1044,6 +1066,11 @@ bool Position::handle_placing_phase_end()
     set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
 
     return true;
+}
+
+inline bool Position::can_move_during_placing_phase() const
+{
+    return rule.mayMoveInPlacingPhase;
 }
 
 bool Position::resign(Color loser)
@@ -1733,11 +1760,11 @@ void Position::flipHorizontally(vector<string> &gameMoveList,
         move = static_cast<Move>((llp[0] << 8) | llp[1]);
     }
 
-    if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
+    if (currentSquare[sideToMove] != 0) {
+        f = currentSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = currentSquare[sideToMove] % static_cast<Square>(RANK_NB);
         r = (RANK_NB - r) % RANK_NB;
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {
@@ -1831,16 +1858,16 @@ void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
         move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
-    if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
+    if (currentSquare[sideToMove] != 0) {
+        f = currentSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = currentSquare[sideToMove] % static_cast<Square>(RANK_NB);
 
         if (f == 1)
             f = FILE_NB;
         else if (f == FILE_NB)
             f = 1;
 
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {
@@ -1998,11 +2025,11 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
         move = static_cast<Move>(((llp[0] << 8) | llp[1]));
     }
 
-    if (currentSquare != 0) {
-        f = currentSquare / static_cast<Square>(RANK_NB);
-        r = currentSquare % static_cast<Square>(RANK_NB);
+    if (currentSquare[sideToMove] != 0) {
+        f = currentSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = currentSquare[sideToMove] % static_cast<Square>(RANK_NB);
         r = (r + RANK_NB - degrees) % RANK_NB;
-        currentSquare = static_cast<Square>(f * RANK_NB + r);
+        currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {

@@ -287,6 +287,11 @@ void Game::setTips()
             tips = turnStr + " to remove a piece. " +
                    std::to_string(p.pieceToRemoveCount[p.sideToMove]) +
                    " pieces can be removed.";
+        } else if (rule.mayMoveInPlacingPhase &&
+                   (p.action == Action::select || p.action == Action::place)) {
+            tips = turnStr + " to place or move a piece. " +
+                   std::to_string(p.pieceInHandCount[p.sideToMove]) +
+                   " pieces remain unplaced.";
         }
         break;
 

@@ -21,7 +21,6 @@ import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
-import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
@@ -235,11 +234,6 @@ class RuleSettingsPage extends StatelessWidget {
     DB().ruleSettings = ruleSettings.copyWith(mayMoveInPlacingPhase: value);
 
     logger.t("[config] mayMoveInPlacingPhase: $value");
-
-    if (value) {
-      rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).experimental);
-    }
   }
 
   void _setIsDefenderMoveFirst(RuleSettings ruleSettings, bool value) {
@@ -355,14 +349,13 @@ class RuleSettingsPage extends StatelessWidget {
         SettingsCard(
           title: Text(S.of(context).moving),
           children: <Widget>[
-            if (EnvironmentConfig.devMode)
-              SettingsListTile.switchTile(
-                value: ruleSettings.mayMoveInPlacingPhase,
-                onChanged: (bool val) =>
-                    _setMayMoveInPlacingPhase(context, ruleSettings, val),
-                titleString: S.of(context).mayMoveInPlacingPhase,
-                subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
-              ),
+            SettingsListTile.switchTile(
+              value: ruleSettings.mayMoveInPlacingPhase,
+              onChanged: (bool val) =>
+                  _setMayMoveInPlacingPhase(context, ruleSettings, val),
+              titleString: S.of(context).mayMoveInPlacingPhase,
+              subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
+            ),
             SettingsListTile.switchTile(
               value: ruleSettings.isDefenderMoveFirst,
               onChanged: (bool val) =>

@@ -103,7 +103,11 @@ int Thread::search()
     std::chrono::steady_clock::time_point cycleEnd;
 #endif
 
-    if (rootPos->get_phase() == Phase::moving) {
+    bool isMovingOrMayMoveInPlacing = (rootPos->get_phase() == Phase::moving) ||
+                                      (rootPos->get_phase() == Phase::placing &&
+                                       rule.mayMoveInPlacingPhase);
+
+    if (isMovingOrMayMoveInPlacing) {
 #ifdef RULE_50
         if (posKeyHistory.size() >= rule.nMoveRule) {
             return 50;
@@ -123,10 +127,10 @@ int Thread::search()
         assert(posKeyHistory.size() < 256);
     }
 
-    if (rootPos->get_phase() == Phase::placing) {
+    if (rootPos->get_phase() == Phase::placing && !rule.mayMoveInPlacingPhase) {
         posKeyHistory.clear();
         rootPos->st.rule50 = 0;
-    } else if (rootPos->get_phase() == Phase::moving) {
+    } else if (isMovingOrMayMoveInPlacing) {
         rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
 

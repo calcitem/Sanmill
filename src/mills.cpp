@@ -461,6 +461,7 @@ bool is_star_squares_full(Position *pos)
     return ret;
 }
 
+// TODO: For Lasker Morris
 Depth get_search_depth(const Position *pos)
 {
     Depth d = 0;

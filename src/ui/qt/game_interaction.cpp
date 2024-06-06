@@ -62,7 +62,7 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
 
 bool Game::performAction(File f, Rank r, QPointF p)
 {
-    // Judge whether to select, place or remove the piece
+    // Judge whether to select, place, move, or remove the piece
     bool result = false;
     PieceItem *piece;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
@@ -87,8 +87,8 @@ bool Game::performAction(File f, Rank r, QPointF p)
             break;
         }
 
-        // If the moving is not successful, try to reselect. There is no break
-        // here
+        // If placing is not successful, try to reselect or move. There is no
+        // break here
         [[fallthrough]];
 
     case Action::select:

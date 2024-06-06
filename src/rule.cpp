@@ -50,7 +50,7 @@ const Rule RULES[N_RULES] = {
          removeOpponentsPieceFromHandThenOpponentsTurn,
      false, false, false, false, BoardFullAction::firstPlayerLose,
      StalemateAction::endWithStalemateLoss, true, 100, 100, true},
-    {"Lasker Morris (WIP)", "Lasker Morris", 10, 3, 3, false,
+    {"Lasker Morris", "Lasker Morris", 10, 3, 3, false,
      MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, true,
      false, false, false, BoardFullAction::firstPlayerLose,
      StalemateAction::endWithStalemateLoss, true, 100, 100, true},

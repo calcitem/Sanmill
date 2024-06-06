@@ -74,13 +74,16 @@ void MovePicker::score()
             // all phrase, check if place sq can close mill
             if (ourMillsCount > 0) {
                 cur->value += RATING_ONE_MILL * ourMillsCount;
-            } else if (pos.get_phase() == Phase::placing) {
-                // placing phrase, check if place sq can block their close mill
+            } else if (pos.get_phase() == Phase::placing &&
+                       !rule.mayMoveInPlacingPhase) {
+                // original logic for placing phase without move allowed
                 theirMillsCount = pos.potential_mills_count(
                     to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
-            } else if (pos.get_phase() == Phase::moving) {
-                // moving phrase, check if place sq can block their close mill
+            } else if (pos.get_phase() == Phase::moving ||
+                       (pos.get_phase() == Phase::placing &&
+                        rule.mayMoveInPlacingPhase)) {
+                // logic for moving phase or placing phase with move allowed
                 theirMillsCount = pos.potential_mills_count(
                     to, ~pos.side_to_move());
 

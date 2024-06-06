@@ -178,6 +178,7 @@ public:
     void put_piece(Piece pc, Square s);
     bool put_piece(File f, Rank r);
     bool put_piece(Square s, bool updateRecord = false);
+    bool handle_moving_phase_for_put_piece(Square s, bool updateRecord);
 
     bool remove_piece(File f, Rank r);
     bool remove_piece(Square s, bool updateRecord = false);
@@ -190,6 +191,8 @@ public:
     bool is_adjacent_to(Square s, Color c);
 
     bool handle_placing_phase_end();
+
+    bool can_move_during_placing_phase() const;
 
     // Data members
     Piece board[SQUARE_EXT_NB];
@@ -221,7 +224,7 @@ public:
     // Relate to Rule
     static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];
 
-    Square currentSquare;
+    Square currentSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     int gamesPlayedCount {0};
 
     static constexpr int RECORD_LEN_MAX = 64;
@@ -343,7 +346,7 @@ inline Piece *Position::get_board() noexcept
 
 inline Square Position::current_square() const
 {
-    return currentSquare;
+    return currentSquare[sideToMove];
 }
 
 inline Phase Position::get_phase() const

@@ -25,28 +25,39 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 {
     ExtMove *cur = moveList;
 
-    // move piece that location weak first
-    for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+    if (pos.phase == Phase::placing && !rule.mayMoveInPlacingPhase) {
+        return cur;
+    }
+
+    const int pieceOnBoardCount = pos.piece_on_board_count(pos.side_to_move());
+    const bool piecesInHandEmpty = (pos.pieceInHandCount[WHITE] == 0 &&
+                                    pos.pieceInHandCount[BLACK] == 0);
+    Piece *board = pos.get_board();
+
+    // Iterate over all squares in reverse priority order
+    // Move piece that location weak first
+    for (auto i = SQUARE_NB - 1; i >= 0; --i) {
         const Square from = MoveList<LEGAL>::movePriorityList[i];
 
-        if (!pos.select_piece(from)) {
+        // Skip if no piece of the current side to move
+        if (!(pos.board[from] & make_piece(pos.sideToMove))) {
             continue;
         }
 
-        if (rule.mayFly && pos.piece_on_board_count(pos.side_to_move()) <=
-                               rule.flyPieceCount) {
-            // piece count < 3 or 4 and allow fly, if is empty point, that's ok,
-            // do not need in move list
+        // Special condition to generate "fly" moves
+        if (rule.mayFly && pieceOnBoardCount <= rule.flyPieceCount &&
+            piecesInHandEmpty) {
             for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
-                if (!pos.get_board()[to]) {
+                if (!board[to]) {
                     *cur++ = make_move(from, to);
                 }
             }
         } else {
+            // Generate standard moves based on direction vectors
             for (auto direction = MD_BEGIN; direction < MD_NB; ++direction) {
                 const Square to =
                     MoveList<LEGAL>::adjacentSquares[from][direction];
-                if (to && !pos.get_board()[to]) {
+                if (to && !board[to]) {
                     *cur++ = make_move(from, to);
                 }
             }
@@ -61,7 +72,12 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 template <>
 ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 {
+    const Color us = pos.side_to_move();
     ExtMove *cur = moveList;
+
+    if (pos.piece_in_hand_count(us) == 0) {
+        return cur;
+    }
 
     for (auto s : MoveList<LEGAL>::movePriorityList) {
         if (!pos.get_board()[s]) {
@@ -129,11 +145,14 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
     switch (pos.get_action()) {
     case Action::select:
     case Action::place:
+        // Generate both PLACE and MOVE actions if the phase is placing
         if (pos.get_phase() == Phase::placing ||
             pos.get_phase() == Phase::ready) {
-            return generate<PLACE>(pos, moveList);
+            cur = generate<PLACE>(pos, moveList);
+            return generate<MOVE>(pos, cur);
         }
 
+        // Generate MOVE actions if the phase is moving
         if (pos.get_phase() == Phase::moving) {
             return generate<MOVE>(pos, moveList);
         }
