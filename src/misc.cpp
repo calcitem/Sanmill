@@ -361,10 +361,13 @@ void prefetch(void *addr)
     __asm__("");
 #endif
 
-#if defined(__INTEL_COMPILER) || defined(_MSC_VER)
+#if defined(__INTEL_COMPILER) || \
+    (defined(_MSC_VER) && !defined(_M_ARM) && !defined(_M_ARM64))
     _mm_prefetch(static_cast<char *>(addr), _MM_HINT_T0);
-#else
+#elif defined(__GNUC__) || defined(__clang__)
     __builtin_prefetch(addr);
+#else
+    (void)addr;
 #endif
 }
 

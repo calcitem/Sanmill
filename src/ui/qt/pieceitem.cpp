@@ -52,7 +52,7 @@ PieceItem::PieceItem(QGraphicsItem *parent)
 #endif /* QT_MOBILE_APP_UI */
 
     removeLineColor = QColor(227, 23, 13);
-    removeLineColor.setAlphaF(0.9);
+    removeLineColor.setAlphaF(0.9f);
 }
 
 PieceItem::~PieceItem() = default;

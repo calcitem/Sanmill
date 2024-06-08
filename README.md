@@ -79,7 +79,7 @@ When reporting an issue or a bug, please tell us which version and compiler you 
 If you have started using Ubuntu or any Ubuntu-based Linux distribution, you must install Qt by running the following command as root:
 
 ```shell
-sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
+sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
 ```
 
 Use Qt Creator to open `src/ui/qt/CMakeLists.txt` , or run

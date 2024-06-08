@@ -37,7 +37,21 @@
 #define STRCPY(destination, destination_size, source) \
     strcpy_s(destination, destination_size, source)
 
+#if defined(_M_ARM) || defined(_M_ARM64)
+// TODO: See generic_popcount()
+inline int popcnt_software(uint32_t x) noexcept
+{
+    int count = 0;
+    while (x) {
+        count += x & 1;
+        x >>= 1;
+    }
+    return count;
+}
+#define POPCNT(x) popcnt_software(x)
+#else
 #define POPCNT(x) __popcnt(x)
+#endif
 
 #else // _WIN32
 

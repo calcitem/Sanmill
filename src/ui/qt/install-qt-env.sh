@@ -15,15 +15,15 @@ detect_os() {
 install_qt_macos() {
     brew install cmake
     brew install qt
-    brew install qt5
-    echo 'export PATH="/opt/homebrew/opt/qt@5/bin:$PATH"' >> ~/.zshrc
+    brew install qt6
+    echo 'export PATH="/opt/homebrew/opt/qt@6/bin:$PATH"' >> ~/.zshrc
     source ~/.zshrc
 }
 
 # Function to install qt on Ubuntu
 install_qt_ubuntu() {
     sudo apt-get update
-    sudo apt-get install -y qt5-default qtmultimedia5-dev qtcreator cmake
+    sudo apt-get install -y qt6-base-dev qt6-multimedia-dev qtcreator cmake
 }
 
 # Main function to install qt

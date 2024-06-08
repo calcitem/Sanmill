@@ -141,7 +141,7 @@ make build ARCH=x86-64-modern
 如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
 
 ```shell
-sudo apt-get install qt5-default qtmultimedia5-dev qtcreator
+sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
 ```
 
 使用 Qt Creator 打开 `src/ui/qt/CMakeLists.txt` ，或者运行：

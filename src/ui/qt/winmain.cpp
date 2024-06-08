@@ -48,7 +48,9 @@ int main(int argc, char *argv[])
 
     QApplication a(argc, argv);
     QTranslator translator;
-    translator.load("mill-pro-qt_zh_CN");
+    if (!translator.load("mill-pro-qt_zh_CN")) {
+        qWarning() << "Failed to load translation file.";
+    }
     a.installTranslator(&translator);
     MillGameWindow w;
     w.show();

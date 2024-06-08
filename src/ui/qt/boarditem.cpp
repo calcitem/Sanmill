@@ -149,7 +149,7 @@ void BoardItem::drawBoard(QPainter *painter)
 {
 #ifndef QT_MOBILE_APP_UI
     QColor shadowColor(128, 42, 42);
-    shadowColor.setAlphaF(0.3);
+    shadowColor.setAlphaF(0.3f);
     painter->fillRect(boundingRect(), QBrush(shadowColor));
 #endif /* ! QT_MOBILE_APP_UI */
 
@@ -260,7 +260,7 @@ void BoardItem::drawPolarCoordinates(QPainter *painter)
     painter->setFont(font);
 
     for (int r = 0; r < RANK_NB; r++) {
-        QString text('1' + r);
+        QString text(QChar('1' + r));
         painter->drawText(points[(FILE_NB - 1) * RANK_NB + r], text);
     }
 }

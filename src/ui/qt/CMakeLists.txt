@@ -1,15 +1,19 @@
 cmake_minimum_required(VERSION 3.10)
 project(mill-pro)
 
+# Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
 
+# Include directories
 include_directories(${CMAKE_SOURCE_DIR} ../../../include ../.. ../../test)
 include_directories(../../perfect)
 
-qt5_add_resources(RESOURCES_RCC ${RESOURCES})
+# Add resource files
+qt_add_resources(RESOURCES_RCC ${RESOURCES})
 
+# Source grouping
 file(GLOB SOURCES_CORE ../../*.cpp ../../*.h ../../../include/*.h)
 source_group("Source Files\\Core" FILES ${SOURCES_CORE})
 
@@ -25,8 +29,12 @@ source_group("Source Files\\Perfect" FILES ${SOURCES_PERFECT})
 file(GLOB FORMS *.ui)
 file(GLOB RESOURCE_FILES *.rc *.qrc)
 
+# Compiler flags
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /W4")
+  if(CMAKE_GENERATOR_PLATFORM STREQUAL "ARM64")
+    # Add ARM64-specific flags or settings
+  endif()
 elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Wno-long-long -Wno-variadic-macros -Wno-overlength-strings -fdiagnostics-color=auto -Wno-deprecated -Wno-unused-parameter")
 else()
@@ -46,12 +54,13 @@ set(all_sources
 
 list(APPEND all_sources ${SOURCES_PERFECT})
 
+# Link libraries and set properties for automatic Qt handling
 add_executable(${PROJECT_NAME} ${all_sources})
 
 if(MSVC)
   target_link_libraries(${PROJECT_NAME} shlwapi)
 endif()
-target_link_libraries(${PROJECT_NAME} Qt5::Core Qt5::Gui Qt5::Multimedia Qt5::Widgets)
+target_link_libraries(${PROJECT_NAME} Qt6::Core Qt6::Gui Qt6::Multimedia Qt6::Widgets)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
 

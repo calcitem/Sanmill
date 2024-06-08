@@ -143,20 +143,28 @@ constexpr Bitboard file_bb(Square s)
 
 /// popcount() counts the number of non-zero bits in a bitboard
 
-inline int popcount(Bitboard b) noexcept
+inline int generic_popcount(Bitboard b) noexcept
 {
-#ifdef DO_NOT_USE_POPCNT
-
     union {
         Bitboard bb;
         uint16_t u[2];
     } v = {b};
-
     return PopCnt16[v.u[0]] + PopCnt16[v.u[1]];
+}
+
+inline int popcount(Bitboard b) noexcept
+{
+#ifdef DO_NOT_USE_POPCNT
+
+    return generic_popcount(b);
 
 #elif defined(_MSC_VER) || defined(__INTEL_COMPILER)
 
+#if defined(_M_X64) || defined(_M_IX86)
     return _mm_popcnt_u32(b);
+#else
+    return generic_popcount(b);
+#endif
 
 #else // Assumed gcc or compatible compiler
 
