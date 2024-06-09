@@ -5,7 +5,7 @@ setlocal
 git clean -fdx
 
 :: Detect system architecture and set Qt6_DIR accordingly
-if exist "%ProgramFiles%\Arm" (
+if exist "%ProgramFiles% (Arm)" (
     set "Qt6_DIR=C:\Qt\6.7.1\msvc2019_arm64\lib\cmake\Qt6"
 ) else (
     set "Qt6_DIR=C:\Qt\6.7.1\msvc2019_64\lib\cmake\Qt6"
@@ -27,7 +27,7 @@ if not defined vsver (
 )
 
 :: Set system architecture based on previous detection
-if exist "%ProgramFiles%\Arm" (
+if exist "%ProgramFiles% (Arm)" (
     set "arch=ARM64"
 ) else (
     set "arch=X64"
@@ -37,10 +37,10 @@ if exist "%ProgramFiles%\Arm" (
 cmake -G "%vsver%" -A %arch% .
 
 :: Build and deploy Debug version
-cmake --build . --target mill-pro --config Debug
+cmake --build . --target mill-pro --config Debug -j
 C:\Qt\Tools\QtDesignStudio\qt6_design_studio_reduced_version\bin\windeployqt "Debug\mill-pro.exe"
 
 :: Build and deploy Release version
-cmake --build . --target mill-pro --config Release
+cmake --build . --target mill-pro --config Release -j
 C:\Qt\Tools\QtDesignStudio\qt6_design_studio_reduced_version\bin\windeployqt "Release\mill-pro.exe"
 
