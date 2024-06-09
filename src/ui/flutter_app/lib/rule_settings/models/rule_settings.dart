@@ -148,7 +148,7 @@ class RuleSettings {
   @Deprecated('Use [millFormationActionInPlacingPhase] instead')
   @HiveField(4)
   final bool hasBannedLocations;
-  @HiveField(5)
+  @HiveField(5, defaultValue: false)
   final bool mayMoveInPlacingPhase;
   @HiveField(6)
   final bool isDefenderMoveFirst;
