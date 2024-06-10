@@ -84,11 +84,22 @@ void Game::updateState(bool result)
 // Update move and position list
 void Game::updateMoveList()
 {
+    // Early return if in a specific phase and action
     if (position.get_phase() == Phase::moving &&
         position.get_action() == Action::place) {
         return;
     }
+
+    // Check if gameMoveList is not empty and the last move is the same as the
+    // current record
+    if (!gameMoveList.empty() && gameMoveList.back() == position.record) {
+        return;
+    }
+
+    // Add the new move to the list
     gameMoveList.emplace_back(position.record);
+
+    // Update position key history based on the length of the position record
     if (strlen(position.record) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
