@@ -27,7 +27,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.7.1'
+          version: '5.15.2'
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
@@ -44,12 +44,11 @@ jobs:
       - name: Build Qt with CMake
         run: |
           cd src/ui/qt
-          set "Qt6_DIR=D:\a\Sanmill\Qt\6.7.1\msvc2019_64\lib\cmake\Qt6"
-          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\6.7.1\\msvc2019_64"
+          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\5.15.2\\msvc2019_64"
           cmake --build . --target mill-pro --config Release
 
       - name: Archive Qt
         uses: actions/upload-artifact@v4
         with:
           name: mill-pro
-          path: src/ui/qt/release/mill-pro.exe
+          path: src/ui/qt/Release/mill-pro.exe
