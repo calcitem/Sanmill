@@ -236,7 +236,13 @@ extension PhaseExtension on Phase {
   String? getTip(BuildContext context) {
     switch (this) {
       case Phase.placing:
-        return S.of(context).tipPlace;
+        if (DB().ruleSettings.mayMoveInPlacingPhase) {
+          final String side =
+              GameController().position.sideToMove.playerName(context);
+          return S.of(context).tipToMove(side);
+        } else {
+          return S.of(context).tipPlace;
+        }
       case Phase.moving:
         return S.of(context).tipMove;
       case Phase.ready:

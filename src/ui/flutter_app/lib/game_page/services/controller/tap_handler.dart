@@ -183,10 +183,20 @@ class TapHandler {
                       GameMode.humanVsHuman) {
                     final String side =
                         controller.position.sideToMove.playerName(context);
-                    showTip(
-                        "${S.of(context).tipPlaced} ${S.of(context).tipToMove(side)}");
+                    if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                      showTip(S.of(context).tipToMove(side));
+                    } else {
+                      showTip(
+                          "${S.of(context).tipPlaced} ${S.of(context).tipToMove(side)}");
+                    }
                   } else {
-                    showTip(S.of(context).tipPlaced);
+                    final String side =
+                        controller.position.sideToMove.playerName(context);
+                    if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                      showTip(S.of(context).tipToMove(side));
+                    } else {
+                      showTip(S.of(context).tipPlaced);
+                    }
                   }
                 } else {
                   if (GameController().gameInstance.gameMode ==
@@ -211,8 +221,12 @@ class TapHandler {
                 if (GameController().position.phase == Phase.placing) {
                   final String side =
                       controller.position.sideToMove.playerName(context);
-                  showTip(
-                      "${S.of(context).tipPlaced} ${S.of(context).tipToMove(side)}");
+                  if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                    showTip(S.of(context).tipToMove(side));
+                  } else {
+                    showTip(
+                        "${S.of(context).tipPlaced} ${S.of(context).tipToMove(side)}");
+                  }
                 } else {
                   final String side =
                       controller.position.sideToMove.playerName(context);
@@ -294,10 +308,21 @@ class TapHandler {
                   GameMode.humanVsHuman) {
                 final String side =
                     controller.position.sideToMove.playerName(context);
-                showTip(
-                    "${S.of(context).tipToMove(side)} ${S.of(context).tipPlace}");
+
+                if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                  showTip(S.of(context).tipToMove(side));
+                } else {
+                  showTip(
+                      "${S.of(context).tipToMove(side)} ${S.of(context).tipPlace}");
+                }
               } else {
-                showTip(S.of(context).tipPlace);
+                final String side =
+                    controller.position.sideToMove.playerName(context);
+                if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                  showTip(S.of(context).tipToMove(side));
+                } else {
+                  showTip(S.of(context).tipPlace);
+                }
               }
               if (DB().generalSettings.screenReaderSupport) {
                 showTip(S.of(context).selected);

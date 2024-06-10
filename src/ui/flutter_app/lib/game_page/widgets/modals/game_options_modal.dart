@@ -64,9 +64,18 @@ class _GameOptionsModal extends StatelessWidget {
 
                   GameController().engineToGo(context, isMoveNow: false);
 
-                  GameController()
-                      .headerTipNotifier
-                      .showTip(S.of(context).tipPlace, snackBar: false);
+                  final String side =
+                      GameController().position.sideToMove.playerName(context);
+
+                  if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                    GameController().headerTipNotifier.showTip(
+                        S.of(context).tipToMove(side),
+                        snackBar: false);
+                  } else {
+                    GameController()
+                        .headerTipNotifier
+                        .showTip(S.of(context).tipPlace, snackBar: false);
+                  }
                 }
 
                 GameController().headerIconsNotifier.showIcons();
@@ -203,9 +212,18 @@ class _GameOptionsModal extends StatelessWidget {
 
               GameController().engineToGo(context, isMoveNow: false);
 
-              GameController()
-                  .headerTipNotifier
-                  .showTip(S.of(context).tipPlace, snackBar: false);
+              final String side =
+                  GameController().position.sideToMove.playerName(context);
+
+              if (DB().ruleSettings.mayMoveInPlacingPhase) {
+                GameController()
+                    .headerTipNotifier
+                    .showTip(S.of(context).tipToMove(side), snackBar: false);
+              } else {
+                GameController()
+                    .headerTipNotifier
+                    .showTip(S.of(context).tipPlace, snackBar: false);
+              }
             }
 
             GameController().headerIconsNotifier.showIcons();
