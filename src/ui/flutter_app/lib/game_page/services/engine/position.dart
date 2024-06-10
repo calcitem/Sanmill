@@ -46,6 +46,7 @@ class Position {
       List<PieceColor>.filled(7 * 7, PieceColor.none);
 
   int placedPieceNumber = 0;
+  int selectedPieceNumber = 0;
   late List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
     sqNumber,
     (int index) => SquareAttribute(placedPieceNumber: 0),
@@ -584,12 +585,14 @@ class Position {
           if (_currentSquare[us] != 0) {
             return handleMovingPhaseForPutPiece(s);
           } else {
+            selectedPieceNumber = 0;
             GameController().gameInstance.blurIndex = null;
           }
         } else {
           // Select piece
           if (_currentSquare[us] == s) {
             _currentSquare[us] = 0;
+            selectedPieceNumber = 0;
             GameController().gameInstance.focusIndex = null;
             SoundManager().playTone(Sound.mill);
           } else {
@@ -597,6 +600,7 @@ class Position {
             GameController().gameInstance.focusIndex = squareToIndex[s];
             SoundManager().playTone(Sound.select);
           }
+          selectedPieceNumber = sqAttrList[s].placedPieceNumber;
           GameController().gameInstance.blurIndex = null;
           return true;
         }
@@ -616,6 +620,10 @@ class Position {
         pieceOnBoardCount[us] = pieceOnBoardCount[us]! + 1;
       }
 
+      // Set square number
+      placedPieceNumber++;
+      sqAttrList[s].placedPieceNumber = placedPieceNumber;
+
       _grid[squareToIndex[s]!] = sideToMove;
       _board[s] = sideToMove;
 
@@ -624,10 +632,6 @@ class Position {
       _record = ExtMove("(${fileOf(s)},${rankOf(s)})");
 
       _updateKey(s);
-
-      // Set square number
-      placedPieceNumber++;
-      sqAttrList[s].placedPieceNumber = placedPieceNumber;
 
       final int n = _millsCount(s);
 
@@ -814,6 +818,13 @@ class Position {
     // Set square number
     sqAttrList[s].placedPieceNumber = placedPieceNumber;
 
+    if (selectedPieceNumber != 0) {
+      sqAttrList[s].placedPieceNumber = selectedPieceNumber;
+      selectedPieceNumber = 0;
+    } else {
+      sqAttrList[s].placedPieceNumber = placedPieceNumber;
+    }
+
     final int n = _millsCount(s);
 
     if (n == 0) {
@@ -955,7 +966,7 @@ class Position {
     GameController().gameInstance.blurIndex = squareToIndex[sq];
 
     // Set square number
-    placedPieceNumber = sqAttrList[sq].placedPieceNumber;
+    selectedPieceNumber = sqAttrList[sq].placedPieceNumber;
 
     return const GameResponseOK();
   }
@@ -1381,6 +1392,7 @@ extension SetupPosition on Position {
     isStalemateRemoving = false;
 
     placedPieceNumber = 0;
+    selectedPieceNumber = 0;
     for (int i = 0; i < sqNumber; i++) {
       sqAttrList[i].placedPieceNumber = 0;
     }
@@ -1454,6 +1466,7 @@ extension SetupPosition on Position {
     isStalemateRemoving = pos.isStalemateRemoving;
 
     placedPieceNumber = pos.placedPieceNumber;
+    selectedPieceNumber = pos.selectedPieceNumber;
     for (int i = 0; i < sqNumber; i++) {
       sqAttrList[i].placedPieceNumber = pos.sqAttrList[i].placedPieceNumber;
     }
