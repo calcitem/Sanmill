@@ -30,8 +30,6 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
     }
 
     const int pieceOnBoardCount = pos.piece_on_board_count(pos.side_to_move());
-    const bool piecesInHandEmpty = (pos.pieceInHandCount[WHITE] == 0 &&
-                                    pos.pieceInHandCount[BLACK] == 0);
     Piece *board = pos.get_board();
 
     // Iterate over all squares in reverse priority order
@@ -46,7 +44,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 
         // Special condition to generate "fly" moves
         if (rule.mayFly && pieceOnBoardCount <= rule.flyPieceCount &&
-            piecesInHandEmpty) {
+            pos.pieceInHandCount[pos.side_to_move()] == 0) {
             for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!board[to]) {
                     *cur++ = make_move(from, to);

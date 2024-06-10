@@ -861,7 +861,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
     // If illegal
     if (pieceOnBoardCount[sideToMove] > rule.flyPieceCount || !rule.mayFly ||
-        pieceInHandCount[sideToMove] > 0 || pieceInHandCount[~sideToMove] > 0) {
+        pieceInHandCount[sideToMove] > 0) {
         if ((square_bb(s) &
              MoveList<LEGAL>::adjacentSquaresBB[currentSquare[sideToMove]]) ==
             0) {

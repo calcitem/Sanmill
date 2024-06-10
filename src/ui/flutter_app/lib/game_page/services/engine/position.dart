@@ -776,8 +776,7 @@ class Position {
     // If illegal
     if (pieceOnBoardCount[sideToMove]! > DB().ruleSettings.flyPieceCount ||
         !DB().ruleSettings.mayFly ||
-        pieceInHandCount[sideToMove]! > 0 ||
-        pieceInHandCount[sideToMove.opponent]! > 0) {
+        pieceInHandCount[sideToMove]! > 0) {
       int md;
 
       for (md = 0; md < moveDirectionNumber; md++) {
