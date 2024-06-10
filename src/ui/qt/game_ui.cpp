@@ -107,30 +107,6 @@ void Game::updateStatusBar(bool reset)
     emit advantageChanged(advantage);
 }
 
-void Game::updateLCDDisplays()
-{
-    emit score1Changed(QString::number(position.score[WHITE], 10));
-    emit score2Changed(QString::number(position.score[BLACK], 10));
-    emit scoreDrawChanged(QString::number(position.score_draw, 10));
-
-    // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                                position.score_draw;
-    int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
-    if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[WHITE] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_2 = position.score[BLACK] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_draw = position.score_draw * 10000 /
-                           position.gamesPlayedCount;
-    }
-
-    emit winningRate1Changed(QString::number(winningRate_1, 10));
-    emit winningRate2Changed(QString::number(winningRate_2, 10));
-    emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
-}
-
 void Game::updateLcdDisplay()
 {
     // Update LCD display
@@ -182,7 +158,7 @@ bool Game::updateScene()
     selectCurrentAndDeletedPieces(deletedPiece);
 
     // Update LCD displays
-    updateLCDDisplays();
+    updateLcdDisplay();
 
     // Update tips
     setTips();

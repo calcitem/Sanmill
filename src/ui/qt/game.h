@@ -208,7 +208,6 @@ private:
     void handleDeletedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
-    void updateLCDDisplays();
     void selectCurrentAndDeletedPieces(PieceItem *deletedPiece);
 
 signals:
