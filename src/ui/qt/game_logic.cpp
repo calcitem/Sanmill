@@ -62,20 +62,18 @@ void Game::handleDeletedPiece(PieceItem *piece, int key,
                   scene.pos_p2;
     }
 
-    if (piece->pos() != pos) {
-        // In order to prepare for the selection of the recently removed
-        // pieces
+    if (piece && piece->pos() != pos) {
+        // In order to prepare for the selection of the recently removed pieces
         deletedPiece = piece;
 
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
         if (position.get_phase() == Phase::moving) {
 #endif
-            auto *animation = new QPropertyAnimation(piece, "pos");
-            animation->setDuration(durationTime);
-            animation->setStartValue(piece->pos());
-            animation->setEndValue(pos);
-            animation->setEasingCurve(QEasingCurve::InOutQuad);
-            animationGroup->addAnimation(animation);
+            auto *animation = createPieceAnimation(piece, piece->pos(), pos,
+                                                   durationTime);
+            if (animation) {
+                animationGroup->addAnimation(animation);
+            }
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
         }
 #endif

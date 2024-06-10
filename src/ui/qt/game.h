@@ -30,9 +30,10 @@
 #include <map>
 #include <vector>
 
-#include <QParallelAnimationGroup>
 #include <QModelIndex>
+#include <QParallelAnimationGroup>
 #include <QPointF>
+#include <QPropertyAnimation>
 #include <QSettings>
 #include <QStringListModel>
 #include <QTextStream>
@@ -274,6 +275,12 @@ public slots:
 
     // Is there a falling animation
     void setAnimation(bool arg = true) noexcept;
+
+    // Set the piece animation
+    QPropertyAnimation *createPieceAnimation(PieceItem *piece,
+                                                   const QPointF &startPos,
+                                                   const QPointF &endPos,
+                                                   int duration);
 
     // Is there a drop sound effect
     void setSound(bool arg = true) const noexcept;

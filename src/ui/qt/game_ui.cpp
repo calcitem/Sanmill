@@ -58,6 +58,24 @@ void Game::setAnimation(bool arg) noexcept
     settings->setValue("Options/Animation", arg);
 }
 
+// Set the piece animation
+QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
+                                         const QPointF &startPos,
+                                         const QPointF &endPos, int duration)
+{
+    if (!piece) {
+        qDebug() << "piece is nullptr in createPieceAnimation";
+        return nullptr;
+    }
+
+    auto *animation = new QPropertyAnimation(piece, "pos");
+    animation->setDuration(duration);
+    animation->setStartValue(startPos);
+    animation->setEndValue(endPos);
+    animation->setEasingCurve(QEasingCurve::InOutQuad);
+    return animation;
+}
+
 void Game::updateStatusBar(bool reset)
 {
     // Signal update status bar
@@ -184,6 +202,7 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
 
     for (int i = 0; i < nTotalPieces; i++) {
         const auto piece = pieceList.at(static_cast<size_t>(i));
+        assert(piece != nullptr);
 
         piece->setSelected(false);
 
@@ -198,17 +217,16 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
                 pos = scene.polarCoordinateToPoint(
                     static_cast<File>(j / RANK_NB),
                     static_cast<Rank>(j % RANK_NB + 1));
-                if (piece->pos() != pos) {
+                if (piece && piece->pos() != pos) {
                     // Let the moving pieces be at the top level
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    auto *animation = new QPropertyAnimation(piece, "pos");
-                    animation->setDuration(durationTime);
-                    animation->setStartValue(piece->pos());
-                    animation->setEndValue(pos);
-                    animation->setEasingCurve(QEasingCurve::InOutQuad);
-                    animationGroup->addAnimation(animation);
+                    auto *animation = createPieceAnimation(piece, piece->pos(),
+                                                           pos, durationTime);
+                    if (animation) {
+                        animationGroup->addAnimation(animation);
+                    }
                 } else {
                     // Let the still pieces be at the bottom
                     piece->setZValue(0);
