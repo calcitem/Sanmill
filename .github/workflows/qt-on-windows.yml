@@ -31,7 +31,6 @@ jobs:
           host: 'windows'
           target: 'desktop'
           arch: 'win64_msvc2019_64'
-          modules: 'qtmultimedia'
           install-deps: 'true'
           setup-python: 'true'
           tools: 'tools_cmake'
