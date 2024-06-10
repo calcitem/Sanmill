@@ -278,9 +278,9 @@ public slots:
 
     // Set the piece animation
     QPropertyAnimation *createPieceAnimation(PieceItem *piece,
-                                                   const QPointF &startPos,
-                                                   const QPointF &endPos,
-                                                   int duration);
+                                             const QPointF &startPos,
+                                             const QPointF &endPos,
+                                             int duration);
 
     // Is there a drop sound effect
     void setSound(bool arg = true) const noexcept;
