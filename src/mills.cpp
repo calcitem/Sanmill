@@ -475,7 +475,9 @@ Depth get_search_depth(const Position *pos)
 
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
-            if (!gameOptions.getDrawOnHumanExperience()) {
+            // TODO: Lasker Morris
+            if (!gameOptions.getDrawOnHumanExperience() ||
+                rule.mayMoveInPlacingPhase) {
                 return static_cast<Depth>(level);
             }
 
