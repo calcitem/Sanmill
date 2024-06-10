@@ -76,11 +76,11 @@
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "放置你的棋子。",
+  "tipPlace": "放置你的棋子",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "你不能把它放在這裏。",
+  "tipBanPlace": "不能把它放在這裏",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
@@ -96,11 +96,11 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "你已移除。",
+  "tipRemoved": "已移除",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "移動一個棋子。",
+  "tipMove": "移動一個棋子",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "輪到 {player} 移動。",
+  "tipToMove": "輪到{player}移動",
   "@tipToMove": {
     "description": " to move."
   },
@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "遊戲已匯入。",
+  "gameImported": "遊戲已匯入",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -652,7 +652,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " 和 ",
+  "and": " 》和《 ",
   "@and": {},
   "accept": "同意",
   "@accept": {
@@ -686,7 +686,7 @@
   "@moveNow": {
     "description": "Move now"
   },
-  "done": "完成。",
+  "done": "完成",
   "@done": {
     "description": "Done."
   },
@@ -782,7 +782,7 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "棋子數：",
+  "pieceCount": "棋子數",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -1136,7 +1136,7 @@
   "@filename": {
     "description": "File name"
   },
-  "loadFailed": "載入失敗。",
+  "loadFailed": "載入失敗",
   "@loadFailed": {
     "description": "Load failed."
   },
@@ -1152,7 +1152,7 @@
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
-  "noMove": "暫無著法。",
+  "noMove": "暫無著法",
   "@noMove": {
     "description": "No move."
   },
@@ -1226,7 +1226,7 @@
   "@pasteDone": {
     "description": "The paste is done."
   },
-  "cannotPaste": "無法貼上。",
+  "cannotPaste": "無法貼上",
   "@cannotPaste": {
     "description": "Cannot paste."
   },
@@ -1246,7 +1246,7 @@
   "@forest": {},
   "desktopImage": "桌面圖片",
   "@desktopImage": {},
-  "invalidPosition": "無效的位置。",
+  "invalidPosition": "無效的棋局",
   "@invalidPosition": {},
   "shareGIF": "動圖分享",
   "@shareGIF": {},
@@ -1414,9 +1414,9 @@
   "@analysisToolbarBackgroundColor": {},
   "analysisToolbarIconColor": "分析工具列圖示顏色",
   "@analysisToolbarIconColor": {},
-  "transformed": "已轉換。",
+  "transformed": "已轉換",
   "@transformed": {},
-  "cannotTransform": "無法轉換。",
+  "cannotTransform": "無法轉換",
   "@cannotTransform": {},
   "rotate": "旋轉",
   "@rotate": {},
@@ -1426,6 +1426,6 @@
   "@verticalFlip": {},
   "innerOuterFlip": "内外",
   "@innerOuterFlip": {},
-  "transparentCanvas": "透明畫布",
+  "transparentCanvas": "透明",
   "@transparentCanvas": {}
 }
