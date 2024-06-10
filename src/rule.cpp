@@ -53,7 +53,7 @@ const Rule RULES[N_RULES] = {
     {"Lasker Morris", "Lasker Morris", 10, 3, 3, false,
      MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, true,
      false, false, false, BoardFullAction::firstPlayerLose,
-     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
+     StalemateAction::endWithStalemateLoss, false, 100, 100, true},
     {"Cheng San Qi", "Cheng San Qi", 9, 3, 3, false,
      MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
      false, false, false, BoardFullAction::firstPlayerLose,
