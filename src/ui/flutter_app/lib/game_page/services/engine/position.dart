@@ -583,6 +583,8 @@ class Position {
         if (_board[s] == PieceColor.none) {
           if (_currentSquare[us] != 0) {
             return handleMovingPhaseForPutPiece(s);
+          } else {
+            GameController().gameInstance.blurIndex = null;
           }
         } else {
           // Select piece
@@ -595,6 +597,7 @@ class Position {
             GameController().gameInstance.focusIndex = squareToIndex[s];
             SoundManager().playTone(Sound.select);
           }
+          GameController().gameInstance.blurIndex = null;
           return true;
         }
       }
