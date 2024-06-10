@@ -691,7 +691,7 @@ bool Position::put_piece(Square s, bool updateRecord)
     const Color us = sideToMove;
 
     if (phase == Phase::gameOver || !(SQ_BEGIN <= s && s < SQ_END) ||
-        board[s] & make_piece(~us)) {
+        board[s] & make_piece(~us) || board[s] == MARKED_PIECE) {
         return false;
     }
 

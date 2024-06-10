@@ -569,7 +569,8 @@ class Position {
 
     if (phase == Phase.gameOver ||
         !(sqBegin <= s && s < sqEnd) ||
-        _board[s] == us.opponent) {
+        _board[s] == us.opponent ||
+        _board[s] == PieceColor.marked) {
       return false;
     }
 
