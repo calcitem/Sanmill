@@ -621,8 +621,8 @@ bool Position::reset()
     gamePly = 0;
     st.rule50 = 0;
 
-    phase = Phase::ready;
     set_side_to_move(WHITE);
+    phase = Phase::ready;
     action = Action::place;
 
     winner = NOBODY;
