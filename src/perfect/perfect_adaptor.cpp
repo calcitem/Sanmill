@@ -77,7 +77,7 @@ int perfect_init()
         field2_offset = 14;
         break;
     case (int)Wrappers::Constants::Variants::lask:
-        ruleVariantName = "lasker";
+        ruleVariantName = "lask";
         max_ksz = 10;
         field2_offset = 14;
         break;
