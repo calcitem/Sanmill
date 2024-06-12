@@ -3,7 +3,7 @@
 ## Database Setup
 
 Navigate to the [Perfect Database](http://compalg.inf.elte.hu/~ggevay/mills/index.php) and download the zip file.
-> **Note**: The Perfect Database currently only supports the standard Nine Men's Morris rules and does not support other rule variants.
+> **Note**: The Perfect Database currently only supports the standard Nine/Twelve/Lasker Men's Morris rules and does not support other rule variants.
 
 Once downloaded, extract the contents of the zip file to your desired directory.
 > You may delete some database files to save space. If the AI cannot find these parts of the database, it will resort to traditional AI algorithms for the best moves.
