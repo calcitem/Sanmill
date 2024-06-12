@@ -1,0 +1,3 @@
+v4.12.0
+
+* Support Lasker Morris.
