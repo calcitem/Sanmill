@@ -80,6 +80,10 @@ class EngineNoBestMove implements EngineResponse {
   const EngineNoBestMove();
 }
 
+class EngineGameIsOver implements EngineResponse {
+  const EngineGameIsOver();
+}
+
 class EngineTimeOut implements EngineResponse {
   const EngineTimeOut();
 }

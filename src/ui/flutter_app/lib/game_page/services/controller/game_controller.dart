@@ -185,7 +185,7 @@ class GameController {
       }
     } else {
       if (GameController().position._checkIfGameIsOver() == true) {
-        return const EngineNoBestMove();
+        return const EngineGameIsOver();
       }
     }
 
@@ -367,6 +367,7 @@ class GameController {
     switch (await GameController()
         .engineToGo(context, isMoveNow: GameController().isEngineRunning)) {
       case EngineResponseOK():
+      case EngineGameIsOver():
         GameController().gameResultNotifier.showResult(force: true);
         break;
       case EngineResponseHumanOK():
