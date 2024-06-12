@@ -52,7 +52,7 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.t("[config] piecesCount = $piecesCount");
 
-      if (DB().generalSettings.usePerfectDatabase && piecesCount != 9) {
+      if (DB().generalSettings.usePerfectDatabase) {
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).reopenToTakeEffect);
       }
@@ -234,6 +234,11 @@ class RuleSettingsPage extends StatelessWidget {
     DB().ruleSettings = ruleSettings.copyWith(mayMoveInPlacingPhase: value);
 
     logger.t("[config] mayMoveInPlacingPhase: $value");
+
+    if (DB().generalSettings.usePerfectDatabase) {
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).reopenToTakeEffect);
+    }
   }
 
   void _setIsDefenderMoveFirst(RuleSettings ruleSettings, bool value) {
