@@ -246,9 +246,16 @@ class Engine {
 
     bool usePerfectDatabase = false;
 
-    // TODO: WAR: Perfect Database only support standard 9mm and 12mm.
-    if ((ruleSettings.piecesCount == 9 && !ruleSettings.hasDiagonalLines) ||
-        (ruleSettings.piecesCount == 12 && ruleSettings.hasDiagonalLines) &&
+    // TODO: WAR: Perfect Database only support standard 9mm and 12mm and Lasker Morris.
+    if ((ruleSettings.piecesCount == 9 &&
+            !ruleSettings.hasDiagonalLines &&
+            ruleSettings.mayMoveInPlacingPhase == false) ||
+        (ruleSettings.piecesCount == 10 &&
+            !ruleSettings.hasDiagonalLines &&
+            ruleSettings.mayMoveInPlacingPhase == true) ||
+        (ruleSettings.piecesCount == 12 &&
+                ruleSettings.hasDiagonalLines &&
+                ruleSettings.mayMoveInPlacingPhase == false) &&
             ruleSettings.flyPieceCount == 3 &&
             ruleSettings.piecesAtLeastCount == 3 &&
             ruleSettings.millFormationActionInPlacingPhase ==
@@ -259,8 +266,7 @@ class Engine {
                 StalemateAction.endWithStalemateLoss &&
             ruleSettings.mayFly == true &&
             ruleSettings.mayRemoveFromMillsAlways == false &&
-            ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.mayMoveInPlacingPhase == false) {
+            ruleSettings.mayRemoveMultiple == false) {
       usePerfectDatabase = generalSettings.usePerfectDatabase;
     } else {
       usePerfectDatabase = false;
