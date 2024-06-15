@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "N/Z Obr.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prosojno Platno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Figura, premaknjena iz enega mlina v drugega, se ne more takoj vrniti na izhodiščno točko v naslednjem potezu, da bi znova oblikovala mlin. Najprej je potrebna druga poteza.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

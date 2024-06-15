@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "U/V okret.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prozirno Platno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Figura pomjerena iz jednog mlina u drugi ne može se odmah vratiti na originalnu točku u sljedećem potezu da bi ponovno formirala mlin. Prvo je potreban drugi potez.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

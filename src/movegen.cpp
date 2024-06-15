@@ -42,6 +42,10 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             continue;
         }
 
+        bool restrictRepeatedMillsFormation =
+            rule.restrictRepeatedMillsFormation &&
+            (from == pos.lastMillToSquare[pos.sideToMove]);
+
         // Special condition to generate "fly" moves
         if (rule.mayFly && pieceOnBoardCount <= rule.flyPieceCount &&
             pos.pieceInHandCount[pos.side_to_move()] == 0) {
@@ -56,6 +60,15 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                 const Square to =
                     MoveList<LEGAL>::adjacentSquares[from][direction];
                 if (to && !board[to]) {
+                    if (restrictRepeatedMillsFormation) {
+                        // Check if form a mill
+                        if (pos.potential_mills_count(to, pos.side_to_move(),
+                                                      from) > 0 &&
+                            pos.mills_count(from) > 0) {
+                            continue;
+                        }
+                    }
+
                     *cur++ = make_move(from, to);
                 }
             }

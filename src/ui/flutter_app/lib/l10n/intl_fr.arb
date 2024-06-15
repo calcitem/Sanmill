@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Ret. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Toile Transparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restreindre la formation répétée de moulins",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Une pièce déplacée d'un moulin pour en former un autre ne peut pas immédiatement retourner au point original au tour suivant pour former à nouveau un moulin. Un autre mouvement est requis d'abord.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

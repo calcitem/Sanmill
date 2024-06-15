@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "І/З Паварот",
   "@innerOuterFlip": {},
   "transparentCanvas": "Празрыстае Палатно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Абмежаваць паўторнае ўтварэнне млыноў",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Кавалак, які перамяшчаецца з аднаго млына ў іншы, не можа непасрэдна вярнуцца ў пачатковую кропку на наступны ход, каб зноў сфармаваць млын. Спачатку патрабуецца іншы рух.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

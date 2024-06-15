@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "పారదర్శక క్యాన్వాస్",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ఒక గిరాటం నుండి మరొకటిని ఏర్పరచడానికి తరలించబడిన ముక్క తదుపరి వంతున వెంటనే అసలు పాయింట్ కు తిరిగి మరలా గిరాటం ఏర్పరచలేదు. ముందుగా వేరొక కదలిక అవసరం.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Kääntö",
   "@innerOuterFlip": {},
   "transparentCanvas": "Läpinäkyvä Kangas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Rajoita toistuvaa myllyjen muodostamista",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Nappula, joka siirretään yhdestä myllystä toiseen, ei voi välittömästi palata alkuperäiseen pisteeseen seuraavalla vuorolla muodostaakseen jälleen myllyn. Ensin tarvitaan erilainen siirto.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

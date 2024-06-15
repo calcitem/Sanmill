@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Inv. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Tela Transparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restringir a formação repetida de moinhos",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Uma peça movida de um moinho para formar outro não pode retornar imediatamente ao ponto original na próxima jogada para formar um moinho novamente. Primeiro, é necessário um movimento diferente.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Lật",
   "@innerOuterFlip": {},
   "transparentCanvas": "Vải Trong Suốt",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Hạn Chế Tạo Lại Cối Xay",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Một quân cờ được di chuyển từ cối xay này sang cối xay khác không thể trở lại điểm ban đầu ngay lượt tiếp theo để hình thành một cối xay mới. Đầu tiên cần một nước đi khác.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

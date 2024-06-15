@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "Pind. N/NJE",
   "@innerOuterFlip": {},
   "transparentCanvas": "Kitambaa Kipitishi",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Zuia uundaji wa kinu cha kusaga",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Kipande kilichohamishwa kutoka kinu kimoja kwenda kingine hakiwezi kurudi mara moja kwenye nukta ya awali katika zamu inayofuata ili kuunda kinu tena. Hatua tofauti inahitajika kwanza.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/U Snu",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gjennomsiktig Lerret",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Begrens gjentatt mølleformasjon",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "En brikke flyttet fra én kvern til en annen kan ikke umiddelbart returnere til det opprinnelige punktet på neste trekk for å danne en kvern igjen. Et annet trekk kreves først.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

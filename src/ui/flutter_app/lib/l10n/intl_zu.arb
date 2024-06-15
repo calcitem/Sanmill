@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Ibhlophu",
   "@innerOuterFlip": {},
   "transparentCanvas": "I-Canvas Esobala",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ucezu oluhambile kusukela kolunye usimende ukuya kolunye alukwazi ukubuyela ngokushesha endaweni yoqobo kujike elilandelayo ukwakha usimende futhi. Kuqala kudingeka enye inyakazo.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

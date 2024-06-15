@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "ကြည်လင်ကန်ဗတ်",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "ထပ်ခါထပ်ခါ အလုပ်ရုံဖွဲ့စည်းခြင်းကို ကန့်သတ်ပါ",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "တစ်ခုမှ တစ်ခုသို့ ရွှေ့ပြီး မီးလုံးတစ်ခု ပြန်ဖွဲ့ဖို့ ရှေ့ရပ်နေရာသို့ နောက်တစ်ခါတွင် ချက်ချင်း မပြန်လာနိုင်ပါ။ အရင်ဆုံး ကြားရှိ ရွှေ့ချက်ကို လိုအပ်သည်။",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

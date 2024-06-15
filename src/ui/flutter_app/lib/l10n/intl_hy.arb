@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Փոխել",
   "@innerOuterFlip": {},
   "transparentCanvas": "Թափանցիկ կտոր",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Սահմանափակել կրկնվող ջրաղացների ձևավորումը",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Մի քառակուսին, որը տեղափոխվել է մեկ հարթակից մյուսը, չի կարող անմիջապես վերադառնալ սկզբնական կետը հաջորդ հարվածում՝ նորից հարթակ ձևավորելու համար: Սկզբում պետք է կատարել այլ շարժ:",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

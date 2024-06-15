@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/U S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gennemsigtigt Lærred",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Begræns gentagen mølle-formation",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "En brik flyttet fra en mølle til en anden kan ikke umiddelbart vende tilbage til det oprindelige punkt på næste tur for at danne en mølle igen. Et andet træk er først nødvendigt.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO فلیپ",
   "@innerOuterFlip": {},
   "transparentCanvas": "بوم شفاف",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "محدود کردن تشکیل دوزهای تکراری",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "یک مهره که از یک دوز به دوز دیگر منتقل شده است نمی‌تواند بلافاصله به نقطه اصلی در دور بعدی بازگردد تا دوباره دوز تشکیل دهد. ابتدا نیاز به حرکتی متفاوت است.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

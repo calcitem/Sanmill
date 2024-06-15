@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "内外反",
   "@innerOuterFlip": {},
   "transparentCanvas": "透明キャンバス",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "繰り返しミル形成の制限",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "一つのミルから別のミルを形成するために移動した駒は、次のターンで元の点にすぐに戻って再びミルを形成することはできません。まず別の動きが必要です。",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

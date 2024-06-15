@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "B/B S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparant Canvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Beperk herhaalde molenvorming",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Een stuk verplaatst van de ene molen naar de andere kan niet onmiddellijk terugkeren naar het oorspronkelijke punt op de volgende beurt om weer een molen te vormen. Eerst is een andere zet nodig.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

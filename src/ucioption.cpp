@@ -154,6 +154,11 @@ static void on_mayRemoveFromMillsAlways(const Option &o)
     rule.mayRemoveFromMillsAlways = static_cast<bool>(o);
 }
 
+static void on_restrictRepeatedMillsFormation(const Option &o)
+{
+    rule.restrictRepeatedMillsFormation = static_cast<bool>(o);
+}
+
 static void on_boardFullAction(const Option &o)
 {
     rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
@@ -243,6 +248,8 @@ void init(OptionsMap &o)
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);
     o["MayRemoveMultiple"] << Option(false, on_mayRemoveMultiple);
     o["MayRemoveFromMillsAlways"] << Option(false, on_mayRemoveFromMillsAlways);
+    o["RestrictRepeatedMillsFormation"]
+        << Option(false, on_restrictRepeatedMillsFormation);
     o["BoardFullAction"] << Option(
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),

@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparent Canvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restrict repeated mills formation",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "A piece moved from one mill to form another cannot immediately return to the original point on the next turn to form a mill again. A different move is required first.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

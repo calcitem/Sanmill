@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO فلپ",
   "@innerOuterFlip": {},
   "transparentCanvas": "شفاف کینوس",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "بار بار مل تشکیل دینے پر پابندی",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ایک پیس جو ایک مل سے دوسرے میں منتقل ہوا ہے وہ اگلی باری میں فوری طور پر اصلی نقطہ پر واپس نہیں جا سکتا تاکہ دوبارہ مل بنا سکے۔ پہلے مختلف حرکت کی ضرورت ہے۔",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

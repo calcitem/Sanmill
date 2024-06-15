@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Pööre",
   "@innerOuterFlip": {},
   "transparentCanvas": "Läbipaistev Lõuend",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Nupp, mis on liigutatud ühest veskist teise, ei saa järgmisel käigul kohe algpunkti tagasi minna, et uuesti veskit moodustada. Esiteks on vajalik teistsugune liigutus.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

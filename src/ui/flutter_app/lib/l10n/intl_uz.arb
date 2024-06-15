@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/T Ayl.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Shaffof Kanvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Qayta-qayta Tegirmon Shakllanishini Cheklash",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Bir tegirmondan boshqasiga ko'chirilgan dona navbatdagi navbatda darhol asl nuqtasiga qaytib, yana tegirmon hosil qila olmaydi. Avval boshqa harakat talab etiladi.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

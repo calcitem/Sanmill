@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IOF",
   "@innerOuterFlip": {},
   "transparentCanvas": "Átlátszó Vászon",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ismételt malmok kialakulásának korlátozása",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Egy egyik malomból a másikba áthelyezett bábu nem térhet vissza azonnal az eredeti pontra a következő körben, hogy újra malom alakuljon ki. Először egy másik lépés szükséges.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

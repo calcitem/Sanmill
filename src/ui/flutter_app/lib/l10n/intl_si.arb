@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO වක්‍රීයක්",
   "@innerOuterFlip": {},
   "transparentCanvas": "විනිවිද තිරය",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "නෙරෙන්චි නැවත නැවත සාදන්නේන් වළක්වන්න",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "එක් නෙරෙන්චියකින් වෙනත් නෙරෙන්චියක් සාදන්නට හැරවූ කොටසක් ඊළඟ වරට මුල් ලක්ෂ්‍යයට වහාම ආපසු නොඑන්න. පළමුව වෙනත් චාලකයක් අවශ්‍යයි.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

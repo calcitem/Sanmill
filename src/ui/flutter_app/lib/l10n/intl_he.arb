@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "היפוך פנים/חוץ",
   "@innerOuterFlip": {},
   "transparentCanvas": "בד שקוף",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "הגבל יצירה חוזרת של טחנות",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "חלק שהועבר מטחנה אחת למשנה לא יכול לחזור מיד לנקודה המקורית בתור הבא כדי ליצור שוב טחנה. דרושה תנועה אחרת תחילה.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

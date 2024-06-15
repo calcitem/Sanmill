@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "आईओ फ्लिप",
   "@innerOuterFlip": {},
   "transparentCanvas": "पारदर्शी कैनवस",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "दोहराए गए मिल के गठन को प्रतिबंधित करें",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "एक मिल से दूसरी मिल बनाने के लिए चलाई गई मोहरा अगली बारी में तुरंत मूल बिंदु पर वापस नहीं जा सकती है। पहले एक अलग चाल की आवश्यकता होती है।",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

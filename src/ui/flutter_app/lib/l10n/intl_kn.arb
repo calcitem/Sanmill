@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "ಆಂತರಿಕ/ಬಾಹ್ಯ ತಿರುಗು",
   "@innerOuterFlip": {},
   "transparentCanvas": "ಪಾರದರ್ಶಕ ಕ್ಯಾನ್ವಾಸ್",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "ಪುನರಾವರ್ತಿತ ಮಿಲ್ ರಚನೆಯನ್ನು ನಿರ್ಬಂಧಿಸಿ",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ಒಂದು ಮಿಲ್ಲಿನಿಂದ ಮತ್ತೊಂದು ಮಿಲ್ಲನ್ನು ರಚಿಸಲು ಸಾಗಿಸಿದ ಕಾಯವು ಮುಂದಿನ ಸುತ್ತಿನಲ್ಲಿ ತಕ್ಷಣ ಮೂಲ ಬಿಂದುವಿಗೆ ಮರಳಿ ಮತ್ತೊಮ್ಮೆ ಮಿಲ್ ರಚಿಸಲು ಹೋಗಬಾರದು. ಮೊದಲು ಬೇರೆ ನಡೆ ಅಗತ್ಯವಿದೆ.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

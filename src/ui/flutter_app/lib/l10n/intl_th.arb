@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO พลิก",
   "@innerOuterFlip": {},
   "transparentCanvas": "ผืนผ้าใส",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "จำกัดการสร้างโรงสีซ้ำ",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ชิ้นส่วนที่ถูกย้ายจากโรงสีหนึ่งไปอีกโรงสีหนึ่งไม่สามารถกลับไปยังจุดเดิมทันทีในตาถัดไปเพื่อสร้างโรงสีอีกครั้งได้ จำเป็นต้องมีการเคลื่อนไหวที่แตกต่างกันก่อน.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

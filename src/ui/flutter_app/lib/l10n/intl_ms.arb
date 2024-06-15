@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Flip D/L",
   "@innerOuterFlip": {},
   "transparentCanvas": "Kanvas Lutsinar",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Hadkan Pembentukan Kilang Berulang",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Kepingan yang dipindahkan dari satu kilang untuk membentuk satu lagi tidak boleh kembali ke titik asal pada giliran seterusnya untuk membentuk kilang lagi. Langkah berbeza diperlukan dahulu.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

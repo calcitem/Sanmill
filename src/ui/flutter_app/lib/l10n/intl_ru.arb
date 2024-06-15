@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Перев",
   "@innerOuterFlip": {},
   "transparentCanvas": "Прозрачное Полотно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ограничить повторное образование мельниц",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Фигура, перемещённая с одной мельницы на другую, не может сразу вернуться в исходную точку на следующем ходу, чтобы снова сформировать мельницу. Сначала требуется другой ход.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

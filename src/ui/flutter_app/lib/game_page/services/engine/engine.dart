@@ -266,7 +266,8 @@ class Engine {
                 StalemateAction.endWithStalemateLoss &&
             ruleSettings.mayFly == true &&
             ruleSettings.mayRemoveFromMillsAlways == false &&
-            ruleSettings.mayRemoveMultiple == false) {
+            ruleSettings.mayRemoveMultiple == false &&
+            ruleSettings.restrictRepeatedMillsFormation == false) {
       usePerfectDatabase = generalSettings.usePerfectDatabase;
     } else {
       usePerfectDatabase = false;
@@ -347,6 +348,10 @@ class Engine {
       ruleSettings.mayRemoveFromMillsAlways,
     );
     await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
+    await _sendOptions(
+      "RestrictRepeatedMillsFormation",
+      ruleSettings.restrictRepeatedMillsFormation,
+    );
   }
 
   Future<void> setOptions() async {

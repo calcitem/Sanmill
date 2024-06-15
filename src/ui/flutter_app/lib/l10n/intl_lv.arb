@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Apgriezt",
   "@innerOuterFlip": {},
   "transparentCanvas": "Caurspīdīgs Audekls",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ierobežot atkārtotu dzirnaviņu veidošanos",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Figūra, kas pārvietota no viena dzirnavām uz citām, nevar nekavējoties atgriezties sākotnējā punktā nākamajā gājienā, lai atkal veidotu dzirnavas. Vispirms ir nepieciešams cits gājiens.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

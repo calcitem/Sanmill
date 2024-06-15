@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Apsvertimas",
   "@innerOuterFlip": {},
   "transparentCanvas": "Permatomas Drobė",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Apriboti pasikartojantį malūnų formavimą",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Figūra perkelta iš vieno malūno į kitą negali iškart grįžti į pradinį tašką kito ėjimo metu, kad vėl sudarytų malūną. Pirmiausia reikia atlikti kitą judesį.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

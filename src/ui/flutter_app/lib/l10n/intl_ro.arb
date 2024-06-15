@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Oglin. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Pânză Transparentă",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restricționează formarea repetată a morilor",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "O piesă mutată de la un moară la alta nu poate reveni imediat la punctul original în următoarea tură pentru a forma din nou o moară. Mai întâi este necesară o mutare diferită.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

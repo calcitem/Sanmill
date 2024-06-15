@@ -77,6 +77,11 @@ struct Rule
     // she will be able to remove the number of mills she closed.
     bool mayRemoveMultiple;
 
+    // This rule prevents a player from moving a piece back to its original
+    // position to immediately reform a mill, if the piece was just used to form
+    // a mill in the previous turn.
+    bool restrictRepeatedMillsFormation;
+
     // By default, players must remove any other pieces first before removing a
     // piece from a formed mill. Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
@@ -106,7 +111,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 8;
+constexpr auto N_RULES = 9;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Cap. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Tela Trasparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Limita la formazione ripetuta di mulini",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Un pezzo spostato da un mulino per formarne un altro non può immediatamente ritornare al punto originale nel turno successivo per formare di nuovo un mulino. È richiesta prima una mossa diversa.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

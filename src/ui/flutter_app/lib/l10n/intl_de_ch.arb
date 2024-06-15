@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/A S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparente Leinwand",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Wiederholte Mühlebildung einschränken",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ein Spielstein, der von einer Mühle zu einer anderen verschoben wurde, kann nicht sofort auf den ursprünglichen Punkt im nächsten Zug zurückkehren, um wieder eine Mühle zu bilden. Zuerst ist ein anderer Zug erforderlich.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Флип",
   "@innerOuterFlip": {},
   "transparentCanvas": "Транспарентно Платно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ограничи повторно формирање мелници",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Парче што се преместува од еден млин во друг не може веднаш да се врати на почетната точка на следниот потег за да формира млин повторно. Прво е потребен различен потег.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

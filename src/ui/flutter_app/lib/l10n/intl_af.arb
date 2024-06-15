@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Draai",
   "@innerOuterFlip": {},
   "transparentCanvas": "Deursigtige Doek",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "'n Stuk wat van een meul na 'n ander geskuif is, kan nie onmiddellik terugkeer na die oorspronklike punt op die volgende beurt om weer 'n meul te vorm nie. 'n Ander skuif is eers nodig.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

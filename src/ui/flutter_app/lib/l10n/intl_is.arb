@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "I/Y S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gegnsætt Striga",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Takmarka endurtekna myndun myllu",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Stykki sem fært er úr einum myllu í aðra getur ekki strax snúið aftur á upphafspunktinn í næsta leik til að mynda myllu aftur. Fyrst þarf annað skref.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }
