@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Oglin. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Pânză Transparentă",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restricționează formarea repetată a morilor",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Această regulă împiedică un jucător să mute o piesă înapoi în poziția sa inițială pentru a reforma imediat o moară, dacă piesa a fost folosită pentru a forma o moară în tura precedentă.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

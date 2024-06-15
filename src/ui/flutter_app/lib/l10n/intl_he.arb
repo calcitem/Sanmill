@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "היפוך פנים/חוץ",
   "@innerOuterFlip": {},
   "transparentCanvas": "בד שקוף",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "הגבל יצירה חוזרת של טחנות",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "חוק זה מונע משחקן להזיז חלק בחזרה לעמדתו המקורית כדי ליצור מיד טחנה מחדש, אם החלק שימש זה עתה ליצירת טחנה בתור הקודם.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

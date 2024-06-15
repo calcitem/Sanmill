@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Перев",
   "@innerOuterFlip": {},
   "transparentCanvas": "Прозрачное Полотно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ограничить повторное образование мельниц",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Это правило запрещает игроку перемещать фишку обратно в ее исходное положение, чтобы немедленно восстановить мельницу, если фишка только что была использована для формирования мельницы в предыдущем ходу.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

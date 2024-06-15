@@ -118,6 +118,7 @@ class RuleSettings {
     this.threefoldRepetitionRule = true,
     this.millFormationActionInPlacingPhase =
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
+    this.restrictRepeatedMillsFormation = false,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -181,6 +182,8 @@ class RuleSettings {
       defaultValue:
           MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard)
   final MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase;
+  @HiveField(19, defaultValue: false)
+  final bool restrictRepeatedMillsFormation;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

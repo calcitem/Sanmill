@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Pas B/J",
   "@innerOuterFlip": {},
   "transparentCanvas": "Pëlhurë Transparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Kufizo formimin e përsëritur të mullinjve",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ky rregull e pengon lojtarin të lëvizë një pjesë prapa në pozicionin e saj fillestar për të riformuar menjëherë një mulli, nëse pjesa sapo është përdorur për të formuar një mulli në raundin e mëparshëm.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

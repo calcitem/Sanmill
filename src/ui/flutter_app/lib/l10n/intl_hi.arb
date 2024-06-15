@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "आईओ फ्लिप",
   "@innerOuterFlip": {},
   "transparentCanvas": "पारदर्शी कैनवस",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "दोहराए गए मिल के गठन को प्रतिबंधित करें",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "यह नियम किसी खिलाड़ी को एक पीस को उसकी मूल स्थिति पर वापस ले जाने से रोकता है ताकि तुरंत एक मिल का पुनर्गठन हो सके, यदि पीस का उपयोग पिछले चाल में एक मिल बनाने के लिए किया गया था।",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

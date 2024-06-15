@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Prev. V/V",
   "@innerOuterFlip": {},
   "transparentCanvas": "Priehľadné Plátno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Obmedziť opakované formovanie mlynov",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Toto pravidlo zabraňuje hráčovi posunúť kameň späť na svoju pôvodnú pozíciu, aby ihneď preformoval mlyn, ak bol kameň práve použitý na vytvorenie mlyna v predchádzajúcom ťahu.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

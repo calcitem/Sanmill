@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "Pind. N/NJE",
   "@innerOuterFlip": {},
   "transparentCanvas": "Kitambaa Kipitishi",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Zuia uundaji wa kinu cha kusaga",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Sheria hii inamzuia mchezaji kuhamisha kipande kurudi kwenye nafasi yake ya awali ili kuunda upya kinu cha kusaga mara moja, ikiwa kipande kilitumika kuunda kinu cha kusaga katika zamu iliyopita.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

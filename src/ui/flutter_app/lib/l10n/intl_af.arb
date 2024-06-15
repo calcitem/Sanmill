@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Draai",
   "@innerOuterFlip": {},
   "transparentCanvas": "Deursigtige Doek",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Hierdie reël voorkom dat 'n speler 'n stuk terugskuif na sy oorspronklike posisie om dadelik 'n meul te hervorm, as die stuk in die vorige beurt gebruik is om 'n meul te vorm.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

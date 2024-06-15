@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "ကြည်လင်ကန်ဗတ်",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "ထပ်ခါထပ်ခါ အလုပ်ရုံဖွဲ့စည်းခြင်းကို ကန့်သတ်ပါ",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ဤစည်းမျဉ်းသည် ကစားသမားအား လက်ရှိအလှည့်တွင် အလုပ်ရုံကို ပုံစံချရန်အသုံးပြုခဲ့သော အစိတ်အပိုင်းဖြင့် အလုပ်ရုံကို ချက်ချင်းပြန်လည်ပုံစံချနိုင်ရန် ၎င်း၏မူရင်းနေရာသို့ ပြန်လည်ရွှေ့ပြောင်းခြင်းမှ တားဆီးထားပါသည်။",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

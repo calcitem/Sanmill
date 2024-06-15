@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Εσωτερική/Εξωτερική Αναστροφή",
   "@innerOuterFlip": {},
   "transparentCanvas": "Διαφανής Καμβάς",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Περιορισμός Επαναλαμβανόμενου Σχηματισμού Μύλων",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Αυτός ο κανόνας εμποδίζει έναν παίκτη από το να μετακινήσει ένα πιόνι πίσω στην αρχική του θέση για να ξανασχηματίσει αμέσως έναν μύλο, εάν το πιόνι μόλις χρησιμοποιήθηκε για τον σχηματισμό ενός μύλου στον προηγούμενο γύρο.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

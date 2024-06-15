@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "I/Y S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gegnsætt Striga",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Takmarka endurtekna myndun myllu",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Þessi regla kemur í veg fyrir að leikmaður færi tafl aftur á upprunalegan stað til að endurheimta myllu strax, ef taflið var notað til að mynda myllu í fyrri umferð.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Kääntö",
   "@innerOuterFlip": {},
   "transparentCanvas": "Läpinäkyvä Kangas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Rajoita toistuvaa myllyjen muodostamista",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Tämä sääntö estää pelaajaa siirtämästä nappulaa takaisin sen alkuperäiseen asemaan muodostaakseen heti uudelleen myllyn, jos nappulaa käytettiin juuri edellisellä vuorolla myllyn muodostamiseen.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

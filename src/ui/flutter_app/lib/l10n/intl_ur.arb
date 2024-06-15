@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO فلپ",
   "@innerOuterFlip": {},
   "transparentCanvas": "شفاف کینوس",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "بار بار مل تشکیل دینے پر پابندی",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "یہ اصول کسی کھلاڑی کو پہلے ٹرن میں مل بنانے کے لیے استعمال ہونے والے ٹکڑے کو اس کی اصل پوزیشن پر واپس منتقل کرنے سے روکتا ہے تاکہ فوری طور پر مل کو دوبارہ تشکیل دیا جا سکے۔",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

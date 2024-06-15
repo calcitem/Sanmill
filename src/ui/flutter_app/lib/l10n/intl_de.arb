@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Kippen",
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparente Leinwand",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Wiederholte Mühlenbildung einschränken",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Diese Regel verhindert, dass ein Spieler einen Stein zurück auf seine ursprüngliche Position zieht, um sofort wieder eine Mühle zu bilden, wenn der Stein gerade im vorherigen Zug zum Bilden einer Mühle verwendet wurde.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

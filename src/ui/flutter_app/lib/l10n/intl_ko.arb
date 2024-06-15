@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "내외",
   "@innerOuterFlip": {},
   "transparentCanvas": "투명 캔버스",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "반복적인 밀 형성 제한",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "이 규칙은 이전 턴에서 밀을 형성하는 데 사용된 조각이 원래 위치로 다시 이동하여 즉시 밀을 재형성하는 것을 방지합니다.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "W/Z",
   "@innerOuterFlip": {},
   "transparentCanvas": "Przezroczyste Płótno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ogranicz powtarzające się formacje młynów",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ta zasada uniemożliwia graczowi przesunięcie pionka z powrotem na jego pierwotną pozycję, aby natychmiast przeformować młyn, jeśli pionek został właśnie użyty do uformowania młyna w poprzedniej turze.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

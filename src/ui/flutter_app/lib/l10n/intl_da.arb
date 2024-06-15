@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/U S.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gennemsigtigt Lærred",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Begræns gentagen mølle-formation",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Denne regel forhindrer en spiller i at flytte en brik tilbage til dens oprindelige position for straks at gendanne en mølle, hvis brikken lige er blevet brugt til at danne en mølle i den foregående tur.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

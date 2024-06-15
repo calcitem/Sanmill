@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "N/Z Obr.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prosojno Platno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "To pravilo preprečuje igralcu, da bi figuro premaknil nazaj na njen prvotni položaj, da bi takoj ponovno oblikoval mlin, če je bila figura pravkar uporabljena za oblikovanje mlina v prejšnji potezi.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

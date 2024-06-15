@@ -289,6 +289,16 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] mayRemoveMultiple: $value");
   }
 
+  void _setRestrictRepeatedMillsFormation(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings =
+        ruleSettings.copyWith(restrictRepeatedMillsFormation: value);
+
+    logger.t("[config] restrictRepeatedMillsFormation: $value");
+  }
+
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
     final Locale? locale = DB().displaySettings.locale;
 
@@ -412,6 +422,14 @@ class RuleSettingsPage extends StatelessWidget {
               ),
               titleString: S.of(context).mayRemoveMultiple,
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
+            ),
+            SettingsListTile.switchTile(
+              value: ruleSettings.restrictRepeatedMillsFormation,
+              onChanged: (bool val) =>
+                  _setRestrictRepeatedMillsFormation(ruleSettings, val),
+              titleString: S.of(context).restrictRepeatedMillsFormation,
+              subtitleString:
+                  S.of(context).restrictRepeatedMillsFormation_Detail,
             ),
           ],
         ),

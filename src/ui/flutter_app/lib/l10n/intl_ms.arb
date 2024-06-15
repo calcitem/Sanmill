@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Flip D/L",
   "@innerOuterFlip": {},
   "transparentCanvas": "Kanvas Lutsinar",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Hadkan Pembentukan Kilang Berulang",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Peraturan ini menghalang pemain daripada menggerakkan buah catur kembali ke kedudukan asalnya untuk membentuk semula kilang dengan segera, jika buah catur itu baru sahaja digunakan untuk membentuk kilang pada giliran sebelumnya.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

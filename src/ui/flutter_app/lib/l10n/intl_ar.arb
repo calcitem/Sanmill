@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO فليب",
   "@innerOuterFlip": {},
   "transparentCanvas": "قماش شفاف",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "تقييد تشكيل الطواحين المتكررة",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "تمنع هذه القاعدة اللاعب من إعادة قطعة إلى موضعها الأصلي لإعادة تشكيل طاحونة على الفور، إذا تم استخدام القطعة للتو لتشكيل طاحونة في الدور السابق.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

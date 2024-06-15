@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO වක්‍රීයක්",
   "@innerOuterFlip": {},
   "transparentCanvas": "විනිවිද තිරය",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ändert upprepade kvarnformationer",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Den här regeln förhindrar en spelare från att flytta en pjäs tillbaka till dess ursprungliga position för att omedelbart återskapa en kvarn, om pjäsen precis användes för att bilda en kvarn i föregående drag.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

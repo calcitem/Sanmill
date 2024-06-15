@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "U/V Z.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prozirno Platno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ovo pravilo sprječava igrača da vrati figuru na njezin početni položaj kako bi odmah ponovno formirao mlin, ako je figura upravo korištena za formiranje mlina u prethodnom potezu.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

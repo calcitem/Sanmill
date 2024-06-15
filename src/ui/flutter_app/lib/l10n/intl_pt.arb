@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Inv. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Tela Transparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restringir a formação repetida de moinhos",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Esta regra impede um jogador de mover uma peça de volta para sua posição original para reformar imediatamente um moinho, se a peça acabou de ser usada para formar um moinho no turno anterior.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

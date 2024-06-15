@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "İ/O Fli",
   "@innerOuterFlip": {},
   "transparentCanvas": "Şəffaf Kanvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Təkrarlanan Dəyirmanların Formalaşmasını Məhdudlaşdırın",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Bu qayda, əgər əvvəlki turda dəyirman qurmaq üçün istifadə edilibsə, oyunçunun fiquru dərhal yenidən dəyirman qurmaq üçün əvvəlki mövqeyinə qaytarmasının qarşısını alır.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

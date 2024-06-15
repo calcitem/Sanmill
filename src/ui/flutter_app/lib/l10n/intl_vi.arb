@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "IO Lật",
   "@innerOuterFlip": {},
   "transparentCanvas": "Vải Trong Suốt",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Hạn Chế Tạo Lại Cối Xay",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Quy tắc này ngăn người chơi di chuyển một quân cờ trở lại vị trí ban đầu của nó để ngay lập tức tạo lại cối xay, nếu quân cờ đó vừa được sử dụng để tạo cối xay ở lượt trước.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

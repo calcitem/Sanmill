@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Pööre",
   "@innerOuterFlip": {},
   "transparentCanvas": "Läbipaistev Lõuend",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "See reegel takistab mängijal nuppu tagasi algasendisse liigutamast, et kohe uuesti veskit moodustada, kui nuppu kasutati äsja eelmisel käigul veski moodustamiseks.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

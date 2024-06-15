@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "Ret. I/E",
   "@innerOuterFlip": {},
   "transparentCanvas": "Toile Transparente",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restreindre la formation répétée de moulins",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Cette règle empêche un joueur de déplacer une pièce à sa position d'origine pour reformer immédiatement un moulin, si la pièce vient d'être utilisée pour former un moulin au tour précédent.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

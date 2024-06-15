@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Flip",
   "@innerOuterFlip": {},
   "transparentCanvas": "పారదర్శక క్యాన్వాస్",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "ఈ నియమం ఒక ప్లేయర్ తన ముందు టర్న్‌లో మిల్లును ఏర్పరచడానికి ఉపయోగించిన భాగాన్ని వెంటనే మళ్లీ మిల్లును ఏర్పరచడానికి దాని వాస్తవ స్థానానికి తిరిగి తరలించకుండా నిరోధిస్తుంది.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

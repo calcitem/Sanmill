@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "І/З Паварот",
   "@innerOuterFlip": {},
   "transparentCanvas": "Празрыстае Палатно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Абмежаваць паўторнае ўтварэнне млыноў",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Гэтае правіла не дазваляе гульцу перамяшчаць фігуру назад у зыходнае становішча, каб неадкладна ўтварыць млын зноў, калі фігура толькі што была выкарыстана для ўтварэння млына ў папярэднім ходзе.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

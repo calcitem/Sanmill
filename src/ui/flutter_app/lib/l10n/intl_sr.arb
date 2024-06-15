@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "У/С прев.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Прозирно Платно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ограничите поновљено формирање млинова",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ово правило спречава играча да помери фигуру назад на њену првобитну позицију да би одмах реформирао млин, ако је фигура управо коришћена за формирање млина у претходном потезу.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

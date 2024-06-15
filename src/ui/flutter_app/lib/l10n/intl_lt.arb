@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Apsvertimas",
   "@innerOuterFlip": {},
   "transparentCanvas": "Permatomas Drobė",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Apriboti pasikartojantį malūnų formavimą",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ši taisyklė neleidžia žaidėjui perkelti figūros atgal į pradinę poziciją, kad iš karto suformuotų malūną, jei figūra ką tik buvo panaudota malūnui suformuoti ankstesniame ėjime.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

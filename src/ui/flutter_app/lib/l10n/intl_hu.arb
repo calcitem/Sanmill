@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IOF",
   "@innerOuterFlip": {},
   "transparentCanvas": "Átlátszó Vászon",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Ismételt malmok kialakulásának korlátozása",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Ez a szabály megakadályozza, hogy egy játékos visszahelyezzen egy bábut az eredeti pozíciójába, hogy azonnal újra malmot alkosson, ha a bábu az előző lépésben épp malmot alkotott.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

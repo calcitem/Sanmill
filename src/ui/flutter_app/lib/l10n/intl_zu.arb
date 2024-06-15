@@ -1525,5 +1525,8 @@
   "innerOuterFlip": "IO Ibhlophu",
   "@innerOuterFlip": {},
   "transparentCanvas": "I-Canvas Esobala",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Lo mthetho uvimbela umdlali ekutheni ahambise isicubu siye endaweni yaso yokuqala ukuze akhephe kabusha isimbokodo, uma leso sicubu besisanda kusetshenziswa ukwakha isimbokodo emzulwini ongaphambili."
 }

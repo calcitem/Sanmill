@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "আইও ফ্লিপ",
   "@innerOuterFlip": {},
   "transparentCanvas": "স্বচ্ছ ক্যানভাস",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "পুনরাবৃত্ত মিলস গঠন সীমিত করুন",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "এই নিয়মটি খেলোয়াড়কে একটি পিস তার মূল অবস্থানে ফিরিয়ে নিয়ে তাৎক্ষণিকভাবে একটি মিল পুনর্গঠন করা থেকে বিরত রাখে, যদি পিসটি ঠিক আগের টার্নে একটি মিল গঠন করতে ব্যবহৃত হয়ে থাকে।",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "内外反",
   "@innerOuterFlip": {},
   "transparentCanvas": "透明キャンバス",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "繰り返しミル形成の制限",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "このルールは、前のターンでミルを形成するために使用されたコマが、元の位置に戻ってすぐにミルを再形成することを防ぎます。",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

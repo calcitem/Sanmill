@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO ફ્લિપ",
   "@innerOuterFlip": {},
   "transparentCanvas": "પારદર્શક કેનવાસ",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "પુનરાવર્તિત મિલની રચનાને પ્રતિબંધિત કરો",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "આ નિયમ ખેલાડીને પાછા તેની મૂળ સ્થિતિ પર ચિહ્નને ખસેડવાથી અટકાવે છે જેથી તરત જ મિલને ફરીથી રચી શકાય, જો ચિહ્નનો ઉપયોગ પહેલાના વળતા પર મિલ બનાવવા માટે થયો હોય.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

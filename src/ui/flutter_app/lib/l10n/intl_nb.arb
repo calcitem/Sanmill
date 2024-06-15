@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/U Snu",
   "@innerOuterFlip": {},
   "transparentCanvas": "Gjennomsiktig Lerret",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Begrens gjentatt mølleformasjon",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Denne regelen forhindrer en spiller fra å flytte en brikke tilbake til sin opprinnelige posisjon for å umiddelbart reformere en mølle, hvis brikken nettopp ble brukt til å forme en mølle i forrige tur.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "İç Dış",
   "@innerOuterFlip": {},
   "transparentCanvas": "Şeffaf Tuval",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Tekrarlanan Değirmen Oluşumunu Kısıtla",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Bu kural, bir oyuncunun bir taşı önceki turda değirmen oluşturmak için kullanılmışsa, hemen yeniden değirmen oluşturmak için orijinal konumuna geri taşımasını engeller.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

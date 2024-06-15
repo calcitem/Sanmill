@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "I/T Ayl.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Shaffof Kanvas",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Qayta-qayta Tegirmon Shakllanishini Cheklash",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Bu qoida o'yinchining avvalgi o'yinda tegirmon yasash uchun ishlatilgan donani darhol qayta tegirmon yasash uchun o'z joyiga qaytarishiga yo'l qo'ymaydi.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

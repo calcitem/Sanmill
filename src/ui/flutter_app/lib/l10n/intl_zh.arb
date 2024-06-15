@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "内外",
   "@innerOuterFlip": {},
   "transparentCanvas": "透明",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "限制重复形成三连",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "此规则可防止玩家将棋子移回其原始位置以立即重新形成三连，如果该棋子刚刚在上一回合中用于形成三连。",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

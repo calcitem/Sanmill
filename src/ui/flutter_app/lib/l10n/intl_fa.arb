@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO فلیپ",
   "@innerOuterFlip": {},
   "transparentCanvas": "بوم شفاف",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "محدود کردن تشکیل آسیاب های تکراری",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "این قانون مانع می شود که بازیکن مهره ای را به موقعیت اولیه خود برگرداند تا بلافاصله یک آسیاب را دوباره تشکیل دهد، اگر مهره در نوبت قبلی برای تشکیل یک آسیاب استفاده شده باشد.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }
