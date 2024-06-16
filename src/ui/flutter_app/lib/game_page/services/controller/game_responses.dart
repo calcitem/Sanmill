@@ -38,6 +38,10 @@ class CanOnlyMoveToAdjacentEmptyPoints implements SelectResponse {
   const CanOnlyMoveToAdjacentEmptyPoints();
 }
 
+class NoPieceSelected implements SelectResponse {
+  const NoPieceSelected();
+}
+
 class SelectOurPieceToMove implements SelectResponse {
   const SelectOurPieceToMove();
 }

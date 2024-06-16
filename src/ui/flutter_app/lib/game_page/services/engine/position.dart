@@ -954,7 +954,7 @@ class Position {
     }
 
     if (_board[sq] == PieceColor.none) {
-      return const CanOnlyMoveToAdjacentEmptyPoints();
+      return const NoPieceSelected();
     }
 
     if (!(_board[sq] == sideToMove)) {

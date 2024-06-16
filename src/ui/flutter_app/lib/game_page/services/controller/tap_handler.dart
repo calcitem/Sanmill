@@ -342,6 +342,9 @@ class TapHandler {
               }
             }
             break;
+          case NoPieceSelected():
+            break;
+          // TODO: no CanOnlyMoveToAdjacentEmptyPoints events
           case CanOnlyMoveToAdjacentEmptyPoints():
             if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
