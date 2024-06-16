@@ -19,6 +19,7 @@
 #include "option.h"
 #include "thread.h"
 #include "uci.h"
+#include "mills.h"
 
 using std::string;
 
@@ -104,6 +105,9 @@ static void on_developerMode(const Option &o)
 static void on_piecesCount(const Option &o)
 {
     rule.pieceCount = static_cast<int>(o);
+
+    Mills::adjacent_squares_init();
+    Mills::mill_table_init();
 }
 
 static void on_flyPieceCount(const Option &o)
@@ -119,6 +123,9 @@ static void on_piecesAtLeastCount(const Option &o)
 static void on_hasDiagonalLines(const Option &o)
 {
     rule.hasDiagonalLines = static_cast<bool>(o);
+
+    Mills::adjacent_squares_init();
+    Mills::mill_table_init();
 }
 
 static void on_millFormationActionInPlacingPhase(const Option &o)
