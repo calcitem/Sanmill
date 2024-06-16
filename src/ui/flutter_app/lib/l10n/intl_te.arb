@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "ఈ నియమం ఒక ప్లేయర్ తన ముందు టర్న్‌లో మిల్లును ఏర్పరచడానికి ఉపయోగించిన భాగాన్ని వెంటనే మళ్లీ మిల్లును ఏర్పరచడానికి దాని వాస్తవ స్థానానికి తిరిగి తరలించకుండా నిరోధిస్తుంది.",
+  "restrictRepeatedMillsFormation_Detail": "ఒక గిరాటం నుండి మరొకటిని ఏర్పరచడానికి తరలించబడిన ముక్క తదుపరి వంతున వెంటనే అసలు పాయింట్ కు తిరిగి మరలా గిరాటం ఏర్పరచలేదు. ముందుగా వేరొక కదలిక అవసరం.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

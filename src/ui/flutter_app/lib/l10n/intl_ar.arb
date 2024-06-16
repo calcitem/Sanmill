@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "تقييد تشكيل الطواحين المتكررة",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "تمنع هذه القاعدة اللاعب من إعادة قطعة إلى موضعها الأصلي لإعادة تشكيل طاحونة على الفور، إذا تم استخدام القطعة للتو لتشكيل طاحونة في الدور السابق.",
+  "restrictRepeatedMillsFormation_Detail": "لا يمكن للقطعة التي تحركت من طاحونة إلى أخرى أن تعود فورًا إلى النقطة الأصلية في الدور التالي لتكوين طاحونة مرة أخرى. يتطلب الأمر حركة مختلفة أولاً.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "הגבל יצירה חוזרת של טחנות",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "חוק זה מונע משחקן להזיז חלק בחזרה לעמדתו המקורית כדי ליצור מיד טחנה מחדש, אם החלק שימש זה עתה ליצירת טחנה בתור הקודם.",
+  "restrictRepeatedMillsFormation_Detail": "חלק שהועבר מטחנה אחת למשנה לא יכול לחזור מיד לנקודה המקורית בתור הבא כדי ליצור שוב טחנה. דרושה תנועה אחרת תחילה.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

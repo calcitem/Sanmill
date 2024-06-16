@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ismételt malmok kialakulásának korlátozása",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ez a szabály megakadályozza, hogy egy játékos visszahelyezzen egy bábut az eredeti pozíciójába, hogy azonnal újra malmot alkosson, ha a bábu az előző lépésben épp malmot alkotott.",
+  "restrictRepeatedMillsFormation_Detail": "Egy egyik malomból a másikba áthelyezett bábu nem térhet vissza azonnal az eredeti pontra a következő körben, hogy újra malom alakuljon ki. Először egy másik lépés szükséges.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Begränsa upprepad kvarnbildning",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Denna regel förhindrar en spelare från att flytta en pjäs tillbaka till dess ursprungliga position för att omedelbart återbilda en kvarn, om pjäsen just användes för att bilda en kvarn i föregående drag.",
+  "restrictRepeatedMillsFormation_Detail": "En pjäs flyttad från en kvarn till en annan kan inte omedelbart återvända till den ursprungliga punkten på nästa drag för att bilda en kvarn igen. Ett annat drag krävs först.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

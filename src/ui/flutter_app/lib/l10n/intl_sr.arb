@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ограничите поновљено формирање млинова",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ово правило спречава играча да помери фигуру назад на њену првобитну позицију да би одмах реформирао млин, ако је фигура управо коришћена за формирање млина у претходном потезу.",
+  "restrictRepeatedMillsFormation_Detail": "Фигура која је премештена из једног млина у други не може одмах да се врати на почетну тачку у следећем потезу да би поново формирала млин. Прво је потребан другачији потез.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

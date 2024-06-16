@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Tekrarlanan Değirmen Oluşumunu Kısıtla",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Bu kural, bir oyuncunun bir taşı önceki turda değirmen oluşturmak için kullanılmışsa, hemen yeniden değirmen oluşturmak için orijinal konumuna geri taşımasını engeller.",
+  "restrictRepeatedMillsFormation_Detail": "Bir değirmenden alınıp başka bir değirmen oluşturmak için taşınan bir parça, bir sonraki turda hemen orijinal noktaya dönüp yeniden değirmen oluşturamaz. Önce farklı bir hamle gereklidir.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

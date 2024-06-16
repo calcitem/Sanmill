@@ -44,7 +44,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 
         bool restrictRepeatedMillsFormation =
             rule.restrictRepeatedMillsFormation &&
-            (from == pos.lastMillSquare[pos.sideToMove]);
+            (from == pos.lastMillToSquare[pos.sideToMove]);
 
         // Special condition to generate "fly" moves
         if (rule.mayFly && pieceOnBoardCount <= rule.flyPieceCount &&
@@ -63,7 +63,8 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                     if (restrictRepeatedMillsFormation) {
                         // Check if form a mill
                         if (pos.potential_mills_count(to, pos.side_to_move(),
-                                                      from) > 0) {
+                                                      from) > 0 &&
+                            pos.mills_count(from) > 0) {
                             continue;
                         }
                     }

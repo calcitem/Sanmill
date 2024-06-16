@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Batasi Pembentukan Penggilingan Berulang",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Aturan ini mencegah pemain memindahkan kembali bidak ke posisi asalnya untuk segera membentuk kembali penggilingan, jika bidak tersebut baru saja digunakan untuk membentuk penggilingan pada giliran sebelumnya.",
+  "restrictRepeatedMillsFormation_Detail": "Sebuah bidak yang dipindahkan dari satu pabrik untuk membentuk pabrik lain tidak bisa langsung kembali ke titik asal di giliran berikutnya untuk membentuk pabrik lagi. Langkah yang berbeda diperlukan terlebih dahulu.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

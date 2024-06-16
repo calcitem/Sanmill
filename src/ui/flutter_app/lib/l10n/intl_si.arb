@@ -1526,8 +1526,8 @@
   "@innerOuterFlip": {},
   "transparentCanvas": "විනිවිද තිරය",
   "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Ändert upprepade kvarnformationer",
+  "restrictRepeatedMillsFormation": "නෙරෙන්චි නැවත නැවත සාදන්නේන් වළක්වන්න",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Den här regeln förhindrar en spelare från att flytta en pjäs tillbaka till dess ursprungliga position för att omedelbart återskapa en kvarn, om pjäsen precis användes för att bilda en kvarn i föregående drag.",
+  "restrictRepeatedMillsFormation_Detail": "එක් නෙරෙන්චියකින් වෙනත් නෙරෙන්චියක් සාදන්නට හැරවූ කොටසක් ඊළඟ වරට මුල් ලක්ෂ්‍යයට වහාම ආපසු නොඑන්න. පළමුව වෙනත් චාලකයක් අවශ්‍යයි.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

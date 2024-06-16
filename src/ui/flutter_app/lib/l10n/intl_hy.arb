@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Սահմանափակել կրկնվող ջրաղացների ձևավորումը",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Այս կանոնը խոչընդոտում է խաղացողին տեղափոխել քարը հետ իր սկզբնական դիրք՝ անմիջապես վերակազմելու ջրաղաց, եթե քարն օգտագործվել էր ջրաղաց կազմելու համար նախորդ քայլում:",
+  "restrictRepeatedMillsFormation_Detail": "Մի քառակուսին, որը տեղափոխվել է մեկ հարթակից մյուսը, չի կարող անմիջապես վերադառնալ սկզբնական կետը հաջորդ հարվածում՝ նորից հարթակ ձևավորելու համար: Սկզբում պետք է կատարել այլ շարժ:",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

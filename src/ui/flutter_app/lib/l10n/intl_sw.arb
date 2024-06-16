@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Zuia uundaji wa kinu cha kusaga",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Sheria hii inamzuia mchezaji kuhamisha kipande kurudi kwenye nafasi yake ya awali ili kuunda upya kinu cha kusaga mara moja, ikiwa kipande kilitumika kuunda kinu cha kusaga katika zamu iliyopita.",
+  "restrictRepeatedMillsFormation_Detail": "Kipande kilichohamishwa kutoka kinu kimoja kwenda kingine hakiwezi kurudi mara moja kwenye nukta ya awali katika zamu inayofuata ili kuunda kinu tena. Hatua tofauti inahitajika kwanza.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

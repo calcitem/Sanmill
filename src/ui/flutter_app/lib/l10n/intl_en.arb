@@ -1526,8 +1526,8 @@
   "@innerOuterFlip": {},
   "transparentCanvas": "Transparent Canvas",
   "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Restrict Repeated Mills Formation",
+  "restrictRepeatedMillsFormation": "Restrict repeated mills formation",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "This rule prevents a player from moving a piece back to its original position to immediately reform a mill, if the piece was just used to form a mill in the previous turn.",
+  "restrictRepeatedMillsFormation_Detail": "A piece moved from one mill to form another cannot immediately return to the original point on the next turn to form a mill again. A different move is required first.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

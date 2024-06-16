@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Hadkan Pembentukan Kilang Berulang",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Peraturan ini menghalang pemain daripada menggerakkan buah catur kembali ke kedudukan asalnya untuk membentuk semula kilang dengan segera, jika buah catur itu baru sahaja digunakan untuk membentuk kilang pada giliran sebelumnya.",
+  "restrictRepeatedMillsFormation_Detail": "Kepingan yang dipindahkan dari satu kilang untuk membentuk satu lagi tidak boleh kembali ke titik asal pada giliran seterusnya untuk membentuk kilang lagi. Langkah berbeza diperlukan dahulu.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

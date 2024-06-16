@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Restricționează formarea repetată a morilor",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Această regulă împiedică un jucător să mute o piesă înapoi în poziția sa inițială pentru a reforma imediat o moară, dacă piesa a fost folosită pentru a forma o moară în tura precedentă.",
+  "restrictRepeatedMillsFormation_Detail": "O piesă mutată de la un moară la alta nu poate reveni imediat la punctul original în următoarea tură pentru a forma din nou o moară. Mai întâi este necesară o mutare diferită.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

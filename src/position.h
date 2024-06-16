@@ -111,7 +111,8 @@ public:
 
     Piece *get_board() noexcept;
     Square current_square() const;
-    Square last_mill_square() const;
+    Square last_mill_from_square() const;
+    Square last_mill_to_square() const;
     Phase get_phase() const;
     Action get_action() const;
     const char *get_record() const;
@@ -226,7 +227,8 @@ public:
     static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];
 
     Square currentSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
-    Square lastMillSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
+    Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
+    Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
     int gamesPlayedCount {0};
 
@@ -352,9 +354,14 @@ inline Square Position::current_square() const
     return currentSquare[sideToMove];
 }
 
-inline Square Position::last_mill_square() const
+inline Square Position::last_mill_from_square() const
 {
-    return lastMillSquare[sideToMove];
+    return lastMillFromSquare[sideToMove];
+}
+
+inline Square Position::last_mill_to_square() const
+{
+    return lastMillToSquare[sideToMove];
 }
 
 inline Phase Position::get_phase() const

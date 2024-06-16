@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "See reegel takistab mängijal nuppu tagasi algasendisse liigutamast, et kohe uuesti veskit moodustada, kui nuppu kasutati äsja eelmisel käigul veski moodustamiseks.",
+  "restrictRepeatedMillsFormation_Detail": "Nupp, mis on liigutatud ühest veskist teise, ei saa järgmisel käigul kohe algpunkti tagasi minna, et uuesti veskit moodustada. Esiteks on vajalik teistsugune liigutus.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

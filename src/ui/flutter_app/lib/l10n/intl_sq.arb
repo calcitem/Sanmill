@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Kufizo formimin e përsëritur të mullinjve",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ky rregull e pengon lojtarin të lëvizë një pjesë prapa në pozicionin e saj fillestar për të riformuar menjëherë një mulli, nëse pjesa sapo është përdorur për të formuar një mulli në raundin e mëparshëm.",
+  "restrictRepeatedMillsFormation_Detail": "Një copë e zhvendosur nga një mulli në tjetrin nuk mund të kthehet menjëherë në pikën fillestare në radhën tjetër për të formuar sërish një mulli. Fillimisht kërkohet një lëvizje tjetër.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

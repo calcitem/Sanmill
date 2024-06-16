@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Hạn Chế Tạo Lại Cối Xay",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Quy tắc này ngăn người chơi di chuyển một quân cờ trở lại vị trí ban đầu của nó để ngay lập tức tạo lại cối xay, nếu quân cờ đó vừa được sử dụng để tạo cối xay ở lượt trước.",
+  "restrictRepeatedMillsFormation_Detail": "Một quân cờ được di chuyển từ cối xay này sang cối xay khác không thể trở lại điểm ban đầu ngay lượt tiếp theo để hình thành một cối xay mới. Đầu tiên cần một nước đi khác.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

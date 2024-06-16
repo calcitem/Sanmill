@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "จำกัดการสร้างโรงสีซ้ำ",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "กฎนี้ป้องกันไม่ให้ผู้เล่นเคลื่อนย้ายชิ้นส่วนกลับไปยังตำแหน่งเดิมเพื่อสร้างโรงสีใหม่ทันที หากชิ้นส่วนนั้นถูกใช้ในการสร้างโรงสีในตาก่อนหน้า",
+  "restrictRepeatedMillsFormation_Detail": "ชิ้นส่วนที่ถูกย้ายจากโรงสีหนึ่งไปอีกโรงสีหนึ่งไม่สามารถกลับไปยังจุดเดิมทันทีในตาถัดไปเพื่อสร้างโรงสีอีกครั้งได้ จำเป็นต้องมีการเคลื่อนไหวที่แตกต่างกันก่อน.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ограничаване на повторното образуване на мелници",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Това правило предотвратява играч да премести фигура обратно в първоначалната й позиция, за да образува мелница незабавно, ако фигурата е била използвана за образуване на мелница в предишния ход.",
+  "restrictRepeatedMillsFormation_Detail": "Пиеса, преместена от един мелничен кръг в друг, не може незабавно да се върне в оригиналната точка на следващия ход, за да образува отново мелничен кръг. Първо е необходимо друго движение.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

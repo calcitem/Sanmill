@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Restringir a formação repetida de moinhos",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Esta regra impede um jogador de mover uma peça de volta para sua posição original para reformar imediatamente um moinho, se a peça acabou de ser usada para formar um moinho no turno anterior.",
+  "restrictRepeatedMillsFormation_Detail": "Uma peça movida de um moinho para formar outro não pode retornar imediatamente ao ponto original na próxima jogada para formar um moinho novamente. Primeiro, é necessário um movimento diferente.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

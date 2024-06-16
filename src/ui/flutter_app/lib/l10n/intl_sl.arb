@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "To pravilo preprečuje igralcu, da bi figuro premaknil nazaj na njen prvotni položaj, da bi takoj ponovno oblikoval mlin, če je bila figura pravkar uporabljena za oblikovanje mlina v prejšnji potezi.",
+  "restrictRepeatedMillsFormation_Detail": "Figura, premaknjena iz enega mlina v drugega, se ne more takoj vrniti na izhodiščno točko v naslednjem potezu, da bi znova oblikovala mlin. Najprej je potrebna druga poteza.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

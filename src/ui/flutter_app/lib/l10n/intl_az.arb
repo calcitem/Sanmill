@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Təkrarlanan Dəyirmanların Formalaşmasını Məhdudlaşdırın",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Bu qayda, əgər əvvəlki turda dəyirman qurmaq üçün istifadə edilibsə, oyunçunun fiquru dərhal yenidən dəyirman qurmaq üçün əvvəlki mövqeyinə qaytarmasının qarşısını alır.",
+  "restrictRepeatedMillsFormation_Detail": "Bir dəyirmanından digərinə köçürülən bir fiqur dərhal növbəti növbədə ilk dəyirmanı yenidən formalaşdırmaq üçün əvvəlki nöqtəyə qayıda bilməz. İlk öncə fərqli bir hərəkət tələb olunur.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ierobežot atkārtotu dzirnaviņu veidošanos",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Šis noteikums neļauj spēlētājam pārvietot kauliņu atpakaļ uz sākotnējo pozīciju, lai nekavējoties atjaunotu dzirnavas, ja kauliņš tikko tika izmantots, lai izveidotu dzirnavas iepriekšējā gājienā.",
+  "restrictRepeatedMillsFormation_Detail": "Figūra, kas pārvietota no viena dzirnavām uz citām, nevar nekavējoties atgriezties sākotnējā punktā nākamajā gājienā, lai atkal veidotu dzirnavas. Vispirms ir nepieciešams cits gājiens.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

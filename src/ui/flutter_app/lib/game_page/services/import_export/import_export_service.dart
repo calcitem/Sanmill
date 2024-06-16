@@ -148,7 +148,7 @@ class ImportService {
 
   static bool _isPureFen(String text) {
     if (text.length >=
-            "********/********/******** w p p 9 0 9 0 0 0 0 0 0 0".length &&
+            "********/********/******** w p p 9 0 9 0 0 0 0 0 0 0 0 0".length &&
         (text.contains("/") &&
             text[8] == "/" &&
             text[17] == "/" &&

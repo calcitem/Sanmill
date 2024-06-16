@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Begræns gentagen mølle-formation",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Denne regel forhindrer en spiller i at flytte en brik tilbage til dens oprindelige position for straks at gendanne en mølle, hvis brikken lige er blevet brugt til at danne en mølle i den foregående tur.",
+  "restrictRepeatedMillsFormation_Detail": "En brik flyttet fra en mølle til en anden kan ikke umiddelbart vende tilbage til det oprindelige punkt på næste tur for at danne en mølle igen. Et andet træk er først nødvendigt.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

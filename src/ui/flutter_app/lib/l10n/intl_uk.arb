@@ -1525,5 +1525,9 @@
   "innerOuterFlip": "В/ЗП",
   "@innerOuterFlip": {},
   "transparentCanvas": "Прозоре Полотно",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Обмежити повторне формування млинів",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Фігура, переміщена з одного млина для створення іншого, не може відразу повернутися на початкову позицію у наступному ході, щоб знову утворити млин. Спочатку потрібен інший хід.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

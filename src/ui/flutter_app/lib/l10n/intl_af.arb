@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Hierdie reël voorkom dat 'n speler 'n stuk terugskuif na sy oorspronklike posisie om dadelik 'n meul te hervorm, as die stuk in die vorige beurt gebruik is om 'n meul te vorm.",
+  "restrictRepeatedMillsFormation_Detail": "'n Stuk wat van een meul na 'n ander geskuif is, kan nie onmiddellik terugkeer na die oorspronklike punt op die volgende beurt om weer 'n meul te vorm nie. 'n Ander skuif is eers nodig.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

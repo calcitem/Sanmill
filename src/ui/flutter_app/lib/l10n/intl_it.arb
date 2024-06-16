@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Limita la formazione ripetuta di mulini",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Questa regola impedisce a un giocatore di spostare un pezzo nella sua posizione originale per riformare immediatamente un mulino, se il pezzo è stato appena utilizzato per formare un mulino nel turno precedente.",
+  "restrictRepeatedMillsFormation_Detail": "Un pezzo spostato da un mulino per formarne un altro non può immediatamente ritornare al punto originale nel turno successivo per formare di nuovo un mulino. È richiesta prima una mossa diversa.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

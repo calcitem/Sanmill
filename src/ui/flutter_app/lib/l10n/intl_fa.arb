@@ -1428,8 +1428,8 @@
   "@innerOuterFlip": {},
   "transparentCanvas": "بوم شفاف",
   "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "محدود کردن تشکیل آسیاب های تکراری",
+  "restrictRepeatedMillsFormation": "محدود کردن تشکیل دوزهای تکراری",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "این قانون مانع می شود که بازیکن مهره ای را به موقعیت اولیه خود برگرداند تا بلافاصله یک آسیاب را دوباره تشکیل دهد، اگر مهره در نوبت قبلی برای تشکیل یک آسیاب استفاده شده باشد.",
+  "restrictRepeatedMillsFormation_Detail": "یک مهره که از یک دوز به دوز دیگر منتقل شده است نمی‌تواند بلافاصله به نقطه اصلی در دور بعدی بازگردد تا دوباره دوز تشکیل دهد. ابتدا نیاز به حرکتی متفاوت است.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1427,5 +1427,9 @@
   "innerOuterFlip": "IO Obrácení",
   "@innerOuterFlip": {},
   "transparentCanvas": "Průhledné Plátno",
-  "@transparentCanvas": {}
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Zakázat opakované formování mlýnů",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Kus přesunutý z jednoho mlýna do druhého nemůže okamžitě vrátit na původní bod v dalším tahu, aby znovu vytvořil mlýn. Nejprve je vyžadován jiný tah.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Абмежаваць паўторнае ўтварэнне млыноў",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Гэтае правіла не дазваляе гульцу перамяшчаць фігуру назад у зыходнае становішча, каб неадкладна ўтварыць млын зноў, калі фігура толькі што была выкарыстана для ўтварэння млына ў папярэднім ходзе.",
+  "restrictRepeatedMillsFormation_Detail": "Кавалак, які перамяшчаецца з аднаго млына ў іншы, не можа непасрэдна вярнуцца ў пачатковую кропку на наступны ход, каб зноў сфармаваць млын. Спачатку патрабуецца іншы рух.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

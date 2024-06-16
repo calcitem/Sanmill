@@ -1431,5 +1431,7 @@
   "restrictRepeatedMillsFormation": "Obmedziť opakované formovanie mlynov",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Toto pravidlo zabraňuje hráčovi posunúť kameň späť na svoju pôvodnú pozíciu, aby ihneď preformoval mlyn, ak bol kameň práve použitý na vytvorenie mlyna v predchádzajúcom ťahu.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "restrictRepeatedMillsFormation_Detail": "Figúrka presunutá z jedného mlyna do druhého nemôže okamžite vrátiť na pôvodný bod v ďalšom ťahu, aby znova vytvorila mlyn. Najprv je potrebný iný ťah.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

@@ -1528,5 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Lo mthetho uvimbela umdlali ekutheni ahambise isicubu siye endaweni yaso yokuqala ukuze akhephe kabusha isimbokodo, uma leso sicubu besisanda kusetshenziswa ukwakha isimbokodo emzulwini ongaphambili."
+  "restrictRepeatedMillsFormation_Detail": "Ucezu oluhambile kusukela kolunye usimende ukuya kolunye alukwazi ukubuyela ngokushesha endaweni yoqobo kujike elilandelayo ukwakha usimende futhi. Kuqala kudingeka enye inyakazo.",
+  "@restrictRepeatedMillsFormation_Detail": {}
 }

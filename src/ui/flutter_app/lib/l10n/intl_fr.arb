@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Restreindre la formation répétée de moulins",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Cette règle empêche un joueur de déplacer une pièce à sa position d'origine pour reformer immédiatement un moulin, si la pièce vient d'être utilisée pour former un moulin au tour précédent.",
+  "restrictRepeatedMillsFormation_Detail": "Une pièce déplacée d'un moulin pour en former un autre ne peut pas immédiatement retourner au point original au tour suivant pour former à nouveau un moulin. Un autre mouvement est requis d'abord.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

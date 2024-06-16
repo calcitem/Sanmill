@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ovo pravilo sprječava igrača da vrati figuru na njezin početni položaj kako bi odmah ponovno formirao mlin, ako je figura upravo korištena za formiranje mlina u prethodnom potezu.",
+  "restrictRepeatedMillsFormation_Detail": "Figura premještena iz jednog mlina u drugi ne može se odmah vratiti na izvornu točku u sljedećem potezu kako bi ponovno formirala mlin. Prvo je potreban drugačiji potez.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

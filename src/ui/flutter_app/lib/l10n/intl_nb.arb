@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Begrens gjentatt mølleformasjon",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Denne regelen forhindrer en spiller fra å flytte en brikke tilbake til sin opprinnelige posisjon for å umiddelbart reformere en mølle, hvis brikken nettopp ble brukt til å forme en mølle i forrige tur.",
+  "restrictRepeatedMillsFormation_Detail": "En brikke flyttet fra én kvern til en annen kan ikke umiddelbart returnere til det opprinnelige punktet på neste trekk for å danne en kvern igjen. Et annet trekk kreves først.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

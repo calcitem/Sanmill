@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "পুনরাবৃত্ত মিলস গঠন সীমিত করুন",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "এই নিয়মটি খেলোয়াড়কে একটি পিস তার মূল অবস্থানে ফিরিয়ে নিয়ে তাৎক্ষণিকভাবে একটি মিল পুনর্গঠন করা থেকে বিরত রাখে, যদি পিসটি ঠিক আগের টার্নে একটি মিল গঠন করতে ব্যবহৃত হয়ে থাকে।",
+  "restrictRepeatedMillsFormation_Detail": "একটি মিল থেকে অন্য মিলে সরানো একটি টুকরো পরবর্তী পালায় আবার মিল গঠনের জন্য অবিলম্বে মূল বিন্দুতে ফিরতে পারে না। প্রথমে অন্য একটি চাল প্রয়োজন।",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

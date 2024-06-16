@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ограничи повторно формирање мелници",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ова правило спречува играчот да го врати дел на неговата оригинална позиција за веднаш да ја преформира мелницата, доколку делот беше штотуку искористен за да формира мелница во претходниот потег.",
+  "restrictRepeatedMillsFormation_Detail": "Парче што се преместува од еден млин во друг не може веднаш да се врати на почетната точка на следниот потег за да формира млин повторно. Прво е потребен различен потег.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

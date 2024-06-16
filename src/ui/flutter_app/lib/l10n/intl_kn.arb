@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "ಪುನರಾವರ್ತಿತ ಮಿಲ್ ರಚನೆಯನ್ನು ನಿರ್ಬಂಧಿಸಿ",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "ಈ ನಿಯಮವು ಆಟಗಾರನನ್ನು ತಕ್ಷಣವೇ ಮಿಲ್ ಅನ್ನು ಪುನರ್ ರಚಿಸಲು ತನ್ನ ಮೂಲ ಸ್ಥಾನಕ್ಕೆ ಒಂದು ತುಣುಕನ್ನು ಹಿಂತಿರುಗಿಸುವುದನ್ನು ತಡೆಯುತ್ತದೆ, ಹಿಂದಿನ ತಿರುವಿನಲ್ಲಿ ಮಿಲ್ ರಚಿಸಲು ಆ ತುಣುಕನ್ನು ಬಳಸಲಾಗಿದ್ದರೆ.",
+  "restrictRepeatedMillsFormation_Detail": "ಒಂದು ಮಿಲ್ಲಿನಿಂದ ಮತ್ತೊಂದು ಮಿಲ್ಲನ್ನು ರಚಿಸಲು ಸಾಗಿಸಿದ ಕಾಯವು ಮುಂದಿನ ಸುತ್ತಿನಲ್ಲಿ ತಕ್ಷಣ ಮೂಲ ಬಿಂದುವಿಗೆ ಮರಳಿ ಮತ್ತೊಮ್ಮೆ ಮಿಲ್ ರಚಿಸಲು ಹೋಗಬಾರದು. ಮೊದಲು ಬೇರೆ ನಡೆ ಅಗತ್ಯವಿದೆ.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

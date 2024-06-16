@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Beperk herhaalde molenvorming",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Deze regel voorkomt dat een speler een schijf terugzet naar zijn oorspronkelijke positie om onmiddellijk een molen te hervormen, als de schijf zojuist is gebruikt om een molen te vormen in de vorige beurt.",
+  "restrictRepeatedMillsFormation_Detail": "Een stuk verplaatst van de ene molen naar de andere kan niet onmiddellijk terugkeren naar het oorspronkelijke punt op de volgende beurt om weer een molen te vormen. Eerst is een andere zet nodig.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

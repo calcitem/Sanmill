@@ -1528,6 +1528,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Takmarka endurtekna myndun myllu",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Þessi regla kemur í veg fyrir að leikmaður færi tafl aftur á upprunalegan stað til að endurheimta myllu strax, ef taflið var notað til að mynda myllu í fyrri umferð.",
+  "restrictRepeatedMillsFormation_Detail": "Stykki sem fært er úr einum myllu í aðra getur ekki strax snúið aftur á upphafspunktinn í næsta leik til að mynda myllu aftur. Fyrst þarf annað skref.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

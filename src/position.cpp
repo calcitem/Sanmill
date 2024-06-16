@@ -292,7 +292,7 @@ Position &Position::set(const string &fenStr, Thread *th)
        4) Action.
 
        5) White on board/White in hand/Black on board/Black in hand/need to
-       remove
+       remove/Last mill square of white/Last mill square of black
 
        6) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
@@ -368,15 +368,20 @@ Position &Position::set(const string &fenStr, Thread *th)
     // 5. White on board / White in hand / Black on board / Black in hand /
     // White need to remove / Black need to remove / last mill square of white /
     // last mill square of black
-    int tmpLastMillSquareWhite = 0;
-    int tmpLastMillSquareBlack = 0;
+    int tmpLastMillFromSquareWhite = 0;
+    int tmpLastMillToSquareWhite = 0;
+    int tmpLastMillFromSquareBlack = 0;
+    int tmpLastMillToSquareBlack = 0;
     ss >> std::skipws >> pieceOnBoardCount[WHITE] >> pieceInHandCount[WHITE] >>
         pieceOnBoardCount[BLACK] >> pieceInHandCount[BLACK] >>
         pieceToRemoveCount[WHITE] >> pieceToRemoveCount[BLACK] >>
-        tmpLastMillSquareWhite >> tmpLastMillSquareBlack;
+        tmpLastMillFromSquareWhite >> tmpLastMillToSquareWhite >>
+        tmpLastMillFromSquareBlack >> tmpLastMillToSquareBlack;
 
-    lastMillSquare[WHITE] = static_cast<Square>(tmpLastMillSquareWhite);
-    lastMillSquare[BLACK] = static_cast<Square>(tmpLastMillSquareBlack);
+    lastMillFromSquare[WHITE] = static_cast<Square>(tmpLastMillFromSquareWhite);
+    lastMillToSquare[WHITE] = static_cast<Square>(tmpLastMillToSquareWhite);
+    lastMillFromSquare[BLACK] = static_cast<Square>(tmpLastMillFromSquareBlack);
+    lastMillToSquare[BLACK] = static_cast<Square>(tmpLastMillToSquareBlack);
 
     // 6-7. Halfmove clock and fullmove number
     ss >> std::skipws >> st.rule50 >> gamePly;
@@ -468,7 +473,8 @@ string Position::fen() const
        << pieceOnBoardCount[BLACK] << " " << pieceInHandCount[BLACK] << " "
        << pieceToRemoveCount[WHITE] << " " << pieceToRemoveCount[BLACK] << " ";
 
-    ss << lastMillSquare[WHITE] << " " << lastMillSquare[BLACK] << " ";
+    ss << lastMillFromSquare[WHITE] << " " << lastMillToSquare[WHITE] << " "
+       << lastMillFromSquare[BLACK] << " " << lastMillToSquare[BLACK] << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -655,7 +661,8 @@ bool Position::reset()
     MoveList<LEGAL>::create();
     create_mill_table();
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
-    lastMillSquare[WHITE] = lastMillSquare[BLACK] = SQ_0;
+    lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
+    lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -710,9 +717,10 @@ bool Position::put_piece(Square s, bool updateRecord)
     }
 
     if (rule.restrictRepeatedMillsFormation &&
-        currentSquare[us] == lastMillSquare[us] &&
-        currentSquare[us] != SQ_NONE) {
-        if (potential_mills_count(s, us, currentSquare[us]) > 0) {
+        currentSquare[us] == lastMillToSquare[us] &&
+        currentSquare[us] != SQ_NONE && s == lastMillFromSquare[us]) {
+        if (potential_mills_count(s, us, currentSquare[us]) > 0 &&
+            mills_count(currentSquare[us]) > 0) {
             return false;
         }
     }
@@ -758,6 +766,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         updateMobility(MOVETYPE_PLACE, s);
 
         currentSquare[sideToMove] = SQ_NONE;
+        lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
 
         if (updateRecord) {
             snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
@@ -775,7 +784,8 @@ bool Position::put_piece(Square s, bool updateRecord)
                 return false;
             }
 
-            lastMillSquare[sideToMove] = SQ_NONE;
+            lastMillFromSquare[sideToMove] = SQ_NONE;
+            lastMillToSquare[sideToMove] = SQ_NONE;
 
             // Begin of set side to move
 
@@ -860,7 +870,6 @@ bool Position::put_piece(Square s, bool updateRecord)
                 }
             } else {
                 action = Action::remove;
-                lastMillSquare[sideToMove] = s;
                 return true;
             }
         }
@@ -922,7 +931,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     if (n == 0) {
         // If no mill during Moving phase
         currentSquare[sideToMove] = SQ_NONE;
-        lastMillSquare[sideToMove] = SQ_NONE;
+        lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
         change_side_to_move();
 
         if (check_if_game_is_over()) {
@@ -930,13 +939,25 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         }
     } else {
         // If forming mill during Moving phase
-        if (rule.restrictRepeatedMillsFormation &&
-            currentSquare[sideToMove] == lastMillSquare[sideToMove]) {
-            return false;
+        if (rule.restrictRepeatedMillsFormation) {
+            int m = potential_mills_count(currentSquare[sideToMove],
+                                          sideToMove);
+            if (currentSquare[sideToMove] == lastMillToSquare[sideToMove] &&
+                s == lastMillFromSquare[sideToMove] && m > 0) {
+                return false;
+            }
+
+            if (m > 0) {
+                lastMillFromSquare[sideToMove] = currentSquare[sideToMove];
+                lastMillToSquare[sideToMove] = s;
+            } else {
+                lastMillFromSquare[sideToMove] = SQ_NONE;
+                lastMillToSquare[sideToMove] = SQ_NONE;
+            }
         }
 
         currentSquare[sideToMove] = SQ_NONE;
-        lastMillSquare[sideToMove] = s;
+
         pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
         update_key_misc();
         action = Action::remove;
@@ -1796,11 +1817,18 @@ void Position::flipHorizontally(vector<string> &gameMoveList,
         currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (lastMillSquare[sideToMove] != 0) {
-        f = lastMillSquare[sideToMove] / static_cast<Square>(RANK_NB);
-        r = lastMillSquare[sideToMove] % static_cast<Square>(RANK_NB);
+    if (lastMillFromSquare[sideToMove] != 0) {
+        f = lastMillFromSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillFromSquare[sideToMove] % static_cast<Square>(RANK_NB);
         r = (RANK_NB - r) % RANK_NB;
-        lastMillSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+        lastMillFromSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+    }
+
+    if (lastMillToSquare[sideToMove] != 0) {
+        f = lastMillToSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillToSquare[sideToMove] % static_cast<Square>(RANK_NB);
+        r = (RANK_NB - r) % RANK_NB;
+        lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {
@@ -1906,16 +1934,28 @@ void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
         currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (lastMillSquare[sideToMove] != 0) {
-        f = lastMillSquare[sideToMove] / static_cast<Square>(RANK_NB);
-        r = lastMillSquare[sideToMove] % static_cast<Square>(RANK_NB);
+    if (lastMillFromSquare[sideToMove] != 0) {
+        f = lastMillFromSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillFromSquare[sideToMove] % static_cast<Square>(RANK_NB);
 
         if (f == 1)
             f = FILE_NB;
         else if (f == FILE_NB)
             f = 1;
 
-        lastMillSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+        lastMillFromSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+    }
+
+    if (lastMillToSquare[sideToMove] != 0) {
+        f = lastMillToSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillToSquare[sideToMove] % static_cast<Square>(RANK_NB);
+
+        if (f == 1)
+            f = FILE_NB;
+        else if (f == FILE_NB)
+            f = 1;
+
+        lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {
@@ -2080,11 +2120,18 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
         currentSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
-    if (lastMillSquare[sideToMove] != 0) {
-        f = lastMillSquare[sideToMove] / static_cast<Square>(RANK_NB);
-        r = lastMillSquare[sideToMove] % static_cast<Square>(RANK_NB);
+    if (lastMillFromSquare[sideToMove] != 0) {
+        f = lastMillFromSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillFromSquare[sideToMove] % static_cast<Square>(RANK_NB);
         r = (r + RANK_NB - degrees) % RANK_NB;
-        lastMillSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+        lastMillFromSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
+    }
+
+    if (lastMillToSquare[sideToMove] != 0) {
+        f = lastMillToSquare[sideToMove] / static_cast<Square>(RANK_NB);
+        r = lastMillToSquare[sideToMove] % static_cast<Square>(RANK_NB);
+        r = (r + RANK_NB - degrees) % RANK_NB;
+        lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
     if (cmdChange) {

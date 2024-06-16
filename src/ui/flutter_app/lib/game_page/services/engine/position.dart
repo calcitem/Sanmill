@@ -106,7 +106,13 @@ class Position {
     PieceColor.draw: 0,
   };
 
-  Map<PieceColor, int> _lastMillSquare = <PieceColor, int>{
+  Map<PieceColor, int> _lastMillFromSquare = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+    PieceColor.draw: 0,
+  };
+
+  Map<PieceColor, int> _lastMillToSquare = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
     PieceColor.draw: 0,
@@ -138,12 +144,14 @@ class Position {
   }
 
   /// Returns a FEN representation of the position.
-  /// Example: "@*O@O*O*/O*@@O@@@/O@O*@*O* b m s 8 0 9 0 0 0 0 0 3 10"
+  /// Example: "@*O@O*O*/O*@@O@@@/O@O*@*O* b m s 8 0 9 0 0 0 0 0 0 0 3 10"
   /// Format: "[Inner ring]/[Middle Ring]/[Outer Ring]
   /// [Side to Move] [Phase] [Action]
   /// [White Piece On Board] [White Piece In Hand]
   /// [Black Piece On Board] [Black Piece In Hand]
   /// [White Piece to Remove] [Black Piece to Remove]
+  /// [White Piece Last Mill From Square] [White Piece Last Mill To Square]
+  /// [Black Piece Last Mill From Square] [Black Piece Last Mill To Square]
   /// [Rule50] [Ply]"
   ///
   /// ([Rule50] and [Ply] are unused right now.)
@@ -213,8 +221,10 @@ class Position {
     buffer.writeSpace(pieceInHandCount[PieceColor.black]);
     buffer.writeSpace(pieceToRemoveCount[PieceColor.white]);
     buffer.writeSpace(pieceToRemoveCount[PieceColor.black]);
-    buffer.writeSpace(_lastMillSquare[PieceColor.white]);
-    buffer.writeSpace(_lastMillSquare[PieceColor.black]);
+    buffer.writeSpace(_lastMillFromSquare[PieceColor.white]);
+    buffer.writeSpace(_lastMillToSquare[PieceColor.white]);
+    buffer.writeSpace(_lastMillFromSquare[PieceColor.black]);
+    buffer.writeSpace(_lastMillToSquare[PieceColor.black]);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -306,24 +316,30 @@ class Position {
     pieceToRemoveCount[PieceColor.black] =
         int.parse(blackPieceToRemoveCountStr);
 
-    final String whiteLastMillSquareStr = l[10];
-    _lastMillSquare[PieceColor.white] = int.parse(whiteLastMillSquareStr);
+    final String whiteLastMillFromSquareStr = l[10];
+    _lastMillFromSquare[PieceColor.white] =
+        int.parse(whiteLastMillFromSquareStr);
 
-    final String blackLastMillSquareStr = l[11];
-    _lastMillSquare[PieceColor.black] = int.parse(blackLastMillSquareStr);
+    final String whiteLastMillToSquareStr = l[11];
+    _lastMillToSquare[PieceColor.white] = int.parse(whiteLastMillToSquareStr);
 
-    final String rule50Str = l[12];
+    final String blackLastMillFromSquareStr = l[12];
+    _lastMillFromSquare[PieceColor.black] =
+        int.parse(blackLastMillFromSquareStr);
+
+    final String blackLastMillToSquareStr = l[13];
+    _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
+
+    final String rule50Str = l[14];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = l[13];
+    final String gamePlyStr = l[15];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
     winner = PieceColor.nobody;
     gameOverReason = null;
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
-    // TODO: Set _lastMillSquare to the last mill square
-    _lastMillSquare[PieceColor.white] = _lastMillSquare[PieceColor.black] = 0;
     _record = null;
 
     return ret;
@@ -332,7 +348,7 @@ class Position {
   // TODO: Implement with C++ in engine
   bool validateFen(String fen) {
     final List<String> parts = fen.split(' ');
-    if (parts.length < 14) {
+    if (parts.length < 16) {
       logger.e('FEN does not contain enough parts.');
       return false;
     }
@@ -436,22 +452,22 @@ class Position {
       return false;
     }
 
-    // Parts 10-11: Last mill square
-    counts = parts.getRange(10, 12).map(int.parse).toList();
+    // Parts 10-13: Last mill square
+    counts = parts.getRange(10, 14).map(int.parse).toList();
     if (counts.any((int count) => count != 0 && (count < 8 || count > 32))) {
       logger.e('Invalid last mill square. Must be 0 or between 8 and 32.');
       return false;
     }
 
-    // Part 12: Half-move clock
-    final int halfMoveClock = int.parse(parts[12]);
+    // Part 14: Half-move clock
+    final int halfMoveClock = int.parse(parts[14]);
     if (halfMoveClock < 0) {
       logger.e('Invalid half-move clock. Cannot be negative.');
       return false;
     }
 
-    // Part 13: Full move number
-    final int fullMoveNumber = int.parse(parts[13]);
+    // Part 15: Full move number
+    final int fullMoveNumber = int.parse(parts[15]);
     if (fullMoveNumber < 1) {
       logger.e('Invalid full move number. Must start at 1.');
       return false;
@@ -602,11 +618,13 @@ class Position {
     }
 
     if (DB().ruleSettings.restrictRepeatedMillsFormation &&
-        _currentSquare[us] == _lastMillSquare[us] &&
-        _currentSquare[us] != 0) {
-      if (_potentialMillsCount(s, us, from: _currentSquare[us]!) > 0) {
+        _currentSquare[us] == _lastMillToSquare[us] &&
+        _currentSquare[us] != 0 &&
+        s == _lastMillFromSquare[us]) {
+      if (_potentialMillsCount(s, us, from: _currentSquare[us]!) > 0 &&
+          _millsCount(_currentSquare[us]!) > 0) {
         // TODO: Show text
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear("🔗➡️🔗🚫");
+        rootScaffoldMessengerKey.currentState!.showSnackBarClear("3->3 X");
         return false;
       }
     }
@@ -662,6 +680,7 @@ class Position {
       _board[s] = sideToMove;
 
       _currentSquare[sideToMove] = 0;
+      _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
 
       _record = ExtMove("(${fileOf(s)},${rankOf(s)})");
 
@@ -678,7 +697,8 @@ class Position {
           return false;
         }
 
-        _lastMillSquare[sideToMove] = 0;
+        _lastMillToSquare[sideToMove] = 0;
+        _lastMillToSquare[sideToMove] = 0;
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
         SoundManager().playTone(Sound.place);
@@ -791,7 +811,6 @@ class Position {
           }
         } else {
           action = Act.remove;
-          _lastMillSquare[sideToMove] = s;
           return true;
         }
       }
@@ -865,7 +884,7 @@ class Position {
     if (n == 0) {
       // If no mill during Moving phase
       _currentSquare[sideToMove] = 0;
-      _lastMillSquare[sideToMove] = 0;
+      _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
       changeSideToMove();
 
       if (_checkIfGameIsOver()) {
@@ -877,13 +896,26 @@ class Position {
       SoundManager().playTone(Sound.place);
     } else {
       // If forming mill during Moving phase
-      if (DB().ruleSettings.restrictRepeatedMillsFormation &&
-          _currentSquare[sideToMove] == _lastMillSquare[sideToMove]) {
-        return false;
+      if (DB().ruleSettings.restrictRepeatedMillsFormation) {
+        final int m =
+            _potentialMillsCount(_currentSquare[sideToMove]!, sideToMove);
+        if (_currentSquare[sideToMove] == _lastMillToSquare[sideToMove] &&
+            s == _lastMillFromSquare[sideToMove] &&
+            m > 0) {
+          return false;
+        }
+
+        if (m > 0) {
+          _lastMillFromSquare[sideToMove] = _currentSquare[sideToMove]!;
+          _lastMillToSquare[sideToMove] = s;
+        } else {
+          _lastMillFromSquare[sideToMove] = 0;
+          _lastMillToSquare[sideToMove] = 0;
+        }
       }
 
       _currentSquare[sideToMove] = 0;
-      _lastMillSquare[sideToMove] = s;
+
       pieceToRemoveCount[sideToMove] =
           DB().ruleSettings.mayRemoveMultiple ? n : 1;
       _updateKeyMisc();
@@ -1420,7 +1452,10 @@ extension SetupPosition on Position {
 
     _record = null;
     _currentSquare[PieceColor.white] = _currentSquare[PieceColor.black] = 0;
-    _lastMillSquare[PieceColor.white] = _lastMillSquare[PieceColor.black] = 0;
+    _lastMillFromSquare[PieceColor.white] =
+        _lastMillFromSquare[PieceColor.black] = 0;
+    _lastMillToSquare[PieceColor.white] =
+        _lastMillToSquare[PieceColor.black] = 0;
 
     _gamePly = 0;
 
@@ -1468,7 +1503,8 @@ extension SetupPosition on Position {
 
     _record = pos._record;
     _currentSquare = pos._currentSquare;
-    _lastMillSquare = pos._lastMillSquare;
+    _lastMillFromSquare = pos._lastMillFromSquare;
+    _lastMillToSquare = pos._lastMillToSquare;
 
     _gamePly = pos._gamePly;
 

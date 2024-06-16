@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ogranicz powtarzające się formacje młynów",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Ta zasada uniemożliwia graczowi przesunięcie pionka z powrotem na jego pierwotną pozycję, aby natychmiast przeformować młyn, jeśli pionek został właśnie użyty do uformowania młyna w poprzedniej turze.",
+  "restrictRepeatedMillsFormation_Detail": "Pionek przeniesiony z jednego młyna do drugiego nie może natychmiast wrócić na oryginalne miejsce w następnej turze, aby ponownie utworzyć młyn. Najpierw wymagany jest inny ruch.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }

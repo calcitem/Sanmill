@@ -1430,6 +1430,6 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Wiederholte Mühlebildung einschränken",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Diese Regel verhindert, dass ein Spieler einen Stein zurück auf seine ursprüngliche Position zieht, um sofort wieder eine Mühle zu bilden, wenn der Stein gerade im vorherigen Zug zum Bilden einer Mühle verwendet wurde.",
+  "restrictRepeatedMillsFormation_Detail": "Ein Spielstein, der von einer Mühle zu einer anderen verschoben wurde, kann nicht sofort auf den ursprünglichen Punkt im nächsten Zug zurückkehren, um wieder eine Mühle zu bilden. Zuerst ist ein anderer Zug erforderlich.",
   "@restrictRepeatedMillsFormation_Detail": {}
 }
