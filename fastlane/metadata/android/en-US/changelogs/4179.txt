@@ -1,0 +1,6 @@
+v4.13.0
+
+Support Restrict Repeated Mills Formation.
+This rule prevents a player from moving a piece back to its original position to
+immediately reform a mill, if the piece was just used to form a mill in the
+previous turn.
