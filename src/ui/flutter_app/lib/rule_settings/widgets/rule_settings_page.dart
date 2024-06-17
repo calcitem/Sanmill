@@ -378,6 +378,14 @@ class RuleSettingsPage extends StatelessWidget {
               titleString: S.of(context).isDefenderMoveFirst,
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
+            SettingsListTile.switchTile(
+              value: ruleSettings.restrictRepeatedMillsFormation,
+              onChanged: (bool val) =>
+                  _setRestrictRepeatedMillsFormation(ruleSettings, val),
+              titleString: S.of(context).restrictRepeatedMillsFormation,
+              subtitleString:
+                  S.of(context).restrictRepeatedMillsFormation_Detail,
+            ),
             SettingsListTile(
               onTap: () => _setStalemateAction(context, ruleSettings),
               titleString: S.of(context).whenStalemate,
@@ -422,14 +430,6 @@ class RuleSettingsPage extends StatelessWidget {
               ),
               titleString: S.of(context).mayRemoveMultiple,
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
-            ),
-            SettingsListTile.switchTile(
-              value: ruleSettings.restrictRepeatedMillsFormation,
-              onChanged: (bool val) =>
-                  _setRestrictRepeatedMillsFormation(ruleSettings, val),
-              titleString: S.of(context).restrictRepeatedMillsFormation,
-              subtitleString:
-                  S.of(context).restrictRepeatedMillsFormation_Detail,
             ),
           ],
         ),
