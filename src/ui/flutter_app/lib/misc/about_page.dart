@@ -138,7 +138,6 @@ class AboutPage extends StatelessWidget {
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).about,
-            style: AppTheme.appBarTheme.titleTextStyle,
           ),
         ),
         body: ListView.separated(

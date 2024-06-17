@@ -186,25 +186,12 @@ class ToolbarItem extends ButtonStyleButton {
     AlignmentGeometry? alignment,
     InteractiveInkFeatureFactory? splashFactory,
   }) {
-    final WidgetStateProperty<Color?>? foregroundColor =
-        (onSurface == null && primary == null)
-            ? null
-            : _ToolbarItemDefaultForeground(primary, onSurface);
-    final WidgetStateProperty<Color?>? overlayColor =
-        (primary == null) ? null : _ToolbarItemDefaultOverlay(primary);
-    final WidgetStateProperty<MouseCursor>? mouseCursor =
-        (enabledMouseCursor == null && disabledMouseCursor == null)
-            ? null
-            : _ToolbarItemDefaultMouseCursor(
-                enabledMouseCursor!,
-                disabledMouseCursor!,
-              );
+
 
     return ButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
       backgroundColor: ButtonStyleButton.allOrNull<Color>(backgroundColor),
-      foregroundColor: foregroundColor,
-      overlayColor: overlayColor,
+
       shadowColor: ButtonStyleButton.allOrNull<Color>(shadowColor),
       elevation: ButtonStyleButton.allOrNull<double>(elevation),
       padding: ButtonStyleButton.allOrNull<EdgeInsetsGeometry>(padding),
@@ -213,7 +200,7 @@ class ToolbarItem extends ButtonStyleButton {
       maximumSize: ButtonStyleButton.allOrNull<Size>(maximumSize),
       side: ButtonStyleButton.allOrNull<BorderSide>(side),
       shape: ButtonStyleButton.allOrNull<OutlinedBorder>(shape),
-      mouseCursor: mouseCursor,
+
       visualDensity: visualDensity,
       tapTargetSize: tapTargetSize,
       animationDuration: animationDuration,
@@ -340,67 +327,7 @@ class ToolbarItem extends ButtonStyleButton {
   }
 }
 
-@immutable
-class _ToolbarItemDefaultForeground extends WidgetStateProperty<Color?> {
-  _ToolbarItemDefaultForeground(this.primary, this.onSurface);
 
-  final Color? primary;
-  final Color? onSurface;
-
-  @override
-  Color? resolve(Set<WidgetState> states) {
-    if (states.contains(WidgetState.disabled)) {
-      return onSurface?.withOpacity(0.38);
-    }
-    return primary;
-  }
-
-  @override
-  String toString() {
-    return '{disabled: ${onSurface?.withOpacity(0.38)}, otherwise: $primary}';
-  }
-}
-
-@immutable
-class _ToolbarItemDefaultOverlay extends WidgetStateProperty<Color?> {
-  _ToolbarItemDefaultOverlay(this.primary);
-
-  final Color primary;
-
-  @override
-  Color? resolve(Set<WidgetState> states) {
-    if (states.contains(WidgetState.hovered)) {
-      return primary.withOpacity(0.04);
-    }
-    if (states.contains(WidgetState.focused) ||
-        states.contains(WidgetState.pressed)) {
-      return primary.withOpacity(0.12);
-    }
-    return null;
-  }
-
-  @override
-  String toString() {
-    return '{hovered: ${primary.withOpacity(0.04)}, focused,pressed: ${primary.withOpacity(0.12)}, otherwise: null}';
-  }
-}
-
-@immutable
-class _ToolbarItemDefaultMouseCursor extends WidgetStateProperty<MouseCursor>
-    with Diagnosticable {
-  _ToolbarItemDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
-
-  final MouseCursor enabledCursor;
-  final MouseCursor disabledCursor;
-
-  @override
-  MouseCursor resolve(Set<WidgetState> states) {
-    if (states.contains(WidgetState.disabled)) {
-      return disabledCursor;
-    }
-    return enabledCursor;
-  }
-}
 
 class _ToolbarItemWithIcon extends ToolbarItem {
   _ToolbarItemWithIcon({
@@ -424,18 +351,7 @@ class _ToolbarItemWithIcon extends ToolbarItem {
   static const double fontSize = 1.0;
   final double scaleFactor = scaler.scale(fontSize) / fontSize;
 
-  @override
-  ButtonStyle defaultStyleOf(BuildContext context) {
-    final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
-      const EdgeInsets.all(8),
-      const EdgeInsets.symmetric(horizontal: 4),
-      const EdgeInsets.symmetric(horizontal: 4),
-      scaleFactor,
-    );
-    return super.defaultStyleOf(context).copyWith(
-          padding: WidgetStateProperty.all<EdgeInsetsGeometry>(scaledPadding),
-        );
-  }
+
 }
 
 class _ToolbarItemChild extends StatelessWidget {

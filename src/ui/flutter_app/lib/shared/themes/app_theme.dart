@@ -46,211 +46,8 @@ import 'ui_colors.dart';
 class AppTheme {
   const AppTheme._();
 
-  static final ColorScheme _colorScheme = ColorScheme(
-    //Color configuration of light theme
-    brightness: Brightness.light,
-    primary:
-        _appPrimaryColor, // Primary color, which has been defined as green in the code
-    onPrimary: Colors
-        .white, // A color that contrasts significantly with the main color, usually used for text or icons
-    primaryContainer: Colors.green
-        .shade700, // Dark variant of the main color, used for containers, etc.
-    onPrimaryContainer:
-        Colors.white, // Color that contrasts with primaryContainer
-    secondary:
-        UIColors.spruce, // Secondary colors, selectable from your color theme
-    onSecondary: Colors
-        .black, // A color that contrasts significantly with the secondary color
-    secondaryContainer: UIColors.spruce, // Dark variant of secondary color
-    onSecondaryContainer: Colors
-        .white, // Color that contrasts significantly with secondaryContainer
-    surface: Colors.white, // Surface color, used for cards, backgrounds, etc.
-    onSurface: Colors.black, // Text or icon color on the background
-    error: Colors.red, // Error color
-    onError: Colors.white, // Text or icon color in error state
-    // Other required colors can continue to be defined
-  );
 
-  ///Light theme
-  static final ThemeData lightThemeData = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.light,
-    colorScheme: _colorScheme, // use ColorScheme
-    sliderTheme: _sliderThemeData.copyWith(
-      activeTrackColor: _colorScheme.primary, // Use colors in ColorScheme
-      inactiveTrackColor: _colorScheme.onSurface.withOpacity(0.5),
-      thumbColor: _colorScheme.primary,
-      // Other slider-related color and style adjustments
-    ),
-    cardTheme: _cardTheme,
-    appBarTheme: appBarTheme.copyWith(
-      backgroundColor: _colorScheme.primary, // Use colors from ColorScheme
-      titleTextStyle: TextStyle(color: _colorScheme.onPrimary),
-      // Other style adjustments related to AppBar
-    ),
-    textTheme:
-        _textTheme, // Adjust the text theme to fit the light background if necessary
-    dividerTheme: _dividerTheme,
-    switchTheme: _lightSwitchTheme,
-    // Other theme settings...
-  );
 
-  /// Dark theme
-  static final ColorScheme _darkColorScheme = _colorScheme.copyWith(
-    brightness: Brightness.dark,
-    //Adjust colors as needed to fit the dark theme
-    // For example, use a darker or lighter color variant
-  );
-
-  static final ThemeData darkThemeData = ThemeData(
-    useMaterial3: true,
-    brightness: Brightness.dark,
-    colorScheme: _darkColorScheme, // Use dark ColorScheme
-    sliderTheme: _sliderThemeData.copyWith(
-      activeTrackColor: _darkColorScheme.primary,
-      inactiveTrackColor: _darkColorScheme.onSurface.withOpacity(0.5),
-      thumbColor: _colorScheme.primary,
-      // Other slider-related color and style adjustments
-    ),
-    cardTheme: _cardTheme,
-    appBarTheme: appBarTheme.copyWith(
-      backgroundColor: _darkColorScheme.primary,
-      titleTextStyle: TextStyle(color: _darkColorScheme.onPrimary),
-      // Other style adjustments related to AppBar
-    ),
-    textTheme:
-        _textTheme, // Adjust the text theme to fit the dark background if necessary
-    dividerTheme: _dividerTheme,
-    switchTheme: _darkSwitchTheme,
-    // Other theme settings...
-  );
-
-  // Color
-  static const MaterialColor _appPrimaryColor =
-      Colors.green; // App bar & Dialog button
-
-  // Theme
-  static final SliderThemeData _sliderThemeData = SliderThemeData(
-    trackHeight: 20, // Track
-    activeTrackColor:
-        _colorScheme.primary, // Use the primary color of ColorScheme
-    inactiveTrackColor: _colorScheme.onSurface
-        .withOpacity(0.5), // More transparent inactive track color
-    thumbColor: _colorScheme.primary, // Use Color type color directly
-    thumbShape: const RoundSliderThumbShape(
-        enabledThumbRadius: 1.0), // Adjust the slider size
-    overlayColor: _colorScheme.primary
-        .withOpacity(0.12), // Overlay color during slider operation
-    overlayShape: const RoundSliderOverlayShape(
-        overlayRadius: 1.0), // Radius of the overlay shape
-    valueIndicatorShape:
-        const PaddleSliderValueIndicatorShape(), // Shape of the numerical indicator
-    valueIndicatorColor:
-        _colorScheme.primary, // Color of the numerical indicator
-    valueIndicatorTextStyle: const TextStyle(
-      color: Colors.white, // Text color of numeric indicator
-      fontSize: 24, // text size
-    ),
-  );
-
-  static final DividerThemeData _dividerTheme = DividerThemeData(
-    indent: 16,
-    endIndent: 16,
-    space: 1.0,
-    thickness: 1.0,
-    color: _colorScheme.onSurface.withOpacity(
-        0.12), //Adjust color transparency according to theme surface color
-  );
-
-  static final CardTheme _cardTheme = CardTheme(
-    margin: const EdgeInsets.symmetric(vertical: 4.0),
-    color: cardColor,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12), // rounded corner design
-    ),
-    elevation: 1, // slight shadow effect
-  );
-
-  static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
-    thumbColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.selected)) {
-        return _colorScheme.primary; // Use primary color when enabled
-      }
-      return _colorScheme.onSurface
-          .withOpacity(0.5); // Use softer colors in off state
-    }),
-    trackColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.selected)) {
-        return _colorScheme.primary
-            .withOpacity(0.5); // Use translucent primary color in on state
-      }
-      return _colorScheme.onSurface
-          .withOpacity(0.3); // Use a more transparent color in the closed state
-    }),
-    trackOutlineColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.disabled)) {
-        return _colorScheme.onSurface
-            .withOpacity(0.5); // Use soft colors in disabled state
-      }
-      return Colors.transparent; // No outer edges in other states
-    }),
-  );
-
-  static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
-    thumbColor:
-        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withOpacity(0.5); // Color in disabled state
-      }
-      if (states.contains(WidgetState.selected)) {
-        return _darkColorScheme
-            .primary; // Use the primary color in the on state
-      }
-      return _darkColorScheme.onSurface.withOpacity(0.5); // Closed state color
-    }),
-    trackColor:
-        WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withOpacity(0.3); // Track color in disabled state
-      }
-      if (states.contains(WidgetState.selected)) {
-        return _darkColorScheme.primary.withOpacity(0.5); // On track color
-      }
-      return _darkColorScheme.onSurface
-          .withOpacity(0.1); // Track color in off state
-    }),
-    trackOutlineColor:
-        WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.disabled)) {
-        return _darkColorScheme.onSurface
-            .withOpacity(0.5); // Outer line color in disabled state
-      }
-      return Colors
-          .transparent; // Usually there is no need to set the outer edge color
-    }),
-  );
-
-  static final AppBarTheme appBarTheme = AppBarTheme(
-    backgroundColor:
-        _colorScheme.primary, // Use the primary color of ColorScheme
-    titleTextStyle: TextStyle(
-      color: _colorScheme
-          .onPrimary, // Select color based on primary color contrast
-      fontSize: 20.0, // font size
-      fontWeight: FontWeight.bold,
-    ),
-    elevation: 0, // Reduce or remove shadows for a flatter design
-    iconTheme: IconThemeData(
-      color: _colorScheme
-          .onPrimary, // Make the icon the same color as the title text
-    ),
-    // You may also need to adjust other properties, such as the brightness of the system status bar, etc.
-  );
 
   static const TextTheme _textTheme = TextTheme(
     headlineLarge: TextStyle(
@@ -272,7 +69,6 @@ class AppTheme {
   );
 
   static FeedbackThemeData feedbackTheme = FeedbackThemeData(
-    activeFeedbackModeColor: _appPrimaryColor,
   );
 
   static const BoxDecoration dialogDecoration = BoxDecoration(
@@ -281,7 +77,6 @@ class AppTheme {
   );
 
   static const TextStyle dialogTitleTextStyle = TextStyle(
-    color: _appPrimaryColor,
   );
 
   static const TextStyle listTileSubtitleStyle = TextStyle(

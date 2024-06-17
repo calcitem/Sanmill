@@ -42,7 +42,6 @@ class LicenseAgreementPage extends StatelessWidget {
             appBar: AppBar(
               title: Text(
                 S.of(context).license,
-                style: AppTheme.appBarTheme.titleTextStyle,
               ),
             ),
             body: SingleChildScrollView(

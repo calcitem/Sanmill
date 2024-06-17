@@ -120,8 +120,6 @@ class SanmillAppState extends State<SanmillApp> {
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         locale: locale,
-        theme: AppTheme.lightThemeData,
-        darkTheme: AppTheme.darkThemeData,
         debugShowCheckedModeBanner: EnvironmentConfig.devMode,
         builder: (BuildContext context, Widget? child) {
           _initializeScreenOrientation(context);
@@ -176,8 +174,6 @@ class SanmillAppState extends State<SanmillApp> {
       localizationsDelegates: S.localizationsDelegates,
       supportedLocales: S.supportedLocales,
       locale: locale,
-      theme: AppTheme.lightThemeData,
-      darkTheme: AppTheme.darkThemeData,
       debugShowCheckedModeBanner: EnvironmentConfig.devMode,
       builder: (BuildContext context, Widget? child) {
         _initializeScreenOrientation(context);

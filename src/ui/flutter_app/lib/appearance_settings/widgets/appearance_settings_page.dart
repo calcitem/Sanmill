@@ -432,7 +432,6 @@ class AppearanceSettingsPage extends StatelessWidget {
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).appearance,
-            style: AppTheme.appBarTheme.titleTextStyle,
           ),
         ),
         body: SettingsList(

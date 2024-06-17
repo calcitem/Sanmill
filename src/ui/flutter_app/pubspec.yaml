@@ -37,7 +37,7 @@ dependencies:
     git:
       url: https://gitlab.com/calcitem/image_gallery_saver
       ref: knottx
-  intl: 0.19.0
+  intl: 0.18.1
   json_annotation: 4.9.0
   kplayer: 0.4.2
   logger: 2.3.0
@@ -65,8 +65,8 @@ dependencies:
   uuid: 4.4.0
 
 dev_dependencies:
-  analyzer: 6.4.1
-  build_runner: 2.4.10
+  analyzer: ^5.13.0
+  build_runner: 2.4.9
   copy_with_extension_gen: 5.0.4
   flutter_driver:
     sdk: flutter

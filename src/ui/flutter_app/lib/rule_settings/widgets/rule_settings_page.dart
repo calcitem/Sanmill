@@ -454,7 +454,6 @@ class RuleSettingsPage extends StatelessWidget {
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).ruleSettings,
-            style: AppTheme.appBarTheme.titleTextStyle,
           ),
         ),
         body: ValueListenableBuilder<Box<RuleSettings>>(

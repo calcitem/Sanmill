@@ -449,7 +449,6 @@ class GeneralSettingsPage extends StatelessWidget {
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).generalSettings,
-            style: AppTheme.appBarTheme.titleTextStyle,
           ),
         ),
         body: ValueListenableBuilder<Box<GeneralSettings>>(
