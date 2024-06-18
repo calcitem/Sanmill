@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ограничить повторное образование мельниц",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Фигура, перемещённая с одной мельницы на другую, не может сразу вернуться в исходную точку на следующем ходу, чтобы снова сформировать мельницу. Сначала требуется другой ход.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Одноразовая мельница",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Каждая мельница может удалить только одну часть соперника. Вы можете реформировать его снова, но его нельзя использовать для дополнительных удалений.",
+  "@oneTimeUseMill_Detail": {}
 }

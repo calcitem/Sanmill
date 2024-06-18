@@ -46,6 +46,7 @@ import '../../shared/utils/helpers/array_helpers/array_helper.dart';
 import '../../shared/utils/helpers/list_helpers/pointed_list.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import 'engine/bitboard.dart';
 import "gif_share/gif_share.dart";
 
 part 'controller/game_controller.dart';

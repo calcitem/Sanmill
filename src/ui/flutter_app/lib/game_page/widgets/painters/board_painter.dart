@@ -42,6 +42,7 @@ class BoardPainter extends CustomPainter {
         points.map((Offset e) => offsetFromPoint(e, size)).toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
+    _drawMillLines(offset, canvas, paint, size);
   }
 
   Paint _createPaint(
@@ -130,6 +131,65 @@ class BoardPainter extends CustomPainter {
       path.addLine(offset[21], offset[15]);
       path.addLine(offset[8], offset[2]);
     }
+  }
+
+  void _drawMillLines(
+      List<Offset> offset, Canvas canvas, Paint paint, Size size) {
+    final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
+    paint.strokeWidth =
+        boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1) + 1;
+
+    if (!DB().ruleSettings.oneTimeUseMill) {
+      return;
+    }
+
+    final Map<PieceColor, List<List<int>>> formedMills =
+        GameController().position.formedMills;
+
+    final Color mixedColor = Color.lerp(
+      DB().colorSettings.whitePieceColor,
+      DB().colorSettings.blackPieceColor,
+      0.5,
+    )!;
+
+    // Draw Mills with unique or mixed colors
+    void drawMills(
+        PieceColor color, List<List<int>> mills, Color defaultColor) {
+      for (final List<int> mill in mills) {
+        final Path path = Path();
+        path.addLine(
+            pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
+        path.addLine(
+            pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
+        path.addLine(
+            pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
+
+        // Check if this mill exists in the opposite color mills
+        final bool isShared = formedMills[color == PieceColor.white
+                ? PieceColor.black
+                : PieceColor.white]!
+            .any((List<int> otherMill) => listEquals(mill, otherMill));
+
+        paint.color = isShared ? mixedColor : defaultColor;
+
+        if (paint.color == DB().colorSettings.boardBackgroundColor ||
+            paint.color == DB().colorSettings.boardLineColor) {
+          if (defaultColor == DB().colorSettings.whitePieceColor) {
+            paint.color = Colors.red;
+          } else {
+            paint.color = Colors.blue;
+          }
+        }
+
+        canvas.drawPath(path, paint);
+      }
+    }
+
+    // Draw White and Black Mills, possibly with mixed color
+    drawMills(PieceColor.white, formedMills[PieceColor.white]!,
+        DB().colorSettings.whitePieceColor);
+    drawMills(PieceColor.black, formedMills[PieceColor.black]!,
+        DB().colorSettings.blackPieceColor);
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {

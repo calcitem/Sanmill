@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "تقييد تشكيل الطواحين المتكررة",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "لا يمكن للقطعة التي تحركت من طاحونة إلى أخرى أن تعود فورًا إلى النقطة الأصلية في الدور التالي لتكوين طاحونة مرة أخرى. يتطلب الأمر حركة مختلفة أولاً.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "مطحنة للاستخدام مرة واحدة",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "يمكن لكل مطحنة إزالة قطعة واحدة فقط من خصمك. يمكنك إعادة تشكيلها مرة أخرى، ولكن لا يمكن استخدامها لعمليات إزالة إضافية.",
+  "@oneTimeUseMill_Detail": {}
 }

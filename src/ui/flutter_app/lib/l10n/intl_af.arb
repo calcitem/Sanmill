@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Beperk Herhaalde Meulvorming",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "'n Stuk wat van een meul na 'n ander geskuif is, kan nie onmiddellik terugkeer na die oorspronklike punt op die volgende beurt om weer 'n meul te vorm nie. 'n Ander skuif is eers nodig.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Eenmalige gebruik meul",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Elke meul kan slegs een keer 'n teenstander se stuk verwyder. Jy kan dit weer hervorm, maar dit kan nie vir bykomende verwyderings gebruik word nie.",
+  "@oneTimeUseMill_Detail": {}
 }

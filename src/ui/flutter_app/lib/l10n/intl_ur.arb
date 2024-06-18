@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "بار بار مل تشکیل دینے پر پابندی",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "ایک پیس جو ایک مل سے دوسرے میں منتقل ہوا ہے وہ اگلی باری میں فوری طور پر اصلی نقطہ پر واپس نہیں جا سکتا تاکہ دوبارہ مل بنا سکے۔ پہلے مختلف حرکت کی ضرورت ہے۔",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ایک وقتی استعمال مل",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "ہر مل صرف ایک بار مخالف کا حصہ ہٹا سکتا ہے۔ آپ اسے دوبارہ تشکیل دے سکتے ہیں، لیکن اسے اضافی ہٹانے کے لئے استعمال نہیں کیا جا سکتا ہے۔",
+  "@oneTimeUseMill_Detail": {}
 }

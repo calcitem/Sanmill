@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Սահմանափակել կրկնվող ջրաղացների ձևավորումը",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Մի քառակուսին, որը տեղափոխվել է մեկ հարթակից մյուսը, չի կարող անմիջապես վերադառնալ սկզբնական կետը հաջորդ հարվածում՝ նորից հարթակ ձևավորելու համար: Սկզբում պետք է կատարել այլ շարժ:",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Մեկանգամյա օգտագործման ջրաղաց",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Յուրաքանչյուր ջրաղաց կարող է հեռացնել հակառակորդի կտորը միայն մեկ անգամ: Դուք կարող եք այն նորից ձևավորել, բայց չի կարող օգտագործվել լրացուցիչ հեռացման համար:",
+  "@oneTimeUseMill_Detail": {}
 }

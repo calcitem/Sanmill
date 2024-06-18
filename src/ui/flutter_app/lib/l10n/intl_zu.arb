@@ -1529,5 +1529,8 @@
   "restrictRepeatedMillsFormation": "Khawulela Ukwakheka Kabusha Kwezimbokodo",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Ucezu oluhambile kusukela kolunye usimende ukuya kolunye alukwazi ukubuyela ngokushesha endaweni yoqobo kujike elilandelayo ukwakha usimende futhi. Kuqala kudingeka enye inyakazo.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Isigayo sokusetshenziswa kanye",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Isigayo ngasinye singasusa isiqeshana somphikisi kanye kuphela. Ungasiphinda futhi, kodwa ngeke usisebenzisele ukususa okwengeziwe."
 }

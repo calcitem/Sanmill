@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Абмежаваць паўторнае ўтварэнне млыноў",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Кавалак, які перамяшчаецца з аднаго млына ў іншы, не можа непасрэдна вярнуцца ў пачатковую кропку на наступны ход, каб зноў сфармаваць млын. Спачатку патрабуецца іншы рух.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Аднаразовая млын",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Кожны млын можа выдаліць толькі адну частку суперніка. Вы можаце перафармаваць яго зноў, але яго нельга выкарыстоўваць для дадатковых выдаленняў.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Rajoita toistuvaa myllyjen muodostamista",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Nappula, joka siirretään yhdestä myllystä toiseen, ei voi välittömästi palata alkuperäiseen pisteeseen seuraavalla vuorolla muodostaakseen jälleen myllyn. Ensin tarvitaan erilainen siirto.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Kertakäyttöinen mylly",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Jokainen mylly voi poistaa vastustajan palan vain kerran. Voit muodostaa sen uudelleen, mutta sitä ei voi käyttää lisäpoistoihin.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -294,11 +294,13 @@ Position &Position::set(const string &fenStr, Thread *th)
        5) White on board/White in hand/Black on board/Black in hand/need to
        remove/Last mill square of white/Last mill square of black
 
-       6) Halfmove clock. This is the number of halfmoves since the last
+       6) Mills bitmask.
+
+       7) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
           N-move rule.
 
-       7) Fullmove number. The number of the full move. It starts at 1, and is
+       8) Fullmove number. The number of the full move. It starts at 1, and is
           incremented after White's move.
     */
 
@@ -383,7 +385,12 @@ Position &Position::set(const string &fenStr, Thread *th)
     lastMillFromSquare[BLACK] = static_cast<Square>(tmpLastMillFromSquareBlack);
     lastMillToSquare[BLACK] = static_cast<Square>(tmpLastMillToSquareBlack);
 
-    // 6-7. Halfmove clock and fullmove number
+    // 6. Mills bitmask
+    uint64_t mb = 0;
+    ss >> std::skipws >> mb;
+    setFormedMillsBB(mb);
+
+    // 7-8. Halfmove clock and fullmove number
     ss >> std::skipws >> st.rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
@@ -475,6 +482,10 @@ string Position::fen() const
 
     ss << lastMillFromSquare[WHITE] << " " << lastMillToSquare[WHITE] << " "
        << lastMillFromSquare[BLACK] << " " << lastMillToSquare[BLACK] << " ";
+
+    uint64_t fm = (static_cast<uint64_t>(formedMillsBB[WHITE]) << 32) |
+                  formedMillsBB[BLACK];
+    ss << fm << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -663,6 +674,7 @@ bool Position::reset()
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
+    formedMillsBB[WHITE] = formedMillsBB[BLACK] = 0;
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -1446,11 +1458,12 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 {
     int n = 0;
     Piece locbak = NO_PIECE;
+    Color color = c;
 
-    assert(SQ_0 <= from && from < SQUARE_EXT_NB);
+    assert(SQ_0 <= from && from < SQ_END);
 
     if (c == NOBODY) {
-        c = color_on(to);
+        color = color_on(to);
     }
 
     if (from >= SQ_BEGIN && from < SQ_END) {
@@ -1462,19 +1475,38 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         CLEAR_BIT(byColorBB[color_of(locbak)], from);
     }
 
-    const Bitboard bc = byColorBB[c];
+    const Bitboard bc = byColorBB[color];
     const Bitboard *mt = millTableBB[to];
 
-    if ((bc & mt[LD_HORIZONTAL]) == mt[LD_HORIZONTAL]) {
-        n++;
-    }
+    if (unlikely(rule.oneTimeUseMill)) {
+        Bitboard potentialMill = 0;
 
-    if ((bc & mt[LD_VERTICAL]) == mt[LD_VERTICAL]) {
-        n++;
-    }
+        for (auto i = 0; i < LD_NB; ++i) {
+            potentialMill = mt[i];
 
-    if ((bc & mt[LD_SLASH]) == mt[LD_SLASH]) {
-        n++;
+            if ((bc & potentialMill) == potentialMill) {
+                if (c == NOBODY) {
+                    n++;
+                } else {
+                    Bitboard line = square_bb(to) | potentialMill;
+                    if ((line & formedMillsBB[sideToMove]) != line) {
+                        n++;
+                    }
+                }
+            }
+        }
+    } else {
+        if ((bc & mt[LD_HORIZONTAL]) == mt[LD_HORIZONTAL]) {
+            n++;
+        }
+
+        if ((bc & mt[LD_VERTICAL]) == mt[LD_VERTICAL]) {
+            n++;
+        }
+
+        if ((bc & mt[LD_SLASH]) == mt[LD_SLASH]) {
+            n++;
+        }
     }
 
     if (from >= SQ_BEGIN && from < SQ_END) {
@@ -1488,16 +1520,30 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     return n;
 }
 
-int Position::mills_count(Square s) const
+int Position::mills_count(Square s)
 {
     int n = 0;
+    Color side = color_on(s);
 
-    const Bitboard bc = byColorBB[color_on(s)];
+    const Bitboard bc = byColorBB[side];
     const Bitboard *mt = millTableBB[s];
 
-    for (auto i = 0; i < LD_NB; ++i) {
-        if ((bc & mt[i]) == mt[i]) {
-            n++;
+    if (unlikely(rule.oneTimeUseMill)) {
+        for (auto i = 0; i < LD_NB; ++i) {
+            Bitboard potentialMill = mt[i];
+            if ((bc & potentialMill) == potentialMill) {
+                auto line = square_bb(s) | potentialMill;
+                if ((line & formedMillsBB[side]) != line) {
+                    formedMillsBB[side] |= line;
+                    n++;
+                }
+            }
+        }
+    } else {
+        for (auto i = 0; i < LD_NB; ++i) {
+            if ((bc & mt[i]) == mt[i]) {
+                n++;
+            }
         }
     }
 
@@ -1720,6 +1766,15 @@ int Position::total_mills_count(Color c)
     }
 
     return n;
+}
+
+void Position::setFormedMillsBB(uint64_t millsBitmask)
+{
+    Bitboard whiteMills = (millsBitmask >> 32) & 0xFFFFFFFF;
+    Bitboard blackMills = millsBitmask & 0xFFFFFFFF;
+
+    formedMillsBB[WHITE] = whiteMills;
+    formedMillsBB[BLACK] = blackMills;
 }
 
 bool Position::is_board_full_removal_at_placing_phase_end()

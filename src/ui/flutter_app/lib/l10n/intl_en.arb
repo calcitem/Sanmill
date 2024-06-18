@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Restrict repeated mills formation",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "A piece moved from one mill to form another cannot immediately return to the original point on the next turn to form a mill again. A different move is required first.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "One-time use mill",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Each mill can remove an opponent's piece only once. You can reform it again, but it cannot be used for additional removals.",
+  "@oneTimeUseMill_Detail": {}
 }

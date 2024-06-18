@@ -1428,8 +1428,12 @@
   "@innerOuterFlip": {},
   "transparentCanvas": "Kanvas Transparan",
   "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "Batasi Pembentukan Penggilingan Berulang",
+  "restrictRepeatedMillsFormation": "Batasi Pembentukan Mul-mulan Berulang",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Sebuah bidak yang dipindahkan dari satu pabrik untuk membentuk pabrik lain tidak bisa langsung kembali ke titik asal di giliran berikutnya untuk membentuk pabrik lagi. Langkah yang berbeda diperlukan terlebih dahulu.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "restrictRepeatedMillsFormation_Detail": "Sebuah bidak yang dipindahkan dari satu Mul-mulan untuk membentuk Mul-mulan lain tidak bisa langsung kembali ke titik asal di giliran berikutnya untuk membentuk Mul-mulan lagi. Langkah yang berbeda diperlukan terlebih dahulu.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Penggunaan sekali waktu Mul-mulan",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Setiap Mul-mulan dapat menghapus satu bagian lawan hanya sekali. Anda dapat membentuknya lagi, tetapi tidak dapat digunakan untuk penghapusan tambahan.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Tekrarlanan Değirmen Oluşumunu Kısıtla",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Bir değirmenden alınıp başka bir değirmen oluşturmak için taşınan bir parça, bir sonraki turda hemen orijinal noktaya dönüp yeniden değirmen oluşturamaz. Önce farklı bir hamle gereklidir.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Tek kullanımlık değirmen",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Her değirmen sadece bir kez rakibin parçasını çıkarabilir. Tekrar oluşturabilirsiniz, ancak ek çıkarmalar için kullanılamaz.",
+  "@oneTimeUseMill_Detail": {}
 }

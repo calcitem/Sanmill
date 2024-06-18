@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Figura, premaknjena iz enega mlina v drugega, se ne more takoj vrniti na izhodiščno točko v naslednjem potezu, da bi znova oblikovala mlin. Najprej je potrebna druga poteza.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "එක් වාරයක් භාවිතා කළ හැකි නෙරෙන්චි",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "සෑම නෙරෙන්චියක්ම ප්‍රතිවාදී කොටසක් එක් වරක් ඉවත් කරයි. ඔබට එය නැවත සංවිධානය කළ හැකිය, නමුත් අතිරේක ඉවත් කිරීම් සඳහා භාවිතා කළ නොහැක.",
+  "@oneTimeUseMill_Detail": {}
 }

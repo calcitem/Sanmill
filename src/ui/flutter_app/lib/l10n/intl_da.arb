@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Begræns gentagen mølle-formation",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "En brik flyttet fra en mølle til en anden kan ikke umiddelbart vende tilbage til det oprindelige punkt på næste tur for at danne en mølle igen. Et andet træk er først nødvendigt.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Engangsbrug mølle",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hver mølle kan kun fjerne en modstanders brik én gang. Du kan gendanne den igen, men den kan ikke bruges til yderligere fjernelser.",
+  "@oneTimeUseMill_Detail": {}
 }

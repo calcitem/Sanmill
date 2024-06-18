@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Hadkan Pembentukan Kilang Berulang",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Kepingan yang dipindahkan dari satu kilang untuk membentuk satu lagi tidak boleh kembali ke titik asal pada giliran seterusnya untuk membentuk kilang lagi. Langkah berbeza diperlukan dahulu.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Kilangan penggunaan satu kali",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Setiap kilangan hanya boleh mengeluarkan satu bahagian lawan sekali sahaja. Anda boleh membentuknya semula, tetapi ia tidak boleh digunakan untuk pengeluaran tambahan.",
+  "@oneTimeUseMill_Detail": {}
 }

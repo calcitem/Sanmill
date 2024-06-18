@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ограничаване на повторното образуване на мелници",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Пиеса, преместена от един мелничен кръг в друг, не може незабавно да се върне в оригиналната точка на следващия ход, за да образува отново мелничен кръг. Първо е необходимо друго движение.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Еднократна използване на мелница",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Всяка мелница може да премахне само една част от противника. Можете да го реформирате отново, но не може да се използва за допълнителни премахвания.",
+  "@oneTimeUseMill_Detail": {}
 }

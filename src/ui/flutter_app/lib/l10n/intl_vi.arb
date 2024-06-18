@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Hạn Chế Tạo Lại Cối Xay",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Một quân cờ được di chuyển từ cối xay này sang cối xay khác không thể trở lại điểm ban đầu ngay lượt tiếp theo để hình thành một cối xay mới. Đầu tiên cần một nước đi khác.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Cối xay sử dụng một lần",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Mỗi cối xay có thể loại bỏ một mảnh của đối thủ chỉ một lần. Bạn có thể tái tạo nó, nhưng không thể sử dụng để loại bỏ bổ sung.",
+  "@oneTimeUseMill_Detail": {}
 }

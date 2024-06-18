@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Begrens gjentatt mølleformasjon",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "En brikke flyttet fra én kvern til en annen kan ikke umiddelbart returnere til det opprinnelige punktet på neste trekk for å danne en kvern igjen. Et annet trekk kreves først.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Engangsbruk mølle",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hver mølle kan fjerne en motstanders brikke bare én gang. Du kan omforme den igjen, men den kan ikke brukes til ytterligere fjerninger.",
+  "@oneTimeUseMill_Detail": {}
 }

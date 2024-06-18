@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ierobežot atkārtotu dzirnaviņu veidošanos",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Figūra, kas pārvietota no viena dzirnavām uz citām, nevar nekavējoties atgriezties sākotnējā punktā nākamajā gājienā, lai atkal veidotu dzirnavas. Vispirms ir nepieciešams cits gājiens.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Vienreiz lietojama dzirnavas",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Katra dzirnava var noņemt tikai vienu pretinieka gabalu. Jūs varat to atkārtoti izveidot, bet to nevar izmantot papildu noņemšanai.",
+  "@oneTimeUseMill_Detail": {}
 }

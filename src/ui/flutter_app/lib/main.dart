@@ -32,6 +32,7 @@ import 'package:hive_flutter/hive_flutter.dart' show Box;
 import 'package:path_provider/path_provider.dart';
 
 import 'appearance_settings/models/display_settings.dart';
+import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart';
 import 'game_page/widgets/painters/painters.dart';
 import 'generated/intl/l10n.dart';
@@ -59,6 +60,8 @@ Future<void> main() async {
   await DB.init();
 
   _initUI();
+
+  initBitboards();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher2(

@@ -262,12 +262,13 @@ class Engine {
                 MillFormationActionInPlacingPhase
                     .removeOpponentsPieceFromBoard &&
             ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
+            ruleSettings.restrictRepeatedMillsFormation == false &&
             ruleSettings.stalemateAction ==
                 StalemateAction.endWithStalemateLoss &&
             ruleSettings.mayFly == true &&
             ruleSettings.mayRemoveFromMillsAlways == false &&
             ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.restrictRepeatedMillsFormation == false) {
+            ruleSettings.oneTimeUseMill == false) {
       usePerfectDatabase = generalSettings.usePerfectDatabase;
     } else {
       usePerfectDatabase = false;
@@ -334,6 +335,10 @@ class Engine {
       ruleSettings.isDefenderMoveFirst,
     );
     await _sendOptions(
+      "RestrictRepeatedMillsFormation",
+      ruleSettings.restrictRepeatedMillsFormation,
+    );
+    await _sendOptions(
         "StalemateAction",
         ruleSettings.stalemateAction?.index ??
             StalemateAction.endWithStalemateLoss.index); // TODO: enum
@@ -348,10 +353,7 @@ class Engine {
       ruleSettings.mayRemoveFromMillsAlways,
     );
     await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
-    await _sendOptions(
-      "RestrictRepeatedMillsFormation",
-      ruleSettings.restrictRepeatedMillsFormation,
-    );
+    await _sendOptions("OneTimeUseMill", ruleSettings.oneTimeUseMill);
   }
 
   Future<void> setOptions() async {

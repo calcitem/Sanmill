@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Begränsa upprepad kvarnbildning",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "En pjäs flyttad från en kvarn till en annan kan inte omedelbart återvända till den ursprungliga punkten på nästa drag för att bilda en kvarn igen. Ett annat drag krävs först.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Engångsbruk kvarn",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Varje kvarn kan bara ta bort en motståndares bit en gång. Du kan omforma den igen, men den kan inte användas för ytterligare borttagningar.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -17,9 +17,11 @@
 #ifndef POSITION_H_INCLUDED
 #define POSITION_H_INCLUDED
 
+#include <array>
 #include <cassert>
 #include <deque>
 #include <memory> // For std::unique_ptr
+#include <set>
 #include <string>
 #include <vector>
 
@@ -62,6 +64,13 @@ public:
     static void init();
 
     Position();
+#if 1
+    ~Position()
+    {
+        // formedMills.at(WHITE).clear();
+        // formedMills.at(BLACK).clear();
+    }
+#endif
 
     // Position(const Position &) = delete;
     // Position &operator=(const Position &) = delete;
@@ -142,11 +151,13 @@ public:
     void reset_bb();
 
     static void create_mill_table();
-    int mills_count(Square s) const;
+    int mills_count(Square s);
 
     // The number of mills that would be closed by the given move.
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
+
+    void setFormedMillsBB(uint64_t millsBitmask);
 
     void surrounded_pieces_count(Square s, int &ourPieceCount,
                                  int &theirPieceCount, int &markedCount,
@@ -229,6 +240,8 @@ public:
     Square currentSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
+
+    Bitboard formedMillsBB[COLOR_NB] {0};
 
     int gamesPlayedCount {0};
 

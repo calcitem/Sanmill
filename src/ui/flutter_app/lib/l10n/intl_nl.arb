@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Beperk herhaalde molenvorming",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Een stuk verplaatst van de ene molen naar de andere kan niet onmiddellijk terugkeren naar het oorspronkelijke punt op de volgende beurt om weer een molen te vormen. Eerst is een andere zet nodig.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Eenmalig gebruik molen",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Elke molen kan slechts één keer een stuk van de tegenstander verwijderen. Je kunt het opnieuw vormen, maar het kan niet worden gebruikt voor extra verwijderingen.",
+  "@oneTimeUseMill_Detail": {}
 }

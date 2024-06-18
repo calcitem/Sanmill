@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Zuia uundaji wa kinu cha kusaga",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Kipande kilichohamishwa kutoka kinu kimoja kwenda kingine hakiwezi kurudi mara moja kwenye nukta ya awali katika zamu inayofuata ili kuunda kinu tena. Hatua tofauti inahitajika kwanza.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Kinu cha matumizi ya mara moja",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Kila kinu kinaweza kuondoa kipande cha mpinzani mara moja tu. Unaweza kuunda tena, lakini hakiwezi kutumika kwa kuondolewa zaidi.",
+  "@oneTimeUseMill_Detail": {}
 }

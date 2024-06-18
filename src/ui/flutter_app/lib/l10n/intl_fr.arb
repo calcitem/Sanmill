@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Restreindre la formation répétée de moulins",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Une pièce déplacée d'un moulin pour en former un autre ne peut pas immédiatement retourner au point original au tour suivant pour former à nouveau un moulin. Un autre mouvement est requis d'abord.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Moulin à usage unique",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Chaque moulin peut retirer une pièce de l'adversaire une seule fois. Vous pouvez le reformer à nouveau, mais il ne peut pas être utilisé pour des suppressions supplémentaires.",
+  "@oneTimeUseMill_Detail": {}
 }

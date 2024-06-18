@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "పునరావృత మిల్లుల ఏర్పాటును నిషేధించండి",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "ఒక గిరాటం నుండి మరొకటిని ఏర్పరచడానికి తరలించబడిన ముక్క తదుపరి వంతున వెంటనే అసలు పాయింట్ కు తిరిగి మరలా గిరాటం ఏర్పరచలేదు. ముందుగా వేరొక కదలిక అవసరం.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ఒకసారి ఉపయోగించే మిల్",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "ప్రతి మిల్ ఒక సారి మాత్రమే ప్రత్యర్థి ముక్కను తొలగిస్తుంది. మీరు దాన్ని మళ్ళీ రూపకల్పన చేయవచ్చు, కానీ అదనపు తొలగింపులకు ఉపయోగించబడదు.",
+  "@oneTimeUseMill_Detail": {}
 }

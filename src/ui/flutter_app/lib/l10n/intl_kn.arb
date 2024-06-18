@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "ಪುನರಾವರ್ತಿತ ಮಿಲ್ ರಚನೆಯನ್ನು ನಿರ್ಬಂಧಿಸಿ",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "ಒಂದು ಮಿಲ್ಲಿನಿಂದ ಮತ್ತೊಂದು ಮಿಲ್ಲನ್ನು ರಚಿಸಲು ಸಾಗಿಸಿದ ಕಾಯವು ಮುಂದಿನ ಸುತ್ತಿನಲ್ಲಿ ತಕ್ಷಣ ಮೂಲ ಬಿಂದುವಿಗೆ ಮರಳಿ ಮತ್ತೊಮ್ಮೆ ಮಿಲ್ ರಚಿಸಲು ಹೋಗಬಾರದು. ಮೊದಲು ಬೇರೆ ನಡೆ ಅಗತ್ಯವಿದೆ.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ಒಂದು ಬಾರಿಗೆ ಬಳಸುವ ಮಿಲ್",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "ಪ್ರತಿ ಮಿಲ್ ಒಂದೇ ಬಾರಿಗೆ ವಿರುದ್ಧದ ಟುಕ್ಕನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ. ನೀವು ಅದನ್ನು ಮತ್ತೆ ರೂಪಿಸಬಹುದು, ಆದರೆ ಅದು ಹೆಚ್ಚುವರಿ ತೆಗೆದುಹಾಕಲು ಬಳಸಲಾಗುವುದಿಲ್ಲ.",
+  "@oneTimeUseMill_Detail": {}
 }

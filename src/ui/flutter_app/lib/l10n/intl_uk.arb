@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Обмежити повторне формування млинів",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Фігура, переміщена з одного млина для створення іншого, не може відразу повернутися на початкову позицію у наступному ході, щоб знову утворити млин. Спочатку потрібен інший хід.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Одноразове використання млина",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Кожен млин може видалити лише одну частину суперника. Ви можете переформувати його знову, але не можна використовувати для додаткових видалень.",
+  "@oneTimeUseMill_Detail": {}
 }

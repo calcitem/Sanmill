@@ -118,6 +118,20 @@ class Position {
     PieceColor.draw: 0,
   };
 
+  Map<PieceColor, int> _formedMillsBB = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+    PieceColor.draw: 0,
+  };
+
+  Map<PieceColor, List<List<int>>> _formedMills = <PieceColor, List<List<int>>>{
+    PieceColor.white: <List<int>>[],
+    PieceColor.black: <List<int>>[],
+    PieceColor.draw: <List<int>>[],
+  };
+
+  Map<PieceColor, List<List<int>>> get formedMills => _formedMills;
+
   ExtMove? _record;
 
   static List<List<List<int>>> get _millTable => _Mills.millTableInit;
@@ -152,6 +166,7 @@ class Position {
   /// [White Piece to Remove] [Black Piece to Remove]
   /// [White Piece Last Mill From Square] [White Piece Last Mill To Square]
   /// [Black Piece Last Mill From Square] [Black Piece Last Mill To Square]
+  /// [MillsBitmask]
   /// [Rule50] [Ply]"
   ///
   /// ([Rule50] and [Ply] are unused right now.)
@@ -225,6 +240,9 @@ class Position {
     buffer.writeSpace(_lastMillToSquare[PieceColor.white]);
     buffer.writeSpace(_lastMillFromSquare[PieceColor.black]);
     buffer.writeSpace(_lastMillToSquare[PieceColor.black]);
+
+    buffer.writeSpace((_formedMillsBB[PieceColor.white]! << 32) |
+        _formedMillsBB[PieceColor.black]!);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -330,10 +348,13 @@ class Position {
     final String blackLastMillToSquareStr = l[13];
     _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
 
-    final String rule50Str = l[14];
+    final String millsBitmaskStr = l[14];
+    setFormedMillsBB(int.parse(millsBitmaskStr));
+
+    final String rule50Str = l[15];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = l[15];
+    final String gamePlyStr = l[16];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -348,7 +369,7 @@ class Position {
   // TODO: Implement with C++ in engine
   bool validateFen(String fen) {
     final List<String> parts = fen.split(' ');
-    if (parts.length < 16) {
+    if (parts.length < 17) {
       logger.e('FEN does not contain enough parts.');
       return false;
     }
@@ -459,15 +480,30 @@ class Position {
       return false;
     }
 
-    // Part 14: Half-move clock
-    final int halfMoveClock = int.parse(parts[14]);
+    // Part 14: Mills bitmask
+    final int millsBitmask = int.parse(parts[14]);
+    // Check if the lowest 8 bits are not zero
+    if ((millsBitmask & 0xFF) != 0) {
+      logger.e('The lowest 8 bits are not zero.');
+      return false;
+    }
+
+    // Check if bits 32 to 39 are not zero
+    // 0xFF << 32 shifts 0xFF (which is 8 bits of 1s) left by 32 positions to reach the 32nd position
+    if ((millsBitmask & (0xFF << 32)) != 0) {
+      logger.e('Bits 32 to 39 are not zero.');
+      return false;
+    }
+
+    // Part 15: Half-move clock
+    final int halfMoveClock = int.parse(parts[15]);
     if (halfMoveClock < 0) {
       logger.e('Invalid half-move clock. Cannot be negative.');
       return false;
     }
 
-    // Part 15: Full move number
-    final int fullMoveNumber = int.parse(parts[15]);
+    // Part 16: Full move number
+    final int fullMoveNumber = int.parse(parts[16]);
     if (fullMoveNumber < 1) {
       logger.e('Invalid full move number. Must start at 1.');
       return false;
@@ -1264,11 +1300,12 @@ class Position {
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
     PieceColor locbak = PieceColor.none;
+    PieceColor color = c;
 
-    assert(0 <= from && from < sqNumber);
+    assert(0 <= from && from < sqEnd);
 
     if (c == PieceColor.nobody) {
-      c = _board[to];
+      color = _board[to];
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -1276,10 +1313,32 @@ class Position {
       _board[from] = _grid[squareToIndex[from]!] = PieceColor.none;
     }
 
-    for (int ld = 0; ld < lineDirectionNumber; ld++) {
-      if (c == _board[_millTable[to][ld][0]] &&
-          c == _board[_millTable[to][ld][1]]) {
-        n++;
+    if (DB().ruleSettings.oneTimeUseMill) {
+      for (int ld = 0; ld < lineDirectionNumber; ld++) {
+        final List<int> mill = <int>[
+          _millTable[to][ld][0],
+          _millTable[to][ld][1],
+          to
+        ];
+
+        if (color == _board[mill[0]] && color == _board[mill[1]]) {
+          if (c == PieceColor.nobody) {
+            n++;
+          } else {
+            final int millBB =
+                squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+            if (!(millBB & _formedMillsBB[color]! == millBB)) {
+              n++;
+            }
+          }
+        }
+      }
+    } else {
+      for (int ld = 0; ld < lineDirectionNumber; ld++) {
+        if (c == _board[_millTable[to][ld][0]] &&
+            c == _board[_millTable[to][ld][1]]) {
+          n++;
+        }
       }
     }
 
@@ -1318,46 +1377,40 @@ class Position {
 
   int _millsCount(int s) {
     int n = 0;
-    final List<int?> idx = <int>[0, 0, 0];
-    int min = 0;
-    int? temp = 0;
     final PieceColor m = _board[s];
 
-    for (int i = 0; i < idx.length; i++) {
-      idx[0] = s;
-      idx[1] = _millTable[s][i][0];
-      idx[2] = _millTable[s][i][1];
+    for (int i = 0; i < lineDirectionNumber; i++) {
+      final List<int> mill = <int>[_millTable[s][i][0], _millTable[s][i][1], s];
+      mill.sort();
 
-      // No mill
-      if (!(m == _board[idx[1]!] && m == _board[idx[2]!])) {
-        continue;
-      }
-
-      // Close mill
-
-      // Sort
-      for (int j = 0; j < 2; j++) {
-        min = j;
-
-        for (int k = j + 1; k < 3; k++) {
-          if (idx[min]! > idx[k]!) {
-            min = k;
-          }
+      if (m == _board[mill[0]] &&
+          m == _board[mill[1]] &&
+          m == _board[mill[2]]) {
+        final int millBB =
+            squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+        if (!DB().ruleSettings.oneTimeUseMill ||
+            !(millBB & _formedMillsBB[m]! == millBB)) {
+          _formedMillsBB[m] = _formedMillsBB[m]! | millBB;
+          _formedMills[m]?.add(mill);
+          n++;
         }
-
-        if (min == j) {
-          continue;
-        }
-
-        temp = idx[min];
-        idx[min] = idx[j];
-        idx[j] = temp;
       }
-
-      n++;
     }
 
     return n;
+  }
+
+  // Helper function to check if two lists are equal
+  bool listEquals(List<int> list1, List<int> list2) {
+    if (list1.length != list2.length) {
+      return false;
+    }
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   bool _isAllInMills(PieceColor c) {
@@ -1400,6 +1453,14 @@ class Position {
     }
 
     return true;
+  }
+
+  void setFormedMillsBB(int millsBitmask) {
+    final int whiteMills = (millsBitmask >> 32) & 0xFFFFFFFF;
+    final int blackMills = millsBitmask & 0xFFFFFFFF;
+
+    _formedMillsBB[PieceColor.white] = whiteMills;
+    _formedMillsBB[PieceColor.black] = blackMills;
   }
 
   @visibleForTesting
@@ -1456,6 +1517,9 @@ extension SetupPosition on Position {
         _lastMillFromSquare[PieceColor.black] = 0;
     _lastMillToSquare[PieceColor.white] =
         _lastMillToSquare[PieceColor.black] = 0;
+    _formedMillsBB[PieceColor.white] = _formedMillsBB[PieceColor.black] = 0;
+    _formedMills[PieceColor.white] = <List<int>>[];
+    _formedMills[PieceColor.black] = <List<int>>[];
 
     _gamePly = 0;
 
@@ -1505,6 +1569,8 @@ extension SetupPosition on Position {
     _currentSquare = pos._currentSquare;
     _lastMillFromSquare = pos._lastMillFromSquare;
     _lastMillToSquare = pos._lastMillToSquare;
+    _formedMillsBB = pos._formedMillsBB;
+    _formedMills = pos._formedMills;
 
     _gamePly = pos._gamePly;
 

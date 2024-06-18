@@ -1433,5 +1433,9 @@
   "restrictRepeatedMillsFormation_Detail": "Toto pravidlo zabraňuje hráčovi posunúť kameň späť na svoju pôvodnú pozíciu, aby ihneď preformoval mlyn, ak bol kameň práve použitý na vytvorenie mlyna v predchádzajúcom ťahu.",
   "@restrictRepeatedMillsFormation_Detail": {},
   "restrictRepeatedMillsFormation_Detail": "Figúrka presunutá z jedného mlyna do druhého nemôže okamžite vrátiť na pôvodný bod v ďalšom ťahu, aby znova vytvorila mlyn. Najprv je potrebný iný ťah.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Jednorazové použitie mlyna",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Každý mlyn môže odstrániť iba jednu časť súpera. Môžete ho znovu reformovať, ale nemôže byť použitý na ďalšie odstránenia.",
+  "@oneTimeUseMill_Detail": {}
 }
