@@ -20,6 +20,7 @@
 #include <cassert>
 #include <deque>
 #include <memory> // For std::unique_ptr
+#include <set>
 #include <string>
 #include <vector>
 
@@ -62,6 +63,10 @@ public:
     static void init();
 
     Position();
+    ~Position() {
+        formedMills[WHITE].clear();
+        formedMills[BLACK].clear();
+    }
 
     // Position(const Position &) = delete;
     // Position &operator=(const Position &) = delete;
@@ -229,6 +234,8 @@ public:
     Square currentSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
+
+    std::vector<Bitboard> formedMills[COLOR_NB];
 
     int gamesPlayedCount {0};
 

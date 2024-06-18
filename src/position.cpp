@@ -663,6 +663,8 @@ bool Position::reset()
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
+    formedMills[WHITE].clear();
+    formedMills[BLACK].clear();
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -1464,17 +1466,18 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 
     const Bitboard bc = byColorBB[c];
     const Bitboard *mt = millTableBB[to];
+    Bitboard potentialMill = 0;
 
-    if ((bc & mt[LD_HORIZONTAL]) == mt[LD_HORIZONTAL]) {
-        n++;
-    }
-
-    if ((bc & mt[LD_VERTICAL]) == mt[LD_VERTICAL]) {
-        n++;
-    }
-
-    if ((bc & mt[LD_SLASH]) == mt[LD_SLASH]) {
-        n++;
+    for (auto i = 0; i < LD_NB; ++i) {
+        Bitboard potentialMill = mt[i];
+        if ((bc & potentialMill) == potentialMill) {
+            n++;
+            if (std::find(formedMills[c].begin(), formedMills[c].end(), potentialMill) == formedMills[c].end()) {
+                formedMills[c].push_back(potentialMill);
+            } else {
+                n--;
+            }
+        }
     }
 
     if (from >= SQ_BEGIN && from < SQ_END) {
@@ -1491,13 +1494,18 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 int Position::mills_count(Square s) const
 {
     int n = 0;
+    Color sideToMove = color_on(s);  // Assuming you have a way to determine the side to move
 
-    const Bitboard bc = byColorBB[color_on(s)];
+    const Bitboard bc = byColorBB[sideToMove];
     const Bitboard *mt = millTableBB[s];
 
     for (auto i = 0; i < LD_NB; ++i) {
-        if ((bc & mt[i]) == mt[i]) {
-            n++;
+        Bitboard potentialMill = mt[i];
+        if ((bc & potentialMill) == potentialMill) {
+            // Use std::find to check if the mill is already formed
+            if (std::find(formedMills[sideToMove].begin(), formedMills[sideToMove].end(), potentialMill) == formedMills[sideToMove].end()) {
+                n++;  // Count this mill only if it hasn't been formed before
+            }
         }
     }
 
