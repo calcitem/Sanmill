@@ -663,8 +663,7 @@ bool Position::reset()
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
-    memset(formedMills, 0, sizeof(formedMills));
-    formedMillsCount[WHITE] = formedMillsCount[BLACK] = 0;    
+    formedMillsBB[WHITE] = formedMillsBB[BLACK] = 0;  
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -1470,12 +1469,11 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 
     for (auto i = 0; i < LD_NB; ++i) {
         Bitboard potentialMill = mt[i];
+
         if ((bc & potentialMill) == potentialMill) {
-            n++;
-            for (size_t j = 0; j < formedMillsCount[c]; j++) {
-                if (formedMills[j][c] == potentialMill) {
-                    n--;
-                }
+            auto line = square_bb(to) | potentialMill;
+            if ((line & formedMillsBB[sideToMove]) != line) {
+                n++;
             }
         }
     }
@@ -1502,20 +1500,11 @@ int Position::mills_count(Square s)
     for (auto i = 0; i < LD_NB; ++i) {
         Bitboard potentialMill = mt[i];
         if ((bc & potentialMill) == potentialMill) {
-            n++;
-            bool found = false;
-            size_t j = 0;
-            for (; j < formedMillsCount[sideToMove]; j++) {
-                if (formedMills[j][sideToMove] == potentialMill) {
-                    n--;
-                    found = true;
-                    break;
-                }
-            }
-            if (found == false) {
-                formedMills[j - 1][sideToMove] == potentialMill;
-                formedMillsCount[sideToMove]++;
-            }
+            auto line = square_bb(s) | potentialMill;
+            if ((line & formedMillsBB[sideToMove]) != line) {
+                formedMillsBB[sideToMove] |= line;
+                n++;
+            }    
         }
     }
 

@@ -238,9 +238,7 @@ public:
     Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
-    Bitboard formedMills[16][COLOR_NB] {{0}};
-    size_t formedMillsCount[COLOR_NB] {0};
-    int test;
+    Bitboard formedMillsBB[COLOR_NB] {{0}};
 
     int gamesPlayedCount {0};
 
