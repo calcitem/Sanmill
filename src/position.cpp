@@ -663,8 +663,8 @@ bool Position::reset()
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
-    formedMills[WHITE].clear();
-    formedMills[BLACK].clear();
+    memset(formedMills, 0, sizeof(formedMills));
+    formedMillsCount[WHITE] = formedMillsCount[BLACK] = 0;    
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -1472,10 +1472,10 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         Bitboard potentialMill = mt[i];
         if ((bc & potentialMill) == potentialMill) {
             n++;
-            if (std::find(formedMills[c].begin(), formedMills[c].end(), potentialMill) == formedMills[c].end()) {
-                formedMills[c].push_back(potentialMill);
-            } else {
-                n--;
+            for (size_t j = 0; j < formedMillsCount[c]; j++) {
+                if (formedMills[j][c] == potentialMill) {
+                    n--;
+                }
             }
         }
     }
@@ -1491,7 +1491,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     return n;
 }
 
-int Position::mills_count(Square s) const
+int Position::mills_count(Square s)
 {
     int n = 0;
     Color sideToMove = color_on(s);  // Assuming you have a way to determine the side to move
@@ -1502,9 +1502,19 @@ int Position::mills_count(Square s) const
     for (auto i = 0; i < LD_NB; ++i) {
         Bitboard potentialMill = mt[i];
         if ((bc & potentialMill) == potentialMill) {
-            // Use std::find to check if the mill is already formed
-            if (std::find(formedMills[sideToMove].begin(), formedMills[sideToMove].end(), potentialMill) == formedMills[sideToMove].end()) {
-                n++;  // Count this mill only if it hasn't been formed before
+            n++;
+            bool found = false;
+            size_t j = 0;
+            for (; j < formedMillsCount[sideToMove]; j++) {
+                if (formedMills[j][sideToMove] == potentialMill) {
+                    n--;
+                    found = true;
+                    break;
+                }
+            }
+            if (found == false) {
+                formedMills[j - 1][sideToMove] == potentialMill;
+                formedMillsCount[sideToMove]++;
             }
         }
     }
