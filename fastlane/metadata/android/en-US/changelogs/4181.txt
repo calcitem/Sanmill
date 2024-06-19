@@ -1,0 +1,3 @@
+v4.13.1
+
+Fixed an issue where file icons were not visible in dark mode.
