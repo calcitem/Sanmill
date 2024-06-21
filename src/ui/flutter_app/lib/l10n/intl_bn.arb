@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "পুনরাবৃত্ত মিলস গঠন সীমিত করুন",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "একটি মিল থেকে অন্য মিলে সরানো একটি টুকরো পরবর্তী পালায় আবার মিল গঠনের জন্য অবিলম্বে মূল বিন্দুতে ফিরতে পারে না। প্রথমে অন্য একটি চাল প্রয়োজন।",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "একবারের জন্য ব্যবহার মিল",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "প্রতিটি মিল একবারই প্রতিদ্বন্দ্বীর একটি অংশ সরিয়ে ফেলতে পারে। আপনি এটি আবার গঠন করতে পারেন, তবে এটি অতিরিক্ত অপসারণের জন্য ব্যবহার করা যাবে না।",
+  "@oneTimeUseMill_Detail": {}
 }

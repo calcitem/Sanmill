@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "Takmarka endurtekna myndun myllu",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Stykki sem fært er úr einum myllu í aðra getur ekki strax snúið aftur á upphafspunktinn í næsta leik til að mynda myllu aftur. Fyrst þarf annað skref.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Eingang notkun mylla",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Hver mylla getur aðeins fjarlægt eitt stykki andstæðingsins einu sinni. Þú getur endurmyndað það, en það er ekki hægt að nota það til að fjarlægja aðra.",
+  "@oneTimeUseMill_Detail": {}
 }

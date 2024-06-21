@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ограничи повторно формирање мелници",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Парче што се преместува од еден млин во друг не може веднаш да се врати на почетната точка на следниот потег за да формира млин повторно. Прво е потребен различен потег.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Еднократна употреба мелница",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Секоја мелница може да отстрани само еден дел од противникот еднаш. Можете повторно да го формирате, но не може да се користи за дополнителни отстранувања.",
+  "@oneTimeUseMill_Detail": {}
 }

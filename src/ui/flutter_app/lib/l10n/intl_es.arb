@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Restringir la formación repetida de molinos",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Una pieza movida de un molino para formar otro no puede regresar inmediatamente al punto original en el siguiente turno para formar un molino nuevamente. Primero se requiere un movimiento diferente.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Molino de un solo uso",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Cada molino puede eliminar una pieza del oponente solo una vez. Puedes volver a formarlo, pero no se puede usar para eliminaciones adicionales.",
+  "@oneTimeUseMill_Detail": {}
 }

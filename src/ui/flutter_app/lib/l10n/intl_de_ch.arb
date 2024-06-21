@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Wiederholte Mühlebildung einschränken",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Ein Spielstein, der von einer Mühle zu einer anderen verschoben wurde, kann nicht sofort auf den ursprünglichen Punkt im nächsten Zug zurückkehren, um wieder eine Mühle zu bilden. Zuerst ist ein anderer Zug erforderlich.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Einmalige Nutzung Mühle",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Jede Mühle kann nur ein gegnerisches Teil einmal entfernen. Sie können es erneut formen, aber es kann nicht für zusätzliche Entfernungen verwendet werden.",
+  "@oneTimeUseMill_Detail": {}
 }

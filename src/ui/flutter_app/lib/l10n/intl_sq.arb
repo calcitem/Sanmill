@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Kufizo formimin e përsëritur të mullinjve",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Një copë e zhvendosur nga një mulli në tjetrin nuk mund të kthehet menjëherë në pikën fillestare në radhën tjetër për të formuar sërish një mulli. Fillimisht kërkohet një lëvizje tjetër.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Mulli për një përdorim",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Çdo mulli mund të heqë një pjesë të kundërshtarit vetëm një herë. Mund ta formoni përsëri, por nuk mund të përdoret për heqje shtesë.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -247,6 +247,16 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] isDefenderMoveFirst: $value");
   }
 
+  void _setRestrictRepeatedMillsFormation(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings =
+        ruleSettings.copyWith(restrictRepeatedMillsFormation: value);
+
+    logger.t("[config] restrictRepeatedMillsFormation: $value");
+  }
+
   void _setStalemateAction(BuildContext context, RuleSettings ruleSettings) {
     void callback(StalemateAction? stalemateAction) {
       Navigator.pop(context);
@@ -289,14 +299,13 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] mayRemoveMultiple: $value");
   }
 
-  void _setRestrictRepeatedMillsFormation(
+  void _setOneTimeUseMill(
     RuleSettings ruleSettings,
     bool value,
   ) {
-    DB().ruleSettings =
-        ruleSettings.copyWith(restrictRepeatedMillsFormation: value);
+    DB().ruleSettings = ruleSettings.copyWith(oneTimeUseMill: value);
 
-    logger.t("[config] restrictRepeatedMillsFormation: $value");
+    logger.t("[config] oneTimeUseMill: $value");
   }
 
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
@@ -430,6 +439,15 @@ class RuleSettingsPage extends StatelessWidget {
               ),
               titleString: S.of(context).mayRemoveMultiple,
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
+            ),
+            SettingsListTile.switchTile(
+              value: ruleSettings.oneTimeUseMill,
+              onChanged: (bool val) => _setOneTimeUseMill(
+                ruleSettings,
+                val,
+              ),
+              titleString: S.of(context).oneTimeUseMill,
+              subtitleString: S.of(context).oneTimeUseMill_Detail,
             ),
           ],
         ),

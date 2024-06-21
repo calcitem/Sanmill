@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Restringir a formação repetida de moinhos",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Uma peça movida de um moinho para formar outro não pode retornar imediatamente ao ponto original na próxima jogada para formar um moinho novamente. Primeiro, é necessário um movimento diferente.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Moinho de uso único",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Cada moinho pode remover uma peça do adversário apenas uma vez. Você pode reformá-lo novamente, mas não pode ser usado para remoções adicionais.",
+  "@oneTimeUseMill_Detail": {}
 }

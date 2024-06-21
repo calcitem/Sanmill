@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Omeji ponavljajoče se oblikovanje mlinov",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Figura, premaknjena iz enega mlina v drugega, se ne more takoj vrniti na izhodiščno točko v naslednjem potezu, da bi znova oblikovala mlin. Najprej je potrebna druga poteza.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Enkratna uporaba mlina",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Vsak mlin lahko odstrani le en del nasprotnika. Lahko ga ponovno oblikujete, vendar ga nimogoče uporabiti za dodatna odstranjevanja.",
+  "@oneTimeUseMill_Detail": {}
 }

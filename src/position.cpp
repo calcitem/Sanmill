@@ -663,7 +663,7 @@ bool Position::reset()
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
-    formedMillsBB[WHITE] = formedMillsBB[BLACK] = 0;  
+    formedMillsBB[WHITE] = formedMillsBB[BLACK] = 0;
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -1492,7 +1492,8 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 int Position::mills_count(Square s)
 {
     int n = 0;
-    Color sideToMove = color_on(s);  // Assuming you have a way to determine the side to move
+    Color sideToMove = color_on(s); // Assuming you have a way to determine the
+                                    // side to move
 
     const Bitboard bc = byColorBB[sideToMove];
     const Bitboard *mt = millTableBB[s];
@@ -1504,7 +1505,7 @@ int Position::mills_count(Square s)
             if ((line & formedMillsBB[sideToMove]) != line) {
                 formedMillsBB[sideToMove] |= line;
                 n++;
-            }    
+            }
         }
     }
 

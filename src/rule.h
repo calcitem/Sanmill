@@ -86,6 +86,10 @@ struct Rule
     // piece from a formed mill. Enable this option to disable the limitation.
     bool mayRemoveFromMillsAlways;
 
+    // Each mill can remove an opponent's piece only once. You can reform it
+    // again, but it cannot be used for additional removals.
+    bool oneTimeUseMill;
+
     // At the end of the placing phase, before the moving phase begins,
     // the action follows if the board is full of pieces.
     BoardFullAction boardFullAction;
@@ -111,7 +115,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 9;
+constexpr auto N_RULES = 10;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

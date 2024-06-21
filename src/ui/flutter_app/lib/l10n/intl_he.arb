@@ -1529,5 +1529,9 @@
   "restrictRepeatedMillsFormation": "הגבל יצירה חוזרת של טחנות",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "חלק שהועבר מטחנה אחת למשנה לא יכול לחזור מיד לנקודה המקורית בתור הבא כדי ליצור שוב טחנה. דרושה תנועה אחרת תחילה.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "טחנה לשימוש חד פעמי",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "כל טחנה יכולה להסיר חתיכה אחת של היריב רק פעם אחת. אתה יכול ליצור אותו מחדש, אבל לא ניתן להשתמש בו להסרות נוספות.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -119,6 +119,7 @@ class RuleSettings {
     this.millFormationActionInPlacingPhase =
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
     this.restrictRepeatedMillsFormation = false,
+    this.oneTimeUseMill = false,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -184,6 +185,8 @@ class RuleSettings {
   final MillFormationActionInPlacingPhase? millFormationActionInPlacingPhase;
   @HiveField(19, defaultValue: false)
   final bool restrictRepeatedMillsFormation;
+  @HiveField(20, defaultValue: false)
+  final bool oneTimeUseMill;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);

@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "반복적인 참고누 형성 제한",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "한 참고누에서 다른 참고누를 형성하기 위해 움직인 말은 다음 턴에서 원래 지점으로 즉시 돌아와 다시 참고누를 형성할 수 없습니다. 먼저 다른 움직임이 필요합니다.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "일회용 밀",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "각 밀은 상대의 조각을 한 번만 제거할 수 있습니다. 다시 형성할 수 있지만 추가 제거에는 사용할 수 없습니다.",
+  "@oneTimeUseMill_Detail": {}
 }

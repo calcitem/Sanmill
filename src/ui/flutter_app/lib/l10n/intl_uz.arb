@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Qayta-qayta Tegirmon Shakllanishini Cheklash",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Bir tegirmondan boshqasiga ko'chirilgan dona navbatdagi navbatda darhol asl nuqtasiga qaytib, yana tegirmon hosil qila olmaydi. Avval boshqa harakat talab etiladi.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Bir martalik ishlatiladigan tegirmon",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Har bir tegirmon raqibning qismini faqat bir marta olib tashlashi mumkin. Siz uni qayta yaratishingiz mumkin, lekin qo'shimcha olib tashlashlar uchun foydalanish mumkin emas.",
+  "@oneTimeUseMill_Detail": {}
 }

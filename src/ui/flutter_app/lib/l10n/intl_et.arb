@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Piira korduvat veskite moodustamist",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Nupp, mis on liigutatud ühest veskist teise, ei saa järgmisel käigul kohe algpunkti tagasi minna, et uuesti veskit moodustada. Esiteks on vajalik teistsugune liigutus.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Ühekordne kasutus veski",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Iga veski saab eemaldada ainult ühe vastase tüki. Saate selle uuesti kujundada, kuid seda ei saa kasutada täiendavate eemaldamiste jaoks.",
+  "@oneTimeUseMill_Detail": {}
 }

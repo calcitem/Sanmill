@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ограничите поновљено формирање млинова",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Фигура која је премештена из једног млина у други не може одмах да се врати на почетну тачку у следећем потезу да би поново формирала млин. Прво је потребан другачији потез.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Једнократна употреба млина",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Сваки млин може уклонити само један део противника. Можете га поново формирати, али се не може користити за додатна уклањања.",
+  "@oneTimeUseMill_Detail": {}
 }

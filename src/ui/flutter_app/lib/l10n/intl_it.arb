@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Limita la formazione ripetuta di mulini",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Un pezzo spostato da un mulino per formarne un altro non può immediatamente ritornare al punto originale nel turno successivo per formare di nuovo un mulino. È richiesta prima una mossa diversa.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Mulino monouso",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Ogni mulino può rimuovere un pezzo dell'avversario una sola volta. Puoi riformarlo di nuovo, ma non può essere utilizzato per rimozioni aggiuntive.",
+  "@oneTimeUseMill_Detail": {}
 }

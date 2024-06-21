@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Apriboti pasikartojantį malūnų formavimą",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Figūra perkelta iš vieno malūno į kitą negali iškart grįžti į pradinį tašką kito ėjimo metu, kad vėl sudarytų malūną. Pirmiausia reikia atlikti kitą judesį.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Vienkartinis malūnas",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Kiekvienas malūnas gali pašalinti tik vieną priešininko figūrą. Jūs galite jį suformuoti dar kartą, tačiau negalite jo naudoti papildomam pašalinimui.",
+  "@oneTimeUseMill_Detail": {}
 }

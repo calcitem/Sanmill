@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "จำกัดการสร้างโรงสีซ้ำ",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "ชิ้นส่วนที่ถูกย้ายจากโรงสีหนึ่งไปอีกโรงสีหนึ่งไม่สามารถกลับไปยังจุดเดิมทันทีในตาถัดไปเพื่อสร้างโรงสีอีกครั้งได้ จำเป็นต้องมีการเคลื่อนไหวที่แตกต่างกันก่อน.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "โรงสีใช้ครั้งเดียว",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "โรงสีแต่ละแห่งสามารถลบชิ้นส่วนของฝ่ายตรงข้ามได้เพียงครั้งเดียวเท่านั้น คุณสามารถสร้างมันขึ้นมาใหม่ได้ แต่ไม่สามารถใช้สำหรับการลบเพิ่มเติมได้",
+  "@oneTimeUseMill_Detail": {}
 }

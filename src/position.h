@@ -64,12 +64,13 @@ public:
     static void init();
 
     Position();
-    #if 1
-    ~Position() {
-        //formedMills.at(WHITE).clear();
-        //formedMills.at(BLACK).clear();
+#if 1
+    ~Position()
+    {
+        // formedMills.at(WHITE).clear();
+        // formedMills.at(BLACK).clear();
     }
-    #endif
+#endif
 
     // Position(const Position &) = delete;
     // Position &operator=(const Position &) = delete;
@@ -238,7 +239,7 @@ public:
     Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
-    Bitboard formedMillsBB[COLOR_NB] {{0}};
+    Bitboard formedMillsBB[COLOR_NB] {0};
 
     int gamesPlayedCount {0};
 

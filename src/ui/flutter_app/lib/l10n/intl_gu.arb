@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "પુનરાવર્તિત મિલની રચનાને પ્રતિબંધિત કરો",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "એક મિલથી બીજી મિલ બનાવવા માટે ખસેડવામાં આવેલ ટુકડો તરત જ આગળની વારીમાં મૂળ બિંદુ પર પાછો ફરી શકતો નથી જેથી ફરીથી મિલ બનાવી શકે. પહેલાં અલગ ચાલની જરૂર છે.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "એક વખત ઉપયોગ મિલ",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "દરેક મિલ માત્ર એક જ વખત પ્રત્યાર્થીની એક પીસ દૂર કરી શકે છે. તમે તેને ફરીથી બનાવો છો, પરંતુ તે વધારાની દૂરીઓ માટે ઉપયોગમાં લેવામાં નથી આવી શકતું.",
+  "@oneTimeUseMill_Detail": {}
 }

@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Ogranicz powtarzające się formacje młynów",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "Pionek przeniesiony z jednego młyna do drugiego nie może natychmiast wrócić na oryginalne miejsce w następnej turze, aby ponownie utworzyć młyn. Najpierw wymagany jest inny ruch.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Młyn jednorazowego użytku",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Każdy młyn może usunąć tylko jedną część przeciwnika. Możesz go ponownie utworzyć, ale nie można go użyć do dodatkowego usuwania.",
+  "@oneTimeUseMill_Detail": {}
 }

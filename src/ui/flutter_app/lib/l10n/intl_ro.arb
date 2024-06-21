@@ -1431,5 +1431,9 @@
   "restrictRepeatedMillsFormation": "Restricționează formarea repetată a morilor",
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "O piesă mutată de la un moară la alta nu poate reveni imediat la punctul original în următoarea tură pentru a forma din nou o moară. Mai întâi este necesară o mutare diferită.",
-  "@restrictRepeatedMillsFormation_Detail": {}
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Moară de unică folosință",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Fiecare moară poate elimina o piesă a adversarului o singură dată. O poți reforma din nou, dar nu poate fi folosită pentru eliminări suplimentare.",
+  "@oneTimeUseMill_Detail": {}
 }
