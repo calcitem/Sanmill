@@ -157,6 +157,8 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
+    void setFormedMillsBB(uint32_t millsBitmask);
+
     void surrounded_pieces_count(Square s, int &ourPieceCount,
                                  int &theirPieceCount, int &markedCount,
                                  int &emptyCount) const;

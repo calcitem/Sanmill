@@ -154,6 +154,7 @@ class Position {
   /// [White Piece to Remove] [Black Piece to Remove]
   /// [White Piece Last Mill From Square] [White Piece Last Mill To Square]
   /// [Black Piece Last Mill From Square] [Black Piece Last Mill To Square]
+  /// [MillsBitmask]
   /// [Rule50] [Ply]"
   ///
   /// ([Rule50] and [Ply] are unused right now.)
@@ -227,6 +228,8 @@ class Position {
     buffer.writeSpace(_lastMillToSquare[PieceColor.white]);
     buffer.writeSpace(_lastMillFromSquare[PieceColor.black]);
     buffer.writeSpace(_lastMillToSquare[PieceColor.black]);
+
+    buffer.writeSpace(calculateMillsBitmask());
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -332,10 +335,13 @@ class Position {
     final String blackLastMillToSquareStr = l[13];
     _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
 
-    final String rule50Str = l[14];
+    final String millsBitmaskStr = l[14];
+    setFormedMillsFromBitmask(int.parse(millsBitmaskStr));
+
+    final String rule50Str = l[15];
     st.rule50 = int.parse(rule50Str);
 
-    final String gamePlyStr = l[15];
+    final String gamePlyStr = l[16];
     _gamePly = int.parse(gamePlyStr);
 
     // Misc
@@ -350,7 +356,7 @@ class Position {
   // TODO: Implement with C++ in engine
   bool validateFen(String fen) {
     final List<String> parts = fen.split(' ');
-    if (parts.length < 16) {
+    if (parts.length < 17) {
       logger.e('FEN does not contain enough parts.');
       return false;
     }
@@ -461,15 +467,22 @@ class Position {
       return false;
     }
 
-    // Part 14: Half-move clock
-    final int halfMoveClock = int.parse(parts[14]);
+    // Part 14: Mills bitmask
+    final int millsBitmask = int.parse(parts[14]);
+    if (millsBitmask < 0) {
+      logger.e('Invalid mills bitmask. Cannot be negative.');
+      return false;
+    }
+
+    // Part 15: Half-move clock
+    final int halfMoveClock = int.parse(parts[15]);
     if (halfMoveClock < 0) {
       logger.e('Invalid half-move clock. Cannot be negative.');
       return false;
     }
 
-    // Part 15: Full move number
-    final int fullMoveNumber = int.parse(parts[15]);
+    // Part 16: Full move number
+    final int fullMoveNumber = int.parse(parts[16]);
     if (fullMoveNumber < 1) {
       logger.e('Invalid full move number. Must start at 1.');
       return false;
@@ -1404,6 +1417,81 @@ class Position {
     }
 
     return true;
+  }
+
+  int calculateMillsBitmask() {
+    int whiteMillsBitmask = 0;
+    int blackMillsBitmask = 0;
+
+    for (int i = 0; i < _formedMills.length; i++) {
+      final List<int> mill = _formedMills[i];
+      final int bitPosition = _getBitPositionForMill(mill);
+      if (bitPosition != -1) {
+        if (_board[mill[0]] == PieceColor.white) {
+          whiteMillsBitmask |= 1 << bitPosition;
+        } else if (_board[mill[0]] == PieceColor.black) {
+          blackMillsBitmask |= 1 << bitPosition;
+        }
+      }
+    }
+
+    // Combine the white and black bitmasks into a single 32-bit integer
+    final int millsBitmask = (whiteMillsBitmask << 16) | blackMillsBitmask;
+    return millsBitmask;
+  }
+
+  int _getBitPositionForMill(List<int> mill) {
+    mill.sort();
+    for (int i = 0; i < _millTable.length; i++) {
+      for (int j = 0; j < _millTable[i].length; j++) {
+        final List<int> tableMill = <int>[
+          i,
+          _millTable[i][j][0],
+          _millTable[i][j][1]
+        ];
+        tableMill.sort();
+        if (listEquals(mill, tableMill)) {
+          return i * 3 + j;
+        }
+      }
+    }
+    return -1;
+  }
+
+  void setFormedMillsFromBitmask(int millsBitmask) {
+    final int whiteMillsBitmask = (millsBitmask >> 16) & 0xFFFF;
+    final int blackMillsBitmask = millsBitmask & 0xFFFF;
+
+    _formedMills.clear();
+
+    for (int i = 0; i < 16; i++) {
+      if ((whiteMillsBitmask & (1 << i)) != 0) {
+        final List<int> mill = _getMillFromBitPosition(i);
+        if (mill.isNotEmpty) {
+          _formedMills.add(mill);
+        }
+      }
+    }
+
+    for (int i = 0; i < 16; i++) {
+      if ((blackMillsBitmask & (1 << i)) != 0) {
+        final List<int> mill = _getMillFromBitPosition(i);
+        if (mill.isNotEmpty) {
+          _formedMills.add(mill);
+        }
+      }
+    }
+  }
+
+  List<int> _getMillFromBitPosition(int bitPosition) {
+    final int i = bitPosition ~/ 3;
+    final int j = bitPosition % 3;
+    if (i < _millTable.length && j < _millTable[i].length) {
+      final List<int> mill = <int>[i, _millTable[i][j][0], _millTable[i][j][1]];
+      mill.sort();
+      return mill;
+    }
+    return <int>[];
   }
 
   @visibleForTesting

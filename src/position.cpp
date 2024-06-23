@@ -294,11 +294,13 @@ Position &Position::set(const string &fenStr, Thread *th)
        5) White on board/White in hand/Black on board/Black in hand/need to
        remove/Last mill square of white/Last mill square of black
 
-       6) Halfmove clock. This is the number of halfmoves since the last
+       6) Mills bitmask.
+
+       7) Halfmove clock. This is the number of halfmoves since the last
           capture. This is used to determine if a draw can be claimed under the
           N-move rule.
 
-       7) Fullmove number. The number of the full move. It starts at 1, and is
+       8) Fullmove number. The number of the full move. It starts at 1, and is
           incremented after White's move.
     */
 
@@ -383,7 +385,12 @@ Position &Position::set(const string &fenStr, Thread *th)
     lastMillFromSquare[BLACK] = static_cast<Square>(tmpLastMillFromSquareBlack);
     lastMillToSquare[BLACK] = static_cast<Square>(tmpLastMillToSquareBlack);
 
-    // 6-7. Halfmove clock and fullmove number
+    // 6. Mills bitmask
+    uint32_t mb = 0;
+    ss >> std::skipws >> mb;
+    setFormedMillsBB(mb);
+
+    // 7-8. Halfmove clock and fullmove number
     ss >> std::skipws >> st.rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
@@ -475,6 +482,8 @@ string Position::fen() const
 
     ss << lastMillFromSquare[WHITE] << " " << lastMillToSquare[WHITE] << " "
        << lastMillFromSquare[BLACK] << " " << lastMillToSquare[BLACK] << " ";
+
+    ss << formedMillsBB << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -1728,6 +1737,15 @@ int Position::total_mills_count(Color c)
     }
 
     return n;
+}
+
+void Position::setFormedMillsBB(uint32_t millsBitmask)
+{
+    Bitboard whiteMills = (millsBitmask >> 16) & 0xFFFF;
+    Bitboard blackMills = millsBitmask & 0xFFFF;
+
+    formedMillsBB[WHITE] = whiteMills;
+    formedMillsBB[BLACK] = blackMills;
 }
 
 bool Position::is_board_full_removal_at_placing_phase_end()

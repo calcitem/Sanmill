@@ -38,15 +38,18 @@ extern vector<string> setup_bench(Position *, istream &);
 namespace {
 
 // FEN string of the initial position, normal mill game
-const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 "
+const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0"
                         "0 1";
 const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 0 0 0 "
+                         "0"
                          "0 0 "
                          "1";
 const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 0 0 0 "
+                         "0"
                          "0 0 "
                          "1";
 const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 0 0 0 "
+                         "0"
                          "0 0 "
                          "1";
 
