@@ -45,6 +45,8 @@ class Position {
   final List<PieceColor> _grid =
       List<PieceColor>.filled(7 * 7, PieceColor.none);
 
+  final List<List<int>> _formedMills = <List<int>>[];
+
   int placedPieceNumber = 0;
   int selectedPieceNumber = 0;
   late List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
@@ -1277,9 +1279,20 @@ class Position {
     }
 
     for (int ld = 0; ld < lineDirectionNumber; ld++) {
-      if (c == _board[_millTable[to][ld][0]] &&
-          c == _board[_millTable[to][ld][1]]) {
-        n++;
+      final List<int> mill = <int>[
+        _millTable[to][ld][0],
+        _millTable[to][ld][1],
+        to
+      ];
+      mill.sort();
+
+      if (c == _board[mill[0]] &&
+          c == _board[mill[1]] &&
+          c == _board[mill[2]]) {
+        if (!_formedMills
+            .any((List<int> formedMill) => listEquals(formedMill, mill))) {
+          n++;
+        }
       }
     }
 
@@ -1318,46 +1331,37 @@ class Position {
 
   int _millsCount(int s) {
     int n = 0;
-    final List<int?> idx = <int>[0, 0, 0];
-    int min = 0;
-    int? temp = 0;
     final PieceColor m = _board[s];
 
-    for (int i = 0; i < idx.length; i++) {
-      idx[0] = s;
-      idx[1] = _millTable[s][i][0];
-      idx[2] = _millTable[s][i][1];
+    for (int i = 0; i < lineDirectionNumber; i++) {
+      final List<int> mill = <int>[_millTable[s][i][0], _millTable[s][i][1], s];
+      mill.sort();
 
-      // No mill
-      if (!(m == _board[idx[1]!] && m == _board[idx[2]!])) {
-        continue;
-      }
-
-      // Close mill
-
-      // Sort
-      for (int j = 0; j < 2; j++) {
-        min = j;
-
-        for (int k = j + 1; k < 3; k++) {
-          if (idx[min]! > idx[k]!) {
-            min = k;
-          }
+      if (m == _board[mill[0]] &&
+          m == _board[mill[1]] &&
+          m == _board[mill[2]]) {
+        if (!_formedMills
+            .any((List<int> formedMill) => listEquals(formedMill, mill))) {
+          _formedMills.add(mill);
+          n++;
         }
-
-        if (min == j) {
-          continue;
-        }
-
-        temp = idx[min];
-        idx[min] = idx[j];
-        idx[j] = temp;
       }
-
-      n++;
     }
 
     return n;
+  }
+
+  // Helper function to check if two lists are equal
+  bool listEquals(List<int> list1, List<int> list2) {
+    if (list1.length != list2.length) {
+      return false;
+    }
+    for (int i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   bool _isAllInMills(PieceColor c) {
@@ -1456,6 +1460,7 @@ extension SetupPosition on Position {
         _lastMillFromSquare[PieceColor.black] = 0;
     _lastMillToSquare[PieceColor.white] =
         _lastMillToSquare[PieceColor.black] = 0;
+    _formedMills.clear();
 
     _gamePly = 0;
 

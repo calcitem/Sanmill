@@ -1468,7 +1468,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
     Bitboard potentialMill = 0;
 
     for (auto i = 0; i < LD_NB; ++i) {
-        Bitboard potentialMill = mt[i];
+        potentialMill = mt[i];
 
         if ((bc & potentialMill) == potentialMill) {
             auto line = square_bb(to) | potentialMill;
@@ -1492,18 +1492,18 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 int Position::mills_count(Square s)
 {
     int n = 0;
-    Color sideToMove = color_on(s); // Assuming you have a way to determine the
-                                    // side to move
+    Color side = color_on(s); // Assuming you have a way to determine the
+                              // side to move
 
-    const Bitboard bc = byColorBB[sideToMove];
+    const Bitboard bc = byColorBB[side];
     const Bitboard *mt = millTableBB[s];
 
     for (auto i = 0; i < LD_NB; ++i) {
         Bitboard potentialMill = mt[i];
         if ((bc & potentialMill) == potentialMill) {
             auto line = square_bb(s) | potentialMill;
-            if ((line & formedMillsBB[sideToMove]) != line) {
-                formedMillsBB[sideToMove] |= line;
+            if ((line & formedMillsBB[side]) != line) {
+                formedMillsBB[side] |= line;
                 n++;
             }
         }
