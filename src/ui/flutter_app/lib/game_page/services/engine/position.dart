@@ -45,8 +45,6 @@ class Position {
   final List<PieceColor> _grid =
       List<PieceColor>.filled(7 * 7, PieceColor.none);
 
-  final List<List<int>> _formedMills = <List<int>>[];
-
   int placedPieceNumber = 0;
   int selectedPieceNumber = 0;
   late List<SquareAttribute> sqAttrList = List<SquareAttribute>.generate(
@@ -115,6 +113,12 @@ class Position {
   };
 
   Map<PieceColor, int> _lastMillToSquare = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+    PieceColor.draw: 0,
+  };
+
+  Map<PieceColor, int> _formedMillsBB = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
     PieceColor.draw: 0,
@@ -229,7 +233,8 @@ class Position {
     buffer.writeSpace(_lastMillFromSquare[PieceColor.black]);
     buffer.writeSpace(_lastMillToSquare[PieceColor.black]);
 
-    buffer.writeSpace(calculateMillsBitmask());
+    buffer.writeSpace((_formedMillsBB[PieceColor.white]! << 32) |
+        _formedMillsBB[PieceColor.black]!);
 
     final int sideIsBlack = _sideToMove == PieceColor.black ? 1 : 0;
 
@@ -336,7 +341,7 @@ class Position {
     _lastMillToSquare[PieceColor.black] = int.parse(blackLastMillToSquareStr);
 
     final String millsBitmaskStr = l[14];
-    setFormedMillsFromBitmask(int.parse(millsBitmaskStr));
+    setFormedMillsBB(int.parse(millsBitmaskStr));
 
     final String rule50Str = l[15];
     st.rule50 = int.parse(rule50Str);
@@ -469,9 +474,15 @@ class Position {
 
     // Part 14: Mills bitmask
     final int millsBitmask = int.parse(parts[14]);
-    if (millsBitmask < 0) {
-      logger.e('Invalid mills bitmask. Cannot be negative.');
-      return false;
+    // Check if the lowest 8 bits are not zero
+    if ((millsBitmask & 0xFF) != 0) {
+      throw Exception("The lowest 8 bits are not zero");
+    }
+    // Check if bits 32 to 40 are not zero
+    // Assuming the inclusion of both bit 32 and bit 40
+    // 0x1FF << 31 shifts 0x1FF (which is 9 bits of 1s) left by 31 positions to reach the 32nd position
+    if ((millsBitmask & (0x1FF << 31)) != 0) {
+      throw Exception("Bits 32 to 40 are not zero");
     }
 
     // Part 15: Half-move clock
@@ -1302,8 +1313,9 @@ class Position {
       if (c == _board[mill[0]] &&
           c == _board[mill[1]] &&
           c == _board[mill[2]]) {
-        if (!_formedMills
-            .any((List<int> formedMill) => listEquals(formedMill, mill))) {
+        final int millBB =
+            squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+        if (!(millBB & _formedMillsBB[c]! == millBB)) {
           n++;
         }
       }
@@ -1353,9 +1365,10 @@ class Position {
       if (m == _board[mill[0]] &&
           m == _board[mill[1]] &&
           m == _board[mill[2]]) {
-        if (!_formedMills
-            .any((List<int> formedMill) => listEquals(formedMill, mill))) {
-          _formedMills.add(mill);
+        final int millBB =
+            squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+        if (!(millBB & _formedMillsBB[m]! == millBB)) {
+          _formedMillsBB[m] = _formedMillsBB[m]! | millBB;
           n++;
         }
       }
@@ -1419,79 +1432,12 @@ class Position {
     return true;
   }
 
-  int calculateMillsBitmask() {
-    int whiteMillsBitmask = 0;
-    int blackMillsBitmask = 0;
+  void setFormedMillsBB(int millsBitmask) {
+    final int whiteMills = (millsBitmask >> 32) & 0xFFFFFFFF;
+    final int blackMills = millsBitmask & 0xFFFFFFFF;
 
-    for (int i = 0; i < _formedMills.length; i++) {
-      final List<int> mill = _formedMills[i];
-      final int bitPosition = _getBitPositionForMill(mill);
-      if (bitPosition != -1) {
-        if (_board[mill[0]] == PieceColor.white) {
-          whiteMillsBitmask |= 1 << bitPosition;
-        } else if (_board[mill[0]] == PieceColor.black) {
-          blackMillsBitmask |= 1 << bitPosition;
-        }
-      }
-    }
-
-    // Combine the white and black bitmasks into a single 32-bit integer
-    final int millsBitmask = (whiteMillsBitmask << 16) | blackMillsBitmask;
-    return millsBitmask;
-  }
-
-  int _getBitPositionForMill(List<int> mill) {
-    mill.sort();
-    for (int i = 0; i < _millTable.length; i++) {
-      for (int j = 0; j < _millTable[i].length; j++) {
-        final List<int> tableMill = <int>[
-          i,
-          _millTable[i][j][0],
-          _millTable[i][j][1]
-        ];
-        tableMill.sort();
-        if (listEquals(mill, tableMill)) {
-          return i * 3 + j;
-        }
-      }
-    }
-    return -1;
-  }
-
-  void setFormedMillsFromBitmask(int millsBitmask) {
-    final int whiteMillsBitmask = (millsBitmask >> 16) & 0xFFFF;
-    final int blackMillsBitmask = millsBitmask & 0xFFFF;
-
-    _formedMills.clear();
-
-    for (int i = 0; i < 16; i++) {
-      if ((whiteMillsBitmask & (1 << i)) != 0) {
-        final List<int> mill = _getMillFromBitPosition(i);
-        if (mill.isNotEmpty) {
-          _formedMills.add(mill);
-        }
-      }
-    }
-
-    for (int i = 0; i < 16; i++) {
-      if ((blackMillsBitmask & (1 << i)) != 0) {
-        final List<int> mill = _getMillFromBitPosition(i);
-        if (mill.isNotEmpty) {
-          _formedMills.add(mill);
-        }
-      }
-    }
-  }
-
-  List<int> _getMillFromBitPosition(int bitPosition) {
-    final int i = bitPosition ~/ 3;
-    final int j = bitPosition % 3;
-    if (i < _millTable.length && j < _millTable[i].length) {
-      final List<int> mill = <int>[i, _millTable[i][j][0], _millTable[i][j][1]];
-      mill.sort();
-      return mill;
-    }
-    return <int>[];
+    _formedMillsBB[PieceColor.white] = whiteMills;
+    _formedMillsBB[PieceColor.black] = blackMills;
   }
 
   @visibleForTesting
@@ -1548,7 +1494,7 @@ extension SetupPosition on Position {
         _lastMillFromSquare[PieceColor.black] = 0;
     _lastMillToSquare[PieceColor.white] =
         _lastMillToSquare[PieceColor.black] = 0;
-    _formedMills.clear();
+    _formedMillsBB[PieceColor.white] = _formedMillsBB[PieceColor.black] = 0;
 
     _gamePly = 0;
 
@@ -1598,6 +1544,7 @@ extension SetupPosition on Position {
     _currentSquare = pos._currentSquare;
     _lastMillFromSquare = pos._lastMillFromSquare;
     _lastMillToSquare = pos._lastMillToSquare;
+    _formedMillsBB = pos._formedMillsBB;
 
     _gamePly = pos._gamePly;
 

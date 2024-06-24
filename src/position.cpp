@@ -386,7 +386,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     lastMillToSquare[BLACK] = static_cast<Square>(tmpLastMillToSquareBlack);
 
     // 6. Mills bitmask
-    uint32_t mb = 0;
+    uint64_t mb = 0;
     ss >> std::skipws >> mb;
     setFormedMillsBB(mb);
 
@@ -483,7 +483,9 @@ string Position::fen() const
     ss << lastMillFromSquare[WHITE] << " " << lastMillToSquare[WHITE] << " "
        << lastMillFromSquare[BLACK] << " " << lastMillToSquare[BLACK] << " ";
 
-    ss << formedMillsBB << " ";
+    uint64_t fm = (static_cast<uint64_t>(formedMillsBB[WHITE]) << 32) |
+                  formedMillsBB[BLACK];
+    ss << fm << " ";
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
@@ -1739,10 +1741,10 @@ int Position::total_mills_count(Color c)
     return n;
 }
 
-void Position::setFormedMillsBB(uint32_t millsBitmask)
+void Position::setFormedMillsBB(uint64_t millsBitmask)
 {
-    Bitboard whiteMills = (millsBitmask >> 16) & 0xFFFF;
-    Bitboard blackMills = millsBitmask & 0xFFFF;
+    Bitboard whiteMills = (millsBitmask >> 32) & 0xFFFFFFFF;
+    Bitboard blackMills = millsBitmask & 0xFFFFFFFF;
 
     formedMillsBB[WHITE] = whiteMills;
     formedMillsBB[BLACK] = blackMills;
