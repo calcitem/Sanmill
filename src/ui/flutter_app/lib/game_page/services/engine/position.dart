@@ -478,11 +478,11 @@ class Position {
     if ((millsBitmask & 0xFF) != 0) {
       throw Exception("The lowest 8 bits are not zero");
     }
-    // Check if bits 32 to 40 are not zero
-    // Assuming the inclusion of both bit 32 and bit 40
-    // 0x1FF << 31 shifts 0x1FF (which is 9 bits of 1s) left by 31 positions to reach the 32nd position
-    if ((millsBitmask & (0x1FF << 31)) != 0) {
-      throw Exception("Bits 32 to 40 are not zero");
+
+    // Check if bits 32 to 39 are not zero
+    // 0xFF << 32 shifts 0xFF (which is 8 bits of 1s) left by 32 positions to reach the 32nd position
+    if ((millsBitmask & (0xFF << 32)) != 0) {
+      throw Exception("Bits 32 to 39 are not zero");
     }
 
     // Part 15: Half-move clock
