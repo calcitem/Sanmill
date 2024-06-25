@@ -1432,8 +1432,8 @@
   "@restrictRepeatedMillsFormation": {},
   "restrictRepeatedMillsFormation_Detail": "从一个三连移动到另一个三连的棋子不能在下一回合立即返回原点再次形成三连。需要先走其他着法。",
   "@restrictRepeatedMillsFormation_Detail": {},
-  "oneTimeUseMill": "一次性磨坊",
+  "oneTimeUseMill": "一次性三连",
   "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "每个磨坊只能删除一次对手的棋子。 你可以再次重组它，但不能用于额外的移除。",
+  "oneTimeUseMill_Detail": "每个三连只能吃掉一次对手的棋子。您可以再次重组它，但不能用于额外的吃子。",
   "@oneTimeUseMill_Detail": {}
 }

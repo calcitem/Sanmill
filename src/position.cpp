@@ -1477,20 +1477,35 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 
     const Bitboard bc = byColorBB[color];
     const Bitboard *mt = millTableBB[to];
-    Bitboard potentialMill = 0;
 
-    for (auto i = 0; i < LD_NB; ++i) {
-        potentialMill = mt[i];
+    if (unlikely(rule.oneTimeUseMill)) {
+        Bitboard potentialMill = 0;
 
-        if ((bc & potentialMill) == potentialMill) {
-            if (c == NOBODY) {
-                n++;
-            } else {
-                Bitboard line = square_bb(to) | potentialMill;
-                if ((line & formedMillsBB[sideToMove]) != line) {
+        for (auto i = 0; i < LD_NB; ++i) {
+            potentialMill = mt[i];
+
+            if ((bc & potentialMill) == potentialMill) {
+                if (c == NOBODY) {
                     n++;
+                } else {
+                    Bitboard line = square_bb(to) | potentialMill;
+                    if ((line & formedMillsBB[sideToMove]) != line) {
+                        n++;
+                    }
                 }
             }
+        }
+    } else {
+        if ((bc & mt[LD_HORIZONTAL]) == mt[LD_HORIZONTAL]) {
+            n++;
+        }
+
+        if ((bc & mt[LD_VERTICAL]) == mt[LD_VERTICAL]) {
+            n++;
+        }
+
+        if ((bc & mt[LD_SLASH]) == mt[LD_SLASH]) {
+            n++;
         }
     }
 
@@ -1508,18 +1523,25 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 int Position::mills_count(Square s)
 {
     int n = 0;
-    Color side = color_on(s); // Assuming you have a way to determine the
-                              // side to move
+    Color side = color_on(s);
 
     const Bitboard bc = byColorBB[side];
     const Bitboard *mt = millTableBB[s];
 
-    for (auto i = 0; i < LD_NB; ++i) {
-        Bitboard potentialMill = mt[i];
-        if ((bc & potentialMill) == potentialMill) {
-            auto line = square_bb(s) | potentialMill;
-            if ((line & formedMillsBB[side]) != line) {
-                formedMillsBB[side] |= line;
+    if (unlikely(rule.oneTimeUseMill)) {
+        for (auto i = 0; i < LD_NB; ++i) {
+            Bitboard potentialMill = mt[i];
+            if ((bc & potentialMill) == potentialMill) {
+                auto line = square_bb(s) | potentialMill;
+                if ((line & formedMillsBB[side]) != line) {
+                    formedMillsBB[side] |= line;
+                    n++;
+                }
+            }
+        }
+    } else {
+        for (auto i = 0; i < LD_NB; ++i) {
+            if ((bc & mt[i]) == mt[i]) {
                 n++;
             }
         }

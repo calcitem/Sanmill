@@ -476,13 +476,15 @@ class Position {
     final int millsBitmask = int.parse(parts[14]);
     // Check if the lowest 8 bits are not zero
     if ((millsBitmask & 0xFF) != 0) {
-      throw Exception("The lowest 8 bits are not zero");
+      logger.e('The lowest 8 bits are not zero.');
+      return false;
     }
 
     // Check if bits 32 to 39 are not zero
     // 0xFF << 32 shifts 0xFF (which is 8 bits of 1s) left by 32 positions to reach the 32nd position
     if ((millsBitmask & (0xFF << 32)) != 0) {
-      throw Exception("Bits 32 to 39 are not zero");
+      logger.e('Bits 32 to 39 are not zero.');
+      return false;
     }
 
     // Part 15: Half-move clock
@@ -1303,22 +1305,31 @@ class Position {
       _board[from] = _grid[squareToIndex[from]!] = PieceColor.none;
     }
 
-    for (int ld = 0; ld < lineDirectionNumber; ld++) {
-      final List<int> mill = <int>[
-        _millTable[to][ld][0],
-        _millTable[to][ld][1],
-        to
-      ];
+    if (DB().ruleSettings.oneTimeUseMill) {
+      for (int ld = 0; ld < lineDirectionNumber; ld++) {
+        final List<int> mill = <int>[
+          _millTable[to][ld][0],
+          _millTable[to][ld][1],
+          to
+        ];
 
-      if (color == _board[mill[0]] && color == _board[mill[1]]) {
-        if (c == PieceColor.nobody) {
-          n++;
-        } else {
-          final int millBB =
-              squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
-          if (!(millBB & _formedMillsBB[color]! == millBB)) {
+        if (color == _board[mill[0]] && color == _board[mill[1]]) {
+          if (c == PieceColor.nobody) {
             n++;
+          } else {
+            final int millBB =
+                squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+            if (!(millBB & _formedMillsBB[color]! == millBB)) {
+              n++;
+            }
           }
+        }
+      }
+    } else {
+      for (int ld = 0; ld < lineDirectionNumber; ld++) {
+        if (c == _board[_millTable[to][ld][0]] &&
+            c == _board[_millTable[to][ld][1]]) {
+          n++;
         }
       }
     }
@@ -1369,7 +1380,8 @@ class Position {
           m == _board[mill[2]]) {
         final int millBB =
             squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
-        if (!(millBB & _formedMillsBB[m]! == millBB)) {
+        if (!DB().ruleSettings.oneTimeUseMill ||
+            !(millBB & _formedMillsBB[m]! == millBB)) {
           _formedMillsBB[m] = _formedMillsBB[m]! | millBB;
           n++;
         }
