@@ -1458,11 +1458,12 @@ int Position::potential_mills_count(Square to, Color c, Square from)
 {
     int n = 0;
     Piece locbak = NO_PIECE;
+    Color color = c;
 
-    assert(SQ_0 <= from && from < SQUARE_EXT_NB);
+    assert(SQ_0 <= from && from < SQ_END);
 
     if (c == NOBODY) {
-        c = color_on(to);
+        color = color_on(to);
     }
 
     if (from >= SQ_BEGIN && from < SQ_END) {
@@ -1474,7 +1475,7 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         CLEAR_BIT(byColorBB[color_of(locbak)], from);
     }
 
-    const Bitboard bc = byColorBB[c];
+    const Bitboard bc = byColorBB[color];
     const Bitboard *mt = millTableBB[to];
     Bitboard potentialMill = 0;
 
@@ -1482,9 +1483,13 @@ int Position::potential_mills_count(Square to, Color c, Square from)
         potentialMill = mt[i];
 
         if ((bc & potentialMill) == potentialMill) {
-            auto line = square_bb(to) | potentialMill;
-            if ((line & formedMillsBB[sideToMove]) != line) {
+            if (c == NOBODY) {
                 n++;
+            } else {
+                Bitboard line = square_bb(to) | potentialMill;
+                if ((line & formedMillsBB[sideToMove]) != line) {
+                    n++;
+                }
             }
         }
     }

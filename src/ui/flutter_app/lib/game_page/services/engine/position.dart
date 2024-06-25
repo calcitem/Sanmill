@@ -1290,11 +1290,12 @@ class Position {
   int _potentialMillsCount(int to, PieceColor c, {int from = 0}) {
     int n = 0;
     PieceColor locbak = PieceColor.none;
+    PieceColor color = c;
 
-    assert(0 <= from && from < sqNumber);
+    assert(0 <= from && from < sqEnd);
 
     if (c == PieceColor.nobody) {
-      c = _board[to];
+      color = _board[to];
     }
 
     if (from != 0 && from >= sqBegin && from < sqEnd) {
@@ -1308,15 +1309,16 @@ class Position {
         _millTable[to][ld][1],
         to
       ];
-      mill.sort();
 
-      if (c == _board[mill[0]] &&
-          c == _board[mill[1]] &&
-          c == _board[mill[2]]) {
-        final int millBB =
-            squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
-        if (!(millBB & _formedMillsBB[c]! == millBB)) {
+      if (color == _board[mill[0]] && color == _board[mill[1]]) {
+        if (c == PieceColor.nobody) {
           n++;
+        } else {
+          final int millBB =
+              squareBb(mill[0]) | squareBb(mill[1]) | squareBb(mill[2]);
+          if (!(millBB & _formedMillsBB[color]! == millBB)) {
+            n++;
+          }
         }
       }
     }
