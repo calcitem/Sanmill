@@ -146,33 +146,40 @@ class BoardPainter extends CustomPainter {
     final Map<PieceColor, List<List<int>>> formedMills =
         GameController().position.formedMills;
 
-    // Draw White Mill
-    paint.color = DB().colorSettings.whitePieceColor;
+    final Color mixedColor = Color.lerp(
+      DB().colorSettings.whitePieceColor,
+      DB().colorSettings.blackPieceColor,
+      0.5,
+    )!;
 
-    for (final List<int> mill in formedMills[PieceColor.white]!) {
-      final Path path = Path(); // Move the path inside the loop
-      path.addLine(
-          pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
-      path.addLine(
-          pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
-      path.addLine(
-          pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
-      canvas.drawPath(path, paint);
+    // Draw Mills with unique or mixed colors
+    void drawMills(
+        PieceColor color, List<List<int>> mills, Color defaultColor) {
+      for (final List<int> mill in mills) {
+        final Path path = Path();
+        path.addLine(
+            pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
+        path.addLine(
+            pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
+        path.addLine(
+            pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
+
+        // Check if this mill exists in the opposite color mills
+        final bool isShared = formedMills[color == PieceColor.white
+                ? PieceColor.black
+                : PieceColor.white]!
+            .any((List<int> otherMill) => listEquals(mill, otherMill));
+
+        paint.color = isShared ? mixedColor : defaultColor;
+        canvas.drawPath(path, paint);
+      }
     }
 
-    // Draw Black Mill
-    paint.color = DB().colorSettings.blackPieceColor;
-
-    for (final List<int> mill in formedMills[PieceColor.black]!) {
-      final Path path = Path(); // Move the path inside the loop
-      path.addLine(
-          pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
-      path.addLine(
-          pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
-      path.addLine(
-          pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
-      canvas.drawPath(path, paint);
-    }
+    // Draw White and Black Mills, possibly with mixed color
+    drawMills(PieceColor.white, formedMills[PieceColor.white]!,
+        DB().colorSettings.whitePieceColor);
+    drawMills(PieceColor.black, formedMills[PieceColor.black]!,
+        DB().colorSettings.blackPieceColor);
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
