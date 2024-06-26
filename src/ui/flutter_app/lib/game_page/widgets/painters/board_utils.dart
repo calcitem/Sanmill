@@ -58,6 +58,10 @@ int? squareFromPoint(Offset point) {
   return indexToSquare[indexFromPoint(point)];
 }
 
+Offset pointFromSquare(int square, Size size) {
+  return pointFromIndex(squareToIndex[square]!, size);
+}
+
 /// Calculates the pressed point
 Offset pointFromOffset(Offset offset, double dimension) {
   final Offset point = (offset - Offset(boardMargin, boardMargin)) /

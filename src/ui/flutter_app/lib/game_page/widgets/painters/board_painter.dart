@@ -42,6 +42,8 @@ class BoardPainter extends CustomPainter {
         points.map((Offset e) => offsetFromPoint(e, size)).toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
+
+    _drawMillLines(offset, canvas, paint, size);
   }
 
   Paint _createPaint(
@@ -113,7 +115,6 @@ class BoardPainter extends CustomPainter {
     path.addRect(Rect.fromPoints(offset[6], offset[17])); // File A
     _addMiddleHorizontalLines(path, offset);
     _addDiagonalLinesIfNeeded(path, offset);
-    _addMillLinesIfNeeded(path, offset);
     return path;
   }
 
@@ -133,9 +134,24 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  void _addMillLinesIfNeeded(Path path, List<Offset> offset) {
+  void _drawMillLines(
+      List<Offset> offset, Canvas canvas, Paint paint, Size size) {
+    _drawOuterRectangle(canvas, offset, paint);
+
+    final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
+    paint.strokeWidth =
+        boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
+    paint.color = DB().colorSettings.whitePieceColor;
+
+    final Path path = _addMillLinesIfNeeded(offset, size);
+    canvas.drawPath(path, paint);
+  }
+
+  Path _addMillLinesIfNeeded(List<Offset> offset, Size size) {
+    final Path path = Path();
+
     if (!DB().ruleSettings.oneTimeUseMill) {
-      return;
+      return path;
     }
 
     final Map<PieceColor, List<List<int>>> formedMills =
@@ -143,17 +159,25 @@ class BoardPainter extends CustomPainter {
 
     // Draw White Mill
     for (final List<int> mill in formedMills[PieceColor.white]!) {
-      path.addLine(offset[mill[0]], offset[mill[1]]);
-      path.addLine(offset[mill[1]], offset[mill[2]]);
-      path.addLine(offset[mill[2]], offset[mill[0]]);
+      path.addLine(
+          pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
+      path.addLine(
+          pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
+      path.addLine(
+          pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
     }
 
     // Draw Black Mill
     for (final List<int> mill in formedMills[PieceColor.black]!) {
-      path.addLine(offset[mill[0]], offset[mill[1]]);
-      path.addLine(offset[mill[1]], offset[mill[2]]);
-      path.addLine(offset[mill[2]], offset[mill[0]]);
+      path.addLine(
+          pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
+      path.addLine(
+          pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
+      path.addLine(
+          pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
     }
+
+    return path;
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
