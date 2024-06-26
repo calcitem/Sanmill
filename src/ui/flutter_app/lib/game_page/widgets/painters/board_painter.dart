@@ -137,7 +137,7 @@ class BoardPainter extends CustomPainter {
       List<Offset> offset, Canvas canvas, Paint paint, Size size) {
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
-        boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
+        boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1) + 1;
 
     if (!DB().ruleSettings.oneTimeUseMill) {
       return;
@@ -171,6 +171,16 @@ class BoardPainter extends CustomPainter {
             .any((List<int> otherMill) => listEquals(mill, otherMill));
 
         paint.color = isShared ? mixedColor : defaultColor;
+
+        if (paint.color == DB().colorSettings.boardBackgroundColor ||
+            paint.color == DB().colorSettings.boardLineColor) {
+          if (defaultColor == DB().colorSettings.whitePieceColor) {
+            paint.color = Colors.red;
+          } else {
+            paint.color = Colors.blue;
+          }
+        }
+
         canvas.drawPath(path, paint);
       }
     }
