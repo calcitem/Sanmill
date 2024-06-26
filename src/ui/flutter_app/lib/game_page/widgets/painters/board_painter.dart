@@ -113,6 +113,7 @@ class BoardPainter extends CustomPainter {
     path.addRect(Rect.fromPoints(offset[6], offset[17])); // File A
     _addMiddleHorizontalLines(path, offset);
     _addDiagonalLinesIfNeeded(path, offset);
+    _addMillLinesIfNeeded(path, offset);
     return path;
   }
 
@@ -129,6 +130,29 @@ class BoardPainter extends CustomPainter {
       path.addLine(offset[17], offset[23]);
       path.addLine(offset[21], offset[15]);
       path.addLine(offset[8], offset[2]);
+    }
+  }
+
+  void _addMillLinesIfNeeded(Path path, List<Offset> offset) {
+    if (!DB().ruleSettings.oneTimeUseMill) {
+      return;
+    }
+
+    final Map<PieceColor, List<List<int>>> formedMills =
+        GameController().position.formedMills;
+
+    // Draw White Mill
+    for (final List<int> mill in formedMills[PieceColor.white]!) {
+      path.addLine(offset[mill[0]], offset[mill[1]]);
+      path.addLine(offset[mill[1]], offset[mill[2]]);
+      path.addLine(offset[mill[2]], offset[mill[0]]);
+    }
+
+    // Draw Black Mill
+    for (final List<int> mill in formedMills[PieceColor.black]!) {
+      path.addLine(offset[mill[0]], offset[mill[1]]);
+      path.addLine(offset[mill[1]], offset[mill[2]]);
+      path.addLine(offset[mill[2]], offset[mill[0]]);
     }
   }
 

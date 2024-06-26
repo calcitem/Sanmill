@@ -124,6 +124,14 @@ class Position {
     PieceColor.draw: 0,
   };
 
+  Map<PieceColor, List<List<int>>> _formedMills = <PieceColor, List<List<int>>>{
+    PieceColor.white: <List<int>>[],
+    PieceColor.black: <List<int>>[],
+    PieceColor.draw: <List<int>>[],
+  };
+
+  Map<PieceColor, List<List<int>>> get formedMills => _formedMills;
+
   ExtMove? _record;
 
   static List<List<List<int>>> get _millTable => _Mills.millTableInit;
@@ -1383,6 +1391,7 @@ class Position {
         if (!DB().ruleSettings.oneTimeUseMill ||
             !(millBB & _formedMillsBB[m]! == millBB)) {
           _formedMillsBB[m] = _formedMillsBB[m]! | millBB;
+          _formedMills[m]?.add(mill);
           n++;
         }
       }
@@ -1509,6 +1518,8 @@ extension SetupPosition on Position {
     _lastMillToSquare[PieceColor.white] =
         _lastMillToSquare[PieceColor.black] = 0;
     _formedMillsBB[PieceColor.white] = _formedMillsBB[PieceColor.black] = 0;
+    _formedMills[PieceColor.white] = <List<int>>[];
+    _formedMills[PieceColor.black] = <List<int>>[];
 
     _gamePly = 0;
 
@@ -1559,6 +1570,7 @@ extension SetupPosition on Position {
     _lastMillFromSquare = pos._lastMillFromSquare;
     _lastMillToSquare = pos._lastMillToSquare;
     _formedMillsBB = pos._formedMillsBB;
+    _formedMills = pos._formedMills;
 
     _gamePly = pos._gamePly;
 
