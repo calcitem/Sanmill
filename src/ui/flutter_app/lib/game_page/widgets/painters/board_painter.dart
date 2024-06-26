@@ -42,7 +42,6 @@ class BoardPainter extends CustomPainter {
         points.map((Offset e) => offsetFromPoint(e, size)).toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
-
     _drawMillLines(offset, canvas, paint, size);
   }
 
@@ -136,28 +135,21 @@ class BoardPainter extends CustomPainter {
 
   void _drawMillLines(
       List<Offset> offset, Canvas canvas, Paint paint, Size size) {
-    _drawOuterRectangle(canvas, offset, paint);
-
+    final Path path = Path();
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
-    paint.color = DB().colorSettings.whitePieceColor;
-
-    final Path path = _addMillLinesIfNeeded(offset, size);
-    canvas.drawPath(path, paint);
-  }
-
-  Path _addMillLinesIfNeeded(List<Offset> offset, Size size) {
-    final Path path = Path();
 
     if (!DB().ruleSettings.oneTimeUseMill) {
-      return path;
+      return;
     }
 
     final Map<PieceColor, List<List<int>>> formedMills =
         GameController().position.formedMills;
 
     // Draw White Mill
+    paint.color = DB().colorSettings.whitePieceColor;
+
     for (final List<int> mill in formedMills[PieceColor.white]!) {
       path.addLine(
           pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
@@ -165,9 +157,12 @@ class BoardPainter extends CustomPainter {
           pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
       path.addLine(
           pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
+      canvas.drawPath(path, paint);
     }
 
     // Draw Black Mill
+    paint.color = DB().colorSettings.blackPieceColor;
+
     for (final List<int> mill in formedMills[PieceColor.black]!) {
       path.addLine(
           pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
@@ -175,9 +170,8 @@ class BoardPainter extends CustomPainter {
           pointFromSquare(mill[1], size), pointFromSquare(mill[2], size));
       path.addLine(
           pointFromSquare(mill[2], size), pointFromSquare(mill[0], size));
+      canvas.drawPath(path, paint);
     }
-
-    return path;
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
