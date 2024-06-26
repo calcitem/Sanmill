@@ -135,7 +135,6 @@ class BoardPainter extends CustomPainter {
 
   void _drawMillLines(
       List<Offset> offset, Canvas canvas, Paint paint, Size size) {
-    final Path path = Path();
     final double boardInnerLineWidth = DB().displaySettings.boardInnerLineWidth;
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
@@ -151,6 +150,7 @@ class BoardPainter extends CustomPainter {
     paint.color = DB().colorSettings.whitePieceColor;
 
     for (final List<int> mill in formedMills[PieceColor.white]!) {
+      final Path path = Path(); // Move the path inside the loop
       path.addLine(
           pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
       path.addLine(
@@ -164,6 +164,7 @@ class BoardPainter extends CustomPainter {
     paint.color = DB().colorSettings.blackPieceColor;
 
     for (final List<int> mill in formedMills[PieceColor.black]!) {
+      final Path path = Path(); // Move the path inside the loop
       path.addLine(
           pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
       path.addLine(
