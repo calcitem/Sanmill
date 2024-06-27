@@ -4,11 +4,11 @@
 
 You can download the Android app from the links below:
 
-[Google Play Store](https://play.google.com/apps/testing/com.calcitem.sanmill)
+[Google Play Store](https://play.google.com/apps/testing/com.calcitem.sanmill412)
 
-[F-Droid](https://f-droid.org/packages/com.calcitem.sanmill)
+[F-Droid](https://f-droid.org/packages/com.calcitem.sanmill412)
 
-[Cafe Bazaar](https://cafebazaar.ir/app/com.calcitem.sanmill)
+[Cafe Bazaar](https://cafebazaar.ir/app/com.calcitem.sanmill412)
 
 [GitHub Actions](https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=is%3Asuccess+branch%3Amaster)
 

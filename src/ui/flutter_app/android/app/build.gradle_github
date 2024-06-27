@@ -39,14 +39,14 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 34
-    namespace "com.calcitem.sanmill"
+    namespace "com.calcitem.sanmill412"
 
     lintOptions {
         disable 'InvalidPackage'
     }
 
     defaultConfig {
-        applicationId "com.calcitem.sanmill"
+        applicationId "com.calcitem.sanmill412"
         minSdkVersion 19
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()

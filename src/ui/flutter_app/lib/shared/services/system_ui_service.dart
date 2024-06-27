@@ -48,7 +48,8 @@ void _initializeScreenOrientation(BuildContext context) {
   }
 }
 
-const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
+const MethodChannel uiMethodChannel =
+    MethodChannel('com.calcitem.sanmill412/ui');
 
 Future<void> setWindowTitle(String title) async {
   if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) {

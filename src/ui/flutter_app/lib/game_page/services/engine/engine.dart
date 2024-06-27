@@ -20,7 +20,7 @@ class Engine {
   Engine();
 
   static const MethodChannel _platform =
-      MethodChannel("com.calcitem.sanmill/engine");
+      MethodChannel("com.calcitem.sanmill412/engine");
 
   bool get _isPlatformChannelAvailable => !kIsWeb;
 

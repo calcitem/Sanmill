@@ -794,7 +794,7 @@
 				);
 				LLVM_LTO = YES;
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill;
+				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill412;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -946,7 +946,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill;
+				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill412;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -984,7 +984,7 @@
 				);
 				LLVM_LTO = YES;
 				MACH_O_TYPE = mh_execute;
-				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill;
+				PRODUCT_BUNDLE_IDENTIFIER = com.calcitem.sanmill412;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";

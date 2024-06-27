@@ -1,9 +1,9 @@
 ## 概览
 
-<a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
+<a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill412/" target="_blank">
 <img src="fastlane/metadata/android/zh-CN/images/featureGraphic.png" alt="Get it on F-Droid"/></a>
 
-<a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill/" target="_blank">
+<a href="https://f-droid.org/zh_Hans/packages/com.calcitem.sanmill412/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
 <a href="https://apps.apple.com/cn/app/mill-n-mens-morris/id1662297339?itsct=apps_box_badge&amp;itscg=30200" target="_blank">

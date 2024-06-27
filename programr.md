@@ -118,7 +118,7 @@ Use [GitHub Actions](https://github.com/calcitem/Sanmill/actions) to build.
 
 Download `aab` file and upload to [Play Console](https://play.google.com/console).
 
-Download `apk` from `Bundle Explorer Selector` and upload to [Cafe Bazaar](https://pishkhan.cafebazaar.ir/apps/com.calcitem.sanmill/releases) and other app stores.
+Download `apk` from `Bundle Explorer Selector` and upload to [Cafe Bazaar](https://pishkhan.cafebazaar.ir/apps/com.calcitem.sanmill412/releases) and other app stores.
 
 ### iOS
 

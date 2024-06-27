@@ -148,7 +148,7 @@ void FlutterWindow::InitializeMethodChannels()
 
         auto channel = std::make_unique<flutter::MethodChannel<>>(
             flutter_controller_->engine()->messenger(),
-            "com.calcitem.sanmill/engine",
+            "com.calcitem.sanmill412/engine",
             &flutter::StandardMethodCodec::GetInstance());
 
         channel->SetMethodCallHandler([this](const auto &call, auto result) {
@@ -161,7 +161,7 @@ void FlutterWindow::InitializeMethodChannels()
 
     auto ui_channel =
         std::make_unique<flutter::MethodChannel<flutter::EncodableValue>>(
-            binary_messenger, "com.calcitem.sanmill/ui",
+            binary_messenger, "com.calcitem.sanmill412/ui",
             &flutter::StandardMethodCodec::GetInstance());
 
     ui_channel->SetMethodCallHandler(

@@ -129,7 +129,7 @@ static void my_application_activate(GApplication *application)
         g_autoptr(FlStandardMethodCodec) codec = fl_standard_method_codec_new();
         g_autoptr(FlBinaryMessenger) messenger = fl_engine_get_binary_messenger(fl_engine);
         g_autoptr(FlMethodChannel) channel = fl_method_channel_new(messenger,
-                                        "com.calcitem.sanmill/engine",
+                                        "com.calcitem.sanmill412/engine",
                                         FL_METHOD_CODEC(codec));
         fl_method_channel_set_method_call_handler(channel, method_call_cb, g_object_ref(view), g_object_unref);
     }

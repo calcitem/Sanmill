@@ -5,10 +5,10 @@
 <a href="https://github.com/calcitem/Sanmill/actions/workflows/flutter.yml?query=branch%3Amaster+is%3Asuccess+event%3Apush" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-github.png" alt="Get it on GitHub" height="80"/></a>
 
-<a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill" target="_blank">
+<a href="https://play.google.com/store/apps/details?id=com.calcitem.sanmill412" target="_blank">
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" alt="Get it on Google Play" height="80"/></a>
 
-<a href="https://f-droid.org/packages/com.calcitem.sanmill/" target="_blank">
+<a href="https://f-droid.org/packages/com.calcitem.sanmill412/" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-fdroid.png" alt="Get it on F-Droid" height="80"/></a>
 
 </br>
@@ -23,7 +23,7 @@
   <img alt="Get it from the Snap Store" src="https://snapcraft.io/static/images/badges/en/snap-store-black.svg" />
 </a>
 
-<a href="https://cafebazaar.ir/app/com.calcitem.sanmill" target="_blank">
+<a href="https://cafebazaar.ir/app/com.calcitem.sanmill412" target="_blank">
 <img src="src/ui/flutter_app/assets/badges/get-it-on-cafebazaar.png" alt="Get it on CafeBazaar" height="54"/></a>
 
 [![snapcraft](https://snapcraft.io/mill/badge.svg)](https://snapcraft.io/mill)

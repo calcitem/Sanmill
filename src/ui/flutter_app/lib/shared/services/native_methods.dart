@@ -21,7 +21,7 @@ import 'logger.dart';
 // ignore: avoid_classes_with_only_static_members
 class NativeMethods {
   static const MethodChannel platform =
-      MethodChannel('com.calcitem.sanmill/native');
+      MethodChannel('com.calcitem.sanmill412/native');
 
   static Future<String?> readContentUri(Uri uri) async {
     try {
