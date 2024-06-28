@@ -52,6 +52,7 @@ MAKEINTRESOURCE
 MINGW
 MINIMIZEBOX
 MINISIZE
+Morabaraba
 MOVETYPE
 MSVC
 MVC
@@ -110,6 +111,7 @@ bak
 bestmove
 bestvalue
 bitboard
+bitmask
 bitset
 boarditem
 buf
