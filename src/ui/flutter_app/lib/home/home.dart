@@ -250,6 +250,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       final String countryCode = Localizations.localeOf(context).languageCode;
 
       switch (countryCode) {
+        case "af": // South Africa
+        case "zu": // South Africa
+          DB().ruleSettings = DB().ruleSettings.copyWith(
+                piecesCount: 12,
+                hasDiagonalLines: true,
+                boardFullAction: BoardFullAction.agreeToDraw,
+                endgameNMoveRule: 10,
+                restrictRepeatedMillsFormation: true,
+              );
+          break;
         case "fa": // Iran
         case "si": // Sri Lanka
           DB().ruleSettings = DB()

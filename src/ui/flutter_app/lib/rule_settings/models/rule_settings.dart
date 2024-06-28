@@ -129,6 +129,9 @@ class RuleSettings {
   /// Creates a Rules object based on the given locale
   factory RuleSettings.fromLocale(Locale? locale) {
     switch (locale?.languageCode) {
+      case "af": // Afrikaans
+      case "zu": // Zulu
+        return const MorabarabaRuleSettings();
       case "fa": // Iran
       case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
@@ -200,6 +203,20 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
       : super(
           piecesCount: 12,
           hasDiagonalLines: true,
+        );
+}
+
+/// Morabaraba Rules
+///
+/// Those rules are the standard Morabaraba rules.
+class MorabarabaRuleSettings extends RuleSettings {
+  const MorabarabaRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          boardFullAction: BoardFullAction.agreeToDraw,
+          endgameNMoveRule: 10,
+          restrictRepeatedMillsFormation: true,
         );
 }
 
