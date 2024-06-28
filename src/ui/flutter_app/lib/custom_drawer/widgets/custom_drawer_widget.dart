@@ -172,10 +172,12 @@ class CustomDrawerState extends State<CustomDrawer>
         builder: (_, CustomDrawerValue value, Widget? child) => InkWell(
           onTap: _drawerController.hideDrawer,
           focusColor: Colors.transparent,
-          child: IgnorePointer(
-            ignoring: value.isDrawerVisible,
-            child: child,
-          ),
+          child: DB().generalSettings.screenReaderSupport
+              ? (value.isDrawerVisible ? Container() : child)
+              : IgnorePointer(
+                  ignoring: value.isDrawerVisible,
+                  child: child,
+                ),
         ),
         child: DecoratedBox(
           decoration: const BoxDecoration(
