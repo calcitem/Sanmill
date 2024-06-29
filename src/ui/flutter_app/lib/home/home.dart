@@ -35,6 +35,7 @@ import '../game_page/widgets/painters/painters.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/widgets/general_settings_page.dart';
 import '../generated/intl/l10n.dart';
+import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
 import '../rule_settings/models/rule_settings.dart';
@@ -466,6 +467,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<void> _launchFeedback(UserFeedback feedback) async {
     final String screenshotFilePath =
         await _saveFeedbackImage(feedback.screenshot);
+
+    final String optionsContent = generateOptionsContent();
+    final String optionsFilePath =
+        await _saveOptionsContentToFile(optionsContent);
+
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
     final String version =
         "${packageInfo.version} (${packageInfo.buildNumber})";
@@ -476,9 +482,17 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           version +
           Constants.feedbackSubjectSuffix,
       recipients: Constants.recipientEmails,
-      attachmentPaths: <String>[screenshotFilePath],
+      attachmentPaths: <String>[screenshotFilePath, optionsFilePath],
     );
+
     await FlutterEmailSender.send(email);
+  }
+
+  static Future<String> _saveOptionsContentToFile(String content) async {
+    final Directory output = await getTemporaryDirectory();
+    final File file = File('${output.path}/options.txt');
+    await file.writeAsString(content);
+    return file.path;
   }
 
   static Future<String> _saveFeedbackImage(Uint8List screenshot) async {
