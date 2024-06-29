@@ -49,11 +49,14 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
           children: <Widget>[
             InkWell(
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
-              child: Text(
-                S.of(context).usePerfectDatabase,
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  S.of(context).usePerfectDatabase,
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ),
@@ -67,11 +70,14 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
             const SizedBox(height: 16),
             InkWell(
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
-              child: Text(
-                S.of(context).help,
-                style: const TextStyle(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  S.of(context).help,
+                  style: const TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                  ),
                 ),
               ),
             ),
