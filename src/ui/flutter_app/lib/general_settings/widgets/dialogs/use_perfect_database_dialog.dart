@@ -68,7 +68,7 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
             InkWell(
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
               child: Text(
-                S.of(context).usePerfectDatabase,
+                S.of(context).help,
                 style: const TextStyle(
                   decoration: TextDecoration.underline,
                   color: Colors.blue,
