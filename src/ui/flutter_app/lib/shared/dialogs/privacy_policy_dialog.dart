@@ -33,10 +33,52 @@ class PrivacyPolicyDialog extends StatelessWidget {
   final VoidCallback? onConfirm;
 
   void _acceptPrivacyPolicy() {
-    DB().generalSettings =
-        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: true);
-
+    _setPrivacyPolicyAcceptance(value: true);
     logger.i("[config] isPrivacyPolicyAccepted: true");
+  }
+
+  static Future<void> _setPrivacyPolicyAcceptance({required bool value}) async {
+    DB().generalSettings =
+        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
+
+    logger.t("[config] isPrivacyPolicyAccepted: $value");
+  }
+
+  static RichText _buildPrivacyPolicyText(
+      BuildContext context, TextStyle bodyTextStyle, TextStyle linkTextStyle) {
+    final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
+        ? Constants.appleStandardEulaUrl
+        : Constants.endUserLicenseAgreementUrl.baseChinese;
+    final String privacyPolicyURL = Constants.privacyPolicyUrl.baseChinese;
+
+    return RichText(
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            style: bodyTextStyle,
+            text: S.of(context).privacyPolicy_Detail_1,
+          ),
+          LinkTextSpan(
+            style: linkTextStyle,
+            text: S.of(context).eula,
+            url: eulaURL,
+          ),
+          TextSpan(
+            style: bodyTextStyle,
+            text: S.of(context).and,
+          ),
+          LinkTextSpan(
+            style: linkTextStyle,
+            text: S.of(context).privacyPolicy,
+            url: privacyPolicyURL,
+          ),
+          TextSpan(
+            style: bodyTextStyle,
+            text: S.of(context).privacyPolicy_Detail_2,
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -60,34 +102,8 @@ class PrivacyPolicyDialog extends StatelessWidget {
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
-        child: RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                style: bodyLargeTextStyle,
-                text: S.of(context).privacyPolicy_Detail_1,
-              ),
-              LinkTextSpan(
-                style: linkTextStyle,
-                text: S.of(context).eula,
-                url: Constants.endUserLicenseAgreementUrl.baseChinese,
-              ),
-              TextSpan(
-                style: bodyLargeTextStyle,
-                text: S.of(context).and,
-              ),
-              LinkTextSpan(
-                style: linkTextStyle,
-                text: S.of(context).privacyPolicy,
-                url: Constants.privacyPolicyUrl.baseChinese,
-              ),
-              TextSpan(
-                style: bodyLargeTextStyle,
-                text: S.of(context).privacyPolicy_Detail_2,
-              ),
-            ],
-          ),
-        ),
+        child:
+            _buildPrivacyPolicyText(context, bodyLargeTextStyle, linkTextStyle),
       ),
       actions: <Widget>[
         TextButton(
@@ -118,18 +134,6 @@ Future<void> showPrivacyDialog(BuildContext context) async {
   final TextStyle linkStyle =
       aboutTextStyle.copyWith(color: themeData.colorScheme.secondary);
 
-  final String eulaURL = !kIsWeb && (Platform.isIOS || Platform.isMacOS)
-      ? Constants.appleStandardEulaUrl
-      : Constants.endUserLicenseAgreementUrl.baseChinese;
-  final String privacyPolicyURL = Constants.privacyPolicyUrl.baseChinese;
-
-  Future<void> setPrivacyPolicyAcceptance({required bool value}) async {
-    DB().generalSettings =
-        DB().generalSettings.copyWith(isPrivacyPolicyAccepted: value);
-
-    logger.t("[config] isPrivacyPolicyAccepted: $value");
-  }
-
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -138,40 +142,14 @@ Future<void> showPrivacyDialog(BuildContext context) async {
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
-        child: RichText(
-          text: TextSpan(
-            children: <TextSpan>[
-              TextSpan(
-                style: aboutTextStyle,
-                text: S.of(context).privacyPolicy_Detail_1,
-              ),
-              LinkTextSpan(
-                style: linkStyle,
-                text: S.of(context).eula,
-                url: eulaURL,
-              ),
-              TextSpan(
-                style: aboutTextStyle,
-                text: S.of(context).and,
-              ),
-              LinkTextSpan(
-                style: linkStyle,
-                text: S.of(context).privacyPolicy,
-                url: privacyPolicyURL,
-              ),
-              TextSpan(
-                style: aboutTextStyle,
-                text: S.of(context).privacyPolicy_Detail_2,
-              ),
-            ],
-          ),
-        ),
+        child: PrivacyPolicyDialog._buildPrivacyPolicyText(
+            context, aboutTextStyle, linkStyle),
       ),
       actions: <Widget>[
         TextButton(
           child: Text(S.of(context).accept),
           onPressed: () {
-            setPrivacyPolicyAcceptance(value: true);
+            PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: true);
             Navigator.pop(context);
           },
         ),
@@ -179,7 +157,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
           TextButton(
             child: Text(S.of(context).exit),
             onPressed: () {
-              setPrivacyPolicyAcceptance(value: false);
+              PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: false);
               SystemChannels.platform.invokeMethod("SystemNavigator.pop");
             },
           ),
