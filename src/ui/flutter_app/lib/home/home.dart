@@ -492,10 +492,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     final Directory output = await getTemporaryDirectory();
     final File file = File('${output.path}/options.txt');
 
-    if (await file.exists()) {
-      await file.delete();
+    // Delete the file synchronously if it exists to avoid slow async IO operations
+    if (file.existsSync()) {
+      file.deleteSync();
     }
 
+    // Write content to the file asynchronously
     await file.writeAsString(content);
     return file.path;
   }
@@ -505,10 +507,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     final String screenshotFilePath = "${output.path}/sanmill-feedback.png";
     final File screenshotFile = File(screenshotFilePath);
 
-    if (await screenshotFile.exists()) {
-      await screenshotFile.delete();
+    // Delete the screenshot file synchronously if it exists
+    if (screenshotFile.existsSync()) {
+      screenshotFile.deleteSync();
     }
 
+    // Write bytes to the screenshot file asynchronously
     await screenshotFile.writeAsBytes(screenshot);
     return screenshotFilePath;
   }
