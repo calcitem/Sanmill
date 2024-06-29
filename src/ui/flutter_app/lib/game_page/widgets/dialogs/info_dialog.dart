@@ -158,22 +158,14 @@ class _InfoDialog extends StatelessWidget {
                     ),
               ),
               onPressed: () async {
-                String content = "";
+                final String copy = S.of(context).copy;
+                final String ok = S.of(context).ok;
 
-                if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-                  final Catcher2Options options = catcher.getCurrentConfig()!;
-                  for (final dynamic value in options.customParameters.values) {
-                    final String str = value
-                        .toString()
-                        .replaceAll("setoption name ", "")
-                        .replaceAll("value", "=");
-                    content += "$str\n";
-                  }
-                }
+                final String content = generateOptionsContent();
 
                 final Widget copyButton = TextButton(
                   child: Text(
-                    S.of(context).copy,
+                    copy,
                     style: TextStyle(
                         fontSize:
                             AppTheme.textScaler.scale(AppTheme.largeFontSize)),
@@ -193,7 +185,7 @@ class _InfoDialog extends StatelessWidget {
 
                 final Widget okButton = TextButton(
                     child: Text(
-                      S.of(context).ok,
+                      ok,
                       style: TextStyle(
                           fontSize: AppTheme.textScaler
                               .scale(AppTheme.largeFontSize)),

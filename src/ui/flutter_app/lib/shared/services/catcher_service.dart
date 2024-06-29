@@ -82,3 +82,21 @@ Future<void> _initCatcher(Catcher2 catcher) async {
     profileConfig: profileOptions,
   );
 }
+
+/// Generates content for the options.
+String generateOptionsContent() {
+  String content = "";
+
+  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+    final Catcher2Options options = catcher.getCurrentConfig()!;
+    for (final dynamic value in options.customParameters.values) {
+      final String str = value
+          .toString()
+          .replaceAll("setoption name ", "")
+          .replaceAll("value", "=");
+      content += "$str\n";
+    }
+  }
+
+  return content;
+}
