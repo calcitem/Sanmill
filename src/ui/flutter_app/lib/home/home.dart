@@ -491,6 +491,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   static Future<String> _saveOptionsContentToFile(String content) async {
     final Directory output = await getTemporaryDirectory();
     final File file = File('${output.path}/options.txt');
+
+    if (await file.exists()) {
+      await file.delete();
+    }
+
     await file.writeAsString(content);
     return file.path;
   }
@@ -499,6 +504,11 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     final Directory output = await getTemporaryDirectory();
     final String screenshotFilePath = "${output.path}/sanmill-feedback.png";
     final File screenshotFile = File(screenshotFilePath);
+
+    if (await screenshotFile.exists()) {
+      await screenshotFile.delete();
+    }
+
     await screenshotFile.writeAsBytes(screenshot);
     return screenshotFilePath;
   }
