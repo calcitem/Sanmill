@@ -16,10 +16,10 @@
 
 part of 'package:sanmill/main.dart';
 
-late Catcher catcher;
+late Catcher2 catcher_2;
 
 /// Initializes the given [catcher]
-Future<void> _initCatcher(Catcher catcher) async {
+Future<void> _initCatcher(Catcher2 catcher) async {
   final Map<String, String> customParameters = <String, String>{};
   late final String externalDirStr;
 
@@ -42,7 +42,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   final String path = "$externalDirStr/${Constants.crashLogsFile}";
   logger.v("[env] ExternalStorageDirectory: $externalDirStr");
 
-  final CatcherOptions debugOptions = CatcherOptions(
+  final Catcher2Options debugOptions = Catcher2Options(
       kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
           ? SilentReportMode()
           : PageReportMode(),
@@ -56,7 +56,7 @@ Future<void> _initCatcher(Catcher catcher) async {
   /// Release configuration.
   /// Same as above, but once user accepts dialog,
   /// user will be prompted to send email with crash to support.
-  final CatcherOptions releaseOptions = CatcherOptions(
+  final Catcher2Options releaseOptions = Catcher2Options(
       kIsWeb || Platform.isLinux || Platform.isWindows || Platform.isMacOS
           ? SilentReportMode()
           : PageReportMode(),
@@ -66,7 +66,7 @@ Future<void> _initCatcher(Catcher catcher) async {
       ],
       customParameters: customParameters);
 
-  final CatcherOptions profileOptions = CatcherOptions(
+  final Catcher2Options profileOptions = Catcher2Options(
       PageReportMode(),
       <ReportHandler>[
         ConsoleHandler(),
@@ -76,7 +76,7 @@ Future<void> _initCatcher(Catcher catcher) async {
       customParameters: customParameters);
 
   /// Pass root widget (MyApp) along with Catcher configuration:
-  catcher.updateConfig(
+  catcher_2.updateConfig(
     debugConfig: debugOptions,
     releaseConfig: releaseOptions,
     profileConfig: profileOptions,

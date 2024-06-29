@@ -16,7 +16,7 @@
 
 import 'dart:io';
 
-import 'package:catcher/core/catcher.dart';
+import 'package:catcher_2/core/catcher_2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -108,10 +108,10 @@ final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
 
 GlobalKey<NavigatorState> get currentNavigatorKey {
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    if (Catcher.navigatorKey == null) {
+    if (Catcher2.navigatorKey == null) {
       return navigatorStateKey;
     }
-    return Catcher.navigatorKey!;
+    return Catcher2.navigatorKey!;
   } else {
     return navigatorStateKey;
   }
