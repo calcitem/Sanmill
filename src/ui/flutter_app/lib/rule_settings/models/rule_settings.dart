@@ -135,6 +135,8 @@ class RuleSettings {
       case "fa": // Iran
       case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
+      case "ru": // Russia
+        return const RussianRuleSettings();
       case "ko": // Korea
         return const ChamGonuRuleSettings();
       default:
@@ -220,16 +222,28 @@ class MorabarabaRuleSettings extends RuleSettings {
         );
 }
 
+/// Russian Rules
+///
+/// Those rules are the Russian rules.
+class RussianRuleSettings extends RuleSettings {
+  const RussianRuleSettings()
+      : super(
+          oneTimeUseMill: true,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
 /// Cham Gonu Rules
 ///
 /// Those rules are the Cham Gonu rules.
 class ChamGonuRuleSettings extends RuleSettings {
   const ChamGonuRuleSettings()
       : super(
-            piecesCount: 12,
-            hasDiagonalLines: true,
-            mayFly: false,
-            millFormationActionInPlacingPhase:
-                MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
-            mayRemoveFromMillsAlways: true);
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          mayFly: false,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          mayRemoveFromMillsAlways: true,
+        );
 }
