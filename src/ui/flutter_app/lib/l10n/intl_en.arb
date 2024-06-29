@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "One-time use mill",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Each mill can remove an opponent's piece only once. You can reform it again, but it cannot be used for additional removals.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
+  "@currentRulesNoPerfectDatabase": {}
 }

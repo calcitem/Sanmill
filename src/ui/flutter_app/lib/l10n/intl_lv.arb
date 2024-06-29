@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Vienreiz lietojama dzirnavas",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Katra dzirnava var noņemt tikai vienu pretinieka gabalu. Jūs varat to atkārtoti izveidot, bet to nevar izmantot papildu noņemšanai.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Pašreizējiem noteikumiem, ko esat iestatījis, nav atbilstošas ideālās datubāzes. Lai iegūtu vairāk informācijas par ideālo datubāzi, lūdzu, noklikšķiniet šeit.",
+  "@currentRulesNoPerfectDatabase": {}
 }

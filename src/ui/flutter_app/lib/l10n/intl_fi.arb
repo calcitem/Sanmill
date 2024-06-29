@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Kertakäyttöinen mylly",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Jokainen mylly voi poistaa vastustajan palan vain kerran. Voit muodostaa sen uudelleen, mutta sitä ei voi käyttää lisäpoistoihin.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Asettamillasi nykyisillä säännöillä ei ole vastaavaa täydellistä tietokantaa. Lisätietoja täydellisestä tietokannasta saat napsauttamalla tästä.",
+  "@currentRulesNoPerfectDatabase": {}
 }

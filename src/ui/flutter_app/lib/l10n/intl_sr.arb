@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Једнократна употреба млина",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Сваки млин може уклонити само један део противника. Можете га поново формирати, али се не може користити за додатна уклањања.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Тренутна правила која сте поставили немају одговарајућу савршену базу података. За више информација о савршеној бази података кликните овде.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "مطحنة للاستخدام مرة واحدة",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "يمكن لكل مطحنة إزالة قطعة واحدة فقط من خصمك. يمكنك إعادة تشكيلها مرة أخرى، ولكن لا يمكن استخدامها لعمليات إزالة إضافية.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "القواعد الحالية التي قمت بتعيينها ليس لها قاعدة بيانات مثالية مقابلة. لمزيد من المعلومات حول قاعدة البيانات المثالية، يرجى النقر هنا.",
+  "@currentRulesNoPerfectDatabase": {}
 }

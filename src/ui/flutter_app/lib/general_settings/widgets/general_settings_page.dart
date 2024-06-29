@@ -304,9 +304,13 @@ class GeneralSettingsPage extends StatelessWidget {
               SettingsListTile.switchTile(
                 value: generalSettings.usePerfectDatabase,
                 onChanged: (bool val) {
-                  _setUsePerfectDatabase(generalSettings, val);
                   if (val == true) {
                     _showUsePerfectDatabaseDialog(context);
+                    if (Engine.isRuleSupportingPerfectDatabase() == true) {
+                      _setUsePerfectDatabase(generalSettings, true);
+                    }
+                  } else {
+                    _setUsePerfectDatabase(generalSettings, false);
                   }
                 },
                 titleString: S.of(context).usePerfectDatabase,

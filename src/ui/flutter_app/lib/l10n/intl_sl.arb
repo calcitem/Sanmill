@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "එක් වාරයක් භාවිතා කළ හැකි නෙරෙන්චි",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "සෑම නෙරෙන්චියක්ම ප්‍රතිවාදී කොටසක් එක් වරක් ඉවත් කරයි. ඔබට එය නැවත සංවිධානය කළ හැකිය, නමුත් අතිරේක ඉවත් කිරීම් සඳහා භාවිතා කළ නොහැක.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Trenutna pravila, ki ste jih nastavili, nimajo ustrezne popolne zbirke podatkov. Za več informacij o popolni zbirki podatkov kliknite tukaj.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "Eingang notkun mylla",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Hver mylla getur aðeins fjarlægt eitt stykki andstæðingsins einu sinni. Þú getur endurmyndað það, en það er ekki hægt að nota það til að fjarlægja aðra.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Núverandi reglur sem þú hefur sett hafa ekki samsvarandi fullkominn gagnagrunn. Fyrir frekari upplýsingar um hinn fullkomna gagnagrunn, vinsamlegast smelltu hér.",
+  "@currentRulesNoPerfectDatabase": {}
 }

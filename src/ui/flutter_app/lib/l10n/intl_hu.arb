@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Egyszeri használatú malom",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Minden malom csak egyszer távolíthatja el az ellenfél egy darabját. Újra megformázhatja, de további eltávolításokhoz nem használható.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "A beállított jelenlegi szabályoknak nincs megfelelő tökéletes adatbázisa. A tökéletes adatbázisról további információkért kattintson ide.",
+  "@currentRulesNoPerfectDatabase": {}
 }

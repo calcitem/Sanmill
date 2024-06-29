@@ -229,7 +229,6 @@ class Engine {
     }
 
     final GeneralSettings generalSettings = DB().generalSettings;
-    final RuleSettings ruleSettings = DB().ruleSettings;
 
     // First Move
     // No need to tell engine.
@@ -246,32 +245,14 @@ class Engine {
 
     bool usePerfectDatabase = false;
 
-    // TODO: WAR: Perfect Database only support standard 9mm and 12mm and Lasker Morris.
-    if ((ruleSettings.piecesCount == 9 &&
-            !ruleSettings.hasDiagonalLines &&
-            ruleSettings.mayMoveInPlacingPhase == false) ||
-        (ruleSettings.piecesCount == 10 &&
-            !ruleSettings.hasDiagonalLines &&
-            ruleSettings.mayMoveInPlacingPhase == true) ||
-        (ruleSettings.piecesCount == 12 &&
-                ruleSettings.hasDiagonalLines &&
-                ruleSettings.mayMoveInPlacingPhase == false) &&
-            ruleSettings.flyPieceCount == 3 &&
-            ruleSettings.piecesAtLeastCount == 3 &&
-            ruleSettings.millFormationActionInPlacingPhase ==
-                MillFormationActionInPlacingPhase
-                    .removeOpponentsPieceFromBoard &&
-            ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
-            ruleSettings.restrictRepeatedMillsFormation == false &&
-            ruleSettings.stalemateAction ==
-                StalemateAction.endWithStalemateLoss &&
-            ruleSettings.mayFly == true &&
-            ruleSettings.mayRemoveFromMillsAlways == false &&
-            ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.oneTimeUseMill == false) {
+    if (isRuleSupportingPerfectDatabase()) {
       usePerfectDatabase = generalSettings.usePerfectDatabase;
     } else {
       usePerfectDatabase = false;
+      if (generalSettings.usePerfectDatabase) {
+        DB().generalSettings =
+            generalSettings.copyWith(usePerfectDatabase: false);
+      }
     }
 
     await _sendOptions(
@@ -361,6 +342,38 @@ class Engine {
 
     await setGeneralOptions();
     await setRuleOptions();
+  }
+
+  static bool isRuleSupportingPerfectDatabase() {
+    final RuleSettings ruleSettings = DB().ruleSettings;
+
+    // TODO: WAR: Perfect Database only support standard 9mm and 12mm and Lasker Morris.
+    if ((ruleSettings.piecesCount == 9 &&
+            !ruleSettings.hasDiagonalLines &&
+            ruleSettings.mayMoveInPlacingPhase == false) ||
+        (ruleSettings.piecesCount == 10 &&
+            !ruleSettings.hasDiagonalLines &&
+            ruleSettings.mayMoveInPlacingPhase == true) ||
+        (ruleSettings.piecesCount == 12 &&
+                ruleSettings.hasDiagonalLines &&
+                ruleSettings.mayMoveInPlacingPhase == false) &&
+            ruleSettings.flyPieceCount == 3 &&
+            ruleSettings.piecesAtLeastCount == 3 &&
+            ruleSettings.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase
+                    .removeOpponentsPieceFromBoard &&
+            ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
+            ruleSettings.restrictRepeatedMillsFormation == false &&
+            ruleSettings.stalemateAction ==
+                StalemateAction.endWithStalemateLoss &&
+            ruleSettings.mayFly == true &&
+            ruleSettings.mayRemoveFromMillsAlways == false &&
+            ruleSettings.mayRemoveMultiple == false &&
+            ruleSettings.oneTimeUseMill == false) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   String? _getPositionFen() {

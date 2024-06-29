@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Tek kullanımlık değirmen",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Her değirmen sadece bir kez rakibin parçasını çıkarabilir. Tekrar oluşturabilirsiniz, ancak ek çıkarmalar için kullanılamaz.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Belirlediğiniz mevcut kuralların karşılık gelen mükemmel bir veritabanı yoktur. Mükemmel veritabanı hakkında daha fazla bilgi için lütfen buraya tıklayın.",
+  "@currentRulesNoPerfectDatabase": {}
 }

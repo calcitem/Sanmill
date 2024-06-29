@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "ఒకసారి ఉపయోగించే మిల్",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "ప్రతి మిల్ ఒక సారి మాత్రమే ప్రత్యర్థి ముక్కను తొలగిస్తుంది. మీరు దాన్ని మళ్ళీ రూపకల్పన చేయవచ్చు, కానీ అదనపు తొలగింపులకు ఉపయోగించబడదు.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "మీరు సెట్ చేసిన ప్రస్తుత నిబంధనలకు అనుగుణంగా ఖచ్చితమైన డేటాబేస్ లేదు. ఖచ్చితమైన డేటాబేస్ గురించి మరింత సమాచారం కోసం ఇక్కడ క్లిక్ చేయండి.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Bir martalik ishlatiladigan tegirmon",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Har bir tegirmon raqibning qismini faqat bir marta olib tashlashi mumkin. Siz uni qayta yaratishingiz mumkin, lekin qo'shimcha olib tashlashlar uchun foydalanish mumkin emas.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Siz o'rnatgan joriy qoidalar mos keladigan mukammal ma'lumotlar bazasiga ega emas. Mukammal ma'lumotlar bazasi haqida ko'proq ma'lumot olish uchun bu yerni bosing.",
+  "@currentRulesNoPerfectDatabase": {}
 }

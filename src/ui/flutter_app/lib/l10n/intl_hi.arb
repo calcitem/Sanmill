@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "एक बार उपयोग मिल",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "प्रत्येक मिल केवल एक बार प्रतिद्वंद्वी का एक टुकड़ा हटा सकता है। आप इसे फिर से बना सकते हैं, लेकिन इसे अतिरिक्त हटाने के लिए उपयोग नहीं किया जा सकता है।",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "आपके द्वारा सेट किए गए वर्तमान नियमों में संबंधित संपूर्ण डेटाबेस नहीं है। संपूर्ण डेटाबेस के बारे में अधिक जानकारी के लिए कृपया यहां क्लिक करें।",
+  "@currentRulesNoPerfectDatabase": {}
 }

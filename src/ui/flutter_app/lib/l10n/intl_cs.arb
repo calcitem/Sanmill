@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Jednorázová mlýn",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Každý mlýn může odstranit pouze jeden kus soupeře. Můžete jej znovu sestavit, ale nelze jej použít pro další odstranění.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Aktuální pravidla, která jste nastavili, nemají odpovídající dokonalou databázi. Pro více informací o dokonalé databázi klikněte zde.",
+  "@currentRulesNoPerfectDatabase": {}
 }

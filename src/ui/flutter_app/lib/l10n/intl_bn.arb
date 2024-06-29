@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "একবারের জন্য ব্যবহার মিল",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "প্রতিটি মিল একবারই প্রতিদ্বন্দ্বীর একটি অংশ সরিয়ে ফেলতে পারে। আপনি এটি আবার গঠন করতে পারেন, তবে এটি অতিরিক্ত অপসারণের জন্য ব্যবহার করা যাবে না।",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "আপনি যে বর্তমান নিয়মগুলি সেট করেছেন তাদের কোনও উপযুক্ত নিখুঁত ডেটাবেস নেই। নিখুঁত ডেটাবেস সম্পর্কে আরও তথ্যের জন্য, এখানে ক্লিক করুন।",
+  "@currentRulesNoPerfectDatabase": {}
 }

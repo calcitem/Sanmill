@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "Cối xay sử dụng một lần",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Mỗi cối xay có thể loại bỏ một mảnh của đối thủ chỉ một lần. Bạn có thể tái tạo nó, nhưng không thể sử dụng để loại bỏ bổ sung.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Các quy tắc hiện tại bạn đã đặt không có cơ sở dữ liệu hoàn hảo tương ứng. Để biết thêm thông tin về cơ sở dữ liệu hoàn hảo, vui lòng nhấp vào đây.",
+  "@currentRulesNoPerfectDatabase": {}
 }

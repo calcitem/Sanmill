@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Moinho de uso único",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Cada moinho pode remover uma peça do adversário apenas uma vez. Você pode reformá-lo novamente, mas não pode ser usado para remoções adicionais.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "As regras atuais que você definiu não têm um banco de dados perfeito correspondente. Para mais informações sobre o banco de dados perfeito, clique aqui.",
+  "@currentRulesNoPerfectDatabase": {}
 }

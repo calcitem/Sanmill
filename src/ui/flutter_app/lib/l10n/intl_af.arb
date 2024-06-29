@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "Eenmalige gebruik meul",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Elke meul kan slegs een keer 'n teenstander se stuk verwyder. Jy kan dit weer hervorm, maar dit kan nie vir bykomende verwyderings gebruik word nie.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Die huidige reëls wat u ingestel het, het nie 'n ooreenstemmende perfekte databasis nie. Vir meer inligting oor die perfekte databasis, klik asseblief hier.",
+  "@currentRulesNoPerfectDatabase": {}
 }

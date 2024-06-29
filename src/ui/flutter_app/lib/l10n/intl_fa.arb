@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "دوز یک‌بار مصرف",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "هر دوز فقط یک بار می‌تواند قطعه‌ای از حریف را حذف کند. شما می‌توانید دوباره آن را بازسازی کنید، اما نمی‌توان از آن برای حذف‌های اضافی استفاده کرد.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "قوانین فعلی که تنظیم کرده‌اید، پایگاه داده کاملی ندارند. برای کسب اطلاعات بیشتر در مورد پایگاه داده کامل، لطفاً اینجا کلیک کنید.",
+  "@currentRulesNoPerfectDatabase": {}
 }

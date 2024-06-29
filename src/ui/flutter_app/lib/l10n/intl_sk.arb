@@ -1437,5 +1437,7 @@
   "oneTimeUseMill": "Jednorazové použitie mlyna",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Každý mlyn môže odstrániť iba jednu časť súpera. Môžete ho znovu reformovať, ale nemôže byť použitý na ďalšie odstránenia.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Aktuálne pravidlá, ktoré ste nastavili, nemajú zodpovedajúcu dokonalú databázu. Pre viac informácií o dokonalej databáze kliknite sem.",
+  "@currentRulesNoPerfectDatabase": {}
 }

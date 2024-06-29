@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Molino de un solo uso",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Cada molino puede eliminar una pieza del oponente solo una vez. Puedes volver a formarlo, pero no se puede usar para eliminaciones adicionales.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Las reglas actuales que has establecido no tienen una base de datos perfecta correspondiente. Para obtener más información sobre la base de datos perfecta, haga clic aquí.",
+  "@currentRulesNoPerfectDatabase": {}
 }

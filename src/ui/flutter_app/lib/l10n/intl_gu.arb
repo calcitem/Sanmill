@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "એક વખત ઉપયોગ મિલ",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "દરેક મિલ માત્ર એક જ વખત પ્રત્યાર્થીની એક પીસ દૂર કરી શકે છે. તમે તેને ફરીથી બનાવો છો, પરંતુ તે વધારાની દૂરીઓ માટે ઉપયોગમાં લેવામાં નથી આવી શકતું.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "તમે સેટ કરેલા વર્તમાન નિયમો પાસે અનુરૂપ પરિપૂર્ણ ડેટાબેઝ નથી. પરિપૂર્ણ ડેટાબેઝ વિશે વધુ માહિતી માટે, કૃપા કરીને અહીં ક્લિક કરો.",
+  "@currentRulesNoPerfectDatabase": {}
 }

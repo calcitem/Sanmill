@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "ಒಂದು ಬಾರಿಗೆ ಬಳಸುವ ಮಿಲ್",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "ಪ್ರತಿ ಮಿಲ್ ಒಂದೇ ಬಾರಿಗೆ ವಿರುದ್ಧದ ಟುಕ್ಕನ್ನು ತೆಗೆದುಹಾಕುತ್ತದೆ. ನೀವು ಅದನ್ನು ಮತ್ತೆ ರೂಪಿಸಬಹುದು, ಆದರೆ ಅದು ಹೆಚ್ಚುವರಿ ತೆಗೆದುಹಾಕಲು ಬಳಸಲಾಗುವುದಿಲ್ಲ.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "ನೀವು ಹೊಂದಿಸಿರುವ ಪ್ರಸ್ತುತ ನಿಯಮಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಪರಿಪೂರ್ಣ ಡೇಟಾಬೇಸ್ ಇಲ್ಲ. ಪರಿಪೂರ್ಣ ಡೇಟಾಬೇಸ್ ಬಗ್ಗೆ ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗಾಗಿ, ದಯವಿಟ್ಟು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+  "@currentRulesNoPerfectDatabase": {}
 }

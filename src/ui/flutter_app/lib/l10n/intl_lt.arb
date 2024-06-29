@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Vienkartinis malūnas",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Kiekvienas malūnas gali pašalinti tik vieną priešininko figūrą. Jūs galite jį suformuoti dar kartą, tačiau negalite jo naudoti papildomam pašalinimui.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Jūsų nustatytos dabartinės taisyklės neturi atitinkamos tobulos duomenų bazės. Norėdami gauti daugiau informacijos apie tobulą duomenų bazę, spustelėkite čia.",
+  "@currentRulesNoPerfectDatabase": {}
 }

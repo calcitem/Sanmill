@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "Isigayo sokusetshenziswa kanye",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Isigayo ngasinye singasusa isiqeshana somphikisi kanye kuphela. Ungasiphinda futhi, kodwa ngeke usisebenzisele ukususa okwengeziwe.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Imithetho yamanje osuyimiselile ayinayo i-database ephelele ehambisanayo. Ukuthola imininingwane engaphezulu mayelana ne-database ephelele, sicela uchofoze lapha.",
+  "@currentRulesNoPerfectDatabase": {}
 }

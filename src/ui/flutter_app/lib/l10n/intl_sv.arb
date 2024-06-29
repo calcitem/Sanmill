@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Engångsbruk kvarn",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Varje kvarn kan bara ta bort en motståndares bit en gång. Du kan omforma den igen, men den kan inte användas för ytterligare borttagningar.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "De aktuella reglerna som du har ställt in har ingen motsvarande perfekt databas. För mer information om den perfekta databasen, klicka här.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Einmalige Nutzung Mühle",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Jede Mühle kann nur ein gegnerisches Teil einmal entfernen. Sie können es erneut formen, aber es kann nicht für zusätzliche Entfernungen verwendet werden.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Die aktuellen Regeln, die Sie festgelegt haben, haben keine entsprechende perfekte Datenbank. Für weitere Informationen zur perfekten Datenbank klicken Sie bitte hier.",
+  "@currentRulesNoPerfectDatabase": {}
 }

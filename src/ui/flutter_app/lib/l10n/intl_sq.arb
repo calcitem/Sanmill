@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Mulli për një përdorim",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Çdo mulli mund të heqë një pjesë të kundërshtarit vetëm një herë. Mund ta formoni përsëri, por nuk mund të përdoret për heqje shtesë.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Rregullat aktuale që keni vendosur nuk kanë një bazë të dhënash të përsosur përkatëse. Për më shumë informacion rreth bazës së dhënash të përsosur, ju lutemi klikoni këtu.",
+  "@currentRulesNoPerfectDatabase": {}
 }

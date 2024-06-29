@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "一度限り使用できるミル",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "各ミルは対戦相手のピースを一度だけ取り除くことができます。再形成することはできますが、追加の除去には使用できません。",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "設定した現在のルールには、対応する完全なデータベースがありません。完全なデータベースの詳細については、ここをクリックしてください。",
+  "@currentRulesNoPerfectDatabase": {}
 }

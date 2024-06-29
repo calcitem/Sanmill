@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Mulino monouso",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Ogni mulino può rimuovere un pezzo dell'avversario una sola volta. Puoi riformarlo di nuovo, ma non può essere utilizzato per rimozioni aggiuntive.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Le regole attuali che hai impostato non hanno un database perfetto corrispondente. Per ulteriori informazioni sul database perfetto, clicca qui.",
+  "@currentRulesNoPerfectDatabase": {}
 }

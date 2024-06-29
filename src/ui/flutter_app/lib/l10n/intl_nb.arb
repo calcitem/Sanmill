@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Engangsbruk mølle",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Hver mølle kan fjerne en motstanders brikke bare én gang. Du kan omforme den igjen, men den kan ikke brukes til ytterligere fjerninger.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "De gjeldende reglene du har satt har ikke en tilsvarende perfekt database. For mer informasjon om den perfekte databasen, klikk her.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Moară de unică folosință",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Fiecare moară poate elimina o piesă a adversarului o singură dată. O poți reforma din nou, dar nu poate fi folosită pentru eliminări suplimentare.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Regulile actuale pe care le-ați setat nu au o bază de date perfectă corespunzătoare. Pentru mai multe informații despre baza de date perfectă, faceți clic aici.",
+  "@currentRulesNoPerfectDatabase": {}
 }

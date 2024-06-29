@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Penggunaan sekali waktu Mul-mulan",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Setiap Mul-mulan dapat menghapus satu bagian lawan hanya sekali. Anda dapat membentuknya lagi, tetapi tidak dapat digunakan untuk penghapusan tambahan.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Aturan saat ini yang Anda tetapkan tidak memiliki database sempurna yang sesuai. Untuk informasi lebih lanjut tentang database sempurna, silakan klik di sini.",
+  "@currentRulesNoPerfectDatabase": {}
 }

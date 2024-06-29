@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "Kinu cha matumizi ya mara moja",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Kila kinu kinaweza kuondoa kipande cha mpinzani mara moja tu. Unaweza kuunda tena, lakini hakiwezi kutumika kwa kuondolewa zaidi.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Sheria za sasa ambazo umeweka hazina hifadhidata kamilifu inayolingana. Kwa habari zaidi kuhusu hifadhidata kamilifu, tafadhali bonyeza hapa.",
+  "@currentRulesNoPerfectDatabase": {}
 }

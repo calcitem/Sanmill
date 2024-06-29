@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "ایک وقتی استعمال مل",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "ہر مل صرف ایک بار مخالف کا حصہ ہٹا سکتا ہے۔ آپ اسے دوبارہ تشکیل دے سکتے ہیں، لیکن اسے اضافی ہٹانے کے لئے استعمال نہیں کیا جا سکتا ہے۔",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "آپ کے طے کردہ موجودہ قواعد کے مطابق کوئی کامل ڈیٹا بیس نہیں ہے۔ کامل ڈیٹا بیس کے بارے میں مزید معلومات کے لیے، براہ کرم یہاں کلک کریں۔",
+  "@currentRulesNoPerfectDatabase": {}
 }

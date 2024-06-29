@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Kilangan penggunaan satu kali",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Setiap kilangan hanya boleh mengeluarkan satu bahagian lawan sekali sahaja. Anda boleh membentuknya semula, tetapi ia tidak boleh digunakan untuk pengeluaran tambahan.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Peraturan semasa yang anda tetapkan tidak mempunyai pangkalan data sempurna yang sepadan. Untuk maklumat lanjut mengenai pangkalan data sempurna, sila klik di sini.",
+  "@currentRulesNoPerfectDatabase": {}
 }

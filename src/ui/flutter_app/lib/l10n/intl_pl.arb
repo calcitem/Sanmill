@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Młyn jednorazowego użytku",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Każdy młyn może usunąć tylko jedną część przeciwnika. Możesz go ponownie utworzyć, ale nie można go użyć do dodatkowego usuwania.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Ustawione przez ciebie aktualne zasady nie mają odpowiedniej idealnej bazy danych. Aby uzyskać więcej informacji o idealnej bazie danych, kliknij tutaj.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -25,10 +25,17 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String description = S.of(context).perfectDatabaseDescription;
+    String description;
 
-    if (DB().ruleSettings.piecesCount != 9) {
-      description = '${S.of(context).experimental}\n\n$description';
+    if (Engine.isRuleSupportingPerfectDatabase() == true) {
+      description = S.of(context).perfectDatabaseDescription;
+
+      // TODO: Fix Twelve Men's Morris DB has draw
+      if (DB().ruleSettings.piecesCount == 12) {
+        description = '${S.of(context).experimental}\n\n$description';
+      }
+    } else {
+      description = S.of(context).currentRulesNoPerfectDatabase;
     }
 
     return AlertDialog(

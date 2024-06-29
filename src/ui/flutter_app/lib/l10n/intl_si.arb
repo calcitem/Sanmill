@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "තෝරාගත හැකි අළුත්",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "සෑම අළුත් එකක්ම ප්‍රතිවාදී පියසක් පමණක් එක් වරක් ඉවත් කරයි. ඔබට එය නැවත සංවිධානය කළ හැකිය, නමුත් අතිරේක ඉවත් කිරීම් සඳහා භාවිතා කළ නොහැක.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "ඔබ සකසා ඇති වර්තමාන නීති සඳහා ගැලපෙන පරිපූර්ණ දත්ත ගබඩාවක් නොමැත. පරිපූර්ණ දත්ත ගබඩාව ගැන වැඩි විස්තර සඳහා, කරුණාකර මෙහි ක්ලික් කරන්න.",
+  "@currentRulesNoPerfectDatabase": {}
 }

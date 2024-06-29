@@ -1533,5 +1533,7 @@
   "oneTimeUseMill": "טחנה לשימוש חד פעמי",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "כל טחנה יכולה להסיר חתיכה אחת של היריב רק פעם אחת. אתה יכול ליצור אותו מחדש, אבל לא ניתן להשתמש בו להסרות נוספות.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "לכללים הנוכחיים שהגדרת אין בסיס נתונים מושלם תואם. למידע נוסף על בסיס הנתונים המושלם, אנא לחץ כאן.",
+  "@currentRulesNoPerfectDatabase": {}
 }

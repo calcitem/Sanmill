@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Ühekordne kasutus veski",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Iga veski saab eemaldada ainult ühe vastase tüki. Saate selle uuesti kujundada, kuid seda ei saa kasutada täiendavate eemaldamiste jaoks.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Praegustel seadistatud reeglitel puudub vastav ideaalne andmebaas. Täiusliku andmebaasi kohta lisateabe saamiseks klõpsake siin.",
+  "@currentRulesNoPerfectDatabase": {}
 }

@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "Moulin à usage unique",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "Chaque moulin peut retirer une pièce de l'adversaire une seule fois. Vous pouvez le reformer à nouveau, mais il ne peut pas être utilisé pour des suppressions supplémentaires.",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Les règles actuelles que vous avez définies n'ont pas de base de données parfaite correspondante. Pour plus d'informations sur la base de données parfaite, veuillez cliquer ici.",
+  "@currentRulesNoPerfectDatabase": {}
 }

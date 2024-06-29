@@ -1435,5 +1435,7 @@
   "oneTimeUseMill": "一次性三连",
   "@oneTimeUseMill": {},
   "oneTimeUseMill_Detail": "每个三连只能吃掉一次对手的棋子。您可以再次重组它，但不能用于额外的吃子。",
-  "@oneTimeUseMill_Detail": {}
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "您设置的当前规则没有相应的完美数据库。有关完美数据库的更多信息，请点击此处。",
+  "@currentRulesNoPerfectDatabase": {}
 }
