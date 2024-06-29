@@ -490,7 +490,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   static Future<String> _saveOptionsContentToFile(String content) async {
     final Directory output = await getTemporaryDirectory();
-    final File file = File('${output.path}/options.txt');
+    final File file = File('${output.path}/sanmill-options.txt');
 
     // Delete the file synchronously if it exists to avoid slow async IO operations
     if (file.existsSync()) {
