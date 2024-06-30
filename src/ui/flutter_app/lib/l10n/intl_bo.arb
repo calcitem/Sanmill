@@ -1,0 +1,1539 @@
+{
+  "@@locale": "bo",
+  "appName": "ཅོ་འགྲིག",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "དགའ་བསུ་ཞུ།",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "options": "གདམ་ག།",
+  "@options": {
+    "description": "Options"
+  },
+  "humanVsHuman": "མི་དང་མི་བར་འགྲན་བསྡུར།",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "humanVsCloud": "མི་དང་སྤྲིན་བར་འགྲན་བསྡུར།",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "about": "སྐོར།",
+  "@about": {
+    "description": "About"
+  },
+  "generalSettings": "སྤྱིར་བཏང་སྒྲིག་སྟངས།",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "settings": "འཛུགས་པ",
+  "@settings": {
+    "description": "Settings"
+  },
+  "help": "རོགས་རམ",
+  "@help": {
+    "description": "Help"
+  },
+  "exit": "ཐོན་སྒོ",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "སྒྲིག་གཞི་སྒྲིག་སྟངས།",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "info": "གནས་ཚུལ།",
+  "@info": {
+    "description": "Info"
+  },
+  "howToPlay": "རྩེད་སྟངས།",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "appearance": "ཕྱི་རྣམ་པ།",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "helpImproveTranslate": "ཡིག་སྒྱུར་ལེགས་བཅོས་ལ་རོགས་བྱེད།",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "language": "སྐད་རིགས།",
+  "@language": {
+    "description": "Languages"
+  },
+  "whenFormingMillsDuringPlacingPhase_Detail": "བཙུགས་པའི་སྐབས་སུ་འཕྲུལ་ཁང་བཟོ་སྐབས་བྱེད་ཐུབ་པའི་བྱ་སྤྱོད།",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "རྟགས་བཀོད་ཟིན་པ།",
+  "@marked": {},
+  "menu": "དཀར་ཆག",
+  "@menu": {},
+  "youCanEnableScreenReaderSupport": "ཁྱོད་ཀྱིས་སྤྱིར་བཏང་སྒྲིག་འཛུགས་ཀྱི་སྤྱོད་སྒོ་གསར་སྒྲིག ནང་འཆར་ཤེལ་ཀློག་ཆས་ལ་རྒྱབ་སྐྱོར་སྒོ་འབྱེད་ཆོག་པ།",
+  "@youCanEnableScreenReaderSupport": {},
+  "monochrome": "གཅིག་མདོག",
+  "@monochrome": {},
+  "showNumbersOnPieces": "རྡེལ་ཐོག་ཨང་གྲངས་སྟོན།",
+  "@showNumbersOnPieces": {},
+  "saveImage": "པར་རིས་ཉར་ཚགས།",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་སྟོན།",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་གི་རྒྱབ་ལྗོངས་ཚོས།",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "དབྱེ་ཞིབ་ལག་ཆས་ཚང་གི་རིས་རྟགས་ཚོས།",
+  "@analysisToolbarIconColor": {},
+  "transformed": "བཟོ་བཅོས་ཟིན་པ།",
+  "@transformed": {},
+  "cannotTransform": "བཟོ་བཅོས་བྱེད་མི་ཐུབ།",
+  "@cannotTransform": {},
+  "rotate": "སྐོར་འཁོར།",
+  "@rotate": {},
+  "horizontalFlip": "H ཕྱོགས།",
+  "@horizontalFlip": {},
+  "verticalFlip": "V ཕྱོགས།",
+  "@verticalFlip": {},
+  "innerOuterFlip": "IO ཕྱོགས།",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "དྭངས་གསལ་རི་མོ།",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "བསྐྱར་ཟློས་གསུམ་གྱི་ཆགས་ཚུལ་ལ་ཚོད་འཛིན་བྱེད།",
+  "@restrictRepeatedMillsFormation": {},
+  "humanVsAi": "མི་དང་ AI བར་འགྲན་བསྡུར།",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "aiVsAi": "AI དང་ AI བར་འགྲན་བསྡུར།",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsLAN": "མི་དང་ LAN བར་འགྲན་བསྡུར།",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "LAN བརྒྱུད་ཚོད་ལྟ།",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "སྤོ་འགུལ།",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "སྤོ་འགུལ་གྱི་ཐོ་གཞུང།",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "སྤོ་འགུལ་གྱི་ཐོ་གཞུང།",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "ཟིན་ཐོ་མེད།",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "ཆོག",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "བདེན་དཔང",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "འདོར་བ",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "ནོར་འཁྲུལ་ཅན་འདེམས།",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "ཁྱེད་རང་གི་དུམ་བུ་དེ་བཞག་རོགས།",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "ཁྱོད་ཀྱིས་འདིར་འཇོག་མི་ཐུབ།",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "ཁྱོད་ཀྱིས་བཞག་ཡོད།",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "དུམ་བུ་ཞིག་བཏོན་དགོས།",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "ཁྱོད་ཀྱིས་དེ་མེད་པར་བཟོ་མི་ཐུབ།",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "ཁྱོད་ཀྱིས་མེད་པར་བཟོས།",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "དུམ་བུ་ཞིག་སྤོ་རོགས།",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "ཁྱེད་རང་གི་རྡེའུ་འདིར་འཇོག་མི་ཆོག",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "ཁྱེད་རང་གི་རྡེའུ་འདིར་སྤོ་མི་ཆོག",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "རྫོང་བཙུགས་འདུག ཁྱེད་རང་གིས་ཁ་གཏད་ཀྱི་རྡེའུ་ལེན་ཆོག",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "ཁ་གཏད་ཀྱི་རྡེའུ་མུ་མཐུད་ལེན་པར་མཐུད་རྒྱུ།",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "ཁ་གཏད་ཀྱི་རྡེའུ་གཅིག་འདེམས་རོགས།",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "རྫོང་ནང་གི་རྡེའུ་ལེན་མི་ཆོག",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "རྡེའུ་རེ་ས་ཚིགས་གཅིག་ལ་སྤོ་ཐུབ།",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "ཁྱེད་རང་གིས་ཁ་གཏད་ཀྱི་རྡེའུ་སྤོ་མི་ཆོག",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "སྤོ་འགུལ་གཏོང་དགོས་པའི་རྡེའུ་འདེམས་རོགས།",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "gameImported": "རྩེད་མོ་ནང་འདྲེན་བྱས་ཚར་པ།",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "ནང་འདྲེན་བྱེད་མི་ཐུབ། {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "སྤོ་ཐབས་དང་སྒྲིག་གཞི་མི་མཐུན་པ།",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "restartGame": "ད་ལྟའི་རྩེད་མོ་དེ་བསྐྱར་དུ་འགོ་འཛུགས་དགོས་སམ།",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "ཡང་བསྐྱར་འགོ་བཙུགས་པ།",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "རྩེད་མོ་འགོ་ཚུགས་སོང་། གནས་སྤོས།",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "དབྱེ་ཞིབ་བྱེད་བཞིན་པ།",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "ནོར་འཁྲུལ། {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "རྒྱལ་ཁའི་བརྒྱ་ཆ།",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "ཐོབ་གྲངས:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "རྩེད་འགྲན་པ་ 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "རྩེད་འགྲན་པ་ 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} རྡེལ་གྲངས་གསུམ་ལས་ཉུང་།",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "རྩེད་པང་ཁེངས་ཟིན་པ་དང་། {player} འགྲོ་ས་མེད།",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "དུས་ཚོད་རྫོགས་སོ། {player} ཕམ་པ།",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "toRemovePiece": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་ལ་རེག་ནས་བསུབ་པ།",
+  "@toRemovePiece": {
+    "description": "Tap on the opponent's one piece to remove."
+  },
+  "needToCreateMillFirst": "ཁྱེད་རང་གིས་དངོས་པོ་གཅིག་བཏོན་མ་ཐག དང་པོ་གསུམ་བཟོ་དགོས།",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "ཁྱོད་ཀྱིས་རང་ཉིད་ཀྱི་རྡེལ་བེད་སྤྱད་ནས་རྩེ་བ།",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "བསྡོམས་རྩིས།",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "རྩེད་མོའི་བསྡོམས་འབོར།",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "privacyPolicy": "སྒེར་གྱི་གསང་དོན་སྲིད་ཇུས།",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "སྐུ་མཁྱེན། \"བཀོལ་སྤྱོད་ཆིངས་ཡིག\" དང་ \"སྒེར་གྱི་སྲིད་ཇུས\" བཅས་ཀྱི་ཆ་རྐྱེན་ལ་གཟབ་ནན་གྱིས་ཀློག་ནས་གོ་བ་ལེན་དགོས།\nཁྱེད་རང་གི་ཆོག་མཆན་ལ་གཞི་བཅོལ་ནས་ང་ཚོས་ཁྱེད་ལ་མཁོ་སྤྲོད་བྱེད་པའི་ཞབས་ཞུ་ཡར་རྒྱས་གཏོང་ཆེད་དུ། ཁྱེད་རང་ལ་ཆོག་མཆན་ཁས་མི་ལེན་པའམ་ཡང་ན་ཆ་མེད་གཏོང་བའི་ཐོབ་ཐང་ཡོད། ང་ཚོས་ནད་རྟགས་གཏོང་བའི་རེ་འདུན་རེ་རེའི་སྔོན་ལ་སྒེའུ་ཁུངས་ཤིག་བརྒྱུད་ནས་ཁྱེད་ཀྱི་མོས་མཐུན་གསལ་པོ་ཐོབ་རྒྱུ་ཡིན།\nཁྱེད་ཀྱིས་ ཀློག་ཐུབ། ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "onBoard": "{player} རྩེད་པང་ཐོག་ཡོད་པ། {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "རྩེད་པང་གི་སྟེང་ནས་བར་ཐག",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "ད་ལྟ་ AI འགུལ་རྒྱུའི་དུས་མིན་པ།",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "AI བསམ་བློ་བཏང་བཞིན་མེད།",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "ཁྱོད་སྤོ་འགུལ་མིང་ཐོའི་མཇུག་ཏུ་སླེབས་པ།",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "ཡང་བསྐྱར་རྗེས་ལ་རེག་ནས་ཕྱིར་ཐོན།",
+  "@tapBackAgainToLeave": {
+    "description": "Tap back again to leave."
+  },
+  "more": "དེ་མིན།",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "འདི་ནི་ཚོད་ལྟའི་བརྒྱུད་རིམ་ཞིག་ཡིན།",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "ཚོད་ལྟ།",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "སྒོ་དབྱེའི་ཐོན་ཁུངས་ཆོག་འཐུས།",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "mayMoveInPlacingPhase": "འཇོག་རིམ་ནང་རྡེལ་བརྗེ་སྤོར་ཆོག",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "defaultLanguage": "སྔོན་སྒྲིག་སྐད་ཡིག",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "moveRandomlyDetail": "གདམ་ཁ་འདི་ལག་བསྟར་བྱེད་པ་དེས་རྩེད་མོའི་གང་བྱུང་དང་སྤྲོ་སྣང་ཆེ་རུ་གཏོང་བ་དང་།",
+  "@moveRandomlyDetail": {},
+  "moveNumber": "{count,plural, =0{འགུལ}=1{{count} འགུལ}other{{count} འགུལ}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "མངོན་འཇུག་ཕམ་པ།",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "gameFiles": "རྩེད་མོའི་ཡིག་ཆ།",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "རྩེད་མོ་འདི་རུ་ཉར་ཚགས་བྱས་ཟིན།",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "སྟོང་པ།",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "སྤོ་འགུལ་མེད།",
+  "@noMove": {
+    "description": "No move."
+  },
+  "filename": "ཡིག་ཆའི་མིང་།",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "བཤེར་བ།…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "restoredPosition": "ཐོག་མའི་གནས་ས་སླར་གསོ་བྱས་ཟིན།",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "གཙང་བཟོ།",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "གཙང་བཟོ་བྱས་ཟིན།",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "བསུབ་པ།",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "རྡེལ་གང་ཡང་བསུབ་མི་ཆོག",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} pieces}} བསུབ་དགོས་པ།",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "འཇོག་ཚར། ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "འཇོག་རིམ་ནང་རྡེལ་གྱི་འཇོག་གྲངས་བསྡོམས་རྩིས།",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "ད་ལྟའི་རྩེད་འགྲན་པས་རྡེལ་ {count} འཇོག་ཚར།",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "འཇོག་རིམ་མ་ཡིན་པས། དེ་བརྗེ་མི་ཆོག",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "སྦྱར་ནས།",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "སྦྱར་ཚར།",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "སྦྱར་མི་ཐུབ།",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "འཇོག་མེད་དང་བསུབས་ཟིན་པའི་རྡེལ་སྟོན།",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "གསལ་སྟོན་ཆ་ཚང་།",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "སྒྲིག་སྟངས་ལག་བསྟར་བྱེད་པར་མཉེན་ཆས་ཕྱིར་ཐོན་ནས་བསྐྱར་དུ་ཁ་ཕྱེ།",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "ནགས་ཚལ།",
+  "@forest": {},
+  "gameScreenRecorder": "རྩེད་མོ་གསལ་སྟོན་པར་རྒྱག་བྱེད་མཁན།",
+  "@gameScreenRecorder": {},
+  "previous": "སྔོན་མ།",
+  "@previous": {},
+  "next": "རྗེས་མ།",
+  "@next": {},
+  "skip": "མཆོང་རྒྱུག",
+  "@skip": {},
+  "gotIt": "ཤེས་རྟོགས་བྱུང་།",
+  "@gotIt": {},
+  "youCanModifyRules": "ཁྱོད་ཀྱིས་སྒྲིག་གཞི་སྒྲིག་འཛུགས་ནང་རྩེད་མོའི་སྒྲིག་གཞི་ལེགས་བཅོས་བྱེད་ཆོག",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "འདེམས་ཆས་ནང་གི་རིན་ཐང་བརྗེ་ཆོག་པའི་ཆེད་དུ་ཙི་གུའི་འཁོར་ལོ་བེད་སྤྱོད་བྱེད་ཆོག",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI བསམ་བློའི་དུས་ཚོད་ 0 ལ་སྒྲིག་འཛུགས་བྱས་པ་ནི་བསམ་བློའི་དུས་ཚོད་ལ་ཚོད་འཛིན་མེད་པ་མཚོན།",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) ནི་ཨལ་ཕ་བེ་ཊ་འཚོལ་ཞིབ་རྩིས་གཞིའི་བསྒྱུར་བཅོས་བྱས་པའི་རྣམ་པ་ཞིག་རེད་།",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "AI བསམ་བློ་གཏོང་བའི་དུས་ཚོད་བསྒྱུར་བཅོས་དེ་ཡོངས་སུ་གཏན་འཁེལ་མིན་པ་ཤེས་དགོས། དཀའ་ངལ་གྱི་ཚད་གཞི་དེ་རིན་ཐང་དམའ་རུ་གཏོང་སྐབས་བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ངོ་མ་དེ་ཐུང་བ་དང་།",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "license": "ཆོག་འཐུས།",
+  "@license": {
+    "description": "License"
+  },
+  "appVersion": "མཉེན་ཆས་ཐོན་རིམ།",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "dark": "མུན་པ།",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "བརྗོད་བྱ།",
+  "@themes": {
+    "description": "Themes"
+  },
+  "desktopImage": "ཌེག་སཀོབ་བརྙན་རིས།",
+  "@desktopImage": {},
+  "invalidPosition": "ནུས་མེད་གནས་ས།",
+  "@invalidPosition": {},
+  "shareGIF": "GIF མཉམ་སྤྱོད།",
+  "@shareGIF": {},
+  "pixelRatio": "པིག་སེལ་གྱི་བསྡུར་ཚད།",
+  "@pixelRatio": {},
+  "duration": "ཡུན་ཚད།",
+  "@duration": {},
+  "yes": "རེད།",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "མ་རེད།",
+  "@no": {
+    "description": "No"
+  },
+  "game": "རྩེད་མོ།",
+  "@game": {
+    "description": "Game"
+  },
+  "tipHaveThreePiecesLeft": "ཁྱེད་རང་ལ་རྡེའུ་གསུམ་ལྷག་འདུག",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "ཁྱེད་རང་གིས་རྡེའུ་རང་འདོད་ཀྱི་ས་ཚིགས་གང་རུང་ལ་སྤོ་ཐུབ།",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} སྤོ་འགུལ་བྱེད་རོགས།",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "རྩེད་འགྲན་པ་ 1 རྒྱལ་ཁ་ཐོབ་པ།",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "རྩེད་འགྲན་པ་ 2 རྒྱལ་ཁ་ཐོབ་པ།",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "རྒྱལ་ཁ་ཐོབ་པ།",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "ཕམ་པ།",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "བསམ་བློ་བཏང་བཞིན་པ།",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "རྩེད་མོ་གསར་པ།",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "རྩེད་མོ་ནང་འདྲེན་པ།",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "རྩེད་མོ་ཕྱིར་འདྲེན་པ།",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "pleaseWait": "སྒུག་རོགས།",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "loseReasonResign": "{player} བསྐྱུར་བ།",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} འགྲོ་ས་མེད།",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "difficulty": "དཀའ་ཚད།",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "feedback": "ཡ་ལན",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "color": "ཚོས།",
+  "@color": {
+    "description": "Color"
+  },
+  "hint": "བརྡ་སྟོན།",
+  "@hint": {
+    "description": "Hint"
+  },
+  "results": "གྲུབ་འབྲས།",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "ལྷག་པ།",
+  "@left": {
+    "description": "left"
+  },
+  "crackMill": "ཀྲེག་འཕྲུལ་ཆས།",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "ཁ་གཏད་ཀྱི་ལག་ནས་ཆ་ཤས་དེ་བཏོན་དགོས། དེ་ནས་ཁ་གཏད་ཀྱི་དུས་ཚོད་རེད།",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "ceylonMill": "སེ་ལོན་འཕྲུལ་ཁང་།",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "ཡང་ནས་ཡང་དུ་བཤིག་པ་དང་བསྐྱར་སྐྲུན་བྱས་ཆོག",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "གལ་ཏེ་རྩེད་མོ་བ་ཞིག་གིས་གསུམ་གཅིག་བརྡུངས་ནས་དེ་མ་ཐག་གསུམ་གསར་པ་བཟོས་ན། རྩེད་མོ་བ་དེས་གསུམ་གསར་པ་བཟོས་ན་ཁོང་གི་འགུལ་སྐྱོད་རྗེས་མའི་ནང་དེ་ལྟའི་མཐུད་མཚམས་ཐོག་མར་སྤོ་ཐུབ།",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "རྩེད་འགྲན་པ་ཞིག་ལ་རྡེལ་གསུམ་ལས་མེད་པ་དང་སྤོ་འགུལ་ཐེངས་བཅུའི་རྗེས་སུ་རྩེད་འགྲན་པ་གཉིས་ཀྱི་གང་རུང་གིས་ཀྱང་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་བསུབ་མེད་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "languageName": "དབྱིན་ཇི།",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "drawReasonRule50": "སྤོ་འགུལ་དུས་རིམ་ཁྲོད། རྡེལ་གང་ཡང་འདས་པའི་གཏན་འཁེལ་གྲངས་ཀའི་སྤོ་འགུལ་ནང་བསུབས་མེད།",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཞིག་ཡིན་ཏེ། རྩེད་པང་ཁེངས་ཟིན་པའི་རྒྱུ་མཚན་གྱིས།",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཞིག་ཡིན། རྒྱུ་མཚན་ནི་ཐེངས་གསུམ་བསྐྱར་ཟློས་བྱས་པའོ།",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "རྩེད་མོ་རྫོགས་སོ།! རྒྱུ་མཚན་མི་ཤེས།",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "རྩེད་མོ་རྫོགས་སོ།",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "ཁྱོད་ཀྱིས་རྒྱལ་ཁ་ཐོབ་པ་ཡིན།! བཀྲ་ཤིས་བདེ་ལེགས།",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "དཀའ་ཚད་མཐོ་བའི་རིམ་པར་འགྲན་སློང་བྱེད་པ། རིམ་པ་གསར་པ་ནི་ {level} རིམ་པ་ཡིན།",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "ཁྱོད་ཕམ་པ།",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "དབྱེ་ཞིབ།",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "version": "ཐོན་རིམ། {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "ཐུགས་རྗེ་ཆེ།",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "skillLevel": "དཀའ་ཚད་ཀྱི་རིམ་པ།",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "AI བསམ་བློའི་དུས་ཚོད།",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "playSounds": "སྒྲ་སྐད་ཀྱི་ནུས་པ།",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "རྩེད་མོའི་ནང་སྒྲ་སྐད་གཏོང་བ།",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "ཕྱིར་ལེན་སྐབས་སྒྲ་མེད་ཉར་བ།",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "སྒྲ་གདངས།",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "སྔོན་འགུལ།",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "མི།",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "AI",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "འཁོར་སྤྱོད།",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "རྩེད་མོ་མཇུག་སྒྲིལ་སྐབས་རང་འགུལ་ངང་ཡང་བསྐྱར་འགོ་བཙུགས།",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "སྔོན་འགུལ་རང་འགུལ་ངང་བརྗེ་པོ་བྱེད།",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "སྣ་ཚོགས་སྤོ་འགུལ།",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "གཞན་པ།",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "སྒྲིག་གཞི།",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "རྩེད་འགྲན་པ་རེའི་རྡེལ་གྲངས་ཀ",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "རྩེད་འགྲན་པ་རེ་རེར་རྡེལ་ག་ཚོད་ཡོད།",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "འཕུར་རྡེལ་གྱི་གྲངས་འབོར།",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "toSelectPiece": "རྡེལ་ཞིག་ལ་རྡེལ་སྤོ་བའི་ཆེད་དུ་རེག",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "flyPieceCount_Detail": "གལ་ཏེ་འཕུར་རྒྱུག་ཆོག་པའི་སྐབས་སུ། རྩེད་འགྲན་པ་གཅིག་གི་རྡེལ་གྲངས་གཏན་འཁེལ་གྱི་གྲངས་འབོར་ཞིག་ཏུ་ཉུང་དུ་ཕྱིན་ཚེ། ཁོ་མོའི་རྡེལ་རྣམས་རྩེད་མོའི་རིང་གི་དུས་མཚམས་གཞན་དག་ཏུ་མཐའ་འཁོར་གྱི་ས་ཚིགས་ཁོ་ནར་སྤོ་འགུལ་བྱེད་ཆོག་པའི་ཚོད་འཛིན་གྱི་འོག་ཏུ་མེད་པར་ས་ཚིགས་སྟོང་པ་གང་རུང་དུ་སྤོ་འགུལ་བྱེད་ཆོག་པ་ཡིན།",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "ཉུང་མཐའི་རྡེལ་གྲངས་",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "གསེག་ཐིག",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "རྩེད་པང་དུ་བཞི་གསེག་ཐིག་ཁ་སྣོན་རྒྱག་པ།",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "རྩེད་འགྲན་པ་གཉིས་པ་སྔོན་འགུལ་བྱེད།",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "འཇོག་རིམ་ནང་གཉིས་པར་འགུལ་བ་རྩེད་འགྲན་པ་ནི་སྤོ་འགུལ་དུས་རིམ་ནང་སྔོན་འགུལ་བྱེད་མཁན་ཡིན།",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "མང་བསུབ།",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "གལ་ཏེ་རྩེད་འགྲན་པ་ཞིག་གིས་ཐེངས་གཅིག་ལ་གསུམ་ལས་མང་བ་ཁ་རྒྱག་ན་ཁོ་མོས་ཁ་རྒྱག་པའི་གསུམ་གྱི་ཨང་གྲངས་དེ་མེད་པར་བཟོ་ཐུབ།",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "གསུམ་གཏོར་བ།",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "སྔོན་སྒྲིག་གི་རྣམ་པར་གཞིགས་ན། རྩེད་འགྲན་པ་རྣམས་ཀྱིས་གྲུབ་ཟིན་པའི་ གསུམ ནས་རྡེལ་གཅིག་བསུབ་སྔོན་དུ་རྡེལ་གཞན་དག་བསུབ་དགོས། ཚོད་འཛིན་འདི་ལས་ཐར་བའི་ཆེད་དུ་འདེམས་གཞི་འདི་ཤུགས་ལྡན་བཟོ།",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "རྩེད་པང་ཁེངས་དུས་རྩེད་འགྲན་པ་གཉིས་པ་ཕམ་པ།",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "འཇོག་རིམ་གྱི་མཇུག་ཏུ་རྩེད་པང་ཁེངས་ཚེ། སྔོན་ལ་འཇོག་མཁན་ཕྱོགས་ཀྱིས་རྩེད་མོ་ཕམ་པ། གལ་ཏེ་དེ་མིན་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "ཁྲིམས་མཐུན་གྱི་སྤོ་འགུལ་མེད་པའི་སྐབས་ཕམ་པ།",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "གལ་ཏེ་ཁོའི་འགྲན་ཟླས་ཁོ་ལ་འགོག་རྐྱེན་བཟོས་ཏེ་ཁོ་ལ་སྤོ་འགུལ་མི་ཐུབ་པའི་སྐབས་སུ། རྩེད་འགྲན་པ་ཕམ་པར་འགྱུར། གལ་ཏེ་འདེམས་གཞི་འདི་ཤུགས་མེད་དུ་བཏང་ན་སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+  },
+  "mayFly": "འཕུར་བསྐྱོད།",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "toMovePiece": "རྡེལ་ཞིག་དང་སྦྲེལ་བའི་ས་ཚིགས་ཤིག་ལ་རེག་ནས་སྤོ་བ།",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "mayFly_Detail": "གལ་ཏེ་རྩེད་འགྲན་པ་གཅིག་ལ་རྡེལ་གསུམ་མ་གཏོགས་མེད་ཚེ(སྒྲིག་སྦྱོར་བྱེད་རུང་)། ཁོ་མོས་རྡེལ་དེ་རང་དབང་གི་ས་ཚིགས་གང་རུང་དུ་སྤོ་བ་གནང་ཆོག",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N-སྤོ་འགུལ་སྒྲིག་གཞི།",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "གལ་ཏེ་གཏན་འཁེལ་གྲངས་ཀའི་སྤོ་འགུལ་ནང་བསུབ་མེད་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "ཕྱིར་ལོག",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "འདེམས་རོགས་གནང་།",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "འདྲ་བཤུས།",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "སྤོ་འགུལ་ལོ་རྒྱུས་པང་ལེབ་གསོག་སྡེར་དུ་འདྲ་བཤུས་བྱས་ཟིན།",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "boardColor": "རྩེད་པང་གི་ཚོས།",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "རྡེལ་གྱི་ཚོས།",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "རྒྱབ་ལྗོངས་ཀྱི་ཚོས།",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "རྩེད་པང་ཐིག་གི་ཚོས།",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "རྩེད་འགྲན་པ་ 1 གྱི་རྡེལ་གྱི་ཚོས།",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "རྩེད་འགྲན་པ་ 2 གྱི་རྡེལ་གྱི་ཚོས།",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "འཕྲིན་ཐུང་གི་ཚོས།",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "འཇོག་མེད་རྡེལ་གྱི་གྲངས་འབོར་སྟོན།",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "རྩེད་པང་ཐོག་མཆན་འགྲེལ་སྟོན།",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "ལོ་རྒྱུས་འགྲུལ་བསྐྱོད་ལག་ཆས་ཚང་སྟོན།",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "མངོན་པ།",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "རྩེད་པང་མཐའ་མཚམས་ཐིག་གི་ཞེང་ཚད།",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "རྩེད་པང་ནང་ཐིག་གི་ཞེང་ཚད།",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "རྡེལ་གྱི་ཞེང་ཚད།",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "ཡིག་གཟུགས་ཀྱི་ཆེ་ཆུང་།",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "ཚད་ལྡན་གྱི་མཚོན་རྟགས།",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "སླར་གསོ།",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "སྔོན་སྒྲིག་སྒྲིག་སྟངས་སླར་གསོ་བྱེད་པ།",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "{element} འདེམས་པ།",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "player": "རྩེད་འགྲན་པ།",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "རྩེད་འགྲན་པ་ 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "རྩེད་འགྲན་པ་ 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "toPlacePiece": "རྡེལ་འཇོག་ཆོག་པའི་ས་ཚིགས་གང་རུང་ཞིག་ལ་རྡེལ་འཇོག་ཆོག",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "mixedMill": "Mixed Mill",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "privacyPolicy_Detail_2": "མང་པོ་ སྦྱོངས། གལ་ཏེ་ཁྱེད་རང་མོས་མཐུན་ཡོད་ན། མོས་མཐུན་ ཞེས་པ་དེ་ལ་སྣུན་ནས་ང་ཚོའི་ཞབས་ཞུ་ལེན་འགོ་ཚུགས་རོགས།",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " དང་ ",
+  "@and": {},
+  "accept": "མོས་མཐུན།",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "ཕྱིར་ལེན།",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "ཕྱིར་ལེན་བཞིན་པ།",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "སྒུག་བཞིན་པ།",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "གོམ་གང་མདུན།",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "ཚང་མ་ཕྱིར་ལེན།",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "ཚང་མ་གོམ་གང་མདུན།",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "ད་ལྟ་སྤོ་འགུལ།",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "བྱས་ཚར།",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill_Detail": "གལ་ཏེ་རྩེད་འགྲན་པ་གཅིག་ལ་ གསུམ ནང་གི་རྡེལ་མ་གཏོགས་མེད་ཚེ། གསུམ ནང་གི་རྡེལ་རྣམས་བསུབ་ཏུ་མི་བཀག་པར་འགྱུར།",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "བརྙན་འཕྲིན་གྱི་ཡུན་ཚད།",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "མེད།",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "བརྗོད་བྱ།",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "རྩེད་མོ་འདིའི་དམིགས་ཡུལ་ནི་ཁ་གཏད་ལ་ཆ་ཤས་གསུམ་ལས་ཉུང་བའམ་ཡང་ན་ཁྲིམས་མཐུན་གྱི་གཡོ་འགུལ་མེད་པར་བཞག་རྒྱུ་དེ་རེད།\n\nགལ་ཏེ་གནས་བབ་ཐེངས་གསུམ་པ་བྱུང་བའམ་ཡང་ན་མཐའ་མའི་འགུལ་སྐྱོད་༡༠༠ནང་ལ་མེད་པར་བཟོས་ན་རྩེད་མོ་དེ་རང་འགུལ་གྱིས་འབྲི་བ་རེད།\n\nརྩེད་མོ་དེ་དུས་རིམ་གསུམ་དུ་བགོས་ཡོད།\n\n1. སྟོང་ཆའི་སྟེང་དུམ་བུ་འཇོག་པ།\n2. ཆ་ཤས་ཉེ་འགྲམ་གྱི་ས་ཚིགས་ལ་སྤོ་བ།\n3. (འདམ་ཀའི་དུས་རིམ།) རྩེད་མོ་བ་དེ་ཆ་ཤས་གསུམ་ལ་མར་ཕབ་པའི་སྐབས་སྟོང་ཆ་གང་རུང་ཞིག་ལ་སྤོ་བ།\n\nའཇོག་པ།\n\nརྩེད་མོ་དེ་སྟོང་ཆ་ཞིག་ནས་འགོ་འཛུགས་པ་དང་། དེའི་ནང་དུ་སྐར་མ་ཉི་ཤུ་རྩ་བཞི་ཡོད་པའི་དྲ་མིག་ཅིག་ཡོད། རྩེད་འགྲན་པ་རེ་རེས་རྩེད་མོ་ཚང་མ་བང་ཁྲི་སྟེང་ལ་མ་བཞག་བར་དུ་རྩེད་མོ་བ་ཚོས་ཁོང་ཚོའི་རྩེད་མོ་དེ་སྟོང་ཆའི་སྟེང་ལ་འཇོག་དགོས། གལ་ཏེ་རྩེད་འགྲན་པ་ཞིག་གིས་ཁོ་རང་གི་རྩེད་མོ་གསུམ་ཐད་ཀར་འཇོག་ཐུབ་ན་ཁོ་ལ་\"འཕྲུལ་འཁོར་\"ཡོད་ཅིང་། ཁོ་རང་གི་ཁ་གཏད་ཀྱི་རྩེད་མོ་གཅིག་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་སྲིད།\n\nཁྲིམས་ལུགས་ཁ་ཤས་སུ་རྩེད་མོ་བ་ཚོས་བཟོས་ཟིན་པའི་འཕྲུལ་ཁང་ནས་ཆ་ཤས་ཤིག་མ་བཏོན་གོང་དུ་ཆ་ཤས་གཞན་པ་གང་རུང་ཞིག་བཏོན་དགོས།\n\nཁྱེད་ཀྱིས་སྒྲིག་གཞི་ཁ་ཤས་ནང་བཀོད་པའི་དུས་རིམ་ནང་ལ་ཆ་ཤས་དེ་དག་བཏོན་པའི་ཆ་ཤས་ཀྱི་ས་ཚིགས་ལ་ཡང་བསྐྱར་འཇོག་མི་ཐུབ།\n\nདངོས་པོ་ཚང་མ་བེད་སྤྱོད་བཏང་ཚར་རྗེས་རྩེད་མོ་བ་ཚོས་སྐོར་རེས་སྤོ་བར་བྱེད།\n\nའགུལ་བསྐྱོད་བྱེད་པ།\n\nསྤོ་བར་རྩེད་མོ་བ་ཞིག་གིས་ཁོ་རང་གི་རྩེད་མོ་གཅིག་བང་ཁྲི་བརྒྱུད་ནས་ཉེ་འགྲམ་གྱི་ས་སྟོང་སྟོང་པར་སྤོ་བར་བྱེད། གལ་ཏེ་ཁོས་དེ་ལྟར་བྱེད་མི་ཐུབ་ན་ཁོས་རྩེད་མོ་ཕམ་ཡོད། རྩེད་འགྲན་པ་ཞིག་གིས་ཁོ་རང་གི་རྩེད་མོ་གསུམ་བང་ཁྲི་སྟེང་ལ་ཕྲེང་བ་བཟོས་ན་དེ་ལ་འཕྲུལ་འཁོར་ཡོད་ཅིང་། དེས་ཁོ་རང་གི་ཁ་གཏད་ཀྱི་རྩེད་མོ་གཅིག་བཀོད་སྒྲིག་བྱེད་པའི་སྐབས་ལྟར་མེད་པར་བཟོ་ཐུབ། རྩེད་མོ་བ་གང་རུང་གིས་ཆ་ཤས་གཉིས་ལ་མར་ཕབ་ནས་འཕྲུལ་ཁང་གསར་པ་བཟོ་བའི་གདམ་ག་མེད་པས་རྩེད་མོ་དེ་ཕམ་གྱི་ཡོད། གལ་ཏེ་ཁོང་གི་ཁ་གཏད་ཀྱིས་ཁོང་ཚོ་འགུལ་སྐྱོད་བྱེད་པར་བཀག་འགོག་བྱས་ན། རྩེད་འགྲན་པ་ཞིག་གིས་རྩེད་མོ་གསུམ་ལས་མང་བ་ཐོབ་སྐབས་ཕམ་ཐུབ།\n\nའཕུར་བསྐྱོད་བྱེད་པ།\n\nཁྲིམས་ལུགས་ཀྱི་ཁྱད་པར་ཁ་ཤས་ནང་རྩེད་མོ་བ་ཞིག་ལ་རྩེད་མོ་གསུམ་ལས་ལྷག་མེད་ན། ཁོང་གི་རྩེད་མོ་དེ་ཚོ་འཕུར་ཐུབ་པ་དང་།\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "ཐོན་རིམ་གནས་ཚུལ།",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "EULA",
+  "@eula": {
+    "description": "EULA"
+  },
+  "sourceCode": "ཐོན་ཁུངས་ཨང་རྟགས།",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "general": "སྤྱིར་བཏང་།",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "མཐོ་རིམ།",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "འཇོག་པ།",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "སྤོ་འགུལ།",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "བསུབ་པ།",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "རྩེད་མོ་མཇུག་སྒྲིལ་ཆ་རྐྱེན།",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "AI རྩེད་སྟངས།",
+  "@aisPlayStyle": {
+    "description": "AI's playstyle"
+  },
+  "passive": "བྱ་སྤྱོད་མེད།",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "དུས་ཚོད་ཟད་པ།",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "drawOnHumanExperience": "མིའི་ཉམས་མྱོང་ལ་བརྟེན་ནས་དཔྱད་པ།",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "རྡེལ་གྱི་སྤོ་འགུལ་ལ་དོ་སྣང་བྱེད།",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "དུམ་བུའི་གྲངས་འབོར།:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} ལག་ཏུ་ཡོད་པ། {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "example": "5"
+      }
+    }
+  },
+  "mayMoveInPlacingPhase_Detail": "འཇོག་རིམ་དང་སྤོ་འགུལ་དུས་རིམ་ཁ་གསལ་མེད། དཔེར་ན། རྩེད་འགྲན་པ་རྣམས་ཀྱིས་སྤོ་འགུལ་རེ་རེར་རྩེད་པང་ཐོག་རྡེལ་འཇོག་པའམ་རྡེལ་གཅིག་སྤོ་བའི་(འཇོག་རྒྱུའི་རྡེལ་ལྷག་ཡོད་ཚེ།)སྐོར་ཐག་གཅོད་བྱེད་ཆོག",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "དཀར་ཆག་གི་ཚོས།",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "དཀར་ཆག་ཡི་གེའི་ཚོས།",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "དཀར་ཆག་གཙོ་གནད་རྣམ་གྲངས་ཀྱི་ཚོས།",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "ལག་ཆས་ཚང་གཙོ་བོའི་རྒྱབ་ལྗོངས་ཀྱི་ཚོས།",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "ལག་ཆས་ཚང་གཙོ་བོའི་རིས་རྟགས་ཀྱི་ཚོས།",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "འགྲུལ་བསྐྱོད་ལག་ཆས་ཚང་གི་རྒྱབ་ལྗོངས་ཀྱི་ཚོས།",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "འགྲུལ་བསྐྱོད་ལག་ཆས་ཚང་གི་རིས་རྟགས་ཀྱི་ཚོས།",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "རང་འགུལ་ངང་ལག་ཆས་ཚང་སྦ་བ།",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "ལག་ཆས་ཚང་གི་གནས་ཡུལ་སྟོན་པ།",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "ཡར་ངོས།",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "མར་ངོས།",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "དབུས།",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "ཁ་དོག་གཅིག་མཚུངས།",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "པར་རིས།",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "རང་གི་པར་རིས་འདེམས་པ།",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "འོད་མདངས།",
+  "@light": {
+    "description": "Light"
+  },
+  "currentTheme": "མིག་སྔའི་བརྗོད་བྱ།",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "བརྗོད་བྱ་ཉར་བ།",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "དབྱེ་ཞིབ་རི་མོ་སྟོན།",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "དབྱེ་ཞིབ།",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "རྩེད་མོ་ཉར་བ།",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "རྩེད་མོ་མངོན་པ།",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "གནས་སྒྲིག་འཛུགས་པ།",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "ཁྲིམས་མཐུན་གྱི་སྤོ་ཐབས་སྟོན།",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "མཇུག་མཐའི་སྤོ་འགུལ་སྟོན།",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "མདའ་རྟགས་སྟོན།",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "རྡེལ།",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "དབྱེ་ཞིབ་བརྙན་རིས་སྟོན།",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Threads",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "མཉམ་ཞུགས་བྱེད།",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "tutorial": "སློབ་ཁྲིད།",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Classic Mill",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "རྩེད་འགྲན་པ་ཞིག་གི་རྡེལ་གསུམ་དུ་ཇེ་ཉུང་དུ་ཕྱིན་ནས། སྤོ་འགུལ་ཐེངས་བཅུའི་ནང་རྩེད་འགྲན་པ་གཉིས་ཀའི་གང་རུང་གིས་ཀྱང་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་བསུབ་མི་ཐུབ་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "ཁ་རྒྱག་པ།",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "དཀར་པོའི་རྡེལ།",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "ནག་པོའི་རྡེལ།",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "སྟོང་པའི་ས་ཚིགས།",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "ས་ཚིགས་མེད།",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "འཇོག་རིམ།",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "སྤོ་འགུལ་དུས་རིམ།",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "འཕུར་རིམ།",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "འགུལ་དགོས་པའི་ཕྱོགས། {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "མཐའ་མའི་སྤོ་འགུལ། {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "འདེམས་ཟིན།",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "སྤྱོད་སྟབས་",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "དྲ་མིག་ཀློག་ཆས་ལ་རྒྱབ་སྐྱོར།",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "གྲུབ་འབྲས་མཉམ་པ་རེད།",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "གྲུབ་འབྲས་མཉམ།",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "རྡེལ་མངོན་གསལ་ཚོས།",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "རྩིས་རྒྱག",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "མཇུག་མཐའི་ N-སྤོ་འགུལ་སྒྲིག་གཞི།",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "གལ་ཏེ་རྩེད་འགྲན་པ་གཉིས་ལ་རྡེལ་གསུམ་ལས་མེད་པ་དང་། ཡང་ན་རྩེད་འགྲན་པ་གཉིས་ཀྱིས་གཏན་འཁེལ་གྱི་སྤོ་འགུལ་ནང་རྡེལ་བསུབ་མེད་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "རྩེད་འགྲན་པ་གཉིས་ལ་རྡེལ་གསུམ་ལས་མེད་པ་དང་། ཡང་ན་རྩེད་འགྲན་པ་གཉིས་ཀྱིས་གཏན་འཁེལ་གྱི་སྤོ་འགུལ་ནང་རྡེལ་བསུབ་མེད།",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "ཐེངས་གསུམ་བསྐྱར་ཟློས་སྒྲིག་གཞི།",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "གལ་སྲིད་གནས་ས་གཅིག་ཐེངས་གསུམ་དུ་འབྱུང་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "གསུམ! མུ་མཐུད་དུ་གོམ་པ་སྤོས་ཏེ།",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "ས་ཚིགས་ཀྱི་རྣམ་པ།",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "ས་ཚིགས་ཀྱི་ཞེང་ཚད།",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "སྲ་གཟུགས།",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "སྟོང་གཟུགས།",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "noteActualDifficultyLevelMayBeLimited": "གལ་ཏེ་ཁྱེད་ཀྱིས་དཀའ་ངལ་གྱི་ཚད་གཞི་མཐོ་པོ་བཟོས་ཡོད་ཀྱང་AI བསམ་བློ་གཏོང་བའི་དུས་ཚོད་འཕར་མ་བྱེད་ན། བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ཀྱི་ཚད་གཞི་ལས་དཀའ་ངལ་གྱི་ཚད་གཞི་ངོ་མ་དེ་རིན་ཐང་དམའ་བར་ཚད་བཀག་བྱེད་སྲིད། རིན་ཐང་ངོ་མ་དེ་འཕྲུལ་ཆས་ཀྱི་བྱེད་ནུས་ལ་གཞིགས་ནས་མི་འདྲ་བ་ཆགས་སྲིད།",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "PVS (Principal Variation Search) ནི་གནས་ཡུལ་གཅིག་གི་ནང་ལ་འགུལ་སྐྱོད་ཡག་ཤོས་འཚོལ་བའི་འཚོལ་ཞིབ་རྩིས་གཞི་ཞིག་ཡིན། དེ་ནི་ཨལ་ཕ་བེ་ཊ་རྩིས་གཞིའི་ཡར་རྒྱས་ཤིག་ཡིན་པ་དང་། སྒེའུ་ཁུང་ཀླད་ཀོར་གྱི་འཚོལ་ཞིབ་བེད་སྤྱད་དེ་འགུལ་སྐྱོད་དེ་འགྱུར་བ་གཙོ་བོ་ནས་བདེ་འཇགས་ལྡན་པའི་གྲངས་ཀ་ལས་ངན་པའམ་ཡང་ན་སྡུག་པོ་མེད་པ་གཏན་འཁེལ་བྱེད། མཐོ་རིམ་སློབ་གྲྭའི་ནང་སློབ་སྦྱོང་བྱེད་བཞིན་པའི་སློབ་མ་ཚོས་སློབ་སྦྱོང་བྱེད་པའི་སྐབས་སུ། མཐོ་རིམ་སློབ་གྲྭའི་སློབ་མ་ཚོས་སློབ་སྦྱོང་བྱེད་པའི་སྐབས་སུ།",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "ཨལ་ཕ་བྷེ་ཊ་རྩིས་གཞི་ནི་གཡོ་འགུལ་ཡག་ཤོས་འཚོལ་བའི་འཚོལ་ཞིབ་རྩིས་གཞི་ཞིག་ཡིན། དེས་འཚོལ་ཞིབ་ཤིང་སྡོང་གཅོད་པ་དང་ནུས་པ་ཆེ་རུ་གཏོང་བར་ཆུང་ཤོས་ཀྱི་གཞི་རྩ་དང་རིན་ཐང་གཉིས་སྟེ་ཨལ་ཕ་དང་བེ་ཊ་བེད་སྤྱོད་བྱེད་ཀྱི་ཡོད། གློག་ཀླད་ལ་ཐོབ་ཐུབ་པའི་གྲངས་ཀ་ཆུང་ཤོས་དེ་ཨལ་ཕ་ཡིས་མཚོན་པ་དང་། བེ་ཊ་ཡིས་ཁ་གཏད་ལ་ཐོབ་ཐུབ་པའི་གྲངས་ཀ་ཆེ་ཤོས་དེ་མཚོན་གྱི་ཡོད། རྩིས་གཞི་དེས་གློག་ཀླད་ལ་རྩེད་མོའི་ནང་ཐག་གཅོད་ཡག་པོ་དང་ཕན་ནུས་ལྡན་པ་བཟོ་བར་ཕན་ཐོགས།",
+  "@whatIsAlphaBeta": {},
+  "drawOnTheHumanExperienceDetail": "འགྲོ་བ་མིའི་ཉམས་མྱོང་ལྟར་ན་རྒྱལ་ཁ་ཐོབ་པར་འབད་བརྩོན་བྱས་ན། དེ་ལས་ལྡོག་སྟེ་ཁྱེད་རང་གི་དམིགས་ཡུལ་དུ་འདྲ་མཉམ་ཡོང་རྒྱུ་དེ་དམིགས་ནས་རྩེད་མོ་ཕམ་རྒྱུ་ལས་གཡོལ་དགོས། ཁྱེད་རང་གི་ཁ་གཏད་ལ་དོ་སྣང་བྱས་ནས་ཁོ་ཚོས་ནོར་འཁྲུལ་བཟོ་སྲིད་པའི་གནས་བབ་ལ་དལ་བུས་ངང་ནས་བསླུ་བྲིད་གཏོང་དགོས། ཁོང་ཚོས་ཞན་ཆ་སྟོན་དུས་གོ་སྐབས་དམ་འཛིན་བྱས་ནས་རྒྱལ་ཁ་ཐོབ་པར་དལ་བུས་ངང་སྐུལ་འདེད་གཏོང་དགོས། དེ་ལྟར་བྱས་ན་རྒྱལ་ཁ་ཐོབ་ཐུབ།",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "རྩེད་མོ་འདིའི་ནང་དུ་རྩེད་མོ་བ་དང་པོ་དང་བསྡུར་ན་རྩེད་མོ་བ་གཉིས་པ་ལ་རྒྱལ་ཁ་ཐོབ་སླ་བ་རེད།",
+  "@firstMoveDetail": {},
+  "passiveDetail": "གདམ་ག་མེད་པའི་གདམ་ག་དེ་ལག་བསྟར་བྱེད་པ་དེས་མིས་བཟོས་རིག་ནུས་ལ་གནས་བབ་དེའི་ནང་ཁེ་ཕན་ཡོད་པའི་སྐབས་ལ་ལྷོད་པོ་ཆགས་རྒྱུ་ལས་གང་མགྱོགས་རྒྱལ་ཁ་ཐོབ་པར་དྲག་ཤུགས་ཀྱིས་འབད་བརྩོན་བྱེད་པ་ལས་ལྷག་པར་དུ་བདེ་འཇགས་ཡོང་བར་བྱེད།",
+  "@passiveDetail": {},
+  "considerMobilityOfPiecesDetail": "གལ་ཏེ་མིས་བཟོས་རིག་ནུས་དེས་ཁོང་གི་ཕྲེང་བའི་འགུལ་སྐྱོད་ལ་བསམ་གཞིག་བྱས་ན། དེས་ཁ་གཏད་ཀྱི་ཕྲེང་བ་དེ་གང་མགྱོགས་འཛིན་ཐུབ་པའི་དམིགས་ཡུལ་བྱེད་པ་མ་ཟད།",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "རྩེད་པང་ཁེངས་པའི་སྐབས།",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "འཇོག་རིམ་མཇུག་སྒྲིལ་སྐབས། སྤོ་འགུལ་དུས་རིམ་འགོ་མ་ཚུགས་གོང་། རྩེད་པང་ཁེངས་ཚེ་གཤམ་གྱི་བྱ་སྤྱོད་སྤེལ།",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "སྤོ་འགུལ་དུས་རིམ་ནང་སྔོན་ལ་འགུལ་མཁན་གྱིས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ།",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "ཕྱོགས་གཉིས་ཀྱིས་གྲུབ་འབྲས་མཉམ་པར་མོས་མཐུན།",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "ཁྱེད་ཀྱི་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་ལེན།",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "རྩེད་འགྲན་པ་དང་པོས་རྩེད་མོ་ཕམ།",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "རྩེད་འགྲན་པ་དང་པོ་དང་གཉིས་པས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རེ་རེ་བསུབ།",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "རྩེད་འགྲན་པ་གཉིས་པ་དང་དང་པོས་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རེ་རེ་བསུབ།",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "ད་ལྟ་འཕུར་རིམ་དུ་ཞུགས་པ་ཡིན། ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་རྣམས་རྩེད་པང་ཐོག་གི་སྟོང་ས་གང་རུང་དུ་མཆོང་ཐུབ། ཁྱོད་ཀྱིས་“སྒྲིག་སྲོལ་གཞི་སྒྲིག་”ནང་འཕུར་སྒྲིག་སྲོལ་སྒོ་རྒྱག་ཆོག",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "འགུལ་མེད་སྐབས།",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "རྡེལ་གང་ཡང་སྤོ་འགུལ་མི་ཐུབ་པའི་སྐབས་གཤམ་གྱི་བྱ་སྤྱོད་གང་སྤེལ།",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "འགུལ་མེད་ཕམ་ཁ་ཞིག་གིས་འགོག་རྐྱེན་ཐེབས་པའི་ཕྱོགས་མཇུག་བསྡུ།",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ་པ་དང་འགུལ་རྗེས་མ་སྤེལ།",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "འགུལ་མེད་གྲུབ་འབྲས་མཉམ་པས་མཇུག་བསྡུ།",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་བསུབ་པ་དང་སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI ཡི་ཡ་ལན་འགོར་འགྱངས་དུས་ཚོད།",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI ད་ལྟ་ཡ་ལན་འགོར་འགྱངས་དུས་རིམ་དུ་གནས། ဆက်လုပ်སྔོན་ལ་ཏོག་ཙམ་བསྒུག་རོགས།",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "ཁྱོད་ཀྱིས་མཐའ་འཁོར་མིན་པའི་རྡེལ་བསུབ་མི་ཆོག",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "གལ་ཏེ་ལམ་ལྷོང་མེད་ན། ཁྱེད་ཀྱི་ཉེ་འགྲམ་གྱི་ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་ཚོ་སྒྲིག་གཞི་གསུམ་ལ་མ་ལྟོས་པར་བཏོན་ཐུབ།",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS ནི་གསར་འགོ་རྩེད་མཁན་ལ་འཚམ་པའི་གཅིག་རྩིས་རྒྱུ་རྩལ་ཡིན་ཞིང་། འདྲ་སྐུའི་བརྒྱུད་ནས་སྤོ་འགུལ་སྣ་ཚོགས་ལ་འཚོལ་ཞིབ་དང་གདེང་འཇོག་བྱས་ཏེ་ཐག་གཅོད་གཏོང་།",
+  "@whatIsMcts": {},
+  "goldenJade": "གསེར་མདོག་བྱུ་རུ།",
+  "@goldenJade": {},
+  "forestWood": "ནགས་ཚལ་ཤིང་ནགས།",
+  "@forestWood": {},
+  "darkMystery": "མུན་ནག་གི་གསང་བ།",
+  "@darkMystery": {},
+  "midnightBlue": "ནམ་ཕྱེད་མཚན་མོའི་སྔོན་པོ།",
+  "@midnightBlue": {},
+  "greenForest": "ལྗང་མདོག་ནགས་ཚལ།",
+  "@greenForest": {},
+  "greenMeadow": "ལྗང་མདོག་རྩྭ་ཐང་།",
+  "@greenMeadow": {},
+  "stonyPath": "རྡོ་ལམ་ཁྲ་ཁྲ།",
+  "@stonyPath": {},
+  "pastelPink": "སྐྱ་མདོག་སོབ་སོབ།",
+  "@pastelPink": {},
+  "turquoiseSea": "གཡུ་མདོག་རྒྱ་མཚོ།",
+  "@turquoiseSea": {},
+  "violetDream": "སྨུག་སྤྲིན་གྱི་རྨི་ལམ།",
+  "@violetDream": {},
+  "mintChocolate": "བོང་སྒྲོག་ཏོག་སྙོལ།",
+  "@mintChocolate": {},
+  "skyBlue": "ནམ་མཁའི་སྔོན་པོ།",
+  "@skyBlue": {},
+  "playfulGarden": "རྩེད་འཇོའི་ལྡུམ་ར།",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "ཕྱིར་ལོག་དབྱེ་ཞིབ་རྩིས་གཞི་དེས་འགོ་འཛུགས་གནས་ཡུལ་མི་འདྲ་བ་ནས་མཇུག་མཐའི་རྩེད་མོའི་གནས་སྡུད་གཞི་གྲངས་བཟོ་བར་རིན་ཐང་སྣ་ཚོགས་ཀྱི་ཕྱིར་ལོག་དབྱེ་ཞིབ་བཀོལ་སྤྱོད་བྱེད་ཀྱི་ཡོད། ཐབས་ལམ་འདི་ཧ་ཅང་ཤུགས་ཆེ་བའི་ཐབས་ཤེས་ཀྱི་སྡེ་ཚན་འོག་ལ་ཚུད་ཡོད།",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "ཁྱེད་རང་རྩིས་གཞི་འདིའི་སྤྱོད་མཁན་གྱི་ལམ་སྟོན་ལ་ལྟ་འདོད་དམ།",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "གོ་གནས་ཀྱི་དགེ་མཚན་སྟོན་པ།",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "གྲངས་མཛོད་ཡང་དག་པ་བེད་སྤྱོད་བྱེད་པ།",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "གདམ་ཁ་འདི་ཁ་ཕྱེ་ནས་རྩེད་མོའི་གནས་སྡུད་གཞི་གྲངས་ཡག་ཤོས་ཤིག་བེད་སྤྱོད་གཏོང་དགོས། ཁྱད་ཆོས་འདིས་རྩེད་མོའི་ཁ་ཕྱེ་བ་དང་མཇུག་སྒྲིལ་གྱི་ཐབས་ཤེས་མཉམ་དུ་བསྡུས་ནས་འགུལ་སྐྱོད་ཡག་ཤོས་བསྟན་པ་དང་། རྩེད་མོའི་ནང་དུ་གཏན་ཚིགས་མཐོ་ཤོས་འཚོལ་མཁན་གྱི་རྩེད་མོ་བ་ཚོའི་འདམ་ག་དང་པོ་ཡིན། གནས་སྡུད་གཞི་གྲངས་དེ་རྩེད་མོའི་ཐབས་ཤེས་ཡག་ཤོས་མཁོ་སྤྲོད་བྱེད་པའི་ཆེད་དུ་བཟོས་པའི་རྩིས་འཁོར་ལག་རྩལ་ཚད་ལྡན་བརྒྱུད་ནས་བཟོས་ཡོད།\n\nགལ་ཏེ་འཕྲུལ་ཆས་ལ་གནས་སྡུད་གཞི་གྲངས་ལ་འཛུལ་ཐུབ་ཀྱི་མེད་ན། སྲོལ་རྒྱུན་གྱི་རྩིས་གཞི་དེ་ཚོ་རྩེད་མོའི་ཐག་གཅོད་བྱེད་པར་བསྒྱུར་རྒྱུ་རེད། གནས་སྡུད་གཞི་གྲངས་ཡོད་པའི་སྐབས་དཀའ་ངལ་གྱི་ཚད་གཞི་དེ་དངོས་གནས་ཧ་ཅང་མཐོ་པོ་ཆགས་ནས་འཕྲུལ་ཆས་ཀྱི་བསམ་བློ་གཏོང་བའི་དུས་ཚོད་ཧ་ཅང་ཉུང་དུ་ཕྱིན་ཡོད། འཕྲུལ་ཆས་ཀྱི་མདའ་རྩེད་རྣམ་པའི་གདམ་ཁའི་སྒྲིག་སྟངས་མང་པོ་ཡང་བརྗེ་སྒྱུར་བྱེད་ཀྱི་ཡོད། རྒྱུ་མཚན་ནི་གནས་སྡུད་གཞི་གྲངས་ཀྱི་གྲུབ་འབྲས་ལ་གཙོ་གནད་ཆེ་ཤོས་ཡོད།\n\nགཞི་གྲངས་མཛོད་འདི་བེད་སྤྱོད་གཏོང་སྟངས་ཤེས་འདོད་ན། འདིར་སྣུན་རོགས།",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "རྒྱབ་ལྗོངས་པར་རིས།",
+  "@backgroundImage": {},
+  "whatIsRandom": "གཞི་གྲངས་མཛོད་ཡང་དག་པ་བེད་སྤྱོད་བྱེད་ གདམ་ཁ་འདི་ལྕོགས་ཅན་མེད་པའི་སྐབས་ གང་བྱུང་སྒྲིག་སྟངས་ཀྱིས་འཕྲུལ་ཆས་ཀྱིས་སྤོ་བཤུད་འདེམས་སྒྲུག་རྩིས་གཞི་གང་རུང་བཀོལ་སྤྱོད་མ་བྱེད་པར་གང་བྱུང་དུ་ཆ་ཤས་སྤོ་བཤུད་བྱེད། འདིས་རྒྱུན་དུ་རྩེད་མོའི་རྣམ་པ་མངོན་གསལ་དོད་པོས་ཞན་དུ་བཏང་བ་རེད། དེ་ལས་ལྡོག་སྟེ། གནས་སྡུད་གཞི་གྲངས་ཡང་དག་པ་བེད་སྤྱོད་གཏོང་སྐབས་མིས་བཟོས་རིག་སྟོབས་ཀྱིས་གནས་ཚུལ་གཞི་གྲངས་ཡང་དག་པ་ལ་བརྟེན་ནས་ཐག་གཅོད་བྱེད་ཀྱི་ཡོད། ཐབས་ལམ་འདིའི་ནང་མིས་བཟོས་རིག་སྟོབས་ཀྱི་བྱ་སྤྱོད་དེ་ཚོ་གནས་སྡུད་གཞི་གྲངས་ཀྱི་ནང་དོན་ལ་གཞི་བཅོལ་ནས་དུས་ཚོད་ངོ་མའི་རྩིས་རྒྱག་དང་འཚོལ་ཞིབ་ཀྱི་རྩིས་གཞི་ལ་རག་ལུས་པ་སྔོན་འགོག་བྱེད་ཀྱི་ཡོད།",
+  "@whatIsRandom": {},
+  "whenFormingMillsDuringPlacingPhase": "འཇོག་པའི་སྐབས་སུ་འཕྲུལ་འཁོར་བཟོ་སྐབས།",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་དགོས།",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་དགོས། དེ་ནས་ཁ་གཏད་ཀྱི་དུས་ཚོད་རེད།",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "ཁ་གཏད་དེས་ཁོ་རང་གི་ཆ་ཤས་དེ་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་ཀྱི་ཡོད།",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "ཁྱེད་རང་གིས་བྱ་སྤྱོད་སྤེལ་བའི་ཚབ་ཏུ། ཁ་གཏད་དེས་ཁོ་རང་གི་ཆ་ཤས་འདེམས་ནས་བང་ཁྲི་ནས་ཕྱིར་འཐེན་བྱེད་པ་དེས་ཁོ་རང་ལ་གནོད་སྐྱོན་གཏོང་བའི་བྱ་སྤྱོད་དེ་ཕན་ནུས་ལྡན་པའི་སྒོ་ནས་སྤེལ་གྱི་ཡོད།",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "ཁ་གཏད་ཀྱི་ལག་ནས་ཆ་ཤས་དེ་བཏོན་ནས་དེ་ནས་ཁྱེད་རང་འགུལ་སྐྱོད་བྱེད་པའི་དུས་ཚོད་རེད།",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "ཁ་གཏད་ཀྱི་ལག་ནས་དུམ་བུ་བཏོན་དགོས། གལ་ཏེ་སྣ་མང་བཏོན་པའི་སྒྲིག་སྟངས་ལྟར་ན། ཆ་ཤས་མང་པོ་བཏོན་དགོས་པ་དང་ཁ་གཏད་ཀྱི་ལག་ཏུ་ཆ་ཤས་གང་ཡང་མ་ལྷག་ན། དེ་ནས་ཁྱེད་རང་འགུལ་སྐྱོད་བྱེད་པའི་དུས་ཚོད་རེད། གལ་ཏེ་ཁྱེད་ཀྱིས་མུ་མཐུད་དུ་འཕྲུལ་ཁང་བཟོས་ན། ཁྱེད་ཀྱིས་ཁ་གཏད་ཀྱི་ཆ་ཤས་དེ་དག་མུ་མཐུད་དུ་མེད་པར་བཟོ་སྲིད།",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ཁ་གཏད་ཀྱི་ལག་ནས་དུམ་བུ་བཏོན་དགོས། གལ་ཏེ་སྣ་མང་བཏོན་པའི་སྒྲིག་སྟངས་ལྟར་ན། ཆ་ཤས་མང་པོ་བཏོན་དགོས་པ་དང་ཁ་གཏད་ཀྱི་ལག་ཏུ་ཆ་ཤས་གང་ཡང་མ་ལྷག་ན། དེ་ནས་ཁ་གཏད་གཡོ་འགུལ་བྱེད་པའི་དུས་ཚོད་རེད།",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "རྟགས་བཀོད་ནས་དུམ་བུ་མེད་པར་བཟོ་རྒྱུ་ཕྱིར་འགྱངས།",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "བཀོད་སྒྲིག་བྱེད་པའི་སྐབས་སུ་བཏོན་དགོས་པའི་དངོས་པོ་དེ་དག་ལ་རྟགས་བཀོད་ཡོད། རྩེད་མོ་བ་གཉིས་ཀའི་ཆེད་དུ་དངོས་པོ་གསར་པ་གང་ཡང་ས་ཚིགས་དེ་དག་ལ་འཇོག་མི་ཐུབ། འགུལ་སྐྱོད་ཀྱི་དུས་རིམ་ལ་འཛུལ་སྐབས་རྟགས་བཀོད་པའི་དངོས་པོ་དེ་དག་ཡོངས་སུ་མེད་པར་བཟོས་པ་དང་། དེ་ནས་རྩེད་མོ་བ་ཚོས་ཁོང་ཚོའི་དངོས་པོ་དེ་དག་ད་ལྟ་སྟོང་པའི་ས་ཚིགས་དེ་དག་ལ་སྤོ་ཐུབ།",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "restrictRepeatedMillsFormation_Detail": "རྡེལ་གཅིག་ གསུམ གཅིག་ནས་སྤོས་ཏེ་ གསུམ གཞན་ཞིག་གྲུབ་པ་ཡིན་ཚེ། སྐོར་རྗེས་མའི་སྐབས་སུ་དེ་མ་ཐག་ཏུ་ཐོག་མའི་ས་ཚིགས་སུ་ལོག་ནས་ཡང་བསྐྱར་ གསུམ གྲུབ་པ་བཟོ་མི་ཆོག སྤོ་འགུལ་མི་འདྲ་བ་གཅིག་བྱེད་དགོས་པ་རེད།",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "ཐེངས་གཅིག་བེད་སྤྱོད་ mill",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "རེ mill ལ་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་མ་གཏོགས་བསུབ་མི་ཆོག ཁྱོད་ཀྱིས་ཡང་བསྐྱར་བཟོ་ཐུབ། ཡིན་ནའང་དེ་ལ་បន្ថែམ་བསུབ་ཏུ་བེད་སྤྱོད་མི་ཆོག",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "ཁྱེད་ཀྱིས་གཏན་འབེབས་བྱས་པའི་ད་ལྟའི་ཁྲིམས་ལུགས་ལ་གནས་སྡུད་གཞི་གྲངས་ཡང་དག་པ་ཞིག་མེད། གཞི་གྲངས་མཛོད་ཀྱི་སྐོར་ལ་གནས་ཚུལ་མང་པོ་ཤེས་འདོད་ན། འདིར་སྣུན་རོགས།",
+  "@currentRulesNoPerfectDatabase": {}
+}
