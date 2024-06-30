@@ -286,7 +286,9 @@ class BoardPainter extends CustomPainter {
 
     final TextSpan notationSpan = TextSpan(
       style: notationTextStyle,
-      text: horizontalNotations[index],
+      text: DB().generalSettings.screenReaderSupport
+          ? horizontalNotations[index].toUpperCase()
+          : horizontalNotations[index],
     );
 
     final TextPainter notationPainter = TextPainter(

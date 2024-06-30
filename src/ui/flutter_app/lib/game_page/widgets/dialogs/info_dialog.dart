@@ -51,8 +51,13 @@ class _InfoDialog extends StatelessWidget {
     }
 
     final String? n1 = controller.gameRecorder.current?.notation;
+
     // Last Move information
     if (n1 != null) {
+      final String formattedNotation = DB().generalSettings.screenReaderSupport
+          ? n1.toUpperCase()
+          : n1.toLowerCase();
+
       // $them is only shown with the screen reader. It is convenient for
       // the disabled to recognize whether the opponent has finished the moving.
       buffer.write(
@@ -62,20 +67,23 @@ class _InfoDialog extends StatelessWidget {
       );
 
       if (n1.startsWith("x")) {
+        String moveNotation = "";
         if (controller.gameRecorder.length == 1) {
           // TODO: Right? (Issue #686)
-          buffer.writeln(
-            controller
-                .gameRecorder[controller.gameRecorder.length - 1].notation,
-          );
+          moveNotation = controller
+              .gameRecorder[controller.gameRecorder.length - 1].notation;
         } else if (controller.gameRecorder.length >= 2) {
-          buffer.writeln(
-            controller
-                .gameRecorder[controller.gameRecorder.length - 2].notation,
-          );
+          moveNotation = controller
+              .gameRecorder[controller.gameRecorder.length - 2].notation;
         }
+        // Apply correct case based on screen reader setting
+        moveNotation = DB().generalSettings.screenReaderSupport
+            ? moveNotation.toUpperCase()
+            : moveNotation.toLowerCase();
+        buffer.writeln(moveNotation);
       }
-      buffer.writeComma(n1);
+
+      buffer.writeComma(formattedNotation);
     }
 
     buffer.writePeriod(S.of(context).sideToMove(us));

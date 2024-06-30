@@ -130,17 +130,31 @@ class ExtMove {
   // "notation" is Standard Notation
   // Sample: xa1, a1-b2, a1
   String get notation {
+    // Fetch the screen reader support setting
+    bool useUpperCase = DB().generalSettings.screenReaderSupport;
+
     switch (type) {
       case MoveType.remove:
-        return "x${_squareToWmdNotation[to]}";
+        return useUpperCase
+            ? "x${_squareToWmdNotation[to]}".toUpperCase()
+            : "x${_squareToWmdNotation[to]}";
       case MoveType.move:
-        return "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
+        return useUpperCase
+            ? "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}"
+                .toUpperCase()
+            : "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
       case MoveType.place:
-        return _squareToWmdNotation[to]!;
+        return useUpperCase
+            ? _squareToWmdNotation[to]!.toUpperCase()
+            : _squareToWmdNotation[to]!;
       case MoveType.draw:
-        return _squareToWmdNotation[to]!; // TODO: Can parse?
+        return useUpperCase
+            ? _squareToWmdNotation[to]!.toUpperCase()
+            : _squareToWmdNotation[to]!; // TODO: Can parse?
       case MoveType.none:
-        return _squareToWmdNotation[to]!; // TODO: Can parse?
+        return useUpperCase
+            ? _squareToWmdNotation[to]!.toUpperCase()
+            : _squareToWmdNotation[to]!; // TODO: Can parse?
       case null:
         logger.e("notation: Invalid MoveType");
         return "";

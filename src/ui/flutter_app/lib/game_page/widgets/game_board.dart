@@ -443,7 +443,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     for (final String file
         in ltr ? horizontalNotations : horizontalNotations.reversed) {
       for (final String rank in verticalNotations) {
-        coordinates.add("$file$rank");
+        coordinates.add("${file.toUpperCase()}$rank");
       }
     }
 

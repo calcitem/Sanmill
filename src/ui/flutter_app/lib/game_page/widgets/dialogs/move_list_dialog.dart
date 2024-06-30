@@ -182,7 +182,9 @@ class _MoveListDialog extends StatelessWidget {
         break;
       }
 
-      final String moveText = mergedMoves[moveIndex + i];
+      final String moveText = DB().generalSettings.screenReaderSupport
+          ? mergedMoves[moveIndex + i].toUpperCase()
+          : mergedMoves[moveIndex + i];
       spans.add(
         WidgetSpan(
           child: ValueListenableBuilder<int?>(
