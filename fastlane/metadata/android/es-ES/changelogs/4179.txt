@@ -1,0 +1,6 @@
+v4.13.0
+
+Soporte para restringir la formación repetida de molinos.
+Esta regla impide que un jugador mueva una pieza a su posición original para
+reformar inmediatamente un molino, si la pieza fue utilizada solo para formar un molino en el
+turno anterior.
