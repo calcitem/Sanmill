@@ -37,7 +37,11 @@ class _MoveListDialog extends StatelessWidget {
     final int fenHeight = fen == null ? 2 : 14;
 
     if (DB().generalSettings.screenReaderSupport) {
-      rootScaffoldMessengerKey.currentState!.clearSnackBars();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (rootScaffoldMessengerKey.currentState != null) {
+          rootScaffoldMessengerKey.currentState!.clearSnackBars();
+        }
+      });
     }
 
     // ValueNotifier to track the selected index
