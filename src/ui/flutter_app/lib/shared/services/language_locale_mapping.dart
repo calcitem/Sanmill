@@ -22,6 +22,7 @@ import '../../generated/intl/l10n_az.dart';
 import '../../generated/intl/l10n_be.dart';
 import '../../generated/intl/l10n_bg.dart';
 import '../../generated/intl/l10n_bn.dart';
+import '../../generated/intl/l10n_bo.dart';
 import '../../generated/intl/l10n_bs.dart';
 import '../../generated/intl/l10n_cs.dart';
 import '../../generated/intl/l10n_da.dart';
@@ -80,6 +81,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("be"): SBe().languageName, // Belarusian
   const Locale("bg"): SBg().languageName, // Bulgarian
   const Locale("bn"): SBn().languageName, // Bengali
+  const Locale("bo"): SBo().languageName, // Tibetan
   const Locale("bs"): SBs().languageName, // Bosnian
   const Locale("cs"): SCs().languageName, // Czech
   const Locale("da"): SDa().languageName, // Danish

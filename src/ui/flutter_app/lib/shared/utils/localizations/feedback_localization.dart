@@ -41,6 +41,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("be"): const BeFeedbackLocalizations(), // Belarusian
     const Locale("bg"): const BgFeedbackLocalizations(), // Bulgarian
     const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
+    const Locale("bo"): const BoFeedbackLocalizations(), // Tibetan
     const Locale("bs"): const BsFeedbackLocalizations(), // Bosnian
     const Locale("cs"): const CsFeedbackLocalizations(), // Czech
     const Locale("da"): const DaFeedbackLocalizations(), // Danish
@@ -254,6 +255,29 @@ class BnFeedbackLocalizations extends FeedbackLocalizations {
       const BnFeedbackLocalizations(),
     );
   }
+}
+
+class BoFeedbackLocalizations extends FeedbackLocalizations {
+  const BoFeedbackLocalizations();
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const BoFeedbackLocalizations(),
+    );
+  }
+
+  @override
+  String get submitButtonText => 'སྤྲོད་པ';
+
+  @override
+  String get feedbackDescriptionText =>
+      'རིན་ཐང་ཅན་གྱི་བསམ་ཚུལ་དང་བསམ་ཚུལ་འགོད་རོགས།';
+
+  @override
+  String get draw => 'རི་མོ་བྲིས་པ།';
+
+  @override
+  String get navigate => 'འགྲིམ་འགྲུལ།';
 }
 
 class BsFeedbackLocalizations extends FeedbackLocalizations {

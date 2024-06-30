@@ -690,7 +690,7 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
-  "languageName": "དབྱིན་ཇི།",
+  "languageName": "བོད་སྐད་",
   "@languageName": {
     "description": "The name of the current language"
   },
