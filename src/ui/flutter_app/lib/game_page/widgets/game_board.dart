@@ -441,8 +441,8 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     final bool ltr = Directionality.of(context) == TextDirection.ltr;
 
     for (final String file
-        in ltr ? verticalNotations : verticalNotations.reversed) {
-      for (final String rank in horizontalNotations) {
+        in ltr ? horizontalNotations : horizontalNotations.reversed) {
+      for (final String rank in verticalNotations) {
         coordinates.add("$file$rank");
       }
     }
