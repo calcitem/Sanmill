@@ -131,7 +131,7 @@ class ExtMove {
   // Sample: xa1, a1-b2, a1
   String get notation {
     // Fetch the screen reader support setting
-    bool useUpperCase = DB().generalSettings.screenReaderSupport;
+    final bool useUpperCase = DB().generalSettings.screenReaderSupport;
 
     switch (type) {
       case MoveType.remove:
