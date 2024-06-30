@@ -373,7 +373,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
           ],
         ),
-        if (!kIsWeb && Platform.isAndroid)
+        if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsCard(
             title: Text(S.of(context).accessibility),
             children: <Widget>[
