@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Chaque moulin peut retirer une pièce de l'adversaire une seule fois. Vous pouvez le reformer à nouveau, mais il ne peut pas être utilisé pour des suppressions supplémentaires.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Les règles actuelles que vous avez définies n'ont pas de base de données parfaite correspondante. Pour plus d'informations sur la base de données parfaite, veuillez cliquer ici.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Concentrez-vous sur le blocage des chemins",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Privilégiez l'obstruction des mouvements de l'adversaire plutôt que la formation de moulins. Au lieu de se concentrer sur le retrait des pièces en complétant des moulins, l'IA vise à piéger l'adversaire, le rendant incapable de se déplacer et assurant une victoire par attrition plutôt que par un jeu agressif. Cette stratégie ne bloque pas activement les moulins de l'adversaire.",
+  "@focusOnBlockingPaths_Detail": {}
 }

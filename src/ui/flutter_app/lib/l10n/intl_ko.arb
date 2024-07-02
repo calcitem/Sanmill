@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "각 참고누는 상대의 조각을 한 번만 제거할 수 있습니다. 다시 형성할 수 있지만 추가 제거에는 사용할 수 없습니다.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "설정한 현재 규칙에 해당하는 완벽한 데이터베이스가 없습니다. 완벽한 데이터베이스에 대한 자세한 정보는 여기를 클릭하십시오.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "차단 경로에 집중",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "밀을 형성하는 것보다 상대방의 움직임을 방해하는 것을 우선시합니다. 밀을 완성하여 조각을 제거하는 데 집중하는 대신, AI는 상대를 함정에 빠뜨리고 움직이지 못하게 하여 공격적인 플레이보다는 소모전을 통해 승리를 확보하는 것을 목표로 합니다. 이 전략은 상대의 밀을 적극적으로 막지 않습니다.",
+  "@focusOnBlockingPaths_Detail": {}
 }

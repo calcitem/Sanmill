@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "Each mill can remove an opponent's piece only once. You can reform it again, but it cannot be used for additional removals.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Focus on blocking paths",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritize obstructing the opponent's movement over forming mills. Instead of focusing on removing pieces by completing mills, the AI aims to trap the opponent, rendering them unable to move and securing a win through attrition rather than aggressive play. This strategy does not actively block the opponent's mills.",
+  "@focusOnBlockingPaths_Detail": {}
 }

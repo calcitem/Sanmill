@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "Mỗi cối xay có thể loại bỏ một mảnh của đối thủ chỉ một lần. Bạn có thể tái tạo nó, nhưng không thể sử dụng để loại bỏ bổ sung.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Các quy tắc hiện tại bạn đã đặt không có cơ sở dữ liệu hoàn hảo tương ứng. Để biết thêm thông tin về cơ sở dữ liệu hoàn hảo, vui lòng nhấp vào đây.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Tập trung vào việc chặn đường",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Ưu tiên cản trở di chuyển của đối thủ thay vì tạo thành cối xay. Thay vì tập trung vào việc loại bỏ các quân cờ bằng cách hoàn thành cối xay, AI nhằm bẫy đối thủ, khiến họ không thể di chuyển và đảm bảo chiến thắng thông qua sự kiệt sức thay vì lối chơi hung hăng. Chiến lược này không chủ động chặn các cối xay của đối thủ.",
+  "@focusOnBlockingPaths_Detail": {}
 }

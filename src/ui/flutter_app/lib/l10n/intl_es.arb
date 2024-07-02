@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Cada molino puede eliminar una pieza del oponente solo una vez. Puedes volver a formarlo, pero no se puede usar para eliminaciones adicionales.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Las reglas actuales que has establecido no tienen una base de datos perfecta correspondiente. Para obtener más información sobre la base de datos perfecta, haga clic aquí.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Concéntrese en bloquear caminos",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Priorice obstruir el movimiento del oponente sobre formar molinos. En lugar de centrarse en eliminar piezas completando molinos, la IA busca atrapar al oponente, dejándolo incapaz de moverse y asegurando una victoria mediante el desgaste en lugar de un juego agresivo. Esta estrategia no bloquea activamente los molinos del oponente.",
+  "@focusOnBlockingPaths_Detail": {}
 }

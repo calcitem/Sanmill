@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Každý mlýn může odstranit pouze jeden kus soupeře. Můžete jej znovu sestavit, ale nelze jej použít pro další odstranění.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Aktuální pravidla, která jste nastavili, nemají odpovídající dokonalou databázi. Pro více informací o dokonalé databázi klikněte zde.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Zaměřte se na blokování cest",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritizujte bránění pohybu soupeře před tvořením mlýnů. Místo zaměření se na odstraňování figurek dokončováním mlýnů, AI se snaží chytit soupeře do pasti, znemožnit mu pohyb a zajistit vítězství opotřebováním místo agresivní hry. Tato strategie aktivně neblokuje soupeřovy mlýny.",
+  "@focusOnBlockingPaths_Detail": {}
 }

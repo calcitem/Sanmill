@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Her değirmen sadece bir kez rakibin parçasını çıkarabilir. Tekrar oluşturabilirsiniz, ancak ek çıkarmalar için kullanılamaz.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Belirlediğiniz mevcut kuralların karşılık gelen mükemmel bir veritabanı yoktur. Mükemmel veritabanı hakkında daha fazla bilgi için lütfen buraya tıklayın.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Engelleyici yollar üzerinde yoğunlaşın",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Rakibin hareketlerini engellemeyi, değirmenler oluşturmanın önüne koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu strateji, rakibin değirmenlerini aktif olarak engellemez.",
+  "@focusOnBlockingPaths_Detail": {}
 }

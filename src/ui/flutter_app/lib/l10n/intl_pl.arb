@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Każdy młyn może usunąć tylko jedną część przeciwnika. Możesz go ponownie utworzyć, ale nie można go użyć do dodatkowego usuwania.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Ustawione przez ciebie aktualne zasady nie mają odpowiedniej idealnej bazy danych. Aby uzyskać więcej informacji o idealnej bazie danych, kliknij tutaj.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Skoncentruj się na blokowaniu dróg",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Priorytetem jest utrudnianie ruchów przeciwnika, a nie tworzenie młynów. Zamiast skupiać się na usuwaniu pionów poprzez ukończenie młynów, SI dąży do unieruchomienia przeciwnika, uniemożliwiając mu poruszanie się i zapewniając zwycięstwo poprzez wyczerpanie, a nie agresywną grę. Ta strategia nie blokuje aktywnie młynów przeciwnika.",
+  "@focusOnBlockingPaths_Detail": {}
 }

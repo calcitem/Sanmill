@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Katra dzirnava var noņemt tikai vienu pretinieka gabalu. Jūs varat to atkārtoti izveidot, bet to nevar izmantot papildu noņemšanai.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Pašreizējiem noteikumiem, ko esat iestatījis, nav atbilstošas ideālās datubāzes. Lai iegūtu vairāk informācijas par ideālo datubāzi, lūdzu, noklikšķiniet šeit.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Koncentrējieties uz ceļu bloķēšanu",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritizējiet pretinieka kustību bloķēšanu, nevis dzirnavu veidošanu. Tā vietā, lai koncentrētos uz figūru noņemšanu, pabeidzot dzirnavas, AI cenšas ieslodzīt pretinieku, padarot viņu nespējīgu kustēties un nodrošinot uzvaru ar izturību, nevis agresīvu spēli. Šī stratēģija aktīvi nebloķē pretinieka dzirnavas.",
+  "@focusOnBlockingPaths_Detail": {}
 }

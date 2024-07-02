@@ -85,6 +85,7 @@ class GeneralSettings {
     this.usePerfectDatabase = false,
     this.drawOnHumanExperience = true,
     this.considerMobility = true,
+    this.focusOnBlockingPaths = false,
     @Deprecated(
         "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode")
     this.developerMode = false,
@@ -194,6 +195,9 @@ class GeneralSettings {
 
   @HiveField(27, defaultValue: false)
   final bool usePerfectDatabase;
+
+  @HiveField(28, defaultValue: false)
+  final bool focusOnBlockingPaths;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

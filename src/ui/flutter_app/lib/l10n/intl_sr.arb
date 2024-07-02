@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Сваки млин може уклонити само један део противника. Можете га поново формирати, али се не може користити за додатна уклањања.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Тренутна правила која сте поставили немају одговарајућу савршену базу података. За више информација о савршеној бази података кликните овде.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Фокусирајте се на блокирање путева",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritet dajte ometanju kretanja protivnika umesto formiranja tri u nizu. Umesto da se fokusira na uklanjanje figura dovršavanjem tri u nizu, AI nastoji da uhvati protivnika u zamku, onemogućavajući mu kretanje i osiguravajući pobedu kroz iscrpljivanje umesto agresivne igre. Ova strategija ne blokira aktivno protivničke tri u nizu.",
+  "@focusOnBlockingPaths_Detail": {}
 }

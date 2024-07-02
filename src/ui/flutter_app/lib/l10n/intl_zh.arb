@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "每个三连只能吃掉一次对手的棋子。您可以再次重组它，但不能用于额外的吃子。",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "您设置的当前规则没有相应的完美数据库。有关完美数据库的更多信息，请点击此处。",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "专注于封堵路径",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "优先阻碍对手走棋，而不是形成三连。AI 不会专注于通过形成三连来吃掉对方的棋子，而是旨在困住对方，使对方的棋子无法移动，并通过消耗战而不是积极进攻来争取胜利。此策略不会主动阻止对方形成三连。",
+  "@focusOnBlockingPaths_Detail": {}
 }

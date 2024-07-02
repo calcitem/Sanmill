@@ -311,6 +311,9 @@ public slots:
     // Consider mobility of pieces
     void setConsiderMobility(bool enabled) const;
 
+    // Focus on blocking paths
+    void setFocusOnBlockingPaths(bool enabled) const;
+
     // AI is Lazy
     void setAiIsLazy(bool enabled) const;
 

@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "Hər dəyirman rəqibin bir hissəsini yalnız bir dəfə çıxara bilər. Onu yenidən formalaşdıra bilərsiniz, lakin əlavə çıxarma üçün istifadə edilə bilməz.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Təyin etdiyiniz cari qaydalar uyğun mükəmməl verilənlər bazasına malik deyil. Mükəmməl verilənlər bazası haqqında daha çox məlumat üçün bura klikləyin.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Bloklama yollarına diqqət yetirin",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Rəqibin hərəkətini maneə törətməyə üstünlük verin, üçlüyü formalaşdırmaqdan daha çox. Üçlü yaratmaqla parçaları çıxarmağa yönəlmək əvəzinə, AI rəqibi tələyə salmağa çalışır, onları hərəkətsiz vəziyyətə gətirir və aqressiv oyundan çox tükəndirməklə qalib gəlir. Bu strategiya rəqibin üçlü yaratmasına aktiv şəkildə mane olmur.",
+  "@focusOnBlockingPaths_Detail": {}
 }

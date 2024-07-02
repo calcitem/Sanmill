@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Varje kvarn kan bara ta bort en motståndares bit en gång. Du kan omforma den igen, men den kan inte användas för ytterligare borttagningar.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "De aktuella reglerna som du har ställt in har ingen motsvarande perfekt databas. För mer information om den perfekta databasen, klicka här.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Fokusera på att blockera vägar",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritera att hindra motståndarens rörelser framför att bilda kvarnar. Istället för att fokusera på att ta bort pjäser genom att fullborda kvarnar, siktar AI på att fånga motståndaren, göra dem oförmögna att röra sig och säkra en seger genom utmattning snarare än aggressivt spel. Denna strategi blockerar inte aktivt motståndarens kvarnar.",
+  "@focusOnBlockingPaths_Detail": {}
 }

@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Kiekvienas malūnas gali pašalinti tik vieną priešininko figūrą. Jūs galite jį suformuoti dar kartą, tačiau negalite jo naudoti papildomam pašalinimui.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Jūsų nustatytos dabartinės taisyklės neturi atitinkamos tobulos duomenų bazės. Norėdami gauti daugiau informacijos apie tobulą duomenų bazę, spustelėkite čia.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Susikoncentruokite į kelio blokavimą",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Pirmenybę teikite priešininko judesių blokavimui, o ne malūnų formavimui. Vietoj to, kad sutelktumėte dėmesį į figūrų pašalinimą užbaigiant malūnus, AI siekia užblokuoti priešininką, padaryti jį nejudriu ir užtikrinti pergalę per išsekimą, o ne agresyvų žaidimą. Ši strategija neblokuoja aktyviai priešininko malūnų.",
+  "@focusOnBlockingPaths_Detail": {}
 }

@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "සෑම නෙරෙන්චියක්ම ප්‍රතිවාදී කොටසක් එක් වරක් ඉවත් කරයි. ඔබට එය නැවත සංවිධානය කළ හැකිය, නමුත් අතිරේක ඉවත් කිරීම් සඳහා භාවිතා කළ නොහැක.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Trenutna pravila, ki ste jih nastavili, nimajo ustrezne popolne zbirke podatkov. Za več informacij o popolni zbirki podatkov kliknite tukaj.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Osredotočite se na blokiranje poti",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Dajte prednost blokiranju premikov nasprotnika pred oblikovanjem mlinov. Namesto da bi se osredotočili na odstranjevanje figur z dokončanjem mlinov, AI poskuša nasprotnika ujeti v past, ga narediti nesposobnega za premikanje in zagotoviti zmago z izčrpanjem namesto z agresivno igro. Ta strategija ne blokira aktivno nasprotnikovih mlinov.",
+  "@focusOnBlockingPaths_Detail": {}
 }

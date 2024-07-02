@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Elke molen kan slechts één keer een stuk van de tegenstander verwijderen. Je kunt het opnieuw vormen, maar het kan niet worden gebruikt voor extra verwijderingen.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "De huidige regels die je hebt ingesteld, hebben geen overeenkomstige perfecte database. Voor meer informatie over de perfecte database, klik hier.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Richt je op het blokkeren van paden",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Geef prioriteit aan het blokkeren van de beweging van de tegenstander boven het vormen van molens. In plaats van je te concentreren op het verwijderen van stukken door molens te voltooien, probeert de AI de tegenstander in de val te lokken, waardoor ze niet kunnen bewegen en een overwinning te behalen door uithoudingsvermogen in plaats van agressief spel. Deze strategie blokkeert de molens van de tegenstander niet actief.",
+  "@focusOnBlockingPaths_Detail": {}
 }

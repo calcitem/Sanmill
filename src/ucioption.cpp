@@ -95,6 +95,11 @@ static void on_considerMobility(const Option &o)
     gameOptions.setConsiderMobility(o);
 }
 
+static void on_focusOnBlockingPaths(const Option &o)
+{
+    gameOptions.setFocusOnBlockingPaths(o);
+}
+
 static void on_developerMode(const Option &o)
 {
     gameOptions.setDeveloperMode(o);
@@ -234,6 +239,7 @@ void init(OptionsMap &o)
     o["PerfectDatabasePath"] << Option(".", on_perfectDatabasePath);
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
+    o["FocusOnBlockingPaths"] << Option(true, on_focusOnBlockingPaths);
     o["DeveloperMode"] << Option(true, on_developerMode);
 
     // Rules

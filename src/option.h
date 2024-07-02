@@ -255,6 +255,18 @@ public:
 
     bool getConsiderMobility() const noexcept { return considerMobility; }
 
+    // focusOnBlockingPaths
+
+    void setFocusOnBlockingPaths(bool enabled) noexcept
+    {
+        focusOnBlockingPaths = enabled;
+    }
+
+    bool getFocusOnBlockingPaths() const noexcept
+    {
+        return focusOnBlockingPaths;
+    }
+
     // Developer Mode
 
     void setDeveloperMode(bool enabled) noexcept { developerMode = enabled; }
@@ -281,6 +293,7 @@ private:
     bool openingBook {false};
     bool drawOnHumanExperience {true};
     bool considerMobility {true};
+    bool focusOnBlockingPaths {false};
     bool developerMode {false};
 
     // TODO: Set this to the correct path

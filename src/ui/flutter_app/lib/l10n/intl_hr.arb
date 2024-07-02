@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Svaki mlin može ukloniti samo jedan protivnički dio. Možete ga ponovno formirati, ali se ne može koristiti za dodatna uklanjanja.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Trenutna pravila koja ste postavili nemaju odgovarajuću savršenu bazu podataka. Za više informacija o savršenoj bazi podataka kliknite ovdje.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Fokusirajte se na blokiranje putova",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Dajte prednost ometanju kretanja protivnika umjesto stvaranju mlinova. Umjesto da se usredotočite na uklanjanje figura dovršavanjem mlinova, AI nastoji uhvatiti protivnika u zamku, onemogućujući mu kretanje i osiguravajući pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira aktivno protivničke mlinove.",
+  "@focusOnBlockingPaths_Detail": {}
 }

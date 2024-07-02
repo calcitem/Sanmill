@@ -154,6 +154,13 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag considerMobility: $value");
   }
 
+  void _setFocusOnBlockingPaths(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings =
+        generalSettings.copyWith(focusOnBlockingPaths: value);
+
+    logger.t("$_logTag focusOnBlockingPaths: $value");
+  }
+
   void _setIsAutoRestart(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(isAutoRestart: value);
 
@@ -334,6 +341,17 @@ class GeneralSettingsPage extends StatelessWidget {
                     S.of(context).considerMobilityOfPiecesDetail);
               },
               titleString: S.of(context).considerMobility,
+            ),
+            SettingsListTile.switchTile(
+              value: generalSettings.focusOnBlockingPaths,
+              onChanged: (bool val) {
+                _setFocusOnBlockingPaths(generalSettings, val);
+                if (val == true) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                      S.of(context).focusOnBlockingPaths_Detail);
+                }
+              },
+              titleString: S.of(context).focusOnBlockingPaths,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.aiIsLazy,

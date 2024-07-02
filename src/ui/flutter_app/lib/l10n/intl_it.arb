@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Ogni mulino può rimuovere un pezzo dell'avversario una sola volta. Puoi riformarlo di nuovo, ma non può essere utilizzato per rimozioni aggiuntive.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Le regole attuali che hai impostato non hanno un database perfetto corrispondente. Per ulteriori informazioni sul database perfetto, clicca qui.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Concentrati sul bloccare i percorsi",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Dai priorità all'ostruzione dei movimenti dell'avversario piuttosto che alla formazione dei mulini. Invece di concentrarsi sulla rimozione dei pezzi completando i mulini, l'IA mira a intrappolare l'avversario, rendendolo incapace di muoversi e garantendo una vittoria per logoramento piuttosto che per gioco aggressivo. Questa strategia non blocca attivamente i mulini dell'avversario.",
+  "@focusOnBlockingPaths_Detail": {}
 }

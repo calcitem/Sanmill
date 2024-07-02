@@ -273,6 +273,8 @@ class Engine {
       generalSettings.drawOnHumanExperience,
     );
     await _sendOptions("ConsiderMobility", generalSettings.considerMobility);
+    await _sendOptions(
+        "FocusOnBlockingPaths", generalSettings.focusOnBlockingPaths);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
 

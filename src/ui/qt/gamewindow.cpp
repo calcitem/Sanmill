@@ -224,6 +224,9 @@ void MillGameWindow::initialize()
     connect(ui.actionConsiderMobility, SIGNAL(toggled(bool)), game,
             SLOT(setConsiderMobility(bool)));
 
+    connect(ui.actionFocusOnBlockingPaths, SIGNAL(toggled(bool)), game,
+            SLOT(setFocusOnBlockingPaths(bool)));
+
     connect(ui.actionAiIsLazy, SIGNAL(toggled(bool)), game,
             SLOT(setAiIsLazy(bool)));
 
@@ -464,6 +467,8 @@ void MillGameWindow::initialize()
     ui.actionDrawOnHumanExperience->setChecked(
         gameOptions.getDrawOnHumanExperience());
     ui.actionConsiderMobility->setChecked(gameOptions.getConsiderMobility());
+    ui.actionFocusOnBlockingPaths->setChecked(
+        gameOptions.getFocusOnBlockingPaths());
     ui.actionAiIsLazy->setChecked(gameOptions.getAiIsLazy());
     ui.actionShuffling_R->setChecked(gameOptions.getShufflingEnabled());
     ui.actionUsePerfectDatabase->setChecked(

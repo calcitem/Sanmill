@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Fiecare moară poate elimina o piesă a adversarului o singură dată. O poți reforma din nou, dar nu poate fi folosită pentru eliminări suplimentare.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Regulile actuale pe care le-ați setat nu au o bază de date perfectă corespunzătoare. Pentru mai multe informații despre baza de date perfectă, faceți clic aici.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Concentrează-te pe blocarea căilor",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritizează blocarea mișcării adversarului în detrimentul formării de moare. În loc să se concentreze pe eliminarea pieselor prin completarea de moare, AI-ul își propune să-l prindă pe adversar, făcându-l incapabil să se miște și asigurând o victorie prin epuizare, mai degrabă decât prin joc agresiv. Această strategie nu blochează activ moarele adversarului.",
+  "@focusOnBlockingPaths_Detail": {}
 }

@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Hver mølle kan fjerne en motstanders brikke bare én gang. Du kan omforme den igjen, men den kan ikke brukes til ytterligere fjerninger.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "De gjeldende reglene du har satt har ikke en tilsvarende perfekt database. For mer informasjon om den perfekte databasen, klikk her.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Fokuser på å blokkere veier",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioriter å hindre motstanderens bevegelser over å danne møller. I stedet for å fokusere på å fjerne brikker ved å fullføre møller, har AI som mål å fange motstanderen, gjøre dem ute av stand til å bevege seg og sikre en seier gjennom utholdenhet i stedet for aggressivt spill. Denne strategien blokkerer ikke aktivt motstanderens møller.",
+  "@focusOnBlockingPaths_Detail": {}
 }

@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Jede Mühle kann nur ein gegnerisches Teil einmal entfernen. Sie können es erneut formen, aber es kann nicht für zusätzliche Entfernungen verwendet werden.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Die aktuellen Regeln, die Sie festgelegt haben, haben keine entsprechende perfekte Datenbank. Für weitere Informationen zur perfekten Datenbank klicken Sie bitte hier.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Wegblockierung fokussieren",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Priorisieren Sie das Blockieren der Bewegungen des Gegners über das Bilden von Mühlen. Anstatt sich darauf zu konzentrieren, Steine durch das Vervollständigen von Mühlen zu entfernen, zielt die KI darauf ab, den Gegner zu fangen, sodass er sich nicht bewegen kann und einen Sieg durch Abnutzung statt durch aggressives Spiel sichert. Diese Strategie blockiert nicht aktiv die Mühlen des Gegners.",
+  "@focusOnBlockingPaths_Detail": {}
 }

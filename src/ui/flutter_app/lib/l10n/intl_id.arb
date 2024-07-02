@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Setiap Mul-mulan dapat menghapus satu bagian lawan hanya sekali. Anda dapat membentuknya lagi, tetapi tidak dapat digunakan untuk penghapusan tambahan.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Aturan saat ini yang Anda tetapkan tidak memiliki database sempurna yang sesuai. Untuk informasi lebih lanjut tentang database sempurna, silakan klik di sini.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Fokus pada memblokir jalur",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Prioritaskan untuk menghalangi pergerakan lawan daripada membentuk kincir. Alih-alih fokus pada menghilangkan bidak dengan menyelesaikan kincir, AI bertujuan untuk menjebak lawan, membuat mereka tidak dapat bergerak dan memastikan kemenangan melalui keletihan daripada permainan agresif. Strategi ini tidak secara aktif menghalangi kincir lawan.",
+  "@focusOnBlockingPaths_Detail": {}
 }

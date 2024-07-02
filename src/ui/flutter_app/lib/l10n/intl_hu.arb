@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Minden malom csak egyszer távolíthatja el az ellenfél egy darabját. Újra megformázhatja, de további eltávolításokhoz nem használható.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "A beállított jelenlegi szabályoknak nincs megfelelő tökéletes adatbázisa. A tökéletes adatbázisról további információkért kattintson ide.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Összpontosítson az útvonalak blokkolására",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "A helyek elfoglalását részesítse előnyben az ellenfél mozgásának akadályozásával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI az ellenfél csapdába ejtésére törekszik, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a stratégia nem akadályozza aktívan az ellenfél malmait.",
+  "@focusOnBlockingPaths_Detail": {}
 }

@@ -82,6 +82,9 @@ void Game::loadSettings()
                 settings->value("Options/DrawOnHumanExperience").toBool());
     setConsiderMobility(
         empty ? true : settings->value("Options/ConsiderMobility").toBool());
+    setFocusOnBlockingPaths(
+        empty ? true :
+                settings->value("Options/FocusOnBlockingPaths").toBool());
     setAiIsLazy(empty ? false : settings->value("Options/AiIsLazy").toBool());
     setShuffling(empty ? true : settings->value("Options/Shuffling").toBool());
     setResignIfMostLose(
@@ -292,6 +295,12 @@ void Game::setConsiderMobility(bool enabled) const
 {
     gameOptions.setConsiderMobility(enabled);
     settings->setValue("Options/ConsiderMobility", enabled);
+}
+
+void Game::setFocusOnBlockingPaths(bool enabled) const
+{
+    gameOptions.setFocusOnBlockingPaths(enabled);
+    settings->setValue("Options/FocusOnBlockingPaths", enabled);
 }
 
 void Game::setAiIsLazy(bool enabled) const

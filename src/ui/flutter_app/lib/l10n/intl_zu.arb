@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "Isigayo ngasinye singasusa isiqeshana somphikisi kanye kuphela. Ungasiphinda futhi, kodwa ngeke usisebenzisele ukususa okwengeziwe.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Imithetho yamanje osuyimiselile ayinayo i-database ephelele ehambisanayo. Ukuthola imininingwane engaphezulu mayelana ne-database ephelele, sicela uchofoze lapha.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Gxila ekuvinjweni kwemizila",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Nikeza phambili ekuphazamiseni ukuhamba kwesitha kunezindleko zokwakha amamili. Esikhundleni sokugxila ekuqedeni izingcezu ngokugcwalisa amamili, i-AI ihlose ukuheha isitha, ukwenza bahluleke ukunyakaza kanye nokuqinisekisa ukunqoba ngokusebenzisa ukufaka engcupheni kunokudlala ngonya. Leli su alivaleli amamili esitha ngendlela ephambili.",
+  "@focusOnBlockingPaths_Detail": {}
 }

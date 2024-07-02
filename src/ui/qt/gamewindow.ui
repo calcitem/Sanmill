@@ -326,6 +326,7 @@
     <addaction name="actionUsePerfectDatabase"/>
     <addaction name="actionDrawOnHumanExperience"/>
     <addaction name="actionConsiderMobility"/>
+    <addaction name="actionFocusOnBlockingPaths"/>
     <addaction name="actionAiIsLazy"/>
     <addaction name="actionIDS_I"/>
     <addaction name="actionDepthExtension_D"/>
@@ -1382,6 +1383,17 @@
    </property>
    <property name="text">
     <string>Consider Mobility of Pieces</string>
+   </property>
+  </action>
+  <action name="actionFocusOnBlockingPaths">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Focus On Blocking Paths</string>
    </property>
   </action>
   <action name="actionDeveloperMode">

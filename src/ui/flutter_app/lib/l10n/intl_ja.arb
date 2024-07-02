@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "各ミルは対戦相手のピースを一度だけ取り除くことができます。再形成することはできますが、追加の除去には使用できません。",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "設定した現在のルールには、対応する完全なデータベースがありません。完全なデータベースの詳細については、ここをクリックしてください。",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "ブロッキングパスに集中する",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "ミルの形成よりも対戦相手の動きを妨害することを優先します。ミルを完成させてピースを取り除くことに焦点を当てるのではなく、AIは対戦相手を罠にかけ、動けなくして、攻撃的なプレイではなく消耗戦を通じて勝利を確保します。この戦略は、対戦相手のミルを積極的にブロックするものではありません。",
+  "@focusOnBlockingPaths_Detail": {}
 }

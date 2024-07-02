@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Cada moinho pode remover uma peça do adversário apenas uma vez. Você pode reformá-lo novamente, mas não pode ser usado para remoções adicionais.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "As regras atuais que você definiu não têm um banco de dados perfeito correspondente. Para mais informações sobre o banco de dados perfeito, clique aqui.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Concentre-se em bloquear caminhos",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Priorize obstruir o movimento do oponente em vez de formar moinhos. Em vez de focar na remoção de peças completando moinhos, a IA visa prender o oponente, impossibilitando-o de se mover e garantindo uma vitória por desgaste em vez de um jogo agressivo. Esta estratégia não bloqueia ativamente os moinhos do oponente.",
+  "@focusOnBlockingPaths_Detail": {}
 }

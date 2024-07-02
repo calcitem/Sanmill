@@ -155,6 +155,10 @@ void MovePicker::score()
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
     }
+
+    if (gameOptions.getFocusOnBlockingPaths() == false) {
+        cur->value = -cur->value;
+    }
 }
 
 /// MovePicker::next_move() is the most important method of the MovePicker

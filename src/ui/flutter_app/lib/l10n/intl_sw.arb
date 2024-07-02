@@ -1535,5 +1535,9 @@
   "oneTimeUseMill_Detail": "Kila kinu kinaweza kuondoa kipande cha mpinzani mara moja tu. Unaweza kuunda tena, lakini hakiwezi kutumika kwa kuondolewa zaidi.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Sheria za sasa ambazo umeweka hazina hifadhidata kamilifu inayolingana. Kwa habari zaidi kuhusu hifadhidata kamilifu, tafadhali bonyeza hapa.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Kuzingatia kuzuia njia",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Panga kipaumbele kuzuia harakati za mpinzani badala ya kuunda mils. Badala ya kuzingatia kuondoa vipande kwa kumaliza mils, AI inalenga kumtega mpinzani, kumzuia asiweze kusonga na kuhakikisha ushindi kupitia uchovu badala ya mchezo wa fujo. Mkakati huu hauzuii mils ya mpinzani kwa nguvu.",
+  "@focusOnBlockingPaths_Detail": {}
 }

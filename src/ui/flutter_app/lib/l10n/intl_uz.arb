@@ -1437,5 +1437,9 @@
   "oneTimeUseMill_Detail": "Har bir tegirmon raqibning qismini faqat bir marta olib tashlashi mumkin. Siz uni qayta yaratishingiz mumkin, lekin qo'shimcha olib tashlashlar uchun foydalanish mumkin emas.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Siz o'rnatgan joriy qoidalar mos keladigan mukammal ma'lumotlar bazasiga ega emas. Mukammal ma'lumotlar bazasi haqida ko'proq ma'lumot olish uchun bu yerni bosing.",
-  "@currentRulesNoPerfectDatabase": {}
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "To'siq yo'llarni bloklashga e'tibor qarating",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "Tegirmonlarni shakllantirish o'rniga raqibning harakatlarini to'sishga ustunlik bering. Tegirmonlarni to'ldirish orqali bo'laklarni olib tashlashga e'tibor qaratish o'rniga, AI raqibni tuzoqqa tushirishga, ularni harakatsiz qilishga va tajovuzkor o'yin o'rniga charchash orqali g'alabani ta'minlashga harakat qiladi. Ushbu strategiya raqibning tegirmonlarini faol ravishda bloklamaydi.",
+  "@focusOnBlockingPaths_Detail": {}
 }
