@@ -1335,8 +1335,8 @@ class Position {
       }
     } else {
       for (int ld = 0; ld < lineDirectionNumber; ld++) {
-        if (c == _board[_millTable[to][ld][0]] &&
-            c == _board[_millTable[to][ld][1]]) {
+        if (color == _board[_millTable[to][ld][0]] &&
+            color == _board[_millTable[to][ld][1]]) {
           n++;
         }
       }
