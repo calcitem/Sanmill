@@ -1,0 +1,3 @@
+v4.14.3
+
+Address the issue where a human player can remove a piece from a mill even when this is not permitted by the rules.
