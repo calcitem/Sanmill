@@ -444,7 +444,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // this line is a draw and return VALUE_DRAW.
     if (rule.threefoldRepetitionRule && depth != originDepth &&
         pos->has_repeated(ss)) {
-        return VALUE_DRAW;
+        // Add a small component to draw evaluations to avoid 3-fold blindness
+        return VALUE_DRAW + 1;
     }
 
     // Initialize a MovePicker object for the current position, and prepare
