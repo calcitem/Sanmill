@@ -1,0 +1,3 @@
+v4.15.0
+
+Modified the game engine to avoid repetitive draws, promoting more aggressive and varied playing strategies.
