@@ -57,12 +57,11 @@ Value Evaluation::value() const
 
     case Phase::placing:
     case Phase::moving:
-        if (gameOptions.getConsiderMobility() ||
-            gameOptions.getFocusOnBlockingPaths()) {
+        if (pos.shoudConsiderMobility()) {
             value += pos.get_mobility_diff();
         }
 
-        if (gameOptions.getFocusOnBlockingPaths() == false) {
+        if (!pos.shouldFocusOnBlockingPaths()) {
             pieceInHandDiffCount = pos.piece_in_hand_count(WHITE) -
                                    pos.piece_in_hand_count(BLACK);
             value += VALUE_EACH_PIECE_INHAND * pieceInHandDiffCount;
@@ -70,19 +69,10 @@ Value Evaluation::value() const
             pieceOnBoardDiffCount = pos.piece_on_board_count(WHITE) -
                                     pos.piece_on_board_count(BLACK);
             value += VALUE_EACH_PIECE_ONBOARD * pieceOnBoardDiffCount;
-        }
 
-        switch (pos.get_action()) {
-        case Action::select:
-        case Action::place:
-            break;
-        case Action::remove:
-            if (gameOptions.getFocusOnBlockingPaths() == false) {
+            if (pos.get_action() == Action::remove) {
                 value += VALUE_EACH_PIECE_NEEDREMOVE * pieceToRemoveDiffCount;
             }
-            break;
-        case Action::none:
-            break;
         }
 
         break;

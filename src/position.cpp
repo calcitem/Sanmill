@@ -21,7 +21,6 @@
 
 #include "bitboard.h"
 #include "mills.h"
-#include "option.h"
 #include "position.h"
 #include "thread.h"
 
@@ -1671,7 +1670,7 @@ void Position::reset_bb()
 
 void Position::updateMobility(MoveType mt, Square s)
 {
-    if (!gameOptions.getConsiderMobility()) {
+    if (!shoudConsiderMobility()) {
         return;
     }
 

@@ -156,7 +156,7 @@ void MovePicker::score()
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
     }
 
-    if (gameOptions.getFocusOnBlockingPaths() == false) {
+    if (!pos.shouldFocusOnBlockingPaths()) {
         cur->value = -cur->value;
     }
 }

@@ -25,6 +25,7 @@
 #include <string>
 #include <vector>
 
+#include "option.h"
 #include "rule.h"
 #include "stack.h"
 #include "types.h"
@@ -177,6 +178,9 @@ public:
     void updateMobility(MoveType mt, Square s);
     // template <typename Mt> void updateMobility(Square from, Square to);
     int calculate_mobility_diff();
+
+    bool shouldFocusOnBlockingPaths() const;
+    bool shoudConsiderMobility() const;
 
     bool is_three_endgame() const;
 
@@ -415,6 +419,27 @@ inline int Position::piece_to_remove_count(Color c) const
 inline int Position::get_mobility_diff() const
 {
     return mobilityDiff;
+}
+
+inline bool Position::shouldFocusOnBlockingPaths() const
+{
+    if (get_phase() == Phase::placing) {
+        return gameOptions.getFocusOnBlockingPaths();
+    } else if (get_phase() == Phase::moving) {
+        return gameOptions.getFocusOnBlockingPaths() && rule.mayFly &&
+               piece_on_board_count(~side_to_move()) ==
+                   rule.piecesAtLeastCount + 1 &&
+               // TODO: 9mm is 7 left, and 12mm is 10 left, right?
+               piece_on_board_count(side_to_move()) >= rule.pieceCount - 2;
+    }
+    return false;
+}
+
+inline bool Position::shoudConsiderMobility() const
+{
+    // Note: Either consider mobility or focus on blocking paths
+    return gameOptions.getConsiderMobility() ||
+           gameOptions.getFocusOnBlockingPaths();
 }
 
 inline bool Position::is_three_endgame() const
