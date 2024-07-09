@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Concéntrese en bloquear caminos",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Priorizar la obstrucción del movimiento del oponente sobre la formación de molinos. En lugar de centrarse en eliminar piezas completando molinos, la IA pretende atrapar al adversario, incapacitándole para moverse y asegurándose la victoria mediante el desgaste en lugar del juego agresivo. Esta estrategia no bloquea activamente los molinos del adversario.",
+  "focusOnBlockingPaths_Detail": "Durante fases específicas del juego, prioriza la obstrucción del movimiento del oponente sobre la formación de molinos. En lugar de centrarse en eliminar piezas completando molinos, la IA pretende atrapar al adversario durante estas fases, incapacitándole para moverse y asegurándose la victoria mediante el desgaste en lugar del juego agresivo. Esta estrategia, específica de ciertas fases, no bloquea activamente los molinos del adversario.",
   "@focusOnBlockingPaths_Detail": {}
 }
