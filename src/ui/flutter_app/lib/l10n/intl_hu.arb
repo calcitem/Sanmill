@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Összpontosítson az útvonalak blokkolására",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "A helyek elfoglalását részesítse előnyben az ellenfél mozgásának akadályozásával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI az ellenfél csapdába ejtésére törekszik, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a stratégia nem akadályozza aktívan az ellenfél malmait.",
+  "focusOnBlockingPaths_Detail": "A játék bizonyos fázisaiban részesítse előnyben az ellenfél mozgásának akadályozását a malmok kialakításával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI ezekben a fázisokban törekszik az ellenfél csapdába ejtésére, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a fázisspecifikus stratégia nem akadályozza aktívan az ellenfél malmait.",
   "@focusOnBlockingPaths_Detail": {}
 }

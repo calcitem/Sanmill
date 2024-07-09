@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Concentrez-vous sur le blocage des chemins",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Privilégiez l'obstruction des mouvements de l'adversaire plutôt que la formation de moulins. Au lieu de se concentrer sur le retrait des pièces en complétant des moulins, l'IA vise à piéger l'adversaire, le rendant incapable de se déplacer et assurant une victoire par attrition plutôt que par un jeu agressif. Cette stratégie ne bloque pas activement les moulins de l'adversaire.",
+  "focusOnBlockingPaths_Detail": "Durant des phases spécifiques du jeu, privilégiez l'obstruction des mouvements de l'adversaire plutôt que la formation de moulins. Au lieu de se concentrer sur le retrait des pièces en complétant des moulins, l'IA vise à piéger l'adversaire pendant ces phases, le rendant incapable de se déplacer et assurant une victoire par attrition plutôt que par un jeu agressif. Cette stratégie spécifique à certaines phases ne bloque pas activement les moulins de l'adversaire.",
   "@focusOnBlockingPaths_Detail": {}
 }

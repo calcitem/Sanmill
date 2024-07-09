@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Concentrează-te pe blocarea căilor",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Prioritizează blocarea mișcării adversarului în detrimentul formării de moare. În loc să se concentreze pe eliminarea pieselor prin completarea de moare, AI-ul își propune să-l prindă pe adversar, făcându-l incapabil să se miște și asigurând o victorie prin epuizare, mai degrabă decât prin joc agresiv. Această strategie nu blochează activ moarele adversarului.",
+  "focusOnBlockingPaths_Detail": "În anumite faze ale jocului, prioritizează blocarea mișcării adversarului în detrimentul formării de moare. În loc să se concentreze pe eliminarea pieselor prin completarea de moare, AI-ul își propune să-l prindă pe adversar în aceste faze, făcându-l incapabil să se miște și asigurând o victorie prin epuizare, mai degrabă decât prin joc agresiv. Această strategie specifică fazei nu blochează activ moarele adversarului.",
   "@focusOnBlockingPaths_Detail": {}
 }

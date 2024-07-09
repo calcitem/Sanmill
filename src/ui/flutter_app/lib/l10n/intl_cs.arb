@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Zaměřte se na blokování cest",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Prioritizujte bránění pohybu soupeře před tvořením mlýnů. Místo zaměření se na odstraňování figurek dokončováním mlýnů, AI se snaží chytit soupeře do pasti, znemožnit mu pohyb a zajistit vítězství opotřebováním místo agresivní hry. Tato strategie aktivně neblokuje soupeřovy mlýny.",
+  "focusOnBlockingPaths_Detail": "V určitých fázích hry prioritizujte bránění pohybu soupeře před tvořením mlýnů. Místo zaměření se na odstraňování figurek dokončováním mlýnů, AI se v těchto fázích snaží chytit soupeře do pasti, znemožnit mu pohyb a zajistit vítězství opotřebováním místo agresivní hry. Tato strategie specifická pro dané fáze aktivně neblokuje soupeřovy mlýny.",
   "@focusOnBlockingPaths_Detail": {}
 }

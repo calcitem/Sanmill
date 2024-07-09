@@ -1440,6 +1440,6 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Engelleyici yollar üzerinde yoğunlaşın",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Rakibin hareketlerini engellemeyi, değirmenler oluşturmanın önüne koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu strateji, rakibin değirmenlerini aktif olarak engellemez.",
+  "focusOnBlockingPaths_Detail": "Oyunun belirli aşamalarında, değirmenler oluşturmanın önüne rakibin hareketlerini engellemeyi koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI bu aşamalar sırasında rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu aşama özel stratejisi, rakibin değirmenlerini aktif olarak engellemez.",
   "@focusOnBlockingPaths_Detail": {}
 }
