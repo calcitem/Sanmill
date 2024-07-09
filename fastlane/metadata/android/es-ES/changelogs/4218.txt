@@ -1,0 +1,3 @@
+v4.15.0
+
+Modificado el motor de juego para evitar empates repetitivos, promoviendo estrategias de juego más agresivas y variadas.
