@@ -180,7 +180,7 @@ public:
     int calculate_mobility_diff();
 
     bool shouldFocusOnBlockingPaths() const;
-    bool shoudConsiderMobility() const;
+    bool shouldConsiderMobility() const;
 
     bool is_three_endgame() const;
 
@@ -435,7 +435,7 @@ inline bool Position::shouldFocusOnBlockingPaths() const
     return false;
 }
 
-inline bool Position::shoudConsiderMobility() const
+inline bool Position::shouldConsiderMobility() const
 {
     // Note: Either consider mobility or focus on blocking paths
     return gameOptions.getConsiderMobility() ||

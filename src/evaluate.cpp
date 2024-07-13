@@ -57,7 +57,7 @@ Value Evaluation::value() const
 
     case Phase::placing:
     case Phase::moving:
-        if (pos.shoudConsiderMobility()) {
+        if (pos.shouldConsiderMobility()) {
             value += pos.get_mobility_diff();
         }
 

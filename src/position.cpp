@@ -1670,7 +1670,7 @@ void Position::reset_bb()
 
 void Position::updateMobility(MoveType mt, Square s)
 {
-    if (!shoudConsiderMobility()) {
+    if (!shouldConsiderMobility()) {
         return;
     }
 
