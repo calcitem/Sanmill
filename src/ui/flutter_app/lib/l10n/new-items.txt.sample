@@ -2,6 +2,10 @@
   "transparentCanvas": "Deursigtige Doek",
   "@transparentCanvas": {},
 
+// intl_am.arb
+  "transparentCanvas": "ግልጽ ሸራ",
+  "@transparentCanvas": {},
+
 // intl_ar.arb
   "transparentCanvas": "قماش شفاف",
   "@transparentCanvas": {},

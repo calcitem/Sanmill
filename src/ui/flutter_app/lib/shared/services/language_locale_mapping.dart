@@ -17,6 +17,7 @@
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n_af.dart';
+import '../../generated/intl/l10n_am.dart';
 import '../../generated/intl/l10n_ar.dart';
 import '../../generated/intl/l10n_az.dart';
 import '../../generated/intl/l10n_be.dart';
@@ -75,6 +76,7 @@ import '../../generated/intl/l10n_zu.dart';
 
 Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("af"): SAf().languageName, // Afrikaans
+  const Locale("am"): SAm().languageName, // Amharic
   const Locale("ar"): SAr().languageName, // Arabic
   const Locale("az"): SAz().languageName, // Azerbaijani
   const Locale("be"): SBe().languageName, // Belarusian

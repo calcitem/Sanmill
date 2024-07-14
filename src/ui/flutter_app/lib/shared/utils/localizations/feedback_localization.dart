@@ -36,6 +36,7 @@ class CustomFeedbackLocalizationsDelegate
   static final Map<Locale, FeedbackLocalizations> _supportedLocales =
       <Locale, FeedbackLocalizations>{
     const Locale("af"): const AfFeedbackLocalizations(), // Afrikaans
+    const Locale("am"): const AmFeedbackLocalizations(), // Amharic
     const Locale("ar"): const ArFeedbackLocalizations(), // Arabic
     const Locale("az"): const AzFeedbackLocalizations(), // Azerbaijani
     const Locale("be"): const BeFeedbackLocalizations(), // Belarusian
@@ -143,6 +144,28 @@ class AfFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const AfFeedbackLocalizations(),
+    );
+  }
+}
+
+class AmFeedbackLocalizations extends FeedbackLocalizations {
+  const AmFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'አስገባ';
+
+  @override
+  String get feedbackDescriptionText => 'ምን ተሳስቷል?';
+
+  @override
+  String get draw => 'ማሟያ';
+
+  @override
+  String get navigate => 'መራ';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const AmFeedbackLocalizations(),
     );
   }
 }
