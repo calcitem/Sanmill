@@ -160,11 +160,11 @@
   "@blackWin": {
     "description": "Player 2 wins!"
   },
-  "won": "Nyer",
+  "won": "Nyert",
   "@won": {
     "description": "Won"
   },
-  "lost": "Veszít",
+  "lost": "Veszített",
   "@lost": {
     "description": "Lost"
   },
