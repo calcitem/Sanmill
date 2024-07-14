@@ -169,6 +169,12 @@ static void on_restrictRepeatedMillsFormation(const Option &o)
     rule.restrictRepeatedMillsFormation = static_cast<bool>(o);
 }
 
+static void on_insertionRuleAction(const Option &o)
+{
+    rule.insertionRuleAction = static_cast<InsertionRuleAction>(
+        static_cast<int>(o));
+}
+
 static void on_boardFullAction(const Option &o)
 {
     rule.boardFullAction = static_cast<BoardFullAction>(static_cast<int>(o));
@@ -262,6 +268,11 @@ void init(OptionsMap &o)
     o["RestrictRepeatedMillsFormation"]
         << Option(false, on_restrictRepeatedMillsFormation);
     o["OneTimeUseMill"] << Option(false, on_oneTimeUseMill);
+    o["InsertionRuleAction"] << Option(
+        static_cast<int>(InsertionRuleAction::disabled),
+        static_cast<int>(InsertionRuleAction::disabled),
+        static_cast<int>(InsertionRuleAction::movingPhaseLimitedPieces),
+        on_insertionRuleAction);
     o["BoardFullAction"] << Option(
         static_cast<int>(BoardFullAction::firstPlayerLose),
         static_cast<int>(BoardFullAction::firstPlayerLose),

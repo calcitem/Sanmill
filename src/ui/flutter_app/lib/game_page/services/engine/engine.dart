@@ -337,6 +337,10 @@ class Engine {
     );
     await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
     await _sendOptions("OneTimeUseMill", ruleSettings.oneTimeUseMill);
+    await _sendOptions(
+        "InsertionRuleAction",
+        ruleSettings.insertionRuleAction?.index ??
+            InsertionRuleAction.disabled.index); // TODO: enum
   }
 
   Future<void> setOptions() async {
@@ -371,7 +375,8 @@ class Engine {
             ruleSettings.mayFly == true &&
             ruleSettings.mayRemoveFromMillsAlways == false &&
             ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.oneTimeUseMill == false) {
+            ruleSettings.oneTimeUseMill == false &&
+            ruleSettings.insertionRuleAction == InsertionRuleAction.disabled) {
       return true;
     } else {
       return false;

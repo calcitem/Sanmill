@@ -34,6 +34,7 @@ part 'modals/mill_formation_action_in_placing_phase_modal.dart';
 part 'modals/n_move_rule_modal.dart';
 part 'modals/piece_count_modal.dart';
 part 'modals/stalemate_action_modal.dart';
+part 'modals/insertion_rule_action_modal.dart';
 
 bool visitedRuleSettingsPage = false;
 
@@ -308,6 +309,32 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] oneTimeUseMill: $value");
   }
 
+  void _setInsertionRuleAction(
+      BuildContext context, RuleSettings ruleSettings) {
+    void callback(InsertionRuleAction? insertionRuleAction) {
+      Navigator.pop(context);
+
+      DB().ruleSettings =
+          ruleSettings.copyWith(insertionRuleAction: insertionRuleAction);
+
+      logger.t("[config] insertionRuleAction = $insertionRuleAction");
+
+      // TODO: InsertionRuleAction: experimental
+      if (insertionRuleAction != InsertionRuleAction.disabled) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
+      }
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _InsertionRuleActionModal(
+        insertionRuleAction: ruleSettings.insertionRuleAction!,
+        onChanged: callback,
+      ),
+    );
+  }
+
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
     final Locale? locale = DB().displaySettings.locale;
 
@@ -448,6 +475,11 @@ class RuleSettingsPage extends StatelessWidget {
               ),
               titleString: S.of(context).oneTimeUseMill,
               subtitleString: S.of(context).oneTimeUseMill_Detail,
+            ),
+            SettingsListTile(
+              onTap: () => _setInsertionRuleAction(context, ruleSettings),
+              titleString: S.of(context).removeByInsertion,
+              subtitleString: S.of(context).removeByInsertion_Detail,
             ),
           ],
         ),

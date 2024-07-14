@@ -43,6 +43,13 @@ enum class StalemateAction {
     endWithStalemateDraw = 4,
 };
 
+enum class InsertionRuleAction {
+    disabled = 0,                // Rule turned off, cannot be used
+    alwaysAllowed = 1,           // Active during all game phases
+    movingPhaseOnly = 2,         // Active during moving phase
+    movingPhaseLimitedPieces = 3 // Active when fewer than three pieces remain
+};
+
 // The rule struct manages the various variants of the rules.
 struct Rule
 {
@@ -90,6 +97,10 @@ struct Rule
     // again, but it cannot be used for additional removals.
     bool oneTimeUseMill;
 
+    // Allows a player to remove two opposing pieces by placing their own piece
+    // directly between them on a straight line.
+    InsertionRuleAction insertionRuleAction;
+
     // At the end of the placing phase, before the moving phase begins,
     // the action follows if the board is full of pieces.
     BoardFullAction boardFullAction;
@@ -115,7 +126,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 10;
+constexpr auto N_RULES = 11;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

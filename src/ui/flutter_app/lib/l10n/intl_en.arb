@@ -1539,5 +1539,17 @@
   "focusOnBlockingPaths": "Focus on blocking paths",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "During specific phases of the game, prioritize obstructing the opponent's movement over forming mills. Instead of focusing on removing pieces by completing mills, the AI aims to trap the opponent during these phases, rendering them unable to move and securing a win through attrition rather than aggressive play. This phase-specific strategy does not actively block the opponent's mills.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "removeByInsertion": "Remove by insertion",
+  "@removeByInsertion": {},
+  "removeByInsertion_Detail": "Allows a player to remove two opposing pieces by placing their own piece directly between them on a straight line.",
+  "@removeByInsertion_Detail": {},
+  "removeByInsertionDisabled": "Disabled: Rule turned off, cannot be used.",
+  "@removeByInsertionDisabled": {},
+  "removeByInsertionAlwaysAllowed": "Always Allowed: Active during all game phases.",
+  "@removeByInsertionAlwaysAllowed": {},
+  "removeByInsertionMovingPhaseOnly": "Moving Phase Only: Active during moving phase.",
+  "@removeByInsertionMovingPhaseOnly": {},
+  "removeByInsertionMovingPhaseLimitedPieces": "Moving Phase, limited pieces: Active under three pieces.",
+  "@removeByInsertionMovingPhaseLimitedPieces": {}
 }

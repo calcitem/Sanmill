@@ -65,6 +65,18 @@ enum StalemateAction {
   endWithStalemateDraw,
 }
 
+@HiveType(typeId: 11)
+enum InsertionRuleAction {
+  @HiveField(0)
+  disabled,
+  @HiveField(1)
+  alwaysAllowed,
+  @HiveField(2)
+  movingPhaseOnly,
+  @HiveField(3)
+  movingPhaseLimitedPieces,
+}
+
 // Currently unused
 String enumName(Object enumEntry) {
   final Map<Object, String> nameMap = <Object, String>{
@@ -120,6 +132,7 @@ class RuleSettings {
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
     this.restrictRepeatedMillsFormation = false,
     this.oneTimeUseMill = false,
+    this.insertionRuleAction = InsertionRuleAction.disabled,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -135,6 +148,8 @@ class RuleSettings {
       case "fa": // Iran
       case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
+      case "id": // Indonesia
+        return const MulMulanRuleSettings();
       case "ru": // Russia
         return const RussianRuleSettings();
       case "ko": // Korea
@@ -192,6 +207,8 @@ class RuleSettings {
   final bool restrictRepeatedMillsFormation;
   @HiveField(20, defaultValue: false)
   final bool oneTimeUseMill;
+  @HiveField(21, defaultValue: InsertionRuleAction.disabled)
+  final InsertionRuleAction? insertionRuleAction;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
@@ -219,6 +236,18 @@ class MorabarabaRuleSettings extends RuleSettings {
           boardFullAction: BoardFullAction.agreeToDraw,
           endgameNMoveRule: 10,
           restrictRepeatedMillsFormation: true,
+        );
+}
+
+/// Mul-Mulan Rules
+///
+/// Those rules are the Mul-Mulan rules.
+class MulMulanRuleSettings extends RuleSettings {
+  const MulMulanRuleSettings()
+      : super(
+          piecesCount: 9,
+          hasDiagonalLines: true,
+          insertionRuleAction: InsertionRuleAction.alwaysAllowed,
         );
 }
 
