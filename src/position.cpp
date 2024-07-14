@@ -670,6 +670,7 @@ bool Position::reset()
 
     MoveList<LEGAL>::create();
     create_mill_table();
+    create_gotong_table();
     currentSquare[WHITE] = currentSquare[BLACK] = SQ_0;
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
@@ -1400,10 +1401,16 @@ Key Position::update_key_misc()
 #include "movegen.h"
 
 Bitboard Position::millTableBB[SQUARE_EXT_NB][LD_NB] = {{0}};
+Bitboard Position::gotongTableBB[SQUARE_EXT_NB][LD_NB] = {{0}};
 
 void Position::create_mill_table()
 {
     Mills::mill_table_init();
+}
+
+void Position::create_gotong_table()
+{
+    Mills::gotong_table_init();
 }
 
 Color Position::color_on(Square s) const

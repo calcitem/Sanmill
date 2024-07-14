@@ -152,6 +152,7 @@ public:
     void reset_bb();
 
     static void create_mill_table();
+    static void create_gotong_table();
     int mills_count(Square s);
 
     // The number of mills that would be closed by the given move.
@@ -240,6 +241,7 @@ public:
 
     // Relate to Rule
     static Bitboard millTableBB[SQUARE_EXT_NB][LD_NB];
+    static Bitboard gotongTableBB[SQUARE_EXT_NB][LD_NB];
 
     Square currentSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
     Square lastMillFromSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};

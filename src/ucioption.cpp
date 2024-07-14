@@ -113,6 +113,7 @@ static void on_piecesCount(const Option &o)
 
     Mills::adjacent_squares_init();
     Mills::mill_table_init();
+    Mills::gotong_table_init();
 }
 
 static void on_flyPieceCount(const Option &o)
@@ -131,6 +132,7 @@ static void on_hasDiagonalLines(const Option &o)
 
     Mills::adjacent_squares_init();
     Mills::mill_table_init();
+    Mills::gotong_table_init();
 }
 
 static void on_millFormationActionInPlacingPhase(const Option &o)
