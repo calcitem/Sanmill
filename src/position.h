@@ -159,6 +159,9 @@ public:
     int potential_mills_count(Square to, Color c, Square from = SQ_0);
     bool is_all_in_mills(Color c);
 
+    // The number of gotongs that would be formed by the given move.
+    int potential_gotongs_count(Square to, Square from = SQ_0);
+
     void setFormedMillsBB(uint64_t millsBitmask);
 
     void surrounded_pieces_count(Square s, int &ourPieceCount,

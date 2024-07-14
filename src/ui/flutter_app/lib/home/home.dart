@@ -272,6 +272,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           DB().ruleSettings = DB().ruleSettings.copyWith(
               piecesCount: 9,
               hasDiagonalLines: true,
+              mayRemoveFromMillsAlways: true,
+              mayRemoveMultiple: true,
               insertionRuleAction: InsertionRuleAction.alwaysAllowed);
           break;
         case "ru": // Russia

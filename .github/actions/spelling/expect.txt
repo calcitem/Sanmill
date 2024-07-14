@@ -169,6 +169,8 @@ gitee
 github
 goldtoken
 google
+gotong
+gotongs
 graphicsconst
 gtest
 gtk

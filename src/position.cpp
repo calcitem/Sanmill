@@ -1569,6 +1569,49 @@ bool Position::is_all_in_mills(Color c)
     return true;
 }
 
+int Position::potential_gotongs_count(Square to, Square from)
+{
+    int n = 0;
+    Piece locbak = NO_PIECE;
+    Color color = ~side_to_move();
+
+    assert(SQ_0 <= from && from < SQ_END);
+
+    if (from >= SQ_BEGIN && from < SQ_END) {
+        locbak = board[from];
+        board[from] = NO_PIECE;
+
+        CLEAR_BIT(byTypeBB[ALL_PIECES], from);
+        CLEAR_BIT(byTypeBB[type_of(locbak)], from);
+        CLEAR_BIT(byColorBB[color_of(locbak)], from);
+    }
+
+    const Bitboard bc = byColorBB[color];
+    const Bitboard *gt = gotongTableBB[to];
+
+    if ((bc & gt[LD_HORIZONTAL]) == gt[LD_HORIZONTAL]) {
+        n++;
+    }
+
+    if ((bc & gt[LD_VERTICAL]) == gt[LD_VERTICAL]) {
+        n++;
+    }
+
+    if ((bc & gt[LD_SLASH]) == gt[LD_SLASH]) {
+        n++;
+    }
+
+    if (from >= SQ_BEGIN && from < SQ_END) {
+        board[from] = locbak;
+
+        SET_BIT(byTypeBB[ALL_PIECES], from);
+        SET_BIT(byTypeBB[type_of(locbak)], from);
+        SET_BIT(byColorBB[color_of(locbak)], from);
+    }
+
+    return n;
+}
+
 void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
                                        int &theirPieceCount, int &markedCount,
                                        int &emptyCount) const

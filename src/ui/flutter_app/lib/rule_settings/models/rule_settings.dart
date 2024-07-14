@@ -247,6 +247,8 @@ class MulMulanRuleSettings extends RuleSettings {
       : super(
           piecesCount: 9,
           hasDiagonalLines: true,
+          mayRemoveFromMillsAlways: true,
+          mayRemoveMultiple: true,
           insertionRuleAction: InsertionRuleAction.alwaysAllowed,
         );
 }
