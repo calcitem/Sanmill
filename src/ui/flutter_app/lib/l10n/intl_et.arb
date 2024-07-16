@@ -1118,7 +1118,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "Eestlane",
+  "languageName": "Eesti",
   "@languageName": {
     "description": "The name of the current language"
   },

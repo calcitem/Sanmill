@@ -64,7 +64,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "українська",
+  "languageName": "Українська",
   "@languageName": {
     "description": "The name of the current language"
   },

@@ -1458,7 +1458,7 @@
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "languageName": "Azərbaycan",
+  "languageName": "Azərbaycanca",
   "@languageName": {
     "description": "The name of the current language"
   },
