@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "warna ikon bar alat utama",
+  "mainToolbarIconColor": "Warna ikon bar alat utama",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

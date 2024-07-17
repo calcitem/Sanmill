@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "culoarea pictogramei barei de instrumente principale",
+  "mainToolbarIconColor": "Culoarea pictogramei barei de instrumente principale",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

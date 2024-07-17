@@ -200,7 +200,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "không có hồ sơ",
+  "noGameRecord": "Không có hồ sơ",
   "@noGameRecord": {
     "description": "No record"
   },

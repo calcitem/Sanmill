@@ -500,7 +500,7 @@
   "@color": {
     "description": "Color"
   },
-  "boardColor": "tahta rengi",
+  "boardColor": "Tahta rengi",
   "@boardColor": {
     "description": "Board color"
   },
@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "ana araç çubuğu simge rengi",
+  "mainToolbarIconColor": "Ana araç çubuğu simge rengi",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },
