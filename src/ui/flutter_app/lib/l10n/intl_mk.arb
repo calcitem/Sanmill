@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "боја на иконата на главната лента со алатки",
+  "mainToolbarIconColor": "Боја на иконата на главната лента со алатки",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

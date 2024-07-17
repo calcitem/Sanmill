@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "kolor ikony głównego paska narzędzi",
+  "mainToolbarIconColor": "Kolor ikony głównego paska narzędzi",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

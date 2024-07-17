@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "päätyökalurivin kuvakkeen väri",
+  "mainToolbarIconColor": "Päätyökalurivin kuvakkeen väri",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "fő eszköztár ikon színe",
+  "mainToolbarIconColor": "Fő eszköztár ikon színe",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },

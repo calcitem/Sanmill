@@ -862,7 +862,7 @@
   "@mainToolbarBackgroundColor": {
     "description": "Main toolbar background color"
   },
-  "mainToolbarIconColor": "hovedværktøjslinjens ikonfarve",
+  "mainToolbarIconColor": "Hovedværktøjslinjens ikonfarve",
   "@mainToolbarIconColor": {
     "description": "main toolbar icon color"
   },
