@@ -1,3 +1,0 @@
-v1.0.19
-
-* Farsça (Farsça) makine çevirisi ekleyin.

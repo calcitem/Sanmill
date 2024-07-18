@@ -1,5 +1,0 @@
-v1.1.8
-
-* Napraw problem z interfejsem menu z prawej do lewej.
-* Popraw tłumaczenia na język angielski.
-* Pokaż nazwę języka zamiast kodu języka na końcu elementu menu.

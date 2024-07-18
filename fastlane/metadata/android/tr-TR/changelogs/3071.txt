@@ -1,3 +1,0 @@
-v2.0.9
-
-Bu güncelleme, uygulamayı sizin için daha iyi hale getirmek için çeşitli iyileştirmeler ve hata düzeltmeleri içerir.

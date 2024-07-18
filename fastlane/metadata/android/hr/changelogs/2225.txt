@@ -1,4 +1,0 @@
-v1.1.43
-
-* Poboljšajte korejski prijevod.
-* Nadogradite Flutter na 2.10.3.

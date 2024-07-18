@@ -1,5 +1,0 @@
-v1.0.5
-
-* Indica i pezzi bianchi come giocatore 1 e neri come giocatore 2
-* Modifica il testo "Suggerimento" in "Informazioni"
-* Correggi errori di battitura

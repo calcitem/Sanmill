@@ -1,3 +1,0 @@
-v4.14.1
-
-Se corrigieron problemas de accesibilidad.

@@ -1,5 +1,0 @@
-v1.0.5
-
-* Beyaz taşları oyuncu 1 olarak ve siyah taşları oyuncu 2 olarak belirtin
-* 'İpucu' metnini 'Bilgi' olarak değiştirin
-* Yazım hatasını düzelt

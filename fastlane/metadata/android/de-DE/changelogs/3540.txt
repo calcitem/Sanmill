@@ -1,3 +1,0 @@
-v3.5.8
-
-Das Problem, dass der Bildschirm grau angezeigt wurde, wenn ein Spiel unentschieden endete, wurde behoben.

@@ -1,3 +1,0 @@
-v3.5.8
-
-Corrigido o problema da tela exibindo cinza quando um jogo termina empatado.

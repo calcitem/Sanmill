@@ -1,3 +1,0 @@
-v2.1.0
-
-Esta actualización incluye varias mejoras y correcciones de errores para que la aplicación sea mejor para usted.

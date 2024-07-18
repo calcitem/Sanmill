@@ -1,3 +1,0 @@
-v1.0.3
-
-* Visa omstart/avbryt-knappar istället för ja/nej-knappar i dialogrutan när spelaren vinner den översta svåra nivån.

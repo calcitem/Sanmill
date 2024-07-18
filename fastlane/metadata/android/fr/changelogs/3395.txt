@@ -1,5 +1,0 @@
-v3.4.0
-
-1. Ajoutez un paramètre pour le délai de réponse AI. Si vous trouvez que l'IA se déplace trop rapidement et qu'il est difficile de voir clairement les mouvements, vous pouvez augmenter cette valeur.
-
-2. Correction d'un problème où, lors de la formation d'un moulin, le mouvement qui forme le moulin n'est pas toujours affiché en premier mais est affiché avec le mouvement de suppression, ce qui ne permet pas de savoir comment l'IA a formé le moulin.

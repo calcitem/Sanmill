@@ -1,3 +1,0 @@
-v4.14.3
-
-Soluciona el problema por el que un jugador humano puede retirar una pieza de un molino aunque las reglas no lo permitan.

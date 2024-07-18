@@ -1,3 +1,0 @@
-v2.0.14
-
-Melhore o gravador de tela do jogo.

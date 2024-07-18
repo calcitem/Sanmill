@@ -1,4 +1,0 @@
-v1.1.1
-
-* Prise en charge de l'importation de la notation PlayOK.
-* Prend en charge le N spécifique des "règles N-move".

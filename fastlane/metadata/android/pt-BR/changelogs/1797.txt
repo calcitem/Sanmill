@@ -1,5 +1,0 @@
-v1.0.5
-
-* Indicar peças brancas como jogador 1 e pretas como jogador 2
-* Altere o texto 'Dica' para 'Informações'
-* Corrigir erro de digitação

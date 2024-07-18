@@ -1,4 +1,0 @@
-v1.1.43
-
-* Popraw tłumaczenie koreańskie.
-* Zaktualizuj Fluttera do wersji 2.10.3.

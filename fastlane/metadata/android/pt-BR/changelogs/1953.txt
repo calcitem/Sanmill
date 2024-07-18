@@ -1,4 +1,0 @@
-v1.1.1
-
-* Suporte para importação de notação PlayOK.
-* Suporte N específico de "regras N-move".

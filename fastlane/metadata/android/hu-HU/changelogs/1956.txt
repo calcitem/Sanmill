@@ -1,4 +1,0 @@
-v1.1.2
-
-* Add hozzá a román nyelvű gépi fordítást.
-* Az import/export stabilitásának javítása.

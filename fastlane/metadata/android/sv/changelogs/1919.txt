@@ -1,3 +1,0 @@
-v1.0.23
-
-* Olika formatvarianter stöds vid import av Move List.

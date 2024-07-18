@@ -1,3 +1,0 @@
-v1.0.23
-
-* Při importu seznamu přesunů jsou podporovány různé varianty formátu.

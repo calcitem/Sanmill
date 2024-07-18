@@ -1,3 +1,0 @@
-v1.0.15
-
-* Gravação de tela de suporte (Experimental)

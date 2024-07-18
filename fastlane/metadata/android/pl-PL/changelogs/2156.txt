@@ -1,6 +1,0 @@
-v1.1.30
-
-* Unikaj zbyt agresywnego AI w fazie otwarcia, co może łatwo doprowadzić do przegranej.
-* Zwiększ maksymalną wartość poziomu umiejętności z 20 do 30.
-* Ustaw opcję „Rozważ mobilność elementów” jako domyślną.
-* Dodaj ustawienie „Kolor podświetlenia elementu” i ustaw czerwony jako domyślny.

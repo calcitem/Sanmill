@@ -1,3 +1,0 @@
-v3.5.6
-
-Javítsa ki azt a problémát, hogy a telepítés utáni első indításkor nem sikerült importálni az áthelyezési listát.

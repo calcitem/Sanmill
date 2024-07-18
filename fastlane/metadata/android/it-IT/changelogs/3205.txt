@@ -1,3 +1,0 @@
-v2.0.20
-
-Risolvi il problema che le tre icone non vengono visualizzate nella parte superiore della pagina del tutorial in modalità oscura.

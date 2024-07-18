@@ -1,3 +1,0 @@
-v2.0.11
-
-Cette mise à jour comprend diverses améliorations et corrections de bogues pour améliorer l'application pour vous.

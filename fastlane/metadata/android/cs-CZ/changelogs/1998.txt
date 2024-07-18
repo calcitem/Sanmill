@@ -1,5 +1,0 @@
-v1.1.9
-
-* Zlepšit překlad perštiny (WIP).
-* Opravte problémy se šipkami možností a navigačními tlačítky v jazycích RTL.
-* Ikona Opravit animaci je příliš vysoká, když je národní prostředí arabština.

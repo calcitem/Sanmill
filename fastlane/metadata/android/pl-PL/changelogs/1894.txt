@@ -1,5 +1,0 @@
-v1.0.20
-
-* Wspieraj Ten/Eleven Men's Morris.
-* Możesz ustawić, ile pozostałych sztuk może latać.
-* Dodaj pasek narzędzi nawigacji historii.

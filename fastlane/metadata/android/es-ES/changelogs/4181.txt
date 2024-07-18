@@ -1,3 +1,0 @@
-v4.13.1
-
-Se solucionó un problema en el que los íconos de archivos no eran visibles en el modo oscuro.

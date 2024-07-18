@@ -1,3 +1,0 @@
-v1.0.12
-
-* Puoi forzare l'IA a muoversi ora quando l'IA sta pensando.

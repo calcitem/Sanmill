@@ -1,4 +1,0 @@
-v1.1.23
-
-* Defina a cor do texto das peças não colocadas para a cor da linha do tabuleiro
-* Adicionar tradução suíço-alemão (WIP)

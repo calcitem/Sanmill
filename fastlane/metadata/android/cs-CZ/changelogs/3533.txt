@@ -1,3 +1,0 @@
-v3.5.6
-
-Opravte problém s nemožností importovat seznam přesunů při prvním spuštění po instalaci.

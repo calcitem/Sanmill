@@ -1,4 +1,0 @@
-v1.1.1
-
-* Wsparcie importowania notacji PlayOK.
-* Obsługa specyficznych N z „reguł ruchu N”.

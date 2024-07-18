@@ -1,3 +1,0 @@
-v3.5.12
-
-Popraw chorwackie tłumaczenie.

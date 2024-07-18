@@ -1,3 +1,0 @@
-v3.4.1
-
-Naprawiono kilka problemów z funkcją ustawiania pozycji.

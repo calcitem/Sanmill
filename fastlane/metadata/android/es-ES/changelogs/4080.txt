@@ -1,5 +1,0 @@
-v4.5.1
-
-Esta actualización incluye varias mejoras y correcciones de errores para mejorar la aplicación para usted.
-
-* Guardar la imagen al guardar el juego en PGN.

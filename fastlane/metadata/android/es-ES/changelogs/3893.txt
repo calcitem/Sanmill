@@ -1,4 +1,0 @@
-v4.0.5
-
-* Se agregó soporte al Cingalés.
-*Traducción al Español actualizada.

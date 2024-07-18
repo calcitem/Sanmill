@@ -1,5 +1,0 @@
-v1.1.39
-
-* Zwiększ moc sztucznej inteligencji w fazie ruchu.
-* Popraw tłumaczenie francuskie i węgierskie.
-* Android 4.1.x nie jest już obsługiwany.

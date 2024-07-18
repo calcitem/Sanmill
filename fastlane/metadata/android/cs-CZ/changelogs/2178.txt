@@ -1,3 +1,0 @@
-v1.1.35
-
-Optimalizujte schopnost AI ovládat situaci ve fázi otevírání.

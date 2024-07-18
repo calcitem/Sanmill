@@ -1,4 +1,0 @@
-v1.1.2
-
-* Rumence makine çevirisi ekleyin.
-* İthalat/ihracat istikrarını geliştirin.

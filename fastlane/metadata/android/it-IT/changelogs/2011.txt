@@ -1,6 +1,0 @@
-v1.1.10
-
-* Risolti i problemi relativi alle frecce delle opzioni nelle lingue RTL.
-* Migliora la traduzione Farsi (lingua persiana) (WIP).
-* Migliora le traduzioni in inglese.
-* Aggiungi traduzioni automatiche bulgaro/bengalese/danese/greco/estone/finlandese/gujarati/croato/indonesiano/lituano/lettone/macedone/malese/olandese/slovacco/sloveno/albanese/serbo/svedese/telugu/tailandese.

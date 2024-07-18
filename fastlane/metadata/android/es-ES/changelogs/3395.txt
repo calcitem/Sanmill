@@ -1,7 +1,0 @@
-v3.4.0
-
-1. Ajuste para retraso de la IA. Si encuentras que la IA se mueve muy rápido y es difícil ver los movimientos, puedes aumentar este valor.
-
-2. Solucionado un problema, al formar un molino, el movimiento del molino no siempre se muestra primero, se muestra junto con otros, y no esta claro cómo la IA lo formó.
-
-3. Solucionado el problema por el que el círculo rojo que indica una pieza seleccionada no se cambiaba a una nueva pieza al pulsar sobre otra en lugar de la pieza seleccionada.

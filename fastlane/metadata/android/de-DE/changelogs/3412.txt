@@ -1,3 +1,0 @@
-v3.4.1
-
-Mehrere Probleme mit der Setup-Positionsfunktion behoben.

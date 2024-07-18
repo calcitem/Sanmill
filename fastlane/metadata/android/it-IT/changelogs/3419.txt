@@ -1,3 +1,0 @@
-v3.4.2
-
-La finestra di dialogo del risultato del gioco corretto viene mostrata due volte.

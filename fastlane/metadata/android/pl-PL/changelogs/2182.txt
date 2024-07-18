@@ -1,4 +1,0 @@
-v1.1.36
-
-* Napraw problem z wyświetlaniem kierunku ikon w układzie od prawej do lewej.
-* Ulepszone tłumaczenie arabskie.

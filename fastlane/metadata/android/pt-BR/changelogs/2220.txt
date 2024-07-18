@@ -1,4 +1,0 @@
-v1.1.42
-
-* Adicionar tradução ucraniana.
-* Melhore a tradução para o português (Brasil).

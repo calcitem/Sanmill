@@ -1,4 +1,0 @@
-v1.0.13
-
-* Dwukrotnie wróć, aby zamknąć aplikację.
-* Wyskakujące okno dialogowe Zasady prywatności przy pierwszym uruchomieniu.

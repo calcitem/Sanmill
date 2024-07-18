@@ -1,5 +1,0 @@
-v3.8.0
-
-* Añadido soporte para el Selector de la imagen de fondo.
-* La IA es más inteligente en los movimientos 5 y 6 cuando se juega con blancas.
-* Mejora la localización en portugués brasileño.

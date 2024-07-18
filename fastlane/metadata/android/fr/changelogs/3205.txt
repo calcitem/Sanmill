@@ -1,3 +1,0 @@
-v2.0.20
-
-Correction du problème d'affichage des trois icônes en haut de la page du didacticiel en mode sombre.

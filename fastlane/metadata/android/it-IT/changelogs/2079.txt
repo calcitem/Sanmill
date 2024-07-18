@@ -1,3 +1,0 @@
-v1.1.22
-
-Quando gli umani contro l'IA, le due parti hanno fatto molte mosse ma non hanno preso i pezzi dell'avversario per molte mosse consecutive e l'IA si bloccherà. Questo problema è stato risolto.

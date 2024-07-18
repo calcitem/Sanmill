@@ -1,3 +1,0 @@
-v1.0.22
-
-* Opravte bílý boční útok tak brzy ze stran ve 3. tahu.

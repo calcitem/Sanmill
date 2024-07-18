@@ -1,4 +1,0 @@
-v1.1.2
-
-* Přidejte strojový překlad do rumunštiny.
-* Zlepšit stabilitu importu/exportu.

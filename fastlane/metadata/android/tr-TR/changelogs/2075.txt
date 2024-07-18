@@ -1,3 +1,0 @@
-v1.1.20
-
-* AI'nın yeteneklerini, özellikle hareket aşamasında ve yüksek seviyelerde geliştirin.

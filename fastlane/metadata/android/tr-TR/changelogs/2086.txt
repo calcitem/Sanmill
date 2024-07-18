@@ -1,4 +1,0 @@
-v1.1.23
-
-* Yerleştirilmemiş parçaların metin rengini tahta çizgi rengine ayarlayın
-* İsviçre Almancası çevirisini ekleyin (WIP)

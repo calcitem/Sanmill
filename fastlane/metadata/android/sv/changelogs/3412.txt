@@ -1,3 +1,0 @@
-v3.4.1
-
-Fixade flera problem med inställningspositionsfunktionen.

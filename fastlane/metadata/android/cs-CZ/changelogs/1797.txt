@@ -1,5 +1,0 @@
-v1.0.5
-
-* Označte bílé figurky jako hráče 1 a černé jako hráče 2
-* Změňte text 'Hint' na 'Info'
-* Opravte překlep

@@ -1,4 +1,0 @@
-v1.1.9
-
-* Javítsa ki a beállítások nyilakkal és a navigációs gombokkal kapcsolatos problémákat az RTL nyelveken.
-* Az animáció javítási ikonja túl magas, ha a nyelv arab.

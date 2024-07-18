@@ -1,3 +1,0 @@
-v1.0.4
-
-* Sperren Sie die Bildschirmausrichtung auf Hochformat.

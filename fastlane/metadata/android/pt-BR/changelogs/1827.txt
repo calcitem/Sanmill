@@ -1,4 +1,0 @@
-v1.0.10
-
-* Acelere o pensamento nos dois primeiros movimentos.
-* Mostre apenas a anotação a bordo em dois lados.

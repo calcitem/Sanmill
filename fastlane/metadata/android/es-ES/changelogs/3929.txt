@@ -1,3 +1,0 @@
-v4.0.9
-
-Esta actualización incluye varias mejoras y correcciones de errores para hacer la aplicación mejor para usted.

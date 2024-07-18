@@ -1,4 +1,0 @@
-v1.1.23
-
-* Ställ in antalet oplacerade bitars textfärg till tavlans linjefärg
-* Lägg till schweizisk tysk översättning (WIP)

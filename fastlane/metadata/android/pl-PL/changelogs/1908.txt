@@ -1,3 +1,0 @@
-v1.0.22
-
-* Napraw atak białej strony tak wcześnie z boków w trzecim ruchu.

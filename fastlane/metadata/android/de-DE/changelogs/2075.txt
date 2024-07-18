@@ -1,3 +1,0 @@
-v1.1.20
-
-* Verbessern Sie die Fähigkeiten der KI, insbesondere in der Bewegungsphase und in hohen Leveln.

@@ -1,4 +1,0 @@
-v1.1.6
-
-* Geçerli sayfanın ekran görüntüsüne açıklama ekleyerek ve metin ekleyerek doğrudan uygulamada etkileşimli geri bildirim sağlayın.
-* Romence ve Macarca dil çevirilerini geliştirin.

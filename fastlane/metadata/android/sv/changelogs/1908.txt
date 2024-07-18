@@ -1,3 +1,0 @@
-v1.0.22
-
-* Fixa vit sidoattack så tidigt från sidorna vid 3:e draget.

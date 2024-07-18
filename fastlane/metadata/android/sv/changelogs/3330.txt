@@ -1,3 +1,0 @@
-v3.2.0
-
-Pad stöder landskapsorientering.

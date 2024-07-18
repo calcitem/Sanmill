@@ -1,7 +1,0 @@
-v2.0.13
-
-* Támogatja a GIF megosztását.
-* Tiltsa le a gesztusokat a játék oldalán.
-* Adjon hozzá árnyékot az el nem helyezett és eltávolított darabokhoz.
-* Javítsa az állapotsor ikonjának színét fehérre.
-* A tábla szélén található darabok rögzítési élei elmosódnak.

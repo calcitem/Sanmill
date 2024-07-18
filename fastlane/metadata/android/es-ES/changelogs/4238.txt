@@ -1,3 +1,0 @@
-v4.16.2
-
-Solucionar problemas de traducción.

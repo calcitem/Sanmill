@@ -1,3 +1,0 @@
-v1.1.41
-
-Nadogradite na Flutter 2.10.1.

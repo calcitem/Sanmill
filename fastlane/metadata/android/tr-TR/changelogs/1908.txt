@@ -1,3 +1,0 @@
-v1.0.22
-
-* 3. hamlede yanlardan çok erken beyaz yan saldırısını düzeltin.

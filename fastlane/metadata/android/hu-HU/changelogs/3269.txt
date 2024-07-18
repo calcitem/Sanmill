@@ -1,3 +1,0 @@
-v2.1.0
-
-Ez a frissítés különféle fejlesztéseket és hibajavításokat tartalmaz az alkalmazás jobbá tétele érdekében.

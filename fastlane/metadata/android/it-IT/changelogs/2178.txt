@@ -1,3 +1,0 @@
-v1.1.35
-
-Ottimizza la capacità dell'IA di controllare la situazione nella fase iniziale.

@@ -1,5 +1,0 @@
-v1.1.9
-
-* Melhorar a tradução Farsi (língua persa) (WIP).
-* Corrige problemas de setas de opções e botões de navegação em idiomas RTL.
-* Correção do ícone de animação muito alto quando a localidade é árabe.

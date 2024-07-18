@@ -1,3 +1,0 @@
-v2.0.20
-
-Solucione el problema de que los tres íconos no se muestran en la parte superior de la página del tutorial en modo oscuro.

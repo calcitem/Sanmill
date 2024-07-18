@@ -1,4 +1,0 @@
-v1.1.24
-
-* Afficher le compteur de pièces non placées par défaut.
-* Améliorer la traduction finnoise.

@@ -1,4 +1,0 @@
-v1.1.23
-
-* Ustaw liczbę nieumieszczonych elementów w kolorze tekstu na kolor linii planszy
-* Dodaj szwajcarskie tłumaczenie na niemiecki (WIP)

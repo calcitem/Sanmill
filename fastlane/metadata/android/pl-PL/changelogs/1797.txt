@@ -1,5 +1,0 @@
-wersja 1.0.5
-
-* Wskaż białe pionki jako gracza 1, a czarne jako gracza 2
-* Zmień tekst „Podpowiedź” na „Informacje”
-* Napraw literówkę

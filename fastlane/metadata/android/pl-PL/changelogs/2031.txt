@@ -1,3 +1,0 @@
-v1.1.13
-
-* Dodaj tłumaczenia maszynowe kannada/norweski/uzbecki/wietnamski.

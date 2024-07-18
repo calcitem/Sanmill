@@ -1,5 +1,0 @@
-v3.4.0
-
-1. Aggiungere un'impostazione per il tempo di ritardo della risposta AI. Se trovi che l'IA si muove troppo velocemente ed è difficile vedere chiaramente le mosse, puoi aumentare questo valore.
-
-2. Risolto un problema per cui, quando si forma un mulino, la mossa che forma il mulino non viene sempre visualizzata per prima, ma viene mostrata insieme alla mossa di rimozione, rendendo poco chiaro come l'IA abbia formato il mulino.

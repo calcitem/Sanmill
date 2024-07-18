@@ -1,5 +1,0 @@
-v1.1.8
-
-* Risolto il problema dell'interfaccia utente del menu con Da destra a sinistra.
-* Migliora le traduzioni in inglese.
-* Mostra il nome della lingua invece del codice della lingua nella parte finale della voce di menu.

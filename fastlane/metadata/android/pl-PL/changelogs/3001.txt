@@ -1,3 +1,0 @@
-v2.0.4
-
-Ta aktualizacja zawiera różne ulepszenia i poprawki błędów, aby ulepszyć aplikację dla Ciebie.

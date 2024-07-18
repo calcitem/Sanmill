@@ -1,3 +1,0 @@
-v1.1.28
-
-O algoritmo AI foi aprimorado para aumentar as habilidades do AI para 180% do original.

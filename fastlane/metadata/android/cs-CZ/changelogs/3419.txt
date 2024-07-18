@@ -1,3 +1,0 @@
-v3.4.2
-
-Dialog Opravit výsledek hry se zobrazí dvakrát.

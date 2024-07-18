@@ -1,3 +1,0 @@
-v1.0.9
-
-* Prikaži oznake na ploči (podesivo).

@@ -1,4 +1,0 @@
-v1.1.23
-
-* Imposta il conteggio del colore del testo dei pezzi non posizionati sul colore della linea del tabellone
-* Aggiungi la traduzione in tedesco svizzero (WIP)

@@ -1,3 +1,0 @@
-v2.0.1
-
-Ovo ažuriranje uključuje razna poboljšanja i ispravke pogrešaka kako bi aplikacija bila bolja za vas.

@@ -1,6 +1,0 @@
-v1.1.10
-
-* RTL dillerinde seçenek okları sorunlarını düzeltin.
-* Farsça (Farsça) çevirisini (WIP) geliştirin.
-* İngilizce çevirileri geliştirin.
-* Bulgarca/Bengalce/Danca/Yunanca/Estonca/Fince/Gujarati/Hırvatça/Endonezyaca/Litvanca/Letonca/Makedonca/Malayca/Hollandaca/Slovakça/Slovence/Arnavutça/Sırpça/İsveççe/Teluguca/Tayca makine çevirilerini ekleyin.

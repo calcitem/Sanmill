@@ -1,4 +1,0 @@
-v1.1.23
-
-* Setze die Textfarbe der nicht platzierten Teile auf die Farbe der Brettlinie.
-* Schweizerdeutsche Übersetzung (WIP) hinzufügen.

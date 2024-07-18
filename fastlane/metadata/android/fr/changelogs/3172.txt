@@ -1,3 +1,0 @@
-v2.0.16
-
-Améliorer l'accessibilité de l'assistant.

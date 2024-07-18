@@ -1,7 +1,0 @@
-v2.0.13
-
-* Podrška za dijeljenje GIF-a.
-* Onemogući geste na stranici igre.
-* Dodajte sjenu nepostavljenim i uklonjenim komadima.
-* Popravite boju ikone statusne trake na bijelu.
-* Popravljeni rubovi komada koji se nalaze na rubu ploče su zamagljeni.

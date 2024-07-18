@@ -1,6 +1,0 @@
-v1.1.30
-
-* AI'nın açılış aşamasında kolayca kayıplara yol açabilecek çok agresif olmasını önleyin.
-* Beceri seviyesinin maksimum değerini 20'den 30'a yükseltin.
-* 'Parçaların hareketliliğini dikkate al' seçeneğini varsayılan olarak açık olarak ayarlayın.
-* 'Parça vurgu rengi' ayarını ekleyin ve kırmızıyı varsayılan olarak ayarlayın.

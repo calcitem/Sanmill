@@ -1,4 +1,0 @@
-v1.1.15
-
-* Támogatja a menü színbeállításait.
-* A perzsa fordítás javítása.

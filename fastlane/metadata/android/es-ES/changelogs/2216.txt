@@ -1,3 +1,0 @@
-v1.1.41
-
-Actualice a Flutter 2.10.1.

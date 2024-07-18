@@ -1,3 +1,0 @@
-v3.5.10
-
-Mettre à jour les traductions croates.

@@ -1,3 +1,0 @@
-v1.0.8
-
-* Prise en charge de la reprise. Vous pouvez essayer d'annuler un mauvais coup et faire un autre meilleur coup.

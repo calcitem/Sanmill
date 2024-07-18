@@ -1,3 +1,0 @@
-v1.0.15
-
-* Soporte de grabación de pantalla (Experimental)

@@ -1,3 +1,0 @@
-v3.5.8
-
-Fixat problemet med att skärmen visar grått när ett spel slutar oavgjort.

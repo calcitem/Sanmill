@@ -1,3 +1,0 @@
-v3.5.11
-
-Ta aktualizacja zawiera różne ulepszenia i poprawki błędów, aby ulepszyć aplikację dla Ciebie.

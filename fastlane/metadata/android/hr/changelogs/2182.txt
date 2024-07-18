@@ -1,4 +1,0 @@
-v1.1.36
-
-* Popravite problem sa prikazom smjera ikona u rasporedu zdesna nalijevo.
-* Poboljšan arapski prijevod.

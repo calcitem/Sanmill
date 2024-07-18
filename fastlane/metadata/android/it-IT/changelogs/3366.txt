@@ -1,3 +1,0 @@
-v3.3.3
-
-Risolto un problema per cui la lingua visualizzata era l'arabo anziché l'inglese come previsto nelle impostazioni locali minori.

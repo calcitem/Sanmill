@@ -1,3 +1,0 @@
-v3.4.1
-
-Risolti diversi problemi con la funzione di posizione di installazione.

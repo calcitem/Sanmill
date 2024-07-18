@@ -1,3 +1,0 @@
-v1.1.22
-
-Kiedy ludzie kontra sztuczna inteligencja, obie strony wykonały wiele ruchów, ale nie zabrały pionków przeciwnika przez wiele kolejnych ruchów, a sztuczna inteligencja zostanie zamrożona. Ten problem został rozwiązany.

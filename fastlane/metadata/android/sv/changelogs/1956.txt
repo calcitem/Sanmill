@@ -1,4 +1,0 @@
-v1.1.2
-
-* Lägg till rumänska maskinöversättning.
-* Förbättra stabiliteten vid import/export.

@@ -1,3 +1,0 @@
-v3.5.8
-
-Kijavítottuk azt a problémát, hogy a képernyő szürkén jelenik meg, amikor a játék döntetlennel végződik.

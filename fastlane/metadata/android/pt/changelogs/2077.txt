@@ -1,3 +1,0 @@
-v1.1.21
-
-* Corrija a direção do ícone dos botões de retorno e avanço no layout da direita para a esquerda.

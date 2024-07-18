@@ -1,4 +1,0 @@
-v1.1.23
-
-* Postavite boju teksta broja nepostavljenih komada na boju crte ploče
-* Dodajte švicarski njemački prijevod (WIP)

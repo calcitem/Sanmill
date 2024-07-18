@@ -1,4 +1,0 @@
-v1.1.12
-
-* Vylepšete překlad do perštiny.
-* Přidejte tradiční čínský překlad.

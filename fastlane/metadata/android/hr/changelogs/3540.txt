@@ -1,3 +1,0 @@
-v3.5.8
-
-Riješen je problem sa sivim zaslonom kada igra završi neriješeno.

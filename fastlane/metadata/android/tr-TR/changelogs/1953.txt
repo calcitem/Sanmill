@@ -1,4 +1,0 @@
-v1.1.1
-
-* PlayOK gösterimini içe aktarmayı destekler.
-* "N-hareket kurallarının" belirli N'sini destekleyin.

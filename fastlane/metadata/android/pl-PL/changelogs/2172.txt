@@ -1,3 +1,0 @@
-v1.1.34
-
-Unikaj zbyt agresywnej gry białych w fazie otwarcia, która może szybko przegrać.

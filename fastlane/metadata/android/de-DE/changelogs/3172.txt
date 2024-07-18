@@ -1,3 +1,0 @@
-v2.0.16
-
-Verbessern Sie die Zugänglichkeit des Assistenten.

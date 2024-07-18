@@ -1,3 +1,0 @@
-v1.1.4
-
-* Supporta l'impostazione delle lingue in inglese, tedesco, persiano, ungherese, rumeno e cinese.

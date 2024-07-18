@@ -1,3 +1,0 @@
-v1.0.23
-
-* Várias variantes de formato são suportadas ao importar Move List.

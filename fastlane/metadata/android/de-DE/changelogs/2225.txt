@@ -1,4 +1,0 @@
-v1.1.43
-
-* Koreanische Übersetzung verbessern.
-* Aktualisieren Sie Flutter auf 2.10.3.

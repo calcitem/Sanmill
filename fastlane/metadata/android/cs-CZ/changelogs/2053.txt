@@ -1,5 +1,0 @@
-v1.1.16
-
-* Zobrazit stavový řádek pro zařízení s velkou obrazovkou.
-* Nezobrazovat nastavení panelu nástrojů navigace, pokud je poměr stran okna menší než 1,7.
-* Vylepšete překlad do perštiny.

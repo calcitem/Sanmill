@@ -1,4 +1,0 @@
-v1.0.17
-
-* Támogassa a betűméret beállítását (az alkalmazás újraindítása után lép hatályba).
-* Tartsa néma visszavételkor (konfigurálható).

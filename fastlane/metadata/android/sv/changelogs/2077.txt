@@ -1,3 +1,0 @@
-v1.1.21
-
-* Åtgärda återtagnings- och steg framåt-knapparnas ikonriktning i höger-till-vänster-layout.

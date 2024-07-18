@@ -1,3 +1,0 @@
-v2.0.14
-
-Améliorer l'enregistreur d'écran de jeu.

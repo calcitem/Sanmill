@@ -1,3 +1,0 @@
-v1.0.4
-
-* Bloqueie a orientação da tela para retrato.

@@ -1,4 +1,0 @@
-v1.1.24
-
-* Domyślnie pokazuj nieumieszczone liczniki sztuk.
-* Popraw tłumaczenie fińskie.

@@ -1,4 +1,0 @@
-v1.1.43
-
-* Migliora la traduzione coreana.
-* Aggiorna Flutter alla versione 2.10.3.

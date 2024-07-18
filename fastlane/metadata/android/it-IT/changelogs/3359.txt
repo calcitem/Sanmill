@@ -1,3 +1,0 @@
-v3.3.2
-
-Questo aggiornamento include vari miglioramenti e correzioni di bug per rendere l'app migliore per te.

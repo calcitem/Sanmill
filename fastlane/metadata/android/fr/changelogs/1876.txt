@@ -1,3 +1,0 @@
-v1.0.18
-
-* Vous pouvez annuler plusieurs étapes.

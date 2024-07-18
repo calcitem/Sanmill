@@ -1,3 +1,0 @@
-v3.3.3
-
-Küçük yerel ayarlarda beklendiği gibi görüntülenen dilin İngilizce yerine Arapça olması sorunu düzeltildi.

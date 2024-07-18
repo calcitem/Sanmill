@@ -1,3 +1,0 @@
-v3.5.6
-
-Solucione el problema de no poder importar la lista de movimientos en el primer lanzamiento después de la instalación.

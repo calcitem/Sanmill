@@ -1,3 +1,0 @@
-v1.1.33
-
-Flutter 2.5'i destekleyin.

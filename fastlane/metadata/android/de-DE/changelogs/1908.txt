@@ -1,4 +1,0 @@
-v1.0.22
-
-* KI verbessern.
-* Deutsche Übersetzung verbessern.

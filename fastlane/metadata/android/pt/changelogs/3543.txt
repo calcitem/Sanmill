@@ -1,3 +1,0 @@
-v3.5.9
-
-Corrigido o problema em que o botão 'Mover agora' na barra de ferramentas de navegação desaparecia ao alternar para a página 'Configurar posição' e, em seguida, voltar.

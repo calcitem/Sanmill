@@ -1,5 +1,0 @@
-v1.1.16
-
-* Mostra la barra di stato per il dispositivo con schermo grande.
-* Non mostrare l'impostazione della barra degli strumenti di navigazione se le proporzioni della finestra sono inferiori a 1,7.
-* Migliora la traduzione persiana.

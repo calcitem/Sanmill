@@ -1,4 +1,0 @@
-v1.1.42
-
-* Ukraynaca çeviri ekleyin.
-* Portekizce (Brezilya) çevirisini geliştirin.

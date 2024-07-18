@@ -1,3 +1,0 @@
-v1.0.22
-
-* Fixe o ataque do lado branco tão cedo pelos lados no 3º movimento.

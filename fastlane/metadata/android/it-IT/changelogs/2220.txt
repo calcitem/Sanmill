@@ -1,4 +1,0 @@
-v1.1.42
-
-* Aggiungi traduzione ucraina.
-* Migliora la traduzione portoghese (Brasile).

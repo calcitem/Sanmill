@@ -1,5 +1,0 @@
-v1.1.18
-
-* Quando il livello di abilità è 1, l'IA si muove in modo più casuale per ridurre la difficoltà.
-* La correzione dell'impostazione della barra degli strumenti di navigazione scompare su alcuni dispositivi.
-* Risolto il problema con il colore del testo dell'elemento evidenziato nel cassetto.

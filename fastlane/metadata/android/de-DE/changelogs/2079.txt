@@ -1,3 +1,0 @@
-v1.1.22
-
-Beim Spiel Mensch gegen KI haben beide Seiten viele Züge gemacht, aber viele aufeinanderfolgende Züge lang keine Figuren des Gegners genommen, und die KI wird eingefroren. Dieses Problem wurde behoben.

@@ -1,3 +1,0 @@
-v3.4.2
-
-La boîte de dialogue de résultat du jeu fixe s'affiche deux fois.

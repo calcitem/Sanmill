@@ -1,6 +1,0 @@
-v1.1.30
-
-* Kerülje el, hogy az AI túl agresszív legyen a nyitó fázisban, ami könnyen veszteségekhez vezethet.
-* Növelje a képzettségi szint maximális értékét 20-ról 30-ra.
-* Állítsa be alapértelmezettként a „Tekintsd meg a darabok mobilitását” beállítást.
-* Adja hozzá a "Darab kiemelési színe" beállítást, és állítsa be a pirosat alapértelmezettként.

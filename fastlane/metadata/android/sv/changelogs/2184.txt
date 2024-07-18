@@ -1,3 +1,0 @@
-v1.1.37
-
-Ändra ikonen för spelet över.

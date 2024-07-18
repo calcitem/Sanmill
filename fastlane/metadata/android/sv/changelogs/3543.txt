@@ -1,3 +1,0 @@
-v3.5.9
-
-Fixade problemet där knappen "Flytta nu" på navigeringsverktygsfältet försvinner när du växlade till sidan "Inställningsposition" och sedan bytte tillbaka.

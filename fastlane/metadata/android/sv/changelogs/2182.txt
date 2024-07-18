@@ -1,4 +1,0 @@
-v1.1.36
-
-* Åtgärda problemet med visning av ikonriktning i layouten från höger till vänster.
-* Förbättrad arabisk översättning.

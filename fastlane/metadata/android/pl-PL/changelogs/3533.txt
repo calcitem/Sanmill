@@ -1,3 +1,0 @@
-v3.5.6
-
-Napraw problem uniemożliwiający zaimportowanie listy ruchów przy pierwszym uruchomieniu po instalacji.

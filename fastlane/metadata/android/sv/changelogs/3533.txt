@@ -1,3 +1,0 @@
-v3.5.6
-
-Åtgärda problemet med att inte kunna importera flyttlistan vid första lanseringen efter installationen.

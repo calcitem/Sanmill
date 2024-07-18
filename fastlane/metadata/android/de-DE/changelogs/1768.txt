@@ -1,3 +1,0 @@
-v1.0.3
-
-* Zeigen Sie im Dialogfeld die Schaltflächen für den Neustart / Abbruch anstelle der Schaltflächen für Ja / Nein an, wenn der Spieler das oberste schwierige Level gewinnt.

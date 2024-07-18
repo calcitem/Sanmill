@@ -1,3 +1,0 @@
-v1.1.21
-
-* Corregir la dirección de los iconos de los botones de retroceso y avance en el diseño de derecha a izquierda.

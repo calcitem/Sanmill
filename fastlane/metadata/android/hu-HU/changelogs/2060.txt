@@ -1,3 +1,0 @@
-v1.1.17
-
-* Lehetővé teszi az eszköztár színének konfigurálását.

@@ -1,3 +1,0 @@
-v1.0.12
-
-* A mesterséges intelligencia mozgásra kényszeríthető most, amikor az AI gondolkodik.

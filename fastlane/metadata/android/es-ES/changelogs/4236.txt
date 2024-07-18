@@ -1,3 +1,0 @@
-v4.16.1
-
-Mejorar las traducciones.

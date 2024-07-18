@@ -1,3 +1,0 @@
-v1.0.3
-
-* Oyuncu en zor seviyeyi kazandığında iletişim kutusundaki evet/hayır düğmeleri yerine yeniden başlat/iptal düğmelerini göster.

@@ -1,3 +1,0 @@
-v1.1.14
-
-* Ställ in standardregeln till Tolv mäns Morris när landet är Iran.

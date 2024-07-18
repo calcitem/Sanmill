@@ -1,4 +1,0 @@
-v1.1.6
-
-* Adjon interaktív visszajelzést közvetlenül az alkalmazásban az aktuális oldal képernyőképének megjegyzésével és szöveg hozzáadásával.
-* A román és magyar nyelvű fordítások javítása.

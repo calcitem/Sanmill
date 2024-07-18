@@ -1,3 +1,0 @@
-v1.1.21
-
-* Popravite smjer ikona gumba za vraćanje i korak naprijed u rasporedu zdesna nalijevo.

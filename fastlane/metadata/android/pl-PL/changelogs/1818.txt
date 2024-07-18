@@ -1,3 +1,0 @@
-wersja 1.0.8
-
-* Wsparcie przy powrocie. Możesz spróbować cofnąć zły ruch i wykonać inny lepszy ruch.

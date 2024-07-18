@@ -1,3 +1,0 @@
-v1.1.19
-
-* Az önkéntesek bekapcsolódhatnak a fordításokba a POEditorunkon.

@@ -1,8 +1,0 @@
-v1.1.38
-
-* Wsparcie przy usuwaniu nieumieszczonych elementów - Jeśli gracz utworzy młyn w fazie umieszczania, może usunąć nieustawiony element przeciwnika i kontynuować ruch.
-* Obsługa zasady Endgame N-Move.
-* Zmień warunek oceny reguły N-ruchu z > na =.
-* Obsługa trzykrotnego ustawienia powtórzeń.
-* Zezwalaj na konfigurowanie stylu punktu i szerokości punktu.
-* Wsparcie importu listy ruchów GoldToken.

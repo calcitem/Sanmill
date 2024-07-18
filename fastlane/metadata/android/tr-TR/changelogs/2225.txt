@@ -1,4 +1,0 @@
-v1.1.43
-
-* Korece çeviriyi geliştirin.
-* Flutter'ı 2.10.3'e yükseltin.

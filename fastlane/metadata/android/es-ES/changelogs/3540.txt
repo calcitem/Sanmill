@@ -1,3 +1,0 @@
-v3.5.8
-
-Se solucionó el problema de la pantalla que se mostraba gris cuando un juego terminaba en empate.

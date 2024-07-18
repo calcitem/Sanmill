@@ -1,3 +1,0 @@
-v1.1.21
-
-* Napraw kierunek ikony przycisków cofania i przewijania do przodu w układzie od prawej do lewej.

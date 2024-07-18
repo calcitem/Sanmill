@@ -1,3 +1,0 @@
-v1.0.12
-
-* Du kan tvinga AI att flytta nu när AI tänker.

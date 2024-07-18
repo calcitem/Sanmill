@@ -1,3 +1,0 @@
-v3.5.2
-
-Importuj tłumaczenie Schweizerdeutsch.

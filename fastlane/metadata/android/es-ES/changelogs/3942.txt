@@ -1,3 +1,0 @@
-v4.1.0 
-
-* Se corrigió que el algoritmo aleatorio no funcionaba con Perfect Database deshabilitado.

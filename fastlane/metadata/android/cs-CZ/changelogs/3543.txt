@@ -1,3 +1,0 @@
-v3.5.9
-
-Opraven problém, kdy tlačítko „Přesunout nyní“ na panelu nástrojů navigace zmizelo při přepnutí na stránku „Nastavení pozice“ a následném přepnutí zpět.

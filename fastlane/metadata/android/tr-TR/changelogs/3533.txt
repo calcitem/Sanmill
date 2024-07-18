@@ -1,3 +1,0 @@
-v3.5.6
-
-Yüklemeden sonraki ilk başlatmada taşıma listesini içe aktaramama sorununu düzeltin.

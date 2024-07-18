@@ -1,4 +1,0 @@
-v1.1.12
-
-* Migliora la traduzione persiana.
-* Aggiungi la traduzione cinese tradizionale.

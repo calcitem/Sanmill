@@ -1,3 +1,0 @@
-v1.0.11
-
-* Podrška Korak naprijed & Uzmi natrag sve & Korak naprijed sve.

@@ -1,4 +1,0 @@
-v1.0.10
-
-* Gyorsítsa fel az első két lépés gondolkodását.
-* Csak két oldalon jelenítse meg a táblán lévő jelölést.

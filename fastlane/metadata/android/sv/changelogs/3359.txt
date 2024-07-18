@@ -1,3 +1,0 @@
-v3.3.2
-
-Den här uppdateringen innehåller olika förbättringar och buggfixar för att göra appen bättre för dig.

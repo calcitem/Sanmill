@@ -1,5 +1,0 @@
-v1.1.39
-
-* Poboljšajte AI snagu pokretne faze.
-* Poboljšajte prijevod na francuski i mađarski.
-* Android 4.1.x više nije podržan.

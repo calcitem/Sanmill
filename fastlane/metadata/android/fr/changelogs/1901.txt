@@ -1,3 +1,0 @@
-v1.0.21
-
-* Prise en charge de l'exportation et de l'importation du jeu.

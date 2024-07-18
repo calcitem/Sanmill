@@ -1,6 +1,0 @@
-v1.1.10
-
-* Popravite probleme sa strelicama opcija u RTL jezicima.
-* Poboljšajte prijevod na farsi (perzijski jezik) (WIP).
-* Poboljšajte prijevode na engleski.
-* Dodajte strojne prijevode za bugarski/bengalski/danski/grčki/estonski/finski/gujarati/hrvatski/indonezijski/litvanski/latvijski/makedonski/malajski/nizozemski/slovački/slovenski/albanski/srpski/švedski/telugu/tajlandski.

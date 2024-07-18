@@ -1,3 +1,0 @@
-v2.0.15
-
-Aggiungi procedura guidata.

@@ -1,3 +1,0 @@
-v1.0.8
-
-* Unterstützung beim Zurücknehmen. Sie können versuchen, einen schlechten Zug rückgängig zu machen und einen anderen besseren Zug zu machen.

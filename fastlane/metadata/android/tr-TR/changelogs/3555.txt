@@ -1,3 +1,0 @@
-v3.5.12
-
-Hırvatça çeviriyi geliştirin.

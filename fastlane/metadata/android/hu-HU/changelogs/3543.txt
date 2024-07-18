@@ -1,3 +1,0 @@
-v3.5.9
-
-Kijavítottuk azt a problémát, amely miatt a Navigációs eszköztár „Move Now” gombja eltűnik, amikor a „Beállítási pozíció” oldalra vált, majd visszavált.

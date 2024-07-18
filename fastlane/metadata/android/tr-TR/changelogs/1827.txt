@@ -1,4 +1,0 @@
-v1.0.10
-
-* İlk iki hamleyi düşünmeyi hızlandırın.
-* Gemideki notasyonu sadece iki tarafta gösterin.

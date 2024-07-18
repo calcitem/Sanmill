@@ -1,3 +1,0 @@
-v3.5.9
-
-Riješen je problem zbog kojeg gumb "Premjesti sada" na navigacijskoj alatnoj traci nestaje kada se prebacite na stranicu "Postavljanje položaja", a zatim se vratite natrag.

@@ -1,3 +1,0 @@
-v2.0.20
-
-Javítsa ki azt a problémát, hogy sötét módban a három ikon nem jelenik meg az oktatóanyag oldalának tetején.

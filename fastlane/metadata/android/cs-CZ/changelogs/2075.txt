@@ -1,3 +1,0 @@
-v1.1.20
-
-* Zlepšete schopnosti AI, zejména ve fázi pohybu a vysokých úrovních.

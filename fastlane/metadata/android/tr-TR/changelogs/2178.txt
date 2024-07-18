@@ -1,3 +1,0 @@
-v1.1.35
-
-Açılış aşamasında AI'nın durumu kontrol etme yeteneğini optimize edin.

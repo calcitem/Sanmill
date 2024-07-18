@@ -1,5 +1,0 @@
-v1.1.8
-
-* Sağdan Sola menü kullanıcı arabirimi sorununu düzeltin.
-* İngilizce çevirileri geliştirin.
-* Menü öğesinin sonunda dil kodu yerine dil adını göster.

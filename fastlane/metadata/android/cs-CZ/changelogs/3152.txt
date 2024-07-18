@@ -1,7 +1,0 @@
-v2.0.13
-
-* Podpora sdílení GIF.
-* Zakázat gesta na stránce hry.
-* Přidejte stín na neumístěné a odstraněné kusy.
-* Opravte barvu ikony stavového řádku na bílou.
-* Fix hrany dílků umístěných na hraně desky jsou rozmazané.

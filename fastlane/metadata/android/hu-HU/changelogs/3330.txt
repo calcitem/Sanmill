@@ -1,3 +1,0 @@
-v3.2.0
-
-A pad támogatja a táj tájolást.

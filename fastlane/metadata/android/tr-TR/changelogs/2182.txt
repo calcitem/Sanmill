@@ -1,4 +1,0 @@
-v1.1.36
-
-* Sağdan sola düzende simge yönü görüntüleme sorununu düzeltin.
-* Geliştirilmiş Arapça çeviri.

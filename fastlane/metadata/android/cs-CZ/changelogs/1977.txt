@@ -1,4 +1,0 @@
-v1.1.6
-
-* Poskytněte interaktivní zpětnou vazbu přímo v aplikaci anotací snímku obrazovky aktuální stránky a přidáním textu.
-* Vylepšete překlady do rumunštiny a maďarštiny.

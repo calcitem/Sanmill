@@ -1,3 +1,0 @@
-v3.4.2
-
-Dialogrutan Fixa spelresultat visas två gånger.

@@ -1,3 +1,0 @@
-v1.1.35
-
-Optimera AI:s förmåga att kontrollera situationen i öppningsfasen.

@@ -1,3 +1,0 @@
-v3.4.2
-
-A caixa de diálogo Corrigir resultado do jogo é exibida duas vezes.

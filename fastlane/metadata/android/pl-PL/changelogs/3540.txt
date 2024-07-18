@@ -1,3 +1,0 @@
-v3.5.8
-
-Naprawiono problem z wyświetlaniem szarego ekranu, gdy gra kończy się remisem.

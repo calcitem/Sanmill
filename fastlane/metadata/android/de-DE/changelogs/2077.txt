@@ -1,3 +1,0 @@
-v1.1.21
-
-* Korrigiert die Richtung des Symbols für die Schaltflächen "Zurücknehmen" und "Schritt vorwärts" im Layout "Von rechts nach links".

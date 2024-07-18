@@ -1,3 +1,0 @@
-v3.4.2
-
-Dijalog s rezultatima popravljanja igre prikazan je dvaput.

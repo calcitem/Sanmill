@@ -1,7 +1,0 @@
-v3.4.0
-
-1. Fügen Sie eine AI-Antwortverzögerungseinstellung hinzu, um schnelle Bewegungen der KI zu verlangsamen und sie besser sichtbar zu machen.
-
-2. Behobenes Problem: Beim Bilden einer Mühle wird die Mühlenbewegung nun klarer angezeigt, ohne mit anderen Bewegungen verwechselt zu werden.
-
-3. Gelöstes Problem: Der rote Kreis, der ein ausgewähltes Stück markiert, wird nun korrekt auf ein neues Stück übertragen, wenn ein anderes Stück anstelle des ausgewählten angetippt wird.

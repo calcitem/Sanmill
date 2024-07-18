@@ -1,3 +1,0 @@
-v1.0.7
-
-* Prise en charge de la notation standard.

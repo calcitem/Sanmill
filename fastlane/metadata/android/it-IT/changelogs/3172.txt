@@ -1,3 +1,0 @@
-v2.0.16
-
-Migliora l'accessibilità della procedura guidata.

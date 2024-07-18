@@ -1,8 +1,0 @@
-v1.1.38
-
-* Supporto per la rimozione dell'impostazione del pezzo non piazzato.
-* Supporta la regola N-Move di Endgame.
-* Cambia la condizione di giudizio della regola N-mosse da > a =.
-* Supporta l'impostazione di ripetizione tripla.
-* Consenti di configurare lo stile del punto e la larghezza del punto.
-* Supporta l'importazione dell'elenco delle mosse GoldToken.

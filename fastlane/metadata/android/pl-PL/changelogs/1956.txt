@@ -1,4 +1,0 @@
-v1.1.2
-
-* Dodaj tłumaczenie maszynowe języka rumuńskiego.
-* Popraw stabilność importu/eksportu.

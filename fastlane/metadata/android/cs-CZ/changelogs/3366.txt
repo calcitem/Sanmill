@@ -1,3 +1,0 @@
-v3.3.3
-
-Opraven problém, kdy zobrazovaným jazykem byla arabština místo angličtiny, jak se očekávalo v menších lokalitách.

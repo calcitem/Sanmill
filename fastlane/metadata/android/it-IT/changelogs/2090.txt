@@ -1,4 +1,0 @@
-v1.1.24
-
-* Mostra il contatore dei pezzi non posizionati per impostazione predefinita.
-* Migliora la traduzione finlandese.

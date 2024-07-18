@@ -1,4 +1,0 @@
-v1.1.2
-
-* Aggiungi la traduzione automatica in lingua rumena.
-* Migliora la stabilità dell'importazione/esportazione.

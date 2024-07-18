@@ -1,3 +1,0 @@
-v3.5.13
-
-Beheben Sie das Problem, dass das Tippen auf die Schaltfläche „Verschiebungsliste“ manchmal nicht reagiert.

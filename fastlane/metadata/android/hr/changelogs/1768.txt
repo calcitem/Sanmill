@@ -1,3 +1,0 @@
-v1.0.3
-
-* Prikaži gumbe za ponovno pokretanje/odustajanje umjesto gumba za da/ne u dijaloškom okviru kada igrač osvoji najtežu razinu.

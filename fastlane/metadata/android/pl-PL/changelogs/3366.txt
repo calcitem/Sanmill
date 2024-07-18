@@ -1,3 +1,0 @@
-v3.3.3
-
-Naprawiono problem polegający na tym, że wyświetlanym językiem był arabski zamiast angielskiego, zgodnie z oczekiwaniami w mniejszych ustawieniach regionalnych.

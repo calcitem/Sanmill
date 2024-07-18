@@ -1,5 +1,0 @@
-v1.1.18
-
-* Gdy poziom umiejętności wynosi 1, sztuczna inteligencja porusza się bardziej losowo, aby zmniejszyć trudność.
-* Napraw ustawienie paska narzędzi nawigacji znikającego na niektórych urządzeniach.
-* Napraw kolor tekstu podświetlenia szuflady.

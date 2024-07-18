@@ -1,4 +1,0 @@
-v1.1.1
-
-* Podrška za uvoz PlayOK zapisa.
-* Podrška za određeni N od "N-move rules".

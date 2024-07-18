@@ -1,4 +1,0 @@
-v1.1.24
-
-* Alapértelmezés szerint az el nem helyezett darabszámláló megjelenítése.
-* A finn fordítás javítása.

@@ -1,3 +1,0 @@
-v1.0.16
-
-* Suporta animação de peça de configuração.

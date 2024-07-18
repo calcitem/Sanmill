@@ -1,3 +1,0 @@
-v3.5.8
-
-Opraven problém se zobrazením šedé obrazovky, když hra skončí remízou.

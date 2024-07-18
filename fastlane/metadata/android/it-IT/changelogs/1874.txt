@@ -1,4 +1,0 @@
-v1.0.17
-
-* Supporta l'impostazione della dimensione del carattere (ha effetto dopo il riavvio dell'app).
-* Mantieni muto quando riprendi (configurabile).

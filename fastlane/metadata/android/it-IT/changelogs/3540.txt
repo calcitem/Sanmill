@@ -1,3 +1,0 @@
-v3.5.8
-
-Risolto il problema per cui lo schermo veniva visualizzato in grigio quando una partita terminava in parità.

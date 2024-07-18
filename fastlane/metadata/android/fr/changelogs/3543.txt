@@ -1,3 +1,0 @@
-v3.5.9
-
-Correction du problème où le bouton "Déplacer maintenant" de la barre d'outils de navigation disparaissait lors du passage à la page "Configurer la position", puis du retour.

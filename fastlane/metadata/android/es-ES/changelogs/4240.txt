@@ -1,3 +1,0 @@
-v4.16.3
-
-Corregir los nombres de los idiomas.

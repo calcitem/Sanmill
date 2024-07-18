@@ -1,3 +1,0 @@
-v2.0.16
-
-Popraw dostępność kreatora.

@@ -1,4 +1,0 @@
-v1.1.15
-
-* Podrška postavke boja izbornika.
-* Poboljšajte prijevod na perzijski.

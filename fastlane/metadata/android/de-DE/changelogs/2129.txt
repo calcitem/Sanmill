@@ -1,3 +1,0 @@
-v1.1.25
-
-Barrierefreiheit unterstützen.

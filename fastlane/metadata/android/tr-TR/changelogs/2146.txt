@@ -1,3 +1,0 @@
-v1.1.28
-
-AI algoritması, AI'nın becerilerini orijinalin %180'ine çıkarmak için geliştirildi.

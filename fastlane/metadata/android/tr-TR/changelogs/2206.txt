@@ -1,5 +1,0 @@
-v1.1.39
-
-* Hareketli fazın AI gücünü geliştirin.
-* Fransızca ve Macarca çeviriyi geliştirin.
-* Android 4.1.x artık desteklenmemektedir.

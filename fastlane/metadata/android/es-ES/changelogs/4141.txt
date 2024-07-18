@@ -1,7 +1,0 @@
-v4.11.0
-
-- Añadida la posibilidad de mostrar directamente las jugadas al pulsar el botón "Jugadas", si se muestra la barra del historial.
-- Añadido un botón de pegar el diálogo.
-- Garantizado que el cuadro de diálogo del selector de colores permanezca abierto cuando se pulsa fuera del diálogo.
-- Corregido un problema por el que el color de las coordenadas no cambiaba con el tema.
-- Añadido el tema de color Lienzo transparente a los colores, útil cuando se establece una imagen de fondo.

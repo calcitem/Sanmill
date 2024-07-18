@@ -1,3 +1,0 @@
-v1.1.32
-
-Consente agli utenti di scegliere l'algoritmo AI.

@@ -1,3 +1,0 @@
-v2.0.14
-
-Verbessern Sie den Spielbildschirmrekorder.

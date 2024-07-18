@@ -1,3 +1,0 @@
-v3.4.1
-
-Se corrigieron varios problemas con la función de posición de configuración.

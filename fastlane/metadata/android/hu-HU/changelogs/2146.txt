@@ -1,3 +1,0 @@
-v1.1.28
-
-A mesterséges intelligencia algoritmusát továbbfejlesztették, hogy a mesterséges intelligencia képességeit az eredeti 180%-ára növeljék.

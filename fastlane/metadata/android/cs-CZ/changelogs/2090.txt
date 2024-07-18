@@ -1,4 +1,0 @@
-v1.1.24
-
-* Ve výchozím nastavení zobrazit počítadlo neumístěných kusů.
-* Vylepšete překlad do finštiny.

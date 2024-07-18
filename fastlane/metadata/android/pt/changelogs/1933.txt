@@ -1,3 +1,0 @@
-v1.0.24
-
-* Suporte considerando a mobilidade das peças.

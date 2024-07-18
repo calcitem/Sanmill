@@ -1,5 +1,0 @@
-v1.0.20
-
-* On/Eleven Erkek Morris'i destekleyin.
-* Kalan parçalardan kaç tanesinin uçabileceğini ayarlayabilirsiniz.
-* Geçmiş Gezinme Araç Çubuğu ekleyin.

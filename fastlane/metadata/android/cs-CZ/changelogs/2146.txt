@@ -1,3 +1,0 @@
-v1.1.28
-
-Algoritmus AI byl vylepšen, aby zvýšil schopnosti AI na 180 % originálu.

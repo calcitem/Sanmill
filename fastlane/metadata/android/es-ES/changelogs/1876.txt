@@ -1,3 +1,0 @@
-v1.0.18
-
-* Puede retroceder varios pasos.

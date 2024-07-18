@@ -1,3 +1,0 @@
-v3.5.8
-
-Bir oyun berabere bittiğinde ekranın gri görüntülenmesi sorunu düzeltildi.

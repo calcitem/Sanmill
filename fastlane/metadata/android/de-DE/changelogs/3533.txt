@@ -1,3 +1,0 @@
-v3.5.6
-
-Behebung des Problems, dass die Umzugsliste beim ersten Start nach der Installation nicht importiert werden konnte.

@@ -1,3 +1,0 @@
-wersja 1.0.7
-
-* Obsługa standardowej notacji.

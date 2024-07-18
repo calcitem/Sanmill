@@ -1,6 +1,0 @@
-v1.1.30
-
-* Vyhněte se příliš agresivní AI v úvodní fázi, což může snadno vést ke ztrátám.
-* Zvyšte maximální hodnotu úrovně dovedností z 20 na 30.
-* Ve výchozím nastavení nastavte „Zvažte mobilitu kusů“ na zapnuto.
-* Přidejte nastavení „Barva zvýraznění kusu“ a nastavte červenou jako výchozí.

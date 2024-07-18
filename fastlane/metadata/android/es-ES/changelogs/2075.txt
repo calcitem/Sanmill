@@ -1,3 +1,0 @@
-v1.1.20
-
-* Mejorar las habilidades de la IA, especialmente en la fase de movimiento y en los niveles altos.

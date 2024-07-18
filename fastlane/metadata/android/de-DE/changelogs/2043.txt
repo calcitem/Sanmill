@@ -1,4 +1,0 @@
-v1.1.15
-
-* Menüfarbeinstellungen unterstützen.
-* Verbessern Sie die persische Übersetzung.

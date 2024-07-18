@@ -1,3 +1,0 @@
-v1.1.5
-
-* Adicione traduções automáticas de árabe/espanhol/francês/japonês/coreano/português/russo.

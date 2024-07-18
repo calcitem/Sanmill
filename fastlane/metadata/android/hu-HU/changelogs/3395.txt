@@ -1,5 +1,0 @@
-v3.4.0
-
-1. Adjon hozzá egy beállítást az AI válaszkésleltetési időhöz. Ha úgy találja, hogy az AI túl gyorsan mozog, és nehéz tisztán látni a mozgásokat, növelheti ezt az értéket.
-
-2. Kijavítottuk azt a hibát, amely miatt malom kialakításakor nem mindig a malmot alkotó mozgás jelenik meg először, hanem az eltávolítási lépéssel együtt, így nem egyértelmű, hogy az AI hogyan alakította ki a malmot.

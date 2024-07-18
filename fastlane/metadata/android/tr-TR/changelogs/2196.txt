@@ -1,8 +1,0 @@
-v1.1.38
-
-* Yerleştirilmemiş taş ayarını kaldırma desteği - Bir oyuncu yerleştirme aşamasında değirmeni oluşturursa, rakibin yerleştirilmemiş taşını çıkarabilir ve hamle yapmaya devam edebilir.
-* Endgame N-Move kuralını destekleyin.
-* N-hareket kuralının değerlendirme koşulunu > yerine = olarak değiştirin.
-* Üçlü tekrarlama ayarını destekleyin.
-* Nokta stilini ve nokta genişliğini yapılandırmaya izin verin.
-* Destek ithalat GoldToken hareket listesi.

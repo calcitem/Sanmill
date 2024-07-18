@@ -1,3 +1,0 @@
-v3.5.9
-
-Das Problem wurde behoben, bei dem die Schaltfläche „Jetzt verschieben“ in der Navigationssymbolleiste verschwand, wenn zur Seite „Position einrichten“ und dann zurück gewechselt wurde.

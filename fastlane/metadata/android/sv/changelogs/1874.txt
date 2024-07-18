@@ -1,4 +1,0 @@
-v1.0.17
-
-* Stöd för inställning av teckenstorlek (träder i kraft efter omstart av appen).
-* Håll tyst när du tar tillbaka (konfigurerbart).

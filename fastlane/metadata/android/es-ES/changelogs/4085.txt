@@ -1,3 +1,0 @@
-v4.6.1
-
-Se ha corregido un problema en el que la aplicación no podía abrir archivos PGN mientras ya se estaba ejecutando.

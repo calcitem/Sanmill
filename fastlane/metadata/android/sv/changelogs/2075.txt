@@ -1,3 +1,0 @@
-v1.1.20
-
-* Förbättra AI:s förmågor, särskilt i den rörliga fasen och höga nivåer.

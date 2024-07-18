@@ -1,4 +1,0 @@
-v1.1.1
-
-* Podpora importu notace PlayOK.
-* Podpora specifických N z "pravidel N-move".

@@ -1,3 +1,0 @@
-v1.1.29
-
-Améliorer l'algorithme d'IA.

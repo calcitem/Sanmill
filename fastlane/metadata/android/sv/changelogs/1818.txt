@@ -1,3 +1,0 @@
-v1.0.8
-
-* Stöd ta tillbaka. Du kan försöka ångra ett dåligt drag och göra något annat bättre drag.

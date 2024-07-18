@@ -1,7 +1,0 @@
-v2.0.13
-
-* Supporta la condivisione di GIF.
-* Disabilita i gesti sulla pagina del gioco.
-* Aggiungi ombra ai pezzi non posizionati e rimossi.
-* Correggi il colore dell'icona della barra di stato su bianco.
-* I bordi corretti dei pezzi situati sul bordo del tabellone sono sfocati.

@@ -1,3 +1,0 @@
-v3.3.3
-
-Corrigido um problema em que o idioma exibido era o árabe em vez do inglês, conforme esperado em localidades secundárias.

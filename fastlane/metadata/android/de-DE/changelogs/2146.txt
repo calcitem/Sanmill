@@ -1,3 +1,0 @@
-v1.1.28
-
-Der KI-Algorithmus wurde verbessert, um die Fähigkeiten der KI auf 180% des Originals zu steigern.

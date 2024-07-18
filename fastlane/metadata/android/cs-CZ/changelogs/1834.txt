@@ -1,3 +1,0 @@
-v1.0.12
-
-* Když umělá inteligence přemýšlí, můžete nyní přinutit umělou inteligenci k pohybu.

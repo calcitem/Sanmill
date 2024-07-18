@@ -1,4 +1,0 @@
-v1.0.10
-
-* Accelera pensando alle prime due mosse.
-* Mostra solo la notazione a bordo su due lati.

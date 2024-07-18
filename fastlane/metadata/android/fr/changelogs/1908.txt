@@ -1,3 +1,0 @@
-v1.0.22
-
-* Correction de l'attaque latérale blanche si tôt depuis les côtés au 3ème coup.

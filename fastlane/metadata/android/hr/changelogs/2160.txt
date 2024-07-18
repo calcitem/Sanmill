@@ -1,4 +1,0 @@
-v1.1.31
-
-* Nine Men's Morris: Fix AI će vjerojatno spriječiti bijelog da napravi mlin u početnoj fazi, čineći AI ranjivim da izgubi igru.
-* Twelve Men's Morris: pojačajte AI snagu.

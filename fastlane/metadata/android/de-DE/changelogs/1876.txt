@@ -1,3 +1,0 @@
-v1.0.18
-
-* Sie können beliebig viele Schritte rückgängig machen.

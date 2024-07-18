@@ -1,3 +1,0 @@
-v3.5.6
-
-Riješite problem nemogućnosti uvoza popisa za premještanje pri prvom pokretanju nakon instalacije.

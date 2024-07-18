@@ -1,4 +1,0 @@
-v1.0.13
-
-* Raddoppia per chiudere l'app.
-* Finestra di dialogo Informativa sulla privacy popup alla prima esecuzione.

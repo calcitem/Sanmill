@@ -1,6 +1,0 @@
-v3.7.0
-
-* Traducción mejorada para múltiples idiomas.
-* La aplicación Qt ahora soporta oficialmente la carga Perfect Database.
-  Las aplicaciones móviles actualmente no soportan la carga de Perfect Database.
-  Para utilizar la Perfect Database, por favor descargue la versión PC del programa.

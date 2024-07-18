@@ -1,3 +1,0 @@
-v1.0.8
-
-* Soporte para la retirada de la jugada. Usted puede tratar de deshacer un mal movimiento y hacer cualquier otro movimiento mejor.

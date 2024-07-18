@@ -1,5 +1,0 @@
-v1.0.20
-
-* Podpora Ten/Eleven Men's Morris.
-* Můžete nastavit, kolik kusů může létat.
-* Přidat panel nástrojů navigace historie.

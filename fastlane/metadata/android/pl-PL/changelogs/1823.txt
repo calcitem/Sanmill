@@ -1,3 +1,0 @@
-wersja 1.0.9
-
-* Pokaż notatki na pokładzie (konfigurowalne).

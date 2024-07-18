@@ -1,3 +1,0 @@
-v2.0.20
-
-Riješite problem da se tri ikone ne prikazuju na vrhu stranice vodiča u tamnom načinu rada.

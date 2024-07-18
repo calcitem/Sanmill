@@ -1,3 +1,0 @@
-v1.1.4
-
-* Destek ayar dilleri İngilizce, Almanca, Farsça, Macarca, Romence ve Çince.

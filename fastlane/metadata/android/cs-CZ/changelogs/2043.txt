@@ -1,4 +1,0 @@
-v1.1.15
-
-* Podpora nastavení barev nabídky.
-* Vylepšete překlad do perštiny.

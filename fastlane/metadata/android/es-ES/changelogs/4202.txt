@@ -1,4 +1,0 @@
-v4.14.0
-
-* Admite reglas rusas.
-* Accesibilidad: corrige las salidas incorrectas del lector de pantalla para las anotaciones del tablero.

@@ -1,4 +1,0 @@
-v1.1.24
-
-* Varsayılan olarak yerleştirilmemiş parça sayacını göster.
-* Fince çeviriyi geliştirin.

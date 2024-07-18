@@ -1,4 +1,0 @@
-v1.0.17
-
-* Suporte para configuração do tamanho da fonte (terá efeito após reiniciar o aplicativo).
-* Manter mudo ao recuperar (configurável).

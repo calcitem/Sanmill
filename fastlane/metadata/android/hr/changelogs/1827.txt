@@ -1,4 +1,0 @@
-v1.0.10
-
-* Ubrzajte razmišljanje o prva dva poteza.
-* Oznaku na ploči prikažite samo s dvije strane.

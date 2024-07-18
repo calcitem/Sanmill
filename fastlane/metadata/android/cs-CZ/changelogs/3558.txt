@@ -1,3 +1,0 @@
-v3.5.13
-
-Vyřešte problém, že někdy klepnutí na tlačítko Přesunout seznam nereaguje.

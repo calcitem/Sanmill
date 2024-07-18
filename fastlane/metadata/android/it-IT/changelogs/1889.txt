@@ -1,3 +1,0 @@
-v1.0.19
-
-* Aggiungi la traduzione automatica Farsi (lingua persiana).

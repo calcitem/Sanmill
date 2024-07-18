@@ -1,3 +1,0 @@
-v3.0.0
-
-Bu güncelleme, uygulamayı sizin için daha iyi hale getirmek için çeşitli iyileştirmeler ve hata düzeltmeleri içerir.

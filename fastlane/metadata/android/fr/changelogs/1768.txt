@@ -1,3 +1,0 @@
-v1.0.3
-
-* Afficher les boutons de redémarrage/annulation au lieu des boutons oui/non dans la boîte de dialogue lorsque le joueur remporte le niveau de difficulté le plus élevé.

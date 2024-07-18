@@ -1,3 +1,0 @@
-v4.10.0
-
-Indicar visualmente la selección actualmente activa en la lista de movimientos.

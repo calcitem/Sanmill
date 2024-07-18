@@ -1,3 +1,0 @@
-v1.0.12
-
-* Możesz zmusić AI do ruchu teraz, gdy AI myśli.

@@ -1,3 +1,0 @@
-v2.0.20
-
-Åtgärda problemet med att de tre ikonerna inte visas högst upp på handledningssidan i mörkt läge.

@@ -1,5 +1,0 @@
-v1.0.20
-
-* Podržite Ten/Eleven Men's Morris.
-* Možete postaviti koliko preostalih komada može letjeti.
-* Dodavanje alatne trake za navigaciju povijesti.

@@ -1,3 +1,0 @@
-v3.4.2
-
-A játék eredményének javítása párbeszédpanel kétszer jelenik meg.

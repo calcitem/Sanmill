@@ -1,4 +1,0 @@
-v1.1.15
-
-* Obsługa ustawień kolorów menu.
-* Popraw tłumaczenie perskie.

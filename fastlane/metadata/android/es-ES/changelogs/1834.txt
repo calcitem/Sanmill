@@ -1,3 +1,0 @@
-v1.0.12
-
-* Puedes forzar a la IA a moverse ahora cuando la IA está pensando.

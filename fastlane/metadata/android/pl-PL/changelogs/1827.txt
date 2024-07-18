@@ -1,4 +1,0 @@
-v1.0.10
-
-* Przyspiesz myślenie o pierwszych dwóch ruchach.
-* Napis na płycie należy pokazywać tylko z dwóch stron.

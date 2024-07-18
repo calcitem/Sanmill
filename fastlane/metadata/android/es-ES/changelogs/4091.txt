@@ -1,3 +1,0 @@
-v4.7.0
-
-Rendimiento mejorado del motor de IA en un 23%.

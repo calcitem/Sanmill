@@ -1,4 +1,0 @@
-v1.0.10
-
-* Urychlete myšlení na první dva tahy.
-* Ukažte zápis na desce pouze na dvou stranách.

@@ -1,7 +1,0 @@
-v2.0.13
-
-* Wsparcie udostępniania GIF.
-* Wyłącz gesty na stronie gry.
-* Dodaj cień do nieumieszczonych i usuniętych elementów.
-* Napraw kolor ikony paska stanu na biały.
-* Napraw krawędzie elementów znajdujących się na krawędzi planszy są rozmyte.

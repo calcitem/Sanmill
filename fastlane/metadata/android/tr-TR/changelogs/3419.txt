@@ -1,3 +1,0 @@
-v3.4.2
-
-Oyun sonucunu düzelt iletişim kutusu iki kez gösterilir.

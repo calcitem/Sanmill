@@ -1,4 +1,0 @@
-v1.1.42
-
-* Ukrainische Übersetzung hinzufügen.
-* Verbessere die Übersetzung ins Portugiesische (Brasilien).

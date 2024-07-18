@@ -1,4 +1,0 @@
-v1.1.23
-
-* Nastavte počet neumístěných kusů barvy textu na barvu čáry desky
-* Přidat švýcarský německý překlad (WIP)

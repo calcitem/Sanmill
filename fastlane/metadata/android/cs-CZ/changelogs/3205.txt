@@ -1,3 +1,0 @@
-v2.0.20
-
-Opravte problém, že se v horní části stránky výukového programu v tmavém režimu nezobrazují tři ikony.
