@@ -1188,7 +1188,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "placedCount": "Umístěno ({count})",
+  "placedCount": "Umístě. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

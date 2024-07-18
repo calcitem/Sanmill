@@ -1190,7 +1190,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedCount": "Umieszczony ({count})",
+  "placedCount": "Umiesz. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Noteikumu iestatījumi",
+  "ruleSettings": "Noteikumi",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

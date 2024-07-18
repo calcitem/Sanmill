@@ -630,7 +630,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Mipangilio ya Kanuni",
+  "ruleSettings": "Kanuni",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1318,7 +1318,7 @@
       }
     }
   },
-  "placedCount": "Iliyowekwa ({count})",
+  "placedCount": "Iliyow. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

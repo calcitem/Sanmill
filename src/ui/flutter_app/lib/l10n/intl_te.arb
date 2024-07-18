@@ -1200,7 +1200,7 @@
       }
     }
   },
-  "placedCount": "ఉంచబడింది ({count})",
+  "placedCount": "ఉంచబ. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

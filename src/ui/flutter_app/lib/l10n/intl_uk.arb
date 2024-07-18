@@ -606,7 +606,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Налаштування правил",
+  "ruleSettings": "Правила",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

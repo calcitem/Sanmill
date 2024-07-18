@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Подешавања правила",
+  "ruleSettings": "Правила",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1152,7 +1152,7 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "placedCount": "Постављено ({count})",
+  "placedCount": "Пост. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

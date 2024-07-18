@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Cilësimet e Rregullave",
+  "ruleSettings": "Rregullat",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

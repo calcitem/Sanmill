@@ -1224,7 +1224,7 @@
       }
     }
   },
-  "placedCount": "Размешчаны ({count})",
+  "placedCount": "Размеш. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Κανόνες (ρυθμίσεις)",
+  "ruleSettings": "Κανόνες ρυθμίσεις",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1184,7 +1184,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "placedCount": "Τοποθετήθηκε ({count})",
+  "placedCount": "Τοποθ. {count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,18 +1420,16 @@
   "@cannotTransform": {},
   "rotate": "Περιστροφή",
   "@rotate": {},
-  "horizontalFlip": "Οριζόντια Αναστροφή",
+  "horizontalFlip": "Ορ. Αν.",
   "@horizontalFlip": {},
-  "verticalFlip": "Κατακόρυφη Αναστροφή",
+  "verticalFlip": "Κατ. Αν.",
   "@verticalFlip": {},
-  "innerOuterFlip": "Εσωτερική/Εξωτερική Αναστροφή",
+  "innerOuterFlip": "Εσ./Εξ. Αν.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Διαφανής Καμβάς",
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Περιορισμός Επαναλαμβανόμενου Σχηματισμού Μύλων",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Αυτός ο κανόνας εμποδίζει έναν παίκτη από το να μετακινήσει ένα πιόνι πίσω στην αρχική του θέση για να ξανασχηματίσει αμέσως έναν μύλο, εάν το πιόνι μόλις χρησιμοποιήθηκε για τον σχηματισμό ενός μύλου στον προηγούμενο γύρο.",
-  "@restrictRepeatedMillsFormation_Detail": {},
   "restrictRepeatedMillsFormation_Detail": "Ένα κομμάτι που μετακινήθηκε από ένα μύλο σε έναν άλλο δεν μπορεί να επιστρέψει αμέσως στο αρχικό σημείο στον επόμενο γύρο για να σχηματίσει ξανά μύλο. Απαιτείται πρώτα μια διαφορετική κίνηση.",
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "Μύλος μιας χρήσης",

@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Поставки за правилата",
+  "ruleSettings": "Правила",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
