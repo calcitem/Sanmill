@@ -484,7 +484,7 @@
   "@options": {
     "description": "Options"
   },
-  "generalSettings": "Izilungiselelo Ezijwayelekile",
+  "generalSettings": "Amasethingi",
   "@generalSettings": {
     "description": "General Settings"
   },
@@ -640,7 +640,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Izilungiselelo Zomthetho",
+  "ruleSettings": "Imithetho",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

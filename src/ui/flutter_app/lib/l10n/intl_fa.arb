@@ -1156,7 +1156,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedCount": "قرار داده شده ({count})",
+  "placedCount": "قرار د ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

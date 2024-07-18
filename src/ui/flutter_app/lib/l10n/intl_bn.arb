@@ -1184,7 +1184,7 @@
   "@clean": {
     "description": "Clean"
   },
-  "placedCount": "স্থাপন করা হয়েছে ({count})",
+  "placedCount": "স্থাপন ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,9 +1420,9 @@
   "@cannotTransform": {},
   "rotate": "ঘোরানো",
   "@rotate": {},
-  "horizontalFlip": "হরইজন্টাল ফ্লিপ",
+  "horizontalFlip": "হর. ফ্লি.",
   "@horizontalFlip": {},
-  "verticalFlip": "ভার্টিক্যাল ফ্লিপ",
+  "verticalFlip": "ভার্ট. ফ্লি.",
   "@verticalFlip": {},
   "innerOuterFlip": "আইও ফ্লিপ",
   "@innerOuterFlip": {},

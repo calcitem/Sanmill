@@ -1418,7 +1418,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "စည်းကမ်းဆက်တင်များ",
+  "ruleSettings": "စည်းကမ်းများ",
   "@ruleSettings": {
     "description": "Rule Settings"
   },

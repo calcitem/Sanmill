@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Taisyklių nustatymai",
+  "ruleSettings": "Taisyklės",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1420,11 +1420,11 @@
   "@cannotTransform": {},
   "rotate": "Pasukti",
   "@rotate": {},
-  "horizontalFlip": "H Apsvertimas",
+  "horizontalFlip": "H. Apsv.",
   "@horizontalFlip": {},
-  "verticalFlip": "V Apsvertimas",
+  "verticalFlip": "V. Apsv.",
   "@verticalFlip": {},
-  "innerOuterFlip": "IO Apsvertimas",
+  "innerOuterFlip": "IO Apsv.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Permatomas Drobė",
   "@transparentCanvas": {},

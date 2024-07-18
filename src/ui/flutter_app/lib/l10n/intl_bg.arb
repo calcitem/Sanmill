@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Настройки на правилата",
+  "ruleSettings": "Правила",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1202,7 +1202,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "placedCount": "Поставен ({count})",
+  "placedCount": "Пост. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

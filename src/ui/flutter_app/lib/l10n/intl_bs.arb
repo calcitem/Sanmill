@@ -1180,7 +1180,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Postavljeno ({count})",
+  "placedCount": "Postav. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

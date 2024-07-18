@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Qoida sozlamalari",
+  "ruleSettings": "Qoidalar",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1190,7 +1190,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "placedCount": "Joylashtirilgan ({count})",
+  "placedCount": "Joylasht. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

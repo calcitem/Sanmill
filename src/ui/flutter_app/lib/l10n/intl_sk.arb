@@ -20,7 +20,7 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Človek proti umelej inteligencii",
+  "humanVsAi": "Človek proti UI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "placedCount": "Umiestnené ({count})",
+  "placedCount": "Umiest. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

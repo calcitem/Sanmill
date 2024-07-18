@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "ನಿಯಮ ಸೆಟ್ಟಿಂಗ್‌ಗಳು",
+  "ruleSettings": "ನಿಯಮಗಳು",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1180,7 +1180,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "ಇರಿಸಲಾಗಿದೆ ({count})",
+  "placedCount": "ಇರಿಸಿ ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1420,11 +1420,11 @@
   "@cannotTransform": {},
   "rotate": "ತಿರುಗು",
   "@rotate": {},
-  "horizontalFlip": "ಹಾರಿಜಾಂತರ ತಿರುಗು",
+  "horizontalFlip": "ಹಾ. ತಿ.",
   "@horizontalFlip": {},
-  "verticalFlip": "ವರ್ಟಿಕಲ್ ತಿರುಗು",
+  "verticalFlip": "ವರ್. ತಿ.",
   "@verticalFlip": {},
-  "innerOuterFlip": "ಆಂತರಿಕ/ಬಾಹ್ಯ ತಿರುಗು",
+  "innerOuterFlip": "ಆಂ/ಬಾ ತಿ.",
   "@innerOuterFlip": {},
   "transparentCanvas": "ಪಾರದರ್ಶಕ ಕ್ಯಾನ್ವಾಸ್",
   "@transparentCanvas": {},

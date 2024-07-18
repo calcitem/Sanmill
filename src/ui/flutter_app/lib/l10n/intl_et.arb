@@ -1188,7 +1188,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Paigutatud ({count})",
+  "placedCount": "Paigut. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

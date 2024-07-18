@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Impostazioni della regola",
+  "ruleSettings": "Regole",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1180,7 +1180,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Posizionato ({count})",
+  "placedCount": "Posiz. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

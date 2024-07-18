@@ -586,7 +586,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Կանոնների կարգավորումներ",
+  "ruleSettings": "Կանոններ",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -1290,7 +1290,7 @@
       }
     }
   },
-  "placedCount": "Տեղադրված ({count})",
+  "placedCount": "Տեղադր. {count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
