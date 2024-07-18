@@ -1184,7 +1184,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "placedCount": "Τοποθ. {count})",
+  "placedCount": "Τοποθ. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {

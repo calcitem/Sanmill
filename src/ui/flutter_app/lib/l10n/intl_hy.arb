@@ -1290,7 +1290,7 @@
       }
     }
   },
-  "placedCount": "Տեղադր. {count})",
+  "placedCount": "Տեղադր. ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
