@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Поставяне на",
+  "placing": "Пост.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Преместване на",
+  "moving": "Прем.",
   "@moving": {
     "description": "Moving"
   },
@@ -1186,7 +1186,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "empty": "празна",
+  "empty": "Празна",
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
@@ -1420,11 +1420,11 @@
   "@cannotTransform": {},
   "rotate": "Завъртане",
   "@rotate": {},
-  "horizontalFlip": "Хор. Обръщане",
+  "horizontalFlip": "Хор. Обр.",
   "@horizontalFlip": {},
-  "verticalFlip": "Верт. Обръщане",
+  "verticalFlip": "Верт. Обр.",
   "@verticalFlip": {},
-  "innerOuterFlip": "Вътр.Външ. Обръщане",
+  "innerOuterFlip": "ВВ Обр.",
   "@innerOuterFlip": {},
   "transparentCanvas": "Прозрачно Платно",
   "@transparentCanvas": {},
