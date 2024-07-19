@@ -212,6 +212,7 @@ class HistoryNavigator {
     }
 
     GameController().reset();
+    posKeyHistory.clear();
 
     GameController().newGameRecorder!.forEachVisible((ExtMove extMove) async {
       if (GameController().gameInstance.doMove(extMove) == false) {
