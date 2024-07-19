@@ -396,13 +396,15 @@ class Engine {
       posFenStr.write(" moves $moves");
     }
 
-    String ret = posFenStr.toString();
+    final String ret = posFenStr.toString();
 
     // WAR
     if (GameController().gameRecorder.lastPositionWithRemove ==
         GameController().gameRecorder.setupPosition) {
       if (GameController().position.action == Act.remove) {
-        ret = ret.replaceFirst(" s ", " r ");
+        // Remove this to Fix #818
+        // TODO: Why commit 8d2f084 did this?
+        //ret = ret.replaceFirst(" s ", " r ");
       }
     }
 
