@@ -51,6 +51,7 @@ class TapHandler {
     }
 
     GameController().setupPositionNotifier.updateIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
     GameController().headerTipNotifier.showTip(ExtMove.sqToNotation(sq),
         snackBar: false); // TODO: snackBar is false?
 

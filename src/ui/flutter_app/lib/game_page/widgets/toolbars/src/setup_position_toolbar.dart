@@ -528,6 +528,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     }
     updateSetupPositionPiecesCount();
     GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
   }
 
   void updateSetupPositionPiecesCount() {
