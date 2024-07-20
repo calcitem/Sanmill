@@ -186,7 +186,7 @@ public:
         static std::random_device rd;
         static std::mt19937 gen(rd());
 
-        AdvancedMove advMoveRef;
+        AdvancedMove advMoveRef {};
         auto m = refMove;
         const Square from = from_sq(m);
         const Square to = to_sq(m);
