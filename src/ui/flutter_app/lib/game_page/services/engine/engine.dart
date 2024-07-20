@@ -207,7 +207,13 @@ class Engine {
         if (response.contains(prefix)) {
           return response;
         } else {
-          logger.w("$_logTag Unexpected engine response: $response");
+          if (response == "") {
+            if (EnvironmentConfig.devMode) {
+              logger.w("$_logTag Empty response");
+            }
+          } else {
+            logger.w("$_logTag Unexpected engine response: $response");
+          }
         }
       }
     }
