@@ -17,9 +17,12 @@
 #ifndef STACK_H_INCLUDED
 #define STACK_H_INCLUDED
 
+#include <cstddef>
+#include <cassert>
+
 namespace Sanmill {
 
-template <typename T, size_t capacity = 128>
+template <typename T, std::size_t capacity = 128>
 class Stack
 {
 public:

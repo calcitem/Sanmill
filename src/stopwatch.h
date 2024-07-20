@@ -19,7 +19,9 @@
 
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cstdint>
+#include <ratio>
 #ifdef _WIN32
 #include <intrin.h>
 #endif
