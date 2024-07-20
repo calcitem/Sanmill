@@ -48,8 +48,6 @@ namespace Wrappers {
 class WSector;
 
 extern std::unordered_map<Id, int> sector_sizes;
-static int f_inv_count[] {1,     4,     30,    158,    757,    2830,  8774,
-                          22188, 46879, 82880, 124124, 157668, 170854};
 
 struct WID
 {
