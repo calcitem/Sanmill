@@ -63,7 +63,7 @@ private:
     static constexpr int SHARED_MEMORY_SIZE = 4096;
     QSharedMemory sharedMemory;
     QString uuid;
-    int uuidSize {0};
+    qsizetype uuidSize {0};
     char *to {nullptr};
     QString readStr;
 
