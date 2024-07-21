@@ -22,25 +22,39 @@ else
 fi
 
 # Detect compiler version
-if command -v gcc > /devontinue; then
+if command -v gcc > /dev/null; then
     GCC_VER=$(gcc -dumpversion)
     echo "GCC version $GCC_VER detected."
+    C_COMPILER=gcc
+    CXX_COMPILER=g++
 elif command -v clang > /dev/null; then
     CLANG_VER=$(clang --version | grep version | awk '{print $3}')
     echo "Clang version $CLANG_VER detected."
+    C_COMPILER=clang
+    CXX_COMPILER=clang++
 else
     echo "No suitable compiler found."
     exit 1
 fi
 
-# Generate project files for Debug
-cmake -G "Unix Makefiles" -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DCMAKE_BUILD_TYPE=Debug $EXTRA_CMAKE_FLAGS -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=Debug .
+# Function to generate and build project
+build_project() {
+    local build_type=$1
+    local generator=$2
 
-# Build and deploy Debug version
-cmake --build . --target mill-pro --config Debug -j
+    cmake -G "$generator" -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DCMAKE_BUILD_TYPE="$build_type" $EXTRA_CMAKE_FLAGS -DCMAKE_C_COMPILER=$C_COMPILER -DCMAKE_CXX_COMPILER=$CXX_COMPILER .
+    cmake --build . --target mill-pro --config "$build_type" -j
+}
 
-# Generate project files for Release
-cmake -G "Unix Makefiles" -DCMAKE_PREFIX_PATH="$Qt6_DIR" -DCMAKE_BUILD_TYPE=Release $EXTRA_CMAKE_FLAGS -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=Release .
+# Detect operating system
+OS=$(uname)
 
-# Build and deploy Release version
-cmake --build . --target mill-pro --config Release -j
+if [[ "$OS" == "Darwin" ]]; then
+    # macOS: Generate and build project using Xcode
+    build_project Debug "Xcode"
+    build_project Release "Xcode"
+else
+    # Linux: Generate and build project using Unix Makefiles
+    build_project Debug "Unix Makefiles"
+    build_project Release "Unix Makefiles"
+fi
