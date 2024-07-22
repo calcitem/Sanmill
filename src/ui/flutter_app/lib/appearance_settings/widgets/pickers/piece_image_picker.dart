@@ -92,19 +92,13 @@ class _PieceImagePicker extends StatelessWidget {
               itemCount: _pieceBgPaths.length,
               itemBuilder: (BuildContext context, int index) {
                 final String asset = _pieceBgPaths[index];
-                final bool isSelectable = asset != otherPlayerSelectedImagePath;
+                final bool isSelectable =
+                    index == 0 || asset != otherPlayerSelectedImagePath;
                 if (index == 0) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: GestureDetector(
-                      onTap: () {
-                        if (isSelectable) {
-                          logger.i('Image selected: $asset');
-                          onImageSelected(asset);
-                        } else {
-                          logger.i('Image not selectable: $asset');
-                        }
-                      },
+                      onTap: isSelectable ? () => onImageSelected(asset) : null,
                       child: Container(
                         width: 60,
                         height: 60,
@@ -113,11 +107,11 @@ class _PieceImagePicker extends StatelessWidget {
                               ? DB().colorSettings.whitePieceColor
                               : DB().colorSettings.blackPieceColor,
                           shape: BoxShape.circle,
-                          border: selectedImagePath == ''
+                          border: selectedImagePath == asset
                               ? Border.all(color: Colors.blue, width: 2)
                               : null,
                         ),
-                        child: selectedImagePath == ''
+                        child: selectedImagePath == asset
                             ? const Align(
                                 child: Icon(
                                   Icons.check_circle,
