@@ -57,7 +57,7 @@ class PiecePainter extends CustomPainter {
 
   /// The value representing the piece animation when placing.
   final double animationValue;
-  final Map<PieceColor, ui.Image?> pieceImages; // Add pieceImages field
+  final Map<PieceColor, ui.Image?>? pieceImages; // Add pieceImages field
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -95,8 +95,9 @@ class PiecePainter extends CustomPainter {
         final Offset pos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
 
-        final ui.Image? image =
-            pieceImages[piece]; // Get image from pieceImages
+        final ui.Image? image = pieceImages == null
+            ? null
+            : pieceImages?[piece]; // Get image from pieceImages
 
         piecesToDraw.add(
           PiecePaintParam(

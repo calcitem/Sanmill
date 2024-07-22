@@ -1,6 +1,7 @@
 part of 'package:sanmill/appearance_settings/widgets/appearance_settings_page.dart';
 
 final List<String> _pieceBgPaths = <String>[
+  '', // Pure color
   Assets.images.whitePieceImage1.path,
   Assets.images.blackPieceImage1.path,
   Assets.images.whitePieceImage2.path,
@@ -17,7 +18,7 @@ class _PieceImagePicker extends StatelessWidget {
     return Container(
       color: DB().colorSettings.boardBackgroundColor,
       child: Semantics(
-        label: S.of(context).pieces, // TODO: pieceImage
+        label: S.of(context).pieces,
         child: ValueListenableBuilder<Box<DisplaySettings>>(
           valueListenable: DB().listenDisplaySettings,
           builder: (BuildContext context, Box<DisplaySettings> box, _) {
@@ -28,8 +29,7 @@ class _PieceImagePicker extends StatelessWidget {
 
             return Center(
               child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20), // Add vertical padding
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -43,6 +43,7 @@ class _PieceImagePicker extends StatelessWidget {
                             whitePieceImagePath: asset);
                       },
                       displaySettings.blackPieceImagePath,
+                      isPlayerOne: true,
                     ),
                     const SizedBox(height: 20),
                     // Row for Player 2
@@ -55,6 +56,7 @@ class _PieceImagePicker extends StatelessWidget {
                             blackPieceImagePath: asset);
                       },
                       displaySettings.whitePieceImagePath,
+                      isPlayerOne: false,
                     ),
                   ],
                 ),
@@ -67,17 +69,16 @@ class _PieceImagePicker extends StatelessWidget {
   }
 
   Widget _buildPlayerRow(
-    BuildContext context,
-    String playerLabel,
-    String selectedImagePath,
-    void Function(String) onImageSelected,
-    String otherPlayerSelectedImagePath,
-  ) {
+      BuildContext context,
+      String playerLabel,
+      String selectedImagePath,
+      void Function(String) onImageSelected,
+      String otherPlayerSelectedImagePath,
+      {required bool isPlayerOne}) {
     return Row(
       children: <Widget>[
         Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 12), // Add left padding
+          padding: const EdgeInsets.only(left: 16, right: 12),
           child: Text(
             playerLabel,
             style: TextStyle(color: DB().colorSettings.boardLineColor),
@@ -85,38 +86,62 @@ class _PieceImagePicker extends StatelessWidget {
         ),
         Expanded(
           child: SizedBox(
-            height: 60, // Ensure a fixed height for the ListView
+            height: 60,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: _pieceBgPaths.length,
               itemBuilder: (BuildContext context, int index) {
                 final String asset = _pieceBgPaths[index];
                 final bool isSelectable = asset != otherPlayerSelectedImagePath;
-
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: GestureDetector(
-                    onTap: isSelectable
-                        ? () {
-                            onImageSelected(asset);
-                          }
-                        : null,
-                    child: Opacity(
-                      opacity: isSelectable ? 1.0 : 0.9,
+                if (index == 0) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: GestureDetector(
+                      onTap: () => onImageSelected(''),
+                      child: Container(
+                        width: 60,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: isPlayerOne
+                              ? DB().colorSettings.whitePieceColor
+                              : DB().colorSettings.blackPieceColor,
+                          shape: BoxShape.circle,
+                          border: selectedImagePath == ''
+                              ? Border.all(color: Colors.blue, width: 2)
+                              : null,
+                        ),
+                        child: selectedImagePath == ''
+                            ? const Positioned(
+                                right: 4,
+                                top: 4,
+                                child: Icon(
+                                  Icons.check_circle,
+                                  color: Colors.green,
+                                ),
+                              )
+                            : null,
+                      ),
+                    ),
+                  );
+                } else {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: GestureDetector(
+                      onTap: isSelectable ? () => onImageSelected(asset) : null,
                       child: _PieceImageItem(
                         asset: asset,
                         isSelect: selectedImagePath == asset,
                       ),
                     ),
-                  ),
-                );
+                  );
+                }
               },
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(right: 16), // Add right padding
-          child: Container(), // Empty container to add padding to the right
+          padding: const EdgeInsets.only(right: 16),
+          child: Container(),
         ),
       ],
     );

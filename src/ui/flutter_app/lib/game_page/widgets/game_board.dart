@@ -171,10 +171,8 @@ class _GameBoardState extends State<GameBoard>
               AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return const Center(child: Text('Error loading images'));
             } else {
-              final Map<PieceColor, ui.Image?> pieceImages = snapshot.data!;
+              final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
               return CustomPaint(
                 painter: BoardPainter(context),
                 foregroundPainter: PiecePainter(
