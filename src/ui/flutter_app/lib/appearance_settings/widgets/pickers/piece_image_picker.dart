@@ -97,7 +97,14 @@ class _PieceImagePicker extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6),
                     child: GestureDetector(
-                      onTap: () => onImageSelected(''),
+                      onTap: () {
+                        if (isSelectable) {
+                          logger.i('Image selected: $asset');
+                          onImageSelected(asset);
+                        } else {
+                          logger.i('Image not selectable: $asset');
+                        }
+                      },
                       child: Container(
                         width: 60,
                         height: 60,
@@ -111,9 +118,7 @@ class _PieceImagePicker extends StatelessWidget {
                               : null,
                         ),
                         child: selectedImagePath == ''
-                            ? const Positioned(
-                                right: 4,
-                                top: 4,
+                            ? const Align(
                                 child: Icon(
                                   Icons.check_circle,
                                   color: Colors.green,
@@ -174,9 +179,7 @@ class _PieceImageItem extends StatelessWidget {
           ),
         ),
         if (isSelect)
-          const Positioned(
-            right: 8,
-            top: 8,
+          const Align(
             child: Icon(
               Icons.check_circle,
               color: Colors.green,
