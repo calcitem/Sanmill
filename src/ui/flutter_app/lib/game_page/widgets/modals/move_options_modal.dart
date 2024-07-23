@@ -25,7 +25,8 @@ class _MoveOptionsModal extends StatelessWidget {
     Navigator.pop(context);
     Future<void>.delayed(const Duration(milliseconds: 100), () {
       showDialog<void>(
-        context: context,
+        context:
+            mainContext, // Use mainContext to make sure the context is still valid
         builder: (BuildContext context) => const _MoveListDialog(),
       );
     });
