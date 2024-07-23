@@ -107,42 +107,48 @@ class GamePage extends StatelessWidget {
   }
 
   Widget _buildGameBoard(BuildContext context, GameController controller) {
-    return Align(
-      alignment: MediaQuery.of(context).orientation == Orientation.landscape
-          ? Alignment.center
-          : Alignment.topCenter,
-      child: FutureBuilder<void>(
-        future: controller.startController(),
-        builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center();
-          }
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) {
+        final bool isLandscape = orientation == Orientation.landscape;
 
-          return Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppTheme.boardMargin),
-            child: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                final double toolbarHeight = _calculateToolbarHeight(context);
+        return Align(
+          alignment: isLandscape ? Alignment.center : Alignment.topCenter,
+          child: FutureBuilder<void>(
+            future: controller.startController(),
+            builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center();
+              }
 
-                // Constraints of the game board but applied to the entire child
-                final double maxWidth = constraints.maxWidth;
-                final double maxHeight = constraints.maxHeight - toolbarHeight;
-                final BoxConstraints constraint = BoxConstraints(
-                  maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
-                      ? maxHeight
-                      : maxWidth,
-                );
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppTheme.boardMargin),
+                child: LayoutBuilder(
+                  builder: (BuildContext context, BoxConstraints constraints) {
+                    final double toolbarHeight =
+                        _calculateToolbarHeight(context);
 
-                return ConstrainedBox(
-                  constraints: constraint,
-                  child: const _Game(),
-                );
-              },
-            ),
-          );
-        },
-      ),
+                    // Constraints of the game board but applied to the entire child
+                    final double maxWidth = constraints.maxWidth;
+                    final double maxHeight =
+                        constraints.maxHeight - toolbarHeight;
+                    final BoxConstraints constraint = BoxConstraints(
+                      maxWidth: (maxHeight > 0 && maxHeight < maxWidth)
+                          ? maxHeight
+                          : maxWidth,
+                    );
+
+                    return ConstrainedBox(
+                      constraints: constraint,
+                      child: const _Game(),
+                    );
+                  },
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
