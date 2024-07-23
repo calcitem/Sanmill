@@ -442,3 +442,6 @@ out/
 
 # Snapcraft
 *.snap
+
+# xmake
+.xmake/
