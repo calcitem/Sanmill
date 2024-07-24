@@ -1,0 +1,3 @@
+v4.16.7
+
+Resolver problemas de visualización en el módulo de comentarios.
