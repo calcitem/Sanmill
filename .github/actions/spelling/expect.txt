@@ -286,6 +286,7 @@ qint
 qobject
 qsearch
 qtime
+qsizetype
 rdbuf
 rdtscp
 readyok
