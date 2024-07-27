@@ -7,8 +7,39 @@ DEBIAN_YAML_FILE=src/ui/flutter_app/debian/debian.yaml
 DEBIAN_DESKTOP_FILE=src/ui/flutter_app/debian/gui/mill.desktop
 QT_RC_FILE=src/ui/qt/mill-pro.rc
 
-EN_CHANGELOG_DIR=fastlane/metadata/android/en-US/changelogs
-ZH_CHANGELOG_DIR=fastlane/metadata/android/zh-CN/changelogs
+CHANGELOG_DIRS=(
+  "fastlane/metadata/android/ar/changelogs"
+  "fastlane/metadata/android/bg/changelogs"
+  "fastlane/metadata/android/bo/changelogs"
+  "fastlane/metadata/android/cs-CZ/changelogs"
+  "fastlane/metadata/android/de-DE/changelogs"
+  "fastlane/metadata/android/en-US/changelogs"
+  "fastlane/metadata/android/es-ES/changelogs"
+  "fastlane/metadata/android/fa-IR/changelogs"
+  "fastlane/metadata/android/fr/changelogs"
+  "fastlane/metadata/android/gu/changelogs"
+  "fastlane/metadata/android/he/changelogs"
+  "fastlane/metadata/android/hi-IN/changelogs"
+  "fastlane/metadata/android/hr/changelogs"
+  "fastlane/metadata/android/hu-HU/changelogs"
+  "fastlane/metadata/android/id/changelogs"
+  "fastlane/metadata/android/is-IS/changelogs"
+  "fastlane/metadata/android/it-IT/changelogs"
+  "fastlane/metadata/android/ja-JP/changelogs"
+  "fastlane/metadata/android/ko/changelogs"
+  "fastlane/metadata/android/pl-PL/changelogs"
+  "fastlane/metadata/android/pt/changelogs"
+  "fastlane/metadata/android/pt-BR/changelogs"
+  "fastlane/metadata/android/ro/changelogs"
+  "fastlane/metadata/android/ru/changelogs"
+  "fastlane/metadata/android/sq/changelogs"
+  "fastlane/metadata/android/sr/changelogs"
+  "fastlane/metadata/android/sv/changelogs"
+  "fastlane/metadata/android/tr-TR/changelogs"
+  "fastlane/metadata/android/uk/changelogs"
+  "fastlane/metadata/android/zh-CN/changelogs"
+  "fastlane/metadata/android/zh-TW/changelogs"
+)
 
 SED=sed
 EDITOR=notepad
@@ -116,16 +147,44 @@ touch ${BUILD_NUMBER}.txt
 echo "v$NEW_VERSION" >> ${BUILD_NUMBER}.txt
 echo >> ${BUILD_NUMBER}.txt
 
-cp ${BUILD_NUMBER}.txt $EN_CHANGELOG_DIR
-cp ${BUILD_NUMBER}.txt $ZH_CHANGELOG_DIR
-rm -f ${BUILD_NUMBER}.txt
-
-echo "This update includes various improvements and bug fixes to make the app better for you." >> $EN_CHANGELOG_DIR/${BUILD_NUMBER}.txt
-echo "此更新包括各种改进和错误修复，以使本 App 更好用。" >> $ZH_CHANGELOG_DIR/${BUILD_NUMBER}.txt
-
-
-$EDITOR $EN_CHANGELOG_DIR/${BUILD_NUMBER}.txt
-$EDITOR $ZH_CHANGELOG_DIR/${BUILD_NUMBER}.txt
+for DIR in "${CHANGELOG_DIRS[@]}"; do
+  mkdir -p $DIR || true
+  cp ${BUILD_NUMBER}.txt $DIR
+  case $DIR in
+    *ar*) echo "يتضمن هذا التحديث تحسينات وإصلاحات للأخطاء لجعل التطبيق أفضل بالنسبة لك." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *bg*) echo "Това актуализиране включва различни подобрения и корекции на грешки, за да направи приложението по-добро за вас." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *bo*) echo "ད་དུང་འདི་ལག་ཐོག་སྤུན་རྒྱུད་བཟོ་བཅོས་དང་བདག་སྤྱོད་གཏོང་མཁན་སོགས་ནང་འཁོད་དང་འབྲི་གཏོང་མཁན་སྔར་བཞིན་གཞན་དང་མཉམ་འབྲི་འདུག་གས།" >> $DIR/${BUILD_NUMBER}.txt ;;
+    *cs-CZ*) echo "Tato aktualizace obsahuje různá vylepšení a opravy chyb, aby byla aplikace pro vás lepší." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *de-DE*) echo "Dieses Update umfasst verschiedene Verbesserungen und Fehlerbehebungen, um die App für dich zu verbessern." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *en-US*) echo "This update includes various improvements and bug fixes to make the app better for you." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *es-ES*) echo "Esta actualización incluye varias mejoras y correcciones de errores para mejorar la aplicación para ti." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *fa-IR*) echo "این به‌روزرسانی شامل بهبودها و رفع اشکالات مختلفی است که برنامه را برای شما بهتر می‌کند." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *fr*) echo "Cette mise à jour comprend diverses améliorations et corrections de bugs pour améliorer l'application pour vous." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *gu*) echo "આ અપડેટમાં વિવિધ સુધારાઓ અને બગ ફિક્સનો સમાવેશ થાય છે જે એપ્લિકેશનને તમારા માટે વધુ સારું બનાવે છે." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *he*) echo "עדכון זה כולל שיפורים ותיקוני באגים שונים כדי להפוך את האפליקציה לטובה יותר עבורך." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *hi-IN*) echo "इस अपडेट में विभिन्न सुधार और बग फिक्स शामिल हैं जो ऐप को आपके लिए बेहतर बनाते हैं।" >> $DIR/${BUILD_NUMBER}.txt ;;
+    *hr*) echo "Ovo ažuriranje uključuje razna poboljšanja i ispravke pogrešaka kako bi aplikacija bila bolja za vas." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *hu-HU*) echo "Ez a frissítés különféle fejlesztéseket és hibajavításokat tartalmaz, hogy jobbá tegye az alkalmazást az Ön számára." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *id*) echo "Pembaruan ini mencakup berbagai peningkatan dan perbaikan bug untuk membuat aplikasi lebih baik bagi Anda." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *is-IS*) echo "Þessi uppfærsla inniheldur ýmsar endurbætur og villuleiðréttingar til að gera forritið betra fyrir þig." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *it-IT*) echo "Questo aggiornamento include vari miglioramenti e correzioni di bug per rendere l'app migliore per te." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *ja-JP*) echo "このアップデートには、アプリをより良くするためのさまざまな改善とバグ修正が含まれています。" >> $DIR/${BUILD_NUMBER}.txt ;;
+    *ko*) echo "이번 업데이트에는 다양한 개선 사항과 버그 수정이 포함되어 있어 앱을 더 잘 사용할 수 있습니다." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *pl-PL*) echo "Ta aktualizacja zawiera różne ulepszenia i poprawki błędów, aby aplikacja była lepsza dla ciebie." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *pt*) echo "Esta atualização inclui várias melhorias e correções de bugs para tornar o aplicativo melhor para você." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *pt-BR*) echo "Esta atualização inclui várias melhorias e correções de bugs para tornar o aplicativo melhor para você." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *ro*) echo "Această actualizare include diverse îmbunătățiri și corecturi de erori pentru a face aplicația mai bună pentru tine." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *ru*) echo "Это обновление включает в себя различные улучшения и исправления ошибок, чтобы сделать приложение лучше для вас." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *sq*) echo "Ky përditësim përfshin përmirësime dhe riparime të ndryshme për ta bërë aplikacionin më të mirë për ju." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *sr*) echo "Ovo ažuriranje uključuje razna poboljšanja i ispravke pogrešaka kako bi aplikacija bila bolja za vas." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *sv*) echo "Denna uppdatering inkluderar olika förbättringar och buggfixar för att göra appen bättre för dig." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *tr-TR*) echo "Bu güncelleme, uygulamayı sizin için daha iyi hale getirmek için çeşitli iyileştirmeler ve hata düzeltmeleri içerir." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *uk*) echo "Це оновлення включає різні покращення та виправлення помилок, щоб зробити додаток кращим для вас." >> $DIR/${BUILD_NUMBER}.txt ;;
+    *zh-CN*) echo "此更新包括各种改进和错误修复，以使本 App 更好用。" >> $DIR/${BUILD_NUMBER}.txt ;;
+    *zh-TW*) echo "此更新包括各種改進和錯誤修復，以使本 App 更好用。" >> $DIR/${BUILD_NUMBER}.txt ;;
+  esac
+  #$EDITOR $DIR/${BUILD_NUMBER}.txt
+done
 
 # Git commit
 git status -s
