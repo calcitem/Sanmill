@@ -52,6 +52,8 @@ class SoundManager {
 
   bool _isTemporaryMute = false;
 
+  bool _allSoundsLoaded = false;
+
   static const String _logTag = "[audio]";
 
   Future<void> loadSounds() async {
@@ -79,17 +81,29 @@ class SoundManager {
     } else {
       _soundpool = Soundpool.fromOptions();
 
-      for (final Sound sound in Sound.values) {
-        _soundIds[sound] = await _soundpool.load(
-          await rootBundle.load(_soundFiles[sound]!),
-        );
+      try {
+        for (final Sound sound in Sound.values) {
+          final int soundId =
+              await _soundpool.load(await rootBundle.load(_soundFiles[sound]!));
+          _soundIds[sound] = soundId;
+        }
+        _allSoundsLoaded = true; // All sounds loaded successfully
+      } catch (e) {
+        logger.e("Failed to load sound: $e");
+        _allSoundsLoaded = false;
       }
     }
   }
 
   Future<void> _playSound(Sound sound) async {
     if (!Platform.isIOS) {
-      _alarmSoundStreamId = await _soundpool.play(_soundIds[sound]!);
+      final int? soundId = _soundIds[sound];
+      if (soundId == null) {
+        logger.e("Sound ID for $sound is not found.");
+        return;
+      }
+
+      _alarmSoundStreamId = await _soundpool.play(soundId);
     }
   }
 
@@ -113,6 +127,11 @@ class SoundManager {
     if (!DB().generalSettings.toneEnabled ||
         _isTemporaryMute ||
         DB().generalSettings.screenReaderSupport) {
+      return;
+    }
+
+    if (!_allSoundsLoaded) {
+      logger.w("Attempt to play sound before all sounds were loaded.");
       return;
     }
 
