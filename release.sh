@@ -7,8 +7,8 @@ DEBIAN_YAML_FILE=src/ui/flutter_app/debian/debian.yaml
 DEBIAN_DESKTOP_FILE=src/ui/flutter_app/debian/gui/mill.desktop
 QT_RC_FILE=src/ui/qt/mill-pro.rc
 
-EN_CHANGLOG_DIR=fastlane/metadata/android/en-US/changelogs
-ZH_CHANGLOG_DIR=fastlane/metadata/android/zh-CN/changelogs
+EN_CHANGELOG_DIR=fastlane/metadata/android/en-US/changelogs
+ZH_CHANGELOG_DIR=fastlane/metadata/android/zh-CN/changelogs
 
 SED=sed
 EDITOR=notepad
@@ -116,16 +116,16 @@ touch ${BUILD_NUMBER}.txt
 echo "v$NEW_VERSION" >> ${BUILD_NUMBER}.txt
 echo >> ${BUILD_NUMBER}.txt
 
-cp ${BUILD_NUMBER}.txt $EN_CHANGLOG_DIR
-cp ${BUILD_NUMBER}.txt $ZH_CHANGLOG_DIR
+cp ${BUILD_NUMBER}.txt $EN_CHANGELOG_DIR
+cp ${BUILD_NUMBER}.txt $ZH_CHANGELOG_DIR
 rm -f ${BUILD_NUMBER}.txt
 
-echo "This update includes various improvements and bug fixes to make the app better for you." >> $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-echo "此更新包括各种改进和错误修复，以使本 App 更好用。" >> $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+echo "This update includes various improvements and bug fixes to make the app better for you." >> $EN_CHANGELOG_DIR/${BUILD_NUMBER}.txt
+echo "此更新包括各种改进和错误修复，以使本 App 更好用。" >> $ZH_CHANGELOG_DIR/${BUILD_NUMBER}.txt
 
 
-$EDITOR $EN_CHANGLOG_DIR/${BUILD_NUMBER}.txt
-$EDITOR $ZH_CHANGLOG_DIR/${BUILD_NUMBER}.txt
+$EDITOR $EN_CHANGELOG_DIR/${BUILD_NUMBER}.txt
+$EDITOR $ZH_CHANGELOG_DIR/${BUILD_NUMBER}.txt
 
 # Git commit
 git status -s
