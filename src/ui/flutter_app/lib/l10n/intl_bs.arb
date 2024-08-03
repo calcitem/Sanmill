@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Fokusirajte se na blokiranje puteva",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Prioritet dajte ometanju kretanja protivnika umjesto formiranja tri u nizu. Umjesto da se fokusira na uklanjanje figura dovršavanjem tri u nizu, AI nastoji da uhvati protivnika u zamku, onemogućavajući mu kretanje i osiguravajući pobjedu kroz iscrpljivanje umjesto agresivne igre. Ova strategija ne blokira aktivno protivničke tri u nizu.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Slika figure",
+  "@pieceImage": {}
 }

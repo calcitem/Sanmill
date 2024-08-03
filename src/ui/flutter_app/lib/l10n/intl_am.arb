@@ -1539,5 +1539,7 @@
   "focusOnBlockingPaths": "በመንገድ ማጒደፍ ላይ ተከናወን",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "በጨዋታው ዘመናት በማለፊያ ላይ በቀንንዴ ማሳመሻ እንደ ዋና ምልከታ ከሆነ የተጫዋች እንቅስቃሴን በማገድ እና በማገልገል እንዲሁም ከጨዋታ እንደሚተሸከም እንቅስቃሴው ማሰባሰብን አያደርግም።",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "የእቃዎች ምስል",
+  "@pieceImage": {}
 }

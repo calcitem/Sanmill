@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Wegblockierung fokussieren",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Während bestimmter Phasen des Spiels, priorisieren Sie das Blockieren der Bewegungen des Gegners über das Bilden von Mühlen. Anstatt sich darauf zu konzentrieren, Steine durch das Vervollständigen von Mühlen zu entfernen, zielt die KI während dieser Phasen darauf ab, den Gegner zu fangen, sodass er sich nicht bewegen kann und einen Sieg durch Abnutzung statt durch aggressives Spiel sichert. Diese phasenspezifische Strategie blockiert nicht aktiv die Mühlen des Gegners.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Schachfigurenbild",
+  "@pieceImage": {}
 }

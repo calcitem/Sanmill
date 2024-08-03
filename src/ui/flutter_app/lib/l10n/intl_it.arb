@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Concentrati sul bloccare i percorsi",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Dai priorità all'ostruzione dei movimenti dell'avversario piuttosto che alla formazione dei mulini. Invece di concentrarsi sulla rimozione dei pezzi completando i mulini, l'IA mira a intrappolare l'avversario, rendendolo incapace di muoversi e garantendo una vittoria per logoramento piuttosto che per gioco aggressivo. Questa strategia non blocca attivamente i mulini dell'avversario.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Immagine del pezzo",
+  "@pieceImage": {}
 }

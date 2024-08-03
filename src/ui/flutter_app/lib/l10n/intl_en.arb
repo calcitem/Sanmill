@@ -1539,5 +1539,7 @@
   "focusOnBlockingPaths": "Focus on blocking paths",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "During specific phases of the game, prioritize obstructing the opponent's movement over forming mills. Instead of focusing on removing pieces by completing mills, the AI aims to trap the opponent during these phases, rendering them unable to move and securing a win through attrition rather than aggressive play. This phase-specific strategy does not actively block the opponent's mills.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Piece image",
+  "@pieceImage": {}
 }

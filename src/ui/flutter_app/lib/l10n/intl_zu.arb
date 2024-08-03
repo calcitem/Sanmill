@@ -1539,5 +1539,7 @@
   "focusOnBlockingPaths": "Gxila ekuvinjweni kwemizila",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Nikeza phambili ekuphazamiseni ukuhamba kwesitha kunezindleko zokwakha amamili. Esikhundleni sokugxila ekuqedeni izingcezu ngokugcwalisa amamili, i-AI ihlose ukuheha isitha, ukwenza bahluleke ukunyakaza kanye nokuqinisekisa ukunqoba ngokusebenzisa ukufaka engcupheni kunokudlala ngonya. Leli su alivaleli amamili esitha ngendlela ephambili.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Isithombe somkhandi",
+  "@pieceImage": {}
 }

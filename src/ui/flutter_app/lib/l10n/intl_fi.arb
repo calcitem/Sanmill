@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Keskity estämään reittejä",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Priorisoi vastustajan liikkeiden estäminen myllyjen muodostamisen sijaan. Sen sijaan, että keskittyisi poistamaan kappaleita täydentämällä myllyjä, AI pyrkii ansaan vastustajan, estäen heitä liikkumasta ja varmistaa voiton kulutuksella eikä aggressiivisella pelillä. Tämä strategia ei aktiivisesti estä vastustajan myllyjä.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Palakuva",
+  "@pieceImage": {}
 }

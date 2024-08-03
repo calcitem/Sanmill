@@ -1539,5 +1539,7 @@
   "focusOnBlockingPaths": "Tập trung vào việc chặn đường",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Ưu tiên cản trở di chuyển của đối thủ thay vì tạo thành cối xay. Thay vì tập trung vào việc loại bỏ các quân cờ bằng cách hoàn thành cối xay, AI nhằm bẫy đối thủ, khiến họ không thể di chuyển và đảm bảo chiến thắng thông qua sự kiệt sức thay vì lối chơi hung hăng. Chiến lược này không chủ động chặn các cối xay của đối thủ.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Hình ảnh của quân cờ",
+  "@pieceImage": {}
 }
