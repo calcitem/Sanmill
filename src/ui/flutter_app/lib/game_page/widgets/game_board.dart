@@ -33,11 +33,12 @@ class GameBoard extends StatefulWidget {
 class _GameBoardState extends State<GameBoard>
     with SingleTickerProviderStateMixin {
   static const String _logTag = "[board]";
+  late Future<Map<PieceColor, ui.Image?>> pieceImagesFuture;
 
   @override
   void initState() {
     super.initState();
-
+    pieceImagesFuture = _loadImages();
     GameController().gameResultNotifier.addListener(_showResult);
 
     if (visitedRuleSettingsPage == true) {
@@ -86,6 +87,10 @@ class _GameBoardState extends State<GameBoard>
     });
   }
 
+  Future<Map<PieceColor, ui.Image?>> _loadImages() async {
+    return loadPieceImages();
+  }
+
   void processInitialSharingMoveList() {
     if (!mounted) {
       return;
@@ -125,6 +130,32 @@ class _GameBoardState extends State<GameBoard>
     GameController().initialSharingMoveList = null;
   }
 
+  Future<ui.Image> loadImage(String assetPath) async {
+    final ByteData data = await rootBundle.load(assetPath);
+    final ui.Codec codec =
+        await ui.instantiateImageCodec(data.buffer.asUint8List());
+    final ui.FrameInfo frame = await codec.getNextFrame();
+    return frame.image;
+  }
+
+  // Loading images and creating PiecePainter
+  // TODO: Load from settings
+  Future<Map<PieceColor, ui.Image?>> loadPieceImages() async {
+    final DisplaySettings displaySettings = DB().displaySettings;
+    final Map<PieceColor, ui.Image?> images = <PieceColor, ui.Image?>{};
+
+    final String whitePieceImagePath = displaySettings.whitePieceImagePath;
+    final String blackPieceImagePath = displaySettings.blackPieceImagePath;
+
+    images[PieceColor.white] = await loadImage(whitePieceImagePath);
+    images[PieceColor.black] = await loadImage(blackPieceImagePath);
+
+    images[PieceColor.marked] =
+        await loadImage('assets/images/marked_piece_image.png');
+
+    return images;
+  }
+
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(
@@ -134,20 +165,31 @@ class _GameBoardState extends State<GameBoard>
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: GameController().animation,
       builder: (_, Widget? child) {
-        return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: GameController().animation.value,
-          ),
-          child: child,
+        return FutureBuilder<Map<PieceColor, ui.Image?>>(
+          future: pieceImagesFuture,
+          builder: (BuildContext context,
+              AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
+              return CustomPaint(
+                painter: BoardPainter(context),
+                foregroundPainter: PiecePainter(
+                  animationValue: GameController().animation.value,
+                  pieceImages: pieceImages,
+                ),
+                child: DB().generalSettings.screenReaderSupport
+                    ? const _BoardSemantics()
+                    : Semantics(
+                        label: S.of(context).youCanEnableScreenReaderSupport,
+                        container: true,
+                      ),
+              );
+            }
+          },
         );
       },
-      child: DB().generalSettings.screenReaderSupport
-          ? const _BoardSemantics()
-          : Semantics(
-              label: S.of(context).youCanEnableScreenReaderSupport,
-              container: true,
-            ),
     );
 
     GameController().animationController.forward();

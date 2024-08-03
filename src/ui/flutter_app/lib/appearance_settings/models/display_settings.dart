@@ -68,6 +68,9 @@ class DisplaySettings {
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
     this.isAnalysisToolbarShown = false,
+    this.whitePieceImagePath = '',
+    this.blackPieceImagePath = '',
+    this.markedPieceImagePath = '',
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -152,6 +155,15 @@ class DisplaySettings {
 
   @HiveField(22, defaultValue: false)
   final bool isAnalysisToolbarShown;
+
+  @HiveField(23, defaultValue: '')
+  final String whitePieceImagePath;
+
+  @HiveField(24, defaultValue: '')
+  final String blackPieceImagePath;
+
+  @HiveField(25, defaultValue: '')
+  final String markedPieceImagePath;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

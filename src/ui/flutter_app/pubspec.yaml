@@ -107,6 +107,19 @@ flutter:
     - assets/images/background_image_3.jpg
     - assets/images/background_image_4.jpg
     - assets/images/background_image_5.jpg
+    - assets/images/white_piece_image_1.png
+    - assets/images/black_piece_image_1.png
+    - assets/images/white_piece_image_2.png
+    - assets/images/black_piece_image_2.png
+    - assets/images/white_piece_image_3.png
+    - assets/images/black_piece_image_3.png
+    - assets/images/white_piece_image_4.png
+    - assets/images/black_piece_image_4.png
+    - assets/images/white_piece_image_5.png
+    - assets/images/black_piece_image_5.png
+    - assets/images/white_piece_image_6.png
+    - assets/images/black_piece_image_6.png
+    - assets/images/marked_piece_image.png
     - assets/databases/std.secval
     - assets/databases/std_0_0_9_9.sec2
     - assets/databases/std_0_1_9_8.sec2

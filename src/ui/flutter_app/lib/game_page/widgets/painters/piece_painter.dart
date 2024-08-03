@@ -27,6 +27,7 @@ class PiecePaintParam {
     required this.animated,
     required this.diameter,
     this.squareAttribute,
+    this.image,
   });
 
   /// The color of the piece.
@@ -40,6 +41,7 @@ class PiecePaintParam {
   final bool animated;
   final double diameter;
   final SquareAttribute? squareAttribute;
+  final ui.Image? image; // Change Image to ui.Image
 }
 
 /// Custom Piece Painter
@@ -50,10 +52,12 @@ class PiecePaintParam {
 class PiecePainter extends CustomPainter {
   PiecePainter({
     required this.animationValue,
+    required this.pieceImages, // Add pieceImages parameter
   });
 
   /// The value representing the piece animation when placing.
   final double animationValue;
+  final Map<PieceColor, ui.Image?>? pieceImages; // Add pieceImages field
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -91,6 +95,10 @@ class PiecePainter extends CustomPainter {
         final Offset pos = pointFromIndex(index, size);
         final bool animated = focusIndex == index;
 
+        final ui.Image? image = pieceImages == null
+            ? null
+            : pieceImages?[piece]; // Get image from pieceImages
+
         piecesToDraw.add(
           PiecePaintParam(
             piece: piece,
@@ -98,6 +106,7 @@ class PiecePainter extends CustomPainter {
             animated: animated,
             diameter: pieceWidth,
             squareAttribute: squareAttribute,
+            image: image,
           ),
         );
 
@@ -110,17 +119,15 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadow of piece
-    canvas.drawShadow(shadowPath, Colors.black, 2, true);
+    // Draw shadow of piece if image is not available
+    if (pieceImages == null) {
+      canvas.drawShadow(shadowPath, Colors.black, 2, true);
+    }
+
     paint.style = PaintingStyle.fill;
 
     Color blurPositionColor = Colors.transparent;
     for (final PiecePaintParam piece in piecesToDraw) {
-      assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.marked,
-      );
       blurPositionColor = piece.piece.blurPositionColor;
 
       final double pieceRadius = pieceWidth / 2;
@@ -129,29 +136,43 @@ class PiecePainter extends CustomPainter {
       final double animatedPieceRadius = animatedPieceWidth / 2;
       final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
 
-      // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
-
-      if (DB().colorSettings.boardBackgroundColor == Colors.white) {
-        paint.style = PaintingStyle.stroke;
-        paint.strokeWidth = 4.0;
+      // Draw the piece image if available, otherwise draw the color
+      if (piece.image != null) {
+        paintImage(
+          canvas: canvas,
+          rect: Rect.fromCircle(
+            center: piece.pos,
+            radius:
+                piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
+          ),
+          image: piece.image!,
+          fit: BoxFit.cover,
+        );
       } else {
-        paint.style = PaintingStyle.fill;
-      }
+        // Draw Border of Piece
+        paint.color = piece.piece.borderColor;
 
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceRadius : pieceRadius,
-        paint,
-      );
-      // Draw the piece
-      paint.style = PaintingStyle.fill;
-      paint.color = piece.piece.pieceColor;
-      canvas.drawCircle(
-        piece.pos,
-        piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
-        paint,
-      );
+        if (DB().colorSettings.boardBackgroundColor == Colors.white) {
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 4.0;
+        } else {
+          paint.style = PaintingStyle.fill;
+        }
+
+        canvas.drawCircle(
+          piece.pos,
+          piece.animated ? animatedPieceRadius : pieceRadius,
+          paint,
+        );
+
+        paint.style = PaintingStyle.fill;
+        paint.color = piece.piece.pieceColor;
+        canvas.drawCircle(
+          piece.pos,
+          piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
+          paint,
+        );
+      }
 
       if (DB().displaySettings.isNumbersOnPiecesShown &&
           piece.squareAttribute?.placedPieceNumber != null &&

@@ -17,6 +17,7 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
@@ -36,6 +37,7 @@ import '../models/display_settings.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
+part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/ai_response_delay_time_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
@@ -114,6 +116,11 @@ class AppearanceSettingsPage extends StatelessWidget {
         builder: (_) => const _BackgroundImagePicker(),
       );
 
+  void setPieceImage(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _PieceImagePicker(),
+      );
+
   void langCallback(
     BuildContext context,
     DisplaySettings displaySettings, [
@@ -179,6 +186,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).backgroundImage,
           onTap: () => setBackgroundImage(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).pieceImage,
+          onTap: () => setPieceImage(context),
         ),
         SettingsListTile(
           titleString: S.of(context).theme,
