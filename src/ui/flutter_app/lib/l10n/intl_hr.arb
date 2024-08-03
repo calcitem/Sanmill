@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Fokusirajte se na blokiranje putova",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Dajte prednost ometanju kretanja protivnika umjesto stvaranju mlinova. Umjesto da se usredotočite na uklanjanje figura dovršavanjem mlinova, AI nastoji uhvatiti protivnika u zamku, onemogućujući mu kretanje i osiguravajući pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira aktivno protivničke mlinove.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Slika figure",
+  "@pieceImage": {}
 }

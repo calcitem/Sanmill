@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Összpontosítson az útvonalak blokkolására",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "A játék bizonyos fázisaiban részesítse előnyben az ellenfél mozgásának akadályozását a malmok kialakításával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI ezekben a fázisokban törekszik az ellenfél csapdába ejtésére, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a fázisspecifikus stratégia nem akadályozza aktívan az ellenfél malmait.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Bábuképek",
+  "@pieceImage": {}
 }

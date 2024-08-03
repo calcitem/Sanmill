@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Koncentrējieties uz ceļu bloķēšanu",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Prioritizējiet pretinieka kustību bloķēšanu, nevis dzirnavu veidošanu. Tā vietā, lai koncentrētos uz figūru noņemšanu, pabeidzot dzirnavas, AI cenšas ieslodzīt pretinieku, padarot viņu nespējīgu kustēties un nodrošinot uzvaru ar izturību, nevis agresīvu spēli. Šī stratēģija aktīvi nebloķē pretinieka dzirnavas.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Figūras attēls",
+  "@pieceImage": {}
 }

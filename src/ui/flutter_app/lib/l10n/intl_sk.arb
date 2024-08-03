@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Zamerajte sa na blokovanie ciest",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Uprednostnite blokovanie pohybu súpera pred tvorbou mlynov. Namiesto zamerania sa na odstraňovanie figúr dokončovaním mlynov sa AI snaží chytiť súpera do pasce, znemožniť mu pohyb a zabezpečiť víťazstvo prostredníctvom opotrebenia, nie agresívnej hry. Táto stratégia aktívne neblokuje mlyny súpera.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Obraz figúry",
+  "@pieceImage": {}
 }

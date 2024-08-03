@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Skoncentruj się na blokowaniu dróg",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Priorytetem jest utrudnianie ruchów przeciwnika, a nie tworzenie młynów. Zamiast skupiać się na usuwaniu pionów poprzez ukończenie młynów, SI dąży do unieruchomienia przeciwnika, uniemożliwiając mu poruszanie się i zapewniając zwycięstwo poprzez wyczerpanie, a nie agresywną grę. Ta strategia nie blokuje aktywnie młynów przeciwnika.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Obrazek figury",
+  "@pieceImage": {}
 }

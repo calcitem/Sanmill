@@ -1539,5 +1539,7 @@
   "focusOnBlockingPaths": "התמקד בחסימת נתיבים",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "עדיף להפריע לתנועת היריב על פני יצירת תחנות רוח. במקום להתמקד בהסרת חלקים על ידי השלמת תחנות רוח, ה-AI מכוון ללכוד את היריב, ולמנוע ממנו לזוז ולהבטיח ניצחון באמצעות שחיקה ולא באמצעות משחק אגרסיבי. אסטרטגיה זו אינה חוסמת באופן פעיל את תחנות הרוח של היריב.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "תמונה של כלי שחמט",
+  "@pieceImage": {}
 }

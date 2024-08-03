@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Osredotočite se na blokiranje poti",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Dajte prednost blokiranju premikov nasprotnika pred oblikovanjem mlinov. Namesto da bi se osredotočili na odstranjevanje figur z dokončanjem mlinov, AI poskuša nasprotnika ujeti v past, ga narediti nesposobnega za premikanje in zagotoviti zmago z izčrpanjem namesto z agresivno igro. Ta strategija ne blokira aktivno nasprotnikovih mlinov.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Slika figure",
+  "@pieceImage": {}
 }

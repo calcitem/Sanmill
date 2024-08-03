@@ -1441,5 +1441,7 @@
   "focusOnBlockingPaths": "Keskendu teede blokeerimisele",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Prioriteerige vastase liikumise takistamist, mitte veskite moodustamist. Selle asemel, et keskenduda veskite täitmisega tükkide eemaldamisele, püüab tehisintellekt vastast lõksu püüda, takistades neil liikumist ja tagades võidu kurnamise, mitte agressiivse mänguga. See strateegia ei blokeeri aktiivselt vastase veskeid.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Maletüki pilt",
+  "@pieceImage": {}
 }
