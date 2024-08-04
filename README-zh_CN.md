@@ -160,7 +160,7 @@ flutter run --dart-define catcher=false dev_mode=true
 
 ### Qt 应用程序
 
-如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
+如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 GNU/Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
 
 ```shell
 sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator

@@ -94,7 +94,7 @@ Launch configurations for Android Studio or Visual Studio Code are available. Se
 
 ### Qt Application
 
-To build the Qt application on Ubuntu or any Ubuntu-based Linux distribution, you must install Qt by running the following command as root:
+To build the Qt application on Ubuntu or any Ubuntu-based GNU/Linux distribution, you must install Qt by running the following command as root:
 
 ```shell
 sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
