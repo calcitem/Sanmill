@@ -34,9 +34,9 @@
 
 [![Readme-Chinese](https://img.shields.io/badge/README-简体中文-red.svg)](README-zh_CN.md)
 
-[Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI and Qt GUI.
+[Sanmill](https://github.com/calcitem/Sanmill) is a free, powerful UCI-like N men's morris program with CUI, Flutter GUI, and Qt GUI. It is distributed under the **GNU General Public License version 3** (GPL v3), ensuring that it remains free software. Users can modify and redistribute the software, provided they adhere to the GPL terms.
 
-[**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating at least to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English.
+[**Nine men's morris**](https://en.wikipedia.org/wiki/Nine_men%27s_morris) is a [strategy](https://en.wikipedia.org/wiki/Abstract_strategy_game) [board game](https://en.wikipedia.org/wiki/Board_games) for two players dating back to the [Roman Empire](https://en.wikipedia.org/wiki/Roman_Empire). The game is also known as **nine-man morris**, **mill**, **mills**, **the mill game**, **merels**, **merrills**, **merelles**, **marelles**, **morelles**, and **ninepenny marl** in English.
 
 ![image](https://github.com/calcitem/calcitem/raw/master/Sanmill/res/sanmill.gif)
 
@@ -44,23 +44,23 @@
 
 This distribution of Sanmill consists of the following files:
 
-* Readme.md, the file you are currently reading.
+* `Readme.md`: The file you are currently reading.
+* `Copying.txt`: A text file containing the GNU General Public License version 3.
+* `src`: A subdirectory containing the full source code, including a Makefile for compiling Sanmill CUI on Unix-like systems.
+* `src/ui/flutter_app`: A subdirectory containing a Flutter frontend.
+* `src/ui/qt`: A subdirectory containing a Qt frontend.
 
-* Copying.txt, a text file containing the GNU General Public License version 3.
+## Frontend Options
 
-* src, a subdirectory containing the full source code, including a Makefile that can be used to compile Sanmill CUI on Unix-like systems.
-
-* src/ui/flutter_app, a subdirectory containing a Flutter frontend.
-
-* src/ui/qt, a subdirectory containing a Qt frontend.
+Sanmill offers two frontend options: **Flutter** and **Qt**. The primary focus is on the Flutter frontend, which is actively developed and maintained, supporting Android, iOS, Windows, and macOS for a consistent cross-platform experience. The Qt frontend is mainly used for debugging the AI engine and is not actively maintained. Users are encouraged to use the Flutter frontend for the latest features and updates.
 
 ## How to Build
 
 ### CUI
 
-Sanmill CUI has support for 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
+Sanmill CUI supports 32 or 64-bit CPUs, certain hardware instructions, big-endian machines such as Power PC, and other platforms.
 
-It should be easy to compile Sanmill directly from the source code on Unix-like systems with the included Makefile in the folder `src`. Generally, it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
+It should be easy to compile Sanmill directly from the source code on Unix-like systems with the included Makefile in the `src` folder. Generally, it is recommended to run `make help` to see a list of make targets with corresponding descriptions.
 
 ```shell
 cd src
@@ -68,21 +68,39 @@ make help
 make build ARCH=x86-64-modern
 ```
 
-When reporting an issue or a bug, please tell us which version and compiler you used to create your executable. This information can be found by typing the following commands in a console:
+When reporting an issue or a bug, please provide information about the version and compiler used to create your executable. You can obtain this information by running:
 
 ```shell
 ./sanmill compiler
 ```
 
+### Flutter App
+
+To build the Flutter app, run `./flutter-init.sh`, and then use Android Studio or Visual Studio Code to open `src/ui/flutter_app`.
+
+We use compile-time environment configs to enable specific parts of the code:
+
+* `test` to prepare the app for Monkey and Appium testing. (References to external sites will be disabled.)
+* `dev_mode` to show the developer mode without needing to enable it first.
+* `catcher` to control the use of Catcher. (Enabled by default; disable if necessary.)
+
+All environment configs can be combined and take boolean values, like:
+
+```shell
+flutter run --dart-define catcher=false dev_mode=true
+```
+
+Launch configurations for Android Studio or Visual Studio Code are available. Select the needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
+
 ### Qt Application
 
-If you have started using Ubuntu or any Ubuntu-based Linux distribution, you must install Qt by running the following command as root:
+To build the Qt application on Ubuntu or any Ubuntu-based Linux distribution, you must install Qt by running the following command as root:
 
 ```shell
 sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
 ```
 
-Use Qt Creator to open `src/ui/qt/CMakeLists.txt` , or run
+Use Qt Creator to open `src/ui/qt/CMakeLists.txt`, or run:
 
 ```shell
 cd src/ui/qt
@@ -90,48 +108,40 @@ cmake .
 cmake --build . --target mill-pro
 ```
 
-and use Visual Studio to open `src\ui\qt\mill-pro.sln` to build Qt Application.
+You can also use Visual Studio to open `src\ui\qt\mill-pro.sln` to build the Qt application.
 
-### Flutter App
+## Understanding the Code Base and Participating in the Project
 
-Run `./flutter-init.sh` , and then use Android Studio or Visual Studio Code to open `src/ui/flutter_app` to build Flutter App.
+Sanmill's improvements have been a community effort. You can contribute in several ways:
 
-We use compile-time environment configs to enable specific parts of the code:
+### Improving the Code
 
-* `test` to prepare the app for Monkey and Appium testing. (References to external sites are going to be disabled.)
-* `dev_mode` to show the developer mode without needing to enable it first.
-* `catcher` to control the use of Catcher. (This is on by default and needs to be disabled when required.)
+* [Sanmill Wiki](https://github.com/calcitem/Sanmill/wiki): Contains explanations of techniques used in Sanmill, with background information.
+* [GitHub Repository](https://github.com/calcitem/Sanmill): The latest source can always be found here.
+* [Discussions](https://github.com/calcitem/Sanmill/discussions): Join discussions about Sanmill.
 
-All environment configs can be combined and take a value of bool like:
+## Terms of Use
 
-```shell
-flutter run --dart-define catcher=false dev_mode=true
-```
+Sanmill is distributed under the **GNU General Public License version 3** (GPL v3). This allows you to use, modify, and distribute the software, provided you include the full source code or a pointer to where the source can be found. Any changes to the source code must also be made available under the GPL.
 
-For ease of use, some launch configs for Android Studio or Visual Studio Code are available. Just select the needed one in the `Run and Debug` or `Run/Debug Configurations` tab.
+For full details, see the GPL v3 in the `Copying.txt` file.
 
-## Understanding the code base and participating in the project
+**Note on App Store Distribution**: As an additional permission under section 7 of the GPL v3, you are allowed to distribute the software through app stores, even if they have restrictive terms that are incompatible with the GPL. However, the source code must also be available under the GPL, either through the app store or another channel without those restrictive terms.
 
-Sanmill's improvement over the last couple of years has been a great community effort. There are a few ways to help contribute to its growth.
+All unofficial builds and forks of the app must be clearly labeled as unofficial (e.g., "Sanmill UNOFFICIAL") or use a different name altogether. They must use a different application ID to avoid conflicts with official releases.
 
-### Improving the code
+## Crash Reporting and Privacy
 
-If you want to help improve the code, there are several valuable resources:
+Sanmill collects non-sensitive crash information to help improve the software. The information collected may include:
 
-* [In this wiki](https://github.com/calcitem/Sanmill/wiki), many techniques used in Sanmill are explained with a lot of background information.
+- Device type and operating system version
+- The actions leading up to the crash
+- The crash error message
 
-* The latest source can always be found on [GitHub](https://github.com/calcitem/Sanmill).
+Users can review the crash report contents before sending. No personally identifiable information (PII) is collected, and all data is anonymized to ensure user privacy. Users can choose not to send crash reports if they prefer.
 
-* Discussions about Sanmill take place in the [Discussions](https://github.com/calcitem/Sanmill/discussions).
+This data is used solely for improving the quality and stability of Sanmill and is not shared with any third parties.
 
-## Terms of use
+## Free Software Philosophy
 
-Sanmill is free and distributed under the **GNU General Public License version 3** (GPL v3). Essentially, this means you are free to do almost exactly what you want with the program, including distributing it among your friends, making it available for download from your website, selling it (either by itself or as part of some bigger software package), or using it as the starting point for a software project of your own.
-
-The only real limitation is that whenever you distribute Sanmill in some way, you must always include the full source code or a pointer to where the source code can be found. If you make any changes to the source code, these changes must also be made available under the GPL.
-
-For full details, read the copy of the GPL v3 found in the file named *Copying.txt*.
-
-As additional permission under section 7, you are allowed to distribute the software through an app store, even if that store has restrictive terms and conditions that are incompatible with the GPL, provided that the source is also available under the GPL with or without this permission through a channel without those restrictive terms and conditions.
-
-All unofficial builds and forks of the app must be clearly labeled as unofficial in the app's name (e.g. "Sanmill  UNOFFICIAL", never just "Sanmill") or use a different name altogether. If any code changes are made, the fork should use a completely different name and app icon. All unofficial builds and forks MUST use a different application ID, in order to not conflict with a potential official release.
+Sanmill is free software, and we emphasize the importance of free software as a matter of freedom. We encourage the use of GPL v3 or later as a license for contributions and discourage the use of non-free licenses.

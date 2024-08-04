@@ -23,7 +23,7 @@
 
 [![Codemagic build status](https://api.codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/status_badge.svg)](https://codemagic.io/apps/5fafbd77605096975ff9d1ba/5fafbd77605096975ff9d1b9/latest_build)
 
-[Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。
+[Sanmill](https://gitee.com/calcitem/Sanmill) 是一个直棋程序，具有命令行、移动端 Flutter 和 PC 端 Qt 三个界面。其遵循 **GNU 通用公共许可证第三版** (GPL v3) 发布，确保其保持自由软件的属性。用户可以修改和重新分发这款软件，但必须遵守 GPL 的条款。
 
 直棋为棋规简单、老少皆宜的双人游戏，通常棋盘为同心的数个正方形，并用直线或斜线将不同的正方形相连结。直棋普遍以消灭对方吃子能力，或困毙对方为胜。规则可用 “**先摆后移，成三吃子，余三飞子，无路者负。**” 简述之。
 
@@ -116,6 +116,10 @@ Sanmill 的此发行版包含以下文件：
 
 * src/ui/qt，包含 Qt 前端的子目录。
 
+## 前端选项
+
+Sanmill 提供两个前端选项：**Flutter** 和 **Qt**。当前主要发布和维护的是 Flutter 前端，支持 Android、iOS、Windows 和 macOS，适合希望在多个平台上获得一致体验的用户。Qt 前端主要用于调试 AI 引擎，不活跃维护。建议用户使用 Flutter 前端以获取最新的功能和更新。
+
 ## 如何构建
 
 ### 命令行程序
@@ -136,24 +140,6 @@ make build ARCH=x86-64-modern
 ./sanmill compiler
 ```
 
-### Qt 应用程序
-
-如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
-
-```shell
-sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
-```
-
-使用 Qt Creator 打开 `src/ui/qt/CMakeLists.txt` ，或者运行：
-
-```shell
-cd src/ui/qt
-cmake .
-cmake --build . --target mill-pro
-```
-
-并使用 Visual Studio 打开 `src\ui\qt\mill-pro.sln` 来构建 Qt 应用程序。
-
 ### Flutter App
 
 运行`./flutter-init.sh`，然后使用 Android Studio 或 Visual Studio Code 打开 `src/ui/flutter_app` 来构建 Flutter App。
@@ -172,6 +158,24 @@ flutter run --dart-define catcher=false dev_mode=true
 
 为了便于使用，可以使用一些 Android Studio 或 Visual Studio Code 的启动配置。只需在“运行和调试”或“运行/调试配置”选项卡中选择所需要一个。
 
+### Qt 应用程序
+
+如果您已经开始使用 Ubuntu 或任何基于 Ubuntu 的 Linux 发行版，则必须通过以 root 身份运行以下命令来安装 Qt：
+
+```shell
+sudo apt-get install qt6-base-dev qt6-multimedia-dev qtcreator
+```
+
+使用 Qt Creator 打开 `src/ui/qt/CMakeLists.txt` ，或者运行：
+
+```shell
+cd src/ui/qt
+cmake .
+cmake --build . --target mill-pro
+```
+
+并使用 Visual Studio 打开 `src\ui\qt\mill-pro.sln` 来构建 Qt 应用程序。
+
 ## 了解代码库并参与项目
 
 在社区的加持下，Sanmill 在过去几年中得到了迅速地改进。有下述几种方法可以帮助项目发展。
@@ -188,12 +192,26 @@ flutter run --dart-define catcher=false dev_mode=true
 
 ## 使用条款
 
-Sanmill 是免费的，并根据 **GNU 通用公共许可证版本 3**（GPL v3）分发。 从本质上讲，这意味着您可以自由地使用该程序并几乎完全按照您的意愿进行操作，包括在您的朋友中分发它、使其可从您的网站下载、出售（单独或作为某些更大软件包的一部分）， 或将其用作您自己的软件项目的起点。
+Sanmill 在 **GNU 通用公共许可证第三版** (GPL v3) 下发布。这意味着您可以使用、修改和分发本软件，但必须包含完整的源代码，或者指向可以找到源代码的地方。对源代码的任何更改也必须在 GPL 下提供。
 
-唯一真正的限制是，每当您以某种方式分发 Sanmill 时，您必须始终包含完整的源代码或指向可以找到源代码的位置的链接。 如果您对源代码进行任何更改，这些更改也必须在 GPL 下可用。
+有关完整的详细信息，请参阅 `Copying.txt` 文件中的 GPL v3。
 
-有关详细信息，请阅读在名为 *Copying.txt* 的文件中找到的 GPL v3 副本。
+**关于应用商店分发的注意事项**：根据 GPL v3 第 7 节的附加许可，您可以在应用商店中分发本软件，即使它们有与 GPL 不兼容的限制性条款。但是，源代码也必须在 GPL 下提供，无论是通过应用商店还是没有这些限制性条款的另一个渠道。
 
-根据第 7 条的附加许可，您被允许通过应用商店进行软件分发，即使该商店的条款和条件与 GPL 不兼容，只要通过没有这些限制性条款和条件的渠道，也可以在 GPL 下提供源代码。
+所有非官方的应用程序构建和分支都必须清楚地标明为非官方（例如，“Sanmill 非官方”），或者使用完全不同的名称。它们必须使用不同的应用程序 ID，以避免与官方版本发生冲突。
 
-所有非官方版本和分支必须在应用程序的名称中清楚地标注为非官方版本（例如“Sanmill UNOFFICIAL”，永远不是“Sanmill”），或者使用一个完全不同的名称。如果进行了代码更改，则分支应使用完全不同的名称和应用图标。所有非官方版本和分支必须使用不同的应用程序 ID，以避免与潜在的官方版本发生冲突。
+## 崩溃报告与隐私
+
+Sanmill 会收集非敏感的崩溃信息，以帮助改进软件。收集的信息可能包括：
+
+- 设备类型和操作系统版本
+- 导致崩溃的操作
+- 崩溃错误消息
+
+用户可以在发送之前查看崩溃报告的内容。不会收集任何个人身份信息（PII），所有数据都是匿名的，以确保用户隐私。用户可以选择不发送崩溃报告。
+
+此数据仅用于提高 Sanmill 的质量和稳定性，不会与任何第三方共享。
+
+## 自由软件理念
+
+Sanmill 是自由软件，我们强调自由软件作为自由的重要性。我们鼓励为贡献使用 GPL v3 或更高版本，并劝阻使用非自由许可证。
