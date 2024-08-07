@@ -190,7 +190,7 @@ done
 git status -s
 git add .
 git commit -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION"
-#exit
+exit
 git tag -d v$NEW_VERSION || true
 git tag -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" v$NEW_VERSION
 git push origin v$NEW_VERSION -f
