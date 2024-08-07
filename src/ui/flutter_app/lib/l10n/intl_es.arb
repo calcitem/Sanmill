@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nEl juego empata automáticamente si una posición se produce por tercera vez o no hace ninguna retirada en los últimos 100 movimientos (configurables).\n\nEl juego se desarrolla en tres fases:\n\n1. 1. Colocación de las piezas en los puntos vacantes\n2. 2. Mover piezas a puntos adyacentes\n3. (fase opcional) Mover las piezas a cualquier punto vacío al reducir el jugador a tres piezas\n\nColocación de\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar sus piezas en los puntos vacantes hasta que cada jugador haya colocado todas las piezas en el tablero. Si un jugador consigue colocar tres de sus piezas en línea recta, tiene un \"molino\" y puede retirar del tablero una de las piezas de su adversario.\n\nEn algunas reglas, los jugadores deben eliminar primero cualquier otra pieza antes de eliminar una pieza de un molino formado.\n\nEn algunas reglas no se pueden volver a colocar las piezas en los puntos de las piezas eliminadas en la fase de colocación.\n\nUna vez utilizadas todas las piezas, los jugadores se mueven por turnos.\n\nMover\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puede hacerlo, ha perdido la partida. Un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede eliminar una de las piezas de su adversario como en la fase de colocación. Si un jugador se reduce a dos piezas, no tiene opción de formar nuevos molinos y, por tanto, pierde la partida. Un jugador también puede perder cuando tiene más de tres piezas si su adversario bloquea su movimiento.\n\nVolando\n\nEn algunas variantes de las reglas, una vez que a un jugador sólo le quedan tres piezas, sus piezas pueden volar, saltar o brincar a cualquier punto libre, no sólo a los adyacentes.\n",
+  "helpContent": "El objetivo del juego es dejar al adversario con menos de tres piezas o sin movimientos legales.\n\nEl juego empata automáticamente si una posición se produce por tercera vez o no hace ninguna retirada en los últimos 100 movimientos (configurables).\n\nEl juego se desarrolla en tres fases:\n\n1. Colocación de las piezas en los puntos vacantes\n2. Mover piezas a puntos adyacentes\n3. (fase opcional) Mover las piezas a cualquier punto vacío al reducir el jugador a tres piezas\n\nColocación\n\nEl juego comienza con un tablero vacío, que consiste en una cuadrícula con veinticuatro puntos. Los jugadores se turnan para colocar las piezas en los puntos vacantes hasta que cada jugador haya colocado todas las piezas en el tablero. Si un jugador consigue colocar tres de las piezas en línea recta, tiene un \"molino\" y puede retirar del tablero una de las piezas del adversario.\n\nEn algunas reglas, los jugadores deben retirar primero cualquier otra pieza antes de retirar una pieza de un molino formado.\n\nEn algunas reglas no se pueden volver a colocar las piezas en los puntos de las piezas retiradas en la fase de colocación.\n\nUna vez utilizadas todas las piezas, los jugadores se mueven por turnos.\n\nMover\n\nPara mover, un jugador mueve una de sus piezas a lo largo de una línea del tablero hasta un punto adyacente libre. Si no puedes hacerlo, has perdido la partida. Un jugador que alinea tres de sus piezas en una línea del tablero tiene un molino y puede eliminar una de las piezas de su adversario como en la fase de colocación. Si un jugador se reduce a dos piezas, no tiene opción de formar nuevos molinos y, por tanto, pierde la partida. Un jugador también puede perder cuando tiene más de tres piezas si el adversario bloquea el movimiento.\n\nVolar\n\nEn algunas variantes de las reglas, una vez que a un jugador silo le quedan tres piezas, sus piezas pueden volar, saltar o brincar a cualquier punto libre, no solo a los adyacentes.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Coloc.",
+  "placing": "Colocar",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Mov.",
+  "moving": "Movimiento",
   "@moving": {
     "description": "Moving"
   },
@@ -1442,6 +1442,6 @@
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Durante fases específicas del juego, da prioridad a obstruir el movimiento del oponente sobre la formación de molinos. En lugar de centrarse en eliminar piezas completando molinos, la IA intenta atrapar al oponente durante estas fases, incapacitándole para moverse y asegurándose la victoria mediante el desgaste en lugar de mediante el juego agresivo. Esta estrategia específica para cada fase no bloquea activamente los molinos del adversario.",
   "@focusOnBlockingPaths_Detail": {},
-  "pieceImage": "Imagen de pieza",
+  "pieceImage": "Imagen de la pieza",
   "@pieceImage": {}
 }
