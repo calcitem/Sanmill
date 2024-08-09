@@ -46,9 +46,6 @@ class _GameBoardState extends State<GameBoard>
       visitedRuleSettingsPage = false;
     }
 
-    // ignore: unnecessary_statements
-    GameController().isControllerReady == false;
-
     GameController().engine.startup();
 
     _setupValueNotifierListener();

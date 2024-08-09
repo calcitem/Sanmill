@@ -43,8 +43,7 @@ class SettingsCard extends StatelessWidget {
         ),
         Card(
           child: Padding(
-            // ignore: use_named_constants
-            padding: const EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
             child: Column(
               children: <Widget>[
                 for (int i = 0; i < children.length; i++)

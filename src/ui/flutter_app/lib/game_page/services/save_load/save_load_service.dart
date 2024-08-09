@@ -305,7 +305,7 @@ class LoadService {
   static Future<String?> readFileContentFromUri(Uri uri) async {
     String? str;
     try {
-      str = await NativeMethods.readContentUri(uri);
+      str = await readContentUri(uri);
     } catch (e) {
       logger.e('Error reading file at $uri: $e');
       rethrow;

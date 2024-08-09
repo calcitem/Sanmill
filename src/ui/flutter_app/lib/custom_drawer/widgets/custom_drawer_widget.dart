@@ -40,7 +40,6 @@ class CustomDrawer extends StatefulWidget {
   final bool disabledGestures;
 
   /// Items the drawer holds
-  // ignore: always_specify_types
   final List<CustomDrawerItem<dynamic>> drawerItems;
 
   /// Header widget of the drawer
@@ -213,7 +212,6 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    // ignore: always_specify_types
     final CustomDrawerItem<dynamic> item = widget.drawerItems[index];
 
     final double itemPadding =

@@ -28,7 +28,9 @@ class SettingsListTile extends StatelessWidget {
     this.trailingString,
   })  : _type = _SettingsTileType.standard,
         _switchValue = null,
-        _callback = onTap,
+        _switchCallback = null,
+        _colorCallback = null,
+        _standardCallback = onTap,
         _colorValue = null;
 
   const SettingsListTile.color({
@@ -39,9 +41,11 @@ class SettingsListTile extends StatelessWidget {
     this.subtitleString,
   })  : _type = _SettingsTileType.color,
         _switchValue = null,
-        _callback = onChanged,
-        trailingString = null,
-        _colorValue = value;
+        _colorValue = value,
+        _switchCallback = null,
+        _colorCallback = onChanged,
+        _standardCallback = null,
+        trailingString = null;
 
   const SettingsListTile.switchTile({
     super.key,
@@ -51,8 +55,10 @@ class SettingsListTile extends StatelessWidget {
     this.subtitleString,
   })  : _type = _SettingsTileType.switchTile,
         _switchValue = value,
-        _callback = onChanged,
         _colorValue = null,
+        _switchCallback = onChanged,
+        _colorCallback = null,
+        _standardCallback = null,
         trailingString = null;
 
   final String titleString;
@@ -62,7 +68,9 @@ class SettingsListTile extends StatelessWidget {
   final _SettingsTileType _type;
   final bool? _switchValue;
   final Color? _colorValue;
-  final Function _callback;
+  final ValueChanged<bool>? _switchCallback;
+  final ValueChanged<Color>? _colorCallback;
+  final VoidCallback? _standardCallback;
 
   Widget get title => Text(
         titleString,
@@ -78,8 +86,7 @@ class SettingsListTile extends StatelessWidget {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
           value: _switchValue!,
-          // ignore: avoid_dynamic_calls
-          onChanged: (bool val) => _callback(val),
+          onChanged: _switchCallback,
           title: title,
           subtitle: subTitle,
         );
@@ -108,8 +115,7 @@ class SettingsListTile extends StatelessWidget {
           title: title,
           subtitle: subTitle,
           trailing: trailing,
-          // ignore: avoid_dynamic_calls
-          onTap: () => _callback(),
+          onTap: _standardCallback,
         );
 
       case _SettingsTileType.color:
@@ -126,8 +132,7 @@ class SettingsListTile extends StatelessWidget {
             builder: (_) => _ColorPickerAlert(
               title: titleString,
               value: _colorValue!,
-              // ignore: avoid_dynamic_calls
-              onChanged: (Color val) => _callback(val),
+              onChanged: _colorCallback!,
             ),
           ),
         );
@@ -144,7 +149,7 @@ class _ColorPickerAlert extends StatefulWidget {
 
   final Color value;
   final String title;
-  final Function(Color) onChanged;
+  final ValueChanged<Color> onChanged;
 
   @override
   _ColorPickerAlertState createState() => _ColorPickerAlertState();

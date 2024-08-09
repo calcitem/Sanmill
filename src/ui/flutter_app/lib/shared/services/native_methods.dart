@@ -15,22 +15,17 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:flutter/services.dart';
-
 import 'logger.dart';
 
-// ignore: avoid_classes_with_only_static_members
-class NativeMethods {
-  static const MethodChannel platform =
-      MethodChannel('com.calcitem.sanmill/native');
+const MethodChannel _platform = MethodChannel('com.calcitem.sanmill/native');
 
-  static Future<String?> readContentUri(Uri uri) async {
-    try {
-      final String? result = await platform.invokeMethod<String>(
-          'readContentUri', <String, String>{'uri': uri.toString()});
-      return result;
-    } on PlatformException catch (e) {
-      logger.e("Failed to read content URI: ${e.message}");
-      return null;
-    }
+Future<String?> readContentUri(Uri uri) async {
+  try {
+    final String? result = await _platform.invokeMethod<String>(
+        'readContentUri', <String, String>{'uri': uri.toString()});
+    return result;
+  } on PlatformException catch (e) {
+    logger.e("Failed to read content URI: ${e.message}");
+    return null;
   }
 }

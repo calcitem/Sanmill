@@ -29,8 +29,8 @@ class TapHandler {
 
   final GameController controller = GameController();
   //final gameMode = MillController().gameInstance.gameMode;
-  // ignore: always_specify_types
-  final showTip = GameController().headerTipNotifier.showTip;
+  final void Function(String tip, {bool snackBar}) showTip =
+      GameController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>
       GameController().position.winner == PieceColor.nobody;

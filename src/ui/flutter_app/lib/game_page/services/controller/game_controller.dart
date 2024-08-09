@@ -253,9 +253,8 @@ class GameController {
           isEngineInDelay = false;
         }
 
-        engineRet = await controller.engine
-            // ignore: avoid_bool_literals_in_conditional_expressions
-            .search(moveNow: loopIsFirst ? isMoveNow : false);
+        engineRet =
+            await controller.engine.search(moveNow: loopIsFirst && isMoveNow);
 
         if (GameController().isControllerActive == false) {
           break;

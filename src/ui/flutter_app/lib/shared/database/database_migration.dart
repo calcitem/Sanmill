@@ -41,7 +41,6 @@ class _DatabaseMigration {
   ];
 
   /// Database Box reference
-  // ignore: always_specify_types
   static late Box<dynamic> _databaseBox;
 
   /// Key at which the [_databaseBox] will be saved
@@ -209,11 +208,11 @@ class _DatabaseV1 {
     final Directory docDir = await getApplicationDocumentsDirectory();
 
     final File file = File("${docDir.path}/$fileName");
-    // ignore: avoid_slow_async_io
-    if (await file.exists()) {
-      return file;
-    }
-    return null;
+    return _checkFileExists(file);
+  }
+
+  static Future<File?> _checkFileExists(File file) async {
+    return file.existsSync() ? file : null;
   }
 
   /// Checks whether the current DB is still the old KV store by checking the availability of the json file

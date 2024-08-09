@@ -46,10 +46,6 @@ class _GameOptionsModal extends StatelessWidget {
                     (GameController().gameRecorder.index != null &&
                         GameController().gameRecorder.index! <= 3)) ||
                 GameController().position.phase == Phase.gameOver) {
-              // TODO: This part of the code is repetitive.
-              // ignore: unnecessary_statements
-              GameController().isControllerActive == false;
-
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
@@ -195,9 +191,6 @@ class _GameOptionsModal extends StatelessWidget {
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
         ),
         onPressed: () {
-          // ignore: unnecessary_statements
-          GameController().isControllerActive == false;
-
           // TODO: Called stopSearching(); so isEngineGoing is always false?
           if (GameController().isEngineRunning == false) {
             GameController().reset(force: true);
