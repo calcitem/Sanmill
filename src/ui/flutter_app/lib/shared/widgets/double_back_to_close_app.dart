@@ -81,7 +81,7 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
     if (_isAndroid) {
       return PopScope(
         canPop: false,
-        onPopInvoked: _handleWillPop,
+        onPopInvokedWithResult: _handleWillPop,
         child: widget.child,
       );
     } else {
@@ -89,8 +89,8 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
     }
   }
 
-  /// Handles [PopScope.onPopInvoked].
-  Future<bool> _handleWillPop(bool didPop) async {
+  /// Handles [PopScope.onPopInvokedWithResult].
+  Future<bool> _handleWillPop(bool didPop, dynamic result) async {
     if (didPop) {
       return false;
     }

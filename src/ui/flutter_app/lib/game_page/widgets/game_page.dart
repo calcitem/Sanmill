@@ -255,6 +255,9 @@ class _GameState extends State<_Game> {
       onPressed: () {
         if (DB().displaySettings.isHistoryNavigationToolbarShown) {
           Future<void>.delayed(const Duration(milliseconds: 100), () {
+            if (!context.mounted) {
+              return;
+            }
             showDialog<void>(
               context: context,
               builder: (BuildContext context) => const _MoveListDialog(),

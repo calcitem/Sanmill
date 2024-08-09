@@ -312,6 +312,9 @@ class AppearanceSettingsPage extends StatelessWidget {
         currentLanguageLocale: displaySettings.locale,
       ),
     ).then((Locale? newLocale) {
+      if (!context.mounted) {
+        return;
+      }
       if (displaySettings.locale != newLocale) {
         langCallback(context, displaySettings, newLocale);
       }
