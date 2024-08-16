@@ -40,12 +40,12 @@ dependencies:
   intl: 0.19.0
   json_annotation: 4.9.0
   kplayer: 0.4.2
-  logger: 2.3.0
+  logger: 2.4.0
   marquee:
     git:
       url: https://gitlab.com/calcitem/marquee.git
       ref: master
-  package_info_plus: 8.0.0
+  package_info_plus: 8.0.2
   path: 1.9.0
   path_provider: 2.1.3
   share_plus: 9.0.0
@@ -66,7 +66,7 @@ dependencies:
 
 dev_dependencies:
   analyzer: 6.7.0
-  build_runner: 2.4.10
+  build_runner: 2.4.12
   copy_with_extension_gen: 5.0.4
   flutter_driver:
     sdk: flutter
@@ -78,7 +78,7 @@ dev_dependencies:
   json_serializable: 6.8.0
   flutter_lints: 4.0.0
   mockito: 5.4.4
-  msix: 3.16.7
+  msix: 3.16.8
   source_gen: 1.5.0
   test: any
 
