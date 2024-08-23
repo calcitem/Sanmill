@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Colocar",
+  "placing": "Coloc.",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Movimiento",
+  "moving": "Mov.",
   "@moving": {
     "description": "Moving"
   },
