@@ -354,7 +354,7 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).placing),
+          title: Text(S.of(context).placingPhase),
           children: <Widget>[
             SettingsListTile(
               onTap: () =>
@@ -368,11 +368,6 @@ class RuleSettingsPage extends StatelessWidget {
               titleString: S.of(context).whenBoardIsFull,
               subtitleString: S.of(context).whenBoardIsFull_Detail,
             ),
-          ],
-        ),
-        SettingsCard(
-          title: Text(S.of(context).moving),
-          children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.mayMoveInPlacingPhase,
               onChanged: (bool val) =>
@@ -380,6 +375,11 @@ class RuleSettingsPage extends StatelessWidget {
               titleString: S.of(context).mayMoveInPlacingPhase,
               subtitleString: S.of(context).mayMoveInPlacingPhase_Detail,
             ),
+          ],
+        ),
+        SettingsCard(
+          title: Text(S.of(context).movingPhase),
+          children: <Widget>[
             SettingsListTile.switchTile(
               value: ruleSettings.isDefenderMoveFirst,
               onChanged: (bool val) =>
