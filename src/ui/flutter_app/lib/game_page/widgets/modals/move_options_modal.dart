@@ -16,8 +16,8 @@
 
 part of '../game_page.dart';
 
-class _MoveOptionsModal extends StatelessWidget {
-  const _MoveOptionsModal({required this.mainContext});
+class MoveOptionsModal extends StatelessWidget {
+  const MoveOptionsModal({super.key, required this.mainContext});
 
   final BuildContext mainContext;
 
@@ -29,7 +29,7 @@ class _MoveOptionsModal extends StatelessWidget {
       }
       showDialog<void>(
         context: mainContext,
-        builder: (BuildContext context) => const _MoveListDialog(),
+        builder: (BuildContext context) => const MoveListDialog(),
       );
     });
   }

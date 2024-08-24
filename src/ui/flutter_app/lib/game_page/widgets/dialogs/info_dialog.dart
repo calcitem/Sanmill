@@ -16,8 +16,8 @@
 
 part of '../game_page.dart';
 
-class _InfoDialog extends StatelessWidget {
-  const _InfoDialog();
+class InfoDialog extends StatelessWidget {
+  const InfoDialog({super.key});
 
   String _infoText(BuildContext context) {
     final GameController controller = GameController();

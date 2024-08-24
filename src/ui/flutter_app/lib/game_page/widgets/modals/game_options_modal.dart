@@ -16,10 +16,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-part of '../game_page.dart';
+import 'dart:io';
 
-class _GameOptionsModal extends StatelessWidget {
-  const _GameOptionsModal({required this.onTriggerScreenshot});
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
+import '../../../generated/intl/l10n.dart';
+import '../../../shared/config/constants.dart';
+import '../../../shared/database/database.dart';
+import '../../../shared/services/logger.dart';
+import '../../../shared/themes/app_theme.dart';
+import '../../../shared/widgets/custom_spacer.dart';
+import '../../services/mill.dart';
+import '../game_page.dart';
+
+// ignore: unused_element
+class GameOptionsModal extends StatelessWidget {
+  const GameOptionsModal({super.key, required this.onTriggerScreenshot});
   final VoidCallback onTriggerScreenshot;
 
   static const String _logTag = "[GameOptionsModal]";
