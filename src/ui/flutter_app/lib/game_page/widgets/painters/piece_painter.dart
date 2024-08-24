@@ -16,6 +16,16 @@
 
 part of '../../../game_page/widgets/painters/painters.dart';
 
+/// Piece Animation Type
+///
+/// The type of animation to play when placing/moving/removing a piece.
+enum PieceAnimationType {
+  none,
+  place,
+  remove,
+  move,
+}
+
 /// Piece Information
 ///
 /// Holds parameters needed to paint each piece.
@@ -23,8 +33,10 @@ part of '../../../game_page/widgets/painters/painters.dart';
 class PiecePaintParam {
   const PiecePaintParam({
     required this.piece,
-    required this.pos,
-    required this.animated,
+    required this.startPos,
+    required this.endPos,
+    required this.animationType,
+    required this.animationProgress,
     required this.diameter,
     this.squareAttribute,
     this.image,
@@ -33,15 +45,25 @@ class PiecePaintParam {
   /// The color of the piece.
   final PieceColor piece;
 
-  /// The position the piece is placed at.
+  /// The start position of the piece.
   ///
-  /// This represents the final position on the canvas.
-  /// To extract this information from the board index use [pointFromIndex].
-  final Offset pos;
-  final bool animated;
+  /// This represents the starting position on the canvas before animation.
+  final Offset startPos;
+
+  /// The end position of the piece.
+  ///
+  /// This represents the final position on the canvas after animation.
+  final Offset endPos;
+
+  /// The type of animation to play.
+  final PieceAnimationType animationType;
+
+  /// The progress of the animation.
+  final double animationProgress;
+
   final double diameter;
   final SquareAttribute? squareAttribute;
-  final ui.Image? image; // Change Image to ui.Image
+  final ui.Image? image; // Image for the piece
 }
 
 /// Custom Piece Painter
@@ -63,27 +85,26 @@ class PiecePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     assert(size.width == size.height);
     final int? focusIndex = GameController().gameInstance.focusIndex;
+    final int? previousFocusIndex =
+        GameController().gameInstance.previousFocusIndex;
     final int? blurIndex = GameController().gameInstance.blurIndex;
 
     final Paint paint = Paint();
-    final Path shadowPath = Path();
-    final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
+    const double shadowBlurRadius = 2.0; // Shadow blur radius
+    const Color shadowColor = Colors.black; // Shadow color
+    const Offset shadowOffset = Offset(1.0, 1.0); // Shadow offset
 
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
             DB().displaySettings.pieceWidth /
             6 -
         1;
-    final double animatedPieceWidth = pieceWidth * animationValue;
 
     // Draw pieces on board
+    late Color blurPositionColor;
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
-
-        final PieceColor piece = GameController()
-            .position
-            .pieceOnGrid(index); // No Pieces when initial
-
+        final PieceColor piece = GameController().position.pieceOnGrid(index);
         if (piece == PieceColor.none) {
           continue;
         }
@@ -92,114 +113,86 @@ class PiecePainter extends CustomPainter {
         final SquareAttribute squareAttribute =
             GameController().position.sqAttrList[sq];
 
-        final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
+        blurPositionColor = piece.blurPositionColor;
 
-        final ui.Image? image = pieceImages == null
-            ? null
-            : pieceImages?[piece]; // Get image from pieceImages
+        final Offset startPos =
+            pointFromIndex(previousFocusIndex ?? index, size);
+        final Offset endPos = pointFromIndex(index, size);
+        final Offset currentPosition = Offset.lerp(
+            startPos, endPos, focusIndex == index ? animationValue : 1.0)!;
 
-        piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
-            pos: pos,
-            animated: animated,
-            diameter: pieceWidth,
-            squareAttribute: squareAttribute,
+        final ui.Image? image =
+            pieceImages == null ? null : pieceImages?[piece];
+
+        // Draw the piece's shadow
+        final Path shadowPath = Path();
+        shadowPath.addOval(Rect.fromCircle(
+            center: currentPosition + shadowOffset, radius: pieceWidth / 2));
+        canvas.drawShadow(shadowPath, shadowColor, shadowBlurRadius, true);
+
+        if (image != null) {
+          // Draw the piece image if available
+          paintImage(
+            canvas: canvas,
+            rect: Rect.fromCircle(
+              center: currentPosition,
+              radius: pieceWidth / 2 * 0.99,
+            ),
             image: image,
-          ),
-        );
-
-        shadowPath.addOval(
-          Rect.fromCircle(
-            center: pos,
-            radius: (animated ? animatedPieceWidth : pieceWidth) / 2,
-          ),
-        );
-      }
-    }
-
-    // Draw shadow of piece if image is not available
-    if (pieceImages == null) {
-      canvas.drawShadow(shadowPath, Colors.black, 2, true);
-    }
-
-    paint.style = PaintingStyle.fill;
-
-    Color blurPositionColor = Colors.transparent;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      blurPositionColor = piece.piece.blurPositionColor;
-
-      final double pieceRadius = pieceWidth / 2;
-      final double pieceInnerRadius = pieceRadius * 0.99;
-
-      final double animatedPieceRadius = animatedPieceWidth / 2;
-      final double animatedPieceInnerRadius = animatedPieceRadius * 0.99;
-
-      // Draw the piece image if available, otherwise draw the color
-      if (piece.image != null) {
-        paintImage(
-          canvas: canvas,
-          rect: Rect.fromCircle(
-            center: piece.pos,
-            radius:
-                piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
-          ),
-          image: piece.image!,
-          fit: BoxFit.cover,
-        );
-      } else {
-        // Draw Border of Piece
-        paint.color = piece.piece.borderColor;
-
-        if (DB().colorSettings.boardBackgroundColor == Colors.white) {
-          paint.style = PaintingStyle.stroke;
-          paint.strokeWidth = 4.0;
+            fit: BoxFit.cover,
+          );
         } else {
+          // Draw the piece border and body if image is not available
+          paint.color = piece.borderColor;
+
+          if (DB().colorSettings.boardBackgroundColor == Colors.white) {
+            paint.style = PaintingStyle.stroke;
+            paint.strokeWidth = 4.0;
+          } else {
+            paint.style = PaintingStyle.fill;
+          }
+
+          canvas.drawCircle(
+            currentPosition,
+            pieceWidth / 2,
+            paint,
+          );
+
           paint.style = PaintingStyle.fill;
+          paint.color = piece.pieceColor;
+          canvas.drawCircle(
+            currentPosition,
+            pieceWidth / 2 * 0.99,
+            paint,
+          );
         }
 
-        canvas.drawCircle(
-          piece.pos,
-          piece.animated ? animatedPieceRadius : pieceRadius,
-          paint,
-        );
-
-        paint.style = PaintingStyle.fill;
-        paint.color = piece.piece.pieceColor;
-        canvas.drawCircle(
-          piece.pos,
-          piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
-          paint,
-        );
-      }
-
-      if (DB().displaySettings.isNumbersOnPiecesShown &&
-          piece.squareAttribute?.placedPieceNumber != null &&
-          piece.squareAttribute!.placedPieceNumber > 0) {
-        // Text Drawing:
-        final TextPainter textPainter = TextPainter(
-          text: TextSpan(
-            text: piece.squareAttribute?.placedPieceNumber.toString(),
-            style: TextStyle(
-              color: piece.piece.pieceColor.computeLuminance() > 0.5
-                  ? Colors.black
-                  : Colors.white,
-              fontSize: piece.diameter * 0.5, // Adjust font size as needed
+        // Draw number on piece if necessary
+        if (DB().displaySettings.isNumbersOnPiecesShown &&
+            squareAttribute.placedPieceNumber != null &&
+            squareAttribute.placedPieceNumber > 0) {
+          final TextPainter textPainter = TextPainter(
+            text: TextSpan(
+              text: squareAttribute.placedPieceNumber.toString(),
+              style: TextStyle(
+                color: piece.pieceColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white,
+                fontSize: pieceWidth * 0.5,
+              ),
             ),
-          ),
-          textAlign: TextAlign.center,
-          textDirection: TextDirection.ltr,
-        );
-        textPainter.layout();
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+          );
+          textPainter.layout();
 
-        // Calculate offset for centering the text
-        final Offset textOffset = Offset(
-          piece.pos.dx - textPainter.width / 2,
-          piece.pos.dy - textPainter.height / 2,
-        );
+          final Offset textOffset = Offset(
+            currentPosition.dx - textPainter.width / 2,
+            currentPosition.dy - textPainter.height / 2,
+          );
 
-        textPainter.paint(canvas, textOffset);
+          textPainter.paint(canvas, textOffset);
+        }
       }
     }
 
@@ -210,11 +203,8 @@ class PiecePainter extends CustomPainter {
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
-      canvas.drawCircle(
-        pointFromIndex(focusIndex, size),
-        animatedPieceWidth / 2,
-        paint,
-      );
+      final Offset focusPosition = pointFromIndex(focusIndex, size);
+      canvas.drawCircle(focusPosition, pieceWidth / 2, paint);
     }
 
     if (blurIndex != null &&
@@ -227,11 +217,8 @@ class PiecePainter extends CustomPainter {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
-      canvas.drawCircle(
-        pointFromIndex(blurIndex, size),
-        animatedPieceWidth / 2 * 0.8,
-        paint,
-      );
+      final Offset blurPosition = pointFromIndex(blurIndex, size);
+      canvas.drawCircle(blurPosition, pieceWidth / 2 * 0.8, paint);
     }
   }
 

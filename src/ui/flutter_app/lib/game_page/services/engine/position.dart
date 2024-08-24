@@ -106,6 +106,8 @@ class Position {
     PieceColor.draw: 0,
   };
 
+  int get currentSquare => _currentSquare[_sideToMove]!;
+
   Map<PieceColor, int> _lastMillFromSquare = <PieceColor, int>{
     PieceColor.white: 0,
     PieceColor.black: 0,
@@ -686,6 +688,7 @@ class Position {
           } else {
             _currentSquare[us] = s;
             GameController().gameInstance.focusIndex = squareToIndex[s];
+            GameController().gameInstance.previousFocusIndex = null;
             SoundManager().playTone(Sound.select);
           }
           selectedPieceNumber = sqAttrList[s].placedPieceNumber;
@@ -737,6 +740,7 @@ class Position {
         _lastMillToSquare[sideToMove] = 0;
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
+        GameController().gameInstance.previousFocusIndex = null;
         SoundManager().playTone(Sound.place);
 
         // Begin of set side to move
@@ -794,6 +798,7 @@ class Position {
         _updateKeyMisc();
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
+        GameController().gameInstance.previousFocusIndex = null;
         SoundManager().playTone(Sound.mill);
 
         if ((DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -927,6 +932,8 @@ class Position {
         return true;
       }
 
+      GameController().gameInstance.previousFocusIndex =
+          GameController().gameInstance.focusIndex;
       GameController().gameInstance.focusIndex = squareToIndex[s];
 
       SoundManager().playTone(Sound.place);
@@ -956,6 +963,8 @@ class Position {
           DB().ruleSettings.mayRemoveMultiple ? n : 1;
       _updateKeyMisc();
       action = Act.remove;
+      GameController().gameInstance.previousFocusIndex =
+          GameController().gameInstance.focusIndex;
       GameController().gameInstance.focusIndex = squareToIndex[s];
       SoundManager().playTone(Sound.mill);
     }
@@ -1079,6 +1088,10 @@ class Position {
 
     // Set square number
     selectedPieceNumber = sqAttrList[sq].placedPieceNumber;
+
+    GameController().gameInstance.previousFocusIndex =
+        GameController().gameInstance.focusIndex;
+    GameController().gameInstance.focusIndex = squareToIndex[sq];
 
     return const GameResponseOK();
   }
@@ -1677,7 +1690,6 @@ extension SetupPosition on Position {
     _grid[squareToIndex[s]!] = piece;
     _board[s] = piece;
 
-    //MillController().gameInstance.focusIndex = squareToIndex[s];
     SoundManager().playTone(GameController().isPositionSetupMarkedPiece
         ? Sound.remove
         : Sound.place);

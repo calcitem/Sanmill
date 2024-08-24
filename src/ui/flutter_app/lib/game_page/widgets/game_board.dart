@@ -30,9 +30,12 @@ class GameBoard extends StatefulWidget {
   State<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard>
-    with SingleTickerProviderStateMixin {
+class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   static const String _logTag = "[board]";
+
+  bool _isMovingAnimationComplete = false;
+  bool _isPlacingAnimationComplete = false;
+
   late Future<Map<PieceColor, ui.Image?>> pieceImagesFuture;
 
   @override
@@ -57,16 +60,90 @@ class _GameBoardState extends State<GameBoard>
 
     // TODO: Check _initAnimation() on branch master.
 
-    GameController().animationController = AnimationController(
-      vsync: this,
-      duration: Duration(
-        seconds: DB().displaySettings.animationDuration.toInt(),
-      ),
+    if (mounted) {
+      GameController().movingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
+
+      GameController().placingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
+
+      GameController().removingAnimationController = AnimationController(
+        vsync: this,
+        duration: Duration(
+          seconds: DB().displaySettings.animationDuration.toInt(),
+        ),
+      );
+
+      GameController()
+          .movingAnimationController
+          .addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onMovingAnimationComplete();
+        }
+      });
+
+      GameController()
+          .placingAnimationController
+          .addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onPlacingAnimationComplete();
+        }
+      });
+
+      GameController()
+          .removingAnimationController
+          .addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          _onRemovingAnimationComplete();
+        }
+      });
+    }
+
+    GameController().movingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().movingAnimationController);
+    GameController().placingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().placingAnimationController);
+    GameController().removingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().removingAnimationController);
+  }
+
+  void _onMovingAnimationComplete() {
+    _isMovingAnimationComplete = true;
+    if (_isPlacingAnimationComplete) {
+      _startRemoveAnimation();
+    }
+  }
+
+  void _onPlacingAnimationComplete() {
+    _isPlacingAnimationComplete = true;
+    if (_isMovingAnimationComplete) {
+      _startRemoveAnimation();
+    }
+  }
+
+  void _onRemovingAnimationComplete() {
+    return;
+  }
+
+  void _startRemoveAnimation() {
+    GameController().removingAnimationController.duration = Duration(
+      seconds: DB().displaySettings.animationDuration.toInt(),
     );
 
-    // sqrt(1.618) = 1.272
-    GameController().animation = Tween<double>(begin: 1.27, end: 1.0)
-        .animate(GameController().animationController);
+    GameController().removingAnimation = Tween<double>(begin: 0, end: 1)
+        .animate(GameController().removingAnimationController);
+
+    GameController().removingAnimationController.reset();
+
+    GameController().removingAnimationController.forward();
   }
 
   Future<void> _setReadyState() async {
@@ -159,37 +236,100 @@ class _GameBoardState extends State<GameBoard>
       context: context,
     );
 
-    final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: GameController().animation,
-      builder: (_, Widget? child) {
-        return FutureBuilder<Map<PieceColor, ui.Image?>>(
-          future: pieceImagesFuture,
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
-              return CustomPaint(
-                painter: BoardPainter(context),
-                foregroundPainter: PiecePainter(
-                  animationValue: GameController().animation.value,
-                  pieceImages: pieceImages,
-                ),
-                child: DB().generalSettings.screenReaderSupport
-                    ? const _BoardSemantics()
-                    : Semantics(
-                        label: S.of(context).youCanEnableScreenReaderSupport,
-                        container: true,
-                      ),
-              );
-            }
-          },
-        );
-      },
-    );
+    late AnimatedBuilder customPaint;
 
-    GameController().animationController.forward();
+    // This part integrates branchA's logic for different animations based on the current action.
+    if (GameController().position.action == Act.remove) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().movingAnimation,
+        builder: (_, Widget? child) {
+          return FutureBuilder<Map<PieceColor, ui.Image?>>(
+            future: pieceImagesFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
+                return CustomPaint(
+                  painter: BoardPainter(context),
+                  foregroundPainter: PiecePainter(
+                    animationValue: GameController().movingAnimation.value,
+                    pieceImages: pieceImages,
+                  ),
+                  child: DB().generalSettings.screenReaderSupport
+                      ? const _BoardSemantics()
+                      : Semantics(
+                          label: S.of(context).youCanEnableScreenReaderSupport,
+                          container: true,
+                        ),
+                );
+              }
+            },
+          );
+        },
+      );
+    } else if (GameController().position.action == Act.place) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().placingAnimation,
+        builder: (_, Widget? child) {
+          return FutureBuilder<Map<PieceColor, ui.Image?>>(
+            future: pieceImagesFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
+                return CustomPaint(
+                  painter: BoardPainter(context),
+                  foregroundPainter: PiecePainter(
+                    animationValue: GameController().placingAnimation.value,
+                    pieceImages: pieceImages,
+                  ),
+                  child: DB().generalSettings.screenReaderSupport
+                      ? const _BoardSemantics()
+                      : Semantics(
+                          label: S.of(context).youCanEnableScreenReaderSupport,
+                          container: true,
+                        ),
+                );
+              }
+            },
+          );
+        },
+      );
+    } else if (GameController().position.action == Act.select) {
+      customPaint = AnimatedBuilder(
+        animation: GameController().movingAnimation,
+        builder: (_, Widget? child) {
+          return FutureBuilder<Map<PieceColor, ui.Image?>>(
+            future: pieceImagesFuture,
+            builder: (BuildContext context,
+                AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
+                return CustomPaint(
+                  painter: BoardPainter(context),
+                  foregroundPainter: PiecePainter(
+                    animationValue: GameController().movingAnimation.value,
+                    pieceImages: pieceImages,
+                  ),
+                  child: DB().generalSettings.screenReaderSupport
+                      ? const _BoardSemantics()
+                      : Semantics(
+                          label: S.of(context).youCanEnableScreenReaderSupport,
+                          container: true,
+                        ),
+                );
+              }
+            },
+          );
+        },
+      );
+    }
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
@@ -302,7 +442,9 @@ class _GameBoardState extends State<GameBoard>
     GameController().isDisposed = true;
     GameController().engine.stopSearching();
     //MillController().engine.shutdown();
-    GameController().animationController.dispose();
+    GameController().movingAnimationController.dispose();
+    GameController().placingAnimationController.dispose();
+    GameController().removingAnimationController.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
     GameController()
         .initialSharingMoveListNotifier

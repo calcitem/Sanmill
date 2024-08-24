@@ -16,6 +16,13 @@
 
 part of '../mill.dart';
 
+enum AnimationType {
+  none,
+  place,
+  remove,
+  move,
+}
+
 /// Game Controller
 ///
 /// A singleton class that holds all objects and methods needed to play Mill.
@@ -73,6 +80,19 @@ class GameController {
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
+  late AnimationController movingAnimationController;
+  late Animation<double> movingAnimation;
+
+  late AnimationController placingAnimationController;
+  late Animation<double> placingAnimation;
+
+  late AnimationController removingAnimationController;
+  late Animation<double> removingAnimation;
+
+  Offset? animatedStartPos;
+  Offset? animatedEndPos;
+  AnimationType currentAnimationType = AnimationType.none;
+
   String? _initialSharingMoveList;
   ValueNotifier<String?> initialSharingMoveListNotifier =
       ValueNotifier<String?>(null);
@@ -85,13 +105,35 @@ class GameController {
 
   String? loadedGameFilenamePrefix;
 
-  late AnimationController animationController;
-  late Animation<double> animation;
-
   bool _isInitialized = false;
   bool get initialized => _isInitialized;
 
   bool get isPositionSetup => gameRecorder.setupPosition != null;
+
+  Act get nextAction {
+    if (gameInstance.gameMode == GameMode.setupPosition) {
+      return Act.place;
+    }
+
+    if (position.action == Act.select) {
+      return Act.place;
+    }
+
+    if (position.action == Act.place) {
+      if (position.pieceToRemoveCount[position.sideToMove]! > 0) {
+        return Act.remove;
+      } else {
+        if (position.phase == Phase.placing) {
+          return Act.place;
+        } else {
+          return Act.select;
+        }
+      }
+    }
+
+    return Act.place;
+  }
+
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   @visibleForTesting
@@ -271,8 +313,14 @@ class GameController {
         searched = true;
 
         if (GameController().isDisposed == false) {
-          GameController().animationController.reset();
-          GameController().animationController.animateTo(1.0);
+          if (GameController().position.currentSquare != 0) {
+            GameController().movingAnimationController.reset();
+            GameController().movingAnimationController.animateTo(1.0);
+          }
+          GameController().placingAnimationController.reset();
+          GameController().placingAnimationController.animateTo(1.0);
+          GameController().removingAnimationController.reset();
+          GameController().removingAnimationController.animateTo(1.0);
         }
 
         // TODO: Do not use BuildContexts across async gaps.

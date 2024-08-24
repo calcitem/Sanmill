@@ -48,13 +48,15 @@ class TutorialPainter extends CustomPainter {
         }
 
         final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
 
         piecesToDraw.add(
           PiecePaintParam(
             piece: piece,
-            pos: pos,
-            animated: animated,
+            startPos: pos, // Added for animation support
+            endPos: pos, // Added for animation support
+            animationType:
+                PieceAnimationType.place, // Added for animation support
+            animationProgress: 50, // Added for animation support
             diameter: pieceWidth,
           ),
         );
@@ -87,14 +89,14 @@ class TutorialPainter extends CustomPainter {
       // Draw Border of Piece
       paint.color = piece.piece.borderColor;
       canvas.drawCircle(
-        piece.pos,
+        piece.endPos, // Adjusted for animation support
         pieceRadius,
         paint,
       );
       // Draw the piece
       paint.color = piece.piece.pieceColor;
       canvas.drawCircle(
-        piece.pos,
+        piece.endPos, // Adjusted for animation support
         pieceInnerRadius,
         paint,
       );
