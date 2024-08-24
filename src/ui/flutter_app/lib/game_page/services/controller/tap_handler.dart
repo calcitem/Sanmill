@@ -391,8 +391,8 @@ class TapHandler {
         final GameResponse removeRet =
             GameController().position._removePiece(sq);
 
-        GameController().animationManager.resetAnimation();
-        GameController().animationManager.animateToEnd();
+        //GameController().animationManager.resetAnimation();
+        //GameController().animationManager.animateToEnd();
 
         switch (removeRet) {
           case GameResponseOK():
