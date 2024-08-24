@@ -18,7 +18,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
-import '../../game_page/widgets/painters/painters.dart';
+import '../../game_page/services/painters/painters.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
