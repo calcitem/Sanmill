@@ -18,6 +18,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:ui';
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -43,6 +44,7 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import 'painters/animation_manager.dart';
 import 'painters/painters.dart';
 import 'toolbars/game_toolbar.dart';
 

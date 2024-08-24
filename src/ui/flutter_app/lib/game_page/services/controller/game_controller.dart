@@ -85,8 +85,7 @@ class GameController {
 
   String? loadedGameFilenamePrefix;
 
-  late AnimationController animationController;
-  late Animation<double> animation;
+  late AnimationManager animationManager;
 
   bool _isInitialized = false;
   bool get initialized => _isInitialized;
@@ -271,8 +270,8 @@ class GameController {
         searched = true;
 
         if (GameController().isDisposed == false) {
-          GameController().animationController.reset();
-          GameController().animationController.animateTo(1.0);
+          GameController().animationManager.resetAnimation();
+          GameController().animationManager.animateToEnd();
         }
 
         // TODO: Do not use BuildContexts across async gaps.

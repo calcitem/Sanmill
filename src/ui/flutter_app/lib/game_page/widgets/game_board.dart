@@ -34,11 +34,14 @@ class _GameBoardState extends State<GameBoard>
     with SingleTickerProviderStateMixin {
   static const String _logTag = "[board]";
   late Future<Map<PieceColor, ui.Image?>> pieceImagesFuture;
+  late AnimationManager animationManager;
 
   @override
   void initState() {
     super.initState();
     pieceImagesFuture = _loadImages();
+    animationManager = AnimationManager(this);
+
     GameController().gameResultNotifier.addListener(_showResult);
 
     if (visitedRuleSettingsPage == true) {
@@ -55,18 +58,7 @@ class _GameBoardState extends State<GameBoard>
       processInitialSharingMoveList();
     });
 
-    // TODO: Check _initAnimation() on branch master.
-
-    GameController().animationController = AnimationController(
-      vsync: this,
-      duration: Duration(
-        seconds: DB().displaySettings.animationDuration.toInt(),
-      ),
-    );
-
-    // sqrt(1.618) = 1.272
-    GameController().animation = Tween<double>(begin: 1.27, end: 1.0)
-        .animate(GameController().animationController);
+    GameController().animationManager = animationManager;
   }
 
   Future<void> _setReadyState() async {
@@ -160,7 +152,7 @@ class _GameBoardState extends State<GameBoard>
     );
 
     final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: GameController().animation,
+      animation: animationManager.animation,
       builder: (_, Widget? child) {
         return FutureBuilder<Map<PieceColor, ui.Image?>>(
           future: pieceImagesFuture,
@@ -173,7 +165,7 @@ class _GameBoardState extends State<GameBoard>
               return CustomPaint(
                 painter: BoardPainter(context),
                 foregroundPainter: PiecePainter(
-                  animationValue: GameController().animation.value,
+                  animationValue: animationManager.animation.value,
                   pieceImages: pieceImages,
                 ),
                 child: DB().generalSettings.screenReaderSupport
@@ -189,7 +181,7 @@ class _GameBoardState extends State<GameBoard>
       },
     );
 
-    GameController().animationController.forward();
+    animationManager.forwardAnimation();
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,
@@ -302,7 +294,7 @@ class _GameBoardState extends State<GameBoard>
     GameController().isDisposed = true;
     GameController().engine.stopSearching();
     //MillController().engine.shutdown();
-    GameController().animationController.dispose();
+    animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
     GameController()
         .initialSharingMoveListNotifier

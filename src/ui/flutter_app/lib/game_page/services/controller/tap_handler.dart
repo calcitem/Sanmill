@@ -120,8 +120,8 @@ class TapHandler {
     switch (GameController().position.action) {
       case Act.place:
         if (GameController().position._putPiece(sq)) {
-          GameController().animationController.reset();
-          GameController().animationController.animateTo(1.0);
+          GameController().animationManager.resetAnimation();
+          GameController().animationManager.animateToEnd();
           if (GameController().position.action == Act.remove) {
             if (GameController()
                 .position
@@ -391,8 +391,8 @@ class TapHandler {
         final GameResponse removeRet =
             GameController().position._removePiece(sq);
 
-        GameController().animationController.reset();
-        GameController().animationController.animateTo(1.0);
+        GameController().animationManager.resetAnimation();
+        GameController().animationManager.animateToEnd();
 
         switch (removeRet) {
           case GameResponseOK():
@@ -473,6 +473,7 @@ class TapHandler {
             logger.i(
               "$_logTag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
             );
+
             if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
               final String side =
