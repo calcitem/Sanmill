@@ -132,7 +132,7 @@ public class MainActivity extends FlutterActivity {
                     .setNativeLogCountMax(10)
                     .setNativeDumpAllThreadsWhiteList(new String[]{
                             "^xcrash\\.sample$",
-                            "^Signal Catcher$",
+                            "^Signal Catcher2$",
                             "^Jit thread pool$",
                             ".*mill.*",
                             ".*engine.*"})   // TODO

@@ -55,7 +55,7 @@ class Engine {
     await _send(command);
 
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
+      final Catcher2Options options = catcher.getCurrentConfig()!;
       options.customParameters[name] = command;
     }
   }
@@ -336,7 +336,7 @@ class Engine {
     }
 
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-      final CatcherOptions options = catcher.getCurrentConfig()!;
+      final Catcher2Options options = catcher.getCurrentConfig()!;
       options.customParameters["PositionFen"] = ret;
     }
 

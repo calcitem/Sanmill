@@ -228,8 +228,8 @@ class TapHandler {
         final GameResponse removeRet =
             GameController().position._removePiece(sq);
 
-        GameController().removingAnimationController.reset();
-        GameController().removingAnimationController.animateTo(1.0);
+        //GameController().removingAnimationController.reset();
+        //GameController().removingAnimationController.animateTo(1.0);
 
         switch (removeRet) {
           case GameResponseOK():
@@ -337,7 +337,7 @@ class TapHandler {
 
         // TODO: moveHistoryText is not lightweight.
         if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-          final CatcherOptions options = catcher.getCurrentConfig()!;
+          final Catcher2Options options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =
               GameController().gameRecorder.moveHistoryText;
         }

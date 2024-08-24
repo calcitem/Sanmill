@@ -5,7 +5,7 @@ import path_provider_foundation
 import share_plus
 import url_launcher_macos
 
-@NSApplicationMain
+@main
 class AppDelegate: FlutterAppDelegate {
     var engine: MillEngine?
 

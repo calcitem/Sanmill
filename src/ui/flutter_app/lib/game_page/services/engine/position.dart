@@ -87,6 +87,8 @@ class Position {
 
   int _currentSquare = 0;
 
+  int get currentSquare => _currentSquare;
+
   ExtMove? _record;
 
   static List<List<List<int>>> get _millTable => _Mills.millTableInit;

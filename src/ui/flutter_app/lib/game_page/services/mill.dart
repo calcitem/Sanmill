@@ -20,7 +20,7 @@ library mill;
 import 'dart:async';
 import 'dart:io';
 
-import 'package:catcher/model/catcher_options.dart';
+import 'package:catcher_2/model/catcher_2_options.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';

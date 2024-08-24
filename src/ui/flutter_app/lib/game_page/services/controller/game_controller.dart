@@ -309,8 +309,10 @@ class GameController {
         searched = true;
 
         if (GameController().isDisposed == false) {
-          GameController().movingAnimationController.reset();
-          GameController().movingAnimationController.animateTo(1.0);
+          if (GameController().position.currentSquare != 0) {
+            GameController().movingAnimationController.reset();
+            GameController().movingAnimationController.animateTo(1.0);
+          }
           GameController().placingAnimationController.reset();
           GameController().placingAnimationController.animateTo(1.0);
           GameController().removingAnimationController.reset();
