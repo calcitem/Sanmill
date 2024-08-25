@@ -167,6 +167,20 @@ class PiecePainter extends CustomPainter {
           );
         }
 
+        // Draw focus position
+        if (focusIndex != null &&
+            GameController().gameInstance.gameMode != GameMode.setupPosition &&
+            focusIndex == index) {
+          // Only draw circle for the moving piece
+          paint.color = DB().colorSettings.pieceHighlightColor;
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 2;
+
+          // Use currentPosition to follow the piece movement
+          final Offset focusPosition = currentPosition;
+          canvas.drawCircle(focusPosition, pieceWidth / 2, paint);
+        }
+
         // Draw number on piece if necessary
         if (DB().displaySettings.isNumbersOnPiecesShown &&
             squareAttribute.placedPieceNumber != null &&
@@ -196,16 +210,7 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw focus and blur position
-    if (focusIndex != null &&
-        GameController().gameInstance.gameMode != GameMode.setupPosition) {
-      paint.color = DB().colorSettings.pieceHighlightColor;
-      paint.style = PaintingStyle.stroke;
-      paint.strokeWidth = 2;
-
-      final Offset focusPosition = pointFromIndex(focusIndex, size);
-      canvas.drawCircle(focusPosition, pieceWidth / 2, paint);
-    }
+    // Draw blur position
 
     if (blurIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
