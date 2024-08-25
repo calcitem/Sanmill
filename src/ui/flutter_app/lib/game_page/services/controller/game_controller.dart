@@ -291,7 +291,7 @@ class GameController {
             0) {
           isEngineInDelay = true;
           await Future<void>.delayed(Duration(
-              seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
+              seconds: DB().displaySettings.animationDuration.toInt()));
           isEngineInDelay = false;
         }
 
