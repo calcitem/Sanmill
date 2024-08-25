@@ -17,7 +17,7 @@
 import 'package:flutter/material.dart';
 
 import '../../game_page/services/mill.dart';
-import '../../game_page/widgets/painters/painters.dart';
+import '../../game_page/services/painters/painters.dart';
 import '../painters/tutorial_painter.dart';
 
 class TutorialBoard extends StatelessWidget {

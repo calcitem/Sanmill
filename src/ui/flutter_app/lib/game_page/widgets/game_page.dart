@@ -43,7 +43,7 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
-import 'painters/painters.dart';
+import '../services/painters/painters.dart';
 import 'toolbars/game_toolbar.dart';
 
 part 'dialogs/game_result_alert_dialog.dart';

@@ -34,7 +34,7 @@ import 'package:path_provider/path_provider.dart';
 import 'appearance_settings/models/display_settings.dart';
 import 'game_page/services/engine/bitboard.dart';
 import 'game_page/services/mill.dart';
-import 'game_page/widgets/painters/painters.dart';
+import 'game_page/services/painters/painters.dart';
 import 'generated/intl/l10n.dart';
 import 'home/home.dart';
 import 'shared/config/constants.dart';
