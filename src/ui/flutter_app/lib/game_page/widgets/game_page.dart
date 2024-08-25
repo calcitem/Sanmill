@@ -46,6 +46,7 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/painters/painters.dart';
 import 'toolbars/game_toolbar.dart';
 
+part 'board_semantics.dart';
 part 'dialogs/game_result_alert_dialog.dart';
 part 'dialogs/info_dialog.dart';
 part 'dialogs/move_list_dialog.dart';
