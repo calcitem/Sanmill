@@ -64,21 +64,21 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       GameController().movingAnimationController = AnimationController(
         vsync: this,
         duration: Duration(
-          seconds: DB().displaySettings.animationDuration.toInt(),
+          milliseconds: (DB().displaySettings.animationDuration * 1000).round(),
         ),
       );
 
       GameController().placingAnimationController = AnimationController(
         vsync: this,
         duration: Duration(
-          seconds: DB().displaySettings.animationDuration.toInt(),
+          milliseconds: (DB().displaySettings.animationDuration * 1000).round(),
         ),
       );
 
       GameController().removingAnimationController = AnimationController(
         vsync: this,
         duration: Duration(
-          seconds: DB().displaySettings.animationDuration.toInt(),
+          milliseconds: (DB().displaySettings.animationDuration * 1000).round(),
         ),
       );
 
@@ -135,7 +135,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   void _startRemoveAnimation() {
     GameController().removingAnimationController.duration = Duration(
-      seconds: DB().displaySettings.animationDuration.toInt(),
+      milliseconds: (DB().displaySettings.animationDuration * 1000).round(),
     );
 
     GameController().removingAnimation = Tween<double>(begin: 0, end: 1)
