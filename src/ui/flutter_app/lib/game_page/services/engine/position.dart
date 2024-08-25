@@ -1261,7 +1261,8 @@ class Position {
 
     if (pieceInHandCount[sideToMove]! == 0) {
       phase = Phase.moving;
-      action = Act.select;
+      //action = Act.select;
+      action = Act.place; // TODO: WAR: Fix moving animation twice when removing
     } else if (pieceInHandCount[sideToMove]! > 0) {
       phase = Phase.placing;
       action = Act.place;

@@ -316,10 +316,10 @@ class GameController {
           GameController().movingAnimationController.reset();
           GameController().movingAnimationController.animateTo(1.0);
 
-          GameController().placingAnimationController.reset();
-          GameController().placingAnimationController.animateTo(1.0);
-          GameController().removingAnimationController.reset();
-          GameController().removingAnimationController.animateTo(1.0);
+          //GameController().placingAnimationController.reset();
+          //GameController().placingAnimationController.animateTo(1.0);
+          //GameController().removingAnimationController.reset();
+          //GameController().removingAnimationController.animateTo(1.0);
         }
 
         // TODO: Do not use BuildContexts across async gaps.
