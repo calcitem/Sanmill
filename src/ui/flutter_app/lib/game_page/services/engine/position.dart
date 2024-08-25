@@ -574,6 +574,12 @@ class Position {
         if (_removePiece(m.to) == const GameResponseOK()) {
           ret = true;
           st.rule50 = 0;
+
+          if (GameController().isDisposed == false) {
+            // TODO: Animation
+            //GameController().removingAnimationController.reset();
+            //GameController().removingAnimationController.animateTo(1.0);
+          }
         } else {
           return false;
         }
@@ -586,6 +592,11 @@ class Position {
         ret = _movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
+
+          if (GameController().isDisposed == false && action != Act.remove) {
+            GameController().movingAnimationController.reset();
+            GameController().movingAnimationController.animateTo(1.0);
+          }
         }
         break;
       case MoveType.place:
@@ -593,6 +604,12 @@ class Position {
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
+
+          if (GameController().isDisposed == false) {
+            // TODO: Animation
+            //GameController().placingAnimationController.reset();
+            //GameController().placingAnimationController.animateTo(1.0);
+          }
         }
         break;
       case MoveType.draw:
@@ -934,6 +951,7 @@ class Position {
 
       GameController().gameInstance.previousFocusIndex =
           GameController().gameInstance.focusIndex;
+
       GameController().gameInstance.focusIndex = squareToIndex[s];
 
       SoundManager().playTone(Sound.place);
@@ -1261,8 +1279,8 @@ class Position {
 
     if (pieceInHandCount[sideToMove]! == 0) {
       phase = Phase.moving;
-      //action = Act.select;
-      action = Act.place; // TODO: WAR: Fix moving animation twice when removing
+      action = Act.select;
+      //action = Act.place; // TODO: WAR: Fix moving animation twice when removing
     } else if (pieceInHandCount[sideToMove]! > 0) {
       phase = Phase.placing;
       action = Act.place;

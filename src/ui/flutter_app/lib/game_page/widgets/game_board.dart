@@ -241,7 +241,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     // This part integrates branchA's logic for different animations based on the current action.
     if (GameController().position.action == Act.remove) {
       customPaint = AnimatedBuilder(
-        animation: GameController().movingAnimation,
+        animation: GameController().removingAnimation,
         builder: (_, Widget? child) {
           return FutureBuilder<Map<PieceColor, ui.Image?>>(
             future: pieceImagesFuture,
@@ -254,7 +254,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 return CustomPaint(
                   painter: BoardPainter(context),
                   foregroundPainter: PiecePainter(
-                    animationValue: GameController().movingAnimation.value,
+                    animationValue: GameController().removingAnimation.value,
                     pieceImages: pieceImages,
                   ),
                   child: DB().generalSettings.screenReaderSupport

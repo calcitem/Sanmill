@@ -291,7 +291,8 @@ class GameController {
             0) {
           isEngineInDelay = true;
           await Future<void>.delayed(Duration(
-              milliseconds: (DB().displaySettings.animationDuration * 1000).round()));
+              milliseconds:
+                  (DB().displaySettings.animationDuration * 1000).round()));
           isEngineInDelay = false;
         }
 
@@ -311,16 +312,6 @@ class GameController {
 
         loopIsFirst = false;
         searched = true;
-
-        if (GameController().isDisposed == false) {
-          GameController().movingAnimationController.reset();
-          GameController().movingAnimationController.animateTo(1.0);
-
-          //GameController().placingAnimationController.reset();
-          //GameController().placingAnimationController.animateTo(1.0);
-          //GameController().removingAnimationController.reset();
-          //GameController().removingAnimationController.animateTo(1.0);
-        }
 
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
