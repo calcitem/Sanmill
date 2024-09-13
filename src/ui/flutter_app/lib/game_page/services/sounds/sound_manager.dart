@@ -78,6 +78,7 @@ class SoundManager {
       });
 
       booted = true;
+      _allSoundsLoaded = true; // All sounds loaded successfully
     } else {
       _soundpool = Soundpool.fromOptions();
 
