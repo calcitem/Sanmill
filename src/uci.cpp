@@ -84,7 +84,8 @@ void position(Position *pos, istringstream &is)
 
     // Parse move list (if any)
     while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
-        pos->do_move(m);
+        StateInfo st;
+        pos->do_move(m, st);
         if (type_of(m) == MOVETYPE_MOVE) {
             posKeyHistory.push_back(pos->key());
         } else {
@@ -165,6 +166,7 @@ begin:
 void UCI::loop(int argc, char *argv[])
 {
     const auto pos = new Position;
+    pos->st = &pos->startState;
     string token, cmd;
 
 #ifdef _MSC_VER

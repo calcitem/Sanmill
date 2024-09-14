@@ -45,12 +45,31 @@ using std::string;
 
 struct StateInfo
 {
-    // Copied when making a move
     unsigned int rule50 {0};
     int pliesFromNull;
-
-    // Not copied when making a move (will be recomputed anyhow)
     Key key;
+    StateInfo *previous;
+
+    // Additional members to store move-specific data
+    Piece capturedPiece {NO_PIECE};
+    Square capturedSquare {SQ_NONE};
+    Piece movedPiece {NO_PIECE};
+    Square fromSquare {SQ_NONE};
+    Square toSquare {SQ_NONE};
+
+    // New members to store necessary data for undoing moves
+    Phase phase;
+    Action action;
+    Square currentSquare[COLOR_NB];
+    Square lastMillFromSquare[COLOR_NB];
+    Square lastMillToSquare[COLOR_NB];
+    int pieceInHandCount[COLOR_NB];
+    int pieceOnBoardCount[COLOR_NB];
+    int pieceToRemoveCount[COLOR_NB];
+    Bitboard formedMillsBB[COLOR_NB];
+    int mobilityDiff;
+    Color sideToMove;
+    int gamePly;
 };
 
 /// Position class stores information regarding the board representation as
@@ -98,8 +117,8 @@ public:
     Piece moved_piece(Move m) const;
 
     // Doing and undoing moves
-    void do_move(Move m);
-    void undo_move(Sanmill::Stack<Position> &ss);
+    void do_move(Move m, StateInfo &newSt);
+    void undo_move(Move m);
 
     // Accessing hash keys
     Key key() const noexcept;
@@ -212,6 +231,7 @@ public:
     bool can_move_during_placing_phase() const;
 
     // Data members
+    StateInfo startState;
     Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
@@ -224,7 +244,7 @@ public:
     int gamePly {0};
     Color sideToMove {NOCOLOR};
     Thread *thisThread {nullptr};
-    StateInfo st;
+    StateInfo *st {nullptr};
 
     /// Mill Game
     Color them {NOCOLOR};
@@ -294,12 +314,12 @@ int Position::count(Color c) const
 
 inline Key Position::key() const noexcept
 {
-    return st.key;
+    return st->key;
 }
 
 inline void Position::construct_key()
 {
-    st.key = 0;
+    st->key = 0;
 }
 
 inline int Position::game_ply() const
@@ -309,7 +329,7 @@ inline int Position::game_ply() const
 
 inline unsigned int Position::rule50_count() const
 {
-    return st.rule50;
+    return st->rule50;
 }
 
 inline Thread *Position::this_thread() const

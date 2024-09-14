@@ -195,7 +195,8 @@ Node *expand(Node *node)
     for (int i = 0; i < moveCount; i++) {
         Position *child_position = new Position(*pos);
         const Move move = mp.moves[i].move;
-        child_position->do_move(move);
+        StateInfo st;
+        child_position->do_move(move, st);
 
         Node *child = new Node(child_position, move, node, i);
         node->add_child(child);

@@ -129,9 +129,9 @@ int Thread::search()
 
     if (rootPos->get_phase() == Phase::placing && !rule.mayMoveInPlacingPhase) {
         posKeyHistory.clear();
-        rootPos->st.rule50 = 0;
+        rootPos->st->rule50 = 0;
     } else if (isMovingOrMayMoveInPlacing) {
-        rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
+        rootPos->st->rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
 
     MoveList<LEGAL>::shuffle();
@@ -478,12 +478,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
-        ss.push(*pos);
+        StateInfo st;
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
 
         // Make and search the move
-        pos->do_move(move);
+        pos->do_move(move, st);
         const Color after = pos->sideToMove;
 
         if (gameOptions.getDepthExtension() == true && moveCount == 1) {
@@ -539,7 +539,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             }
         }
 
-        pos->undo_move(ss);
+        pos->undo_move(move);
 
         // assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 

@@ -256,8 +256,8 @@ void Position::init()
 
 Position::Position()
 {
+    st = &startState;
     construct_key();
-
     reset();
 
     score[WHITE] = score[BLACK] = score_draw = gamesPlayedCount = 0;
@@ -390,7 +390,10 @@ Position &Position::set(const string &fenStr, Thread *th)
     setFormedMillsBB(mb);
 
     // 7-8. Halfmove clock and fullmove number
-    ss >> std::skipws >> st.rule50 >> gamePly;
+    if (st == nullptr) {
+        st = &startState;
+    }
+    ss >> std::skipws >> st->rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
@@ -486,7 +489,7 @@ string Position::fen() const
                   formedMillsBB[BLACK];
     ss << fm << " ";
 
-    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+    ss << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
 }
@@ -518,42 +521,92 @@ bool Position::legal(Move m) const
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.
 
-void Position::do_move(Move m)
+void Position::do_move(Move m, StateInfo &newSt)
 {
-    bool ret = false;
+    newSt.previous = st;
+    newSt.rule50 = st->rule50;
+    newSt.pliesFromNull = st->pliesFromNull;
+    newSt.key = st->key;
+
+    newSt.movedPiece = NO_PIECE;
+    newSt.fromSquare = SQ_NONE;
+    newSt.toSquare = SQ_NONE;
+    newSt.capturedPiece = NO_PIECE;
+    newSt.capturedSquare = SQ_NONE;
+
+    // Save current state variables
+    newSt.phase = phase;
+    newSt.action = action;
+    newSt.currentSquare[WHITE] = currentSquare[WHITE];
+    newSt.currentSquare[BLACK] = currentSquare[BLACK];
+    newSt.lastMillFromSquare[WHITE] = lastMillFromSquare[WHITE];
+    newSt.lastMillFromSquare[BLACK] = lastMillFromSquare[BLACK];
+    newSt.lastMillToSquare[WHITE] = lastMillToSquare[WHITE];
+    newSt.lastMillToSquare[BLACK] = lastMillToSquare[BLACK];
+    newSt.pieceInHandCount[WHITE] = pieceInHandCount[WHITE];
+    newSt.pieceInHandCount[BLACK] = pieceInHandCount[BLACK];
+    newSt.pieceOnBoardCount[WHITE] = pieceOnBoardCount[WHITE];
+    newSt.pieceOnBoardCount[BLACK] = pieceOnBoardCount[BLACK];
+    newSt.pieceToRemoveCount[WHITE] = pieceToRemoveCount[WHITE];
+    newSt.pieceToRemoveCount[BLACK] = pieceToRemoveCount[BLACK];
+    newSt.formedMillsBB[WHITE] = formedMillsBB[WHITE];
+    newSt.formedMillsBB[BLACK] = formedMillsBB[BLACK];
+    newSt.mobilityDiff = mobilityDiff;
+    newSt.sideToMove = sideToMove;
+    newSt.gamePly = gamePly;
+
+    st = &newSt;
 
     const MoveType mt = type_of(m);
+    bool ret = false;
 
     switch (mt) {
-    case MOVETYPE_REMOVE:
-        ret = remove_piece(to_sq(m));
+    case MOVETYPE_REMOVE: {
+        const Square s = to_sq(m);
+        newSt.capturedPiece = board[s];
+        newSt.capturedSquare = s;
+
+        ret = remove_piece(s, false);
+
         if (ret) {
-            // Reset rule 50 counter
-            st.rule50 = 0;
+            st->rule50 = 0;
         }
         break;
-    case MOVETYPE_MOVE:
-        ret = move_piece(from_sq(m), to_sq(m));
+    }
+    case MOVETYPE_MOVE: {
+        const Square from = from_sq(m);
+        const Square to = to_sq(m);
+
+        newSt.movedPiece = board[from];
+        newSt.fromSquare = from;
+        newSt.toSquare = to;
+
+        ret = move_piece(from, to);
+
         if (ret) {
-            ++st.rule50;
+            ++st->rule50;
         }
         break;
-    case MOVETYPE_PLACE:
-        ret = put_piece(to_sq(m));
+    }
+    case MOVETYPE_PLACE: {
+        const Square s = to_sq(m);
+        newSt.toSquare = s;
+
+        ret = put_piece(s, false);
+
         if (ret) {
-            // Reset rule 50 counter
-            st.rule50 = 0;
+            st->rule50 = 0;
         }
         break;
+    }
     }
 
     if (!ret) {
         return;
     }
 
-    // Increment ply counters. In particular
     ++gamePly;
-    ++st.pliesFromNull;
+    ++st->pliesFromNull;
 
     move = m;
 }
@@ -561,10 +614,102 @@ void Position::do_move(Move m)
 /// Position::undo_move() unmakes a move. When it returns, the position should
 /// be restored to exactly the same state as before the move was made.
 
-void Position::undo_move(Sanmill::Stack<Position> &ss)
+void Position::undo_move(Move m)
 {
-    memcpy(this, ss.top(), sizeof(Position));
-    ss.pop();
+    StateInfo *prevSt = st->previous;
+
+    const MoveType mt = type_of(m);
+
+    switch (mt) {
+    case MOVETYPE_REMOVE: {
+        Square s = st->capturedSquare;
+        Piece pc = st->capturedPiece;
+
+        board[s] = pc;
+
+        Bitboard sBB = square_bb(s);
+
+        byTypeBB[ALL_PIECES] |= sBB;
+        byTypeBB[type_of(pc)] |= sBB;
+        byColorBB[color_of(pc)] |= sBB;
+
+        update_key(s);
+
+        pieceOnBoardCount[color_of(pc)]++;
+
+        pieceToRemoveCount[sideToMove]++;
+
+        break;
+    }
+    case MOVETYPE_MOVE: {
+        Square from = st->fromSquare;
+        Square to = st->toSquare;
+        Piece pc = st->movedPiece;
+
+        board[from] = pc;
+        board[to] = NO_PIECE;
+
+        // Convert squares to bitboards
+        Bitboard fromBB = square_bb(from);
+        Bitboard toBB = square_bb(to);
+
+        // Update bitboards
+        byTypeBB[ALL_PIECES] ^= fromBB ^ toBB;
+        byTypeBB[type_of(pc)] ^= fromBB ^ toBB;
+        byColorBB[color_of(pc)] ^= fromBB ^ toBB;
+
+        // Update Zobrist key
+        revert_key(to);
+        update_key(from);
+
+        break;
+    }
+    case MOVETYPE_PLACE: {
+        Square s = st->toSquare;
+        Piece pc = board[s];
+
+        board[s] = NO_PIECE;
+
+        Bitboard sBB = square_bb(s);
+
+        byTypeBB[ALL_PIECES] ^= sBB;
+        byTypeBB[type_of(pc)] ^= sBB;
+        byColorBB[color_of(pc)] ^= sBB;
+
+        revert_key(s);
+
+        pieceOnBoardCount[sideToMove]--;
+        pieceInHandCount[sideToMove]++;
+
+        break;
+    }
+    }
+
+    // Restore state variables from st
+    phase = st->phase;
+    action = st->action;
+    currentSquare[WHITE] = st->currentSquare[WHITE];
+    currentSquare[BLACK] = st->currentSquare[BLACK];
+    lastMillFromSquare[WHITE] = st->lastMillFromSquare[WHITE];
+    lastMillFromSquare[BLACK] = st->lastMillFromSquare[BLACK];
+    lastMillToSquare[WHITE] = st->lastMillToSquare[WHITE];
+    lastMillToSquare[BLACK] = st->lastMillToSquare[BLACK];
+    pieceInHandCount[WHITE] = st->pieceInHandCount[WHITE];
+    pieceInHandCount[BLACK] = st->pieceInHandCount[BLACK];
+    pieceOnBoardCount[WHITE] = st->pieceOnBoardCount[WHITE];
+    pieceOnBoardCount[BLACK] = st->pieceOnBoardCount[BLACK];
+    pieceToRemoveCount[WHITE] = st->pieceToRemoveCount[WHITE];
+    pieceToRemoveCount[BLACK] = st->pieceToRemoveCount[BLACK];
+    formedMillsBB[WHITE] = st->formedMillsBB[WHITE];
+    formedMillsBB[BLACK] = st->formedMillsBB[BLACK];
+    mobilityDiff = st->mobilityDiff;
+    sideToMove = st->sideToMove;
+    them = ~sideToMove;
+    gamePly = st->gamePly;
+
+    st = prevSt;
+
+    move = MOVE_NONE;
 }
 
 /// Position::key_after() computes the new hash key after the given move. Needed
@@ -573,7 +718,7 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
 
 Key Position::key_after(Move m) const
 {
-    Key k = st.key;
+    Key k = st->key;
     const auto s = to_sq(m);
     const MoveType mt = type_of(m);
 
@@ -615,7 +760,7 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
         if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
             break;
         }
-        if (key() == ss[i].st.key) {
+        if (key() == ss[i].st->key) {
             return true;
         }
     }
@@ -644,7 +789,7 @@ bool Position::has_game_cycle() const
 bool Position::reset()
 {
     gamePly = 0;
-    st.rule50 = 0;
+    st->rule50 = 0;
 
     set_side_to_move(WHITE);
     phase = Phase::ready;
@@ -657,7 +802,7 @@ bool Position::reset()
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
 
-    st.key = 0;
+    st->key = 0;
 
     pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
@@ -914,7 +1059,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
                  file_of(currentSquare[sideToMove]),
                  rank_of(currentSquare[sideToMove]), file_of(s), rank_of(s));
-        st.rule50++;
+        st->rule50++;
     }
 
     const Piece pc = board[currentSquare[sideToMove]];
@@ -1030,7 +1175,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (updateRecord) {
         snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", file_of(s), rank_of(s));
-        st.rule50 = 0; // TODO(calcitem): Need to move out?
+        st->rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
     pieceOnBoardCount[them]--;
@@ -1340,7 +1485,7 @@ inline void Position::set_side_to_move(Color c)
     if (sideToMove != c) {
         sideToMove = c;
         // us = c;
-        st.key ^= Zobrist::side;
+        st->key ^= Zobrist::side;
     }
 
     them = ~sideToMove;
@@ -1372,9 +1517,9 @@ inline Key Position::update_key(Square s)
 {
     const int pieceType = color_on(s);
 
-    st.key ^= Zobrist::psq[pieceType][s];
+    st->key ^= Zobrist::psq[pieceType][s];
 
-    return st.key;
+    return st->key;
 }
 
 inline Key Position::revert_key(Square s)
@@ -1384,14 +1529,14 @@ inline Key Position::revert_key(Square s)
 
 Key Position::update_key_misc()
 {
-    st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
+    st->key = st->key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
     // TODO: pieceToRemoveCount[sideToMove] or
     // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
-    st.key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
-              << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
+    st->key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
+               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
-    return st.key;
+    return st->key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
