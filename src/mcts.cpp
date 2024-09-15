@@ -146,7 +146,7 @@ public:
 
     void increment_visits() { ++num_visits; }
 
-    void add_value(double value) { total_value += value; }
+    void add_value(Value value) { total_value += value; }
 
     void add_child(Node *child) { children.emplace_back(child); }
 
@@ -285,25 +285,14 @@ Value simulate(Node *node, Sanmill::Stack<Position> &ss)
     return value;
 }
 
-// Normalize the value to be in the range [-1, 1]
-double normalize_value(double raw_value)
-{
-    const double maxValue = 20.0; // Maximum value for normalization
-    if (raw_value > maxValue)
-        return 1.0;
-    if (raw_value < -maxValue)
-        return -1.0;
-    return static_cast<double>(raw_value) / maxValue;
-}
-
 // Backpropagate the simulation result up the tree
 void backpropagate(Node *node, Value value)
 {
-    double normalized_value = normalize_value(value);
+    Value current_value = value;
     while (node != nullptr) {
         node->increment_visits();
-        node->add_value(normalized_value);
-        normalized_value = -normalized_value;
+        node->add_value(current_value);
+        current_value = -current_value;
         node = node->parent;
     }
 }
