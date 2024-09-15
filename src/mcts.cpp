@@ -161,12 +161,6 @@ public:
     uint32_t num_wins {0};
     int move_index {0};
     mutable double cached_log_parent_visits;
-
-#ifdef MCTS_ALPHA_BETA
-    Depth alpha_beta_depth {1};
-    Node *best_alpha_beta_child {nullptr};
-    double last_bonus_given {0.0};
-#endif // MCTS_ALPHA_BETA
 };
 
 // Recursively delete the tree starting from the given node using memory pool
@@ -291,59 +285,6 @@ void backpropagate(Node *node, bool win)
     }
 }
 
-#ifdef MCTS_ALPHA_BETA
-bool should_use_alpha_beta(const Node *node)
-{
-    // Use alpha-beta search if the node's alpha-beta search depth is less than
-    // a threshold Or the node has been visited more than a certain number of
-    // times
-    const int alpha_beta_depth_threshold = 10;
-    const int visit_count_threshold = 0;
-
-    return node->alpha_beta_depth < alpha_beta_depth_threshold ||
-           node->num_visits > visit_count_threshold;
-}
-#endif // MCTS_ALPHA_BETA
-
-#ifdef MCTS_PRINT_STAT
-void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
-                 Move bestMove, Value best_value, double win_score)
-{
-    uint32_t total_visits = 0;
-
-    // Iterate through all moves and print their statistics
-    std::cout << "\n";
-    std::cout << std::setw(5) << "Move"
-              << "    " << std::setw(9) << std::fixed << std::setprecision(6)
-              << "Win Rate"
-              << "    " << std::setw(6) << "Wins"
-              << "    " << std::setw(6) << "Visits" << '\n';
-    std::cout << "----------------------------------------\n";
-    for (int i = 0; i < mp.move_count(); ++i) {
-        uint32_t visits = shared_visits.visits(i);
-        total_visits += visits;
-        uint32_t wins = shared_visits.wins(i);
-        double win_rate = static_cast<double>(wins) / visits;
-
-        std::string move_str = UCI::move(mp.moves[i].move);
-
-        std::cout << std::setw(5) << move_str << "    " << std::setw(9)
-                  << std::fixed << std::setprecision(6) << win_rate << "    "
-                  << std::setw(6) << wins << "    " << std::setw(6) << visits
-                  << '\n';
-    }
-    std::cout << "----------------------------------------\n";
-    std::cout << "Best Move: " << UCI::move(bestMove) << '\n';
-    std::cout << "Best Move Win Score: " << std::fixed << std::setprecision(6)
-              << win_score << "\n";
-    std::cout << "Best Move Value: " << (int)best_value << '\n';
-
-    std::cout << "-----------------------------\n";
-    std::cout << "Total visits: " << total_visits << '\n';
-    std::cout << "\n";
-}
-#endif // MCTS_PRINT_STAT
-
 // Worker function for running MCTS on a separate thread
 void mcts_worker(Position *pos, int max_iterations,
                  ThreadSafeNodeVisits &shared_visits,
@@ -357,12 +298,6 @@ void mcts_worker(Position *pos, int max_iterations,
 
     int iteration = 0;
 
-#ifdef MCTS_ALPHA_BETA
-    Move bestMove {MOVE_NONE};
-    const int max_alpha_beta_depth = 15; // set a max depth according to your
-                                         // needs
-#endif                                   // MCTS_ALPHA_BETA
-
     const int check_time_mask = CHECK_TIME_FREQUENCY - 1;
 
     // Add time limit (no limit if gameOptions.getMoveTime() returns 0)
@@ -375,29 +310,9 @@ void mcts_worker(Position *pos, int max_iterations,
 
     while (iteration < max_iterations) {
         Node *node = select(root, EXPLORATION_PARAMETER);
-#ifdef MCTS_ALPHA_BETA
-        if (should_use_alpha_beta(node)) { // Check if alpha-beta search should
-                                           // be used
-            Value value = qsearch(pos, ss, node->alpha_beta_depth,
-                                  node->alpha_beta_depth, -VALUE_INFINITE,
-                                  VALUE_INFINITE, bestMove);
-            node->num_visits++;
-            if (value > 0) {
-                node->num_wins++;
-            }
-            if (node->alpha_beta_depth < max_alpha_beta_depth) {
-                node->alpha_beta_depth++; // Increase the depth for the next
-                                          // alpha-beta search
-            }
-        } else {
-#endif // MCTS_ALPHA_BETA
-            Node *expanded_node = expand(node, node_pool, position_pool);
-            bool win = simulate(expanded_node, ss);
-            backpropagate(expanded_node, win);
-#ifdef MCTS_ALPHA_BETA
-        }
-#endif // MCTS_ALPHA_BETA
-
+        Node *expanded_node = expand(node, node_pool, position_pool);
+        bool win = simulate(expanded_node, ss);
+        backpropagate(expanded_node, win);
         iteration++;
 
         if ((iteration & check_time_mask) == 0) {
@@ -473,17 +388,5 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
                         pos->piece_on_board_count(~pos->sideToMove) -
                         pos->piece_in_hand_count(~pos->sideToMove)) *
                        VALUE_EACH_PIECE;
-
-#ifdef MCTS_PRINT_STAT
-    double win_score = static_cast<double>(
-                           shared_visits.wins(best_move_index)) /
-                       shared_visits.visits(best_move_index);
-    // Value best_value = static_cast<Value>(win_score * 100.0 - 50.0);
-    // double win_score = static_cast<double>(max_visits) /
-    //                    (max_iterations / num_threads);
-
-    print_stats(mp, shared_visits, bestMove, best_value, win_score);
-#endif // MCTS_PRINT_STAT
-
     return best_value;
 }
