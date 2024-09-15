@@ -24,6 +24,7 @@
 #include <stack>
 #include <thread>
 #include <vector>
+#include <mutex>
 
 #include "mcts.h"
 #include "movepick.h"
@@ -95,7 +96,7 @@ class ThreadSafeNodeVisits
 public:
     explicit ThreadSafeNodeVisits(size_t initial_size)
         : node_visits_(initial_size)
-        , node_wins_(initial_size)
+        , node_values_(initial_size, 0.0)
     { }
 
     // Increment visits using relaxed memory order for reduced synchronization
@@ -104,10 +105,11 @@ public:
         node_visits_[move_index].fetch_add(visits, std::memory_order_relaxed);
     }
 
-    // Increment wins using relaxed memory order
-    void increment_wins(int move_index, uint32_t wins)
+    // Add value in a thread-safe manner
+    void add_values(int move_index, double value)
     {
-        node_wins_[move_index].fetch_add(wins, std::memory_order_relaxed);
+        std::lock_guard<std::mutex> lock(mutex_);
+        node_values_[move_index] += value;
     }
 
     // Read the visits count with relaxed memory order
@@ -116,15 +118,17 @@ public:
         return node_visits_[move_index].load(std::memory_order_relaxed);
     }
 
-    // Read the wins count with relaxed memory order
-    uint32_t wins(int move_index)
+    // Read the total value in a thread-safe manner
+    double values(int move_index)
     {
-        return node_wins_[move_index].load(std::memory_order_relaxed);
+        std::lock_guard<std::mutex> lock(mutex_);
+        return node_values_[move_index];
     }
 
 private:
     std::vector<std::atomic<uint32_t>> node_visits_;
-    std::vector<std::atomic<uint32_t>> node_wins_;
+    std::vector<double> node_values_;
+    std::mutex mutex_;
 };
 
 // Class representing a node in the MCTS tree
@@ -140,25 +144,23 @@ public:
         , cached_log_parent_visits(-1)
     { }
 
-    double win_score() const
-    {
-        if (num_visits == 0)
-            return 0;
-        return static_cast<double>(num_wins) / num_visits;
-    }
-
     void increment_visits() { ++num_visits; }
 
-    void increment_wins() { ++num_wins; }
+    void add_value(Value value) { total_value += value; }
 
     void add_child(Node *child) { children.emplace_back(child); }
+
+    double average_value() const
+    {
+        return num_visits > 0 ? total_value / num_visits : 0.0;
+    }
 
     Position *position {nullptr};
     Move move;
     Node *parent {nullptr};
     std::vector<Node *> children;
     uint32_t num_visits {0};
-    uint32_t num_wins {0};
+    double total_value {0.0};
     int move_index {0};
     mutable double cached_log_parent_visits;
 };
@@ -194,15 +196,16 @@ double uct_value_tuned(const Node *node, double exploration_parameter)
         node->cached_log_parent_visits = std::log(node->parent->num_visits);
     }
 
-    double mean = node->win_score();
+    double mean = node->average_value();
     double exploration_term = exploration_parameter *
-                              std::sqrt(2 * std::log(node->parent->num_visits) /
+                              std::sqrt(2 * node->cached_log_parent_visits /
                                         node->num_visits);
-    double variance_term = std::sqrt((mean * (1 - mean)) / node->num_visits);
-    double bias_term = BIAS_FACTOR *
-                       static_cast<double>(MAX_MOVES - node->move_index);
+    // Optional: Add variance and bias terms to the UCT value
+    // double variance_term = std::sqrt((mean * (1 - mean)) / node->num_visits);
+    // double bias_term = BIAS_FACTOR * static_cast<double>(MAX_MOVES -
+    // node->move_index);
 
-    return mean + exploration_term + variance_term + bias_term;
+    return mean + exploration_term; // + variance_term + bias_term;
 }
 
 // Return the best child node according to UCT value tuned
@@ -261,7 +264,7 @@ Node *expand(Node *node, MemoryPool<Node> &node_pool,
 }
 
 // Simulate a game from the given node
-bool simulate(Node *node, Sanmill::Stack<Position> &ss)
+Value simulate(Node *node, Sanmill::Stack<Position> &ss)
 {
     Position *pos = node->position;
 
@@ -270,17 +273,16 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
     Value value = qsearch(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
                           -VALUE_INFINITE, VALUE_INFINITE, bestMove);
 
-    return value > 0;
+    return value;
 }
 
 // Backpropagate the simulation result up the tree
-void backpropagate(Node *node, bool win)
+void backpropagate(Node *node, Value value)
 {
     while (node != nullptr) {
         node->increment_visits();
-        if (win)
-            node->increment_wins();
-        win = !win;
+        node->add_value(value);
+        value = -value;
         node = node->parent;
     }
 }
@@ -311,8 +313,8 @@ void mcts_worker(Position *pos, int max_iterations,
     while (iteration < max_iterations) {
         Node *node = select(root, EXPLORATION_PARAMETER);
         Node *expanded_node = expand(node, node_pool, position_pool);
-        bool win = simulate(expanded_node, ss);
-        backpropagate(expanded_node, win);
+        Value sim_value = simulate(expanded_node, ss);
+        backpropagate(expanded_node, sim_value);
         iteration++;
 
         if ((iteration & check_time_mask) == 0) {
@@ -325,7 +327,8 @@ void mcts_worker(Position *pos, int max_iterations,
 
     for (Node *child : root->children) {
         shared_visits.increment_visits(child->move_index, child->num_visits);
-        shared_visits.increment_wins(child->move_index, child->num_wins);
+        shared_visits.add_values(child->move_index,
+                                 child->total_value);
     }
 
     delete_tree(root, node_pool, position_pool);
