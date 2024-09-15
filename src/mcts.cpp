@@ -137,6 +137,7 @@ public:
         , move(m)
         , parent(prt)
         , move_index(idx)
+        , cached_log_parent_visits(-1)
     { }
 
     double win_score() const
@@ -159,6 +160,7 @@ public:
     uint32_t num_visits {0};
     uint32_t num_wins {0};
     int move_index {0};
+    mutable double cached_log_parent_visits;
 
 #ifdef MCTS_ALPHA_BETA
     Depth alpha_beta_depth {1};
@@ -192,6 +194,10 @@ double uct_value_tuned(const Node *node, double exploration_parameter)
 {
     if (node->num_visits == 0) {
         return std::numeric_limits<double>::max();
+    }
+
+    if (node->cached_log_parent_visits < 0) {
+        node->cached_log_parent_visits = std::log(node->parent->num_visits);
     }
 
     double mean = node->win_score();
