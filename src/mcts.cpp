@@ -289,13 +289,15 @@ Value simulate(Node *node, Sanmill::Stack<Position> &ss)
 double normalize_value(double raw_value)
 {
     const double maxValue = 20.0; // Maximum value for normalization
-    if (raw_value > maxValue) return 1.0;
-    if (raw_value < -maxValue) return -1.0;
+    if (raw_value > maxValue)
+        return 1.0;
+    if (raw_value < -maxValue)
+        return -1.0;
     return static_cast<double>(raw_value) / maxValue;
 }
 
 // Backpropagate the simulation result up the tree
-void backpropagate(Node* node, Value value)
+void backpropagate(Node *node, Value value)
 {
     double normalized_value = normalize_value(value);
     while (node != nullptr) {
@@ -371,15 +373,23 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         num_threads = 1;
     }
 
-    MemoryPool<Node> node_pool(num_threads * MAX_MOVES);
-    MemoryPool<Position> position_pool(num_threads * MAX_MOVES);
-
+    std::vector<std::unique_ptr<MemoryPool<Node>>> node_pools;
+    std::vector<std::unique_ptr<MemoryPool<Position>>> position_pools;
     std::vector<std::thread> threads(num_threads);
 
+    // Create individual memory pools for each thread
+    for (int i = 0; i < num_threads; ++i) {
+        node_pools.push_back(std::make_unique<MemoryPool<Node>>(MAX_MOVES));
+        position_pools.push_back(
+            std::make_unique<MemoryPool<Position>>(MAX_MOVES));
+    }
+
+    // Launch threads with their own memory pools
     for (int i = 0; i < num_threads; ++i) {
         threads[i] = std::thread(mcts_worker, pos, max_iterations / num_threads,
-                                 std::ref(shared_visits), std::ref(node_pool),
-                                 std::ref(position_pool));
+                                 std::ref(shared_visits),
+                                 std::ref(*node_pools[i]),
+                                 std::ref(*position_pools[i]));
     }
 
     for (auto &t : threads) {
