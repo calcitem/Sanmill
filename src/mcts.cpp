@@ -193,7 +193,7 @@ double uct_value_tuned(const Node *node, double exploration_parameter)
     }
 
     if (node->cached_log_parent_visits < 0) {
-        node->cached_log_parent_visits = std::log(node->parent->num_visits);
+        node->cached_log_parent_visits = std::log(node->parent->num_visits + 1); // Avoid log(0)
     }
 
     double mean = node->average_value();
