@@ -235,32 +235,41 @@ Node *select(Node *node, double exploration_parameter)
     return node;
 }
 
-// Expand the node by creating new child nodes for all legal moves
+// Expand the node by creating a new child node for the most promising move
 Node *expand(Node *node, MemoryPool<Node> &node_pool,
              MemoryPool<Position> &position_pool)
 {
     Position *pos = node->position;
 
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move(); // Sort moves
-    // const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR,
-    // 1);
-    const int moveCount = mp.move_count();
+    mp.next_move(); // Get the first move
 
-    // Add child nodes for each sorted legal move
-    for (int i = 0; i < moveCount; i++) {
-        Position *child_position = position_pool.acquire();
-        *child_position = *pos; // Copy the position
+    // Find the first unexpanded move
+    for (int i = 0; i < mp.move_count(); ++i) {
+        bool already_expanded = false;
+        for (Node *child : node->children) {
+            if (child->move == mp.moves[i].move) {
+                already_expanded = true;
+                break;
+            }
+        }
+        if (!already_expanded) {
+            // Extend this move
+            Position *child_position = position_pool.acquire();
+            *child_position = *pos;
 
-        const Move move = mp.moves[i].move;
-        child_position->do_move(move);
+            const Move move = mp.moves[i].move;
+            child_position->do_move(move);
 
-        Node *child = node_pool.acquire();
-        new (child) Node(child_position, move, node, i);
-        node->add_child(child);
+            Node *child = node_pool.acquire();
+            new (child) Node(child_position, move, node, i);
+            node->add_child(child);
+            return child;
+        }
     }
 
-    return node->children.empty() ? node : node->children.front();
+    // If all moves are expanded, return the node itself
+    return node;
 }
 
 // Simulate a game from the given node
@@ -327,8 +336,7 @@ void mcts_worker(Position *pos, int max_iterations,
 
     for (Node *child : root->children) {
         shared_visits.increment_visits(child->move_index, child->num_visits);
-        shared_visits.add_values(child->move_index,
-                                 child->total_value);
+        shared_visits.add_values(child->move_index, child->total_value);
     }
 
     delete_tree(root, node_pool, position_pool);
