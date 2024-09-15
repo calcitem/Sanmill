@@ -20,6 +20,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <stack>
 #include <thread>
 #include <vector>
@@ -40,7 +41,55 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 using namespace std;
 
-// Use std::atomic for thread-safe, lock-free operations
+// Pre-allocate memory pools for Node and Position objects
+template <typename T>
+class MemoryPool
+{
+public:
+    // Constructor allocates a block of memory for the specified number of
+    // objects
+    MemoryPool(size_t pool_size)
+        : pool_size_(pool_size)
+    {
+        pool_ = static_cast<T *>(operator new(pool_size_ * sizeof(T)));
+        for (size_t i = 0; i < pool_size_; ++i) {
+            free_list_.push_back(pool_ + i);
+        }
+    }
+
+    ~MemoryPool() { operator delete(pool_); }
+
+    // Acquire an object from the pool
+    T *acquire()
+    {
+        if (free_list_.empty()) {
+            // If no object is available, allocate a new one (rare case)
+            return new T(); // Error: No matching constructor for initialization
+                            // of 'Node'
+        }
+        T *obj = free_list_.back();
+        free_list_.pop_back();
+        return obj;
+    }
+
+    // Return an object to the pool
+    void release(T *obj)
+    {
+        if (obj >= pool_ && obj < pool_ + pool_size_) {
+            obj->~T(); // Call destructor explicitly
+            free_list_.push_back(obj);
+        } else {
+            delete obj; // If not from the pool, delete it
+        }
+    }
+
+private:
+    size_t pool_size_;
+    T *pool_;
+    std::vector<T *> free_list_;
+};
+
+// Thread-safe atomic node visit tracking
 class ThreadSafeNodeVisits
 {
 public:
@@ -50,7 +99,6 @@ public:
     { }
 
     // Increment visits using relaxed memory order for reduced synchronization
-    // overhead
     void increment_visits(int move_index, uint32_t visits)
     {
         node_visits_[move_index].fetch_add(visits, std::memory_order_relaxed);
@@ -75,15 +123,15 @@ public:
     }
 
 private:
-    // Use std::atomic to avoid locking
     std::vector<std::atomic<uint32_t>> node_visits_;
     std::vector<std::atomic<uint32_t>> node_wins_;
 };
 
-// Class representing a node in the Monte Carlo Tree Search
+// Class representing a node in the MCTS tree
 class Node
 {
 public:
+    Node() = default;
     Node(Position *pos, Move m, Node *prt, int idx)
         : position(pos)
         , move(m)
@@ -111,6 +159,7 @@ public:
     uint32_t num_visits {0};
     uint32_t num_wins {0};
     int move_index {0};
+
 #ifdef MCTS_ALPHA_BETA
     Depth alpha_beta_depth {1};
     Node *best_alpha_beta_child {nullptr};
@@ -118,8 +167,9 @@ public:
 #endif // MCTS_ALPHA_BETA
 };
 
-// Recursively delete tree starting from the given node
-void delete_tree(Node *root)
+// Recursively delete the tree starting from the given node using memory pool
+void delete_tree(Node *root, MemoryPool<Node> &node_pool,
+                 MemoryPool<Position> &position_pool)
 {
     std::stack<Node *> nodes;
     nodes.push(root);
@@ -132,8 +182,8 @@ void delete_tree(Node *root)
             nodes.push(child);
         }
 
-        delete node->position;
-        delete node;
+        position_pool.release(node->position);
+        node_pool.release(node);
     }
 }
 
@@ -173,7 +223,7 @@ Node *best_uct_child_tuned(Node *node, double exploration_parameter)
     return best_child;
 }
 
-// Select the next node to expand
+// Select the best child node based on UCT value
 Node *select(Node *node, double exploration_parameter)
 {
     while (!node->children.empty()) {
@@ -182,8 +232,9 @@ Node *select(Node *node, double exploration_parameter)
     return node;
 }
 
-// Expand the current node by adding child nodes for all legal moves
-Node *expand(Node *node)
+// Expand the node by creating new child nodes for all legal moves
+Node *expand(Node *node, MemoryPool<Node> &node_pool,
+             MemoryPool<Position> &position_pool)
 {
     Position *pos = node->position;
 
@@ -195,18 +246,21 @@ Node *expand(Node *node)
 
     // Add child nodes for each sorted legal move
     for (int i = 0; i < moveCount; i++) {
-        Position *child_position = new Position(*pos);
+        Position *child_position = position_pool.acquire();
+        *child_position = *pos; // Copy the position
+
         const Move move = mp.moves[i].move;
         child_position->do_move(move);
 
-        Node *child = new Node(child_position, move, node, i);
+        Node *child = node_pool.acquire();
+        new (child) Node(child_position, move, node, i);
         node->add_child(child);
     }
 
     return node->children.empty() ? node : node->children.front();
 }
 
-// Simulate a game from the given node and return whether it resulted in a win
+// Simulate a game from the given node
 bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 {
     Position *pos = node->position;
@@ -219,7 +273,7 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
     return value > 0;
 }
 
-// Back propagate the results of the simulation up the tree
+// Backpropagate the simulation result up the tree
 void backpropagate(Node *node, bool win)
 {
     while (node != nullptr) {
@@ -284,12 +338,16 @@ void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
 }
 #endif // MCTS_PRINT_STAT
 
+// Worker function for running MCTS on a separate thread
 void mcts_worker(Position *pos, int max_iterations,
-                 ThreadSafeNodeVisits &shared_visits)
+                 ThreadSafeNodeVisits &shared_visits,
+                 MemoryPool<Node> &node_pool,
+                 MemoryPool<Position> &position_pool)
 {
     Sanmill::Stack<Position> ss;
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, 0);
+    Node *root = node_pool.acquire();
+    new (root) Node(position_pool.acquire(), MOVE_NONE, nullptr, 0);
 
     int iteration = 0;
 
@@ -327,7 +385,7 @@ void mcts_worker(Position *pos, int max_iterations,
             }
         } else {
 #endif // MCTS_ALPHA_BETA
-            Node *expanded_node = expand(node);
+            Node *expanded_node = expand(node, node_pool, position_pool);
             bool win = simulate(expanded_node, ss);
             backpropagate(expanded_node, win);
 #ifdef MCTS_ALPHA_BETA
@@ -349,10 +407,10 @@ void mcts_worker(Position *pos, int max_iterations,
         shared_visits.increment_wins(child->move_index, child->num_wins);
     }
 
-    delete_tree(root);
+    delete_tree(root, node_pool, position_pool);
 }
 
-// Perform Monte Carlo Tree Search to find the best move and its value
+// MCTS function to find the best move
 Value monte_carlo_tree_search(Position *pos, Move &bestMove)
 {
     // Adjust these values according to your needs
@@ -370,11 +428,16 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     if (num_threads == 0) {
         num_threads = 1;
     }
+
+    MemoryPool<Node> node_pool(num_threads * MAX_MOVES);
+    MemoryPool<Position> position_pool(num_threads * MAX_MOVES);
+
     std::vector<std::thread> threads(num_threads);
 
     for (int i = 0; i < num_threads; ++i) {
         threads[i] = std::thread(mcts_worker, pos, max_iterations / num_threads,
-                                 std::ref(shared_visits));
+                                 std::ref(shared_visits), std::ref(node_pool),
+                                 std::ref(position_pool));
     }
 
     for (auto &t : threads) {
