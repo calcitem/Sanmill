@@ -236,6 +236,11 @@ class _GameBoardState extends State<GameBoard>
                           .headerTipNotifier
                           .showTip(strNoBestMoveErr);
                       break;
+                    case EngineGameIsOver():
+                      GameController()
+                          .gameResultNotifier
+                          .showResult(force: true);
+                      break;
                     default:
                       break;
                   }
