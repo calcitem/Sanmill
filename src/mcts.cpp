@@ -15,11 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <cmath>
 #include <iomanip>
 #include <iostream>
-#include <mutex>
 #include <stack>
 #include <thread>
 #include <vector>
@@ -40,42 +40,44 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 using namespace std;
 
+// Use std::atomic for thread-safe, lock-free operations
 class ThreadSafeNodeVisits
 {
 public:
     explicit ThreadSafeNodeVisits(size_t initial_size)
-        : node_visits_(initial_size, 0)
-        , node_wins_(initial_size, 0)
+        : node_visits_(initial_size)
+        , node_wins_(initial_size)
     { }
 
+    // Increment visits using relaxed memory order for reduced synchronization
+    // overhead
     void increment_visits(int move_index, uint32_t visits)
     {
-        std::unique_lock<std::mutex> lock(mutex_);
-        node_visits_[move_index] += visits;
+        node_visits_[move_index].fetch_add(visits, std::memory_order_relaxed);
     }
 
+    // Increment wins using relaxed memory order
     void increment_wins(int move_index, uint32_t wins)
     {
-        std::unique_lock<std::mutex> lock(mutex_);
-        node_wins_[move_index] += wins;
+        node_wins_[move_index].fetch_add(wins, std::memory_order_relaxed);
     }
 
+    // Read the visits count with relaxed memory order
     uint32_t visits(int move_index)
     {
-        std::unique_lock<std::mutex> lock(mutex_);
-        return node_visits_[move_index];
+        return node_visits_[move_index].load(std::memory_order_relaxed);
     }
 
+    // Read the wins count with relaxed memory order
     uint32_t wins(int move_index)
     {
-        std::unique_lock<std::mutex> lock(mutex_);
-        return node_wins_[move_index];
+        return node_wins_[move_index].load(std::memory_order_relaxed);
     }
 
 private:
-    std::vector<uint32_t> node_visits_;
-    std::vector<uint32_t> node_wins_;
-    std::mutex mutex_;
+    // Use std::atomic to avoid locking
+    std::vector<std::atomic<uint32_t>> node_visits_;
+    std::vector<std::atomic<uint32_t>> node_wins_;
 };
 
 // Class representing a node in the Monte Carlo Tree Search
