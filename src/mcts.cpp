@@ -193,7 +193,8 @@ double uct_value_tuned(const Node *node, double exploration_parameter)
     }
 
     if (node->cached_log_parent_visits < 0) {
-        node->cached_log_parent_visits = std::log(node->parent->num_visits + 1); // Avoid log(0)
+        node->cached_log_parent_visits = std::log(node->parent->num_visits +
+                                                  1); // Avoid log(0)
     }
 
     double mean = node->average_value();
@@ -391,12 +392,15 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     mp.next_move();
 
     int best_move_index = 0;
-    uint32_t max_visits = 0;
+    double best_score = -std::numeric_limits<double>::infinity();
 
     for (int i = 0; i < mp.move_count(); ++i) {
         uint32_t visits = shared_visits.visits(i);
-        if (visits > max_visits) {
-            max_visits = visits;
+        double average_value = visits > 0 ? shared_visits.values(i) / visits :
+                                            0.0;
+        double score = average_value + (double)visits * 0.001;
+        if (score > best_score) {
+            best_score = score;
             best_move_index = i;
         }
     }
