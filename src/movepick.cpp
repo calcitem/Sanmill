@@ -53,12 +53,10 @@ void MovePicker::score()
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
 
-#ifdef TT_MOVE_ENABLE
         if (m == ttMove) {
             cur->value += RATING_TT;
             continue;
         }
-#endif // TT_MOVE_ENABLE
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);
