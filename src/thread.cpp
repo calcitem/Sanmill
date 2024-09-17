@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -22,6 +23,7 @@
 #include "mills.h"
 #include "option.h"
 #include "thread.h"
+#include "tt.h"
 #include "uci.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -181,7 +183,7 @@ void Thread::setAi(Position *p)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
+    // TT::clear(); // TODO(tt): Clear.
 #endif
 #endif
 }

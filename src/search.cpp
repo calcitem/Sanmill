@@ -14,12 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <iostream>
+
 #include "endgame.h"
 #include "evaluate.h"
 #include "mcts.h"
+#include "misc.h"
 #include "option.h"
 #include "uci.h"
 #include "thread.h"
+#include "tt.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect_adaptor.h"
@@ -168,7 +172,7 @@ int Thread::search()
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            TranspositionTable::clear();
+            TT.clear();
 #endif
 #endif
 
@@ -240,7 +244,7 @@ next:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
+    TT.clear();
 #endif
 #endif
 
@@ -354,7 +358,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             return alpha;
         }
     }
-#endif // THREEFOLD_REPETITION
+#endif // THREEFOLD_REPETITION_TEST
 
     Move ttMove = MOVE_NONE;
 
@@ -393,33 +397,35 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
                                   // and no available moves
 
-    Bound type = BOUND_NONE;
+    bool found = false;
+    TTEntry *entry = TT.probe(posKey, found);
 
-    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta,
-                                                     type
-#ifdef TT_MOVE_ENABLE
-                                                     ,
-                                                     ttMove
-#endif // TT_MOVE_ENABLE
-    );
+    if (found && entry->depth() >= depth) {
+        Bound type = entry->bound();
+        const Value probeVal = entry->value();
 
-    if (probeVal != VALUE_UNKNOWN) {
-#ifdef TRANSPOSITION_TABLE_DEBUG
-        Threads.main()->ttHitCount++;
-#endif
-
-        bestValue = probeVal;
-        return bestValue;
+        if (type == BOUND_EXACT) {
+            bestValue = probeVal;
+            return bestValue;
+        } else if (type == BOUND_UPPER && probeVal <= alpha) {
+            return alpha;
+        } else if (type == BOUND_LOWER && probeVal >= beta) {
+            return beta;
+        }
+        // Continue searching if bounds do not allow a cutoff
     }
+
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    if (probeVal == VALUE_UNKNOWN) {
+    if (found && entry->depth() >= depth) {
+        Threads.main()->ttHitCount++;
+    } else {
         Threads.main()->ttMissCount++;
     }
 #endif
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    // process leaves
+    // Process leaves
 
     // Check for aborted search
     // TODO(calcitem): and immediate draw
@@ -428,7 +434,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
-        // For win quickly
+        // For quick wins
         if (bestValue > 0) {
             bestValue += depth;
         } else {
@@ -464,10 +470,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
+#if 0
     for (int i = 0; i < moveCount; i++) {
-        TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
+        TT.prefetch(pos->key_after(mp.moves[i].move)); // TODO(tt): Implement
     }
-
+#endif
 #ifdef PREFETCH_DEBUG
     if (posKey << 8 >> 8 == 0x0) {
         int pause = 1;
@@ -570,17 +577,17 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(
-        bestValue, depth,
-        TranspositionTable::boundType(bestValue, oldAlpha, beta), posKey
-#ifdef TT_MOVE_ENABLE
-        ,
-        bestMove
-#endif // TT_MOVE_ENABLE
-    );
-#endif /* TRANSPOSITION_TABLE_ENABLE */
+    Bound bound = BOUND_EXACT;
+    if (bestValue <= oldAlpha) {
+        bound = BOUND_UPPER;
+    } else if (bestValue >= beta) {
+        bound = BOUND_LOWER;
+    }
 
-    // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    TTEntry *saveEntry = TT.probe(posKey, found);
+    saveEntry->save(posKey, bestValue, /* pv */ false, bound, depth, bestMove,
+                    Eval::evaluate(*pos));
+#endif /* TRANSPOSITION_TABLE_ENABLE */
 
     return bestValue;
 }

@@ -24,6 +24,7 @@
 #include <string>
 #include <vector>
 
+#include "misc.h"
 #include "movepick.h"
 #include "position.h"
 #include "search.h"
@@ -88,7 +89,7 @@ public:
     void analyze(Color c) const;
 
 #ifdef TIME_STAT
-    TimePoint sortTime {0};
+    std::chrono::milliseconds::rep sortTime {0};
 #endif
 #ifdef CYCLE_STAT
     stopwatch::rdtscp_clock::time_point sortCycle;

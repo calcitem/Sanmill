@@ -43,6 +43,7 @@
 #include "database.h"
 #include "gamescene.h"
 #include "mills.h"
+#include "misc.h"
 #include "pieceitem.h"
 #include "position.h"
 #include "server.h"
