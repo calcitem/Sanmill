@@ -356,6 +356,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     TTEntry *tte = TT.probe(posKey, ttHit);
     const Depth ttDepth = 0; // 对于静态搜索，深度为 0
 
+    // 如果命中置换表，尝试使用已存储的值
     if (ttHit) {
         Depth tteDepth = tte->depth();
         Value ttValue = tte->value();
@@ -405,6 +406,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE);
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
+
+    Move localBestMove = MOVE_NONE; // 用于在本层跟踪最佳着法
 
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
@@ -464,19 +467,16 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
-        if (value >= bestValue) {
+        if (value > bestValue) {
             bestValue = value;
+            localBestMove = move; // 更新本层的最佳着法
 
             if (value > alpha) {
-                if (depth == originDepth) {
-                    bestMove = move;
-                }
+                alpha = value;
 
-                if (value < beta) {
-                    alpha = value;
-                } else {
-                    assert(value >= beta); // Fail high
-                    break;                 // Fail high
+                if (alpha >= beta) {
+                    // Beta 剪枝
+                    break;
                 }
             }
         }
@@ -487,8 +487,16 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
                         bestValue >= beta ? BOUND_LOWER : BOUND_EXACT;
 
-        tte->save(posKey, bestValue, false /* pv */, ttBound, ttDepth,
-                  bestMove, bestValue);
+        // 如果当前节点是 PV 节点，则设置 pv 标志
+        bool isPvNode = ttBound == BOUND_EXACT;
+
+        tte->save(posKey, bestValue, isPvNode, ttBound, ttDepth,
+                  localBestMove, bestValue);
+    }
+
+    // 如果在根节点，更新最佳着法
+    if (depth == originDepth && localBestMove != MOVE_NONE) {
+        bestMove = localBestMove;
     }
 
     return bestValue;
