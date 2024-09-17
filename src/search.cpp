@@ -337,7 +337,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     Depth epsilon;
 
-#ifdef RULE_50
     if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
@@ -346,150 +345,72 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             return alpha;
         }
     }
-#endif // RULE_50
 
-#ifdef THREEFOLD_REPETITION_TEST
-    // Check if we have an upcoming move which draws by repetition, or
-    // if the opponent had an alternative move earlier to this position.
-    if (/* alpha < VALUE_DRAW && */
-        depth != originDepth && pos->has_repeated(ss)) {
-        alpha = VALUE_DRAW;
-        if (alpha >= beta) {
-            return alpha;
-        }
-    }
-#endif // THREEFOLD_REPETITION_TEST
-
-    Move ttMove = MOVE_NONE;
-
-    // Transposition table lookup
-
-#if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
-#endif
 
-#ifdef ENDGAME_LEARNING
-    Endgame endgame;
+    // 保存原始的 alpha 值
+    const Value alphaOrig = alpha;
 
-    if (gameOptions.isEndgameLearningEnabled() && posKey &&
-        Thread::probeEndgameHash(posKey, endgame)) {
-        switch (endgame.type) {
-        case EndGameType::whiteWin:
-            bestValue = VALUE_MATE;
-            bestValue += depth;
-            break;
-        case EndGameType::blackWin:
-            bestValue = -VALUE_MATE;
-            bestValue -= depth;
-            break;
-        default:
-            break;
+    // 探测置换表
+    bool ttHit;
+    TTEntry *tte = TT.probe(posKey, ttHit);
+    const Depth ttDepth = 0; // 对于静态搜索，深度为 0
+
+    if (ttHit) {
+        Depth tteDepth = tte->depth();
+        Value ttValue = tte->value();
+        Bound ttBound = tte->bound();
+
+        // 如果置换表中的深度足够
+        if (tteDepth >= ttDepth) {
+            if (ttBound == BOUND_EXACT) {
+                return ttValue;
+            } else if (ttBound == BOUND_LOWER && ttValue >= beta) {
+                return ttValue;
+            } else if (ttBound == BOUND_UPPER && ttValue <= alpha) {
+                return ttValue;
+            }
         }
-
-        return bestValue;
-    }
-#endif /* ENDGAME_LEARNING */
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-
-    // check transposition-table
-
-    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
-                                  // and no available moves
-
-    bool found = false;
-    TTEntry *entry = TT.probe(posKey, found);
-
-    if (found && entry->depth() >= depth) {
-        Bound type = entry->bound();
-        const Value probeVal = entry->value();
-
-        if (type == BOUND_EXACT) {
-            bestValue = probeVal;
-            return bestValue;
-        } else if (type == BOUND_UPPER && probeVal <= alpha) {
-            return alpha;
-        } else if (type == BOUND_LOWER && probeVal >= beta) {
-            return beta;
-        }
-        // Continue searching if bounds do not allow a cutoff
     }
 
-#ifdef TRANSPOSITION_TABLE_DEBUG
-    if (found && entry->depth() >= depth) {
-        Threads.main()->ttHitCount++;
-    } else {
-        Threads.main()->ttMissCount++;
-    }
-#endif
-
-#endif /* TRANSPOSITION_TABLE_ENABLE */
-
-    // Process leaves
-
-    // Check for aborted search
-    // TODO(calcitem): and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
-                                                   // hash
+    if (unlikely(pos->phase == Phase::gameOver) ||
         depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
-        // For quick wins
+        // 对快速胜利进行调整
         if (bestValue > 0) {
             bestValue += depth;
         } else {
             bestValue -= depth;
         }
 
+        // 在这里保存置换表
+        if (tte) {
+            Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
+                            bestValue >= beta ? BOUND_LOWER : BOUND_EXACT;
+
+            tte->save(posKey, bestValue, false /* pv */, ttBound, ttDepth,
+                      MOVE_NONE, bestValue);
+        }
+
         return bestValue;
     }
 
-    // if this isn't the root of the search tree (where we have
-    // to pick a move and can't simply return VALUE_DRAW) then check to
-    // see if the position is a repeat. if so, we can assume that
-    // this line is a draw and return VALUE_DRAW.
     if (rule.threefoldRepetitionRule && depth != originDepth &&
         pos->has_repeated(ss)) {
-        // Add a small component to draw evaluations to avoid 3-fold blindness
         return VALUE_DRAW + 1;
     }
 
-    // Initialize a MovePicker object for the current position, and prepare
-    // to search the moves.
-    MovePicker mp(*pos, ttMove);
+    // 初始化 MovePicker 对象
+    MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE);
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
-#ifndef NNUE_GENERATE_TRAINING_DATA
-    if (moveCount == 1 && depth == originDepth) {
-        bestMove = nextMove;
-        bestValue = VALUE_UNIQUE;
-        return bestValue;
-    }
-#endif /* !NNUE_GENERATE_TRAINING_DATA */
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifndef DISABLE_PREFETCH
-#if 0
-    for (int i = 0; i < moveCount; i++) {
-        TT.prefetch(pos->key_after(mp.moves[i].move)); // TODO(tt): Implement
-    }
-#endif
-#ifdef PREFETCH_DEBUG
-    if (posKey << 8 >> 8 == 0x0) {
-        int pause = 1;
-    }
-#endif // PREFETCH_DEBUG
-#endif // !DISABLE_PREFETCH
-#endif // TRANSPOSITION_TABLE_ENABLE
-
-    // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
 
-        // Make and search the move
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
@@ -499,11 +420,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             epsilon = 0;
         }
 
-        // epsilon += pos->piece_to_remove_count(pos->sideToMove);
-
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            // debugPrintf("Algorithm: PVS.\n");
-
             if (i == 0) {
                 if (after != before) {
                     value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
@@ -521,7 +438,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     if (value > alpha && value < beta) {
                         value = -qsearch(pos, ss, depth - 1 + epsilon,
                                          originDepth, -beta, -alpha, bestMove);
-                        // assert(value >= alpha && value <= beta);
                     }
                 } else {
                     value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
@@ -530,13 +446,10 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     if (value > alpha && value < beta) {
                         value = qsearch(pos, ss, depth - 1 + epsilon,
                                         originDepth, alpha, beta, bestMove);
-                        // assert(value >= alpha && value <= beta);
                     }
                 }
             }
         } else {
-            // debugPrintf("Algorithm: Alpha-Beta.\n");
-
             if (after != before) {
                 value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
                                  -beta, -alpha, bestMove);
@@ -548,12 +461,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         pos->undo_move(ss);
 
-        // assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
-
-        // Check for a new best move
-        // Finished searching the move. If a stop occurred, the return value of
-        // the search cannot be trusted, and we return immediately without
-        // updating best move and TT.
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
@@ -566,7 +473,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 }
 
                 if (value < beta) {
-                    // Update alpha! Always alpha < beta
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high
@@ -576,18 +482,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         }
     }
 
-#ifdef TRANSPOSITION_TABLE_ENABLE
-    Bound bound = BOUND_EXACT;
-    if (bestValue <= oldAlpha) {
-        bound = BOUND_UPPER;
-    } else if (bestValue >= beta) {
-        bound = BOUND_LOWER;
-    }
+    // 在返回前保存置换表
+    if (tte) {
+        Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
+                        bestValue >= beta ? BOUND_LOWER : BOUND_EXACT;
 
-    TTEntry *saveEntry = TT.probe(posKey, found);
-    saveEntry->save(posKey, bestValue, /* pv */ false, bound, depth, bestMove,
-                    Eval::evaluate(*pos));
-#endif /* TRANSPOSITION_TABLE_ENABLE */
+        tte->save(posKey, bestValue, false /* pv */, ttBound, ttDepth,
+                  bestMove, bestValue);
+    }
 
     return bestValue;
 }
