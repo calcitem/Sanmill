@@ -30,14 +30,14 @@
 /// pv node     1 bit
 /// bound type  2 bit
 /// move       32 bit (official SF: 16 bit)
-/// value      16 bit
-/// eval value 16 bit
+/// value       8 bit
+/// eval value  8 bit
 
 struct TTEntry
 {
     Move move() const { return (Move)move32; }
-    Value value() const { return (Value)value16; }
-    Value eval() const { return (Value)eval16; }
+    Value value() const { return (Value)value8; }
+    Value eval() const { return (Value)eval8; }
     Depth depth() const { return (Depth)depth8 + DEPTH_OFFSET; }
     bool is_pv() const { return (bool)(genBound8 & 0x4); }
     Bound bound() const { return (Bound)(genBound8 & 0x3); }
@@ -49,9 +49,9 @@ private:
     uint16_t key16;
     uint8_t depth8;
     uint8_t genBound8;
-    uint32_t move32;
-    int16_t value16;
-    int16_t eval16;
+    int32_t move32;
+    int8_t value8;
+    int8_t eval8;
 };
 
 /// A TranspositionTable is an array of Cluster, of size clusterCount. Each
