@@ -354,7 +354,7 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // 探测置换表
     bool ttHit;
     TTEntry *tte = TT.probe(posKey, ttHit);
-    const Depth ttDepth = 0; // 对于静态搜索，深度为 0
+    const Depth ttDepth = depth;
 
     // 如果命中置换表，尝试使用已存储的值
     if (ttHit) {
