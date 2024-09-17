@@ -100,8 +100,8 @@ public:
 
     TTEntry *first_entry(const Key key) const
     {
-        size_t index = (size_t(key) * 2654435761U) % clusterCount;
-        return &table[index].entry[0];
+        //return &table[mul_hi64(key, clusterCount)].entry[0];
+        return &table[mul_hi32(key, clusterCount)].entry[0];
     }
 
 private:

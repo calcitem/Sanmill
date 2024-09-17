@@ -404,7 +404,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // 初始化 MovePicker 对象
     MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE);
-    const Move nextMove = mp.next_move();
+    mp.next_move();
+    //const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
     Move localBestMove = MOVE_NONE; // 用于在本层跟踪最佳着法

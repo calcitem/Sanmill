@@ -200,6 +200,24 @@ inline uint64_t mul_hi64(uint64_t a, uint64_t b)
 #endif
 }
 
+inline uint32_t mul_hi32(uint32_t a, uint32_t b)
+{
+#if defined(__GNUC__)
+    return ((uint64_t)a * (uint64_t)b) >> 32;
+#else
+    uint32_t aL = a & 0xFFFF;
+    uint32_t aH = a >> 16;
+    uint32_t bL = b & 0xFFFF;
+    uint32_t bH = b >> 16;
+
+    uint32_t c1 = (aL * bL) >> 16;
+    uint32_t c2 = aH * bL + c1;
+    uint32_t c3 = aL * bH + (c2 & 0xFFFF);
+
+    return aH * bH + (c2 >> 16) + (c3 >> 16);
+#endif
+}
+
 /// Under Windows it is not possible for a process to run on more than one
 /// logical processor group. This usually means to be limited to use max 64
 /// cores. To overcome this, some special platform specific API should be
