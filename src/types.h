@@ -289,13 +289,13 @@ enum Piece : uint8_t {
 using Depth = int8_t;
 
 enum : int {
-  DEPTH_QS_CHECKS     =  0,
-  DEPTH_QS_NO_CHECKS  = -1,
-  DEPTH_QS_RECAPTURES = -5,
+    DEPTH_QS_CHECKS = 0,
+    DEPTH_QS_NO_CHECKS = -1,
+    DEPTH_QS_RECAPTURES = -5,
 
-  DEPTH_NONE   = -6,
+    DEPTH_NONE = -6,
 
-  DEPTH_OFFSET = -7 // value used only for TT entry occupancy check
+    DEPTH_OFFSET = -7 // value used only for TT entry occupancy check
 };
 
 enum Square : int {
