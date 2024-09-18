@@ -32,9 +32,6 @@
 using Eval::evaluate;
 using std::string;
 
-// Different node types, used as a template parameter
-enum NodeType { NonPV, PV, Root };
-
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
@@ -456,20 +453,90 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             epsilon = 0;
         }
 
-        // 递归调用，根据当前节点是否为 PV 节点，设置下一级节点的类型
-        if (nodeType == PV && i == 0) {
-            value = -do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                   -beta, -alpha, bestMove);
-        } else {
-            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                      -alpha - VALUE_PVS_WINDOW, -alpha,
-                                      bestMove);
+        if (gameOptions.getAlgorithm() == 1 /* PVS */) {
+            if (nodeType == PV) {
+                if (i == 0) {
+                    if (after != before) {
+                        value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
+                                            originDepth, -beta, -alpha, bestMove);
+                    } else {
+                        value = do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                            alpha, beta, bestMove);
+                    }
+                } else {
+                    if (after != before) {
+                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                originDepth, -alpha - VALUE_PVS_WINDOW,
+                                                -alpha, bestMove);
 
-            if (value > alpha && value < beta) {
-                value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                          originDepth, -beta, -alpha, bestMove);
+                        if (value > alpha && value < beta) {
+                            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                    originDepth, -beta, -alpha, bestMove);
+                        }
+                    } else {
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                                alpha, alpha + VALUE_PVS_WINDOW,
+                                                bestMove);
+
+                        if (value > alpha && value < beta) {
+                            value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                    originDepth, alpha, beta, bestMove);
+                        }
+                    }
+                }
+            } else {  // NonPV
+                if (i == 0) {
+                    if (after != before) {
+                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                        originDepth, -beta, -alpha, bestMove);
+                    } else {
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                        alpha, beta, bestMove);
+                    }
+                } else {
+                    if (after != before) {
+                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                        originDepth, -alpha - VALUE_PVS_WINDOW,
+                                        -alpha, bestMove);
+
+                        if (value > alpha && value < beta) {
+                            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                            originDepth, -beta, -alpha,
+                                            bestMove);
+                        }
+                    } else {
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                        alpha, alpha + VALUE_PVS_WINDOW,
+                                        bestMove);
+
+                        if (value > alpha && value < beta) {
+                            value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                            originDepth, alpha, beta, bestMove);
+                        }
+                    }
+                }
+            }
+        } else {
+            // 非PVS算法的情况，继续区分PV和NonPV节点类型
+            if (nodeType == PV) {
+                if (after != before) {
+                    value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
+                                        originDepth, -beta, -alpha, bestMove);
+                } else {
+                    value = do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                        alpha, beta, bestMove);
+                }
+            } else {
+                if (after != before) {
+                    value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                            originDepth, -beta, -alpha, bestMove);
+                } else {
+                    value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                            alpha, beta, bestMove);
+                }
             }
         }
+
 
         pos->undo_move(ss);
 

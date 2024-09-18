@@ -128,6 +128,9 @@ enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 
 enum class AiMoveType { unknown, traditional, perfect, consensus };
 
+// Different node types, used as a template parameter
+enum NodeType { NonPV, PV, Root };
+
 enum Color : uint8_t {
     NOCOLOR = 0,
     WHITE = 1,
