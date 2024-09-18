@@ -491,8 +491,10 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // 如果当前节点是 PV 节点，则设置 pv 标志
         bool isPvNode = ttBound == BOUND_EXACT;
 
-        tte->save(posKey, bestValue, isPvNode, ttBound, ttDepth,
-                  localBestMove, bestValue);
+        // 仅当 localBestMove 不是 MOVE_NONE 时，才保存到置换表
+        if (localBestMove != MOVE_NONE) {
+            tte->save(posKey, bestValue, isPvNode, ttBound, ttDepth, localBestMove, bestValue);
+        }
     }
 
     // 如果在根节点，更新最佳着法
