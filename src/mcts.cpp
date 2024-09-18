@@ -35,6 +35,7 @@
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
+template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
@@ -211,8 +212,8 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = do_search(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
-                            -VALUE_INFINITE, VALUE_INFINITE, bestMove);
+    Value value = do_search<PV>(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
+                                -VALUE_INFINITE, VALUE_INFINITE, bestMove);
 
     return value > 0;
 }
@@ -312,9 +313,9 @@ void mcts_worker(Position *pos, int max_iterations,
 #ifdef MCTS_ALPHA_BETA
         if (should_use_alpha_beta(node)) { // Check if alpha-beta search should
                                            // be used
-            Value value = do_search(pos, ss, node->alpha_beta_depth,
-                                    node->alpha_beta_depth, -VALUE_INFINITE,
-                                    VALUE_INFINITE, bestMove);
+            Value value = do_search<PV>(pos, ss, node->alpha_beta_depth,
+                                        node->alpha_beta_depth, -VALUE_INFINITE,
+                                        VALUE_INFINITE, bestMove);
             node->num_visits++;
             if (value > 0) {
                 node->num_wins++;

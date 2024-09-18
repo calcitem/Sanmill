@@ -32,9 +32,13 @@
 using Eval::evaluate;
 using std::string;
 
+// Different node types, used as a template parameter
+enum NodeType { NonPV, PV, Root };
+
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
+template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
@@ -172,7 +176,7 @@ int Thread::search()
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            TT.clear();
+            // TT.clear();
 #endif
 #endif
 
@@ -184,7 +188,7 @@ int Thread::search()
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 value = random_search(rootPos, bestMove);
             } else {
-                value = do_search(rootPos, ss, i, i, alpha, beta, bestMove);
+                value = do_search<PV>(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -244,7 +248,7 @@ next:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    TT.clear();
+    // TT.clear();
 #endif
 #endif
 
@@ -261,7 +265,8 @@ next:
     } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
         value = random_search(rootPos, bestMove);
     } else {
-        value = do_search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
+        value = do_search<PV>(rootPos, ss, d, originDepth, alpha, beta,
+                              bestMove);
     }
 
     fallbackMove = bestMove;
@@ -341,14 +346,15 @@ Value value_to_tt(Value v, int ply)
 
     if (v <= -VALUE_MATE_IN_MAX_PLY) { // 输的局面
         // 检查是否会溢出，并进行裁剪
-        if (v - ply < VALUE_INFINITE)
-            return VALUE_INFINITE;
+        if (v - ply < -VALUE_INFINITE)
+            return -VALUE_INFINITE;
         return v - ply;
     }
 
     return v; // 其他情况下，直接返回评估值
 }
 
+template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
@@ -414,7 +420,10 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                             bestValue >= beta      ? BOUND_LOWER :
                                                      BOUND_EXACT;
 
-            tte->save(posKey, adjustedValue, false /* pv */, ttBound, ttDepth,
+            // 如果当前节点是 PV 节点，则设置 pv 标志
+            bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
+
+            tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
                       MOVE_NONE, Eval::evaluate(*pos));
         }
 
@@ -429,7 +438,6 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // 初始化 MovePicker 对象
     MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE);
     mp.next_move();
-    // const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
     Move localBestMove = MOVE_NONE; // 用于在本层跟踪最佳着法
@@ -448,44 +456,18 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             epsilon = 0;
         }
 
-        if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            if (i == 0) {
-                if (after != before) {
-                    value = -do_search(pos, ss, depth - 1 + epsilon,
-                                       originDepth, -beta, -alpha, bestMove);
-                } else {
-                    value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
-                                      alpha, beta, bestMove);
-                }
-            } else {
-                if (after != before) {
-                    value = -do_search(pos, ss, depth - 1 + epsilon,
-                                       originDepth, -alpha - VALUE_PVS_WINDOW,
-                                       -alpha, bestMove);
-
-                    if (value > alpha && value < beta) {
-                        value = -do_search(pos, ss, depth - 1 + epsilon,
-                                           originDepth, -beta, -alpha,
-                                           bestMove);
-                    }
-                } else {
-                    value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
-                                      alpha, alpha + VALUE_PVS_WINDOW,
+        // 递归调用，根据当前节点是否为 PV 节点，设置下一级节点的类型
+        if (nodeType == PV && i == 0) {
+            value = -do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                   -beta, -alpha, bestMove);
+        } else {
+            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
+                                      -alpha - VALUE_PVS_WINDOW, -alpha,
                                       bestMove);
 
-                    if (value > alpha && value < beta) {
-                        value = do_search(pos, ss, depth - 1 + epsilon,
-                                          originDepth, alpha, beta, bestMove);
-                    }
-                }
-            }
-        } else {
-            if (after != before) {
-                value = -do_search(pos, ss, depth - 1 + epsilon, originDepth,
-                                   -beta, -alpha, bestMove);
-            } else {
-                value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
-                                  alpha, beta, bestMove);
+            if (value > alpha && value < beta) {
+                value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                          originDepth, -beta, -alpha, bestMove);
             }
         }
 
@@ -516,14 +498,14 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                                                  BOUND_EXACT;
 
         // 如果当前节点是 PV 节点，则设置 pv 标志
-        bool isPvNode = ttBound == BOUND_EXACT;
+        bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
 
         // 使用 value_to_tt 函数来调整 bestValue
         Value adjustedValue = value_to_tt(bestValue, ss.size());
 
         // 仅当 localBestMove 不是 MOVE_NONE 时，才保存到置换表
         if (localBestMove != MOVE_NONE) {
-            tte->save(posKey, adjustedValue, isPvNode, ttBound, ttDepth,
+            tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
                       localBestMove, Eval::evaluate(*pos));
         }
     }
@@ -551,8 +533,8 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
             beta = g;
         }
 
-        g = do_search(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW,
-                      beta, bestMove);
+        g = do_search<PV>(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW,
+                          beta, bestMove);
 
         if (g < beta) {
             upperbound = g; // fail low
