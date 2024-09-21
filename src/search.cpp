@@ -248,7 +248,7 @@ next:
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    // TT.clear();
+    TT.clear();
 #endif
 #endif
 
