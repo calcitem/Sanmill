@@ -427,6 +427,12 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
     const Depth ttDepth = depth;
 
+    // 提取 ttEval，如果存在有效的评估值
+    Value ttEval = VALUE_NONE;
+    if (ttHit && tte->eval() != 0) {
+        ttEval = static_cast<Value>(tte->eval());
+    }
+
     // 如果命中置换表，尝试使用已存储的值
     if (ttHit) {
         Depth tteDepth = tte->depth();
@@ -463,10 +469,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             bestValue -= depth;
         }
 
-        // 调整 bestValue 以适应置换表
         Value adjustedValue = value_to_tt(bestValue, ss.size());
 
-        // 保存到置换表，ev 设置为 evalValue
         if (tte) {
             Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
                             bestValue >= beta      ? BOUND_LOWER :
@@ -497,8 +501,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return VALUE_DRAW + 1;
     }
 
-    // 初始化 MovePicker 对象
-    MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE);
+    // 传递 ttEval 给 MovePicker
+    MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE, ttEval);
     mp.next_move();
     const int moveCount = mp.move_count();
 
