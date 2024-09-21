@@ -18,6 +18,9 @@
 #include "gamewindow.h"
 #include "misc.h"
 #include "position.h"
+#include "thread.h"
+#include "tt.h"
+#include "uci.h"
 
 QString APP_FILENAME_DEFAULT = "mill-pro";
 
@@ -41,8 +44,10 @@ QString getAppFileName()
 
 int main(int argc, char *argv[])
 {
+    UCI::init(Options);
     Bitboards::init();
     Position::init();
+    Threads.set(static_cast<size_t>(Options["Threads"]));
 
     QResource::registerResource("gamewindow.rcc");
 
