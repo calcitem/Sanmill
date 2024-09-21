@@ -402,23 +402,22 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     Bound type = BOUND_NONE;
 
-    bool found;
-    TTEntry *entry = TT.probe(posKey, found);
+    auto [found, ttData, ttWriter] = TT.probe(posKey);
     Value probeVal = VALUE_UNKNOWN;
 
-    if (found && depth <= entry->depth()) {
-        type = entry->bound();
+    if (found && depth <= ttData.depth) {
+        type = ttData.bound;
         switch (type) {
         case BOUND_EXACT:
-            probeVal = entry->value();
+            probeVal = ttData.value;
             break;
         case BOUND_UPPER:
-            if (entry->value() <= alpha) {
+            if (ttData.value <= alpha) {
                 probeVal = alpha;
             }
             break;
         case BOUND_LOWER:
-            if (entry->value() >= beta) {
+            if (ttData.value >= beta) {
                 probeVal = beta;
             }
             break;
@@ -595,9 +594,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     bool pv = (depth == originDepth); // 假设 pv 标志基于是否为 PV 节点
 
     // 如果没有找到匹配条目或者当前深度更高，则保存到 TT
-    if (!found || depth > entry->depth()) {
-        entry->save(posKey, bestValue, pv, bound, depth, bestMove,
-                    bestValue); // 假设 eval = bestValue
+    if (!found || depth > ttData.depth) {
+        ttWriter.write(posKey, bestValue, bound, depth, TT.generation());
     }
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 

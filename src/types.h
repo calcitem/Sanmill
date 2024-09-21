@@ -293,13 +293,22 @@ enum Piece : uint8_t {
 using Depth = int8_t;
 
 enum : int {
-    DEPTH_QS_CHECKS = 0,
-    DEPTH_QS_NO_CHECKS = -1,
-    DEPTH_QS_RECAPTURES = -5,
-
-    DEPTH_NONE = -6,
-
-    DEPTH_OFFSET = -7 // value used only for TT entry occupancy check
+    // The following DEPTH_ constants are used for transposition table entries
+    // and quiescence search move generation stages. In regular search, the
+    // depth stored in the transposition table is literal: the search depth
+    // (effort) used to make the corresponding transposition table value. In
+    // quiescence search, however, the transposition table entries only store
+    // the current quiescence move generation stage (which should thus compare
+    // lower than any regular search depth).
+    DEPTH_QS = 0,
+    // For transposition table entries where no searching at all was done
+    // (whether regular or qsearch) we use DEPTH_UNSEARCHED, which should thus
+    // compare lower than any quiescence or regular depth. DEPTH_ENTRY_OFFSET
+    // is used only for the transposition table entry occupancy check (see
+    // tt.cpp),
+    // and should thus be lower than DEPTH_UNSEARCHED.
+    DEPTH_UNSEARCHED = -2,
+    DEPTH_ENTRY_OFFSET = -3
 };
 
 enum Square : int {
