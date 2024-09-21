@@ -633,14 +633,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         pos->undo_move(ss);
 
-        // 当搜索被中断时，当前搜索结果可能不完整或不准确。返回一个中性的值（如
-        // `VALUE_ZERO`）可以避免错误地利用部分搜索结果。 对比：Stockfish
-        // 在搜索被中断时通常会安全退出，并返回当前最佳搜索结果，而不是返回一个固定值。这是因为即使搜索被中断，通常仍然有部分结果可以利用。
-        // 改进建议：考虑返回当前的 `bestValue` 或一个标识中断的特殊值
-        // VALUE_INTERRUPTED，而不是
-        // `VALUE_ZERO`，以更准确地反映当前的搜索状态。
         if (Threads.stop.load(std::memory_order_relaxed))
-            return VALUE_ZERO;
+            return bestValue;
 
         if (value > bestValue) {
             bestValue = value;
