@@ -174,9 +174,11 @@ void MovePicker::score()
 /// list of generated moves.
 Move MovePicker::next_move()
 {
+#if 0
     if (ttMove != MOVE_NONE && pos.legal(ttMove)) {
         return ttMove;
     }
+#endif
 
     endMoves = generate<LEGAL>(pos, moves);
     moveCount = static_cast<int>(endMoves - moves);
