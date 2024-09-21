@@ -14,15 +14,15 @@
 class ThreadPool;
 
 // Constants
-static constexpr size_t CACHE_LINE_SIZE = 64;
-static constexpr size_t DEFAULT_TT_MB_SIZE = 256; // Default TT size in MB
+constexpr size_t CACHE_LINE_SIZE = 64;
+constexpr size_t DEFAULT_TT_MB_SIZE = 256; // Default TT size in MB
 
 // Struct to hold the data retrieved from the TT
 struct TTData
 {
-    Value value;
-    Depth depth;
-    Bound bound;
+    Value value; // 32-bit evaluation value
+    Depth depth; // 8-bit search depth
+    Bound bound; // 8-bit bound type
 };
 
 // Aligned TTEntry to prevent false sharing and improve cache performance
@@ -41,7 +41,7 @@ struct alignas(CACHE_LINE_SIZE) TTEntry
     // Check if the TTEntry is occupied based on depth
     bool is_occupied() const;
 
-    // Save data into the TTEntry atomically
+    // Save data into the TTEntry
     void save(Key k, Value v, Bound b, Depth d, uint8_t gen);
 
     // Calculate relative age for aging mechanism
@@ -57,10 +57,10 @@ public:
 
 private:
     friend class TranspositionTable;
-    TTEntry *entry;
+    TTEntry *entry; // Pointer to the TTEntry to be written
 
     // Private constructor to ensure controlled access
-    TTWriter(TTEntry *tte)
+    explicit TTWriter(TTEntry *tte)
         : entry(tte)
     { }
 };
@@ -74,6 +74,7 @@ public:
         , table(nullptr)
         , generation_(0)
     { }
+
     ~TranspositionTable();
 
     // Initialize or resize the TT with the specified size in megabytes
@@ -100,11 +101,10 @@ public:
 private:
     friend struct TTEntry;
 
-    size_t entryCount; // Total number of TTEntries
-    TTEntry *table;    // Pointer to the TTEntries array
-
-    // Use atomic for thread-safe generation updates
-    uint8_t generation_;
+    size_t entryCount;                // Total number of TTEntries
+    TTEntry *table;                   // Pointer to the TTEntries array
+    std::atomic<uint8_t> generation_; // Atomic generation counter for thread
+                                      // safety
 };
 
 // Externally accessible TT instance
