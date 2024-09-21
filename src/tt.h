@@ -30,14 +30,14 @@
 /// pv node     1 bit
 /// bound type  2 bit
 /// move       32 bit (official SF: 16 bit)
-/// value       8 bit
-/// eval value  8 bit
+/// value      16 bit
+/// eval value 16 bit
 
 struct TTEntry
 {
     Move move() const { return (Move)move32; }
-    Value value() const { return (Value)value8; }
-    Value eval() const { return (Value)eval8; }
+    Value value() const { return (Value)value16; }
+    Value eval() const { return (Value)eval16; }
     Depth depth() const { return (Depth)depth8 + DEPTH_OFFSET; }
     bool is_pv() const { return (bool)(genBound8 & 0x4); }
     Bound bound() const { return (Bound)(genBound8 & 0x3); }
@@ -50,8 +50,8 @@ private:
     uint8_t depth8;
     uint8_t genBound8;
     int32_t move32;
-    int8_t value8;
-    int8_t eval8;
+    int16_t value16;
+    int16_t eval16;
 };
 
 /// A TranspositionTable is an array of Cluster, of size clusterCount. Each
@@ -75,11 +75,10 @@ class TranspositionTable
     // Constants used to refresh the hash table periodically
     static constexpr unsigned GENERATION_BITS = 3; // nb of bits reserved for
                                                    // other things
-    static constexpr int GENERATION_DELTA = (1
-                                             << GENERATION_BITS); // increment
-                                                                  // for
-                                                                  // generation
-                                                                  // field
+    static constexpr int GENERATION_DELTA = (1 << GENERATION_BITS); // increment
+                                                                    // for
+                                                                    // generation
+                                                                    // field
     static constexpr int GENERATION_CYCLE = 255 +
                                             (1 << GENERATION_BITS); // cycle
                                                                     // length
@@ -100,9 +99,7 @@ public:
 
     TTEntry *first_entry(const Key key) const
     {
-        // return &table[mul_hi64(key, clusterCount)].entry[0];
-        assert(clusterCount <= UINT32_MAX && "clusterCount exceeds uint32_t maximum value");
-        return &table[mul_hi32(key, clusterCount)].entry[0];
+        return &table[mul_hi64(key, clusterCount)].entry[0];
     }
 
 private:

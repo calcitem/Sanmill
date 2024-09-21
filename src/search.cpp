@@ -72,8 +72,6 @@ int ttHits = 0;
 
 int Thread::search()
 {
-
-
     Sanmill::Stack<Position> ss;
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -311,7 +309,9 @@ out:
     lastvalue = bestvalue;
     bestvalue = value;
 
-    sync_cout << "################ TT Hit Rate: " << (100.0 * ttHits / ttTotalProbes) << "% (" << ttHits << "/" << ttTotalProbes << ")" << sync_endl;
+    sync_cout << "################ TT Hit Rate: "
+              << (100.0 * ttHits / ttTotalProbes) << "% (" << ttHits << "/"
+              << ttTotalProbes << ")" << sync_endl;
     ttTotalProbes = 0;
     ttHits = 0;
 
@@ -478,60 +478,75 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 if (i == 0) {
                     if (after != before) {
                         value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                            originDepth, -beta, -alpha, bestMove);
-        } else {
-                        value = do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                            alpha, beta, bestMove);
-        }
+                                               originDepth, -beta, -alpha,
+                                               bestMove);
+                    } else {
+                        value = do_search<PV>(pos, ss, depth - 1 + epsilon,
+                                              originDepth, alpha, beta,
+                                              bestMove);
+                    }
                 } else {
                     if (after != before) {
                         value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                originDepth, -alpha - VALUE_PVS_WINDOW,
-                                                -alpha, bestMove);
+                                                  originDepth,
+                                                  -alpha - VALUE_PVS_WINDOW,
+                                                  -alpha, bestMove);
 
                         if (value > alpha && value < beta) {
-                            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                    originDepth, -beta, -alpha, bestMove);
+                            value = -do_search<NonPV>(pos, ss,
+                                                      depth - 1 + epsilon,
+                                                      originDepth, -beta,
+                                                      -alpha, bestMove);
                         }
                     } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                                alpha, alpha + VALUE_PVS_WINDOW,
-                                                bestMove);
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                 originDepth, alpha,
+                                                 alpha + VALUE_PVS_WINDOW,
+                                                 bestMove);
 
                         if (value > alpha && value < beta) {
-                            value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                    originDepth, alpha, beta, bestMove);
+                            value = do_search<NonPV>(pos, ss,
+                                                     depth - 1 + epsilon,
+                                                     originDepth, alpha, beta,
+                                                     bestMove);
                         }
                     }
                 }
-            } else {  // NonPV
+            } else { // NonPV
                 if (i == 0) {
                     if (after != before) {
                         value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                        originDepth, -beta, -alpha, bestMove);
+                                                  originDepth, -beta, -alpha,
+                                                  bestMove);
                     } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                        alpha, beta, bestMove);
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                 originDepth, alpha, beta,
+                                                 bestMove);
                     }
                 } else {
                     if (after != before) {
                         value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                        originDepth, -alpha - VALUE_PVS_WINDOW,
-                                        -alpha, bestMove);
+                                                  originDepth,
+                                                  -alpha - VALUE_PVS_WINDOW,
+                                                  -alpha, bestMove);
 
                         if (value > alpha && value < beta) {
-                            value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                            originDepth, -beta, -alpha,
-                                            bestMove);
+                            value = -do_search<NonPV>(pos, ss,
+                                                      depth - 1 + epsilon,
+                                                      originDepth, -beta,
+                                                      -alpha, bestMove);
                         }
                     } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                        alpha, alpha + VALUE_PVS_WINDOW,
-                                        bestMove);
+                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                                 originDepth, alpha,
+                                                 alpha + VALUE_PVS_WINDOW,
+                                                 bestMove);
 
                         if (value > alpha && value < beta) {
-                            value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                            originDepth, alpha, beta, bestMove);
+                            value = do_search<NonPV>(pos, ss,
+                                                     depth - 1 + epsilon,
+                                                     originDepth, alpha, beta,
+                                                     bestMove);
                         }
                     }
                 }
@@ -541,22 +556,24 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             if (nodeType == PV) {
                 if (after != before) {
                     value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                        originDepth, -beta, -alpha, bestMove);
+                                           originDepth, -beta, -alpha,
+                                           bestMove);
                 } else {
-                    value = do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                        alpha, beta, bestMove);
+                    value = do_search<PV>(pos, ss, depth - 1 + epsilon,
+                                          originDepth, alpha, beta, bestMove);
                 }
             } else {
                 if (after != before) {
                     value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                            originDepth, -beta, -alpha, bestMove);
+                                              originDepth, -beta, -alpha,
+                                              bestMove);
                 } else {
-                    value = do_search<NonPV>(pos, ss, depth - 1 + epsilon, originDepth,
-                                            alpha, beta, bestMove);
+                    value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
+                                             originDepth, alpha, beta,
+                                             bestMove);
                 }
             }
         }
-
 
         pos->undo_move(ss);
 
@@ -587,7 +604,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // 使用缓存的评估值，而不是重新计算
         if (evalValue == VALUE_NONE) {
-            evalValue = Eval::evaluate(*pos); // 如果之前没有计算评估值，在这里计算一次
+            evalValue = Eval::evaluate(
+                *pos); // 如果之前没有计算评估值，在这里计算一次
         }
 
         Value adjustedValue = value_to_tt(bestValue, ss.size());

@@ -46,8 +46,8 @@ void TTEntry::save(Key k, Value v, bool pv, Bound b, Depth d, Move m, Value ev)
         key16 = (uint16_t)k;
         depth8 = (uint8_t)(d - DEPTH_OFFSET);
         genBound8 = (uint8_t)(TT.generation8 | uint8_t(pv) << 2 | b);
-        value8 = (int8_t)v;
-        eval8 = (int8_t)ev;
+        value16 = (int16_t)v;
+        eval16 = (int16_t)ev;
     }
 }
 
