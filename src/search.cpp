@@ -35,7 +35,6 @@ using std::string;
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
-template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
@@ -176,7 +175,7 @@ int Thread::search()
         for (Depth i = depthBegin; i < originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-            // TT.clear();
+            TT.clear();
 #endif
 #endif
 
@@ -188,7 +187,7 @@ int Thread::search()
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 value = random_search(rootPos, bestMove);
             } else {
-                value = do_search<PV>(rootPos, ss, i, i, alpha, beta, bestMove);
+                value = do_search(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -265,8 +264,7 @@ next:
     } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
         value = random_search(rootPos, bestMove);
     } else {
-        value = do_search<PV>(rootPos, ss, d, originDepth, alpha, beta,
-                              bestMove);
+        value = do_search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
 
     fallbackMove = bestMove;
@@ -309,12 +307,6 @@ out:
     lastvalue = bestvalue;
     bestvalue = value;
 
-    sync_cout << "################ TT Hit Rate: "
-              << (100.0 * ttHits / ttTotalProbes) << "% (" << ttHits << "/"
-              << ttTotalProbes << ")" << sync_endl;
-    ttTotalProbes = 0;
-    ttHits = 0;
-
     return 0;
 }
 
@@ -340,70 +332,15 @@ Value random_search(Position *pos, Move &bestMove)
 
 vector<Key> posKeyHistory;
 
-// 在某个合适的头文件中声明
-Value value_to_tt(Value v, int ply);
-Value value_from_tt(Value v, int ply, int r50c);
-
-// 在源文件中实现
-Value value_to_tt(Value v, int ply)
-{
-    assert(v != VALUE_NONE);
-
-    if (v >= VALUE_TB_WIN_IN_MAX_PLY) { // 处理将死分数
-        return v + ply;
-    }
-
-    if (v <= VALUE_TB_LOSS_IN_MAX_PLY) { // 处理被将死分数
-        return v - ply;
-    }
-
-    return v; // 对于非将死分数，不做调整
-}
-
-Value value_from_tt(Value v, int ply, int r50c)
-{
-    if (v == VALUE_NONE)
-        return VALUE_NONE;
-
-    if (v >= VALUE_TB_WIN_IN_MAX_PLY) { // 从 TT 中检索到的将死分数
-        // 防止将死分数因 ply 过多而变得不准确
-        if (v >= VALUE_MATE_IN_MAX_PLY && VALUE_MATE - v > 99 - r50c)
-            return VALUE_MATE_IN_MAX_PLY - 1; // 返回一个保守的将死分数
-
-        return v - ply;
-    }
-
-    if (v <= VALUE_TB_LOSS_IN_MAX_PLY) { // 从 TT 中检索到的被将死分数
-        // 防止被将死分数因 ply 过多而变得不准确
-        if (v <= VALUE_MATED_IN_MAX_PLY && VALUE_MATE + v > 99 - r50c)
-            return VALUE_MATED_IN_MAX_PLY + 1; // 返回一个保守的被将死分数
-
-        return v + ply;
-    }
-
-    return v; // 对于非将死分数，不做调整
-}
-
-template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
 
-    // `evalValue` 被用于存储静态评估值，而 `bestValue`
-    // 可能会在后续逻辑中被修改（例如，加上深度以调整快速胜利）。 `evalValue`
-    // 本身只是一个静态评估值，不需要被调整。因此，`evalValue`
-    // 不完全是多余的，它提供了一个原始的、不受深度影响的评估值。
-    // 在档案吗代码中，`evalValue` 似乎并未在后续逻辑中被充分利用，特别是与
-    // Stockfish 的实现相比，Stockfish 更倾向于直接使用
-    // `bestValue`(存疑，似乎会使用 eval)。 如果 `evalValue`
-    // 不被后续代码有效利用，可以考虑移除它，直接使用 `bestValue`
-    // 进行评估和置换表的存储。但是需要搞清楚 Stockfish 是怎么做的。
-    Value evalValue = VALUE_NONE;
-
     Depth epsilon;
 
+#ifdef RULE_50
     if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
@@ -412,113 +349,150 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             return alpha;
         }
     }
+#endif // RULE_50
 
+#ifdef THREEFOLD_REPETITION_TEST
+    // Check if we have an upcoming move which draws by repetition, or
+    // if the opponent had an alternative move earlier to this position.
+    if (/* alpha < VALUE_DRAW && */
+        depth != originDepth && pos->has_repeated(ss)) {
+        alpha = VALUE_DRAW;
+        if (alpha >= beta) {
+            return alpha;
+        }
+    }
+#endif // THREEFOLD_REPETITION
+
+    Move ttMove = MOVE_NONE;
+
+    // Transposition table lookup
+
+#if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
+#endif
 
-    // 保存原始的 alpha 值
-    const Value alphaOrig = alpha;
+#ifdef ENDGAME_LEARNING
+    Endgame endgame;
 
-    // 探测置换表
-    bool ttHit;
-    TTEntry *tte = TT.probe(posKey, ttHit);
-    ttTotalProbes++; // 每次调用 probe 时增加总探测次数
-    if (ttHit) {
-        ttHits++; // 如果命中，增加命中次数
+    if (gameOptions.isEndgameLearningEnabled() && posKey &&
+        Thread::probeEndgameHash(posKey, endgame)) {
+        switch (endgame.type) {
+        case EndGameType::whiteWin:
+            bestValue = VALUE_MATE;
+            bestValue += depth;
+            break;
+        case EndGameType::blackWin:
+            bestValue = -VALUE_MATE;
+            bestValue -= depth;
+            break;
+        default:
+            break;
+        }
+
+        return bestValue;
     }
-    const Depth ttDepth = depth;
+#endif /* ENDGAME_LEARNING */
 
-    // 提取 ttEval，如果存在有效的评估值
-    Value ttEval = VALUE_NONE;
-    if (ttHit && tte->eval() != 0) {
-        ttEval = static_cast<Value>(tte->eval());
-    }
+#ifdef TRANSPOSITION_TABLE_ENABLE
 
-    // 如果命中置换表，尝试使用已存储的值
-    if (ttHit) {
-        Depth tteDepth = tte->depth();
-        Value raw_ttValue = tte->value();
-        Bound ttBound = tte->bound();
+    // check transposition-table
 
-        // 如果置换表中的深度足够
-        if (tteDepth >= ttDepth) {
-            // 使用 value_from_tt 调整 TT 中的值
-            Value ttValue = value_from_tt(raw_ttValue, ss.size(),
-                                          pos->rule50_count());
+    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
+                                  // and no available moves
 
-            if (ttBound == BOUND_EXACT) {
-                return ttValue;
-            } else if (ttBound == BOUND_LOWER && ttValue >= beta) {
-                return ttValue;
-            } else if (ttBound == BOUND_UPPER && ttValue <= alpha) {
-                return ttValue;
+    Bound type = BOUND_NONE;
+
+    bool found;
+    TTEntry *entry = TT.probe(posKey, found);
+    Value probeVal = VALUE_UNKNOWN;
+
+    if (found && depth <= entry->depth()) {
+        type = entry->bound();
+        switch (type) {
+        case BOUND_EXACT:
+            probeVal = entry->value();
+            break;
+        case BOUND_UPPER:
+            if (entry->value() <= alpha) {
+                probeVal = alpha;
             }
+            break;
+        case BOUND_LOWER:
+            if (entry->value() >= beta) {
+                probeVal = beta;
+            }
+            break;
+        case BOUND_NONE:
+            break;
         }
     }
 
-    // 当深度为0或者达到终止条件时，计算评估值
-    if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
-        Threads.stop.load(std::memory_order_relaxed)) {
-        // 计算评估值
-        evalValue = Eval::evaluate(*pos);
+    if (probeVal != VALUE_UNKNOWN) {
+#ifdef TRANSPOSITION_TABLE_DEBUG
+        Threads.main()->ttHitCount++;
+#endif
 
-        // 对快速胜利进行调整
-        bestValue = evalValue;
+        bestValue = probeVal;
+        return bestValue;
+    }
+#ifdef TRANSPOSITION_TABLE_DEBUG
+    if (probeVal == VALUE_UNKNOWN) {
+        Threads.main()->ttMissCount++;
+    }
+#endif
+
+#endif /* TRANSPOSITION_TABLE_ENABLE */
+
+    // process leaves
+
+    // Check for aborted search
+    // TODO(calcitem): and immediate draw
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
+                                                   // hash
+        depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
+        bestValue = Eval::evaluate(*pos);
+
+        // For win quickly
         if (bestValue > 0) {
             bestValue += depth;
         } else {
             bestValue -= depth;
         }
 
-        Value adjustedValue = value_to_tt(bestValue, ss.size());
-
-        if (tte) {
-            Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
-                            bestValue >= beta      ? BOUND_LOWER :
-                                                     BOUND_EXACT;
-
-            // 如果当前节点是 PV 节点，则设置 pv 标志
-            // 只有当边界类型为 `BOUND_EXACT` 时，评估值才被认为是精确的；如果是
-            // `BOUND_UPPER` 或 `BOUND_LOWER`，则评估值只是一个上界或下界。
-            bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
-
-            // 直接使用缓存的评估值，而不是重新评估
-            // 将 `MOVE_NONE`
-            // 作为着法保存，因为确实没有可用的着法。这样可以防止在置换表中存储无效或错误的着法信息。
-            // 在 Stockfish
-            // 中，置换表保存最佳移动（`ttMove`）通常是在成功搜索后，例如当找到一个新的最佳值时。但在进行静态评估时，可能不保存具体的移动，类似于不保存移动
-            // (`MOVE_NONE`)。
-            // 改进建议：确保在非静态评估阶段（如深度搜索完成后）正确保存
-            // `ttMove`，以充分利用置换表的优势。
-            tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                      MOVE_NONE, evalValue);
-        }
-
         return bestValue;
     }
 
+    // if this isn't the root of the search tree (where we have
+    // to pick a move and can't simply return VALUE_DRAW) then check to
+    // see if the position is a repeat. if so, we can assume that
+    // this line is a draw and return VALUE_DRAW.
     if (rule.threefoldRepetitionRule && depth != originDepth &&
         pos->has_repeated(ss)) {
+        // Add a small component to draw evaluations to avoid 3-fold blindness
         return VALUE_DRAW + 1;
     }
 
-    // 传递 ttEval 给 MovePicker
-    MovePicker mp(*pos, ttHit ? tte->move() : MOVE_NONE, ttEval);
-    mp.next_move();
+    // Initialize a MovePicker object for the current position, and prepare
+    // to search the moves.
+    MovePicker mp(*pos, ttMove);
+    const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
 
-    // `localBestMove`
-    // 有助于在当前搜索层中独立追踪最佳移动，确保递归搜索的正确性和模块化。
-    // 在递归调用中，我们不希望修改
-    // `bestMove`，因为那是用于返回根节点的最佳着法。因此，我们使用
-    // `localBestMove` 来保存当前层的最佳着法。 localBestMove
-    // 可以确保每一层次的最佳走法被正确跟踪并保存到置换表中。
-    Move localBestMove = MOVE_NONE;
+#ifndef NNUE_GENERATE_TRAINING_DATA
+    if (moveCount == 1 && depth == originDepth) {
+        bestMove = nextMove;
+        bestValue = VALUE_UNIQUE;
+        return bestValue;
+    }
+#endif /* !NNUE_GENERATE_TRAINING_DATA */
 
+    // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
 
+        // Make and search the move
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
@@ -528,153 +502,106 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             epsilon = 0;
         }
 
+        // epsilon += pos->piece_to_remove_count(pos->sideToMove);
+
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            if (nodeType == PV) {
-                if (i == 0) {
-                    if (after != before) {
-                        value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                               originDepth, -beta, -alpha,
-                                               bestMove);
-                    } else {
-                        value = do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                              originDepth, alpha, beta,
-                                              bestMove);
-                    }
+            // debugPrintf("Algorithm: PVS.\n");
+
+            if (i == 0) {
+                if (after != before) {
+                    value = -do_search(pos, ss, depth - 1 + epsilon,
+                                       originDepth, -beta, -alpha, bestMove);
                 } else {
-                    if (after != before) {
-                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                  originDepth,
-                                                  -alpha - VALUE_PVS_WINDOW,
-                                                  -alpha, bestMove);
-
-                        if (value > alpha && value < beta) {
-                            value = -do_search<NonPV>(pos, ss,
-                                                      depth - 1 + epsilon,
-                                                      originDepth, -beta,
-                                                      -alpha, bestMove);
-                        }
-                    } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                 originDepth, alpha,
-                                                 alpha + VALUE_PVS_WINDOW,
-                                                 bestMove);
-
-                        if (value > alpha && value < beta) {
-                            value = do_search<NonPV>(pos, ss,
-                                                     depth - 1 + epsilon,
-                                                     originDepth, alpha, beta,
-                                                     bestMove);
-                        }
-                    }
+                    value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
+                                      alpha, beta, bestMove);
                 }
-            } else { // NonPV
-                if (i == 0) {
-                    if (after != before) {
-                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                  originDepth, -beta, -alpha,
-                                                  bestMove);
-                    } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                 originDepth, alpha, beta,
-                                                 bestMove);
+            } else {
+                if (after != before) {
+                    value = -do_search(pos, ss, depth - 1 + epsilon,
+                                       originDepth, -alpha - VALUE_PVS_WINDOW,
+                                       -alpha, bestMove);
+
+                    if (value > alpha && value < beta) {
+                        value = -do_search(pos, ss, depth - 1 + epsilon,
+                                           originDepth, -beta, -alpha,
+                                           bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 } else {
-                    if (after != before) {
-                        value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                  originDepth,
-                                                  -alpha - VALUE_PVS_WINDOW,
-                                                  -alpha, bestMove);
+                    value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
+                                      alpha, alpha + VALUE_PVS_WINDOW,
+                                      bestMove);
 
-                        if (value > alpha && value < beta) {
-                            value = -do_search<NonPV>(pos, ss,
-                                                      depth - 1 + epsilon,
-                                                      originDepth, -beta,
-                                                      -alpha, bestMove);
-                        }
-                    } else {
-                        value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                                 originDepth, alpha,
-                                                 alpha + VALUE_PVS_WINDOW,
-                                                 bestMove);
-
-                        if (value > alpha && value < beta) {
-                            value = do_search<NonPV>(pos, ss,
-                                                     depth - 1 + epsilon,
-                                                     originDepth, alpha, beta,
-                                                     bestMove);
-                        }
+                    if (value > alpha && value < beta) {
+                        value = do_search(pos, ss, depth - 1 + epsilon,
+                                          originDepth, alpha, beta, bestMove);
+                        // assert(value >= alpha && value <= beta);
                     }
                 }
             }
         } else {
-            // 非PVS算法的情况，继续区分PV和NonPV节点类型
-            if (nodeType == PV) {
-                if (after != before) {
-                    value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                           originDepth, -beta, -alpha,
-                                           bestMove);
-                } else {
-                    value = do_search<PV>(pos, ss, depth - 1 + epsilon,
-                                          originDepth, alpha, beta, bestMove);
-                }
+            // debugPrintf("Algorithm: Alpha-Beta.\n");
+
+            if (after != before) {
+                value = -do_search(pos, ss, depth - 1 + epsilon, originDepth,
+                                   -beta, -alpha, bestMove);
             } else {
-                if (after != before) {
-                    value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                              originDepth, -beta, -alpha,
-                                              bestMove);
-                } else {
-                    value = do_search<NonPV>(pos, ss, depth - 1 + epsilon,
-                                             originDepth, alpha, beta,
-                                             bestMove);
-                }
+                value = do_search(pos, ss, depth - 1 + epsilon, originDepth,
+                                  alpha, beta, bestMove);
             }
         }
 
         pos->undo_move(ss);
 
-        if (Threads.stop.load(std::memory_order_relaxed))
-            return bestValue;
+        // assert(value > -VALUE_INFINITE && value < VALUE_INFINITE);
 
-        if (value > bestValue) {
+        // Check for a new best move
+        // Finished searching the move. If a stop occurred, the return value of
+        // the search cannot be trusted, and we return immediately without
+        // updating best move and TT.
+        if (Threads.stop.load(std::memory_order_relaxed))
+            return VALUE_ZERO;
+
+        if (value >= bestValue) {
             bestValue = value;
-            localBestMove = move; // 更新本层的最佳着法
 
             if (value > alpha) {
-                alpha = value;
+                if (depth == originDepth) {
+                    bestMove = move;
+                }
 
-                if (alpha >= beta) {
-                    break; // Beta 剪枝
+                if (value < beta) {
+                    // Update alpha! Always alpha < beta
+                    alpha = value;
+                } else {
+                    assert(value >= beta); // Fail high
+                    break;                 // Fail high
                 }
             }
         }
     }
 
-    // 在返回前保存置换表
-    // 在 Alpha-Beta 剪枝算法中，通常将搜索结果与传入的 `alpha` 和 `beta`
-    // 进行比较，以确定边界。`alphaOrig` 是原始的 `alpha` 值，在函数开始时被保存
-    // 使用 `alphaOrig` 是合理的，因为在函数逻辑中，`alpha`
-    // 可能已经被调整以反映更高的下界。为了保持置换表的一致性，比较应该基于函数入口时的
-    // `alpha` (`alphaOrig`) 而非可能被调整后的 `alpha`。 根据最初的搜索窗口
-    // `[alphaOrig, beta)`
-    // 来判断。这样可以确保置换表中的信息在原始窗口范围内是准确的，便于在后续搜索中正确地使用。
-    if (tte) {
-        Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
-                        bestValue >= beta      ? BOUND_LOWER :
-                                                 BOUND_EXACT;
-
-        bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
-
-        Value adjustedValue = value_to_tt(bestValue, ss.size());
-
-        // 保存到置换表，ev 设置为 VALUE_NONE
-        tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                  localBestMove, VALUE_NONE);
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    // 确定边界类型
+    Bound bound = BOUND_EXACT;
+    if (bestValue <= oldAlpha) {
+        bound = BOUND_UPPER;
+    } else if (bestValue >= beta) {
+        bound = BOUND_LOWER;
+    } else {
+        bound = BOUND_EXACT;
     }
 
-    // 如果在根节点，更新最佳着法
-    if (depth == originDepth && localBestMove != MOVE_NONE) {
-        bestMove = localBestMove;
+    bool pv = (depth == originDepth); // 假设 pv 标志基于是否为 PV 节点
+
+    // 如果没有找到匹配条目或者当前深度更高，则保存到 TT
+    if (!found || depth > entry->depth()) {
+        entry->save(posKey, bestValue, pv, bound, depth, bestMove,
+                    bestValue); // 假设 eval = bestValue
     }
+#endif /* TRANSPOSITION_TABLE_ENABLE */
+
+    // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
 
     return bestValue;
 }
@@ -694,8 +621,8 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
             beta = g;
         }
 
-        g = do_search<PV>(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW,
-                          beta, bestMove);
+        g = do_search(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW,
+                      beta, bestMove);
 
         if (g < beta) {
             upperbound = g; // fail low

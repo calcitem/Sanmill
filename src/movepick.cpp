@@ -34,10 +34,9 @@ void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
 /// Constructors of the MovePicker class.
 
 /// MovePicker constructor for the main search
-MovePicker::MovePicker(Position &p, Move ttm, Value te) noexcept
+MovePicker::MovePicker(Position &p, Move ttm) noexcept
     : pos(p)
     , ttMove(ttm)
-    , ttEval(te)
 { }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
@@ -54,18 +53,12 @@ void MovePicker::score()
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
 
+#ifdef TT_MOVE_ENABLE
         if (m == ttMove) {
             cur->value += RATING_TT;
-
-            // 如果 ttEval 有效，进一步提升 ttMove 的评分
-            if (ttEval != VALUE_NONE) {
-                // 假设 ttEval 越高越好，给予额外的评分提升
-                // 可以根据实际情况调整评分策略
-                cur->value += ttEval;
-            }
-
             continue;
         }
+#endif // TT_MOVE_ENABLE
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);
@@ -174,12 +167,6 @@ void MovePicker::score()
 /// list of generated moves.
 Move MovePicker::next_move()
 {
-#if 0
-    if (ttMove != MOVE_NONE && pos.legal(ttMove)) {
-        return ttMove;
-    }
-#endif
-
     endMoves = generate<LEGAL>(pos, moves);
     moveCount = static_cast<int>(endMoves - moves);
 

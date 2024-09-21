@@ -35,7 +35,6 @@
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
-template <NodeType nodeType>
 Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
@@ -186,7 +185,7 @@ Node *expand(Node *node)
 {
     Position *pos = node->position;
 
-    MovePicker mp(*pos, MOVE_NONE, VALUE_NONE);
+    MovePicker mp(*pos, MOVE_NONE);
     mp.next_move(); // Sort moves
     // const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR,
     // 1);
@@ -212,8 +211,8 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = do_search<PV>(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
-                                -VALUE_INFINITE, VALUE_INFINITE, bestMove);
+    Value value = do_search(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
+                            -VALUE_INFINITE, VALUE_INFINITE, bestMove);
 
     return value > 0;
 }
@@ -313,9 +312,9 @@ void mcts_worker(Position *pos, int max_iterations,
 #ifdef MCTS_ALPHA_BETA
         if (should_use_alpha_beta(node)) { // Check if alpha-beta search should
                                            // be used
-            Value value = do_search<PV>(pos, ss, node->alpha_beta_depth,
-                                        node->alpha_beta_depth, -VALUE_INFINITE,
-                                        VALUE_INFINITE, bestMove);
+            Value value = do_search(pos, ss, node->alpha_beta_depth,
+                                    node->alpha_beta_depth, -VALUE_INFINITE,
+                                    VALUE_INFINITE, bestMove);
             node->num_visits++;
             if (value > 0) {
                 node->num_wins++;
@@ -382,7 +381,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
         }
     }
 
-    MovePicker mp(*pos, MOVE_NONE, VALUE_NONE);
+    MovePicker mp(*pos, MOVE_NONE);
     mp.next_move();
 
     int best_move_index = 0;

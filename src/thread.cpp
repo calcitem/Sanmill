@@ -183,7 +183,7 @@ void Thread::setAi(Position *p)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
-    // TT::clear(); // TODO(tt): Clear.
+    TT.clear();
 #endif
 #endif
 }

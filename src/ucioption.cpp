@@ -219,7 +219,7 @@ void init(OptionsMap &o)
                                      "Both",
                                      "Both");
     o["Threads"] << Option(1, 1, 512, on_threads);
-    o["Hash"] << Option(16, 1, MaxHashMB, on_hash_size);
+    o["Hash"] << Option(128, 1, MaxHashMB, on_hash_size);
     o["Clear Hash"] << Option(on_clear_hash);
     o["Ponder"] << Option(false);
     o["MultiPV"] << Option(1, 1, 500);
