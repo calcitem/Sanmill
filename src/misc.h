@@ -150,8 +150,8 @@ public:
 constexpr uint64_t mul_hi64(uint64_t a, uint64_t b)
 {
 #if defined(__GNUC__) && defined(IS_64BIT)
-    __extension__ typedef unsigned __int128 uint128;
-    return ((uint128)a * (uint128)b) >> 64;
+    __extension__ using uint128 = unsigned __int128;
+    return (uint128(a) * uint128(b)) >> 64;
 #else
     const uint64_t aL = static_cast<uint32_t>(a), aH = a >> 32;
     const uint64_t bL = static_cast<uint32_t>(b), bH = b >> 32;

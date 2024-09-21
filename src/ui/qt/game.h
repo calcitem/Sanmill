@@ -27,6 +27,7 @@
 #define GAME_H_INCLUDED
 
 #include <functional>
+#include <iostream>
 #include <map>
 #include <vector>
 

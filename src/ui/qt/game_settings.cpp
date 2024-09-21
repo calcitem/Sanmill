@@ -45,18 +45,37 @@
 
 using std::to_string;
 
+QString getExecutableDir()
+{
+    QString executablePath = QCoreApplication::applicationFilePath();
+    QFileInfo fileInfo(executablePath);
+    return QDir::toNativeSeparators(fileInfo.absolutePath());
+}
+
+QString getSettingsFilename(const QString &settingsFile)
+{
+    QString executableDir = getExecutableDir();
+    QDir dir(executableDir);
+    QString settingsFilename = dir.filePath(settingsFile);
+    return QDir::toNativeSeparators(settingsFilename);
+}
+
 void Game::loadSettings()
 {
     bool empty = false;
 
-    const QFileInfo file(SETTINGS_FILE);
+    QString settingsFilename = getSettingsFilename(SETTINGS_FILE);
+
+    qDebug() << "Settings File Path:" << settingsFilename;
+
+    const QFileInfo file(settingsFilename);
     if (!file.exists()) {
-        cout << SETTINGS_FILE.toStdString() << " is not exists, create it."
+        cout << settingsFilename.toStdString() << " is not exists, create it."
              << std::endl;
         empty = true;
     }
 
-    settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
+    settings = new QSettings(settingsFilename, QSettings::IniFormat);
 
     setEngineWhite(empty ? false :
                            settings->value("Options/WhiteIsAiPlayer").toBool());
