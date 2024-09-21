@@ -340,24 +340,48 @@ Value random_search(Position *pos, Move &bestMove)
 
 vector<Key> posKeyHistory;
 
-// 实现 value_to_tt 函数，防止溢出
+// 在某个合适的头文件中声明
+Value value_to_tt(Value v, int ply);
+Value value_from_tt(Value v, int ply, int r50c);
+
+// 在源文件中实现
 Value value_to_tt(Value v, int ply)
 {
-    if (v >= VALUE_MATE_IN_MAX_PLY) { // 赢的局面
-        // 检查是否会溢出，并进行裁剪
-        if (v + ply > VALUE_INFINITE)
-            return VALUE_INFINITE;
+    assert(v != VALUE_NONE);
+
+    if (v >= VALUE_TB_WIN_IN_MAX_PLY) { // 处理将死分数
         return v + ply;
     }
 
-    if (v <= -VALUE_MATE_IN_MAX_PLY) { // 输的局面
-        // 检查是否会溢出，并进行裁剪
-        if (v - ply < -VALUE_INFINITE)
-            return -VALUE_INFINITE;
+    if (v <= VALUE_TB_LOSS_IN_MAX_PLY) { // 处理被将死分数
         return v - ply;
     }
 
-    return v; // 其他情况下，直接返回评估值
+    return v; // 对于非将死分数，不做调整
+}
+
+Value value_from_tt(Value v, int ply, int r50c)
+{
+    if (v == VALUE_NONE)
+        return VALUE_NONE;
+
+    if (v >= VALUE_TB_WIN_IN_MAX_PLY) { // 从 TT 中检索到的将死分数
+        // 防止将死分数因 ply 过多而变得不准确
+        if (v >= VALUE_MATE_IN_MAX_PLY && VALUE_MATE - v > 99 - r50c)
+            return VALUE_MATE_IN_MAX_PLY - 1; // 返回一个保守的将死分数
+
+        return v - ply;
+    }
+
+    if (v <= VALUE_TB_LOSS_IN_MAX_PLY) { // 从 TT 中检索到的被将死分数
+        // 防止被将死分数因 ply 过多而变得不准确
+        if (v <= VALUE_MATED_IN_MAX_PLY && VALUE_MATE + v > 99 - r50c)
+            return VALUE_MATED_IN_MAX_PLY + 1; // 返回一个保守的被将死分数
+
+        return v + ply;
+    }
+
+    return v; // 对于非将死分数，不做调整
 }
 
 template <NodeType nodeType>
@@ -406,11 +430,15 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // 如果命中置换表，尝试使用已存储的值
     if (ttHit) {
         Depth tteDepth = tte->depth();
-        Value ttValue = tte->value();
+        Value raw_ttValue = tte->value();
         Bound ttBound = tte->bound();
 
         // 如果置换表中的深度足够
         if (tteDepth >= ttDepth) {
+            // 使用 value_from_tt 调整 TT 中的值
+            Value ttValue = value_from_tt(raw_ttValue, ss.size(),
+                                          pos->rule50_count());
+
             if (ttBound == BOUND_EXACT) {
                 return ttValue;
             } else if (ttBound == BOUND_LOWER && ttValue >= beta) {
@@ -440,12 +468,14 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // 在这里保存置换表
         if (tte) {
-            Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
-                            bestValue >= beta      ? BOUND_LOWER :
-                                                BOUND_EXACT; // 问题：这里和
-                                                             // alphaOrig
-                                                             // 比较，是正确的吗？不是和
-                                                             // alpha 比较吗？
+            Bound ttBound = bestValue <= alphaOrig ?
+                                BOUND_UPPER :
+                            bestValue >= beta ?
+                                BOUND_LOWER :
+                                BOUND_EXACT; // 问题：这里和
+                                             // alphaOrig
+                                             // 比较，是正确的吗？不是和
+                                             // alpha 比较吗？
 
             // 如果当前节点是 PV 节点，则设置 pv 标志
             // 只有当边界类型为 `BOUND_EXACT` 时，评估值才被认为是精确的；如果是
