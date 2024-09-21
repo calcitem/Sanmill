@@ -463,19 +463,14 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             bestValue -= depth;
         }
 
-        // 使用 value_to_tt 函数来调整 bestValue
+        // 调整 bestValue 以适应置换表
         Value adjustedValue = value_to_tt(bestValue, ss.size());
 
-        // 在这里保存置换表
+        // 保存到置换表，ev 设置为 evalValue
         if (tte) {
-            Bound ttBound = bestValue <= alphaOrig ?
-                                BOUND_UPPER :
-                            bestValue >= beta ?
-                                BOUND_LOWER :
-                                BOUND_EXACT; // 问题：这里和
-                                             // alphaOrig
-                                             // 比较，是正确的吗？不是和
-                                             // alpha 比较吗？
+            Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
+                            bestValue >= beta      ? BOUND_LOWER :
+                                                     BOUND_EXACT;
 
             // 如果当前节点是 PV 节点，则设置 pv 标志
             // 只有当边界类型为 `BOUND_EXACT` 时，评估值才被认为是精确的；如果是
@@ -665,16 +660,11 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
 
-        // 使用缓存的评估值，而不是重新计算
-        if (evalValue == VALUE_NONE) {
-            evalValue = Eval::evaluate(
-                *pos); // 如果之前没有计算评估值，在这里计算一次
-        }
-
         Value adjustedValue = value_to_tt(bestValue, ss.size());
 
+        // 保存到置换表，ev 设置为 VALUE_NONE
         tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                  localBestMove, evalValue);
+                  localBestMove, VALUE_NONE);
     }
 
     // 如果在根节点，更新最佳着法
