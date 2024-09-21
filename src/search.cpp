@@ -63,12 +63,17 @@ void Search::clear()
 extern Value nnueTrainingDataBestValue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
+int ttTotalProbes = 0;
+int ttHits = 0;
+
 /// Thread::search() is the main iterative deepening loop. It calls search()
 /// repeatedly with increasing depth until the allocated thinking time has been
 /// consumed, the user stops the search, or the maximum search depth is reached.
 
 int Thread::search()
 {
+
+
     Sanmill::Stack<Position> ss;
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -306,6 +311,10 @@ out:
     lastvalue = bestvalue;
     bestvalue = value;
 
+    sync_cout << "################ TT Hit Rate: " << (100.0 * ttHits / ttTotalProbes) << "% (" << ttHits << "/" << ttTotalProbes << ")" << sync_endl;
+    ttTotalProbes = 0;
+    ttHits = 0;
+
     return 0;
 }
 
@@ -378,6 +387,10 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // 探测置换表
     bool ttHit;
     TTEntry *tte = TT.probe(posKey, ttHit);
+    ttTotalProbes++; // 每次调用 probe 时增加总探测次数
+    if (ttHit) {
+        ttHits++; // 如果命中，增加命中次数
+    }
     const Depth ttDepth = depth;
 
     // 如果命中置换表，尝试使用已存储的值
