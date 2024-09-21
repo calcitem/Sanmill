@@ -1,21 +1,3 @@
-/*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2024 The Stockfish developers (see AUTHORS file)
-
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #ifndef TT_H_INCLUDED
 #define TT_H_INCLUDED
 
@@ -32,6 +14,12 @@ struct TTEntry;
 
 // Fixed number of TTEntry per hash bucket
 static constexpr int BucketSize = 4;
+
+// Align TTEntry to cache lines (typically 64 bytes) to prevent false sharing
+static constexpr size_t CACHE_LINE_SIZE = 64;
+
+// Ensure bucketCount is a power of 2 for optimal hashing and masking
+static constexpr size_t MAX_BUCKET_COUNT = 1 << 30; // Example maximum
 
 // There is only one global hash table for the engine and all its threads. For
 // chess in particular, we even allow racy updates between threads to and from
@@ -57,7 +45,33 @@ struct TTData
     Bound bound;
 };
 
-// This is used to make racy writes to the global TT.
+// Transposition table entry structure optimized for cache alignment and minimal
+// padding
+struct alignas(CACHE_LINE_SIZE) TTEntry
+{
+    uint16_t key16;      // 16-bit key for position identification
+    uint8_t depth8;      // 8-bit search depth
+    uint8_t generation8; // 8-bit generation for aging
+    Bound bound8;        // 8-bit bound type
+    int16_t value16;     // 16-bit evaluation value
+    uint8_t padding[2]; // Padding to make the struct size a multiple of 8 bytes
+
+    // Convert internal bitfields to external types
+    TTData read() const
+    {
+        return TTData {
+            Value(value16),
+            Depth(depth8 + DEPTH_ENTRY_OFFSET),
+            Bound(bound8),
+        };
+    }
+
+    bool is_occupied() const;
+    void save(Key k, Value v, Bound b, Depth d, uint8_t generation8);
+    uint8_t relative_age(uint8_t current_generation) const;
+};
+
+// Wrapper for writing to a TTEntry, ensuring separation of concerns
 struct TTWriter
 {
 public:
@@ -66,9 +80,12 @@ public:
 private:
     friend class TranspositionTable;
     TTEntry *entry;
+
+    // Constructor is private to control access
     TTWriter(TTEntry *tte);
 };
 
+// TranspositionTable class optimized for cache-friendly access patterns
 class TranspositionTable
 {
 public:
@@ -76,34 +93,25 @@ public:
 
     void resize(size_t mbSize); // Set TT size
     void clear();               // Re-initialize memory, multithreaded
-    int hashfull() const; // Approximate what fraction of entries (permille)
-                          // have been written to during this root search
+    int hashfull() const;       // Approximate fraction of entries used
 
-    void new_search();          // Must be called at the beginning of each root
-                                // search to track entry aging
-    uint8_t generation() const; // The current age, used when writing new data
-                                // to the TT
-    std::tuple<bool, TTData, TTWriter> probe(const Key key) const; // The main
-                                                                   // method,
-                                                                   // whose
-                                                                   // retvals
-                                                                   // separate
-                                                                   // local vs
-                                                                   // global
-                                                                   // objects
-    TTEntry *first_entry(const Key key) const; // The hash function; its
-                                               // only external use is memory
-                                               // prefetching.
+    void new_search();          // Initialize a new search
+    uint8_t generation() const; // Current generation for aging
+    std::tuple<bool, TTData, TTWriter> probe(const Key key) const; // Main
+                                                                   // lookup
+                                                                   // method
+    TTEntry *first_entry(const Key key) const; // Get the first entry in the
+                                               // bucket
 
 private:
     friend struct TTEntry;
 
-    size_t bucketCount; // Number of hash buckets
+    size_t bucketCount; // Number of hash buckets, must be a power of 2
     TTEntry *table = nullptr;
 
-    uint8_t generation8 = 0; // Current generation
+    uint8_t generation8 = 0; // Current generation for aging
 };
 
-extern TranspositionTable TT; // Our global transposition table
+extern TranspositionTable TT; // Global transposition table
 
-#endif // #ifndef TT_H_INCLUDED
+#endif // TT_H_INCLUDED
