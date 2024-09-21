@@ -1,21 +1,3 @@
-/*
-  Stockfish, a UCI chess playing engine derived from Glaurung 2.1
-  Copyright (C) 2004-2024 The Stockfish developers (see AUTHORS file)
-
-  Stockfish is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
-
-  Stockfish is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #include "tt.h"
 
 #include <cassert>
@@ -23,6 +5,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <vector>
+#include <thread>
 
 #include "memory.h"
 #include "misc.h"
@@ -33,13 +17,13 @@ extern UCI::OptionsMap Options; // Global object
 
 TranspositionTable TT; // Our global transposition table
 
-// TTEntry struct is the 10 bytes transposition table entry, defined as below:
+// TTEntry struct is the 11 bytes transposition table entry, defined as below:
 //
 // key        16 bit
 // value      16 bit
 // depth       8 bit
-// generation  5 bit
-// bound type  2 bit
+// generation   8 bit
+// bound       8 bit
 //
 // These fields are in the same order as accessed by TT::probe(), since memory
 // is fastest sequentially. Equally, the store order in save() matches this
@@ -53,14 +37,14 @@ struct TTEntry
         return TTData {
             Value(value16),
             Depth(depth8 + DEPTH_ENTRY_OFFSET),
-            Bound(genBound8),
+            Bound(bound8),
         };
     }
 
     bool is_occupied() const;
     void save(Key k, Value v, Bound b, Depth d, uint8_t generation8);
     // The returned age is a multiple of TranspositionTable::GENERATION_DELTA
-    uint8_t relative_age(const uint8_t generation8) const;
+    uint8_t relative_age(uint8_t current_generation) const;
 
 private:
     friend class TranspositionTable;
@@ -68,20 +52,9 @@ private:
     uint16_t key16;
     int16_t value16;
     uint8_t depth8;
-    uint8_t genBound8;
+    uint8_t generation8;
+    Bound bound8;
 };
-
-// `genBound8` is where most of the details are. We use the following constants
-// to manipulate 5 leading generation bits and 3 trailing miscellaneous bits.
-
-// These bits are reserved for other things.
-static constexpr unsigned GENERATION_BITS = 3;
-// increment for generation field
-static constexpr int GENERATION_DELTA = (1 << GENERATION_BITS);
-// cycle length
-static constexpr int GENERATION_CYCLE = 255 + GENERATION_DELTA;
-// mask to pull out generation number
-static constexpr int GENERATION_MASK = (0xFF << GENERATION_BITS) & 0xFF;
 
 // DEPTH_ENTRY_OFFSET exists because 1) we use `bool(depth8)` as the occupancy
 // check, but 2) we need to store negative depths for QS. (`depth8` is the only
@@ -89,7 +62,7 @@ static constexpr int GENERATION_MASK = (0xFF << GENERATION_BITS) & 0xFF;
 // than 1<<8 less the offset, as asserted in `save`.)
 bool TTEntry::is_occupied() const
 {
-    return bool(depth8);
+    return depth8 != 0;
 }
 
 // Populates the TTEntry with a new node's data, possibly
@@ -98,29 +71,26 @@ void TTEntry::save(Key k, Value v, Bound b, Depth d, uint8_t generation8)
 {
     // Overwrite less valuable entries (cheapest checks first)
     if (b == BOUND_EXACT || uint16_t(k) != key16 ||
-        d - DEPTH_ENTRY_OFFSET > depth8 || // 问题：这个公式对吗？
-        relative_age(generation8)) {
+        d - DEPTH_ENTRY_OFFSET > depth8 || relative_age(generation8)) {
         assert(d > DEPTH_ENTRY_OFFSET);
         assert(d < 256 + DEPTH_ENTRY_OFFSET);
 
         key16 = uint16_t(k);
         depth8 = uint8_t(d - DEPTH_ENTRY_OFFSET);
-        genBound8 = uint8_t(generation8 | b);
+        this->generation8 = generation8;
+        bound8 = b;
         value16 = int16_t(v);
     }
 }
 
-uint8_t TTEntry::relative_age(const uint8_t generation8) const
+uint8_t TTEntry::relative_age(uint8_t current_generation) const
 {
-    // Due to our packed storage format for generation and its cyclic
-    // nature we add GENERATION_CYCLE (256 is the modulus, plus what
-    // is needed to keep the unrelated lowest n bits from affecting
-    // the result) to calculate the entry age correctly even after
-    // generation8 overflows into the next cycle.
-    return (GENERATION_CYCLE + generation8 - genBound8) & GENERATION_MASK;
+    // Due to the cyclic nature of generation8, calculate the relative age
+    // correctly
+    return (current_generation - generation8);
 }
 
-// TTWriter is but a very thin wrapper around the pointer
+// TTWriter is a thin wrapper around the pointer
 TTWriter::TTWriter(TTEntry *tte)
     : entry(tte)
 { }
@@ -130,25 +100,14 @@ void TTWriter::write(Key k, Value v, Bound b, Depth d, uint8_t generation8)
     entry->save(k, v, b, d, generation8);
 }
 
-// A TranspositionTable is an array of Cluster, of size clusterCount. Each
-// cluster consists of ClusterSize number of TTEntry. Each non-empty TTEntry
-// contains information on exactly one position. The size of a Cluster should
-// divide the size of a cache line for best performance, as the cacheline is
-// prefetched when possible.
-
-static constexpr int ClusterSize = 5;
-
-struct Cluster
-{
-    TTEntry entry[ClusterSize];
-    char padding[2]; // Pad to 32 bytes
-};
-
-static_assert(sizeof(Cluster) == 32, "Suboptimal Cluster size");
+// A TranspositionTable is a flat array of TTEntry.
+// Each TTEntry contains information on exactly one position.
+// The size of the TranspositionTable should be a power of 2 for optimal
+// hashing.
 
 /// TranspositionTable::resize() sets the size of the transposition table,
 /// measured in megabytes. Transposition table consists of a power of 2 number
-/// of clusters and each cluster consists of ClusterSize number of TTEntry.
+/// of TTEntry * BucketSize.
 
 void TranspositionTable::resize(size_t mbSize)
 {
@@ -156,10 +115,19 @@ void TranspositionTable::resize(size_t mbSize)
 
     aligned_large_pages_free(table);
 
-    clusterCount = mbSize * 1024 * 1024 / sizeof(Cluster);
+    // Calculate the number of hash buckets
+    bucketCount = (mbSize * 1024 * 1024) / (sizeof(TTEntry) * BucketSize);
 
-    table = static_cast<Cluster *>(
-        aligned_large_pages_alloc(clusterCount * sizeof(Cluster)));
+    // Ensure bucketCount is a power of 2 for optimal hashing
+    // If not, adjust it to the next power of 2
+    size_t originalBucketCount = bucketCount;
+    size_t power = 1;
+    while (power < bucketCount)
+        power <<= 1;
+    bucketCount = power;
+
+    table = static_cast<TTEntry *>(
+        aligned_large_pages_alloc(bucketCount * BucketSize * sizeof(TTEntry)));
     if (!table) {
         std::cerr << "Failed to allocate " << mbSize
                   << "MB for transposition table." << std::endl;
@@ -170,8 +138,7 @@ void TranspositionTable::resize(size_t mbSize)
 }
 
 /// TranspositionTable::clear() initializes the entire transposition table to
-/// zero,
-//  in a multi-threaded way.
+/// zero, in a multi-threaded way.
 
 void TranspositionTable::clear()
 {
@@ -185,13 +152,16 @@ void TranspositionTable::clear()
                 WinProcGroup::bindThisThread(idx);
 
             // Each thread will zero its part of the hash table
-            const size_t stride = size_t(clusterCount / Options["Threads"]),
-                         start = size_t(stride * idx),
-                         len = idx != Options["Threads"] - 1 ?
-                                   stride :
-                                   clusterCount - start;
+            const size_t stride = bucketCount / Options["Threads"];
+            const size_t start = stride * idx;
+            const size_t end = (idx == Options["Threads"] - 1) ? bucketCount :
+                                                                 start + stride;
 
-            std::memset(&table[start], 0, len * sizeof(Cluster));
+            for (size_t i = start; i < end; ++i) {
+                for (int j = 0; j < BucketSize; ++j) {
+                    std::memset(&table[i * BucketSize + j], 0, sizeof(TTEntry));
+                }
+            }
         });
     }
 
@@ -200,24 +170,27 @@ void TranspositionTable::clear()
 }
 
 // Returns an approximation of the hashtable
-// occupation during a search. The hash is x permill full, as per UCI protocol.
+// occupation during a search. The hash is x permille full, as per UCI protocol.
 // Only counts entries which match the current generation.
 int TranspositionTable::hashfull() const
 {
     int cnt = 0;
-    for (int i = 0; i < 1000; ++i)
-        for (int j = 0; j < ClusterSize; ++j)
-            cnt += table[i].entry[j].is_occupied() &&
-                   (table[i].entry[j].genBound8 & GENERATION_MASK) ==
-                       generation8;
+    for (int i = 0; i < 1000; ++i) {
+        size_t index = i % bucketCount; // Ensure index is within bucketCount
+        for (int j = 0; j < BucketSize; ++j) {
+            const TTEntry &entry = table[index * BucketSize + j];
+            if (entry.is_occupied() && entry.generation8 == generation8)
+                cnt++;
+        }
+    }
 
-    return cnt / ClusterSize;
+    return cnt / BucketSize;
 }
 
 void TranspositionTable::new_search()
 {
-    // increment by delta to keep lower bits as is
-    generation8 += GENERATION_DELTA;
+    // Increment generation to track aging
+    generation8++;
 }
 
 uint8_t TranspositionTable::generation() const
@@ -229,33 +202,41 @@ uint8_t TranspositionTable::generation() const
 // table. It returns true if the position is found.
 // Otherwise, it returns false and a pointer to an empty or least valuable
 // TTEntry to be replaced later. The replace value of an entry is calculated as
-// its depth minus 8 times its relative age. TTEntry t1 is considered more
+// its depth minus its age. TTEntry t1 is considered more
 // valuable than TTEntry t2 if its replace value is greater than that of t2.
 std::tuple<bool, TTData, TTWriter>
 TranspositionTable::probe(const Key key) const
 {
     TTEntry *const tte = first_entry(key);
-    const uint16_t key16 = uint16_t(key); // Use the low 16 bits as key inside
-                                          // the cluster
+    const uint16_t key16 = uint16_t(key); // Use the low 16 bits as key
 
-    for (int i = 0; i < ClusterSize; ++i)
-        if (tte[i].key16 == key16)
+    TTEntry *replace = nullptr;
+    int min_replace_value = INT32_MAX;
+
+    for (int i = 0; i < BucketSize; ++i) {
+        TTEntry &entry = tte[i];
+        if (entry.key16 == key16 && entry.is_occupied()) {
             // This gap is the main place for read races.
             // After `read()` completes that copy is final, but may be
             // self-inconsistent.
-            return {tte[i].is_occupied(), tte[i].read(), TTWriter(&tte[i])};
+            return {true, entry.read(), TTWriter(&entry)};
+        }
 
-    // Find an entry to be replaced according to the replacement strategy
-    TTEntry *replace = tte;
-    for (int i = 1; i < ClusterSize; ++i)
-        if (replace->depth8 - replace->relative_age(generation8) * 2 >
-            tte[i].depth8 - tte[i].relative_age(generation8) * 2)
-            replace = &tte[i];
+        // Calculate replace value based on depth and age
+        int replace_value = entry.depth8 - entry.relative_age(generation8) * 2;
+        if (replace_value < min_replace_value) {
+            min_replace_value = replace_value;
+            replace = &entry;
+        }
+    }
 
+    // If no exact match found, return the least valuable entry to replace
     return {false, TTData(), TTWriter(replace)};
 }
 
 TTEntry *TranspositionTable::first_entry(const Key key) const
 {
-    return &table[mul_hi64(key, clusterCount)].entry[0];
+    // Simple modulo-based hashing using higher bits for better distribution
+    size_t index = mul_hi64(key, bucketCount);
+    return &const_cast<TTEntry *>(table)[index * BucketSize];
 }

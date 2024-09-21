@@ -29,7 +29,9 @@
 
 class ThreadPool;
 struct TTEntry;
-struct Cluster;
+
+// Fixed number of TTEntry per hash bucket
+static constexpr int BucketSize = 4;
 
 // There is only one global hash table for the engine and all its threads. For
 // chess in particular, we even allow racy updates between threads to and from
@@ -77,8 +79,8 @@ public:
     int hashfull() const; // Approximate what fraction of entries (permille)
                           // have been written to during this root search
 
-    void new_search(); // This must be called at the beginning of each root
-                       // search to track entry aging
+    void new_search();          // Must be called at the beginning of each root
+                                // search to track entry aging
     uint8_t generation() const; // The current age, used when writing new data
                                 // to the TT
     std::tuple<bool, TTData, TTWriter> probe(const Key key) const; // The main
@@ -89,17 +91,17 @@ public:
                                                                    // local vs
                                                                    // global
                                                                    // objects
-    TTEntry *first_entry(const Key key) const; // This is the hash function; its
+    TTEntry *first_entry(const Key key) const; // The hash function; its
                                                // only external use is memory
                                                // prefetching.
 
 private:
     friend struct TTEntry;
 
-    size_t clusterCount;
-    Cluster *table = nullptr;
+    size_t bucketCount; // Number of hash buckets
+    TTEntry *table = nullptr;
 
-    uint8_t generation8 = 0; // Size must be not bigger than TTEntry::genBound8
+    uint8_t generation8 = 0; // Current generation
 };
 
 extern TranspositionTable TT; // Our global transposition table
