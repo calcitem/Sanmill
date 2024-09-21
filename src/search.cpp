@@ -366,7 +366,17 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
-    Value evalValue = VALUE_NONE; // 用于缓存评估值
+
+    // `evalValue` 被用于存储静态评估值，而 `bestValue`
+    // 可能会在后续逻辑中被修改（例如，加上深度以调整快速胜利）。 `evalValue`
+    // 本身只是一个静态评估值，不需要被调整。因此，`evalValue`
+    // 不完全是多余的，它提供了一个原始的、不受深度影响的评估值。
+    // 在档案吗代码中，`evalValue` 似乎并未在后续逻辑中被充分利用，特别是与
+    // Stockfish 的实现相比，Stockfish 更倾向于直接使用
+    // `bestValue`(存疑，似乎会使用 eval)。 如果 `evalValue`
+    // 不被后续代码有效利用，可以考虑移除它，直接使用 `bestValue`
+    // 进行评估和置换表的存储。但是需要搞清楚 Stockfish 是怎么做的。
+    Value evalValue = VALUE_NONE;
 
     Depth epsilon;
 
@@ -414,10 +424,8 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // 当深度为0或者达到终止条件时，计算评估值
     if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
         Threads.stop.load(std::memory_order_relaxed)) {
-        // 只在需要的时候调用评估函数，并缓存结果
-        if (evalValue == VALUE_NONE) {
-            evalValue = Eval::evaluate(*pos);
-        }
+        // 计算评估值
+        evalValue = Eval::evaluate(*pos);
 
         // 对快速胜利进行调整
         bestValue = evalValue;
@@ -434,12 +442,24 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         if (tte) {
             Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
                             bestValue >= beta      ? BOUND_LOWER :
-                                                     BOUND_EXACT;
+                                                BOUND_EXACT; // 问题：这里和
+                                                             // alphaOrig
+                                                             // 比较，是正确的吗？不是和
+                                                             // alpha 比较吗？
 
             // 如果当前节点是 PV 节点，则设置 pv 标志
+            // 只有当边界类型为 `BOUND_EXACT` 时，评估值才被认为是精确的；如果是
+            // `BOUND_UPPER` 或 `BOUND_LOWER`，则评估值只是一个上界或下界。
             bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
 
             // 直接使用缓存的评估值，而不是重新评估
+            // 将 `MOVE_NONE`
+            // 作为着法保存，因为确实没有可用的着法。这样可以防止在置换表中存储无效或错误的着法信息。
+            // 在 Stockfish
+            // 中，置换表保存最佳移动（`ttMove`）通常是在成功搜索后，例如当找到一个新的最佳值时。但在进行静态评估时，可能不保存具体的移动，类似于不保存移动
+            // (`MOVE_NONE`)。
+            // 改进建议：确保在非静态评估阶段（如深度搜索完成后）正确保存
+            // `ttMove`，以充分利用置换表的优势。
             tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
                       MOVE_NONE, evalValue);
         }
@@ -457,7 +477,13 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     mp.next_move();
     const int moveCount = mp.move_count();
 
-    Move localBestMove = MOVE_NONE; // 用于在本层跟踪最佳着法
+    // `localBestMove`
+    // 有助于在当前搜索层中独立追踪最佳移动，确保递归搜索的正确性和模块化。
+    // 在递归调用中，我们不希望修改
+    // `bestMove`，因为那是用于返回根节点的最佳着法。因此，我们使用
+    // `localBestMove` 来保存当前层的最佳着法。 localBestMove
+    // 可以确保每一层次的最佳走法被正确跟踪并保存到置换表中。
+    Move localBestMove = MOVE_NONE;
 
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
@@ -577,6 +603,12 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         pos->undo_move(ss);
 
+        // 当搜索被中断时，当前搜索结果可能不完整或不准确。返回一个中性的值（如
+        // `VALUE_ZERO`）可以避免错误地利用部分搜索结果。 对比：Stockfish
+        // 在搜索被中断时通常会安全退出，并返回当前最佳搜索结果，而不是返回一个固定值。这是因为即使搜索被中断，通常仍然有部分结果可以利用。
+        // 改进建议：考虑返回当前的 `bestValue` 或一个标识中断的特殊值
+        // VALUE_INTERRUPTED，而不是
+        // `VALUE_ZERO`，以更准确地反映当前的搜索状态。
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
@@ -595,6 +627,13 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
     // 在返回前保存置换表
+    // 在 Alpha-Beta 剪枝算法中，通常将搜索结果与传入的 `alpha` 和 `beta`
+    // 进行比较，以确定边界。`alphaOrig` 是原始的 `alpha` 值，在函数开始时被保存
+    // 使用 `alphaOrig` 是合理的，因为在函数逻辑中，`alpha`
+    // 可能已经被调整以反映更高的下界。为了保持置换表的一致性，比较应该基于函数入口时的
+    // `alpha` (`alphaOrig`) 而非可能被调整后的 `alpha`。 根据最初的搜索窗口
+    // `[alphaOrig, beta)`
+    // 来判断。这样可以确保置换表中的信息在原始窗口范围内是准确的，便于在后续搜索中正确地使用。
     if (tte) {
         Bound ttBound = bestValue <= alphaOrig ? BOUND_UPPER :
                         bestValue >= beta      ? BOUND_LOWER :
@@ -609,10 +648,9 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         }
 
         Value adjustedValue = value_to_tt(bestValue, ss.size());
-        if (localBestMove != MOVE_NONE) {
-            tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                      localBestMove, evalValue);
-        }
+
+        tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
+                  localBestMove, evalValue);
     }
 
     // 如果在根节点，更新最佳着法
