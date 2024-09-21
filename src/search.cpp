@@ -357,6 +357,7 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
+    Value evalValue = VALUE_NONE; // 用于缓存评估值
 
     Depth epsilon;
 
@@ -397,11 +398,16 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         }
     }
 
+    // 当深度为0或者达到终止条件时，计算评估值
     if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
         Threads.stop.load(std::memory_order_relaxed)) {
-        bestValue = Eval::evaluate(*pos);
+        // 只在需要的时候调用评估函数，并缓存结果
+        if (evalValue == VALUE_NONE) {
+            evalValue = Eval::evaluate(*pos);
+        }
 
         // 对快速胜利进行调整
+        bestValue = evalValue;
         if (bestValue > 0) {
             bestValue += depth;
         } else {
@@ -420,8 +426,9 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             // 如果当前节点是 PV 节点，则设置 pv 标志
             bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
 
+            // 直接使用缓存的评估值，而不是重新评估
             tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                      MOVE_NONE, Eval::evaluate(*pos));
+                      MOVE_NONE, evalValue);
         }
 
         return bestValue;
@@ -459,10 +466,10 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     if (after != before) {
                         value = -do_search<PV>(pos, ss, depth - 1 + epsilon,
                                             originDepth, -beta, -alpha, bestMove);
-                    } else {
+        } else {
                         value = do_search<PV>(pos, ss, depth - 1 + epsilon, originDepth,
                                             alpha, beta, bestMove);
-                    }
+        }
                 } else {
                     if (after != before) {
                         value = -do_search<NonPV>(pos, ss, depth - 1 + epsilon,
@@ -551,8 +558,7 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                 alpha = value;
 
                 if (alpha >= beta) {
-                    // Beta 剪枝
-                    break;
+                    break; // Beta 剪枝
                 }
             }
         }
@@ -564,16 +570,17 @@ Value do_search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                         bestValue >= beta      ? BOUND_LOWER :
                                                  BOUND_EXACT;
 
-        // 如果当前节点是 PV 节点，则设置 pv 标志
         bool isPvNodeEntry = (nodeType == PV) && (ttBound == BOUND_EXACT);
 
-        // 使用 value_to_tt 函数来调整 bestValue
-        Value adjustedValue = value_to_tt(bestValue, ss.size());
+        // 使用缓存的评估值，而不是重新计算
+        if (evalValue == VALUE_NONE) {
+            evalValue = Eval::evaluate(*pos); // 如果之前没有计算评估值，在这里计算一次
+        }
 
-        // 仅当 localBestMove 不是 MOVE_NONE 时，才保存到置换表
+        Value adjustedValue = value_to_tt(bestValue, ss.size());
         if (localBestMove != MOVE_NONE) {
             tte->save(posKey, adjustedValue, isPvNodeEntry, ttBound, ttDepth,
-                      localBestMove, Eval::evaluate(*pos));
+                      localBestMove, evalValue);
         }
     }
 

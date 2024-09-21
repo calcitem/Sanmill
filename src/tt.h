@@ -101,6 +101,7 @@ public:
     TTEntry *first_entry(const Key key) const
     {
         // return &table[mul_hi64(key, clusterCount)].entry[0];
+        assert(clusterCount <= UINT32_MAX && "clusterCount exceeds uint32_t maximum value");
         return &table[mul_hi32(key, clusterCount)].entry[0];
     }
 
