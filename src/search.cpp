@@ -341,6 +341,25 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     Depth epsilon;
 
+    // Process leaves
+
+    // Check for aborted search
+    // TODO(calcitem): and immediate draw
+    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
+                                                   // hash
+        depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
+        bestValue = Eval::evaluate(*pos);
+
+        // For win quickly
+        if (bestValue > 0) {
+            bestValue += depth;
+        } else {
+            bestValue -= depth;
+        }
+
+        return bestValue;
+    }
+
 #ifdef RULE_50
     if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
@@ -364,9 +383,9 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 #endif // THREEFOLD_REPETITION
 
-    Move ttMove = MOVE_NONE;
-
     // Transposition table lookup
+
+    Move ttMove = MOVE_NONE;
 
 #if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
     const Key posKey = pos->key();
@@ -395,8 +414,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-
-    // Check transposition-table
 
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
                                   // and no available moves
@@ -435,25 +452,6 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
-
-    // Process leaves
-
-    // Check for aborted search
-    // TODO(calcitem): and immediate draw
-    if (unlikely(pos->phase == Phase::gameOver) || // TODO(calcitem): Deal with
-                                                   // hash
-        depth <= 0 || Threads.stop.load(std::memory_order_relaxed)) {
-        bestValue = Eval::evaluate(*pos);
-
-        // For win quickly
-        if (bestValue > 0) {
-            bestValue += depth;
-        } else {
-            bestValue -= depth;
-        }
-
-        return bestValue;
-    }
 
     // if this isn't the root of the search tree (where we have
     // to pick a move and can't simply return VALUE_DRAW) then check to
