@@ -290,6 +290,9 @@ using Depth = int8_t;
 
 enum : int { DEPTH_NONE = 0, DEPTH_OFFSET = DEPTH_NONE };
 
+// Define NodeType to differentiate between PV and NonPV nodes
+enum class NodeType { PV, NonPV, Root };
+
 enum Square : int {
     SQ_0 = 0,
     SQ_1 = 1,
