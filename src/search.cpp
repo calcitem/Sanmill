@@ -31,8 +31,8 @@ using std::string;
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-              Depth originDepth, Value alpha, Value beta, Move &bestMove);
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+             Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 Value random_search(Position *pos, Move &bestMove);
 
@@ -180,7 +180,7 @@ int Thread::search()
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 value = random_search(rootPos, bestMove);
             } else {
-                value = qsearch(rootPos, ss, i, i, alpha, beta, bestMove);
+                value = ::search(rootPos, ss, i, i, alpha, beta, bestMove);
             }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -257,7 +257,7 @@ next:
     } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
         value = random_search(rootPos, bestMove);
     } else {
-        value = qsearch(rootPos, ss, d, originDepth, alpha, beta, bestMove);
+        value = ::search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
 
     fallbackMove = bestMove;
@@ -333,8 +333,8 @@ Value random_search(Position *pos, Move &bestMove)
 
 vector<Key> posKeyHistory;
 
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-              Depth originDepth, Value alpha, Value beta, Move &bestMove)
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+             Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value value;
     Value bestValue = -VALUE_INFINITE;
@@ -514,30 +514,30 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
             if (i == 0) {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                     -beta, -alpha, bestMove);
+                    value = -search(pos, ss, depth - 1 + epsilon, originDepth,
+                                    -beta, -alpha, bestMove);
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                    alpha, beta, bestMove);
+                    value = search(pos, ss, depth - 1 + epsilon, originDepth,
+                                   alpha, beta, bestMove);
                 }
             } else {
                 if (after != before) {
-                    value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                     -alpha - VALUE_PVS_WINDOW, -alpha,
-                                     bestMove);
+                    value = -search(pos, ss, depth - 1 + epsilon, originDepth,
+                                    -alpha - VALUE_PVS_WINDOW, -alpha,
+                                    bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = -qsearch(pos, ss, depth - 1 + epsilon,
-                                         originDepth, -beta, -alpha, bestMove);
+                        value = -search(pos, ss, depth - 1 + epsilon,
+                                        originDepth, -beta, -alpha, bestMove);
                         // assert(value >= alpha && value <= beta);
                     }
                 } else {
-                    value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                    alpha, alpha + VALUE_PVS_WINDOW, bestMove);
+                    value = search(pos, ss, depth - 1 + epsilon, originDepth,
+                                   alpha, alpha + VALUE_PVS_WINDOW, bestMove);
 
                     if (value > alpha && value < beta) {
-                        value = qsearch(pos, ss, depth - 1 + epsilon,
-                                        originDepth, alpha, beta, bestMove);
+                        value = search(pos, ss, depth - 1 + epsilon,
+                                       originDepth, alpha, beta, bestMove);
                         // assert(value >= alpha && value <= beta);
                     }
                 }
@@ -546,11 +546,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             // debugPrintf("Algorithm: Alpha-Beta.\n");
 
             if (after != before) {
-                value = -qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                 -beta, -alpha, bestMove);
+                value = -search(pos, ss, depth - 1 + epsilon, originDepth,
+                                -beta, -alpha, bestMove);
             } else {
-                value = qsearch(pos, ss, depth - 1 + epsilon, originDepth,
-                                alpha, beta, bestMove);
+                value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
+                               beta, bestMove);
             }
         }
 
@@ -621,8 +621,8 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
             beta = g;
         }
 
-        g = qsearch(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta,
-                    bestMove);
+        g = search(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta,
+                   bestMove);
 
         if (g < beta) {
             upperbound = g; // fail low
