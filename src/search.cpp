@@ -314,25 +314,6 @@ out:
     return 0;
 }
 
-/////////////////////////////////////////////////////////////////////////////////
-
-// Random search implementation
-Value random_search(Position *pos, Move &bestMove)
-{
-    MoveList<LEGAL> ml(*pos);
-
-    if (ml.size() == 0) {
-        return VALUE_DRAW;
-    }
-
-    ml.shuffle();
-
-    const int index = rand() % ml.size();
-    bestMove = ml.getMove(index);
-
-    return VALUE_ZERO;
-}
-
 vector<Key> posKeyHistory;
 
 /// Search function that performs recursive search with alpha-beta pruning
@@ -621,6 +602,23 @@ Value pvs(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
     return value;
+}
+
+// Random search implementation
+Value random_search(Position *pos, Move &bestMove)
+{
+    MoveList<LEGAL> ml(*pos);
+
+    if (ml.size() == 0) {
+        return VALUE_DRAW;
+    }
+
+    ml.shuffle();
+
+    const int index = rand() % ml.size();
+    bestMove = ml.getMove(index);
+
+    return VALUE_ZERO;
 }
 
 /// Function to check if the search has timed out
