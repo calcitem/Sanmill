@@ -291,10 +291,18 @@ out:
 
 #ifdef TIME_STAT
     timeEnd = std::chrono::steady_clock::now();
-    debugPrintf(
-        "Total Time: %llus\n",
-        std::chrono::duration_cast<std::chrono::seconds>(timeEnd - timeStart)
-            .count());
+    auto duration = timeEnd - timeStart;
+    if (std::chrono::duration_cast<std::chrono::seconds>(duration).count() >
+        100) {
+        debugPrintf(
+            "Total Time: %llu s\n",
+            std::chrono::duration_cast<std::chrono::seconds>(duration).count());
+    } else {
+        debugPrintf(
+            "Total Time: %llu ms\n",
+            std::chrono::duration_cast<std::chrono::milliseconds>(duration)
+                .count());
+    }
 #endif
 
     lastvalue = bestvalue;
