@@ -562,7 +562,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
-        if (value >= bestValue) {
+        if (value > bestValue) {
             bestValue = value;
 
             if (value > alpha) {
