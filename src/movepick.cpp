@@ -165,13 +165,19 @@ void MovePicker::score()
 /// class. It returns a new pseudo legal move every time it is called until
 /// there are no more moves left, picking the move with the highest score from a
 /// list of generated moves.
+template <GenType Type>
 Move MovePicker::next_move()
 {
-    endMoves = generate<LEGAL>(pos, moves);
+    endMoves = generate<Type>(pos, moves);
     moveCount = static_cast<int>(endMoves - moves);
 
-    score<LEGAL>();
+    score<Type>();
     partial_insertion_sort(moves, endMoves, INT_MIN);
 
     return *moves;
 }
+
+template Move MovePicker::next_move<LEGAL>();
+template Move MovePicker::next_move<PLACE>();
+template Move MovePicker::next_move<MOVE>();
+template Move MovePicker::next_move<REMOVE>();

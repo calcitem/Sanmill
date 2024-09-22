@@ -17,6 +17,7 @@
 #include "endgame.h"
 #include "evaluate.h"
 #include "mcts.h"
+#include "movepick.h"
 #include "option.h"
 #include "uci.h"
 #include "thread.h"
@@ -461,7 +462,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);
-    const Move nextMove = mp.next_move();
+    const Move nextMove = mp.next_move<LEGAL>();
     const int moveCount = mp.move_count();
 
 #ifndef NNUE_GENERATE_TRAINING_DATA

@@ -43,6 +43,7 @@ public:
     MovePicker &operator=(const MovePicker &) = delete;
     explicit MovePicker(Position &p, Move ttm) noexcept;
 
+    template <GenType>
     Move next_move();
 
     template <GenType>
