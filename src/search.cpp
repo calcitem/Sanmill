@@ -351,15 +351,58 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return stand_pat;
     }
 
-    // Generate remove moves
-    MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move<REMOVE>();
-    const int moveCount = mp.move_count();
+    // Transposition Table probing
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    const Key posKey = pos->key();
+    const Depth ttDepth = std::max(depth, Depth(0)); // Ensure non-negative
+                                                     // depth
 
-    // Prefetch transposition table entries for all moves
+    Value oldAlpha = alpha; // To determine bound type when storing in TT
+    Bound type = BOUND_NONE;
+    Move ttMove = MOVE_NONE; // Move from TT (if available)
+
+    // Probe TT for existing evaluation
+    Value probeVal = TranspositionTable::probe(posKey, ttDepth, type
+#ifdef TT_MOVE_ENABLE
+                                               ,
+                                               ttMove
+#endif // TT_MOVE_ENABLE
+    );
+
+    if (probeVal != VALUE_UNKNOWN) {
+        if (type == BOUND_EXACT) {
+            return probeVal; // Exact value found in TT
+        }
+        if (type == BOUND_LOWER) {
+            alpha = std::max(alpha, probeVal);
+        } else if (type == BOUND_UPPER) {
+            beta = std::min(beta, probeVal);
+        }
+        if (alpha >= beta) {
+            return probeVal; // Cut-off
+        }
+    }
+#endif // TRANSPOSITION_TABLE_ENABLE
+
+    // Generate capture moves
+    MovePicker mp(*pos, ttMove);
+    mp.next_move<REMOVE>();
+    int moveCount = mp.move_count();
+
+    // Limit the number of capture moves
+    const int MAX_REMOVE_MOVES = 2;
+    if (moveCount > MAX_REMOVE_MOVES) {
+        moveCount = MAX_REMOVE_MOVES;
+    }
+
+    // Prefetch TT entries for all moves
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifndef DISABLE_PREFETCH
     for (int i = 0; i < moveCount; i++) {
         TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
     }
+#endif // !DISABLE_PREFETCH
+#endif // TRANSPOSITION_TABLE_ENABLE
 
     // For each capture move
     for (int i = 0; i < moveCount; i++) {
@@ -388,6 +431,16 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // If the value is greater or equal to beta, cut off
         if (value >= beta) {
+            // Store in TT before returning
+#ifdef TRANSPOSITION_TABLE_ENABLE
+            Bound ttBound = BOUND_LOWER;
+            TranspositionTable::save(beta, ttDepth, ttBound, posKey
+#ifdef TT_MOVE_ENABLE
+                                     ,
+                                     move
+#endif // TT_MOVE_ENABLE
+            );
+#endif // TRANSPOSITION_TABLE_ENABLE
             return beta;
         }
 
@@ -399,6 +452,24 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             }
         }
     }
+
+    // Store the result in TT
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    Bound ttBound;
+    if (alpha <= oldAlpha)
+        ttBound = BOUND_UPPER;
+    else if (alpha >= beta)
+        ttBound = BOUND_LOWER;
+    else
+        ttBound = BOUND_EXACT;
+
+    TranspositionTable::save(alpha, ttDepth, ttBound, posKey
+#ifdef TT_MOVE_ENABLE
+                             ,
+                             bestMove
+#endif // TT_MOVE_ENABLE
+    );
+#endif // TRANSPOSITION_TABLE_ENABLE
 
     // Return alpha as the best value
     return alpha;
