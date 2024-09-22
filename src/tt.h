@@ -67,8 +67,7 @@ class TranspositionTable
 public:
     static bool search(Key key, TTEntry &tte);
 
-    static Value probe(Key key, Depth depth, Value alpha, Value beta,
-                       Bound &type
+    static Value probe(Key key, Depth depth, Bound &type
 #ifdef TT_MOVE_ENABLE
                        ,
                        Move &ttMove
@@ -81,8 +80,6 @@ public:
                     const Move &ttMove
 #endif // TT_MOVE_ENABLE
     );
-
-    static Bound boundType(Value value, Value alpha, Value beta);
 
     static void clear();
 

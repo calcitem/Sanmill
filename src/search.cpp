@@ -388,15 +388,14 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
-    // check transposition-table
+    // Check transposition-table
 
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
                                   // and no available moves
 
     Bound type = BOUND_NONE;
 
-    const Value probeVal = TranspositionTable::probe(posKey, depth, alpha, beta,
-                                                     type
+    const Value probeVal = TranspositionTable::probe(posKey, depth, type
 #ifdef TT_MOVE_ENABLE
                                                      ,
                                                      ttMove
@@ -408,9 +407,22 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         Threads.main()->ttHitCount++;
 #endif
 
-        bestValue = probeVal;
-        return bestValue;
+        if (type == BOUND_EXACT) {
+            bestValue = probeVal;
+            return bestValue;
+        } else if (type == BOUND_UPPER) {
+            if (probeVal <= alpha) {
+                bestValue = alpha;
+                return bestValue;
+            }
+        } else if (type == BOUND_LOWER) {
+            if (probeVal >= beta) {
+                bestValue = beta;
+                return bestValue;
+            }
+        }
     }
+
 #ifdef TRANSPOSITION_TABLE_DEBUG
     if (probeVal == VALUE_UNKNOWN) {
         Threads.main()->ttMissCount++;
@@ -419,7 +431,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    // process leaves
+    // Process leaves
 
     // Check for aborted search
     // TODO(calcitem): and immediate draw
@@ -570,12 +582,18 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    TranspositionTable::save(
-        bestValue, depth,
-        TranspositionTable::boundType(bestValue, oldAlpha, beta), posKey
+    Bound ttBound;
+    if (bestValue <= oldAlpha)
+        ttBound = BOUND_UPPER;
+    else if (bestValue >= beta)
+        ttBound = BOUND_LOWER;
+    else
+        ttBound = BOUND_EXACT;
+
+    TranspositionTable::save(bestValue, depth, ttBound, posKey
 #ifdef TT_MOVE_ENABLE
-        ,
-        bestMove
+                             ,
+                             bestMove
 #endif // TT_MOVE_ENABLE
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */

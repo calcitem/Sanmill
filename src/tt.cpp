@@ -26,8 +26,7 @@ HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
-                                Bound &type
+Value TranspositionTable::probe(Key key, Depth depth, Bound &type
 #ifdef TT_MOVE_ENABLE
                                 ,
                                 Move &ttMove
@@ -42,7 +41,7 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    if (tte.type != BOUND_EXACT) {
+    if (tte.bound() != BOUND_EXACT) {
 #endif
         if (tte.age8 != transpositionTableAge) {
             return VALUE_UNKNOWN;
@@ -57,28 +56,12 @@ Value TranspositionTable::probe(Key key, Depth depth, Value alpha, Value beta,
     }
 
     type = tte.bound();
-
-    switch (tte.bound()) {
-    case BOUND_EXACT:
-        return tte.value();
-    case BOUND_UPPER:
-        if (tte.value8 <= alpha) {
-            return alpha;
-        }
-        break;
-    case BOUND_LOWER:
-        if (tte.value() >= beta) {
-            return beta;
-        }
-        break;
-    case BOUND_NONE:
-        break;
-    }
+    return tte.value();
 
 out:
 
 #ifdef TT_MOVE_ENABLE
-    ttMove = tte.ttMove;
+    ttMove = tte.tt_move();
 #endif // TT_MOVE_ENABLE
 
     return VALUE_UNKNOWN;
@@ -115,9 +98,9 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
-    tte.value8 = value;
-    tte.depth8 = depth;
-    tte.genBound8 = type;
+    tte.value8 = static_cast<int8_t>(value);
+    tte.depth8 = static_cast<int8_t>(depth - DEPTH_OFFSET);
+    tte.genBound8 = static_cast<uint8_t>(type);
 
 #ifdef TT_MOVE_ENABLE
     tte.ttMove = ttMove;
@@ -130,16 +113,6 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
     TT.insert(key, tte);
 
     return 0;
-}
-
-Bound TranspositionTable::boundType(Value value, Value alpha, Value beta)
-{
-    if (value <= alpha)
-        return BOUND_UPPER;
-    if (value >= beta)
-        return BOUND_LOWER;
-
-    return BOUND_EXACT;
 }
 
 void TranspositionTable::clear()
