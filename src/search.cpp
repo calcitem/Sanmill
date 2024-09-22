@@ -505,7 +505,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
-        if (gameOptions.getDepthExtension() == true && moveCount == 1) {
+        if (gameOptions.getDepthExtension() == true &&
+            (moveCount == 1 || nodeType == NodeType::PV)) {
             epsilon = 1;
         } else {
             epsilon = 0;
@@ -515,9 +516,9 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // Check if the current node is a PV node
         if (i == 0 && nodeType == NodeType::PV) {
-            nodeType = NodeType::PV;
+            nt = NodeType::PV;
         } else {
-            nodeType = NodeType::NonPV;
+            nt = NodeType::NonPV;
         }
 
         // epsilon += pos->piece_to_remove_count(pos->sideToMove);
