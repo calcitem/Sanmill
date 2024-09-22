@@ -316,14 +316,102 @@ out:
 
 vector<Key> posKeyHistory;
 
+// Quiescence Search
+Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove)
+{
+    // Evaluate the current position
+    Value stand_pat = Eval::evaluate(*pos);
+
+    // Adjust evaluation to prefer quicker wins or slower losses
+    if (stand_pat > 0) {
+        stand_pat += depth;
+    } else {
+        stand_pat -= depth;
+    }
+
+    // If depth limit reached, return stand_pat
+    const int MAX_QUIESCENCE_DEPTH = 1;
+    if (depth <= -MAX_QUIESCENCE_DEPTH) {
+        return stand_pat;
+    }
+
+    // If the evaluation is greater or equal to beta, cut off
+    if (stand_pat >= beta) {
+        return beta;
+    }
+
+    // If the evaluation is better than alpha, update alpha
+    if (stand_pat > alpha) {
+        alpha = stand_pat;
+    }
+
+    // If the position is a terminal node, return the evaluation
+    if (unlikely(pos->phase == Phase::gameOver)) {
+        return stand_pat;
+    }
+
+    // Generate remove moves
+    MovePicker mp(*pos, MOVE_NONE);
+    mp.next_move<REMOVE>();
+    const int moveCount = mp.move_count();
+
+    // Prefetch transposition table entries for all moves
+    for (int i = 0; i < moveCount; i++) {
+        TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
+    }
+
+    // For each capture move
+    for (int i = 0; i < moveCount; i++) {
+        ss.push(*pos);
+        const Color before = pos->sideToMove;
+        const Move move = mp.moves[i].move;
+
+        // Make the move on the board
+        pos->do_move(move);
+        const Color after = pos->sideToMove;
+
+        // Recursively call qsearch
+        Value value = (after != before) ?
+                          -qsearch(pos, ss, depth - 1, originDepth, -beta,
+                                   -alpha, bestMove) :
+                          qsearch(pos, ss, depth - 1, originDepth, alpha, beta,
+                                  bestMove);
+
+        // Undo the move
+        pos->undo_move(ss);
+
+        // Check for search abortion
+        if (Threads.stop.load(std::memory_order_relaxed)) {
+            return VALUE_ZERO;
+        }
+
+        // If the value is greater or equal to beta, cut off
+        if (value >= beta) {
+            return beta;
+        }
+
+        // If the value is better than alpha, update alpha
+        if (value > alpha) {
+            alpha = value;
+            if (depth == originDepth) {
+                bestMove = move;
+            }
+        }
+    }
+
+    // Return alpha as the best value
+    return alpha;
+}
+
 /// Search function that performs recursive search with alpha-beta pruning
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
              Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value bestValue = -VALUE_INFINITE;
 
-    // Check for terminal position, depth limit, or search abortion
-    if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
+    // Check for terminal position or search abortion
+    if (unlikely(pos->phase == Phase::gameOver) ||
         Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
@@ -335,6 +423,11 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         }
 
         return bestValue;
+    }
+
+    if (depth <= 0) {
+        // Call quiescence search when depth limit is reached
+        return qsearch(pos, ss, depth, originDepth, alpha, beta, bestMove);
     }
 
 #ifdef RULE_50
