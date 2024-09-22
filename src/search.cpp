@@ -32,14 +32,14 @@ using Eval::evaluate;
 using std::string;
 
 const int HISTORY_SIZE = SQUARE_EXT_NB;
-std::atomic<int> history_table[HISTORY_SIZE][HISTORY_SIZE];
+int history_table[HISTORY_SIZE][HISTORY_SIZE];
 
-// Initialize the history table
+// Initialize the history table with zeros
 void initialize_history_table()
 {
     for (int i = 0; i < HISTORY_SIZE; ++i) {
         for (int j = 0; j < HISTORY_SIZE; ++j) {
-            history_table[i][j] = SQ_NONE;
+            history_table[i][j] = 0;
         }
     }
 }
@@ -49,44 +49,42 @@ void Search::init() noexcept { }
 
 const int MIN_DEPTH_FOR_HISTORY_UPDATE = 12;
 const int MAX_HISTORY_VALUE = 50;
+const int HISTORY_DECAY_INTERVAL = 1000; // Example: decay after 1000 updates
 
-// Function to update history table when a move causes a beta cutoff
+// Counter to track the number of updates for decay
+static int update_count = 0;
+
+// Function to decay the history table values
+void decay_history_table()
+{
+    for (int from = 0; from < HISTORY_SIZE; ++from) {
+        for (int to = 0; to < HISTORY_SIZE; ++to) {
+            if (history_table[from][to] > 0) {
+                history_table[from][to] /= 2; // Apply decay
+            }
+        }
+    }
+}
+
+// Function to update history table based on the best move
 void update_history_table(Move move)
 {
     if (type_of(move) == MOVETYPE_REMOVE) {
-        return;
+        return; // Do not update history for remove moves
     }
 
     int from = from_sq(move);
     int to = to_sq(move);
 
-    int old_val = history_table[from][to].load(std::memory_order_relaxed);
-    while (old_val < MAX_HISTORY_VALUE) {
-        if (history_table[from][to].compare_exchange_weak(
-                old_val, old_val + 1, std::memory_order_relaxed)) {
-            break;
-        }
-        // If compare_exchange_weak fails, old_val is updated to the current
-        // value and the check continues.
+    // Saturate the history value to prevent overflow
+    if (history_table[from][to] < MAX_HISTORY_VALUE) {
+        history_table[from][to]++;
     }
 
-    static std::atomic<int> update_count(0);
-    if (++update_count % 10 == 0) {
-        debugPrintf("History table updated %d times\n", update_count.load());
-    }
-}
-
-void decay_history_table()
-{
-    for (int from = 0; from < HISTORY_SIZE; ++from) {
-        for (int to = 0; to < HISTORY_SIZE; ++to) {
-            int current = history_table[from][to].load(
-                std::memory_order_relaxed);
-            if (current > 0) {
-                history_table[from][to].store(current / 2,
-                                              std::memory_order_relaxed);
-            }
-        }
+    // Increment update count and apply decay if necessary
+    if (++update_count >= HISTORY_DECAY_INTERVAL) {
+        decay_history_table();
+        update_count = 0;
     }
 }
 
@@ -232,7 +230,7 @@ int Thread::search()
             TranspositionTable::clear();
 #endif
 #endif
-            // Initialize history heuristic table
+            // Initialize history heuristic table for each iteration
             initialize_history_table();
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
@@ -307,7 +305,7 @@ next:
 #endif
 #endif
 
-    // Initialize history heuristic table
+    // Initialize history heuristic table before the final search
     initialize_history_table();
 
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
@@ -377,7 +375,7 @@ out:
     return 0;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
 
 Value random_search(Position *pos, Move &bestMove)
 {
@@ -397,8 +395,11 @@ Value random_search(Position *pos, Move &bestMove)
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Vector to keep track of position keys for repetition detection
 vector<Key> posKeyHistory;
 
+// Modified qsearch to update history table based on the best move after
+// searching all children
 Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
@@ -529,8 +530,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return VALUE_DRAW + 1;
     }
 
-    // Initialize a MovePicker object for the current position, and prepare
-    // to search the moves.
+    // Initialize a MovePicker object for the current position, and prepare to
+    // search the moves.
     MovePicker mp(*pos, ttMove);
     const Move nextMove = mp.next_move();
     const int moveCount = mp.move_count();
@@ -556,6 +557,9 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif // PREFETCH_DEBUG
 #endif // !DISABLE_PREFETCH
 #endif // TRANSPOSITION_TABLE_ENABLE
+
+    // Variable to keep track of the best move found in this node
+    Move localBestMove = MOVE_NONE;
 
     // Loop through the moves until no moves remain or a beta cutoff occurs
     for (int i = 0; i < moveCount; i++) {
@@ -633,6 +637,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         if (value > bestValue) {
             bestValue = value;
+            localBestMove = move;
 
             if (value > alpha) {
                 if (depth == originDepth) {
@@ -644,9 +649,12 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high
+
                     // Beta cutoff occurred, update history heuristic
                     if (depth >= MIN_DEPTH_FOR_HISTORY_UPDATE) {
-                        update_history_table(move);
+                        // Defer history update until after all moves are
+                        // evaluated Store the move to update later
+                        bestMove = move;
                     }
                     break; // Fail high
                 }
@@ -671,7 +679,10 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+    // Update the history table based on the best move found
+    if (depth >= MIN_DEPTH_FOR_HISTORY_UPDATE && localBestMove != MOVE_NONE) {
+        update_history_table(localBestMove);
+    }
 
     return bestValue;
 }

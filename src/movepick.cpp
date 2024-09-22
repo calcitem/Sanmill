@@ -18,7 +18,7 @@
 #include "option.h"
 
 // Declare the history table as external
-extern std::atomic<int> history_table[SQUARE_EXT_NB][SQUARE_EXT_NB];
+extern int history_table[SQUARE_EXT_NB][SQUARE_EXT_NB];
 
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
@@ -66,27 +66,37 @@ void MovePicker::score()
         const Square to = to_sq(m);
         const Square from = from_sq(m);
 
-        // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
-        // no mill, so need |from| to judge
+        // History heuristic: prioritize moves based on the history table
+        int historyVal = history_table[from][to];
+        if (historyVal > 0) {
+            // Assign a high value to prioritize this move during sorting
+            cur->value += historyVal;
+
+            // Ensure that the move value does not exceed RATING_INFINITE
+            if (cur->value > RATING_INFINITE) {
+                cur->value = RATING_INFINITE;
+            }
+        }
+
         const int ourMillsCount = pos.potential_mills_count(
             to, pos.side_to_move(), from);
 
 #ifndef SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
         // TODO(calcitem): rule.mayRemoveMultiple adapt other rules
         if (type_of(m) != MOVETYPE_REMOVE) {
-            // all phrase, check if place sq can close mill
+            // All phrase, check if place square can close mill
             if (ourMillsCount > 0) {
                 cur->value += RATING_ONE_MILL * ourMillsCount;
             } else if (pos.get_phase() == Phase::placing &&
                        !rule.mayMoveInPlacingPhase) {
-                // original logic for placing phase without move allowed
+                // Original logic for placing phase without move allowed
                 theirMillsCount = pos.potential_mills_count(
                     to, ~pos.side_to_move());
                 cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
             } else if (pos.get_phase() == Phase::moving ||
                        (pos.get_phase() == Phase::placing &&
                         rule.mayMoveInPlacingPhase)) {
-                // logic for moving phase or placing phase with move allowed
+                // Logic for moving phase or placing phase with move allowed
                 theirMillsCount = pos.potential_mills_count(
                     to, ~pos.side_to_move());
 
@@ -112,7 +122,7 @@ void MovePicker::score()
             // If has Diagonal Lines, black 2nd move place star point is as
             // important as close mill (TODO)
             if ((rule.hasDiagonalLines || gameOptions.getAlgorithm() == 3) &&
-                pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
+                pos.count<ON_BOARD>(BLACK) < 2 && // Patch: only when black 2nd
                 // move
                 Position::is_star_square(static_cast<Square>(m))) {
                 cur->value += RATING_STAR_SQUARE;
@@ -129,40 +139,34 @@ void MovePicker::score()
                 // cur->value += RATING_REMOVE_ONE_MILL * ourMillsCount;
 
                 if (theirPiecesCount == 0) {
-                    // if remove point nearby has no their piece, preferred.
+                    // If remove point nearby has no their piece, preferred.
                     cur->value += 1;
                     if (ourPieceCount > 0) {
-                        // if remove point nearby our piece, preferred
+                        // If remove point nearby our piece, preferred
                         cur->value += ourPieceCount;
                     }
                 }
             }
 
-            // remove point is in their mill
+            // Remove point is in their mill
             theirMillsCount = pos.potential_mills_count(to,
                                                         ~pos.side_to_move());
             if (theirMillsCount) {
                 if (theirPiecesCount >= 2) {
-                    // if nearby their piece, prefer do not remove
+                    // If nearby their piece, prefer do not remove
                     cur->value -= theirPiecesCount;
 
                     if (ourPieceCount == 0) {
-                        // if nearby has no our piece, more prefer do not remove
+                        // If nearby has no our piece, more prefer do not remove
                         cur->value -= 1;
                     }
                 }
             }
 
-            // prefer remove piece that mobility is strong
+            // Prefer remove piece that mobility is strong
             cur->value += emptyCount;
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
-
-        // History heuristic: add a value based on the history table
-        cur->value += history_table[from][to];
-        if (cur->value > RATING_INFINITE) {
-            cur->value = RATING_INFINITE;
-        }
     }
 
     if (!pos.shouldFocusOnBlockingPaths()) {
