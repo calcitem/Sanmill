@@ -416,18 +416,15 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif
 
         if (type == BOUND_EXACT) {
-            bestValue = probeVal;
-            return bestValue;
+            return probeVal;
+        }
+        if (type == BOUND_LOWER) {
+            alpha = std::max(alpha, probeVal);
         } else if (type == BOUND_UPPER) {
-            if (probeVal <= alpha) {
-                bestValue = alpha;
-                return bestValue;
-            }
-        } else if (type == BOUND_LOWER) {
-            if (probeVal >= beta) {
-                bestValue = beta;
-                return bestValue;
-            }
+            beta = std::min(beta, probeVal);
+        }
+        if (alpha >= beta) {
+            return probeVal;
         }
     }
 
