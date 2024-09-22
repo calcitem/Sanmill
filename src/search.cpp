@@ -329,23 +329,6 @@ Value random_search(Position *pos, Move &bestMove)
     return VALUE_ZERO;
 }
 
-// Static search
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-              Depth originDepth, Value alpha, Value beta, Move &bestMove)
-{
-    // Perform static evaluation of the position
-    Value bestValue = evaluate(*pos);
-
-    // Adjust evaluation based on depth for faster wins or delayed losses
-    if (bestValue > 0) {
-        bestValue += depth;
-    } else {
-        bestValue -= depth;
-    }
-
-    return bestValue;
-}
-
 vector<Key> posKeyHistory;
 
 /// Search function that performs recursive search with alpha-beta pruning
@@ -360,8 +343,16 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     // Check for terminal position, depth limit, or search abortion
     if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
         Threads.stop.load(std::memory_order_relaxed)) {
-        // Call qsearch for static evaluation
-        return qsearch(pos, ss, depth, originDepth, alpha, beta, bestMove);
+        bestValue = Eval::evaluate(*pos);
+
+        // For win quickly
+        if (bestValue > 0) {
+            bestValue += depth;
+        } else {
+            bestValue -= depth;
+        }
+
+        return bestValue;
     }
 
 #ifdef RULE_50
@@ -499,54 +490,42 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
-        if (gameOptions.getDepthExtension() == true && moveCount == 1) {
-            epsilon = 1;
-        } else {
-            epsilon = 0;
-        }
+        // Determine the depth extension
+        epsilon = (gameOptions.getDepthExtension() && moveCount == 1) ? 1 : 0;
 
-        // Recursive search based on the selected algorithm
+        // Perform recursive search based on the selected algorithm
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
             // Principal Variation Search (PVS)
             if (i == 0) {
-                if (after != before) {
-                    value = -search(pos, ss, depth - 1 + epsilon, originDepth,
-                                    -beta, -alpha, bestMove);
-                } else {
-                    value = search(pos, ss, depth - 1 + epsilon, originDepth,
+                value = (after != before) ?
+                            -search(pos, ss, depth - 1 + epsilon, originDepth,
+                                    -beta, -alpha, bestMove) :
+                            search(pos, ss, depth - 1 + epsilon, originDepth,
                                    alpha, beta, bestMove);
-                }
             } else {
-                if (after != before) {
-                    value = -search(pos, ss, depth - 1 + epsilon, originDepth,
+                value = (after != before) ?
+                            -search(pos, ss, depth - 1 + epsilon, originDepth,
                                     -alpha - VALUE_PVS_WINDOW, -alpha,
-                                    bestMove);
-
-                    if (value > alpha && value < beta) {
-                        value = -search(pos, ss, depth - 1 + epsilon,
-                                        originDepth, -beta, -alpha, bestMove);
-                        // Ensure value is within bounds
-                    }
-                } else {
-                    value = search(pos, ss, depth - 1 + epsilon, originDepth,
+                                    bestMove) :
+                            search(pos, ss, depth - 1 + epsilon, originDepth,
                                    alpha, alpha + VALUE_PVS_WINDOW, bestMove);
 
-                    if (value > alpha && value < beta) {
-                        value = search(pos, ss, depth - 1 + epsilon,
+                // Re-search if the value is within the search window
+                if (value > alpha && value < beta) {
+                    value = (after != before) ?
+                                -search(pos, ss, depth - 1 + epsilon,
+                                        originDepth, -beta, -alpha, bestMove) :
+                                search(pos, ss, depth - 1 + epsilon,
                                        originDepth, alpha, beta, bestMove);
-                        // Ensure value is within bounds
-                    }
                 }
             }
         } else {
             // Alpha-Beta Search
-            if (after != before) {
-                value = -search(pos, ss, depth - 1 + epsilon, originDepth,
-                                -beta, -alpha, bestMove);
-            } else {
-                value = search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
+            value = (after != before) ?
+                        -search(pos, ss, depth - 1 + epsilon, originDepth,
+                                -beta, -alpha, bestMove) :
+                        search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
                                beta, bestMove);
-            }
         }
 
         // Undo the move
