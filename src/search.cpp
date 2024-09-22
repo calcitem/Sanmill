@@ -14,6 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <atomic>
+#include <vector>
+
 #include "endgame.h"
 #include "evaluate.h"
 #include "mcts.h"
@@ -28,6 +31,65 @@
 using Eval::evaluate;
 using std::string;
 
+const int HISTORY_SIZE = SQUARE_EXT_NB;
+std::atomic<int> history_table[HISTORY_SIZE][HISTORY_SIZE];
+
+// Initialize the history table
+void initialize_history_table()
+{
+    for (int i = 0; i < HISTORY_SIZE; ++i) {
+        for (int j = 0; j < HISTORY_SIZE; ++j) {
+            history_table[i][j] = SQ_NONE;
+        }
+    }
+}
+
+// This function is called at startup
+void Search::init() noexcept { }
+
+const int MIN_DEPTH_FOR_HISTORY_UPDATE = 12;
+const int MAX_HISTORY_VALUE = 50;
+
+// Function to update history table when a move causes a beta cutoff
+void update_history_table(Move move)
+{
+    if (type_of(move) == MOVETYPE_REMOVE) {
+        return;
+    }
+
+    int from = from_sq(move);
+    int to = to_sq(move);
+
+    int old_val = history_table[from][to].load(std::memory_order_relaxed);
+    while (old_val < MAX_HISTORY_VALUE) {
+        if (history_table[from][to].compare_exchange_weak(
+                old_val, old_val + 1, std::memory_order_relaxed)) {
+            break;
+        }
+        // If compare_exchange_weak fails, old_val is updated to the current
+        // value and the check continues.
+    }
+
+    static std::atomic<int> update_count(0);
+    if (++update_count % 10 == 0) {
+        debugPrintf("History table updated %d times\n", update_count.load());
+    }
+}
+
+void decay_history_table()
+{
+    for (int from = 0; from < HISTORY_SIZE; ++from) {
+        for (int to = 0; to < HISTORY_SIZE; ++to) {
+            int current = history_table[from][to].load(
+                std::memory_order_relaxed);
+            if (current > 0) {
+                history_table[from][to].store(current / 2,
+                                              std::memory_order_relaxed);
+            }
+        }
+    }
+}
+
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
@@ -38,10 +100,6 @@ Value random_search(Position *pos, Move &bestMove);
 
 bool is_timeout(TimePoint startTime);
 
-/// Search::init() is called at startup
-
-void Search::init() noexcept { }
-
 /// Search::clear() resets search state to its initial value
 
 void Search::clear()
@@ -51,6 +109,9 @@ void Search::clear()
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
 #endif
+    // Initialize history heuristic table
+    initialize_history_table();
+
     Threads.clear();
 }
 
@@ -171,6 +232,8 @@ int Thread::search()
             TranspositionTable::clear();
 #endif
 #endif
+            // Initialize history heuristic table
+            initialize_history_table();
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
                 // debugPrintf("Algorithm: MTD(f).\n");
@@ -243,6 +306,9 @@ next:
     TranspositionTable::clear();
 #endif
 #endif
+
+    // Initialize history heuristic table
+    initialize_history_table();
 
     if (gameOptions.getAlgorithm() != 2 /* !MTD(f) */
         && gameOptions.getIDSEnabled()) {
@@ -578,7 +644,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     alpha = value;
                 } else {
                     assert(value >= beta); // Fail high
-                    break;                 // Fail high
+                    // Beta cutoff occurred, update history heuristic
+                    if (depth >= MIN_DEPTH_FOR_HISTORY_UPDATE) {
+                        update_history_table(move);
+                    }
+                    break; // Fail high
                 }
             }
         }

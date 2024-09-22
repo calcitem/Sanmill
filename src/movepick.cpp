@@ -17,6 +17,9 @@
 #include "movepick.h"
 #include "option.h"
 
+// Declare the history table as external
+extern std::atomic<int> history_table[SQUARE_EXT_NB][SQUARE_EXT_NB];
+
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
 void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
@@ -154,6 +157,12 @@ void MovePicker::score()
             cur->value += emptyCount;
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
+
+        // History heuristic: add a value based on the history table
+        cur->value += history_table[from][to];
+        if (cur->value > RATING_INFINITE) {
+            cur->value = RATING_INFINITE;
+        }
     }
 
     if (!pos.shouldFocusOnBlockingPaths()) {
