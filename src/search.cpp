@@ -331,7 +331,7 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
     // If depth limit reached, return stand_pat
-    const int MAX_QUIESCENCE_DEPTH = 1;
+    const int MAX_QUIESCENCE_DEPTH = 0; // TODO: Set to 1 or more
     if (depth <= -MAX_QUIESCENCE_DEPTH) {
         return stand_pat;
     }
