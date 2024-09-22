@@ -74,6 +74,8 @@ constexpr auto DEFAULT_RULE_NUMBER = 0;
 
 constexpr auto DEPTH_ADJUST = 0;
 
+constexpr int MAX_DEPTH = 256;
+
 #ifdef DEBUG
 #define TIME_STAT
 // #define CYCLE_STAT

@@ -17,7 +17,6 @@
 #ifndef MOVEPICK_H_INCLUDED
 #define MOVEPICK_H_INCLUDED
 
-#include <array>
 #include <limits>
 #include <type_traits>
 
@@ -25,8 +24,32 @@
 #include "position.h"
 #include "types.h"
 
-class Position;
-struct ExtMove;
+// Define the maximum number of killer moves per depth
+constexpr int MAX_KILLER_MOVES = 2;
+
+// KillerMoves structure using fixed-size arrays
+struct KillerMoves
+{
+    // Each depth has a fixed-size array of killer moves
+    Move killers[MAX_DEPTH][MAX_KILLER_MOVES];
+
+    // Inserts a killer move into the current depth's killer list
+    void insert(int depth, Move move)
+    {
+        killers[depth][1] = killers[depth][0];
+        killers[depth][0] = move;
+    }
+
+    // Checks if a move is a killer move at the given depth
+    bool is_killer(int depth, Move move) const
+    {
+        return killers[depth][0] == move || killers[depth][1] == move;
+    }
+};
+
+// Use thread_local storage for KillerMoves to avoid contention
+extern thread_local KillerMoves killerMovesGlobal;
+KillerMoves &getKillerMoves();
 
 void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit);
 

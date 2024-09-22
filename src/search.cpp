@@ -17,6 +17,7 @@
 #include "endgame.h"
 #include "evaluate.h"
 #include "mcts.h"
+#include "movepick.h"
 #include "option.h"
 #include "uci.h"
 #include "thread.h"
@@ -52,6 +53,10 @@ void Search::clear()
     TT.clear();
 #endif
     Threads.clear();
+
+    // Clear global killer moves
+    KillerMoves &km = getKillerMoves();
+    memset(km.killers, MOVE_NONE, sizeof(km.killers));
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -602,6 +607,17 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
     // assert(bestValue > -VALUE_INFINITE && bestValue < VALUE_INFINITE);
+
+#if 1
+    // Update Killer Moves only at originDepth
+    if (depth == originDepth && bestValue >= beta && bestMove != MOVE_NONE) {
+        KillerMoves &km = getKillerMoves();
+        int currentDepth = pos->game_ply();
+
+        // Insert the move into the killer moves for the current depth
+        km.insert(currentDepth, bestMove);
+    }
+#endif
 
     return bestValue;
 }

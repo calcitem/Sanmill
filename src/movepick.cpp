@@ -17,6 +17,15 @@
 #include "movepick.h"
 #include "option.h"
 
+// Define the thread_local KillerMoves instance
+thread_local KillerMoves killerMovesGlobal;
+
+// getKillerMoves() now returns the thread-local instance
+KillerMoves &getKillerMoves()
+{
+    return killerMovesGlobal;
+}
+
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
 void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
@@ -50,8 +59,29 @@ void MovePicker::score()
     int markedCount = 0;
     int emptyCount = 0;
 
+    // Get current search depth
+    int currentDepth = pos.game_ply();
+
+    // Access thread-local Killer Moves
+    KillerMoves &km = getKillerMoves();
+
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
+
+        // Check if the move is a Killer Move
+        if (km.is_killer(currentDepth, m)) {
+            cur->value = RATING_KILLER_MOVE;
+
+            // Ensure the score does not exceed maximum
+#if 0
+            if (cur->value > RATING_INIFINITY) {
+                cur->value = RATING_INIFINITY;
+            }
+#endif
+
+            // Skip further scoring as it's a killer move
+            continue;
+        }
 
 #ifdef TT_MOVE_ENABLE
         if (m == ttMove) {
@@ -160,6 +190,9 @@ void MovePicker::score()
         cur->value = -cur->value;
     }
 }
+
+// Explicit template instantiation for LEGAL moves
+template void MovePicker::score<LEGAL>();
 
 /// MovePicker::next_move() is the most important method of the MovePicker
 /// class. It returns a new pseudo legal move every time it is called until
