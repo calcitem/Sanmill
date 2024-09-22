@@ -26,6 +26,11 @@
 #include "perfect_adaptor.h"
 #endif
 
+#include <unordered_map>
+#include <vector>
+#include <fstream>
+#include <random>
+
 using Eval::evaluate;
 using std::string;
 
@@ -44,8 +49,95 @@ Value random_search(Position *pos, Move &bestMove);
 
 bool is_timeout(TimePoint startTime);
 
+/// OpeningBook namespace handles the opening book functionality
+namespace OpeningBook {
+
+// Structure to hold a move and its weight
+struct BookMove
+{
+    Move move;
+    int weight;
+};
+
+// Hash map to store opening book entries for fast lookup
+// Each Key maps to a vector of BookMoves
+static std::unordered_map<Key, std::vector<BookMove>> book;
+
+// Random number generator for selecting moves
+static std::mt19937 rng(static_cast<unsigned int>(std::time(nullptr)));
+
+/// Initializes the opening book by loading from a file
+void init()
+{
+    // Load the opening book from a binary file
+    std::ifstream bookFile("book.bin", std::ios::binary);
+    if (!bookFile) {
+        // Opening book file not found or cannot be opened
+        // You can add error handling or logging here
+        return;
+    }
+
+    Key key;
+    Move move;
+    int weight;
+    while (bookFile.read(reinterpret_cast<char *>(&key), sizeof(Key))) {
+        if (!bookFile.read(reinterpret_cast<char *>(&move), sizeof(Move))) {
+            // Error reading move data
+            break;
+        }
+        // Read the weight if available, default to 1 if not
+        if (!bookFile.read(reinterpret_cast<char *>(&weight), sizeof(int))) {
+            weight = 1;
+        }
+        book[key].push_back({move, weight});
+    }
+
+    bookFile.close();
+}
+
+/// Probes the opening book for the given position
+/// Returns the best move if found, or MOVE_NONE otherwise
+Move probe(const Position &pos)
+{
+    Key posKey = pos.key();
+    auto it = book.find(posKey);
+    if (it != book.end() && !it->second.empty()) {
+        const std::vector<BookMove> &moves = it->second;
+        // Calculate the total weight
+        int totalWeight = 0;
+        for (const auto &bm : moves) {
+            totalWeight += bm.weight;
+        }
+        // Generate a random number in the range [0, totalWeight)
+        std::uniform_int_distribution<int> dist(0, totalWeight - 1);
+        int rnd = dist(rng);
+        // Select a move based on the random number and weights
+        for (const auto &bm : moves) {
+            if (rnd < bm.weight) {
+                return bm.move;
+            }
+            rnd -= bm.weight;
+        }
+        // Fallback in case of rounding errors
+        return moves.back().move;
+    } else {
+        return MOVE_NONE;
+    }
+}
+
+/// Clears the opening book entries
+void clear()
+{
+    book.clear();
+}
+} // namespace OpeningBook
+
 /// Search::init() is called at startup
-void Search::init() noexcept { }
+void Search::init() noexcept
+{
+    // Initialize the opening book
+    OpeningBook::init();
+}
 
 /// Search::clear() resets search state to its initial value
 void Search::clear()
@@ -56,6 +148,9 @@ void Search::clear()
     TT.clear();
 #endif
     Threads.clear();
+
+    // Clear the opening book entries
+    OpeningBook::clear();
 }
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -73,6 +168,17 @@ int Thread::search()
     Move fallbackMove = MOVE_NONE;
     Value fallbackValue = VALUE_UNKNOWN;
 #endif // GABOR_MALOM_PERFECT_AI
+
+    // Check the opening book for the current position
+    Move bookMove = OpeningBook::probe(*rootPos);
+    if (bookMove != MOVE_NONE) {
+        // Found a move in the opening book
+        bestMove = bookMove;
+        aiMoveType = AiMoveType::book;
+        debugPrintf("Opening book move found: %s\n",
+                    UCI::move(bestMove).c_str());
+        return 0;
+    }
 
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
@@ -263,8 +369,10 @@ next:
         value = ::search(rootPos, ss, d, originDepth, alpha, beta, bestMove);
     }
 
+#if defined(GABOR_MALOM_PERFECT_AI)
     fallbackMove = bestMove;
     fallbackValue = value;
+#endif // GABOR_MALOM_PERFECT_AI
     aiMoveType = AiMoveType::traditional;
 
     debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());

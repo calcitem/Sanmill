@@ -126,7 +126,7 @@ enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
 
 enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 
-enum class AiMoveType { unknown, traditional, perfect, consensus };
+enum class AiMoveType { unknown, traditional, perfect, consensus, book };
 
 enum Color : uint8_t {
     NOCOLOR = 0,
