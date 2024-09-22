@@ -33,6 +33,10 @@ using std::string;
 Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
            Depth depth, Depth originDepth, Move &bestMove);
 
+Value pvs(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+          Depth originDepth, Value alpha, Value beta, Move &bestMove, int i,
+          const Color before, const Color after);
+
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
              Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
@@ -335,17 +339,14 @@ vector<Key> posKeyHistory;
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
              Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
-    Value value;
     Value bestValue = -VALUE_INFINITE;
-
-    Depth epsilon;
 
     // Check for terminal position, depth limit, or search abortion
     if (unlikely(pos->phase == Phase::gameOver) || depth <= 0 ||
         Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
-        // For win quickly
+        // Adjust evaluation to prefer quicker wins or slower losses
         if (bestValue > 0) {
             bestValue += depth;
         } else {
@@ -356,6 +357,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 
 #ifdef RULE_50
+    // Rule 50 move draw condition
     if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
@@ -408,7 +410,6 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #ifdef TRANSPOSITION_TABLE_ENABLE
     const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
                                   // and no available moves
-
     Bound type = BOUND_NONE;
 
     const Value probeVal = TranspositionTable::probe(posKey, depth, type
@@ -450,6 +451,9 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // Add a small component to draw evaluations to avoid 3-fold blindness
         return VALUE_DRAW + 1;
     }
+
+    Value value;
+    Depth epsilon;
 
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);
@@ -495,30 +499,9 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // Perform recursive search based on the selected algorithm
         if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            // Principal Variation Search (PVS)
-            if (i == 0) {
-                value = (after != before) ?
-                            -search(pos, ss, depth - 1 + epsilon, originDepth,
-                                    -beta, -alpha, bestMove) :
-                            search(pos, ss, depth - 1 + epsilon, originDepth,
-                                   alpha, beta, bestMove);
-            } else {
-                value = (after != before) ?
-                            -search(pos, ss, depth - 1 + epsilon, originDepth,
-                                    -alpha - VALUE_PVS_WINDOW, -alpha,
-                                    bestMove) :
-                            search(pos, ss, depth - 1 + epsilon, originDepth,
-                                   alpha, alpha + VALUE_PVS_WINDOW, bestMove);
-
-                // Re-search if the value is within the search window
-                if (value > alpha && value < beta) {
-                    value = (after != before) ?
-                                -search(pos, ss, depth - 1 + epsilon,
-                                        originDepth, -beta, -alpha, bestMove) :
-                                search(pos, ss, depth - 1 + epsilon,
-                                       originDepth, alpha, beta, bestMove);
-                }
-            }
+            // Call the PVS function
+            value = pvs(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta,
+                        bestMove, i, before, after);
         } else {
             // Alpha-Beta Search
             value = (after != before) ?
@@ -605,6 +588,39 @@ Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
     }
 
     return g;
+}
+
+/// Function that performs Principal Variation Search (PVS)
+Value pvs(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+          Depth originDepth, Value alpha, Value beta, Move &bestMove, int i,
+          const Color before, const Color after)
+{
+    Value value;
+
+    if (i == 0) {
+        // First move: full window search
+        value = (after != before) ?
+                    -search(pos, ss, depth, originDepth, -beta, -alpha,
+                            bestMove) :
+                    search(pos, ss, depth, originDepth, alpha, beta, bestMove);
+    } else {
+        // Subsequent moves: null window search (PVS)
+        value = (after != before) ?
+                    -search(pos, ss, depth, originDepth,
+                            -alpha - VALUE_PVS_WINDOW, -alpha, bestMove) :
+                    search(pos, ss, depth, originDepth, alpha,
+                           alpha + VALUE_PVS_WINDOW, bestMove);
+
+        // Re-search if the value is within the search window
+        if (value > alpha && value < beta) {
+            value = (after != before) ? -search(pos, ss, depth, originDepth,
+                                                -beta, -alpha, bestMove) :
+                                        search(pos, ss, depth, originDepth,
+                                               alpha, beta, bestMove);
+        }
+    }
+
+    return value;
 }
 
 /// Function to check if the search has timed out
