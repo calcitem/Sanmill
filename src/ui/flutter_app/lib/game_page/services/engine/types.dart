@@ -175,7 +175,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get pieceColor {
+  Color get mainColor {
     final ColorSettings colorSettings = DB().colorSettings;
     switch (this) {
       case PieceColor.white:
@@ -212,7 +212,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get blurPositionColor => pieceColor.withOpacity(0.1);
+  Color get blurPositionColor => mainColor.withOpacity(0.1);
 }
 
 enum AiMoveType { unknown, traditional, perfect, consensus }

@@ -20,9 +20,9 @@ part of '../../../game_page/services/painters/painters.dart';
 ///
 /// Holds parameters needed to paint each piece.
 @immutable
-class PiecePaintParam {
-  const PiecePaintParam({
-    required this.piece,
+class Piece {
+  const Piece({
+    required this.pieceColor,
     required this.pos,
     required this.animated,
     required this.diameter,
@@ -31,7 +31,7 @@ class PiecePaintParam {
   });
 
   /// The color of the piece.
-  final PieceColor piece;
+  final PieceColor pieceColor;
 
   /// The position the piece is placed at.
   ///
@@ -67,7 +67,7 @@ class PiecePainter extends CustomPainter {
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
-    final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
+    final List<Piece> piecesToDraw = <Piece>[];
 
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
             DB().displaySettings.pieceWidth /
@@ -100,8 +100,8 @@ class PiecePainter extends CustomPainter {
             : pieceImages?[piece]; // Get image from pieceImages
 
         piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
+          Piece(
+            pieceColor: piece,
             pos: pos,
             animated: animated,
             diameter: pieceWidth,
@@ -127,8 +127,8 @@ class PiecePainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     Color blurPositionColor = Colors.transparent;
-    for (final PiecePaintParam piece in piecesToDraw) {
-      blurPositionColor = piece.piece.blurPositionColor;
+    for (final Piece piece in piecesToDraw) {
+      blurPositionColor = piece.pieceColor.blurPositionColor;
 
       final double pieceRadius = pieceWidth / 2;
       final double pieceInnerRadius = pieceRadius * 0.99;
@@ -150,7 +150,7 @@ class PiecePainter extends CustomPainter {
         );
       } else {
         // Draw Border of Piece
-        paint.color = piece.piece.borderColor;
+        paint.color = piece.pieceColor.borderColor;
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
           paint.style = PaintingStyle.stroke;
@@ -166,7 +166,7 @@ class PiecePainter extends CustomPainter {
         );
 
         paint.style = PaintingStyle.fill;
-        paint.color = piece.piece.pieceColor;
+        paint.color = piece.pieceColor.mainColor;
         canvas.drawCircle(
           piece.pos,
           piece.animated ? animatedPieceInnerRadius : pieceInnerRadius,
@@ -182,7 +182,7 @@ class PiecePainter extends CustomPainter {
           text: TextSpan(
             text: piece.squareAttribute?.placedPieceNumber.toString(),
             style: TextStyle(
-              color: piece.piece.pieceColor.computeLuminance() > 0.5
+              color: piece.pieceColor.mainColor.computeLuminance() > 0.5
                   ? Colors.black
                   : Colors.white,
               fontSize: piece.diameter * 0.5, // Adjust font size as needed
