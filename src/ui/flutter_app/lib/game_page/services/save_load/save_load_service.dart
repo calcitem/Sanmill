@@ -208,10 +208,10 @@ class LoadService {
 
     // Delay to show the tip after the navigation tip is shown
     if (GameController().loadedGameFilenamePrefix != null) {
+      final String loadedGameFilenamePrefix =
+          GameController().loadedGameFilenamePrefix!;
       Future<void>.delayed(Duration.zero, () {
-        GameController()
-            .headerTipNotifier
-            .showTip(GameController().loadedGameFilenamePrefix!);
+        GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
     }
   }

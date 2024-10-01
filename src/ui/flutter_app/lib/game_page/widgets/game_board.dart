@@ -103,11 +103,12 @@ class _GameBoardState extends State<GameBoard>
     }
 
     if (mounted && GameController().loadedGameFilenamePrefix != null) {
+      final String loadedGameFilenamePrefix =
+          GameController().loadedGameFilenamePrefix!;
+
       // Delay to show the tip after the navigation tip is shown
       Future<void>.delayed(Duration.zero, () {
-        GameController()
-            .headerTipNotifier
-            .showTip(GameController().loadedGameFilenamePrefix!);
+        GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
     }
 
