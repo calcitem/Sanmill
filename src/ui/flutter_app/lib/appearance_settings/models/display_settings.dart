@@ -62,7 +62,7 @@ class DisplaySettings {
     @Deprecated("Use [fontScale] instead.") this.fontSize = 16.0,
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
-    this.animationDuration = 0.0,
+    this.animationDuration = 1.0,
     @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
     this.isPositionalAdvantageIndicatorShown = false,
     this.backgroundImagePath = '',
