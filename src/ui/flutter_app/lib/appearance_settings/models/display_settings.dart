@@ -63,7 +63,7 @@ class DisplaySettings {
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
     this.animationDuration = 0.0,
-    this.aiResponseDelayTime = 0.0,
+    @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
     this.isPositionalAdvantageIndicatorShown = false,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
@@ -119,7 +119,7 @@ class DisplaySettings {
   @HiveField(11)
   final double boardTop;
 
-  @HiveField(12)
+  @HiveField(12, defaultValue: 1.0)
   final double animationDuration;
 
   @HiveField(13)
@@ -141,6 +141,7 @@ class DisplaySettings {
   @HiveField(17, defaultValue: false)
   final bool isFullScreen;
 
+  @Deprecated("Deprecated.")
   @HiveField(18, defaultValue: 0.0)
   final double aiResponseDelayTime;
 

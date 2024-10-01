@@ -17,6 +17,7 @@
 /// Although marked as a library this package is tightly integrated into the app
 library painters;
 
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';

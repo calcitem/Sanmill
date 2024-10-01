@@ -30,8 +30,7 @@ class GameBoard extends StatefulWidget {
   State<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard>
-    with SingleTickerProviderStateMixin {
+class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   static const String _logTag = "[board]";
   late Future<Map<PieceColor, ui.Image?>> pieceImagesFuture;
   late AnimationManager animationManager;
@@ -153,7 +152,11 @@ class _GameBoardState extends State<GameBoard>
     );
 
     final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: animationManager.animation,
+      animation: Listenable.merge(<Animation<double>>[
+        animationManager.placeAnimationController,
+        animationManager.moveAnimationController,
+        animationManager.removeAnimationController,
+      ]),
       builder: (_, Widget? child) {
         return FutureBuilder<Map<PieceColor, ui.Image?>>(
           future: pieceImagesFuture,
@@ -166,7 +169,9 @@ class _GameBoardState extends State<GameBoard>
               return CustomPaint(
                 painter: BoardPainter(context),
                 foregroundPainter: PiecePainter(
-                  animationValue: animationManager.animation.value,
+                  placeAnimationValue: animationManager.placeAnimation.value,
+                  moveAnimationValue: animationManager.moveAnimation.value,
+                  removeAnimationValue: animationManager.removeAnimation.value,
                   pieceImages: pieceImages,
                 ),
                 child: DB().generalSettings.screenReaderSupport
@@ -182,7 +187,8 @@ class _GameBoardState extends State<GameBoard>
       },
     );
 
-    animationManager.forwardAnimation();
+    //animationManager.forwardPlaceAnimation();
+    //animationManager.forwardMoveAnimation();
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,

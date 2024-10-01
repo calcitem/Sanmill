@@ -39,7 +39,6 @@ part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_mo
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
-part 'package:sanmill/appearance_settings/widgets/sliders/ai_response_delay_time_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
@@ -104,11 +103,6 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setAnimationDuration(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _AnimationDurationSlider(),
-      );
-
-  void setAiResponseDelayTime(BuildContext context) => showModalBottomSheet(
-        context: context,
-        builder: (_) => const _AiResponseDelayTimeSlider(),
       );
 
   void setBackgroundImage(BuildContext context) => showModalBottomSheet(
@@ -427,10 +421,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
-        ),
-        SettingsListTile(
-          titleString: S.of(context).aiResponseDelayTime,
-          onTap: () => setAiResponseDelayTime(context),
         ),
       ],
     );

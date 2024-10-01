@@ -39,6 +39,7 @@ class Game {
 
   int? focusIndex;
   int? blurIndex;
+  int? removeIndex;
 
   final List<Player> players = <Player>[
     Player(color: PieceColor.white, isAi: false),

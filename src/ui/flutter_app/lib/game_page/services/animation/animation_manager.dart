@@ -17,46 +17,165 @@
 import 'package:flutter/material.dart';
 
 import '../../../shared/database/database.dart';
+import '../mill.dart';
 
 class AnimationManager {
   AnimationManager(this.vsync) {
-    _initAnimation();
+    _initPlaceAnimation();
+    _initMoveAnimation();
+    _initRemoveAnimation();
   }
 
   final TickerProvider vsync;
 
-  late final AnimationController _animationController;
-  late final Animation<double> _animation;
+  bool allowAnimations = true;
 
-  AnimationController get animationController => _animationController;
-  Animation<double> get animation => _animation;
+  // Place Animation
+  late final AnimationController _placeAnimationController;
+  late final Animation<double> _placeAnimation;
 
-  void _initAnimation() {
-    // TODO: Check _initAnimation on branch master
-    _animationController = AnimationController(
+  AnimationController get placeAnimationController => _placeAnimationController;
+  Animation<double> get placeAnimation => _placeAnimation;
+
+  // Move Animation
+  late final AnimationController _moveAnimationController;
+  late final Animation<double> _moveAnimation;
+
+  AnimationController get moveAnimationController => _moveAnimationController;
+  Animation<double> get moveAnimation => _moveAnimation;
+
+  // Remove Animation
+  late final AnimationController _removeAnimationController;
+  late final Animation<double> _removeAnimation;
+
+  AnimationController get removeAnimationController =>
+      _removeAnimationController;
+  Animation<double> get removeAnimation => _removeAnimation;
+
+  void _initPlaceAnimation() {
+    _placeAnimationController = AnimationController(
       vsync: vsync,
       duration: Duration(
-        seconds: DB().displaySettings.animationDuration.toInt(),
+        milliseconds: (DB().displaySettings.animationDuration * 1000).toInt(),
       ),
     );
 
-    _animation =
-        Tween<double>(begin: 1.27, end: 1.0).animate(_animationController);
+    _placeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _placeAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+  }
+
+  void _initMoveAnimation() {
+    _moveAnimationController = AnimationController(
+      vsync: vsync,
+      duration: Duration(
+        milliseconds: (DB().displaySettings.animationDuration * 1000).toInt(),
+      ),
+    );
+
+    _moveAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _moveAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
+  }
+
+  void _initRemoveAnimation() {
+    _removeAnimationController = AnimationController(
+      vsync: vsync,
+      duration: Duration(
+        milliseconds: (DB().displaySettings.animationDuration * 1000).toInt(),
+      ),
+    );
+
+    _removeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _removeAnimationController,
+        curve: Curves.easeOutCubic,
+      ),
+    );
   }
 
   void dispose() {
-    _animationController.dispose();
+    _placeAnimationController.dispose();
+    _moveAnimationController.dispose();
+    _removeAnimationController.dispose();
   }
 
-  void resetAnimation() {
-    _animationController.reset();
+  void resetPlaceAnimation() {
+    _placeAnimationController.reset();
   }
 
-  void forwardAnimation() {
-    _animationController.forward();
+  void forwardPlaceAnimation() {
+    _placeAnimationController.forward();
   }
 
-  void animateToEnd() {
-    _animationController.animateTo(1.0);
+  void resetMoveAnimation() {
+    _moveAnimationController.reset();
+  }
+
+  void forwardMoveAnimation() {
+    _moveAnimationController.forward();
+  }
+
+  void resetRemoveAnimation() {
+    _removeAnimationController.reset();
+  }
+
+  void forwardRemoveAnimation() {
+    _removeAnimationController.forward();
+  }
+
+  void animatePlace() {
+    if (GameController().isDisposed == true) {
+      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+      //return;
+    }
+
+    if (allowAnimations) {
+      resetPlaceAnimation();
+      forwardPlaceAnimation();
+    }
+  }
+
+  bool isRemoveAnimationAnimating() {
+    if (_removeAnimationController.isAnimating) {
+      return true;
+    }
+    return false;
+  }
+
+  void animateMove() {
+    if (GameController().isDisposed == true) {
+      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+      //return;
+    }
+
+    if (allowAnimations) {
+      resetMoveAnimation();
+      forwardMoveAnimation();
+    }
+  }
+
+  void animateRemove() {
+    if (GameController().isDisposed == true) {
+      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+      //return;
+    }
+    if (allowAnimations) {
+      resetRemoveAnimation();
+
+      _removeAnimationController.addStatusListener((AnimationStatus status) {
+        if (status == AnimationStatus.completed) {
+          GameController().gameInstance.removeIndex = null;
+        }
+      });
+
+      forwardRemoveAnimation();
+    }
   }
 }

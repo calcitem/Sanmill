@@ -248,7 +248,9 @@ class GameController {
             0) {
           isEngineInDelay = true;
           await Future<void>.delayed(Duration(
-              seconds: DB().displaySettings.aiResponseDelayTime.toInt()));
+            milliseconds:
+                (DB().displaySettings.animationDuration * 1000).toInt(),
+          ));
           isEngineInDelay = false;
         }
 
@@ -268,11 +270,6 @@ class GameController {
 
         loopIsFirst = false;
         searched = true;
-
-        if (GameController().isDisposed == false) {
-          GameController().animationManager.resetAnimation();
-          GameController().animationManager.animateToEnd();
-        }
 
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {

@@ -48,14 +48,13 @@ class TutorialPainter extends CustomPainter {
         }
 
         final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
 
         piecesToDraw.add(
           Piece(
             pieceColor: piece,
             pos: pos,
-            animated: animated,
             diameter: pieceWidth,
+            index: index,
           ),
         );
 

@@ -572,6 +572,9 @@ class Position {
         if (_removePiece(m.to) == const GameResponseOK()) {
           ret = true;
           st.rule50 = 0;
+
+          GameController().gameInstance.removeIndex = squareToIndex[m.to];
+          GameController().animationManager.animateRemove();
         } else {
           return false;
         }
@@ -584,6 +587,8 @@ class Position {
         ret = _movePiece(m.from, m.to);
         if (ret) {
           ++st.rule50;
+          GameController().gameInstance.removeIndex = null;
+          GameController().animationManager.animateMove();
         }
         break;
       case MoveType.place:
@@ -591,6 +596,10 @@ class Position {
         if (ret) {
           // Reset rule 50 counter
           st.rule50 = 0;
+          GameController().gameInstance.removeIndex = null;
+          //GameController().gameInstance.focusIndex = squareToIndex[m.to];
+          //GameController().gameInstance.blurIndex = squareToIndex[m.from];
+          GameController().animationManager.animatePlace();
         }
         break;
       case MoveType.draw:
@@ -1143,6 +1152,10 @@ class Position {
 
     logger.i("[position] Game over, $w win, because of $reason");
     _updateScore();
+
+    GameController().gameInstance.focusIndex = null;
+    GameController().gameInstance.blurIndex = null;
+    GameController().gameInstance.removeIndex = null;
   }
 
   void _updateScore() {

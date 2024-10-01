@@ -81,8 +81,16 @@ class HistoryNavigator {
 
     SoundManager().mute();
 
+    if (navMode == HistoryNavMode.takeBackAll ||
+        navMode == HistoryNavMode.takeBackN ||
+        navMode == HistoryNavMode.takeBack) {
+      GameController().animationManager.allowAnimations = false;
+    }
+
     final HistoryResponse resp =
         await doEachMove(navMode, number); // doMove() to index
+
+    GameController().animationManager.allowAnimations = true;
 
     switch (resp) {
       case HistoryOK():
