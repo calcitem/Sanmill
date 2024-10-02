@@ -55,14 +55,25 @@ class PiecePainter extends CustomPainter {
     required this.placeAnimationValue,
     required this.moveAnimationValue,
     required this.removeAnimationValue,
+    required this.animationConfig,
     required this.pieceImages,
-  });
+  }) : _animationFactory = AnimationFactory(animationConfig);
 
   final double placeAnimationValue;
   final double moveAnimationValue;
   final double removeAnimationValue;
 
+  final AnimationConfig animationConfig;
+  final AnimationFactory _animationFactory;
+
   final Map<PieceColor, ui.Image?>? pieceImages;
+
+  // Retrieve the appropriate animation effect functions
+  late final void Function(Canvas, Offset, double, double) drawPlaceEffect =
+      _animationFactory.getPlaceEffect();
+
+  late final void Function(Canvas, Offset, double, double) drawRemoveEffect =
+      _animationFactory.getRemoveEffect();
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -114,13 +125,15 @@ class PiecePainter extends CustomPainter {
         if (isPlacingPiece) {
           pos = pointFromIndex(index, size);
 
+          // Call the configured place effect
           drawPlaceEffect(
             canvas,
             pos,
             pieceWidth,
             placeAnimationValue,
           );
-          //continue; // Skip normal drawing
+          // Continue to skip normal drawing if desired
+          // continue;
         }
 
         if (isMovingPiece) {
@@ -138,6 +151,7 @@ class PiecePainter extends CustomPainter {
         }
 
         if (isRemovingPiece) {
+          // Call the configured remove effect
           drawRemoveEffect(
             canvas,
             pos,
@@ -300,151 +314,13 @@ class PiecePainter extends CustomPainter {
     }
   }
 
-  void drawPlaceEffect(
-    Canvas canvas,
-    Offset center,
-    double diameter,
-    double animationValue,
-  ) {
-    if (DB().displaySettings.animationDuration == 0.0) {
-      return;
-    }
-
-    // Apply easing to the animation value
-    final double easedAnimation = Curves.easeOut.transform(animationValue);
-
-    // Calculate the maximum and current radius based on the diameter and animation
-    final double maxRadius = diameter * 0.25;
-    final double currentRadius = diameter + maxRadius * easedAnimation;
-
-    // Define the main and secondary opacities
-    final double mainOpacity = 0.6 * (1.0 - easedAnimation);
-    final double secondOpacity = mainOpacity * 0.8;
-
-    // Cache the board line color to avoid repeated calls
-    final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
-
-    // Define the configuration for each effect layer
-    final List<_EffectLayer> layers = <_EffectLayer>[
-      // Main layer
-      _EffectLayer(
-        radiusFactor: 1.0,
-        opacityFactor: 0.8,
-      ),
-      // Second layer
-      _EffectLayer(
-        radiusFactor: 0.75,
-        opacityFactor: 0.5,
-      ),
-      // Third layer
-      _EffectLayer(
-        radiusFactor: 0.5,
-        opacityFactor: 0.2,
-      ),
-    ];
-
-    // Iterate over each layer configuration to draw the circles
-    for (final _EffectLayer layer in layers) {
-      // Determine the radius for the current layer
-      final double layerRadius = currentRadius * layer.radiusFactor;
-
-      // Determine the opacity for the current layer
-      double layerOpacity;
-      if (layer.opacityFactor == 1.0) {
-        layerOpacity = mainOpacity;
-      } else if (layer.opacityFactor == 0.8) {
-        layerOpacity = secondOpacity;
-      } else {
-        layerOpacity = mainOpacity * layer.opacityFactor;
-      }
-
-      // Create the paint with a radial gradient shader
-      final Paint paint = Paint()
-        ..shader = RadialGradient(
-          colors: <ui.Color>[
-            boardLineColor.withOpacity(layerOpacity),
-            boardLineColor.withOpacity(0.0),
-          ],
-          stops: const <double>[
-            0.0,
-            1.0,
-          ],
-        ).createShader(Rect.fromCircle(center: center, radius: layerRadius))
-        ..style = PaintingStyle.fill;
-
-      // Draw the circle on the canvas
-      canvas.drawCircle(center, layerRadius, paint);
-    }
-  }
-
-  void drawRemoveEffect(
-    Canvas canvas,
-    Offset center,
-    double diameter,
-    double animationValue,
-  ) {
-    if (DB().displaySettings.animationDuration == 0.0) {
-      return;
-    }
-
-    final int numParticles = DB().ruleSettings.piecesCount;
-    final double maxDistance = diameter * 3;
-    final double particleMaxSize = diameter * 0.12;
-    final double particleMinSize = diameter * 0.05;
-
-    final double time = Curves.easeOut.transform(animationValue);
-
-    final int seed = DateTime.now().millisecondsSinceEpoch;
-    final Random random = Random(seed);
-
-    for (int i = 0; i < numParticles; i++) {
-      final double angle =
-          (i / numParticles) * 2 * pi + random.nextDouble() * 0.2;
-      final double speed = 0.5 + random.nextDouble() * 0.4;
-
-      final double distance = speed * time * maxDistance;
-      final Offset offset = Offset(cos(angle), sin(angle)) * distance;
-      final Offset particlePos = center + offset;
-
-      final double opacity = (1.0 - time).clamp(0.0, 1.0);
-
-      final Color particleColor = HSVColor.fromAHSV(
-        opacity,
-        random.nextDouble() * 360,
-        1.0,
-        1.0,
-      ).toColor();
-
-      final Paint particlePaint = Paint()
-        ..color = particleColor
-        ..style = PaintingStyle.fill;
-
-      final double particleSize = particleMinSize +
-          (particleMaxSize - particleMinSize) *
-              (1.0 - time) *
-              (0.8 + random.nextDouble() * 0.4);
-
-      canvas.drawCircle(particlePos, particleSize, particlePaint);
-    }
-  }
-
   @override
   bool shouldRepaint(PiecePainter oldDelegate) =>
       placeAnimationValue != oldDelegate.placeAnimationValue ||
       moveAnimationValue != oldDelegate.moveAnimationValue ||
-      removeAnimationValue != oldDelegate.removeAnimationValue;
-}
-
-/// A helper class to define the properties of each effect layer.
-class _EffectLayer {
-  _EffectLayer({
-    required this.radiusFactor,
-    required this.opacityFactor,
-  });
-
-  /// The factor by which to multiply the current radius.
-  final double radiusFactor;
-
-  /// The factor by which to multiply the main opacity.
-  final double opacityFactor;
+      removeAnimationValue != oldDelegate.removeAnimationValue ||
+      animationConfig.placeEffectType !=
+          oldDelegate.animationConfig.placeEffectType ||
+      animationConfig.removeEffectType !=
+          oldDelegate.animationConfig.removeEffectType;
 }

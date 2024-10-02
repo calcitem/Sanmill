@@ -151,6 +151,11 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       context: context,
     );
 
+    const AnimationConfig animationConfig = AnimationConfig(
+      placeEffectType: PlaceEffectType.ripple,
+      removeEffectType: RemoveEffectType.particles,
+    );
+
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: Listenable.merge(<Animation<double>>[
         animationManager.placeAnimationController,
@@ -173,6 +178,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   moveAnimationValue: animationManager.moveAnimation.value,
                   removeAnimationValue: animationManager.removeAnimation.value,
                   pieceImages: pieceImages,
+                  animationConfig: animationConfig,
                 ),
                 child: DB().generalSettings.screenReaderSupport
                     ? const _BoardSemantics()

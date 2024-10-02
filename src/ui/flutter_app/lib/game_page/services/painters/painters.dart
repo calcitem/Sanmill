@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// ignore_for_file: directives_ordering
+
 /// Although marked as a library this package is tightly integrated into the app
 library painters;
 
-import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -29,6 +30,14 @@ import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../services/mill.dart';
+import 'animation_effects/animation_factory.dart';
+
+export 'animation_effects/animation_factory.dart';
+export 'animation_effects/animation_types.dart';
+export 'animation_effects/place_ripple_effect.dart';
+export 'animation_effects/place_expansion_effect.dart';
+export 'animation_effects/remove_particles_effect.dart';
+export 'animation_effects/remove_fade_effect.dart';
 
 part 'board_painter.dart';
 part 'board_utils.dart';
