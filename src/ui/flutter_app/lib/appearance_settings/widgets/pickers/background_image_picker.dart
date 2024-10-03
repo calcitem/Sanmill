@@ -24,6 +24,8 @@ final List<String> _bgPaths = <String>[
   Assets.images.backgroundImage3.path,
   Assets.images.backgroundImage4.path,
   Assets.images.backgroundImage5.path,
+  Assets.images.backgroundImage6.path,
+  Assets.images.backgroundImage7.path,
 ];
 
 class _BackgroundImagePicker extends StatelessWidget {
@@ -45,7 +47,7 @@ class _BackgroundImagePicker extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
-              childAspectRatio: 1080 / 1920,
+              childAspectRatio: 576 / 1024,
               crossAxisSpacing: 12,
               mainAxisSpacing: 12,
             ),
