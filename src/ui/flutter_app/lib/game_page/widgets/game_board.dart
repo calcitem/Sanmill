@@ -69,10 +69,20 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     }
   }
 
+  void _processInitialSharingMoveListListener() {
+    processInitialSharingMoveList();
+  }
+
   void _setupValueNotifierListener() {
-    GameController().initialSharingMoveListNotifier.addListener(() {
-      processInitialSharingMoveList();
-    });
+    GameController()
+        .initialSharingMoveListNotifier
+        .addListener(_processInitialSharingMoveListListener);
+  }
+
+  void _removeValueNotifierListener() {
+    GameController()
+        .initialSharingMoveListNotifier
+        .removeListener(_processInitialSharingMoveListListener);
   }
 
   Future<Map<PieceColor, ui.Image?>> _loadImages() async {
@@ -308,9 +318,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     //MillController().engine.shutdown();
     animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
-    GameController()
-        .initialSharingMoveListNotifier
-        .removeListener(_setupValueNotifierListener);
+    _removeValueNotifierListener();
     super.dispose();
   }
 }
