@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "තොරාගන්නා එක තුනක් හදන්නට වඩා ප්‍රතිවාදියන්ගේ චලන වලට බාධා එල්ල කිරීමට. තොරාගන්නා එක තුනක් සම්පූර්ණ කිරීමෙන් කොටස් ඉවත් කිරීම සඳහා අවධානය යොමු කිරීම වෙනුවට, AI ප්‍රතිවාදියා හසු කිරීමට, ඔවුන්ට චලනය කළ නොහැකි වන අතර ආක‍්‍රමණාකාරී ක්‍රීඩාවක් මඟින් නොව ප‍්‍රතිස්ථාමී යුද්ධයකින් ජයග්‍රහණය සපයයි. මෙම මූලාකෘතිය ප්‍රතිවාදියන්ගේ එකතු තුරන් තදම වැඩි ක්‍රියාවෙන් නතර කරන්නේ නැත.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "තීරු රූපය",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "වර්ණ සැකසුම් ආනයන කරන්න",
+  "@importColorSettings": {},
+  "exportColorSettings": "වර්ණ සැකසුම් අපනයනය කරන්න",
+  "@exportColorSettings": {},
+  "import": "ආනයන",
+  "@import": {},
+  "export": "අපනයන",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "කරුණාකර පළමුව JSON ආකෘති සැකසුම් පසුරුපුවරුවට පිටපත් කරන්න.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "පසුරුපුවරුවට පිටපත් කෙරුණා.",
+  "@copiedToClipboard": {},
+  "imported": "ආනයනය කරන ලදි.",
+  "@imported": {}
 }

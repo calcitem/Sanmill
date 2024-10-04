@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Forgangsröð að hindra hreyfingar andstæðingsins fram yfir að mynda möllur. Í stað þess að einbeita sér að því að fjarlægja stykki með því að ljúka möllum, miðar AI að því að loka andstæðingnum, gera þeim ófært að hreyfa sig og tryggja sigur með úthaldsleik frekar en árásargjarnri leik. Þessi stefna lokar ekki virkan möllum andstæðingsins.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Skákmanna mynd",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Flytja inn litastillingar",
+  "@importColorSettings": {},
+  "exportColorSettings": "Flytja út litastillingar",
+  "@exportColorSettings": {},
+  "import": "Flytja inn",
+  "@import": {},
+  "export": "Flytja út",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Vinsamlegast afritaðu JSON stillingarnar á klemmuspjald fyrst.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Afritað á klemmuspjald.",
+  "@copiedToClipboard": {},
+  "imported": "Flutt inn.",
+  "@imported": {}
 }

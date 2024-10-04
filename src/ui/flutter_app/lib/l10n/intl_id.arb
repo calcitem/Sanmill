@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Prioritaskan untuk menghalangi pergerakan lawan daripada membentuk kincir. Alih-alih fokus pada menghilangkan bidak dengan menyelesaikan kincir, AI bertujuan untuk menjebak lawan, membuat mereka tidak dapat bergerak dan memastikan kemenangan melalui keletihan daripada permainan agresif. Strategi ini tidak secara aktif menghalangi kincir lawan.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Gambar bidak",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Impor pengaturan warna",
+  "@importColorSettings": {},
+  "exportColorSettings": "Ekspor pengaturan warna",
+  "@exportColorSettings": {},
+  "import": "Impor",
+  "@import": {},
+  "export": "Ekspor",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Silakan salin pengaturan format JSON ke clipboard terlebih dahulu.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Disalin ke clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Diimpor.",
+  "@imported": {}
 }

@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Durante fases específicas del juego, da prioridad a obstruir el movimiento del oponente sobre la formación de molinos. En lugar de centrarse en eliminar piezas completando molinos, la IA intenta atrapar al oponente durante estas fases, incapacitándole para moverse y asegurándose la victoria mediante el desgaste en lugar de mediante el juego agresivo. Esta estrategia específica para cada fase no bloquea activamente los molinos del adversario.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Imagen de la pieza",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importar ajustes de color",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportar ajustes de color",
+  "@exportColorSettings": {},
+  "import": "Importar",
+  "@import": {},
+  "export": "Exportar",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Por favor, copie los ajustes del formato JSON al portapapeles primero.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiado al portapapeles.",
+  "@copiedToClipboard": {},
+  "imported": "Importado.",
+  "@imported": {}
 }

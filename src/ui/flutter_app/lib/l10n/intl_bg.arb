@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Приоритизирайте блокирането на движението на противника вместо формирането на тройки. Вместо да се фокусирате върху премахването на фигури чрез завършване на тройки, AI цели да вкара противника в капан, като го направи неспособен да се движи и да осигури победа чрез изтощение, а не чрез агресивна игра. Тази стратегия не блокира активно тройките на противника.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Изображение на фигура",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Импортиране на настройки за цвят",
+  "@importColorSettings": {},
+  "exportColorSettings": "Експортиране на настройки за цвят",
+  "@exportColorSettings": {},
+  "import": "Импорт",
+  "@import": {},
+  "export": "Експорт",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Моля, първо копирайте настройките за формат JSON в клипборда.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Копирано в клипборда.",
+  "@copiedToClipboard": {},
+  "imported": "Импортирано.",
+  "@imported": {}
 }

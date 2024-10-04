@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "ให้ความสำคัญกับการขัดขวางการเคลื่อนไหวของฝ่ายตรงข้ามมากกว่าการสร้างมิลล์ แทนที่จะมุ่งเน้นไปที่การลบชิ้นส่วนด้วยการทำมิลล์ให้สมบูรณ์ AI ตั้งใจที่จะดักฝ่ายตรงข้าม ทำให้พวกเขาไม่สามารถเคลื่อนไหวได้และรักษาชัยชนะผ่านการสึกหรอมากกว่าการเล่นอย่างดุเดือด กลยุทธ์นี้ไม่ได้ขัดขวางมิลล์ของฝ่ายตรงข้ามอย่างแข็งขัน",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "รูปหมาก",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "นำเข้าการตั้งค่าสี",
+  "@importColorSettings": {},
+  "exportColorSettings": "ส่งออกการตั้งค่าสี",
+  "@exportColorSettings": {},
+  "import": "นำเข้า",
+  "@import": {},
+  "export": "ส่งออก",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "โปรดคัดลอกการตั้งค่ารูปแบบ JSON ไปยังคลิปบอร์ดก่อน",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+  "@copiedToClipboard": {},
+  "imported": "นำเข้าแล้ว",
+  "@imported": {}
 }

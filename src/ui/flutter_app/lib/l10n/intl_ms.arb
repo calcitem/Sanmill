@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Utamakan untuk menghalang pergerakan lawan daripada membentuk kincir. Daripada memberi tumpuan untuk menghapuskan kepingan dengan melengkapkan kincir, AI bertujuan untuk memerangkap lawan, menjadikan mereka tidak dapat bergerak dan memastikan kemenangan melalui kepenatan dan bukan permainan agresif. Strategi ini tidak secara aktif menghalang kincir lawan.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Gambar catur",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Import tetapan warna",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksport tetapan warna",
+  "@exportColorSettings": {},
+  "import": "Import",
+  "@import": {},
+  "export": "Eksport",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Sila salin tetapan format JSON ke papan keratan terlebih dahulu.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Disalin ke papan keratan.",
+  "@copiedToClipboard": {},
+  "imported": "Diimport.",
+  "@imported": {}
 }

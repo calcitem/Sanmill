@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Jepni përparësi bllokimit të lëvizjeve të kundërshtarit përpara formimit të mulli. Në vend që të përqendrohet në heqjen e pjesëve duke përfunduar mulli, AI synon të fusë kundërshtarin në kurth, duke e bërë të paaftë të lëvizë dhe të sigurojë një fitore përmes konsumimit sesa lojës agresive. Kjo strategji nuk bllokon në mënyrë aktive mulli të kundërshtarit.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Imazhi i copës",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importoni cilësimet e ngjyrave",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksportoni cilësimet e ngjyrave",
+  "@exportColorSettings": {},
+  "import": "Importoni",
+  "@import": {},
+  "export": "Eksportoni",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Ju lutemi kopjoni fillimisht cilësimet e formatit JSON në kujtesën e përkohshme.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopjuar në kujtesën e përkohshme.",
+  "@copiedToClipboard": {},
+  "imported": "Importuar.",
+  "@imported": {}
 }

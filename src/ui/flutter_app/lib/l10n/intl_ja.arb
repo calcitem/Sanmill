@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "ミルの形成よりも対戦相手の動きを妨害することを優先します。ミルを完成させてピースを取り除くことに焦点を当てるのではなく、AIは対戦相手を罠にかけ、動けなくして、攻撃的なプレイではなく消耗戦を通じて勝利を確保します。この戦略は、対戦相手のミルを積極的にブロックするものではありません。",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "駒の画像",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "カラ―設定をインポート",
+  "@importColorSettings": {},
+  "exportColorSettings": "カラ―設定をエクスポート",
+  "@exportColorSettings": {},
+  "import": "インポート",
+  "@import": {},
+  "export": "エクスポート",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "最初に JSON 形式の設定をクリップボードにコピーしてください。",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "クリップボードにコピーされました。",
+  "@copiedToClipboard": {},
+  "imported": "インポートされました。",
+  "@imported": {}
 }

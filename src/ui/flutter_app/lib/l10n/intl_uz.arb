@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Tegirmonlarni shakllantirish o'rniga raqibning harakatlarini to'sishga ustunlik bering. Tegirmonlarni to'ldirish orqali bo'laklarni olib tashlashga e'tibor qaratish o'rniga, AI raqibni tuzoqqa tushirishga, ularni harakatsiz qilishga va tajovuzkor o'yin o'rniga charchash orqali g'alabani ta'minlashga harakat qiladi. Ushbu strategiya raqibning tegirmonlarini faol ravishda bloklamaydi.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Shaxmat rasmi",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Rang sozlamalarini import qilish",
+  "@importColorSettings": {},
+  "exportColorSettings": "Rang sozlamalarini eksport qilish",
+  "@exportColorSettings": {},
+  "import": "Import qilish",
+  "@import": {},
+  "export": "Eksport qilish",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Iltimos, birinchi navbatda JSON formatidagi sozlamalarni buferga nusxalab oling.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Buferga nusxalandi.",
+  "@copiedToClipboard": {},
+  "imported": "Import qilindi.",
+  "@imported": {}
 }

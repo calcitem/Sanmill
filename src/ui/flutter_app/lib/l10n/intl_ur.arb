@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "ملز بنانے کے بجائے مخالف کی حرکات کو روکنے کو ترجیح دیں۔ ملز مکمل کرنے سے ٹکڑوں کو ہٹانے پر توجہ دینے کے بجائے، AI کا مقصد مخالف کو پھنسانا ہے، انہیں حرکت کرنے سے قاصر بنانا اور جارحانہ کھیل کے بجائے گراوٹ کے ذریعے فتح کو یقینی بنانا ہے۔ یہ حکمت عملی مخالف کی ملز کو فعال طور پر نہیں روکتی ہے۔",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "شطرنج کا تصویر",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "رنگ کی ترتیبات درآمد کریں",
+  "@importColorSettings": {},
+  "exportColorSettings": "رنگ کی ترتیبات برآمد کریں",
+  "@exportColorSettings": {},
+  "import": "درآمد کریں",
+  "@import": {},
+  "export": "برآمد کریں",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "براہ کرم پہلے JSON فارمیٹ کی ترتیبات کو کلپ بورڈ پر کاپی کریں۔",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "کلپ بورڈ پر کاپی کر دیا گیا۔",
+  "@copiedToClipboard": {},
+  "imported": "درآمد کیا گیا۔",
+  "@imported": {}
 }

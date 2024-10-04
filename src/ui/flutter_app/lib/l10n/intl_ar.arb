@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "خلال مراحل محددة من اللعبة، قدِّم الأولوية لإعاقة حركة الخصم على تشكيل الطواحين. بدلاً من التركيز على إزالة القطع عبر إكمال الطواحين، تهدف الذكاء الاصطناعي إلى محاصرة الخصم خلال هذه المراحل، مما يجعله غير قادر على التحرك وضمان الفوز من خلال الإنهاك بدلاً من اللعب العدواني. هذه الاستراتيجية المحددة بالمرحلة لا تعيق طواحين الخصم بنشاط.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "صورة قطعة الشطرنج",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "استيراد إعدادات الألوان",
+  "@importColorSettings": {},
+  "exportColorSettings": "تصدير إعدادات الألوان",
+  "@exportColorSettings": {},
+  "import": "استيراد",
+  "@import": {},
+  "export": "تصدير",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "يرجى نسخ إعدادات تنسيق JSON إلى الحافظة أولاً.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "تم النسخ إلى الحافظة.",
+  "@copiedToClipboard": {},
+  "imported": "تم الاستيراد.",
+  "@imported": {}
 }

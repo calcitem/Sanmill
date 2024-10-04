@@ -14,11 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
 
@@ -114,6 +116,161 @@ class AppearanceSettingsPage extends StatelessWidget {
         context: context,
         builder: (_) => const _PieceImagePicker(),
       );
+
+  Future<void> importColorSettings(BuildContext context) async {
+    final String strImport = S.of(context).import;
+    final String strClose = S.of(context).close;
+    final String strImported = S.of(context).imported;
+    final String strInvalidFormat = S.of(context).pleaseCopyJsonToClipboard;
+
+    // Get clipboard data
+    final ClipboardData? data = await Clipboard.getData('text/plain');
+    if (data == null || data.text == null) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        SnackBar(
+          content: Text(strInvalidFormat),
+        ),
+      );
+      return;
+    }
+
+    // Check if clipboard content contains only ASCII characters
+    final String clipboardText = data.text!;
+    if (!isAscii(clipboardText)) {
+      // If content is not ASCII, show a SnackBar with the invalid format message
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        SnackBar(
+          content: Text(strInvalidFormat),
+        ),
+      );
+      return;
+    }
+
+    try {
+      // Try to parse the clipboard content as JSON
+      final Map<String, dynamic> json =
+          jsonDecode(clipboardText) as Map<String, dynamic>;
+      final Widget importButton = TextButton(
+        child: Text(
+          strImport,
+          style: TextStyle(
+            fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+          ),
+        ),
+        onPressed: () async {
+          final ColorSettings colorSettings = ColorSettings.fromJson(json);
+          DB().colorSettings = colorSettings;
+
+          rootScaffoldMessengerKey.currentState!.showSnackBarClear(strImported);
+
+          if (!context.mounted) {
+            return;
+          }
+          Navigator.pop(context);
+        },
+      );
+
+      final Widget closeButton = TextButton(
+        child: Text(
+          strClose,
+          style: TextStyle(
+            fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+          ),
+        ),
+        onPressed: () => Navigator.pop(context),
+      );
+
+      final AlertDialog alert = AlertDialog(
+        title: Text(
+          strImport,
+          style: TextStyle(
+            fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+          ),
+        ),
+        // Show content if it's valid JSON
+        content: Text(
+          clipboardText,
+          textDirection: TextDirection.ltr,
+        ),
+        actions: <Widget>[importButton, closeButton],
+        scrollable: true,
+      );
+
+      if (!context.mounted) {
+        return;
+      }
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    } catch (e) {
+      // If parsing fails (not valid JSON), show a SnackBar with the invalid format message
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        SnackBar(
+          content: Text(strInvalidFormat),
+        ),
+      );
+    }
+  }
+
+  // Function to check if a string contains only ASCII characters
+  bool isAscii(String text) {
+    return text.codeUnits.every((int unit) => unit <= 127);
+  }
+
+  void exportColorSettings(BuildContext context) {
+    final String json = jsonEncode(DB().colorSettings.toJson());
+    final String content = json;
+    final Widget copyButton = TextButton(
+      child: Text(
+        S.of(context).copy,
+        style: TextStyle(
+          fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+        ),
+      ),
+      onPressed: () {
+        Clipboard.setData(ClipboardData(text: content));
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).copiedToClipboard);
+        Navigator.pop(context);
+      },
+    );
+
+    final Widget closeButton = TextButton(
+      child: Text(
+        S.of(context).close,
+        style: TextStyle(
+          fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+        ),
+      ),
+      onPressed: () => Navigator.pop(context),
+    );
+
+    final AlertDialog alert = AlertDialog(
+      title: Text(
+        S.of(context).export,
+        style: TextStyle(
+          fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),
+        ),
+      ),
+      content: Text(
+        content,
+        textDirection: TextDirection.ltr,
+      ),
+      actions: <Widget>[copyButton, closeButton],
+      scrollable: true,
+    );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   void langCallback(
     BuildContext context,
@@ -287,6 +444,14 @@ class AppearanceSettingsPage extends StatelessWidget {
               analysisToolbarIconColor: val,
             ),
           ),
+        SettingsListTile(
+          titleString: S.of(context).importColorSettings,
+          onTap: () => importColorSettings(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).exportColorSettings,
+          onTap: () => exportColorSettings(context),
+        ),
       ],
     );
   }

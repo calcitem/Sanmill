@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Prioriter at hindre modstanderens bevægelser over at danne møller. I stedet for at fokusere på at fjerne brikker ved at fuldføre møller, sigter AI på at fange modstanderen, så de ikke kan bevæge sig og sikre en sejr gennem udmattelse snarere end aggressivt spil. Denne strategi blokerer ikke aktivt modstanderens møller.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Brikbillede",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importér farveindstillinger",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksporter farveindstillinger",
+  "@exportColorSettings": {},
+  "import": "Importér",
+  "@import": {},
+  "export": "Eksportér",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kopier venligst JSON-formatindstillingerne til udklipsholderen først.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopieret til udklipsholder.",
+  "@copiedToClipboard": {},
+  "imported": "Importeret.",
+  "@imported": {}
 }

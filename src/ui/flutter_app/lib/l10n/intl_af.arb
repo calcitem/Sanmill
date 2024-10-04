@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Tydens spesifieke fases van die spel, prioritiseer om die teenstander se beweging te belemmer eerder as om rye van drie te vorm. In plaas daarvan om te fokus op die verwydering van stukke deur rye van drie te voltooi, mik die KI daarna om die teenstander tydens hierdie fases vas te keer, sodat hulle nie kan beweeg nie en 'n oorwinning deur uitputting verseker. Hierdie fase-spesifieke strategie blokkeer nie aktief die teenstander se rye van drie nie.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Stukkieprentjie",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Kleurinstellings invoer",
+  "@importColorSettings": {},
+  "exportColorSettings": "Kleurinstellings uitvoer",
+  "@exportColorSettings": {},
+  "import": "Invoer",
+  "@import": {},
+  "export": "Uitvoer",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kopieer asseblief eers die JSON-formaatinstellings na die knipbord.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Na knipbord gekopieer.",
+  "@copiedToClipboard": {},
+  "imported": "Geïmporteer.",
+  "@imported": {}
 }

@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Rəqibin hərəkətini maneə törətməyə üstünlük verin, üçlüyü formalaşdırmaqdan daha çox. Üçlü yaratmaqla parçaları çıxarmağa yönəlmək əvəzinə, AI rəqibi tələyə salmağa çalışır, onları hərəkətsiz vəziyyətə gətirir və aqressiv oyundan çox tükəndirməklə qalib gəlir. Bu strategiya rəqibin üçlü yaratmasına aktiv şəkildə mane olmur.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Fiqur şəkli",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Rəng ayarlarını idxal edin",
+  "@importColorSettings": {},
+  "exportColorSettings": "Rəng ayarlarını ixrac edin",
+  "@exportColorSettings": {},
+  "import": "İdxal",
+  "@import": {},
+  "export": "İxrac",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Zəhmət olmasa əvvəlcə JSON formatlı parametrləri mübadilə buferinə kopyalayın.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Mübadilə buferinə kopyalandı.",
+  "@copiedToClipboard": {},
+  "imported": "İdxal edildi.",
+  "@imported": {}
 }

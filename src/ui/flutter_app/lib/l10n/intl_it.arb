@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Dai priorità all'ostruzione dei movimenti dell'avversario piuttosto che alla formazione dei mulini. Invece di concentrarsi sulla rimozione dei pezzi completando i mulini, l'IA mira a intrappolare l'avversario, rendendolo incapace di muoversi e garantendo una vittoria per logoramento piuttosto che per gioco aggressivo. Questa strategia non blocca attivamente i mulini dell'avversario.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Immagine del pezzo",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importa impostazioni colore",
+  "@importColorSettings": {},
+  "exportColorSettings": "Esporta impostazioni colore",
+  "@exportColorSettings": {},
+  "import": "Importa",
+  "@import": {},
+  "export": "Esporta",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Si prega di copiare prima le impostazioni del formato JSON negli appunti.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiato negli appunti.",
+  "@copiedToClipboard": {},
+  "imported": "Importato.",
+  "@imported": {}
 }

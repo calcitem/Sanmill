@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Durante fases específicas do jogo, priorize obstruir o movimento do oponente em vez de formar moinhos. Em vez de focar em remover peças completando moinhos, a IA visa aprisionar o adversário durante essas fases, incapacitando-o de se mover e garantindo a vitória por desgaste em vez de jogo agressivo. Essa estratégia específica de fase não bloqueia ativamente os moinhos do oponente.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Imagem da peça",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importar configurações de cor",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportar configurações de cor",
+  "@exportColorSettings": {},
+  "import": "Importar",
+  "@import": {},
+  "export": "Exportar",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Por favor, copie as configurações do formato JSON para a área de transferência primeiro.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiado para a área de transferência.",
+  "@copiedToClipboard": {},
+  "imported": "Importado.",
+  "@imported": {}
 }

@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Prioriteerige vastase liikumise takistamist, mitte veskite moodustamist. Selle asemel, et keskenduda veskite täitmisega tükkide eemaldamisele, püüab tehisintellekt vastast lõksu püüda, takistades neil liikumist ja tagades võidu kurnamise, mitte agressiivse mänguga. See strateegia ei blokeeri aktiivselt vastase veskeid.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Maletüki pilt",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Impordi värviseaded",
+  "@importColorSettings": {},
+  "exportColorSettings": "Ekspordi värviseaded",
+  "@exportColorSettings": {},
+  "import": "Impordi",
+  "@import": {},
+  "export": "Ekspordi",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Palun kopeerige kõigepealt JSON-vormingu sätted lõikelauale.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopeeritud lõikelauale.",
+  "@copiedToClipboard": {},
+  "imported": "Imporditud.",
+  "@imported": {}
 }

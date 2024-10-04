@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Дадете приоритет на блокирањето на движењето на противникот наместо формирање мелници. Наместо да се фокусирате на отстранување на фигури со завршување на мелници, AI има за цел да го зароби противникот, оневозможувајќи го да се движи и обезбедувајќи победа преку исцрпување наместо агресивна игра. Оваа стратегија не ги блокира активно мелниците на противникот.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Слика на фигура",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Внеси поставки за боја",
+  "@importColorSettings": {},
+  "exportColorSettings": "Изнеси поставки за боја",
+  "@exportColorSettings": {},
+  "import": "Увези",
+  "@import": {},
+  "export": "Извези",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Копирајте ги поставките на JSON форматот во таблата за сечење.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Копирано во таблата за сечење.",
+  "@copiedToClipboard": {},
+  "imported": "Увезено.",
+  "@imported": {}
 }

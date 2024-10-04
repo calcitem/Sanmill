@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Nikeza phambili ekuphazamiseni ukuhamba kwesitha kunezindleko zokwakha amamili. Esikhundleni sokugxila ekuqedeni izingcezu ngokugcwalisa amamili, i-AI ihlose ukuheha isitha, ukwenza bahluleke ukunyakaza kanye nokuqinisekisa ukunqoba ngokusebenzisa ukufaka engcupheni kunokudlala ngonya. Leli su alivaleli amamili esitha ngendlela ephambili.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Isithombe somkhandi",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Ngenisa izilungiselelo zombala",
+  "@importColorSettings": {},
+  "exportColorSettings": "Thumela izilungiselelo zombala",
+  "@exportColorSettings": {},
+  "import": "Ngenisa",
+  "@import": {},
+  "export": "Thumela",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Sicela ukopishe izilungiselelo zefomethi ye-JSON ku-clipboard kuqala.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Ikhopishwe ku-clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Kungenisiwe.",
+  "@imported": {}
 }

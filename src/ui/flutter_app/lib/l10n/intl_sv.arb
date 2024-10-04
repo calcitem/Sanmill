@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Prioritera att hindra motståndarens rörelser framför att bilda kvarnar. Istället för att fokusera på att ta bort pjäser genom att fullborda kvarnar, siktar AI på att fånga motståndaren, göra dem oförmögna att röra sig och säkra en seger genom utmattning snarare än aggressivt spel. Denna strategi blockerar inte aktivt motståndarens kvarnar.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Pjäspussel",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importera färginställningar",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportera färginställningar",
+  "@exportColorSettings": {},
+  "import": "Importera",
+  "@import": {},
+  "export": "Exportera",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kopiera JSON-formatinställningarna till urklipp först.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopierat till urklipp.",
+  "@copiedToClipboard": {},
+  "imported": "Importerad.",
+  "@imported": {}
 }

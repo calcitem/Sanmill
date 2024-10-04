@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Pirmenybę teikite priešininko judesių blokavimui, o ne malūnų formavimui. Vietoj to, kad sutelktumėte dėmesį į figūrų pašalinimą užbaigiant malūnus, AI siekia užblokuoti priešininką, padaryti jį nejudriu ir užtikrinti pergalę per išsekimą, o ne agresyvų žaidimą. Ši strategija neblokuoja aktyviai priešininko malūnų.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Figūros vaizdas",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importuoti spalvų nustatymus",
+  "@importColorSettings": {},
+  "exportColorSettings": "Eksportuoti spalvų nustatymus",
+  "@exportColorSettings": {},
+  "import": "Importuoti",
+  "@import": {},
+  "export": "Eksportuoti",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Prašome pirmiausia nukopijuoti JSON formato nustatymus į iškarpinę.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Nukopijuota į iškarpinę.",
+  "@copiedToClipboard": {},
+  "imported": "Importuota.",
+  "@imported": {}
 }

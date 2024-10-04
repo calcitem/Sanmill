@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "A játék bizonyos fázisaiban részesítse előnyben az ellenfél mozgásának akadályozását a malmok kialakításával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI ezekben a fázisokban törekszik az ellenfél csapdába ejtésére, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a fázisspecifikus stratégia nem akadályozza aktívan az ellenfél malmait.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Bábuképek",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Színbeállítások importálása",
+  "@importColorSettings": {},
+  "exportColorSettings": "Színbeállítások exportálása",
+  "@exportColorSettings": {},
+  "import": "Importálás",
+  "@import": {},
+  "export": "Exportálás",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kérjük, először másolja a JSON formátumú beállításokat a vágólapra.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Vágólapra másolva.",
+  "@copiedToClipboard": {},
+  "imported": "Importálva.",
+  "@imported": {}
 }

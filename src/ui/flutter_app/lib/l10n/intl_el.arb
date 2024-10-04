@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Δώστε προτεραιότητα στην παρεμπόδιση της κίνησης του αντιπάλου παρά στον σχηματισμό μύλων. Αντί να εστιάζει στην αφαίρεση κομματιών ολοκληρώνοντας μύλους, η AI στοχεύει να παγιδεύσει τον αντίπαλο, καθιστώντας τον ανίκανο να κινηθεί και εξασφαλίζοντας τη νίκη μέσω φθοράς παρά μέσω επιθετικού παιχνιδιού. Αυτή η στρατηγική δεν μπλοκάρει ενεργά τους μύλους του αντιπάλου.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Εικόνα πιόνι",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Εισαγωγή ρυθμίσεων χρώματος",
+  "@importColorSettings": {},
+  "exportColorSettings": "Εξαγωγή ρυθμίσεων χρώματος",
+  "@exportColorSettings": {},
+  "import": "Εισαγωγή",
+  "@import": {},
+  "export": "Εξαγωγή",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Αντιγράψτε πρώτα τις ρυθμίσεις μορφής JSON στο πρόχειρο.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Αντιγράφηκε στο πρόχειρο.",
+  "@copiedToClipboard": {},
+  "imported": "Εισήχθη.",
+  "@imported": {}
 }

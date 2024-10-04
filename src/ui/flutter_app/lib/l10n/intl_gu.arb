@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "મિલ્સ બનાવવાના બદલે પ્રતિકુલતા માર્ગ અવરોધિત કરવા પર પ્રાથમિકતા આપો. મિલ્સ પૂર્ણ કરીને ભાગોને દૂર કરવા પર ધ્યાન કેન્દ્રિત કરવાનો બદલે, AI પ્રતિકુલતાને ફસાવવાનો હેતુ ધરાવે છે, જેથી તેઓ હલનચલન ન કરી શકે અને આક્રમક રમણાના બદલે ઘસારા દ્વારા વિજય પ્રાપ્ત કરે. આ વ્યૂહરચના પ્રતિકુલતાની મિલ્સને સક્રિય રીતે અવરોધિત કરતી નથી.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "ચેસના પિયાનો ચિત્ર",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "રંગ સેટિંગ્સ આયાત કરો",
+  "@importColorSettings": {},
+  "exportColorSettings": "રંગ સેટિંગ્સ નિકાસ કરો",
+  "@exportColorSettings": {},
+  "import": "આયાત",
+  "@import": {},
+  "export": "નિકાસ",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "મહેરબાની કરી JSON ફોર્મેટ સેટિંગ્સને પહેલાં ક્લિપબોર્ડ પર કૉપિ કરો.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "ક્લિપબોર્ડ પર કૉપિ કરવામાં આવ્યું.",
+  "@copiedToClipboard": {},
+  "imported": "આયાત કરાયું.",
+  "@imported": {}
 }

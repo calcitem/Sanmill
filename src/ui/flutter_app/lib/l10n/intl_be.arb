@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Перавага аддаецца перашкодзе руху суперніка, а не фарміраванню тройкі. Замест таго, каб засяродзіцца на выдаленні фігур шляхам завяршэння тройкі, ШІ імкнецца паставіць суперніка ў тупік, не дазваляючы яму рухацца і забяспечваючы перамогу праз стратэгію знясілення, а не агрэсіўную гульню. Гэтая стратэгія не блакуе актыўна тройкі суперніка.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Выява фігуры",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Імпартаваць налады колеру",
+  "@importColorSettings": {},
+  "exportColorSettings": "Экспартаваць налады колеру",
+  "@exportColorSettings": {},
+  "import": "Імпарт",
+  "@import": {},
+  "export": "Экспарт",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Калі ласка, спачатку скапіруйце налады фармату JSON у буфер абмену.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Скапіравана ў буфер абмену.",
+  "@copiedToClipboard": {},
+  "imported": "Імпартавана.",
+  "@imported": {}
 }

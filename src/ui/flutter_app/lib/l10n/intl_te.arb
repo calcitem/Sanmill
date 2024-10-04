@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "మిల్లులు ఏర్పరచడం కంటే ప్రత్యర్థి యొక్క కదలికలను అడ్డుకోవడానికి ప్రాధాన్యత ఇవ్వండి. మిల్లులు పూర్తి చేయడం ద్వారా ముక్కలను తొలగించడం మీద దృష్టి పెట్టడం బదులు, AI ప్రత్యర్థిని ఉంచడానికి ప్రయత్నిస్తుంది, వారిని కదలకుండా చేసి, ఆగ్రహపు ఆటకు బదులుగా క్షీణత ద్వారా విజయం సాధించడానికి లక్ష్యం చేస్తుంది. ఈ వ్యూహం ప్రత్యర్థి యొక్క మిల్లులను చురుకుగా అడ్డుకోదు.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "చదరంగపు ముక్క చిత్రం",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "రంగు సెట్టింగ్‌లను దిగుమతి చేయండి",
+  "@importColorSettings": {},
+  "exportColorSettings": "రంగు సెట్టింగ్‌లను ఎగుమతి చేయండి",
+  "@exportColorSettings": {},
+  "import": "దిగుమతి",
+  "@import": {},
+  "export": "ఎగుమతి",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "దయచేసి ముందుగా JSON ఫార్మాట్ సెట్టింగ్‌లను క్లిప్‌బోర్డ్‌కి కాపీ చేయండి.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "క్లిప్‌బోర్డ్‌కి కాపీ చేయబడింది.",
+  "@copiedToClipboard": {},
+  "imported": "ఆయాతించబడింది.",
+  "@imported": {}
 }

@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "در مراحل خاصی از بازی، به جای تشکیل میل، اولویت به مسدود کردن حرکت حریف دهید. به جای تمرکز بر حذف مهره‌ها با تکمیل میل، هوش مصنوعی هدف دارد که در این مراحل حریف را به دام بیندازد، او را ناتوان از حرکت کند و از طریق فرسایش به جای بازی تهاجمی، پیروزی را تضمین کند. این استراتژی که مختص به مراحلی خاص است، به‌طور فعال میل‌های حریف را مسدود نمی‌کند.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "تصویر مهره",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "وارد کردن تنظیمات رنگ",
+  "@importColorSettings": {},
+  "exportColorSettings": "صادر کردن تنظیمات رنگ",
+  "@exportColorSettings": {},
+  "import": "وارد کردن",
+  "@import": {},
+  "export": "صادر کردن",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "لطفاً ابتدا تنظیمات قالب JSON را به کلیپ بورد کپی کنید.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "به کلیپ بورد کپی شد.",
+  "@copiedToClipboard": {},
+  "imported": "وارد شد.",
+  "@imported": {}
 }

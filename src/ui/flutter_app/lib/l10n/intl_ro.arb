@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "În anumite faze ale jocului, prioritizează blocarea mișcării adversarului în detrimentul formării de moare. În loc să se concentreze pe eliminarea pieselor prin completarea de moare, AI-ul își propune să-l prindă pe adversar în aceste faze, făcându-l incapabil să se miște și asigurând o victorie prin epuizare, mai degrabă decât prin joc agresiv. Această strategie specifică fazei nu blochează activ moarele adversarului.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Imagine piesă",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Importați setările de culoare",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportați setările de culoare",
+  "@exportColorSettings": {},
+  "import": "Importați",
+  "@import": {},
+  "export": "Exportați",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Vă rugăm să copiați mai întâi setările formatului JSON în clipboard.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiat în clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Importat.",
+  "@imported": {}
 }

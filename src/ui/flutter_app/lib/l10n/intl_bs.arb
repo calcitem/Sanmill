@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Prioritet dajte ometanju kretanja protivnika umjesto formiranja tri u nizu. Umjesto da se fokusira na uklanjanje figura dovršavanjem tri u nizu, AI nastoji da uhvati protivnika u zamku, onemogućavajući mu kretanje i osiguravajući pobjedu kroz iscrpljivanje umjesto agresivne igre. Ova strategija ne blokira aktivno protivničke tri u nizu.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Slika figure",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Uvezi postavke boja",
+  "@importColorSettings": {},
+  "exportColorSettings": "Izvezi postavke boja",
+  "@exportColorSettings": {},
+  "import": "Uvoz",
+  "@import": {},
+  "export": "Izvoz",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Molimo prvo kopirajte postavke JSON formata u međuspremnik.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopirano u međuspremnik.",
+  "@copiedToClipboard": {},
+  "imported": "Uvezeno.",
+  "@imported": {}
 }

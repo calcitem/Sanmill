@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Während bestimmter Phasen des Spiels, priorisieren Sie das Blockieren der Bewegungen des Gegners über das Bilden von Mühlen. Anstatt sich darauf zu konzentrieren, Steine durch das Vervollständigen von Mühlen zu entfernen, zielt die KI während dieser Phasen darauf ab, den Gegner zu fangen, sodass er sich nicht bewegen kann und einen Sieg durch Abnutzung statt durch aggressives Spiel sichert. Diese phasenspezifische Strategie blockiert nicht aktiv die Mühlen des Gegners.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Schachfigurenbild",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Farbeneinstellungen importieren",
+  "@importColorSettings": {},
+  "exportColorSettings": "Farbeneinstellungen exportieren",
+  "@exportColorSettings": {},
+  "import": "Importieren",
+  "@import": {},
+  "export": "Exportieren",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Bitte kopieren Sie zuerst die JSON-Format-Einstellungen in die Zwischenablage.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "In die Zwischenablage kopiert.",
+  "@copiedToClipboard": {},
+  "imported": "Importiert.",
+  "@imported": {}
 }

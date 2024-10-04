@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "在游戏的特定阶段中，优先阻碍对手走棋，而不是形成三连。在这些阶段中，AI 不会专注于通过形成三连来吃掉对方的棋子，而是旨在困住对方，使对方的棋子无法移动，并通过消耗战而不是积极进攻来争取胜利。这种针对特定阶段的策略不会主动阻止对方形成三连。",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "棋子图片",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "导入颜色设置",
+  "@importColorSettings": {},
+  "exportColorSettings": "导出颜色设置",
+  "@exportColorSettings": {},
+  "import": "导入",
+  "@import": {},
+  "export": "导出",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "请先将 JSON 格式的配置复制到剪贴板。",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "已复制到剪贴板。",
+  "@copiedToClipboard": {},
+  "imported": "已导入。",
+  "@imported": {}
 }

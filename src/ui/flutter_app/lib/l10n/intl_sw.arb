@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "Panga kipaumbele kuzuia harakati za mpinzani badala ya kuunda mils. Badala ya kuzingatia kuondoa vipande kwa kumaliza mils, AI inalenga kumtega mpinzani, kumzuia asiweze kusonga na kuhakikisha ushindi kupitia uchovu badala ya mchezo wa fujo. Mkakati huu hauzuii mils ya mpinzani kwa nguvu.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Picha ya kipande",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Ingiza mipangilio ya rangi",
+  "@importColorSettings": {},
+  "exportColorSettings": "Hamisha mipangilio ya rangi",
+  "@exportColorSettings": {},
+  "import": "Ingiza",
+  "@import": {},
+  "export": "Hamisha",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Tafadhali nakili mipangilio ya umbizo la JSON kwenye ubao wa kunakili kwanza.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Imenakiliwa kwenye ubao wa kunakili.",
+  "@copiedToClipboard": {},
+  "imported": "Imeingizwa.",
+  "@imported": {}
 }

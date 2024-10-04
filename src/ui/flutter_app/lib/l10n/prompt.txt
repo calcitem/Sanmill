@@ -1,8 +1,12 @@
 Please translate the following contents of the arb file:
 
 ```json
-"currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
-"@currentRulesNoPerfectDatabase": {},
+"pleaseCopyJsonToClipboard": "Please copy the JSON format settings to the clipboard first.",
+"@pleaseCopyJsonToClipboard": {},
+"copiedToClipboard": "Copied to clipboard.",
+"@copiedToClipboard": {},
+"Imported": "Imported.",
+"@Imported": {},
 ```
 
 into:
@@ -72,7 +76,11 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
-  "@currentRulesNoPerfectDatabase": {},
+  "pleaseCopyJsonToClipboard": "Please copy the JSON format settings to the clipboard first.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copied to clipboard.",
+  "@copiedToClipboard": {},
+  "Imported": "Imported.",
+  "@Imported": {},
 ```
 

@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "Oyunun belirli aşamalarında, değirmenler oluşturmanın önüne rakibin hareketlerini engellemeyi koyun. Parçaları değirmenleri tamamlayarak kaldırmaya odaklanmak yerine, AI bu aşamalar sırasında rakibi tuzağa düşürmeyi, hareket edemez hale getirmeyi ve agresif oyun yerine yıpratma yoluyla zaferi sağlamayı hedefler. Bu aşama özel stratejisi, rakibin değirmenlerini aktif olarak engellemez.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Satranç parçası resmi",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "Renk ayarlarını içe aktar",
+  "@importColorSettings": {},
+  "exportColorSettings": "Renk ayarlarını dışa aktar",
+  "@exportColorSettings": {},
+  "import": "İçe aktar",
+  "@import": {},
+  "export": "Dışa aktar",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Lütfen önce JSON biçim ayarlarını panoya kopyalayın.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Panoya kopyalandı.",
+  "@copiedToClipboard": {},
+  "imported": "İçe aktarıldı.",
+  "@imported": {}
 }

@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "게임의 특정 단계에서는 참고누를 형성하는 것보다 상대방의 움직임을 방해하는 것을 우선시합니다. 참고누를 완성하여 조각을 제거하는 데 집중하는 대신, 이 단계에서 AI는 상대를 함정에 빠뜨리고 움직이지 못하게 하여 공격적인 플레이보다는 소모전을 통해 승리를 확보하는 것을 목표로 합니다. 이 단계별 전략은 상대의 참고누를 적극적으로 막지 않습니다.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "체스 말 이미지",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "색상 설정 가져오기",
+  "@importColorSettings": {},
+  "exportColorSettings": "색상 설정 내보내기",
+  "@exportColorSettings": {},
+  "import": "가져오기",
+  "@import": {},
+  "export": "내보내기",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "먼저 JSON 형식 설정을 클립보드에 복사하십시오.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "클립보드에 복사되었습니다.",
+  "@copiedToClipboard": {},
+  "imported": "가져왔습니다.",
+  "@imported": {}
 }

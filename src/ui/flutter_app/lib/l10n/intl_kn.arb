@@ -1443,5 +1443,19 @@
   "focusOnBlockingPaths_Detail": "ಮಿಲ್ಲುಗಳನ್ನು ರಚಿಸುವುದಕ್ಕಿಂತ ಎದುರಾಳಿಯ ಚಲನೆಗಳನ್ನು ಅಡ್ಡಿಪಡಿಸುವುದಕ್ಕೆ ಪ್ರಾಮುಖ್ಯತೆ ನೀಡಲು. ಮಿಲ್ಲುಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸುವ ಮೂಲಕ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕುವುದಕ್ಕೆ ಬದಲು, AI ಎದುರಾಳಿಯನ್ನು ಒರೆಹಾಕಲು ಪ್ರಯತ್ನಿಸುತ್ತದೆ, ಅವರನ್ನು ಚಲಿಸದಂತೆ ಮಾಡುತ್ತದೆ ಮತ್ತು ಆಕ್ರಮಣಾತ್ಮಕ ಆಟದ ಬದಲು ಆರೋಹಣದ ಮೂಲಕ ಜಯವನ್ನು ಭದ್ರಪಡಿಸುತ್ತದೆ. ಈ ತಂತ್ರ ನಿಖರವಾಗಿ ಎದುರಾಳಿಯ ಮಿಲ್ಲುಗಳನ್ನು ತಡೆಯುವುದಿಲ್ಲ.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "ಚೆಸ್ ಆಕೃತಿ ಚಿತ್ರ",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "ಬಣ್ಣ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಆಮದುಮಾಡಿ",
+  "@importColorSettings": {},
+  "exportColorSettings": "ಬಣ್ಣ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ರಫ್ತುಮಾಡಿ",
+  "@exportColorSettings": {},
+  "import": "ಆಮದು",
+  "@import": {},
+  "export": "ರಫ್ತು",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "ದಯವಿಟ್ಟು ಮೊದಲು JSON ಸ್ವರೂಪದ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿ.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.",
+  "@copiedToClipboard": {},
+  "imported": "ಆಮದು ಮಾಡಲಾಗಿದೆ.",
+  "@imported": {}
 }
