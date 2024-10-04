@@ -13,11 +13,13 @@ into:
 
 ```
 intl_af.arb
+intl_am.arb
 intl_ar.arb
 intl_az.arb
 intl_be.arb
 intl_bg.arb
 intl_bn.arb
+intl_bo.arb
 intl_bs.arb
 intl_cs.arb
 intl_da.arb

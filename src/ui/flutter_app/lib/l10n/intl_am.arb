@@ -1541,5 +1541,19 @@
   "focusOnBlockingPaths_Detail": "በጨዋታው ዘመናት በማለፊያ ላይ በቀንንዴ ማሳመሻ እንደ ዋና ምልከታ ከሆነ የተጫዋች እንቅስቃሴን በማገድ እና በማገልገል እንዲሁም ከጨዋታ እንደሚተሸከም እንቅስቃሴው ማሰባሰብን አያደርግም።",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "የእቃዎች ምስል",
-  "@pieceImage": {}
+  "@pieceImage": {},
+  "importColorSettings": "ቀለም ቅንብሮችን አስመጣ",
+  "@importColorSettings": {},
+  "exportColorSettings": "ቀለም ቅንብሮችን አስገባ",
+  "@exportColorSettings": {},
+  "import": "አስመጣ",
+  "@import": {},
+  "export": "አስገባ",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "እባክዎ የJSON ቅንብሮችን ቅርጽ አስቀድሞ ወደ ቅርጫት ይቅዱ።",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "ወደ ቅርጫት ተቀድቷል።",
+  "@copiedToClipboard": {},
+  "imported": "ተመጥቷል።",
+  "@imported": {}
 }
