@@ -178,14 +178,6 @@ class AppearanceSettingsPage extends StatelessWidget {
       title: Text(S.of(context).color),
       children: <Widget>[
         SettingsListTile(
-          titleString: S.of(context).backgroundImage,
-          onTap: () => setBackgroundImage(context),
-        ),
-        SettingsListTile(
-          titleString: S.of(context).pieceImage,
-          onTap: () => setPieceImage(context),
-        ),
-        SettingsListTile(
           titleString: S.of(context).theme,
           onTap: () => _setTheme(context, colorSettings),
         ),
@@ -421,6 +413,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).backgroundImage,
+          onTap: () => setBackgroundImage(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).pieceImage,
+          onTap: () => setPieceImage(context),
         ),
       ],
     );
