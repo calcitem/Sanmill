@@ -139,7 +139,26 @@ class GamePage extends StatelessWidget {
 
                     return ConstrainedBox(
                       constraints: constraint,
-                      child: const PlayArea(),
+                      // Use ValueListenableBuilder to listen to DisplaySettings changes
+                      child: ValueListenableBuilder<Box<DisplaySettings>>(
+                        valueListenable: DB().listenDisplaySettings,
+                        builder: (BuildContext context,
+                            Box<DisplaySettings> box, Widget? child) {
+                          final DisplaySettings displaySettings = box.get(
+                            DB.displaySettingsKey,
+                            defaultValue: const DisplaySettings(),
+                          )!;
+
+                          // Retrieve the selected board image path
+                          final String boardImagePath =
+                              displaySettings.boardImagePath;
+
+                          return PlayArea(
+                            // Pass the board image path to PlayArea
+                            boardImagePath: boardImagePath,
+                          );
+                        },
+                      ),
                     );
                   },
                 ),

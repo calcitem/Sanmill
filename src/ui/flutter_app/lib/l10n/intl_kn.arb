@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಲಾಗಿದೆ.",
   "@copiedToClipboard": {},
   "imported": "ಆಮದು ಮಾಡಲಾಗಿದೆ.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "ಬೋರ್ಡ್ ಚಿತ್ರ",
+  "@boardImage": {}
 }

@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Nokopēts starpliktuvē.",
   "@copiedToClipboard": {},
   "imported": "Importēts.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Dēļa attēls",
+  "@boardImage": {}
 }

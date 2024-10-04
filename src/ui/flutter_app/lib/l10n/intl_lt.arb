@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Nukopijuota į iškarpinę.",
   "@copiedToClipboard": {},
   "imported": "Importuota.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Lentos vaizdas",
+  "@boardImage": {}
 }

@@ -1,12 +1,8 @@
 Please translate the following contents of the arb file:
 
 ```json
-"pleaseCopyJsonToClipboard": "Please copy the JSON format settings to the clipboard first.",
-"@pleaseCopyJsonToClipboard": {},
-"copiedToClipboard": "Copied to clipboard.",
-"@copiedToClipboard": {},
-"Imported": "Imported.",
-"@Imported": {},
+"boardImage": "Board image",
+"@boardImage": {},
 ```
 
 into:
@@ -78,11 +74,7 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "pleaseCopyJsonToClipboard": "Please copy the JSON format settings to the clipboard first.",
-  "@pleaseCopyJsonToClipboard": {},
-  "copiedToClipboard": "Copied to clipboard.",
-  "@copiedToClipboard": {},
-  "Imported": "Imported.",
-  "@Imported": {},
+  "boardImage": "Board image",
+  "@boardImage": {},
 ```
 

@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Копирано в клипборда.",
   "@copiedToClipboard": {},
   "imported": "Импортирано.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Изображение на дъска",
+  "@boardImage": {}
 }

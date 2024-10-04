@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Copié dans le presse-papiers.",
   "@copiedToClipboard": {},
   "imported": "Importé.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Image du plateau",
+  "@boardImage": {}
 }

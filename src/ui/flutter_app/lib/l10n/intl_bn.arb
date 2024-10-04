@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "ক্লিপবোর্ডে কপি করা হয়েছে।",
   "@copiedToClipboard": {},
   "imported": "আমদানি করা হয়েছে।",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "বোর্ডের চিত্র",
+  "@boardImage": {}
 }

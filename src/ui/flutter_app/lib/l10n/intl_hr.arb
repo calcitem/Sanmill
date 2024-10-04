@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopirano u međuspremnik.",
   "@copiedToClipboard": {},
   "imported": "Uvezeno.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Slika ploče",
+  "@boardImage": {}
 }

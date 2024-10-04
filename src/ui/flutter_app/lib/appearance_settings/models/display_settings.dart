@@ -71,6 +71,7 @@ class DisplaySettings {
     this.whitePieceImagePath = '',
     this.blackPieceImagePath = '',
     this.markedPieceImagePath = '',
+    this.boardImagePath = '',
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -165,6 +166,9 @@ class DisplaySettings {
 
   @HiveField(25, defaultValue: '')
   final String markedPieceImagePath;
+
+  @HiveField(26, defaultValue: '')
+  final String boardImagePath;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

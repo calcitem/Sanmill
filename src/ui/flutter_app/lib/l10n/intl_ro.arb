@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Copiat în clipboard.",
   "@copiedToClipboard": {},
   "imported": "Importat.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Imagine tablă",
+  "@boardImage": {}
 }

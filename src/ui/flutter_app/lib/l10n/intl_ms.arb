@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Disalin ke papan keratan.",
   "@copiedToClipboard": {},
   "imported": "Diimport.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Imej papan",
+  "@boardImage": {}
 }

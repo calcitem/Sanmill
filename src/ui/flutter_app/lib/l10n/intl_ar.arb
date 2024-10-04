@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "تم النسخ إلى الحافظة.",
   "@copiedToClipboard": {},
   "imported": "تم الاستيراد.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "صورة اللوحة",
+  "@boardImage": {}
 }

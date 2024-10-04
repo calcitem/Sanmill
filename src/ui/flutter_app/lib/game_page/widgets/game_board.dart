@@ -16,13 +16,31 @@
 
 part of 'game_page.dart';
 
+class GameImages {
+  ui.Image? whitePieceImage;
+  ui.Image? blackPieceImage;
+  ui.Image? markedPieceImage;
+  ui.Image? boardImage;
+}
+
 /// Game Board
 ///
 /// The board the game is played on.
 /// This widget will also handle the input from the user.
 @visibleForTesting
 class GameBoard extends StatefulWidget {
-  const GameBoard({super.key});
+  /// Creates a [GameBoard] widget.
+  ///
+  /// The [boardImagePath] parameter is the path to the selected board image.
+  const GameBoard({
+    super.key,
+    required this.boardImagePath,
+  });
+
+  /// The path to the selected board image.
+  ///
+  /// If null or empty, a default background color will be used.
+  final String boardImagePath;
 
   static const String _logTag = "[board]";
 
@@ -32,13 +50,13 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   static const String _logTag = "[board]";
-  late Future<Map<PieceColor, ui.Image?>> pieceImagesFuture;
+  late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
   @override
   void initState() {
     super.initState();
-    pieceImagesFuture = _loadImages();
+    gameImagesFuture = _loadImages();
     animationManager = AnimationManager(this);
 
     GameController().gameResultNotifier.addListener(_showResult);
@@ -85,8 +103,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         .removeListener(_processInitialSharingMoveListListener);
   }
 
-  Future<Map<PieceColor, ui.Image?>> _loadImages() async {
-    return loadPieceImages();
+  Future<GameImages> _loadImages() async {
+    return loadGameImages();
   }
 
   void processInitialSharingMoveList() {
@@ -139,20 +157,35 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   // Loading images and creating PiecePainter
   // TODO: Load from settings
-  Future<Map<PieceColor, ui.Image?>> loadPieceImages() async {
+  Future<GameImages> loadGameImages() async {
     final DisplaySettings displaySettings = DB().displaySettings;
-    final Map<PieceColor, ui.Image?> images = <PieceColor, ui.Image?>{};
+    final GameImages gameImages = GameImages();
 
     final String whitePieceImagePath = displaySettings.whitePieceImagePath;
     final String blackPieceImagePath = displaySettings.blackPieceImagePath;
 
-    images[PieceColor.white] = await loadImage(whitePieceImagePath);
-    images[PieceColor.black] = await loadImage(blackPieceImagePath);
+    if (whitePieceImagePath.isEmpty) {
+      gameImages.whitePieceImage = null;
+    } else {
+      gameImages.whitePieceImage = await loadImage(whitePieceImagePath);
+    }
 
-    images[PieceColor.marked] =
+    if (blackPieceImagePath.isEmpty) {
+      gameImages.blackPieceImage = null;
+    } else {
+      gameImages.blackPieceImage = await loadImage(blackPieceImagePath);
+    }
+
+    gameImages.markedPieceImage =
         await loadImage('assets/images/marked_piece_image.png');
 
-    return images;
+    if (widget.boardImagePath.isEmpty) {
+      gameImages.boardImage = null;
+    } else {
+      gameImages.boardImage = await loadImage(widget.boardImagePath);
+    }
+
+    return gameImages;
   }
 
   @override
@@ -168,37 +201,40 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         animationManager.removeAnimationController,
       ]),
       builder: (_, Widget? child) {
-        return FutureBuilder<Map<PieceColor, ui.Image?>>(
-          future: pieceImagesFuture,
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<PieceColor, ui.Image?>> snapshot) {
+        return FutureBuilder<GameImages>(
+          future: gameImagesFuture,
+          builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else {
-              final Map<PieceColor, ui.Image?>? pieceImages = snapshot.data;
-              return CustomPaint(
-                painter: BoardPainter(context),
-                foregroundPainter: PiecePainter(
-                  placeAnimationValue: animationManager.placeAnimation.value,
-                  moveAnimationValue: animationManager.moveAnimation.value,
-                  removeAnimationValue: animationManager.removeAnimation.value,
-                  pieceImages: pieceImages,
+              final GameImages? gameImages = snapshot.data;
+              return SizedBox.expand(
+                child: CustomPaint(
+                  painter: BoardPainter(context, gameImages?.boardImage),
+                  foregroundPainter: PiecePainter(
+                    placeAnimationValue: animationManager.placeAnimation.value,
+                    moveAnimationValue: animationManager.moveAnimation.value,
+                    removeAnimationValue:
+                        animationManager.removeAnimation.value,
+                    pieceImages: <PieceColor, ui.Image?>{
+                      PieceColor.white: gameImages?.whitePieceImage,
+                      PieceColor.black: gameImages?.blackPieceImage,
+                      PieceColor.marked: gameImages?.markedPieceImage,
+                    },
+                  ),
+                  child: DB().generalSettings.screenReaderSupport
+                      ? const _BoardSemantics()
+                      : Semantics(
+                          label: S.of(context).youCanEnableScreenReaderSupport,
+                          container: true,
+                        ),
                 ),
-                child: DB().generalSettings.screenReaderSupport
-                    ? const _BoardSemantics()
-                    : Semantics(
-                        label: S.of(context).youCanEnableScreenReaderSupport,
-                        container: true,
-                      ),
               );
             }
           },
         );
       },
     );
-
-    //animationManager.forwardPlaceAnimation();
-    //animationManager.forwardMoveAnimation();
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
       valueListenable: DB().listenDisplaySettings,

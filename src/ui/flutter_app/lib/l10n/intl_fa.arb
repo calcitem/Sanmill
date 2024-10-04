@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "به کلیپ بورد کپی شد.",
   "@copiedToClipboard": {},
   "imported": "وارد شد.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "تصویر تخته",
+  "@boardImage": {}
 }

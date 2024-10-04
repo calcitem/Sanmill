@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "ወደ ቅርጫት ተቀድቷል።",
   "@copiedToClipboard": {},
   "imported": "ተመጥቷል።",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "የሰሌዳ ምስል",
+  "@boardImage": {}
 }

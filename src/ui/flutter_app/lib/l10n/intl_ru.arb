@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Скопировано в буфер обмена.",
   "@copiedToClipboard": {},
   "imported": "Импортировано.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Изображение доски",
+  "@boardImage": {}
 }

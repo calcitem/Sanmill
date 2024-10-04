@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopioitu leikepöydälle.",
   "@copiedToClipboard": {},
   "imported": "Tuotu.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Laudan kuva",
+  "@boardImage": {}
 }

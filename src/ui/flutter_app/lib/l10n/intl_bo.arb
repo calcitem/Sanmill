@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "ལག་ཆས་ནང་བརྡར་ཡོད།",
   "@copiedToClipboard": {},
   "imported": "ནང་འདྲེན་ཡོད།",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "བར་སྟོད་གྱི་རི་མོ།",
+  "@boardImage": {}
 }

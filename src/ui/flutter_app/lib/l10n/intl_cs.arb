@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Zkopírováno do schránky.",
   "@copiedToClipboard": {},
   "imported": "Importováno.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Obrázek desky",
+  "@boardImage": {}
 }

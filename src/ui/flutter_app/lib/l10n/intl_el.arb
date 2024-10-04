@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Αντιγράφηκε στο πρόχειρο.",
   "@copiedToClipboard": {},
   "imported": "Εισήχθη.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Εικόνα ταμπλό",
+  "@boardImage": {}
 }

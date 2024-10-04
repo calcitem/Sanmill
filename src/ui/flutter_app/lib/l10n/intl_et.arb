@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopeeritud lõikelauale.",
   "@copiedToClipboard": {},
   "imported": "Imporditud.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Laua pilt",
+  "@boardImage": {}
 }

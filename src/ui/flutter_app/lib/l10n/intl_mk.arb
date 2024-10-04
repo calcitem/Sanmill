@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Копирано во таблата за сечење.",
   "@copiedToClipboard": {},
   "imported": "Увезено.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Слика на табла",
+  "@boardImage": {}
 }

@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopierat till urklipp.",
   "@copiedToClipboard": {},
   "imported": "Importerad.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Bräd bild",
+  "@boardImage": {}
 }

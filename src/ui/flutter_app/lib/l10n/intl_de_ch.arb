@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "In die Zwischenablage kopiert.",
   "@copiedToClipboard": {},
   "imported": "Importiert.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Brettbild",
+  "@boardImage": {}
 }

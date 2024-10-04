@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Disalin ke clipboard.",
   "@copiedToClipboard": {},
   "imported": "Diimpor.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Gambar papan",
+  "@boardImage": {}
 }

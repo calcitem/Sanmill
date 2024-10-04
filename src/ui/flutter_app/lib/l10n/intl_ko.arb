@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "클립보드에 복사되었습니다.",
   "@copiedToClipboard": {},
   "imported": "가져왔습니다.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "보드 이미지",
+  "@boardImage": {}
 }

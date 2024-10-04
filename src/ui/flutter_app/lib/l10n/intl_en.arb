@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Copied to clipboard.",
   "@copiedToClipboard": {},
   "imported": "Imported.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Board image",
+  "@boardImage": {}
 }

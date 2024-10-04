@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "පසුරුපුවරුවට පිටපත් කෙරුණා.",
   "@copiedToClipboard": {},
   "imported": "ආනයනය කරන ලදි.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "පුවරුවේ රූපය",
+  "@boardImage": {}
 }

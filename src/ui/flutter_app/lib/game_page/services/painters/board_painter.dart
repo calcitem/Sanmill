@@ -21,9 +21,10 @@ part of '../../../game_page/services/painters/painters.dart';
 /// Painter to draw the Board. The pieces are drawn by [PiecePainter].
 /// It asserts the Canvas to be a square.
 class BoardPainter extends CustomPainter {
-  BoardPainter(this.context);
+  BoardPainter(this.context, this.backgroundImage);
 
   final BuildContext context;
+  final ui.Image? backgroundImage;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -35,7 +36,7 @@ class BoardPainter extends CustomPainter {
         DB().displaySettings.boardBorderLineWidth;
     final Paint paint = _createPaint(colorSettings, boardBorderLineWidth, size);
 
-    _drawBackground(canvas, size);
+    _drawBackground(canvas, size, colorSettings);
     _drawOptionalElements(canvas, size, position);
 
     final List<Offset> offset =
@@ -80,17 +81,27 @@ class BoardPainter extends CustomPainter {
     return DB().displaySettings.isNotationsShown || EnvironmentConfig.devMode;
   }
 
-  static void _drawBackground(Canvas canvas, Size size) {
+  void _drawBackground(Canvas canvas, Size size, ColorSettings colorSettings) {
     final Paint paint = Paint();
-    paint.color = DB().colorSettings.boardBackgroundColor;
 
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-        const Radius.circular(AppTheme.boardBorderRadius),
-      ),
-      paint,
-    );
+    if (backgroundImage != null) {
+      canvas.drawImageRect(
+        backgroundImage!,
+        Rect.fromLTWH(0, 0, backgroundImage!.width.toDouble(),
+            backgroundImage!.height.toDouble()),
+        Rect.fromLTWH(0, 0, size.width, size.height),
+        paint,
+      );
+    } else {
+      paint.color = colorSettings.boardBackgroundColor;
+      canvas.drawRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+          const Radius.circular(AppTheme.boardBorderRadius),
+        ),
+        paint,
+      );
+    }
   }
 
   void _drawLines(List<Offset> offset, Canvas canvas, Paint paint, Size size) {

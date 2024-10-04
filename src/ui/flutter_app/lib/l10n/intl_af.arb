@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Na knipbord gekopieer.",
   "@copiedToClipboard": {},
   "imported": "Geïmporteer.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Bordbeeld",
+  "@boardImage": {}
 }

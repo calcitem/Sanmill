@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Afritað á klemmuspjald.",
   "@copiedToClipboard": {},
   "imported": "Flutt inn.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Borðmynd",
+  "@boardImage": {}
 }

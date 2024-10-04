@@ -39,6 +39,7 @@ import '../models/display_settings.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
+part 'package:sanmill/appearance_settings/widgets/pickers/board_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
@@ -110,6 +111,11 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setBackgroundImage(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _BackgroundImagePicker(),
+      );
+
+  void setBoardImage(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _BoardImagePicker(),
       );
 
   void setPieceImage(BuildContext context) => showModalBottomSheet(
@@ -582,6 +588,10 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).backgroundImage,
           onTap: () => setBackgroundImage(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).boardImage,
+          onTap: () => setBoardImage(context),
         ),
         SettingsListTile(
           titleString: S.of(context).pieceImage,

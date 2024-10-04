@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Copiato negli appunti.",
   "@copiedToClipboard": {},
   "imported": "Importato.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Immagine della tavola",
+  "@boardImage": {}
 }

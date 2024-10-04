@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Đã sao chép vào bảng tạm.",
   "@copiedToClipboard": {},
   "imported": "Đã nhập.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Hình ảnh bảng",
+  "@boardImage": {}
 }

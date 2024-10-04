@@ -30,7 +30,13 @@ import 'modals/game_options_modal.dart';
 import 'toolbars/game_toolbar.dart';
 
 class PlayArea extends StatefulWidget {
-  const PlayArea({super.key});
+  /// Creates a PlayArea widget.
+  ///
+  /// The [boardImagePath] parameter is the path to the selected board image.
+  const PlayArea({super.key, required this.boardImagePath});
+
+  /// The path to the selected board image.
+  final String boardImagePath;
 
   @override
   PlayAreaState createState() => PlayAreaState();
@@ -40,24 +46,29 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void initState() {
     super.initState();
+    // Listen to changes in header icons to update the UI accordingly.
     GameController().headerIconsNotifier.addListener(_updateUI);
   }
 
   @override
   void dispose() {
+    // Remove the listener when disposing to prevent memory leaks.
     GameController().headerIconsNotifier.removeListener(_updateUI);
     super.dispose();
   }
 
+  /// Updates the UI by calling setState.
   void _updateUI() {
     setState(() {});
   }
 
+  /// Takes a screenshot and saves it to the specified [storageLocation] with an optional [filename].
   Future<void> _takeScreenshot(String storageLocation,
       [String? filename]) async {
     await ScreenshotService.takeScreenshot(storageLocation, filename);
   }
 
+  /// Opens a modal bottom sheet with the provided [modal] widget.
   void _openModal(BuildContext context, Widget modal) {
     showModalBottomSheet(
       context: context,
@@ -66,6 +77,7 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  /// Navigates to the GeneralSettingsPage.
   void _navigateToSettings(BuildContext context) {
     Navigator.push(
       context,
@@ -74,6 +86,7 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  /// Opens a dialog with the provided [dialog] widget.
   void _openDialog(BuildContext context, Widget dialog) {
     showDialog(
       context: context,
@@ -81,11 +94,13 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  /// Builds a list of toolbar items by expanding each [ToolbarItem].
   List<Widget> _buildToolbarItems(
       BuildContext context, List<ToolbarItem> items) {
     return items.map((ToolbarItem item) => Expanded(child: item)).toList();
   }
 
+  /// Retrieves the main toolbar items for the game page.
   List<ToolbarItem> _getMainToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem.icon(
@@ -118,19 +133,22 @@ class PlayAreaState extends State<PlayArea> {
     ];
   }
 
+  /// Builds the move modal based on display settings.
   Widget _buildMoveModal(BuildContext context) {
     if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+      // Delay the dialog opening to ensure it happens after the current frame.
       Future<void>.delayed(const Duration(milliseconds: 100), () {
         if (context.mounted) {
           _openDialog(context, const MoveListDialog());
         }
       });
-      // Return a placeholder widget or something appropriate to maintain return type consistency
-      return const SizedBox.shrink(); // Returns an empty widget
+      // Return a placeholder widget to maintain return type consistency.
+      return const SizedBox.shrink();
     }
     return MoveOptionsModal(mainContext: context);
   }
 
+  /// Retrieves the history navigation toolbar items.
   List<ToolbarItem> _getHistoryNavToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem(
@@ -166,6 +184,7 @@ class PlayAreaState extends State<PlayArea> {
     ];
   }
 
+  /// Retrieves the analysis toolbar items.
   List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem(
@@ -176,10 +195,12 @@ class PlayAreaState extends State<PlayArea> {
     ];
   }
 
+  /// Generates a string of pieces based on the [count].
   String _getPiecesText(int count) {
     return "●" * count;
   }
 
+  /// Builds the row displaying the count of pieces in hand.
   Widget _buildPieceCountRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -244,6 +265,7 @@ class PlayAreaState extends State<PlayArea> {
     );
   }
 
+  /// Builds the row displaying the count of removed pieces.
   Widget _buildRemovedPieceCountRow() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -312,6 +334,7 @@ class PlayAreaState extends State<PlayArea> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
+        // Calculate the dimension of the play area based on screen orientation.
         final double dimension = (constraints.maxWidth) *
             (MediaQuery.of(context).orientation == Orientation.portrait
                 ? 1.0
@@ -328,6 +351,7 @@ class PlayAreaState extends State<PlayArea> {
               child: Column(
                 children: <Widget>[
                   GameHeader(),
+                  // Conditionally display the piece count row based on display settings and game mode.
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
@@ -336,13 +360,18 @@ class PlayAreaState extends State<PlayArea> {
                     _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
+                  // Display the game board with the selected board image.
                   NativeScreenshot(
                     controller: ScreenshotService.screenshotController,
                     child: Container(
                       alignment: Alignment.center,
-                      child: const GameBoard(),
+                      // Pass the selected boardImagePath to GameBoard.
+                      child: GameBoard(
+                        boardImagePath: widget.boardImagePath,
+                      ),
                     ),
                   ),
+                  // Conditionally display the removed piece count row.
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
@@ -351,9 +380,11 @@ class PlayAreaState extends State<PlayArea> {
                     _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
+                  // Display the setup position toolbar if in setup mode.
                   if (GameController().gameInstance.gameMode ==
                       GameMode.setupPosition)
                     const SetupPositionToolbar(),
+                  // Display the history navigation toolbar based on display settings and game mode.
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition)
@@ -364,6 +395,7 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getHistoryNavToolbarItems(context)),
                     ),
+                  // Display the analysis toolbar if enabled in display settings.
                   if (DB().displaySettings.isAnalysisToolbarShown)
                     GamePageToolbar(
                       backgroundColor:
@@ -372,6 +404,7 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getAnalysisToolbarItems(context)),
                     ),
+                  // Display the main toolbar if not in setup mode.
                   if (GameController().gameInstance.gameMode !=
                       GameMode.setupPosition)
                     GamePageToolbar(

@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Copiado para a área de transferência.",
   "@copiedToClipboard": {},
   "imported": "Importado.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Imagem do tabuleiro",
+  "@boardImage": {}
 }

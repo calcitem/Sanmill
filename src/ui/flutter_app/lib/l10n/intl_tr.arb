@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Panoya kopyalandı.",
   "@copiedToClipboard": {},
   "imported": "İçe aktarıldı.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Tahta görüntüsü",
+  "@boardImage": {}
 }

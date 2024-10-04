@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Պատճենվել է Clipboard-ին:",
   "@copiedToClipboard": {},
   "imported": "Ներմուծված է:",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Տախտակի պատկեր",
+  "@boardImage": {}
 }

@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopirano v odložišče.",
   "@copiedToClipboard": {},
   "imported": "Uvoženo.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Slika plošče",
+  "@boardImage": {}
 }

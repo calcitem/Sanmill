@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopjuar në kujtesën e përkohshme.",
   "@copiedToClipboard": {},
   "imported": "Importuar.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Imazhi i tabelës",
+  "@boardImage": {}
 }

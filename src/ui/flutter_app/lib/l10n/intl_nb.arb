@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Kopiert til utklippstavlen.",
   "@copiedToClipboard": {},
   "imported": "Importert.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Bilde av brett",
+  "@boardImage": {}
 }

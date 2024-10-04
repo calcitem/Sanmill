@@ -41,7 +41,7 @@ class TutorialBoard extends StatelessWidget {
         return SizedBox.square(
           dimension: dimension,
           child: CustomPaint(
-            painter: BoardPainter(context),
+            painter: BoardPainter(context, null),
             foregroundPainter: TutorialPainter(
               focusIndex: focusIndex,
               blurIndex: blurIndex,

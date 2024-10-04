@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Vágólapra másolva.",
   "@copiedToClipboard": {},
   "imported": "Importálva.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Tábla kép",
+  "@boardImage": {}
 }

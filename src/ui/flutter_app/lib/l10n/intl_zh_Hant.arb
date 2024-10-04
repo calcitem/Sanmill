@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "已複製到剪貼板。",
   "@copiedToClipboard": {},
   "imported": "已導入。",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "棋盤圖片",
+  "@boardImage": {}
 }

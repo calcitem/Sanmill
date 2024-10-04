@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Buferga nusxalandi.",
   "@copiedToClipboard": {},
   "imported": "Import qilindi.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Taxta tasviri",
+  "@boardImage": {}
 }

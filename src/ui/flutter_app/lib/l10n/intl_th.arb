@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
   "@copiedToClipboard": {},
   "imported": "นำเข้าแล้ว",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "ภาพกระดาน",
+  "@boardImage": {}
 }

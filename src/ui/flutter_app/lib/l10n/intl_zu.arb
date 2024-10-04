@@ -1555,5 +1555,7 @@
   "copiedToClipboard": "Ikhopishwe ku-clipboard.",
   "@copiedToClipboard": {},
   "imported": "Kungenisiwe.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Isithombe sebhodi",
+  "@boardImage": {}
 }

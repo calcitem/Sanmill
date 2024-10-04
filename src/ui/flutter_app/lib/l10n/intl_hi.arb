@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया।",
   "@copiedToClipboard": {},
   "imported": "आयात किया गया।",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "बोर्ड छवि",
+  "@boardImage": {}
 }

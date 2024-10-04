@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Копирано у привремену меморију.",
   "@copiedToClipboard": {},
   "imported": "Увезено.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Слика табле",
+  "@boardImage": {}
 }

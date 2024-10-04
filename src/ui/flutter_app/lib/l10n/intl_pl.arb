@@ -1457,5 +1457,7 @@
   "copiedToClipboard": "Skopiowano do schowka.",
   "@copiedToClipboard": {},
   "imported": "Zaimportowano.",
-  "@imported": {}
+  "@imported": {},
+  "boardImage": "Obraz tablicy",
+  "@boardImage": {}
 }
