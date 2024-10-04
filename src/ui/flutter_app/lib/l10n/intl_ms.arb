@@ -1459,5 +1459,9 @@
   "imported": "Diimport.",
   "@imported": {},
   "boardImage": "Imej papan",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Daun Musim Gugur",
+  "@autumnLeaves": {},
+  "legendaryLand": "Tanah Lagenda",
+  "@legendaryLand": {}
 }

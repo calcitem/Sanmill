@@ -22,6 +22,8 @@ enum ColorTheme {
   dark,
   monochrome,
   transparentCanvas,
+  autumnLeaves,
+  legendaryLand,
   goldenJade,
   forestWood,
   greenMeadow,
@@ -82,6 +84,18 @@ class _ThemeModal extends StatelessWidget {
               title: Text(S.of(context).transparentCanvas),
               groupValue: theme,
               value: ColorTheme.transparentCanvas,
+              onChanged: onChanged,
+            ),
+            RadioListTile<ColorTheme>(
+              title: Text(S.of(context).autumnLeaves),
+              groupValue: theme,
+              value: ColorTheme.autumnLeaves,
+              onChanged: onChanged,
+            ),
+            RadioListTile<ColorTheme>(
+              title: Text(S.of(context).legendaryLand),
+              groupValue: theme,
+              value: ColorTheme.legendaryLand,
               onChanged: onChanged,
             ),
             RadioListTile<ColorTheme>(

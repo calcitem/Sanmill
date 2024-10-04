@@ -1459,5 +1459,9 @@
   "imported": "Импортирано.",
   "@imported": {},
   "boardImage": "Изображение на дъска",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Есенни листа",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарна земя",
+  "@legendaryLand": {}
 }

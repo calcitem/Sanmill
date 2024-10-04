@@ -1459,5 +1459,9 @@
   "imported": "İçe aktarıldı.",
   "@imported": {},
   "boardImage": "Tahta görüntüsü",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Sonbahar Yaprakları",
+  "@autumnLeaves": {},
+  "legendaryLand": "Efsanevi Diyar",
+  "@legendaryLand": {}
 }

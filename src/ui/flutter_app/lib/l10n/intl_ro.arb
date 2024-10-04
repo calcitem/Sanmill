@@ -1459,5 +1459,9 @@
   "imported": "Importat.",
   "@imported": {},
   "boardImage": "Imagine tablă",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Frunzele de Toamnă",
+  "@autumnLeaves": {},
+  "legendaryLand": "Tărâm Legendar",
+  "@legendaryLand": {}
 }

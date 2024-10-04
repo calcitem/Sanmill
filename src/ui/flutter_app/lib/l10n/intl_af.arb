@@ -1557,5 +1557,9 @@
   "imported": "Geïmporteer.",
   "@imported": {},
   "boardImage": "Bordbeeld",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Herfsblare",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendariese Land",
+  "@legendaryLand": {}
 }

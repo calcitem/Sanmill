@@ -1459,5 +1459,9 @@
   "imported": "Importováno.",
   "@imported": {},
   "boardImage": "Obrázek desky",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Podzimní listí",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendární Země",
+  "@legendaryLand": {}
 }

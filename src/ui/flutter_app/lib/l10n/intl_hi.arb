@@ -1459,5 +1459,9 @@
   "imported": "आयात किया गया।",
   "@imported": {},
   "boardImage": "बोर्ड छवि",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "पतझड़ के पत्ते",
+  "@autumnLeaves": {},
+  "legendaryLand": "पौराणिक भूमि",
+  "@legendaryLand": {}
 }

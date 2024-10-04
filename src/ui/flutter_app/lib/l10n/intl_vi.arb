@@ -1557,5 +1557,9 @@
   "imported": "Đã nhập.",
   "@imported": {},
   "boardImage": "Hình ảnh bảng",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Lá mùa thu",
+  "@autumnLeaves": {},
+  "legendaryLand": "Vùng Đất Huyền Thoại",
+  "@legendaryLand": {}
 }

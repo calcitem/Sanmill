@@ -1459,5 +1459,9 @@
   "imported": "Увезено.",
   "@imported": {},
   "boardImage": "Слика табле",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Јесење Листје",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарна Земља",
+  "@legendaryLand": {}
 }

@@ -1459,5 +1459,9 @@
   "imported": "Importert.",
   "@imported": {},
   "boardImage": "Bilde av brett",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Høstløv",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarisk Land",
+  "@legendaryLand": {}
 }

@@ -1557,5 +1557,9 @@
   "imported": "Flutt inn.",
   "@imported": {},
   "boardImage": "Borðmynd",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Haustlauf",
+  "@autumnLeaves": {},
+  "legendaryLand": "Goðsagnir Land",
+  "@legendaryLand": {}
 }

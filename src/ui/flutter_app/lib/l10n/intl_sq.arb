@@ -1459,5 +1459,9 @@
   "imported": "Importuar.",
   "@imported": {},
   "boardImage": "Imazhi i tabelës",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Gjethet e Vjeshtës",
+  "@autumnLeaves": {},
+  "legendaryLand": "Toka Legjendare",
+  "@legendaryLand": {}
 }

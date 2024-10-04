@@ -1459,5 +1459,9 @@
   "imported": "Uvezeno.",
   "@imported": {},
   "boardImage": "Slika ploče",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Jesenje lišće",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarna Zemlja",
+  "@legendaryLand": {}
 }

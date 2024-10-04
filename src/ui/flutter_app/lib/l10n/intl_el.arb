@@ -1459,5 +1459,9 @@
   "imported": "Εισήχθη.",
   "@imported": {},
   "boardImage": "Εικόνα ταμπλό",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Φθινοπωρινά φύλλα",
+  "@autumnLeaves": {},
+  "legendaryLand": "Θρυλική γη",
+  "@legendaryLand": {}
 }

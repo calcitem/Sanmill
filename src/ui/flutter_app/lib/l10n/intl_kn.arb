@@ -1459,5 +1459,9 @@
   "imported": "ಆಮದು ಮಾಡಲಾಗಿದೆ.",
   "@imported": {},
   "boardImage": "ಬೋರ್ಡ್ ಚಿತ್ರ",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "ಶರದಪಾತದ ಎಲೆಗಳು",
+  "@autumnLeaves": {},
+  "legendaryLand": "ಪೌರಾಣಿಕ ನೆಲ",
+  "@legendaryLand": {}
 }

@@ -1459,5 +1459,9 @@
   "imported": "Imporditud.",
   "@imported": {},
   "boardImage": "Laua pilt",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Sügise lehed",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendaarne Maa",
+  "@legendaryLand": {}
 }

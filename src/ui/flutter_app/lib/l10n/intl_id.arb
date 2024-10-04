@@ -1459,5 +1459,9 @@
   "imported": "Diimpor.",
   "@imported": {},
   "boardImage": "Gambar papan",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Daun-daun Musim Gugur",
+  "@autumnLeaves": {},
+  "legendaryLand": "Tanah Legendaris",
+  "@legendaryLand": {}
 }

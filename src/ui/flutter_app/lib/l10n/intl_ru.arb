@@ -1459,5 +1459,9 @@
   "imported": "Импортировано.",
   "@imported": {},
   "boardImage": "Изображение доски",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Осенние Листья",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарная Земля",
+  "@legendaryLand": {}
 }

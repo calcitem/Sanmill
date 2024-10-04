@@ -1557,5 +1557,9 @@
   "imported": "ተመጥቷል።",
   "@imported": {},
   "boardImage": "የሰሌዳ ምስል",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "አውጣዎቹ",
+  "@autumnLeaves": {},
+  "legendaryLand": "አስደናቂ ምድር",
+  "@legendaryLand": {}
 }

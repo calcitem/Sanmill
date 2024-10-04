@@ -1557,5 +1557,9 @@
   "imported": "יובא.",
   "@imported": {},
   "boardImage": "תמונת לוח",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "עלים של סתיו",
+  "@autumnLeaves": {},
+  "legendaryLand": "ארץ אגדות",
+  "@legendaryLand": {}
 }

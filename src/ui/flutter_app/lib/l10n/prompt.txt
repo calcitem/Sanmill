@@ -1,8 +1,10 @@
 Please translate the following contents of the arb file:
 
 ```json
-"boardImage": "Board image",
-"@boardImage": {},
+"autumnLeaves": "Autumn Leaves",
+"@autumnLeaves": {},
+"legendaryLand": "Legendary Land",
+"@legendaryLand": {},
 ```
 
 into:
@@ -74,7 +76,9 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "boardImage": "Board image",
-  "@boardImage": {},
+  "autumnLeaves": "Autumn Leaves",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendary Land",
+  "@legendaryLand": {},
 ```
 

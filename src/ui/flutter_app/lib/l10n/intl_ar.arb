@@ -1459,5 +1459,9 @@
   "imported": "تم الاستيراد.",
   "@imported": {},
   "boardImage": "صورة اللوحة",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "أوراق الخريف",
+  "@autumnLeaves": {},
+  "legendaryLand": "الأرض الأسطورية",
+  "@legendaryLand": {}
 }

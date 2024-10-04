@@ -1459,5 +1459,9 @@
   "imported": "นำเข้าแล้ว",
   "@imported": {},
   "boardImage": "ภาพกระดาน",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "ใบไม้ร่วง",
+  "@autumnLeaves": {},
+  "legendaryLand": "ดินแดนในตำนาน",
+  "@legendaryLand": {}
 }

@@ -1557,5 +1557,9 @@
   "imported": "インポートされました。",
   "@imported": {},
   "boardImage": "ボード画像",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "秋の葉",
+  "@autumnLeaves": {},
+  "legendaryLand": "伝説の地",
+  "@legendaryLand": {}
 }

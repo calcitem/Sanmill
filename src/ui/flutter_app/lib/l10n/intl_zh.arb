@@ -1459,5 +1459,9 @@
   "imported": "已导入。",
   "@imported": {},
   "boardImage": "棋盘图片",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "秋叶",
+  "@autumnLeaves": {},
+  "legendaryLand": "青绿",
+  "@legendaryLand": {}
 }

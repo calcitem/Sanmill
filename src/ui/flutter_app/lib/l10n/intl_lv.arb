@@ -1459,5 +1459,9 @@
   "imported": "Importēts.",
   "@imported": {},
   "boardImage": "Dēļa attēls",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Rudens lapas",
+  "@autumnLeaves": {},
+  "legendaryLand": "Leģendārā zeme",
+  "@legendaryLand": {}
 }

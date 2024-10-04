@@ -1459,5 +1459,9 @@
   "imported": "وارد شد.",
   "@imported": {},
   "boardImage": "تصویر تخته",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "برگ‌های پاییزی",
+  "@autumnLeaves": {},
+  "legendaryLand": "سرزمین افسانه‌ای",
+  "@legendaryLand": {}
 }

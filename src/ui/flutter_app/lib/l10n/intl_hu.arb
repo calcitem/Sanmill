@@ -1459,5 +1459,9 @@
   "imported": "Importálva.",
   "@imported": {},
   "boardImage": "Tábla kép",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Őszi levelek",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendás Föld",
+  "@legendaryLand": {}
 }

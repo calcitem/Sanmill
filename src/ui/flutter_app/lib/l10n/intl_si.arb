@@ -1557,5 +1557,9 @@
   "imported": "ආනයනය කරන ලදි.",
   "@imported": {},
   "boardImage": "පුවරුවේ රූපය",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "ශරත් පත්",
+  "@autumnLeaves": {},
+  "legendaryLand": "පුරාණය භූමිය",
+  "@legendaryLand": {}
 }

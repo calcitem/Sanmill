@@ -1557,5 +1557,9 @@
   "imported": "တင်သွင်းပြီး။",
   "@imported": {},
   "boardImage": "ဘုတ်ပြားပုံ",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "ဆောင်းဦးတစ်ပိုင်း",
+  "@autumnLeaves": {},
+  "legendaryLand": "ဒဏ္ဍာရီ မြေ",
+  "@legendaryLand": {}
 }

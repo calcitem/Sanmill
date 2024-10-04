@@ -1459,5 +1459,9 @@
   "imported": "আমদানি করা হয়েছে।",
   "@imported": {},
   "boardImage": "বোর্ডের চিত্র",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "শরতের পাতা",
+  "@autumnLeaves": {},
+  "legendaryLand": "কিংবদন্তি জমি",
+  "@legendaryLand": {}
 }

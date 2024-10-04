@@ -1459,5 +1459,9 @@
   "imported": "Tuotu.",
   "@imported": {},
   "boardImage": "Laudan kuva",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Syksyn lehdet",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendaarinen Maa",
+  "@legendaryLand": {}
 }

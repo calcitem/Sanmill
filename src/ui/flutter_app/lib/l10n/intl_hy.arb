@@ -1557,5 +1557,9 @@
   "imported": "Ներմուծված է:",
   "@imported": {},
   "boardImage": "Տախտակի պատկեր",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Աշնանային տերևներ",
+  "@autumnLeaves": {},
+  "legendaryLand": "Լեգենդար երկիր",
+  "@legendaryLand": {}
 }

@@ -407,6 +407,46 @@ class AppTheme {
       analysisToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
       analysisToolbarIconColor: Colors.black,
     ),
+    ColorTheme.autumnLeaves: ColorSettings(
+      boardLineColor: Color(0xFF000000), // Black
+      darkBackgroundColor: Color(0xFF284B3A), // Dark Green
+      boardBackgroundColor: Color(0xD78B5A3C), // Semi-transparent Burnt Sienna
+      whitePieceColor: Color(0xFFEAE6C1), // Pale Beige
+      blackPieceColor: Color(0xFF3C3B3F), // Dark Charcoal
+      pieceHighlightColor: Color(0x88F08080), // Semi-transparent Light Coral
+      messageColor: Color(0xFF000000), // Black
+      drawerColor: Color(0xFF000000), // Black
+      drawerTextColor: Color(0xFFFFFFFF), // White
+      drawerHighlightItemColor:
+          Color(0x33FFB6C1), // Semi-transparent Light Pink
+      mainToolbarBackgroundColor:
+          Color(0xD88B5A3C), // Semi-transparent Burnt Sienna
+      mainToolbarIconColor: Color(0xFF000000), // Black
+      navigationToolbarBackgroundColor:
+          Color(0xD58B5A3C), // Semi-transparent Burnt Sienna
+      navigationToolbarIconColor: Color(0xFF000000), // Black
+      analysisToolbarBackgroundColor: Color(0xFF8B5A2B), // Russet Brown
+      analysisToolbarIconColor: Color(0xFFA4A293), // Pale Taupe
+    ),
+    ColorTheme.legendaryLand: ColorSettings(
+      boardLineColor: Color(0xFF8FBC8F), // Dark Sea Green
+      darkBackgroundColor: Color(0xFF8B7355), // Cinnamon
+      boardBackgroundColor: Color(0xFF8B5A2B), // Russet Brown
+      whitePieceColor: Color(0xFFB2D8B2), // Mint Green
+      blackPieceColor: Color(0xFF1A4D6E), // Indigo Dye
+      pieceHighlightColor: Color(0xFFCD853F), // Peru
+      messageColor: Color(0xFFF0FFF0), // Honeydew
+      drawerColor: Color(0xFF2E4D40), // Dartmouth Green
+      drawerTextColor: Color(0xFFE0EEE0), // Nyanza
+      drawerHighlightItemColor:
+          Color(0x88355E3B), // Semi-transparent Olive Drab
+      mainToolbarBackgroundColor: Color(0xFF8B7355), // Cinnamon
+      mainToolbarIconColor: Color(0xFFF0FFF0), // Honeydew
+      navigationToolbarBackgroundColor: Color(0xFF8B7355), // Cinnamon
+      navigationToolbarIconColor: Color(0xFFF0FFF0), // Honeydew
+      analysisToolbarBackgroundColor: Color(0xFF8B7355), // Cinnamon
+      analysisToolbarIconColor: Color(0xFFF0FFF0), // Honeydew
+    ),
     ColorTheme.goldenJade: ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42), // golden
       darkBackgroundColor: Color(0xFFE9E7D7), // light beige

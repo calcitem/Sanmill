@@ -1459,5 +1459,9 @@
   "imported": "가져왔습니다.",
   "@imported": {},
   "boardImage": "보드 이미지",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "가을 잎",
+  "@autumnLeaves": {},
+  "legendaryLand": "전설의 땅",
+  "@legendaryLand": {}
 }

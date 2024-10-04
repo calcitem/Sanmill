@@ -1459,5 +1459,9 @@
   "imported": "Importuota.",
   "@imported": {},
   "boardImage": "Lentos vaizdas",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Rudeniniai lapai",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendinė Žemė",
+  "@legendaryLand": {}
 }

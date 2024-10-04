@@ -1557,5 +1557,9 @@
   "imported": "Імпартавана.",
   "@imported": {},
   "boardImage": "Вобраз дошкі",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Восеньскія лісце",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарная Зямля",
+  "@legendaryLand": {}
 }

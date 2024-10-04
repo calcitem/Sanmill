@@ -1459,5 +1459,9 @@
   "imported": "Import qilindi.",
   "@imported": {},
   "boardImage": "Taxta tasviri",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Kuz yaproqlari",
+  "@autumnLeaves": {},
+  "legendaryLand": "Afsonaviy Mamlakat",
+  "@legendaryLand": {}
 }

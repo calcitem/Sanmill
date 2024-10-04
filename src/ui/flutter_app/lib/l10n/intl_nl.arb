@@ -1459,5 +1459,9 @@
   "imported": "Geïmporteerd.",
   "@imported": {},
   "boardImage": "Bordafbeelding",
-  "@boardImage": {}
+  "@boardImage": {},
+  "autumnLeaves": "Herfstbladeren",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarisch Land",
+  "@legendaryLand": {}
 }
