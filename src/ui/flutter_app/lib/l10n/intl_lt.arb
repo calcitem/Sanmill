@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendinė Žemė",
   "@legendaryLand": {},
   "vignetteEffect": "Vinetės efektas",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ar norite padaryti įrankių juostą visiškai permatomą, kai nustatoma lentos fono paveikslėlis?",
+  "@promptMakeToolbarTransparent": {}
 }

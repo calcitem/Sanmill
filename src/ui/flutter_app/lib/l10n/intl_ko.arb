@@ -1465,5 +1465,7 @@
   "legendaryLand": "전설의 땅",
   "@legendaryLand": {},
   "vignetteEffect": "비네팅 효과",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "보드 배경 이미지가 설정되었을 때 도구 모음을 완전히 투명하게 만들겠습니까?",
+  "@promptMakeToolbarTransparent": {}
 }

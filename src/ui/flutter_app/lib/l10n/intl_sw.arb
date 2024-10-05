@@ -1563,5 +1563,7 @@
   "legendaryLand": "Ardhi ya Kihistoria",
   "@legendaryLand": {},
   "vignetteEffect": "Athari ya vignette",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Je, ungependa kufanya ukanda wa zana kuwa wa uwazi kabisa wakati picha ya mandharinyuma ya bodi imewekwa?",
+  "@promptMakeToolbarTransparent": {}
 }

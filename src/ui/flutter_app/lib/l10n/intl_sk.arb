@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendárna Krajina",
   "@legendaryLand": {},
   "vignetteEffect": "Efekt vinety",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Chcete, aby bola panel nástrojov úplne priehľadná, keď je nastavený obrázok pozadia dosky?",
+  "@promptMakeToolbarTransparent": {}
 }

@@ -1563,5 +1563,7 @@
   "legendaryLand": "Izwe Elidumile",
   "@legendaryLand": {},
   "vignetteEffect": "Umphumela we-vignette",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ungathanda ukwenza ibha yamathuluzi ifanekane ngokuphelele uma isithombe sangemuva sebhodi sisethwe?",
+  "@promptMakeToolbarTransparent": {}
 }

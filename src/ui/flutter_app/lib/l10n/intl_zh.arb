@@ -1465,5 +1465,7 @@
   "legendaryLand": "青绿",
   "@legendaryLand": {},
   "vignetteEffect": "暗角效果",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "当设置了棋盘背景图片时，您是否希望工具栏完全透明？",
+  "@promptMakeToolbarTransparent": {}
 }

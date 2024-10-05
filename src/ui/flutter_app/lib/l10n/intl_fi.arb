@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendaarinen Maa",
   "@legendaryLand": {},
   "vignetteEffect": "Vignetointi-efekti",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Haluatko tehdä työkalupalkin täysin läpinäkyväksi, kun lautakuvan taustakuva on asetettu?",
+  "@promptMakeToolbarTransparent": {}
 }

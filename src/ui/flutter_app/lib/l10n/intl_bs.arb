@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendarna Zemlja",
   "@legendaryLand": {},
   "vignetteEffect": "Vinjeta efekat",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Želite li da alatna traka bude potpuno prozirna kada je postavljena pozadinska slika ploče?",
+  "@promptMakeToolbarTransparent": {}
 }

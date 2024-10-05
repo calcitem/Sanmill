@@ -1563,5 +1563,7 @@
   "legendaryLand": "Legendary Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignette effect",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
+  "@promptMakeToolbarTransparent": {}
 }

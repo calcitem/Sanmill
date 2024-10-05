@@ -1465,5 +1465,7 @@
   "legendaryLand": "Terre Légendaire",
   "@legendaryLand": {},
   "vignetteEffect": "Effet de vignettage",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Souhaitez-vous rendre la barre d'outils complètement transparente lorsqu'une image de fond du plateau est définie?",
+  "@promptMakeToolbarTransparent": {}
 }

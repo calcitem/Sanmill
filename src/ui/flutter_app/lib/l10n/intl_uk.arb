@@ -1563,5 +1563,7 @@
   "legendaryLand": "Легендарна Земля",
   "@legendaryLand": {},
   "vignetteEffect": "Ефект віньєтки",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ви хочете зробити панель інструментів повністю прозорою, коли встановлено фонове зображення дошки?",
+  "@promptMakeToolbarTransparent": {}
 }

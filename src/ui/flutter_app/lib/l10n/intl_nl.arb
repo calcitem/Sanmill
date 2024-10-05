@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendarisch Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignetteringseffect",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Wil je de werkbalk volledig transparant maken wanneer een achtergrondafbeelding voor het bord is ingesteld?",
+  "@promptMakeToolbarTransparent": {}
 }

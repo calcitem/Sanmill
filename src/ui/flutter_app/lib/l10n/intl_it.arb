@@ -1465,5 +1465,7 @@
   "legendaryLand": "Terra Leggendaria",
   "@legendaryLand": {},
   "vignetteEffect": "Effetto vignettatura",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vuoi rendere la barra degli strumenti completamente trasparente quando viene impostata un'immagine di sfondo della tavola?",
+  "@promptMakeToolbarTransparent": {}
 }

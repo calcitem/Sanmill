@@ -1465,5 +1465,7 @@
   "legendaryLand": "Легендарна Земја",
   "@legendaryLand": {},
   "vignetteEffect": "Ефект на винјета",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Дали сакате алатната лента да биде целосно проѕирна кога е поставена слика за позадина на таблата?",
+  "@promptMakeToolbarTransparent": {}
 }

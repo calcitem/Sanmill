@@ -1465,5 +1465,7 @@
   "legendaryLand": "Легендарна земя",
   "@legendaryLand": {},
   "vignetteEffect": "Ефект винетка",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Бихте ли искали да направите лентата с инструменти напълно прозрачна, когато е зададена фоново изображение на дъската?",
+  "@promptMakeToolbarTransparent": {}
 }

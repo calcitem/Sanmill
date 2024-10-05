@@ -1465,5 +1465,7 @@
   "legendaryLand": "ดินแดนในตำนาน",
   "@legendaryLand": {},
   "vignetteEffect": "เอฟเฟกต์ขอบมืด",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "คุณต้องการให้แถบเครื่องมือโปร่งใสเต็มที่เมื่อกำหนดภาพพื้นหลังของกระดานแล้วหรือไม่?",
+  "@promptMakeToolbarTransparent": {}
 }

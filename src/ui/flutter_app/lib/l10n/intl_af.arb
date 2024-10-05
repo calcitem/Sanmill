@@ -1563,5 +1563,7 @@
   "legendaryLand": "Legendariese Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignet-effek",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Wil jy die werkbalk heeltemal deurskynend maak wanneer 'n bordanfronstoepasafbeelding ingestel is?",
+  "@promptMakeToolbarTransparent": {}
 }

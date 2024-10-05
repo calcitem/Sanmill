@@ -1465,5 +1465,7 @@
   "legendaryLand": "पौराणिक भूमि",
   "@legendaryLand": {},
   "vignetteEffect": "विगनेट प्रभाव",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "क्या आप बोर्ड पृष्ठभूमि छवि सेट करने पर टूलबार को पूरी तरह से पारदर्शी बनाना चाहेंगे?",
+  "@promptMakeToolbarTransparent": {}
 }

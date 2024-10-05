@@ -1563,5 +1563,7 @@
   "legendaryLand": "ארץ אגדות",
   "@legendaryLand": {},
   "vignetteEffect": "אפקט ויגנט",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "אתה רוצה להפוך את סרגל הכלים לשקוף לחלוטין כאשר תמונת רקע ללוח מוגדרת?",
+  "@promptMakeToolbarTransparent": {}
 }

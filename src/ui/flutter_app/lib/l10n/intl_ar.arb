@@ -1465,5 +1465,7 @@
   "legendaryLand": "الأرض الأسطورية",
   "@legendaryLand": {},
   "vignetteEffect": "تأثير التظليل",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "هل تود جعل شريط الأدوات شفافًا بالكامل عندما يتم تعيين صورة خلفية للوحة؟",
+  "@promptMakeToolbarTransparent": {}
 }

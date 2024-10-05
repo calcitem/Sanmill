@@ -1465,5 +1465,7 @@
   "legendaryLand": "Θρυλική γη",
   "@legendaryLand": {},
   "vignetteEffect": "Εφέ βινιέτας",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Θα θέλατε να κάνετε τη γραμμή εργαλείων εντελώς διαφανή όταν ορίζεται μια εικόνα φόντου πίνακα;",
+  "@promptMakeToolbarTransparent": {}
 }

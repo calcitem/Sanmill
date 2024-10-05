@@ -1465,5 +1465,7 @@
   "legendaryLand": "Leģendārā zeme",
   "@legendaryLand": {},
   "vignetteEffect": "Vinjete efekts",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vai vēlaties padarīt rīku jos pilnīgi caurspīdīgu, kad ir iestatīta dēļa fona attēls?",
+  "@promptMakeToolbarTransparent": {}
 }

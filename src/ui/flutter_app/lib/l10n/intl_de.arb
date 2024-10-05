@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendäres Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignettierungseffekt",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Möchten Sie die Symbolleiste vollständig transparent machen, wenn ein Hintergrundbild für das Board festgelegt ist?",
+  "@promptMakeToolbarTransparent": {}
 }

@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendás Föld",
   "@legendaryLand": {},
   "vignetteEffect": "Vignetta hatás",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Szeretné a felső eszköztárat teljesen átlátszóvá tenni, amikor egy tábla háttérkép van beállítva?",
+  "@promptMakeToolbarTransparent": {}
 }

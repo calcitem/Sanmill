@@ -1563,5 +1563,7 @@
   "legendaryLand": "පුරාණය භූමිය",
   "@legendaryLand": {},
   "vignetteEffect": "වින්යට් අත්පත් ඇඳීම",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "පුවරුවේ පසුබැසීම් රූපය සකස් කරන විට මෙවලම් තීරුව සම්පූර්ණයෙන්ම පැහැදිලි කිරීමට අවශ්‍යද?",
+  "@promptMakeToolbarTransparent": {}
 }

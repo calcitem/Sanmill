@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendarna Zemlja",
   "@legendaryLand": {},
   "vignetteEffect": "Učinek vinjete",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ali želite, da je orodni vrstica popolnoma prosojna, ko je nastavljena slika ozadja plošče?",
+  "@promptMakeToolbarTransparent": {}
 }

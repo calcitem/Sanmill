@@ -1465,5 +1465,7 @@
   "legendaryLand": "Tanah Legendaris",
   "@legendaryLand": {},
   "vignetteEffect": "Efek vinyet",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Apakah Anda ingin membuat bilah alat sepenuhnya transparan ketika gambar latar belakang papan diatur?",
+  "@promptMakeToolbarTransparent": {}
 }

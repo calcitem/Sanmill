@@ -1465,5 +1465,7 @@
   "legendaryLand": "কিংবদন্তি জমি",
   "@legendaryLand": {},
   "vignetteEffect": "ভিনিয়েট প্রভাব",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "বোর্ডের পটভূমি চিত্র সেট করা হলে টুলবার সম্পূর্ণ স্বচ্ছ করতে চান?",
+  "@promptMakeToolbarTransparent": {}
 }

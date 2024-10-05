@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendarisk Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignett-effekt",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vil du gjøre verktøylinjen helt gjennomsiktig når et bakgrunnsbilde for brettet er satt?",
+  "@promptMakeToolbarTransparent": {}
 }

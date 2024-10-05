@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file:
 
 ```json
-"vignetteEffect": "Vignette effect",
-"@vignetteEffect": {},
+"promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
+"@promptMakeToolbarTransparent": {},
 ```
 
 into:
@@ -74,11 +74,11 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "vignetteEffect": "Vignette effect",
-  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
+  "@promptMakeToolbarTransparent": {},
 
 // intl_zh.arb
-  "vignetteEffect": "暗角效果",
-  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "当设置了棋盘背景图片时，您是否希望工具栏完全透明？",
+  "@promptMakeToolbarTransparent": {},
 ```
 

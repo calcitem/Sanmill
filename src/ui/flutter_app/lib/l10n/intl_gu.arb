@@ -1465,5 +1465,7 @@
   "legendaryLand": "દંતકથા ધરતી",
   "@legendaryLand": {},
   "vignetteEffect": "વિનેટ અસર",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "તબ્લો પાછળની છબી સેટ કરાય ત્યારે ટૂલબારને સંપૂર્ણપણે પારદર્શક બનાવશો?",
+  "@promptMakeToolbarTransparent": {}
 }

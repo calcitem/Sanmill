@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendární Země",
   "@legendaryLand": {},
   "vignetteEffect": "Efekt vinětace",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Chcete, aby byla panel nástrojů plně průhledná, když je nastaven obrázek pozadí desky?",
+  "@promptMakeToolbarTransparent": {}
 }

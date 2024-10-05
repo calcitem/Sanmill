@@ -1563,5 +1563,7 @@
   "legendaryLand": "አስደናቂ ምድር",
   "@legendaryLand": {},
   "vignetteEffect": "ቪንየት ተጽዕኖ",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "የቦርድ የጀርባ ምስል ተወስኗል በሆነ ጊዜ መሣሪያ ቁልፍ ፍጹም በግልጽ ማድረግ ትፈልጋለህ?",
+  "@promptMakeToolbarTransparent": {}
 }

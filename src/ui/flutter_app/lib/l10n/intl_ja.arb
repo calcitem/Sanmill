@@ -1563,5 +1563,7 @@
   "legendaryLand": "伝説の地",
   "@legendaryLand": {},
   "vignetteEffect": "ビネット効果",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "ボードの背景画像が設定されたときに、ツールバーを完全に透明にしますか？",
+  "@promptMakeToolbarTransparent": {}
 }

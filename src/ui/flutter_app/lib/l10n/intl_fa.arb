@@ -1465,5 +1465,7 @@
   "legendaryLand": "سرزمین افسانه‌ای",
   "@legendaryLand": {},
   "vignetteEffect": "افکت وینیت",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "آیا می‌خواهید نوار ابزار کاملاً شفاف شود وقتی تصویر پس‌زمینه‌ی تخته تنظیم شده است؟",
+  "@promptMakeToolbarTransparent": {}
 }

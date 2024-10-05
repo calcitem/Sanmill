@@ -1465,5 +1465,7 @@
   "legendaryLand": "Tărâm Legendar",
   "@legendaryLand": {},
   "vignetteEffect": "Efect de vinietă",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ați dori să faceți bara de instrumente complet transparentă când este setată o imagine de fundal pentru tablă?",
+  "@promptMakeToolbarTransparent": {}
 }

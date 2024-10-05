@@ -1465,5 +1465,7 @@
   "legendaryLand": "Efsanevi Diyar",
   "@legendaryLand": {},
   "vignetteEffect": "Vinyet efekti",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Tahta arka plan resmi ayarlandığında araç çubuğunu tamamen şeffaf yapmak ister misiniz?",
+  "@promptMakeToolbarTransparent": {}
 }

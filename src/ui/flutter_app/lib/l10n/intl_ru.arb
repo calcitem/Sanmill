@@ -1465,5 +1465,7 @@
   "legendaryLand": "Легендарная Земля",
   "@legendaryLand": {},
   "vignetteEffect": "Эффект виньетки",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Вы хотите сделать панель инструментов полностью прозрачной, когда установлено фоновое изображение доски?",
+  "@promptMakeToolbarTransparent": {}
 }

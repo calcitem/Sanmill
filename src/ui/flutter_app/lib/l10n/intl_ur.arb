@@ -1563,5 +1563,7 @@
   "legendaryLand": "افسانوی زمین",
   "@legendaryLand": {},
   "vignetteEffect": "وینیٹ اثر",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "کیا آپ بورڈ کے پس منظر کی تصویر سیٹ کرنے پر ٹول بار کو مکمل طور پر شفاف بنانا چاہیں گے؟",
+  "@promptMakeToolbarTransparent": {}
 }

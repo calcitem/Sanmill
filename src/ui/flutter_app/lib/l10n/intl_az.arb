@@ -1563,5 +1563,7 @@
   "legendaryLand": "Əfsanəvi Torpaq",
   "@legendaryLand": {},
   "vignetteEffect": "Vinyet effekti",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Bir taxta arxa plan şəkli təyin edildikdə alət çubuğunu tam şəffaf etmək istərdiniz?",
+  "@promptMakeToolbarTransparent": {}
 }

@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendarisk Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignet effekt",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vil du gøre værktøjslinjen fuldstændig gennemsigtig, når et baggrundsbillede til tavlen er indstillet?",
+  "@promptMakeToolbarTransparent": {}
 }

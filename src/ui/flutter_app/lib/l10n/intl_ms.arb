@@ -1465,5 +1465,7 @@
   "legendaryLand": "Tanah Lagenda",
   "@legendaryLand": {},
   "vignetteEffect": "Kesan vignet",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Adakah anda ingin menjadikan bar alat sepenuhnya telus apabila imej latar belakang papan ditetapkan?",
+  "@promptMakeToolbarTransparent": {}
 }

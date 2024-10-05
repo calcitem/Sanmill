@@ -1465,5 +1465,7 @@
   "legendaryLand": "Legendaarne Maa",
   "@legendaryLand": {},
   "vignetteEffect": "Vinjett-efekt",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Kas soovite tööriistariba täiesti läbipaistvaks muuta, kui laudade taustapilt on seatud?",
+  "@promptMakeToolbarTransparent": {}
 }

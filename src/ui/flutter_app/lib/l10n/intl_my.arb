@@ -1563,5 +1563,7 @@
   "legendaryLand": "ဒဏ္ဍာရီ မြေ",
   "@legendaryLand": {},
   "vignetteEffect": "ဗီညာ အထိအရောက်",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "ဘုတ်နောက်ခံပုံသတ်မှတ်ထားသောအခါ ကိရိယာဘားကို အပြည့်အဝ ထင်ရှားပြတ်သားအောင် ပြုလုပ်လိုပါသလား?",
+  "@promptMakeToolbarTransparent": {}
 }

@@ -1563,5 +1563,7 @@
   "legendaryLand": "Goðsagnir Land",
   "@legendaryLand": {},
   "vignetteEffect": "Vignettingaráhrif",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Viltu gera verkstjólastikuna alveg gegnsæa þegar bakgrunnsmynd fyrir borð er stillt?",
+  "@promptMakeToolbarTransparent": {}
 }

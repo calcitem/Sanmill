@@ -1465,5 +1465,7 @@
   "legendaryLand": "Terra Lendária",
   "@legendaryLand": {},
   "vignetteEffect": "Efeito vinheta",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Gostaria de tornar a barra de ferramentas totalmente transparente quando uma imagem de fundo do tabuleiro estiver definida?",
+  "@promptMakeToolbarTransparent": {}
 }

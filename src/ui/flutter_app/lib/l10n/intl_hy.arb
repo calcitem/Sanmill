@@ -1563,5 +1563,7 @@
   "legendaryLand": "Լեգենդար երկիր",
   "@legendaryLand": {},
   "vignetteEffect": "Վինյետ ազդեցություն",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ցանկանու՞մ եք գործիքը ամբողջովին празնատուն դարձնել, երբ կահույքի պատուհանի պատկերն է կարգավորվում:",
+  "@promptMakeToolbarTransparent": {}
 }

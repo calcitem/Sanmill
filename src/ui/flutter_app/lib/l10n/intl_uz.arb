@@ -1465,5 +1465,7 @@
   "legendaryLand": "Afsonaviy Mamlakat",
   "@legendaryLand": {},
   "vignetteEffect": "Vinyet effekti",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Taxta fon rasmi belgilanganida asboblar panelini butunlay shaffof qilishni xohlaysizmi?",
+  "@promptMakeToolbarTransparent": {}
 }

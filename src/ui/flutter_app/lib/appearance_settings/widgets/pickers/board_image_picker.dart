@@ -60,6 +60,7 @@ class _BoardImagePicker extends StatelessWidget {
                   DB().displaySettings =
                       displaySettings.copyWith(boardImagePath: asset);
                 },
+                displaySettings: displaySettings,
               );
             },
             itemCount: _boardPaths.length + 1,
@@ -75,19 +76,90 @@ class _BoardImageItem extends StatelessWidget {
     required this.asset,
     this.isSelect = false,
     this.onChanged,
+    required this.displaySettings,
   });
 
   final String asset;
   final bool isSelect;
   final VoidCallback? onChanged;
+  final DisplaySettings displaySettings;
 
   @override
   Widget build(BuildContext context) {
     final bool isDefault = asset.isEmpty;
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         if (!isSelect) {
           onChanged?.call();
+
+          if ((displaySettings.boardImagePath == null ||
+                  displaySettings.boardImagePath.isEmpty) &&
+              !isDefault) {
+            final bool isNavigationToolbarOpaque =
+                DB().colorSettings.navigationToolbarBackgroundColor.alpha !=
+                    0x00;
+            final bool isMainToolbarOpaque =
+                DB().colorSettings.mainToolbarBackgroundColor.alpha != 0x00;
+            final bool isAnalysisToolbarOpaque =
+                DB().colorSettings.analysisToolbarBackgroundColor.alpha != 0x00;
+
+            if (isNavigationToolbarOpaque ||
+                isMainToolbarOpaque ||
+                isAnalysisToolbarOpaque) {
+              final bool? result = await showDialog<bool>(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(S.of(context).color),
+                    content: Text(S.of(context).promptMakeToolbarTransparent),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          S.of(context).no,
+                          style: TextStyle(
+                              fontSize: AppTheme.textScaler
+                                  .scale(AppTheme.defaultFontSize)),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(
+                          S.of(context).yes,
+                          style: TextStyle(
+                              fontSize: AppTheme.textScaler
+                                  .scale(AppTheme.defaultFontSize)),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (result ?? false) {
+                Color currentColor =
+                    DB().colorSettings.mainToolbarBackgroundColor;
+                Color newColor = currentColor.withAlpha(0x00);
+                DB().colorSettings = DB()
+                    .colorSettings
+                    .copyWith(mainToolbarBackgroundColor: newColor);
+
+                currentColor =
+                    DB().colorSettings.navigationToolbarBackgroundColor;
+                newColor = currentColor.withAlpha(0x00);
+                DB().colorSettings = DB()
+                    .colorSettings
+                    .copyWith(navigationToolbarBackgroundColor: newColor);
+
+                currentColor =
+                    DB().colorSettings.analysisToolbarBackgroundColor;
+                newColor = currentColor.withAlpha(0x00);
+                DB().colorSettings = DB()
+                    .colorSettings
+                    .copyWith(analysisToolbarBackgroundColor: newColor);
+              }
+            }
+          }
         }
       },
       child: Stack(

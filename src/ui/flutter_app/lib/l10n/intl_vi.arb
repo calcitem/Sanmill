@@ -1563,5 +1563,7 @@
   "legendaryLand": "Vùng Đất Huyền Thoại",
   "@legendaryLand": {},
   "vignetteEffect": "Hiệu ứng tối góc",
-  "@vignetteEffect": {}
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Bạn có muốn làm cho thanh công cụ hoàn toàn trong suốt khi hình nền bảng được thiết lập không?",
+  "@promptMakeToolbarTransparent": {}
 }
