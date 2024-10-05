@@ -1,0 +1,3 @@
+v5.0.0
+
+Dieses Update umfasst verschiedene Verbesserungen und Fehlerbehebungen, um die App für dich zu verbessern.
