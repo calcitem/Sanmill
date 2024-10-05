@@ -189,13 +189,15 @@ class HeaderTipState extends State<HeaderTip> {
     GameController().headerTipNotifier.addListener(_showTip);
   }
 
-  void _showTip() {
+  Future<void> _showTip() async {
     final HeaderTipNotifier headerTipNotifier =
         GameController().headerTipNotifier;
 
-    if (headerTipNotifier.showSnackBar) {
+    if (true) {
+      final String? llmResp =
+          await LLM().generateResponse("${headerTipNotifier.message}");
       rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(headerTipNotifier.message);
+          .showSnackBarClear(llmResp ?? headerTipNotifier.message);
     }
 
     _messageNotifier.value = headerTipNotifier.message;

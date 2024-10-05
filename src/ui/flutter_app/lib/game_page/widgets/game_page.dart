@@ -34,6 +34,7 @@ import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
+import '../../shared/services/llm.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/themes/ui_colors.dart';

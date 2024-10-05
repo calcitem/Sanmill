@@ -40,6 +40,7 @@ import 'home/home.dart';
 import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/services/environment_config.dart';
+import 'shared/services/llm.dart';
 import 'shared/services/logger.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
@@ -49,6 +50,8 @@ part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
   logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
   logger.i('Environment [test]: ${EnvironmentConfig.test}');
@@ -62,6 +65,8 @@ Future<void> main() async {
   _initUI();
 
   initBitboards();
+
+  await LLM.initialize();
 
   if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
     catcher = Catcher2(

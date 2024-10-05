@@ -29,6 +29,7 @@ dependencies:
       ref: main
   flutter_picker: 2.1.0
   flutter_sharing_intent: 1.1.1
+  flutter_gemma: 0.0.4
   hive: 2.2.3
   hive_flutter: 1.1.0
   image: 4.2.0
