@@ -26,6 +26,7 @@ final List<String> _boardPaths = <String>[
   Assets.images.backgroundImage5.path,
   Assets.images.backgroundImage6.path,
   Assets.images.backgroundImage7.path,
+  Assets.images.backgroundImage8.path,
 ];
 
 class _BoardImagePicker extends StatelessWidget {
