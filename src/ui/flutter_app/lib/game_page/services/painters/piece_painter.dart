@@ -180,9 +180,22 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadow of pieces if image is not available
-    if (pieceImages == null) {
-      canvas.drawShadow(shadowPath, Colors.black, 2, true);
+    // Draw shadow if image is null for any piece
+    for (final Piece piece in piecesToDraw) {
+      if (piece.image == null) {
+        canvas.drawShadow(
+          Path()
+            ..addOval(
+              Rect.fromCircle(
+                center: piece.pos,
+                radius: piece.diameter / 2,
+              ),
+            ),
+          Colors.black,
+          2,
+          true,
+        );
+      }
     }
 
     paint.style = PaintingStyle.fill;
