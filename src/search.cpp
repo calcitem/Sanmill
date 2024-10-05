@@ -94,6 +94,8 @@ int Thread::search()
         originDepth = d;
     }
 
+    bool isPondering = Threads.main()->ponder.load();
+
     const time_t time0 = time(nullptr);
     srand(static_cast<unsigned int>(time0));
 
@@ -225,7 +227,7 @@ next:
 
             lastValue = value;
 
-            if (is_timeout(startTime)) {
+            if (!isPondering && is_timeout(startTime)) {
                 debugPrintf("originDepth = %d, depth = %d\n", originDepth, i);
                 goto out;
             }
@@ -291,6 +293,14 @@ next:
 #endif // GABOR_MALOM_PERFECT_AI
 
 out:
+
+    if (isPondering) {
+        while (!Threads.stop.load()) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+    }
+
+    Threads.stop.store(true);
 
 #ifdef TIME_STAT
     timeEnd = std::chrono::steady_clock::now();
@@ -382,7 +392,8 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->undo_move(ss);
 
         // Check for search abortion
-        if (Threads.stop.load(std::memory_order_relaxed)) {
+        if (Threads.stop.load(std::memory_order_relaxed) ||
+            Threads.main()->stopOnPonderhit) {
             return VALUE_ZERO;
         }
 
@@ -412,7 +423,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Check for terminal position or search abortion
     if (unlikely(pos->phase == Phase::gameOver) ||
-        Threads.stop.load(std::memory_order_relaxed)) {
+        Threads.stop.load(std::memory_order_relaxed) ||
+        Threads.main()->stopOnPonderhit) {
         bestValue = Eval::evaluate(*pos);
 
         // Adjust evaluation to prefer quicker wins or slower losses
@@ -589,7 +601,8 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->undo_move(ss);
 
         // Check for search abortion
-        if (Threads.stop.load(std::memory_order_relaxed))
+        if (Threads.stop.load(std::memory_order_relaxed) ||
+            Threads.main()->stopOnPonderhit)
             return VALUE_ZERO;
 
         // Update best value and best move if necessary
@@ -717,6 +730,10 @@ Value random_search(Position *pos, Move &bestMove)
 /// Function to check if the search has timed out
 bool is_timeout(TimePoint startTime)
 {
+    if (Threads.main()->ponder.load()) {
+        return false;
+    }
+
     const auto limit = gameOptions.getMoveTime() * 1000;
     const TimePoint elapsed = now() - startTime;
 

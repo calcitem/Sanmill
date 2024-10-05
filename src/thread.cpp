@@ -155,14 +155,16 @@ void Thread::idle_loop()
                                             -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
-            if (ret == 3 || ret == 50 || ret == 10) {
-                debugPrintf("Draw\n\n");
-                bestMoveString = "draw";
-                emitCommand();
-            } else {
-                bestMoveString = next_move();
-                if (bestMoveString != "" && bestMoveString != "error!") {
+            if (!Threads.main()->ponder.load()) {
+                if (ret == 3 || ret == 50 || ret == 10) {
+                    debugPrintf("Draw\n\n");
+                    bestMoveString = "draw";
                     emitCommand();
+                } else {
+                    bestMoveString = next_move();
+                    if (bestMoveString != "" && bestMoveString != "error!") {
+                        emitCommand();
+                    }
                 }
             }
 #ifdef OPENING_BOOK

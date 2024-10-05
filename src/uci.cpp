@@ -123,13 +123,13 @@ void setoption(istringstream &is)
 // the thinking time and other parameters from the input string, then starts
 // the search.
 
-void go(Position *pos)
+void go(Position *pos, bool ponderMode)
 {
 #ifdef UCI_AUTO_RE_GO
 begin:
 #endif
 
-    Threads.start_thinking(pos);
+    Threads.start_thinking(pos, ponderMode);
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
@@ -166,6 +166,7 @@ void UCI::loop(int argc, char *argv[])
 {
     const auto pos = new Position;
     string token, cmd;
+    bool ponderMode = false;
 
 #ifdef _MSC_VER
     switch (rule.pieceCount) {
@@ -242,6 +243,9 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "ponderhit")
             Threads.main()->ponder = false; // Switch to normal search
 
+        else if (token == "ponder")
+            ponderMode = true;
+
         else if (token == "uci")
             sync_cout << "id name " << engine_info(true) << "\n"
                       << Options << "\nuciok" << sync_endl;
@@ -249,7 +253,7 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "setoption")
             setoption(is);
         else if (token == "go")
-            go(pos);
+            go(pos, ponderMode);
         else if (token == "position")
             position(pos, is);
         else if (token == "ucinewgame")
