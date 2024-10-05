@@ -1463,5 +1463,7 @@
   "autumnLeaves": "가을 잎",
   "@autumnLeaves": {},
   "legendaryLand": "전설의 땅",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "비네팅 효과",
+  "@vignetteEffect": {}
 }

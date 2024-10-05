@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Payız yarpaqları",
   "@autumnLeaves": {},
   "legendaryLand": "Əfsanəvi Torpaq",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinyet effekti",
+  "@vignetteEffect": {}
 }

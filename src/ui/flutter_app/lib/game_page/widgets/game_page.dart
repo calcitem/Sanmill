@@ -44,6 +44,7 @@ import '../services/animation/animation_manager.dart';
 import '../services/painters/painters.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';
+import 'vignette_overlay.dart';
 
 part 'board_semantics.dart';
 part 'dialogs/game_result_alert_dialog.dart';
@@ -68,18 +69,42 @@ class GamePage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: <Widget>[
-          // Background image or color
-          _buildBackground(),
-          // Game board
-          _buildGameBoard(context, controller),
-          // Drawer icon
-          Align(
-            alignment: AlignmentDirectional.topStart,
-            child: SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
-          ),
-        ],
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          // Constraints of the game board but applied to the entire child
+          final double maxWidth = constraints.maxWidth;
+          final double maxHeight = constraints.maxHeight;
+          final double boardDimension =
+              (maxHeight > 0 && maxHeight < maxWidth) ? maxHeight : maxWidth;
+
+          final Rect gameBoardRect = Rect.fromLTWH(
+            (constraints.maxWidth - boardDimension) /
+                2, // Center the board horizontally
+            0,
+            boardDimension,
+            boardDimension,
+          );
+
+          return Stack(
+            children: <Widget>[
+              // Background image or color
+              _buildBackground(),
+
+              // Game board
+              _buildGameBoard(context, controller),
+              // Drawer icon
+              Align(
+                alignment: AlignmentDirectional.topStart,
+                child:
+                    SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
+              ),
+
+              // Vignette overlay
+              if (DB().displaySettings.vignetteEffectEnabled)
+                VignetteOverlay(gameBoardRect: gameBoardRect),
+            ],
+          );
+        },
       ),
     );
   }

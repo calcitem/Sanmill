@@ -1561,5 +1561,7 @@
   "autumnLeaves": "ဆောင်းဦးတစ်ပိုင်း",
   "@autumnLeaves": {},
   "legendaryLand": "ဒဏ္ဍာရီ မြေ",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "ဗီညာ အထိအရောက်",
+  "@vignetteEffect": {}
 }

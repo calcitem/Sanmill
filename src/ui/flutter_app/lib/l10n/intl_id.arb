@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Daun-daun Musim Gugur",
   "@autumnLeaves": {},
   "legendaryLand": "Tanah Legendaris",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Efek vinyet",
+  "@vignetteEffect": {}
 }

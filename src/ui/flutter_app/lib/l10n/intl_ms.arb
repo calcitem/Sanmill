@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Daun Musim Gugur",
   "@autumnLeaves": {},
   "legendaryLand": "Tanah Lagenda",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Kesan vignet",
+  "@vignetteEffect": {}
 }

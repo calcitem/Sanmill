@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Աշնանային տերևներ",
   "@autumnLeaves": {},
   "legendaryLand": "Լեգենդար երկիր",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Վինյետ ազդեցություն",
+  "@vignetteEffect": {}
 }

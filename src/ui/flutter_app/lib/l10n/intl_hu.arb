@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Őszi levelek",
   "@autumnLeaves": {},
   "legendaryLand": "Legendás Föld",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetta hatás",
+  "@vignetteEffect": {}
 }

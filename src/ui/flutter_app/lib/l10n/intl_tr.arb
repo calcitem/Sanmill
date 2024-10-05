@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Sonbahar Yaprakları",
   "@autumnLeaves": {},
   "legendaryLand": "Efsanevi Diyar",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinyet efekti",
+  "@vignetteEffect": {}
 }

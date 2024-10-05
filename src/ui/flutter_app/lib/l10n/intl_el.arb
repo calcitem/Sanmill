@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Φθινοπωρινά φύλλα",
   "@autumnLeaves": {},
   "legendaryLand": "Θρυλική γη",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Εφέ βινιέτας",
+  "@vignetteEffect": {}
 }

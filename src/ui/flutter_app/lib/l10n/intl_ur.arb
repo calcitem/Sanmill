@@ -1561,5 +1561,7 @@
   "autumnLeaves": "خزاں کے پتے",
   "@autumnLeaves": {},
   "legendaryLand": "افسانوی زمین",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "وینیٹ اثر",
+  "@vignetteEffect": {}
 }

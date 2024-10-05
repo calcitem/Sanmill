@@ -1463,5 +1463,7 @@
   "autumnLeaves": "秋葉",
   "@autumnLeaves": {},
   "legendaryLand": "青綠",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "暗角效果",
+  "@vignetteEffect": {}
 }

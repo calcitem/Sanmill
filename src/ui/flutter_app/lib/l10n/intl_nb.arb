@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Høstløv",
   "@autumnLeaves": {},
   "legendaryLand": "Legendarisk Land",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignett-effekt",
+  "@vignetteEffect": {}
 }

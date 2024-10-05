@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Herfsblare",
   "@autumnLeaves": {},
   "legendaryLand": "Legendariese Land",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignet-effek",
+  "@vignetteEffect": {}
 }

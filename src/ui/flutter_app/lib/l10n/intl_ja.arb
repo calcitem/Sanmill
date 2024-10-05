@@ -1561,5 +1561,7 @@
   "autumnLeaves": "秋の葉",
   "@autumnLeaves": {},
   "legendaryLand": "伝説の地",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "ビネット効果",
+  "@vignetteEffect": {}
 }

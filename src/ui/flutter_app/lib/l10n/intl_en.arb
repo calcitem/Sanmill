@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Autumn Leaves",
   "@autumnLeaves": {},
   "legendaryLand": "Legendary Land",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignette effect",
+  "@vignetteEffect": {}
 }

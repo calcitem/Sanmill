@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Rudens lapas",
   "@autumnLeaves": {},
   "legendaryLand": "Leģendārā zeme",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinjete efekts",
+  "@vignetteEffect": {}
 }

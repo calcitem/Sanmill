@@ -1561,5 +1561,7 @@
   "autumnLeaves": "አውጣዎቹ",
   "@autumnLeaves": {},
   "legendaryLand": "አስደናቂ ምድር",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "ቪንየት ተጽዕኖ",
+  "@vignetteEffect": {}
 }

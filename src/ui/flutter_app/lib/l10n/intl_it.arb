@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Foglie d'Autunno",
   "@autumnLeaves": {},
   "legendaryLand": "Terra Leggendaria",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Effetto vignettatura",
+  "@vignetteEffect": {}
 }

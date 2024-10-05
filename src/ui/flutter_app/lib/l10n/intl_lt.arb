@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Rudeniniai lapai",
   "@autumnLeaves": {},
   "legendaryLand": "Legendinė Žemė",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinetės efektas",
+  "@vignetteEffect": {}
 }

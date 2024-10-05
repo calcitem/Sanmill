@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Есенски лисја",
   "@autumnLeaves": {},
   "legendaryLand": "Легендарна Земја",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Ефект на винјета",
+  "@vignetteEffect": {}
 }

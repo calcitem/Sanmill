@@ -1,10 +1,8 @@
 Please translate the following contents of the arb file:
 
 ```json
-"autumnLeaves": "Autumn Leaves",
-"@autumnLeaves": {},
-"legendaryLand": "Legendary Land",
-"@legendaryLand": {},
+"vignetteEffect": "Vignette effect",
+"@vignetteEffect": {},
 ```
 
 into:
@@ -76,9 +74,11 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "autumnLeaves": "Autumn Leaves",
-  "@autumnLeaves": {},
-  "legendaryLand": "Legendary Land",
-  "@legendaryLand": {},
+  "vignetteEffect": "Vignette effect",
+  "@vignetteEffect": {},
+
+// intl_zh.arb
+  "vignetteEffect": "暗角效果",
+  "@vignetteEffect": {},
 ```
 

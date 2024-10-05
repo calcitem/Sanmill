@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Jesienne Liście",
   "@autumnLeaves": {},
   "legendaryLand": "Legendarna Ziemia",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Efekt winiety",
+  "@vignetteEffect": {}
 }

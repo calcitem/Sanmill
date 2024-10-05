@@ -585,6 +585,12 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
         ),
+        SettingsListTile.switchTile(
+          value: displaySettings.vignetteEffectEnabled,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(vignetteEffectEnabled: val),
+          titleString: S.of(context).vignetteEffect,
+        ),
         SettingsListTile(
           titleString: S.of(context).backgroundImage,
           onTap: () => setBackgroundImage(context),

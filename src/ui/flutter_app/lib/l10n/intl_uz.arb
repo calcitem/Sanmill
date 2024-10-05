@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Kuz yaproqlari",
   "@autumnLeaves": {},
   "legendaryLand": "Afsonaviy Mamlakat",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vinyet effekti",
+  "@vignetteEffect": {}
 }

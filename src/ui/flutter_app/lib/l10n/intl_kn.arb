@@ -1463,5 +1463,7 @@
   "autumnLeaves": "ಶರದಪಾತದ ಎಲೆಗಳು",
   "@autumnLeaves": {},
   "legendaryLand": "ಪೌರಾಣಿಕ ನೆಲ",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "ವಿನ್ಯೆಟ್ ಪರಿಣಾಮ",
+  "@vignetteEffect": {}
 }

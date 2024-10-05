@@ -1463,5 +1463,7 @@
   "autumnLeaves": "శరదృతువు ఆకులు",
   "@autumnLeaves": {},
   "legendaryLand": "పౌరాణిక భూమి",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "వినియట్ ప్రభావం",
+  "@vignetteEffect": {}
 }

@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Frunzele de Toamnă",
   "@autumnLeaves": {},
   "legendaryLand": "Tărâm Legendar",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Efect de vinietă",
+  "@vignetteEffect": {}
 }

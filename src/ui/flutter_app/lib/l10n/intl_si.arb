@@ -1561,5 +1561,7 @@
   "autumnLeaves": "ශරත් පත්",
   "@autumnLeaves": {},
   "legendaryLand": "පුරාණය භූමිය",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "වින්යට් අත්පත් ඇඳීම",
+  "@vignetteEffect": {}
 }

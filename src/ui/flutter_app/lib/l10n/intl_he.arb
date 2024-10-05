@@ -1561,5 +1561,7 @@
   "autumnLeaves": "עלים של סתיו",
   "@autumnLeaves": {},
   "legendaryLand": "ארץ אגדות",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "אפקט ויגנט",
+  "@vignetteEffect": {}
 }

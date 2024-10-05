@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Jesensko Listje",
   "@autumnLeaves": {},
   "legendaryLand": "Legendarna Zemlja",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Učinek vinjete",
+  "@vignetteEffect": {}
 }

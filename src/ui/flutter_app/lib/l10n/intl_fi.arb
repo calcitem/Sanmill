@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Syksyn lehdet",
   "@autumnLeaves": {},
   "legendaryLand": "Legendaarinen Maa",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetointi-efekti",
+  "@vignetteEffect": {}
 }

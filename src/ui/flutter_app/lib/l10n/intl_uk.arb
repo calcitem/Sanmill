@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Осіннє Листя",
   "@autumnLeaves": {},
   "legendaryLand": "Легендарна Земля",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Ефект віньєтки",
+  "@vignetteEffect": {}
 }

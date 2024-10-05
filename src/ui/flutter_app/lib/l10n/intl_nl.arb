@@ -1463,5 +1463,7 @@
   "autumnLeaves": "Herfstbladeren",
   "@autumnLeaves": {},
   "legendaryLand": "Legendarisch Land",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetteringseffect",
+  "@vignetteEffect": {}
 }

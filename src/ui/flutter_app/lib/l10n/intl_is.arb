@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Haustlauf",
   "@autumnLeaves": {},
   "legendaryLand": "Goðsagnir Land",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignettingaráhrif",
+  "@vignetteEffect": {}
 }

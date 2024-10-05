@@ -1463,5 +1463,7 @@
   "autumnLeaves": "শরতের পাতা",
   "@autumnLeaves": {},
   "legendaryLand": "কিংবদন্তি জমি",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "ভিনিয়েট প্রভাব",
+  "@vignetteEffect": {}
 }

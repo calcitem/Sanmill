@@ -1463,5 +1463,7 @@
   "autumnLeaves": "أوراق الخريف",
   "@autumnLeaves": {},
   "legendaryLand": "الأرض الأسطورية",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "تأثير التظليل",
+  "@vignetteEffect": {}
 }

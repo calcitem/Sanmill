@@ -1463,5 +1463,7 @@
   "autumnLeaves": "ใบไม้ร่วง",
   "@autumnLeaves": {},
   "legendaryLand": "ดินแดนในตำนาน",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "เอฟเฟกต์ขอบมืด",
+  "@vignetteEffect": {}
 }

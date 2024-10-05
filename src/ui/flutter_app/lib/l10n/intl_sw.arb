@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Majani ya Majira ya Kuanguka",
   "@autumnLeaves": {},
   "legendaryLand": "Ardhi ya Kihistoria",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Athari ya vignette",
+  "@vignetteEffect": {}
 }

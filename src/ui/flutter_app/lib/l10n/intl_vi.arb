@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Lá mùa thu",
   "@autumnLeaves": {},
   "legendaryLand": "Vùng Đất Huyền Thoại",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Hiệu ứng tối góc",
+  "@vignetteEffect": {}
 }

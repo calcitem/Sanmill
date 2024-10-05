@@ -1463,5 +1463,7 @@
   "autumnLeaves": "पतझड़ के पत्ते",
   "@autumnLeaves": {},
   "legendaryLand": "पौराणिक भूमि",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "विगनेट प्रभाव",
+  "@vignetteEffect": {}
 }

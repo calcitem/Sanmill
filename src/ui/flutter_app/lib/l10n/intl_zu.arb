@@ -1561,5 +1561,7 @@
   "autumnLeaves": "Amacembe Ekwindla",
   "@autumnLeaves": {},
   "legendaryLand": "Izwe Elidumile",
-  "@legendaryLand": {}
+  "@legendaryLand": {},
+  "vignetteEffect": "Umphumela we-vignette",
+  "@vignetteEffect": {}
 }
