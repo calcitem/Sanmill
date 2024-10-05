@@ -85,6 +85,12 @@ class BoardPainter extends CustomPainter {
     final Paint paint = Paint();
 
     if (backgroundImage != null) {
+      canvas.clipRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
+          const Radius.circular(AppTheme.boardBorderRadius),
+        ),
+      );
       canvas.drawImageRect(
         backgroundImage!,
         Rect.fromLTWH(0, 0, backgroundImage!.width.toDouble(),
