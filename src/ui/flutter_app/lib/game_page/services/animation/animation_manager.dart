@@ -27,6 +27,7 @@ class AnimationManager {
   }
 
   final TickerProvider vsync;
+  bool _isDisposed = false; // Track whether dispose() was called
 
   bool allowAnimations = true;
 
@@ -52,6 +53,7 @@ class AnimationManager {
       _removeAnimationController;
   Animation<double> get removeAnimation => _removeAnimation;
 
+  // Initialize Place Animation
   void _initPlaceAnimation() {
     _placeAnimationController = AnimationController(
       vsync: vsync,
@@ -68,6 +70,7 @@ class AnimationManager {
     );
   }
 
+  // Initialize Move Animation
   void _initMoveAnimation() {
     _moveAnimationController = AnimationController(
       vsync: vsync,
@@ -84,6 +87,7 @@ class AnimationManager {
     );
   }
 
+  // Initialize Remove Animation
   void _initRemoveAnimation() {
     _removeAnimationController = AnimationController(
       vsync: vsync,
@@ -100,40 +104,67 @@ class AnimationManager {
     );
   }
 
+  // Properly dispose of the animation controllers
   void dispose() {
+    _isDisposed = true; // Mark as disposed
     _placeAnimationController.dispose();
     _moveAnimationController.dispose();
     _removeAnimationController.dispose();
   }
 
+  // Reset Place Animation if not disposed
   void resetPlaceAnimation() {
-    _placeAnimationController.reset();
+    if (!_isDisposed) {
+      _placeAnimationController.reset();
+    }
   }
 
+  // Start Place Animation if not disposed
   void forwardPlaceAnimation() {
-    _placeAnimationController.forward();
+    if (!_isDisposed) {
+      _placeAnimationController.forward();
+    }
   }
 
+  // Reset Move Animation if not disposed
   void resetMoveAnimation() {
-    _moveAnimationController.reset();
+    if (!_isDisposed) {
+      _moveAnimationController.reset();
+    }
   }
 
+  // Start Move Animation if not disposed
   void forwardMoveAnimation() {
-    _moveAnimationController.forward();
+    if (!_isDisposed) {
+      _moveAnimationController.forward();
+    }
   }
 
+  // Reset Remove Animation if not disposed
   void resetRemoveAnimation() {
-    _removeAnimationController.reset();
+    if (!_isDisposed) {
+      _removeAnimationController.reset();
+    }
   }
 
+  // Start Remove Animation if not disposed
   void forwardRemoveAnimation() {
-    _removeAnimationController.forward();
+    if (!_isDisposed) {
+      _removeAnimationController.forward();
+    }
   }
 
+  // Check if Remove Animation is currently animating
+  bool isRemoveAnimationAnimating() {
+    return !_isDisposed && _removeAnimationController.isAnimating;
+  }
+
+  // Handle Place Animation with proper disposal check
   void animatePlace() {
-    if (GameController().isDisposed == true) {
-      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
-      //return;
+    // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+    if (/* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
     }
 
     if (allowAnimations) {
@@ -142,17 +173,11 @@ class AnimationManager {
     }
   }
 
-  bool isRemoveAnimationAnimating() {
-    if (_removeAnimationController.isAnimating) {
-      return true;
-    }
-    return false;
-  }
-
+  // Handle Move Animation with proper disposal check
   void animateMove() {
-    if (GameController().isDisposed == true) {
-      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
-      //return;
+    if (/* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
     }
 
     if (allowAnimations) {
@@ -161,11 +186,13 @@ class AnimationManager {
     }
   }
 
+  // Handle Remove Animation with proper disposal check
   void animateRemove() {
-    if (GameController().isDisposed == true) {
-      // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
-      //return;
+    if (/* GameController().isDisposed == true || */ _isDisposed) {
+      // Avoid animation when GameController or AnimationManager is disposed
+      return;
     }
+
     if (allowAnimations) {
       resetRemoveAnimation();
 
