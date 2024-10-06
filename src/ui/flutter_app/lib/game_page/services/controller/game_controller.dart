@@ -93,6 +93,12 @@ class GameController {
   bool get isPositionSetup => gameRecorder.setupPosition != null;
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
+  // Bluetooth Service instance
+  final BluetoothService _bluetoothService = BluetoothService.instance;
+
+  // Subscription to Bluetooth move stream
+  StreamSubscription<String>? _bluetoothMoveSubscription;
+
   @visibleForTesting
   static GameController instance = GameController._();
 
@@ -103,6 +109,11 @@ class GameController {
     }
 
     await SoundManager().loadSounds();
+
+    // Bluetooth specific initialization if in Bluetooth mode
+    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth) {
+      await _initializeBluetooth();
+    }
 
     _isInitialized = true;
     logger.i("$_logTag initialized");
@@ -118,6 +129,13 @@ class GameController {
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
+
+    // Disconnect Bluetooth if resetting the game
+    // TODO(BT): Need it?
+    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth) {
+      _bluetoothMoveSubscription?.cancel();
+      _bluetoothService.disconnect();
+    }
 
     GameController().engine.stopSearching();
 
@@ -153,6 +171,40 @@ class GameController {
     gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
 
     _startGame();
+  }
+
+  /// Initializes Bluetooth communication for the game.
+  Future<void> _initializeBluetooth() async {
+    // Initialize the Bluetooth service
+    // await _bluetoothService.enableBluetooth(); // TODO(BT): Right?
+
+    // Listen to incoming moves
+    _bluetoothMoveSubscription =
+        _bluetoothService.moveStream.listen((String move) {
+      logger.i("$_logTag Received move from opponent: $move");
+      applyOpponentMove(move);
+    });
+  }
+
+  // TODO(BT): Modify
+  /// Applies the move received from the opponent over Bluetooth.
+  void applyOpponentMove(String moveStr) {
+    // Ensure it's the opponent's turn
+    if (gameInstance.isHumanToMove) {
+      logger.w("$_logTag It's not the opponent's turn.");
+      return;
+    }
+
+    // Apply the move to the game state
+    final bool moveSuccess = gameInstance.doMove(ExtMove(moveStr));
+    if (moveSuccess) {
+      logger.i("$_logTag Move applied successfully from opponent: $moveStr");
+      // Update UI or notify listeners if necessary
+      gameResultNotifier.showResult(force: true);
+    } else {
+      logger.e("$_logTag Failed to apply move from opponent: $moveStr");
+      headerTipNotifier.showTip("Invalid move received from opponent.");
+    }
   }
 
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
@@ -221,6 +273,13 @@ class GameController {
       DB().generalSettings = DB().generalSettings.copyWith(
             remindedOpponentMayFly: true,
           );
+    }
+
+    // Handle Bluetooth mode logic
+    if (gameMode == GameMode.humanVsHumanBluetooth) {
+      // In Bluetooth mode, moves are handled via Bluetooth, so skip engine processing
+      logger.i("$tag Handling move for Bluetooth game mode...");
+      return const EngineResponseOK(); // Or appropriate response
     }
 
     while ((gameInstance.isAiToMove &&
@@ -316,10 +375,17 @@ class GameController {
   }
 
   Future<void> moveNow(BuildContext context) async {
-    const String tag = "[engineToGo]";
+    const String tag = "[moveNow]";
     bool reversed = false;
 
     loadedGameFilenamePrefix = null;
+
+    // Handle Bluetooth-specific move logic
+    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth) {
+      logger.i("$tag Handling move for Bluetooth game mode...");
+      // TODO(BT): Skip engine processing
+      return;
+    }
 
     if (isEngineInDelay == true) {
       return rootScaffoldMessengerKey.currentState!
@@ -423,4 +489,30 @@ class GameController {
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
       ImportService.exportGame(context);
+
+  void dispose() {
+    isDisposed = true;
+    isControllerActive = false;
+    isControllerReady = false;
+    isEngineRunning = false;
+    isEngineInDelay = false;
+
+    // Disconnect Bluetooth and cancel subscriptions
+    // TODO(BT): Need it?
+    _bluetoothMoveSubscription?.cancel();
+    _bluetoothService.disconnect();
+
+    setupPositionNotifier.dispose();
+    gameResultNotifier.dispose();
+    boardSemanticsNotifier.dispose();
+
+    headerTipNotifier.dispose();
+    headerIconsNotifier.dispose();
+
+    initialSharingMoveListNotifier.dispose();
+
+    animationManager.dispose();
+
+    instance = GameController._();
+  }
 }

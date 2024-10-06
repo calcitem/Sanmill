@@ -1567,5 +1567,9 @@
   "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Enable vibration in the game",
-  "@vibration": {}
+  "@vibration": {},
+  "bluetoothGameOverMessage": "Bluetooth game over.",
+  "@bluetoothGameOverMessage": {},
+  "restartBluetoothGame": "Restart Bluetooth Game",
+  "@restartBluetoothGame": {}
 }

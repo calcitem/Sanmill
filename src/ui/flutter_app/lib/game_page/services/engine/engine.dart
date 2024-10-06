@@ -426,6 +426,7 @@ class Engine {
 enum GameMode {
   humanVsAi,
   humanVsHuman,
+  humanVsHumanBluetooth,
   aiVsAi,
   setupPosition,
 
@@ -460,6 +461,8 @@ extension GameModeExtension on GameMode {
         }
       case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
+      case GameMode.humanVsHumanBluetooth: // Added icon for Bluetooth mode
+        return FluentIcons.bluetooth_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
       case GameMode.setupPosition:
@@ -490,6 +493,8 @@ extension GameModeExtension on GameMode {
         }
       case GameMode.humanVsHuman:
         return FluentIcons.person_24_filled;
+      case GameMode.humanVsHumanBluetooth: // Added icon for Bluetooth mode
+        return FluentIcons.bluetooth_24_filled;
       case GameMode.aiVsAi:
         return botIcon;
       case GameMode.setupPosition:
@@ -517,6 +522,7 @@ extension GameModeExtension on GameMode {
         };
       case GameMode.setupPosition:
       case GameMode.humanVsHuman:
+      case GameMode.humanVsHumanBluetooth: // Added behavior for Bluetooth mode
       case GameMode.humanVsLAN:
       case GameMode.humanVsCloud:
         return <PieceColor, bool>{

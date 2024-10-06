@@ -68,11 +68,44 @@ class GameResultAlertDialog extends StatelessWidget {
 
     logger.t("$_logTag Game over reason string: $content");
 
-    final List<Widget> actions;
-    if (_gameResult == GameResult.win &&
+    List<Widget> actions;
+
+    // Handling the game over dialog for Bluetooth mode
+    if (gameMode == GameMode.humanVsHumanBluetooth) {
+      content.writeln();
+      content.writeln(S.of(context).bluetoothGameOverMessage);
+
+      actions = <Widget>[
+        TextButton(
+          child: Text(
+            S.of(context).restartBluetoothGame,
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          ),
+          onPressed: () {
+            // TODO(BT): Implement Bluetooth-specific game reset logic here
+            GameController().reset(force: true);
+            GameController()
+                .headerTipNotifier
+                .showTip(S.of(context).gameStarted);
+            GameController().headerIconsNotifier.showIcons();
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          child: Text(
+            S.of(context).cancel,
+            style: TextStyle(
+                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ];
+    } else if (_gameResult == GameResult.win &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi) {
+      // Original logic for AI vs Human mode
       content.writeln();
       content.writeln();
       content.writeln(
@@ -132,6 +165,7 @@ class GameResultAlertDialog extends StatelessWidget {
         ),
       ];
     } else {
+      // Default actions for other game modes
       actions = <Widget>[
         TextButton(
           child: Text(

@@ -55,6 +55,7 @@ import '../tutorial/widgets/tutorial_dialog.dart';
 enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
+  humanVsHumanBluetooth,
   aiVsAi,
   setupPosition,
   generalSettings,
@@ -71,24 +72,29 @@ extension _DrawerScreen on _DrawerIndex {
   Widget? get screen {
     switch (this) {
       case _DrawerIndex.humanVsAi:
-        return GamePage(
+        return const GamePage(
           GameMode.humanVsAi,
-          key: const Key("Human-Ai"),
+          key: Key("Human-Ai"),
         );
       case _DrawerIndex.humanVsHuman:
-        return GamePage(
+        return const GamePage(
           GameMode.humanVsHuman,
-          key: const Key("Human-Human"),
+          key: Key("Human-Human"),
+        );
+      case _DrawerIndex.humanVsHumanBluetooth:
+        return const GamePage(
+          GameMode.humanVsHumanBluetooth,
+          key: Key("Human-Human-Bluetooth"),
         );
       case _DrawerIndex.aiVsAi:
-        return GamePage(
+        return const GamePage(
           GameMode.aiVsAi,
-          key: const Key("Ai-Ai"),
+          key: Key("Ai-Ai"),
         );
       case _DrawerIndex.setupPosition:
-        return GamePage(
+        return const GamePage(
           GameMode.setupPosition,
-          key: const Key("SetupPosition"),
+          key: Key("SetupPosition"),
         );
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();
@@ -146,6 +152,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
       case _DrawerIndex.humanVsHuman:
         logger.i('Switching to Human vs Human');
+        break;
+      case _DrawerIndex.humanVsHumanBluetooth:
+        logger.i('Switching to Human vs Human Bluetooth');
         break;
       case _DrawerIndex.aiVsAi:
         logger.i('Switching to AI vs AI');
@@ -325,6 +334,15 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         itemValue: _DrawerIndex.humanVsHuman,
         itemTitle: S.of(context).humanVsHuman,
         itemIcon: const Icon(FluentIcons.people_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
+      CustomDrawerItem<_DrawerIndex>(
+        itemValue:
+            _DrawerIndex.humanVsHumanBluetooth, // Added for Bluetooth mode
+        itemTitle:
+            "Bluetooth", // TODO(BT): S.of(context).humanVsHumanBluetooth,  // Ensure localization exists
+        itemIcon: const Icon(FluentIcons.bluetooth_24_regular),
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
