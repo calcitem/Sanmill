@@ -869,6 +869,10 @@ class Position {
   }
 
   bool handleMovingPhaseForPutPiece(int s) {
+    if (_board[s] != PieceColor.none) {
+      return false;
+    }
+
     if (_checkIfGameIsOver()) {
       return true;
     }
