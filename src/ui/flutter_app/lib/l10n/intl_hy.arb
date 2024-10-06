@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Վինյետ ազդեցություն",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Ցանկանու՞մ եք գործիքը ամբողջովին празնատուն դարձնել, երբ կահույքի պատուհանի պատկերն է կարգավորվում:",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Միացնել թրթռոցը խաղում",
+  "@vibration": {}
 }

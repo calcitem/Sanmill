@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efekti i vinjetës",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "A dëshironi të bëni shiritin e veglave plotësisht transparent kur është caktuar një imazh sfondi për tabelën?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktivizo vibracionin në lojë",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinjett-efekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Kas soovite tööriistariba täiesti läbipaistvaks muuta, kui laudade taustapilt on seatud?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Luba vibratsioon mängus",
+  "@vibration": {}
 }

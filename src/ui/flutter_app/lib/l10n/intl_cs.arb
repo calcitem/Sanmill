@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efekt vinětace",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Chcete, aby byla panel nástrojů plně průhledná, když je nastaven obrázek pozadí desky?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Povolit vibrace ve hře",
+  "@vibration": {}
 }

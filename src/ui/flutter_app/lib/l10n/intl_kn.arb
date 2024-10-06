@@ -1467,5 +1467,7 @@
   "vignetteEffect": "ವಿನ್ಯೆಟ್ ಪರಿಣಾಮ",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "ಬೋರ್ಡ್ ಹಿನ್ನೆಲೆಯ ಚಿತ್ರವನ್ನು ಸೆಟ್ ಮಾಡಿದಾಗ ಟೂಲ್ಬಾರ್ ಅನ್ನು ಸಂಪೂರ್ಣವಾಗಿ ಪಾರದರ್ಶಕಗೊಳಿಸಲು ಬಯಸುವಿರಾ?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "ಆಟದಲ್ಲಿ ಸ್ಪಂದನವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+  "@vibration": {}
 }

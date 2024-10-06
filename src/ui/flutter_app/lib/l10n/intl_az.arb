@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Vinyet effekti",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Bir taxta arxa plan şəkli təyin edildikdə alət çubuğunu tam şəffaf etmək istərdiniz?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Oyun içində vibrasiyanı aktiv edin",
+  "@vibration": {}
 }

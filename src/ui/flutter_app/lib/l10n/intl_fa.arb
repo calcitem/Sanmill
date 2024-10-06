@@ -1467,5 +1467,7 @@
   "vignetteEffect": "افکت وینیت",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "آیا می‌خواهید نوار ابزار کاملاً شفاف شود وقتی تصویر پس‌زمینه‌ی تخته تنظیم شده است؟",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "فعال کردن لرزش در بازی",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinjetteringseffekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Vill du göra verktygsfältet helt genomskinligt när en bakgrundsbild för brädet är inställd?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktivera vibration i spelet",
+  "@vibration": {}
 }

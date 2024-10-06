@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinetės efektas",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Ar norite padaryti įrankių juostą visiškai permatomą, kai nustatoma lentos fono paveikslėlis?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Įjungti vibraciją žaidime",
+  "@vibration": {}
 }

@@ -1565,5 +1565,7 @@
   "vignetteEffect": "אפקט ויגנט",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "אתה רוצה להפוך את סרגל הכלים לשקוף לחלוטין כאשר תמונת רקע ללוח מוגדרת?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "הפעל רטט במשחק",
+  "@vibration": {}
 }

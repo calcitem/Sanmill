@@ -1565,5 +1565,7 @@
   "vignetteEffect": "བི་ནེཊ་ཨེཕེགཊ།",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "གནས་སྟངས་སྒྲིག་གསར་བར་མཉམ་མཐུད་མཐོང་མཁན་གྱི་གྲུབ་སྒྲིག་སྒྲིག་གསར་བར་བསྒྱུར་བ་གྱིས་ཁྱོད་ལ་ཡོད་པས?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "རྩིས་སྒྲིག་བྱས་ཟིན་པ།",
+  "@vibration": {}
 }

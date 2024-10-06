@@ -1565,5 +1565,7 @@
   "vignetteEffect": "ビネット効果",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "ボードの背景画像が設定されたときに、ツールバーを完全に透明にしますか？",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "ゲーム内でバイブレーションを有効にする",
+  "@vibration": {}
 }

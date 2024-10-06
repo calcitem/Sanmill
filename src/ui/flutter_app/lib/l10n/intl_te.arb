@@ -1467,5 +1467,7 @@
   "vignetteEffect": "వినియట్ ప్రభావం",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "బోర్డు నేపథ్య చిత్రాన్ని సెట్ చేసినప్పుడు టూల్‌బార్‌ను పూర్తిగా పారదర్శకంగా చేయాలనుకుంటున్నారా?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "గేమ్‌లో వైబ్రేషన్‌ని ప్రారంభించండి",
+  "@vibration": {}
 }

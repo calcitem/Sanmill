@@ -1467,5 +1467,7 @@
   "vignetteEffect": "تأثير التظليل",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "هل تود جعل شريط الأدوات شفافًا بالكامل عندما يتم تعيين صورة خلفية للوحة؟",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "تمكين الاهتزاز في اللعبة",
+  "@vibration": {}
 }

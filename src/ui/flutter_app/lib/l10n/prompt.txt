@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file:
 
 ```json
-"promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
-"@promptMakeToolbarTransparent": {},
+"vibration": "Enable vibration in the game",
+"@vibration": {},
 ```
 
 into:
@@ -74,11 +74,11 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
-  "@promptMakeToolbarTransparent": {},
+  "vibration": "Enable vibration in the game",
+  "@vibration": {},
 
 // intl_zh.arb
-  "promptMakeToolbarTransparent": "当设置了棋盘背景图片时，您是否希望工具栏完全透明？",
-  "@promptMakeToolbarTransparent": {},
+  "vibration": "游戏中启用振动",
+  "@vibration": {},
 ```
 

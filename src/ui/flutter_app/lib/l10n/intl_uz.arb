@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinyet effekti",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Taxta fon rasmi belgilanganida asboblar panelini butunlay shaffof qilishni xohlaysizmi?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "O'yinda vibratsiyani yoqing",
+  "@vibration": {}
 }

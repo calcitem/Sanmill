@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Umphumela we-vignette",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Ungathanda ukwenza ibha yamathuluzi ifanekane ngokuphelele uma isithombe sangemuva sebhodi sisethwe?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Vumela ukuzamazama emdlalweni",
+  "@vibration": {}
 }

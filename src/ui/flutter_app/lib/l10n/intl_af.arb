@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Vignet-effek",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Wil jy die werkbalk heeltemal deurskynend maak wanneer 'n bordanfronstoepasafbeelding ingestel is?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Skakel vibrasie in die spel aan",
+  "@vibration": {}
 }

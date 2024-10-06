@@ -1467,5 +1467,7 @@
   "vignetteEffect": "暗角效果",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "當設置了棋盤背景圖片時，您是否希望工具欄完全透明？",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "遊戲中啟用振動",
+  "@vibration": {}
 }

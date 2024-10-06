@@ -29,6 +29,7 @@ import 'package:flutter/services.dart';
 import 'package:kplayer/kplayer.dart' as kplayer;
 import 'package:path_provider/path_provider.dart';
 import 'package:soundpool/soundpool.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -70,6 +71,7 @@ part 'notifiers/header_tip_notifier.dart';
 part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
+part 'sounds/vibration_manager.dart';
 part "transform/transform.dart";
 
 // TODO: [Leptopoda] Separate the ui from the logic

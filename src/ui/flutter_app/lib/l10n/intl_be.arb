@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Эфект віньеткі",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Ці хацелі б вы зрабіць панэль інструментаў цалкам празрыстай, калі ўсталявана фонавая выявы для дошкі?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Уключыць вібрацыю ў гульні",
+  "@vibration": {}
 }

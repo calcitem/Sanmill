@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vignettierungseffekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Möchten Sie die Werkzeugleiste vollständig transparent machen, wenn ein Hintergrundbild für das Board festgelegt ist?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Vibration im Spiel aktivieren",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Effet de vignettage",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Souhaitez-vous rendre la barre d'outils complètement transparente lorsqu'une image de fond du plateau est définie?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Activer la vibration dans le jeu",
+  "@vibration": {}
 }

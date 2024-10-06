@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efek vinyet",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Apakah Anda ingin membuat bilah alat sepenuhnya transparan ketika gambar latar belakang papan diatur?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktifkan getaran di dalam permainan",
+  "@vibration": {}
 }

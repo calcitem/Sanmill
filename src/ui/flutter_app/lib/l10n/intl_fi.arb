@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vignetointi-efekti",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Haluatko tehdä työkalupalkin täysin läpinäkyväksi, kun lautakuvan taustakuva on asetettu?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Ota värinä käyttöön pelissä",
+  "@vibration": {}
 }

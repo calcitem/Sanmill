@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinjeta efekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Želite li učiniti alatnu traku potpuno prozirnom kada je postavljena pozadinska slika ploče?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Omogući vibraciju u igri",
+  "@vibration": {}
 }

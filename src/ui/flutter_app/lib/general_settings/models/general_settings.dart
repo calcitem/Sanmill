@@ -97,6 +97,7 @@ class GeneralSettings {
     this.gameScreenRecorderPixelRatio = 50,
     this.showTutorial = true,
     this.remindedOpponentMayFly = false,
+    this.vibrationEnabled = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -198,6 +199,9 @@ class GeneralSettings {
 
   @HiveField(28, defaultValue: false)
   final bool focusOnBlockingPaths;
+
+  @HiveField(29, defaultValue: false)
+  final bool vibrationEnabled;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

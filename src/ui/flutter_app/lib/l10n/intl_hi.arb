@@ -1467,5 +1467,7 @@
   "vignetteEffect": "विगनेट प्रभाव",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "क्या आप बोर्ड पृष्ठभूमि छवि सेट करने पर टूलबार को पूरी तरह से पारदर्शी बनाना चाहेंगे?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "गेम में वाइब्रेशन सक्षम करें",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinjete efekts",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Vai vēlaties padarīt rīku jos pilnīgi caurspīdīgu, kad ir iestatīta dēļa fona attēls?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Iespējot vibrāciju spēlē",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efekt winiety",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Czy chcesz, aby pasek narzędzi był całkowicie przezroczysty, gdy ustawiony jest obraz tła planszy?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Włącz wibracje w grze",
+  "@vibration": {}
 }

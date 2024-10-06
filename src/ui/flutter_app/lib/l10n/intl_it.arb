@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Effetto vignettatura",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Vuoi rendere la barra degli strumenti completamente trasparente quando viene impostata un'immagine di sfondo della tavola?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Attiva la vibrazione nel gioco",
+  "@vibration": {}
 }

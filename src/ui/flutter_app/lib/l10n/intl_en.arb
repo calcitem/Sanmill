@@ -1565,5 +1565,7 @@
   "vignetteEffect": "Vignette effect",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Enable vibration in the game",
+  "@vibration": {}
 }

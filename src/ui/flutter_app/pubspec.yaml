@@ -44,6 +44,7 @@ dependencies:
     git:
       url: https://gitlab.com/calcitem/marquee.git
       ref: master
+  native_screenshot_widget: 0.0.8
   package_info_plus: 8.0.2
   path: 1.9.0
   path_provider: 2.1.4
@@ -59,7 +60,7 @@ dependencies:
       url: https://gitlab.com/calcitem/soundpool.git
       ref: windows_linux_support
       path: soundpool_windux
-  native_screenshot_widget: 0.0.8
+  vibration: 1.8.4
   url_launcher: 6.3.0
   uuid: 4.5.0
 

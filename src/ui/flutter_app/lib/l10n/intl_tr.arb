@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vinyet efekti",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Tahta arka plan resmi ayarlandığında araç çubuğunu tamamen şeffaf yapmak ister misiniz?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Oyunda titreşimi etkinleştir",
+  "@vibration": {}
 }

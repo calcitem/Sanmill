@@ -125,6 +125,10 @@ class SoundManager {
 
     assert(GameController().initialized);
 
+    if (DB().generalSettings.vibrationEnabled) {
+      await VibrationManager().vibrate(sound);
+    }
+
     if (!DB().generalSettings.toneEnabled ||
         _isTemporaryMute ||
         DB().generalSettings.screenReaderSupport) {

@@ -189,6 +189,12 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag keepMuteWhenTakingBack: $value");
   }
 
+  void _setVibration(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(vibrationEnabled: value);
+
+    logger.t("$_logTag vibrationEnabled: $value");
+  }
+
   void _setScreenReaderSupport(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(screenReaderSupport: value);
 
@@ -389,6 +395,12 @@ class GeneralSettingsPage extends StatelessWidget {
                   _setKeepMuteWhenTakingBack(generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
+            if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
+              SettingsListTile.switchTile(
+                value: generalSettings.vibrationEnabled,
+                onChanged: (bool val) => _setVibration(generalSettings, val),
+                titleString: S.of(context).vibration,
+              ),
           ],
         ),
         if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vignet effekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Vil du gøre værktøjslinjen fuldstændig gennemsigtig, når et baggrundsbillede til tavlen er indstillet?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktiver vibration i spillet",
+  "@vibration": {}
 }

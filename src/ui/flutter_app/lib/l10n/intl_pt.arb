@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efeito vinheta",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Gostaria de tornar a barra de ferramentas totalmente transparente quando uma imagem de fundo do tabuleiro estiver definida?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Ativar vibração no jogo",
+  "@vibration": {}
 }

@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vignetteringseffect",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Wil je de werkbalk volledig transparant maken wanneer een achtergrondafbeelding voor het bord is ingesteld?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Trilling inschakelen in het spel",
+  "@vibration": {}
 }

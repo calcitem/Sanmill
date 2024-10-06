@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Vignett-effekt",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Vil du gjøre verktøylinjen helt gjennomsiktig når et bakgrunnsbilde for brettet er satt?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktiver vibrasjon i spillet",
+  "@vibration": {}
 }

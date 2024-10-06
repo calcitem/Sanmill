@@ -1565,5 +1565,7 @@
   "vignetteEffect": "ቪንየት ተጽዕኖ",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "የቦርድ የጀርባ ምስል ተወስኗል በሆነ ጊዜ መሣሪያ ቁልፍ ፍጹም በግልጽ ማድረግ ትፈልጋለህ?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "እንቅስቃሴ በጨዋታው ይክዋን",
+  "@vibration": {}
 }

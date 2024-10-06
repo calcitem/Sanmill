@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Kesan vignet",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Adakah anda ingin menjadikan bar alat sepenuhnya telus apabila imej latar belakang papan ditetapkan?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktifkan getaran dalam permainan",
+  "@vibration": {}
 }

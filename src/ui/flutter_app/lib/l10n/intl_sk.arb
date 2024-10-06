@@ -1467,5 +1467,7 @@
   "vignetteEffect": "Efekt vinety",
   "@vignetteEffect": {},
   "promptMakeToolbarTransparent": "Chcete, aby bola panel nástrojov úplne priehľadná, keď je nastavený obrázok pozadia dosky?",
-  "@promptMakeToolbarTransparent": {}
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Povoliť vibrácie v hre",
+  "@vibration": {}
 }
