@@ -896,6 +896,10 @@ bool Position::put_piece(Square s, bool updateRecord)
 
 bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 {
+    if (board[s] != NO_PIECE) {
+        return false;
+    }
+
     if (check_if_game_is_over()) {
         return true;
     }
