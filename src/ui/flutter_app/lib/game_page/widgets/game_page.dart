@@ -22,7 +22,7 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_nearby_connections/flutter_nearby_connections.dart';
 import 'package:hive/hive.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
@@ -42,6 +42,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/animation/animation_manager.dart';
+// Import the updated BluetoothService
 import '../services/bluetooth/bluetooth_service.dart';
 import '../services/painters/painters.dart';
 import 'play_area.dart';
@@ -74,6 +75,9 @@ class GamePageState extends State<GamePage> {
   bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
 
+  // Subscription for NearbyService connection events
+  StreamSubscription<List<Device>>? _nearbyStateSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -89,175 +93,103 @@ class GamePageState extends State<GamePage> {
   Future<void> _initializeBluetoothGame() async {
     logger.i("Initializing Bluetooth game...");
 
-    // Request necessary Bluetooth permissions
-    await _bluetoothService.requestBluetoothPermissions();
+    // Initialize NearbyService
+    await _bluetoothService.initNearbyService();
 
-    // Check if Bluetooth is enabled
-    await _bluetoothService.enableBluetooth();
+    // Listen for connection state changes
+    // Listen for connection state changes
+    _nearbyStateSubscription =
+        _bluetoothService.nearbyService.stateChangedSubscription(
+      callback: (dynamic devices) async {
+        // Cast the dynamic data to List<Device>
+        final List<Device> deviceList = devices as List<Device>;
+        for (final Device device in deviceList) {
+          if (device.state == SessionState.connected) {
+            if (!_isBluetoothConnected) {
+              // New device connected
+              setState(() {
+                _isBluetoothConnected = true;
+                _bluetoothStatus = "Connected to ${device.deviceName}";
+              });
 
-    // Start device discovery
-    final List<BluetoothDiscoveryResult> discoveredDevices =
-        <BluetoothDiscoveryResult>[];
-    StreamSubscription<BluetoothDiscoveryResult>? discoveryStream;
+              // Show pairing confirmation dialog
+              await _showPairingConfirmationDialog(device);
 
-    // Show discovery in progress dialog (do not await)
-    _showDiscoveringDialog();
+              // Listen for incoming moves
+              _bluetoothMoveSubscription =
+                  _bluetoothService.moveStream.listen((String moveStr) {
+                // Handle received move
+                if (moveStr.isNotEmpty) {
+                  logger.i("Received move from opponent: $moveStr");
+                  // Apply opponent's move
+                  GameController().applyOpponentMove(moveStr);
+                } else {
+                  logger.w("Received invalid move data: $moveStr");
+                }
+              });
+            }
+          } else if (device.state == SessionState.notConnected) {
+            // Device disconnected
+            setState(() {
+              _isBluetoothConnected = false;
+              _bluetoothStatus = "Disconnected";
+            });
 
-    // Start discovery and update UI
-    discoveryStream = _bluetoothService
-        .startDiscovery()
-        .listen((BluetoothDiscoveryResult result) {
-      // Avoid duplicates
-      if (discoveredDevices.every((BluetoothDiscoveryResult element) =>
-          element.device.address != result.device.address)) {
-        setState(() {
-          discoveredDevices.add(result);
-        });
-      }
-    });
+            // Cancel move subscription
+            await _bluetoothMoveSubscription?.cancel();
+            _bluetoothMoveSubscription = null;
+          }
+        }
+      },
+    ) as StreamSubscription<List<Device>>?;
 
-    // Wait for a fixed duration for discovery, e.g., 10 seconds
-    await Future.delayed(const Duration(seconds: 10));
+    // Optionally, you can automatically connect to the first available device
+    // Or handle multiple connections if needed
+  }
 
-    // Cancel discovery
-    await discoveryStream.cancel();
-
-    // Dismiss the discovering dialog safely
-    if (mounted) {
-      Navigator.of(context, rootNavigator: true).pop();
-    }
-
-    // If no devices found, update status
-    if (discoveredDevices.isEmpty) {
-      logger.e("No devices found.");
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _bluetoothStatus = "No devices found";
-      });
-      return;
-    }
-
-    // Show device selection dialog
-    final BluetoothDevice? selectedDevice =
-        await _showDeviceSelectionDialog(discoveredDevices);
-
-    if (selectedDevice == null) {
-      logger.i("No device selected.");
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _bluetoothStatus = "No device selected";
-      });
-      return;
-    }
-
-    // Proceed with pairing and connection
-    final bool connected = await _pairAndConnect(selectedDevice);
-
+  /// Shows a pairing confirmation dialog when a device connects
+  Future<void> _showPairingConfirmationDialog(Device device) async {
     if (!mounted) {
       return;
     }
 
-    if (connected) {
-      setState(() {
-        _isBluetoothConnected = true;
-        _bluetoothStatus = "Connected to ${selectedDevice.name}";
-      });
-
-      // Listen for incoming moves
-      _bluetoothMoveSubscription =
-          _bluetoothService.moveStream.listen((String moveStr) {
-        // Handle received move
-        if (moveStr.isNotEmpty) {
-          logger.i("Received move from opponent: $moveStr");
-          // Apply opponent's move
-          GameController().applyOpponentMove(moveStr);
-        } else {
-          logger.w("Received invalid move data: $moveStr");
-        }
-      });
-    } else {
-      setState(() {
-        _bluetoothStatus = "Connection failed";
-      });
-    }
-  }
-
-  /// Shows the "Discovering devices..." dialog without awaiting
-  void _showDiscoveringDialog() {
-    showDialog(
+    final bool? confirm = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return const AlertDialog(
-          title: Text("Discovering devices..."),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircularProgressIndicator(),
-              SizedBox(height: 20),
-              Text("Searching for nearby Bluetooth devices..."),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  /// Shows a dialog for selecting a discovered device.
-  Future<BluetoothDevice?> _showDeviceSelectionDialog(
-      List<BluetoothDiscoveryResult> devices) async {
-    return showDialog<BluetoothDevice>(
-      context: context,
-      builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Select a device"),
-          content: SingleChildScrollView(
-            child: Column(
-              children: devices.map((BluetoothDiscoveryResult result) {
-                final String deviceName = result.device.name ?? 'Unknown device';
-                return ListTile(
-                  title: Text('$deviceName (${result.device.address})'),
-                  onTap: () {
-                    Navigator.pop(context, result.device);
-                  },
-                );
-              }).toList(),
+          title: const Text("Confirm Pairing"),
+          content: Text("Pair with ${device.deviceName}?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Cancel"),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
             ),
-          ),
+            TextButton(
+              child: const Text("Confirm"),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+            ),
+          ],
         );
       },
     );
-  }
 
-  /// Attempts to pair with the selected device, then connects.
-  Future<bool> _pairAndConnect(BluetoothDevice device) async {
-    try {
-      // Check the bond state of the device
-      final BluetoothBondState bondState =
-          await _bluetoothService.getBondState(device);
-
-      // If not paired, attempt to pair
-      if (bondState != BluetoothBondState.bonded) {
-        logger.i("Pairing with ${device.name} (${device.address})...");
-        final bool paired = await _bluetoothService.pairDevice(device);
-        if (!paired) {
-          logger.e("Pairing failed with ${device.name} (${device.address}).");
-          return false;
-        }
-      }
-
-      // Now connect to the device
-      logger.i("Connecting to ${device.name} (${device.address})...");
-      await _bluetoothService.connect(device);
-      logger.i("Connected to ${device.name}");
-      return true;
-    } catch (e) {
-      logger.e("Error pairing or connecting to device: $e");
-      return false;
+    if (confirm != null && confirm == true) {
+      logger.i("Pairing confirmed with ${device.deviceName}");
+      // You can send a confirmation message or set up the game here if needed
+      // For example, designate roles based on advertiser flag
+      // Or send initial game state
+    } else {
+      logger.i("Pairing canceled with ${device.deviceName}");
+      // Disconnect if user cancels pairing
+      await _bluetoothService.disconnect();
+      setState(() {
+        _bluetoothStatus = "Pairing canceled";
+      });
     }
   }
 
@@ -265,6 +197,7 @@ class GamePageState extends State<GamePage> {
   void dispose() {
     // Dispose Bluetooth resources
     _bluetoothMoveSubscription?.cancel();
+    _nearbyStateSubscription?.cancel();
     _bluetoothService.disconnect();
     _bluetoothService.dispose();
 

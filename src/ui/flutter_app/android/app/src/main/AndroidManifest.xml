@@ -41,6 +41,12 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name="com.nankai.flutter_nearby_connections.NearbyService"
+            android:foregroundServiceType="connectedDevice"
+            android:permission="android.permission.BIND_NEARBY_CONNECTIONS">
+        </service>
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
@@ -65,6 +71,8 @@
 
     <!-- For accessing fine location (required for Bluetooth scanning in Android 10 and above) -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE" />
 
     <!-- Queries element for manifest declarations required for certain app behaviors -->
     <queries>

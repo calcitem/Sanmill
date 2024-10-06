@@ -27,6 +27,10 @@ dependencies:
   flutter_email_sender: 6.0.3
   flutter_localizations:
     sdk: flutter
+  flutter_nearby_connections:
+    git:
+      url: https://gitlab.com/calcitem/flutter_nearby_connections.git
+      ref: master
   flutter_platform_alert:
     git:
       url: https://gitlab.com/calcitem/flutter_platform_alert.git
