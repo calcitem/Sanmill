@@ -38,6 +38,7 @@ class GameBluetoothService {
   static const String serviceUuid = '123e4567-e89b-12d3-a456-426614174000';
   static const String characteristicUuid =
       '123e4567-e89b-12d3-a456-426614174001';
+  static const String cccdUuid = '00002902-0000-1000-8000-00805f9b34fb';
 
   // The role of the device (advertiser or connector)
   final DeviceRole role;
@@ -206,38 +207,54 @@ class GameBluetoothService {
       for (final BluetoothService service in services) {
         logger.i("$_logTag Found service with UUID: ${service.uuid}");
 
-        // Loop through all characteristics of each service
         for (final BluetoothCharacteristic characteristic
             in service.characteristics) {
           logger.i(
               "$_logTag Found characteristic with UUID: ${characteristic.uuid}");
 
-          // Check if the characteristic matches the target UUID
           if (characteristic.uuid.toString() == characteristicUuid) {
             _writeCharacteristic = characteristic;
 
             // Check if the characteristic supports notifications or indications
-            final CharacteristicProperties properties = characteristic.properties;
+            final CharacteristicProperties properties =
+                characteristic.properties;
             if (properties.notify || properties.indicate) {
               try {
-                // Enable notifications on the characteristic
-                await characteristic.setNotifyValue(true);
+                // Look for CCCD (Client Characteristic Configuration Descriptor)
+                BluetoothDescriptor? cccdDescriptor;
+                for (final BluetoothDescriptor descriptor
+                    in characteristic.descriptors) {
+                  if (descriptor.uuid.toString() == cccdUuid) {
+                    cccdDescriptor = descriptor;
+                    break;
+                  }
+                }
 
-                // Check if notifications were successfully enabled
-                if (characteristic.isNotifying) {
-                  // Listen for incoming data on the characteristic's value stream
-                  characteristic.lastValueStream.listen(
-                    _onDataReceived,
-                    onError: (error) {
-                      logger.e("$_logTag Error in receiving data: $error");
-                    },
-                  );
+                if (cccdDescriptor != null) {
+                  // Enable notifications by writing to the CCCD descriptor
+                  await cccdDescriptor.write(<int>[0x01, 0x00]);
 
-                  logger.i(
-                      "$_logTag Notifications enabled and listening on characteristic ${characteristic.uuid}");
+                  // Enable notifications on the characteristic
+                  await characteristic.setNotifyValue(true);
+
+                  // Check if notifications were successfully enabled
+                  if (characteristic.isNotifying) {
+                    // Listen for incoming data
+                    characteristic.lastValueStream.listen(
+                      _onDataReceived,
+                      onError: (error) {
+                        logger.e("$_logTag Error in receiving data: $error");
+                      },
+                    );
+                    logger.i(
+                        "$_logTag Notifications enabled for characteristic ${characteristic.uuid}");
+                  } else {
+                    logger.e(
+                        "$_logTag Failed to enable notifications for characteristic ${characteristic.uuid}");
+                  }
                 } else {
                   logger.e(
-                      "$_logTag Failed to enable notifications for characteristic ${characteristic.uuid}");
+                      "$_logTag CCCD not found for characteristic ${characteristic.uuid}");
                 }
               } catch (e) {
                 logger.e(
