@@ -1,4 +1,4 @@
-// bluetooth_service.dart
+// game_bluetooth_service.dart
 import 'dart:async';
 import 'dart:convert';
 
@@ -6,7 +6,7 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../shared/services/logger.dart';
 
-/// BluetoothService handles Bluetooth connectivity, permissions, sending, and receiving data.
+/// GameBluetoothService handles Bluetooth connectivity, permissions, sending, and receiving data.
 /// Utilizes flutter_blue_plus for Bluetooth Low Energy (BLE) functionalities.
 class GameBluetoothService {
   // Singleton pattern to ensure only one instance of BluetoothService exists.
@@ -28,8 +28,7 @@ class GameBluetoothService {
 
   /// Enables Bluetooth if not already enabled.
   Future<void> enableBluetooth() async {
-    // ignore: prefer_final_locals
-    bool isOn = await FlutterBluePlus.isSupported;
+    final bool isOn = await FlutterBluePlus.isSupported;
     if (!isOn) {
       try {
         await FlutterBluePlus.turnOn(timeout: 120);
@@ -45,7 +44,6 @@ class GameBluetoothService {
 
   /// Starts scanning for nearby Bluetooth Low Energy devices.
   Stream<ScanResult> startScan() {
-    // Start scanning with default settings.
     FlutterBluePlus.startScan(timeout: const Duration(seconds: 4));
     return FlutterBluePlus.scanResults.expand((List<ScanResult> results) {
       for (final ScanResult result in results) {
@@ -71,7 +69,7 @@ class GameBluetoothService {
     return device.connectionState.first;
   }
 
-  /// Attempts to connect to a Bluetooth device.
+  /// Attempts to connect to a Bluetooth device and logs additional device information.
   Future<void> connect(BluetoothDevice device) async {
     try {
       logger.i(
@@ -81,6 +79,18 @@ class GameBluetoothService {
       await device.connect(timeout: const Duration(seconds: 15));
       _connectedDevice = device;
       logger.i("$_logTag Connected to ${device.platformName}");
+
+      // Log additional device information.
+      logger.i("$_logTag Device Advertised Name: ${device.advName}");
+      logger.i("$_logTag Device ID: ${device.remoteId}");
+      logger.i(
+          "$_logTag Is Device AutoConnect Enabled: ${device.isAutoConnectEnabled}");
+      logger.i("$_logTag Current MTU Size: ${device.mtuNow}");
+      if (device.isConnected) {
+        logger.i("$_logTag Device is currently connected.");
+      } else {
+        logger.w("$_logTag Device is not connected.");
+      }
 
       // Discover services after connection.
       await _discoverServices(device);
@@ -95,17 +105,22 @@ class GameBluetoothService {
     try {
       final List<BluetoothService> services = await device.discoverServices();
       for (final BluetoothService service in services) {
+        logger.i("$_logTag Found service with UUID: ${service.uuid}");
         for (final BluetoothCharacteristic characteristic
             in service.characteristics) {
+          logger.i(
+              "$_logTag Found characteristic with UUID: ${characteristic.uuid}");
+
           // Replace 'YOUR_CHARACTERISTIC_UUID' with the actual UUID.
-          if (characteristic.uuid.toString() == 'YOUR_CHARACTERISTIC_UUID') {
+          if (characteristic.uuid.toString() ==
+              '12345678-1234-5678-1234-567812345678') {
             _writeCharacteristic = characteristic;
 
             // Enable notifications for the characteristic.
             await characteristic.setNotifyValue(true);
             characteristic.lastValueStream.listen(_onDataReceived);
             logger.i(
-                "$_logTag Found and subscribed to characteristic ${characteristic.uuid}");
+                "$_logTag Subscribed to characteristic ${characteristic.uuid}");
           }
         }
       }
@@ -182,5 +197,104 @@ class GameBluetoothService {
     _moveController.close();
     disconnect();
     logger.i("$_logTag BluetoothService disposed.");
+  }
+}
+
+class GameBluetoothAdvertiser {
+  static const String serviceUuidString = 'abcd1234-5678-90ab-cdef12345678';
+  static const String characteristicUuidString =
+      '12345678-1234-5678-1234-567812345678';
+
+  late BluetoothCharacteristic _characteristic;
+  BluetoothDevice? _connectedDevice;
+
+  final StreamController<String> _dataStreamController =
+      StreamController<String>.broadcast();
+  Stream<String> get dataStream => _dataStreamController.stream;
+
+  /// Initializes the Bluetooth characteristic for advertising.
+  Future<void> initializeService(DeviceIdentifier remoteId) async {
+    final Guid serviceUuid = Guid(serviceUuidString);
+    final Guid characteristicUuid = Guid(characteristicUuidString);
+
+    // Initialize characteristic based on the BluetoothCharacteristic definition
+    _characteristic = BluetoothCharacteristic(
+      remoteId: remoteId,
+      serviceUuid: serviceUuid,
+      characteristicUuid: characteristicUuid,
+    );
+  }
+
+  /// Starts advertising the Bluetooth characteristic, making it discoverable to other devices.
+  Future<void> startAdvertising() async {
+    try {
+      // Ensure Bluetooth permissions are granted
+      await requestBluetoothPermissions();
+
+      // Currently, FlutterBluePlus does not directly support service advertisement
+      // due to platform limitations, so you may need platform-specific code
+      logger.i(
+          "[Advertiser] Started advertising service with UUID: $serviceUuidString");
+
+      // Listen for incoming data
+      _characteristic.lastValueStream.listen((List<int> data) {
+        _onDataReceived(data);
+      });
+    } catch (e) {
+      logger.e("[Advertiser] Error starting advertisement: $e");
+    }
+  }
+
+  /// Stops advertising the Bluetooth characteristic.
+  Future<void> stopAdvertising() async {
+    try {
+      // The `stopAdvertising` API isn't directly available in flutter_blue_plus.
+      logger.i("[Advertiser] Stopped advertising service.");
+    } catch (e) {
+      logger.e("[Advertiser] Error stopping advertisement: $e");
+    }
+  }
+
+  /// Handles incoming data from the connected device.
+  void _onDataReceived(List<int> data) {
+    try {
+      final String received = utf8.decode(data);
+      logger.i("[Advertiser] Data received: $received");
+      _dataStreamController.add(received);
+    } catch (e) {
+      logger.e("[Advertiser] Error processing received data: $e");
+    }
+  }
+
+  /// Sends data to the connected device.
+  Future<void> sendData(String message) async {
+    if (_connectedDevice != null) {
+      try {
+        final List<int> encodedData = utf8.encode(message);
+        await _characteristic.write(encodedData, withoutResponse: true);
+        logger.i("[Advertiser] Sent data: $message");
+      } catch (e) {
+        logger.e("[Advertiser] Error sending data: $e");
+      }
+    } else {
+      logger.w("[Advertiser] No connected device available.");
+    }
+  }
+
+  /// Requests the necessary Bluetooth permissions for Android.
+  Future<void> requestBluetoothPermissions() async {
+    await <Permission>[
+      Permission.bluetoothAdvertise,
+      Permission.bluetoothConnect,
+      Permission.bluetoothScan,
+      Permission.location,
+    ].request();
+  }
+
+  /// Disposes the Bluetooth service by stopping advertising and closing the stream controller.
+  void dispose() {
+    stopAdvertising();
+    _dataStreamController.close();
+    logger.i("[Advertiser] Bluetooth Advertiser disposed.");
   }
 }
