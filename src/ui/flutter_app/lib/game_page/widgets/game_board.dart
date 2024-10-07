@@ -358,9 +358,6 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     GameController().gameResultNotifier.removeListener(_showResult);
     _removeValueNotifierListener();
 
-    // Cancel the Bluetooth move subscription if it exists
-    _bluetoothMoveSubscription?.cancel();
-
     super.dispose();
   }
 }
