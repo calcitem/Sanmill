@@ -26,7 +26,7 @@ class GameImages {
 /// Game Board
 ///
 /// The board the game is played on.
-/// This widget will also handle the input from the user.
+/// This widget also handles the input from the user.
 @visibleForTesting
 class GameBoard extends StatefulWidget {
   /// Creates a [GameBoard] widget.
@@ -53,8 +53,6 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
-  StreamSubscription<String>? _bluetoothMoveSubscription;
-
   @override
   void initState() {
     super.initState();
@@ -78,22 +76,6 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     });
 
     GameController().animationManager = animationManager;
-
-    // Listen for incoming Bluetooth moves if in Bluetooth game mode
-    if (GameController().gameInstance.gameMode ==
-        GameMode.humanVsHumanBluetooth) {
-      _bluetoothMoveSubscription =
-          GameBluetoothService.instance.moveStream.listen((String moveStr) {
-        if (moveStr != null) {
-          logger
-              .i("${GameBoard._logTag} Received move from opponent: $moveStr");
-          // Apply the opponent's move using GameController
-          GameController().applyOpponentMove(moveStr);
-        } else {
-          logger.w("${GameBoard._logTag} Received invalid move data: $moveStr");
-        }
-      });
-    }
   }
 
   Future<void> _setReadyState() async {
@@ -288,20 +270,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   final String strNoBestMoveErr =
                       S.of(context).error(S.of(context).noMove);
 
-                  // Check if the game mode is Bluetooth, handle Bluetooth-specific tap logic
-                  if (GameController().gameInstance.gameMode ==
-                      GameMode.humanVsHumanBluetooth) {
-                    // TODO(BT): Handle the tap in Bluetooth mode, such as sending the move to the other player
-                    logger.i(
-                        "${GameBoard._logTag} Handling move in Bluetooth mode for square $square");
-
-                    // Example placeholder for Bluetooth move handling
-                    // TODO(BT): Implement the logic to send the move over Bluetooth and receive the opponent's move
-                    //await _handleBluetoothMove(square);
-
-                    return;
-                  }
-
+                  // Non-Bluetooth move handling
                   switch (await tapHandler.onBoardTap(square)) {
                     case EngineResponseOK():
                       GameController()
@@ -338,17 +307,6 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         );
       },
     );
-  }
-
-  /// Handles a move when playing in Bluetooth mode.
-  Future<void> _handleBluetoothMove(String moveStr) async {
-    // TODO(BT): Implement the logic to send the move over Bluetooth and receive the opponent's move
-    logger.i("${GameBoard._logTag} Sending move $moveStr over Bluetooth");
-    // Send the move to the opponent via Bluetooth
-    await GameBluetoothService.instance.sendMove(moveStr);
-
-    // Optionally, you can add a delay or waiting mechanism if needed
-    logger.i("${GameBoard._logTag} Sent move $moveStr over Bluetooth");
   }
 
   void _showResult() {

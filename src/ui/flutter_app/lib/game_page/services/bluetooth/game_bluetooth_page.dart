@@ -14,13 +14,13 @@ class GameBluetoothPage extends StatefulWidget {
 }
 
 class GameBluetoothPageState extends State<GameBluetoothPage> {
-  final GameBluetoothService _bluetoothService = GameBluetoothService.instance;
+  GameBluetoothService? _bluetoothService; // Initialize with role later
   StreamSubscription<String>? _bluetoothMoveSubscription;
   bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
   String? _currentRoomId;
   List<ScanResult> _availableDevices = <ScanResult>[];
-  ScanResult? _selectedDevice; // Changed to not be late, as it may be null
+  ScanResult? _selectedDevice;
   BluetoothDevice? _connectedDevice;
   Timer? _advertisingTimer;
   int _advertisingTimeout = 60; // Advertising timeout in seconds
@@ -32,8 +32,12 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       _showRoomSelectionDialog();
     });
 
+    if (_bluetoothService == null) {
+      return;
+    }
+
     // Subscribe to connection changes from the Bluetooth service
-    _bluetoothService.onDeviceConnected.listen((BluetoothDevice device) {
+    _bluetoothService!.onDeviceConnected.listen((BluetoothDevice device) {
       // Update the UI when a device connects
       setState(() {
         _isBluetoothConnected = true;
@@ -43,7 +47,9 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       });
 
       // Stop advertising when a device connects
-      _bluetoothService.stopAdvertising();
+      if (_bluetoothService != null) {
+        _bluetoothService!.stopAdvertising();
+      }
       _advertisingTimer?.cancel();
 
       // Show a dialog to notify the user that a device has connected
@@ -54,8 +60,8 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
   @override
   void dispose() {
     _bluetoothMoveSubscription?.cancel();
-    _bluetoothService.disconnect();
-    _bluetoothService.dispose();
+    _bluetoothService?.disconnect();
+    _bluetoothService?.dispose();
     _advertisingTimer?.cancel();
     super.dispose();
   }
@@ -107,7 +113,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
 
   /// Disconnects from the current Bluetooth device
   Future<void> _disconnect() async {
-    await _bluetoothService.disconnect();
+    await _bluetoothService?.disconnect();
     setState(() {
       _isBluetoothConnected = false;
       _bluetoothStatus = "Disconnected";
@@ -116,6 +122,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     });
   }
 
+  /// Shows a dialog to choose room action: Create or Join
   Future<void> _showRoomSelectionDialog() async {
     final RoomAction? selectedAction = await showDialog<RoomAction>(
       context: context,
@@ -140,14 +147,19 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     );
 
     if (selectedAction == RoomAction.create) {
+      _bluetoothService =
+          GameBluetoothService.getInstance(DeviceRole.advertiser);
       await _handleCreateRoom();
     } else if (selectedAction == RoomAction.join) {
+      _bluetoothService =
+          GameBluetoothService.getInstance(DeviceRole.connector);
       await _handleJoinRoom();
     } else {
       _showErrorDialog("No action selected. Please try again.");
     }
   }
 
+  /// Handles room creation logic, including advertising setup
   Future<void> _handleCreateRoom() async {
     try {
       _currentRoomId = DateTime.now().millisecondsSinceEpoch.toString();
@@ -182,7 +194,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       });
 
       // Start advertising to allow other devices to discover
-      await _bluetoothService.startAdvertising();
+      await _bluetoothService?.startAdvertising();
 
       // Start the advertising timeout timer
       _startAdvertisingTimer();
@@ -192,6 +204,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     }
   }
 
+  /// Starts the advertising timer
   void _startAdvertisingTimer() {
     _advertisingTimeout = 60; // Reset timeout
     _advertisingTimer?.cancel();
@@ -199,7 +212,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
         Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       if (_advertisingTimeout == 0) {
         timer.cancel();
-        _bluetoothService.stopAdvertising();
+        _bluetoothService?.stopAdvertising();
         setState(() {
           _bluetoothStatus = "Advertising timed out. No opponent connected.";
         });
@@ -211,10 +224,11 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     });
   }
 
+  /// Handles joining a room by scanning for available devices
   Future<void> _handleJoinRoom() async {
     try {
-      await _bluetoothService.requestBluetoothPermissions();
-      await _bluetoothService.enableBluetooth();
+      await _bluetoothService?.requestBluetoothPermissions();
+      await _bluetoothService?.enableBluetooth();
 
       await _startDeviceDiscovery();
 
@@ -232,7 +246,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       }
 
       setState(() {
-        _selectedDevice = selectedDevice; // Store the selected device
+        _selectedDevice = selectedDevice;
       });
 
       await _connectToDevice(selectedDevice.device);
@@ -242,13 +256,15 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     }
   }
 
+  /// Starts device discovery for joining a room
   Future<void> _startDeviceDiscovery() async {
     _showDiscoveringDialog();
 
     StreamSubscription<ScanResult>? discoveryStream;
     _availableDevices = <ScanResult>[];
 
-    discoveryStream = _bluetoothService.startScan().listen((ScanResult result) {
+    discoveryStream =
+        _bluetoothService?.startScan().listen((ScanResult result) {
       if (_availableDevices.every((ScanResult element) =>
           element.device.remoteId != result.device.remoteId)) {
         setState(() {
@@ -258,7 +274,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     });
 
     await Future<void>.delayed(const Duration(seconds: 10));
-    await discoveryStream.cancel();
+    await discoveryStream?.cancel();
 
     if (mounted) {
       Navigator.of(context, rootNavigator: true).pop();
@@ -293,13 +309,14 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     );
   }
 
+  /// Connects to a selected Bluetooth device
   Future<void> _connectToDevice(BluetoothDevice device) async {
     try {
       setState(() {
         _bluetoothStatus = "Connecting to ${device.platformName}...";
       });
 
-      await _bluetoothService.connect(device);
+      await _bluetoothService?.connect(device);
 
       if (!mounted) {
         return;
@@ -385,4 +402,6 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       },
     );
   }
+
+// Other helper methods (e.g., error dialogs, device connected dialog) remain unchanged
 }

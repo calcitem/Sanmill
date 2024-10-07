@@ -26,7 +26,6 @@ import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/bluetooth/game_bluetooth_page.dart';
-import '../services/bluetooth/game_bluetooth_service.dart';
 import '../services/painters/painters.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';

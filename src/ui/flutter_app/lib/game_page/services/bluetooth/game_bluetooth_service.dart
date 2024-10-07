@@ -1,32 +1,41 @@
 // game_bluetooth_service.dart
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../shared/services/logger.dart';
 
+/// Enum to define the role of the device - Advertiser or Connector
+enum DeviceRole { advertiser, connector }
+
 /// GameBluetoothService handles Bluetooth connectivity, permissions, sending, receiving data, and advertising.
 /// Utilizes flutter_blue_plus for Bluetooth Low Energy (BLE) functionalities and native Android code for advertising.
 class GameBluetoothService {
-  // Singleton pattern to ensure only one instance of BluetoothService exists.
-  GameBluetoothService._privateConstructor();
-  static const String _logTag = "[BluetoothService]";
-  static final GameBluetoothService instance =
-      GameBluetoothService._privateConstructor();
+  // Singleton pattern with role
+  GameBluetoothService._privateConstructor(this.role);
 
-  // Native channel for calling Android methods
+  static GameBluetoothService? _instance;
+
+  /// Method to get a single instance of GameBluetoothService, ensuring role-based initialization
+  static GameBluetoothService getInstance(DeviceRole role) {
+    if (_instance == null || _instance!.role != role) {
+      _instance = GameBluetoothService._privateConstructor(role);
+    }
+    return _instance!;
+  }
+
+  static const String _logTag = "[BluetoothService]";
   static const MethodChannel _advertiseChannel =
       MethodChannel('com.calcitem.sanmill/advertise');
 
-  // Currently connected Bluetooth device.
-  BluetoothDevice? _connectedDevice;
+  // The role of the device (advertiser or connector)
+  final DeviceRole role;
 
-  // Currently connected characteristic for communication.
+  BluetoothDevice? _connectedDevice;
   BluetoothCharacteristic? _writeCharacteristic;
 
-  // Stream controller for incoming moves, using a broadcast stream for multiple listeners.
+  // Stream controllers for moves and device connection events
   final StreamController<String> _moveController =
       StreamController<String>.broadcast();
   Stream<String> get moveStream => _moveController.stream;
@@ -34,6 +43,7 @@ class GameBluetoothService {
   // StreamController for device connection events
   final StreamController<BluetoothDevice> _deviceConnectedController =
       StreamController<BluetoothDevice>.broadcast();
+
   Stream<BluetoothDevice> get onDeviceConnected =>
       _deviceConnectedController.stream;
 
@@ -63,8 +73,12 @@ class GameBluetoothService {
     }
   }
 
-  /// Starts scanning for nearby Bluetooth Low Energy devices.
+  /// Starts scanning for nearby Bluetooth Low Energy devices, only if role is Connector.
   Stream<ScanResult> startScan() {
+    if (role != DeviceRole.connector) {
+      logger.w("$_logTag This device is not set as connector.");
+      return const Stream<ScanResult>.empty();
+    }
     FlutterBluePlus.startScan(timeout: const Duration(seconds: 4));
     return FlutterBluePlus.scanResults.expand((List<ScanResult> results) {
       for (final ScanResult result in results) {
@@ -80,6 +94,10 @@ class GameBluetoothService {
 
   /// Stops an ongoing Bluetooth scan.
   Future<void> stopScan() async {
+    if (role != DeviceRole.connector) {
+      logger.w("$_logTag This device is not set as connector.");
+      return;
+    }
     await FlutterBluePlus.stopScan();
     logger.i("$_logTag Stopped scanning for Bluetooth devices.");
   }
@@ -90,8 +108,13 @@ class GameBluetoothService {
     return device.connectionState.first;
   }
 
-  /// Attempts to connect to a Bluetooth device and logs additional device information.
+  /// Connects to a Bluetooth device if the role is Connector and logs additional device information.
   Future<void> connect(BluetoothDevice device) async {
+    if (role != DeviceRole.connector) {
+      logger.w("$_logTag This device is not set as connector.");
+      return;
+    }
+
     try {
       logger.i(
           "$_logTag Connecting to ${device.platformName} (${device.remoteId})");
@@ -250,8 +273,13 @@ class GameBluetoothService {
     ].request();
   }
 
-  /// Starts BLE advertising by invoking a native Android method.
+  /// Starts BLE advertising by invoking a native Android method, if role is Advertiser.
   Future<void> startAdvertising() async {
+    if (role != DeviceRole.advertiser) {
+      logger.w("$_logTag This device is not set as advertiser.");
+      return;
+    }
+
     if (_isAdvertising) {
       logger.w("$_logTag Advertising is already active.");
       return;
