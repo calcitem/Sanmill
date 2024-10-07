@@ -48,7 +48,7 @@ import '../../shared/utils/helpers/list_helpers/pointed_list.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import 'animation/animation_manager.dart';
-import 'bluetooth/bluetooth_service.dart';
+import 'bluetooth/game_bluetooth_service.dart';
 import 'engine/bitboard.dart';
 import "gif_share/gif_share.dart";
 

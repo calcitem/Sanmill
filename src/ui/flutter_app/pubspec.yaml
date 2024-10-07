@@ -8,10 +8,6 @@ environment:
 
 dependencies:
   animated_text_kit: 4.2.2
-  flutter_bluetooth_serial:
-    git:
-      url: https://gitlab.com/calcitem/flutter_bluetooth_serial.git
-      ref: master
   catcher_2: 2.0.0
   collection: 1.18.0
   copy_with_extension: 5.0.4
@@ -23,6 +19,7 @@ dependencies:
   fluentui_system_icons: 1.1.257
   flutter:
     sdk: flutter
+  flutter_blue_plus: 1.33.2
   flutter_colorpicker: 1.1.0
   flutter_email_sender: 6.0.3
   flutter_localizations:

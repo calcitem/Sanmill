@@ -83,7 +83,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     if (GameController().gameInstance.gameMode ==
         GameMode.humanVsHumanBluetooth) {
       _bluetoothMoveSubscription =
-          BluetoothService.instance.moveStream.listen((String moveStr) {
+          GameBluetoothService.instance.moveStream.listen((String moveStr) {
         if (moveStr != null) {
           logger
               .i("${GameBoard._logTag} Received move from opponent: $moveStr");
@@ -345,7 +345,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     // TODO(BT): Implement the logic to send the move over Bluetooth and receive the opponent's move
     logger.i("${GameBoard._logTag} Sending move $moveStr over Bluetooth");
     // Send the move to the opponent via Bluetooth
-    await BluetoothService.instance.sendMove(moveStr);
+    await GameBluetoothService.instance.sendMove(moveStr);
 
     // Optionally, you can add a delay or waiting mechanism if needed
     logger.i("${GameBoard._logTag} Sent move $moveStr over Bluetooth");

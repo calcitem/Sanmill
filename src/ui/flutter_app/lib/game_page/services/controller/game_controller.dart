@@ -94,7 +94,7 @@ class GameController {
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   // Bluetooth Service instance
-  final BluetoothService _bluetoothService = BluetoothService.instance;
+  final GameBluetoothService _bluetoothService = GameBluetoothService.instance;
 
   // Subscription to Bluetooth move stream
   StreamSubscription<String>? _bluetoothMoveSubscription;
