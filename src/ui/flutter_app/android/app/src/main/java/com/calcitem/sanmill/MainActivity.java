@@ -61,6 +61,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.os.ParcelUuid;
 
+import android.os.Handler;
+import android.os.Looper;
+
 public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
@@ -77,13 +80,19 @@ public class MainActivity extends FlutterActivity {
     // Define UUID for advertising (replace with your own UUID)
     private static final String SERVICE_UUID = "123e4567-e89b-12d3-a456-426614174000";
 
+    // Handler to post tasks to the main thread
+    private final Handler mainHandler = new Handler(Looper.getMainLooper());
+
     // BLE Advertise callback
     private final AdvertiseCallback advertiseCallback = new AdvertiseCallback() {
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             Log.i("BLE", "Advertising started successfully");
             if (advertiseEventSink != null) {
-                advertiseEventSink.success("Advertising started successfully");
+                // Post to main thread to avoid threading issues
+                mainHandler.post(() -> {
+                    advertiseEventSink.success("Advertising started successfully");
+                });
             }
         }
 
@@ -112,7 +121,10 @@ public class MainActivity extends FlutterActivity {
             }
             Log.e("BLE", "Advertising failed with error code: " + errorCode + " - " + errorMessage);
             if (advertiseEventSink != null) {
-                advertiseEventSink.error("ADVERTISE_START_FAILURE", errorMessage, null);
+                // Post to main thread to avoid threading issues
+                mainHandler.post(() -> {
+                    advertiseEventSink.error("ADVERTISE_START_FAILURE", errorMessage, null);
+                });
             }
             isAdvertising = false; // Update advertising state
         }
@@ -195,12 +207,18 @@ public class MainActivity extends FlutterActivity {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.i("GATT", "Device connected: " + device.getAddress());
                 if (advertiseEventSink != null) {
-                    advertiseEventSink.success("Device connected: " + device.getAddress());
+                    // Post to main thread to avoid threading issues
+                    mainHandler.post(() -> {
+                        advertiseEventSink.success("Device connected: " + device.getAddress());
+                    });
                 }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.i("GATT", "Device disconnected: " + device.getAddress());
                 if (advertiseEventSink != null) {
-                    advertiseEventSink.success("Device disconnected: " + device.getAddress());
+                    // Post to main thread to avoid threading issues
+                    mainHandler.post(() -> {
+                        advertiseEventSink.success("Device disconnected: " + device.getAddress());
+                    });
                 }
             }
         }
@@ -229,10 +247,18 @@ public class MainActivity extends FlutterActivity {
             if (responseNeeded) {
                 gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
             }
+
+            // If you need to send data to Flutter, ensure to post it to the main thread            
+            if (advertiseEventSink != null) {
+                mainHandler.post(() -> {
+                    advertiseEventSink.success("Received data: " + received);
+                });
+            }
+            
         }
     };
 
-    @Override
+@Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
