@@ -238,17 +238,12 @@ class GameBluetoothService {
 
   /// Sends a move over the Bluetooth connection.
   Future<void> sendMove(String moveStr) async {
-    if (_writeCharacteristic != null) {
-      try {
-        // Encode the move and send it via the characteristic.
-        await _writeCharacteristic!
-            .write(utf8.encode("$moveStr\n"), withoutResponse: true);
-        logger.i("$_logTag Sent move: $moveStr");
-      } catch (e) {
-        logger.e("$_logTag Error sending move: $e");
-      }
-    } else {
-      logger.w("$_logTag Write characteristic is not available.");
+    try {
+      final result = await _advertiseChannel
+          .invokeMethod('sendMove', <String, String>{"move": moveStr});
+      logger.i("Move sent successfully: $result");
+    } catch (e) {
+      logger.e("Error sending move: $e");
     }
   }
 
@@ -331,11 +326,16 @@ class GameBluetoothService {
     _advertiseEventChannel.receiveBroadcastStream().listen((event) {
       logger.i("$_logTag Advertise event received: $event");
       if (event.toString().startsWith("Device connected:")) {
-        // Handle device connected event
+        // Extract the device address from the event
         final String deviceAddress =
             event.toString().substring("Device connected: ".length);
         logger.i("$_logTag Device connected: $deviceAddress");
-        // You can notify your app of the connection, update UI, etc.
+
+        // Create a BluetoothDevice instance from the address
+        final BluetoothDevice device = BluetoothDevice.fromId(deviceAddress);
+
+        // Emit the device connected event so UI can listen and respond
+        _deviceConnectedController.add(device);
       }
     }, onError: (error) {
       logger.e("$_logTag Advertise error received: $error");

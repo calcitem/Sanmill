@@ -14,7 +14,7 @@ class GameBluetoothPage extends StatefulWidget {
 }
 
 class GameBluetoothPageState extends State<GameBluetoothPage> {
-  GameBluetoothService? _bluetoothService; // Initialize with role later
+  GameBluetoothService? _bluetoothService;
   StreamSubscription<String>? _bluetoothMoveSubscription;
   bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
@@ -23,7 +23,8 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
   ScanResult? _selectedDevice;
   BluetoothDevice? _connectedDevice;
   Timer? _advertisingTimer;
-  int _advertisingTimeout = 60; // Advertising timeout in seconds
+  int _advertisingTimeout = 60;
+  String _receivedMessage = ""; // Stores the last received message
 
   @override
   void initState() {
@@ -32,13 +33,12 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       _showRoomSelectionDialog();
     });
 
-    if (_bluetoothService == null) {
-      return;
-    }
+    // TODO(BT):
+    _bluetoothService ??=
+        GameBluetoothService.getInstance(DeviceRole.advertiser);
 
     // Subscribe to connection changes from the Bluetooth service
     _bluetoothService!.onDeviceConnected.listen((BluetoothDevice device) {
-      // Update the UI when a device connects
       setState(() {
         _isBluetoothConnected = true;
         _connectedDevice = device;
@@ -54,6 +54,14 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
 
       // Show a dialog to notify the user that a device has connected
       _showDeviceConnectedDialog(device);
+    });
+
+    // Subscribe to incoming Bluetooth messages
+    _bluetoothMoveSubscription =
+        _bluetoothService?.moveStream.listen((String message) {
+      setState(() {
+        _receivedMessage = message; // Update the UI with the received message
+      });
     });
   }
 
@@ -101,14 +109,38 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
               child: const Text("Select Room Action"),
             ),
             if (_isBluetoothConnected)
-              ElevatedButton(
-                onPressed: _disconnect,
-                child: const Text("Disconnect"),
+              Column(
+                children: <Widget>[
+                  ElevatedButton(
+                    onPressed: _disconnect,
+                    child: const Text("Disconnect"),
+                  ),
+                  ElevatedButton(
+                    onPressed: _sendHelloMessage,
+                    child: const Text("Send Hello"),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    _receivedMessage.isNotEmpty
+                        ? "Received: $_receivedMessage"
+                        : "No messages received",
+                    style: const TextStyle(color: Colors.black, fontSize: 16),
+                  ),
+                ],
               ),
           ],
         ),
       ),
     );
+  }
+
+  /// Sends a "Hello" message to the connected device.
+  Future<void> _sendHelloMessage() async {
+    if (_isBluetoothConnected) {
+      await _bluetoothService?.sendMove("Hello");
+    } else {
+      _showErrorDialog("Not connected to any device.");
+    }
   }
 
   /// Disconnects from the current Bluetooth device
@@ -119,6 +151,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       _bluetoothStatus = "Disconnected";
       _selectedDevice = null;
       _connectedDevice = null;
+      _receivedMessage = ""; // Clear the received message
     });
   }
 

@@ -70,6 +70,7 @@ public class MainActivity extends FlutterActivity {
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
     private static final String ADVERTISE_CHANNEL = "com.calcitem.sanmill/advertise";
     private static final String ADVERTISE_EVENTS_CHANNEL = "com.calcitem.sanmill/advertise_events";
+    private BluetoothDevice connectedDevice;
     private BluetoothLeAdvertiser bluetoothLeAdvertiser;
     private BluetoothGattServer gattServer;
     private EventChannel.EventSink advertiseEventSink; // For sending events to Flutter
@@ -147,9 +148,9 @@ public class MainActivity extends FlutterActivity {
 
             // Add characteristics to the service
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(
-                    UUID.fromString(SERVICE_UUID),
-                    BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE,
-                    BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
+                UUID.fromString(SERVICE_UUID),
+                BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE | BluetoothGattCharacteristic.PROPERTY_NOTIFY,
+                BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
             service.addCharacteristic(characteristic);
 
             // Add the service to the GATT server
@@ -200,22 +201,38 @@ public class MainActivity extends FlutterActivity {
         Log.i("BLE", "Advertising stopped");
     }
 
+    private void sendMoveToConnectedDevice(String move) {
+        if (gattServer != null && connectedDevice != null) {
+            BluetoothGattCharacteristic characteristic = gattServer.getService(UUID.fromString(SERVICE_UUID)).getCharacteristic(UUID.fromString(SERVICE_UUID));
+
+            characteristic.setValue(move.getBytes(StandardCharsets.UTF_8));
+
+            gattServer.notifyCharacteristicChanged(connectedDevice, characteristic, false);
+
+            Log.i("GATT", "Sent move to connected device: " + move);
+        } else {
+            Log.w("GATT", "GATT server or connected device is null.");
+        }
+    }
+
     private BluetoothGattServerCallback gattServerCallback = new BluetoothGattServerCallback() {
         @Override
         public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
             super.onConnectionStateChange(device, status, newState);
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.i("GATT", "Device connected: " + device.getAddress());
+                connectedDevice = device;
+
                 if (advertiseEventSink != null) {
-                    // Post to main thread to avoid threading issues
                     mainHandler.post(() -> {
                         advertiseEventSink.success("Device connected: " + device.getAddress());
                     });
                 }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.i("GATT", "Device disconnected: " + device.getAddress());
+                connectedDevice = null;
+
                 if (advertiseEventSink != null) {
-                    // Post to main thread to avoid threading issues
                     mainHandler.post(() -> {
                         advertiseEventSink.success("Device disconnected: " + device.getAddress());
                     });
@@ -248,17 +265,17 @@ public class MainActivity extends FlutterActivity {
                 gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
             }
 
-            // If you need to send data to Flutter, ensure to post it to the main thread            
+            // If you need to send data to Flutter, ensure to post it to the main thread
             if (advertiseEventSink != null) {
                 mainHandler.post(() -> {
                     advertiseEventSink.success("Received data: " + received);
                 });
             }
-            
+
         }
     };
 
-@Override
+    @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
         GeneratedPluginRegistrant.registerWith(flutterEngine);
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
@@ -325,6 +342,10 @@ public class MainActivity extends FlutterActivity {
             } else if (call.method.equals("stopAdvertising")) {
                 stopAdvertising();
                 result.success("Advertising stopped");
+            } else if (call.method.equals("sendMove")) {
+                String move = call.argument("move");
+                sendMoveToConnectedDevice(move);
+                result.success("Move sent: " + move);
             } else {
                 result.notImplemented();
             }
