@@ -132,7 +132,8 @@ class GameController {
 
     // Disconnect Bluetooth if resetting the game
     // TODO(BT): Need it?
-    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth && _bluetoothService != null) {
+    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth &&
+        _bluetoothService != null) {
       _bluetoothMoveSubscription?.cancel();
       _bluetoothService?.disconnect();
     }

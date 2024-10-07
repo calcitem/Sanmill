@@ -91,10 +91,11 @@ class GamePageState extends State<GamePage> {
 
   /// Initializes Bluetooth-specific setup for the game
   Future<void> _initializeBluetoothGame() async {
-
     if (_bluetoothService == null) {
       logger.i("Initializing Bluetooth service...");
-      final BluetoothDeviceType btDevType = DB().generalSettings.aiMovesFirst? BluetoothDeviceType.browser : BluetoothDeviceType.advertiser;
+      final BluetoothDeviceType btDevType = DB().generalSettings.aiMovesFirst
+          ? BluetoothDeviceType.browser
+          : BluetoothDeviceType.advertiser;
       _bluetoothService = BluetoothService.createInstance(btDevType);
     }
 
@@ -147,13 +148,11 @@ class GamePageState extends State<GamePage> {
           }
         }
       },
-    ) as StreamSubscription<List<Device>>? ;
+    ) as StreamSubscription<List<Device>>?;
 
     // Optionally, you can automatically connect to the first available device
     // Or handle multiple connections if needed
   }
-
-
 
   /// Shows a pairing confirmation dialog when a device connects
   Future<void> _showPairingConfirmationDialog(Device device) async {

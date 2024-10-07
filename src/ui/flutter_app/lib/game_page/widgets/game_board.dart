@@ -81,14 +81,15 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
     GameController().animationManager = animationManager;
 
-
-
     // Listen for incoming Bluetooth moves if in Bluetooth game mode
     if (GameController().gameInstance.gameMode ==
         GameMode.humanVsHumanBluetooth) {
-      btDevType = DB().generalSettings.aiMovesFirst? BluetoothDeviceType.browser : BluetoothDeviceType.advertiser;
-      _bluetoothMoveSubscription =
-          BluetoothService.createInstance(btDevType)!.moveStream.listen((String moveStr) {
+      btDevType = DB().generalSettings.aiMovesFirst
+          ? BluetoothDeviceType.browser
+          : BluetoothDeviceType.advertiser;
+      _bluetoothMoveSubscription = BluetoothService.createInstance(btDevType)!
+          .moveStream
+          .listen((String moveStr) {
         if (moveStr != null) {
           logger
               .i("${GameBoard._logTag} Received move from opponent: $moveStr");
