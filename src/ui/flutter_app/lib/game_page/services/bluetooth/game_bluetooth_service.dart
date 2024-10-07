@@ -176,31 +176,58 @@ class GameBluetoothService {
     }
   }
 
-  /// Discovers services and characteristics for the connected device.
+  /// Discovers services and characteristics for the connected device, enabling notifications
+  /// on specific characteristics and listening for data updates.
   Future<void> _discoverServices(BluetoothDevice device) async {
     try {
+      // Discover available services on the connected device
       final List<BluetoothService> services = await device.discoverServices();
+
+      // List to hold futures for enabling notifications on multiple characteristics simultaneously
+      final List<Future> notificationFutures = <Future>[];
+
       for (final BluetoothService service in services) {
         logger.i("$_logTag Found service with UUID: ${service.uuid}");
+
+        // Loop through all characteristics of each service
         for (final BluetoothCharacteristic characteristic
             in service.characteristics) {
           logger.i(
               "$_logTag Found characteristic with UUID: ${characteristic.uuid}");
 
-          // Replace with your actual characteristic UUID
+          // Check if the characteristic matches the target UUID
           if (characteristic.uuid.toString() ==
               '123e4567-e89b-12d3-a456-426614174000') {
             _writeCharacteristic = characteristic;
 
-            // Enable notifications for the characteristic.
-            await characteristic.setNotifyValue(true);
-            characteristic.lastValueStream.listen(_onDataReceived);
-            logger.i(
-                "$_logTag Subscribed to characteristic ${characteristic.uuid}");
+            // Attempt to enable notifications on the characteristic
+            try {
+              notificationFutures.add(characteristic.setNotifyValue(true));
+
+              // Listen for incoming data on the characteristic's stream
+              characteristic.lastValueStream.listen(
+                _onDataReceived,
+                onError: (error) {
+                  logger.e(
+                      "$_logTag Error in receiving data for ${characteristic.uuid}: $error");
+                },
+                cancelOnError: true,
+              );
+
+              logger.i(
+                  "$_logTag Subscribed to characteristic ${characteristic.uuid}");
+            } catch (e) {
+              logger.e(
+                  "$_logTag Failed to enable notifications for ${characteristic.uuid}: $e");
+            }
           }
         }
       }
 
+      // Await all notification setups to complete
+      await Future.wait(notificationFutures);
+
+      // Check if the write characteristic was successfully found and set
       if (_writeCharacteristic == null) {
         logger.w("$_logTag Desired characteristic not found on device.");
       }
@@ -209,8 +236,10 @@ class GameBluetoothService {
         logger.w(
             "$_logTag Device disconnected before service discovery. Reconnecting...");
         try {
+          // Reconnect to the device with a short delay
+          await Future.delayed(const Duration(seconds: 2));
           await device.connect();
-          await _discoverServices(device);
+          await _discoverServices(device); // Retry discovering services
         } catch (reconnectError) {
           logger.e("$_logTag Reconnection failed: $reconnectError");
           rethrow;
@@ -325,6 +354,11 @@ class GameBluetoothService {
   void _listenToAdvertiseEvents() {
     _advertiseEventChannel.receiveBroadcastStream().listen((event) {
       logger.i("$_logTag Advertise event received: $event");
+      // If the event contains data, process it with _onDataReceived
+      if (event is String && event.startsWith("Received data:")) {
+        final data = event.replaceFirst("Received data: ", "");
+        _onDataReceived(utf8.encode(data));
+      }
       if (event.toString().startsWith("Device connected:")) {
         // Extract the device address from the event
         final String deviceAddress =

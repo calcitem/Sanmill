@@ -151,6 +151,9 @@ public class MainActivity extends FlutterActivity {
                 UUID.fromString(SERVICE_UUID),
                 BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE | BluetoothGattCharacteristic.PROPERTY_NOTIFY,
                 BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
+
+            characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
+
             service.addCharacteristic(characteristic);
 
             // Add the service to the GATT server
@@ -202,14 +205,25 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void sendMoveToConnectedDevice(String move) {
+        Log.d("GATT", "Sending move to connected device: " + move);
         if (gattServer != null && connectedDevice != null) {
-            BluetoothGattCharacteristic characteristic = gattServer.getService(UUID.fromString(SERVICE_UUID)).getCharacteristic(UUID.fromString(SERVICE_UUID));
+            // Retrieve the characteristic associated with the specified UUID
+            BluetoothGattCharacteristic characteristic = gattServer
+                    .getService(UUID.fromString(SERVICE_UUID))
+                    .getCharacteristic(UUID.fromString(SERVICE_UUID));
 
+            // Set the value for the characteristic
             characteristic.setValue(move.getBytes(StandardCharsets.UTF_8));
 
-            gattServer.notifyCharacteristicChanged(connectedDevice, characteristic, false);
+            // Notify the connected device that the characteristic value has changed
+            boolean notificationSent = gattServer.notifyCharacteristicChanged(connectedDevice, characteristic, true);
 
-            Log.i("GATT", "Sent move to connected device: " + move);
+            // Log the outcome of the notification attempt
+            if (notificationSent) {
+                Log.i("GATT", "Notification sent successfully");
+            } else {
+                Log.e("GATT", "Failed to send notification");
+            }
         } else {
             Log.w("GATT", "GATT server or connected device is null.");
         }
@@ -222,6 +236,10 @@ public class MainActivity extends FlutterActivity {
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.i("GATT", "Device connected: " + device.getAddress());
                 connectedDevice = device;
+
+                new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                    sendMoveToConnectedDevice("Your Message Here");
+                }, 500);
 
                 if (advertiseEventSink != null) {
                     mainHandler.post(() -> {
