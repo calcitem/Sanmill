@@ -118,7 +118,7 @@ class GameBluetoothService {
 
           // Replace 'YOUR_CHARACTERISTIC_UUID' with the actual UUID.
           if (characteristic.uuid.toString() ==
-              '12345678-1234-5678-1234-567812345678') {
+              '123e4567-e89b-12d3-a456-426614174000') {
             _writeCharacteristic = characteristic;
 
             // Enable notifications for the characteristic.

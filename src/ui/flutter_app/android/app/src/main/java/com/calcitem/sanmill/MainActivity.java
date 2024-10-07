@@ -63,7 +63,7 @@ public class MainActivity extends FlutterActivity {
 
 
     // Define UUID for advertising (replace with your own UUID)
-    private static final String SERVICE_UUID = "abcd1234-5678-90ab-cdef12345678";
+    private static final String SERVICE_UUID = "123e4567-e89b-12d3-a456-426614174000";
 
     // BLE Advertise callback
     private final AdvertiseCallback advertiseCallback = new AdvertiseCallback() {

@@ -124,16 +124,17 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
         return;
       }
 
+      // Display the room created dialog
       await showDialog<void>(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Room Created"),
+            title: const Text("Create Room"),
             content: Text(
-                "Your Room ID: $_currentRoomId\n\nWaiting for opponent to connect..."),
+                "Your Room ID: $_currentRoomId\n\nCreate Room to waiting for opponent to connect..."),
             actions: <Widget>[
               TextButton(
-                child: const Text("OK"),
+                child: const Text("Continue"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -143,6 +144,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
         },
       );
 
+      // Update the UI to show the new status before advertising
       setState(() {
         _bluetoothStatus = "Room created. Waiting for opponent to connect.";
       });
