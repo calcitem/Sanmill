@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-
 import '../../../shared/services/logger.dart';
 import 'game_bluetooth_service.dart';
 
@@ -22,8 +20,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
   String _bluetoothStatus = "Disconnected";
   String? _currentRoomId;
   List<ScanResult> _availableDevices = <ScanResult>[];
-  late ScanResult? _selectedDevice;
-  // New variables to track connected device and advertising status
+  ScanResult? _selectedDevice; // Changed to not be late, as it may be null
   BluetoothDevice? _connectedDevice;
   Timer? _advertisingTimer;
   int _advertisingTimeout = 60; // Advertising timeout in seconds
@@ -83,6 +80,11 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
                 _bluetoothStatus.contains("Advertising"))
               Text(
                 "Advertising... Remaining time: $_advertisingTimeout s",
+                style: const TextStyle(color: Colors.blue, fontSize: 16),
+              ),
+            if (!_isBluetoothConnected && _selectedDevice != null)
+              Text(
+                "Selected Device: ${_selectedDevice!.device.platformName} (${_selectedDevice!.device.remoteId})",
                 style: const TextStyle(color: Colors.blue, fontSize: 16),
               ),
             const SizedBox(height: 20),
@@ -229,7 +231,10 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
         return;
       }
 
-      _selectedDevice = selectedDevice;
+      setState(() {
+        _selectedDevice = selectedDevice; // Store the selected device
+      });
+
       await _connectToDevice(selectedDevice.device);
     } catch (e) {
       logger.e("Error joining room: $e");
