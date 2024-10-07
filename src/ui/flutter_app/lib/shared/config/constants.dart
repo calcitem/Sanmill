@@ -103,6 +103,10 @@ class Constants {
   static const int highestSkillLevel = 30;
 
   static bool isAndroid10Plus = false;
+
+  // TODO(BT): Replace with your own UUID. You can generate one from https://www.uuidgenerator.net/
+  static const String bluetoothServiceUUID =
+      "00001101-0000-1000-8000-00805F9B34FB";
 }
 
 // TODO: Move to navigation folder

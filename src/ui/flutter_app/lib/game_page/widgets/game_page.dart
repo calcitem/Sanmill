@@ -57,6 +57,9 @@ part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
 
+// Enum to represent room actions
+enum RoomAction { create, join }
+
 // Modify GamePage to be a StatefulWidget to manage Bluetooth state
 class GamePage extends StatefulWidget {
   const GamePage(this.gameMode, {super.key});
@@ -74,6 +77,11 @@ class GamePageState extends State<GamePage> {
   bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
 
+  // Variables for Room management
+  String? _currentRoomId;
+  List<BluetoothDiscoveryResult> _availableDevices =
+      <BluetoothDiscoveryResult>[];
+
   @override
   void initState() {
     super.initState();
@@ -81,109 +89,249 @@ class GamePageState extends State<GamePage> {
 
     // If the game mode is Bluetooth, initialize Bluetooth-specific setup
     if (widget.gameMode == GameMode.humanVsHumanBluetooth) {
-      _initializeBluetoothGame();
+      // Show the Room selection dialog after the first frame is rendered
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _showRoomSelectionDialog();
+      });
     }
   }
 
-  /// Initializes Bluetooth-specific setup for the game
-  Future<void> _initializeBluetoothGame() async {
-    logger.i("Initializing Bluetooth game...");
+  /// Displays a dialog allowing the user to create or join a room
+  Future<void> _showRoomSelectionDialog() async {
+    // Show a dialog with options to Create or Join a Room
+    final RoomAction? selectedAction = await showDialog<RoomAction>(
+      context: context,
+      barrierDismissible:
+          false, // Prevent dismissing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Mill Game"),
+          content: const Text(
+              "Would you like to create a new room or join an existing one?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Create Room"),
+              onPressed: () {
+                Navigator.of(context).pop(RoomAction.create);
+              },
+            ),
+            TextButton(
+              child: const Text("Join Room"),
+              onPressed: () {
+                Navigator.of(context).pop(RoomAction.join);
+              },
+            ),
+          ],
+        );
+      },
+    );
 
-    // Request necessary Bluetooth permissions
-    await _bluetoothService.requestBluetoothPermissions();
+    // Handle the user's selection
+    if (selectedAction == RoomAction.create) {
+      await _handleCreateRoom();
+    } else if (selectedAction == RoomAction.join) {
+      await _handleJoinRoom();
+    } else {
+      // If no action was selected, show an error dialog
+      _showErrorDialog("No action selected. Please try again.");
+    }
+  }
 
-    // Check if Bluetooth is enabled
-    await _bluetoothService.enableBluetooth();
+  /// Handles the creation of a new room
+  Future<void> _handleCreateRoom() async {
+    try {
+      // Generate a unique Room ID (you might want to use a more robust method)
+      _currentRoomId = DateTime.now().millisecondsSinceEpoch.toString();
 
-    // Start device discovery
-    final List<BluetoothDiscoveryResult> discoveredDevices =
-        <BluetoothDiscoveryResult>[];
-    StreamSubscription<BluetoothDiscoveryResult>? discoveryStream;
+      // Display the Room ID to the user so they can share it with others
+      await showDialog<void>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Room Created"),
+            content: Text(
+                "Your Room ID is:\n$_currentRoomId\n\nShare this ID with your opponent to join."),
+            actions: <Widget>[
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
 
-    // Show discovery in progress dialog (do not await)
+      // Since `flutter_bluetooth_serial` doesn't support server sockets directly,
+      // you can prompt the user to wait for the opponent to connect manually.
+      // Alternatively, implement a custom pairing mechanism based on Room ID.
+
+      // Update Bluetooth status
+      setState(() {
+        _bluetoothStatus = "Room created. Waiting for opponent to connect.";
+      });
+
+      // Optionally, implement a mechanism to wait for an incoming connection.
+      // This might involve manual pairing using the Room ID as a reference.
+
+      // Note: Due to limitations in the `flutter_bluetooth_serial` package,
+      // implementing server-side listening for connections isn't straightforward.
+      // Consider using platform-specific code or alternative packages if necessary.
+    } catch (e) {
+      logger.e("Error creating room: $e");
+      _showErrorDialog("Failed to create room. Please try again.");
+    }
+  }
+
+  /// Handles joining an existing room
+  Future<void> _handleJoinRoom() async {
+    try {
+      // Request necessary Bluetooth permissions
+      await _bluetoothService.requestBluetoothPermissions();
+
+      // Enable Bluetooth if not already enabled
+      await _bluetoothService.enableBluetooth();
+
+      // Start device discovery
+      await _startDeviceDiscovery();
+
+      if (_availableDevices.isEmpty) {
+        _showErrorDialog("No available rooms found.");
+        return;
+      }
+
+      // Show device selection dialog
+      final BluetoothDiscoveryResult? selectedDevice =
+          await _showDeviceSelectionDialog(_availableDevices);
+
+      if (selectedDevice == null) {
+        _showErrorDialog("No device selected.");
+        return;
+      }
+
+      // Proceed with connecting to the selected device
+      await _connectToDevice(selectedDevice.device);
+    } catch (e) {
+      logger.e("Error joining room: $e");
+      _showErrorDialog("Failed to join room. Please try again.");
+    }
+  }
+
+  /// Starts Bluetooth device discovery
+  Future<void> _startDeviceDiscovery() async {
+    // Show discovery in progress dialog
     _showDiscoveringDialog();
 
-    // Start discovery and update UI
-    discoveryStream = _bluetoothService
+    // Start discovery
+    StreamSubscription<BluetoothDiscoveryResult>? discoveryStream;
+    _availableDevices = <BluetoothDiscoveryResult>[];
+
+    discoveryStream = FlutterBluetoothSerial.instance
         .startDiscovery()
         .listen((BluetoothDiscoveryResult result) {
-      // Avoid duplicates
-      if (discoveredDevices.every((BluetoothDiscoveryResult element) =>
-          element.device.address != result.device.address)) {
+      // Avoid duplicates and exclude self
+      if (_availableDevices.every((BluetoothDiscoveryResult element) =>
+              element.device.address != result.device.address) &&
+          result.device.address != _bluetoothService.getLocalAddress()) {
         setState(() {
-          discoveredDevices.add(result);
+          _availableDevices.add(result);
         });
       }
     });
 
-    // Wait for a fixed duration for discovery, e.g., 10 seconds
+    // Wait for discovery to complete (e.g., 10 seconds)
     await Future.delayed(const Duration(seconds: 10));
 
     // Cancel discovery
     await discoveryStream.cancel();
 
-    // Dismiss the discovering dialog safely
+    // Dismiss the discovering dialog
     if (mounted) {
       Navigator.of(context, rootNavigator: true).pop();
     }
+  }
 
-    // If no devices found, update status
-    if (discoveredDevices.isEmpty) {
-      logger.e("No devices found.");
-      if (!mounted) {
-        return;
-      }
+  /// Shows a dialog for selecting a discovered device.
+  Future<BluetoothDiscoveryResult?> _showDeviceSelectionDialog(
+      List<BluetoothDiscoveryResult> devices) async {
+    return showDialog<BluetoothDiscoveryResult>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Select a Room"),
+          content: SingleChildScrollView(
+            child: Column(
+              children: devices.map((BluetoothDiscoveryResult result) {
+                final String deviceName =
+                    result.device.name ?? 'Unknown device';
+                return ListTile(
+                  title: Text('$deviceName (${result.device.address})'),
+                  onTap: () {
+                    Navigator.pop(context, result);
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  /// Connects to the selected Bluetooth device
+  Future<void> _connectToDevice(BluetoothDevice device) async {
+    try {
       setState(() {
-        _bluetoothStatus = "No devices found";
+        _bluetoothStatus = "Connecting to ${device.name}...";
       });
-      return;
-    }
 
-    // Show device selection dialog
-    final BluetoothDevice? selectedDevice =
-        await _showDeviceSelectionDialog(discoveredDevices);
+      await _bluetoothService.connect(device);
 
-    if (selectedDevice == null) {
-      logger.i("No device selected.");
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        _bluetoothStatus = "No device selected";
-      });
-      return;
-    }
-
-    // Proceed with pairing and connection
-    final bool connected = await _pairAndConnect(selectedDevice);
-
-    if (!mounted) {
-      return;
-    }
-
-    if (connected) {
       setState(() {
         _isBluetoothConnected = true;
-        _bluetoothStatus = "Connected to ${selectedDevice.name}";
+        _bluetoothStatus = "Connected to ${device.name}";
       });
 
       // Listen for incoming moves
       _bluetoothMoveSubscription =
           _bluetoothService.moveStream.listen((String moveStr) {
-        // Handle received move
         if (moveStr.isNotEmpty) {
           logger.i("Received move from opponent: $moveStr");
           // Apply opponent's move
-          GameController().applyOpponentMove(moveStr);
+          controller.applyOpponentMove(moveStr);
         } else {
           logger.w("Received invalid move data: $moveStr");
         }
       });
-    } else {
+    } catch (e) {
+      logger.e("Failed to connect to device: $e");
+      _showErrorDialog("Failed to connect to device: $e");
       setState(() {
         _bluetoothStatus = "Connection failed";
       });
     }
+  }
+
+  /// Displays an error dialog with the provided message
+  Future<void> _showErrorDialog(String message) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   /// Shows the "Discovering devices..." dialog without awaiting
@@ -207,57 +355,12 @@ class GamePageState extends State<GamePage> {
     );
   }
 
-  /// Shows a dialog for selecting a discovered device.
-  Future<BluetoothDevice?> _showDeviceSelectionDialog(
-      List<BluetoothDiscoveryResult> devices) async {
-    return showDialog<BluetoothDevice>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Select a device"),
-          content: SingleChildScrollView(
-            child: Column(
-              children: devices.map((BluetoothDiscoveryResult result) {
-                final String deviceName = result.device.name ?? 'Unknown device';
-                return ListTile(
-                  title: Text('$deviceName (${result.device.address})'),
-                  onTap: () {
-                    Navigator.pop(context, result.device);
-                  },
-                );
-              }).toList(),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  /// Attempts to pair with the selected device, then connects.
-  Future<bool> _pairAndConnect(BluetoothDevice device) async {
-    try {
-      // Check the bond state of the device
-      final BluetoothBondState bondState =
-          await _bluetoothService.getBondState(device);
-
-      // If not paired, attempt to pair
-      if (bondState != BluetoothBondState.bonded) {
-        logger.i("Pairing with ${device.name} (${device.address})...");
-        final bool paired = await _bluetoothService.pairDevice(device);
-        if (!paired) {
-          logger.e("Pairing failed with ${device.name} (${device.address}).");
-          return false;
-        }
-      }
-
-      // Now connect to the device
-      logger.i("Connecting to ${device.name} (${device.address})...");
-      await _bluetoothService.connect(device);
-      logger.i("Connected to ${device.name}");
-      return true;
-    } catch (e) {
-      logger.e("Error pairing or connecting to device: $e");
-      return false;
+  /// Sends a move to the opponent via Bluetooth
+  void _sendMove(String move) {
+    if (_isBluetoothConnected) {
+      _bluetoothService.sendMove(move);
+    } else {
+      _showErrorDialog("Not connected to any opponent.");
     }
   }
 
@@ -313,6 +416,7 @@ class GamePageState extends State<GamePage> {
     );
   }
 
+  /// Builds the background for the game page
   Widget _buildBackground() {
     if (DB().displaySettings.backgroundImagePath.isEmpty) {
       return Container(
@@ -334,6 +438,7 @@ class GamePageState extends State<GamePage> {
     }
   }
 
+  /// Builds the game board widget
   Widget _buildGameBoard(BuildContext context, GameController controller) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
@@ -385,6 +490,7 @@ class GamePageState extends State<GamePage> {
                           return PlayArea(
                             // Pass the board image path to PlayArea
                             boardImagePath: boardImagePath,
+                            //onMoveMade: _sendMove, // TODO(BT): Callback to send move
                           );
                         },
                       ),
@@ -399,6 +505,7 @@ class GamePageState extends State<GamePage> {
     );
   }
 
+  /// Calculates the height of the toolbar based on settings
   double _calculateToolbarHeight(BuildContext context) {
     double toolbarHeight =
         GamePageToolbar.height + ButtonTheme.of(context).height;

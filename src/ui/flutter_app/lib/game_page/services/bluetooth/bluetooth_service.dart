@@ -1,3 +1,4 @@
+// bluetoolth_service.dart
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
@@ -33,11 +34,13 @@ class BluetoothService {
 
   /// Starts discovery for nearby Bluetooth devices, including their names if available.
   Stream<BluetoothDiscoveryResult> startDiscovery() {
-    return FlutterBluetoothSerial.instance.startDiscovery().map((BluetoothDiscoveryResult result) {
+    return FlutterBluetoothSerial.instance
+        .startDiscovery()
+        .map((BluetoothDiscoveryResult result) {
       // Log the discovered device's address and name (if available)
       final String deviceName = result.device.name ?? 'Unknown device';
       logger.i("Discovered ${result.device.address} ($deviceName)");
-      return result;  // Return the result as is
+      return result; // Return the result as is
     });
   }
 
@@ -54,10 +57,9 @@ class BluetoothService {
 
   /// Attempts to pair with a Bluetooth device.
   Future<bool> pairDevice(BluetoothDevice device) async {
-    final bool bonded = (await FlutterBluetoothSerial.instance
-            .bondDeviceAtAddress(device.address)) ??
-        false;
-    return bonded;
+    final bool? bonded = await FlutterBluetoothSerial.instance
+        .bondDeviceAtAddress(device.address);
+    return bonded ?? false;
   }
 
   /// Connects to a Bluetooth device.
@@ -70,6 +72,7 @@ class BluetoothService {
       // Listen for incoming data from the Bluetooth device.
       _connection!.input!.listen(_onDataReceived).onDone(() {
         logger.i("$_logTag Disconnected by remote device.");
+        _moveController.close();
       });
     } catch (e) {
       logger.e("$_logTag Error connecting to device: $e");
@@ -142,6 +145,11 @@ class BluetoothService {
     if (await Permission.bluetoothScan.isPermanentlyDenied) {
       openAppSettings();
     }
+  }
+
+  /// Retrieves the local Bluetooth address.
+  Future<String?> getLocalAddress() async {
+    return FlutterBluetoothSerial.instance.address;
   }
 
   /// Disposes the Bluetooth service by closing the stream controller and disconnecting Bluetooth.
