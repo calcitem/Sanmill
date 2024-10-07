@@ -70,7 +70,7 @@ class GamePage extends StatefulWidget {
 
 class GamePageState extends State<GamePage> {
   final GameController controller = GameController();
-  final BluetoothService _bluetoothService = BluetoothService.instance;
+  BluetoothService? _bluetoothService;
   StreamSubscription<String>? _bluetoothMoveSubscription;
   bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
@@ -91,18 +91,24 @@ class GamePageState extends State<GamePage> {
 
   /// Initializes Bluetooth-specific setup for the game
   Future<void> _initializeBluetoothGame() async {
+
+    if (_bluetoothService == null) {
+      logger.i("Initializing Bluetooth service...");
+      final BluetoothDeviceType btDevType = DB().generalSettings.aiMovesFirst? BluetoothDeviceType.browser : BluetoothDeviceType.advertiser;
+      _bluetoothService = BluetoothService.createInstance(btDevType);
+    }
+
     logger.i("Initializing Bluetooth game...");
 
     // Initialize NearbyService
-    await _bluetoothService.initNearbyService();
+    await _bluetoothService!.initNearbyService();
 
     // Listen for connection state changes
-    // Listen for connection state changes
     _nearbyStateSubscription =
-        _bluetoothService.nearbyService.stateChangedSubscription(
-      callback: (dynamic devices) async {
+        _bluetoothService!.nearbyService.stateChangedSubscription(
+      callback: (List<Device> devices) async {
         // Cast the dynamic data to List<Device>
-        final List<Device> deviceList = devices as List<Device>;
+        final List<Device> deviceList = devices;
         for (final Device device in deviceList) {
           if (device.state == SessionState.connected) {
             if (!_isBluetoothConnected) {
@@ -117,7 +123,7 @@ class GamePageState extends State<GamePage> {
 
               // Listen for incoming moves
               _bluetoothMoveSubscription =
-                  _bluetoothService.moveStream.listen((String moveStr) {
+                  _bluetoothService!.moveStream.listen((String moveStr) {
                 // Handle received move
                 if (moveStr.isNotEmpty) {
                   logger.i("Received move from opponent: $moveStr");
@@ -141,15 +147,17 @@ class GamePageState extends State<GamePage> {
           }
         }
       },
-    ) as StreamSubscription<List<Device>>?;
+    ) as StreamSubscription<List<Device>>? ;
 
     // Optionally, you can automatically connect to the first available device
     // Or handle multiple connections if needed
   }
 
+
+
   /// Shows a pairing confirmation dialog when a device connects
   Future<void> _showPairingConfirmationDialog(Device device) async {
-    if (!mounted) {
+    if (!mounted || _bluetoothService == null) {
       return;
     }
 
@@ -186,7 +194,7 @@ class GamePageState extends State<GamePage> {
     } else {
       logger.i("Pairing canceled with ${device.deviceName}");
       // Disconnect if user cancels pairing
-      await _bluetoothService.disconnect();
+      await _bluetoothService!.disconnect();
       setState(() {
         _bluetoothStatus = "Pairing canceled";
       });
@@ -198,8 +206,11 @@ class GamePageState extends State<GamePage> {
     // Dispose Bluetooth resources
     _bluetoothMoveSubscription?.cancel();
     _nearbyStateSubscription?.cancel();
-    _bluetoothService.disconnect();
-    _bluetoothService.dispose();
+
+    if (_bluetoothService != null) {
+      _bluetoothService!.disconnect();
+      _bluetoothService!.dispose();
+    }
 
     super.dispose();
   }

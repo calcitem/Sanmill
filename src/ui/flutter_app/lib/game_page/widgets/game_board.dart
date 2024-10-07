@@ -53,6 +53,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
+  // Bluetooth specific
+  BluetoothDeviceType? btDevType;
   StreamSubscription<String>? _bluetoothMoveSubscription;
 
   @override
@@ -79,11 +81,14 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
     GameController().animationManager = animationManager;
 
+
+
     // Listen for incoming Bluetooth moves if in Bluetooth game mode
     if (GameController().gameInstance.gameMode ==
         GameMode.humanVsHumanBluetooth) {
+      btDevType = DB().generalSettings.aiMovesFirst? BluetoothDeviceType.browser : BluetoothDeviceType.advertiser;
       _bluetoothMoveSubscription =
-          BluetoothService.instance.moveStream.listen((String moveStr) {
+          BluetoothService.createInstance(btDevType)!.moveStream.listen((String moveStr) {
         if (moveStr != null) {
           logger
               .i("${GameBoard._logTag} Received move from opponent: $moveStr");
@@ -345,7 +350,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     // TODO(BT): Implement the logic to send the move over Bluetooth and receive the opponent's move
     logger.i("${GameBoard._logTag} Sending move $moveStr over Bluetooth");
     // Send the move to the opponent via Bluetooth
-    await BluetoothService.instance.sendMove(moveStr);
+    await BluetoothService.createInstance(btDevType)!.sendMove(moveStr);
 
     // Optionally, you can add a delay or waiting mechanism if needed
     logger.i("${GameBoard._logTag} Sent move $moveStr over Bluetooth");

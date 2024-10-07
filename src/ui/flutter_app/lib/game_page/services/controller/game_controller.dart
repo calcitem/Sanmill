@@ -94,7 +94,7 @@ class GameController {
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   // Bluetooth Service instance
-  final BluetoothService _bluetoothService = BluetoothService.instance;
+  BluetoothService? _bluetoothService;
 
   // Subscription to Bluetooth move stream
   StreamSubscription<String>? _bluetoothMoveSubscription;
@@ -132,9 +132,9 @@ class GameController {
 
     // Disconnect Bluetooth if resetting the game
     // TODO(BT): Need it?
-    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth) {
+    if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth && _bluetoothService != null) {
       _bluetoothMoveSubscription?.cancel();
-      _bluetoothService.disconnect();
+      _bluetoothService?.disconnect();
     }
 
     GameController().engine.stopSearching();
@@ -178,9 +178,12 @@ class GameController {
     // Initialize the Bluetooth service
     // await _bluetoothService.enableBluetooth(); // TODO(BT): Right?
 
+    if (_bluetoothService == null) {
+      return;
+    }
     // Listen to incoming moves
     _bluetoothMoveSubscription =
-        _bluetoothService.moveStream.listen((String move) {
+        _bluetoothService!.moveStream.listen((String move) {
       logger.i("$_logTag Received move from opponent: $move");
       applyOpponentMove(move);
     });
@@ -499,8 +502,12 @@ class GameController {
 
     // Disconnect Bluetooth and cancel subscriptions
     // TODO(BT): Need it?
-    _bluetoothMoveSubscription?.cancel();
-    _bluetoothService.disconnect();
+    if (_bluetoothMoveSubscription != null) {
+      _bluetoothMoveSubscription!.cancel();
+    }
+    if (_bluetoothService != null) {
+      _bluetoothService!.disconnect();
+    }
 
     setupPositionNotifier.dispose();
     gameResultNotifier.dispose();

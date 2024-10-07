@@ -5,13 +5,23 @@ import 'package:flutter_nearby_connections/flutter_nearby_connections.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../shared/services/logger.dart';
 
+enum BluetoothDeviceType { advertiser, browser }
+
 /// BluetoothService handles Bluetooth connectivity, permissions, sending, and receiving data using flutter_nearby_connections.
 class BluetoothService {
   // Singleton pattern to ensure only one instance of BluetoothService exists.
-  BluetoothService._privateConstructor();
+  BluetoothService._privateConstructor(this.deviceType);
+
   static const String _logTag = "[BluetoothService]";
-  static final BluetoothService instance =
-      BluetoothService._privateConstructor();
+
+  final BluetoothDeviceType deviceType;
+
+  static BluetoothService? createInstance(BluetoothDeviceType? type) {
+    if (type == null) {
+      return null;
+    }
+    return BluetoothService._privateConstructor(type);
+  }
 
   // NearbyService instance from flutter_nearby_connections
   final NearbyService _nearbyService = NearbyService();
@@ -43,9 +53,9 @@ class BluetoothService {
     // Request necessary permissions
     await _requestNearbyPermissions();
 
-    bool _isNearbyServiceRunning = false;
+    bool isNearbyServiceRunning = false;
 
-    final permissionStatus = await Permission.bluetoothScan.status;
+    final PermissionStatus permissionStatus = await Permission.bluetoothScan.status;
     logger.i("Bluetooth Scan Permission: $permissionStatus");
 
     // Initialize NearbyService
@@ -56,11 +66,11 @@ class BluetoothService {
           "Mill_${DateTime.now().millisecondsSinceEpoch}", // Unique device name
       callback: (bool isRunning) {
         logger.i("NearbyService callback triggered: isRunning = $isRunning");
-        _isNearbyServiceRunning = isRunning;
+        isNearbyServiceRunning = isRunning;
         if (isRunning) {
-          logger.i("NearbyService started successfully.");
+          logger.i("NearbyService initialized.");
         } else {
-          logger.e("NearbyService failed to start.");
+          logger.e("NearbyService failed to initialize.");
         }
       },
     );
@@ -80,27 +90,19 @@ class BluetoothService {
       },
     );
 
-    // Start advertising and browsing
-    try {
-      logger.i("Attempting to start advertising peer...");
-      if (_isNearbyServiceRunning) {
-        await Future.delayed(const Duration(seconds: 20));
-        await await _nearbyService.startAdvertisingPeer();
+    // Start advertising or browsing
+    if (isNearbyServiceRunning) {
+      if (deviceType == BluetoothDeviceType.advertiser) {
+        logger.i("Attempting to start advertising peer...");
+        await _nearbyService.startAdvertisingPeer();
         logger.i("Started advertising peer successfully.");
       } else {
-        logger.e("NearbyService failed to start, aborting advertising/browsing.");
+        logger.i("Attempting to start browsing for peers...");
+        await _nearbyService.startBrowsingForPeers();
+        logger.i("Started browsing for peers successfully.");
       }
-    } catch (e) {
-      logger.e("Error starting advertising peer: $e");
-    }
-
-    try {
-      await Future.delayed(const Duration(seconds: 20));
-      logger.i("Attempting to start browsing for peers...");
-      await _nearbyService.startBrowsingForPeers();
-      logger.i("Started browsing for peers successfully.");
-    } catch (e) {
-      logger.e("Error starting browsing for peers: $e");
+    } else {
+      logger.e("NearbyService failed to start, aborting advertising/browsing.");
     }
 
   }
