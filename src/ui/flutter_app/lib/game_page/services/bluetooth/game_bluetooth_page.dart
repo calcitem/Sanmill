@@ -298,6 +298,10 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
 
     discoveryStream =
         _bluetoothService?.startScan().listen((ScanResult result) {
+      logger.i('设备: ${result.device.platformName}');
+      logger.i('服务UUIDs: ${result.advertisementData.serviceUuids}');
+      logger.i('制造商数据: ${result.advertisementData.manufacturerData}');
+      logger.i('服务数据: ${result.advertisementData.serviceData}');
       if (_availableDevices.every((ScanResult element) =>
           element.device.remoteId != result.device.remoteId)) {
         setState(() {

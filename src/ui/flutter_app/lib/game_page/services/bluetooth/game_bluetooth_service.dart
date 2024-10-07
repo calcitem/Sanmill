@@ -35,6 +35,10 @@ class GameBluetoothService {
   static const EventChannel _advertiseEventChannel =
       EventChannel('com.calcitem.sanmill/advertise_events');
 
+  static const String serviceUuid = '123e4567-e89b-12d3-a456-426614174000';
+  static const String characteristicUuid =
+      '123e4567-e89b-12d3-a456-426614174001';
+
   // The role of the device (advertiser or connector)
   final DeviceRole role;
 
@@ -86,7 +90,10 @@ class GameBluetoothService {
       logger.w("$_logTag This device is not set as connector.");
       return const Stream<ScanResult>.empty();
     }
-    FlutterBluePlus.startScan(timeout: const Duration(seconds: 4));
+    FlutterBluePlus.startScan(
+      timeout: const Duration(seconds: 5),
+      withServices: <Guid>[Guid(serviceUuid)],
+    );
     return FlutterBluePlus.scanResults.expand((List<ScanResult> results) {
       for (final ScanResult result in results) {
         final String deviceName = result.device.platformName.isNotEmpty
@@ -94,6 +101,13 @@ class GameBluetoothService {
             : 'Unknown device';
         logger.i(
             "Discovered ${result.device.remoteId} ($deviceName) with RSSI ${result.rssi}");
+        logger.i('发现设备: ${result.device.platformName}');
+        logger.i('服务UUIDs: ${result.advertisementData.serviceUuids}');
+        // 检查设备是否广播所需的服务UUID
+        if (result.advertisementData.serviceUuids.contains(Guid(serviceUuid))) {
+          logger.i('设备 ${result.device.platformName} 具有服务 UUID！');
+          // 继续连接或执行其他操作
+        }
       }
       return results;
     });
@@ -180,6 +194,9 @@ class GameBluetoothService {
   /// on specific characteristics and listening for data updates.
   Future<void> _discoverServices(BluetoothDevice device) async {
     try {
+      // Delay slightly to ensure the connection is stable before discovering services
+      await Future<void>.delayed(const Duration(seconds: 1));
+
       // Discover available services on the connected device
       final List<BluetoothService> services = await device.discoverServices();
 
@@ -196,47 +213,55 @@ class GameBluetoothService {
               "$_logTag Found characteristic with UUID: ${characteristic.uuid}");
 
           // Check if the characteristic matches the target UUID
-          if (characteristic.uuid.toString() ==
-              '123e4567-e89b-12d3-a456-426614174000') {
+          if (characteristic.uuid.toString() == characteristicUuid) {
             _writeCharacteristic = characteristic;
 
-            // Attempt to enable notifications on the characteristic
-            try {
-              notificationFutures.add(characteristic.setNotifyValue(true));
+            // Check if the characteristic supports notifications or indications
+            final CharacteristicProperties properties = characteristic.properties;
+            if (properties.notify || properties.indicate) {
+              try {
+                // Enable notifications on the characteristic
+                await characteristic.setNotifyValue(true);
 
-              // Listen for incoming data on the characteristic's stream
-              characteristic.lastValueStream.listen(
-                _onDataReceived,
-                onError: (error) {
+                // Check if notifications were successfully enabled
+                if (characteristic.isNotifying) {
+                  // Listen for incoming data on the characteristic's value stream
+                  characteristic.lastValueStream.listen(
+                    _onDataReceived,
+                    onError: (error) {
+                      logger.e("$_logTag Error in receiving data: $error");
+                    },
+                  );
+
+                  logger.i(
+                      "$_logTag Notifications enabled and listening on characteristic ${characteristic.uuid}");
+                } else {
                   logger.e(
-                      "$_logTag Error in receiving data for ${characteristic.uuid}: $error");
-                },
-                cancelOnError: true,
-              );
-
-              logger.i(
-                  "$_logTag Subscribed to characteristic ${characteristic.uuid}");
-            } catch (e) {
-              logger.e(
-                  "$_logTag Failed to enable notifications for ${characteristic.uuid}: $e");
+                      "$_logTag Failed to enable notifications for characteristic ${characteristic.uuid}");
+                }
+              } catch (e) {
+                logger.e(
+                    "$_logTag Exception when enabling notifications for ${characteristic.uuid}: $e");
+              }
+            } else {
+              logger.w(
+                  "$_logTag Characteristic ${characteristic.uuid} does not support notifications or indications.");
             }
           }
         }
       }
-
-      // Await all notification setups to complete
-      await Future.wait(notificationFutures);
 
       // Check if the write characteristic was successfully found and set
       if (_writeCharacteristic == null) {
         logger.w("$_logTag Desired characteristic not found on device.");
       }
     } catch (e) {
+      // Handle cases where the device disconnects before service discovery completes
       if (e.toString().contains("device is disconnected")) {
         logger.w(
             "$_logTag Device disconnected before service discovery. Reconnecting...");
         try {
-          // Reconnect to the device with a short delay
+          // Reconnect to the device after a short delay
           await Future.delayed(const Duration(seconds: 2));
           await device.connect();
           await _discoverServices(device); // Retry discovering services
@@ -356,7 +381,7 @@ class GameBluetoothService {
       logger.i("$_logTag Advertise event received: $event");
       // If the event contains data, process it with _onDataReceived
       if (event is String && event.startsWith("Received data:")) {
-        final data = event.replaceFirst("Received data: ", "");
+        final String data = event.replaceFirst("Received data: ", "");
         _onDataReceived(utf8.encode(data));
       }
       if (event.toString().startsWith("Device connected:")) {

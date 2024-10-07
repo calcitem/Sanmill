@@ -31,6 +31,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Build;
+import java.util.Arrays;
 import android.util.Log;
 
 import java.io.File;
@@ -54,6 +55,7 @@ import android.bluetooth.le.BluetoothLeAdvertiser;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothGattServerCallback;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothProfile;
@@ -79,7 +81,9 @@ public class MainActivity extends FlutterActivity {
     private final String TAG_XCRASH = "xCrash";
 
     // Define UUID for advertising (replace with your own UUID)
-    private static final String SERVICE_UUID = "123e4567-e89b-12d3-a456-426614174000";
+    private static final String SERVICE_UUID =        "123e4567-e89b-12d3-a456-426614174000";
+    private static final String CHARACTERISTIC_UUID = "123e4567-e89b-12d3-a456-426614174001";
+    private static final String CCCD_UUID           = "00002902-0000-1000-8000-00805f9b34fb";
 
     // Handler to post tasks to the main thread
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -148,16 +152,32 @@ public class MainActivity extends FlutterActivity {
 
             // Add characteristics to the service
             BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(
-                UUID.fromString(SERVICE_UUID),
+                UUID.fromString(CHARACTERISTIC_UUID),
                 BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE | BluetoothGattCharacteristic.PROPERTY_NOTIFY,
                 BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
 
             characteristic.setWriteType(BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT);
 
-            service.addCharacteristic(characteristic);
+            BluetoothGattDescriptor cccd = new BluetoothGattDescriptor(
+                UUID.fromString(CCCD_UUID),
+                BluetoothGattDescriptor.PERMISSION_READ | BluetoothGattDescriptor.PERMISSION_WRITE
+            );
+            characteristic.addDescriptor(cccd);
+
+            boolean characteristicAdded = service.addCharacteristic(characteristic);
+            if (characteristicAdded) {
+                Log.i("GATT", "Characteristic added successfully: " + CHARACTERISTIC_UUID);
+            } else {
+                Log.e("GATT", "Failed to add characteristic: " + CHARACTERISTIC_UUID);
+            }
 
             // Add the service to the GATT server
-            gattServer.addService(service);
+            boolean serviceAdded = gattServer.addService(service);
+            if (serviceAdded) {
+                Log.i("GATT", "Service added successfully: " + SERVICE_UUID);
+            } else {
+                Log.e("GATT", "Failed to add service: " + SERVICE_UUID);
+            }
 
             // Define advertise settings
             AdvertiseSettings settings = new AdvertiseSettings.Builder()
@@ -217,7 +237,7 @@ public class MainActivity extends FlutterActivity {
             // Retrieve the characteristic associated with the specified UUID
             BluetoothGattCharacteristic characteristic = gattServer
                     .getService(UUID.fromString(SERVICE_UUID))
-                    .getCharacteristic(UUID.fromString(SERVICE_UUID));
+                    .getCharacteristic(UUID.fromString(CHARACTERISTIC_UUID));
 
             // Set the value for the characteristic
             characteristic.setValue(move.getBytes(StandardCharsets.UTF_8));
@@ -298,6 +318,39 @@ public class MainActivity extends FlutterActivity {
             }
 
         }
+
+        @Override
+        public void onServiceAdded(int status, BluetoothGattService service) {
+            super.onServiceAdded(status, service);
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                Log.i("GATT", "Service added successfully: " + service.getUuid().toString());
+            } else {
+                Log.e("GATT", "Failed to add service: " + service.getUuid().toString() + ", status: " + status);
+            }
+        }
+
+        @Override
+        public void onDescriptorWriteRequest(BluetoothDevice device, int requestId,
+                                             BluetoothGattDescriptor descriptor,
+                                             boolean preparedWrite, boolean responseNeeded,
+                                             int offset, byte[] value) {
+            super.onDescriptorWriteRequest(device, requestId, descriptor, preparedWrite, responseNeeded, offset, value);
+
+            Log.i("GATT", "onDescriptorWriteRequest for descriptor: " + descriptor.getUuid().toString());
+
+            if (descriptor.getUuid().equals(UUID.fromString(CCCD_UUID))) {
+                if (Arrays.equals(value, BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE)) {
+                    Log.i("GATT", "Notifications enabled");
+                } else if (Arrays.equals(value, BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE)) {
+                    Log.i("GATT", "Notifications disabled");
+                }
+                descriptor.setValue(value);
+            }
+
+            if (responseNeeded) {
+                gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
+            }
+        }
     };
 
     @Override
@@ -369,8 +422,13 @@ public class MainActivity extends FlutterActivity {
                 result.success("Advertising stopped");
             } else if (call.method.equals("sendMove")) {
                 String move = call.argument("move");
-                sendMoveToConnectedDevice(move);
-                result.success("Move sent: " + move);
+                if (move == null) {
+                    Log.i("GATT", "Move is null, not sending.");
+                    result.success("Move is null, not sending.");
+                } else {
+                    sendMoveToConnectedDevice(move);
+                    result.success("Move sent: " + move);
+                }
             } else {
                 result.notImplemented();
             }
