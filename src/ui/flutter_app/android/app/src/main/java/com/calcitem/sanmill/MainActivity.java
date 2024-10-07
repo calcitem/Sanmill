@@ -50,6 +50,14 @@ import android.bluetooth.le.AdvertiseCallback;
 import android.bluetooth.le.AdvertiseData;
 import android.bluetooth.le.AdvertiseSettings;
 import android.bluetooth.le.BluetoothLeAdvertiser;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothGattServerCallback;
+import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothProfile;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
 import android.os.ParcelUuid;
 
 public class MainActivity extends FlutterActivity {
@@ -58,6 +66,7 @@ public class MainActivity extends FlutterActivity {
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
     private static final String ADVERTISE_CHANNEL = "com.calcitem.sanmill/advertise";
     private BluetoothLeAdvertiser bluetoothLeAdvertiser;
+    private BluetoothGattServer gattServer;
 
     private final String TAG_XCRASH = "xCrash";
 
@@ -79,9 +88,24 @@ public class MainActivity extends FlutterActivity {
     };
 
     private void startAdvertising() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
             bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+
+            // Set up GATT server
+            gattServer = bluetoothManager.openGattServer(this, gattServerCallback);
+            BluetoothGattService service = new BluetoothGattService(UUID.fromString(SERVICE_UUID), BluetoothGattService.SERVICE_TYPE_PRIMARY);
+
+            // Add characteristics to the service
+            BluetoothGattCharacteristic characteristic = new BluetoothGattCharacteristic(
+                    UUID.fromString(SERVICE_UUID),
+                    BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_WRITE,
+                    BluetoothGattCharacteristic.PERMISSION_READ | BluetoothGattCharacteristic.PERMISSION_WRITE);
+            service.addCharacteristic(characteristic);
+
+            // Add the service to the GATT server
+            gattServer.addService(service);
 
             // Define advertise settings
             AdvertiseSettings settings = new AdvertiseSettings.Builder()
@@ -90,17 +114,17 @@ public class MainActivity extends FlutterActivity {
                     .setConnectable(true)
                     .build();
 
-            // Define advertise data - omit UUID to save space
+            // Define advertise data
             AdvertiseData advertiseData = new AdvertiseData.Builder()
                     .setIncludeDeviceName(true)
                     .build();
 
-            // Define scan response data - add UUID here
+            // Define scan response data
             AdvertiseData scanResponseData = new AdvertiseData.Builder()
                     .addServiceUuid(new ParcelUuid(UUID.fromString(SERVICE_UUID)))
                     .build();
 
-            // Start advertising with both advertise data and scan response data
+            // Start advertising
             if (bluetoothLeAdvertiser != null) {
                 bluetoothLeAdvertiser.startAdvertising(settings, advertiseData, scanResponseData, advertiseCallback);
             } else {
@@ -115,7 +139,47 @@ public class MainActivity extends FlutterActivity {
         if (bluetoothLeAdvertiser != null) {
             bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
         }
+        if (gattServer != null) {
+            gattServer.close();
+        }
     }
+    private BluetoothGattServerCallback gattServerCallback = new BluetoothGattServerCallback() {
+        @Override
+        public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
+            super.onConnectionStateChange(device, status, newState);
+            if (newState == BluetoothProfile.STATE_CONNECTED) {
+                Log.i("GATT", "Device connected: " + device.getAddress());
+            } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+                Log.i("GATT", "Device disconnected: " + device.getAddress());
+            }
+        }
+
+        @Override
+        public void onCharacteristicReadRequest(BluetoothDevice device, int requestId,
+                                                int offset, BluetoothGattCharacteristic characteristic) {
+            super.onCharacteristicReadRequest(device, requestId, offset, characteristic);
+            // Handle read request
+            Log.i("GATT", "onCharacteristicReadRequest");
+            byte[] value = "Hello from server".getBytes(StandardCharsets.UTF_8);
+            gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, value);
+        }
+
+        @Override
+        public void onCharacteristicWriteRequest(BluetoothDevice device, int requestId,
+                                                 BluetoothGattCharacteristic characteristic,
+                                                 boolean preparedWrite, boolean responseNeeded,
+                                                 int offset, byte[] value) {
+            super.onCharacteristicWriteRequest(device, requestId, characteristic, preparedWrite,
+                    responseNeeded, offset, value);
+            // Handle write request
+            String received = new String(value, StandardCharsets.UTF_8);
+            Log.i("GATT", "onCharacteristicWriteRequest, value: " + received);
+
+            if (responseNeeded) {
+                gattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, offset, null);
+            }
+        }
+    };
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
