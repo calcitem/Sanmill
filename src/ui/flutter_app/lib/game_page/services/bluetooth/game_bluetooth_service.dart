@@ -31,6 +31,12 @@ class GameBluetoothService {
       StreamController<String>.broadcast();
   Stream<String> get moveStream => _moveController.stream;
 
+  // StreamController for device connection events
+  final StreamController<BluetoothDevice> _deviceConnectedController =
+      StreamController<BluetoothDevice>.broadcast();
+  Stream<BluetoothDevice> get onDeviceConnected =>
+      _deviceConnectedController.stream;
+
   /// Enables Bluetooth if not already enabled.
   Future<void> enableBluetooth() async {
     final bool isOn = await FlutterBluePlus.isSupported;
@@ -96,6 +102,9 @@ class GameBluetoothService {
       } else {
         logger.w("$_logTag Device is not connected.");
       }
+
+      _deviceConnectedController
+          .add(device); // Notify listeners of the connection
 
       // Discover services after connection.
       await _discoverServices(device);
@@ -221,6 +230,7 @@ class GameBluetoothService {
   void dispose() {
     stopAdvertising();
     _moveController.close();
+    _deviceConnectedController.close();
     disconnect();
     logger.i("$_logTag BluetoothService disposed.");
   }

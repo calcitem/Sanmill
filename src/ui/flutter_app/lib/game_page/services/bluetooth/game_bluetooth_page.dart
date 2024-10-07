@@ -23,12 +23,34 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
   String? _currentRoomId;
   List<ScanResult> _availableDevices = <ScanResult>[];
   late ScanResult? _selectedDevice;
+  // New variables to track connected device and advertising status
+  BluetoothDevice? _connectedDevice;
+  Timer? _advertisingTimer;
+  int _advertisingTimeout = 60; // Advertising timeout in seconds
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _showRoomSelectionDialog();
+    });
+
+    // Subscribe to connection changes from the Bluetooth service
+    _bluetoothService.onDeviceConnected.listen((BluetoothDevice device) {
+      // Update the UI when a device connects
+      setState(() {
+        _isBluetoothConnected = true;
+        _connectedDevice = device;
+        _bluetoothStatus =
+            "Connected to ${device.platformName.isNotEmpty ? device.platformName : 'Unknown Device'}";
+      });
+
+      // Stop advertising when a device connects
+      _bluetoothService.stopAdvertising();
+      _advertisingTimer?.cancel();
+
+      // Show a dialog to notify the user that a device has connected
+      _showDeviceConnectedDialog(device);
     });
   }
 
@@ -37,6 +59,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
     _bluetoothMoveSubscription?.cancel();
     _bluetoothService.disconnect();
     _bluetoothService.dispose();
+    _advertisingTimer?.cancel();
     super.dispose();
   }
 
@@ -51,10 +74,16 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(_bluetoothStatus),
-            if (_isBluetoothConnected && _selectedDevice != null)
+            if (_isBluetoothConnected && _connectedDevice != null)
               Text(
-                "Connected to: ${_selectedDevice!.device.platformName.isNotEmpty ? _selectedDevice!.device.platformName : "Unknown"}",
+                "Connected to: ${_connectedDevice!.platformName.isNotEmpty ? _connectedDevice!.platformName : "Unknown"}",
                 style: const TextStyle(color: Colors.green, fontSize: 16),
+              ),
+            if (!_isBluetoothConnected &&
+                _bluetoothStatus.contains("Advertising"))
+              Text(
+                "Advertising... Remaining time: $_advertisingTimeout s",
+                style: const TextStyle(color: Colors.blue, fontSize: 16),
               ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -81,6 +110,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       _isBluetoothConnected = false;
       _bluetoothStatus = "Disconnected";
       _selectedDevice = null;
+      _connectedDevice = null;
     });
   }
 
@@ -131,7 +161,7 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
           return AlertDialog(
             title: const Text("Create Room"),
             content: Text(
-                "Your Room ID: $_currentRoomId\n\nCreate Room to waiting for opponent to connect..."),
+                "Your Room ID: $_currentRoomId\n\nCreating room and waiting for opponent to connect..."),
             actions: <Widget>[
               TextButton(
                 child: const Text("Continue"),
@@ -151,10 +181,32 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
 
       // Start advertising to allow other devices to discover
       await _bluetoothService.startAdvertising();
+
+      // Start the advertising timeout timer
+      _startAdvertisingTimer();
     } catch (e) {
       logger.e("Error creating room: $e");
       _showErrorDialog("Failed to create room. Please try again.");
     }
+  }
+
+  void _startAdvertisingTimer() {
+    _advertisingTimeout = 60; // Reset timeout
+    _advertisingTimer?.cancel();
+    _advertisingTimer =
+        Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (_advertisingTimeout == 0) {
+        timer.cancel();
+        _bluetoothService.stopAdvertising();
+        setState(() {
+          _bluetoothStatus = "Advertising timed out. No opponent connected.";
+        });
+      } else {
+        setState(() {
+          _advertisingTimeout--;
+        });
+      }
+    });
   }
 
   Future<void> _handleJoinRoom() async {
@@ -251,9 +303,13 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       setState(() {
         _isBluetoothConnected = true;
         _bluetoothStatus = "Connected to ${device.platformName}";
+        _connectedDevice = device;
       });
 
-      Navigator.of(context).pop(true);
+      // Show a dialog to notify the user that the connection is successful
+      _showDeviceConnectedDialog(device);
+
+      // Navigate to the game page or continue with the game logic here
     } catch (e) {
       logger.e("Failed to connect to device: $e");
       _showErrorDialog("Failed to connect to device: $e");
@@ -261,6 +317,28 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
         _bluetoothStatus = "Connection failed";
       });
     }
+  }
+
+  Future<void> _showDeviceConnectedDialog(BluetoothDevice device) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Device Connected"),
+          content: Text(
+              "Successfully connected to ${device.platformName.isNotEmpty ? device.platformName : 'Unknown Device'}."),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Proceed to the game or next step
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> _showErrorDialog(String message) async {
