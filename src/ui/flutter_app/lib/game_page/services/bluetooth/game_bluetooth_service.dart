@@ -49,6 +49,7 @@ class GameBluetoothService {
 
   // Flag to track if advertising is active
   bool _isAdvertising = false;
+  Timer? _advertisingTimeoutTimer;
 
   /// Enables Bluetooth if not already enabled.
   Future<void> enableBluetooth() async {
@@ -245,6 +246,64 @@ class GameBluetoothService {
     }
   }
 
+  /// Requests the necessary Bluetooth permissions for Android.
+  Future<void> requestBluetoothPermissions() async {
+    // Request relevant permissions for Bluetooth operations.
+    await <Permission>[
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.bluetoothAdvertise,
+      Permission.location,
+    ].request();
+  }
+
+
+  /// Starts BLE advertising with timeout handling
+  Future<void> startAdvertising() async {
+    if (role != DeviceRole.advertiser) {
+      logger.w("$_logTag This device is not set as advertiser.");
+      return;
+    }
+
+    if (_isAdvertising) {
+      logger.w("$_logTag Advertising is already active.");
+      return;
+    }
+    try {
+      await _advertiseChannel.invokeMethod('startAdvertising');
+      _isAdvertising = true;
+      logger.i("$_logTag Advertising started.");
+
+      // Set up a timeout to stop advertising automatically if no connection is made.
+      _advertisingTimeoutTimer?.cancel();
+      _advertisingTimeoutTimer = Timer(const Duration(seconds: 60), () {
+        if (_isAdvertising) {
+          stopAdvertising();
+          logger.i("$_logTag Advertising stopped due to timeout.");
+        }
+      });
+    } on PlatformException catch (e) {
+      _isAdvertising = false;
+      logger.e("$_logTag Failed to start advertising: ${e.message}");
+    }
+  }
+
+  /// Stops BLE advertising by invoking a native Android method.
+  Future<void> stopAdvertising() async {
+    if (!_isAdvertising) {
+      logger.w("$_logTag Advertising is not active.");
+      return;
+    }
+    try {
+      await _advertiseChannel.invokeMethod('stopAdvertising');
+      _isAdvertising = false;
+      _advertisingTimeoutTimer?.cancel(); // Cancel any active timeout timer
+      logger.i("$_logTag Advertising stopped.");
+    } on PlatformException catch (e) {
+      logger.e("$_logTag Failed to stop advertising: ${e.message}");
+    }
+  }
+
   /// Disconnects from the currently connected Bluetooth device.
   Future<void> disconnect() async {
     if (_connectedDevice != null) {
@@ -262,56 +321,10 @@ class GameBluetoothService {
     }
   }
 
-  /// Requests the necessary Bluetooth permissions for Android.
-  Future<void> requestBluetoothPermissions() async {
-    // Request relevant permissions for Bluetooth operations.
-    await <Permission>[
-      Permission.bluetoothScan,
-      Permission.bluetoothConnect,
-      Permission.bluetoothAdvertise,
-      Permission.location,
-    ].request();
-  }
-
-  /// Starts BLE advertising by invoking a native Android method, if role is Advertiser.
-  Future<void> startAdvertising() async {
-    if (role != DeviceRole.advertiser) {
-      logger.w("$_logTag This device is not set as advertiser.");
-      return;
-    }
-
-    if (_isAdvertising) {
-      logger.w("$_logTag Advertising is already active.");
-      return;
-    }
-    try {
-      await _advertiseChannel.invokeMethod('startAdvertising');
-      _isAdvertising = true;
-      logger.i("$_logTag Advertising started.");
-    } on PlatformException catch (e) {
-      _isAdvertising = false;
-      logger.e("$_logTag Failed to start advertising: ${e.message}");
-    }
-  }
-
-  /// Stops BLE advertising by invoking a native Android method.
-  Future<void> stopAdvertising() async {
-    if (!_isAdvertising) {
-      logger.w("$_logTag Advertising is not active.");
-      return;
-    }
-    try {
-      await _advertiseChannel.invokeMethod('stopAdvertising');
-      _isAdvertising = false;
-      logger.i("$_logTag Advertising stopped.");
-    } on PlatformException catch (e) {
-      logger.e("$_logTag Failed to stop advertising: ${e.message}");
-    }
-  }
-
-  /// Disposes the Bluetooth service by closing the stream controller and disconnecting Bluetooth.
+  /// Disposes the Bluetooth service by closing the stream controller, stopping advertising, and disconnecting Bluetooth.
   void dispose() {
     stopAdvertising();
+    _advertisingTimeoutTimer?.cancel();
     _moveController.close();
     _deviceConnectedController.close();
     disconnect();
