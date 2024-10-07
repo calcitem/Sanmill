@@ -90,15 +90,19 @@ public class MainActivity extends FlutterActivity {
                     .setConnectable(true)
                     .build();
 
-            // Define advertise data
-            AdvertiseData data = new AdvertiseData.Builder()
+            // Define advertise data - omit UUID to save space
+            AdvertiseData advertiseData = new AdvertiseData.Builder()
                     .setIncludeDeviceName(true)
+                    .build();
+
+            // Define scan response data - add UUID here
+            AdvertiseData scanResponseData = new AdvertiseData.Builder()
                     .addServiceUuid(new ParcelUuid(UUID.fromString(SERVICE_UUID)))
                     .build();
 
-            // Start advertising
+            // Start advertising with both advertise data and scan response data
             if (bluetoothLeAdvertiser != null) {
-                bluetoothLeAdvertiser.startAdvertising(settings, data, advertiseCallback);
+                bluetoothLeAdvertiser.startAdvertising(settings, advertiseData, scanResponseData, advertiseCallback);
             } else {
                 Log.e("BLE", "Bluetooth LE Advertiser not available");
             }

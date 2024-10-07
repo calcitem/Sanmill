@@ -261,6 +261,7 @@ class GameBluetoothService {
       _isAdvertising = true;
       logger.i("$_logTag Advertising started.");
     } on PlatformException catch (e) {
+      _isAdvertising = false;
       logger.e("$_logTag Failed to start advertising: ${e.message}");
     }
   }
