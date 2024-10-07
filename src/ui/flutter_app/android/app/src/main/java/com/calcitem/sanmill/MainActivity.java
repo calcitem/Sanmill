@@ -166,14 +166,21 @@ public class MainActivity extends FlutterActivity {
                     .setConnectable(true)
                     .build();
 
-            // Define advertise data
+            // Optionally include a shortened device name to reduce size
+            String deviceName = bluetoothAdapter.getName();
+            if (deviceName == null || deviceName.length() > 8) {
+                deviceName = "BLEDev"; // Short default name
+                bluetoothAdapter.setName(deviceName);
+            }
+
+            // Define advertise data and include the service UUID
             AdvertiseData advertiseData = new AdvertiseData.Builder()
                     .setIncludeDeviceName(true)
+                    .addServiceUuid(new ParcelUuid(UUID.fromString(SERVICE_UUID)))
                     .build();
 
-            // Define scan response data
+            // Since we moved the service UUID to the advertise data, we can leave scan response empty or use it for additional data
             AdvertiseData scanResponseData = new AdvertiseData.Builder()
-                    .addServiceUuid(new ParcelUuid(UUID.fromString(SERVICE_UUID)))
                     .build();
 
             // Start advertising
