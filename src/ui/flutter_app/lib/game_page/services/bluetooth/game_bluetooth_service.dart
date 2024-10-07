@@ -37,10 +37,18 @@ class GameBluetoothService {
   Stream<BluetoothDevice> get onDeviceConnected =>
       _deviceConnectedController.stream;
 
+  // Flag to track if advertising is active
+  bool _isAdvertising = false;
+
   /// Enables Bluetooth if not already enabled.
   Future<void> enableBluetooth() async {
-    final bool isOn = await FlutterBluePlus.isSupported;
-    if (!isOn) {
+    final bool isSupported = await FlutterBluePlus.isSupported;
+
+    // Use the adapterState stream to check if Bluetooth is on
+    final BluetoothAdapterState currentState =
+        await FlutterBluePlus.adapterState.first;
+
+    if (isSupported && currentState != BluetoothAdapterState.on) {
       try {
         await FlutterBluePlus.turnOn(timeout: 120);
         logger.i("$_logTag Bluetooth has been enabled.");
@@ -48,6 +56,8 @@ class GameBluetoothService {
         logger.e("$_logTag Failed to enable Bluetooth: $e");
         rethrow;
       }
+    } else if (!isSupported) {
+      logger.e("$_logTag Bluetooth is not supported on this device.");
     } else {
       logger.i("$_logTag Bluetooth is already enabled.");
     }
@@ -86,10 +96,29 @@ class GameBluetoothService {
       logger.i(
           "$_logTag Connecting to ${device.platformName} (${device.remoteId})");
 
+      // Stop advertising before attempting to connect to avoid conflicts
+      if (_isAdvertising) {
+        await stopAdvertising();
+      }
+
       // Establish connection to the Bluetooth device.
       await device.connect(timeout: const Duration(seconds: 15));
       _connectedDevice = device;
       logger.i("$_logTag Connected to ${device.platformName}");
+
+      // Listen for connection state changes to monitor disconnects.
+      device.connectionState.listen((BluetoothConnectionState state) {
+        logger.i("Connection state changed: $state");
+        if (state == BluetoothConnectionState.disconnected) {
+          logger.w("Device disconnected during operation.");
+          // Perform any necessary cleanup or reconnection here
+          _connectedDevice = null;
+          _writeCharacteristic = null;
+          // Optionally, you could attempt to reconnect automatically
+          // Uncomment the following line if you want auto-reconnect
+          // connect(device);
+        }
+      });
 
       // Log additional device information.
       logger.i("$_logTag Device Advertised Name: ${device.advName}");
@@ -103,8 +132,11 @@ class GameBluetoothService {
         logger.w("$_logTag Device is not connected.");
       }
 
-      _deviceConnectedController
-          .add(device); // Notify listeners of the connection
+      // Notify listeners of the connection
+      _deviceConnectedController.add(device);
+
+      // Optional delay to allow connection to stabilize before discovering services
+      await Future<void>.delayed(const Duration(seconds: 2));
 
       // Discover services after connection.
       await _discoverServices(device);
@@ -125,7 +157,7 @@ class GameBluetoothService {
           logger.i(
               "$_logTag Found characteristic with UUID: ${characteristic.uuid}");
 
-          // Replace 'YOUR_CHARACTERISTIC_UUID' with the actual UUID.
+          // Replace with your actual characteristic UUID
           if (characteristic.uuid.toString() ==
               '123e4567-e89b-12d3-a456-426614174000') {
             _writeCharacteristic = characteristic;
@@ -143,8 +175,20 @@ class GameBluetoothService {
         logger.w("$_logTag Desired characteristic not found on device.");
       }
     } catch (e) {
-      logger.e("$_logTag Error discovering services: $e");
-      rethrow;
+      if (e.toString().contains("device is disconnected")) {
+        logger.w(
+            "$_logTag Device disconnected before service discovery. Reconnecting...");
+        try {
+          await device.connect();
+          await _discoverServices(device);
+        } catch (reconnectError) {
+          logger.e("$_logTag Reconnection failed: $reconnectError");
+          rethrow;
+        }
+      } else {
+        logger.e("$_logTag Error discovering services: $e");
+        rethrow;
+      }
     }
   }
 
@@ -208,8 +252,13 @@ class GameBluetoothService {
 
   /// Starts BLE advertising by invoking a native Android method.
   Future<void> startAdvertising() async {
+    if (_isAdvertising) {
+      logger.w("$_logTag Advertising is already active.");
+      return;
+    }
     try {
       await _advertiseChannel.invokeMethod('startAdvertising');
+      _isAdvertising = true;
       logger.i("$_logTag Advertising started.");
     } on PlatformException catch (e) {
       logger.e("$_logTag Failed to start advertising: ${e.message}");
@@ -218,8 +267,13 @@ class GameBluetoothService {
 
   /// Stops BLE advertising by invoking a native Android method.
   Future<void> stopAdvertising() async {
+    if (!_isAdvertising) {
+      logger.w("$_logTag Advertising is not active.");
+      return;
+    }
     try {
       await _advertiseChannel.invokeMethod('stopAdvertising');
+      _isAdvertising = false;
       logger.i("$_logTag Advertising stopped.");
     } on PlatformException catch (e) {
       logger.e("$_logTag Failed to stop advertising: ${e.message}");
