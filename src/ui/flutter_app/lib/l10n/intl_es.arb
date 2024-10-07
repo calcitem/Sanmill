@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Coloc.",
+  "placing": "Colocar",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Mov.",
+  "moving": "Mover",
   "@moving": {
     "description": "Moving"
   },
@@ -1460,13 +1460,13 @@
   "@imported": {},
   "boardImage": "Imagen del tablero",
   "@boardImage": {},
-  "autumnLeaves": "Hojas de Otoño",
+  "autumnLeaves": "Hojas en otoño",
   "@autumnLeaves": {},
   "legendaryLand": "Tierra legendaria",
   "@legendaryLand": {},
   "vignetteEffect": "Efecto viñeta",
   "@vignetteEffect": {},
-  "promptMakeToolbarTransparent": "¿Te gustaría hacer que la barra de herramientas sea completamente transparente cuando se establece una imagen de fondo del tablero?",
+  "promptMakeToolbarTransparent": "¿Quieres que la barra de herramientas sea completamente transparente cuando se establece una imagen de fondo?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Activar vibración en el juego",
   "@vibration": {}
