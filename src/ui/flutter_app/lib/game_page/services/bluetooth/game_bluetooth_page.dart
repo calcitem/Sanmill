@@ -18,12 +18,11 @@ class GameBluetoothPage extends StatefulWidget {
 class GameBluetoothPageState extends State<GameBluetoothPage> {
   final GameBluetoothService _bluetoothService = GameBluetoothService.instance;
   StreamSubscription<String>? _bluetoothMoveSubscription;
-  bool _isBluetoothConnected = false; // Used to track connection status
+  bool _isBluetoothConnected = false;
   String _bluetoothStatus = "Disconnected";
   String? _currentRoomId;
-  List<ScanResult> _availableDevices =
-      <ScanResult>[]; // Update type to ScanResult
-  late ScanResult? _selectedDevice; // Used to store selected device for pairing
+  List<ScanResult> _availableDevices = <ScanResult>[];
+  late ScanResult? _selectedDevice;
 
   @override
   void initState() {
@@ -147,6 +146,9 @@ class GameBluetoothPageState extends State<GameBluetoothPage> {
       setState(() {
         _bluetoothStatus = "Room created. Waiting for opponent to connect.";
       });
+
+      // Start advertising to allow other devices to discover
+      await _bluetoothService.startAdvertising();
     } catch (e) {
       logger.e("Error creating room: $e");
       _showErrorDialog("Failed to create room. Please try again.");

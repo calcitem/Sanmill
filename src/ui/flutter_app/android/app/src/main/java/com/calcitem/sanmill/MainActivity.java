@@ -43,17 +43,75 @@ import xcrash.TombstoneParser;
 import xcrash.XCrash;
 import xcrash.ICrashCallback;
 
+// Import Bluetooth libraries
+import java.util.UUID;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.le.AdvertiseCallback;
+import android.bluetooth.le.AdvertiseData;
+import android.bluetooth.le.AdvertiseSettings;
+import android.bluetooth.le.BluetoothLeAdvertiser;
+import android.os.ParcelUuid;
+
 public class MainActivity extends FlutterActivity {
 
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
+    private static final String ADVERTISE_CHANNEL = "com.calcitem.sanmill/advertise";
+    private BluetoothLeAdvertiser bluetoothLeAdvertiser;
 
     private final String TAG_XCRASH = "xCrash";
 
-    // You do not need to override onCreate() in order to invoke
-    // GeneratedPluginRegistrant. Flutter now does that on your behalf.
 
-    // ...retain whatever custom code you had from before (if any).
+    // Define UUID for advertising (replace with your own UUID)
+    private static final String SERVICE_UUID = "abcd1234-5678-90ab-cdef12345678";
+
+    // BLE Advertise callback
+    private final AdvertiseCallback advertiseCallback = new AdvertiseCallback() {
+        @Override
+        public void onStartSuccess(AdvertiseSettings settingsInEffect) {
+            Log.i("BLE", "Advertising started successfully");
+        }
+
+        @Override
+        public void onStartFailure(int errorCode) {
+            Log.e("BLE", "Advertising failed with error code: " + errorCode);
+        }
+    };
+
+    private void startAdvertising() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
+            bluetoothLeAdvertiser = bluetoothAdapter.getBluetoothLeAdvertiser();
+
+            // Define advertise settings
+            AdvertiseSettings settings = new AdvertiseSettings.Builder()
+                    .setAdvertiseMode(AdvertiseSettings.ADVERTISE_MODE_LOW_LATENCY)
+                    .setTxPowerLevel(AdvertiseSettings.ADVERTISE_TX_POWER_HIGH)
+                    .setConnectable(true)
+                    .build();
+
+            // Define advertise data
+            AdvertiseData data = new AdvertiseData.Builder()
+                    .setIncludeDeviceName(true)
+                    .addServiceUuid(new ParcelUuid(UUID.fromString(SERVICE_UUID)))
+                    .build();
+
+            // Start advertising
+            if (bluetoothLeAdvertiser != null) {
+                bluetoothLeAdvertiser.startAdvertising(settings, data, advertiseCallback);
+            } else {
+                Log.e("BLE", "Bluetooth LE Advertiser not available");
+            }
+        } else {
+            Log.e("BLE", "Bluetooth Adapter not available or not enabled");
+        }
+    }
+
+    private void stopAdvertising() {
+        if (bluetoothLeAdvertiser != null) {
+            bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
+        }
+    }
 
     @Override
     public void configureFlutterEngine(@NonNull FlutterEngine flutterEngine) {
@@ -61,57 +119,71 @@ public class MainActivity extends FlutterActivity {
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ENGINE_CHANNEL)
                 .setMethodCallHandler(
                     (call, result) -> {
-                        MillEngine engine = new MillEngine();
-                        switch (call.method) {
-                            case "startup":
-                                result.success(engine.startup());
-                                break;
-                            case "send":
-                                result.success(engine.send(call.arguments.toString()));
-                                break;
-                            case "read":
-                                result.success(engine.read());
-                                break;
-                            case "shutdown":
-                                result.success(engine.shutdown());
-                                break;
-                            case "isReady":
-                                result.success(engine.isReady());
-                                break;
-                            case "isThinking":
-                                result.success(engine.isThinking());
-                                break;
-                            default:
-                                result.notImplemented();
-                                break;
-                        }
+                MillEngine engine = new MillEngine();
+                switch (call.method) {
+                    case "startup":
+                        result.success(engine.startup());
+                        break;
+                    case "send":
+                        result.success(engine.send(call.arguments.toString()));
+                        break;
+                    case "read":
+                        result.success(engine.read());
+                        break;
+                    case "shutdown":
+                        result.success(engine.shutdown());
+                        break;
+                    case "isReady":
+                        result.success(engine.isReady());
+                        break;
+                    case "isThinking":
+                        result.success(engine.isThinking());
+                        break;
+                    default:
+                        result.notImplemented();
+                        break;
                 }
+    }
         );
 
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), NATIVE_CHANNEL)
             .setMethodCallHandler(
               (call, result) -> {
-                  if (call.method.equals("readContentUri")) {
-                      String uriString = call.argument("uri");
-                      Uri uri = Uri.parse(uriString);
-                      String data;
-                      if ("content".equals(uri.getScheme())) {
-                          data = readContentUri(uri, this);
-                      } else if ("file".equals(uri.getScheme())) {
-                          data = readFileUri(uri, this);
-                      } else {
-                          data = null;
-                      }
-                      if (data != null) {
-                          result.success(data);
-                      } else {
-                          result.error("UNAVAILABLE", "Data not available.", null);
-                      }
-                  } else {
-                      result.notImplemented();
-                  }
+                if (call.method.equals("readContentUri")) {
+                    String uriString = call.argument("uri");
+                    Uri uri = Uri.parse(uriString);
+                    String data;
+                    if ("content".equals(uri.getScheme())) {
+                        data = readContentUri(uri, this);
+                    } else if ("file".equals(uri.getScheme())) {
+                        data = readFileUri(uri, this);
+                    } else {
+                        data = null;
+                    }
+                    if (data != null) {
+                        result.success(data);
+                    } else {
+                        result.error("UNAVAILABLE", "Data not available.", null);
+                    }
+                } else {
+                    result.notImplemented();
+                }
             }
         );
+
+        // Setup the new channel for advertising
+        new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ADVERTISE_CHANNEL)
+        .setMethodCallHandler((call, result) -> {
+            if (call.method.equals("startAdvertising")) {
+                startAdvertising();
+                result.success("Advertising started");
+            } else if (call.method.equals("stopAdvertising")) {
+                stopAdvertising();
+                result.success("Advertising stopped");
+            } else {
+                result.notImplemented();
+            }
+        });
     }
 
     @Override

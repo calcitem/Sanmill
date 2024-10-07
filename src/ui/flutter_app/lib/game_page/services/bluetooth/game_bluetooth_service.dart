@@ -2,18 +2,23 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../shared/services/logger.dart';
 
-/// GameBluetoothService handles Bluetooth connectivity, permissions, sending, and receiving data.
-/// Utilizes flutter_blue_plus for Bluetooth Low Energy (BLE) functionalities.
+/// GameBluetoothService handles Bluetooth connectivity, permissions, sending, receiving data, and advertising.
+/// Utilizes flutter_blue_plus for Bluetooth Low Energy (BLE) functionalities and native Android code for advertising.
 class GameBluetoothService {
   // Singleton pattern to ensure only one instance of BluetoothService exists.
   GameBluetoothService._privateConstructor();
   static const String _logTag = "[BluetoothService]";
   static final GameBluetoothService instance =
       GameBluetoothService._privateConstructor();
+
+  // Native channel for calling Android methods
+  static const MethodChannel _advertiseChannel =
+      MethodChannel('com.calcitem.sanmill/advertise');
 
   // Currently connected Bluetooth device.
   BluetoothDevice? _connectedDevice;
@@ -192,109 +197,31 @@ class GameBluetoothService {
     ].request();
   }
 
+  /// Starts BLE advertising by invoking a native Android method.
+  Future<void> startAdvertising() async {
+    try {
+      await _advertiseChannel.invokeMethod('startAdvertising');
+      logger.i("$_logTag Advertising started.");
+    } on PlatformException catch (e) {
+      logger.e("$_logTag Failed to start advertising: ${e.message}");
+    }
+  }
+
+  /// Stops BLE advertising by invoking a native Android method.
+  Future<void> stopAdvertising() async {
+    try {
+      await _advertiseChannel.invokeMethod('stopAdvertising');
+      logger.i("$_logTag Advertising stopped.");
+    } on PlatformException catch (e) {
+      logger.e("$_logTag Failed to stop advertising: ${e.message}");
+    }
+  }
+
   /// Disposes the Bluetooth service by closing the stream controller and disconnecting Bluetooth.
   void dispose() {
+    stopAdvertising();
     _moveController.close();
     disconnect();
     logger.i("$_logTag BluetoothService disposed.");
-  }
-}
-
-class GameBluetoothAdvertiser {
-  static const String serviceUuidString = 'abcd1234-5678-90ab-cdef12345678';
-  static const String characteristicUuidString =
-      '12345678-1234-5678-1234-567812345678';
-
-  late BluetoothCharacteristic _characteristic;
-  BluetoothDevice? _connectedDevice;
-
-  final StreamController<String> _dataStreamController =
-      StreamController<String>.broadcast();
-  Stream<String> get dataStream => _dataStreamController.stream;
-
-  /// Initializes the Bluetooth characteristic for advertising.
-  Future<void> initializeService(DeviceIdentifier remoteId) async {
-    final Guid serviceUuid = Guid(serviceUuidString);
-    final Guid characteristicUuid = Guid(characteristicUuidString);
-
-    // Initialize characteristic based on the BluetoothCharacteristic definition
-    _characteristic = BluetoothCharacteristic(
-      remoteId: remoteId,
-      serviceUuid: serviceUuid,
-      characteristicUuid: characteristicUuid,
-    );
-  }
-
-  /// Starts advertising the Bluetooth characteristic, making it discoverable to other devices.
-  Future<void> startAdvertising() async {
-    try {
-      // Ensure Bluetooth permissions are granted
-      await requestBluetoothPermissions();
-
-      // Currently, FlutterBluePlus does not directly support service advertisement
-      // due to platform limitations, so you may need platform-specific code
-      logger.i(
-          "[Advertiser] Started advertising service with UUID: $serviceUuidString");
-
-      // Listen for incoming data
-      _characteristic.lastValueStream.listen((List<int> data) {
-        _onDataReceived(data);
-      });
-    } catch (e) {
-      logger.e("[Advertiser] Error starting advertisement: $e");
-    }
-  }
-
-  /// Stops advertising the Bluetooth characteristic.
-  Future<void> stopAdvertising() async {
-    try {
-      // The `stopAdvertising` API isn't directly available in flutter_blue_plus.
-      logger.i("[Advertiser] Stopped advertising service.");
-    } catch (e) {
-      logger.e("[Advertiser] Error stopping advertisement: $e");
-    }
-  }
-
-  /// Handles incoming data from the connected device.
-  void _onDataReceived(List<int> data) {
-    try {
-      final String received = utf8.decode(data);
-      logger.i("[Advertiser] Data received: $received");
-      _dataStreamController.add(received);
-    } catch (e) {
-      logger.e("[Advertiser] Error processing received data: $e");
-    }
-  }
-
-  /// Sends data to the connected device.
-  Future<void> sendData(String message) async {
-    if (_connectedDevice != null) {
-      try {
-        final List<int> encodedData = utf8.encode(message);
-        await _characteristic.write(encodedData, withoutResponse: true);
-        logger.i("[Advertiser] Sent data: $message");
-      } catch (e) {
-        logger.e("[Advertiser] Error sending data: $e");
-      }
-    } else {
-      logger.w("[Advertiser] No connected device available.");
-    }
-  }
-
-  /// Requests the necessary Bluetooth permissions for Android.
-  Future<void> requestBluetoothPermissions() async {
-    await <Permission>[
-      Permission.bluetoothAdvertise,
-      Permission.bluetoothConnect,
-      Permission.bluetoothScan,
-      Permission.location,
-    ].request();
-  }
-
-  /// Disposes the Bluetooth service by stopping advertising and closing the stream controller.
-  void dispose() {
-    stopAdvertising();
-    _dataStreamController.close();
-    logger.i("[Advertiser] Bluetooth Advertiser disposed.");
   }
 }
