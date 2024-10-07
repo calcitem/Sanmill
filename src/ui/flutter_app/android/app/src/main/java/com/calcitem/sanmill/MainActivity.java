@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugins.GeneratedPluginRegistrant;
 
 import org.json.JSONObject;
@@ -65,11 +66,13 @@ public class MainActivity extends FlutterActivity {
     private static final String ENGINE_CHANNEL = "com.calcitem.sanmill/engine";
     private static final String NATIVE_CHANNEL = "com.calcitem.sanmill/native";
     private static final String ADVERTISE_CHANNEL = "com.calcitem.sanmill/advertise";
+    private static final String ADVERTISE_EVENTS_CHANNEL = "com.calcitem.sanmill/advertise_events";
     private BluetoothLeAdvertiser bluetoothLeAdvertiser;
     private BluetoothGattServer gattServer;
+    private EventChannel.EventSink advertiseEventSink; // For sending events to Flutter
+    private boolean isAdvertising = false; // To track advertising state
 
     private final String TAG_XCRASH = "xCrash";
-
 
     // Define UUID for advertising (replace with your own UUID)
     private static final String SERVICE_UUID = "123e4567-e89b-12d3-a456-426614174000";
@@ -79,15 +82,48 @@ public class MainActivity extends FlutterActivity {
         @Override
         public void onStartSuccess(AdvertiseSettings settingsInEffect) {
             Log.i("BLE", "Advertising started successfully");
+            if (advertiseEventSink != null) {
+                advertiseEventSink.success("Advertising started successfully");
+            }
         }
 
         @Override
         public void onStartFailure(int errorCode) {
-            Log.e("BLE", "Advertising failed with error code: " + errorCode);
+            String errorMessage;
+            switch (errorCode) {
+                case AdvertiseCallback.ADVERTISE_FAILED_DATA_TOO_LARGE:
+                    errorMessage = "Failed to start advertising as the advertise data to be broadcasted is larger than 31 bytes.";
+                    break;
+                case AdvertiseCallback.ADVERTISE_FAILED_TOO_MANY_ADVERTISERS:
+                    errorMessage = "Failed to start advertising because no advertising instance is available.";
+                    break;
+                case AdvertiseCallback.ADVERTISE_FAILED_ALREADY_STARTED:
+                    errorMessage = "Failed to start advertising as the advertising is already started.";
+                    break;
+                case AdvertiseCallback.ADVERTISE_FAILED_INTERNAL_ERROR:
+                    errorMessage = "Operation failed due to an internal error.";
+                    break;
+                case AdvertiseCallback.ADVERTISE_FAILED_FEATURE_UNSUPPORTED:
+                    errorMessage = "This feature is not supported on this platform.";
+                    break;
+                default:
+                    errorMessage = "Unknown error.";
+                    break;
+            }
+            Log.e("BLE", "Advertising failed with error code: " + errorCode + " - " + errorMessage);
+            if (advertiseEventSink != null) {
+                advertiseEventSink.error("ADVERTISE_START_FAILURE", errorMessage, null);
+            }
+            isAdvertising = false; // Update advertising state
         }
     };
 
     private void startAdvertising() {
+        if (isAdvertising) {
+            Log.w("BLE", "Already advertising");
+            return;
+        }
+
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         if (bluetoothAdapter != null && bluetoothAdapter.isEnabled()) {
@@ -127,6 +163,7 @@ public class MainActivity extends FlutterActivity {
             // Start advertising
             if (bluetoothLeAdvertiser != null) {
                 bluetoothLeAdvertiser.startAdvertising(settings, advertiseData, scanResponseData, advertiseCallback);
+                isAdvertising = true; // Update advertising state
             } else {
                 Log.e("BLE", "Bluetooth LE Advertiser not available");
             }
@@ -136,21 +173,35 @@ public class MainActivity extends FlutterActivity {
     }
 
     private void stopAdvertising() {
+        if (!isAdvertising) {
+            Log.w("BLE", "Not advertising");
+            return;
+        }
+
         if (bluetoothLeAdvertiser != null) {
             bluetoothLeAdvertiser.stopAdvertising(advertiseCallback);
+            isAdvertising = false;
         }
         if (gattServer != null) {
             gattServer.close();
         }
+        Log.i("BLE", "Advertising stopped");
     }
+
     private BluetoothGattServerCallback gattServerCallback = new BluetoothGattServerCallback() {
         @Override
         public void onConnectionStateChange(BluetoothDevice device, int status, int newState) {
             super.onConnectionStateChange(device, status, newState);
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.i("GATT", "Device connected: " + device.getAddress());
+                if (advertiseEventSink != null) {
+                    advertiseEventSink.success("Device connected: " + device.getAddress());
+                }
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                 Log.i("GATT", "Device disconnected: " + device.getAddress());
+                if (advertiseEventSink != null) {
+                    advertiseEventSink.success("Device disconnected: " + device.getAddress());
+                }
             }
         }
 
@@ -211,7 +262,7 @@ public class MainActivity extends FlutterActivity {
                         result.notImplemented();
                         break;
                 }
-    }
+            }
         );
 
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), NATIVE_CHANNEL)
@@ -252,6 +303,20 @@ public class MainActivity extends FlutterActivity {
                 result.notImplemented();
             }
         });
+
+        // EventChannel for sending events to Flutter
+        new EventChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), ADVERTISE_EVENTS_CHANNEL)
+            .setStreamHandler(new EventChannel.StreamHandler() {
+                @Override
+                public void onListen(Object arguments, EventChannel.EventSink events) {
+                    advertiseEventSink = events;
+                }
+
+                @Override
+                public void onCancel(Object arguments) {
+                    advertiseEventSink = null;
+                }
+            });
     }
 
     @Override

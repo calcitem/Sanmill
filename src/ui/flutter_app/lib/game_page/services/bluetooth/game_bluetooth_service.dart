@@ -13,7 +13,9 @@ enum DeviceRole { advertiser, connector }
 /// Utilizes flutter_blue_plus for Bluetooth Low Energy (BLE) functionalities and native Android code for advertising.
 class GameBluetoothService {
   // Singleton pattern with role
-  GameBluetoothService._privateConstructor(this.role);
+  GameBluetoothService._privateConstructor(this.role) {
+    _listenToAdvertiseEvents(); // Start listening to native events
+  }
 
   static GameBluetoothService? _instance;
 
@@ -28,6 +30,10 @@ class GameBluetoothService {
   static const String _logTag = "[BluetoothService]";
   static const MethodChannel _advertiseChannel =
       MethodChannel('com.calcitem.sanmill/advertise');
+
+  // Event channel to receive events from native code
+  static const EventChannel _advertiseEventChannel =
+      EventChannel('com.calcitem.sanmill/advertise_events');
 
   // The role of the device (advertiser or connector)
   final DeviceRole role;
@@ -257,7 +263,6 @@ class GameBluetoothService {
     ].request();
   }
 
-
   /// Starts BLE advertising with timeout handling
   Future<void> startAdvertising() async {
     if (role != DeviceRole.advertiser) {
@@ -319,6 +324,22 @@ class GameBluetoothService {
     } else {
       logger.w("$_logTag No Bluetooth device is currently connected.");
     }
+  }
+
+  /// Listens to events from the native Android code via EventChannel
+  void _listenToAdvertiseEvents() {
+    _advertiseEventChannel.receiveBroadcastStream().listen((event) {
+      logger.i("$_logTag Advertise event received: $event");
+      if (event.toString().startsWith("Device connected:")) {
+        // Handle device connected event
+        final String deviceAddress =
+            event.toString().substring("Device connected: ".length);
+        logger.i("$_logTag Device connected: $deviceAddress");
+        // You can notify your app of the connection, update UI, etc.
+      }
+    }, onError: (error) {
+      logger.e("$_logTag Advertise error received: $error");
+    });
   }
 
   /// Disposes the Bluetooth service by closing the stream controller, stopping advertising, and disconnecting Bluetooth.
