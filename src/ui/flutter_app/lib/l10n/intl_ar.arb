@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "هل تود جعل شريط الأدوات شفافًا بالكامل عندما يتم تعيين صورة خلفية للوحة؟",
   "@promptMakeToolbarTransparent": {},
   "vibration": "تمكين الاهتزاز في اللعبة",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "سمة الصوت",
+  "@soundTheme": {},
+  "ball": "كرة",
+  "@ball": {},
+  "liquid": "سائل",
+  "@liquid": {},
+  "wood": "خشب",
+  "@wood": {}
 }

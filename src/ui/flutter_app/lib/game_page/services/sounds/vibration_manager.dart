@@ -27,8 +27,6 @@ class VibrationManager {
 
   final Map<Sound, int> _vibrationDurations = <Sound, int>{
     Sound.draw: 200,
-    Sound.fly: 15,
-    Sound.go: 50,
     Sound.illegal: 100,
     Sound.lose: 250,
     Sound.mill: 50,

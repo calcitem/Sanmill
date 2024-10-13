@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "གནས་སྟངས་སྒྲིག་གསར་བར་མཉམ་མཐུད་མཐོང་མཁན་གྱི་གྲུབ་སྒྲིག་སྒྲིག་གསར་བར་བསྒྱུར་བ་གྱིས་ཁྱོད་ལ་ཡོད་པས?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "རྩིས་སྒྲིག་བྱས་ཟིན་པ།",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "སྒྲ་རྒྱུགས་ཀྱི་རྟེན་",
+  "@soundTheme": {},
+  "ball": "ནག",
+  "@ball": {},
+  "liquid": "འཕེལ་བ",
+  "@liquid": {},
+  "wood": "འབྲུག",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Souhaitez-vous rendre la barre d'outils complètement transparente lorsqu'une image de fond du plateau est définie?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Activer la vibration dans le jeu",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Thème sonore",
+  "@soundTheme": {},
+  "ball": "Balle",
+  "@ball": {},
+  "liquid": "Liquide",
+  "@liquid": {},
+  "wood": "Bois",
+  "@wood": {}
 }

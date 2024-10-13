@@ -17,7 +17,7 @@
 part of '../mill.dart';
 
 /// Sounds the [SoundManager] can play through [SoundManager.playTone].
-enum Sound { draw, fly, go, illegal, lose, mill, place, remove, select, win }
+enum Sound { draw, illegal, lose, mill, place, remove, select, win }
 
 class SoundManager {
   factory SoundManager() => instance;
@@ -31,17 +31,40 @@ class SoundManager {
   late Soundpool _soundpool;
   int _alarmSoundStreamId = 0;
 
-  final Map<Sound, String> _soundFiles = <Sound, String>{
-    Sound.draw: Assets.audios.draw,
-    Sound.fly: Assets.audios.fly,
-    Sound.go: Assets.audios.go,
-    Sound.illegal: Assets.audios.illegal,
-    Sound.lose: Assets.audios.lose,
-    Sound.mill: Assets.audios.mill,
-    Sound.place: Assets.audios.place,
-    Sound.remove: Assets.audios.remove,
-    Sound.select: Assets.audios.select,
-    Sound.win: Assets.audios.win,
+  String? soundThemeName = 'ball';
+
+  final Map<String, Map<Sound, String>> _soundFiles =
+      <String, Map<Sound, String>>{
+    'ball': <Sound, String>{
+      Sound.draw: Assets.audios.draw,
+      Sound.illegal: Assets.audios.ball.illegal,
+      Sound.lose: Assets.audios.lose,
+      Sound.mill: Assets.audios.ball.mill,
+      Sound.place: Assets.audios.ball.place,
+      Sound.remove: Assets.audios.ball.remove,
+      Sound.select: Assets.audios.ball.select,
+      Sound.win: Assets.audios.win,
+    },
+    'liquid': <Sound, String>{
+      Sound.draw: Assets.audios.draw,
+      Sound.illegal: Assets.audios.liquid.illegal,
+      Sound.lose: Assets.audios.lose,
+      Sound.mill: Assets.audios.liquid.mill,
+      Sound.place: Assets.audios.liquid.place,
+      Sound.remove: Assets.audios.liquid.remove,
+      Sound.select: Assets.audios.liquid.select,
+      Sound.win: Assets.audios.win,
+    },
+    'wood': <Sound, String>{
+      Sound.draw: Assets.audios.draw,
+      Sound.illegal: Assets.audios.wood.illegal,
+      Sound.lose: Assets.audios.lose,
+      Sound.mill: Assets.audios.wood.mill,
+      Sound.place: Assets.audios.wood.place,
+      Sound.remove: Assets.audios.wood.remove,
+      Sound.select: Assets.audios.wood.select,
+      Sound.win: Assets.audios.win,
+    },
   };
 
   // Change to maintain a map of PlayerController instances for each sound.
@@ -57,10 +80,18 @@ class SoundManager {
   static const String _logTag = "[audio]";
 
   Future<void> loadSounds() async {
-    assert(!GameController().initialized);
+    // assert(!GameController().initialized);
 
     if (kIsWeb) {
       logger.w("$_logTag Audio Player does not support Web.");
+      return;
+    }
+
+    soundThemeName = DB().generalSettings.soundTheme?.name ?? 'ball';
+
+    final Map<Sound, String>? sounds = _soundFiles[soundThemeName];
+    if (sounds == null) {
+      logger.e("No sound files found for theme $soundThemeName.");
       return;
     }
 
@@ -72,39 +103,26 @@ class SoundManager {
       kplayer.Player.boot();
       kplayer.PlayerController.enableLog = false;
 
-      // Initialize a PlayerController for each sound
-      _soundFiles.forEach((Sound sound, String fileName) {
+      sounds.forEach((Sound sound, String fileName) {
         _players[sound] = kplayer.Player.asset(fileName, autoPlay: false);
       });
 
       booted = true;
-      _allSoundsLoaded = true; // All sounds loaded successfully
+      _allSoundsLoaded = true;
     } else {
       _soundpool = Soundpool.fromOptions();
 
       try {
-        for (final Sound sound in Sound.values) {
+        for (final Sound sound in sounds.keys) {
           final int soundId =
-              await _soundpool.load(await rootBundle.load(_soundFiles[sound]!));
+              await _soundpool.load(await rootBundle.load(sounds[sound]!));
           _soundIds[sound] = soundId;
         }
-        _allSoundsLoaded = true; // All sounds loaded successfully
+        _allSoundsLoaded = true;
       } catch (e) {
         logger.e("Failed to load sound: $e");
         _allSoundsLoaded = false;
       }
-    }
-  }
-
-  Future<void> _playSound(Sound sound) async {
-    if (!Platform.isIOS) {
-      final int? soundId = _soundIds[sound];
-      if (soundId == null) {
-        logger.e("Sound ID for $sound is not found.");
-        return;
-      }
-
-      _alarmSoundStreamId = await _soundpool.play(soundId);
     }
   }
 
@@ -144,14 +162,23 @@ class SoundManager {
       await _stopAllSounds();
 
       final kplayer.PlayerController? player = _players[sound];
+      if (player == null) {
+        logger.e("No player found for sound $sound in theme $soundThemeName.");
+        return;
+      }
       try {
-        await player?.play();
+        await player.play();
       } catch (e) {
         logger.e("$_logTag Error playing sound: $e");
       }
     } else {
       await _stopSound();
-      await _playSound(sound);
+      final int? soundId = _soundIds[sound];
+      if (soundId == null) {
+        logger.e("Sound ID for $sound is not found in theme $soundThemeName.");
+        return;
+      }
+      _alarmSoundStreamId = await _soundpool.play(soundId);
     }
   }
 

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "คุณต้องการให้แถบเครื่องมือโปร่งใสเต็มที่เมื่อกำหนดภาพพื้นหลังของกระดานแล้วหรือไม่?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "เปิดใช้งานการสั่นในเกม",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "ธีมเสียง",
+  "@soundTheme": {},
+  "ball": "ลูกบอล",
+  "@ball": {},
+  "liquid": "ของเหลว",
+  "@liquid": {},
+  "wood": "ไม้",
+  "@wood": {}
 }

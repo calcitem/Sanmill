@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "A dëshironi të bëni shiritin e veglave plotësisht transparent kur është caktuar një imazh sfondi për tabelën?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Aktivizo vibracionin në lojë",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Tema e zërit",
+  "@soundTheme": {},
+  "ball": "Top",
+  "@ball": {},
+  "liquid": "Lëng",
+  "@liquid": {},
+  "wood": "Druri",
+  "@wood": {}
 }

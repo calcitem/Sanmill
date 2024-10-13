@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Gostaria de tornar a barra de ferramentas totalmente transparente quando uma imagem de fundo do tabuleiro estiver definida?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Ativar vibração no jogo",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Tema de som",
+  "@soundTheme": {},
+  "ball": "Bola",
+  "@ball": {},
+  "liquid": "Líquido",
+  "@liquid": {},
+  "wood": "Madeira",
+  "@wood": {}
 }

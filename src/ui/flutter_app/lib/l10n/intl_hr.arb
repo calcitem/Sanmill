@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Želite li učiniti alatnu traku potpuno prozirnom kada je postavljena pozadinska slika ploče?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Omogući vibraciju u igri",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Zvučna tema",
+  "@soundTheme": {},
+  "ball": "Lopta",
+  "@ball": {},
+  "liquid": "Tekućina",
+  "@liquid": {},
+  "wood": "Drvo",
+  "@wood": {}
 }

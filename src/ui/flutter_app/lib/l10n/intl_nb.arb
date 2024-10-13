@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Vil du gjøre verktøylinjen helt gjennomsiktig når et bakgrunnsbilde for brettet er satt?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Aktiver vibrasjon i spillet",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Lydtema",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Væske",
+  "@liquid": {},
+  "wood": "Tre",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Möchten Sie die Werkzeugleiste vollständig transparent machen, wenn ein Hintergrundbild für das Board festgelegt ist?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Vibration im Spiel aktivieren",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Soundthema",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Flüssigkeit",
+  "@liquid": {},
+  "wood": "Holz",
+  "@wood": {}
 }

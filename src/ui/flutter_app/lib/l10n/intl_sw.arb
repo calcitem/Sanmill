@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Je, ungependa kufanya ukanda wa zana kuwa wa uwazi kabisa wakati picha ya mandharinyuma ya bodi imewekwa?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Wezesha mtetemo kwenye mchezo",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Mandhari ya sauti",
+  "@soundTheme": {},
+  "ball": "Mpira",
+  "@ball": {},
+  "liquid": "Kiasi",
+  "@liquid": {},
+  "wood": "Mbao",
+  "@wood": {}
 }

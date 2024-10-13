@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "বোর্ডের পটভূমি চিত্র সেট করা হলে টুলবার সম্পূর্ণ স্বচ্ছ করতে চান?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "গেমে ভাইব্রেশন সক্ষম করুন",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "সাউন্ড থিম",
+  "@soundTheme": {},
+  "ball": "বল",
+  "@ball": {},
+  "liquid": "তরল",
+  "@liquid": {},
+  "wood": "কাঠ",
+  "@wood": {}
 }

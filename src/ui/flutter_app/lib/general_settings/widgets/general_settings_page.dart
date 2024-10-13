@@ -41,6 +41,7 @@ part 'dialogs/use_perfect_database_dialog.dart';
 part 'modals/algorithm_modal.dart';
 part 'modals/duration_modal.dart';
 part 'modals/ratio_modal.dart';
+part 'modals/sound_theme_modal.dart';
 part 'pickers/skill_level_picker.dart';
 part 'sliders/move_time_slider.dart';
 
@@ -187,6 +188,26 @@ class GeneralSettingsPage extends StatelessWidget {
         generalSettings.copyWith(keepMuteWhenTakingBack: value);
 
     logger.t("$_logTag keepMuteWhenTakingBack: $value");
+  }
+
+  void _setSoundTheme(BuildContext context, GeneralSettings generalSettings) {
+    void callback(SoundTheme? soundTheme) {
+      DB().generalSettings = generalSettings.copyWith(soundTheme: soundTheme);
+
+      logger.t("$_logTag soundTheme = $soundTheme");
+
+      SoundManager().loadSounds();
+
+      Navigator.pop(context);
+    }
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _SoundThemeModal(
+        soundTheme: generalSettings.soundTheme!,
+        onChanged: callback,
+      ),
+    );
   }
 
   void _setVibration(GeneralSettings generalSettings, bool value) {
@@ -394,6 +415,11 @@ class GeneralSettingsPage extends StatelessWidget {
               onChanged: (bool val) =>
                   _setKeepMuteWhenTakingBack(generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
+            ),
+            SettingsListTile(
+              titleString: S.of(context).soundTheme,
+              trailingString: generalSettings.soundTheme!.name,
+              onTap: () => _setSoundTheme(context, generalSettings),
             ),
             if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
               SettingsListTile.switchTile(

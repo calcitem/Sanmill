@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Бихте ли искали да направите лентата с инструменти напълно прозрачна, когато е зададена фоново изображение на дъската?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Активиране на вибрацията в играта",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Тема на звука",
+  "@soundTheme": {},
+  "ball": "Топка",
+  "@ball": {},
+  "liquid": "Течност",
+  "@liquid": {},
+  "wood": "Дърво",
+  "@wood": {}
 }

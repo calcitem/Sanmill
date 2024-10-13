@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Adakah anda ingin menjadikan bar alat sepenuhnya telus apabila imej latar belakang papan ditetapkan?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Aktifkan getaran dalam permainan",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Tema bunyi",
+  "@soundTheme": {},
+  "ball": "Bola",
+  "@ball": {},
+  "liquid": "Cecair",
+  "@liquid": {},
+  "wood": "Kayu",
+  "@wood": {}
 }

@@ -35,6 +35,16 @@ enum SearchAlgorithm {
   random,
 }
 
+@HiveType(typeId: 11)
+enum SoundTheme {
+  @HiveField(0)
+  ball,
+  @HiveField(1)
+  liquid,
+  @HiveField(2)
+  wood,
+}
+
 extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
@@ -48,6 +58,19 @@ extension SearchAlgorithmName on SearchAlgorithm {
         return 'MCTS';
       case SearchAlgorithm.random:
         return 'Random';
+    }
+  }
+}
+
+extension SoundThemeName on SoundTheme {
+  String get name {
+    switch (this) {
+      case SoundTheme.ball:
+        return 'ball';
+      case SoundTheme.liquid:
+        return 'liquid';
+      case SoundTheme.wood:
+        return 'wood';
     }
   }
 }
@@ -98,6 +121,7 @@ class GeneralSettings {
     this.showTutorial = true,
     this.remindedOpponentMayFly = false,
     this.vibrationEnabled = false,
+    this.soundTheme = SoundTheme.ball,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -202,6 +226,9 @@ class GeneralSettings {
 
   @HiveField(29, defaultValue: false)
   final bool vibrationEnabled;
+
+  @HiveField(30, defaultValue: SoundTheme.ball)
+  final SoundTheme? soundTheme;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

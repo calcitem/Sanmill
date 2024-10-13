@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Ցանկանու՞մ եք գործիքը ամբողջովին празնատուն դարձնել, երբ կահույքի պատուհանի պատկերն է կարգավորվում:",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Միացնել թրթռոցը խաղում",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Ցունքի թեմա",
+  "@soundTheme": {},
+  "ball": "գնդակ",
+  "@ball": {},
+  "liquid": "ցուցակ",
+  "@liquid": {},
+  "wood": "փայտ",
+  "@wood": {}
 }

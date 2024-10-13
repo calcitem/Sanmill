@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Θα θέλατε να κάνετε τη γραμμή εργαλείων εντελώς διαφανή όταν ορίζεται μια εικόνα φόντου πίνακα;",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Ενεργοποίηση δόνησης στο παιχνίδι",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Θέμα ήχου",
+  "@soundTheme": {},
+  "ball": "Μπάλα",
+  "@ball": {},
+  "liquid": "Υγρό",
+  "@liquid": {},
+  "wood": "Ξύλο",
+  "@wood": {}
 }

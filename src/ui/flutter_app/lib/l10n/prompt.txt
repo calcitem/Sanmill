@@ -1,8 +1,14 @@
-Please translate the following contents of the arb file:
+Please translate the following contents of the arb file, output the complete arb file directly:
 
 ```json
-"vibration": "Enable vibration in the game",
-"@vibration": {},
+"soundTheme": "Sound theme",
+"@soundTheme": {},
+"ball": "Ball",
+"@ball": {},
+"liquid": "Liquid",
+"@liquid": {},
+"wood": "Wood",
+"@wood": {},
 ```
 
 into:
@@ -74,11 +80,23 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "vibration": "Enable vibration in the game",
-  "@vibration": {},
+  "soundTheme": "Sound theme",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Liquid",
+  "@liquid": {},
+  "wood": "Wood",
+  "@wood": {},
 
 // intl_zh.arb
-  "vibration": "游戏中启用振动",
-  "@vibration": {},
+  "soundTheme": "声音主题",
+  "@soundTheme": {},
+  "ball": "球",
+  "@ball": {},
+  "liquid": "水",
+  "@liquid": {},
+  "wood": "木",
+  "@wood": {},
 ```
 

@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "የቦርድ የጀርባ ምስል ተወስኗል በሆነ ጊዜ መሣሪያ ቁልፍ ፍጹም በግልጽ ማድረግ ትፈልጋለህ?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "እንቅስቃሴ በጨዋታው ይክዋን",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "የድምጽ ገጽታ",
+  "@soundTheme": {},
+  "ball": "ኳስ",
+  "@ball": {},
+  "liquid": "ፈሳሽ",
+  "@liquid": {},
+  "wood": "ዛፍ",
+  "@wood": {}
 }

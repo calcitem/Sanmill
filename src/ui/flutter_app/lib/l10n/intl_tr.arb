@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Tahta arka plan resmi ayarlandığında araç çubuğunu tamamen şeffaf yapmak ister misiniz?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Oyunda titreşimi etkinleştir",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Ses teması",
+  "@soundTheme": {},
+  "ball": "Top",
+  "@ball": {},
+  "liquid": "Sıvı",
+  "@liquid": {},
+  "wood": "Odun",
+  "@wood": {}
 }

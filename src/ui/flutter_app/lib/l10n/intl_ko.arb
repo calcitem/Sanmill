@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "보드 배경 이미지가 설정되었을 때 도구 모음을 완전히 투명하게 만들겠습니까?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "게임에서 진동 활성화",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "사운드 테마",
+  "@soundTheme": {},
+  "ball": "공",
+  "@ball": {},
+  "liquid": "액체",
+  "@liquid": {},
+  "wood": "목재",
+  "@wood": {}
 }
