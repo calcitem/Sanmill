@@ -244,18 +244,44 @@ class GameController {
       try {
         logger.t("$tag Searching..., isMoveNow: $isMoveNow");
 
-        if (GameController().position.pieceOnBoardCount[PieceColor.black]! >
-            0) {
-          isEngineInDelay = true;
-          await Future<void>.delayed(Duration(
-            milliseconds:
-                (DB().displaySettings.animationDuration * 1000).toInt(),
-          ));
-          isEngineInDelay = false;
-        }
+        final DateTime startTime = DateTime.now();
+
+        isEngineInDelay = false;
 
         engineRet =
             await controller.engine.search(moveNow: loopIsFirst && isMoveNow);
+
+        final MoveParser moveParser = MoveParser();
+        final MoveType type = moveParser.parseMoveType(engineRet.extMove!.move);
+
+        int weight = 1000;
+        if (type == MoveType.remove) {
+          if (GameController().position.phase == Phase.moving) {
+            weight = 1000;
+          } else {
+            weight = 1000;
+          }
+        } else {
+          weight = 1000;
+        }
+
+        isEngineInDelay = true;
+
+        final DateTime endTime = DateTime.now();
+
+        final Duration elapsed = endTime.difference(startTime);
+        final Duration requiredDuration = Duration(
+          milliseconds:
+              (DB().displaySettings.animationDuration * weight).toInt(),
+        );
+
+        if (elapsed < requiredDuration) {
+          final Duration delayDuration = requiredDuration - elapsed;
+          await Future<void>.delayed(
+              delayDuration > Duration.zero ? delayDuration : Duration.zero);
+        }
+
+        isEngineInDelay = false;
 
         if (GameController().isControllerActive == false) {
           break;
