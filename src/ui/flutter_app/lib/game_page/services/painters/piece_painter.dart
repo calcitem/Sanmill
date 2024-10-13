@@ -73,7 +73,10 @@ class PiecePainter extends CustomPainter {
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
-    final List<Piece> piecesToDraw = <Piece>[];
+
+    // Separate lists for normal and moving pieces
+    final List<Piece> normalPiecesToDraw = <Piece>[];
+    final List<Piece> movingPiecesToDraw = <Piece>[];
 
     final double pieceWidth = (size.width - AppTheme.boardPadding * 2) *
             DB().displaySettings.pieceWidth /
@@ -120,7 +123,7 @@ class PiecePainter extends CustomPainter {
             pieceWidth,
             placeAnimationValue,
           );
-          //continue; // Skip normal drawing
+          // Continue to draw the placing piece normally after the effect
         }
 
         if (isMovingPiece) {
@@ -160,16 +163,21 @@ class PiecePainter extends CustomPainter {
 
         final double adjustedPieceWidth = pieceWidth;
 
-        piecesToDraw.add(
-          Piece(
-            pieceColor: pieceColor,
-            pos: pos,
-            diameter: adjustedPieceWidth,
-            index: index,
-            squareAttribute: squareAttribute,
-            image: image,
-          ),
+        final Piece piece = Piece(
+          pieceColor: pieceColor,
+          pos: pos,
+          diameter: adjustedPieceWidth,
+          index: index,
+          squareAttribute: squareAttribute,
+          image: image,
         );
+
+        // Add to the appropriate list based on whether it's moving
+        if (isMovingPiece) {
+          movingPiecesToDraw.add(piece);
+        } else {
+          normalPiecesToDraw.add(piece);
+        }
 
         shadowPath.addOval(
           Rect.fromCircle(
@@ -180,8 +188,26 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadow if image is null for any piece
-    for (final Piece piece in piecesToDraw) {
+    // Draw shadows for normal pieces
+    for (final Piece piece in normalPiecesToDraw) {
+      if (piece.image == null) {
+        canvas.drawShadow(
+          Path()
+            ..addOval(
+              Rect.fromCircle(
+                center: piece.pos,
+                radius: piece.diameter / 2,
+              ),
+            ),
+          Colors.black,
+          2,
+          true,
+        );
+      }
+    }
+
+    // Draw shadows for moving pieces
+    for (final Piece piece in movingPiecesToDraw) {
       if (piece.image == null) {
         canvas.drawShadow(
           Path()
@@ -201,7 +227,85 @@ class PiecePainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     Color blurPositionColor = Colors.transparent;
-    for (final Piece piece in piecesToDraw) {
+
+    // Draw normal pieces first
+    for (final Piece piece in normalPiecesToDraw) {
+      blurPositionColor = piece.pieceColor.blurPositionColor;
+
+      const double opacity = 1.0;
+
+      final double pieceRadius = piece.diameter / 2;
+      final double pieceInnerRadius = pieceRadius * 0.99;
+
+      if (piece.image != null) {
+        paintImage(
+          canvas: canvas,
+          rect: Rect.fromCircle(
+            center: piece.pos,
+            radius: pieceInnerRadius,
+          ),
+          image: piece.image!,
+          fit: BoxFit.cover,
+        );
+      } else {
+        // Draw border of the piece
+        paint.color = piece.pieceColor.borderColor.withOpacity(opacity);
+
+        if (DB().colorSettings.boardBackgroundColor == Colors.white) {
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 4.0;
+        } else {
+          paint.style = PaintingStyle.fill;
+        }
+
+        canvas.drawCircle(
+          piece.pos,
+          pieceRadius,
+          paint,
+        );
+
+        // Fill the piece with main color
+        paint.style = PaintingStyle.fill;
+        paint.color = piece.pieceColor.mainColor.withOpacity(opacity);
+        canvas.drawCircle(
+          piece.pos,
+          pieceInnerRadius,
+          paint,
+        );
+      }
+
+      // Draw numbers on pieces if enabled
+      if (DB().displaySettings.isNumbersOnPiecesShown &&
+          piece.squareAttribute?.placedPieceNumber != null &&
+          piece.squareAttribute!.placedPieceNumber > 0) {
+        // Text Drawing:
+        final TextPainter textPainter = TextPainter(
+          text: TextSpan(
+            text: piece.squareAttribute?.placedPieceNumber.toString(),
+            style: TextStyle(
+              color: piece.pieceColor.mainColor.computeLuminance() > 0.5
+                  ? Colors.black
+                  : Colors.white,
+              fontSize: piece.diameter * 0.5,
+            ),
+          ),
+          textAlign: TextAlign.center,
+          textDirection: TextDirection.ltr,
+        );
+        textPainter.layout();
+
+        // Calculate offset for centering the text
+        final Offset textOffset = Offset(
+          piece.pos.dx - textPainter.width / 2,
+          piece.pos.dy - textPainter.height / 2,
+        );
+
+        textPainter.paint(canvas, textOffset);
+      }
+    }
+
+    // Draw moving pieces on top of normal pieces
+    for (final Piece piece in movingPiecesToDraw) {
       blurPositionColor = piece.pieceColor.blurPositionColor;
 
       const double opacity = 1.0;
