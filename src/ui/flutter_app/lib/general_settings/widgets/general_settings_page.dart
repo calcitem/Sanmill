@@ -196,7 +196,13 @@ class GeneralSettingsPage extends StatelessWidget {
 
       logger.t("$_logTag soundTheme = $soundTheme");
 
-      SoundManager().loadSounds();
+      // TODO: Take effect on iOS
+      if (Platform.isIOS) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).reopenToTakeEffect);
+      } else {
+        SoundManager().loadSounds();
+      }
 
       Navigator.pop(context);
     }
