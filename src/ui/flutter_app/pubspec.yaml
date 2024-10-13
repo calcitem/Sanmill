@@ -45,6 +45,7 @@ dependencies:
     git:
       url: https://gitlab.com/calcitem/marquee.git
       ref: master
+  multicast_dns: 0.3.2+7
   native_screenshot_widget: 0.0.8
   package_info_plus: 8.0.2
   path: 1.9.0

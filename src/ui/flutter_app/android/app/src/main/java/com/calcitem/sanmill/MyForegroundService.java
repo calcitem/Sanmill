@@ -28,7 +28,7 @@ public class MyForegroundService extends Service {
                 .setSmallIcon(android.R.drawable.sym_def_app_icon) // Use the default app icon
                 .build();
 
-        startForeground(1, notification);
+        startForeground(1, notification); // 这是第 31 行，有问题吗？
         // Do the background work here
 
         return START_NOT_STICKY;

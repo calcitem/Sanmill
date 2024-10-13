@@ -93,8 +93,8 @@ class GameController {
   bool get isPositionSetup => gameRecorder.setupPosition != null;
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
-  // Bluetooth Service instance
-  GameBluetoothService? _bluetoothService;
+  // LAN Service instance
+  GameLANService? _bluetoothService;
 
   // Subscription to Bluetooth move stream
   StreamSubscription<String>? _bluetoothMoveSubscription;
@@ -133,10 +133,6 @@ class GameController {
     // Disconnect Bluetooth if resetting the game
     // TODO(BT): Need it?
     if (gameInstance.gameMode == GameMode.humanVsHumanBluetooth) {
-      _bluetoothMoveSubscription?.cancel();
-      if (_bluetoothService != null) {
-        _bluetoothService!.disconnect();
-      }
     }
 
     GameController().engine.stopSearching();

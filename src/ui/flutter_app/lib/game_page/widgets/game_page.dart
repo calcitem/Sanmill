@@ -25,7 +25,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/animation/animation_manager.dart';
-import '../services/bluetooth/game_bluetooth_page.dart';
+import '../services/lan/game_lan_page.dart';
 import '../services/painters/painters.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';
@@ -70,7 +70,7 @@ class GamePageState extends State<GamePage> {
     final bool? bluetoothResult = await Navigator.push<bool?>(
       context,
       MaterialPageRoute<bool?>(
-        builder: (BuildContext context) => const GameBluetoothPage(),
+        builder: (BuildContext context) => const GameLANPage(),
       ),
     );
 

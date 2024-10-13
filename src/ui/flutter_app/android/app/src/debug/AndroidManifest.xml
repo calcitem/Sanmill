@@ -13,6 +13,13 @@
         android:enableOnBackInvokedCallback="true"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
+        <!-- Define the foreground service -->
+        <service
+            android:name=".MyForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location"/>
+
         <!-- Meta-data for Flutter embedding -->
         <meta-data
             android:name="flutterEmbedding"
@@ -52,24 +59,15 @@
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
 
-    <!-- Bluetooth permissions -->
-    <!-- For general Bluetooth functionality (deprecated in Android 12) -->
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-
-    <!-- For Bluetooth scanning (Android 12 and above) -->
-    <uses-permission
-        android:name="android.permission.BLUETOOTH_SCAN"
-        android:usesPermissionFlags="neverForLocation" />
-
-    <!-- For Bluetooth connection (Android 12 and above) -->
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-
-    <!-- For Bluetooth advertising (if applicable) -->
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-
-    <!-- For accessing fine location (required for Bluetooth scanning in Android 10 and above) -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Queries element for manifest declarations required for certain app behaviors -->
     <queries>
         <intent>
             <action android:name="android.intent.action.SENDTO" />
