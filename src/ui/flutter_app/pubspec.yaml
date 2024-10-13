@@ -23,10 +23,7 @@ dependencies:
   flutter_email_sender: 6.0.3
   flutter_localizations:
     sdk: flutter
-  flutter_platform_alert:
-    git:
-      url: https://gitlab.com/calcitem/flutter_platform_alert.git
-      ref: main
+  flutter_platform_alert: 0.6.1
   flutter_picker: 2.1.0
   flutter_sharing_intent: 1.1.1
   hive: 2.2.3
@@ -40,10 +37,7 @@ dependencies:
   json_annotation: 4.9.0
   kplayer: 0.4.2
   logger: 2.4.0
-  marquee:
-    git:
-      url: https://gitlab.com/calcitem/marquee.git
-      ref: master
+  marquee: 2.3.0
   native_screenshot_widget: 0.0.8
   package_info_plus: 8.0.2
   path: 1.9.0
