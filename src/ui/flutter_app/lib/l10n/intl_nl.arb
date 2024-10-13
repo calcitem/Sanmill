@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Wil je de werkbalk volledig transparant maken wanneer een achtergrondafbeelding voor het bord is ingesteld?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Trilling inschakelen in het spel",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Geluids thema",
+  "@soundTheme": {},
+  "ball": "Bal",
+  "@ball": {},
+  "liquid": "Vloeistof",
+  "@liquid": {},
+  "wood": "Hout",
+  "@wood": {}
 }

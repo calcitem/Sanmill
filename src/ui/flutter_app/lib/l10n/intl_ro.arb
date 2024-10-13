@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Ați dori să faceți bara de instrumente complet transparentă când este setată o imagine de fundal pentru tablă?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Activează vibrația în joc",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Tema sunetului",
+  "@soundTheme": {},
+  "ball": "Bila",
+  "@ball": {},
+  "liquid": "Lichid",
+  "@liquid": {},
+  "wood": "Lemn",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Taxta fon rasmi belgilanganida asboblar panelini butunlay shaffof qilishni xohlaysizmi?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "O'yinda vibratsiyani yoqing",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Ovoz mavzusi",
+  "@soundTheme": {},
+  "ball": "To'p",
+  "@ball": {},
+  "liquid": "Suyuqlik",
+  "@liquid": {},
+  "wood": "Yog'och",
+  "@wood": {}
 }

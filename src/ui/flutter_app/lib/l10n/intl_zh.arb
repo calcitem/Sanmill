@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "当设置了棋盘背景图片时，您是否希望工具栏完全透明？",
   "@promptMakeToolbarTransparent": {},
   "vibration": "游戏中启用振动",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "声音主题",
+  "@soundTheme": {},
+  "ball": "球",
+  "@ball": {},
+  "liquid": "水",
+  "@liquid": {},
+  "wood": "木",
+  "@wood": {}
 }

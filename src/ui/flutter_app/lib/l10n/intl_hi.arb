@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "क्या आप बोर्ड पृष्ठभूमि छवि सेट करने पर टूलबार को पूरी तरह से पारदर्शी बनाना चाहेंगे?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "गेम में वाइब्रेशन सक्षम करें",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "ध्वनि विषय",
+  "@soundTheme": {},
+  "ball": "गेंद",
+  "@ball": {},
+  "liquid": "तरल",
+  "@liquid": {},
+  "wood": "लकड़ी",
+  "@wood": {}
 }

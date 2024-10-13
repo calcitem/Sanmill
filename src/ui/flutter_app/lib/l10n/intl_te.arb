@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "బోర్డు నేపథ్య చిత్రాన్ని సెట్ చేసినప్పుడు టూల్‌బార్‌ను పూర్తిగా పారదర్శకంగా చేయాలనుకుంటున్నారా?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "గేమ్‌లో వైబ్రేషన్‌ని ప్రారంభించండి",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "శబ్ద థీమ్",
+  "@soundTheme": {},
+  "ball": "బంతి",
+  "@ball": {},
+  "liquid": "ద్రవం",
+  "@liquid": {},
+  "wood": "మొక్క",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Ali želite, da je orodni vrstica popolnoma prosojna, ko je nastavljena slika ozadja plošče?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Omogoči vibracije v igri",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Zvočna tema",
+  "@soundTheme": {},
+  "ball": "Krogla",
+  "@ball": {},
+  "liquid": "Tekočina",
+  "@liquid": {},
+  "wood": "Les",
+  "@wood": {}
 }

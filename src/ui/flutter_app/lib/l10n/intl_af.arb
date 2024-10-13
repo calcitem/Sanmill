@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Wil jy die werkbalk heeltemal deurskynend maak wanneer 'n bordanfronstoepasafbeelding ingestel is?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Skakel vibrasie in die spel aan",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Klank tema",
+  "@soundTheme": {},
+  "ball": "Bal",
+  "@ball": {},
+  "liquid": "Vloeistof",
+  "@liquid": {},
+  "wood": "Hout",
+  "@wood": {}
 }

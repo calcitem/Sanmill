@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Vil du gøre værktøjslinjen fuldstændig gennemsigtig, når et baggrundsbillede til tavlen er indstillet?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Aktiver vibration i spillet",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Lydtema",
+  "@soundTheme": {},
+  "ball": "Bold",
+  "@ball": {},
+  "liquid": "Væske",
+  "@liquid": {},
+  "wood": "Træ",
+  "@wood": {}
 }

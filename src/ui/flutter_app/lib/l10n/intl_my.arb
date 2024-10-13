@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "ဘုတ်နောက်ခံပုံသတ်မှတ်ထားသောအခါ ကိရိယာဘားကို အပြည့်အဝ ထင်ရှားပြတ်သားအောင် ပြုလုပ်လိုပါသလား?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "ဂိမ်းတွင် တုန်ခါမှု ဖွင့်ပါ",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "အသံအကြောင်းအရာ",
+  "@soundTheme": {},
+  "ball": "ဘောလုံး",
+  "@ball": {},
+  "liquid": "ရည်",
+  "@liquid": {},
+  "wood": "သစ်သား",
+  "@wood": {}
 }

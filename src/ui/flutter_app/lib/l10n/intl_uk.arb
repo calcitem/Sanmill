@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Ви хочете зробити панель інструментів повністю прозорою, коли встановлено фонове зображення дошки?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Увімкнути вібрацію в грі",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Тема звуку",
+  "@soundTheme": {},
+  "ball": "М'яч",
+  "@ball": {},
+  "liquid": "Рідина",
+  "@liquid": {},
+  "wood": "Дерево",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Czy chcesz, aby pasek narzędzi był całkowicie przezroczysty, gdy ustawiony jest obraz tła planszy?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Włącz wibracje w grze",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Motyw dźwięku",
+  "@soundTheme": {},
+  "ball": "Piłka",
+  "@ball": {},
+  "liquid": "Płyn",
+  "@liquid": {},
+  "wood": "Drewno",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "તબ્લો પાછળની છબી સેટ કરાય ત્યારે ટૂલબારને સંપૂર્ણપણે પારદર્શક બનાવશો?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "રમતમાં વાઇબ્રેશન સક્રિય કરો",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "શબ્દ વિષય",
+  "@soundTheme": {},
+  "ball": "બૉલ",
+  "@ball": {},
+  "liquid": "તરસ",
+  "@liquid": {},
+  "wood": "લાકડું",
+  "@wood": {}
 }

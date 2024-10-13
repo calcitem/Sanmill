@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Vill du göra verktygsfältet helt genomskinligt när en bakgrundsbild för brädet är inställd?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Aktivera vibration i spelet",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Ljudtema",
+  "@soundTheme": {},
+  "ball": "Boll",
+  "@ball": {},
+  "liquid": "Vätska",
+  "@liquid": {},
+  "wood": "Trä",
+  "@wood": {}
 }

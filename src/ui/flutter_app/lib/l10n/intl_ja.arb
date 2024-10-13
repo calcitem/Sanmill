@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "ボードの背景画像が設定されたときに、ツールバーを完全に透明にしますか？",
   "@promptMakeToolbarTransparent": {},
   "vibration": "ゲーム内でバイブレーションを有効にする",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "サウンドテーマ",
+  "@soundTheme": {},
+  "ball": "ボール",
+  "@ball": {},
+  "liquid": "液体",
+  "@liquid": {},
+  "wood": "木",
+  "@wood": {}
 }

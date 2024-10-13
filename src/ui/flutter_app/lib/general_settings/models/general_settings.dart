@@ -15,9 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../generated/intl/l10n.dart';
 
 part 'general_settings.g.dart';
 
@@ -35,6 +37,16 @@ enum SearchAlgorithm {
   random,
 }
 
+@HiveType(typeId: 11)
+enum SoundTheme {
+  @HiveField(0)
+  ball,
+  @HiveField(1)
+  liquid,
+  @HiveField(2)
+  wood,
+}
+
 extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
@@ -48,6 +60,30 @@ extension SearchAlgorithmName on SearchAlgorithm {
         return 'MCTS';
       case SearchAlgorithm.random:
         return 'Random';
+    }
+  }
+}
+
+extension SoundThemeName on SoundTheme {
+  String get name {
+    switch (this) {
+      case SoundTheme.ball:
+        return 'ball';
+      case SoundTheme.liquid:
+        return 'liquid';
+      case SoundTheme.wood:
+        return 'wood';
+    }
+  }
+
+  String localeName(BuildContext context) {
+    switch (this) {
+      case SoundTheme.ball:
+        return S.of(context).ball;
+      case SoundTheme.liquid:
+        return S.of(context).liquid;
+      case SoundTheme.wood:
+        return S.of(context).wood;
     }
   }
 }
@@ -98,6 +134,7 @@ class GeneralSettings {
     this.showTutorial = true,
     this.remindedOpponentMayFly = false,
     this.vibrationEnabled = false,
+    this.soundTheme = SoundTheme.ball,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -202,6 +239,9 @@ class GeneralSettings {
 
   @HiveField(29, defaultValue: false)
   final bool vibrationEnabled;
+
+  @HiveField(30, defaultValue: SoundTheme.ball)
+  final SoundTheme? soundTheme;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

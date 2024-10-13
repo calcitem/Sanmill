@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Vai vēlaties padarīt rīku jos pilnīgi caurspīdīgu, kad ir iestatīta dēļa fona attēls?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Iespējot vibrāciju spēlē",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Skaņas tēma",
+  "@soundTheme": {},
+  "ball": "Bumba",
+  "@ball": {},
+  "liquid": "Šķidrums",
+  "@liquid": {},
+  "wood": "Koks",
+  "@wood": {}
 }

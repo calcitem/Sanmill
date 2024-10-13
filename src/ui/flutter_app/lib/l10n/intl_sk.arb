@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Chcete, aby bola panel nástrojov úplne priehľadná, keď je nastavený obrázok pozadia dosky?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Povoliť vibrácie v hre",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Zvukové téma",
+  "@soundTheme": {},
+  "ball": "Lopta",
+  "@ball": {},
+  "liquid": "Tekutina",
+  "@liquid": {},
+  "wood": "Drevo",
+  "@wood": {}
 }

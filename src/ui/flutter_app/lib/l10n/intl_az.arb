@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Bir taxta arxa plan şəkli təyin edildikdə alət çubuğunu tam şəffaf etmək istərdiniz?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Oyun içində vibrasiyanı aktiv edin",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Səs mövzusu",
+  "@soundTheme": {},
+  "ball": "Top",
+  "@ball": {},
+  "liquid": "Maye",
+  "@liquid": {},
+  "wood": "Taxta",
+  "@wood": {}
 }

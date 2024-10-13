@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Vuoi rendere la barra degli strumenti completamente trasparente quando viene impostata un'immagine di sfondo della tavola?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Attiva la vibrazione nel gioco",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Tema del suono",
+  "@soundTheme": {},
+  "ball": "Palla",
+  "@ball": {},
+  "liquid": "Liquido",
+  "@liquid": {},
+  "wood": "Legno",
+  "@wood": {}
 }

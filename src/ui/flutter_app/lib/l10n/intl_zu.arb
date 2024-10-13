@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Ungathanda ukwenza ibha yamathuluzi ifanekane ngokuphelele uma isithombe sangemuva sebhodi sisethwe?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Vumela ukuzamazama emdlalweni",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Itimu yomculo",
+  "@soundTheme": {},
+  "ball": "Ibhola",
+  "@ball": {},
+  "liquid": "Uchwepheshe",
+  "@liquid": {},
+  "wood": "Izinkuni",
+  "@wood": {}
 }

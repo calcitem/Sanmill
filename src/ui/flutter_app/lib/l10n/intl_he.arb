@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "אתה רוצה להפוך את סרגל הכלים לשקוף לחלוטין כאשר תמונת רקע ללוח מוגדרת?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "הפעל רטט במשחק",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "ערכת צלילים",
+  "@soundTheme": {},
+  "ball": "כדור",
+  "@ball": {},
+  "liquid": "נוזל",
+  "@liquid": {},
+  "wood": "עץ",
+  "@wood": {}
 }

@@ -92,16 +92,24 @@ flutter:
     - assets/files/git-branch.txt
     - assets/files/git-revision.txt
     - assets/licenses/GPL-3.0.txt
-    - assets/audios/draw.mp3
-    - assets/audios/fly.mp3
-    - assets/audios/go.mp3
-    - assets/audios/illegal.mp3
-    - assets/audios/lose.mp3
-    - assets/audios/mill.mp3
-    - assets/audios/place.mp3
-    - assets/audios/remove.mp3
-    - assets/audios/select.mp3
+    - assets/audios/ball/select.mp3
+    - assets/audios/ball/place.mp3
+    - assets/audios/ball/mill.mp3
+    - assets/audios/ball/remove.mp3
+    - assets/audios/ball/illegal.mp3
+    - assets/audios/liquid/select.mp3
+    - assets/audios/liquid/place.mp3
+    - assets/audios/liquid/mill.mp3
+    - assets/audios/liquid/remove.mp3
+    - assets/audios/liquid/illegal.mp3
+    - assets/audios/wood/select.mp3
+    - assets/audios/wood/place.mp3
+    - assets/audios/wood/mill.mp3
+    - assets/audios/wood/remove.mp3
+    - assets/audios/wood/illegal.mp3
     - assets/audios/win.mp3
+    - assets/audios/draw.mp3
+    - assets/audios/lose.mp3
     - assets/images/background_image_1.jpg
     - assets/images/background_image_2.jpg
     - assets/images/background_image_3.jpg

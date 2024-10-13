@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "පුවරුවේ පසුබැසීම් රූපය සකස් කරන විට මෙවලම් තීරුව සම්පූර්ණයෙන්ම පැහැදිලි කිරීමට අවශ්‍යද?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "ක්‍රීඩාවේ විබ්‍රේෂන් සක්‍රීය කරන්න",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "ශබ්ද තේමා",
+  "@soundTheme": {},
+  "ball": "පෙරට",
+  "@ball": {},
+  "liquid": "ද්‍රවය",
+  "@liquid": {},
+  "wood": "මුද",
+  "@wood": {}
 }

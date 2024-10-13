@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Szeretné a felső eszköztárat teljesen átlátszóvá tenni, amikor egy tábla háttérkép van beállítva?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Engedélyezze a rezgést a játékban",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Hang téma",
+  "@soundTheme": {},
+  "ball": "Labda",
+  "@ball": {},
+  "liquid": "Folyadék",
+  "@liquid": {},
+  "wood": "Fa",
+  "@wood": {}
 }

@@ -1469,5 +1469,13 @@
   "promptMakeToolbarTransparent": "Kas soovite tööriistariba täiesti läbipaistvaks muuta, kui laudade taustapilt on seatud?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Luba vibratsioon mängus",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Heliteema",
+  "@soundTheme": {},
+  "ball": "Pall",
+  "@ball": {},
+  "liquid": "Vedelik",
+  "@liquid": {},
+  "wood": "Puit",
+  "@wood": {}
 }

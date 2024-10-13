@@ -1567,5 +1567,13 @@
   "promptMakeToolbarTransparent": "Viltu gera verkstjólastikuna alveg gegnsæa þegar bakgrunnsmynd fyrir borð er stillt?",
   "@promptMakeToolbarTransparent": {},
   "vibration": "Virkjaðu titring í leiknum",
-  "@vibration": {}
+  "@vibration": {},
+  "soundTheme": "Hljóðtema",
+  "@soundTheme": {},
+  "ball": "Kúla",
+  "@ball": {},
+  "liquid": "Vökvi",
+  "@liquid": {},
+  "wood": "Tré",
+  "@wood": {}
 }
