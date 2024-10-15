@@ -1477,5 +1477,9 @@
   "liquid": "Lichid",
   "@liquid": {},
   "wood": "Lemn",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Efect de animație la plasarea piesei",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efect de animație la eliminarea piesei",
+  "@removeEffectAnimation": {}
 }

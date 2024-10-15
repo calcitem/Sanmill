@@ -1477,5 +1477,9 @@
   "liquid": "水",
   "@liquid": {},
   "wood": "木",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "擺子的動畫效果",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "吃子的動畫效果",
+  "@removeEffectAnimation": {}
 }

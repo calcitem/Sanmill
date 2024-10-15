@@ -1477,5 +1477,9 @@
   "liquid": "Suyuqlik",
   "@liquid": {},
   "wood": "Yog'och",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Figurani joylashtirish animatsion effekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Figurani olib tashlash animatsion effekti",
+  "@removeEffectAnimation": {}
 }

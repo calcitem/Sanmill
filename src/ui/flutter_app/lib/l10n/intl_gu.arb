@@ -1477,5 +1477,9 @@
   "liquid": "તરસ",
   "@liquid": {},
   "wood": "લાકડું",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "પતાની મૂકાશની એનિમેશન અસર",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "પતાની દૂર કરવાની એનિમેશન અસર",
+  "@removeEffectAnimation": {}
 }

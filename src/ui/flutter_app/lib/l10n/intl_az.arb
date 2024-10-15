@@ -1575,5 +1575,9 @@
   "liquid": "Maye",
   "@liquid": {},
   "wood": "Taxta",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Fiquru yerləşdirmə animasiya effekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Fiquru çıxarma animasiya effekti",
+  "@removeEffectAnimation": {}
 }

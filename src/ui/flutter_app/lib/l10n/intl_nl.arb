@@ -1477,5 +1477,9 @@
   "liquid": "Vloeistof",
   "@liquid": {},
   "wood": "Hout",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animatie-effect bij plaatsen van stuk",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animatie-effect bij verwijderen van stuk",
+  "@removeEffectAnimation": {}
 }

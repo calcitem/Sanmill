@@ -1575,5 +1575,9 @@
   "liquid": "Vökvi",
   "@liquid": {},
   "wood": "Tré",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Hreyfimyndaráhrif við að setja niður taflmann",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Hreyfimyndaráhrif við að fjarlægja taflmann",
+  "@removeEffectAnimation": {}
 }

@@ -37,8 +37,8 @@ class PiecePainter extends CustomPainter {
   final Map<PieceColor, ui.Image?>? pieceImages;
 
   // Animation instances for place and remove effects.
-  final PlaceEffectAnimation placeEffectAnimation;
-  final RemoveEffectAnimation removeEffectAnimation;
+  final PieceEffectAnimation placeEffectAnimation;
+  final PieceEffectAnimation removeEffectAnimation;
 
   @override
   void paint(Canvas canvas, Size size) {

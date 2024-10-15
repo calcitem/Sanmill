@@ -36,12 +36,13 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/color_settings.dart';
 import '../models/display_settings.dart';
+import 'piece_effect_selection_page.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/board_image_picker.dart';
-part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
+part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
@@ -107,6 +108,42 @@ class AppearanceSettingsPage extends StatelessWidget {
         context: context,
         builder: (_) => const _AnimationDurationSlider(),
       );
+
+  Future<void> setPlaceEffectAnimation(BuildContext context) async {
+    final EffectItem? selectedEffect = await Navigator.push<EffectItem>(
+      context,
+      MaterialPageRoute<EffectItem>(
+        builder: (BuildContext context) => const PieceEffectSelectionPage(),
+      ),
+    );
+
+    if (selectedEffect != null) {
+      DB().displaySettings = DB().displaySettings.copyWith(
+            placeEffectAnimation: selectedEffect.name,
+          );
+
+      logger
+          .t("[config] Selected PlaceEffectAnimation: ${selectedEffect.name}");
+    }
+  }
+
+  Future<void> setRemoveEffectAnimation(BuildContext context) async {
+    final EffectItem? selectedEffect = await Navigator.push<EffectItem>(
+      context,
+      MaterialPageRoute<EffectItem>(
+        builder: (BuildContext context) => const PieceEffectSelectionPage(),
+      ),
+    );
+
+    if (selectedEffect != null) {
+      DB().displaySettings = DB().displaySettings.copyWith(
+            removeEffectAnimation: selectedEffect.name,
+          );
+
+      logger
+          .t("[config] Selected RemoveEffectAnimation: ${selectedEffect.name}");
+    }
+  }
 
   void setBackgroundImage(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -584,6 +621,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).animationDuration,
           onTap: () => setAnimationDuration(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).placeEffectAnimation,
+          onTap: () => setPlaceEffectAnimation(context),
+        ),
+        SettingsListTile(
+          titleString: S.of(context).removeEffectAnimation,
+          onTap: () => setRemoveEffectAnimation(context),
         ),
         SettingsListTile.switchTile(
           value: displaySettings.vignetteEffectEnabled,

@@ -1575,5 +1575,9 @@
   "liquid": "נוזל",
   "@liquid": {},
   "wood": "עץ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "אפקט אנימציה של הנחת כלי",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "אפקט אנימציה של הסרת כלי",
+  "@removeEffectAnimation": {}
 }

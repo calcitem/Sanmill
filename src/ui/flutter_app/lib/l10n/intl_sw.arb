@@ -1575,5 +1575,9 @@
   "liquid": "Kiasi",
   "@liquid": {},
   "wood": "Mbao",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Athari ya uhuishaji wa kuweka kipande",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Athari ya uhuishaji wa kuondoa kipande",
+  "@removeEffectAnimation": {}
 }

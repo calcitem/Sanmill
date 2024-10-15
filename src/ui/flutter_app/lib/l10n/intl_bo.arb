@@ -1575,5 +1575,9 @@
   "liquid": "འཕེལ་བ",
   "@liquid": {},
   "wood": "འབྲུག",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "ཆ་འཇུག་རིག་བཟོ་བའི་བསྒྱུར་བཅོས",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "ཆ་སུབ་རིག་བཟོ་བའི་བསྒྱུར་བཅོས",
+  "@removeEffectAnimation": {}
 }

@@ -1575,5 +1575,9 @@
   "liquid": "ရည်",
   "@liquid": {},
   "wood": "သစ်သား",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "သားကိုထားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "သားကိုဖယ်ရှားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
+  "@removeEffectAnimation": {}
 }

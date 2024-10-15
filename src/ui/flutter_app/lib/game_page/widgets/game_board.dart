@@ -194,6 +194,117 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       context: context,
     );
 
+    // Assuming you have a user setting that selects the animation type.
+    PieceEffectAnimation placeEffectAnimation;
+
+    switch (DB().displaySettings.placeEffectAnimation) {
+      case 'Aura':
+        placeEffectAnimation = AuraPieceEffectAnimation();
+        break;
+      case 'Echo':
+        placeEffectAnimation = EchoPieceEffectAnimation();
+        break;
+      case 'Expand':
+        placeEffectAnimation = ExpandPieceEffectAnimation();
+        break;
+      case 'Explode':
+        placeEffectAnimation = ExplodePieceEffectAnimation();
+        break;
+      case 'Orbit':
+        placeEffectAnimation = OrbitPieceEffectAnimation();
+        break;
+      case 'ParticleBurst':
+        placeEffectAnimation = ParticleBurstPieceEffectAnimation();
+        break;
+      case 'Radiate':
+        placeEffectAnimation = RadiatePieceEffectAnimation();
+        break;
+      case 'Radial':
+        placeEffectAnimation = RadialPieceEffectAnimation();
+        break;
+      case 'Ripple':
+        placeEffectAnimation = RipplePieceEffectAnimation();
+        break;
+      case 'Rotate':
+        placeEffectAnimation = RotatePieceEffectAnimation();
+        break;
+      case 'Spiral':
+        placeEffectAnimation = SpiralPieceEffectAnimation();
+        break;
+      case 'StarBurst':
+        placeEffectAnimation = StarBurstPieceEffectAnimation();
+        break;
+      case 'Shatter':
+        placeEffectAnimation = ShatterPieceEffectAnimation();
+        break;
+      case 'Disperse':
+        placeEffectAnimation = DispersePieceEffectAnimation();
+        break;
+      default:
+        placeEffectAnimation = RadialPieceEffectAnimation();
+    }
+
+    PieceEffectAnimation removeEffectAnimation;
+
+    switch (DB().displaySettings.removeEffectAnimation) {
+      case 'Aura':
+        removeEffectAnimation = AuraPieceEffectAnimation();
+        break;
+      case 'Echo':
+        removeEffectAnimation = EchoPieceEffectAnimation();
+        break;
+      case 'Expand':
+        removeEffectAnimation = ExpandPieceEffectAnimation();
+        break;
+      case 'Explode':
+        removeEffectAnimation = ExplodePieceEffectAnimation();
+        break;
+      case 'Orbit':
+        removeEffectAnimation = OrbitPieceEffectAnimation();
+        break;
+      case 'ParticleBurst':
+        removeEffectAnimation = ParticleBurstPieceEffectAnimation();
+        break;
+      case 'Radiate':
+        removeEffectAnimation = RadiatePieceEffectAnimation();
+        break;
+      case 'Radial':
+        removeEffectAnimation = RadialPieceEffectAnimation();
+        break;
+      case 'Ripple':
+        removeEffectAnimation = RipplePieceEffectAnimation();
+        break;
+      case 'Rotate':
+        removeEffectAnimation = RotatePieceEffectAnimation();
+        break;
+      case 'Spiral':
+        removeEffectAnimation = SpiralPieceEffectAnimation();
+        break;
+      case 'StarBurst':
+        removeEffectAnimation = StarBurstPieceEffectAnimation();
+        break;
+      case 'Fade': //
+        removeEffectAnimation = FadePieceEffectAnimation();
+        break;
+      case 'Shrink': //
+        removeEffectAnimation = ShrinkPieceEffectAnimation();
+        break;
+      case 'Shatter':
+        removeEffectAnimation = ShatterPieceEffectAnimation();
+        break;
+      case 'Disperse':
+        removeEffectAnimation = DispersePieceEffectAnimation();
+        break;
+      case 'Vanish': //
+        removeEffectAnimation = VanishPieceEffectAnimation();
+        break;
+      case 'Melt': //
+        removeEffectAnimation = MeltPieceEffectAnimation();
+        break;
+      default:
+        removeEffectAnimation = ExplodePieceEffectAnimation();
+    }
+
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: Listenable.merge(<Animation<double>>[
         animationManager.placeAnimationController,
@@ -221,8 +332,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       PieceColor.black: gameImages?.blackPieceImage,
                       PieceColor.marked: gameImages?.markedPieceImage,
                     },
-                    placeEffectAnimation: DefaultPlaceEffectAnimation(),
-                    removeEffectAnimation: DefaultRemoveEffectAnimation(),
+                    placeEffectAnimation: placeEffectAnimation,
+                    removeEffectAnimation: removeEffectAnimation,
                   ),
                   child: DB().generalSettings.screenReaderSupport
                       ? const _BoardSemantics()

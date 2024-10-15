@@ -1477,5 +1477,9 @@
   "liquid": "তরল",
   "@liquid": {},
   "wood": "কাঠ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "ঘুঁটি স্থাপনের অ্যানিমেশন প্রভাব",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "ঘুঁটি অপসারণের অ্যানিমেশন প্রভাব",
+  "@removeEffectAnimation": {}
 }

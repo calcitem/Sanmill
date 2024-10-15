@@ -1477,5 +1477,9 @@
   "liquid": "Lëng",
   "@liquid": {},
   "wood": "Druri",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Efekti i animacionit të vendosjes së figurës",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efekti i animacionit të heqjes së figurës",
+  "@removeEffectAnimation": {}
 }

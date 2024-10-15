@@ -1477,5 +1477,9 @@
   "liquid": "Flüssigkeit",
   "@liquid": {},
   "wood": "Holz",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animationseffekt beim Platzieren von Spielfiguren",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animationseffekt beim Entfernen von Spielfiguren",
+  "@removeEffectAnimation": {}
 }

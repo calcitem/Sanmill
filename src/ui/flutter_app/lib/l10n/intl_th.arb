@@ -1477,5 +1477,9 @@
   "liquid": "ของเหลว",
   "@liquid": {},
   "wood": "ไม้",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "เอฟเฟกต์แอนิเมชันการวางตัวหมาก",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "เอฟเฟกต์แอนิเมชันการลบตัวหมาก",
+  "@removeEffectAnimation": {}
 }

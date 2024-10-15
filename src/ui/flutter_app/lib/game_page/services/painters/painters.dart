@@ -28,8 +28,7 @@ import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../mill.dart';
-import 'animations/place_effect_animation.dart';
-import 'animations/remove_effect_animation.dart';
+import 'animations/piece_effect_animation.dart';
 import 'piece.dart';
 
 part 'board_painter.dart';

@@ -1477,5 +1477,9 @@
   "liquid": "Sıvı",
   "@liquid": {},
   "wood": "Odun",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Taş yerleştirme animasyon efekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Taş kaldırma animasyon efekti",
+  "@removeEffectAnimation": {}
 }

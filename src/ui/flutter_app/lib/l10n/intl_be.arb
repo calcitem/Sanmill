@@ -1575,5 +1575,9 @@
   "liquid": "Целавая",
   "@liquid": {},
   "wood": "Дрэва",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Анімацыйны эфект размяшчэння фігуры",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анімацыйны эфект выдалення фігуры",
+  "@removeEffectAnimation": {}
 }

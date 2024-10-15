@@ -1477,5 +1477,9 @@
   "liquid": "Vedelik",
   "@liquid": {},
   "wood": "Puit",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Nupu paigutamise animatsiooni efekt",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Nupu eemaldamise animatsiooni efekt",
+  "@removeEffectAnimation": {}
 }

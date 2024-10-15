@@ -1575,5 +1575,9 @@
   "liquid": "Chất lỏng",
   "@liquid": {},
   "wood": "Gỗ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Hiệu ứng hoạt hình đặt quân cờ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Hiệu ứng hoạt hình loại bỏ quân cờ",
+  "@removeEffectAnimation": {}
 }
