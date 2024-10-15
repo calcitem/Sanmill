@@ -98,7 +98,12 @@ class MoveListDialog extends StatelessWidget {
                     S.of(context).copy,
                     style: _getButtonTextStyle(context),
                   ),
-                  onPressed: () => GameController.export(context),
+                  onPressed: () {
+                    GameController.export(context);
+                    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+                      Navigator.pop(context);
+                    }
+                  },
                 ),
               ),
               Expanded(
@@ -107,7 +112,12 @@ class MoveListDialog extends StatelessWidget {
                     S.of(context).paste,
                     style: _getButtonTextStyle(context),
                   ),
-                  onPressed: () => GameController.import(context),
+                  onPressed: () {
+                    GameController.import(context);
+                    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+                      Navigator.pop(context);
+                    }
+                  },
                 ),
               ),
               Expanded(
@@ -116,7 +126,12 @@ class MoveListDialog extends StatelessWidget {
                     S.of(context).cancel,
                     style: _getButtonTextStyle(context),
                   ),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    if (DB().displaySettings.isHistoryNavigationToolbarShown) {
+                      Navigator.pop(context);
+                    }
+                  },
                 ),
               ),
             ],
