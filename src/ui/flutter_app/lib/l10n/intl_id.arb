@@ -1477,5 +1477,9 @@
   "liquid": "Cairan",
   "@liquid": {},
   "wood": "Kayu",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Efek animasi penempatan bidak",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efek animasi penghapusan bidak",
+  "@removeEffectAnimation": {}
 }

@@ -1477,5 +1477,9 @@
   "liquid": "Tekućina",
   "@liquid": {},
   "wood": "Drvo",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animacijski efekt postavljanja figure",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animacijski efekt uklanjanja figure",
+  "@removeEffectAnimation": {}
 }

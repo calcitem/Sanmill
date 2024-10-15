@@ -1477,5 +1477,9 @@
   "liquid": "مایع",
   "@liquid": {},
   "wood": "چوب",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "اثر انیمیشن قرار دادن مهره",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "اثر انیمیشن حذف مهره",
+  "@removeEffectAnimation": {}
 }

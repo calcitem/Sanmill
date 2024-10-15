@@ -1477,5 +1477,9 @@
   "liquid": "Folyadék",
   "@liquid": {},
   "wood": "Fa",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Bábu elhelyezési animációs effektus",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Bábu eltávolítási animációs effektus",
+  "@removeEffectAnimation": {}
 }

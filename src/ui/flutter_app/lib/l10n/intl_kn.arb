@@ -1477,5 +1477,9 @@
   "liquid": "ದ್ರವ",
   "@liquid": {},
   "wood": "ಮರ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "ಮುಗ್ದವನ್ನು ಇರಿಸುವ ಅನಿಮೇಷನ್ ಪರಿಣಾಮ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "ಮುಗ್ದವನ್ನು ತೆಗೆದುಹಾಕುವ ಅನಿಮೇಷನ್ ಪರಿಣಾಮ",
+  "@removeEffectAnimation": {}
 }

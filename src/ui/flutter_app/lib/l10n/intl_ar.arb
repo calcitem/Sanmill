@@ -1477,5 +1477,9 @@
   "liquid": "سائل",
   "@liquid": {},
   "wood": "خشب",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "تأثير تحريك وضع القطعة",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "تأثير تحريك إزالة القطعة",
+  "@removeEffectAnimation": {}
 }

@@ -1477,5 +1477,9 @@
   "liquid": "ద్రవం",
   "@liquid": {},
   "wood": "మొక్క",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "గేమ్ భాగాన్ని ఉంచే యానిమేషన్ ప్రభావం",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "గేమ్ భాగాన్ని తొలగించే యానిమేషన్ ప్రభావం",
+  "@removeEffectAnimation": {}
 }

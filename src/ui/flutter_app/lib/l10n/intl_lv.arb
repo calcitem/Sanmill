@@ -1477,5 +1477,9 @@
   "liquid": "Šķidrums",
   "@liquid": {},
   "wood": "Koks",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Figūras novietošanas animācijas efekts",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Figūras noņemšanas animācijas efekts",
+  "@removeEffectAnimation": {}
 }

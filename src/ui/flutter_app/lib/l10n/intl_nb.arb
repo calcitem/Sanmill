@@ -1477,5 +1477,9 @@
   "liquid": "Væske",
   "@liquid": {},
   "wood": "Tre",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animasjonseffekt ved plassering av brikke",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animasjonseffekt ved fjerning av brikke",
+  "@removeEffectAnimation": {}
 }

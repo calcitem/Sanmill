@@ -1575,5 +1575,9 @@
   "liquid": "سیال",
   "@liquid": {},
   "wood": "لکڑی",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "مہرا رکھنے کا متحرک اثر",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "مہرا ہٹانے کا متحرک اثر",
+  "@removeEffectAnimation": {}
 }

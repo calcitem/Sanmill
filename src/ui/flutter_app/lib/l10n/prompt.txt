@@ -1,14 +1,10 @@
 Please translate the following contents of the arb file, output the complete arb file directly:
 
 ```json
-"soundTheme": "Sound theme",
-"@soundTheme": {},
-"ball": "Ball",
-"@ball": {},
-"liquid": "Liquid",
-"@liquid": {},
-"wood": "Wood",
-"@wood": {},
+"placeEffectAnimation": "Piece placing animation effect",
+"@placeEffectAnimation": {},
+"removeEffectAnimation": "Piece removing animation effect",
+"@removeEffectAnimation": {}
 ```
 
 into:
@@ -80,23 +76,16 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "soundTheme": "Sound theme",
-  "@soundTheme": {},
-  "ball": "Ball",
-  "@ball": {},
-  "liquid": "Liquid",
-  "@liquid": {},
-  "wood": "Wood",
-  "@wood": {},
+  "placeEffectAnimation": "Piece placing animation effect",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Piece removing animation effect",
+  "@removeEffectAnimation": {}
+
 
 // intl_zh.arb
-  "soundTheme": "声音主题",
-  "@soundTheme": {},
-  "ball": "球",
-  "@ball": {},
-  "liquid": "水",
-  "@liquid": {},
-  "wood": "木",
-  "@wood": {},
+  "placeEffectAnimation": "摆子的动画效果",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "吃子的动画效果",
+  "@removeEffectAnimation": {}
 ```
 

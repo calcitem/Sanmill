@@ -53,6 +53,32 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
+  // Define a mapping of animation names to their corresponding constructors.
+  final Map<String, PieceEffectAnimation Function()> animationMap =
+      <String, PieceEffectAnimation Function()>{
+    'Aura': () => AuraPieceEffectAnimation(),
+    'Burst': () => BurstPieceEffectAnimation(),
+    'Echo': () => EchoPieceEffectAnimation(),
+    'Expand': () => ExpandPieceEffectAnimation(),
+    'Explode': () => ExplodePieceEffectAnimation(),
+    'Fireworks': () => FireworksPieceEffectAnimation(),
+    'Glow': () => GlowPieceEffectAnimation(),
+    'Orbit': () => OrbitPieceEffectAnimation(),
+    'Radial': () => RadialPieceEffectAnimation(),
+    'Ripple': () => RipplePieceEffectAnimation(),
+    'Rotate': () => RotatePieceEffectAnimation(),
+    'Sparkle': () => SparklePieceEffectAnimation(),
+    'Spiral': () => SpiralPieceEffectAnimation(),
+    'Fade': () => FadePieceEffectAnimation(),
+    'Shrink': () => ShrinkPieceEffectAnimation(),
+    'Shatter': () => ShatterPieceEffectAnimation(),
+    'Disperse': () => DispersePieceEffectAnimation(),
+    'Vanish': () => VanishPieceEffectAnimation(),
+    'Melt': () => MeltPieceEffectAnimation(),
+
+    // Add any additional animations here.
+  };
+
   @override
   void initState() {
     super.initState();
@@ -194,6 +220,17 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       context: context,
     );
 
+    // Retrieve the selected animation names from user settings.
+    final String placeEffectName = DB().displaySettings.placeEffectAnimation;
+    final String removeEffectName = DB().displaySettings.removeEffectAnimation;
+
+    // Use the map to get the corresponding animation instances.
+    final PieceEffectAnimation placeEffectAnimation =
+        animationMap[placeEffectName]?.call() ?? RadialPieceEffectAnimation();
+
+    final PieceEffectAnimation removeEffectAnimation =
+        animationMap[removeEffectName]?.call() ?? ExplodePieceEffectAnimation();
+
     final AnimatedBuilder customPaint = AnimatedBuilder(
       animation: Listenable.merge(<Animation<double>>[
         animationManager.placeAnimationController,
@@ -221,8 +258,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       PieceColor.black: gameImages?.blackPieceImage,
                       PieceColor.marked: gameImages?.markedPieceImage,
                     },
-                    placeEffectAnimation: DefaultPlaceEffectAnimation(),
-                    removeEffectAnimation: DefaultRemoveEffectAnimation(),
+                    placeEffectAnimation: placeEffectAnimation,
+                    removeEffectAnimation: removeEffectAnimation,
                   ),
                   child: DB().generalSettings.screenReaderSupport
                       ? const _BoardSemantics()

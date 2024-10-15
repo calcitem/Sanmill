@@ -1477,5 +1477,9 @@
   "liquid": "Tekutina",
   "@liquid": {},
   "wood": "Dřevo",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animace efektu umístění figurky",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animace efektu odstranění figurky",
+  "@removeEffectAnimation": {}
 }

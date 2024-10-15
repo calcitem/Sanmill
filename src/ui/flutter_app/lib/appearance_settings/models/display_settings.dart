@@ -73,6 +73,8 @@ class DisplaySettings {
     this.markedPieceImagePath = '',
     this.boardImagePath = '',
     this.vignetteEffectEnabled = false,
+    this.placeEffectAnimation = 'Default',
+    this.removeEffectAnimation = 'Default',
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -173,6 +175,12 @@ class DisplaySettings {
 
   @HiveField(27, defaultValue: false)
   final bool vignetteEffectEnabled;
+
+  @HiveField(28, defaultValue: 'Default')
+  final String placeEffectAnimation;
+
+  @HiveField(29, defaultValue: 'Default')
+  final String removeEffectAnimation;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

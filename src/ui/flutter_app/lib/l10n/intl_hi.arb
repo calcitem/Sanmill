@@ -1477,5 +1477,9 @@
   "liquid": "तरल",
   "@liquid": {},
   "wood": "लकड़ी",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "गोटी रखने का एनीमेशन प्रभाव",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "गोटी हटाने का एनीमेशन प्रभाव",
+  "@removeEffectAnimation": {}
 }

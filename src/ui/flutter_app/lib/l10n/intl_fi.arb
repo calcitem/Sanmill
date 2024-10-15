@@ -1477,5 +1477,9 @@
   "liquid": "Neste",
   "@liquid": {},
   "wood": "Puu",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Nappulan asettamisen animaatioefekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Nappulan poistamisen animaatioefekti",
+  "@removeEffectAnimation": {}
 }

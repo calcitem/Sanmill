@@ -1477,5 +1477,9 @@
   "liquid": "Liquide",
   "@liquid": {},
   "wood": "Bois",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Effet d'animation lors du placement de la pièce",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Effet d'animation lors du retrait de la pièce",
+  "@removeEffectAnimation": {}
 }

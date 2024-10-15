@@ -1575,5 +1575,9 @@
   "liquid": "ցուցակ",
   "@liquid": {},
   "wood": "փայտ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Խաղաքար դնելու անիմացիոն էֆեկտ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Խաղաքար հանելու անիմացիոն էֆեկտ",
+  "@removeEffectAnimation": {}
 }

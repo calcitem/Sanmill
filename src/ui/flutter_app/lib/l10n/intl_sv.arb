@@ -1477,5 +1477,9 @@
   "liquid": "Vätska",
   "@liquid": {},
   "wood": "Trä",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animeringseffekt vid placering av pjäs",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animeringseffekt vid borttagning av pjäs",
+  "@removeEffectAnimation": {}
 }

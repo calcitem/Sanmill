@@ -1575,5 +1575,9 @@
   "liquid": "液体",
   "@liquid": {},
   "wood": "木",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "駒を置くアニメーション効果",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "駒を取り除くアニメーション効果",
+  "@removeEffectAnimation": {}
 }

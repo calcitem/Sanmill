@@ -1477,5 +1477,9 @@
   "liquid": "Tekočina",
   "@liquid": {},
   "wood": "Les",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Animacijski učinek pri postavitvi figure",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animacijski učinek pri odstranitvi figure",
+  "@removeEffectAnimation": {}
 }

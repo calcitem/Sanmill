@@ -1477,5 +1477,9 @@
   "liquid": "Płyn",
   "@liquid": {},
   "wood": "Drewno",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Efekt animacji przy stawianiu pionka",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efekt animacji przy usuwaniu pionka",
+  "@removeEffectAnimation": {}
 }

@@ -1575,5 +1575,9 @@
   "liquid": "ፈሳሽ",
   "@liquid": {},
   "wood": "ዛፍ",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "ቁስ ማስቀመጥ አንድነት ተጽእኖ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "ቁስ ማስወገድ አንድነት ተጽእኖ",
+  "@removeEffectAnimation": {}
 }

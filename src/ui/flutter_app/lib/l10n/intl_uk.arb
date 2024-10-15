@@ -1575,5 +1575,9 @@
   "liquid": "Рідина",
   "@liquid": {},
   "wood": "Дерево",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Анімаційний ефект розміщення фігури",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анімаційний ефект видалення фігури",
+  "@removeEffectAnimation": {}
 }

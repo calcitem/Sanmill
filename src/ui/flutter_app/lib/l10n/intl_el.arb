@@ -1477,5 +1477,9 @@
   "liquid": "Υγρό",
   "@liquid": {},
   "wood": "Ξύλο",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Εφέ κίνησης τοποθέτησης πιόνιου",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Εφέ κίνησης αφαίρεσης πιόνιου",
+  "@removeEffectAnimation": {}
 }

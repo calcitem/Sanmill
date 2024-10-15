@@ -1477,5 +1477,9 @@
   "liquid": "Cecair",
   "@liquid": {},
   "wood": "Kayu",
-  "@wood": {}
+  "@wood": {},
+  "placeEffectAnimation": "Efek animasi meletakkan buah",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efek animasi mengeluarkan buah",
+  "@removeEffectAnimation": {}
 }
