@@ -221,6 +221,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       PieceColor.black: gameImages?.blackPieceImage,
                       PieceColor.marked: gameImages?.markedPieceImage,
                     },
+                    placeEffectAnimation: DefaultPlaceEffectAnimation(),
+                    removeEffectAnimation: DefaultRemoveEffectAnimation(),
                   ),
                   child: DB().generalSettings.screenReaderSupport
                       ? const _BoardSemantics()

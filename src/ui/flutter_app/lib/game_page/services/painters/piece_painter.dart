@@ -16,36 +16,6 @@
 
 part of '../../../game_page/services/painters/painters.dart';
 
-/// Piece Information
-///
-/// Holds parameters needed to paint each piece.
-@immutable
-class Piece {
-  const Piece({
-    required this.pieceColor,
-    required this.pos,
-    required this.diameter,
-    required this.index,
-    this.squareAttribute,
-    this.image,
-  });
-
-  /// The color of the piece.
-  final PieceColor pieceColor;
-
-  /// The position of the piece on the canvas.
-  final Offset pos;
-
-  /// The diameter of the piece.
-  final double diameter;
-
-  /// The index of the piece.
-  final int index;
-
-  final SquareAttribute? squareAttribute;
-  final ui.Image? image;
-}
-
 /// Custom Piece Painter
 ///
 /// Painter to draw each piece on the board.
@@ -56,6 +26,8 @@ class PiecePainter extends CustomPainter {
     required this.moveAnimationValue,
     required this.removeAnimationValue,
     required this.pieceImages,
+    required this.placeEffectAnimation,
+    required this.removeEffectAnimation,
   });
 
   final double placeAnimationValue;
@@ -63,6 +35,10 @@ class PiecePainter extends CustomPainter {
   final double removeAnimationValue;
 
   final Map<PieceColor, ui.Image?>? pieceImages;
+
+  // Animation instances for place and remove effects.
+  final PlaceEffectAnimation placeEffectAnimation;
+  final RemoveEffectAnimation removeEffectAnimation;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -74,7 +50,7 @@ class PiecePainter extends CustomPainter {
     final Paint paint = Paint();
     final Path shadowPath = Path();
 
-    // Separate lists for normal and moving pieces
+    // Separate lists for normal and moving pieces.
     final List<Piece> normalPiecesToDraw = <Piece>[];
     final List<Piece> movingPiecesToDraw = <Piece>[];
 
@@ -83,10 +59,10 @@ class PiecePainter extends CustomPainter {
             6 -
         1;
 
-    // Variable to hold the current position of the moving piece
+    // Variable to hold the current position of the moving piece.
     Offset? movingPos;
 
-    // Draw pieces on board
+    // Draw pieces on board.
     for (int row = 0; row < 7; row++) {
       for (int col = 0; col < 7; col++) {
         final int index = row * 7 + col;
@@ -96,20 +72,20 @@ class PiecePainter extends CustomPainter {
 
         Offset pos;
 
-        // Check if this piece is currently placing
+        // Check if this piece is currently placing.
         final bool isPlacingPiece = (placeAnimationValue < 1.0) &&
             (focusIndex != null) &&
             (blurIndex == null) &&
             (index == focusIndex);
 
-        // Check if this piece is currently moving
+        // Check if this piece is currently moving.
         final bool isMovingPiece = (moveAnimationValue < 1.0) &&
             (focusIndex != null) &&
             (blurIndex != null) &&
             (index == focusIndex) &&
             !GameController().animationManager.isRemoveAnimationAnimating();
 
-        // Check if this piece is currently being removed
+        // Check if this piece is currently being removed.
         final bool isRemovingPiece = (removeAnimationValue < 1.0) &&
             (removeIndex != null) &&
             (index == removeIndex);
@@ -117,37 +93,37 @@ class PiecePainter extends CustomPainter {
         if (isPlacingPiece) {
           pos = pointFromIndex(index, size);
 
-          drawPlaceEffect(
+          placeEffectAnimation.draw(
             canvas,
             pos,
             pieceWidth,
             placeAnimationValue,
           );
-          // Continue to draw the placing piece normally after the effect
+          // Continue to draw the placing piece normally after the effect.
         }
 
         if (isMovingPiece) {
-          // Calculate interpolated position between blurIndex and focusIndex
+          // Calculate interpolated position between blurIndex and focusIndex.
           final Offset fromPos = pointFromIndex(blurIndex, size);
           final Offset toPos = pointFromIndex(focusIndex, size);
 
           pos = Offset.lerp(fromPos, toPos, moveAnimationValue)!;
 
-          // Store the moving piece's current position for highlight
+          // Store the moving piece's current position for highlight.
           movingPos = pos;
         } else {
-          // Use the normal position
+          // Use the normal position.
           pos = pointFromIndex(index, size);
         }
 
         if (isRemovingPiece) {
-          drawRemoveEffect(
+          removeEffectAnimation.draw(
             canvas,
             pos,
             pieceWidth,
             removeAnimationValue,
           );
-          continue; // Skip normal drawing
+          continue; // Skip normal drawing.
         }
 
         if (pieceColor == PieceColor.none) {
@@ -172,7 +148,7 @@ class PiecePainter extends CustomPainter {
           image: image,
         );
 
-        // Add to the appropriate list based on whether it's moving
+        // Add to the appropriate list based on whether it's moving.
         if (isMovingPiece) {
           movingPiecesToDraw.add(piece);
         } else {
@@ -188,7 +164,7 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadows for normal pieces
+    // Draw shadows for normal pieces.
     for (final Piece piece in normalPiecesToDraw) {
       if (piece.image == null) {
         canvas.drawShadow(
@@ -206,7 +182,7 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw shadows for moving pieces
+    // Draw shadows for moving pieces.
     for (final Piece piece in movingPiecesToDraw) {
       if (piece.image == null) {
         canvas.drawShadow(
@@ -228,7 +204,7 @@ class PiecePainter extends CustomPainter {
 
     Color blurPositionColor = Colors.transparent;
 
-    // Draw normal pieces first
+    // Draw normal pieces first.
     for (final Piece piece in normalPiecesToDraw) {
       blurPositionColor = piece.pieceColor.blurPositionColor;
 
@@ -248,7 +224,7 @@ class PiecePainter extends CustomPainter {
           fit: BoxFit.cover,
         );
       } else {
-        // Draw border of the piece
+        // Draw border of the piece.
         paint.color = piece.pieceColor.borderColor.withOpacity(opacity);
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
@@ -264,7 +240,7 @@ class PiecePainter extends CustomPainter {
           paint,
         );
 
-        // Fill the piece with main color
+        // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withOpacity(opacity);
         canvas.drawCircle(
@@ -274,7 +250,7 @@ class PiecePainter extends CustomPainter {
         );
       }
 
-      // Draw numbers on pieces if enabled
+      // Draw numbers on pieces if enabled.
       if (DB().displaySettings.isNumbersOnPiecesShown &&
           piece.squareAttribute?.placedPieceNumber != null &&
           piece.squareAttribute!.placedPieceNumber > 0) {
@@ -294,7 +270,7 @@ class PiecePainter extends CustomPainter {
         );
         textPainter.layout();
 
-        // Calculate offset for centering the text
+        // Calculate offset for centering the text.
         final Offset textOffset = Offset(
           piece.pos.dx - textPainter.width / 2,
           piece.pos.dy - textPainter.height / 2,
@@ -304,7 +280,7 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw moving pieces on top of normal pieces
+    // Draw moving pieces on top of normal pieces.
     for (final Piece piece in movingPiecesToDraw) {
       blurPositionColor = piece.pieceColor.blurPositionColor;
 
@@ -324,7 +300,7 @@ class PiecePainter extends CustomPainter {
           fit: BoxFit.cover,
         );
       } else {
-        // Draw border of the piece
+        // Draw border of the piece.
         paint.color = piece.pieceColor.borderColor.withOpacity(opacity);
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
@@ -340,7 +316,7 @@ class PiecePainter extends CustomPainter {
           paint,
         );
 
-        // Fill the piece with main color
+        // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
         paint.color = piece.pieceColor.mainColor.withOpacity(opacity);
         canvas.drawCircle(
@@ -350,7 +326,7 @@ class PiecePainter extends CustomPainter {
         );
       }
 
-      // Draw numbers on pieces if enabled
+      // Draw numbers on pieces if enabled.
       if (DB().displaySettings.isNumbersOnPiecesShown &&
           piece.squareAttribute?.placedPieceNumber != null &&
           piece.squareAttribute!.placedPieceNumber > 0) {
@@ -370,7 +346,7 @@ class PiecePainter extends CustomPainter {
         );
         textPainter.layout();
 
-        // Calculate offset for centering the text
+        // Calculate offset for centering the text.
         final Offset textOffset = Offset(
           piece.pos.dx - textPainter.width / 2,
           piece.pos.dy - textPainter.height / 2,
@@ -380,14 +356,14 @@ class PiecePainter extends CustomPainter {
       }
     }
 
-    // Draw focus and blur positions
+    // Draw focus and blur positions.
     if (focusIndex != null &&
         GameController().gameInstance.gameMode != GameMode.setupPosition) {
       paint.color = DB().colorSettings.pieceHighlightColor;
       paint.style = PaintingStyle.stroke;
       paint.strokeWidth = 2;
 
-      // If the piece is moving, use the interpolated position for highlight
+      // If the piece is moving, use the interpolated position for highlight.
       final Offset focusPos = movingPos ?? pointFromIndex(focusIndex, size);
 
       canvas.drawCircle(
@@ -407,8 +383,7 @@ class PiecePainter extends CustomPainter {
       paint.color = blurPositionColor;
       paint.style = PaintingStyle.fill;
 
-      // If the piece is moving, optionally update blur position if needed
-      // Here, assuming blur remains at the original position
+      // Blur remains at the original position.
       canvas.drawCircle(
         pointFromIndex(blurIndex, size),
         pieceWidth / 2 * 0.8,
@@ -417,151 +392,9 @@ class PiecePainter extends CustomPainter {
     }
   }
 
-  void drawPlaceEffect(
-    Canvas canvas,
-    Offset center,
-    double diameter,
-    double animationValue,
-  ) {
-    if (DB().displaySettings.animationDuration == 0.0) {
-      return;
-    }
-
-    // Apply easing to the animation value
-    final double easedAnimation = Curves.easeOut.transform(animationValue);
-
-    // Calculate the maximum and current radius based on the diameter and animation
-    final double maxRadius = diameter * 0.25;
-    final double currentRadius = diameter + maxRadius * easedAnimation;
-
-    // Define the main and secondary opacities
-    final double mainOpacity = 0.6 * (1.0 - easedAnimation);
-    final double secondOpacity = mainOpacity * 0.8;
-
-    // Cache the board line color to avoid repeated calls
-    final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
-
-    // Define the configuration for each effect layer
-    final List<_EffectLayer> layers = <_EffectLayer>[
-      // Main layer
-      _EffectLayer(
-        radiusFactor: 1.0,
-        opacityFactor: 0.8,
-      ),
-      // Second layer
-      _EffectLayer(
-        radiusFactor: 0.75,
-        opacityFactor: 0.5,
-      ),
-      // Third layer
-      _EffectLayer(
-        radiusFactor: 0.5,
-        opacityFactor: 0.2,
-      ),
-    ];
-
-    // Iterate over each layer configuration to draw the circles
-    for (final _EffectLayer layer in layers) {
-      // Determine the radius for the current layer
-      final double layerRadius = currentRadius * layer.radiusFactor;
-
-      // Determine the opacity for the current layer
-      double layerOpacity;
-      if (layer.opacityFactor == 1.0) {
-        layerOpacity = mainOpacity;
-      } else if (layer.opacityFactor == 0.8) {
-        layerOpacity = secondOpacity;
-      } else {
-        layerOpacity = mainOpacity * layer.opacityFactor;
-      }
-
-      // Create the paint with a radial gradient shader
-      final Paint paint = Paint()
-        ..shader = RadialGradient(
-          colors: <ui.Color>[
-            boardLineColor.withOpacity(layerOpacity),
-            boardLineColor.withOpacity(0.0),
-          ],
-          stops: const <double>[
-            0.0,
-            1.0,
-          ],
-        ).createShader(Rect.fromCircle(center: center, radius: layerRadius))
-        ..style = PaintingStyle.fill;
-
-      // Draw the circle on the canvas
-      canvas.drawCircle(center, layerRadius, paint);
-    }
-  }
-
-  void drawRemoveEffect(
-    Canvas canvas,
-    Offset center,
-    double diameter,
-    double animationValue,
-  ) {
-    if (DB().displaySettings.animationDuration == 0.0) {
-      return;
-    }
-
-    final int numParticles = DB().ruleSettings.piecesCount;
-    final double maxDistance = diameter * 3;
-    final double particleMaxSize = diameter * 0.12;
-    final double particleMinSize = diameter * 0.05;
-
-    final double time = Curves.easeOut.transform(animationValue);
-
-    final int seed = DateTime.now().millisecondsSinceEpoch;
-    final Random random = Random(seed);
-
-    for (int i = 0; i < numParticles; i++) {
-      final double angle =
-          (i / numParticles) * 2 * pi + random.nextDouble() * 0.2;
-      final double speed = 0.5 + random.nextDouble() * 0.4;
-
-      final double distance = speed * time * maxDistance;
-      final Offset offset = Offset(cos(angle), sin(angle)) * distance;
-      final Offset particlePos = center + offset;
-
-      final double opacity = (1.0 - time).clamp(0.0, 1.0);
-
-      final Color particleColor = HSVColor.fromAHSV(
-        opacity,
-        random.nextDouble() * 360,
-        1.0,
-        1.0,
-      ).toColor();
-
-      final Paint particlePaint = Paint()
-        ..color = particleColor
-        ..style = PaintingStyle.fill;
-
-      final double particleSize = particleMinSize +
-          (particleMaxSize - particleMinSize) *
-              (1.0 - time) *
-              (0.8 + random.nextDouble() * 0.4);
-
-      canvas.drawCircle(particlePos, particleSize, particlePaint);
-    }
-  }
-
   @override
   bool shouldRepaint(PiecePainter oldDelegate) =>
       placeAnimationValue != oldDelegate.placeAnimationValue ||
       moveAnimationValue != oldDelegate.moveAnimationValue ||
       removeAnimationValue != oldDelegate.removeAnimationValue;
-}
-
-/// A helper class to define the properties of each effect layer.
-class _EffectLayer {
-  _EffectLayer({
-    required this.radiusFactor,
-    required this.opacityFactor,
-  });
-
-  /// The factor by which to multiply the current radius.
-  final double radiusFactor;
-
-  /// The factor by which to multiply the main opacity.
-  final double opacityFactor;
 }

@@ -17,7 +17,6 @@
 /// Although marked as a library this package is tightly integrated into the app
 library painters;
 
-import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/foundation.dart';
@@ -28,7 +27,10 @@ import '../../../appearance_settings/models/display_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
 import '../../../shared/themes/app_theme.dart';
-import '../../services/mill.dart';
+import '../mill.dart';
+import 'animations/place_effect_animation.dart';
+import 'animations/remove_effect_animation.dart';
+import 'piece.dart';
 
 part 'board_painter.dart';
 part 'board_utils.dart';
