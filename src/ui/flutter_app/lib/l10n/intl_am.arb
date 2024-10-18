@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "ቁስ ማስቀመጥ አንድነት ተጽእኖ",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "ቁስ ማስወገድ አንድነት ተጽእኖ",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "መሳሪያ መስመርን በታች አሳይ",
+  "@isToolbarAtBottom": {}
 }

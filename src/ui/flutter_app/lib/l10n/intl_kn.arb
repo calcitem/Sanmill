@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "ಮುಗ್ದವನ್ನು ಇರಿಸುವ ಅನಿಮೇಷನ್ ಪರಿಣಾಮ",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "ಮುಗ್ದವನ್ನು ತೆಗೆದುಹಾಕುವ ಅನಿಮೇಷನ್ ಪರಿಣಾಮ",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ಕೆಳಗೆ ಸಾಧನಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ",
+  "@isToolbarAtBottom": {}
 }

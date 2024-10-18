@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Animovaný efekt pri umiestnení figúrky",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animovaný efekt pri odstránení figúrky",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Zobraziť panel nástrojov dole",
+  "@isToolbarAtBottom": {}
 }

@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "गोटी रखने का एनीमेशन प्रभाव",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "गोटी हटाने का एनीमेशन प्रभाव",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "टूलबार को नीचे दिखाएं",
+  "@isToolbarAtBottom": {}
 }

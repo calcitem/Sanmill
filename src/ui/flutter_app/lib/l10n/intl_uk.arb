@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Анімаційний ефект розміщення фігури",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Анімаційний ефект видалення фігури",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показати панель інструментів внизу",
+  "@isToolbarAtBottom": {}
 }

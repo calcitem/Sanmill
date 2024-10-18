@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "කිවිය තබා ඇති ඇනිමේෂන් බලපෑම",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "කිවිය ඉවත් කිරීමේ ඇනිමේෂන් බලපෑම",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "මෙහෙයුම් තීරුව පහළින් පෙන්වන්න",
+  "@isToolbarAtBottom": {}
 }

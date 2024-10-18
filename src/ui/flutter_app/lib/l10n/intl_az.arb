@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Fiquru yerləşdirmə animasiya effekti",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Fiquru çıxarma animasiya effekti",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Alətlər panelini aşağıda göstər",
+  "@isToolbarAtBottom": {}
 }

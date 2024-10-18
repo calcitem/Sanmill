@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "擺子的動畫效果",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "吃子的動畫效果",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "工具列顯示在底部",
+  "@isToolbarAtBottom": {}
 }

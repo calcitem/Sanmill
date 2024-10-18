@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Animatie-effect bij plaatsen van stuk",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animatie-effect bij verwijderen van stuk",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Werkbalk onderaan weergeven",
+  "@isToolbarAtBottom": {}
 }

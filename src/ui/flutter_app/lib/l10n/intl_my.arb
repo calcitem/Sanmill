@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "သားကိုထားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "သားကိုဖယ်ရှားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ကိရိယာဘားကို အောက်ဆုံးတွင် ပြပါ",
+  "@isToolbarAtBottom": {}
 }

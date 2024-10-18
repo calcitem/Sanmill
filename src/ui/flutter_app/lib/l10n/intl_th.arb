@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "เอฟเฟกต์แอนิเมชันการวางตัวหมาก",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "เอฟเฟกต์แอนิเมชันการลบตัวหมาก",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "แสดงแถบเครื่องมือที่ด้านล่าง",
+  "@isToolbarAtBottom": {}
 }

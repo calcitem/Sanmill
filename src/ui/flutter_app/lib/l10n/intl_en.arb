@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Piece placing animation effect",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Piece removing animation effect",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Show toolbar at bottom",
+  "@isToolbarAtBottom": {}
 }

@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "ঘুঁটি স্থাপনের অ্যানিমেশন প্রভাব",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "ঘুঁটি অপসারণের অ্যানিমেশন প্রভাব",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "টুলবার নীচে দেখান",
+  "@isToolbarAtBottom": {}
 }

@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Анимационен ефект при поставяне на фигура",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Анимационен ефект при премахване на фигура",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показване на лентата с инструменти в долната част",
+  "@isToolbarAtBottom": {}
 }

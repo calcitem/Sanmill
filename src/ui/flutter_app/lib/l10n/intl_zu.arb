@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Umphumela we-animation wokubeka ucezu",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Umphumela we-animation wokususa ucezu",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Khombisa ibha yamathuluzi ezansi",
+  "@isToolbarAtBottom": {}
 }

@@ -1,10 +1,8 @@
 Please translate the following contents of the arb file, output the complete arb file directly:
 
 ```json
-"placeEffectAnimation": "Piece placing animation effect",
-"@placeEffectAnimation": {},
-"removeEffectAnimation": "Piece removing animation effect",
-"@removeEffectAnimation": {}
+"isToolbarAtBottom": "Show toolbar at bottom",
+"@isToolbarAtBottom": {},
 ```
 
 into:
@@ -76,16 +74,12 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "placeEffectAnimation": "Piece placing animation effect",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Piece removing animation effect",
-  "@removeEffectAnimation": {}
+  "isToolbarAtBottom": "Show toolbar at bottom",
+  "@isToolbarAtBottom": {},
 
 
 // intl_zh.arb
-  "placeEffectAnimation": "摆子的动画效果",
-  "@placeEffectAnimation": {},
-  "removeEffectAnimation": "吃子的动画效果",
-  "@removeEffectAnimation": {}
+  "isToolbarAtBottom": "工具栏紧靠在屏幕底部",
+  "@isToolbarAtBottom": {},
 ```
 

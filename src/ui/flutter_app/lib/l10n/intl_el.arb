@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Εφέ κίνησης τοποθέτησης πιόνιου",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Εφέ κίνησης αφαίρεσης πιόνιου",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Εμφάνιση της γραμμής εργαλείων στο κάτω μέρος",
+  "@isToolbarAtBottom": {}
 }

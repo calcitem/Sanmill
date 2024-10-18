@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "اثر انیمیشن قرار دادن مهره",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "اثر انیمیشن حذف مهره",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "نمایش نوار ابزار در پایین",
+  "@isToolbarAtBottom": {}
 }

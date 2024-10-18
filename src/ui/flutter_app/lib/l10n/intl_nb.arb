@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Animasjonseffekt ved plassering av brikke",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animasjonseffekt ved fjerning av brikke",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Vis verktøylinjen nederst",
+  "@isToolbarAtBottom": {}
 }

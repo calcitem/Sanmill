@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "말 놓기 애니메이션 효과",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "말 제거 애니메이션 효과",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "도구 모음을 아래에 표시",
+  "@isToolbarAtBottom": {}
 }

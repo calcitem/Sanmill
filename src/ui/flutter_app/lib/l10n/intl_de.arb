@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Animationseffekt beim Platzieren von Figuren",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animationseffekt beim Entfernen von Figuren",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Symbolleiste unten anzeigen",
+  "@isToolbarAtBottom": {}
 }

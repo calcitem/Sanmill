@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Effet d'animation lors du placement de la pièce",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Effet d'animation lors du retrait de la pièce",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Afficher la barre d'outils en bas",
+  "@isToolbarAtBottom": {}
 }

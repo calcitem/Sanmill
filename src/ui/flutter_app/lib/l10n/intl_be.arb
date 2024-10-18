@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Анімацыйны эфект размяшчэння фігуры",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Анімацыйны эфект выдалення фігуры",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Паказаць панэль інструментаў унізе",
+  "@isToolbarAtBottom": {}
 }

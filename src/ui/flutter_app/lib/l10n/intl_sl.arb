@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Animacijski učinek pri postavitvi figure",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animacijski učinek pri odstranitvi figure",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Pokaži orodno vrstico na dnu",
+  "@isToolbarAtBottom": {}
 }

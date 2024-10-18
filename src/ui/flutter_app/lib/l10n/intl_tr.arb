@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Taş yerleştirme animasyon efekti",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Taş kaldırma animasyon efekti",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Araç çubuğunu altta göster",
+  "@isToolbarAtBottom": {}
 }

@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "駒を置くアニメーション効果",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "駒を取り除くアニメーション効果",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ツールバーを下部に表示",
+  "@isToolbarAtBottom": {}
 }

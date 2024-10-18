@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "مہرا رکھنے کا متحرک اثر",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "مہرا ہٹانے کا متحرک اثر",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ٹول بار کو نیچے دکھائیں",
+  "@isToolbarAtBottom": {}
 }

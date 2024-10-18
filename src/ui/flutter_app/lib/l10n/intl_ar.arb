@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "تأثير تحريك وضع القطعة",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "تأثير تحريك إزالة القطعة",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "عرض شريط الأدوات في الأسفل",
+  "@isToolbarAtBottom": {}
 }

@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Efect de animație la plasarea piesei",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efect de animație la eliminarea piesei",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Afișează bara de instrumente în partea de jos",
+  "@isToolbarAtBottom": {}
 }

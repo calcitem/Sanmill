@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Stuk plaas animasie-effek",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Stuk verwydering animasie-effek",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Wys werkbalk onder",
+  "@isToolbarAtBottom": {}
 }

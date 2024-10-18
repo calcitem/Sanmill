@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Effetto animazione di posizionamento pezzo",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Effetto animazione di rimozione pezzo",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Mostra la barra degli strumenti in basso",
+  "@isToolbarAtBottom": {}
 }

@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Nappulan asettamisen animaatioefekti",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Nappulan poistamisen animaatioefekti",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Näytä työkalupalkki alhaalla",
+  "@isToolbarAtBottom": {}
 }

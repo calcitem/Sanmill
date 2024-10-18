@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Bábu elhelyezési animációs effektus",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Bábu eltávolítási animációs effektus",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Eszköztár megjelenítése alul",
+  "@isToolbarAtBottom": {}
 }

@@ -75,6 +75,7 @@ class DisplaySettings {
     this.vignetteEffectEnabled = false,
     this.placeEffectAnimation = 'Default',
     this.removeEffectAnimation = 'Default',
+    this.isToolbarAtBottom = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -181,6 +182,9 @@ class DisplaySettings {
 
   @HiveField(29, defaultValue: 'Default')
   final String removeEffectAnimation;
+
+  @HiveField(30, defaultValue: false)
+  final bool isToolbarAtBottom;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

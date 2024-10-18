@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Խաղաքար դնելու անիմացիոն էֆեկտ",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Խաղաքար հանելու անիմացիոն էֆեկտ",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Ցույց տալ գործիքագոտին ներքեւում",
+  "@isToolbarAtBottom": {}
 }

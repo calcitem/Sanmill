@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Efecto de animación al colocar pieza",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efecto de animación al eliminar pieza",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Mostrar la barra de herramientas en la parte inferior",
+  "@isToolbarAtBottom": {}
 }

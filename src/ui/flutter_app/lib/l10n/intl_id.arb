@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Efek animasi penempatan bidak",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efek animasi penghapusan bidak",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Tampilkan bilah alat di bagian bawah",
+  "@isToolbarAtBottom": {}
 }

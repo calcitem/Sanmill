@@ -340,11 +340,16 @@ class PlayAreaState extends State<PlayArea> {
                 ? 1.0
                 : 0.65);
 
-        return SizedBox(
+        // Check if the toolbar should be displayed at the bottom.
+        final bool isToolbarAtBottom = DB().displaySettings.isToolbarAtBottom;
+
+        // Build the main content of the page.
+        final Widget mainContent = SizedBox(
           width: dimension,
           child: SafeArea(
             top: MediaQuery.of(context).orientation == Orientation.portrait,
-            bottom: false,
+            bottom:
+                !isToolbarAtBottom, // Disable bottom safe area if toolbar is at bottom
             right: false,
             left: false,
             child: SingleChildScrollView(
@@ -380,11 +385,67 @@ class PlayAreaState extends State<PlayArea> {
                     _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  // Display the setup position toolbar if in setup mode.
+                  // Display the setup position toolbar if in setup mode and toolbar is not at bottom.
+                  if (GameController().gameInstance.gameMode ==
+                          GameMode.setupPosition &&
+                      !isToolbarAtBottom)
+                    const SetupPositionToolbar(),
+                  // Display the history navigation toolbar based on display settings and game mode.
+                  if (DB().displaySettings.isHistoryNavigationToolbarShown &&
+                      GameController().gameInstance.gameMode !=
+                          GameMode.setupPosition &&
+                      !isToolbarAtBottom)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.navigationToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.navigationToolbarIconColor,
+                      children: _buildToolbarItems(
+                          context, _getHistoryNavToolbarItems(context)),
+                    ),
+                  // Display the analysis toolbar if enabled in display settings and toolbar is not at bottom.
+                  if (DB().displaySettings.isAnalysisToolbarShown &&
+                      !isToolbarAtBottom)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.analysisToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.analysisToolbarIconColor,
+                      children: _buildToolbarItems(
+                          context, _getAnalysisToolbarItems(context)),
+                    ),
+                  // Display the main toolbar if not in setup mode and toolbar is not at bottom.
+                  if (GameController().gameInstance.gameMode !=
+                          GameMode.setupPosition &&
+                      !isToolbarAtBottom)
+                    GamePageToolbar(
+                      backgroundColor:
+                          DB().colorSettings.mainToolbarBackgroundColor,
+                      itemColor: DB().colorSettings.mainToolbarIconColor,
+                      children: _buildToolbarItems(
+                          context, _getMainToolbarItems(context)),
+                    ),
+                  const SizedBox(height: AppTheme.boardMargin),
+                ],
+              ),
+            ),
+          ),
+        );
+
+        // If toolbar should be at the bottom, use a Column with main content and toolbar separated.
+        if (isToolbarAtBottom) {
+          return SizedBox(
+            width: dimension,
+            child: SafeArea(
+              top: MediaQuery.of(context).orientation == Orientation.portrait,
+              right: false,
+              left: false,
+              child: Column(
+                children: <Widget>[
+                  // Expanded to take up available space above the toolbar
+                  Expanded(child: mainContent),
+                  // Display all toolbars at the bottom
                   if (GameController().gameInstance.gameMode ==
                       GameMode.setupPosition)
                     const SetupPositionToolbar(),
-                  // Display the history navigation toolbar based on display settings and game mode.
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition)
@@ -418,8 +479,11 @@ class PlayAreaState extends State<PlayArea> {
                 ],
               ),
             ),
-          ),
-        );
+          );
+        }
+
+        // If toolbar is not at the bottom, return the main content as is.
+        return mainContent;
       },
     );
   }

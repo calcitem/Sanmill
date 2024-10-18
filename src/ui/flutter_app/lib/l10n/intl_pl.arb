@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Efekt animacji przy stawianiu pionka",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efekt animacji przy usuwaniu pionka",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Pokaż pasek narzędzi na dole",
+  "@isToolbarAtBottom": {}
 }

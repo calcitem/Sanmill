@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Figūros padėjimo animacijos efektas",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Figūros pašalinimo animacijos efektas",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Rodyti įrankių juostą apačioje",
+  "@isToolbarAtBottom": {}
 }

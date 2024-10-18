@@ -1579,5 +1579,7 @@
   "placeEffectAnimation": "Hiệu ứng hoạt hình đặt quân cờ",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Hiệu ứng hoạt hình loại bỏ quân cờ",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Hiển thị thanh công cụ ở phía dưới",
+  "@isToolbarAtBottom": {}
 }

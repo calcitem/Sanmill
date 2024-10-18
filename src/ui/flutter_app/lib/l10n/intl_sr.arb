@@ -1481,5 +1481,7 @@
   "placeEffectAnimation": "Анимациони ефекат постављања фигуре",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Анимациони ефекат уклањања фигуре",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Прикажи алатну траку на дну",
+  "@isToolbarAtBottom": {}
 }
