@@ -571,19 +571,12 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // Determine the depth extension
         epsilon = (gameOptions.getDepthExtension() && moveCount == 1) ? 1 : 0;
 
-        // Perform recursive search based on the selected algorithm
-        if (gameOptions.getAlgorithm() == 1 /* PVS */) {
-            // Call the PVS function
-            value = pvs(pos, ss, depth - 1 + epsilon, originDepth, alpha, beta,
-                        bestMove, i, before, after);
-        } else {
-            // Alpha-Beta Search
-            value = (after != before) ?
-                        -search(pos, ss, depth - 1 + epsilon, originDepth,
-                                -beta, -alpha, bestMove) :
-                        search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
-                               beta, bestMove);
-        }
+        // Perform recursive search
+        value = (after != before) ?
+                    -search(pos, ss, depth - 1 + epsilon, originDepth, -beta,
+                            -alpha, bestMove) :
+                    search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
+                           beta, bestMove);
 
         // Undo the move
         pos->undo_move(ss);
