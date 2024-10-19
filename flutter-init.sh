@@ -23,14 +23,11 @@ flutter config --no-analytics
 # Get Flutter packages
 flutter pub get
 
-# Generate localization files
-flutter gen-l10n -v
-
 # Generate Flutter version file
 echo "const Map<String, String> flutterVersion =" > "$FLUTTER_VERSION_FILE"
 flutter --version --machine | tee -a "$FLUTTER_VERSION_FILE"
 echo ";" >> "$FLUTTER_VERSION_FILE"
 
 # Run code generation
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 
