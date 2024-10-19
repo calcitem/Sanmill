@@ -1478,10 +1478,10 @@
   "@liquid": {},
   "wood": "Madera",
   "@wood": {},
-  "placeEffectAnimation": "Efecto de animación al colocar pieza",
+  "placeEffectAnimation": "Efecto de animación al colocar la pieza",
   "@placeEffectAnimation": {},
-  "removeEffectAnimation": "Efecto de animación al eliminar pieza",
+  "removeEffectAnimation": "Efecto de animación al eliminar las piezas",
   "@removeEffectAnimation": {},
-  "isToolbarAtBottom": "Mostrar la barra de herramientas en la parte inferior",
+  "isToolbarAtBottom": "Mostrar barra de herramientas en la parte inferior",
   "@isToolbarAtBottom": {}
 }
