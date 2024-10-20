@@ -1,5 +1,5 @@
 #!/bin/bash
-
+/
 YAML_FILE=src/ui/flutter_app/pubspec.yaml
 SNAP_YAML_FILE=snap/snapcraft.yaml
 SNAP_DESKTOP_FILE=snap/gui/mill.desktop
@@ -185,5 +185,19 @@ git commit -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release ver
 #exit
 git tag -d v$NEW_VERSION || true
 git tag -m "Sanmill v$NEW_VERSION (${BUILD_NUMBER})" -m "Official release version of Sanmill v$NEW_VERSION" v$NEW_VERSION
-git push origin v$NEW_VERSION -f
-git push origin master
+
+# Show the latest commit details
+git show
+
+# Prompt the user for confirmation
+read -p "Do you want to push the latest changes to the master branch? (y/n): " choice
+
+if [ "$choice" == "y" ]; then
+  # If the user confirms, push the changes to the master branch
+  git push origin v$NEW_VERSION -f
+  git push origin master
+  echo "Changes have been pushed to the master branch."
+else
+  # If the user declines, skip the push
+  echo "Push to master branch has been skipped."
+fi
