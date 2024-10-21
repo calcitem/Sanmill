@@ -15,7 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Although marked as a library this package is tightly integrated into the app
-library mill;
+library;
 
 import 'dart:async';
 import 'dart:io';

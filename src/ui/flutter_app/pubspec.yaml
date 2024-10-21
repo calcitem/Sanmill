@@ -4,7 +4,7 @@ publish_to: none
 version: 5.4.1+4362
 
 environment:
-  sdk: ">=2.17.0 <4.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   animated_text_kit: 4.2.2
@@ -33,12 +33,14 @@ dependencies:
     git:
       url: https://gitlab.com/calcitem/image_gallery_saver
       ref: knottx
+  image_picker: 1.1.2
   intl: 0.19.0
   json_annotation: 4.9.0
   kplayer: 0.4.2
   logger: 2.4.0
   marquee: 2.3.0
   native_screenshot_widget: 0.0.8
+  opencv_dart: 1.2.5
   package_info_plus: 8.1.0
   path: 1.9.0
   path_provider: 2.1.4

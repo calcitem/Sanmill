@@ -26,6 +26,7 @@ import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../services/mill.dart';
 import 'game_page.dart';
+import 'image_to_fen.dart';
 import 'modals/game_options_modal.dart';
 import 'toolbars/game_toolbar.dart';
 
@@ -125,7 +126,14 @@ class PlayAreaState extends State<PlayArea> {
             maxLines: 1, overflow: TextOverflow.ellipsis),
       ),
       ToolbarItem.icon(
-        onPressed: () => _openDialog(context, const InfoDialog()),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<ImageToFenApp>(
+              builder: (BuildContext context) => const ImageToFenApp(),
+            ),
+          );
+        },
         icon: const Icon(FluentIcons.book_information_24_regular),
         label: Text(S.of(context).info,
             maxLines: 1, overflow: TextOverflow.ellipsis),
