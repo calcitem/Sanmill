@@ -12,7 +12,7 @@ import '../../shared/services/logger.dart';
 
 class PointWithAngle {
   PointWithAngle(this.point, this.angle);
-  final cv.Point2f point;
+  final cv.Point point;
   final double angle;
 }
 
@@ -27,7 +27,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   Uint8List? _processedImage;
 
   Uint8List? grayImage;
-  Uint8List? blurredImage;
+  Uint8List? enhancedImage;
   Uint8List? threshImage;
   Uint8List? warpedImage;
 
@@ -62,10 +62,11 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         throw Exception('不支持的图像通道数: ${mat.channels}');
       }
 
-      // Preprocessing: blur and threshold
-      final cv.Mat blurred = cv.gaussianBlur(gray, (5, 5), 0);
+      // Preprocessing: Histogram Equalization and median blur
+      final cv.Mat enhanced = cv.equalizeHist(gray);
+      final cv.Mat medianBlurred = cv.medianBlur(enhanced, 5);
       final cv.Mat thresh = cv.adaptiveThreshold(
-        blurred,
+        medianBlurred,
         255,
         cv.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv.THRESH_BINARY_INV,
@@ -73,9 +74,9 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         2,
       );
 
-      // 调试：显示灰度图像、模糊图像和阈值图像
+      // 调试：显示灰度图像、增强图像和阈值图像
       grayImage = cv.imencode('.png', gray).$2;
-      blurredImage = cv.imencode('.png', blurred).$2;
+      enhancedImage = cv.imencode('.png', enhanced).$2;
       threshImage = cv.imencode('.png', thresh).$2;
 
       // Find contours
@@ -141,15 +142,17 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       // Release memory
       mat.dispose();
       gray.dispose();
-      blurred.dispose();
+      enhanced.dispose();
+      medianBlurred.dispose();
       thresh.dispose();
       hierarchy.dispose();
       // No need to dispose contours if they are lists
     }
   }
 
-  List<cv.Point2f> _orderPoints(cv.VecPoint approx) {
-    // 计算质心
+  // Adjusted _orderPoints to return List<cv.Point>
+  List<cv.Point> _orderPoints(cv.VecPoint approx) {
+    // Compute centroid
     double cX = 0, cY = 0;
     for (final cv.Point p in approx) {
       cX += p.x;
@@ -158,28 +161,28 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     cX /= approx.length;
     cY /= approx.length;
 
-    // 计算每个点的角度
+    // Compute angles
     final List<PointWithAngle> pointsWithAngles = <PointWithAngle>[];
     for (final cv.Point p in approx) {
       final double angle = math.atan2(p.y - cY, p.x - cX);
       pointsWithAngles.add(PointWithAngle(
-        cv.Point2f(p.x.toDouble(), p.y.toDouble()),
+        cv.Point(p.x, p.y),
         angle,
       ));
     }
 
-    // 按角度排序
+    // Sort points by angle
     pointsWithAngles.sort(
         (PointWithAngle a, PointWithAngle b) => a.angle.compareTo(b.angle));
 
-    // 提取排序后的点
-    final List<cv.Point2f> sortedPoints =
+    // Extract sorted points
+    final List<cv.Point> sortedPoints =
         pointsWithAngles.map((PointWithAngle e) => e.point).toList();
 
     return sortedPoints;
   }
 
-  // Perspective transform function to align the board
+// Adjusted _warpPerspective function
   cv.Mat _warpPerspective(cv.Mat mat, cv.VecPoint contour) {
     final double peri = cv.arcLength(contour, true);
     final cv.VecPoint approx = cv.approxPolyDP(contour, 0.02 * peri, true);
@@ -188,27 +191,25 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       return mat;
     }
 
-    final List<cv.Point2f> orderedPoints = _orderPoints(approx);
+    final List<cv.Point> orderedPoints = _orderPoints(approx);
 
-    final cv.VecPoint srcPoints = cv.VecPoint.fromList(orderedPoints
-        .map((cv.Point2f p) => cv.Point(p.x.toInt(), p.y.toInt()))
-        .toList());
+    final cv.VecPoint srcPoints = cv.VecPoint.fromList(orderedPoints);
 
-    // 目标点的顺序应与源点的排序一致
+    // Destination points
     final cv.VecPoint dstPoints = cv.VecPoint.fromList(<cv.Point>[
-      cv.Point(0, 0), // 对应源点的第一个点
-      cv.Point(500, 0), // 对应源点的第二个点
-      cv.Point(500, 500), // 对应源点的第三个点
-      cv.Point(0, 500), // 对应源点的第四个点
+      cv.Point(0, 0),
+      cv.Point(500, 0),
+      cv.Point(500, 500),
+      cv.Point(0, 500),
     ]);
 
-    // 计算透视变换矩阵
+    // Compute the perspective transform matrix
     final cv.Mat M = cv.getPerspectiveTransform(srcPoints, dstPoints);
 
-    // 应用透视变换
+    // Apply perspective transform
     final cv.Mat warped = cv.warpPerspective(mat, M, (500, 500));
 
-    // 释放内存
+    // Release memory
     M.dispose();
     srcPoints.dispose();
     dstPoints.dispose();
@@ -216,21 +217,23 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return warped;
   }
 
-  // 棋子识别函数
-  List<String> _detectPieces(Mat warped) {
-    final List<String> positions = List<String>.filled(24, 'e'); // 'e' 代表空位
+  // Piece detection function
+  // Piece detection function
+  List<String> _detectPieces(cv.Mat warped) {
+    final List<String> positions =
+        List<String>.filled(24, 'e'); // 'e' represents empty
 
-    // 获取网格点
+    // Get grid points
     final List<cv.Point2f> gridPoints = _getGridPoints();
 
-    // 调试：在图像上绘制网格点
+    // Debug: Draw grid points on the image
     if (EnvironmentConfig.devMode) {
       for (final cv.Point2f point in gridPoints) {
         cv.circle(
           warped,
           cv.Point(point.x.toInt(), point.y.toInt()),
           5,
-          cv.Scalar(255), // 使用蓝色标记网格点，便于区分
+          cv.Scalar(255, 0, 0), // Use blue color to mark grid points
           thickness: -1,
         );
       }
@@ -239,35 +242,54 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     for (int i = 0; i < gridPoints.length; i++) {
       final cv.Point2f point = gridPoints[i];
 
-      // 提取区域
-      final Mat roi =
-          getRectSubPix(warped, (30, 30), cv.Point2f(point.x, point.y));
+      // Extract region of interest
+      final cv.Mat roi = cv.getRectSubPix(
+        warped,
+        (30, 30),
+        point,
+      );
 
-      // 转换为灰度图并应用高斯模糊以减少噪声
-      final Mat gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY);
-      final Mat blurredGray = cv.gaussianBlur(gray, (5, 5), 0);
+      // Convert to grayscale
+      final cv.Mat gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY);
 
-      // 计算灰度图的平均值
-      final cv.Scalar meanVal = roi.mean(mask: blurredGray);
+      // Apply binary threshold to detect white pieces
+      final cv.Mat threshWhite = cv
+          .threshold(
+            gray,
+            200,
+            255,
+            cv.THRESH_BINARY,
+          )
+          .$2;
 
-      // 调试：打印每个位置的平均灰度值
-      logger.i('位置 $i 的平均灰度值：${meanVal.val1}');
+      // Apply inverse binary threshold to detect black pieces
+      final cv.Mat threshBlack = cv
+          .threshold(
+            gray,
+            50,
+            255,
+            cv.THRESH_BINARY_INV,
+          )
+          .$2;
 
-      // 根据平均灰度值判断棋子颜色
-      if (meanVal.val1 > 230) {
-        // 白棋阈值，调整以适应实际情况
-        positions[i] = 'w'; // 白棋
-      } else if (meanVal.val1 < 120) {
-        // 黑棋阈值，调整以适应实际情况
-        positions[i] = 'b'; // 黑棋
+      // Count non-zero pixels
+      final int whiteCount = cv.countNonZero(threshWhite);
+      final int blackCount = cv.countNonZero(threshBlack);
+
+      // Determine piece color based on pixel counts
+      if (whiteCount > 100) {
+        positions[i] = 'w';
+      } else if (blackCount > 100) {
+        positions[i] = 'b';
       } else {
-        positions[i] = 'e'; // 空位或无法确定
+        positions[i] = 'e';
       }
 
-      // 释放内存
+      // Release memory
       roi.dispose();
       gray.dispose();
-      blurredGray.dispose();
+      threshWhite.dispose();
+      threshBlack.dispose();
     }
 
     return positions;
@@ -366,7 +388,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                 ],
                 // 显示调试图像（可选）
                 if (grayImage != null) Image.memory(grayImage!),
-                if (blurredImage != null) Image.memory(blurredImage!),
+                if (enhancedImage != null) Image.memory(enhancedImage!),
                 if (threshImage != null) Image.memory(threshImage!),
                 if (warpedImage != null) Image.memory(warpedImage!),
               ],
