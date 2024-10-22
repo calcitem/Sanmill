@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
-import 'package:opencv_dart/opencv_dart.dart';
 
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
@@ -46,27 +45,20 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           Uint8List.fromList(img.encodeJpg(orientedImage));
 
       // 将修正后的图像数据解码为 OpenCV Mat
-      final cv.Mat mat = cv.imdecode(correctedImageData,
-          cv.IMREAD_UNCHANGED); // 使用 IMREAD_UNCHANGED 来保留通道信息
+      final cv.Mat mat = cv.imdecode(correctedImageData, cv.IMREAD_COLOR);
 
-      cv.Mat gray;
+      // 转换为灰度图像
+      final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
 
-      // 检查图像的通道数
-      if (mat.channels == 1) {
-        // 如果图像已经是灰度图像，直接使用
-        gray = mat;
-      } else if (mat.channels == 3) {
-        // 如果图像是彩色图像，转换为灰度图像
-        gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
-      } else {
-        throw Exception('不支持的图像通道数: ${mat.channels}');
-      }
-
-      // Preprocessing: Histogram Equalization and median blur
+      // 使用标准直方图均衡化
       final cv.Mat enhanced = cv.equalizeHist(gray);
-      final cv.Mat medianBlurred = cv.medianBlur(enhanced, 5);
+
+      // 使用高斯模糊
+      final cv.Mat blurred = cv.gaussianBlur(enhanced, (5, 5), 0);
+
+      // 自适应阈值
       final cv.Mat thresh = cv.adaptiveThreshold(
-        medianBlurred,
+        blurred,
         255,
         cv.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv.THRESH_BINARY_INV,
@@ -91,25 +83,57 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
       logger.i('检测到的轮廓数量：${contours.length}'); // 调试信息
 
-      // Find the largest contour, assuming it's the board
+      // 筛选可能的棋盘轮廓
       cv.VecPoint? boardContour;
       double maxArea = 0;
       for (final cv.VecPoint contour in contours) {
         final double area = cv.contourArea(contour);
-        if (area > maxArea) {
-          maxArea = area;
-          boardContour = contour;
+        // 根据面积过滤
+        if (area < 10000) {
+          continue;
+        }
+        final double peri = cv.arcLength(contour, true);
+        final cv.VecPoint approx = cv.approxPolyDP(contour, 0.02 * peri, true);
+        // 找到四边形
+        if (approx.length == 4) {
+          // 检查长宽比
+          final cv.Rect rect = cv.boundingRect(approx);
+          final double aspectRatio = rect.width / rect.height;
+          if (aspectRatio > 0.8 && aspectRatio < 1.2) {
+            if (area > maxArea) {
+              maxArea = area;
+              boardContour = approx;
+            }
+          }
         }
       }
 
       if (boardContour != null) {
         // 在原图像上绘制棋盘轮廓
         final cv.Mat matWithContour = mat.clone();
-        // 使用现有的 contours 而不是创建新的 cv.Contours 对象
-        cv.drawContours(matWithContour, contours, -1, cv.Scalar(0, 255),
-            thickness: 2);
 
-        // Perspective transform to align the board
+        // 将 VecPoint 转换为 List<Point>
+        final List<cv.Point> boardContourPoints = boardContour.toList();
+
+        // 将 List<List<Point>> 转换为 Contours (VecVecPoint)
+        final cv.Contours boardContours =
+            cv.VecVecPoint.fromList(<List<cv.Point>>[boardContourPoints]);
+
+        cv.drawContours(
+          matWithContour,
+          boardContours,
+          -1,
+          cv.Scalar(0, 255),
+          thickness: 2,
+        );
+
+        // 调试：显示带有轮廓的图像
+        grayImage = cv.imencode('.png', matWithContour).$2;
+
+        // 释放临时 Contours
+        boardContours.dispose();
+
+        // 透视变换对齐棋盘
         final cv.Mat warped = _warpPerspective(mat, boardContour);
 
         // 调试：显示透视变换后的图像
@@ -133,6 +157,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         // 释放临时图像
         matWithContour.dispose();
         warpedWithAnnotations.dispose();
+        warped.dispose();
       } else {
         setState(() {
           _fenString = "未检测到 Nine Men's Morris 棋盘";
@@ -143,7 +168,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       mat.dispose();
       gray.dispose();
       enhanced.dispose();
-      medianBlurred.dispose();
+      blurred.dispose();
       thresh.dispose();
       hierarchy.dispose();
       // No need to dispose contours if they are lists
@@ -182,32 +207,44 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return sortedPoints;
   }
 
-// Adjusted _warpPerspective function
+  // Adjusted _warpPerspective function
   cv.Mat _warpPerspective(cv.Mat mat, cv.VecPoint contour) {
-    final double peri = cv.arcLength(contour, true);
-    final cv.VecPoint approx = cv.approxPolyDP(contour, 0.02 * peri, true);
-
-    if (approx.length != 4) {
-      return mat;
-    }
-
-    final List<cv.Point> orderedPoints = _orderPoints(approx);
+    // 获取排序后的四个顶点
+    final List<cv.Point> orderedPoints = _orderPoints(contour);
 
     final cv.VecPoint srcPoints = cv.VecPoint.fromList(orderedPoints);
+
+    // 计算宽度和高度
+    final double widthA = math.sqrt(
+        math.pow(orderedPoints[2].x - orderedPoints[3].x, 2) +
+            math.pow(orderedPoints[2].y - orderedPoints[3].y, 2));
+    final double widthB = math.sqrt(
+        math.pow(orderedPoints[1].x - orderedPoints[0].x, 2) +
+            math.pow(orderedPoints[1].y - orderedPoints[0].y, 2));
+    final double maxWidth = math.max(widthA, widthB);
+
+    final double heightA = math.sqrt(
+        math.pow(orderedPoints[1].x - orderedPoints[2].x, 2) +
+            math.pow(orderedPoints[1].y - orderedPoints[2].y, 2));
+    final double heightB = math.sqrt(
+        math.pow(orderedPoints[0].x - orderedPoints[3].x, 2) +
+            math.pow(orderedPoints[0].y - orderedPoints[3].y, 2));
+    final double maxHeight = math.max(heightA, heightB);
 
     // Destination points
     final cv.VecPoint dstPoints = cv.VecPoint.fromList(<cv.Point>[
       cv.Point(0, 0),
-      cv.Point(500, 0),
-      cv.Point(500, 500),
-      cv.Point(0, 500),
+      cv.Point(maxWidth.toInt() - 1, 0),
+      cv.Point(maxWidth.toInt() - 1, maxHeight.toInt() - 1),
+      cv.Point(0, maxHeight.toInt() - 1),
     ]);
 
     // Compute the perspective transform matrix
     final cv.Mat M = cv.getPerspectiveTransform(srcPoints, dstPoints);
 
     // Apply perspective transform
-    final cv.Mat warped = cv.warpPerspective(mat, M, (500, 500));
+    final cv.Mat warped =
+        cv.warpPerspective(mat, M, (maxWidth.toInt(), maxHeight.toInt()));
 
     // Release memory
     M.dispose();
@@ -218,22 +255,20 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   }
 
   // Piece detection function
-  // Piece detection function
   List<String> _detectPieces(cv.Mat warped) {
-    final List<String> positions =
-        List<String>.filled(24, 'e'); // 'e' represents empty
+    final List<String> positions = List<String>.filled(24, 'e');
 
-    // Get grid points
-    final List<cv.Point2f> gridPoints = _getGridPoints();
+    // 动态计算网格点
+    final List<cv.Point2f> gridPoints = _getDynamicGridPoints(warped);
 
-    // Debug: Draw grid points on the image
+    // 调试：在图像上绘制网格点
     if (EnvironmentConfig.devMode) {
       for (final cv.Point2f point in gridPoints) {
         cv.circle(
           warped,
           cv.Point(point.x.toInt(), point.y.toInt()),
           5,
-          cv.Scalar(255, 0, 0), // Use blue color to mark grid points
+          cv.Scalar(255), // 使用蓝色标记网格点
           thickness: -1,
         );
       }
@@ -249,32 +284,33 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         point,
       );
 
-      // Convert to grayscale
-      final cv.Mat gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY);
+      // Convert to HSV color space
+      final cv.Mat hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV);
 
-      // Apply binary threshold to detect white pieces
-      final cv.Mat threshWhite = cv
-          .threshold(
-            gray,
-            200,
-            255,
-            cv.THRESH_BINARY,
-          )
-          .$2;
+      // 获取 hsv 矩阵的行数和列数
+      final int rows = hsv.rows;
+      final int cols = hsv.cols;
 
-      // Apply inverse binary threshold to detect black pieces
-      final cv.Mat threshBlack = cv
-          .threshold(
-            gray,
-            50,
-            255,
-            cv.THRESH_BINARY_INV,
-          )
-          .$2;
+      // 创建与 hsv 大小相同的矩阵，填充对应的阈值
+      final cv.Mat lowerWhite = cv.Mat.zeros(rows, cols, hsv.type);
+      lowerWhite.setTo(cv.Scalar(0, 0, 200));
+
+      final cv.Mat upperWhite = cv.Mat.zeros(rows, cols, hsv.type);
+      upperWhite.setTo(cv.Scalar(180, 50, 255));
+
+      final cv.Mat whiteMask = cv.inRange(hsv, lowerWhite, upperWhite);
+
+      final cv.Mat lowerBlack = cv.Mat.zeros(rows, cols, hsv.type);
+      lowerBlack.setTo(cv.Scalar());
+
+      final cv.Mat upperBlack = cv.Mat.zeros(rows, cols, hsv.type);
+      upperBlack.setTo(cv.Scalar(180, 255, 50));
+
+      final cv.Mat blackMask = cv.inRange(hsv, lowerBlack, upperBlack);
 
       // Count non-zero pixels
-      final int whiteCount = cv.countNonZero(threshWhite);
-      final int blackCount = cv.countNonZero(threshBlack);
+      final int whiteCount = cv.countNonZero(whiteMask);
+      final int blackCount = cv.countNonZero(blackMask);
 
       // Determine piece color based on pixel counts
       if (whiteCount > 100) {
@@ -287,17 +323,104 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
       // Release memory
       roi.dispose();
-      gray.dispose();
-      threshWhite.dispose();
-      threshBlack.dispose();
+      hsv.dispose();
+      whiteMask.dispose();
+      blackMask.dispose();
+      lowerWhite.dispose();
+      upperWhite.dispose();
+      lowerBlack.dispose();
+      upperBlack.dispose();
     }
 
     return positions;
   }
 
+// 动态获取棋盘上的24个网格点
+  List<cv.Point2f> _getDynamicGridPoints(cv.Mat warped) {
+    final double width = warped.cols.toDouble();
+    final double height = warped.rows.toDouble();
+
+    // 基于原始500x500图像的比例
+    // 外层方框比例
+    const double outerLeftXRatio = 35.0 / 500.0;
+    const double outerCenterXRatio = 250.0 / 500.0;
+    const double outerRightXRatio = 465.0 / 500.0;
+
+    const double outerTopYRatio = 40.0 / 500.0;
+    const double outerCenterYRatio = 250.0 / 500.0;
+    const double outerBottomYRatio = 465.0 / 500.0;
+
+    // 中层方框比例
+    const double middleLeftXRatio = 105.0 / 500.0;
+    const double middleCenterXRatio = 250.0 / 500.0;
+    const double middleRightXRatio = 395.0 / 500.0;
+
+    const double middleTopYRatio = 110.0 / 500.0;
+    const double middleCenterYRatio = 250.0 / 500.0;
+    const double middleBottomYRatio = 395.0 / 500.0;
+
+    // 内层方框比例
+    const double innerLeftXRatio = 175.0 / 500.0;
+    const double innerCenterXRatio = 250.0 / 500.0;
+    const double innerRightXRatio = 325.0 / 500.0;
+
+    const double innerTopYRatio = 180.0 / 500.0;
+    const double innerCenterYRatio = 250.0 / 500.0;
+    const double innerBottomYRatio = 325.0 / 500.0;
+
+    final List<cv.Point2f> points = <cv.Point2f>[
+      // 外层方框角和中点
+      cv.Point2f(outerLeftXRatio * width, outerTopYRatio * height), // 0: 左上角
+      cv.Point2f(outerCenterXRatio * width, outerTopYRatio * height), // 1: 上中点
+      cv.Point2f(outerRightXRatio * width, outerTopYRatio * height), // 2: 右上角
+      cv.Point2f(outerLeftXRatio * width, outerCenterYRatio * height), // 3: 左中点
+      cv.Point2f(
+          outerRightXRatio * width, outerCenterYRatio * height), // 4: 右中点
+      cv.Point2f(outerLeftXRatio * width, outerBottomYRatio * height), // 5: 左下角
+      cv.Point2f(
+          outerCenterXRatio * width, outerBottomYRatio * height), // 6: 下中点
+      cv.Point2f(
+          outerRightXRatio * width, outerBottomYRatio * height), // 7: 右下角
+
+      // 中层方框角和中点
+      cv.Point2f(middleLeftXRatio * width, middleTopYRatio * height), // 8: 左上角
+      cv.Point2f(
+          middleCenterXRatio * width, middleTopYRatio * height), // 9: 上中点
+      cv.Point2f(
+          middleRightXRatio * width, middleTopYRatio * height), // 10: 右上角
+      cv.Point2f(
+          middleLeftXRatio * width, middleCenterYRatio * height), // 11: 左中点
+      cv.Point2f(
+          middleRightXRatio * width, middleCenterYRatio * height), // 12: 右中点
+      cv.Point2f(
+          middleLeftXRatio * width, middleBottomYRatio * height), // 13: 左下角
+      cv.Point2f(
+          middleCenterXRatio * width, middleBottomYRatio * height), // 14: 下中点
+      cv.Point2f(
+          middleRightXRatio * width, middleBottomYRatio * height), // 15: 右下角
+
+      // 内层方框角和中点
+      cv.Point2f(innerLeftXRatio * width, innerTopYRatio * height), // 16: 左上角
+      cv.Point2f(innerCenterXRatio * width, innerTopYRatio * height), // 17: 上中点
+      cv.Point2f(innerRightXRatio * width, innerTopYRatio * height), // 18: 右上角
+      cv.Point2f(
+          innerLeftXRatio * width, innerCenterYRatio * height), // 19: 左中点
+      cv.Point2f(
+          innerRightXRatio * width, innerCenterYRatio * height), // 20: 右中点
+      cv.Point2f(
+          innerLeftXRatio * width, innerBottomYRatio * height), // 21: 左下角
+      cv.Point2f(
+          innerCenterXRatio * width, innerBottomYRatio * height), // 22: 下中点
+      cv.Point2f(
+          innerRightXRatio * width, innerBottomYRatio * height), // 23: 右下角
+    ];
+
+    return points;
+  }
+
   // 在图像上绘制识别结果
   void _annotatePieces(cv.Mat image, List<String> positions) {
-    final List<cv.Point2f> gridPoints = _getGridPoints();
+    final List<cv.Point2f> gridPoints = _getDynamicGridPoints(image);
 
     for (int i = 0; i < positions.length; i++) {
       final cv.Point2f point = gridPoints[i];
@@ -319,42 +442,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         lineType: cv.LINE_AA,
       );
     }
-  }
-
-  // Get the 24 grid points on the board
-  List<cv.Point2f> _getGridPoints() {
-    // Corrected Nine Men's Morris positions based on your adjustments
-    return <cv.Point2f>[
-      // Outer square corners and midpoints
-      cv.Point2f(35.0, 40.0), // 0: Top-left corner
-      cv.Point2f(250.0, 40.0), // 1: Top midpoint
-      cv.Point2f(465.0, 35.0), // 2: Top-right corner
-      cv.Point2f(35.0, 250.0), // 3: Left midpoint
-      cv.Point2f(465.0, 250.0), // 4: Right midpoint
-      cv.Point2f(35.0, 465.0), // 5: Bottom-left corner
-      cv.Point2f(250.0, 465.0), // 6: Bottom midpoint
-      cv.Point2f(465.0, 465.0), // 7: Bottom-right corner
-
-      // Middle square corners and midpoints
-      cv.Point2f(105.0, 110.0), // 8: Top-left corner
-      cv.Point2f(250.0, 110.0), // 9: Top midpoint
-      cv.Point2f(395.0, 105.0), // 10: Top-right corner
-      cv.Point2f(105.0, 250.0), // 11: Left midpoint
-      cv.Point2f(395.0, 250.0), // 12: Right midpoint
-      cv.Point2f(105.0, 395.0), // 13: Bottom-left corner
-      cv.Point2f(250.0, 395.0), // 14: Bottom midpoint
-      cv.Point2f(395.0, 395.0), // 15: Bottom-right corner
-
-      // Inner square corners and midpoints
-      cv.Point2f(175.0, 180.0), // 16: Top-left corner
-      cv.Point2f(250.0, 180.0), // 17: Top midpoint
-      cv.Point2f(325.0, 175.0), // 18: Top-right corner
-      cv.Point2f(175.0, 250.0), // 19: Left midpoint
-      cv.Point2f(325.0, 250.0), // 20: Right midpoint
-      cv.Point2f(175.0, 325.0), // 21: Bottom-left corner
-      cv.Point2f(250.0, 325.0), // 22: Bottom midpoint
-      cv.Point2f(325.0, 325.0), // 23: Bottom-right corner
-    ];
   }
 
   // Generate FEN string
