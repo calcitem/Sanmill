@@ -136,8 +136,11 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         // 透视变换对齐棋盘
         final cv.Mat warped = _warpPerspective(mat, boardContour);
 
+        // 应用边缘检测和霍夫线变换
+        final cv.Mat warpedWithLines = _applyEdgeDetectionAndHoughLines(warped);
+
         // 调试：显示透视变换后的图像
-        warpedImage = cv.imencode('.png', warped).$2;
+        warpedImage = cv.imencode('.png', warpedWithLines).$2;
 
         // Detect piece positions
         final List<String> positions = _detectPieces(warped);
@@ -158,6 +161,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         matWithContour.dispose();
         warpedWithAnnotations.dispose();
         warped.dispose();
+        warpedWithLines.dispose();
       } else {
         setState(() {
           _fenString = "未检测到 Nine Men's Morris 棋盘";
@@ -254,6 +258,54 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return warped;
   }
 
+  // 边缘检测和霍夫线变换函数
+  cv.Mat _applyEdgeDetectionAndHoughLines(cv.Mat warped) {
+    // 转换为灰度图像
+    final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
+
+    // 应用高斯模糊
+    final cv.Mat blurred = cv.gaussianBlur(warpedGray, (5, 5), 0);
+
+    // 应用边缘检测（Canny）
+    final cv.Mat edges = cv.canny(blurred, 50, 150);
+
+    // 应用霍夫线变换
+    final cv.Mat lines = cv.HoughLinesP(
+      edges,
+      1,
+      math.pi / 180,
+      100,
+      minLineLength: 100,
+      maxLineGap: 10,
+    );
+
+    // 在图像上绘制检测到的线条
+    final cv.Mat warpedWithLines = warped.clone();
+    for (int i = 0; i < lines.rows; i++) {
+      final cv.Mat line = lines.row(i); // 获取第 i 行的线条
+      final int x1 = line.at<int>(0, 0);
+      final int y1 = line.at<int>(0, 1);
+      final int x2 = line.at<int>(0, 2);
+      final int y2 = line.at<int>(0, 3);
+
+      cv.line(
+        warpedWithLines,
+        cv.Point(x1, y1),
+        cv.Point(x2, y2),
+        cv.Scalar(0, 0, 255),
+        thickness: 2,
+      );
+    }
+
+    // 释放内存
+    warpedGray.dispose();
+    blurred.dispose();
+    edges.dispose();
+    lines.dispose();
+
+    return warpedWithLines;
+  }
+
   // Piece detection function
   List<String> _detectPieces(cv.Mat warped) {
     final List<String> positions = List<String>.filled(24, 'e');
@@ -291,7 +343,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       final int rows = hsv.rows;
       final int cols = hsv.cols;
 
-      // 创建与 hsv 大小相同的矩阵，填充对应的阈值
+      // 定义白色和黑色的阈值
       final cv.Mat lowerWhite = cv.Mat.zeros(rows, cols, hsv.type);
       lowerWhite.setTo(cv.Scalar(0, 0, 200));
 
@@ -326,16 +378,12 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       hsv.dispose();
       whiteMask.dispose();
       blackMask.dispose();
-      lowerWhite.dispose();
-      upperWhite.dispose();
-      lowerBlack.dispose();
-      upperBlack.dispose();
     }
 
     return positions;
   }
 
-// 动态获取棋盘上的24个网格点
+  // 动态获取棋盘上的24个网格点
   List<cv.Point2f> _getDynamicGridPoints(cv.Mat warped) {
     final double width = warped.cols.toDouble();
     final double height = warped.rows.toDouble();
