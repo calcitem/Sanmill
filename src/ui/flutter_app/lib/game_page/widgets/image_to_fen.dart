@@ -22,6 +22,12 @@ class ImageToFenApp extends StatefulWidget {
   ImageToFenAppState createState() => ImageToFenAppState();
 }
 
+class Line {
+  Line(this.startPoint, this.endPoint);
+  final cv.Point startPoint;
+  final cv.Point endPoint;
+}
+
 class ImageToFenAppState extends State<ImageToFenApp> {
   Uint8List? _processedImage;
 
@@ -50,8 +56,27 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       // 转换为灰度图像
       final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
 
-      // 使用标准直方图均衡化
-      final cv.Mat enhanced = cv.equalizeHist(gray);
+      // 不支持 CLAHE，故使用伽马校正
+      // 将灰度图像转换为数组格式
+      final List<num> grayPixels = gray.data;
+
+      // 定义伽马值
+      const double gamma = 1.5;
+      const double inverseGamma = 1.0 / gamma;
+
+      // 生成查找表来加快伽马变换的速度
+      final List<num> gammaLUT = List<num>.generate(256, (int i) {
+        return (math.pow(i / 255.0, inverseGamma) * 255).toInt();
+      });
+
+      // 应用伽马校正
+      for (int i = 0; i < grayPixels.length; i++) {
+        grayPixels[i] = gammaLUT[grayPixels[i].toInt()];
+      }
+
+      // 将数组转换回 `cv.Mat` 格式
+      final cv.Mat enhanced =
+          cv.Mat.fromList(gray.rows, gray.cols, gray.type, grayPixels);
 
       // 使用高斯模糊
       final cv.Mat blurred = cv.gaussianBlur(enhanced, (5, 5), 0);
@@ -62,18 +87,22 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         255,
         cv.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv.THRESH_BINARY_INV,
-        11,
-        2,
+        15, // 增大块大小
+        3, // 调整常数C
       );
+
+      // 应用闭运算以连接断裂的边缘
+      final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 5));
+      final cv.Mat closed = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel);
 
       // 调试：显示灰度图像、增强图像和阈值图像
       grayImage = cv.imencode('.png', gray).$2;
       enhancedImage = cv.imencode('.png', enhanced).$2;
-      threshImage = cv.imencode('.png', thresh).$2;
+      threshImage = cv.imencode('.png', closed).$2;
 
       // Find contours
       final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
-        thresh,
+        closed,
         cv.RETR_EXTERNAL,
         cv.CHAIN_APPROX_SIMPLE,
       );
@@ -93,9 +122,15 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           continue;
         }
         final double peri = cv.arcLength(contour, true);
-        final cv.VecPoint approx = cv.approxPolyDP(contour, 0.02 * peri, true);
-        // 找到四边形
-        if (approx.length == 4) {
+        final cv.VecPoint approx =
+            cv.approxPolyDP(contour, 0.04 * peri, true); // 增大epsilon
+
+        // 计算轮廓的圆度
+        // ignore: prefer_final_locals
+        double circularity = 4 * math.pi * area / (peri * peri);
+
+        // 找到四边形且圆度合理
+        if (approx.length == 4 && circularity > 0.7) {
           // 检查长宽比
           final cv.Rect rect = cv.boundingRect(approx);
           final double aspectRatio = rect.width / rect.height;
@@ -123,7 +158,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           matWithContour,
           boardContours,
           -1,
-          cv.Scalar(0, 255),
+          cv.Scalar(0, 255), // 使用绿色绘制轮廓
           thickness: 2,
         );
 
@@ -168,15 +203,84 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         });
       }
 
-      // Release memory
+      // 释放内存
       mat.dispose();
       gray.dispose();
       enhanced.dispose();
       blurred.dispose();
       thresh.dispose();
+      closed.dispose();
+      kernel.dispose();
       hierarchy.dispose();
       // No need to dispose contours if they are lists
     }
+  }
+
+  List<Line> _filterLines(cv.Mat lines) {
+    const double angleTolerance = 0.1; // Angle tolerance
+    const int distanceThreshold = 10; // Distance threshold
+
+    final List<Line> horizontalLines = <Line>[];
+    final List<Line> verticalLines = <Line>[];
+
+    // Iterate over the lines
+    for (int i = 0; i < lines.rows; i++) {
+      final cv.Point startPoint = cv.Point(lines.at(i, 0), lines.at(i, 1));
+      final cv.Point endPoint = cv.Point(lines.at(i, 2), lines.at(i, 3));
+      final Line line = Line(startPoint, endPoint);
+
+      final double angle = math
+          .atan2(
+            (line.endPoint.y - line.startPoint.y).toDouble(),
+            (line.endPoint.x - line.startPoint.x).toDouble(),
+          )
+          .abs();
+
+      if ((angle - 0).abs() < angleTolerance ||
+          (angle - math.pi).abs() < angleTolerance) {
+        horizontalLines.add(line);
+      } else if ((angle - math.pi / 2).abs() < angleTolerance) {
+        verticalLines.add(line);
+      }
+    }
+
+    return <Line>[
+      ..._removeDuplicateLines(horizontalLines, distanceThreshold),
+      ..._removeDuplicateLines(verticalLines, distanceThreshold),
+    ];
+  }
+
+// 移除重复的或接近的直线
+  List<Line> _removeDuplicateLines(List<Line> lines, int threshold) {
+    lines.sort((Line a, Line b) => a.startPoint.y.compareTo(b.startPoint.y));
+
+    final List<Line> filteredLines = <Line>[];
+    for (final Line line in lines) {
+      bool isDuplicate = false;
+      for (final Line filteredLine in filteredLines) {
+        // 计算两个点之间的欧氏距离
+        final double startPointDistance = math.sqrt(
+          math.pow(line.startPoint.x - filteredLine.startPoint.x, 2) +
+              math.pow(line.startPoint.y - filteredLine.startPoint.y, 2),
+        );
+
+        final double endPointDistance = math.sqrt(
+          math.pow(line.endPoint.x - filteredLine.endPoint.x, 2) +
+              math.pow(line.endPoint.y - filteredLine.endPoint.y, 2),
+        );
+
+        // 判断是否在距离阈值内
+        if (startPointDistance < threshold && endPointDistance < threshold) {
+          isDuplicate = true;
+          break;
+        }
+      }
+      if (!isDuplicate) {
+        filteredLines.add(line);
+      }
+    }
+
+    return filteredLines;
   }
 
   // Adjusted _orderPoints to return List<cv.Point>
@@ -279,19 +383,15 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       maxLineGap: 10,
     );
 
-    // 在图像上绘制检测到的线条
-    final cv.Mat warpedWithLines = warped.clone();
-    for (int i = 0; i < lines.rows; i++) {
-      final cv.Mat line = lines.row(i); // 获取第 i 行的线条
-      final int x1 = line.at<int>(0, 0);
-      final int y1 = line.at<int>(0, 1);
-      final int x2 = line.at<int>(0, 2);
-      final int y2 = line.at<int>(0, 3);
+    final List<Line> filteredLines = _filterLines(lines);
 
+    // Draw detected lines on the image
+    final cv.Mat warpedWithLines = warped.clone();
+    for (final Line line in filteredLines) {
       cv.line(
         warpedWithLines,
-        cv.Point(x1, y1),
-        cv.Point(x2, y2),
+        line.startPoint,
+        line.endPoint,
         cv.Scalar(0, 0, 255),
         thickness: 2,
       );
