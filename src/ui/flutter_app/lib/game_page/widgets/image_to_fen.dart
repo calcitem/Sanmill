@@ -55,48 +55,104 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   double _blackThresholdRatio = 0.5; // 黑色阈值比率
 
   Future<void> _processImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? imgFile = await picker.pickImage(source: ImageSource.gallery);
+    logger.i('开始 _processImage 函数');
 
-    if (imgFile != null) {
+    final ImagePicker picker = ImagePicker();
+    logger.i('初始化 ImagePicker');
+
+    final XFile? imgFile = await picker.pickImage(source: ImageSource.gallery);
+    if (imgFile == null) {
+      logger.i('未选择任何图像');
+      return;
+    }
+
+    logger.i('选择的图像路径: ${imgFile.path}');
+    logger.i('图像大小: ${await imgFile.length()} 字节');
+
+    try {
       // 读取图像数据并修正方向
+      logger.i('读取图像数据');
       final Uint8List imageData = await imgFile.readAsBytes();
-      final img.Image image = img.decodeImage(imageData)!;
-      final img.Image orientedImage = img.bakeOrientation(image);
+      logger.i('成功读取图像数据，数据长度: ${imageData.length} 字节');
+
+      logger.i('解码图像');
+      final img.Image? decodedImage = img.decodeImage(imageData);
+      if (decodedImage == null) {
+        logger.i('图像解码失败');
+        return;
+      }
+      logger.i('图像解码成功，图像尺寸: ${decodedImage.width}x${decodedImage.height}');
+
+      logger.i('修正图像方向');
+      final img.Image orientedImage = img.bakeOrientation(decodedImage);
+      logger.i('方向修正后的图像尺寸: ${orientedImage.width}x${orientedImage.height}');
+
+      logger.i('编码修正后的图像为 JPEG');
       final Uint8List correctedImageData =
           Uint8List.fromList(img.encodeJpg(orientedImage));
+      logger.i('JPEG 编码完成，数据长度: ${correctedImageData.length} 字节');
 
       // 将修正后的图像数据解码为 OpenCV Mat
+      logger.i('将修正后的图像数据解码为 OpenCV Mat');
       final cv.Mat mat = cv.imdecode(correctedImageData, cv.IMREAD_COLOR);
+      logger.i(
+          'OpenCV Mat 解码成功，Mat 尺寸: ${mat.rows}x${mat.cols}, 类型: ${mat.type}');
 
       // 转换为灰度图像
+      logger.i('转换为灰度图像');
       final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
+      logger.i('灰度转换完成，Mat 尺寸: ${gray.rows}x${gray.cols}, 类型: ${gray.type}');
 
       // 不支持 CLAHE，故使用伽马校正
-      // 将灰度图像转换为数组格式
+      logger.i('开始伽马校正');
       final List<num> grayPixels = gray.data;
+      logger.i('灰度图像像素数量: ${grayPixels.length}');
 
       // 使用可调的伽马值
       final double inverseGamma = 1.0 / _gamma;
+      logger.i('使用的逆伽马值: $inverseGamma');
 
       // 生成查找表来加快伽马变换的速度
+      logger.i('生成伽马查找表 (LUT)');
       final List<num> gammaLUT = List<num>.generate(256, (int i) {
-        return (math.pow(i / 255.0, inverseGamma) * 255).toInt();
+        final num value = (math.pow(i / 255.0, inverseGamma) * 255).toInt();
+        if (i % 50 == 0) {
+          // 每50个值记录一次
+          logger.i('LUT[$i] = $value');
+        }
+        return value;
       });
+      logger.i('伽马查找表生成完成');
 
       // 应用伽马校正
+      logger.i('应用伽马校正到灰度图像');
       for (int i = 0; i < grayPixels.length; i++) {
-        grayPixels[i] = gammaLUT[grayPixels[i].toInt()];
+        final int original = grayPixels[i].toInt();
+        grayPixels[i] = gammaLUT[original];
+        if (i < 10) {
+          // 仅记录前10个像素值以避免日志过多
+          logger.i('像素[$i]: 原始=$original, 校正后=${gammaLUT[original]}');
+        }
+        if (i == 10) {
+          logger.i('省略中间像素日志...');
+        }
       }
+      logger.i('伽马校正应用完成');
 
       // 将数组转换回 `cv.Mat` 格式
+      logger.i('将伽马校正后的像素数组转换回 cv.Mat');
       final cv.Mat enhanced =
           cv.Mat.fromList(gray.rows, gray.cols, gray.type, grayPixels);
+      logger.i(
+          '增强后的 Mat 尺寸: ${enhanced.rows}x${enhanced.cols}, 类型: ${enhanced.type}');
 
       // 使用高斯模糊
+      logger.i('应用高斯模糊');
       final cv.Mat blurred = cv.gaussianBlur(enhanced, (5, 5), 0);
+      logger.i('高斯模糊完成，Blurred Mat 尺寸: ${blurred.rows}x${blurred.cols}');
 
       // 自适应阈值
+      logger.i('应用自适应阈值');
       final cv.Mat thresh = cv.adaptiveThreshold(
         blurred,
         255,
@@ -105,72 +161,108 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         _adaptiveThresholdBlockSize, // 可调块大小
         _adaptiveThresholdC, // 可调常数C
       );
+      logger.i('自适应阈值完成，Thresh Mat 尺寸: ${thresh.rows}x${thresh.cols}');
 
       // 应用闭运算以连接断裂的边缘
+      logger.i('应用闭运算以连接断裂的边缘');
       final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 5));
       final cv.Mat closed = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel);
+      logger.i('闭运算完成，Closed Mat 尺寸: ${closed.rows}x${closed.cols}');
 
       // 调试：显示灰度图像、增强图像和阈值图像
+      logger.i('编码灰度图像');
       grayImage = cv.imencode('.png', gray).$2;
+      logger.i('灰度图像编码完成，大小: ${grayImage!.length} 字节');
+
+      logger.i('编码增强图像');
       enhancedImage = cv.imencode('.png', enhanced).$2;
+      logger.i('增强图像编码完成，大小: ${enhancedImage!.length} 字节');
+
+      logger.i('编码阈值图像');
       threshImage = cv.imencode('.png', closed).$2;
+      logger.i('阈值图像编码完成，大小: ${threshImage!.length} 字节');
 
       // Find contours
+      logger.i('查找轮廓');
       final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
         closed,
         cv.RETR_EXTERNAL,
         cv.CHAIN_APPROX_SIMPLE,
       );
-
       final cv.Contours contours = contoursResult.$1;
       final cv.Mat hierarchy = contoursResult.$2;
-
-      logger.i('检测到的轮廓数量：${contours.length}'); // 调试信息
+      logger.i('轮廓查找完成，检测到的轮廓数量: ${contours.length}');
 
       // 筛选可能的棋盘轮廓
+      logger.i('开始筛选可能的棋盘轮廓');
       cv.VecPoint? boardContour;
       double maxArea = 0;
-      for (final cv.VecPoint contour in contours) {
+      for (int idx = 0; idx < contours.length; idx++) {
+        final cv.VecPoint contour = contours[idx];
         final double area = cv.contourArea(contour);
+        logger.i('轮廓[$idx] 的面积: $area');
+
         // 根据面积过滤
         if (area < _contourAreaThreshold) {
-          // 使用可调面积阈值
+          logger.i('轮廓[$idx] 面积小于阈值 $_contourAreaThreshold，跳过');
           continue;
         }
+
         final double peri = cv.arcLength(contour, true);
+        logger.i('轮廓[$idx] 的周长: $peri');
+
         final cv.VecPoint approx = cv.approxPolyDP(
             contour, _epsilonMultiplier * peri, true); // 使用可调epsilon
+        logger.i('轮廓[$idx] 的近似多边形顶点数量: ${approx.length}');
 
         // 计算轮廓的圆度
-        // ignore: prefer_final_locals
-        double circularity = 4 * math.pi * area / (peri * peri);
+        final double circularity = 4 * math.pi * area / (peri * peri);
+        logger.i('轮廓[$idx] 的圆度: $circularity');
 
         // 找到四边形且圆度合理
-        if (approx.length == 4 && circularity > 0.7) {
+        if (approx.length == 4 && circularity > 0.6) {
+          logger.i('轮廓[$idx] 是四边形且圆度大于 0.6');
           // 检查长宽比
           final cv.Rect rect = cv.boundingRect(approx);
           final double aspectRatio = rect.width / rect.height;
+          logger.i('轮廓[$idx] 的长宽比: $aspectRatio');
+
           if (aspectRatio > _aspectRatioMin && aspectRatio < _aspectRatioMax) {
+            logger.i(
+                '轮廓[$idx] 的长宽比在可接受范围内 ($_aspectRatioMin - $_aspectRatioMax)');
             // 使用可调长宽比
             if (area > maxArea) {
+              logger.i('轮廓[$idx] 的面积大于当前最大面积 ($maxArea)，更新 boardContour');
               maxArea = area;
               boardContour = approx;
+            } else {
+              logger.i('轮廓[$idx] 的面积不大于当前最大面积 ($maxArea)，跳过');
             }
+          } else {
+            logger.i(
+                '轮廓[$idx] 的长宽比不在可接受范围内 ($_aspectRatioMin - $_aspectRatioMax)');
           }
+        } else {
+          logger.i('轮廓[$idx] 不是四边形或圆度不够，跳过');
         }
       }
 
       if (boardContour != null) {
+        logger.i('找到棋盘轮廓，面积: $maxArea');
         // 在原图像上绘制棋盘轮廓
         final cv.Mat matWithContour = mat.clone();
+        logger.i('克隆原始 Mat 以绘制轮廓');
 
         // 将 VecPoint 转换为 List<Point>
         final List<cv.Point> boardContourPoints = boardContour.toList();
+        logger.i('棋盘轮廓的点数量: ${boardContourPoints.length}');
 
         // 将 List<List<Point>> 转换为 Contours (VecVecPoint)
         final cv.Contours boardContours =
             cv.VecVecPoint.fromList(<List<cv.Point>>[boardContourPoints]);
+        logger.i('转换棋盘轮廓为 cv.Contours');
 
+        logger.i('在图像上绘制棋盘轮廓');
         cv.drawContours(
           matWithContour,
           boardContours,
@@ -178,49 +270,74 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           cv.Scalar(0, 255), // 使用绿色绘制轮廓
           thickness: 2,
         );
+        logger.i('轮廓绘制完成');
 
         // 调试：显示带有轮廓的图像
+        logger.i('编码带有轮廓的图像');
         grayImage = cv.imencode('.png', matWithContour).$2;
+        logger.i('带轮廓图像编码完成，大小: ${grayImage!.length} 字节');
 
         // 释放临时 Contours
+        logger.i('释放临时 Contours');
         boardContours.dispose();
 
         // 透视变换对齐棋盘
+        logger.i('应用透视变换以对齐棋盘');
         final cv.Mat warped = _warpPerspective(mat, boardContour);
+        logger.i('透视变换完成，Warped Mat 尺寸: ${warped.rows}x${warped.cols}');
 
         // 应用边缘检测和霍夫线变换
+        logger.i('应用边缘检测和霍夫线变换');
         final cv.Mat warpedWithLines = _applyEdgeDetectionAndHoughLines(warped);
+        logger.i(
+            '边缘检测和霍夫线变换完成，WarpedWithLines Mat 尺寸: ${warpedWithLines.rows}x${warpedWithLines.cols}');
 
         // 调试：显示透视变换后的图像
+        logger.i('编码透视变换后的图像');
         warpedImage = cv.imencode('.png', warpedWithLines).$2;
+        logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
 
         // Detect piece positions
+        logger.i('检测棋子位置');
         final List<String> positions = _detectPieces(warped);
+        logger.i('检测到的棋子位置数量: ${positions.length}');
+        for (int i = 0; i < positions.length; i++) {
+          logger.i('棋子[$i] 位置: ${positions[i]}');
+        }
 
         // 在图像上绘制识别结果
+        logger.i('在图像上绘制识别结果');
         final cv.Mat warpedWithAnnotations = warped.clone();
         _annotatePieces(warpedWithAnnotations, positions);
+        logger.i('绘制识别结果完成');
 
         // Generate FEN string
+        logger.i('生成 FEN 字符串');
         final String fen = _generateFEN(positions);
+        logger.i('生成的 FEN 字符串: $fen');
 
         setState(() {
+          logger.i('更新 UI 状态');
           _processedImage = cv.imencode('.png', warpedWithAnnotations).$2;
           _fenString = fen;
+          logger.i('UI 状态更新完成');
         });
 
         // 释放临时图像
+        logger.i('释放临时图像资源');
         matWithContour.dispose();
         warpedWithAnnotations.dispose();
         warped.dispose();
         warpedWithLines.dispose();
       } else {
+        logger.i("未检测到 Nine Men's Morris Board");
         setState(() {
           _fenString = "未检测到 Nine Men's Morris 棋盘";
         });
       }
 
       // 释放内存
+      logger.i('释放所有 OpenCV Mat 资源');
       mat.dispose();
       gray.dispose();
       enhanced.dispose();
@@ -229,8 +346,13 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       closed.dispose();
       kernel.dispose();
       hierarchy.dispose();
+      logger.i('所有资源释放完成');
       // No need to dispose contours if they are lists
+    } catch (e) {
+      logger.e('处理图像时发生错误: $e', error: e);
     }
+
+    logger.i('_processImage 函数结束');
   }
 
   List<Line> _filterLines(cv.Mat lines) {
@@ -673,10 +795,22 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                 ],
 
                 // 显示调试图像（可选）
-                if (grayImage != null) Image.memory(grayImage!),
-                if (enhancedImage != null) Image.memory(enhancedImage!),
-                if (threshImage != null) Image.memory(threshImage!),
-                if (warpedImage != null) Image.memory(warpedImage!),
+                if (grayImage != null) ...<Widget>[
+                  const Text('灰度图像'),
+                  Image.memory(grayImage!),
+                ],
+                if (enhancedImage != null) ...<Widget>[
+                  const Text('增强图像'),
+                  Image.memory(enhancedImage!),
+                ],
+                if (threshImage != null) ...<Widget>[
+                  const Text('阈值图像'),
+                  Image.memory(threshImage!),
+                ],
+                if (warpedImage != null) ...<Widget>[
+                  const Text('透视变换后的图像'),
+                  Image.memory(warpedImage!),
+                ],
 
                 // 添加阈值设置区域
                 Padding(
