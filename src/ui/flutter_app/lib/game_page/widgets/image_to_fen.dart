@@ -406,7 +406,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return warpedWithLines;
   }
 
-  // Piece detection function
+// Piece detection function
   List<String> _detectPieces(cv.Mat warped) {
     final List<String> positions = List<String>.filled(24, 'e');
 
@@ -426,54 +426,83 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       }
     }
 
+    // 定义相对阈值（例如，ROI总像素的指定比例）
+    const double whiteThresholdRatio = 0.5;
+    const double blackThresholdRatio = 0.5;
+
     for (int i = 0; i < gridPoints.length; i++) {
       final cv.Point2f point = gridPoints[i];
 
-      // Extract region of interest
+      // 提取感兴趣区域 (ROI)
       final cv.Mat roi = cv.getRectSubPix(
         warped,
         (30, 30),
         point,
       );
 
-      // Convert to HSV color space
+      // 转换为 HSV 颜色空间
       final cv.Mat hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV);
 
-      // 获取 hsv 矩阵的行数和列数
-      final int rows = hsv.rows;
-      final int cols = hsv.cols;
+      // 应用形态学操作以减少噪声
+      final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3));
+
+      // 进行开运算
+      final cv.Mat opened = cv.morphologyEx(
+        hsv,
+        cv.MORPH_OPEN,
+        kernel,
+      );
+
+      // 进行闭运算
+      final cv.Mat closed = cv.morphologyEx(
+        opened,
+        cv.MORPH_CLOSE,
+        kernel,
+      );
+
+      // 释放中间变量
+      opened.dispose();
+      closed.dispose();
+      kernel.dispose();
 
       // 定义白色和黑色的阈值
-      final cv.Mat lowerWhite = cv.Mat.zeros(rows, cols, hsv.type);
+      final cv.Mat lowerWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
       lowerWhite.setTo(cv.Scalar(0, 0, 200));
 
-      final cv.Mat upperWhite = cv.Mat.zeros(rows, cols, hsv.type);
+      final cv.Mat upperWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
       upperWhite.setTo(cv.Scalar(180, 50, 255));
 
       final cv.Mat whiteMask = cv.inRange(hsv, lowerWhite, upperWhite);
 
-      final cv.Mat lowerBlack = cv.Mat.zeros(rows, cols, hsv.type);
+      final cv.Mat lowerBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
       lowerBlack.setTo(cv.Scalar());
 
-      final cv.Mat upperBlack = cv.Mat.zeros(rows, cols, hsv.type);
+      final cv.Mat upperBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
       upperBlack.setTo(cv.Scalar(180, 255, 50));
 
       final cv.Mat blackMask = cv.inRange(hsv, lowerBlack, upperBlack);
 
-      // Count non-zero pixels
+      // 计算 ROI 总像素数
+      final int totalPixels = roi.rows * roi.cols;
+
+      // 计算非零像素数量
       final int whiteCount = cv.countNonZero(whiteMask);
       final int blackCount = cv.countNonZero(blackMask);
 
-      // Determine piece color based on pixel counts
-      if (whiteCount > 100) {
+      // 计算阈值
+      final int whiteThreshold = (totalPixels * whiteThresholdRatio).toInt();
+      final int blackThreshold = (totalPixels * blackThresholdRatio).toInt();
+
+      // 根据相对阈值确定棋子颜色
+      if (whiteCount > whiteThreshold) {
         positions[i] = 'w';
-      } else if (blackCount > 100) {
+      } else if (blackCount > blackThreshold) {
         positions[i] = 'b';
       } else {
         positions[i] = 'e';
       }
 
-      // Release memory
+      // 释放内存
       roi.dispose();
       hsv.dispose();
       whiteMask.dispose();
