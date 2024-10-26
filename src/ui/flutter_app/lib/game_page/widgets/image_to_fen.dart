@@ -782,77 +782,67 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         grayImage = cv.imencode('.png', matWithContour).$2;
         logger.i('带轮廓图像编码完成，大小: ${grayImage!.length} 字节');
 
-        // 透视变换对齐棋盘
+        // 应用透视变换以对齐棋盘
         logger.i('应用透视变换以对齐棋盘');
         final cv.Mat warped = _warpPerspective(mat, boardContour);
         logger.i('透视变换完成，Warped Mat 尺寸: ${warped.rows}x${warped.cols}');
 
-        // 应用边缘检测和霍夫线变换
-        logger.i('应用边缘检测和霍夫线变换');
-        final cv.Mat warpedWithLines = _applyEdgeDetectionAndHoughLines(warped);
-        logger.i(
-            '边缘检测和霍夫线变换完成，WarpedWithLines Mat 尺寸: ${warpedWithLines.rows}x${warpedWithLines.cols}');
+        // 转换为灰度图像
+        final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
 
-        // 调试：显示透视变换后的图像
-        logger.i('编码透视变换后的图像');
-        warpedImage = cv.imencode('.png', warpedWithLines).$2;
-        logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
+        // 应用霍夫圆变换
+        logger.i('开始霍夫圆变换检测圆形棋子');
+        final cv.Mat circles = cv.HoughCircles(
+          warpedGray,
+          cv.HOUGH_GRADIENT,
+          _dp,
+          _minDist,
+          param1: _param1,
+          param2: _param2,
+          minRadius: _minRadius,
+          maxRadius: _maxRadius,
+        );
 
-        // **根据霍夫圆变换结果生成棋子位置**
-        logger.i('根据霍夫圆变换结果生成棋子位置');
-        List<String> positions = [];
-        if (circles.cols > 0) {
-          positions = _detectPiecesWithHoughCircles(circles, mat);
+        // 检查是否检测到圆形
+        if (circles.isEmpty) {
+          logger.i('未检测到任何圆形');
         } else {
-          positions = List<String>.filled(24, 'e'); // 如果没有检测到圆，则使用默认的空位置列表
+          logger.i('霍夫圆变换完成，检测到的圆数量: ${circles.cols}');
+
+          // 检测棋子位置
+          final List<String> positions =
+              _detectPiecesWithHoughCircles(circles, warped);
+
+          // 在对齐的棋盘图像上绘制圆形和标注
+          final cv.Mat annotatedWarped = warped.clone();
+          _annotatePiecesWithHoughCircles(annotatedWarped, circles, positions);
+
+          // 生成 FEN 字符串
+          final String fen = _generateFEN(positions);
+          logger.i('生成的 FEN 字符串: $fen');
+
+          setState(() {
+            logger.i('更新 UI 状态');
+            _processedImage = cv.imencode('.png', annotatedWarped).$2;
+            _fenString = fen;
+            logger.i('UI 状态更新完成');
+          });
+
+          // 释放临时 Mat
+          annotatedWarped.dispose();
         }
-        logger.i('检测到的棋子位置数量: ${positions.length}');
-        for (int i = 0; i < positions.length; i++) {
-          logger.i('棋子[$i] 位置: ${positions[i]}');
-        }
 
-        // 在图像上绘制识别结果
-        logger.i('在图像上绘制识别结果');
-        final cv.Mat annotatedMat = mat.clone();
-        if (circles.cols > 0) {
-          _annotatePiecesWithHoughCircles(annotatedMat, circles, positions);
-        }
-        logger.i('绘制识别结果完成');
-
-        // 调试：显示带有圆形和标记的图像
-        logger.i('编码带有识别结果的图像');
-        grayImage = cv.imencode('.png', annotatedMat).$2;
-        logger.i('带识别结果的图像编码完成，大小: ${grayImage!.length} 字节');
-
-        // Generate FEN string
-        logger.i('生成 FEN 字符串');
-        final String fen = _generateFEN(positions);
-        logger.i('生成的 FEN 字符串: $fen');
-
-        setState(() {
-          logger.i('更新 UI 状态');
-          _processedImage = cv.imencode('.png', annotatedMat).$2;
-          _fenString = fen;
-          logger.i('UI 状态更新完成');
-        });
-
-        // 释放临时 Contours
-        logger.i('释放临时 Contours');
+        // 释放其他临时 Mat 和资源
+        logger.i('释放临时 Mat 和资源');
         boardContours.dispose();
 
-        // 释放临时 Mat
-        logger.i('释放临时 Mat 资源');
         mat.dispose();
         gray.dispose();
-
-        annotatedMat.dispose();
         closed.dispose();
-        // 释放临时 Mat
+
         circles.dispose();
         circlesMat.dispose();
-        // **新部分结束**
 
-        // 释放临时 Mat
         blurred.dispose();
         thresh.dispose();
         kernel.dispose();
