@@ -7,7 +7,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
 import '../../shared/services/environment_config.dart';
-import '../../shared/services/logger.dart';
 
 class PointWithAngle {
   PointWithAngle(this.point, this.angle);
@@ -35,46 +34,29 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   Uint8List? enhancedImage;
   Uint8List? threshImage;
   Uint8List? warpedImage;
-  Uint8List? circlesImage; // 新增：显示检测到的圆形的图像
 
   String _fenString = '';
 
-  // 定义关键阈值的状态变量
-  double _gamma = 1.5; // 伽马值
-  int _adaptiveThresholdBlockSize = 15; // 自适应阈值块大小
-  double _adaptiveThresholdC = 3; // 自适应阈值常数C
-  double _contourAreaThreshold = 10000; // 轮廓面积阈值
-  double _contourCircleThreshold = 20; // 轮廓圆面积阈值
-  double _epsilonMultiplier = 0.04; // 逼近多边形精度乘数
-  double _aspectRatioMin = 0.8; // 长宽比最小值
-  double _aspectRatioMax = 1.2; // 长宽比最大值
-  int _houghThreshold = 100; // 霍夫线变换阈值
-  double _minLineLength = 100; // 最小线长
-  double _maxLineGap = 10; // 线段间隙阈值
-  double _angleTolerance = 0.1; // 线角容差
-  int _distanceThreshold = 10; // 线距离阈值
-  double _whiteThresholdRatio = 0.5; // 白色阈值比率
-  double _blackThresholdRatio = 0.5; // 黑色阈值比率
-  int _whiteGrayThreshold = 180; // 白色灰度阈值
-  int _blackGrayThreshold = 80; // 黑色灰度阈值
+  final double _gamma = 1.5;
+  final int _adaptiveThresholdBlockSize = 9;
+  final double _adaptiveThresholdC = 5;
+  final double _contourAreaThreshold = 300; // 轮廓面积阈值
+  final double _epsilonMultiplier = 0.04;
+  final double _aspectRatioMin = 0.8;
+  final double _aspectRatioMax = 1.2;
+  final int _whiteGrayThreshold = 180;
+  final int _blackGrayThreshold = 80;
 
-  // 新增：霍夫圆变换的参数
-  double _dp = 1.2;
-  double _minDist = 30;
-  double _param1 = 50;
-  double _param2 = 30;
-  int _minRadius = 10;
-  int _maxRadius = 25;
+  final double _angleTolerance = 0.1; // 用于线条过滤的角度公差
+  final int _distanceThreshold = 30; // 用于检测相似线条的距离阈值
 
   List<Line> _filterLines(cv.Mat lines) {
-    // 使用可调角度容差和距离阈值
-    final double angleTolerance = _angleTolerance; // 角度容差
-    final int distanceThreshold = _distanceThreshold; // 距离阈值
+    final double angleTolerance = _angleTolerance;
+    final int distanceThreshold = _distanceThreshold;
 
     final List<Line> horizontalLines = <Line>[];
     final List<Line> verticalLines = <Line>[];
 
-    // Iterate over the lines
     for (int i = 0; i < lines.rows; i++) {
       final cv.Point startPoint = cv.Point(lines.at(i, 0), lines.at(i, 1));
       final cv.Point endPoint = cv.Point(lines.at(i, 2), lines.at(i, 3));
@@ -101,7 +83,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     ];
   }
 
-// 移除重复的或接近的直线
   List<Line> _removeDuplicateLines(List<Line> lines, int threshold) {
     lines.sort((Line a, Line b) => a.startPoint.y.compareTo(b.startPoint.y));
 
@@ -109,7 +90,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     for (final Line line in lines) {
       bool isDuplicate = false;
       for (final Line filteredLine in filteredLines) {
-        // 计算两个点之间的欧氏距离
         final double startPointDistance = math.sqrt(
           math.pow(line.startPoint.x - filteredLine.startPoint.x, 2) +
               math.pow(line.startPoint.y - filteredLine.startPoint.y, 2),
@@ -120,7 +100,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
               math.pow(line.endPoint.y - filteredLine.endPoint.y, 2),
         );
 
-        // 判断是否在距离阈值内
         if (startPointDistance < threshold && endPointDistance < threshold) {
           isDuplicate = true;
           break;
@@ -134,9 +113,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return filteredLines;
   }
 
-  // 调整后的 _orderPoints 函数，返回 List<cv.Point>
   List<cv.Point> _orderPoints(cv.VecPoint approx) {
-    // Compute centroid
     double cX = 0, cY = 0;
     for (final cv.Point p in approx) {
       cX += p.x;
@@ -145,7 +122,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     cX /= approx.length;
     cY /= approx.length;
 
-    // Compute angles
     final List<PointWithAngle> pointsWithAngles = <PointWithAngle>[];
     for (final cv.Point p in approx) {
       final double angle = math.atan2(p.y - cY, p.x - cX);
@@ -155,55 +131,33 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       ));
     }
 
-    // Sort points by angle
     pointsWithAngles.sort(
         (PointWithAngle a, PointWithAngle b) => a.angle.compareTo(b.angle));
 
-    // Extract sorted points
     final List<cv.Point> sortedPoints =
         pointsWithAngles.map((PointWithAngle e) => e.point).toList();
 
     return sortedPoints;
   }
 
-  // 调整后的 _warpPerspective 函数
   cv.Mat _warpPerspective(cv.Mat mat, cv.VecPoint contour) {
-    // 获取排序后的四个顶点
     final List<cv.Point> orderedPoints = _orderPoints(contour);
 
     final cv.VecPoint srcPoints = cv.VecPoint.fromList(orderedPoints);
 
-    // 计算宽度和高度
-    final double widthA = math.sqrt(
-        math.pow(orderedPoints[2].x - orderedPoints[3].x, 2) +
-            math.pow(orderedPoints[2].y - orderedPoints[3].y, 2));
-    final double widthB = math.sqrt(
-        math.pow(orderedPoints[1].x - orderedPoints[0].x, 2) +
-            math.pow(orderedPoints[1].y - orderedPoints[0].y, 2));
-    final double maxWidth = math.max(widthA, widthB);
-
-    final double heightA = math.sqrt(
-        math.pow(orderedPoints[1].x - orderedPoints[2].x, 2) +
-            math.pow(orderedPoints[1].y - orderedPoints[2].y, 2));
-    final double heightB = math.sqrt(
-        math.pow(orderedPoints[0].x - orderedPoints[3].x, 2) +
-            math.pow(orderedPoints[0].y - orderedPoints[3].y, 2));
-    final double maxHeight = math.max(heightA, heightB);
-
-    // Destination points
+    // Destination points: 固定为500x500的图像
     final cv.VecPoint dstPoints = cv.VecPoint.fromList(<cv.Point>[
       cv.Point(0, 0),
-      cv.Point(maxWidth.toInt() - 1, 0),
-      cv.Point(maxWidth.toInt() - 1, maxHeight.toInt() - 1),
-      cv.Point(0, maxHeight.toInt() - 1),
+      cv.Point(499, 0),
+      cv.Point(499, 499),
+      cv.Point(0, 499),
     ]);
 
     // Compute the perspective transform matrix
     final cv.Mat M = cv.getPerspectiveTransform(srcPoints, dstPoints);
 
     // Apply perspective transform
-    final cv.Mat warped =
-        cv.warpPerspective(mat, M, (maxWidth.toInt(), maxHeight.toInt()));
+    final cv.Mat warped = cv.warpPerspective(mat, M, (500, 500));
 
     // Release memory
     M.dispose();
@@ -213,158 +167,50 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return warped;
   }
 
-  // 边缘检测和霍夫线变换函数
-  cv.Mat _applyEdgeDetectionAndHoughLines(cv.Mat warped) {
-    // 转换为灰度图像
-    final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
-
-    // 应用高斯模糊
-    final cv.Mat blurred = cv.gaussianBlur(warpedGray, (5, 5), 0);
-
-    // 应用边缘检测（Canny）
-    final cv.Mat edges = cv.canny(blurred, 50, 150);
-
-    // 应用霍夫线变换，使用可调参数
-    final cv.Mat lines = cv.HoughLinesP(
-      edges,
-      1,
-      math.pi / 180,
-      _houghThreshold, // 可调霍夫阈值
-      minLineLength: _minLineLength, // 可调最小线长
-      maxLineGap: _maxLineGap, // 可调最大线间隙
-    );
-
-    final List<Line> filteredLines = _filterLines(lines);
-
-    // Draw detected lines on the image
-    final cv.Mat warpedWithLines = warped.clone();
-    for (final Line line in filteredLines) {
-      cv.line(
-        warpedWithLines,
-        line.startPoint,
-        line.endPoint,
-        cv.Scalar(0, 0, 255),
-        thickness: 2,
-      );
-    }
-
-    // 释放内存
-    warpedGray.dispose();
-    blurred.dispose();
-    edges.dispose();
-    lines.dispose();
-
-    return warpedWithLines;
-  }
-
-  // 动态获取棋盘上的24个网格点
-  List<cv.Point2f> _getDynamicGridPoints(cv.Mat warped) {
-    final double width = warped.cols.toDouble();
-    final double height = warped.rows.toDouble();
-
-    // 基于原始500x500图像的比例
-    // 外层方框比例
-    const double outerLeftXRatio = 35.0 / 500.0;
-    const double outerCenterXRatio = 250.0 / 500.0;
-    const double outerRightXRatio = 465.0 / 500.0;
-
-    const double outerTopYRatio = 40.0 / 500.0;
-    const double outerCenterYRatio = 250.0 / 500.0;
-    const double outerBottomYRatio = 465.0 / 500.0;
-
-    // 中层方框比例
-    const double middleLeftXRatio = 105.0 / 500.0;
-    const double middleCenterXRatio = 250.0 / 500.0;
-    const double middleRightXRatio = 395.0 / 500.0;
-
-    const double middleTopYRatio = 110.0 / 500.0;
-    const double middleCenterYRatio = 250.0 / 500.0;
-    const double middleBottomYRatio = 395.0 / 500.0;
-
-    // 内层方框比例
-    const double innerLeftXRatio = 175.0 / 500.0;
-    const double innerCenterXRatio = 250.0 / 500.0;
-    const double innerRightXRatio = 325.0 / 500.0;
-
-    const double innerTopYRatio = 180.0 / 500.0;
-    const double innerCenterYRatio = 250.0 / 500.0;
-    const double innerBottomYRatio = 325.0 / 500.0;
-
+  // 获取棋盘上的24个网格点
+  List<cv.Point2f> _getGridPoints() {
     final List<cv.Point2f> points = <cv.Point2f>[
-      // 外层方框角和中点
-      cv.Point2f(outerLeftXRatio * width, outerTopYRatio * height),
-      // 0: 左上角
-      cv.Point2f(outerCenterXRatio * width, outerTopYRatio * height),
-      // 1: 上中点
-      cv.Point2f(outerRightXRatio * width, outerTopYRatio * height),
-      // 2: 右上角
-      cv.Point2f(outerLeftXRatio * width, outerCenterYRatio * height),
-      // 3: 左中点
-      cv.Point2f(outerRightXRatio * width, outerCenterYRatio * height),
-      // 4: 右中点
-      cv.Point2f(outerLeftXRatio * width, outerBottomYRatio * height),
-      // 5: 左下角
-      cv.Point2f(outerCenterXRatio * width, outerBottomYRatio * height),
-      // 6: 下中点
-      cv.Point2f(outerRightXRatio * width, outerBottomYRatio * height),
-      // 7: 右下角
-
-      // 中层方框角和中点
-      cv.Point2f(middleLeftXRatio * width, middleTopYRatio * height),
-      // 8: 左上角
-      cv.Point2f(middleCenterXRatio * width, middleTopYRatio * height),
-      // 9: 上中点
-      cv.Point2f(middleRightXRatio * width, middleTopYRatio * height),
-      // 10: 右上角
-      cv.Point2f(middleLeftXRatio * width, middleCenterYRatio * height),
-      // 11: 左中点
-      cv.Point2f(middleRightXRatio * width, middleCenterYRatio * height),
-      // 12: 右中点
-      cv.Point2f(middleLeftXRatio * width, middleBottomYRatio * height),
-      // 13: 左下角
-      cv.Point2f(middleCenterXRatio * width, middleBottomYRatio * height),
-      // 14: 下中点
-      cv.Point2f(middleRightXRatio * width, middleBottomYRatio * height),
-      // 15: 右下角
-
-      // 内层方框角和中点
-      cv.Point2f(innerLeftXRatio * width, innerTopYRatio * height),
-      // 16: 左上角
-      cv.Point2f(innerCenterXRatio * width, innerTopYRatio * height),
-      // 17: 上中点
-      cv.Point2f(innerRightXRatio * width, innerTopYRatio * height),
-      // 18: 右上角
-      cv.Point2f(innerLeftXRatio * width, innerCenterYRatio * height),
-      // 19: 左中点
-      cv.Point2f(innerRightXRatio * width, innerCenterYRatio * height),
-      // 20: 右中点
-      cv.Point2f(innerLeftXRatio * width, innerBottomYRatio * height),
-      // 21: 左下角
-      cv.Point2f(innerCenterXRatio * width, innerBottomYRatio * height),
-      // 22: 下中点
-      cv.Point2f(innerRightXRatio * width, innerBottomYRatio * height),
-      // 23: 右下角
+      cv.Point2f(35.0, 40.0), // 0: 左上角
+      cv.Point2f(250.0, 40.0), // 1: 上中点
+      cv.Point2f(465.0, 40.0), // 2: 右上角
+      cv.Point2f(35.0, 250.0), // 3: 左中点
+      cv.Point2f(465.0, 250.0), // 4: 右中点
+      cv.Point2f(35.0, 465.0), // 5: 左下角
+      cv.Point2f(250.0, 465.0), // 6: 下中点
+      cv.Point2f(465.0, 465.0), // 7: 右下角
+      cv.Point2f(105.0, 110.0), // 8: 左上角
+      cv.Point2f(250.0, 110.0), // 9: 上中点
+      cv.Point2f(395.0, 110.0), // 10: 右上角
+      cv.Point2f(105.0, 250.0), // 11: 左中点
+      cv.Point2f(395.0, 250.0), // 12: 右中点
+      cv.Point2f(105.0, 395.0), // 13: 左下角
+      cv.Point2f(250.0, 395.0), // 14: 下中点
+      cv.Point2f(395.0, 395.0), // 15: 右下角
+      cv.Point2f(175.0, 180.0), // 16: 左上角
+      cv.Point2f(250.0, 180.0), // 17: 上中点
+      cv.Point2f(325.0, 180.0), // 18: 右上角
+      cv.Point2f(175.0, 250.0), // 19: 左中点
+      cv.Point2f(325.0, 250.0), // 20: 右中点
+      cv.Point2f(175.0, 325.0), // 21: 左下角
+      cv.Point2f(250.0, 325.0), // 22: 下中点
+      cv.Point2f(325.0, 325.0), // 23: 右下角
     ];
 
     return points;
   }
 
-  // **新增：棋子分类函数**
   String _classifyPiece(cv.Mat mat, cv.Point2f center, double radius) {
-    // 提取棋子区域的灰度图像
     final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
 
-    // 提取棋子区域
     final cv.Mat circularRoi = cv.getRectSubPix(
       gray,
       (radius.toInt() * 2, radius.toInt() * 2),
       center,
     );
 
-    // 计算平均灰度值
     int totalGrayValue = 0;
     int totalPixels = 0;
-    final Uint8List pixelData = circularRoi.data; // 提取为字节数组
+    final Uint8List pixelData = circularRoi.data;
     for (int y = 0; y < circularRoi.rows; y++) {
       for (int x = 0; x < circularRoi.cols; x++) {
         final double distance =
@@ -377,7 +223,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     }
     final double meanGray = totalGrayValue / totalPixels;
 
-    // 根据灰度值分类
     if (meanGray > _whiteGrayThreshold) {
       return 'w';
     } else if (meanGray < _blackGrayThreshold) {
@@ -387,471 +232,302 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     }
   }
 
-  // **新增：使用霍夫圆变换进行棋子检测**
-  List<String> _detectPiecesWithHoughCircles(
-      cv.Mat circles, cv.Mat originalMat) {
-    final List<String> positions = List<String>.filled(24, 'e');
+  List<String> _detectPiecesUsingContours(cv.Mat thresh, cv.Mat originalMat) {
+    // 检测阈值图像中的轮廓
+    final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
+      thresh,
+      cv.RETR_EXTERNAL,
+      cv.CHAIN_APPROX_SIMPLE,
+    );
+    final cv.Contours contours = contoursResult.$1;
 
-    // 假设已经有网格点的位置（可以基于棋盘的透视变换结果动态获取）
-    // 这里需要实现根据网格点和检测到的圆形来匹配棋子的位置
-    // 由于具体棋盘布局和匹配逻辑未提供，这里提供一个示例框架
-
-    // 获取网格点
-    final List<cv.Point2f> gridPoints = _getDynamicGridPoints(originalMat);
-
-    if (circles.cols > 0) {
-      final List<double> circlesData =
-          circles.data.map((int e) => e.toDouble()).toList();
-
-      for (int i = 0; i < circles.cols; i++) {
-        final double x = circlesData[i * 3 + 0];
-        final double y = circlesData[i * 3 + 1];
-        final double radius = circlesData[i * 3 + 2];
-
-        logger.i('检测到的圆[$i]: x=$x, y=$y, radius=$radius');
-
-        // 找到最近的网格点
-        double minDistance = double.infinity;
-        int closestGridIndex = -1;
-        for (int j = 0; j < gridPoints.length; j++) {
-          final double distance = math.sqrt(math.pow(x - gridPoints[j].x, 2) +
-              math.pow(y - gridPoints[j].y, 2));
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestGridIndex = j;
-          }
-        }
-
-        // 设置一个合理的最大距离阈值
-        if (minDistance < 30 && closestGridIndex != -1) {
-          // 根据灰度值或其他特征判断棋子颜色
-          final cv.Point2f detectedCenter = cv.Point2f(x, y);
-          final String color =
-              _classifyPiece(originalMat, detectedCenter, radius);
-          positions[closestGridIndex] = color;
-        }
-      }
-
-      return positions;
+    // 在所有检测到的轮廓上绘制线条
+    for (int i = 0; i < contours.length; i++) {
+      final cv.VecPoint contour = contours[i];
+      // 在原始图像上绘制轮廓线
+      cv.drawContours(
+        originalMat,
+        contours,
+        i,
+        cv.Scalar(0, 0, 255), // 使用红色标记轮廓，方便调试
+        thickness: 5,
+      );
     }
 
-    // 如果没有检测到任何圆形，返回默认的 positions
+    // 获取棋盘的24个点位
+    final List<cv.Point2f> gridPoints = _getGridPoints();
+
+    // 存储每个点位的棋子状态
+    final List<String> positions = List<String>.filled(24, 'e');
+
+    // 遍历每个轮廓，寻找圆形轮廓
+    for (int i = 0; i < contours.length; i++) {
+      final cv.VecPoint contour = contours[i];
+      final double area = cv.contourArea(contour);
+
+      // 筛选符合面积阈值的轮廓
+      if (area > _contourAreaThreshold) {
+        // 计算轮廓的圆形度
+        final double perimeter = cv.arcLength(contour, true);
+        final double circularity = 4 * math.pi * area / (perimeter * perimeter);
+
+        // 设置圆形度阈值（例如0.7）
+        if (circularity > 0.7) {
+          // 计算最小外接圆
+          final enclosingCircle = cv.minEnclosingCircle(contour);
+          final cv.Point2f center = enclosingCircle.$1; // 或 enclosingCircle[0]
+          final double radius = enclosingCircle.$2; // 或 enclosingCircle[1]
+
+          // 绘制圆形轮廓
+          cv.circle(
+            originalMat,
+            cv.Point(center.x.toInt(), center.y.toInt()),
+            radius.toInt(),
+            cv.Scalar(0, 255, 0),
+            thickness: 2,
+          );
+
+          // 将该中心与最近的网格点位进行匹配
+          double minDistance = double.infinity;
+          int closestGridIndex = -1;
+
+          for (int j = 0; j < gridPoints.length; j++) {
+            final double distance = math.sqrt(
+              math.pow(center.x - gridPoints[j].x, 2) +
+                  math.pow(center.y - gridPoints[j].y, 2),
+            );
+
+            if (distance < minDistance) {
+              minDistance = distance;
+              closestGridIndex = j;
+            }
+          }
+
+          // 如果轮廓中心距离某个网格点位小于阈值，则认为该点位上存在棋子
+          if (minDistance < _distanceThreshold && closestGridIndex != -1) {
+            // 检查该网格点是否已被占用，避免重复标记
+            if (positions[closestGridIndex] == 'e') {
+              final String color = _classifyPiece(originalMat, center, radius);
+              positions[closestGridIndex] = color;
+
+              // 绘制棋子的位置和颜色（添加轮廓框和文字标记）
+              cv.rectangle(
+                originalMat,
+                cv.Rect(
+                  (center.x - radius).toInt(),
+                  (center.y - radius).toInt(),
+                  (radius * 2).toInt(),
+                  (radius * 2).toInt(),
+                ),
+                color == 'w' ? cv.Scalar(255, 255, 255) : cv.Scalar(0, 0, 0),
+                thickness: 2,
+              );
+
+              cv.putText(
+                originalMat,
+                color,
+                cv.Point(center.x.toInt() - 10, center.y.toInt() - 10),
+                cv.FONT_HERSHEY_SIMPLEX,
+                0.6,
+                color == 'w' ? cv.Scalar(255, 255, 255) : cv.Scalar(0, 0, 0),
+                thickness: 2,
+                lineType: cv.LINE_AA,
+              );
+            }
+          }
+        }
+      }
+    }
+
+    // 生成FEN串
+    final String fen = _generateFEN(positions);
+
+    // 释放内存
+    contours.dispose();
+    contoursResult.$2.dispose();
+
     return positions;
   }
 
-  // **新增：在图像上绘制检测到的圆形和标注**
-  void _annotatePiecesWithHoughCircles(
-      cv.Mat image, cv.Mat circles, List<String> positions) {
-    final List<cv.Point2f> gridPoints = _getDynamicGridPoints(image);
-
-    if (circles.cols > 0) {
-      final List<double> circlesData =
-          circles.data.map((int e) => e.toDouble()).toList();
-
-      for (int i = 0; i < circles.cols; i++) {
-        final double x = circlesData[i * 3 + 0];
-        final double y = circlesData[i * 3 + 1];
-        final double radius = circlesData[i * 3 + 2];
-
-        // 找到最近的网格点
-        double minDistance = double.infinity;
-        int closestGridIndex = -1;
-        for (int j = 0; j < gridPoints.length; j++) {
-          final double distance = math.sqrt(math.pow(x - gridPoints[j].x, 2) +
-              math.pow(y - gridPoints[j].y, 2));
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestGridIndex = j;
-          }
-        }
-
-        // 设置一个合理的最大距离阈值
-        if (minDistance < 30 && closestGridIndex != -1) {
-          // 根据分类结果设置标签
-          final String label = positions[closestGridIndex];
-
-          // 设置文本位置，调整偏移量使其在圆心正上方
-          final cv.Point textOrg = cv.Point(
-            x.toInt() - 10, // 适当调整x偏移量
-            y.toInt() - radius.toInt() - 10, // 适当调整y偏移量
-          );
-          cv.putText(
-            image,
-            label,
-            textOrg,
-            cv.FONT_HERSHEY_SIMPLEX,
-            0.6,
-            cv.Scalar(255, 0, 0), // 使用蓝色标记棋子
-            thickness: 2,
-            lineType: cv.LINE_AA,
-          );
-        }
-      }
-    }
-  }
-
-  // Generate FEN string
   String _generateFEN(List<String> positions) {
-    // Convert position list to string
     return positions.join();
   }
 
   Future<void> _processImage() async {
-    logger.i('开始 _processImage 函数');
-
     final ImagePicker picker = ImagePicker();
-    logger.i('初始化 ImagePicker');
 
     final XFile? imgFile = await picker.pickImage(source: ImageSource.gallery);
     if (imgFile == null) {
-      logger.i('未选择任何图像');
       return;
     }
 
-    logger.i('选择的图像路径: ${imgFile.path}');
-    logger.i('图像大小: ${await imgFile.length()} 字节');
-
-    // 读取图像数据并修正方向
-    logger.i('读取图像数据');
     final Uint8List imageData = await imgFile.readAsBytes();
-    logger.i('成功读取图像数据，数据长度: ${imageData.length} 字节');
 
-    logger.i('解码图像');
     final img.Image? decodedImage = img.decodeImage(imageData);
     if (decodedImage == null) {
-      logger.i('图像解码失败');
       return;
     }
-    logger.i('图像解码成功，图像尺寸: ${decodedImage.width}x${decodedImage.height}');
 
-    logger.i('修正图像方向');
     final img.Image orientedImage = img.bakeOrientation(decodedImage);
-    logger.i('方向修正后的图像尺寸: ${orientedImage.width}x${orientedImage.height}');
 
-    logger.i('编码修正后的图像为 JPEG');
     final Uint8List correctedImageData =
         Uint8List.fromList(img.encodeJpg(orientedImage));
-    logger.i('JPEG 编码完成，数据长度: ${correctedImageData.length} 字节');
 
-    // 将修正后的图像数据解码为 OpenCV Mat
-    logger.i('将修正后的图像数据解码为 OpenCV Mat');
     final cv.Mat mat = cv.imdecode(correctedImageData, cv.IMREAD_COLOR);
-    logger
-        .i('OpenCV Mat 解码成功，Mat 尺寸: ${mat.rows}x${mat.cols}, 类型: ${mat.type}');
 
-    // 转换为灰度图像
-    logger.i('转换为灰度图像');
     final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
-    logger.i('灰度转换完成，Mat 尺寸: ${gray.rows}x${gray.cols}, 类型: ${gray.type}');
 
-    // 不支持 CLAHE，故使用伽马校正
-    logger.i('开始伽马校正');
     final List<num> grayPixels = gray.data;
-    logger.i('灰度图像像素数量: ${grayPixels.length}');
 
-    // 使用可调的伽马值
     final double inverseGamma = 1.0 / _gamma;
-    logger.i('使用的逆伽马值: $inverseGamma');
 
-    // 生成查找表来加快伽马变换的速度
-    logger.i('生成伽马查找表 (LUT)');
     final List<num> gammaLUT = List<num>.generate(256, (int i) {
       final num value = (math.pow(i / 255.0, inverseGamma) * 255).toInt();
-      if (i % 50 == 0) {
-        // 每50个值记录一次
-        logger.i('LUT[$i] = $value');
-      }
       return value;
     });
-    logger.i('伽马查找表生成完成');
 
-    // 应用伽马校正
-    logger.i('应用伽马校正到灰度图像');
     for (int i = 0; i < grayPixels.length; i++) {
       final int original = grayPixels[i].toInt();
       grayPixels[i] = gammaLUT[original];
-      if (i < 10) {
-        // 仅记录前10个像素值以避免日志过多
-        logger.i('像素[$i]: 原始=$original, 校正后=${gammaLUT[original]}');
-      }
-      if (i == 10) {
-        logger.i('省略中间像素日志...');
-      }
     }
-    logger.i('伽马校正应用完成');
 
-    // 将数组转换回 `cv.Mat` 格式
-    logger.i('将伽马校正后的像素数组转换回 cv.Mat');
     final cv.Mat enhanced =
         cv.Mat.fromList(gray.rows, gray.cols, gray.type, grayPixels);
-    logger.i(
-        '增强后的 Mat 尺寸: ${enhanced.rows}x${enhanced.cols}, 类型: ${enhanced.type}');
 
-    // 使用高斯模糊
-    logger.i('应用高斯模糊');
     final cv.Mat blurred = cv.gaussianBlur(enhanced, (5, 5), 0);
-    logger.i('高斯模糊完成，Blurred Mat 尺寸: ${blurred.rows}x${blurred.cols}');
 
-    // 自适应阈值
-    logger.i('应用自适应阈值');
     final cv.Mat thresh = cv.adaptiveThreshold(
       blurred,
       255,
       cv.ADAPTIVE_THRESH_GAUSSIAN_C,
       cv.THRESH_BINARY_INV,
-      _adaptiveThresholdBlockSize, // 可调块大小
-      _adaptiveThresholdC, // 可调常数C
+      _adaptiveThresholdBlockSize,
+      _adaptiveThresholdC,
     );
-    logger.i('自适应阈值完成，Thresh Mat 尺寸: ${thresh.rows}x${thresh.cols}');
 
-    // 应用闭运算以连接断裂的边缘
-    logger.i('应用闭运算以连接断裂的边缘');
+    // 结构元素过大会导致细节丢失，可以减小内核尺寸以保留更多轮廓细节
     final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_RECT, (5, 5));
     final cv.Mat closed = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel);
-    logger.i('闭运算完成，Closed Mat 尺寸: ${closed.rows}x${closed.cols}');
 
-    // 调试：显示灰度图像、增强图像和阈值图像
-    logger.i('编码灰度图像');
     grayImage = cv.imencode('.png', gray).$2;
-    logger.i('灰度图像编码完成，大小: ${grayImage!.length} 字节');
 
-    logger.i('编码增强图像');
     enhancedImage = cv.imencode('.png', enhanced).$2;
-    logger.i('增强图像编码完成，大小: ${enhancedImage!.length} 字节');
 
-    logger.i('编码阈值图像');
     threshImage = cv.imencode('.png', closed).$2;
-    logger.i('阈值图像编码完成，大小: ${threshImage!.length} 字节');
 
-    // **新部分开始：使用霍夫圆变换检测圆形棋子**
-    logger.i('开始霍夫圆变换检测圆形棋子');
-    final cv.Mat circles = cv.HoughCircles(
-      gray, // 使用灰度图像
-      cv.HOUGH_GRADIENT,
-      _dp,
-      _minDist,
-      param1: _param1,
-      param2: _param2,
-      minRadius: _minRadius,
-      maxRadius: _maxRadius,
+    final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
+      closed,
+      cv.RETR_EXTERNAL,
+      cv.CHAIN_APPROX_SIMPLE,
     );
+    final cv.Contours contours = contoursResult.$1;
+    // final cv.Mat hierarchy = contoursResult.$2; // 删除未使用的变量
 
-    // 检查 circles 是否为空
-    if (circles.isEmpty) {
-      logger.i('未检测到任何圆形');
-      return; // 或执行其他适当的处理
-    }
+    cv.VecPoint? boardContour;
+    double maxArea = 0;
+    for (int idx = 0; idx < contours.length; idx++) {
+      final cv.VecPoint contour = contours[idx];
+      final double area = cv.contourArea(contour);
 
-    logger.i('霍夫圆变换完成，检测到的圆数量: ${circles.cols}');
-
-    // 创建一张用于绘制圆形的图像
-    final cv.Mat circlesMat = mat.clone();
-    if (circles.cols > 0) {
-      final List<double> circlesData =
-          circles.data.map((int e) => e.toDouble()).toList();
-
-      for (int i = 0; i < circles.cols; i++) {
-        final double x = circlesData[i * 3 + 0];
-        final double y = circlesData[i * 3 + 1];
-        final double radius = circlesData[i * 3 + 2];
-
-        logger.i('检测到的圆[$i]: x=$x, y=$y, radius=$radius');
-
-        // 根据检测到的圆进行分类（白棋、黑棋或空）
-        // 这里可以根据实际需求进行分类逻辑的实现
-        // 例如，通过圆心的灰度值来判断颜色
-
-        // 绘制圆形和圆心
-        cv.circle(
-          circlesMat,
-          cv.Point(x.toInt(), y.toInt()),
-          radius.toInt(),
-          cv.Scalar(0, 255, 0), // 绿色圆圈
-          thickness: 2,
-        );
-        cv.circle(
-          circlesMat,
-          cv.Point(x.toInt(), y.toInt()),
-          2,
-          cv.Scalar(0, 0, 255), // 红色圆心
-          thickness: 3,
-        );
+      if (area < _contourAreaThreshold) {
+        continue;
       }
 
-      // 调试：显示检测到圆形的图像
-      logger.i('编码检测到圆形的图像');
-      circlesImage = cv.imencode('.png', circlesMat).$2;
-      logger.i('检测到圆形的图像编码完成，大小: ${circlesImage!.length} 字节');
+      final double peri = cv.arcLength(contour, true);
 
-      // **调整：移除原有轮廓检测及相关逻辑**
-      // 由于我们现在使用霍夫圆变换进行圆形检测，可以移除原有的轮廓检测部分
-      // 下面的代码可以根据需要保留或删除
+      final cv.VecPoint approx =
+          cv.approxPolyDP(contour, _epsilonMultiplier * peri, true);
 
-      // Find contours
-      logger.i('查找轮廓');
-      final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
-        closed,
-        cv.RETR_EXTERNAL,
-        cv.CHAIN_APPROX_SIMPLE,
-      );
-      final cv.Contours contours = contoursResult.$1;
-      final cv.Mat hierarchy = contoursResult.$2;
-      logger.i('轮廓查找完成，检测到的轮廓数量: ${contours.length}');
+      final double circularity = 4 * math.pi * area / (peri * peri);
 
-      // 筛选可能的棋盘轮廓
-      logger.i('开始筛选可能的棋盘轮廓');
-      cv.VecPoint? boardContour;
-      double maxArea = 0;
-      for (int idx = 0; idx < contours.length; idx++) {
-        final cv.VecPoint contour = contours[idx];
-        final double area = cv.contourArea(contour);
-        logger.i('轮廓[$idx] 的面积: $area');
+      if (approx.length == 4 && circularity > 0.6) {
+        final cv.Rect rect = cv.boundingRect(approx);
+        final double aspectRatio = rect.width / rect.height;
 
-        // 根据面积过滤
-        if (area < _contourAreaThreshold) {
-          logger.i('轮廓[$idx] 面积小于阈值 $_contourAreaThreshold，跳过');
-          continue;
-        }
-
-        final double peri = cv.arcLength(contour, true);
-        logger.i('轮廓[$idx] 的周长: $peri');
-
-        final cv.VecPoint approx = cv.approxPolyDP(
-            contour, _epsilonMultiplier * peri, true); // 使用可调epsilon
-        logger.i('轮廓[$idx] 的近似多边形顶点数量: ${approx.length}');
-
-        // 计算轮廓的圆度
-        final double circularity = 4 * math.pi * area / (peri * peri);
-        logger.i('轮廓[$idx] 的圆度: $circularity');
-
-        // 找到四边形且圆度合理
-        if (approx.length == 4 && circularity > 0.6) {
-          logger.i('轮廓[$idx] 是四边形且圆度大于 0.6');
-          // 检查长宽比
-          final cv.Rect rect = cv.boundingRect(approx);
-          final double aspectRatio = rect.width / rect.height;
-          logger.i('轮廓[$idx] 的长宽比: $aspectRatio');
-
-          if (aspectRatio > _aspectRatioMin && aspectRatio < _aspectRatioMax) {
-            logger.i(
-                '轮廓[$idx] 的长宽比在可接受范围内 ($_aspectRatioMin - $_aspectRatioMax)');
-            // 使用可调长宽比
-            if (area > maxArea) {
-              logger.i('轮廓[$idx] 的面积大于当前最大面积 ($maxArea)，更新 boardContour');
-              maxArea = area;
-              boardContour = approx;
-            } else {
-              logger.i('轮廓[$idx] 的面积不大于当前最大面积 ($maxArea)，跳过');
-            }
-          } else {
-            logger.i(
-                '轮廓[$idx] 的长宽比不在可接受范围内 ($_aspectRatioMin - $_aspectRatioMax)');
+        if (aspectRatio > _aspectRatioMin && aspectRatio < _aspectRatioMax) {
+          if (area > maxArea) {
+            maxArea = area;
+            boardContour = approx;
           }
-        } else {
-          logger.i('轮廓[$idx] 不是四边形或圆度不够，跳过');
         }
-      }
-
-      if (boardContour != null) {
-        logger.i('找到棋盘轮廓，面积: $maxArea');
-        // 在原图像上绘制棋盘轮廓
-        final cv.Mat matWithContour = mat.clone();
-        logger.i('克隆原始 Mat 以绘制轮廓');
-
-        // 将 VecPoint 转换为 List<Point>
-        final List<cv.Point> boardContourPoints = boardContour.toList();
-        logger.i('棋盘轮廓的点数量: ${boardContourPoints.length}');
-
-        // 将 List<List<Point>> 转换为 Contours (VecVecPoint)
-        final cv.Contours boardContours =
-            cv.VecVecPoint.fromList(<List<cv.Point>>[boardContourPoints]);
-        logger.i('转换棋盘轮廓为 cv.Contours');
-
-        logger.i('在图像上绘制棋盘轮廓');
-        cv.drawContours(
-          matWithContour,
-          boardContours,
-          -1,
-          cv.Scalar(0, 255), // 使用绿色绘制轮廓
-          thickness: 2,
-        );
-        logger.i('轮廓绘制完成');
-
-        // 调试：显示带有轮廓的图像
-        logger.i('编码带有轮廓的图像');
-        grayImage = cv.imencode('.png', matWithContour).$2;
-        logger.i('带轮廓图像编码完成，大小: ${grayImage!.length} 字节');
-
-        // 应用透视变换以对齐棋盘
-        logger.i('应用透视变换以对齐棋盘');
-        final cv.Mat warped = _warpPerspective(mat, boardContour);
-        logger.i('透视变换完成，Warped Mat 尺寸: ${warped.rows}x${warped.cols}');
-
-        // 转换为灰度图像
-        final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
-
-        // 应用霍夫圆变换
-        logger.i('开始霍夫圆变换检测圆形棋子');
-        final cv.Mat circles = cv.HoughCircles(
-          warpedGray,
-          cv.HOUGH_GRADIENT,
-          _dp,
-          _minDist,
-          param1: _param1,
-          param2: _param2,
-          minRadius: _minRadius,
-          maxRadius: _maxRadius,
-        );
-
-        // 检查是否检测到圆形
-        if (circles.isEmpty) {
-          logger.i('未检测到任何圆形');
-        } else {
-          logger.i('霍夫圆变换完成，检测到的圆数量: ${circles.cols}');
-
-          // 检测棋子位置
-          final List<String> positions =
-              _detectPiecesWithHoughCircles(circles, warped);
-
-          // 在对齐的棋盘图像上绘制圆形和标注
-          final cv.Mat annotatedWarped = warped.clone();
-          _annotatePiecesWithHoughCircles(annotatedWarped, circles, positions);
-
-          // 生成 FEN 字符串
-          final String fen = _generateFEN(positions);
-          logger.i('生成的 FEN 字符串: $fen');
-
-          setState(() {
-            logger.i('更新 UI 状态');
-            _processedImage = cv.imencode('.png', annotatedWarped).$2;
-            _fenString = fen;
-            logger.i('UI 状态更新完成');
-          });
-
-          // 释放临时 Mat
-          annotatedWarped.dispose();
-        }
-
-        // 释放其他临时 Mat 和资源
-        logger.i('释放临时 Mat 和资源');
-        boardContours.dispose();
-
-        mat.dispose();
-        gray.dispose();
-        closed.dispose();
-
-        circles.dispose();
-        circlesMat.dispose();
-
-        blurred.dispose();
-        thresh.dispose();
-        kernel.dispose();
-
-        enhanced.dispose();
-
-        logger.i('_processImage 函数结束');
       }
     }
+
+    if (boardContour != null) {
+      final cv.Mat matWithContour = mat.clone();
+
+      final List<cv.Point> boardContourPoints = boardContour.toList();
+
+      final cv.Contours boardContours =
+          cv.VecVecPoint.fromList(<List<cv.Point>>[boardContourPoints]);
+
+      cv.drawContours(
+        matWithContour,
+        boardContours,
+        -1,
+        cv.Scalar(0, 255),
+        thickness: 2,
+      );
+
+      grayImage = cv.imencode('.png', matWithContour).$2;
+
+      final cv.Mat warped = _warpPerspective(mat, boardContour);
+
+      if (EnvironmentConfig.devMode) {
+        // 在透视变换后的图像上标记24个点位
+        final List<cv.Point2f> gridPoints = _getGridPoints();
+        for (final cv.Point2f point in gridPoints) {
+          cv.circle(
+            warped,
+            cv.Point(point.x.toInt(), point.y.toInt()),
+            5,
+            cv.Scalar(0, 255), // 绿色标记点
+            thickness: 2,
+          );
+        }
+      }
+
+      final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
+
+      // 对透视变换后的灰度图像应用阈值处理
+      final cv.Mat threshWarped = cv.adaptiveThreshold(
+        warpedGray,
+        255,
+        cv.ADAPTIVE_THRESH_GAUSSIAN_C,
+        cv.THRESH_BINARY_INV,
+        _adaptiveThresholdBlockSize,
+        _adaptiveThresholdC,
+      );
+
+      // 使用 contours 方法检测棋子
+      final List<String> positions =
+          _detectPiecesUsingContours(threshWarped, warped);
+
+      final String fen = _generateFEN(positions);
+
+      setState(() {
+        _processedImage = cv.imencode('.png', warped).$2; // 使用标记后的透视变换图像
+        _fenString = fen;
+      });
+
+      // 释放内存
+      warped.dispose();
+      boardContours.dispose();
+
+      mat.dispose();
+      matWithContour.dispose();
+      gray.dispose();
+      closed.dispose();
+
+      blurred.dispose();
+      thresh.dispose();
+      kernel.dispose();
+      enhanced.dispose();
+    }
+
+    // 释放内存
+    contours.dispose();
+    contoursResult.$2.dispose();
   }
 
   @override
@@ -863,13 +539,10 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // 图像处理按钮
                 ElevatedButton(
                   onPressed: _processImage,
                   child: const Text('选择并处理图像'),
                 ),
-
-                // 显示处理后的图像和FEN字符串
                 if (_processedImage != null) ...<Widget>[
                   Image.memory(_processedImage!),
                   const SizedBox(height: 20),
@@ -880,8 +553,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   const SizedBox(height: 20),
                   Text(_fenString),
                 ],
-
-                // 显示调试图像（可选）
                 if (grayImage != null) ...<Widget>[
                   const Text('灰度图像'),
                   Image.memory(grayImage!),
@@ -894,534 +565,13 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   const Text('阈值图像'),
                   Image.memory(threshImage!),
                 ],
+                // 移除透视变换后的图像显示，因为已在_processedImage中显示
+                /*
                 if (warpedImage != null) ...<Widget>[
                   const Text('透视变换后的图像'),
                   Image.memory(warpedImage!),
                 ],
-                if (circlesImage != null) ...<Widget>[
-                  // 新增：显示检测到圆形的图像
-                  const Text('检测到圆形的图像'),
-                  Image.memory(circlesImage!),
-                ],
-
-                // 添加阈值设置区域
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // 伽马值设置
-                      Text(
-                        '伽马值 (Gamma): ${_gamma.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _gamma,
-                        min: 0.5,
-                        max: 3.0,
-                        divisions: 25,
-                        label: _gamma.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _gamma = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '调整图像的亮度和对比度。较高的值会使图像更亮。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 自适应阈值块大小设置
-                      Text(
-                        '自适应阈值块大小: $_adaptiveThresholdBlockSize',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _adaptiveThresholdBlockSize.toDouble(),
-                        min: 3,
-                        max: 31,
-                        divisions: 14,
-                        label: _adaptiveThresholdBlockSize.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            // 阻止块大小为偶数
-                            _adaptiveThresholdBlockSize =
-                                value.toInt() | 1; // 确保为奇数
-                          });
-                        },
-                      ),
-                      Text(
-                        '影响阈值化时考虑的局部区域大小。较大的块大小可以更好地适应光照不均。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 自适应阈值常数C设置
-                      Text(
-                        '自适应阈值常数 C: $_adaptiveThresholdC',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _adaptiveThresholdC,
-                        min: -10,
-                        max: 10,
-                        divisions: 20,
-                        label: _adaptiveThresholdC.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _adaptiveThresholdC = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '用于自适应阈值的常数，减去块的平均值。正值会使阈值降低，负值则相反。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 轮廓面积阈值设置
-                      Text(
-                        '轮廓面积阈值: ${_contourAreaThreshold.toInt()}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _contourAreaThreshold,
-                        min: 1000,
-                        max: 50000,
-                        divisions: 49,
-                        label: _contourAreaThreshold.toInt().toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _contourAreaThreshold = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '筛选轮廓时的最小面积。较高的值会忽略较小的轮廓。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 逼近多边形精度乘数设置
-                      Text(
-                        '逼近多边形精度乘数: ${_epsilonMultiplier.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _epsilonMultiplier,
-                        min: 0.01,
-                        max: 0.1,
-                        divisions: 9,
-                        label: _epsilonMultiplier.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _epsilonMultiplier = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '多边形逼近的精度，值越大逼近越粗略。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 长宽比最小值设置
-                      Text(
-                        '长宽比最小值: ${_aspectRatioMin.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _aspectRatioMin,
-                        min: 0.5,
-                        max: 1.5,
-                        divisions: 20,
-                        label: _aspectRatioMin.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _aspectRatioMin = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '筛选轮廓时的最小长宽比。用于确保轮廓接近正方形。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 长宽比最大值设置
-                      Text(
-                        '长宽比最大值: ${_aspectRatioMax.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _aspectRatioMax,
-                        min: 0.5,
-                        max: 1.5,
-                        divisions: 20,
-                        label: _aspectRatioMax.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _aspectRatioMax = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '筛选轮廓时的最大长宽比。用于确保轮廓接近正方形。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 霍夫线变换阈值设置
-                      Text(
-                        '霍夫线变换阈值: $_houghThreshold',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _houghThreshold.toDouble(),
-                        min: 50,
-                        max: 200,
-                        divisions: 150,
-                        label: _houghThreshold.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _houghThreshold = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '霍夫线变换中检测直线的最小投票数。较高的值会检测到更明显的直线。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 最小线长设置
-                      Text(
-                        '最小线长: $_minLineLength',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _minLineLength,
-                        min: 50,
-                        max: 300,
-                        divisions: 25,
-                        label: _minLineLength.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _minLineLength = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '霍夫线变换中检测直线的最小长度。较长的线段会被优先检测。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 线段间隙阈值设置
-                      Text(
-                        '线段间隙阈值: $_maxLineGap',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _maxLineGap,
-                        min: 5,
-                        max: 50,
-                        divisions: 45,
-                        label: _maxLineGap.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _maxLineGap = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '霍夫线变换中，允许的最大线段间隙。较大的值会将接近的线段合并。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 线角容差设置
-                      Text(
-                        '线角容差: ${_angleTolerance.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _angleTolerance,
-                        max: math.pi / 4,
-                        // 0 到 45度
-                        divisions: 45,
-                        label: _angleTolerance.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _angleTolerance = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '筛选直线时的角度容差（弧度）。用于区分水平和垂直线。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 线距离阈值设置
-                      Text(
-                        '线距离阈值: $_distanceThreshold',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _distanceThreshold.toDouble(),
-                        min: 5,
-                        max: 50,
-                        divisions: 45,
-                        label: _distanceThreshold.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _distanceThreshold = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '筛选直线时的距离阈值。用于移除接近的重复线段。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 白色阈值比率设置
-                      Text(
-                        '白色阈值比率: ${_whiteThresholdRatio.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _whiteThresholdRatio,
-                        divisions: 100,
-                        label: _whiteThresholdRatio.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _whiteThresholdRatio = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '检测白色棋子时的像素比例阈值。较高的值需要更多的白色像素以识别为白棋。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 黑色阈值比率设置
-                      Text(
-                        '黑色阈值比率: ${_blackThresholdRatio.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _blackThresholdRatio,
-                        divisions: 100,
-                        label: _blackThresholdRatio.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _blackThresholdRatio = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '检测黑色棋子时的像素比例阈值。较高的值需要更多的黑色像素以识别为黑棋。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 白色灰度阈值设置
-                      Text(
-                        '白色灰度阈值: ${_whiteGrayThreshold.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _whiteGrayThreshold.toDouble(),
-                        max: 255,
-                        divisions: 255,
-                        label: _whiteGrayThreshold.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _whiteGrayThreshold = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '用于检测白色棋子的灰度阈值。较高的值会使更多的像素被识别为白棋。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // 黑色灰度阈值设置
-                      Text(
-                        '黑色灰度阈值: ${_blackGrayThreshold.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _blackGrayThreshold.toDouble(),
-                        max: 255,
-                        divisions: 255,
-                        label: _blackGrayThreshold.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _blackGrayThreshold = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '用于检测黑色棋子的灰度阈值。较低的值会使更多的像素被识别为黑棋。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // **新增：霍夫圆变换参数设置**
-                      Text(
-                        '霍夫圆变换参数设置',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                      const SizedBox(height: 8),
-
-                      // dp 设置
-                      Text(
-                        'dp: ${_dp.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _dp,
-                        min: 1.0,
-                        max: 3.0,
-                        divisions: 20,
-                        label: _dp.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _dp = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '累加器分辨率与图像分辨率的反比。较大的 dp 值会降低检测速度，但可以检测更大的圆。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // minDist 设置
-                      Text(
-                        'minDist: ${_minDist.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _minDist,
-                        min: 10,
-                        max: 100,
-                        divisions: 90,
-                        label: _minDist.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _minDist = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '检测到的圆心之间的最小距离。较大的 minDist 值可以避免检测到过多的圆。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // param1 设置
-                      Text(
-                        'param1: ${_param1.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _param1,
-                        min: 10,
-                        max: 200,
-                        divisions: 190,
-                        label: _param1.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _param1 = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '用于边缘检测的高阈值（Canny算法）。较高的值会使边缘检测更严格。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // param2 设置
-                      Text(
-                        'param2: ${_param2.toStringAsFixed(2)}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _param2,
-                        min: 10,
-                        max: 100,
-                        divisions: 90,
-                        label: _param2.toStringAsFixed(2),
-                        onChanged: (double value) {
-                          setState(() {
-                            _param2 = value;
-                          });
-                        },
-                      ),
-                      Text(
-                        '累加器阈值。较高的 param2 值会减少检测到的圆的数量。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // minRadius 设置
-                      Text(
-                        'minRadius: $_minRadius',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _minRadius.toDouble(),
-                        min: 5,
-                        max: 50,
-                        divisions: 45,
-                        label: _minRadius.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _minRadius = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '检测到的最小圆半径。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-
-                      // maxRadius 设置
-                      Text(
-                        'maxRadius: $_maxRadius',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Slider(
-                        value: _maxRadius.toDouble(),
-                        min: 5,
-                        max: 100,
-                        divisions: 95,
-                        label: _maxRadius.toString(),
-                        onChanged: (double value) {
-                          setState(() {
-                            _maxRadius = value.toInt();
-                          });
-                        },
-                      ),
-                      Text(
-                        '检测到的最大圆半径。',
-                        style: TextStyle(color: Colors.grey[700]),
-                      ),
-                      const SizedBox(height: 16),
-                    ],
-                  ),
-                ),
+                */
               ],
             ),
           ),
