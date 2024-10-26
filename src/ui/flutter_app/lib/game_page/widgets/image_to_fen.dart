@@ -38,6 +38,22 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
   String _fenString = '';
 
+  // 定义关键阈值的状态变量
+  double _gamma = 1.5; // 伽马值
+  int _adaptiveThresholdBlockSize = 15; // 自适应阈值块大小
+  double _adaptiveThresholdC = 3; // 自适应阈值常数C
+  double _contourAreaThreshold = 10000; // 轮廓面积阈值
+  double _epsilonMultiplier = 0.04; // 逼近多边形精度乘数
+  double _aspectRatioMin = 0.8; // 长宽比最小值
+  double _aspectRatioMax = 1.2; // 长宽比最大值
+  int _houghThreshold = 100; // 霍夫线变换阈值
+  double _minLineLength = 100; // 最小线长
+  double _maxLineGap = 10; // 线段间隙阈值
+  double _angleTolerance = 0.1; // 线角容差
+  int _distanceThreshold = 10; // 线距离阈值
+  double _whiteThresholdRatio = 0.5; // 白色阈值比率
+  double _blackThresholdRatio = 0.5; // 黑色阈值比率
+
   Future<void> _processImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? imgFile = await picker.pickImage(source: ImageSource.gallery);
@@ -60,9 +76,8 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       // 将灰度图像转换为数组格式
       final List<num> grayPixels = gray.data;
 
-      // 定义伽马值
-      const double gamma = 1.5;
-      const double inverseGamma = 1.0 / gamma;
+      // 使用可调的伽马值
+      final double inverseGamma = 1.0 / _gamma;
 
       // 生成查找表来加快伽马变换的速度
       final List<num> gammaLUT = List<num>.generate(256, (int i) {
@@ -87,8 +102,8 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         255,
         cv.ADAPTIVE_THRESH_GAUSSIAN_C,
         cv.THRESH_BINARY_INV,
-        15, // 增大块大小
-        3, // 调整常数C
+        _adaptiveThresholdBlockSize, // 可调块大小
+        _adaptiveThresholdC, // 可调常数C
       );
 
       // 应用闭运算以连接断裂的边缘
@@ -118,12 +133,13 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       for (final cv.VecPoint contour in contours) {
         final double area = cv.contourArea(contour);
         // 根据面积过滤
-        if (area < 10000) {
+        if (area < _contourAreaThreshold) {
+          // 使用可调面积阈值
           continue;
         }
         final double peri = cv.arcLength(contour, true);
-        final cv.VecPoint approx =
-            cv.approxPolyDP(contour, 0.04 * peri, true); // 增大epsilon
+        final cv.VecPoint approx = cv.approxPolyDP(
+            contour, _epsilonMultiplier * peri, true); // 使用可调epsilon
 
         // 计算轮廓的圆度
         // ignore: prefer_final_locals
@@ -134,7 +150,8 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           // 检查长宽比
           final cv.Rect rect = cv.boundingRect(approx);
           final double aspectRatio = rect.width / rect.height;
-          if (aspectRatio > 0.8 && aspectRatio < 1.2) {
+          if (aspectRatio > _aspectRatioMin && aspectRatio < _aspectRatioMax) {
+            // 使用可调长宽比
             if (area > maxArea) {
               maxArea = area;
               boardContour = approx;
@@ -217,8 +234,9 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   }
 
   List<Line> _filterLines(cv.Mat lines) {
-    const double angleTolerance = 0.1; // Angle tolerance
-    const int distanceThreshold = 10; // Distance threshold
+    // 使用可调角度容差和距离阈值
+    final double angleTolerance = _angleTolerance; // 角度容差
+    final int distanceThreshold = _distanceThreshold; // 距离阈值
 
     final List<Line> horizontalLines = <Line>[];
     final List<Line> verticalLines = <Line>[];
@@ -283,7 +301,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return filteredLines;
   }
 
-  // Adjusted _orderPoints to return List<cv.Point>
+  // 调整后的 _orderPoints 函数，返回 List<cv.Point>
   List<cv.Point> _orderPoints(cv.VecPoint approx) {
     // Compute centroid
     double cX = 0, cY = 0;
@@ -315,7 +333,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return sortedPoints;
   }
 
-  // Adjusted _warpPerspective function
+  // 调整后的 _warpPerspective 函数
   cv.Mat _warpPerspective(cv.Mat mat, cv.VecPoint contour) {
     // 获取排序后的四个顶点
     final List<cv.Point> orderedPoints = _orderPoints(contour);
@@ -373,14 +391,14 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     // 应用边缘检测（Canny）
     final cv.Mat edges = cv.canny(blurred, 50, 150);
 
-    // 应用霍夫线变换
+    // 应用霍夫线变换，使用可调参数
     final cv.Mat lines = cv.HoughLinesP(
       edges,
       1,
       math.pi / 180,
-      100,
-      minLineLength: 100,
-      maxLineGap: 10,
+      _houghThreshold, // 可调霍夫阈值
+      minLineLength: _minLineLength, // 可调最小线长
+      maxLineGap: _maxLineGap, // 可调最大线间隙
     );
 
     final List<Line> filteredLines = _filterLines(lines);
@@ -406,7 +424,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     return warpedWithLines;
   }
 
-// Piece detection function
+  // Piece detection function
   List<String> _detectPieces(cv.Mat warped) {
     final List<String> positions = List<String>.filled(24, 'e');
 
@@ -427,8 +445,8 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     }
 
     // 定义相对阈值（例如，ROI总像素的指定比例）
-    const double whiteThresholdRatio = 0.5;
-    const double blackThresholdRatio = 0.5;
+    final double whiteThresholdRatio = _whiteThresholdRatio; // 可调白色阈值比率
+    final double blackThresholdRatio = _blackThresholdRatio; // 可调黑色阈值比率
 
     for (int i = 0; i < gridPoints.length; i++) {
       final cv.Point2f point = gridPoints[i];
@@ -636,10 +654,13 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
+                // 图像处理按钮
                 ElevatedButton(
                   onPressed: _processImage,
                   child: const Text('选择并处理图像'),
                 ),
+
+                // 显示处理后的图像和FEN字符串
                 if (_processedImage != null) ...<Widget>[
                   Image.memory(_processedImage!),
                   const SizedBox(height: 20),
@@ -650,11 +671,340 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   const SizedBox(height: 20),
                   Text(_fenString),
                 ],
+
                 // 显示调试图像（可选）
                 if (grayImage != null) Image.memory(grayImage!),
                 if (enhancedImage != null) Image.memory(enhancedImage!),
                 if (threshImage != null) Image.memory(threshImage!),
                 if (warpedImage != null) Image.memory(warpedImage!),
+
+                // 添加阈值设置区域
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // 伽马值设置
+                      Text(
+                        '伽马值 (Gamma): ${_gamma.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _gamma,
+                        min: 0.5,
+                        max: 3.0,
+                        divisions: 25,
+                        label: _gamma.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _gamma = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '调整图像的亮度和对比度。较高的值会使图像更亮。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 自适应阈值块大小设置
+                      Text(
+                        '自适应阈值块大小: $_adaptiveThresholdBlockSize',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _adaptiveThresholdBlockSize.toDouble(),
+                        min: 3,
+                        max: 31,
+                        divisions: 14,
+                        label: _adaptiveThresholdBlockSize.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            // 阻止块大小为偶数
+                            _adaptiveThresholdBlockSize =
+                                value.toInt() | 1; // 确保为奇数
+                          });
+                        },
+                      ),
+                      Text(
+                        '影响阈值化时考虑的局部区域大小。较大的块大小可以更好地适应光照不均。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 自适应阈值常数C设置
+                      Text(
+                        '自适应阈值常数 C: $_adaptiveThresholdC',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _adaptiveThresholdC,
+                        min: -10,
+                        max: 10,
+                        divisions: 20,
+                        label: _adaptiveThresholdC.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _adaptiveThresholdC = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '用于自适应阈值的常数，减去块的平均值。正值会使阈值降低，负值则相反。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 轮廓面积阈值设置
+                      Text(
+                        '轮廓面积阈值: ${_contourAreaThreshold.toInt()}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _contourAreaThreshold,
+                        min: 1000,
+                        max: 50000,
+                        divisions: 49,
+                        label: _contourAreaThreshold.toInt().toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _contourAreaThreshold = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '筛选轮廓时的最小面积。较高的值会忽略较小的轮廓。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 逼近多边形精度乘数设置
+                      Text(
+                        '逼近多边形精度乘数: ${_epsilonMultiplier.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _epsilonMultiplier,
+                        min: 0.01,
+                        max: 0.1,
+                        divisions: 9,
+                        label: _epsilonMultiplier.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _epsilonMultiplier = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '多边形逼近的精度，值越大逼近越粗略。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 长宽比最小值设置
+                      Text(
+                        '长宽比最小值: ${_aspectRatioMin.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _aspectRatioMin,
+                        min: 0.5,
+                        max: 1.5,
+                        divisions: 20,
+                        label: _aspectRatioMin.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _aspectRatioMin = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '筛选轮廓时的最小长宽比。用于确保轮廓接近正方形。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 长宽比最大值设置
+                      Text(
+                        '长宽比最大值: ${_aspectRatioMax.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _aspectRatioMax,
+                        min: 0.5,
+                        max: 1.5,
+                        divisions: 20,
+                        label: _aspectRatioMax.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _aspectRatioMax = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '筛选轮廓时的最大长宽比。用于确保轮廓接近正方形。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 霍夫线变换阈值设置
+                      Text(
+                        '霍夫线变换阈值: $_houghThreshold',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _houghThreshold.toDouble(),
+                        min: 50,
+                        max: 200,
+                        divisions: 150,
+                        label: _houghThreshold.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _houghThreshold = value.toInt();
+                          });
+                        },
+                      ),
+                      Text(
+                        '霍夫线变换中检测直线的最小投票数。较高的值会检测到更明显的直线。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 最小线长设置
+                      Text(
+                        '最小线长: $_minLineLength',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _minLineLength,
+                        min: 50,
+                        max: 300,
+                        divisions: 25,
+                        label: _minLineLength.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _minLineLength = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '霍夫线变换中检测直线的最小长度。较长的线段会被优先检测。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 线段间隙阈值设置
+                      Text(
+                        '线段间隙阈值: $_maxLineGap',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _maxLineGap,
+                        min: 5,
+                        max: 50,
+                        divisions: 45,
+                        label: _maxLineGap.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _maxLineGap = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '霍夫线变换中，允许的最大线段间隙。较大的值会将接近的线段合并。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 线角容差设置
+                      Text(
+                        '线角容差: ${_angleTolerance.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _angleTolerance,
+                        max: math.pi / 4, // 0 到 45度
+                        divisions: 45,
+                        label: _angleTolerance.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _angleTolerance = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '筛选直线时的角度容差（弧度）。用于区分水平和垂直线。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 线距离阈值设置
+                      Text(
+                        '线距离阈值: $_distanceThreshold',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _distanceThreshold.toDouble(),
+                        min: 5,
+                        max: 50,
+                        divisions: 45,
+                        label: _distanceThreshold.toString(),
+                        onChanged: (double value) {
+                          setState(() {
+                            _distanceThreshold = value.toInt();
+                          });
+                        },
+                      ),
+                      Text(
+                        '筛选直线时的距离阈值。用于移除接近的重复线段。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 白色阈值比率设置
+                      Text(
+                        '白色阈值比率: ${_whiteThresholdRatio.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _whiteThresholdRatio,
+                        divisions: 100,
+                        label: _whiteThresholdRatio.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _whiteThresholdRatio = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '检测白色棋子时的像素比例阈值。较高的值需要更多的白色像素以识别为白棋。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // 黑色阈值比率设置
+                      Text(
+                        '黑色阈值比率: ${_blackThresholdRatio.toStringAsFixed(2)}',
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Slider(
+                        value: _blackThresholdRatio,
+                        divisions: 100,
+                        label: _blackThresholdRatio.toStringAsFixed(2),
+                        onChanged: (double value) {
+                          setState(() {
+                            _blackThresholdRatio = value;
+                          });
+                        },
+                      ),
+                      Text(
+                        '检测黑色棋子时的像素比例阈值。较高的值需要更多的黑色像素以识别为黑棋。',
+                        style: TextStyle(color: Colors.grey[700]),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
