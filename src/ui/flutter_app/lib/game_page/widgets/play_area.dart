@@ -18,9 +18,9 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
+import '../../board_recognition/widgets/recognition_page.dart';
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
-import '../../image_to_fen/image_to_fen_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
@@ -129,8 +129,8 @@ class PlayAreaState extends State<PlayArea> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute<ImageToFenApp>(
-              builder: (BuildContext context) => const ImageToFenApp(),
+            MaterialPageRoute<RecognitionPage>(
+              builder: (BuildContext context) => const RecognitionPage(),
             ),
           );
         },

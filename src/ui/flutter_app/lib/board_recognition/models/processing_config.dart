@@ -3,8 +3,8 @@
 import 'dart:math' as math;
 
 /// Main configuration class, containing all settings related to image processing.
-class ImageProcessingConfig {
-  ImageProcessingConfig._(); // Private constructor to prevent instantiation
+class ProcessingConfig {
+  ProcessingConfig._(); // Private constructor to prevent instantiation
 
   // Static instances of various configurations
   static GammaConfig gammaConfig = GammaConfig(gamma: 1.2);
@@ -157,7 +157,7 @@ class UIConfig {
   UIConfig._(); // Private constructor to prevent instantiation
 
   // App title
-  final String appBarTitle = "Nine Men's Morris Recognition";
+  final String appBarTitle = "Mill Board Recognition";
 
   // Button text
   final String selectAndProcessImageButton = "Select and Process Image";

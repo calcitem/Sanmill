@@ -8,12 +8,12 @@ import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
-import '../../shared/services/logger.dart';
-import '../shared/services/environment_config.dart';
-import 'board_detection.dart';
-import 'fen_generator.dart';
-import 'image_processing_config.dart';
-import 'piece_detection.dart';
+import '../../../shared/services/logger.dart';
+import '../../shared/services/environment_config.dart';
+import '../models/processing_config.dart';
+import '../services/board_detector.dart';
+import '../services/fen_builder.dart';
+import '../services/piece_detector.dart';
 
 class PointWithAngle {
   PointWithAngle(this.point, this.angle);
@@ -21,14 +21,14 @@ class PointWithAngle {
   final double angle;
 }
 
-class ImageToFenApp extends StatefulWidget {
-  const ImageToFenApp({super.key});
+class RecognitionPage extends StatefulWidget {
+  const RecognitionPage({super.key});
 
   @override
-  ImageToFenAppState createState() => ImageToFenAppState();
+  RecognitionPageState createState() => RecognitionPageState();
 }
 
-class ImageToFenAppState extends State<ImageToFenApp> {
+class RecognitionPageState extends State<RecognitionPage> {
   Uint8List? _debugImage;
   Uint8List? _processedImage;
   Uint8List? grayImage;
@@ -102,7 +102,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     logger.i('Number of grayscale image pixels: ${grayPixels.length}');
 
     // Use adjustable gamma value
-    final double inverseGamma = 1.0 / ImageProcessingConfig.gammaConfig.gamma;
+    final double inverseGamma = 1.0 / ProcessingConfig.gammaConfig.gamma;
     logger.i('Using inverse gamma value: $inverseGamma');
 
     // Generate LUT for faster gamma transformation
@@ -143,7 +143,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     // Apply Gaussian blur
     logger.i('Applying Gaussian blur');
     final cv.Mat blurred = cv.gaussianBlur(
-        enhanced, ImageProcessingConfig.parameters.gaussianKernelSize, 0);
+        enhanced, ProcessingConfig.parameters.gaussianKernelSize, 0);
     logger.i(
         'Gaussian blur applied, Blurred Mat dimensions: ${blurred.rows}x${blurred.cols}');
 
@@ -159,8 +159,8 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       255,
       cv.ADAPTIVE_THRESH_GAUSSIAN_C,
       cv.THRESH_BINARY_INV,
-      ImageProcessingConfig.adaptiveThresholdConfig.blockSize,
-      ImageProcessingConfig.adaptiveThresholdConfig.c,
+      ProcessingConfig.adaptiveThresholdConfig.blockSize,
+      ProcessingConfig.adaptiveThresholdConfig.c,
     );
     logger.i(
         'Adaptive thresholding completed, Thresh Mat dimensions: ${thresh.rows}x${thresh.cols}');
@@ -168,7 +168,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     // Apply morphological closing to connect broken edges
     logger.i('Applying morphological closing to connect broken edges');
     final cv.Mat kernel = cv.getStructuringElement(
-        cv.MORPH_RECT, ImageProcessingConfig.parameters.morphologyKernelSize);
+        cv.MORPH_RECT, ProcessingConfig.parameters.morphologyKernelSize);
     final cv.Mat closed = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel);
     logger.i(
         'Morphological closing completed, Closed Mat dimensions: ${closed.rows}x${closed.cols}');
@@ -231,9 +231,9 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       logger.i('Contour[$idx] area: $area');
 
       // Filter based on area
-      if (area < ImageProcessingConfig.contourConfig.areaThreshold) {
+      if (area < ProcessingConfig.contourConfig.areaThreshold) {
         logger.i(
-            'Contour[$idx] area below threshold ${ImageProcessingConfig.contourConfig.areaThreshold}, skipping');
+            'Contour[$idx] area below threshold ${ProcessingConfig.contourConfig.areaThreshold}, skipping');
         continue;
       }
 
@@ -242,7 +242,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
       final cv.VecPoint approx = cv.approxPolyDP(
         contour,
-        ImageProcessingConfig.contourConfig.epsilonMultiplier * peri,
+        ProcessingConfig.contourConfig.epsilonMultiplier * peri,
         true,
       ); // Use adjustable epsilon
       logger.i(
@@ -273,10 +273,10 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         final double aspectRatio = rect.width / rect.height;
         logger.i('Contour[$idx] aspect ratio: $aspectRatio');
 
-        if (aspectRatio > ImageProcessingConfig.contourConfig.aspectRatioMin &&
-            aspectRatio < ImageProcessingConfig.contourConfig.aspectRatioMax) {
+        if (aspectRatio > ProcessingConfig.contourConfig.aspectRatioMin &&
+            aspectRatio < ProcessingConfig.contourConfig.aspectRatioMax) {
           logger.i(
-              'Contour[$idx] aspect ratio within acceptable range (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
+              'Contour[$idx] aspect ratio within acceptable range (${ProcessingConfig.contourConfig.aspectRatioMin} - ${ProcessingConfig.contourConfig.aspectRatioMax})');
           // Use adjustable aspect ratio
           if (area > maxArea) {
             logger.i(
@@ -289,7 +289,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           }
         } else {
           logger.i(
-              'Contour[$idx] aspect ratio outside acceptable range (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
+              'Contour[$idx] aspect ratio outside acceptable range (${ProcessingConfig.contourConfig.aspectRatioMin} - ${ProcessingConfig.contourConfig.aspectRatioMax})');
         }
       } else {
         logger.i(
@@ -318,11 +318,11 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         boardContours,
         -1,
         cv.Scalar(
-          ImageProcessingConfig.parameters.drawContoursColor.$1.toDouble(),
-          ImageProcessingConfig.parameters.drawContoursColor.$2.toDouble(),
-          ImageProcessingConfig.parameters.drawContoursColor.$3.toDouble(),
+          ProcessingConfig.parameters.drawContoursColor.$1.toDouble(),
+          ProcessingConfig.parameters.drawContoursColor.$2.toDouble(),
+          ProcessingConfig.parameters.drawContoursColor.$3.toDouble(),
         ), // Using configured color
-        thickness: ImageProcessingConfig.parameters.drawContoursThickness,
+        thickness: ProcessingConfig.parameters.drawContoursThickness,
       );
       logger.i('Contour drawing completed');
 
@@ -432,10 +432,10 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       warped.dispose();
       warpedWithLines.dispose();
     } else {
-      logger.i("Nine Men's Morris Board not detected");
+      logger.i("Mill Board not detected");
       setState(() {
         _debugImage = cv.imencode('.png', matWithContours).$2;
-        _fenString = "Nine Men's Morris board not detected";
+        _fenString = "Mill board not detected";
       });
     }
 
@@ -457,7 +457,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
   @override
   Widget build(BuildContext context) {
-    final UIConfig uiConfig = ImageProcessingConfig.uiConfig;
+    final UIConfig uiConfig = ProcessingConfig.uiConfig;
 
     return MaterialApp(
       home: Scaffold(
@@ -528,7 +528,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: ImageProcessingConfig.uiConfig.sliders
+                    children: ProcessingConfig.uiConfig.sliders
                         .map((SliderConfig sliderConfig) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16.0),
@@ -537,23 +537,23 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                           children: <Widget>[
                             // Slider title
                             Text(
-                              '${sliderConfig.labelPrefix}${sliderConfig.labelFormatter(ImageProcessingConfig.getSliderValue(sliderConfig.configKey))}',
+                              '${sliderConfig.labelPrefix}${sliderConfig.labelFormatter(ProcessingConfig.getSliderValue(sliderConfig.configKey))}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
                             // Slider itself
                             Slider(
-                              value: ImageProcessingConfig.getSliderValue(
+                              value: ProcessingConfig.getSliderValue(
                                   sliderConfig.configKey),
                               min: sliderConfig.min,
                               max: sliderConfig.max,
                               divisions: sliderConfig.divisions,
                               label: sliderConfig.labelFormatter(
-                                  ImageProcessingConfig.getSliderValue(
+                                  ProcessingConfig.getSliderValue(
                                       sliderConfig.configKey)),
                               onChanged: (double value) {
                                 setState(() {
-                                  ImageProcessingConfig.updateConfig(
+                                  ProcessingConfig.updateConfig(
                                       sliderConfig.configKey, value);
                                 });
                               },

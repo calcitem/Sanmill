@@ -2,8 +2,8 @@
 
 import 'dart:math' as math;
 import 'package:opencv_dart/opencv_dart.dart' as cv;
-import 'image_processing_config.dart';
-import 'image_to_fen_page.dart';
+import '../models/processing_config.dart';
+import '../widgets/recognition_page.dart';
 
 class Line {
   Line(this.startPoint, this.endPoint);
@@ -29,21 +29,21 @@ List<Line> filterLines(cv.Mat lines) {
         .abs();
 
     if ((angle - 0).abs() <
-            ImageProcessingConfig.houghTransformConfig.angleTolerance ||
+            ProcessingConfig.houghTransformConfig.angleTolerance ||
         (angle - math.pi).abs() <
-            ImageProcessingConfig.houghTransformConfig.angleTolerance) {
+            ProcessingConfig.houghTransformConfig.angleTolerance) {
       horizontalLines.add(line);
     } else if ((angle - math.pi / 2).abs() <
-        ImageProcessingConfig.houghTransformConfig.angleTolerance) {
+        ProcessingConfig.houghTransformConfig.angleTolerance) {
       verticalLines.add(line);
     }
   }
 
   return <Line>[
     ...removeDuplicateLines(horizontalLines,
-        ImageProcessingConfig.houghTransformConfig.distanceThreshold),
-    ...removeDuplicateLines(verticalLines,
-        ImageProcessingConfig.houghTransformConfig.distanceThreshold),
+        ProcessingConfig.houghTransformConfig.distanceThreshold),
+    ...removeDuplicateLines(
+        verticalLines, ProcessingConfig.houghTransformConfig.distanceThreshold),
   ];
 }
 
@@ -176,11 +176,11 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
     edges,
     1,
     math.pi / 180,
-    ImageProcessingConfig
+    ProcessingConfig
         .houghTransformConfig.threshold, // Adjustable Hough threshold
-    minLineLength: ImageProcessingConfig
+    minLineLength: ProcessingConfig
         .houghTransformConfig.minLineLength, // Adjustable min line length
-    maxLineGap: ImageProcessingConfig
+    maxLineGap: ProcessingConfig
         .houghTransformConfig.maxLineGap, // Adjustable max line gap
   );
 
