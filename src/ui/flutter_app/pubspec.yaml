@@ -40,7 +40,7 @@ dependencies:
   logger: 2.4.0
   marquee: 2.3.0
   native_screenshot_widget: 0.0.8
-  opencv_dart: 1.2.5
+  opencv_dart: 1.3.0
   package_info_plus: 8.1.0
   path: 1.9.0
   path_provider: 2.1.4

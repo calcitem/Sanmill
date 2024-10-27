@@ -1,4 +1,4 @@
-import 'package:opencv_dart/core.dart';
+import 'package:opencv_dart/opencv.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
 import '../../shared/services/environment_config.dart';
