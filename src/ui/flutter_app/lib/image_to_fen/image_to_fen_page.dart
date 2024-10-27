@@ -36,6 +36,10 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
   String _fenString = '';
 
+  // 添加棋盘边缘和尺寸变量
+  cv.Rect? _boardEdge;
+  String _boardSize = '未检测';
+
   Future<void> _processImage() async {
     logger.i('开始 _processImage 函数');
 
@@ -301,7 +305,25 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         warpedImage = cv.imencode('.png', warpedWithLines).$2;
         logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
 
-        // Detect piece positions
+        // 进行线检测后的步骤：计算棋盘边缘和尺寸
+        logger.i('计算棋盘边缘和尺寸');
+        final List<Line> detectedLines = extractDetectedLines(warpedWithLines);
+        logger.i('检测到的总线条数量: ${detectedLines.length}');
+
+        // 计算棋盘边缘
+        _boardEdge = computeBoardEdges(detectedLines);
+        if (_boardEdge != null) {
+          logger.i(
+              '棋盘边缘计算完成: x=${_boardEdge!.x}, y=${_boardEdge!.y}, width=${_boardEdge!.width}, height=${_boardEdge!.height}');
+        } else {
+          logger.i('未能计算棋盘边缘');
+        }
+
+        // 确定棋盘尺寸
+        _boardSize = determineBoardSize(detectedLines);
+        logger.i('棋盘尺寸确定为: $_boardSize');
+
+        // 检测棋子位置
         logger.i('检测棋子位置');
         final List<String> positions = detectPieces(warped);
         logger.i('检测到的棋子位置数量: ${positions.length}');
@@ -386,6 +408,17 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                     _processedImage == null) ...<Widget>[
                   const SizedBox(height: 20),
                   Text(_fenString),
+                ],
+
+                // 显示棋盘边缘和尺寸
+                if (_boardEdge != null) ...<Widget>[
+                  const SizedBox(height: 20),
+                  Text(
+                      '棋盘边缘: ${_boardEdge!.x}, ${_boardEdge!.y}, ${_boardEdge!.width}, ${_boardEdge!.height}'),
+                ],
+                if (_boardSize.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 10),
+                  Text('棋盘尺寸: $_boardSize'),
                 ],
 
                 // 显示调试图像（可选）

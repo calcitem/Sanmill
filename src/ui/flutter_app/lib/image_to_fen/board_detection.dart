@@ -1,3 +1,5 @@
+// board_detection.dart
+
 import 'dart:math' as math;
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 import 'image_processing_config.dart';
@@ -198,4 +200,76 @@ cv.Mat applyEdgeDetectionAndHoughLines(cv.Mat warped) {
   lines.dispose();
 
   return warpedWithLines;
+}
+
+// 提取检测到的线条
+List<Line> extractDetectedLines(cv.Mat warpedWithLines) {
+  final List<Line> lines = <Line>[];
+
+  // 假设在 warpPerspective 后，applyEdgeDetectionAndHoughLines 已经绘制了线条
+  // 这里可以进一步处理以提取线条信息
+  // 例如，可以再次使用 HoughLinesP 或其他方法提取线条
+  // 这里简化为返回空列表
+  // 具体实现取决于实际需求
+
+  // 实现具体的线条提取逻辑
+
+  return lines;
+}
+
+// 计算棋盘边缘
+// 计算棋盘边缘
+cv.Rect? computeBoardEdges(List<Line> lines) {
+  if (lines.isEmpty) {
+    return null;
+  }
+
+  int minX = -0x80000000;
+  int minY = -0x80000000;
+  int maxX = 0x7FFFFFFF;
+  int maxY = 0x7FFFFFFF;
+
+  for (final Line line in lines) {
+    minX = math.min(minX, math.min(line.startPoint.x, line.endPoint.x));
+    minY = math.min(minY, math.min(line.startPoint.y, line.endPoint.y));
+    maxX = math.max(maxX, math.max(line.startPoint.x, line.endPoint.x));
+    maxY = math.max(maxY, math.max(line.startPoint.y, line.endPoint.y));
+  }
+
+  // 使用正确的构造函数并传递 double 类型参数
+  return cv.Rect(
+    minX,
+    minY,
+    maxX - minX,
+    maxY - minY,
+  );
+}
+
+// 确定棋盘尺寸
+String determineBoardSize(List<Line> lines) {
+  // 假设九子棋棋盘有固定数量的水平和垂直线
+  // 根据实际检测到的线条数量来判断
+
+  int horizontal = 0;
+  int vertical = 0;
+
+  for (final Line line in lines) {
+    final double angle = math.atan2(
+            (line.endPoint.y - line.startPoint.y).toDouble(),
+            (line.endPoint.x - line.startPoint.x).toDouble()) *
+        180 /
+        math.pi;
+    if (angle.abs() < 10 || (angle.abs() > 170)) {
+      horizontal++;
+    } else if ((angle.abs() - 90).abs() < 10) {
+      vertical++;
+    }
+  }
+
+  // 根据九子棋的标准，通常有8条水平线和8条垂直线
+  if (horizontal >= 8 && vertical >= 8) {
+    return '标准九子棋棋盘';
+  } else {
+    return '非标准棋盘，检测到 $horizontal 条水平线和 $vertical 条垂直线';
+  }
 }
