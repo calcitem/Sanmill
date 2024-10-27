@@ -1,3 +1,4 @@
+import 'package:opencv_dart/core.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
 import '../shared/services/environment_config.dart';
@@ -5,7 +6,6 @@ import '../shared/services/logger.dart';
 
 List<String> detectPieces(cv.Mat warped) {
   final List<String> positions = List<String>.filled(24, 'X');
-
   final List<cv.Point2f> gridPoints = getDynamicGridPoints(warped);
 
   if (EnvironmentConfig.devMode) {
@@ -20,86 +20,79 @@ List<String> detectPieces(cv.Mat warped) {
     }
   }
 
-  final List<int> whiteCounts = <int>[];
-  final List<int> blackCounts = <int>[];
-  final List<double> whiteMeans = <double>[];
-  final List<double> blackMeans = <double>[];
-
-  final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3));
+  final List<double> whiteCounts = <double>[];
+  final List<double> blackCounts = <double>[];
+  final List<double> meanVs = <double>[];
 
   for (int i = 0; i < gridPoints.length; i++) {
     final cv.Point2f point = gridPoints[i];
-
     final cv.Mat roi = cv.getRectSubPix(warped, (100, 100), point);
 
     if (roi.isEmpty) {
-      logger.w('警告: ROI 提取失败，点索引 $i 可能位于图像边缘。');
-      whiteCounts.add(0);
-      blackCounts.add(0);
-      whiteMeans.add(0.0);
-      blackMeans.add(0.0);
+      logger.w('Warning: ROI extraction failed at index $i.');
+      whiteCounts.add(0.0);
+      blackCounts.add(0.0);
+      meanVs.add(0.0);
       roi.dispose();
       continue;
     }
 
-    // 使用自适应阈值进行分割
-    final cv.Mat gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY);
+    // Convert ROI to HSV
+    final cv.Mat hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV);
 
-    // 应用 Otsu 阈值
-    final (double otsuThreshold, cv.Mat _) = cv.threshold(
-      gray,
-      0,
-      255,
-      cv.THRESH_BINARY + cv.THRESH_OTSU,
-    );
+    // Define thresholds for white and black in HSV space
+    final cv.Mat lowerWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
+    lowerWhite.setTo(cv.Scalar(0, 0, 200));
 
-    // 应用二进制阈值
-    final (double _, cv.Mat binary) = cv.threshold(
-      gray,
-      otsuThreshold,
-      255,
-      cv.THRESH_BINARY,
-    );
+    final cv.Mat upperWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
+    upperWhite.setTo(cv.Scalar(180, 50, 255));
 
-    final int whiteCount = cv.countNonZero(binary);
-    final int blackCount = roi.cols * roi.rows - whiteCount;
+    final cv.Mat whiteMask = cv.inRange(hsv, lowerWhite, upperWhite);
 
-    // 计算平均亮度
-    final (cv.Scalar meanWhite, cv.Scalar stddevWhite) =
-        cv.meanStdDev(roi, mask: binary);
-    final double whiteMean = meanWhite.val2; // 假设使用第三通道（R通道）
+    final cv.Mat lowerBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
+    lowerBlack.setTo(cv.Scalar());
 
-    final (cv.Scalar meanBlack, cv.Scalar stddevBlack) =
-        cv.meanStdDev(roi, mask: cv.bitwiseNOT(binary));
-    final double blackMean = meanBlack.val2;
+    final cv.Mat upperBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
+    upperBlack.setTo(cv.Scalar(180, 255, 50));
 
-    whiteCounts.add(whiteCount);
-    blackCounts.add(blackCount);
-    whiteMeans.add(whiteMean);
-    blackMeans.add(blackMean);
+    final cv.Mat blackMask = cv.inRange(hsv, lowerBlack, upperBlack);
 
-    // Dispose only cv.Mat objects
-    gray.dispose();
-    binary.dispose();
+    // Count non-zero pixels
+    final int whiteCount = cv.countNonZero(whiteMask);
+    final int blackCount = cv.countNonZero(blackMask);
+
+    // Split HSV channels and compute mean of V channel
+    final VecMat hsvChannels = cv.split(hsv);
+
+    final cv.Scalar meanV = hsvChannels[2].mean();
+
+    whiteCounts.add(whiteCount.toDouble());
+    blackCounts.add(blackCount.toDouble());
+    meanVs.add(meanV.val1); // Access the first element for the V channel mean
+
+    // Dispose resources
+
+    blackMask.dispose();
+    whiteMask.dispose();
+
     roi.dispose();
-    // No need to dispose cv.Scalar objects
+    hsv.dispose();
   }
 
-  // 组合特征向量
+  // Combine features
   final List<List<double>> features = <List<double>>[];
   for (int i = 0; i < whiteCounts.length; i++) {
     features.add(<double>[
-      whiteCounts[i].toDouble(),
-      blackCounts[i].toDouble(),
-      whiteMeans[i],
-      blackMeans[i],
+      whiteCounts[i],
+      blackCounts[i],
+      meanVs[i],
     ]);
   }
 
-  // 标准化特征数据
+  // Normalize features
   final List<List<double>> normalizedFeatures = normalizeFeatures(features);
 
-  // 将 normalizedFeatures 转换为 Mat
+  // Prepare data for K-Means
   final cv.Mat dataMat = cv.Mat.zeros(
     normalizedFeatures.length,
     normalizedFeatures[0].length,
@@ -111,62 +104,58 @@ List<String> detectPieces(cv.Mat warped) {
     }
   }
 
-  // 准备 bestLabels
+  // Prepare bestLabels
   final cv.Mat bestLabels = cv.Mat.zeros(
     dataMat.rows,
     1,
     const cv.MatType(cv.MatType.CV_32S),
   );
 
-  // 定义终止条件
+  // Define termination criteria
   const (int, int, double) criteria =
       (cv.TERM_EPS + cv.TERM_MAX_ITER, 100, 1e-4);
 
-  // 应用 K-Means 聚类
+  // Apply K-Means clustering
   final (double compactness, cv.Mat resultLabels, cv.Mat resultCenters) =
       cv.kmeans(
     dataMat,
-    3, // K
+    3,
     bestLabels,
     criteria,
-    10, // attempts
+    10,
     cv.KMEANS_PP_CENTERS,
   );
 
-  // 将 resultLabels 和 resultCenters 转换为 Dart 列表
+  // Convert resultLabels and resultCenters to Dart lists
   final List<int> labels = matToIntList(resultLabels);
   final List<List<double>> centersList = matToList(resultCenters);
 
-  // 计算每个聚类中心的特征值之和，以确定其对应的棋子状态
+  // Map clusters to piece types
   final List<double> centerSums = centersList
       .map((List<double> c) => c.reduce((double a, double b) => a + b))
       .toList();
   final List<int> sortedIndices = argsort(centerSums);
 
-  // 将聚类中心按照特征值之和从大到小排序，依次对应白棋、黑棋、空位
-  final List<String> pieceTypes = <String>['W', 'B', 'X'];
+  final List<String> pieceTypes = <String>['X', 'B', 'W'];
   final Map<int, String> clusterToPiece = <int, String>{};
   for (int i = 0; i < sortedIndices.length; i++) {
     clusterToPiece[sortedIndices[i]] = pieceTypes[i];
   }
 
-  // 根据聚类结果设置 positions
+  // Assign positions based on clustering
   for (int i = 0; i < labels.length; i++) {
     final int label = labels[i];
     positions[i] = clusterToPiece[label]!;
 
-    // 添加调试信息
+    // Add debug information
     if (EnvironmentConfig.devMode) {
-      positions[i] += ' ${whiteCounts[i]}/${blackCounts[i]}';
+      positions[i] += ' ${whiteCounts[i].toInt()}/${blackCounts[i].toInt()}';
     }
   }
 
-  // 释放资源
-  kernel.dispose();
-  dataMat.dispose();
+  // Dispose resources
   bestLabels.dispose();
-  resultLabels.dispose();
-  resultCenters.dispose();
+  dataMat.dispose();
 
   return positions;
 }
