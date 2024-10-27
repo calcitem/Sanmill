@@ -28,6 +28,7 @@ class ImageToFenApp extends StatefulWidget {
 }
 
 class ImageToFenAppState extends State<ImageToFenApp> {
+  Uint8List? _debugImage;
   Uint8List? _processedImage;
   Uint8List? grayImage;
   Uint8List? enhancedImage;
@@ -183,12 +184,35 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     logger.i('查找轮廓');
     final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
       closed,
-      cv.RETR_EXTERNAL,
-      cv.CHAIN_APPROX_SIMPLE,
+      cv.RETR_LIST,
+      cv.CHAIN_APPROX_NONE,
     );
     final cv.Contours contours = contoursResult.$1;
     final cv.Mat hierarchy = contoursResult.$2;
     logger.i('轮廓查找完成，检测到的轮廓数量: ${contours.length}');
+
+    // 创建一个副本以绘制符合条件的轮廓
+    final cv.Mat matWithContours = mat.clone();
+
+    ////////////////////////////////////////////////////////////////////////////
+    // 在图像上绘制轮廓，使用蓝色
+    if (false) {
+      logger.i('在图像上绘制轮廓');
+      cv.drawContours(
+        matWithContours,
+        contours,
+        -1,
+        cv.Scalar(255, 0, 0), // 使用蓝色(BGR)
+        thickness: 2,
+      );
+      logger.i('轮廓绘制完成');
+
+      // 编码带有轮廓的图像
+      logger.i('编码带有轮廓的图像');
+      _debugImage = cv.imencode('.png', matWithContours).$2;
+      logger.i('带有轮廓的图像编码完成，大小: ${_debugImage!.length} 字节');
+    }
+    ////////////////////////////////////////////////////////////////////////////
 
     // 筛选可能的棋盘轮廓
     logger.i('开始筛选可能的棋盘轮廓');
@@ -220,9 +244,22 @@ class ImageToFenAppState extends State<ImageToFenApp> {
       final double circularity = 4 * math.pi * area / (peri * peri);
       logger.i('轮廓[$idx] 的圆度: $circularity');
 
+      // 仅绘制符合条件的轮廓
+      if (approx.length == 4 && circularity > 0.4) {
+        cv.drawContours(
+          matWithContours,
+          cv.VecVecPoint.fromList(<List<cv.Point>>[approx.toList()]),
+          -1,
+          cv.Scalar(255, 0, 0), // 蓝色
+          thickness: 2,
+        );
+        logger.i('绘制轮廓[$idx]：面积=$area, 圆度=$circularity');
+        _debugImage = cv.imencode('.png', matWithContours).$2;
+      }
+
       // 找到四边形且圆度合理
-      if (approx.length == 4 && circularity > 0.6) {
-        logger.i('轮廓[$idx] 是四边形且圆度大于 0.6');
+      if (approx.length == 4 && circularity > 0.4) {
+        logger.i('轮廓[$idx] 是四边形且圆度大于 0.4');
         // 检查长宽比
         final cv.Rect rect = cv.boundingRect(approx);
         final double aspectRatio = rect.width / rect.height;
@@ -382,6 +419,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     } else {
       logger.i("未检测到 Nine Men's Morris Board");
       setState(() {
+        _debugImage = cv.imencode('.png', matWithContours).$2;
         _fenString = "未检测到 Nine Men's Morris 棋盘";
       });
     }
@@ -443,6 +481,11 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                 ),
 
                 // 显示调试图像（可选）
+                if (_debugImage != null) ...<Widget>[
+                  const SizedBox(height: 20),
+                  const Text('调试用图像:'),
+                  Image.memory(_debugImage!),
+                ],
                 if (_detectedLinesImage != null) ...<Widget>[
                   const SizedBox(height: 20),
                   const Text('检测到的线条:'),
