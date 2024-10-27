@@ -54,7 +54,7 @@ List<Line> removeDuplicateLines(List<Line> lines, int threshold) {
   for (final Line line in lines) {
     bool isDuplicate = false;
     for (final Line filteredLine in filteredLines) {
-      // 计算两个点之间的欧氏距离
+      // Calculate Euclidean distance between two points
       final double startPointDistance = math.sqrt(
         math.pow(line.startPoint.x - filteredLine.startPoint.x, 2) +
             math.pow(line.startPoint.y - filteredLine.startPoint.y, 2),
@@ -65,7 +65,7 @@ List<Line> removeDuplicateLines(List<Line> lines, int threshold) {
             math.pow(line.endPoint.y - filteredLine.endPoint.y, 2),
       );
 
-      // 判断是否在距离阈值内
+      // Check if within distance threshold
       if (startPointDistance < threshold && endPointDistance < threshold) {
         isDuplicate = true;
         break;
@@ -111,12 +111,12 @@ List<cv.Point> orderPoints(cv.VecPoint approx) {
 }
 
 cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
-  // 获取排序后的四个顶点
+  // Get the ordered four vertices
   final List<cv.Point> orderedPoints = orderPoints(contour);
 
   final cv.VecPoint srcPoints = cv.VecPoint.fromList(orderedPoints);
 
-  // 计算宽度和高度
+  // Calculate width and height
   final double widthA = math.sqrt(
       math.pow(orderedPoints[2].x - orderedPoints[3].x, 2) +
           math.pow(orderedPoints[2].y - orderedPoints[3].y, 2));
@@ -156,32 +156,32 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
   return warped;
 }
 
-// 边缘检测和霍夫线变换函数
+// Edge detection and Hough line transform function
 (cv.Mat warpedWithLines, List<Line> filteredLines)
     applyEdgeDetectionAndHoughLines(cv.Mat warped) {
-  // 转换为灰度图像
+  // Convert to grayscale image
   final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
 
-  // 应用高斯模糊
+  // Apply Gaussian blur
   final cv.Mat blurred = cv.gaussianBlur(warpedGray, (11, 11), 0);
 
-  // 应用边缘检测（Canny）
-  // **`threshold2`（大阈值）**先找到强边缘，再基于强边缘找到与其相连的**弱边缘**（通过`threshold1`确定）。
-  // 这种滞后阈值的方法能够避免在噪声或图像模糊区域出现虚假边缘。
-  // **如果想减少边缘噪声**：可以增大 `threshold2`，这样能确保只有显著的边缘被检测到；适当增大 `threshold1`，减弱弱边缘的链接效果。
-  // **如果边缘太稀疏或不完整**：减小 `threshold1` 的值，允许更多的弱边缘链接到强边缘；同时减小 `threshold2`，使更多的边缘通过强度检测。
+  // Apply edge detection (Canny)
+  // `threshold2` (high threshold) detects strong edges, then links to weak edges (based on `threshold1`).
+  // This hysteresis thresholding avoids false edges in noise or blurred areas.
+  // Increase `threshold2` to reduce noise; decrease for more edges.
   final cv.Mat edges = cv.canny(blurred, 1, 1); // 10, 80?
 
-  // 应用霍夫线变换，使用可调参数
+  // Apply Hough Line Transform with adjustable parameters
   final cv.Mat lines = cv.HoughLinesP(
     edges,
     1,
     math.pi / 180,
-    ImageProcessingConfig.houghTransformConfig.threshold, // 可调霍夫阈值
-    minLineLength:
-        ImageProcessingConfig.houghTransformConfig.minLineLength, // 可调最小线长
-    maxLineGap:
-        ImageProcessingConfig.houghTransformConfig.maxLineGap, // 可调最大线间隙
+    ImageProcessingConfig
+        .houghTransformConfig.threshold, // Adjustable Hough threshold
+    minLineLength: ImageProcessingConfig
+        .houghTransformConfig.minLineLength, // Adjustable min line length
+    maxLineGap: ImageProcessingConfig
+        .houghTransformConfig.maxLineGap, // Adjustable max line gap
   );
 
   final List<Line> filteredLines = filterLines(lines);
@@ -198,7 +198,7 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
     );
   }
 
-  // 释放内存
+  // Release memory
   warpedGray.dispose();
   blurred.dispose();
   edges.dispose();
@@ -207,7 +207,7 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
   return (warpedWithLines, filteredLines);
 }
 
-// 计算棋盘边缘
+// Compute board edges
 cv.Rect? computeBoardEdges(List<Line> lines) {
   if (lines.isEmpty) {
     return null;
@@ -225,7 +225,7 @@ cv.Rect? computeBoardEdges(List<Line> lines) {
     maxY = math.max(maxY, math.max(line.startPoint.y, line.endPoint.y));
   }
 
-  // 使用正确的构造函数并传递 double 类型参数
+  // Use appropriate constructor and pass double values
   return cv.Rect(
     minX,
     minY,
@@ -234,10 +234,10 @@ cv.Rect? computeBoardEdges(List<Line> lines) {
   );
 }
 
-// 确定棋盘尺寸
+// Determine board size
 String determineBoardSize(List<Line> lines) {
-  // 假设九子棋棋盘有固定数量的水平和垂直线
-  // 根据实际检测到的线条数量来判断
+  // Assume Mill board has fixed number of horizontal and vertical lines
+  // Detect the number of lines actually detected
 
   int horizontal = 0;
   int vertical = 0;
@@ -255,10 +255,10 @@ String determineBoardSize(List<Line> lines) {
     }
   }
 
-  // 根据九子棋的标准，通常有8条水平线和8条垂直线
+  // According to Mill standard, there are usually 8 horizontal and 8 vertical lines
   if (horizontal >= 8 && vertical >= 8) {
-    return '标准九子棋棋盘';
+    return 'Mill board';
   } else {
-    return '非标准棋盘，检测到 $horizontal 条水平线和 $vertical 条垂直线';
+    return 'Mill board not recognized, detected $horizontal horizontal lines and $vertical vertical lines';
   }
 }

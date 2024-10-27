@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
 import '../../shared/services/logger.dart';
+import '../shared/services/environment_config.dart';
 import 'board_detection.dart';
 import 'fen_generator.dart';
 import 'image_processing_config.dart';
@@ -38,270 +39,280 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
   String _fenString = '';
 
-  // 添加棋盘边缘和尺寸变量
+  // Add variables for board edge and size
   cv.Rect? _boardEdge;
-  String _boardSize = '未检测';
+  String _boardSize = 'Not Detected';
 
   Future<void> _processImage() async {
-    logger.i('开始 _processImage 函数');
+    logger.i('Starting _processImage function');
 
     final ImagePicker picker = ImagePicker();
-    logger.i('初始化 ImagePicker');
+    logger.i('Initialized ImagePicker');
 
     final XFile? imgFile = await picker.pickImage(source: ImageSource.gallery);
     if (imgFile == null) {
-      logger.i('未选择任何图像');
+      logger.i('No image selected');
       return;
     }
 
-    logger.i('选择的图像路径: ${imgFile.path}');
-    logger.i('图像大小: ${await imgFile.length()} 字节');
+    logger.i('Selected image path: ${imgFile.path}');
+    logger.i('Image size: ${await imgFile.length()} bytes');
 
-    // 读取图像数据并修正方向
-    logger.i('读取图像数据');
+    // Read image data and correct orientation
+    logger.i('Reading image data');
     final Uint8List imageData = await imgFile.readAsBytes();
-    logger.i('成功读取图像数据，数据长度: ${imageData.length} 字节');
+    logger.i(
+        'Successfully read image data, data length: ${imageData.length} bytes');
 
-    logger.i('解码图像');
+    logger.i('Decoding image');
     final img.Image? decodedImage = img.decodeImage(imageData);
     if (decodedImage == null) {
-      logger.i('图像解码失败');
+      logger.i('Failed to decode image');
       return;
     }
-    logger.i('图像解码成功，图像尺寸: ${decodedImage.width}x${decodedImage.height}');
+    logger.i(
+        'Image decoded successfully, image dimensions: ${decodedImage.width}x${decodedImage.height}');
 
-    logger.i('修正图像方向');
+    logger.i('Correcting image orientation');
     final img.Image orientedImage = img.bakeOrientation(decodedImage);
-    logger.i('方向修正后的图像尺寸: ${orientedImage.width}x${orientedImage.height}');
+    logger.i(
+        'Dimensions after orientation correction: ${orientedImage.width}x${orientedImage.height}');
 
-    logger.i('编码修正后的图像为 JPEG');
+    logger.i('Encoding corrected image to JPEG');
     final Uint8List correctedImageData =
         Uint8List.fromList(img.encodeJpg(orientedImage));
-    logger.i('JPEG 编码完成，数据长度: ${correctedImageData.length} 字节');
+    logger.i(
+        'JPEG encoding completed, data length: ${correctedImageData.length} bytes');
 
-    // 将修正后的图像数据解码为 OpenCV Mat
-    logger.i('将修正后的图像数据解码为 OpenCV Mat');
+    // Decode corrected image data to OpenCV Mat
+    logger.i('Decoding corrected image data to OpenCV Mat');
     final cv.Mat mat = cv.imdecode(correctedImageData, cv.IMREAD_COLOR);
-    logger
-        .i('OpenCV Mat 解码成功，Mat 尺寸: ${mat.rows}x${mat.cols}, 类型: ${mat.type}');
+    logger.i(
+        'OpenCV Mat decoding successful, Mat dimensions: ${mat.rows}x${mat.cols}, type: ${mat.type}');
 
-    // 转换为灰度图像
-    logger.i('转换为灰度图像');
+    // Convert to grayscale
+    logger.i('Converting to grayscale');
     final cv.Mat gray = cv.cvtColor(mat, cv.COLOR_BGR2GRAY);
-    logger.i('灰度转换完成，Mat 尺寸: ${gray.rows}x${gray.cols}, 类型: ${gray.type}');
+    logger.i(
+        'Grayscale conversion completed, Mat dimensions: ${gray.rows}x${gray.cols}, type: ${gray.type}');
 
-    // 不支持 CLAHE，故使用伽马校正
-    logger.i('开始伽马校正');
+    // Use gamma correction instead of CLAHE
+    logger.i('Starting gamma correction');
     final List<num> grayPixels = gray.data;
-    logger.i('灰度图像像素数量: ${grayPixels.length}');
+    logger.i('Number of grayscale image pixels: ${grayPixels.length}');
 
-    // 使用可调的伽马值
+    // Use adjustable gamma value
     final double inverseGamma = 1.0 / ImageProcessingConfig.gammaConfig.gamma;
-    logger.i('使用的逆伽马值: $inverseGamma');
+    logger.i('Using inverse gamma value: $inverseGamma');
 
-    // 生成查找表来加快伽马变换的速度
-    logger.i('生成伽马查找表 (LUT)');
+    // Generate LUT for faster gamma transformation
+    logger.i('Generating gamma LUT (Look-Up Table)');
     final List<num> gammaLUT = List<num>.generate(256, (int i) {
       final num value = (math.pow(i / 255.0, inverseGamma) * 255).toInt();
       if (i % 50 == 0) {
-        // 每50个值记录一次
+        // Log every 50th value
         logger.i('LUT[$i] = $value');
       }
       return value;
     });
-    logger.i('伽马查找表生成完成');
+    logger.i('Gamma LUT generation complete');
 
-    // 应用伽马校正
-    logger.i('应用伽马校正到灰度图像');
+    // Apply gamma correction
+    logger.i('Applying gamma correction to grayscale image');
     for (int i = 0; i < grayPixels.length; i++) {
       final int original = grayPixels[i].toInt();
       grayPixels[i] = gammaLUT[original];
       if (i < 10) {
-        // 仅记录前10个像素值以避免日志过多
-        logger.i('像素[$i]: 原始=$original, 校正后=${gammaLUT[original]}');
+        // Log first 10 pixel values to avoid excessive logging
+        logger.i(
+            'Pixel[$i]: Original=$original, Corrected=${gammaLUT[original]}');
       }
       if (i == 10) {
-        logger.i('省略中间像素日志...');
+        logger.i('Omitting further pixel logs...');
       }
     }
-    logger.i('伽马校正应用完成');
+    logger.i('Gamma correction applied');
 
-    // 将数组转换回 `cv.Mat` 格式
-    logger.i('将伽马校正后的像素数组转换回 cv.Mat');
+    // Convert array back to cv.Mat format
+    logger.i('Converting gamma-corrected pixel array back to cv.Mat');
     final cv.Mat enhanced =
         cv.Mat.fromList(gray.rows, gray.cols, gray.type, grayPixels);
     logger.i(
-        '增强后的 Mat 尺寸: ${enhanced.rows}x${enhanced.cols}, 类型: ${enhanced.type}');
+        'Enhanced Mat dimensions: ${enhanced.rows}x${enhanced.cols}, type: ${enhanced.type}');
 
-    // 使用高斯模糊
-    logger.i('应用高斯模糊');
+    // Apply Gaussian blur
+    logger.i('Applying Gaussian blur');
     final cv.Mat blurred = cv.gaussianBlur(
-      enhanced,
-      ImageProcessingConfig.parameters.gaussianKernelSize,
-      0,
-    );
-    logger.i('高斯模糊完成，Blurred Mat 尺寸: ${blurred.rows}x${blurred.cols}');
+        enhanced, ImageProcessingConfig.parameters.gaussianKernelSize, 0);
+    logger.i(
+        'Gaussian blur applied, Blurred Mat dimensions: ${blurred.rows}x${blurred.cols}');
 
-    // 自适应阈值
-    logger.i('应用自适应阈值');
+    // Apply Canny edge detection
+    final cv.Mat edges = cv.canny(blurred, 50, 150);
+    logger.i(
+        'Canny edge detection completed, Edges Mat dimensions: ${edges.rows}x${edges.cols}');
+
+    // Adaptive thresholding
+    logger.i('Applying adaptive thresholding');
     final cv.Mat thresh = cv.adaptiveThreshold(
-      blurred,
+      edges,
       255,
       cv.ADAPTIVE_THRESH_GAUSSIAN_C,
       cv.THRESH_BINARY_INV,
       ImageProcessingConfig.adaptiveThresholdConfig.blockSize,
       ImageProcessingConfig.adaptiveThresholdConfig.c,
     );
-    logger.i('自适应阈值完成，Thresh Mat 尺寸: ${thresh.rows}x${thresh.cols}');
+    logger.i(
+        'Adaptive thresholding completed, Thresh Mat dimensions: ${thresh.rows}x${thresh.cols}');
 
-    // 应用闭运算以连接断裂的边缘
-    logger.i('应用闭运算以连接断裂的边缘');
+    // Apply morphological closing to connect broken edges
+    logger.i('Applying morphological closing to connect broken edges');
     final cv.Mat kernel = cv.getStructuringElement(
-      cv.MORPH_RECT,
-      ImageProcessingConfig.parameters.morphologyKernelSize,
-    );
-    final cv.Mat closed = cv.morphologyEx(
-      thresh,
-      cv.MORPH_CLOSE,
-      kernel,
-    );
-    logger.i('闭运算完成，Closed Mat 尺寸: ${closed.rows}x${closed.cols}');
+        cv.MORPH_RECT, ImageProcessingConfig.parameters.morphologyKernelSize);
+    final cv.Mat closed = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel);
+    logger.i(
+        'Morphological closing completed, Closed Mat dimensions: ${closed.rows}x${closed.cols}');
 
-    // 调试：显示灰度图像、增强图像和阈值图像
-    logger.i('编码灰度图像');
+    // Debug: Display grayscale image, enhanced image, and thresholded image
+    logger.i('Encoding grayscale image');
     grayImage = cv.imencode('.png', gray).$2;
-    logger.i('灰度图像编码完成，大小: ${grayImage!.length} 字节');
+    logger.i(
+        'Grayscale image encoding completed, size: ${grayImage!.length} bytes');
 
-    logger.i('编码增强图像');
+    logger.i('Encoding enhanced image');
     enhancedImage = cv.imencode('.png', enhanced).$2;
-    logger.i('增强图像编码完成，大小: ${enhancedImage!.length} 字节');
+    logger.i(
+        'Enhanced image encoding completed, size: ${enhancedImage!.length} bytes');
 
-    logger.i('编码阈值图像');
+    logger.i('Encoding thresholded image');
     threshImage = cv.imencode('.png', closed).$2;
-    logger.i('阈值图像编码完成，大小: ${threshImage!.length} 字节');
+    logger.i(
+        'Thresholded image encoding completed, size: ${threshImage!.length} bytes');
 
-    // 查找轮廓
-    logger.i('查找轮廓');
-    final (cv.Contours, cv.Mat) contoursResult = cv.findContours(
-      closed,
-      cv.RETR_LIST,
-      cv.CHAIN_APPROX_NONE,
-    );
+    // Find contours
+    logger.i('Finding contours');
+    final (cv.Contours, cv.Mat) contoursResult =
+        cv.findContours(closed, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
     final cv.Contours contours = contoursResult.$1;
     final cv.Mat hierarchy = contoursResult.$2;
-    logger.i('轮廓查找完成，检测到的轮廓数量: ${contours.length}');
+    logger.i('Contours found, number of detected contours: ${contours.length}');
 
-    // 创建一个副本以绘制符合条件的轮廓
+    // Create a copy to draw contours that meet criteria
     final cv.Mat matWithContours = mat.clone();
 
     ////////////////////////////////////////////////////////////////////////////
-    // 在图像上绘制轮廓，使用蓝色
-    if (false) {
-      logger.i('在图像上绘制轮廓');
+    // Draw contours on the image, using blue
+    if (EnvironmentConfig.devMode) {
+      logger.i('Drawing contours on the image');
       cv.drawContours(
         matWithContours,
         contours,
         -1,
-        cv.Scalar(255, 0, 0), // 使用蓝色(BGR)
+        cv.Scalar(255), // Blue in BGR
         thickness: 2,
       );
-      logger.i('轮廓绘制完成');
+      logger.i('Contour drawing completed');
 
-      // 编码带有轮廓的图像
-      logger.i('编码带有轮廓的图像');
+      // Encode image with contours
+      logger.i('Encoding image with contours');
       _debugImage = cv.imencode('.png', matWithContours).$2;
-      logger.i('带有轮廓的图像编码完成，大小: ${_debugImage!.length} 字节');
+      logger
+          .i('Image with contours encoded, size: ${_debugImage!.length} bytes');
     }
     ////////////////////////////////////////////////////////////////////////////
 
-    // 筛选可能的棋盘轮廓
-    logger.i('开始筛选可能的棋盘轮廓');
+    // Filter possible board contours
+    logger.i('Filtering possible board contours');
     cv.VecPoint? boardContour;
     double maxArea = 0;
     for (int idx = 0; idx < contours.length; idx++) {
       final cv.VecPoint contour = contours[idx];
       final double area = cv.contourArea(contour);
-      logger.i('轮廓[$idx] 的面积: $area');
+      logger.i('Contour[$idx] area: $area');
 
-      // 根据面积过滤
+      // Filter based on area
       if (area < ImageProcessingConfig.contourConfig.areaThreshold) {
         logger.i(
-            '轮廓[$idx] 面积小于阈值 ${ImageProcessingConfig.contourConfig.areaThreshold}，跳过');
+            'Contour[$idx] area below threshold ${ImageProcessingConfig.contourConfig.areaThreshold}, skipping');
         continue;
       }
 
       final double peri = cv.arcLength(contour, true);
-      logger.i('轮廓[$idx] 的周长: $peri');
+      logger.i('Contour[$idx] perimeter: $peri');
 
       final cv.VecPoint approx = cv.approxPolyDP(
         contour,
         ImageProcessingConfig.contourConfig.epsilonMultiplier * peri,
         true,
-      ); // 使用可调epsilon
-      logger.i('轮廓[$idx] 的近似多边形顶点数量: ${approx.length}');
+      ); // Use adjustable epsilon
+      logger.i(
+          'Contour[$idx] approximated polygon vertices count: ${approx.length}');
 
-      // 计算轮廓的圆度
+      // Calculate contour circularity
       final double circularity = 4 * math.pi * area / (peri * peri);
-      logger.i('轮廓[$idx] 的圆度: $circularity');
+      logger.i('Contour[$idx] circularity: $circularity');
 
-      // 仅绘制符合条件的轮廓
+      // Draw contours that meet criteria
       if (approx.length == 4 && circularity > 0.4) {
         cv.drawContours(
           matWithContours,
           cv.VecVecPoint.fromList(<List<cv.Point>>[approx.toList()]),
           -1,
-          cv.Scalar(255, 0, 0), // 蓝色
+          cv.Scalar(255), // Blue
           thickness: 2,
         );
-        logger.i('绘制轮廓[$idx]：面积=$area, 圆度=$circularity');
+        logger.i('Drawing contour[$idx]: area=$area, circularity=$circularity');
         _debugImage = cv.imencode('.png', matWithContours).$2;
       }
 
-      // 找到四边形且圆度合理
+      // If quadrilateral and circularity is reasonable
       if (approx.length == 4 && circularity > 0.4) {
-        logger.i('轮廓[$idx] 是四边形且圆度大于 0.4');
-        // 检查长宽比
+        logger.i('Contour[$idx] is quadrilateral and circularity > 0.4');
+        // Check aspect ratio
         final cv.Rect rect = cv.boundingRect(approx);
         final double aspectRatio = rect.width / rect.height;
-        logger.i('轮廓[$idx] 的长宽比: $aspectRatio');
+        logger.i('Contour[$idx] aspect ratio: $aspectRatio');
 
         if (aspectRatio > ImageProcessingConfig.contourConfig.aspectRatioMin &&
             aspectRatio < ImageProcessingConfig.contourConfig.aspectRatioMax) {
           logger.i(
-              '轮廓[$idx] 的长宽比在可接受范围内 (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
-          // 使用可调长宽比
+              'Contour[$idx] aspect ratio within acceptable range (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
+          // Use adjustable aspect ratio
           if (area > maxArea) {
-            logger.i('轮廓[$idx] 的面积大于当前最大面积 ($maxArea)，更新 boardContour');
+            logger.i(
+                'Contour[$idx] area larger than current max area ($maxArea), updating boardContour');
             maxArea = area;
             boardContour = approx;
           } else {
-            logger.i('轮廓[$idx] 的面积不大于当前最大面积 ($maxArea)，跳过');
+            logger.i(
+                'Contour[$idx] area not larger than current max area ($maxArea), skipping');
           }
         } else {
           logger.i(
-              '轮廓[$idx] 的长宽比不在可接受范围内 (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
+              'Contour[$idx] aspect ratio outside acceptable range (${ImageProcessingConfig.contourConfig.aspectRatioMin} - ${ImageProcessingConfig.contourConfig.aspectRatioMax})');
         }
       } else {
-        logger.i('轮廓[$idx] 不是四边形或圆度不够，跳过');
+        logger.i(
+            'Contour[$idx] not quadrilateral or circularity insufficient, skipping');
       }
     }
 
     if (boardContour != null) {
-      logger.i('找到棋盘轮廓，面积: $maxArea');
-      // 在原图像上绘制棋盘轮廓
+      logger.i('Board contour found, area: $maxArea');
+      // Draw board contour on the original image
       final cv.Mat matWithContour = mat.clone();
-      logger.i('克隆原始 Mat 以绘制轮廓');
+      logger.i('Cloning original Mat to draw contour');
 
-      // 将 VecPoint 转换为 List<Point>
+      // Convert VecPoint to List<Point>
       final List<cv.Point> boardContourPoints = boardContour.toList();
-      logger.i('棋盘轮廓的点数量: ${boardContourPoints.length}');
+      logger.i('Board contour points count: ${boardContourPoints.length}');
 
-      // 将 List<List<Point>> 转换为 Contours (VecVecPoint)
+      // Convert List<List<Point>> to Contours (VecVecPoint)
       final cv.Contours boardContours =
           cv.VecVecPoint.fromList(<List<cv.Point>>[boardContourPoints]);
-      logger.i('转换棋盘轮廓为 cv.Contours');
+      logger.i('Converted board contour to cv.Contours');
 
-      logger.i('在图像上绘制棋盘轮廓');
+      logger.i('Drawing board contour on the image');
       cv.drawContours(
         matWithContour,
         boardContours,
@@ -310,44 +321,47 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           ImageProcessingConfig.parameters.drawContoursColor.$1.toDouble(),
           ImageProcessingConfig.parameters.drawContoursColor.$2.toDouble(),
           ImageProcessingConfig.parameters.drawContoursColor.$3.toDouble(),
-        ), // 使用配置中的颜色
+        ), // Using configured color
         thickness: ImageProcessingConfig.parameters.drawContoursThickness,
       );
-      logger.i('轮廓绘制完成');
+      logger.i('Contour drawing completed');
 
-      // 调试：显示带有轮廓的图像
-      logger.i('编码带有轮廓的图像');
+      // Debug: Display image with contour
+      logger.i('Encoding image with contour');
       grayImage = cv.imencode('.png', matWithContour).$2;
-      logger.i('带轮廓图像编码完成，大小: ${grayImage!.length} 字节');
+      logger.i(
+          'Image with contour encoding completed, size: ${grayImage!.length} bytes');
 
-      // 释放临时 Contours
-      logger.i('释放临时 Contours');
+      // Release temporary Contours
+      logger.i('Releasing temporary Contours');
       boardContours.dispose();
 
-      // 透视变换对齐棋盘
-      logger.i('应用透视变换以对齐棋盘');
+      // Apply perspective transform to align the board
+      logger.i('Applying perspective transform to align board');
       final cv.Mat warped = warpPerspective(mat, boardContour);
-      logger.i('透视变换完成，Warped Mat 尺寸: ${warped.rows}x${warped.cols}');
+      logger.i(
+          'Perspective transformation completed, Warped Mat dimensions: ${warped.rows}x${warped.cols}');
 
-      // 应用边缘检测和霍夫线变换
-      logger.i('应用边缘检测和霍夫线变换');
+      // Apply edge detection and Hough line transform
+      logger.i('Applying edge detection and Hough line transform');
       final (cv.Mat warpedWithLines, List<Line> detectedLines) =
           applyEdgeDetectionAndHoughLines(warped);
       logger.i(
-          '边缘检测和霍夫线变换完成，WarpedWithLines Mat 尺寸: ${warpedWithLines.rows}x${warpedWithLines.cols}');
+          'Edge detection and Hough line transform completed, WarpedWithLines Mat dimensions: ${warpedWithLines.rows}x${warpedWithLines.cols}');
 
-      logger.i('提取检测到的线条');
-      logger.i('检测到的总线条数量: ${detectedLines.length}');
+      logger.i('Extracting detected lines');
+      logger.i('Total number of detected lines: ${detectedLines.length}');
 
-      // 调试：显示透视变换后的图像
-      logger.i('编码透视变换后的图像');
+      // Debug: Display warped image after perspective transformation
+      logger.i('Encoding warped image after perspective transformation');
       warpedImage = cv.imencode('.png', warpedWithLines).$2;
-      logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
+      logger.i(
+          'Warped image encoding completed, size: ${warpedImage!.length} bytes');
 
       // Draw detected lines
       // Clone the warpedWithLines image to draw detected lines
       final cv.Mat linesImage = warpedWithLines.clone();
-      logger.i('克隆 warpedWithLines 以绘制检测到的线条');
+      logger.i('Cloning warpedWithLines to draw detected lines');
 
       // Draw each detected line on the linesImage
       for (final Line line in detectedLines) {
@@ -359,73 +373,74 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           thickness: 5,
         );
       }
-      logger.i('所有检测到的线条已绘制在 linesImage 上');
+      logger.i('All detected lines drawn on linesImage');
 
       // Encode the linesImage to PNG
-      logger.i('编码带有检测到线条的图像');
+      logger.i('Encoding image with detected lines');
       _detectedLinesImage = cv.imencode('.png', linesImage).$2;
-      logger.i('带有检测到线条的图像编码完成，大小: ${_detectedLinesImage!.length} 字节');
+      logger.i(
+          'Image with detected lines encoded, size: ${_detectedLinesImage!.length} bytes');
 
-      // Dispose the temporary linesImage
+      // Dispose of the temporary linesImage
       linesImage.dispose();
 
-      // 计算棋盘边缘
-      logger.i('计算棋盘边缘和尺寸');
+      // Calculate board edges
+      logger.i('Calculating board edges and size');
       final List<Line> filteredLines = detectedLines;
       _boardEdge = computeBoardEdges(filteredLines);
       if (_boardEdge != null) {
         logger.i(
-            '棋盘边缘计算完成: x=${_boardEdge!.x}, y=${_boardEdge!.y}, width=${_boardEdge!.width}, height=${_boardEdge!.height}');
+            'Board edge calculation complete: x=${_boardEdge!.x}, y=${_boardEdge!.y}, width=${_boardEdge!.width}, height=${_boardEdge!.height}');
       } else {
-        logger.i('未能计算棋盘边缘');
+        logger.i('Failed to calculate board edge');
       }
 
-      // 确定棋盘尺寸
+      // Determine board size
       _boardSize = determineBoardSize(filteredLines);
-      logger.i('棋盘尺寸确定为: $_boardSize');
+      logger.i('Board size determined: $_boardSize');
 
-      // 检测棋子位置
-      logger.i('检测棋子位置');
+      // Detect piece positions
+      logger.i('Detecting piece positions');
       final List<String> positions = detectPieces(warped);
-      logger.i('检测到的棋子位置数量: ${positions.length}');
+      logger.i('Number of detected piece positions: ${positions.length}');
       for (int i = 0; i < positions.length; i++) {
-        logger.i('棋子[$i] 位置: ${positions[i]}');
+        logger.i('Piece[$i] position: ${positions[i]}');
       }
 
-      // 在图像上绘制识别结果
-      logger.i('在图像上绘制识别结果');
+      // Draw detection results on the image
+      logger.i('Drawing detection results on the image');
       final cv.Mat warpedWithAnnotations = warped.clone();
       annotatePieces(warpedWithAnnotations, positions);
-      logger.i('绘制识别结果完成');
+      logger.i('Detection results drawn');
 
       // Generate FEN string
-      logger.i('生成 FEN 字符串');
+      logger.i('Generating FEN string');
       final String fen = generateFEN(positions);
-      logger.i('生成的 FEN 字符串: $fen');
+      logger.i('Generated FEN string: $fen');
 
       setState(() {
-        logger.i('更新 UI 状态');
+        logger.i('Updating UI state');
         _processedImage = cv.imencode('.png', warpedWithAnnotations).$2;
         _fenString = fen;
-        logger.i('UI 状态更新完成');
+        logger.i('UI state update complete');
       });
 
-      // 释放临时图像
-      logger.i('释放临时图像资源');
+      // Release temporary images
+      logger.i('Releasing temporary image resources');
       matWithContour.dispose();
       warpedWithAnnotations.dispose();
       warped.dispose();
       warpedWithLines.dispose();
     } else {
-      logger.i("未检测到 Nine Men's Morris Board");
+      logger.i("Nine Men's Morris Board not detected");
       setState(() {
         _debugImage = cv.imencode('.png', matWithContours).$2;
-        _fenString = "未检测到 Nine Men's Morris 棋盘";
+        _fenString = "Nine Men's Morris board not detected";
       });
     }
 
-    // 释放内存
-    logger.i('释放所有 OpenCV Mat 资源');
+    // Release memory
+    logger.i('Releasing all OpenCV Mat resources');
     mat.dispose();
     gray.dispose();
     enhanced.dispose();
@@ -434,10 +449,10 @@ class ImageToFenAppState extends State<ImageToFenApp> {
     closed.dispose();
     kernel.dispose();
     hierarchy.dispose();
-    logger.i('所有资源释放完成');
+    logger.i('All resources released');
     // No need to dispose contours if they are lists
 
-    logger.i('_processImage 函数结束');
+    logger.i('_processImage function completed');
   }
 
   @override
@@ -451,18 +466,18 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // 显示棋盘边缘和尺寸
+                // Display board edge and size
                 if (_boardEdge != null) ...<Widget>[
                   const SizedBox(height: 20),
                   Text(
-                      '棋盘边缘: ${_boardEdge!.x}, ${_boardEdge!.y}, ${_boardEdge!.width}, ${_boardEdge!.height}'),
+                      'Board Edge: ${_boardEdge!.x}, ${_boardEdge!.y}, ${_boardEdge!.width}, ${_boardEdge!.height}'),
                 ],
                 if (_boardSize.isNotEmpty) ...<Widget>[
                   const SizedBox(height: 10),
-                  Text('棋盘尺寸: $_boardSize'),
+                  Text('Board Size: $_boardSize'),
                 ],
 
-                // 显示处理后的图像和FEN字符串
+                // Display processed image and FEN string
                 if (_processedImage != null) ...<Widget>[
                   Image.memory(_processedImage!),
                   const SizedBox(height: 20),
@@ -474,21 +489,21 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   Text(_fenString),
                 ],
 
-                // 图像处理按钮
+                // Image processing button
                 ElevatedButton(
                   onPressed: _processImage,
                   child: Text(uiConfig.selectAndProcessImageButton),
                 ),
 
-                // 显示调试图像（可选）
+                // Display debug images (optional)
                 if (_debugImage != null) ...<Widget>[
                   const SizedBox(height: 20),
-                  const Text('调试用图像:'),
+                  const Text('Debug Image:'),
                   Image.memory(_debugImage!),
                 ],
                 if (_detectedLinesImage != null) ...<Widget>[
                   const SizedBox(height: 20),
-                  const Text('检测到的线条:'),
+                  const Text('Detected Lines:'),
                   Image.memory(_detectedLinesImage!),
                 ],
                 if (grayImage != null) ...<Widget>[
@@ -508,7 +523,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   Image.memory(warpedImage!),
                 ],
 
-                // 添加阈值设置区域
+                // Add slider configuration area
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -520,13 +535,13 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            // Slider标题
+                            // Slider title
                             Text(
                               '${sliderConfig.labelPrefix}${sliderConfig.labelFormatter(ImageProcessingConfig.getSliderValue(sliderConfig.configKey))}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            // Slider本体
+                            // Slider itself
                             Slider(
                               value: ImageProcessingConfig.getSliderValue(
                                   sliderConfig.configKey),
@@ -543,7 +558,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                                 });
                               },
                             ),
-                            // Slider描述
+                            // Slider description
                             Text(
                               sliderConfig.description,
                               style: TextStyle(color: Colors.grey[700]),

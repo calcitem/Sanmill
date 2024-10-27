@@ -206,40 +206,40 @@ void annotatePieces(cv.Mat image, List<String> positions) {
     final cv.Point2f point = gridPoints[i];
     final String label = positions[i];
 
-    // 设置文本位置，调整偏移量使其在蓝点正上方
+    // Set text position, adjust offset to place it right above the blue point
     final cv.Point textOrg = cv.Point(
-      (point.x - 10).toInt(), // 适当调整x偏移量
-      (point.y + 5).toInt(), // 适当调整y偏移量
+      (point.x - 10).toInt(), // Adjust x offset
+      (point.y + 5).toInt(), // Adjust y offset
     );
 
-    // 先用黑色绘制较粗的文字作为轮廓
+    // Draw thicker text outline in black as a border
     cv.putText(
       image,
       label,
       textOrg,
       cv.FONT_HERSHEY_SIMPLEX,
-      1.0, // 调整字体大小
-      cv.Scalar(), // 黑色 (B, G, R)
-      thickness: 3, // 较大的厚度
+      1.0, // Adjust font size
+      cv.Scalar(), // Black (B, G, R)
+      thickness: 3, // Thicker border
       lineType: cv.LINE_AA,
     );
 
-    // 再用黄色绘制较细的文字填充
+    // Draw thinner yellow text as fill
     cv.putText(
       image,
       label,
       textOrg,
       cv.FONT_HERSHEY_SIMPLEX,
-      1.0, // 调整字体大小
-      cv.Scalar(0, 255, 255), // 黄色 (B, G, R)
+      1.0, // Adjust font size
+      cv.Scalar(0, 255, 255), // Yellow (B, G, R)
       lineType: cv.LINE_AA,
     );
   }
 }
 
-// 标准化特征数据
+// Normalize feature data
 List<List<double>> normalizeFeatures(List<List<double>> features) {
-  // 计算每个特征的最小值和最大值
+  // Calculate min and max for each feature
   final int numFeatures = features[0].length;
   final List<double> minVals =
       List<double>.filled(numFeatures, double.infinity);
@@ -257,7 +257,7 @@ List<List<double>> normalizeFeatures(List<List<double>> features) {
     }
   }
 
-  // 标准化到 [0, 1]
+  // Normalize to [0, 1]
   final List<List<double>> normalized = <List<double>>[];
   for (final List<double> feature in features) {
     final List<double> normFeature = <double>[];
@@ -286,8 +286,8 @@ List<cv.Point2f> getDynamicGridPoints(cv.Mat warped) {
   final double width = warped.cols.toDouble();
   final double height = warped.rows.toDouble();
 
-  // 基于原始500x500图像的比例
-  // 外层方框比例
+  // Based on original 500x500 image proportions
+  // Outer box proportions
   const double outerLeftXRatio = 35.0 / 500.0;
   const double outerCenterXRatio = 250.0 / 500.0;
   const double outerRightXRatio = 465.0 / 500.0;
@@ -296,7 +296,7 @@ List<cv.Point2f> getDynamicGridPoints(cv.Mat warped) {
   const double outerCenterYRatio = 250.0 / 500.0;
   const double outerBottomYRatio = 465.0 / 500.0;
 
-  // 中层方框比例
+  // Middle box proportions
   const double middleLeftXRatio = 105.0 / 500.0;
   const double middleCenterXRatio = 250.0 / 500.0;
   const double middleRightXRatio = 395.0 / 500.0;
@@ -305,7 +305,7 @@ List<cv.Point2f> getDynamicGridPoints(cv.Mat warped) {
   const double middleCenterYRatio = 250.0 / 500.0;
   const double middleBottomYRatio = 395.0 / 500.0;
 
-  // 内层方框比例
+  // Inner box proportions
   const double innerLeftXRatio = 175.0 / 500.0;
   const double innerCenterXRatio = 250.0 / 500.0;
   const double innerRightXRatio = 325.0 / 500.0;
@@ -315,41 +315,59 @@ List<cv.Point2f> getDynamicGridPoints(cv.Mat warped) {
   const double innerBottomYRatio = 325.0 / 500.0;
 
   final List<cv.Point2f> points = <cv.Point2f>[
-    // 外层方框角和中点
-    cv.Point2f(outerLeftXRatio * width, outerTopYRatio * height), // 0: 左上角
-    cv.Point2f(outerCenterXRatio * width, outerTopYRatio * height), // 1: 上中点
-    cv.Point2f(outerRightXRatio * width, outerTopYRatio * height), // 2: 右上角
-    cv.Point2f(outerLeftXRatio * width, outerCenterYRatio * height), // 3: 左中点
-    cv.Point2f(outerRightXRatio * width, outerCenterYRatio * height), // 4: 右中点
-    cv.Point2f(outerLeftXRatio * width, outerBottomYRatio * height), // 5: 左下角
-    cv.Point2f(outerCenterXRatio * width, outerBottomYRatio * height), // 6: 下中点
-    cv.Point2f(outerRightXRatio * width, outerBottomYRatio * height), // 7: 右下角
+    // Outer box corners and center points
+    cv.Point2f(
+        outerLeftXRatio * width, outerTopYRatio * height), // 0: Top left corner
+    cv.Point2f(
+        outerCenterXRatio * width, outerTopYRatio * height), // 1: Top center
+    cv.Point2f(outerRightXRatio * width,
+        outerTopYRatio * height), // 2: Top right corner
+    cv.Point2f(
+        outerLeftXRatio * width, outerCenterYRatio * height), // 3: Left center
+    cv.Point2f(outerRightXRatio * width,
+        outerCenterYRatio * height), // 4: Right center
+    cv.Point2f(outerLeftXRatio * width,
+        outerBottomYRatio * height), // 5: Bottom left corner
+    cv.Point2f(outerCenterXRatio * width,
+        outerBottomYRatio * height), // 6: Bottom center
+    cv.Point2f(outerRightXRatio * width,
+        outerBottomYRatio * height), // 7: Bottom right corner
 
-    // 中层方框角和中点
-    cv.Point2f(middleLeftXRatio * width, middleTopYRatio * height), // 8: 左上角
-    cv.Point2f(middleCenterXRatio * width, middleTopYRatio * height), // 9: 上中点
-    cv.Point2f(middleRightXRatio * width, middleTopYRatio * height), // 10: 右上角
+    // Middle box corners and center points
+    cv.Point2f(middleLeftXRatio * width,
+        middleTopYRatio * height), // 8: Top left corner
     cv.Point2f(
-        middleLeftXRatio * width, middleCenterYRatio * height), // 11: 左中点
-    cv.Point2f(
-        middleRightXRatio * width, middleCenterYRatio * height), // 12: 右中点
-    cv.Point2f(
-        middleLeftXRatio * width, middleBottomYRatio * height), // 13: 左下角
-    cv.Point2f(
-        middleCenterXRatio * width, middleBottomYRatio * height), // 14: 下中点
-    cv.Point2f(
-        middleRightXRatio * width, middleBottomYRatio * height), // 15: 右下角
+        middleCenterXRatio * width, middleTopYRatio * height), // 9: Top center
+    cv.Point2f(middleRightXRatio * width,
+        middleTopYRatio * height), // 10: Top right corner
+    cv.Point2f(middleLeftXRatio * width,
+        middleCenterYRatio * height), // 11: Left center
+    cv.Point2f(middleRightXRatio * width,
+        middleCenterYRatio * height), // 12: Right center
+    cv.Point2f(middleLeftXRatio * width,
+        middleBottomYRatio * height), // 13: Bottom left corner
+    cv.Point2f(middleCenterXRatio * width,
+        middleBottomYRatio * height), // 14: Bottom center
+    cv.Point2f(middleRightXRatio * width,
+        middleBottomYRatio * height), // 15: Bottom right corner
 
-    // 内层方框角和中点
-    cv.Point2f(innerLeftXRatio * width, innerTopYRatio * height), // 16: 左上角
-    cv.Point2f(innerCenterXRatio * width, innerTopYRatio * height), // 17: 上中点
-    cv.Point2f(innerRightXRatio * width, innerTopYRatio * height), // 18: 右上角
-    cv.Point2f(innerLeftXRatio * width, innerCenterYRatio * height), // 19: 左中点
-    cv.Point2f(innerRightXRatio * width, innerCenterYRatio * height), // 20: 右中点
-    cv.Point2f(innerLeftXRatio * width, innerBottomYRatio * height), // 21: 左下角
+    // Inner box corners and center points
+    cv.Point2f(innerLeftXRatio * width,
+        innerTopYRatio * height), // 16: Top left corner
     cv.Point2f(
-        innerCenterXRatio * width, innerBottomYRatio * height), // 22: 下中点
-    cv.Point2f(innerRightXRatio * width, innerBottomYRatio * height), // 23: 右下角
+        innerCenterXRatio * width, innerTopYRatio * height), // 17: Top center
+    cv.Point2f(innerRightXRatio * width,
+        innerTopYRatio * height), // 18: Top right corner
+    cv.Point2f(
+        innerLeftXRatio * width, innerCenterYRatio * height), // 19: Left center
+    cv.Point2f(innerRightXRatio * width,
+        innerCenterYRatio * height), // 20: Right center
+    cv.Point2f(innerLeftXRatio * width,
+        innerBottomYRatio * height), // 21: Bottom left corner
+    cv.Point2f(innerCenterXRatio * width,
+        innerBottomYRatio * height), // 22: Bottom center
+    cv.Point2f(innerRightXRatio * width,
+        innerBottomYRatio * height), // 23: Bottom right corner
   ];
 
   return points;
