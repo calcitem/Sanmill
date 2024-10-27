@@ -419,11 +419,16 @@ class ImageToFenAppState extends State<ImageToFenApp> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                // 图像处理按钮
-                ElevatedButton(
-                  onPressed: _processImage,
-                  child: Text(uiConfig.selectAndProcessImageButton),
-                ),
+                // 显示棋盘边缘和尺寸
+                if (_boardEdge != null) ...<Widget>[
+                  const SizedBox(height: 20),
+                  Text(
+                      '棋盘边缘: ${_boardEdge!.x}, ${_boardEdge!.y}, ${_boardEdge!.width}, ${_boardEdge!.height}'),
+                ],
+                if (_boardSize.isNotEmpty) ...<Widget>[
+                  const SizedBox(height: 10),
+                  Text('棋盘尺寸: $_boardSize'),
+                ],
 
                 // 显示处理后的图像和FEN字符串
                 if (_processedImage != null) ...<Widget>[
@@ -437,18 +442,18 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                   Text(_fenString),
                 ],
 
-                // 显示棋盘边缘和尺寸
-                if (_boardEdge != null) ...<Widget>[
-                  const SizedBox(height: 20),
-                  Text(
-                      '棋盘边缘: ${_boardEdge!.x}, ${_boardEdge!.y}, ${_boardEdge!.width}, ${_boardEdge!.height}'),
-                ],
-                if (_boardSize.isNotEmpty) ...<Widget>[
-                  const SizedBox(height: 10),
-                  Text('棋盘尺寸: $_boardSize'),
-                ],
+                // 图像处理按钮
+                ElevatedButton(
+                  onPressed: _processImage,
+                  child: Text(uiConfig.selectAndProcessImageButton),
+                ),
 
                 // 显示调试图像（可选）
+                if (_detectedLinesImage != null) ...<Widget>[
+                  const SizedBox(height: 20),
+                  const Text('检测到的线条:'),
+                  Image.memory(_detectedLinesImage!),
+                ],
                 if (grayImage != null) ...<Widget>[
                   Text(uiConfig.debugImageLabels['grayImage']!),
                   Image.memory(grayImage!),
@@ -464,11 +469,6 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                 if (warpedImage != null) ...<Widget>[
                   Text(uiConfig.debugImageLabels['warpedImage']!),
                   Image.memory(warpedImage!),
-                ],
-                if (_detectedLinesImage != null) ...<Widget>[
-                  const SizedBox(height: 20),
-                  const Text('检测到的线条:'),
-                  Image.memory(_detectedLinesImage!),
                 ],
 
                 // 添加阈值设置区域

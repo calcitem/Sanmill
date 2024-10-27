@@ -163,10 +163,14 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
   final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
 
   // 应用高斯模糊
-  final cv.Mat blurred = cv.gaussianBlur(warpedGray, (5, 5), 0);
+  final cv.Mat blurred = cv.gaussianBlur(warpedGray, (11, 11), 0);
 
   // 应用边缘检测（Canny）
-  final cv.Mat edges = cv.canny(blurred, 50, 150);
+  // **`threshold2`（大阈值）**先找到强边缘，再基于强边缘找到与其相连的**弱边缘**（通过`threshold1`确定）。
+  // 这种滞后阈值的方法能够避免在噪声或图像模糊区域出现虚假边缘。
+  // **如果想减少边缘噪声**：可以增大 `threshold2`，这样能确保只有显著的边缘被检测到；适当增大 `threshold1`，减弱弱边缘的链接效果。
+  // **如果边缘太稀疏或不完整**：减小 `threshold1` 的值，允许更多的弱边缘链接到强边缘；同时减小 `threshold2`，使更多的边缘通过强度检测。
+  final cv.Mat edges = cv.canny(blurred, 1, 1); // 10, 80?
 
   // 应用霍夫线变换，使用可调参数
   final cv.Mat lines = cv.HoughLinesP(

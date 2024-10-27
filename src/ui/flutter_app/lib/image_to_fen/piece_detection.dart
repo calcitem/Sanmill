@@ -30,7 +30,7 @@ List<String> detectPieces(
     // 提取感兴趣区域 (ROI)
     final cv.Mat roi = cv.getRectSubPix(
       warped,
-      (30, 30),
+      (100, 100),
       point,
     );
 
@@ -98,6 +98,11 @@ List<String> detectPieces(
       positions[i] = 'b';
     } else {
       positions[i] = 'e';
+    }
+    positions[i] += ' $whiteCount/$blackCount';
+    if (EnvironmentConfig.devMode) {
+      positions[i] += ' $whiteCount/$blackCount';
+      //positions[i] += '\n($whiteCount/$whiteThreshold, \n$blackCount/$blackThreshold)';
     }
 
     // 释放内存
