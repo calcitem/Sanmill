@@ -157,7 +157,8 @@ cv.Mat warpPerspective(cv.Mat mat, cv.VecPoint contour) {
 }
 
 // 边缘检测和霍夫线变换函数
-cv.Mat applyEdgeDetectionAndHoughLines(cv.Mat warped) {
+(cv.Mat warpedWithLines, List<Line> filteredLines)
+    applyEdgeDetectionAndHoughLines(cv.Mat warped) {
   // 转换为灰度图像
   final cv.Mat warpedGray = cv.cvtColor(warped, cv.COLOR_BGR2GRAY);
 
@@ -199,55 +200,9 @@ cv.Mat applyEdgeDetectionAndHoughLines(cv.Mat warped) {
   edges.dispose();
   lines.dispose();
 
-  return warpedWithLines;
+  return (warpedWithLines, filteredLines);
 }
 
-// 提取检测到的线条
-List<Line> extractDetectedLines(cv.Mat warpedWithLines) {
-  // Convert to grayscale
-  final cv.Mat gray = cv.cvtColor(warpedWithLines, cv.COLOR_BGR2GRAY);
-
-  // Edge detection (Canny)
-  final cv.Mat edges = cv.canny(gray, 50, 150);
-
-  // Hough Line Transform
-  final cv.Mat linesMat = cv.HoughLinesP(
-    edges,
-    1,
-    math.pi / 180,
-    ImageProcessingConfig.houghTransformConfig.threshold,
-    minLineLength: ImageProcessingConfig.houghTransformConfig.minLineLength,
-    maxLineGap: ImageProcessingConfig.houghTransformConfig.maxLineGap,
-  );
-
-  final List<Line> lines = <Line>[];
-
-  // Check if linesMat is not empty
-  if (linesMat.rows > 0) {
-    final List<num> data = linesMat.data;
-
-    // Each line has 4 numbers: x1, y1, x2, y2
-    for (int i = 0; i < data.length; i += 4) {
-      final int x1 = data[i].toInt();
-      final int y1 = data[i + 1].toInt();
-      final int x2 = data[i + 2].toInt();
-      final int y2 = data[i + 3].toInt();
-
-      final cv.Point startPoint = cv.Point(x1, y1);
-      final cv.Point endPoint = cv.Point(x2, y2);
-      lines.add(Line(startPoint, endPoint));
-    }
-  }
-
-  // Dispose temporary objects
-  gray.dispose();
-  edges.dispose();
-  linesMat.dispose();
-
-  return lines;
-}
-
-// 计算棋盘边缘
 // 计算棋盘边缘
 cv.Rect? computeBoardEdges(List<Line> lines) {
   if (lines.isEmpty) {

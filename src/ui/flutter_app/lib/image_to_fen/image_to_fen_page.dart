@@ -297,19 +297,18 @@ class ImageToFenAppState extends State<ImageToFenApp> {
 
         // 应用边缘检测和霍夫线变换
         logger.i('应用边缘检测和霍夫线变换');
-        final cv.Mat warpedWithLines = applyEdgeDetectionAndHoughLines(warped);
+        final (cv.Mat warpedWithLines, List<Line> detectedLines) =
+            applyEdgeDetectionAndHoughLines(warped);
         logger.i(
             '边缘检测和霍夫线变换完成，WarpedWithLines Mat 尺寸: ${warpedWithLines.rows}x${warpedWithLines.cols}');
+
+        logger.i('提取检测到的线条');
+        logger.i('检测到的总线条数量: ${detectedLines.length}');
 
         // 调试：显示透视变换后的图像
         logger.i('编码透视变换后的图像');
         warpedImage = cv.imencode('.png', warpedWithLines).$2;
         logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
-
-        // 进行线检测后的步骤：提取检测到的线条
-        logger.i('提取检测到的线条');
-        final List<Line> detectedLines = extractDetectedLines(warpedWithLines);
-        logger.i('检测到的总线条数量: ${detectedLines.length}');
 
         // Draw detected lines
         // Clone the warpedWithLines image to draw detected lines
@@ -323,7 +322,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
             line.startPoint,
             line.endPoint,
             cv.Scalar(255), // Blue color in BGR
-            thickness: 2,
+            thickness: 5,
           );
         }
         logger.i('所有检测到的线条已绘制在 linesImage 上');
