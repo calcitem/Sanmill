@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:opencv_dart/opencv_dart.dart' as cv;
 
 import '../shared/services/environment_config.dart';
@@ -8,132 +6,146 @@ import '../shared/services/logger.dart';
 List<String> detectPieces(cv.Mat warped) {
   final List<String> positions = List<String>.filled(24, 'X');
 
-  // 动态计算网格点
   final List<cv.Point2f> gridPoints = getDynamicGridPoints(warped);
 
-  // 调试：在图像上绘制网格点
   if (EnvironmentConfig.devMode) {
     for (final cv.Point2f point in gridPoints) {
       cv.circle(
         warped,
         cv.Point(point.x.toInt(), point.y.toInt()),
         5,
-        cv.Scalar(255), // 使用蓝色标记网格点 (B, G, R)
+        cv.Scalar(255),
         thickness: -1,
       );
     }
   }
 
-  // 存储所有点的 whiteCount 和 blackCount
   final List<int> whiteCounts = <int>[];
   final List<int> blackCounts = <int>[];
+  final List<double> whiteMeans = <double>[];
+  final List<double> blackMeans = <double>[];
 
-  // 提前定义一些常用 Mat 对象以减少重复创建
   final cv.Mat kernel = cv.getStructuringElement(cv.MORPH_ELLIPSE, (3, 3));
 
-  // 第一次遍历：计算所有点的 whiteCount 和 blackCount
   for (int i = 0; i < gridPoints.length; i++) {
     final cv.Point2f point = gridPoints[i];
 
-    // 提取感兴趣区域 (ROI)
     final cv.Mat roi = cv.getRectSubPix(warped, (100, 100), point);
 
-    // 检查 ROI 是否为空
     if (roi.isEmpty) {
       logger.w('警告: ROI 提取失败，点索引 $i 可能位于图像边缘。');
       whiteCounts.add(0);
       blackCounts.add(0);
+      whiteMeans.add(0.0);
+      blackMeans.add(0.0);
       roi.dispose();
       continue;
     }
 
-    // 转换为 HSV 颜色空间
-    final cv.Mat hsv = cv.cvtColor(roi, cv.COLOR_BGR2HSV);
+    // 使用自适应阈值进行分割
+    final cv.Mat gray = cv.cvtColor(roi, cv.COLOR_BGR2GRAY);
 
-    // 应用形态学操作以减少噪声
-    final cv.Mat opened = cv.morphologyEx(hsv, cv.MORPH_OPEN, kernel);
-    final cv.Mat closed = cv.morphologyEx(opened, cv.MORPH_CLOSE, kernel);
+    // 应用 Otsu 阈值
+    final (double otsuThreshold, cv.Mat _) = cv.threshold(
+      gray,
+      0,
+      255,
+      cv.THRESH_BINARY + cv.THRESH_OTSU,
+    );
 
-    // 定义白色的阈值
-    final cv.Mat lowerWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
-    lowerWhite.setTo(cv.Scalar(0, 0, 200));
+    // 应用二进制阈值
+    final (double _, cv.Mat binary) = cv.threshold(
+      gray,
+      otsuThreshold,
+      255,
+      cv.THRESH_BINARY,
+    );
 
-    final cv.Mat upperWhite = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
-    upperWhite.setTo(cv.Scalar(180, 50, 255));
+    final int whiteCount = cv.countNonZero(binary);
+    final int blackCount = roi.cols * roi.rows - whiteCount;
 
-    final cv.Mat whiteMask = cv.inRange(closed, lowerWhite, upperWhite);
+    // 计算平均亮度
+    final (cv.Scalar meanWhite, cv.Scalar stddevWhite) =
+        cv.meanStdDev(roi, mask: binary);
+    final double whiteMean = meanWhite.val2; // 假设使用第三通道（R通道）
 
-    // 定义黑色的阈值，排除白色区域
-    final cv.Mat lowerBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
-    lowerBlack.setTo(cv.Scalar()); // 确保所有 HSV 通道都设置
-
-    final cv.Mat upperBlack = cv.Mat.zeros(hsv.rows, hsv.cols, hsv.type);
-    upperBlack.setTo(cv.Scalar(180, 255, 50));
-
-    final cv.Mat blackMask = cv.inRange(closed, lowerBlack, upperBlack);
-
-    // 排除白色区域
-    final cv.Mat invertedWhiteMask = cv.bitwiseNOT(whiteMask);
-    final cv.Mat maskedBlack = cv.bitwiseAND(blackMask, invertedWhiteMask);
-    //blackMask = maskedBlack;
-
-    // 计算非零像素数量
-    final int whiteCount = cv.countNonZero(whiteMask);
-    final int blackCount = cv.countNonZero(maskedBlack);
+    final (cv.Scalar meanBlack, cv.Scalar stddevBlack) =
+        cv.meanStdDev(roi, mask: cv.bitwiseNOT(binary));
+    final double blackMean = meanBlack.val2;
 
     whiteCounts.add(whiteCount);
     blackCounts.add(blackCount);
+    whiteMeans.add(whiteMean);
+    blackMeans.add(blackMean);
 
-    // 释放中间变量
+    // Dispose only cv.Mat objects
+    gray.dispose();
+    binary.dispose();
     roi.dispose();
-    hsv.dispose();
-    opened.dispose();
-    closed.dispose();
-    whiteMask.dispose();
-    blackMask.dispose();
-    lowerWhite.dispose();
-    upperWhite.dispose();
-    lowerBlack.dispose();
-    upperBlack.dispose();
-    invertedWhiteMask.dispose();
-    maskedBlack.dispose();
+    // No need to dispose cv.Scalar objects
   }
 
-  // 将 whiteCount 和 blackCount 组合成特征向量
+  // 组合特征向量
   final List<List<double>> features = <List<double>>[];
   for (int i = 0; i < whiteCounts.length; i++) {
-    features
-        .add(<double>[whiteCounts[i].toDouble(), blackCounts[i].toDouble()]);
+    features.add(<double>[
+      whiteCounts[i].toDouble(),
+      blackCounts[i].toDouble(),
+      whiteMeans[i],
+      blackMeans[i],
+    ]);
   }
 
   // 标准化特征数据
-  final List<double> whiteCountsNorm = normalizeList(whiteCounts);
-  final List<double> blackCountsNorm = normalizeList(blackCounts);
-  final List<List<double>> normalizedFeatures = <List<double>>[];
-  for (int i = 0; i < whiteCountsNorm.length; i++) {
-    normalizedFeatures.add(<double>[whiteCountsNorm[i], blackCountsNorm[i]]);
+  final List<List<double>> normalizedFeatures = normalizeFeatures(features);
+
+  // 将 normalizedFeatures 转换为 Mat
+  final cv.Mat dataMat = cv.Mat.zeros(
+    normalizedFeatures.length,
+    normalizedFeatures[0].length,
+    const cv.MatType(cv.MatType.CV_32F),
+  );
+  for (int i = 0; i < dataMat.rows; i++) {
+    for (int j = 0; j < dataMat.cols; j++) {
+      dataMat.set(i, j, normalizedFeatures[i][j]);
+    }
   }
 
-  // 应用 K-Means 聚类，将点分为三类
-  const int K = 3; // 聚类数量（白棋、黑棋、空位）
-  const int attempts = 10;
-  final (List<int> labels, List<List<double>> centers) = kmeans(
-    normalizedFeatures,
-    K,
-    attempts,
+  // 准备 bestLabels
+  final cv.Mat bestLabels = cv.Mat.zeros(
+    dataMat.rows,
+    1,
+    const cv.MatType(cv.MatType.CV_32S),
   );
 
-  // 映射聚类结果到棋子状态
-  // 首先确定每个聚类中心对应的棋子状态
-  final Map<int, String> clusterToPiece = <int, String>{};
-  final List<String> pieceTypes = <String>['W', 'B', 'X'];
+  // 定义终止条件
+  const (int, int, double) criteria =
+      (cv.TERM_EPS + cv.TERM_MAX_ITER, 100, 1e-4);
+
+  // 应用 K-Means 聚类
+  final (double compactness, cv.Mat resultLabels, cv.Mat resultCenters) =
+      cv.kmeans(
+    dataMat,
+    3, // K
+    bestLabels,
+    criteria,
+    10, // attempts
+    cv.KMEANS_PP_CENTERS,
+  );
+
+  // 将 resultLabels 和 resultCenters 转换为 Dart 列表
+  final List<int> labels = matToIntList(resultLabels);
+  final List<List<double>> centersList = matToList(resultCenters);
 
   // 计算每个聚类中心的特征值之和，以确定其对应的棋子状态
-  final List<double> centerSums =
-      centers.map((List<double> c) => c[0] + c[1]).toList();
+  final List<double> centerSums = centersList
+      .map((List<double> c) => c.reduce((double a, double b) => a + b))
+      .toList();
   final List<int> sortedIndices = argsort(centerSums);
 
   // 将聚类中心按照特征值之和从大到小排序，依次对应白棋、黑棋、空位
+  final List<String> pieceTypes = <String>['W', 'B', 'X'];
+  final Map<int, String> clusterToPiece = <int, String>{};
   for (int i = 0; i < sortedIndices.length; i++) {
     clusterToPiece[sortedIndices[i]] = pieceTypes[i];
   }
@@ -149,10 +161,53 @@ List<String> detectPieces(cv.Mat warped) {
     }
   }
 
-  // 释放 kernel
+  // 释放资源
   kernel.dispose();
+  dataMat.dispose();
+  bestLabels.dispose();
+  resultLabels.dispose();
+  resultCenters.dispose();
 
   return positions;
+}
+
+// Helper functions to extract data from cv.Mat
+List<List<double>> matToList(cv.Mat mat) {
+  final int rows = mat.rows;
+  final int cols = mat.cols;
+  final List<List<double>> result = <List<double>>[];
+
+  for (int i = 0; i < rows; i++) {
+    final List<double> row = <double>[];
+    for (int j = 0; j < cols; j++) {
+      // Since mat is of type CV_32F, we use at<double>
+      final double value = mat.at<double>(i, j);
+      row.add(value);
+    }
+    result.add(row);
+  }
+
+  return result;
+}
+
+List<int> matToIntList(cv.Mat mat) {
+  final int rows = mat.rows;
+  final List<int> result = <int>[];
+
+  for (int i = 0; i < rows; i++) {
+    // Since labels are of type CV_32S, we use at<int>
+    final int value = mat.at<int>(i, 0);
+    result.add(value);
+  }
+
+  return result;
+}
+
+// Implement argsort function
+List<int> argsort(List<double> array) {
+  final List<int> indices = List<int>.generate(array.length, (int i) => i);
+  indices.sort((int a, int b) => array[a].compareTo(array[b]));
+  return indices;
 }
 
 void annotatePieces(cv.Mat image, List<String> positions) {
@@ -164,8 +219,8 @@ void annotatePieces(cv.Mat image, List<String> positions) {
 
     // 设置文本位置，调整偏移量使其在蓝点正上方
     final cv.Point textOrg = cv.Point(
-      point.x.toInt() - 10, // 适当调整x偏移量
-      point.y.toInt() + 5, // 适当调整y偏移量
+      (point.x - 10).toInt(), // 适当调整x偏移量
+      (point.y + 5).toInt(), // 适当调整y偏移量
     );
 
     // 先用黑色绘制较粗的文字作为轮廓
@@ -174,7 +229,7 @@ void annotatePieces(cv.Mat image, List<String> positions) {
       label,
       textOrg,
       cv.FONT_HERSHEY_SIMPLEX,
-      3,
+      1.0, // 调整字体大小
       cv.Scalar(), // 黑色 (B, G, R)
       thickness: 3, // 较大的厚度
       lineType: cv.LINE_AA,
@@ -186,145 +241,56 @@ void annotatePieces(cv.Mat image, List<String> positions) {
       label,
       textOrg,
       cv.FONT_HERSHEY_SIMPLEX,
-      3,
+      1.0, // 调整字体大小
       cv.Scalar(0, 255, 255), // 黄色 (B, G, R)
-      thickness: 2, // 较小的厚度
       lineType: cv.LINE_AA,
     );
   }
 }
 
-// 简单的 K-Means 聚类实现
-// 返回值：(labels, centers)
-(List<int>, List<List<double>>) kmeans(
-  List<List<double>> data,
-  int K,
-  int attempts,
-) {
-  const int maxIterations = 100;
-  const double epsilon = 1e-4;
+// 标准化特征数据
+List<List<double>> normalizeFeatures(List<List<double>> features) {
+  // 计算每个特征的最小值和最大值
+  final int numFeatures = features[0].length;
+  final List<double> minVals =
+      List<double>.filled(numFeatures, double.infinity);
+  final List<double> maxVals =
+      List<double>.filled(numFeatures, -double.infinity);
 
-  List<List<double>> bestCenters = <List<double>>[];
-  List<int> bestLabels = <int>[];
-  double bestCompactness = double.maxFinite;
-
-  for (int attempt = 0; attempt < attempts; attempt++) {
-    // 随机初始化聚类中心
-    final List<List<double>> centers = <List<double>>[];
-    final List<int> initialIndices = getRandomIndices(data.length, K);
-    for (final int idx in initialIndices) {
-      centers.add(List.from(data[idx]));
-    }
-
-    final List<int> labels = List.filled(data.length, -1);
-    double compactness = 0.0;
-
-    for (int iter = 0; iter < maxIterations; iter++) {
-      bool centersChanged = false;
-
-      // 1. 分配每个点到最近的聚类中心
-      for (int i = 0; i < data.length; i++) {
-        double minDist = double.maxFinite;
-        int minLabel = -1;
-        for (int j = 0; j < K; j++) {
-          final double dist = euclideanDistance(data[i], centers[j]);
-          if (dist < minDist) {
-            minDist = dist;
-            minLabel = j;
-          }
-        }
-        if (labels[i] != minLabel) {
-          labels[i] = minLabel;
-          centersChanged = true;
-        }
+  for (final List<double> feature in features) {
+    for (int i = 0; i < numFeatures; i++) {
+      if (feature[i] < minVals[i]) {
+        minVals[i] = feature[i];
       }
-
-      // 2. 更新聚类中心
-      final List<List<double>> newCenters =
-          List.generate(K, (_) => <double>[0.0, 0.0]);
-      final List<int> counts = List.filled(K, 0);
-
-      for (int i = 0; i < data.length; i++) {
-        final int label = labels[i];
-        newCenters[label][0] += data[i][0];
-        newCenters[label][1] += data[i][1];
-        counts[label] += 1;
+      if (feature[i] > maxVals[i]) {
+        maxVals[i] = feature[i];
       }
-
-      for (int j = 0; j < K; j++) {
-        if (counts[j] != 0) {
-          newCenters[j][0] /= counts[j];
-          newCenters[j][1] /= counts[j];
-        } else {
-          // 如果某个聚类没有分配到任何点，重新随机初始化
-          final int idx = getRandomIndices(data.length, 1)[0];
-          newCenters[j] = List.from(data[idx]);
-        }
-      }
-
-      // 计算中心移动距离
-      double centerShift = 0.0;
-      for (int j = 0; j < K; j++) {
-        centerShift += euclideanDistance(centers[j], newCenters[j]);
-      }
-
-      // 更新中心
-      centers.setAll(0, newCenters);
-
-      if (!centersChanged || centerShift <= epsilon) {
-        break;
-      }
-    }
-
-    // 计算紧密度（Compactness）
-    compactness = 0.0;
-    for (int i = 0; i < data.length; i++) {
-      final int label = labels[i];
-      compactness += euclideanDistance(data[i], centers[label]);
-    }
-
-    // 更新最佳结果
-    if (compactness < bestCompactness) {
-      bestCompactness = compactness;
-      bestCenters = List.from(centers);
-      bestLabels = List.from(labels);
     }
   }
 
-  return (bestLabels, bestCenters);
-}
-
-// 计算欧氏距离
-double euclideanDistance(List<double> a, List<double> b) {
-  double sum = 0.0;
-  for (int i = 0; i < a.length; i++) {
-    final double diff = a[i] - b[i];
-    sum += diff * diff;
+  // 标准化到 [0, 1]
+  final List<List<double>> normalized = <List<double>>[];
+  for (final List<double> feature in features) {
+    final List<double> normFeature = <double>[];
+    for (int i = 0; i < numFeatures; i++) {
+      if (maxVals[i] - minVals[i] == 0) {
+        normFeature.add(0.0);
+      } else {
+        normFeature.add((feature[i] - minVals[i]) / (maxVals[i] - minVals[i]));
+      }
+    }
+    normalized.add(normFeature);
   }
-  return math.sqrt(sum); // 使用 Math.sqrt 得到实际距离
+
+  return normalized;
 }
 
-// 标准化列表
-List<double> normalizeList(List<int> data) {
-  final int maxVal = data.reduce((int a, int b) => a > b ? a : b);
-  if (maxVal == 0) {
-    return List.filled(data.length, 0.0);
-  }
-  return data.map((int val) => val / maxVal).toList();
-}
-
-// 获取随机索引列表
-List<int> getRandomIndices(int range, int count) {
-  final List<int> indices = List.generate(range, (int index) => index);
-  indices.shuffle();
-  return indices.sublist(0, count);
-}
-
-// 对列表进行排序并返回排序后的索引列表
-List<int> argsort(List<double> list) {
-  final List<int> indices = List.generate(list.length, (int index) => index);
-  indices.sort((int a, int b) => list[b].compareTo(list[a])); // 从大到小排序
-  return indices;
+// Helper class to represent a tuple
+class Tuple3<T1, T2, T3> {
+  Tuple3(this.item1, this.item2, this.item3);
+  final T1 item1;
+  final T2 item2;
+  final T3 item3;
 }
 
 List<cv.Point2f> getDynamicGridPoints(cv.Mat warped) {
