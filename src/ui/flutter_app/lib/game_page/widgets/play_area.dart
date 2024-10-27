@@ -20,13 +20,13 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 
 import '../../general_settings/widgets/general_settings_page.dart';
 import '../../generated/intl/l10n.dart';
+import '../../image_to_fen/image_to_fen_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../services/mill.dart';
 import 'game_page.dart';
-import 'image_to_fen.dart';
 import 'modals/game_options_modal.dart';
 import 'toolbars/game_toolbar.dart';
 
