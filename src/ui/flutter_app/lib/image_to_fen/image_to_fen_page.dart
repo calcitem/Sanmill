@@ -33,6 +33,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
   Uint8List? enhancedImage;
   Uint8List? threshImage;
   Uint8List? warpedImage;
+  Uint8List? _detectedLinesImage;
 
   String _fenString = '';
 
@@ -305,13 +306,40 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         warpedImage = cv.imencode('.png', warpedWithLines).$2;
         logger.i('透视变换后图像编码完成，大小: ${warpedImage!.length} 字节');
 
-        // 进行线检测后的步骤：计算棋盘边缘和尺寸
-        logger.i('计算棋盘边缘和尺寸');
+        // 进行线检测后的步骤：提取检测到的线条
+        logger.i('提取检测到的线条');
         final List<Line> detectedLines = extractDetectedLines(warpedWithLines);
         logger.i('检测到的总线条数量: ${detectedLines.length}');
 
+        // Draw detected lines
+        // Clone the warpedWithLines image to draw detected lines
+        final cv.Mat linesImage = warpedWithLines.clone();
+        logger.i('克隆 warpedWithLines 以绘制检测到的线条');
+
+        // Draw each detected line on the linesImage
+        for (final Line line in detectedLines) {
+          cv.line(
+            linesImage,
+            line.startPoint,
+            line.endPoint,
+            cv.Scalar(255), // Blue color in BGR
+            thickness: 2,
+          );
+        }
+        logger.i('所有检测到的线条已绘制在 linesImage 上');
+
+        // Encode the linesImage to PNG
+        logger.i('编码带有检测到线条的图像');
+        _detectedLinesImage = cv.imencode('.png', linesImage).$2;
+        logger.i('带有检测到线条的图像编码完成，大小: ${_detectedLinesImage!.length} 字节');
+
+        // Dispose the temporary linesImage
+        linesImage.dispose();
+
         // 计算棋盘边缘
-        _boardEdge = computeBoardEdges(detectedLines);
+        logger.i('计算棋盘边缘和尺寸');
+        final List<Line> filteredLines = detectedLines;
+        _boardEdge = computeBoardEdges(filteredLines);
         if (_boardEdge != null) {
           logger.i(
               '棋盘边缘计算完成: x=${_boardEdge!.x}, y=${_boardEdge!.y}, width=${_boardEdge!.width}, height=${_boardEdge!.height}');
@@ -320,7 +348,7 @@ class ImageToFenAppState extends State<ImageToFenApp> {
         }
 
         // 确定棋盘尺寸
-        _boardSize = determineBoardSize(detectedLines);
+        _boardSize = determineBoardSize(filteredLines);
         logger.i('棋盘尺寸确定为: $_boardSize');
 
         // 检测棋子位置
@@ -437,6 +465,11 @@ class ImageToFenAppState extends State<ImageToFenApp> {
                 if (warpedImage != null) ...<Widget>[
                   Text(uiConfig.debugImageLabels['warpedImage']!),
                   Image.memory(warpedImage!),
+                ],
+                if (_detectedLinesImage != null) ...<Widget>[
+                  const SizedBox(height: 20),
+                  const Text('检测到的线条:'),
+                  Image.memory(_detectedLinesImage!),
                 ],
 
                 // 添加阈值设置区域
