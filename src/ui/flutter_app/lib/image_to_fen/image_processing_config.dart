@@ -23,10 +23,6 @@ class ImageProcessingConfig {
     angleTolerance: 0.1,
     distanceThreshold: 10,
   );
-  static PieceDetectionConfig pieceDetectionConfig = PieceDetectionConfig(
-    whiteThresholdRatio: 0.5,
-    blackThresholdRatio: 0.5,
-  );
   static ImageProcessingParameters parameters = ImageProcessingParameters(
     gaussianKernelSize: (5, 5),
     morphologyKernelSize: (5, 5),
@@ -51,8 +47,6 @@ class ImageProcessingConfig {
     'angleTolerance': () => houghTransformConfig.angleTolerance,
     'distanceThreshold': () =>
         houghTransformConfig.distanceThreshold.toDouble(),
-    'whiteThresholdRatio': () => pieceDetectionConfig.whiteThresholdRatio,
-    'blackThresholdRatio': () => pieceDetectionConfig.blackThresholdRatio,
   };
 
   // 映射 configKey 到设置函数
@@ -76,10 +70,6 @@ class ImageProcessingConfig {
         houghTransformConfig.angleTolerance = value,
     'distanceThreshold': (double value) =>
         houghTransformConfig.distanceThreshold = value.toInt(),
-    'whiteThresholdRatio': (double value) =>
-        pieceDetectionConfig.whiteThresholdRatio = value,
-    'blackThresholdRatio': (double value) =>
-        pieceDetectionConfig.blackThresholdRatio = value,
   };
 
   /// 根据configKey获取当前滑块的值
@@ -295,24 +285,6 @@ class UIConfig {
       divisions: 45,
       labelFormatter: (double value) => value.toInt().toString(),
       description: '筛选直线时的距离阈值。用于移除接近的重复线段。',
-    ),
-    SliderConfig(
-      labelPrefix: '白色阈值比率: ',
-      configKey: 'whiteThresholdRatio',
-      min: 0.0,
-      max: 1.0,
-      divisions: 100,
-      labelFormatter: (double value) => value.toStringAsFixed(2),
-      description: '检测白色棋子时的像素比例阈值。较高的值需要更多的白色像素以识别为白棋。',
-    ),
-    SliderConfig(
-      labelPrefix: '黑色阈值比率: ',
-      configKey: 'blackThresholdRatio',
-      min: 0.0,
-      max: 1.0,
-      divisions: 100,
-      labelFormatter: (double value) => value.toStringAsFixed(2),
-      description: '检测黑色棋子时的像素比例阈值。较高的值需要更多的黑色像素以识别为黑棋。',
     ),
   ];
 }
