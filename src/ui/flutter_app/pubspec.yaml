@@ -10,6 +10,7 @@ dependencies:
   animated_text_kit: 4.2.2
   catcher_2: 2.0.1
   collection: 1.18.0
+  crop_your_image: 1.1.0
   copy_with_extension: 5.0.4
   cupertino_icons: 1.0.8
   device_info_plus: 11.1.0
@@ -33,6 +34,7 @@ dependencies:
     git:
       url: https://gitlab.com/calcitem/image_gallery_saver
       ref: knottx
+  image_picker: 1.1.2
   intl: 0.19.0
   json_annotation: 4.9.0
   kplayer: 0.4.2

@@ -25,6 +25,7 @@ import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
+import '../../appearance_settings/widgets/appearance_settings_page.dart';
 import '../../custom_drawer/custom_drawer.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -110,19 +111,35 @@ class GamePage extends StatelessWidget {
     );
   }
 
+  /// Builds the background widget based on user selection.
+  ///
+  /// - If a custom image is selected, it displays the custom image.
+  /// - If a built-in image is selected, it displays the built-in image.
+  /// - If no image is selected, it displays a solid color background.
   Widget _buildBackground() {
-    if (DB().displaySettings.backgroundImagePath.isEmpty) {
+    // Retrieve the current display settings from the database
+    final DisplaySettings displaySettings = DB().displaySettings;
+
+    // Obtain the appropriate ImageProvider based on the backgroundImagePath
+    final ImageProvider? backgroundImage =
+        getBackgroundImageProvider(displaySettings);
+
+    if (backgroundImage == null) {
+      // No image selected, use a solid color background
       return Container(
         color: DB().colorSettings.darkBackgroundColor,
       );
     } else {
-      return Image.asset(
-        DB().displaySettings.backgroundImagePath,
+      // Image selected, display it with error handling
+      return Image(
+        image: backgroundImage,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
+        // Handle any errors that occur while loading the image
         errorBuilder:
             (BuildContext context, Object error, StackTrace? stackTrace) {
+          // Fallback to a solid color background if the image fails to load
           return Container(
             color: DB().colorSettings.darkBackgroundColor,
           );
@@ -153,7 +170,6 @@ class GamePage extends StatelessWidget {
                     final double toolbarHeight =
                         _calculateToolbarHeight(context);
 
-                    // Constraints of the game board but applied to the entire child
                     final double maxWidth = constraints.maxWidth;
                     final double maxHeight =
                         constraints.maxHeight - toolbarHeight;
@@ -165,7 +181,6 @@ class GamePage extends StatelessWidget {
 
                     return ConstrainedBox(
                       constraints: constraint,
-                      // Use ValueListenableBuilder to listen to DisplaySettings changes
                       child: ValueListenableBuilder<Box<DisplaySettings>>(
                         valueListenable: DB().listenDisplaySettings,
                         builder: (BuildContext context,
@@ -175,13 +190,9 @@ class GamePage extends StatelessWidget {
                             defaultValue: const DisplaySettings(),
                           )!;
 
-                          // Retrieve the selected board image path
-                          final String boardImagePath =
-                              displaySettings.boardImagePath;
-
                           return PlayArea(
-                            // Pass the board image path to PlayArea
-                            boardImagePath: boardImagePath,
+                            boardImage: getBoardImageProvider(
+                                displaySettings), // Pass the ImageProvider
                           );
                         },
                       ),

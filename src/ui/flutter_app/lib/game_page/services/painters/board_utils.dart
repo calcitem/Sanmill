@@ -75,6 +75,10 @@ Offset offsetFromPoint(Offset point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) +
     Offset(boardMargin, boardMargin);
 
+Offset offsetFromPoint2(Offset point, Size size) =>
+    (point * (size.width - boardMargin * 2) / 6) +
+    Offset(boardMargin, boardMargin);
+
 double offsetFromInt(int point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) + boardMargin;
 

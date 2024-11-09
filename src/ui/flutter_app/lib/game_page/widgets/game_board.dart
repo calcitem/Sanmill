@@ -31,16 +31,16 @@ class GameImages {
 class GameBoard extends StatefulWidget {
   /// Creates a [GameBoard] widget.
   ///
-  /// The [boardImagePath] parameter is the path to the selected board image.
+  /// The [boardImage] parameter is the ImageProvider for the selected board image.
   const GameBoard({
     super.key,
-    required this.boardImagePath,
+    required this.boardImage,
   });
 
-  /// The path to the selected board image.
+  /// The ImageProvider for the selected board image.
   ///
-  /// If null or empty, a default background color will be used.
-  final String boardImagePath;
+  /// If null, a default background color will be used.
+  final ImageProvider? boardImage;
 
   static const String _logTag = "[board]";
 
@@ -181,35 +181,84 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     return frame.image;
   }
 
+  Future<ui.Image?> loadImageFromFilePath(String filePath) async {
+    try {
+      if (filePath.startsWith('assets/')) {
+        return loadImage(filePath);
+      }
+
+      final File file = File(filePath);
+      final Uint8List imageData = await file.readAsBytes();
+      final ui.Codec codec = await ui.instantiateImageCodec(imageData);
+      final ui.FrameInfo frame = await codec.getNextFrame();
+      return frame.image;
+    } catch (e) {
+      // Log the error for debugging
+      logger.e("Error loading image from file path: $e");
+      return null;
+    }
+  }
+
+  // Helper method to convert ImageProvider to ui.Image?
+  Future<ui.Image?> _loadImageProvider(ImageProvider? provider) async {
+    if (provider == null) {
+      return null;
+    }
+
+    final Completer<ui.Image> completer = Completer<ui.Image>();
+    final ImageStream stream = provider.resolve(ImageConfiguration.empty);
+    final ImageStreamListener listener = ImageStreamListener(
+      (ImageInfo info, bool _) {
+        completer.complete(info.image);
+      },
+      onError: (Object exception, StackTrace? stackTrace) {
+        completer.completeError(exception, stackTrace);
+      },
+    );
+
+    stream.addListener(listener);
+
+    try {
+      final ui.Image image = await completer.future;
+      return image;
+    } catch (e) {
+      // Handle the error as needed, e.g., log it
+      logger.e("Error loading board image: $e");
+      return null;
+    } finally {
+      stream.removeListener(listener);
+    }
+  }
+
   // Loading images and creating PiecePainter
-  // TODO: Load from settings
   Future<GameImages> loadGameImages() async {
     final DisplaySettings displaySettings = DB().displaySettings;
     final GameImages gameImages = GameImages();
 
+    // Load white piece image from settings, if specified
     final String whitePieceImagePath = displaySettings.whitePieceImagePath;
-    final String blackPieceImagePath = displaySettings.blackPieceImagePath;
-
     if (whitePieceImagePath.isEmpty) {
       gameImages.whitePieceImage = null;
     } else {
-      gameImages.whitePieceImage = await loadImage(whitePieceImagePath);
+      gameImages.whitePieceImage =
+          await loadImageFromFilePath(whitePieceImagePath);
     }
 
+    // Load black piece image from settings, if specified
+    final String blackPieceImagePath = displaySettings.blackPieceImagePath;
     if (blackPieceImagePath.isEmpty) {
       gameImages.blackPieceImage = null;
     } else {
-      gameImages.blackPieceImage = await loadImage(blackPieceImagePath);
+      gameImages.blackPieceImage =
+          await loadImageFromFilePath(blackPieceImagePath);
     }
 
+    // Load marked piece image (static asset)
     gameImages.markedPieceImage =
         await loadImage('assets/images/marked_piece_image.png');
 
-    if (widget.boardImagePath.isEmpty) {
-      gameImages.boardImage = null;
-    } else {
-      gameImages.boardImage = await loadImage(widget.boardImagePath);
-    }
+    // Load board image from ImageProvider
+    gameImages.boardImage = await _loadImageProvider(widget.boardImage);
 
     return gameImages;
   }
@@ -243,10 +292,14 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
           builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              // Handle errors appropriately
+              return const Center(child: Text('Error loading images'));
             } else {
               final GameImages? gameImages = snapshot.data;
               return SizedBox.expand(
                 child: CustomPaint(
+                  // Pass the resolved ui.Image? to BoardPainter
                   painter: BoardPainter(context, gameImages?.boardImage),
                   foregroundPainter: PiecePainter(
                     placeAnimationValue: animationManager.placeAnimation.value,

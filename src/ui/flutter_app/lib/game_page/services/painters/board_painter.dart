@@ -125,7 +125,7 @@ class BoardPainter extends CustomPainter {
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
   }
 
-  Path _createLinePath(List<Offset> offset) {
+  static Path _createLinePath(List<Offset> offset) {
     final Path path = Path();
     path.addRect(Rect.fromPoints(offset[3], offset[20])); // File B
     path.addRect(Rect.fromPoints(offset[6], offset[17])); // File A
@@ -134,14 +134,14 @@ class BoardPainter extends CustomPainter {
     return path;
   }
 
-  void _addMiddleHorizontalLines(Path path, List<Offset> offset) {
+  static void _addMiddleHorizontalLines(Path path, List<Offset> offset) {
     path.addLine(offset[1], offset[7]);
     path.addLine(offset[16], offset[22]);
     path.addLine(offset[9], offset[11]);
     path.addLine(offset[12], offset[14]);
   }
 
-  void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset) {
+  static void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset) {
     if (DB().ruleSettings.hasDiagonalLines) {
       path.addLine(offset[0], offset[6]);
       path.addLine(offset[17], offset[23]);
@@ -210,7 +210,7 @@ class BoardPainter extends CustomPainter {
   }
 
   static void _drawPoints(List<Offset> points, Canvas canvas, Paint paint) {
-    final PaintingStyle? style = _getPointPaintingStyle();
+    final PaintingStyle? style = getPointPaintingStyle();
 
     if (style == null) {
       return;
@@ -224,7 +224,7 @@ class BoardPainter extends CustomPainter {
     }
   }
 
-  static PaintingStyle? _getPointPaintingStyle() {
+  static PaintingStyle? getPointPaintingStyle() {
     switch (DB().displaySettings.pointPaintingStyle) {
       case PointPaintingStyle.fill:
         return PaintingStyle.fill;
@@ -319,6 +319,150 @@ class BoardPainter extends CustomPainter {
         size.height - (boardMargin + notationPainter.height) / 2;
     notationPainter.paint(canvas,
         Offset(offsetFromInt(index, size) - notationPainter.width / 2, offset));
+  }
+
+  static void _drawDashedRect(Canvas canvas, Rect rect, List<Color> colors,
+      double strokeWidth, double dashLength, double spaceLength) {
+    final Paint paint = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+    _drawDashedLine(canvas, Offset(rect.left, rect.top),
+        Offset(rect.right, rect.top), colors, paint, dashLength, spaceLength);
+    _drawDashedLine(
+        canvas,
+        Offset(rect.right, rect.top),
+        Offset(rect.right, rect.bottom),
+        colors,
+        paint,
+        dashLength,
+        spaceLength);
+    _drawDashedLine(canvas, Offset(rect.right, rect.bottom),
+        Offset(rect.left, rect.bottom), colors, paint, dashLength, spaceLength);
+    _drawDashedLine(canvas, Offset(rect.left, rect.bottom),
+        Offset(rect.left, rect.top), colors, paint, dashLength, spaceLength);
+  }
+
+  static void _drawDashedPath(Canvas canvas, Path path, List<Color> colors,
+      double strokeWidth, double dashLength, double spaceLength) {
+    final Paint paint = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+    final PathMetrics pathMetrics = path.computeMetrics();
+    int colorIndex = 0;
+
+    for (final PathMetric metric in pathMetrics) {
+      double distance = 0.0;
+      while (distance < metric.length) {
+        paint.color = colors[colorIndex];
+        colorIndex = (colorIndex + 1) % colors.length;
+        final double nextDistance = distance + dashLength;
+        canvas.drawPath(metric.extractPath(distance, nextDistance), paint);
+        distance = nextDistance + spaceLength;
+      }
+    }
+  }
+
+  static void _drawDashedLine(Canvas canvas, Offset start, Offset end,
+      List<Color> colors, Paint paint, double dashLength, double spaceLength) {
+    final double totalLength = (end - start).distance;
+    final double dx = (end.dx - start.dx) / totalLength;
+    final double dy = (end.dy - start.dy) / totalLength;
+
+    double distance = 0.0;
+    int colorIndex = 0;
+
+    while (distance < totalLength) {
+      paint.color = colors[colorIndex];
+      colorIndex = (colorIndex + 1) % colors.length;
+
+      final Offset from =
+          Offset(start.dx + dx * distance, start.dy + dy * distance);
+      distance += dashLength;
+
+      if (distance > totalLength) {
+        distance = totalLength;
+      }
+      final Offset to =
+          Offset(start.dx + dx * distance, start.dy + dy * distance);
+
+      canvas.drawLine(from, to, paint);
+      distance += spaceLength;
+    }
+  }
+
+  static void drawReferenceLines(Canvas canvas, Size size) {
+    final List<Color> colors = <Color>[
+      Colors.black,
+      Colors.white,
+      Colors.yellow,
+      Colors.blue,
+      Colors.red
+    ];
+
+    const double strokeWidth = 2.0;
+    const double dashLength = 10.0;
+    const double spaceLength = 5.0;
+
+    final List<Offset> offset =
+        points.map((Offset e) => offsetFromPoint2(e, size)).toList();
+
+    _drawDashedRect(canvas, Rect.fromPoints(offset[0], offset[23]), colors,
+        strokeWidth, dashLength, spaceLength);
+
+    final Path path = _createLinePath(offset);
+
+    _drawDashedPath(canvas, path, colors, strokeWidth, dashLength, spaceLength);
+
+    final PaintingStyle? style = getPointPaintingStyle();
+    if (style != null) {
+      final Paint pointPaint = Paint()..style = style;
+      final double pointRadius = DB().displaySettings.pointWidth;
+      for (final Offset point in offset) {
+        canvas.drawCircle(point, pointRadius, pointPaint);
+      }
+    }
+  }
+
+  static void drawDashedCircle(Canvas canvas, Offset center, double radius) {
+    final List<Color> colors = <Color>[
+      Colors.black,
+      Colors.white,
+      Colors.yellow,
+      Colors.blue,
+      Colors.red,
+    ];
+
+    const double strokeWidth = 2.0;
+    const double dashLength = 10.0;
+    const double spaceLength = 5.0;
+    final Paint paint = Paint()
+      ..strokeWidth = strokeWidth
+      ..style = PaintingStyle.stroke;
+
+    double distance = 0.0;
+    final double circumference = 2 * pi * radius;
+    int colorIndex = 0;
+
+    while (distance < circumference) {
+      paint.color = colors[colorIndex];
+      colorIndex = (colorIndex + 1) % colors.length;
+
+      // Calculate the start and end points of each dashed segment on the circle
+      final double startAngle = distance / radius;
+      final double endAngle =
+          ((distance + dashLength) / radius).clamp(0, 2 * pi);
+
+      final Path path = Path();
+      path.arcTo(
+        Rect.fromCircle(center: center, radius: radius),
+        startAngle,
+        endAngle - startAngle,
+        false,
+      );
+      canvas.drawPath(path, paint);
+
+      distance += dashLength + spaceLength;
+    }
   }
 
   @override

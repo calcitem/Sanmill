@@ -14,15 +14,19 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
+import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../shared/widgets/settings/settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
@@ -37,11 +41,13 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/color_settings.dart';
 import '../models/display_settings.dart';
+import './../../game_page/services/painters/painters.dart';
 import 'piece_effect_selection_page.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/board_image_picker.dart';
+part 'package:sanmill/appearance_settings/widgets/pickers/image_crop_page.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';

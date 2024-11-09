@@ -76,6 +76,10 @@ class DisplaySettings {
     this.placeEffectAnimation = 'Default',
     this.removeEffectAnimation = 'Default',
     this.isToolbarAtBottom = false,
+    this.customBackgroundImagePath,
+    this.customBoardImagePath,
+    this.customWhitePieceImagePath,
+    this.customBlackPieceImagePath,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -185,6 +189,18 @@ class DisplaySettings {
 
   @HiveField(30, defaultValue: false)
   final bool isToolbarAtBottom;
+
+  @HiveField(31, defaultValue: null)
+  final String? customBackgroundImagePath;
+
+  @HiveField(32, defaultValue: null)
+  final String? customBoardImagePath;
+
+  @HiveField(33, defaultValue: null)
+  final String? customWhitePieceImagePath;
+
+  @HiveField(34, defaultValue: null)
+  final String? customBlackPieceImagePath;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

@@ -32,11 +32,11 @@ import 'toolbars/game_toolbar.dart';
 class PlayArea extends StatefulWidget {
   /// Creates a PlayArea widget.
   ///
-  /// The [boardImagePath] parameter is the path to the selected board image.
-  const PlayArea({super.key, required this.boardImagePath});
+  /// The [boardImage] parameter is the ImageProvider for the selected board image.
+  const PlayArea({super.key, required this.boardImage});
 
-  /// The path to the selected board image.
-  final String boardImagePath;
+  /// The ImageProvider for the selected board image.
+  final ImageProvider? boardImage;
 
   @override
   PlayAreaState createState() => PlayAreaState();
@@ -370,9 +370,9 @@ class PlayAreaState extends State<PlayArea> {
                     controller: ScreenshotService.screenshotController,
                     child: Container(
                       alignment: Alignment.center,
-                      // Pass the selected boardImagePath to GameBoard.
                       child: GameBoard(
-                        boardImagePath: widget.boardImagePath,
+                        boardImage: widget
+                            .boardImage, // Pass the ImageProvider to GameBoard
                       ),
                     ),
                   ),
