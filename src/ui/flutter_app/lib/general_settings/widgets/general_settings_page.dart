@@ -69,7 +69,10 @@ class GeneralSettingsPage extends StatelessWidget {
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(aiMovesFirst: value);
 
-    GameController().position.changeSideToMove();
+    if (GameController().position.isEmpty()) {
+      GameController().position.changeSideToMove();
+      GameController().reset(force: true);
+    }
 
     Position.resetScore();
 

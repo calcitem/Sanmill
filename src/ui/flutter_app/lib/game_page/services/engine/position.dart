@@ -72,6 +72,13 @@ class Position {
         pieceInHandCount[PieceColor.black]!;
   }
 
+  bool isEmpty() {
+    return pieceInHandCount[PieceColor.white]! == DB().ruleSettings.piecesCount &&
+        pieceInHandCount[PieceColor.black]! == DB().ruleSettings.piecesCount &&
+        pieceOnBoardCount[PieceColor.white]! == 0 &&
+        pieceOnBoardCount[PieceColor.black]! == 0;
+  }
+
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 
