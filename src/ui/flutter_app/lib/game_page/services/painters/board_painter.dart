@@ -51,12 +51,7 @@ class BoardPainter extends CustomPainter {
     final Paint paint = Paint();
     paint.strokeWidth =
         boardBorderLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
-    paint.color = Color.lerp(
-      colorSettings.boardBackgroundColor,
-      colorSettings.boardLineColor,
-      colorSettings.boardLineColor.opacity,
-    )!
-        .withOpacity(1);
+    paint.color = colorSettings.boardLineColor;
     paint.style = PaintingStyle.stroke;
     return paint;
   }
@@ -239,7 +234,9 @@ class BoardPainter extends CustomPainter {
     final int pieceInHandCount = _calculatePieceInHandCount(position);
 
     final TextSpan textSpan = TextSpan(
-      style: TextStyle(fontSize: 48, color: DB().colorSettings.boardLineColor),
+      style: TextStyle(
+          fontSize: 48,
+          color: DB().colorSettings.boardLineColor.withOpacity(1.0)),
       text: pieceInHandCount.toString(),
     );
 
@@ -272,7 +269,7 @@ class BoardPainter extends CustomPainter {
 
   static void _drawVerticalNotation(Canvas canvas, Size size, int index) {
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor,
+      color: DB().colorSettings.boardLineColor.withOpacity(1.0),
       fontSize: AppTheme.textScaler.scale(20),
     );
 
@@ -297,7 +294,7 @@ class BoardPainter extends CustomPainter {
 
   static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor,
+      color: DB().colorSettings.boardLineColor.withOpacity(1.0),
       fontSize: AppTheme.textScaler.scale(20),
     );
 

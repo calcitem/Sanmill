@@ -34,7 +34,7 @@ part 'color_settings.g.dart';
 @immutable
 class ColorSettings {
   const ColorSettings({
-    this.boardLineColor = UIColors.rosewood50,
+    this.boardLineColor = UIColors.burntSienna,
     this.darkBackgroundColor = UIColors.spruce,
     this.boardBackgroundColor = UIColors.burlyWood,
     this.whitePieceColor = Colors.white,

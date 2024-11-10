@@ -49,6 +49,8 @@ class UIColors {
 
   static const Color burlyWood = Color(0xFFDEB887);
 
+  static const Color burntSienna = Color(0xFFA15B48);
+
   static const Color butterflyBlue = Color(0xFF38ACEC);
 
   static const Color citrus = Color(0xFFA1C50A);
