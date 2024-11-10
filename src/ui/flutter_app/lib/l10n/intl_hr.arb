@@ -662,7 +662,7 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Vrati figure na prethodno mjesto …",
+  "takingBack": "Vraćanje figure na prethodno mjesto …",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -702,7 +702,7 @@
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "Ništa",
+  "none": "Bez",
   "@none": {
     "description": "None"
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivih) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi partiju. Kao u fazi postavljanja, igrač koji postavi tri svoje figure u nizu ima mlin i može ukloniti jednu protivnčku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi partiju. Igrač također gubi partiju kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
+  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi partiju. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi partiju. Igrač također gubi partiju kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -766,7 +766,7 @@
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Time-out",
+  "timeout": "Pauza",
   "@timeout": {
     "description": "Timeout"
   },
@@ -810,7 +810,7 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Za prekidanje partije ponovo dodirnite gumb „Natrag”.",
+  "tapBackAgainToLeave": "Za napuštanje igre ponovo dodirnite gumb za natrag.",
   "@tapBackAgainToLeave": {
     "description": "Tap back again to leave."
   },
@@ -1430,7 +1430,7 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Figura koja se pomakne iz jednog mlina za formiranje jednog drugog mlina se ne može odmah vratiti na izvorno mjesto u sljedećem potezu kako bi ponovo formirala mlin. Najprije je potreban jedan drugi potez.",
+  "restrictRepeatedMillsFormation_Detail": "Figura koja se pomakne iz jednog mlina za formiranje jednog drugog mlina se ne može odmah vratiti na izvorno mjesto u sljedećem potezu kako bi ponovo formirala mlin. Najprije je mora odigrati jedan drugi potez.",
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "Jednokratna uporaba mlina",
   "@oneTimeUseMill": {},
@@ -1438,9 +1438,9 @@
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Trenutačno postavljena pravila nemaju odgovarajuću savršenu bazu podataka. Za više informacija o savršenoj bazi podataka kliknite ovdje.",
   "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Fokusirajte se na blokiranje putova",
+  "focusOnBlockingPaths": "Prioriziraj blokiranje pomicanja",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Tijekom određenih faza igre prioriziraj ometanje protivnika u pomicanju figura umjesto formiranje mlinova. Umjesto da se usredotoči na uklanjanje figura sastavljanjem mlinova, UI nastoji uhvatiti protivnika u zamku, onemogućiti mu micanje figura i osigurati pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira aktivno protivničke mlinove.",
+  "focusOnBlockingPaths_Detail": "Tijekom određenih faza igre prioriziraj ometanje protivnika u pomicanju figura umjesto formiranje mlinova. Umjesto da se usredotoči na uklanjanje figura sastavljanjem mlinova, UI nastoji uhvatiti protivnika u zamku, onemogućiti mu pomicanje figura i osigurati pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira protivničke mlinove aktivno.",
   "@focusOnBlockingPaths_Detail": {},
   "pieceImage": "Slika figure",
   "@pieceImage": {},
