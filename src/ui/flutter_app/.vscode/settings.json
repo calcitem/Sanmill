@@ -16,5 +16,6 @@
     "readyok",
     "uciok",
     "XCRASH"
-  ]
+  ],
+  "cmake.sourceDirectory": "/home/ubuntu/Sanmill/src/ui/flutter_app/linux"
 }

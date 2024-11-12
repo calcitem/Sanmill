@@ -28,9 +28,6 @@ class SoundManager {
   @visibleForTesting
   static SoundManager instance = SoundManager._();
 
-  late Soundpool _soundpool;
-  int _alarmSoundStreamId = 0;
-
   String? soundThemeName = 'ball';
 
   final Map<String, Map<Sound, String>> _soundFiles =
@@ -71,8 +68,6 @@ class SoundManager {
   final Map<Sound, kplayer.PlayerController> _players =
       <Sound, kplayer.PlayerController>{};
 
-  final Map<Sound, int> _soundIds = <Sound, int>{};
-
   bool _isTemporaryMute = false;
 
   bool _allSoundsLoaded = false;
@@ -95,7 +90,7 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       if (booted == true) {
         return;
       }
@@ -109,30 +104,6 @@ class SoundManager {
 
       booted = true;
       _allSoundsLoaded = true;
-    } else {
-      _soundpool = Soundpool.fromOptions();
-
-      try {
-        for (final Sound sound in sounds.keys) {
-          final int soundId =
-              await _soundpool.load(await rootBundle.load(sounds[sound]!));
-          _soundIds[sound] = soundId;
-        }
-        _allSoundsLoaded = true;
-      } catch (e) {
-        logger.e("Failed to load sound: $e");
-        _allSoundsLoaded = false;
-      }
-    }
-  }
-
-  Future<void> _stopSound() async {
-    if (kIsWeb || Platform.isIOS) {
-      return;
-    }
-
-    if (_alarmSoundStreamId > 0) {
-      await _soundpool.stop(_alarmSoundStreamId);
     }
   }
 
@@ -160,7 +131,7 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       await _stopAllSounds();
 
       final kplayer.PlayerController? player = _players[sound];
@@ -173,19 +144,11 @@ class SoundManager {
       } catch (e) {
         logger.e("$_logTag Error playing sound: $e");
       }
-    } else {
-      await _stopSound();
-      final int? soundId = _soundIds[sound];
-      if (soundId == null) {
-        logger.e("Sound ID for $sound is not found in theme $soundThemeName.");
-        return;
-      }
-      _alarmSoundStreamId = await _soundpool.play(soundId);
     }
   }
 
   Future<void> _stopAllSounds() async {
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       final List<Future<void>> stopFutures = <Future<void>>[];
       _players.forEach((_, kplayer.PlayerController player) {
         stopFutures.add(player.stop());
@@ -207,12 +170,10 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isLinux) {
       _players
           .forEach((_, kplayer.PlayerController player) => player.dispose());
       _players.clear();
-    } else {
-      _soundpool.dispose();
     }
   }
 }

@@ -45,16 +45,6 @@ dependencies:
   path: 1.9.0
   path_provider: 2.1.4
   share_plus: 10.1.0
-  soundpool:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: master
-      path: soundpool
-  soundpool_windux:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: windows_linux_support
-      path: soundpool_windux
   vibration: 2.0.1
   url_launcher: 6.3.1
   uuid: 4.5.1

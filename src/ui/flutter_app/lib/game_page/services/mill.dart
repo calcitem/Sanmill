@@ -28,7 +28,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kplayer/kplayer.dart' as kplayer;
 import 'package:path_provider/path_provider.dart';
-import 'package:soundpool/soundpool.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
