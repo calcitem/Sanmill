@@ -658,7 +658,7 @@
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "Vrati figuru na prethodno mjesto",
+  "takeBack": "Vrati figuru natrag",
   "@takeBack": {
     "description": "Take back"
   },
