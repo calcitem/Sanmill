@@ -1579,5 +1579,9 @@
   "placeEffectAnimation": "Hreyfimyndaráhrif við að setja niður taflmann",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Hreyfimyndaráhrif við að fjarlægja taflmann",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Sýna tækjastiku neðst",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Horngeisli spjalds",
+  "@boardCornerRadius": {}
 }

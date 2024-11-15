@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "Efek animasi meletakkan buah",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efek animasi mengeluarkan buah",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Tunjukkan bar alat di bahagian bawah",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Jejari sudut papan",
+  "@boardCornerRadius": {}
 }

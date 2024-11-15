@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Efekt animacji przy usuwaniu pionka",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Pokaż pasek narzędzi na dole",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Promień narożnika tablicy",
+  "@boardCornerRadius": {}
 }

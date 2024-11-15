@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Figurani olib tashlash animatsion effekti",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Asboblar panelini pastda ko'rsatish",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Taxta burchak radiusi",
+  "@boardCornerRadius": {}
 }

@@ -83,7 +83,7 @@ class BoardPainter extends CustomPainter {
       canvas.clipRRect(
         RRect.fromRectAndRadius(
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          const Radius.circular(AppTheme.boardBorderRadius),
+          Radius.circular(DB().displaySettings.boardCornerRadius),
         ),
       );
       canvas.drawImageRect(
@@ -98,7 +98,7 @@ class BoardPainter extends CustomPainter {
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          const Radius.circular(AppTheme.boardBorderRadius),
+          Radius.circular(DB().displaySettings.boardCornerRadius),
         ),
         paint,
       );

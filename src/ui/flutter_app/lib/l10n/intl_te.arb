@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "గేమ్ భాగాన్ని ఉంచే యానిమేషన్ ప్రభావం",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "గేమ్ భాగాన్ని తొలగించే యానిమేషన్ ప్రభావం",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "క్రింద టూల్‌బార్ చూపించు",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "బోర్డు మూల వ్యాసార్ధం",
+  "@boardCornerRadius": {}
 }

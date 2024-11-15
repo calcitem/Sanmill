@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animace efektu odstranění figurky",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Zobrazit nástrojovou lištu dole",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Poloměr rohu desky",
+  "@boardCornerRadius": {}
 }

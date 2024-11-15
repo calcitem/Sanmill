@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Piece removing animation effect",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Show toolbar at bottom",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Board corner radius",
+  "@boardCornerRadius": {}
 }

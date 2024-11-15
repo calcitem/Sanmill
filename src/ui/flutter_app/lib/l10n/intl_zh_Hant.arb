@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "吃子的動畫效果",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "工具列顯示在底部",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "棋盤圓角半徑",
+  "@boardCornerRadius": {}
 }

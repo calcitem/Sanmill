@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file, output the complete arb file directly:
 
 ```json
-"isToolbarAtBottom": "Show toolbar at bottom",
-"@isToolbarAtBottom": {},
+"boardCornerRadius": "board corner radius",
+"@boardCornerRadius": {},
 ```
 
 into:
@@ -74,12 +74,12 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "isToolbarAtBottom": "Show toolbar at bottom",
-  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "board corner radius",
+  "@boardCornerRadius": {},
 
 
 // intl_zh.arb
-  "isToolbarAtBottom": "工具栏紧靠在屏幕底部",
-  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "棋盘圆角半径",
+  "@boardCornerRadius": {},
 ```
 

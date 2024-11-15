@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Efecto de animación al eliminar las piezas",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Mostrar barra de herramientas en la parte inferior",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Radio de esquina del tablero",
+  "@boardCornerRadius": {}
 }

@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Efect de animație la eliminarea piesei",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Afișează bara de instrumente în partea de jos",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raza colțului tablei",
+  "@boardCornerRadius": {}
 }

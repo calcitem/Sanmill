@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "ཆ་སུབ་རིག་བཟོ་བའི་བསྒྱུར་བཅོས",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "ལྕགས་སྒྲོན་སྤྱིར་བཤད་འོག་ཕྱོགས་སྟོན།",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "གོ་རིམ་གྱི་གཡོན་ཚད།",
+  "@boardCornerRadius": {}
 }

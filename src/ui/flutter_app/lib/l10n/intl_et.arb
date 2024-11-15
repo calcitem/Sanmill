@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "Nupu paigutamise animatsiooni efekt",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Nupu eemaldamise animatsiooni efekt",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Kuva tööriistariba all",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Laua nurga raadius",
+  "@boardCornerRadius": {}
 }

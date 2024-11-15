@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "သားကိုဖယ်ရှားရာတွင် အန်နိမေးရှင်း အကျိုးသက်ရောက်မှု",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "ကိရိယာဘားကို အောက်ဆုံးတွင် ပြပါ",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "ဘုတ်အနားရိုးကျော်လွန်အချင်း",
+  "@boardCornerRadius": {}
 }

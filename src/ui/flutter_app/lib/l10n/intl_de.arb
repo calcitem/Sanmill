@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animationseffekt beim Entfernen von Figuren",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Symbolleiste unten anzeigen",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Eckenradius des Bretts",
+  "@boardCornerRadius": {}
 }

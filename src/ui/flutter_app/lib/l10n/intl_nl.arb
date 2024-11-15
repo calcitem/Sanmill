@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animatie-effect bij verwijderen van stuk",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Werkbalk onderaan weergeven",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Hoekstraal van het bord",
+  "@boardCornerRadius": {}
 }

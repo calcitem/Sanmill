@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Effet d'animation lors du retrait de la pièce",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Afficher la barre d'outils en bas",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Rayon de coin du plateau",
+  "@boardCornerRadius": {}
 }

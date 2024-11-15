@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animovaný efekt pri odstránení figúrky",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Zobraziť panel nástrojov dole",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Polomer rohu dosky",
+  "@boardCornerRadius": {}
 }

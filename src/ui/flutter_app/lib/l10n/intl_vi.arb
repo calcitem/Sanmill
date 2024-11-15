@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Hiệu ứng hoạt hình loại bỏ quân cờ",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Hiển thị thanh công cụ ở phía dưới",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Bán kính góc bảng",
+  "@boardCornerRadius": {}
 }

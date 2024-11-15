@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Анимационен ефект при премахване на фигура",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Показване на лентата с инструменти в долната част",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус на ъгъла на дъската",
+  "@boardCornerRadius": {}
 }

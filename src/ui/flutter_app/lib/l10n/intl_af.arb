@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Stuk verwydering animasie-effek",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Wys werkbalk onder",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raadhoekradius van die bord",
+  "@boardCornerRadius": {}
 }

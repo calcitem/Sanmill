@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "Figūras novietošanas animācijas efekts",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Figūras noņemšanas animācijas efekts",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Rādīt rīkjoslu apakšā",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Dēļa stūra rādiuss",
+  "@boardCornerRadius": {}
 }

@@ -51,6 +51,7 @@ part 'package:sanmill/appearance_settings/widgets/pickers/image_crop_page.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/language_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
+part 'package:sanmill/appearance_settings/widgets/sliders/board_corner_radius_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart';
@@ -61,6 +62,11 @@ part 'package:sanmill/shared/themes/theme_modal.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
+
+  void setBoardCornerRadius(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _BoardCornerRadiusSlider(),
+      );
 
   void setBoardBorderLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,
@@ -600,6 +606,10 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).showPositionalAdvantageIndicator,
         ),
         SettingsListTile(
+          titleString: S.of(context).boardCornerRadius,
+          onTap: () => setBoardCornerRadius(context),
+        ),
+        SettingsListTile(
           titleString: S.of(context).boardBorderLineWidth,
           onTap: () => setBoardBorderLineWidth(context),
         ),
@@ -615,6 +625,10 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).pointWidth,
           onTap: () => setPointWidth(context),
         ),
+        SettingsListTile(
+          titleString: S.of(context).boardTop,
+          onTap: () => setBoardTop(context),
+        ),
         SettingsListTile.switchTile(
           value: displaySettings.isNumbersOnPiecesShown,
           onChanged: (bool val) => DB().displaySettings =
@@ -628,10 +642,6 @@ class AppearanceSettingsPage extends StatelessWidget {
         SettingsListTile(
           titleString: S.of(context).fontSize,
           onTap: () => setFontSize(context),
-        ),
-        SettingsListTile(
-          titleString: S.of(context).boardTop,
-          onTap: () => setBoardTop(context),
         ),
         SettingsListTile(
           titleString: S.of(context).animationDuration,

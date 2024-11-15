@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Анимационный эффект при удалении фигуры",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Показать панель инструментов внизу",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус угла доски",
+  "@boardCornerRadius": {}
 }

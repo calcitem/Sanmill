@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "ಮುಗ್ದವನ್ನು ತೆಗೆದುಹಾಕುವ ಅನಿಮೇಷನ್ ಪರಿಣಾಮ",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "ಕೆಳಗೆ ಸಾಧನಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "ಬೋರ್ಡ್‌ನ ಮೂಲೆಯ ತ್ರಿಜ್ಯ",
+  "@boardCornerRadius": {}
 }

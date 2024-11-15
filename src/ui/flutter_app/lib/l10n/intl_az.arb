@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Fiquru çıxarma animasiya effekti",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Alətlər panelini aşağıda göstər",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Lövhənin bucaq radiusu",
+  "@boardCornerRadius": {}
 }

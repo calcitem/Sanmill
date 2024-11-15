@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animasjonseffekt ved fjerning av brikke",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Vis verktøylinjen nederst",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Bordhjørneradius",
+  "@boardCornerRadius": {}
 }

@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "Efekti i animacionit të vendosjes së figurës",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efekti i animacionit të heqjes së figurës",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Shfaq shiritin e mjeteve në fund",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Rraundi i skajit të bordit",
+  "@boardCornerRadius": {}
 }

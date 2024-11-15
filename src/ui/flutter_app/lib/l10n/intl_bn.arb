@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "ঘুঁটি অপসারণের অ্যানিমেশন প্রভাব",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "টুলবার নীচে দেখান",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "বোর্ডের কোণের ব্যাসার্ধ",
+  "@boardCornerRadius": {}
 }

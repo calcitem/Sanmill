@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "אפקט אנימציה של הסרת כלי",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "הצג את סרגל הכלים בתחתית",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "רדיוס פינת הלוח",
+  "@boardCornerRadius": {}
 }

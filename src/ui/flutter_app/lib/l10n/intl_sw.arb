@@ -1579,5 +1579,9 @@
   "placeEffectAnimation": "Athari ya uhuishaji wa kuweka kipande",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Athari ya uhuishaji wa kuondoa kipande",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Onyesha upau wa zana chini",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Radius ya kona ya ubao",
+  "@boardCornerRadius": {}
 }

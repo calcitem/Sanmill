@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Nappulan poistamisen animaatioefekti",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Näytä työkalupalkki alhaalla",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Lautan kulman säde",
+  "@boardCornerRadius": {}
 }

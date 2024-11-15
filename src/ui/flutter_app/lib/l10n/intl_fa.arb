@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "اثر انیمیشن حذف مهره",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "نمایش نوار ابزار در پایین",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "شعاع گوشه تخته",
+  "@boardCornerRadius": {}
 }

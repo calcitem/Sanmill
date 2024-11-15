@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Efeito de animação ao remover peça",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Mostrar a barra de ferramentas na parte inferior",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raio do canto do tabuleiro",
+  "@boardCornerRadius": {}
 }

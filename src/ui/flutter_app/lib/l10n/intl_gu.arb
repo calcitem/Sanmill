@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "પતાની મૂકાશની એનિમેશન અસર",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "પતાની દૂર કરવાની એનિમેશન અસર",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ટૂલબાર નીચે બતાવો",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "બોર્ડની ખૂણાની ત્રિજ્યા",
+  "@boardCornerRadius": {}
 }

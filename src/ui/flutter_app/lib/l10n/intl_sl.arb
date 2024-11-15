@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animacijski učinek pri odstranitvi figure",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Pokaži orodno vrstico na dnu",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Polmer vogala plošče",
+  "@boardCornerRadius": {}
 }

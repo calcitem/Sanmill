@@ -80,6 +80,7 @@ class DisplaySettings {
     this.customBoardImagePath,
     this.customWhitePieceImagePath,
     this.customBlackPieceImagePath,
+    this.boardCornerRadius = 5.0,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -201,6 +202,9 @@ class DisplaySettings {
 
   @HiveField(34, defaultValue: null)
   final String? customBlackPieceImagePath;
+
+  @HiveField(35, defaultValue: 5.0)
+  final double boardCornerRadius;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

@@ -1481,5 +1481,9 @@
   "placeEffectAnimation": "Animationseffekt beim Platzieren von Spielfiguren",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Animationseffekt beim Entfernen von Spielfiguren",
-  "@removeEffectAnimation": {}
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Werkzeugleiste unten anzeigen",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Eckenradius des Bretts",
+  "@boardCornerRadius": {}
 }

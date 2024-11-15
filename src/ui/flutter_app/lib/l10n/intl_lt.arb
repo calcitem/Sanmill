@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Figūros pašalinimo animacijos efektas",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Rodyti įrankių juostą apačioje",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Lentos kampo spindulys",
+  "@boardCornerRadius": {}
 }

@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "เอฟเฟกต์แอนิเมชันการลบตัวหมาก",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "แสดงแถบเครื่องมือที่ด้านล่าง",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "รัศมีมุมของบอร์ด",
+  "@boardCornerRadius": {}
 }

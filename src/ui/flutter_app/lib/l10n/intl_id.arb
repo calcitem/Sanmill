@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Efek animasi penghapusan bidak",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Tampilkan bilah alat di bagian bawah",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Radius sudut papan",
+  "@boardCornerRadius": {}
 }

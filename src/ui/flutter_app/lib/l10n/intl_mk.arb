@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Анимациски ефект при отстранување на фигура",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Прикажи ја алатникот на дното",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус на аголот на таблата",
+  "@boardCornerRadius": {}
 }

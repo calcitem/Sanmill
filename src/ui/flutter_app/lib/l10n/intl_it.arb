@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Effetto animazione di rimozione pezzo",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Mostra la barra degli strumenti in basso",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raggio dell'angolo della tavola",
+  "@boardCornerRadius": {}
 }

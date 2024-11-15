@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Խաղաքար հանելու անիմացիոն էֆեկտ",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Ցույց տալ գործիքագոտին ներքեւում",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Տախտակի անկյունային շառավիղ",
+  "@boardCornerRadius": {}
 }

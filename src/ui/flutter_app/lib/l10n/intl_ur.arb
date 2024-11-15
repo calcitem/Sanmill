@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "مہرا ہٹانے کا متحرک اثر",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "ٹول بار کو نیچے دکھائیں",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "تختہ کے کونے کا رداس",
+  "@boardCornerRadius": {}
 }

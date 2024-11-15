@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "تأثير تحريك إزالة القطعة",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "عرض شريط الأدوات في الأسفل",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "نصف قطر زاوية اللوح",
+  "@boardCornerRadius": {}
 }

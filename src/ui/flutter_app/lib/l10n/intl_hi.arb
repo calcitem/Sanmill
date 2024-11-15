@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "गोटी हटाने का एनीमेशन प्रभाव",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "टूलबार को नीचे दिखाएं",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "बोर्ड के कोने की त्रिज्या",
+  "@boardCornerRadius": {}
 }

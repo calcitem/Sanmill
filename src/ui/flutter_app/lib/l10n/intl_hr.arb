@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animacijski efekt uklanjanja figure",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Prikaži alatnu traku dolje",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Polumjer kuta ploče",
+  "@boardCornerRadius": {}
 }

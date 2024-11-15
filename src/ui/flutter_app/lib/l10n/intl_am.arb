@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "ቁስ ማስወገድ አንድነት ተጽእኖ",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "መሳሪያ መስመርን በታች አሳይ",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "የሳህን ማዕዘን አካል ክብ አካል",
+  "@boardCornerRadius": {}
 }

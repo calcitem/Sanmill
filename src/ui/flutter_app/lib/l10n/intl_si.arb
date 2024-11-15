@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "කිවිය ඉවත් කිරීමේ ඇනිමේෂන් බලපෑම",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "මෙහෙයුම් තීරුව පහළින් පෙන්වන්න",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "මන්දලාකාර තැටියේ අන්තයේ අරය",
+  "@boardCornerRadius": {}
 }

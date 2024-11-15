@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Taş kaldırma animasyon efekti",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Araç çubuğunu altta göster",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Pano köşe yarıçapı",
+  "@boardCornerRadius": {}
 }

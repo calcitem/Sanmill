@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Εφέ κίνησης αφαίρεσης πιόνιου",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Εμφάνιση της γραμμής εργαλείων στο κάτω μέρος",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Ακτίνα γωνίας ταμπλό",
+  "@boardCornerRadius": {}
 }

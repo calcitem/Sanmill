@@ -313,7 +313,7 @@ class AppTheme {
       TextScaler.linear(DB().displaySettings.fontScale);
 
   static const double boardMargin = 10.0;
-  static const double boardBorderRadius = 5.0;
+  static double boardCornerRadius = DB().displaySettings.boardCornerRadius;
   static late double boardPadding;
   static const double sizedBoxHeight = 16.0;
 

@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Umphumela we-animation wokususa ucezu",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Khombisa ibha yamathuluzi ezansi",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Iradiusi yekona yebhodi",
+  "@boardCornerRadius": {}
 }

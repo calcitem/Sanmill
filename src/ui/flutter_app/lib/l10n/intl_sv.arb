@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Animeringseffekt vid borttagning av pjäs",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Visa verktygsfältet längst ner",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Hörnradie på brädan",
+  "@boardCornerRadius": {}
 }

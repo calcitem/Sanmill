@@ -1581,5 +1581,7 @@
   "removeEffectAnimation": "Анімаційний ефект видалення фігури",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Показати панель інструментів внизу",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радіус кута дошки",
+  "@boardCornerRadius": {}
 }

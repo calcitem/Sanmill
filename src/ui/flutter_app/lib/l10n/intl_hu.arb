@@ -1483,5 +1483,7 @@
   "removeEffectAnimation": "Bábu eltávolítási animációs effektus",
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "Eszköztár megjelenítése alul",
-  "@isToolbarAtBottom": {}
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Tábla sarkának sugara",
+  "@boardCornerRadius": {}
 }
