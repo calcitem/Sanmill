@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "ツールバーを下部に表示",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "ボードの角の半径",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "オープニングブックを使用する",
+  "@useOpeningBook": {}
 }

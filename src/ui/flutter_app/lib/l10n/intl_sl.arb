@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Pokaži orodno vrstico na dnu",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Polmer vogala plošče",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Uporabite knjigo odpiranja",
+  "@useOpeningBook": {}
 }

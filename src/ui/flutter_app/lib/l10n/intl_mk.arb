@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Прикажи ја алатникот на дното",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Радиус на аголот на таблата",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Користете книга за отворање",
+  "@useOpeningBook": {}
 }

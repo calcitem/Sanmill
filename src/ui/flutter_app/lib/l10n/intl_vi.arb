@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Hiển thị thanh công cụ ở phía dưới",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Bán kính góc bảng",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Sử dụng sách mở đầu",
+  "@useOpeningBook": {}
 }

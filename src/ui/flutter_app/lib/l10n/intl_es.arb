@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Mostrar barra de herramientas en la parte inferior",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Radio de esquina del tablero",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Usar libro de apertura",
+  "@useOpeningBook": {}
 }

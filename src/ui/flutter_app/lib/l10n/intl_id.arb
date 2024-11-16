@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Tampilkan bilah alat di bagian bawah",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Radius sudut papan",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gunakan buku pembuka",
+  "@useOpeningBook": {}
 }

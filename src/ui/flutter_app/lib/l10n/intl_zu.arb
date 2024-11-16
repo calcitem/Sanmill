@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Khombisa ibha yamathuluzi ezansi",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Iradiusi yekona yebhodi",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Sebenzisa incwadi yokuvula",
+  "@useOpeningBook": {}
 }

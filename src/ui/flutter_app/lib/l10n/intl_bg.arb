@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Показване на лентата с инструменти в долната част",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Радиус на ъгъла на дъската",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Използвайте книга за откриване",
+  "@useOpeningBook": {}
 }

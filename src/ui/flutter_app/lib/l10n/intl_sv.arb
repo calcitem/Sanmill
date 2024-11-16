@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Visa verktygsfältet längst ner",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Hörnradie på brädan",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Använd öppningsbok",
+  "@useOpeningBook": {}
 }

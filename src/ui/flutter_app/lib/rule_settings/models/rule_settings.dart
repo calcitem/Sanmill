@@ -195,6 +195,25 @@ class RuleSettings {
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
+
+  bool isLikelyNineMensMorris() {
+    return piecesCount == 9 &&
+        !hasDiagonalLines &&
+        !mayMoveInPlacingPhase &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !oneTimeUseMill;
+  }
+}
+
+/// Nine Men's Morris Rules
+///
+/// Those rules are the standard Nine Men's Morris rules.
+class NineMensMorrisRuleSettings extends RuleSettings {
+  const NineMensMorrisRuleSettings()
+      : super(
+          piecesCount: 9,
+          hasDiagonalLines: false,
+        );
 }
 
 /// Twelve Men's Morris Rules

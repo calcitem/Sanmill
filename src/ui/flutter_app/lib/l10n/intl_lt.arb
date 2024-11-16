@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Rodyti įrankių juostą apačioje",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Lentos kampo spindulys",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Naudokite atidarymo knygą",
+  "@useOpeningBook": {}
 }

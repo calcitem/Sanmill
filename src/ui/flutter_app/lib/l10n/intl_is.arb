@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Sýna tækjastiku neðst",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Horngeisli spjalds",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Notaðu opnunarbók",
+  "@useOpeningBook": {}
 }

@@ -113,7 +113,7 @@ class GeneralSettings {
     this.resignIfMostLose = false,
     this.shufflingEnabled = true,
     this.learnEndgame = false,
-    this.openingBook = false,
+    @Deprecated('Use [useOpeningBook] instead') this.openingBook = false,
     @Deprecated(
         'This only represents the old algorithm type. Use [searchAlgorithm] instead')
     this.algorithm = 2,
@@ -135,6 +135,7 @@ class GeneralSettings {
     this.remindedOpponentMayFly = false,
     this.vibrationEnabled = false,
     this.soundTheme = SoundTheme.ball,
+    this.useOpeningBook = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -180,6 +181,7 @@ class GeneralSettings {
   @HiveField(12)
   final bool learnEndgame;
 
+  @Deprecated('Use [useOpeningBook] instead')
   @HiveField(13)
   final bool openingBook;
 
@@ -242,6 +244,9 @@ class GeneralSettings {
 
   @HiveField(30, defaultValue: SoundTheme.ball)
   final SoundTheme? soundTheme;
+
+  @HiveField(31, defaultValue: false)
+  final bool useOpeningBook;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

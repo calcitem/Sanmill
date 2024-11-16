@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Afișează bara de instrumente în partea de jos",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Raza colțului tablei",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Utilizați cartea de deschidere",
+  "@useOpeningBook": {}
 }

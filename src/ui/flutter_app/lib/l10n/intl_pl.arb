@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Pokaż pasek narzędzi na dole",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Promień narożnika tablicy",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Użyj książki otwierającej",
+  "@useOpeningBook": {}
 }

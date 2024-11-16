@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "도구 모음을 아래에 표시",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "보드 코너 반지름",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "오프닝 북 사용",
+  "@useOpeningBook": {}
 }

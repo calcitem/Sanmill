@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Show toolbar at bottom",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Board corner radius",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Use opening book",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "ટૂલબાર નીચે બતાવો",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "બોર્ડની ખૂણાની ત્રિજ્યા",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ઓપનિંગ બુક ઉપયોગ કરો",
+  "@useOpeningBook": {}
 }

@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "ٹول بار کو نیچے دکھائیں",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "تختہ کے کونے کا رداس",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "افتتاحی کتاب استعمال کریں",
+  "@useOpeningBook": {}
 }

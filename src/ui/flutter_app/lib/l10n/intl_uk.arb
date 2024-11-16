@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Показати панель інструментів внизу",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Радіус кута дошки",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Використовуйте книгу для відкриття",
+  "@useOpeningBook": {}
 }

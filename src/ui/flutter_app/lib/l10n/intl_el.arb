@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Εμφάνιση της γραμμής εργαλείων στο κάτω μέρος",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Ακτίνα γωνίας ταμπλό",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Χρησιμοποιήστε βιβλίο ανοίγματος",
+  "@useOpeningBook": {}
 }

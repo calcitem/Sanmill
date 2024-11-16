@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Mostra la barra degli strumenti in basso",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Raggio dell'angolo della tavola",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Usa libro di apertura",
+  "@useOpeningBook": {}
 }

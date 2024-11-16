@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Symbolleiste unten anzeigen",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Eckenradius des Bretts",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Eröffnungsbuch verwenden",
+  "@useOpeningBook": {}
 }
