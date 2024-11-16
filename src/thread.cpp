@@ -1,5 +1,8 @@
 // This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
+// See AUTHORS file for the list of contributors.
+//
+// Copyright (C) 2004-2024 The Stockfish developers
+// Copyright (C) 2019-2024 The Sanmill developers
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,7 +15,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #include <iomanip>
 #include <sstream>

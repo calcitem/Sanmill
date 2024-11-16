@@ -1,32 +1,39 @@
 # List of authors for Sanmill, as of Sep 3, 2023
 
-# Founders of the Sanmill project
-Calcitem (calcitem)
+## Founders of the Sanmill project
 
-# All other authors of the code in alphabetical order
-Christian Weiske (cweiske)
-Diego (sguinetti)
-Jintao Yang (Joker2770)
-Nikolas Rimikis (Leptopoda)
-Xu Shiwei (xshiwei)
+- Calcitem (calcitem)
 
-# Some of the code has been adapted and modified on the basis of Stockfish, NineChess and ChessRoad etc.
+## All other authors of the code in alphabetical order
 
-# Authors of Stockfish
-Tord Romstad (romstad)
-Marco Costalba (mcostalba)
-Joona Kiiski (zamar)
-Gary Linscott (glinscott)
+- Christian Weiske (cweiske)
+- Diego (sguinetti)
+- Jintao Yang (Joker2770)
+- Nikolas Rimikis (Leptopoda)
+- Xu Shiwei (xshiwei)
 
-# Authors of NineChess
-Liu Wei (liuweilhy)
+## Code adapted and modified from other projects
 
-# Authors of ChessRoad
-He Zhaoyun (hezhaoyun)
+Some of the code in this project has been adapted and modified based on the following projects:
 
-# Authors of PerfectAI
-Gabor E. Gevay (gevay)
-Gabor Danner (DannerG) 
+### Authors of Stockfish
 
-# Authors of hash map
-Kaushik Basu (kshk123)
+For the full list of Stockfish authors, see:
+[Stockfish AUTHORS file](https://github.com/official-stockfish/Stockfish/blob/master/AUTHORS)
+
+### Authors of NineChess
+
+- Liu Wei (liuweilhy)
+
+### Authors of ChessRoad
+
+- He Zhaoyun (hezhaoyun)
+
+### Authors of PerfectAI
+
+- Gabor E. Gevay (gevay)
+- Gabor Danner (DannerG)
+
+### Authors of hash map
+
+- Kaushik Basu (kshk123)
