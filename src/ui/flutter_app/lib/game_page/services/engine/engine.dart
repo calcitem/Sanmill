@@ -100,6 +100,9 @@ class Engine {
   }
 
   Future<EngineRet> search({bool moveNow = false}) async {
+    String? fen;
+    final String normalizedFen;
+
     if (await isThinking()) {
       await stopSearching();
     } else if (moveNow) {
@@ -116,13 +119,58 @@ class Engine {
     }
 
     if (!moveNow) {
-      final String? fen = _getPositionFen();
+      fen = GameController().position.fen;
       if (fen == null) {
         // ignore: only_throw_errors
         throw const EngineNoBestMove();
       }
-      await _send(fen);
-      await _send("go");
+
+      final List<String> fenFields = fen.split(' ');
+      if (fenFields.length < 2) {
+        normalizedFen = fen;
+      } else {
+        fenFields[fenFields.length - 2] = '0';
+        normalizedFen = fenFields.join(' ');
+      }
+
+      // Check if the normalized FEN exists in the fenToBestMoves map
+      if (isRuleSupportingOpeningBook() &&
+          DB().generalSettings.useOpeningBook &&
+          nineMensMorrisFenToBestMoves.containsKey(normalizedFen)) {
+        final List<String> bestMoves =
+            nineMensMorrisFenToBestMoves[normalizedFen]!;
+
+        // Retrieve the shufflingEnabled setting
+        final bool shufflingEnabled = DB().generalSettings.shufflingEnabled;
+
+        String selectedMove;
+
+        if (shufflingEnabled) {
+          // Shuffle is enabled: select a random move from the list
+          final int seed = DateTime.now().millisecondsSinceEpoch;
+          final Random random = Random(seed);
+          selectedMove = bestMoves[random.nextInt(bestMoves.length)];
+        } else {
+          // Shuffle is disabled: select the first move
+          selectedMove = bestMoves.first;
+        }
+
+        // Return the selected move with default score and move type
+        return EngineRet(
+          "0", // Default score
+          AiMoveType.openingBook,
+          ExtMove(wmdNotationToMove[selectedMove]!),
+        );
+      } else {
+        // FEN not found in predefined map: proceed with engine search
+        fen = _getPositionFen();
+        if (fen == null) {
+          // ignore: only_throw_errors
+          throw const EngineNoBestMove();
+        }
+        await _send(fen);
+        await _send("go");
+      }
     } else {
       logger.t("$_logTag Move now");
     }
@@ -352,6 +400,16 @@ class Engine {
     await setRuleOptions();
   }
 
+  static bool isRuleSupportingOpeningBook() {
+    final RuleSettings ruleSettings = DB().ruleSettings;
+
+    if (ruleSettings.isLikelyNineMensMorris()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   static bool isRuleSupportingPerfectDatabase() {
     final RuleSettings ruleSettings = DB().ruleSettings;
 
@@ -443,6 +501,7 @@ Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{
   AiMoveType.traditional: FluentIcons.bot_24_filled,
   AiMoveType.perfect: FluentIcons.database_24_filled,
   AiMoveType.consensus: FluentIcons.bot_add_24_filled,
+  AiMoveType.openingBook: FluentIcons.book_24_filled,
   AiMoveType.unknown: FluentIcons.bot_24_filled,
 };
 

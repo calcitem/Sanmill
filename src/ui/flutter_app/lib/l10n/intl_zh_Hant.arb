@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "工具列顯示在底部",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "棋盤圓角半徑",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "使用開局庫",
+  "@useOpeningBook": {}
 }

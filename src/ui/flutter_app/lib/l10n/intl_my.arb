@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "ကိရိယာဘားကို အောက်ဆုံးတွင် ပြပါ",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "ဘုတ်အနားရိုးကျော်လွန်အချင်း",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ဖွင့်စာအုပ်ကိုသုံးပါ",
+  "@useOpeningBook": {}
 }

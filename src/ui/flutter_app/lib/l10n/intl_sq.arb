@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Shfaq shiritin e mjeteve në fund",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Rraundi i skajit të bordit",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Përdorni librin e hapjes",
+  "@useOpeningBook": {}
 }

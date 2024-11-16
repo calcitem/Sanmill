@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "මෙහෙයුම් තීරුව පහළින් පෙන්වන්න",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "මන්දලාකාර තැටියේ අන්තයේ අරය",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ආරම්භක පොත භාවිතය",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "ಕೆಳಗೆ ಸಾಧನಪಟ್ಟಿಯನ್ನು ತೋರಿಸಿ",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "ಬೋರ್ಡ್‌ನ ಮೂಲೆಯ ತ್ರಿಜ್ಯ",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ಓಪನಿಂಗ್ ಬುಕ್ ಬಳಸಿ",
+  "@useOpeningBook": {}
 }

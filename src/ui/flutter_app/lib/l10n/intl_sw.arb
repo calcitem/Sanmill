@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Onyesha upau wa zana chini",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Radius ya kona ya ubao",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Tumia kitabu cha ufunguzi",
+  "@useOpeningBook": {}
 }

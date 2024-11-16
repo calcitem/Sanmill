@@ -19,6 +19,7 @@ library mill;
 
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:catcher_2/model/catcher_2_options.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
@@ -63,6 +64,7 @@ part 'engine/mills.dart';
 part 'engine/position.dart';
 part 'engine/types.dart';
 part 'engine/zobrist.dart';
+part 'engine/opening_book.dart';
 part 'import_export/import_export_service.dart';
 part 'notifiers/board_semantics_notifier.dart';
 part 'notifiers/game_result_notifier.dart';

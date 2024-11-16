@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Zobrazit nástrojovou lištu dole",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Poloměr rohu desky",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Použijte úvodní knihu",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Eszköztár megjelenítése alul",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Tábla sarkának sugara",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Használja a nyitókönyvet",
+  "@useOpeningBook": {}
 }

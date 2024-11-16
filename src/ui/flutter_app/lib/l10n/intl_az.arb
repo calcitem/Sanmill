@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Alətlər panelini aşağıda göstər",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Lövhənin bucaq radiusu",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Açılış kitabı istifadə edin",
+  "@useOpeningBook": {}
 }

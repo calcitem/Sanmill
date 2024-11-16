@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "แสดงแถบเครื่องมือที่ด้านล่าง",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "รัศมีมุมของบอร์ด",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ใช้หนังสือเปิด",
+  "@useOpeningBook": {}
 }

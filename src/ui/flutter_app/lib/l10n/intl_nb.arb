@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Vis verktøylinjen nederst",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Bordhjørneradius",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Bruk åpningsbok",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "క్రింద టూల్‌బార్ చూపించు",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "బోర్డు మూల వ్యాసార్ధం",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ఓపెనింగ్ బుక్ వాడండి",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Araç çubuğunu altta göster",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Pano köşe yarıçapı",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Açılış kitabını kullanın",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Kuva tööriistariba all",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Laua nurga raadius",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Kasuta avamisraamatut",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Prikaži alatnu traku na dnu",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Radijus ugla ploče",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Koristite otvaranje knjige",
+  "@useOpeningBook": {}
 }

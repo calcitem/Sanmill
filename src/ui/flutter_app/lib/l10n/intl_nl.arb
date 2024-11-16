@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Werkbalk onderaan weergeven",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Hoekstraal van het bord",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gebruik openingsboek",
+  "@useOpeningBook": {}
 }

@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Näytä työkalupalkki alhaalla",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Lautan kulman säde",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Käytä avausteosta",
+  "@useOpeningBook": {}
 }

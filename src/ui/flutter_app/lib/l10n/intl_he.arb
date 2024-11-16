@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "הצג את סרגל הכלים בתחתית",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "רדיוס פינת הלוח",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "השתמש בספר פתיחה",
+  "@useOpeningBook": {}
 }

@@ -130,6 +130,12 @@ class GeneralSettingsPage extends StatelessWidget {
     );
   }
 
+  void _setUseOpeningBook(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(useOpeningBook: value);
+
+    logger.t("$_logTag useOpeningBook: $value");
+  }
+
   void _setUsePerfectDatabase(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(usePerfectDatabase: value);
 
@@ -343,6 +349,18 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
+            if (DB().ruleSettings.isLikelyNineMensMorris())
+              SettingsListTile.switchTile(
+                value: generalSettings.useOpeningBook,
+                onChanged: (bool val) {
+                  if (val == true) {
+                    _setUseOpeningBook(generalSettings, true);
+                  } else {
+                    _setUseOpeningBook(generalSettings, false);
+                  }
+                },
+                titleString: S.of(context).useOpeningBook,
+              ),
             if (!kIsWeb)
               SettingsListTile.switchTile(
                 value: generalSettings.usePerfectDatabase,

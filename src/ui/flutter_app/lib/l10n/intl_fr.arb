@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Afficher la barre d'outils en bas",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Rayon de coin du plateau",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Utiliser le livre d'ouverture",
+  "@useOpeningBook": {}
 }

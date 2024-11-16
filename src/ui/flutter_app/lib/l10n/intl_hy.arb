@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Ցույց տալ գործիքագոտին ներքեւում",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Տախտակի անկյունային շառավիղ",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Օգտագործեք բացման գիրք",
+  "@useOpeningBook": {}
 }

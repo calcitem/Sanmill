@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "Wys werkbalk onder",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Raadhoekradius van die bord",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gebruik openingsboek",
+  "@useOpeningBook": {}
 }

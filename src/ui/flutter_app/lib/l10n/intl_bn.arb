@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "টুলবার নীচে দেখান",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "বোর্ডের কোণের ব্যাসার্ধ",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ওপেনিং বুক ব্যবহার করুন",
+  "@useOpeningBook": {}
 }

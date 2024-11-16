@@ -1485,5 +1485,7 @@
   "isToolbarAtBottom": "Asboblar panelini pastda ko'rsatish",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Taxta burchak radiusi",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Ochiq kitobdan foydalaning",
+  "@useOpeningBook": {}
 }

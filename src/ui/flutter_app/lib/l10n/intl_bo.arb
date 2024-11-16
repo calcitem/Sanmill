@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "ལྕགས་སྒྲོན་སྤྱིར་བཤད་འོག་ཕྱོགས་སྟོན།",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "གོ་རིམ་གྱི་གཡོན་ཚད།",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "འགོ་འཛུགས་ཡིག་ཆ་ལ་བཀོལ་པ།",
+  "@useOpeningBook": {}
 }

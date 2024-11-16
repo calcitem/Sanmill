@@ -215,7 +215,7 @@ extension PieceColorExtension on PieceColor {
   Color get blurPositionColor => mainColor.withOpacity(0.1);
 }
 
-enum AiMoveType { unknown, traditional, perfect, consensus }
+enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
 
 enum Phase { ready, placing, moving, gameOver }
 

@@ -1583,5 +1583,7 @@
   "isToolbarAtBottom": "መሳሪያ መስመርን በታች አሳይ",
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "የሳህን ማዕዘን አካል ክብ አካል",
-  "@boardCornerRadius": {}
+  "@boardCornerRadius": {},
+  "useOpeningBook": "መክፈቻ መጽሐፍ ይጠቀሙ",
+  "@useOpeningBook": {}
 }
