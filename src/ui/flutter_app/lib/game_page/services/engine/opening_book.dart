@@ -35,6 +35,8 @@ part of '../mill.dart';
 //   ],
 //
 // Leave a blank line below, generate the output code, and paste it back here.
+//
+// Note: Replace the second and third last field of FEN string with '0'.
 
 Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
   /*
@@ -2011,8 +2013,7 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     |         |        |
     a1 ----- d1 ----- g1
   */
-  "********/@@OOOO@*/******** w p r 4 5 3 5 1 0 0 0 0 0 15762598695796736 0 4":
-      <String>["xf6"],
+  "********/@@OOOO@*/******** w p r 4 5 3 5 1 0 0 0 0 0 0 0 4": <String>["xf6"],
 
   ////////
 

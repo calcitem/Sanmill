@@ -129,7 +129,10 @@ class Engine {
       if (fenFields.length < 2) {
         normalizedFen = fen;
       } else {
+        // Replace the second last field with '0'
         fenFields[fenFields.length - 2] = '0';
+        // Replace the third last field with '0'
+        fenFields[fenFields.length - 3] = '0';
         normalizedFen = fenFields.join(' ');
       }
 
