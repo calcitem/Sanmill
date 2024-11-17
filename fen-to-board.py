@@ -271,6 +271,7 @@ try:
 
     # Output the transformed boards
     print("  //////////////////////////////////////////////////////////////////////////////")
+    print("")
     for idx, (transformation, transformed_board_state) in enumerate(board_states_list):
         rotation_steps, flip_v, flip_h, flip_io = transformation
         # Reset the board to the original state for each transformation
