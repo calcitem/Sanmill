@@ -37,8 +37,8 @@ middle_ring_positions = ['d6', 'f6', 'f4', 'f2', 'd2', 'b2', 'b4', 'b6']
 outer_ring_positions = ['d7', 'g7', 'g4', 'g1', 'd1', 'a1', 'a4', 'a7']
 
 # Build mappings between position names and their ring and index
-positions_index = {}  # Map position name to (ring, index)
-index_to_position = {}  # Map (ring, index) to position name
+positions_index = {}      # Map position name to (ring, index)
+index_to_position = {}    # Map (ring, index) to position name
 
 # Assign indices to positions in each ring
 for idx, pos_name in enumerate(outer_ring_positions):
@@ -209,107 +209,135 @@ def board_state_to_fen(board_state, rest_of_fen=''):
 
     return fen_string
 
-# Main code for processing user input
+# DualWriter class to write to both console and file
+class DualWriter:
+    def __init__(self, file, original_stdout):
+        self.file = file
+        self.console = original_stdout
+
+    def write(self, message):
+        self.console.write(message)
+        self.file.write(message)
+
+    def flush(self):
+        self.console.flush()
+        self.file.flush()
+
+# Main code for processing input from a file
 import re
 from itertools import product
+import sys
 
-# Read the multi-line input
-print("Enter the input (end with an empty line):")
-input_lines = []
-while True:
+def main():
+    # Check if the input filename is provided as a command-line argument
+    if len(sys.argv) < 2:
+        print("Usage: python script.py <input_filename>")
+        sys.exit(1)
+
+    input_filename = sys.argv[1]
+
+    # Read the content from the input file
     try:
-        line = input()
-        if not line.strip():
-            break
-        input_lines.append(line)
-    except EOFError:
-        break  # End of input
+        with open(input_filename, 'r', encoding='utf-8') as infile:
+            input_text = infile.read()
+    except FileNotFoundError:
+        print(f"Error: File '{input_filename}' not found.")
+        sys.exit(1)
+    except IOError as e:
+        print(f"Error reading file '{input_filename}': {e}")
+        sys.exit(1)
 
-# Combine the lines into a single string
-input_text = '\n'.join(input_lines)
+    # Save the original stdout
+    original_stdout = sys.stdout
 
-# Pattern to match the FEN string inside quotes
-fen_pattern = r'"([^"]+)"'
+    # Open the output file in write mode to overwrite existing content
+    try:
+        with open('opening-book.txt', 'w', encoding='utf-8') as f:
+            # Redirect stdout to write to both console and file
+            sys.stdout = DualWriter(f, original_stdout)
 
-fen_match = re.search(fen_pattern, input_text)
-if fen_match:
-    fen_string = fen_match.group(1)
-else:
-    raise ValueError("FEN string not found in the input.")
+            # Pattern to match the FEN string inside quotes
+            fen_pattern = r'"([^"]+)"'
 
-# Pattern to match the positions inside <String>[ ... ]
-positions_pattern = r'<String>\[\s*(.*?)\s*\]'
-positions_match = re.search(positions_pattern, input_text, re.DOTALL)
-if positions_match:
-    positions_text = positions_match.group(1)
-    # Split the positions by commas and strip quotes
-    positions_list = [pos.strip().strip('"') for pos in positions_text.split(',') if pos.strip()]
-else:
-    raise ValueError("Positions not found in the input.")
-
-try:
-    # Parse the FEN string to get the board state
-    board_state, rest_of_fen = parse_fen(fen_string)
-
-    # Prepare to generate transformations
-    rotation_steps_list = [0, 2, 4, 6]  # Corresponds to 0°, 90°, 180°, 270°
-    flip_v_options = [False, True]      # Vertical flip
-    flip_h_options = [False, True]      # Horizontal flip
-    flip_io_options = [False, True]     # Inner/outer flip
-
-    # Generate all combinations of transformations
-    transformations = list(product(rotation_steps_list, flip_v_options, flip_h_options, flip_io_options))
-
-    unique_board_states = set()
-    board_states_list = []
-
-    # Apply each transformation and collect unique board states
-    for transformation in transformations:
-        transformed_board_state = apply_transformation(board_state, transformation)
-        canonical_state = board_state_to_canonical(transformed_board_state)
-        if canonical_state not in unique_board_states:
-            unique_board_states.add(canonical_state)
-            board_states_list.append((transformation, transformed_board_state))
-
-    # Output the transformed boards
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("")
-    print("  //////////////////////////////////////////////////////////////////////////////")
-    print("")
-    for idx, (transformation, transformed_board_state) in enumerate(board_states_list):
-        rotation_steps, flip_v, flip_h, flip_io = transformation
-        # Reset the board to the original state for each transformation
-        board = original_board[:]
-        update_board(transformed_board_state, board)
-        # Print the board drawing
-        print("  /*")
-        for line in board[1:-1]:  # Skip the first and last line (the /* and */ comments)
-            print(line)
-        print("  */")
-        # Transform the positions_list with handling of optional 'x' prefix
-        transformed_positions_list = []
-        for pos in positions_list:
-            if pos.startswith('x'):
-                prefix = 'x'
-                coord = pos[1:]
+            fen_match = re.search(fen_pattern, input_text)
+            if fen_match:
+                fen_string = fen_match.group(1)
             else:
-                prefix = ''
-                coord = pos
-            transformed_coord = transform_position(coord, transformation)
-            transformed_pos = prefix + transformed_coord
-            transformed_positions_list.append(transformed_pos)
-        # Generate the transformed FEN string
-        transformed_fen_string = board_state_to_fen(transformed_board_state, rest_of_fen)
-        # Output the Dart code snippet
-        print(f'  "{transformed_fen_string}": <String>[')
-        for pos in transformed_positions_list:
-            print(f'    "{pos}",')
-        print('  ],\n')
-except Exception as e:
-    print("Invalid input. Please provide a valid FEN string or positions.")
+                print("Invalid input. Please provide a valid FEN string.")
+                return
+
+            # Pattern to match the positions inside <String>[ ... ]
+            positions_pattern = r'<String>\[\s*(.*?)\s*\]'
+            positions_match = re.search(positions_pattern, input_text, re.DOTALL)
+            if positions_match:
+                positions_text = positions_match.group(1)
+                # Split the positions by commas and strip quotes
+                positions_list = [pos.strip().strip('"') for pos in positions_text.split(',') if pos.strip()]
+            else:
+                print("Invalid input. Please provide valid positions.")
+                return
+
+            try:
+                # Parse the FEN string to get the board state
+                board_state, rest_of_fen = parse_fen(fen_string)
+
+                # Prepare to generate transformations
+                rotation_steps_list = [0, 2, 4, 6]  # Corresponds to 0°, 90°, 180°, 270°
+                flip_v_options = [False, True]       # Vertical flip
+                flip_h_options = [False, True]       # Horizontal flip
+                flip_io_options = [False, True]      # Inner/outer flip
+
+                # Generate all combinations of transformations
+                transformations = list(product(rotation_steps_list, flip_v_options, flip_h_options, flip_io_options))
+
+                unique_board_states = set()
+                board_states_list = []
+
+                # Apply each transformation and collect unique board states
+                for transformation in transformations:
+                    transformed_board_state = apply_transformation(board_state, transformation)
+                    canonical_state = board_state_to_canonical(transformed_board_state)
+                    if canonical_state not in unique_board_states:
+                        unique_board_states.add(canonical_state)
+                        board_states_list.append((transformation, transformed_board_state))
+
+                # Output the transformed boards
+                print("  //////////////////////////////////////////////////////////////////////////////")
+                print("")
+                for idx, (transformation, transformed_board_state) in enumerate(board_states_list):
+                    rotation_steps, flip_v, flip_h, flip_io = transformation
+                    # Reset the board to the original state for each transformation
+                    board = original_board[:]
+                    update_board(transformed_board_state, board)
+                    # Print the board drawing
+                    print("  /*")
+                    for line in board[1:-1]:  # Skip the first and last line (the /* and */ comments)
+                        print(line)
+                    print("  */")
+                    # Transform the positions_list with handling of optional 'x' prefix
+                    transformed_positions_list = []
+                    for pos in positions_list:
+                        if pos.startswith('x'):
+                            prefix = 'x'
+                            coord = pos[1:]
+                        else:
+                            prefix = ''
+                            coord = pos
+                        transformed_coord = transform_position(coord, transformation)
+                        transformed_pos = prefix + transformed_coord
+                        transformed_positions_list.append(transformed_pos)
+                    # Generate the transformed FEN string
+                    transformed_fen_string = board_state_to_fen(transformed_board_state, rest_of_fen)
+                    # Output the Dart code snippet
+                    print(f'  "{transformed_fen_string}": <String>[')
+                    for pos in transformed_positions_list:
+                        print(f'    "{pos}",')
+                    print('  ],\n')
+            except Exception as e:
+                print("Invalid input. Please provide a valid FEN string or positions.")
+    finally:
+        # Restore the original stdout
+        sys.stdout = original_stdout
+
+if __name__ == "__main__":
+    main()

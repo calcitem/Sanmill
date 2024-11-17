@@ -155,6 +155,15 @@ class GameController {
     _startGame();
   }
 
+  bool isAutoRestart() {
+    if (/*EnvironmentConfig.devMode ==*/ true) {
+      return DB().generalSettings.isAutoRestart &&
+          GameController().position.isNoDraw() == false;
+    }
+
+    //return DB().generalSettings.isAutoRestart;
+  }
+
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
   Future<EngineResponse> engineToGo(BuildContext context,
@@ -223,8 +232,7 @@ class GameController {
           );
     }
 
-    while ((gameInstance.isAiToMove &&
-            (isGameRunning || DB().generalSettings.isAutoRestart)) &&
+    while ((gameInstance.isAiToMove && (isGameRunning || isAutoRestart())) &&
         GameController().isControllerActive) {
       if (gameMode == GameMode.aiVsAi) {
         GameController()
@@ -291,7 +299,7 @@ class GameController {
       GameController().aiMoveType = engineRet.aiMoveType;
 
       if (GameController().position.winner != PieceColor.nobody) {
-        if (DB().generalSettings.isAutoRestart == true) {
+        if (isAutoRestart() == true) {
           GameController().reset();
         } else {
           GameController().isEngineRunning = false;

@@ -99,6 +99,28 @@ class Engine {
     }
   }
 
+  /// Saves the given FEN string to a local file named 'fen.txt'.
+  /// If the file already exists, the FEN is appended with a newline.
+  Future<void> _saveFenToFile(String fen) async {
+    try {
+      // Get the application documents directory.
+      final Directory directory = await getApplicationDocumentsDirectory();
+
+      // Define the path to 'fen.txt'.
+      final String path = '${directory.path}/fen.txt';
+
+      final File file = File(path);
+
+      // Append the FEN string with a newline. If the file doesn't exist, it will be created.
+      await file.writeAsString('$fen\n', mode: FileMode.append);
+
+      logger.i("Successfully saved FEN to $path");
+    } catch (e) {
+      logger.e("Failed to save FEN to file: $e");
+      // Handle the error as needed, possibly rethrow or notify the user.
+    }
+  }
+
   Future<EngineRet> search({bool moveNow = false}) async {
     String? fen;
     final String normalizedFen;
@@ -158,12 +180,23 @@ class Engine {
           selectedMove = bestMoves.first;
         }
 
-        // Return the selected move with default score and move type
-        return EngineRet(
-          "0", // Default score
-          AiMoveType.openingBook,
-          ExtMove(wmdNotationToMove[selectedMove]!),
-        );
+        // Check if the first character of selectedMove is 'x'
+        if (selectedMove.startsWith('x')) {
+          // Extract the part after 'x', query wmdNotationToMove, and prepend '-'
+          final String move = wmdNotationToMove[selectedMove.substring(1)]!;
+          return EngineRet(
+            "0", // Default score
+            AiMoveType.openingBook,
+            ExtMove('-$move'),
+          );
+        } else {
+          // Default logic for selectedMove
+          return EngineRet(
+            "0", // Default score
+            AiMoveType.openingBook,
+            ExtMove(wmdNotationToMove[selectedMove]!),
+          );
+        }
       } else {
         // FEN not found in predefined map: proceed with engine search
         fen = _getPositionFen();
@@ -207,6 +240,20 @@ class Engine {
         aiMoveType = AiMoveType.traditional;
       } else if (aiMoveTypeStr == "perfect") {
         aiMoveType = AiMoveType.perfect;
+        if (EnvironmentConfig.devMode == true) {
+          final String? saveFen = GameController().position.fen;
+
+          // Save saveFen to local file if it does not contain " m ".
+          if (saveFen != null) {
+            if (!saveFen.contains(" m ")) {
+              await _saveFenToFile(saveFen);
+            } else {
+              logger.w("$_logTag saveFen contains ' m ', not saving to file.");
+            }
+          } else {
+            logger.w("$_logTag saveFen is null, cannot save to file.");
+          }
+        }
       } else if (aiMoveTypeStr == "consensus") {
         aiMoveType = AiMoveType.consensus;
       }

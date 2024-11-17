@@ -428,7 +428,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
     GameController().headerIconsNotifier.showIcons();
 
-    if (DB().generalSettings.isAutoRestart == false &&
+    if (GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.aiVsAi &&
         gameMode != GameMode.setupPosition) {

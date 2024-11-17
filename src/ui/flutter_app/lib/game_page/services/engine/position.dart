@@ -83,6 +83,13 @@ class Position {
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 
+  bool isNoDraw() {
+    if (score[PieceColor.white]! > 0 || score[PieceColor.black]! > 0) {
+      return true;
+    }
+    return false;
+  }
+
   int _gamePly = 0;
   PieceColor _sideToMove = PieceColor.white;
 
