@@ -90,13 +90,13 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     1. b4
   */
   "********/******O*/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
+    "b6",
     "d6",
     "f6",
-    "b6",
     "f4",
+    "f2",
     "d2",
     "b2",
-    "f2",
   ],
 
   /*
@@ -115,13 +115,13 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
     1. d6
   */
   "********/O*******/******** b p p 1 8 0 9 0 0 0 0 0 0 0 0 1": <String>[
-    "d2",
     "f6",
-    "b6",
     "f4",
-    "b4",
-    "b2",
     "f2",
+    "d2",
+    "b2",
+    "b4",
+    "b6",
   ],
 
   /*
