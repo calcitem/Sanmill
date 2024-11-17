@@ -1326,6 +1326,7 @@ Map<String, List<String>> nineMensMorrisFenToBestMoves = <String, List<String>>{
   ],
 
   //////////////////////////////////////////////////////////////////////////////
+
   /*
     a7 ----- d7 ----- g7
     |         |        |
