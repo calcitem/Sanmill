@@ -182,6 +182,7 @@ class Engine {
 
         // Check if the first character of selectedMove is 'x'
         if (selectedMove.startsWith('x')) {
+          await Future<void>.delayed(const Duration(milliseconds: 100));
           // Extract the part after 'x', query wmdNotationToMove, and prepend '-'
           final String move = wmdNotationToMove[selectedMove.substring(1)]!;
           return EngineRet(
@@ -190,6 +191,7 @@ class Engine {
             ExtMove('-$move'),
           );
         } else {
+          await Future<void>.delayed(const Duration(milliseconds: 100));
           // Default logic for selectedMove
           return EngineRet(
             "0", // Default score
