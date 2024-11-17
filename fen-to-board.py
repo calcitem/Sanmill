@@ -133,8 +133,9 @@ def apply_transformation(board_state, transformation):
         index = (index + rotation_steps) % 8
 
         # Map back to position name
-        new_pos_name = index_to_position[(ring, index)]
-        transformed_board_state[new_pos_name] = piece
+        new_pos_name = index_to_position.get((ring, index))
+        if new_pos_name:
+            transformed_board_state[new_pos_name] = piece
 
     return transformed_board_state
 
@@ -165,7 +166,9 @@ def transform_position(pos_name, transformation):
     index = (index + rotation_steps) % 8
 
     # Map back to position name
-    new_pos_name = index_to_position[(ring, index)]
+    new_pos_name = index_to_position.get((ring, index))
+    if not new_pos_name:
+        raise ValueError(f"Transformation resulted in invalid position for ring {ring} and index {index}")
     return new_pos_name
 
 # Function to represent the board state in a canonical form for comparison
@@ -208,6 +211,7 @@ def board_state_to_fen(board_state, rest_of_fen=''):
 
 # Main code for processing user input
 import re
+from itertools import product
 
 # Read the multi-line input
 print("Enter the input (end with an empty line):")
@@ -238,7 +242,7 @@ positions_pattern = r'<String>\[\s*(.*?)\s*\]'
 positions_match = re.search(positions_pattern, input_text, re.DOTALL)
 if positions_match:
     positions_text = positions_match.group(1)
-    # Now split the positions by commas
+    # Split the positions by commas and strip quotes
     positions_list = [pos.strip().strip('"') for pos in positions_text.split(',') if pos.strip()]
 else:
     raise ValueError("Positions not found in the input.")
@@ -252,8 +256,6 @@ try:
     flip_v_options = [False, True]      # Vertical flip
     flip_h_options = [False, True]      # Horizontal flip
     flip_io_options = [False, True]     # Inner/outer flip
-
-    from itertools import product
 
     # Generate all combinations of transformations
     transformations = list(product(rotation_steps_list, flip_v_options, flip_h_options, flip_io_options))
@@ -282,8 +284,18 @@ try:
         for line in board[1:-1]:  # Skip the first and last line (the /* and */ comments)
             print(line)
         print("  */")
-        # Transform the positions_list
-        transformed_positions_list = [transform_position(pos, transformation) for pos in positions_list]
+        # Transform the positions_list with handling of optional 'x' prefix
+        transformed_positions_list = []
+        for pos in positions_list:
+            if pos.startswith('x'):
+                prefix = 'x'
+                coord = pos[1:]
+            else:
+                prefix = ''
+                coord = pos
+            transformed_coord = transform_position(coord, transformation)
+            transformed_pos = prefix + transformed_coord
+            transformed_positions_list.append(transformed_pos)
         # Generate the transformed FEN string
         transformed_fen_string = board_state_to_fen(transformed_board_state, rest_of_fen)
         # Output the Dart code snippet
