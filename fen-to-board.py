@@ -272,6 +272,14 @@ try:
             board_states_list.append((transformation, transformed_board_state))
 
     # Output the transformed boards
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
+    print("")
     print("  //////////////////////////////////////////////////////////////////////////////")
     print("")
     for idx, (transformation, transformed_board_state) in enumerate(board_states_list):
