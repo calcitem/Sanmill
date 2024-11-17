@@ -1,5 +1,5 @@
 # Define the initial board as a list of strings
-board = [
+original_board = [
     "  /*",
     "    a7 ----- d7 ----- g7",
     "    |         |        |",
@@ -36,20 +36,8 @@ inner_ring_positions = ['d5', 'e5', 'e4', 'e3', 'd3', 'c3', 'c4', 'c5']
 middle_ring_positions = ['d6', 'f6', 'f4', 'f2', 'd2', 'b2', 'b4', 'b6']
 outer_ring_positions = ['d7', 'g7', 'g4', 'g1', 'd1', 'a1', 'a4', 'a7']
 
-# Read the FEN string from input
-fen_string = input().strip()
-
-# Split the FEN string into parts
-positions_fen = fen_string.split(' ')[0]
-fen_parts = positions_fen.split('/')
-
-# Extract FEN strings for each ring
-inner_fen = fen_parts[0]
-middle_fen = fen_parts[1]
-outer_fen = fen_parts[2]
-
-# Function to update the board
-def update_board(fen, positions):
+# Function to update the board based on the FEN string
+def update_board(fen, positions, board):
     for i in range(8):
         fen_char = fen[i]
         if fen_char != '*':
@@ -61,12 +49,36 @@ def update_board(fen, positions):
             line[col_idx + 1] = fen_char
             board[line_idx] = ''.join(line)
 
-# Update the board for each ring
-update_board(inner_fen, inner_ring_positions)
-update_board(middle_fen, middle_ring_positions)
-update_board(outer_fen, outer_ring_positions)
+# Main loop for processing user input
+while True:
+    # Reset the board to the original state
+    board = original_board[:]
 
-# Print the modified board
-for line in board:
-    print(line)
+    # Read the FEN string from input
+    fen_string = input("Enter FEN string (or 'q'/'quit' to exit): ").strip()
 
+    # Check if the user wants to quit
+    if fen_string.lower() in ['q', 'quit']:
+        print("Exiting the program.")
+        break
+
+    try:
+        # Split the FEN string into parts
+        positions_fen = fen_string.split(' ')[0]
+        fen_parts = positions_fen.split('/')
+
+        # Extract FEN strings for each ring
+        inner_fen = fen_parts[0]
+        middle_fen = fen_parts[1]
+        outer_fen = fen_parts[2]
+
+        # Update the board for each ring
+        update_board(inner_fen, inner_ring_positions, board)
+        update_board(middle_fen, middle_ring_positions, board)
+        update_board(outer_fen, outer_ring_positions, board)
+
+        # Print the modified board
+        for line in board:
+            print(line)
+    except Exception as e:
+        print("Invalid input. Please provide a valid FEN string.")
