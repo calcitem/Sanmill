@@ -156,12 +156,12 @@ class GameController {
   }
 
   bool isAutoRestart() {
-    if (/*EnvironmentConfig.devMode ==*/ true) {
+    if (EnvironmentConfig.devMode == true) {
       return DB().generalSettings.isAutoRestart &&
           GameController().position.isNoDraw() == false;
     }
 
-    //return DB().generalSettings.isAutoRestart;
+    return DB().generalSettings.isAutoRestart;
   }
 
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.

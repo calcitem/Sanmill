@@ -158,6 +158,8 @@ class Engine {
         normalizedFen = fenFields.join(' ');
       }
 
+      logger.i("FEN = $normalizedFen");
+
       // Check if the normalized FEN exists in the fenToBestMoves map
       if (isRuleSupportingOpeningBook() &&
           DB().generalSettings.useOpeningBook &&
