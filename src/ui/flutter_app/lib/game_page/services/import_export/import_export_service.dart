@@ -24,7 +24,7 @@ class ImportService {
 
   static const String _logTag = "[Importer]";
 
-  /// Exports the game to the devices clipboard.
+  /// Exports the game to the device's clipboard.
   static Future<void> exportGame(BuildContext context) async {
     await Clipboard.setData(
       ClipboardData(text: GameController().gameRecorder.moveHistoryText),
@@ -219,16 +219,11 @@ class ImportService {
   static bool _isGoldTokenMoveList(String text) {
     // Example: https://www.goldtoken.com/games/play?g=13097650;print=yes
 
-    if (text.length >= 10 &&
-        (text.substring(0, 9) == "GoldToken" ||
-            text.substring(0, 10) == "Past Moves" ||
-            text.substring(0, 5) == "Go to" ||
-            text.substring(0, 4) == "Turn" ||
-            text.substring(0, 8) == "(Player ")) {
-      return true;
-    }
-
-    return false;
+    return text.contains("GoldToken") ||
+        text.contains("Past Moves") ||
+        text.contains("Go to") ||
+        text.contains("Turn") ||
+        text.contains("(Player ");
   }
 
   static String addTagPairs(String moveList) {
@@ -369,6 +364,12 @@ class ImportService {
       }
 
       ml = moveList.substring(start);
+
+      // Remove "Quick Jump" and any text after it to ensure successful import
+      final int quickJumpIndex = ml.indexOf("Quick Jump");
+      if (quickJumpIndex != -1) {
+        ml = ml.substring(0, quickJumpIndex).trim();
+      }
     }
 
     // TODO: Is it will cause what?
@@ -402,7 +403,7 @@ class ImportService {
         // GoldToken
         .replaceAll("\t", " ")
         .replaceAll("place to ", "")
-        .replaceAll("  take ", "x")
+        .replaceAll("  take ", " x")
         .replaceAll(" -> ", "-")
         // Finally
         .split(" ");
