@@ -16,11 +16,11 @@
   "@no": {
     "description": "No"
   },
-  "game": "Partija",
+  "game": "Igra",
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Čovjek protiv UI",
+  "humanVsAi": "Čovjek protiv UI-a",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "UI protiv UI",
+  "aiVsAi": "UI protiv UI-a",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -144,7 +144,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo mjesto.",
+  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo koje mjesto.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -320,7 +320,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Vrijeme razmišljanja za UI",
+  "moveTime": "Vrijeme razmišljanja UI-a",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -380,7 +380,7 @@
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Broj figura koje svaki igrač ima",
+  "piecesCount": "Broj figura za svakog igrača",
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
@@ -532,7 +532,7 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Prikaži oznake na ploči",
+  "isNotationsShown": "Prikaži notacije na ploči",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
@@ -544,11 +544,11 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Širina vanjske linije",
+  "boardBorderLineWidth": "Širina rubne linije ploče",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Širina unutarnjih linija",
+  "boardInnerLineWidth": "Širina unutarnjih linija ploče",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
@@ -1148,7 +1148,7 @@
   "@browse": {
     "description": "Browse…"
   },
-  "gameSavedTo": "Partija je spremljena u",
+  "gameSavedTo": "Igra je spremljena u",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
@@ -1268,7 +1268,7 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "Za mijenjanje vrijednosti u biraču možeš koristiti kotačić miša.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "Vrijeme razmišljanja za UI postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
+  "noTimeLimitForThinking": "Vrijeme razmišljanja UI-a postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja umjetne inteligencije možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je AI u fazi razmišljanja kada vrijeme istekne.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
@@ -1296,7 +1296,7 @@
   "@whenBoardIsFull_Detail": {},
   "sideToMoveRemovePiece": "Igrač koji prvi pomiče figure u fazi pomicanja uklanja jednu od protivničkih figura.",
   "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Obje strane pristaju na remi.",
+  "agreeToDraw": "Obje strane pristaju na neodlučeno.",
   "@agreeToDraw": {},
   "takeOpponentsPiece": "Uzmite jednu od protivničkih figura.",
   "@takeOpponentsPiece": {},
@@ -1308,7 +1308,7 @@
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Sada kada smo ušli u fazu skakanja, protivničke figure mogu skakati na bilo koje prazno mjesto na ploči. Pravilo skakanja se može isključiti u „Postavke pravila”.",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Kada zastoj",
+  "whenStalemate": "Pat situacija",
   "@whenStalemate": {},
   "whenStalemate_Detail": "Koja radnja slijedi kada se nijedna figura ne može pomaknuti?",
   "@whenStalemate_Detail": {},
@@ -1318,7 +1318,7 @@
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Uklonite jednu od protivničkih figura i napravite sljedeći potez.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Završite s neodlučenim patom.",
+  "endWithStalemateDraw": "Završite igru neodlučeno zbog pat situacije.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Uklonite jednu od protivničkih figura i promijenite stranu kretanja.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1352,7 +1352,7 @@
   "@violetDream": {},
   "mintChocolate": "Mint čokolada",
   "@mintChocolate": {},
-  "skyBlue": "Plavo nebo",
+  "skyBlue": "Nebesko plava",
   "@skyBlue": {},
   "playfulGarden": "Razigrani vrt",
   "@playfulGarden": {},
@@ -1364,7 +1364,7 @@
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
   "@showPositionalAdvantageIndicator": {},
-  "usePerfectDatabase": "Koristite savršenu bazu podataka",
+  "usePerfectDatabase": "Koristi savršenu bazu podataka",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "Omogućite ovu opciju da koristite besprijekornu bazu podataka igara generiranu pomoću vrhunskih algoritama. Ova funkcija integrira i strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je poželjan izbor za igrače koji traže najviši nivo preciznosti u igri. Kreirana kroz precizne računarske tehnike, baza podataka je dizajnirana da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako AI ne uspije pristupiti bazi podataka, okrenut će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Nivo poteškoće' postaje gotovo nepobjediv, a 'Vrijeme razmišljanja AI' doživljava drastično smanjenje. Mnoga podešavanja unutar opcija 'AI's Playstyle' će biti poništena, jer rezultati baze podataka imaju najveći prioritet.\n\nZa upute o tome kako maksimalno iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
@@ -1418,7 +1418,7 @@
   "@transformed": {},
   "cannotTransform": "Nije moguće transformirati.",
   "@cannotTransform": {},
-  "rotate": "Rotiraj",
+  "rotate": "Okreni",
   "@rotate": {},
   "horizontalFlip": "H okret.",
   "@horizontalFlip": {},
