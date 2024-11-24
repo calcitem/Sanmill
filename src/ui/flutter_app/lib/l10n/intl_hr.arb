@@ -16,11 +16,11 @@
   "@no": {
     "description": "No"
   },
-  "game": "Partija",
+  "game": "Igra",
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Čovjek protiv UI",
+  "humanVsAi": "Čovjek protiv UI-a",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "UI protiv UI",
+  "aiVsAi": "UI protiv UI-a",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -144,7 +144,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo mjesto.",
+  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo koje mjesto.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -320,7 +320,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Vrijeme razmišljanja za UI",
+  "moveTime": "Vrijeme razmišljanja UI-a",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -380,7 +380,7 @@
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Broj figura koje svaki igrač ima",
+  "piecesCount": "Broj figura za svakog igrača",
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
@@ -392,7 +392,7 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Ako je skakanje aktivirano, kada igraču preostane određeni broj figura, one se mogu pomaknuti na bilo koje neuzeto mjesto. Pomicanje nije ograničeno samo na susjedna mjesta kao inače u igri.",
+  "flyPieceCount_Detail": "Ako je skakanje aktivirano, kada igraču preostane određeni broj figura, one se mogu pomaknuti na bilo koje nezauzeto mjesto. Pomicanje nije ograničeno samo na susjedna mjesta kao inače u igri.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
@@ -436,7 +436,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kada je ploča na kraju faze postavljanja puna, igrač koji prvi postavlja figure gubi igru. Inače je igra neodlučena.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kada je ploča na kraju faze postavljanja puna, igrač koji prvi postavlja figure gubi igru. Inače igra završava neodlučeno.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
@@ -532,7 +532,7 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Prikaži oznake na ploči",
+  "isNotationsShown": "Prikaži notacije na ploči",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
@@ -544,11 +544,11 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Širina vanjske linije",
+  "boardBorderLineWidth": "Širina rubne linije ploče",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Širina unutarnjih linija",
+  "boardInnerLineWidth": "Širina unutarnjih linija ploče",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
@@ -560,7 +560,7 @@
   "@fontSize": {
     "description": "Font size"
   },
-  "standardNotation": "WMD zapisi",
+  "standardNotation": "WMD notacija",
   "@standardNotation": {
     "description": "Standard notation"
   },
@@ -648,7 +648,7 @@
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Ako se ne slažete s ovom politikom, nemojte koristiti ovu aplikaciju. Korištenje aplikacije podrazumijeva da prihvaćate ove uvjete.",
+  "privacyPolicy_Detail_2": ". Ako se ne slažete s ovom politikom nemojte koristiti ovu aplikaciju. Korištenje aplikacije podrazumijeva da prihvaćate ove uvjete.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
@@ -774,7 +774,7 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Koristi ljudsko iskustvo",
+  "drawOnHumanExperience": "Neodlučeno na ljudskom iskustvu",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
@@ -994,7 +994,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "Mlin se može više puta pokvariti i prepravljati",
+  "mayBreakAndRemakeMillRepeatedly": "Mlin se može više puta razbiti i ponovo stvoriti",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1148,7 +1148,7 @@
   "@browse": {
     "description": "Browse…"
   },
-  "gameSavedTo": "Partija je spremljena u",
+  "gameSavedTo": "Igra je spremljena u",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
@@ -1268,27 +1268,27 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "Za mijenjanje vrijednosti u biraču možeš koristiti kotačić miša.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "Vrijeme razmišljanja za UI postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
+  "noTimeLimitForThinking": "Vrijeme razmišljanja UI-a postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja umjetne inteligencije možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je AI u fazi razmišljanja kada vrijeme istekne.",
+  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja UI-a možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je UI usred razmišljanja kada vrijeme istekne.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Ako postaviš visoku razinu težine, ali ne povećaš vrijeme razmišljanja UI-a, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama stroja.",
+  "noteActualDifficultyLevelMayBeLimited": "Ako postaviš visoku razinu težine, ali ne povećaš vrijeme razmišljanja UI-a, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama uređaja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretrage i korištenjem dobrog početnog pogađanja za sužavanje prostora pretrage.",
   "@whatIsMtdf": {},
-  "whatIsPvs": "PVS (Principal Variation Search) je algoritam pretraživanja za pronalaženje najboljeg poteza u određenoj poziciji. To je poboljšanje alfa-beta algoritma i koristi nulte ili nulte pretrage prozora za potvrdu da je potez lošiji ili nije lošiji od već sigurnog rezultata iz glavne varijacije. PVS se fokusira na poteze koji najviše obećavaju i izbjegava nepotrebne pretrage suboptimalnih grana, što pomaže u poboljšanju učinkovitosti pretrage.",
+  "whatIsPvs": "PVS (Principal Variation Search) je algoritam pretraživanja za pronalaženje najboljeg poteza u određenoj poziciji. To je poboljšanje alfa-beta algoritma i koristi nulte ili nulte pretrage prozora za potvrdu da je potez lošiji ili nije lošiji od već sigurnog rezultata iz glavne varijante. PVS se fokusira na poteze koji najviše obećavaju i izbjegava nepotrebne pretrage suboptimalnih grana, što pomaže u poboljšanju učinkovitosti pretrage.",
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Alfa-beta algoritam je algoritam pretraživanja za pronalaženje najboljeg poteza. Koristi minimax princip i dvije vrijednosti, alfa i beta, za smanjenje stabla pretraživanja i povećanje učinkovitosti. Alpha predstavlja minimalni rezultat za koji je računalo sigurno da može dobiti, dok beta predstavlja maksimalni rezultat koji njegov protivnik može dobiti. Algoritam pomaže računalu donositi pametne i učinkovite odluke u igri.",
   "@whatIsAlphaBeta": {},
   "firstMoveDetail": "U ovoj igri drugi igrač lakše pobjeđuje nego prvi igrač.",
   "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na remi kao svoj cilj i izbjegnite gubitak igre. Promatrajte svog protivnika i nježno ga namamite u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti partiju.",
+  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na neodlučeno kao svoj cilj i izbjegnite gubljenje igre. Promatrajte svog protivnika i namamite ga u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti partiju.",
   "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Omogućavanje pasivne opcije će uzrokovati da se AI opusti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
+  "passiveDetail": "Uključivanjem pasivne opcije će se UI opustiti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
   "@passiveDetail": {},
   "considerMobilityOfPiecesDetail": "Ako umjetna inteligencija uzme u obzir pokretljivost svojih figura, neće nastojati samo uzimati protivničke figure što je brže moguće, već će također razmotriti blokiranje protivničkih poteza i spriječiti da protivnik učini isto.",
   "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "Uključivanje ove opcije povećava nasumičnost i zabavu igre, dok njezino isključivanje može pomoći u proučavanju načina da se pobijedi AI.",
+  "moveRandomlyDetail": "Uključivanje ove opcije povećava slučajnost i zabavu igre, dok njezino isključivanje može pomoći u proučavanju načina da se UI pobijedi.",
   "@moveRandomlyDetail": {},
   "whenBoardIsFull": "Kad je ploča puna",
   "@whenBoardIsFull": {},
@@ -1296,7 +1296,7 @@
   "@whenBoardIsFull_Detail": {},
   "sideToMoveRemovePiece": "Igrač koji prvi pomiče figure u fazi pomicanja uklanja jednu od protivničkih figura.",
   "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Obje strane pristaju na remi.",
+  "agreeToDraw": "Obje strane pristaju na neodlučeno.",
   "@agreeToDraw": {},
   "takeOpponentsPiece": "Uzmite jednu od protivničkih figura.",
   "@takeOpponentsPiece": {},
@@ -1308,7 +1308,7 @@
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Sada kada smo ušli u fazu skakanja, protivničke figure mogu skakati na bilo koje prazno mjesto na ploči. Pravilo skakanja se može isključiti u „Postavke pravila”.",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Kada zastoj",
+  "whenStalemate": "Pat situacija",
   "@whenStalemate": {},
   "whenStalemate_Detail": "Koja radnja slijedi kada se nijedna figura ne može pomaknuti?",
   "@whenStalemate_Detail": {},
@@ -1318,7 +1318,7 @@
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Uklonite jednu od protivničkih figura i napravite sljedeći potez.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Završite s neodlučenim patom.",
+  "endWithStalemateDraw": "Završite igru neodlučeno zbog pat situacije.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Uklonite jednu od protivničkih figura i promijenite stranu kretanja.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1352,25 +1352,25 @@
   "@violetDream": {},
   "mintChocolate": "Mint čokolada",
   "@mintChocolate": {},
-  "skyBlue": "Plavo nebo",
+  "skyBlue": "Nebesko plava",
   "@skyBlue": {},
   "playfulGarden": "Razigrani vrt",
   "@playfulGarden": {},
   "darkMystery": "Tamna misterija",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Algoritam retrogradne analize koristi viševrijednu retrogradnu analizu za izgradnju baze podataka o završnici s različitih početnih pozicija, a zatim primjenjuje tu bazu podataka za optimizaciju igranja. Ovaj pristup spada u kategoriju Ultra-Strong rješenja.",
+  "whatIsRetrogradeAnalysis": "Algoritam retrogradne analize koristi viševrijednu retrogradnu analizu za izgradnju baze podataka završetka igre s različitih početnih pozicija, a zatim primjenjuje tu bazu podataka za optimizaciju igranja. Ovaj pristup spada u kategoriju ultra jakog rješenja.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Želite li vidjeti korisnički priručnik za ovaj algoritam?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
   "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Omogućite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako AI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Difficulty Level' postaje gotovo nepobjediv, a 'AI Thinking Time' doživljava drastično smanjenje. Mnoge postavke unutar opcija 'AI's Playstyle' bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
+  "perfectDatabaseDescription": "Uključite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako UI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Razina težine' postaje gotovo nepobjediva, a 'Vrijeme razmišljanja UI-a' doživljava drastično smanjenje. Mnoge postavke unutar opcija 'Stil igre UI-a' bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
-  "usePerfectDatabase": "Koristite savršenu bazu podataka",
+  "usePerfectDatabase": "Koristi savršenu bazu podataka",
   "@usePerfectDatabase": {},
   "backgroundImage": "Pozadinska slika",
   "@backgroundImage": {},
-  "whatIsRandom": "Kada opcija 'Upotrijebi savršenu bazu podataka' nije omogućena, postavka 'Nasumično' uzrokuje da AI pomiče dijelove nasumično bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Nasuprot tome, kada je omogućena opcija \"Koristi savršenu bazu podataka\", AI se isključivo oslanja na \"Savršenu bazu podataka\" za donošenje odluka, umjesto da je miješa s tradicionalnim algoritmima umjetne inteligencije. U ovom načinu rada, potezi umjetne inteligencije u potpunosti se temelje na sadržaju baze podataka, izbjegavajući oslanjanje na izračune u stvarnom vremenu ili algoritme pretraživanja.",
+  "whatIsRandom": "Kada opcija 'Koristi savršenu bazu podataka' nije omogućena, postavka 'Slučajno' uzrokuje da UI pomiče dijelove slučajno bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Nasuprot tome, kada je opcija \"Koristi savršenu bazu podataka\" uključena, UI se za donošenje odluka isključivo oslanja na sadržaj u \"Savršena baza podataka\", umjesto da je miješa s tradicionalnim algoritmima umjetne inteligencije. U ovom načinu rada, potezi umjetne inteligencije u potpunosti se temelje na sadržaju baze podataka, izbjegavajući oslanjanje na kalkulacije u stvarnom vremenu ili algoritme pretraživanja.",
   "@whatIsRandom": {},
   "removeOpponentsPieceFromHandThenOpponentsTurn": "Uklonite protivničke figure iz njegove ruke; zatim je protivnik na redu da postavi figuru.",
   "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
@@ -1418,13 +1418,13 @@
   "@transformed": {},
   "cannotTransform": "Nije moguće transformirati.",
   "@cannotTransform": {},
-  "rotate": "Rotiraj",
+  "rotate": "Okreni",
   "@rotate": {},
-  "horizontalFlip": "H.Z.",
+  "horizontalFlip": "Vod. okretanje",
   "@horizontalFlip": {},
-  "verticalFlip": "V.Z.",
+  "verticalFlip": "Okom. okretanje",
   "@verticalFlip": {},
-  "innerOuterFlip": "U/V Z.",
+  "innerOuterFlip": "U/V okretanje",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prozirno platno",
   "@transparentCanvas": {},
@@ -1486,6 +1486,6 @@
   "@isToolbarAtBottom": {},
   "boardCornerRadius": "Polumjer kuta ploče",
   "@boardCornerRadius": {},
-  "useOpeningBook": "Koristite otvaranje knjige",
+  "useOpeningBook": "Koristi knjigu postavljanja figura",
   "@useOpeningBook": {}
 }
