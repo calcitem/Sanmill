@@ -774,7 +774,7 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Neodlučeno na ljudskom iskustvu",
+  "drawOnHumanExperience": "Omogući AI-u da koristi ljudsko iskustvo",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
