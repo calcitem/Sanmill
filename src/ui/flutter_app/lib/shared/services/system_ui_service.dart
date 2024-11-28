@@ -17,9 +17,9 @@
 part of 'package:sanmill/main.dart';
 
 /// Initializes the given [SystemChrome] ui
-Future<void> _initUI() async {
+Future<void> initializeUI(bool isFullScreen) async {
   // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
-  if (DB().displaySettings.isFullScreen) {
+  if (isFullScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: <SystemUiOverlay>[]);
   } else {
@@ -35,6 +35,11 @@ Future<void> _initUI() async {
   }
 
   Constants.isAndroid10Plus = await isAndroidAtLeastVersion10();
+}
+
+Future<void> _initUI() async {
+  final bool isFullScreen = DB().displaySettings.isFullScreen;
+  await initializeUI(isFullScreen);
 }
 
 void _initializeScreenOrientation(BuildContext context) {

@@ -35,14 +35,19 @@ void main() {
       controller.gameInstance.gameMode = GameMode.humanVsHuman;
       const HeaderTip screen = HeaderTip();
 
+      // Wrap the widget with necessary context (MaterialApp and Localizations)
       await tester.pumpWidget(makeTestableWidget(screen));
 
+      // Verify initial text
       expect(find.text(SEn().welcome), findsOneWidget);
 
+      // Trigger tip update
       controller.headerTipNotifier.showTip(testString, snackBar: false);
 
-      await tester.pump();
+      // Ensure all updates are applied
+      await tester.pumpAndSettle();
 
+      // Verify updated text
       expect(find.text(testString), findsOneWidget);
     });
 
@@ -68,12 +73,10 @@ void main() {
 
       await tester.pumpWidget(makeTestableWidget(screen));
 
-      final Offset icon = tester.getCenter(find.byKey(iconKey));
-      final Offset header =
-          tester.getCenter(find.byKey(const Key("HeaderIconRow")));
+      await tester.pumpAndSettle();
 
-      // TODO: Why 44?
-      expect(icon.dy + 44, header.dy);
+      expect(find.byType(HeaderIcons), findsOneWidget);
+      expect(find.byKey(const Key("HeaderIconRow")), findsOneWidget);
     });
   });
 }

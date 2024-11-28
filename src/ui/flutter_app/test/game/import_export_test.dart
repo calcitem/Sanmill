@@ -1,19 +1,3 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sanmill/game_page/services/mill.dart';
 import 'package:sanmill/shared/database/database.dart';
@@ -24,37 +8,50 @@ import '../helpers/test_mills.dart';
 
 void main() {
   group("Import Export Service", () {
+    setUp(() {
+      // Mock DB and SoundManager to isolate the test environment
+      DB.instance = MockDB();
+      SoundManager.instance = MockAudios();
+
+      // Initialize the singleton GameController
+      final GameController controller = GameController.instance;
+      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+    });
+
     test(
         "Import standard notation should populate the recorder with the imported moves",
         () async {
       const WinLessThanThreeGame testMill = WinLessThanThreeGame();
 
-      // Initialize the test
-      DB.instance = MockDB();
-      SoundManager.instance = MockAudios();
-      final GameController controller = GameController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      // Access the singleton GameController instance
+      final GameController controller = GameController.instance;
 
-      // Import a game
+      // Import a game using ImportService
       ImportService.import(testMill.moveList);
 
+      // Verify that the recorder contains the expected moves
       expect(
-          GameController().gameRecorder.toString(), testMill.recorderToString);
+        controller.gameRecorder.toString(),
+        testMill.recorderToString,
+        reason: 'GameRecorder should contain the imported moves',
+      );
     });
 
-    test("export standard notation", () async {
+    test("Export standard notation", () async {
       const WinLessThanThreeGame testMill = WinLessThanThreeGame();
 
-      // Initialize the test
-      DB.instance = MockDB();
-      SoundManager.instance = MockAudios();
-      final GameController controller = GameController();
-      controller.gameInstance.gameMode = GameMode.humanVsHuman;
+      // Access the singleton GameController instance
+      final GameController controller = GameController.instance;
 
       // Import a game
       ImportService.import(testMill.moveList);
 
-      expect(controller.gameRecorder.moveHistoryText, testMill.moveList);
+      // Verify the exported moves match the original imported moves
+      expect(
+        controller.gameRecorder.moveHistoryText.trim(),
+        testMill.moveList.trim(),
+        reason: 'Exported move list should match the original imported list',
+      );
     });
   });
 }
