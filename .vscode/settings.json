@@ -227,6 +227,17 @@
         "unordered_map": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "algorithm": "cpp"
-    }
+        "algorithm": "cpp",
+        "*.h": "cpp",
+        "*.c": "c",
+        "*.cpp": "cpp"
+    },
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/include",
+        "${workspaceFolder}/src/perfect"
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.intelliSenseMode": "${default}",
+    "C_Cpp.default.compilerPath": "/usr/bin/g++"
 }
