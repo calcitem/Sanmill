@@ -21,15 +21,14 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:catcher_2/model/catcher_2_options.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kplayer/kplayer.dart' as kplayer;
 import 'package:path_provider/path_provider.dart';
-import 'package:soundpool/soundpool.dart';
 import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
@@ -61,10 +60,10 @@ part 'engine/engine.dart';
 part 'engine/ext_move.dart';
 part 'engine/game.dart';
 part 'engine/mills.dart';
+part 'engine/opening_book.dart';
 part 'engine/position.dart';
 part 'engine/types.dart';
 part 'engine/zobrist.dart';
-part 'engine/opening_book.dart';
 part 'import_export/import_export_service.dart';
 part 'notifiers/board_semantics_notifier.dart';
 part 'notifiers/game_result_notifier.dart';

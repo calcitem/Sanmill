@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   animated_text_kit: 4.2.2
+  audioplayers: 6.1.0
   catcher_2: 2.0.2
   collection: 1.18.0
   crop_your_image: 1.1.0
@@ -37,7 +38,6 @@ dependencies:
   image_picker: 1.1.2
   intl: 0.19.0
   json_annotation: 4.9.0
-  kplayer: 0.4.2
   logger: 2.5.0
   marquee: 2.3.0
   native_screenshot_widget: 0.0.8
@@ -45,16 +45,6 @@ dependencies:
   path: 1.9.0
   path_provider: 2.1.5
   share_plus: 10.1.2
-  soundpool:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: master
-      path: soundpool
-  soundpool_windux:
-    git:
-      url: https://gitlab.com/calcitem/soundpool.git
-      ref: windows_linux_support
-      path: soundpool_windux
   vibration: 2.0.1
   url_launcher: 6.3.1
   uuid: 4.5.1

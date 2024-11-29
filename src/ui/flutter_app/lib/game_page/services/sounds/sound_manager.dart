@@ -23,13 +23,9 @@ class SoundManager {
   factory SoundManager() => instance;
 
   SoundManager._();
-  static bool booted = false;
 
   @visibleForTesting
   static SoundManager instance = SoundManager._();
-
-  late Soundpool _soundpool;
-  int _alarmSoundStreamId = 0;
 
   String? soundThemeName = 'ball';
 
@@ -67,11 +63,8 @@ class SoundManager {
     },
   };
 
-  // Change to maintain a map of PlayerController instances for each sound.
-  final Map<Sound, kplayer.PlayerController> _players =
-      <Sound, kplayer.PlayerController>{};
-
-  final Map<Sound, int> _soundIds = <Sound, int>{};
+  // Map of AudioPlayer instances for each sound.
+  final Map<Sound, AudioPlayer> _players = <Sound, AudioPlayer>{};
 
   bool _isTemporaryMute = false;
 
@@ -80,13 +73,6 @@ class SoundManager {
   static const String _logTag = "[audio]";
 
   Future<void> loadSounds() async {
-    // assert(!GameController().initialized);
-
-    if (kIsWeb) {
-      logger.w("$_logTag Audio Player does not support Web.");
-      return;
-    }
-
     soundThemeName = DB().generalSettings.soundTheme?.name ?? 'ball';
 
     final Map<Sound, String>? sounds = _soundFiles[soundThemeName];
@@ -95,54 +81,31 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
-      if (booted == true) {
-        return;
+    try {
+      for (final Sound sound in sounds.keys) {
+        // Adjust the file path by replacing 'assets/' with ''.
+        final String fileName = sounds[sound]!.replaceFirst('assets/', '');
+        final AudioPlayer player = AudioPlayer();
+        await player.setReleaseMode(ReleaseMode.stop);
+        await player.setSource(AssetSource(fileName));
+        _players[sound] = player;
       }
-
-      kplayer.Player.boot();
-      kplayer.PlayerController.enableLog = false;
-
-      sounds.forEach((Sound sound, String fileName) {
-        _players[sound] = kplayer.Player.asset(fileName, autoPlay: false);
-      });
-
-      booted = true;
       _allSoundsLoaded = true;
-    } else {
-      _soundpool = Soundpool.fromOptions();
-
-      try {
-        for (final Sound sound in sounds.keys) {
-          final int soundId =
-              await _soundpool.load(await rootBundle.load(sounds[sound]!));
-          _soundIds[sound] = soundId;
-        }
-        _allSoundsLoaded = true;
-      } catch (e) {
-        logger.e("Failed to load sound: $e");
-        _allSoundsLoaded = false;
-      }
+    } catch (e) {
+      logger.e("Failed to load sound: $e");
+      _allSoundsLoaded = false;
     }
   }
 
-  Future<void> _stopSound() async {
-    if (kIsWeb || Platform.isIOS) {
-      return;
-    }
-
-    if (_alarmSoundStreamId > 0) {
-      await _soundpool.stop(_alarmSoundStreamId);
-    }
+  Future<void> _stopAllSounds() async {
+    final List<Future<void>> stopFutures = <Future<void>>[];
+    _players.forEach((_, AudioPlayer player) {
+      stopFutures.add(player.stop());
+    });
+    await Future.wait(stopFutures);
   }
 
   Future<void> playTone(Sound sound) async {
-    if (kIsWeb) {
-      return;
-    }
-
-    assert(GameController().initialized);
-
     if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
       return;
     }
@@ -160,37 +123,17 @@ class SoundManager {
       return;
     }
 
-    if (Platform.isIOS) {
-      await _stopAllSounds();
+    await _stopAllSounds();
 
-      final kplayer.PlayerController? player = _players[sound];
-      if (player == null) {
-        logger.e("No player found for sound $sound in theme $soundThemeName.");
-        return;
-      }
-      try {
-        await player.play();
-      } catch (e) {
-        logger.e("$_logTag Error playing sound: $e");
-      }
-    } else {
-      await _stopSound();
-      final int? soundId = _soundIds[sound];
-      if (soundId == null) {
-        logger.e("Sound ID for $sound is not found in theme $soundThemeName.");
-        return;
-      }
-      _alarmSoundStreamId = await _soundpool.play(soundId);
+    final AudioPlayer? player = _players[sound];
+    if (player == null) {
+      logger.e("No player found for sound $sound in theme $soundThemeName.");
+      return;
     }
-  }
-
-  Future<void> _stopAllSounds() async {
-    if (Platform.isIOS) {
-      final List<Future<void>> stopFutures = <Future<void>>[];
-      _players.forEach((_, kplayer.PlayerController player) {
-        stopFutures.add(player.stop());
-      });
-      await Future.wait(stopFutures);
+    try {
+      await player.resume();
+    } catch (e) {
+      logger.e("$_logTag Error playing sound: $e");
     }
   }
 
@@ -203,16 +146,9 @@ class SoundManager {
   }
 
   void disposePool() {
-    if (kIsWeb) {
-      return;
-    }
-
-    if (Platform.isIOS) {
-      _players
-          .forEach((_, kplayer.PlayerController player) => player.dispose());
-      _players.clear();
-    } else {
-      _soundpool.dispose();
-    }
+    _players.forEach((_, AudioPlayer player) {
+      player.dispose();
+    });
+    _players.clear();
   }
 }
