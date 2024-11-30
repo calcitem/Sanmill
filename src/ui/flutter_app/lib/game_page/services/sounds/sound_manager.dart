@@ -63,8 +63,8 @@ class SoundManager {
     },
   };
 
-  // Map of AudioPlayer instances for each sound.
-  final Map<Sound, AudioPlayer> _players = <Sound, AudioPlayer>{};
+  // Map of Sound to SoundPlayer instances, which include the player and fileName.
+  final Map<Sound, SoundPlayer> _players = <Sound, SoundPlayer>{};
 
   bool _isTemporaryMute = false;
 
@@ -87,8 +87,8 @@ class SoundManager {
         final String fileName = sounds[sound]!.replaceFirst('assets/', '');
         final AudioPlayer player = AudioPlayer();
         await player.setReleaseMode(ReleaseMode.stop);
-        await player.setSource(AssetSource(fileName));
-        _players[sound] = player;
+        // No need to set the source here; we'll set it and play immediately in playTone.
+        _players[sound] = SoundPlayer(player, fileName);
       }
       _allSoundsLoaded = true;
     } catch (e) {
@@ -97,14 +97,7 @@ class SoundManager {
     }
   }
 
-  Future<void> _stopAllSounds() async {
-    final List<Future<void>> stopFutures = <Future<void>>[];
-    _players.forEach((_, AudioPlayer player) {
-      stopFutures.add(player.stop());
-    });
-    await Future.wait(stopFutures);
-  }
-
+  /// Play the given sound.
   Future<void> playTone(Sound sound) async {
     if (_isTemporaryMute || DB().generalSettings.screenReaderSupport) {
       return;
@@ -123,15 +116,15 @@ class SoundManager {
       return;
     }
 
-    await _stopAllSounds();
-
-    final AudioPlayer? player = _players[sound];
-    if (player == null) {
+    // Get the SoundPlayer instance for the sound.
+    final SoundPlayer? soundPlayer = _players[sound];
+    if (soundPlayer == null) {
       logger.e("No player found for sound $sound in theme $soundThemeName.");
       return;
     }
     try {
-      await player.resume();
+      // Set the source and play immediately to avoid delays on Linux.
+      await soundPlayer.player.play(AssetSource(soundPlayer.fileName));
     } catch (e) {
       logger.e("$_logTag Error playing sound: $e");
     }
@@ -146,9 +139,16 @@ class SoundManager {
   }
 
   void disposePool() {
-    _players.forEach((_, AudioPlayer player) {
-      player.dispose();
+    _players.forEach((_, SoundPlayer soundPlayer) {
+      soundPlayer.player.dispose();
     });
     _players.clear();
   }
+}
+
+/// Helper class to store AudioPlayer and associated fileName.
+class SoundPlayer {
+  SoundPlayer(this.player, this.fileName);
+  final AudioPlayer player;
+  final String fileName;
 }
