@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file for Nine Men's Morris Game, output the complete arb file directly:
 
 ```json
-"useOpeningBook": "Use opening book",
-"@useOpeningBook": {},
+"daSanQi": "Da San Qi",
+"@daSanQi": {},
 ```
 
 into:
@@ -38,7 +38,7 @@ intl_id.arb
 intl_is.arb
 intl_it.arb
 intl_ja.arb
-intl_kn. arb
+intl_kn.arb
 intl_ko.arb
 intl_lt.arb
 intl_lv.arb
@@ -74,12 +74,13 @@ The corresponding content. The format is as follows:
 
 ```json
 // intl_en.arb
-  "useOpeningBook": "Use opening book",
-  "@useOpeningBook": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
 
 
 // intl_zh.arb
-  "useOpeningBook": "使用开局库",
-  "@useOpeningBook": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
 ```
 
+No translation.

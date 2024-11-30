@@ -34,11 +34,66 @@ part 'modals/mill_formation_action_in_placing_phase_modal.dart';
 part 'modals/n_move_rule_modal.dart';
 part 'modals/piece_count_modal.dart';
 part 'modals/stalemate_action_modal.dart';
+part 'modals/rule_set_modal.dart';
 
 bool visitedRuleSettingsPage = false;
 
 class RuleSettingsPage extends StatelessWidget {
   const RuleSettingsPage({super.key});
+
+  // Rule set
+  void _setRuleSet(BuildContext context, RuleSettings ruleSettings) {
+    void callback(RuleSet? ruleSet) {
+      Navigator.pop(context); // Closes the modal after selection.
+
+      if (ruleSet == RuleSet.current) {
+        return; // If the selected rule set is the current one, do nothing.
+      }
+
+      // Updates the rule settings with the new rule set.
+      DB().ruleSettings = ruleSettings.copyWith(
+          // General
+          piecesCount: ruleSetProperties[ruleSet]!.piecesCount,
+          hasDiagonalLines: ruleSetProperties[ruleSet]!.hasDiagonalLines,
+          nMoveRule: ruleSetProperties[ruleSet]!.nMoveRule,
+          endgameNMoveRule: ruleSetProperties[ruleSet]!.endgameNMoveRule,
+          threefoldRepetitionRule:
+              ruleSetProperties[ruleSet]!.threefoldRepetitionRule,
+
+          // Placing phase
+          millFormationActionInPlacingPhase:
+              ruleSetProperties[ruleSet]!.millFormationActionInPlacingPhase,
+          boardFullAction: ruleSetProperties[ruleSet]!.boardFullAction,
+          mayMoveInPlacingPhase:
+              ruleSetProperties[ruleSet]!.mayMoveInPlacingPhase,
+
+          // Moving phase
+          isDefenderMoveFirst: ruleSetProperties[ruleSet]!.isDefenderMoveFirst,
+          restrictRepeatedMillsFormation:
+              ruleSetProperties[ruleSet]!.restrictRepeatedMillsFormation,
+          stalemateAction: ruleSetProperties[ruleSet]!.stalemateAction,
+          piecesAtLeastCount: ruleSetProperties[ruleSet]!.piecesAtLeastCount,
+
+          //  Flying
+          mayFly: ruleSetProperties[ruleSet]!.mayFly,
+          flyPieceCount: ruleSetProperties[ruleSet]!.flyPieceCount,
+
+          // Removing
+          mayRemoveFromMillsAlways:
+              ruleSetProperties[ruleSet]!.mayRemoveFromMillsAlways,
+          mayRemoveMultiple: ruleSetProperties[ruleSet]!.mayRemoveMultiple,
+          oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill);
+    }
+
+    // Display a modal bottom sheet with the available rule sets.
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => _RuleSetModal(
+        ruleSet: RuleSet.current,
+        onChanged: callback,
+      ),
+    );
+  }
 
   // General
   void _setNTotalPiecesEachSide(
@@ -317,6 +372,17 @@ class RuleSettingsPage extends StatelessWidget {
     )!;
     return SettingsList(
       children: <Widget>[
+        SettingsCard(
+          title: Text(S.of(context).ruleSet),
+          children: <Widget>[
+            SettingsListTile(
+              titleString: S.of(context).ruleSet,
+              //subtitleString: S.of(context).ruleSet_Detail,
+              //trailingString: ruleSettings.ruleSet,
+              onTap: () => _setRuleSet(context, ruleSettings),
+            ),
+          ],
+        ),
         SettingsCard(
           title: Text(S.of(context).general),
           children: <Widget>[
