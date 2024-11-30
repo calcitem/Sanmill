@@ -174,9 +174,6 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
         return generate<REMOVE>(pos, moveList);
 
     case Action::none:
-#ifdef FLUTTER_UI
-        LOGD("generate(): action = %hu\n", pos.get_action());
-#endif
         break;
     }
 
