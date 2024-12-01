@@ -219,7 +219,8 @@ enum RuleSet {
   chengSanQi,
   daSanQi,
   mulMulan,
-  nerenchi
+  nerenchi,
+  selectFromMap,
 }
 
 /// Nine Men's Morris Rules
