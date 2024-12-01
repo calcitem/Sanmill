@@ -262,6 +262,9 @@ class MorabarabaRuleSettings extends RuleSettings {
 /// Dooz Rules
 ///
 /// https://web.archive.org/web/20150919203008/http://dezyan.blogfa.com/post-146.aspx
+/// https://www.aparat.com/v/y916l8o
+/// https://www.aparat.com/v/k974686
+/// https://www.aparat.com/v/o39z663 (mayFly & !mayRemoveFromMillsAlways)
 class DoozRuleSettings extends RuleSettings {
   const DoozRuleSettings()
       : super(
