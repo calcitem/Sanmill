@@ -50,6 +50,15 @@ class RuleSettingsPage extends StatelessWidget {
         return; // If the selected rule set is the current one, do nothing.
       }
 
+      if (ruleSet == RuleSet.zhiQi ||
+          ruleSet == RuleSet.chengSanQi ||
+          ruleSet == RuleSet.daSanQi ||
+          ruleSet == RuleSet.mulMulan ||
+          ruleSet == RuleSet.nerenchi) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).experimental);
+      }
+
       // Updates the rule settings with the new rule set.
       DB().ruleSettings = ruleSettings.copyWith(
           // General
