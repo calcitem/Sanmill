@@ -1613,5 +1613,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Vumela i-AI ukuthi isebenzise ukuvula amanyathelo ajwayele ukusetshenziswa ngabadlali abaqeqeshiwe abantu ekuqaleni komdlalo. Qaphela: Lesi sici sitholakala okwamanje kumasethi womthetho athize kuphela.",
+  "@useOpeningBook_Detail": {}
 }

@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Lubage AI-l kasutada avakäike, mida kasutavad tavaliselt professionaalsed inimmängijad varajases mängus. Märkus: See funktsioon on hetkel saadaval ainult teatud reeglistike jaoks.",
+  "@useOpeningBook_Detail": {}
 }

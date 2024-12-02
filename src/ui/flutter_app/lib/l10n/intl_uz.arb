@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "AI-dan o'yinning dastlabki bosqichida professional inson o'yinchilari tomonidan tez-tez ishlatiladigan ochish harakatlaridan foydalanishiga ruxsat bering. Eslatma: Ushbu xususiyat hozircha faqat ma'lum qoida to'plamlari uchun mavjud.",
+  "@useOpeningBook_Detail": {}
 }

@@ -303,6 +303,14 @@ class GeneralSettingsPage extends StatelessWidget {
       defaultValue: const GeneralSettings(),
     )!;
 
+    final String perfectDatabaseDescription =
+        S.of(context).perfectDatabaseDescription;
+    final String perfectDatabaseDescriptionFistLine =
+        perfectDatabaseDescription.contains('\n')
+            ? perfectDatabaseDescription.substring(
+                0, perfectDatabaseDescription.indexOf('\n'))
+            : perfectDatabaseDescription;
+
     return SettingsList(
       children: <Widget>[
         SettingsCard(
@@ -328,7 +336,7 @@ class GeneralSettingsPage extends StatelessWidget {
           children: <Widget>[
             SettingsListTile(
               titleString: S.of(context).skillLevel,
-              //trailingString: "L" + DB().generalSettings.skillLevel.toString(),
+              trailingString: DB().generalSettings.skillLevel.toString(),
               onTap: () {
                 if (EnvironmentConfig.test == false) {
                   _setSkillLevel(context);
@@ -337,6 +345,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile(
               titleString: S.of(context).moveTime,
+              trailingString: DB().generalSettings.skillLevel.toString(),
               onTap: () => _setMoveTime(context),
             ),
           ],
@@ -360,6 +369,7 @@ class GeneralSettingsPage extends StatelessWidget {
                   }
                 },
                 titleString: S.of(context).useOpeningBook,
+                subtitleString: S.of(context).useOpeningBook_Detail,
               ),
             if (!kIsWeb)
               SettingsListTile.switchTile(
@@ -375,58 +385,47 @@ class GeneralSettingsPage extends StatelessWidget {
                   }
                 },
                 titleString: S.of(context).usePerfectDatabase,
+                subtitleString: perfectDatabaseDescriptionFistLine,
               ),
             SettingsListTile.switchTile(
               value: generalSettings.drawOnHumanExperience,
               onChanged: (bool val) {
                 _setDrawOnHumanExperience(generalSettings, val);
-                if (val == true) {
-                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).drawOnTheHumanExperienceDetail);
-                }
               },
               titleString: S.of(context).drawOnHumanExperience,
+              subtitleString: S.of(context).drawOnTheHumanExperienceDetail,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.considerMobility,
               onChanged: (bool val) {
                 _setConsiderMobility(generalSettings, val);
-                rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                    S.of(context).considerMobilityOfPiecesDetail);
               },
               titleString: S.of(context).considerMobility,
+              subtitleString: S.of(context).considerMobilityOfPiecesDetail,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.focusOnBlockingPaths,
               onChanged: (bool val) {
                 _setFocusOnBlockingPaths(generalSettings, val);
-                if (val == true) {
-                  rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-                      S.of(context).focusOnBlockingPaths_Detail);
-                }
               },
               titleString: S.of(context).focusOnBlockingPaths,
+              subtitleString: S.of(context).focusOnBlockingPaths_Detail,
             ),
             SettingsListTile.switchTile(
               value: generalSettings.aiIsLazy,
               onChanged: (bool val) {
                 _setAiIsLazy(generalSettings, val);
-                if (val == true) {
-                  rootScaffoldMessengerKey.currentState!
-                      .showSnackBarClear(S.of(context).passiveDetail);
-                }
               },
               titleString: S.of(context).passive,
+              subtitleString: S.of(context).passiveDetail,
             ),
             SettingsListTile.switchTile(
-              value: generalSettings.shufflingEnabled,
-              onChanged: (bool val) {
-                _setShufflingEnabled(generalSettings, val);
-                rootScaffoldMessengerKey.currentState!
-                    .showSnackBarClear(S.of(context).moveRandomlyDetail);
-              },
-              titleString: S.of(context).shufflingEnabled,
-            ),
+                value: generalSettings.shufflingEnabled,
+                onChanged: (bool val) {
+                  _setShufflingEnabled(generalSettings, val);
+                },
+                titleString: S.of(context).shufflingEnabled,
+                subtitleString: S.of(context).moveRandomlyDetail),
           ],
         ),
         SettingsCard(

@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Pozwól SI korzystać z ruchów otwarcia, które są powszechnie stosowane przez profesjonalnych ludzkich graczy na wczesnym etapie gry. Uwaga: Ta funkcja jest obecnie dostępna tylko dla określonych zestawów zasad.",
+  "@useOpeningBook_Detail": {}
 }

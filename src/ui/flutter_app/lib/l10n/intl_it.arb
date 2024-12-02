@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Consenti all'IA di utilizzare mosse di apertura comunemente impiegate dai giocatori umani professionisti durante le prime fasi del gioco. Nota: questa funzione è attualmente disponibile solo per specifici insiemi di regole.",
+  "@useOpeningBook_Detail": {}
 }

@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Izinkan AI menggunakan gerakan pembukaan yang biasa digunakan oleh pemain manusia profesional selama awal permainan. Catatan: Fitur ini saat ini hanya tersedia untuk set aturan tertentu.",
+  "@useOpeningBook_Detail": {}
 }

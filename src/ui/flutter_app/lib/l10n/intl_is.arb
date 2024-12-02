@@ -1613,5 +1613,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Leyfðu gervigreindinni að nota opnunaráð sem faglegir mannlegir leikmenn nota oft í upphafi leiks. Athugið: Þessi eiginleiki er núna aðeins í boði fyrir ákveðin regluset.",
+  "@useOpeningBook_Detail": {}
 }

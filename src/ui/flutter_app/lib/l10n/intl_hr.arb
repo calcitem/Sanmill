@@ -1515,5 +1515,7 @@
   "oneTimeMill": "Jednokratni Mlin",
   "@oneTimeMill": {},
   "daSanQi": "Da-sanči",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Dopustite AI-u da koristi otvarajuće poteze koji se uobičajeno koriste od strane profesionalnih ljudskih igrača tijekom rane igre. Napomena: Ova značajka trenutno je dostupna samo za određene skupove pravila.",
+  "@useOpeningBook_Detail": {}
 }

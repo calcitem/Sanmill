@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Leiskite AI naudoti atidarymo ėjimus, kuriuos dažnai naudoja profesionalūs žmogaus žaidėjai ankstyvosiose žaidimo stadijose. Pastaba: Šiuo metu ši funkcija galima tik tam tikrose taisyklių rinkiniuose.",
+  "@useOpeningBook_Detail": {}
 }

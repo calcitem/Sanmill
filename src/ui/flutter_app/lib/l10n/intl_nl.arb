@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Laat de AI openingszetten gebruiken die vaak worden gebruikt door professionele menselijke spelers in het vroege spel. Opmerking: Deze functie is momenteel alleen beschikbaar voor specifieke regelsets.",
+  "@useOpeningBook_Detail": {}
 }

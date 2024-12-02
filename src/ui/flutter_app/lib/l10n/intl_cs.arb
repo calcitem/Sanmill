@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Nechte AI používat otevírací tahy, které jsou běžně používány profesionálními hráči v rané fázi hry. Poznámka: Tato funkce je v současné době dostupná pouze pro konkrétní sady pravidel.",
+  "@useOpeningBook_Detail": {}
 }

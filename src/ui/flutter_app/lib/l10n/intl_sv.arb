@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Låt AI använda öppningsdrag som ofta används av professionella mänskliga spelare under tidiga skeden av spelet. Obs: Denna funktion är för närvarande endast tillgänglig för specifika regeluppsättningar.",
+  "@useOpeningBook_Detail": {}
 }

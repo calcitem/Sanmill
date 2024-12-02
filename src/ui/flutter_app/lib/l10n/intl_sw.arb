@@ -1613,5 +1613,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Ruhusu AI kutumia hatua za ufunguzi zinazotumiwa kawaida na wachezaji wa kibinadamu wa kitaalamu katika mchezo wa mapema. Kumbuka: Kipengele hiki kwa sasa kinapatikana tu kwa seti maalum za sheria.",
+  "@useOpeningBook_Detail": {}
 }

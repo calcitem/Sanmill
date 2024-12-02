@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Yapay zekanın, oyunun erken aşamalarında profesyonel insan oyuncular tarafından sıkça kullanılan açılış hamlelerini kullanmasına izin verin. Not: Bu özellik şu anda yalnızca belirli kurallar setleri için mevcuttur.",
+  "@useOpeningBook_Detail": {}
 }

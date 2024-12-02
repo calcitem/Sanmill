@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "ಆರಂಭಿಕ ಆಟದಲ್ಲಿ ವೃತ್ತಿಪರ ಮಾನವ ಆಟಗಾರರು ಸಾಮಾನ್ಯವಾಗಿ ಬಳಸುವ ಓಪನಿಂಗ್ ಚಲನೆಗಳನ್ನು AI ಬಳಸಲು ಅನುಮತಿಸಿ. ಗಮನಿಸಿ: ಈ ವೈಶಿಷ್ಟ್ಯ ಪ್ರಸ್ತುತ ಕೆಲವು ನಿಯಮ ಸೆಟ್ಗಳಿಗೆ ಮಾತ್ರ ಲಭ್ಯವಿದೆ.",
+  "@useOpeningBook_Detail": {}
 }

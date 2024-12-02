@@ -1515,5 +1515,7 @@
   "oneTimeMill": "Einmal-Mühle",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Lassen Sie die KI Eröffnungszüge verwenden, die üblicherweise von professionellen menschlichen Spielern im frühen Spiel verwendet werden. Hinweis: Diese Funktion ist derzeit nur für bestimmte Regelsets verfügbar.",
+  "@useOpeningBook_Detail": {}
 }

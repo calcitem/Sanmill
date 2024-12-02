@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Ļaujiet AI izmantot atklāšanas gājienus, ko bieži izmanto profesionālie cilvēku spēlētāji spēles sākumā. Piezīme: Šī funkcija pašlaik ir pieejama tikai konkrētiem noteikumu kopumiem.",
+  "@useOpeningBook_Detail": {}
 }

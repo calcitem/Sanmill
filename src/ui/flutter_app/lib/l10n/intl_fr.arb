@@ -1515,5 +1515,7 @@
   "oneTimeMill": "Moulin unique",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Permettez à l'IA d'utiliser des mouvements d'ouverture couramment employés par les joueurs humains professionnels au début du jeu. Remarque: Cette fonctionnalité est actuellement disponible uniquement pour certains ensembles de règles.",
+  "@useOpeningBook_Detail": {}
 }

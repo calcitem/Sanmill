@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Anna tekoälyn käyttää aloitusliikkeitä, joita ammattilaiset ihmispelaajat yleisesti käyttävät pelin alussa. Huomautus: Tämä toiminto on tällä hetkellä saatavilla vain tietyille sääntöjoukoille.",
+  "@useOpeningBook_Detail": {}
 }

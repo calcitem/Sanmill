@@ -1515,5 +1515,7 @@
   "oneTimeMill": "One-Time Mill",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
-  "@daSanQi": {}
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Dopustite AI-u da koristi početne poteze koje često koriste profesionalni ljudski igrači u ranim fazama igre. Napomena: Ova funkcija trenutno je dostupna samo za određene setove pravila.",
+  "@useOpeningBook_Detail": {}
 }
