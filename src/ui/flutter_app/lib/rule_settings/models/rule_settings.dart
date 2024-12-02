@@ -199,6 +199,7 @@ class RuleSettings {
   bool isLikelyNineMensMorris() {
     return piecesCount == 9 &&
         !hasDiagonalLines &&
+        !isDefenderMoveFirst &&
         !mayMoveInPlacingPhase &&
         !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
         !oneTimeUseMill;

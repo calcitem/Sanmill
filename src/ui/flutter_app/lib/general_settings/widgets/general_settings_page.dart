@@ -320,7 +320,8 @@ class GeneralSettingsPage extends StatelessWidget {
               value: !generalSettings.aiMovesFirst,
               onChanged: (bool val) {
                 _setWhoMovesFirst(generalSettings, !val);
-                if (val == false) {
+                if (val == false &&
+                    DB().ruleSettings.isLikelyNineMensMorris()) {
                   rootScaffoldMessengerKey.currentState!
                       .showSnackBarClear(S.of(context).firstMoveDetail);
                 }
