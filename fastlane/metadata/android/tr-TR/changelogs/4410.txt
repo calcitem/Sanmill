@@ -1,0 +1,3 @@
+v5.7.2
+
+Bu güncelleme, uygulamayı sizin için daha iyi hale getirmek için çeşitli iyileştirmeler ve hata düzeltmeleri içerir.
