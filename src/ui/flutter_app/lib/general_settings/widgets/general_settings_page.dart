@@ -346,7 +346,7 @@ class GeneralSettingsPage extends StatelessWidget {
             ),
             SettingsListTile(
               titleString: S.of(context).moveTime,
-              trailingString: DB().generalSettings.skillLevel.toString(),
+              trailingString: DB().generalSettings.moveTime.toString(),
               onTap: () => _setMoveTime(context),
             ),
           ],
