@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Potezi",
+  "move": "Potez",
   "@move": {
     "description": "Move"
   },
@@ -316,7 +316,7 @@
   "@generalSettings": {
     "description": "General Settings"
   },
-  "skillLevel": "Razina težine",
+  "skillLevel": "Razina složenosti",
   "@skillLevel": {
     "description": "Difficulty level"
   },
@@ -324,7 +324,7 @@
   "@moveTime": {
     "description": "AI thinking time"
   },
-  "difficulty": "Težina",
+  "difficulty": "Složenost",
   "@difficulty": {
     "description": "Difficulty"
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi partiju. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi partiju. Igrač također gubi partiju kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
+  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi igru. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi igru. Igrač također gubi partiju kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -774,7 +774,7 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Omogući AI-u da koristi ljudsko iskustvo",
+  "drawOnHumanExperience": "Koristi ljudsko iskustvo za poteze",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
@@ -1136,7 +1136,7 @@
   "@filename": {
     "description": "File name"
   },
-  "gameFiles": "Datoteke igre",
+  "gameFiles": "Datoteke igri",
   "@gameFiles": {
     "description": "Game files"
   },
@@ -1254,7 +1254,7 @@
   "@duration": {},
   "pixelRatio": "Omjer piksela",
   "@pixelRatio": {},
-  "gameScreenRecorder": "Snimač zaslona igre",
+  "gameScreenRecorder": "Snimač ekrana igre",
   "@gameScreenRecorder": {},
   "previous": "Prethodna",
   "@previous": {},
@@ -1270,9 +1270,9 @@
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "Vrijeme razmišljanja UI-a postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja UI-a možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je UI usred razmišljanja kada vrijeme istekne.",
+  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja UI-a možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina složenosti postavljena na nižu vrijednost i može biti duže kada je UI usred razmišljanja kada vrijeme istekne.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Ako postaviš visoku razinu težine, ali ne povećaš vrijeme razmišljanja UI-a, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama uređaja.",
+  "noteActualDifficultyLevelMayBeLimited": "Ako postaviš visoku razinu složenosti, ali ne povećaš vrijeme razmišljanja UI-a, stvarna razina složenosti može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama uređaja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretrage i korištenjem dobrog početnog pogađanja za sužavanje prostora pretrage.",
   "@whatIsMtdf": {},
@@ -1282,7 +1282,7 @@
   "@whatIsAlphaBeta": {},
   "firstMoveDetail": "U ovoj igri drugi igrač lakše pobjeđuje nego prvi igrač.",
   "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na neodlučeno kao svoj cilj i izbjegnite gubljenje igre. Promatrajte svog protivnika i namamite ga u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti partiju.",
+  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na neodlučeno kao svoj cilj i izbjegnite gubljenje igre. Promatrajte svog protivnika i namamite ga u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti igru.",
   "@drawOnTheHumanExperienceDetail": {},
   "passiveDetail": "Uključivanjem pasivne opcije će se UI opustiti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
   "@passiveDetail": {},
@@ -1364,7 +1364,7 @@
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
   "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Uključite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako UI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Razina težine' postaje gotovo nepobjediva, a 'Vrijeme razmišljanja UI-a' doživljava drastično smanjenje. Mnoge postavke unutar opcija 'Stil igre UI-a' bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
+  "perfectDatabaseDescription": "Uključite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako UI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, „Razina složenosti” postaje gotovo nepobjediva, a „Vrijeme razmišljanja UI-a” doživljava drastično smanjenje. Mnoge postavke unutar opcija „Stil igre UI-a” bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Koristi savršenu bazu podataka",
   "@usePerfectDatabase": {},
@@ -1404,7 +1404,7 @@
   "@showNumbersOnPieces": {},
   "monochrome": "Jednobojno",
   "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač zaslona u postavkama pristupačnosti u „Opće postavke”.",
+  "youCanEnableScreenReaderSupport": "Podrška za čitač ekrana se može uključiti u konfiguraciji pristupačnosti u „Opće postavke”.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Spremi sliku",
   "@saveImage": {},
@@ -1420,17 +1420,17 @@
   "@cannotTransform": {},
   "rotate": "Okreni",
   "@rotate": {},
-  "horizontalFlip": "Vod. O.",
+  "horizontalFlip": "Vod. okret",
   "@horizontalFlip": {},
-  "verticalFlip": "Okom. O.",
+  "verticalFlip": "Okom. okret",
   "@verticalFlip": {},
-  "innerOuterFlip": "U/V O.",
+  "innerOuterFlip": "U/V okret",
   "@innerOuterFlip": {},
   "transparentCanvas": "Prozirno platno",
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Figura koja se pomakne iz jednog mlina za formiranje jednog drugog mlina se ne može odmah vratiti na izvorno mjesto u sljedećem potezu kako bi ponovo formirala mlin. Najprije je mora odigrati jedan drugi potez.",
+  "restrictRepeatedMillsFormation_Detail": "Figura koja se pomakne iz jednog mlina za formiranje jednog drugog mlina se ne može odmah vratiti na izvorno mjesto u sljedećem potezu kako bi ponovo formirala mlin. Najprije se mora odigrati jedan drugi potez.",
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "Jednokratna uporaba mlina",
   "@oneTimeUseMill": {},
@@ -1488,7 +1488,7 @@
   "@boardCornerRadius": {},
   "useOpeningBook": "Koristi knjigu postavljanja figura",
   "@useOpeningBook": {},
-  "currentRule": "Trenutno",
+  "currentRule": "Trenutačno",
   "@currentRule": {},
   "nineMensMorris": "Nine Men's Morris",
   "@nineMensMorris": {},
@@ -1498,11 +1498,11 @@
   "@morabaraba": {},
   "dooz": "Dooz",
   "@dooz": {},
-  "chamGonu": "Čamgonu",
+  "chamGonu": "Cham Gonu",
   "@chamGonu": {},
-  "zhiQi": "Džiči",
+  "zhiQi": "Zhi Qi",
   "@zhiQi": {},
-  "chengSanQi": "Čengsanči",
+  "chengSanQi": "Cheng San Qi",
   "@chengSanQi": {},
   "mulMulan": "Mul-Mulan",
   "@mulMulan": {},
@@ -1512,10 +1512,10 @@
   "@ruleSet": {},
   "laskerMorris": "Lasker Morris",
   "@laskerMorris": {},
-  "oneTimeMill": "Jednokratni Mlin",
+  "oneTimeMill": "Jednokratni mlin",
   "@oneTimeMill": {},
-  "daSanQi": "Da-sanči",
+  "daSanQi": "Da San Qi",
   "@daSanQi": {},
-  "useOpeningBook_Detail": "Dopustite AI-u da koristi otvarajuće poteze koji se uobičajeno koriste od strane profesionalnih ljudskih igrača tijekom rane igre. Napomena: Ova značajka trenutno je dostupna samo za određene skupove pravila.",
+  "useOpeningBook_Detail": "Dopusti UI-u da koristi otvarajuće poteze koje profesionalni ljudski igrači uobičajeno koriste u početku igre. Napomena: Ova je funkcija trenutačno dostupna samo za određene skupove pravila.",
   "@useOpeningBook_Detail": {}
 }
