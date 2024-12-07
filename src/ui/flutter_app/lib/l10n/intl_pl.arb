@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Wybierz niewłaściwy element.",
+  "tipSelectWrong": "Wybrałeś niewłaściwy pionek.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -112,15 +112,15 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Młyn! Zabierz kawałek przeciwnika.",
+  "tipMill": "Młyn! Usuń pionek przeciwnika.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Kontynuuj zabieranie pionka przeciwnika.",
+  "tipContinueMill": "Kontynuuj usuwanie pionka przeciwnika.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Wybierz jedną z figur przeciwnika.",
+  "tipSelectOpponentsPiece": "Wybierz jeden z pionków przeciwnika.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
@@ -140,7 +140,7 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Zostały Ci 3 sztuki.",
+  "tipHaveThreePiecesLeft": "Zostały Ci 3 pionki.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -240,11 +240,11 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} zrezygnuj.",
+  "loseReasonResign": "{player} zrezygnował.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} nie ma drogi.",
+  "loseReasonNoWay": "{player} nie może wykonać ruchu.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Czas się skończył, {player} stracone.",
+  "loseReasonTimeOver": "Czas się skończył, {player} przegrał.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,9 +394,9 @@
   },
   "flyPieceCount_Detail": "Jeśli latanie jest włączone, to gdy gracz jest zredukowany do określonej liczby elementów, jego elementy mogą poruszać się do dowolnego niezajętego punktu, zamiast być ograniczone do sąsiednich punktów, jak w pozostałej części gry.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "Co najmniej",
+  "piecesAtLeastCount": "Minimalna liczba pionków",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Gracz przegra, jeśli jego przeciwnik zablokuje go tak, że nie będzie mógł go ruszyć. Zmień stronę na ruch, jeśli ta opcja jest wyłączona.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Latający",
   "@mayFly": {
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Wyjdź z",
+  "exit": "Wyjdź",
   "@exit": {
     "description": "Exit"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Stuknij w jeden z elementów przeciwnika, aby go usunąć.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Musisz najpierw stworzyć młyn, zanim będziesz mógł usunąć kawałek.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Styl gry AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasywne",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Stuknij ponownie w tył, aby wyjść.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Więcej",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Jeśli gracz rozbije młyn, aby natychmiast stworzyć nowy młyn, taki gracz może przesunąć taki element z powrotem do pierwotnego skrzyżowania w swoim następnym ruchu, jeśli zrobi nowy młyn.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Gra jest remisowana, jeśli gracz ma trzy pionki i po dziesięciu ruchach żaden z graczy nie usuwa pionów przeciwnika",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "Pasta jest gotowa.",
+  "pasteDone": "Wklejanie zakończone.",
   "@pasteDone": {
     "description": "The paste is done."
   },

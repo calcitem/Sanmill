@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Valitse väärä kappale.",
+  "tipSelectWrong": "Valitsit väärän nappulan.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Sinä sijoitit.",
+  "tipPlaced": "Asetit nappulan.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Sinä poistit.",
+  "tipRemoved": "Poistit nappulan.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Jos lentäminen on käytössä, kun pelaajan nappulamäärä vähenee tiettyyn lukumäärään, hänen nappulansa voivat vapaasti siirtyä mihin tahansa tyhjään pisteeseen sen sijaan, että ne olisivat rajoitettuja viereisiin pisteisiin, kuten muussa pelissä.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Vähintään nappuloita",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Pelaaja häviää, jos hänen vastustajansa estää ne niin, ettei niitä voi siirtää. Vaihda puoli siirtoon, jos tämä vaihtoehto on poistettu käytöstä.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Lentävä",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Napauta vastustajan yhtä nappulaa poistaaksesi sen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Sinun on ensin luotava mylly, ennen kuin voit poistaa kappaleen.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Tekoälyn pelityyli",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiivinen",
   "@passive": {
@@ -794,7 +794,7 @@
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "Laudan siirtäminen ylhäältäpäin",
+  "boardTop": "Laudan etäisyys yläreunasta",
   "@boardTop": {
     "description": "Board offset from the top"
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Poistu napauttamalla uudelleen takaisin.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Lisää",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Jos pelaaja rikkoo myllyn uuden myllyn luomiseksi välittömästi, pelaaja voi siirtää tällaisen kappaleen takaisin alkuperäiseen risteykseen seuraavalla liikkeellään, jos se tekee uuden myllyn.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Peli vedetään, jos pelaajalla on kolme nappulaa ja kymmenen siirron jälkeen kumpikaan pelaaja ei poista vastustajan nappuloita",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1166,7 +1166,7 @@
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "noPiecesCanBeRemoved": "Mitään osia ei voi poistaa.",
+  "noPiecesCanBeRemoved": "Yhtään nappulaa ei voi poistaa.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
@@ -1226,7 +1226,7 @@
   "@pasteDone": {
     "description": "The paste is done."
   },
-  "cannotPaste": "Ei voi liittää.",
+  "cannotPaste": "Liittäminen ei onnistu.",
   "@cannotPaste": {
     "description": "Cannot paste."
   },
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Käytä täydellistä tietokantaa",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's Playstyle' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
+  "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's play style' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Taustakuva",
   "@backgroundImage": {},

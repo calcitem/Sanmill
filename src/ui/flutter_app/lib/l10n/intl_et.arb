@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Kui lendamine on lubatud, siis kui mängija arv on vähenenud teatavale arvule, võivad tema mängujooned vabalt liikuda mis tahes vabasse punkti, selle asemel, et olla piiratud naaberpunktidega, nagu ülejäänud mängus.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Vähemalt tükid",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Mängija kaotab, kui vastane blokeerib neid nii, et neid ei saa liigutada. Vahetage poole, kui see valik on keelatud.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Lendamine",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Puudutage vastase ühte tükki, et seda eemaldada.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Sa pead esmalt looma veski, enne kui saad tüki eemaldada.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI mängustiil",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiivne",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Koputage uuesti tagasi, et lahkuda.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Rohkem",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Kasutage täiuslikku andmebaasi",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Lubage see suvand, et kasutada tipptasemel algoritmide abil loodud veatut mängude andmebaasi. See funktsioon integreerib nii mängu ava- kui ka lõpustrateegiad, et soovitada optimaalseid käike. See on eelistatud valik mängijatele, kes otsivad mängus kõrgeimat täpsust. Põhjalike arvutustehnikate abil loodud andmebaas on loodud pakkuma peaaegu täiuslikke mängulahendusi.\n\nMärkus. Kui AI-l ei õnnestu andmebaasile juurde pääseda, kasutab see mänguotsuste tegemiseks tavalisi algoritme. Kui andmebaas on saadaval, muutub raskusaste peaaegu ületamatuks ja AI mõtlemisaeg väheneb drastiliselt. Paljud AI's Playstyle'i valikute sätted tühistatakse, kuna andmebaasi tulemused on kõige olulisemad.\n\nJuhiste saamiseks selle veatu andmebaasi maksimaalse kasutamise kohta klõpsake siin.",
+  "perfectDatabaseDescription": "Lubage see suvand, et kasutada tipptasemel algoritmide abil loodud veatut mängude andmebaasi. See funktsioon integreerib nii mängu ava- kui ka lõpustrateegiad, et soovitada optimaalseid käike. See on eelistatud valik mängijatele, kes otsivad mängus kõrgeimat täpsust. Põhjalike arvutustehnikate abil loodud andmebaas on loodud pakkuma peaaegu täiuslikke mängulahendusi.\n\nMärkus. Kui AI-l ei õnnestu andmebaasile juurde pääseda, kasutab see mänguotsuste tegemiseks tavalisi algoritme. Kui andmebaas on saadaval, muutub raskusaste peaaegu ületamatuks ja AI mõtlemisaeg väheneb drastiliselt. Paljud AI's play style'i valikute sätted tühistatakse, kuna andmebaasi tulemused on kõige olulisemad.\n\nJuhiste saamiseks selle veatu andmebaasi maksimaalse kasutamise kohta klõpsake siin.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Taustapilt",
   "@backgroundImage": {},

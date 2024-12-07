@@ -558,7 +558,7 @@
   },
   "flyPieceCount_Detail": "Uma i-Flying inikwe amandla, uma umdlali encishiselwa esibalweni sesiqephu esithile, izingcezu zakhe zikhululekile ukuya kunoma iyiphi indawo engahlali muntu esikhundleni sokukhawulelwa kumaphoyinti aseduze njengakuyo yonke igeyimu.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Izingcezu Okungenani",
   "@piecesAtLeastCount": {
@@ -602,7 +602,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Umdlali uzolahlekelwa uma imbangi yakhe iwavimba ukuze anganyakaziswa. Shintsha uhlangothi ukuze uhambise uma le nketho ikhutshaziwe.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly_Detail": "Uma umdlali enezingcezu ezintathu noma ezine kuphela (ezilungisekayo) ezisele, angasusa ucezu aluyise kunoma iyiphi indawo yamahhala.",
   "@mayFly_Detail": {
@@ -752,7 +752,7 @@
   },
   "toRemovePiece": "Thepha ucezu olulodwa lombangi ukuze ulususe.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Udinga ukudala umshini wokugaya kuqala ngaphambi kokuthi ususe ucezu.",
   "@needToCreateMillFirst": {
@@ -886,7 +886,7 @@
   },
   "aisPlayStyle": "Indlela yokudlala ye-AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Ungenzi lutho",
   "@passive": {
@@ -958,7 +958,7 @@
   },
   "tapBackAgainToLeave": "Thepha futhi ukuze uhambe.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Okuningi",
   "@more": {
@@ -1110,7 +1110,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Uma umdlali ephula isigayo ukuze akhe isigayo esisha ngokushesha, umdlali onjalo angakwazi ukubuyisela ucezu olunjalo endaweni yokuhlangana yasekuqaleni ekuhambeni kwakhe okulandelayo uma enza isigayo esisha.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Uma umdlali ehle waba yizicucu ezintathu, futhi kungekho mdlali ongasusa ucezu lombangi phakathi nomnyakazo oyishumi, umdlalo uwumdwebo.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
@@ -1464,7 +1464,7 @@
   "@viewAlgorithmGuide": {},
   "usePerfectDatabase": "Sebenzisa i-database ephelele",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's Playstyle' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",
+  "perfectDatabaseDescription": "Nika amandla le nketho ukuze usebenzise isizindalwazi segeyimu esingenasici esikhiqizwe ngama-algorithms asezingeni eliphezulu. Lesi sici sihlanganisa kokubili amasu okuvula nawokuqeda ukuphakamisa umnyakazo olungile. Lokhu ukukhetha okuncanyelwayo kwabadlali abafuna ileveli ephezulu yokunemba ekudlalweni kwegeyimu. Idalwe ngamasu ekhompyutha ahlakaniphile, isizindalwazi siklanyelwe ukunikeza izixazululo zegeyimu ezicishe ziphelele.\n\nQaphela: Uma i-AI ihluleka ukufinyelela kusizindalwazi, izophendukela kuma-algorithms avamile ezinqumweni zokudlala umdlalo. Uma isizindalwazi sitholakala, 'Izinga Lobunzima' licishe lingehluleki, futhi 'Isikhathi Sokucabanga Se-AI' sithola ukuncipha okukhulu. Izilungiselelo eziningi ezingaphakathi kwezinketho ze-'AI's play style' zizokhishwa, njengoba imiphumela yesizindalwazi ibambe phezulu kakhulu.\n\nUkuze uthole umhlahlandlela wokuthi ungayisebenzisa kanjani ngokugcwele le database engenasici, chofoza lapha.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Isithombe semva",
   "@backgroundImage": {},

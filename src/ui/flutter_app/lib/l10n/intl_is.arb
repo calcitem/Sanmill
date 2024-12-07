@@ -122,7 +122,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Leikmaðurinn mun tapa ef andstæðingur hans hindrar þá þannig að ekki er hægt að færa þá. Breyttu hlið til að færa ef þessi valkostur er óvirkur.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "nMoveRule": "N-hreyfa regla",
   "@nMoveRule": {
@@ -432,47 +432,47 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Veldu rangt stykki.",
+  "tipSelectWrong": "Veldu ranga stykkið.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Settu stykkin þín.",
+  "tipPlace": "Settu stykkið þitt.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Þú getur ekki sett það hér.",
+  "tipBanPlace": "Þú getur ekki sett stykkið þitt hér.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Þú settir.",
+  "tipPlaced": "Þú settir stykkið.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Fjarlægðu stykki.",
+  "tipRemove": "Fjarlægðu stykkið.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Þú getur ekki fjarlægt það.",
+  "tipBanRemove": "Þú getur ekki fjarlægt stykkið.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Þú fjarlægðir.",
+  "tipRemoved": "Þú fjarlægðir stykkið.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Færa stykki.",
+  "tipMove": "Færðu stykkið.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "Þú getur ekki sett verkið þitt hér.",
+  "tipCannotPlace": "Þú getur ekki sett stykkið þitt hér.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
-  "tipCannotMove": "Þú getur ekki flutt verkið þitt hingað.",
+  "tipCannotMove": "Þú getur ekki fært stykkið þitt á þennan punkt.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mill! Taktu hlut andstæðingsins.",
+  "tipMill": "Mill! Taktu stykki andstæðingsins.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -480,23 +480,23 @@
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Veldu einn af verkum andstæðingsins.",
+  "tipSelectOpponentsPiece": "Veldu eitt af stykki andstæðingsins.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Þú getur ekki fjarlægt stykki úr myllu.",
+  "tipCannotRemovePieceFromMill": "Þú getur ekki fjarlægt stykkið úr myllu.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "Hluti getur færst um 1 stig.",
+  "tipCanMoveOnePoint": "Stykkið getur færst um 1 punkt.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "Þú getur ekki hreyft stykki andstæðingsins.",
+  "tipCannotMoveOpponentsPieces": "Þú getur ekki fært stykki andstæðingsins.",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Veldu verkið þitt til að færa.",
+  "tipSelectPieceToMove": "Veldu stykkið þitt til að færa.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
@@ -504,7 +504,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Þú getur farið á hvaða stað sem þú vilt.",
+  "tipCanMoveToAnyPoint": "Þú getur fært stykkið á hvaða punkt sem er.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -722,7 +722,7 @@
   },
   "flyPieceCount_Detail": "Ef kveikt er á fljúgandi, þegar leikmanni er fækkað niður í ákveðna stykkisfjölda, er stykki hennar frjálst að fara á hvaða stað sem er óupptekinn í stað þess að vera bundinn við aðliggjandi stig eins og í restinni af leiknum.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "hasDiagonalLines": "Hvíaðar línur",
   "@hasDiagonalLines": {
@@ -882,7 +882,7 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Pikkaðu á hvaða lausan stað sem er til að setja verkið.",
+  "toPlacePiece": "Pikkaðu á hvaða lausan punkt sem er til að setja stykkið.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
@@ -896,7 +896,7 @@
   },
   "toRemovePiece": "Bankaðu á eitt stykki andstæðingsins til að fjarlægja.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Þú þarft að búa til myllu fyrst áður en þú getur fjarlægt stykki.",
   "@needToCreateMillFirst": {
@@ -1018,7 +1018,7 @@
   },
   "aisPlayStyle": "Leikstíll gervigreindar",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "inHand": "{player} í hendi: {count}",
   "@inHand": {
@@ -1066,7 +1066,7 @@
   },
   "tapBackAgainToLeave": "Bankaðu aftur til baka til að fara.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Meira",
   "@more": {
@@ -1230,7 +1230,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ef leikmaður brýtur myllu til að búa til nýja myllu strax, getur hann fært slíkan hlut aftur á upphaflega mótið í næstu hreyfingu sinni ef hann gerir nýja myllu.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Leikurinn er jafntefli ef leikmaður er með þrjú stykki og eftir tíu hreyfingar tekur hvorugur leikmaður stykki andstæðingsins",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1436,7 +1436,7 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Gervigreind er sem stendur í seinkaðri viðbragðsfasa. Vinsamlegast bíddu í smá stund áður en þú heldur áfram.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Þú getur ekki fjarlægt hlut sem ekki er aðliggjandi.",
+  "tipCanNotRemoveNonadjacent": "Þú getur ekki fjarlægt stykki sem ekki er aðliggjandi.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Ef pattstaða er, er hægt að fjarlægja stykki andstæðingsins, sem liggja að þínum, burt, óháð myllumyndun.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
@@ -1464,7 +1464,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Notaðu fullkominn gagnagrunn",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Virkjaðu þennan valkost til að nota gallalausan leikjagagnagrunn sem er búinn til með nýjustu reikniritum. Þessi eiginleiki samþættir bæði opnunar- og lokaaðferðir til að stinga upp á bestu hreyfingum. Þetta er ákjósanlegur kostur fyrir leikmenn sem sækjast eftir hæsta stigi nákvæmni í spilun. Gagnagrunnurinn er búinn til með nákvæmri tölvutækni og er hannaður til að bjóða upp á næstum fullkomnar leikjalausnir.\n\nAthugið: Ef gervigreind nær ekki aðgangi að gagnagrunninum mun það snúa sér að hefðbundnum reikniritum fyrir ákvarðanir um spilun. Þegar gagnagrunnurinn er tiltækur verður „Erfiðleikastigið“ nánast óviðjafnanlegt og „AI Thinking Time“ minnkar verulega. Mörgum stillingum innan valmöguleika 'AI's Playstyle' verður hnekkt, þar sem niðurstöður gagnagrunnsins hafa hæsta forgang.\n\nTil að fá leiðbeiningar um hvernig á að nýta þennan gallalausa gagnagrunn sem best, smelltu hér.",
+  "perfectDatabaseDescription": "Virkjaðu þennan valkost til að nota gallalausan leikjagagnagrunn sem er búinn til með nýjustu reikniritum. Þessi eiginleiki samþættir bæði opnunar- og lokaaðferðir til að stinga upp á bestu hreyfingum. Þetta er ákjósanlegur kostur fyrir leikmenn sem sækjast eftir hæsta stigi nákvæmni í spilun. Gagnagrunnurinn er búinn til með nákvæmri tölvutækni og er hannaður til að bjóða upp á næstum fullkomnar leikjalausnir.\n\nAthugið: Ef gervigreind nær ekki aðgangi að gagnagrunninum mun það snúa sér að hefðbundnum reikniritum fyrir ákvarðanir um spilun. Þegar gagnagrunnurinn er tiltækur verður „Erfiðleikastigið“ nánast óviðjafnanlegt og „AI Thinking Time“ minnkar verulega. Mörgum stillingum innan valmöguleika 'AI's play style' verður hnekkt, þar sem niðurstöður gagnagrunnsins hafa hæsta forgang.\n\nTil að fá leiðbeiningar um hvernig á að nýta þennan gallalausa gagnagrunn sem best, smelltu hér.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Bakgrunnsmynd",
   "@backgroundImage": {},

@@ -28,11 +28,11 @@
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "boardColor": "bảng màu",
+  "boardColor": "Màu bàn cờ",
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "mảnh màu",
+  "pieceColor": "Màu quân cờ",
   "@pieceColor": {
     "description": "Piece color"
   },
@@ -60,7 +60,7 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Chạm vào bất kỳ điểm có sẵn nào để đặt mảnh ghép.",
+  "toPlacePiece": "Chạm vào bất kỳ điểm trống nào để đặt quân cờ.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
@@ -74,7 +74,7 @@
   },
   "toRemovePiece": "Chạm vào một mảnh của đối thủ để loại bỏ.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "theme": "chủ đề",
   "@theme": {
@@ -88,11 +88,11 @@
   "@welcome": {
     "description": "Welcome"
   },
-  "yes": "Đúng",
+  "yes": "Có",
   "@yes": {
     "description": "Yes"
   },
-  "no": "KHÔNG",
+  "no": "Không",
   "@no": {
     "description": "No"
   },
@@ -150,7 +150,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu một người chơi phá vỡ một cối xay để tạo một cối xay mới ngay lập tức, thì người chơi đó có thể di chuyển quân cờ đó trở lại đường giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra một cối xay mới.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Ván cờ hòa nếu một đấu thủ có ba quân và sau mười nước đi không đấu thủ nào lấy được quân của đối phương",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -204,7 +204,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "ĐƯỢC RỒI",
+  "ok": "Ok",
   "@ok": {
     "description": "OK"
   },
@@ -216,55 +216,55 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Chọn mảnh ghép sai.",
+  "tipSelectWrong": "Bạn đã chọn sai quân cờ.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Đặt mảnh của bạn.",
+  "tipPlace": "Hãy đặt quân cờ của bạn.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Bạn không thể đặt nó ở đây.",
+  "tipBanPlace": "Bạn không thể đặt quân cờ ở đây.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Bạn đặt.",
+  "tipPlaced": "Đã đặt quân cờ.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Loại bỏ một mảnh.",
+  "tipRemove": "Loại bỏ một quân cờ.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Bạn không thể loại bỏ nó.",
+  "tipBanRemove": "Bạn không thể loại bỏ quân cờ này.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Bạn đã gỡ bỏ.",
+  "tipRemoved": "Đã loại bỏ quân cờ.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Di chuyển một mảnh.",
+  "tipMove": "Di chuyển một quân cờ.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotMove": "Bạn không thể di chuyển mảnh của bạn ở đây.",
+  "tipCannotMove": "Bạn không thể di chuyển quân cờ của mình ở đây.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Cối xay! Lấy mảnh của đối thủ của bạn.",
+  "tipMill": "Cối xay! Loại bỏ một quân cờ của đối thủ.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Tiếp tục lấy mảnh của đối thủ của bạn.",
+  "tipContinueMill": "Tiếp tục loại bỏ quân cờ của đối thủ.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Chọn một trong những mảnh của đối thủ của bạn.",
+  "tipSelectOpponentsPiece": "Chọn một quân cờ của đối thủ.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Bạn không thể lấy một mảnh ra khỏi cối xay.",
+  "tipCannotRemovePieceFromMill": "Bạn không thể loại bỏ quân cờ từ cối xay.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -272,11 +272,11 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Chọn mảnh của bạn để di chuyển.",
+  "tipSelectPieceToMove": "Chọn quân cờ của bạn để di chuyển.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Bạn còn ba mảnh.",
+  "tipHaveThreePiecesLeft": "Bạn còn ba quân cờ.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -306,7 +306,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "Mất",
+  "lost": "Thua",
   "@lost": {
     "description": "Lost"
   },
@@ -378,11 +378,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "Người 1",
+  "white": "Người chơi 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Người 2",
+  "black": "Người chơi 2",
   "@black": {
     "description": "Player 2"
   },
@@ -574,7 +574,7 @@
   },
   "flyPieceCount_Detail": "Nếu Bay được bật, khi một người chơi bị giảm số lượng quân cờ cụ thể, quân cờ của cô ấy có thể tự do di chuyển đến bất kỳ điểm trống nào thay vì bị giới hạn ở các điểm liền kề như trong phần còn lại của trò chơi.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "miếng ít nhất",
   "@piecesAtLeastCount": {
@@ -626,7 +626,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Người chơi sẽ thua nếu đối thủ của anh ta chặn chúng để chúng không thể di chuyển được. Đổi bên để di chuyển nếu tùy chọn này bị tắt.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "bay",
   "@mayFly": {
@@ -668,7 +668,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Lối ra",
+  "exit": "Thoát",
   "@exit": {
     "description": "Exit"
   },
@@ -902,7 +902,7 @@
   },
   "aisPlayStyle": "lối chơi của AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Thụ động",
   "@passive": {
@@ -974,7 +974,7 @@
   },
   "tapBackAgainToLeave": "Nhấn lại một lần nữa để rời đi.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Hơn",
   "@more": {
@@ -1016,11 +1016,11 @@
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
-  "top": "Đứng đầu",
+  "top": "Phía trên",
   "@top": {
     "description": "Top"
   },
-  "bottom": "Đáy",
+  "bottom": "Phía dưới",
   "@bottom": {
     "description": "Bottom"
   },
@@ -1040,11 +1040,11 @@
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "Ánh sáng",
+  "light": "Sáng",
   "@light": {
     "description": "Light"
   },
-  "dark": "Tối tăm",
+  "dark": "Tối",
   "@dark": {
     "description": "Dark"
   },

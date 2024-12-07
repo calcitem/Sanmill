@@ -532,7 +532,7 @@
   },
   "flyPieceCount_Detail": "Ikiwa Kipengele cha Kuruka kimewashwa, mchezaji anapopunguzwa hadi idadi mahususi ya vipande, vipande vyake viko huru kusogea hadi sehemu yoyote isiyokaliwa badala ya kuwekewa vikwazo kwa pointi zilizo karibu kama ilivyokuwa katika mchezo uliosalia.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Vipande Angalau",
   "@piecesAtLeastCount": {
@@ -584,7 +584,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Mchezaji atapoteza ikiwa mpinzani wake atawazuia ili wasiweze kuhamishwa. Badilisha upande ili kusogeza ikiwa chaguo hili limezimwa.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Kuruka",
   "@mayFly": {
@@ -742,7 +742,7 @@
   },
   "toRemovePiece": "Gonga kwenye kipande kimoja cha mpinzani ili kuondoa.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Unahitaji kuunda kinu kwanza kabla ya kuondoa kipande.",
   "@needToCreateMillFirst": {
@@ -880,7 +880,7 @@
   },
   "aisPlayStyle": "Mtindo wa kucheza wa AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasipo",
   "@passive": {
@@ -952,7 +952,7 @@
   },
   "tapBackAgainToLeave": "Gusa tena ili kuondoka.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Zaidi",
   "@more": {
@@ -1136,7 +1136,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Mchezaji akivunja kinu ili kuunda kinu kipya mara moja, mchezaji kama huyo anaweza kurudisha kipande hicho kwenye makutano ya awali katika hatua yake inayofuata ikiwa atafanya kinu kipya.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Mchezo huchorwa ikiwa mchezaji ana vipande vitatu na baada ya hatua kumi hakuna mchezaji anayeondoa vipande vya mpinzani",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1462,7 +1462,7 @@
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Je, ungependa kuona mwongozo wa mtumiaji wa kanuni hii?",
   "@viewAlgorithmGuide": {},
-  "perfectDatabaseDescription": "Washa chaguo hili ili kutumia hifadhidata isiyo na dosari ya mchezo inayozalishwa kupitia kanuni za kisasa. Kipengele hiki huunganisha mikakati ya kufungua na ya mwisho ili kupendekeza hatua bora. Hili ndilo chaguo linalopendelewa kwa wachezaji wanaotafuta kiwango cha juu cha usahihi katika uchezaji. Imeundwa kupitia mbinu za kimakinifu za kukokotoa, hifadhidata imeundwa ili kutoa suluhu zilizo karibu kabisa za mchezo.\n\nKumbuka: Iwapo AI itashindwa kufikia hifadhidata, itageuka kuwa kanuni za kawaida za maamuzi ya uchezaji mchezo. Hifadhidata inapopatikana, 'Kiwango cha Ugumu' huwa kisichoweza kushindwa, na 'Wakati wa Kufikiria wa AI' hupunguzwa sana. Mipangilio mingi ndani ya chaguo za 'AI's Playstyle' itabatilishwa, kwa kuwa matokeo ya hifadhidata yana kipaumbele cha juu zaidi.\n\nKwa mwongozo wa jinsi ya kufaidika zaidi na hifadhidata hii isiyo na dosari, bofya hapa.",
+  "perfectDatabaseDescription": "Washa chaguo hili ili kutumia hifadhidata isiyo na dosari ya mchezo inayozalishwa kupitia kanuni za kisasa. Kipengele hiki huunganisha mikakati ya kufungua na ya mwisho ili kupendekeza hatua bora. Hili ndilo chaguo linalopendelewa kwa wachezaji wanaotafuta kiwango cha juu cha usahihi katika uchezaji. Imeundwa kupitia mbinu za kimakinifu za kukokotoa, hifadhidata imeundwa ili kutoa suluhu zilizo karibu kabisa za mchezo.\n\nKumbuka: Iwapo AI itashindwa kufikia hifadhidata, itageuka kuwa kanuni za kawaida za maamuzi ya uchezaji mchezo. Hifadhidata inapopatikana, 'Kiwango cha Ugumu' huwa kisichoweza kushindwa, na 'Wakati wa Kufikiria wa AI' hupunguzwa sana. Mipangilio mingi ndani ya chaguo za 'AI's play style' itabatilishwa, kwa kuwa matokeo ya hifadhidata yana kipaumbele cha juu zaidi.\n\nKwa mwongozo wa jinsi ya kufaidika zaidi na hifadhidata hii isiyo na dosari, bofya hapa.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Tumia hifadhidata kamili",
   "@usePerfectDatabase": {},

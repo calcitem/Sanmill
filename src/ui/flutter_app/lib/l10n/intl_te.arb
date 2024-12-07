@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "ఫ్లయింగ్ ప్రారంభించబడితే, ఒక క్రీడాకారుడు ఒక నిర్దిష్ట ముక్కల సంఖ్యకు తగ్గించబడినప్పుడు, ఆమె ముక్కలు మిగిలిన ఆటల మాదిరిగానే ప్రక్కనే ఉన్న పాయింట్లకు పరిమితం కాకుండా ఏదైనా ఖాళీ చేయని బిందువుకు వెళ్లడానికి ఉచితం.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ముక్కలు తక్కువ",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "తన ప్రత్యర్థి వారిని తరలించకుండా అడ్డుకుంటే ఆటగాడు కోల్పోతాడు. ఈ ఎంపిక నిలిపివేయబడితే తరలించడానికి వైపు మార్చండి.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "ఎగురుతూ",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "తొలగించడానికి ప్రత్యర్థి యొక్క ఒక భాగాన్ని నొక్కండి.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "మీరు ఒక భాగాన్ని తొలగించే ముందు మీరు మొదట ఒక మిల్లును సృష్టించాలి.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI యొక్క ప్లేస్టైల్",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "నిష్క్రియాత్మ",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "బయలుదేరడానికి మళ్ళీ నొక్కండి.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "మరింత",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "ఒక కొత్త మిల్లును సృష్టించడానికి ఒక ఆటగాడు ఒక మిల్లును విచ్ఛిన్నం చేస్తే, అలాంటి ఆటగాడు కొత్త మిల్లును తయారు చేస్తే, ఆ ముక్కను తన తదుపరి కదలికలో అసలు జంక్షన్‌కు తిరిగి తరలించవచ్చు.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ఒక ఆటగాడికి మూడు ముక్కలు ఉంటే ఆట డ్రా అవుతుంది మరియు పది కదలికల తరువాత ఆటగాడు ప్రత్యర్థి ముక్కలను తొలగించడు",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

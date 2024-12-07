@@ -526,7 +526,7 @@
   },
   "flyPieceCount_Detail": "Uçuş aktivləşdirilibsə, oyunçu müəyyən bir parça sayına endirildikdə, onun fiqurları oyunun qalan hissəsində olduğu kimi bitişik nöqtələrlə məhdudlaşdırılmaq əvəzinə istənilən boş nöqtəyə keçə bilər.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Ən azı Parçalar",
   "@piecesAtLeastCount": {
@@ -574,7 +574,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Rəqibi onları hərəkət etdirə bilməmək üçün blok edərsə, oyunçu itirəcək. Bu seçim deaktivdirsə, hərəkət etmək üçün tərəfi dəyişdirin.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Uçan",
   "@mayFly": {
@@ -748,7 +748,7 @@
   },
   "toRemovePiece": "Çıxarmaq üçün rəqibin bir parçasına toxunun.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Bir parçanı çıxarmazdan əvvəl əvvəlcə dəyirman yaratmalısınız.",
   "@needToCreateMillFirst": {
@@ -886,7 +886,7 @@
   },
   "aisPlayStyle": "AI-nin oyun tərzi",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiv",
   "@passive": {
@@ -958,7 +958,7 @@
   },
   "tapBackAgainToLeave": "Çıxmaq üçün yenidən klikləyin.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Daha çox",
   "@more": {
@@ -1138,7 +1138,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Əgər oyunçu dərhal yeni dəyirman yaratmaq üçün dəyirmanı sındırarsa, belə oyunçu yeni dəyirman edərsə, növbəti hərəkətində belə parçanı orijinal qovşağına köçürə bilər.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Əgər oyunçuda üç fiqur varsa və on hərəkətdən sonra heç bir oyunçu rəqibin fiqurlarını çıxarmazsa, oyun heç-heçə sayılır",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

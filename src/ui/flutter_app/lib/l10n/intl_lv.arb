@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Ja ir ieslēgta funkcija \"Lidojošā figūra\", kad spēlētāja figūru skaits ir samazināts līdz noteiktam skaitlim, viņa figūras var brīvi pārvietoties uz jebkuru neaizņemtu punktu, nevis tikai uz blakus esošiem punktiem, kā tas ir pārējā spēles laikā.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Vismazākais figūru skaits",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Spēlētājs zaudē, ja pretinieks bloķē tā, ka to nevar pārvietot. Ja šī opcija ir atspējota, mainiet pusi, lai pārvietotos.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Skrējiens",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Pieskarieties pretinieka vienai figūrai, lai to noņemtu.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Pirms figūras noņemšanas vispirms ir jāizveido dzirnavas.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Mākslīgā intelekta spēles stils",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasīvais",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Pieskarieties atpakaļ, lai izietu.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Vairāk",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ja spēlētājs pārtrauc dzirnavas, lai nekavējoties izveidotu jaunu dzirnavu, šāds spēlētājs var nākamajā gabalā pārvietot šo gabalu atpakaļ uz sākotnējo krustojumu, ja tas izveido jaunu dzirnavu.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spēle tiek izlozēta, ja spēlētājam ir trīs figūras un pēc desmit kustībām neviens spēlētājs nenoņem pretinieka figūras",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1364,7 +1364,7 @@
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Rādīt pozīcijas priekšrocības indikatoru",
   "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's Playstyle' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
+  "perfectDatabaseDescription": "Iespējojiet šo opciju, lai izmantotu nevainojamu spēļu datu bāzi, kas izveidota, izmantojot progresīvus algoritmus. Šī funkcija apvieno gan spēles sākuma, gan beigu stratēģijas, lai ieteiktu optimālas kustības. Šī ir vēlamā izvēle spēlētājiem, kuri meklē visaugstāko spēles precizitātes līmeni. Datubāze, kas izveidota, izmantojot rūpīgas skaitļošanas metodes, ir izstrādāta, lai piedāvātu gandrīz ideālus spēļu risinājumus.\n\nPiezīme. Ja mākslīgais intelekts nevar piekļūt datu bāzei, tas izmantos parastos algoritmus, lai pieņemtu lēmumus par spēli. Kad datu bāze ir pieejama, “Grūtības līmenis” kļūst praktiski nepārspējams, un “AI domāšanas laiks” krasi samazinās. Daudzi iestatījumi 'AI's play style' opcijās tiks ignorēti, jo datu bāzes rezultātiem ir visaugstākā prioritāte.\n\nLai iegūtu norādījumus par to, kā maksimāli izmantot šo nevainojamo datubāzi, noklikšķiniet šeit.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Izmantojiet perfektu datu bāzi",
   "@usePerfectDatabase": {},

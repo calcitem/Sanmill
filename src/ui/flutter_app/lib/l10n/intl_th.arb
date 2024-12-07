@@ -72,39 +72,39 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "เลือกชิ้นผิด",
+  "tipSelectWrong": "คุณเลือกหมากผิดตัว",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "วางชิ้นส่วนของคุณ",
+  "tipPlace": "วางหมากของคุณ",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "คุณไม่สามารถวางไว้ที่นี่",
+  "tipBanPlace": "คุณไม่สามารถวางหมากตรงนี้ได้",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "คุณวางไว้",
+  "tipPlaced": "คุณวางหมากแล้ว",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "ถอดชิ้นส่วน",
+  "tipRemove": "นำหมากออก",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "คุณไม่สามารถลบออกได้",
+  "tipBanRemove": "คุณไม่สามารถนำออกได้",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "คุณลบออก",
+  "tipRemoved": "คุณนำหมากออกแล้ว",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "ย้ายชิ้น",
+  "tipMove": "ย้ายหมาก",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "คุณไม่สามารถวางชิ้นส่วนของคุณที่นี่",
+  "tipCannotPlace": "คุณไม่สามารถวางหมากของคุณที่นี่ได้",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
@@ -112,39 +112,39 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "มิลล์! ใช้ชิ้นส่วนของฝ่ายตรงข้าม",
+  "tipMill": "มิลล์! หยิบหมากของฝ่ายตรงข้ามออก",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "ดำเนินการต่อเพื่อนำชิ้นส่วนของฝ่ายตรงข้าม",
+  "tipContinueMill": "ทำต่อเพื่อหยิบหมากฝ่ายตรงข้ามออก",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "เลือกชิ้นส่วนของคู่ต่อสู้ของคุณ",
+  "tipSelectOpponentsPiece": "เลือกหมากของฝ่ายตรงข้าม",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "คุณไม่สามารถเอาชิ้นส่วนออกจากโรงสีได้",
+  "tipCannotRemovePieceFromMill": "คุณไม่สามารถนำหมากออกจากมิลล์ได้",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "ชิ้นหนึ่งสามารถเคลื่อนที่ได้ 1 จุด",
+  "tipCanMoveOnePoint": "หมากหนึ่งตัวสามารถเคลื่อนไปได้ 1 จุด",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับชิ้นส่วนของคู่ต่อสู้ได้",
+  "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับหมากของฝ่ายตรงข้ามได้",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "เลือกชิ้นส่วนของคุณเพื่อย้าย",
+  "tipSelectPieceToMove": "เลือกหมากของคุณเพื่อย้าย",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "คุณเหลือสามชิ้น",
+  "tipHaveThreePiecesLeft": "คุณเหลือหมากสามตัว",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "คุณสามารถย้ายไปยังจุดใดก็ได้ที่คุณต้องการ",
+  "tipCanMoveToAnyPoint": "คุณสามารถย้ายหมากไปยังจุดใดก็ได้ที่ต้องการ",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "หากเปิดใช้งานการบิน เมื่อผู้เล่นถูกลดจำนวนเป็นจำนวนชิ้นที่กำหนด ชิ้นส่วนของเธอสามารถย้ายไปยังจุดที่ว่างได้ แทนที่จะถูกจำกัดให้อยู่ที่จุดที่อยู่ติดกันเหมือนกับในส่วนที่เหลือของเกม",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ชิ้นอย่างน้อย",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ผู้เล่นจะแพ้หากคู่ต่อสู้บล็อกพวกเขาเพื่อไม่ให้เคลื่อนที่ เปลี่ยนด้านเพื่อย้ายหากตัวเลือกนี้ถูกปิดใช้งาน",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "บิน",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "แตะที่ชิ้นหนึ่งของฝ่ายตรงข้ามเพื่อลบ",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "คุณต้องสร้างโรงสีก่อนจึงจะสามารถถอดชิ้นส่วนได้",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "สไตล์การเล่นของ AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "เฉื่อย",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "แตะกลับอีกครั้งเพื่อออก",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "มากกว่า",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "หากผู้เล่นทำลายโรงโม่เพื่อสร้างโรงสีใหม่ทันที ผู้เล่นดังกล่าวสามารถย้ายชิ้นส่วนดังกล่าวกลับไปที่ทางแยกเดิมในการย้ายครั้งต่อไปหากสร้างโรงสีใหม่",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "เกมจะถูกสุ่มขึ้นถ้าผู้เล่นมีสามชิ้นและหลังจากผ่านไปสิบกระบวนแล้วผู้เล่นจะไม่ถอดชิ้นส่วนของฝ่ายตรงข้าม",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

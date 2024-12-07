@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Μετα",
+  "move": "Μετακίνηση",
   "@move": {
     "description": "Move"
   },
@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Επιλέξτε το λάθος κομμάτι.",
+  "tipSelectWrong": "Έχετε επιλέξει λάθος κομμάτι.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Μύλος! Πάρε το κομμάτι του αντιπάλου σου.",
+  "tipMill": "Μύλος! Αφαιρέστε ένα κομμάτι του αντιπάλου.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -140,7 +140,7 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Έχουν απομείνει τρία κομμάτια.",
+  "tipHaveThreePiecesLeft": "Σας απομένουν τρία κομμάτια.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -208,7 +208,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Το παιχνίδι ξεκίνησε, παρακαλώ τοποθετήστε.",
+  "gameStarted": "Το παιχνίδι ξεκίνησε. Παρακαλούμε τοποθετήστε τα κομμάτια σας.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
@@ -240,19 +240,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} παραιτηθείτε.",
+  "loseReasonResign": "{player} παραιτήθηκε.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "Το {player} δεν έχει δρόμο.",
+  "loseReasonNoWay": "Ο {player} δεν έχει καμία διαθέσιμη κίνηση.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Η πλακέτα είναι γεμάτη και το {player} δεν έχει δρόμο.",
+  "loseReasonBoardIsFull": "Το ταμπλό είναι γεμάτο και ο {player} δεν μπορεί να κινηθεί.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Ο χρόνος τελείωσε, το {player} χάθηκε.",
+  "loseReasonTimeOver": "Ο χρόνος τελείωσε, το {player} έχασε.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Εάν είναι ενεργοποιημένο το Ιπτάμενο κομμάτι, όταν ένας παίκτης μειωθεί σε έναν συγκεκριμένο αριθμό κομματιών, τα κομμάτια του είναι ελεύθερα να μετακινηθούν σε οποιοδήποτε μη κατειλημμένο σημείο αντί να περιορίζονται σε γειτονικά σημεία όπως στο υπόλοιπο παιχνίδι.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Κομμάτια Τουλάχιστον",
   "@piecesAtLeastCount": {
@@ -428,7 +428,7 @@
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "Από προεπιλογή, οι παίκτες πρέπει να αφαιρέσουν πρώτα τυχόν άλλα κομμάτια πριν αφαιρέσουν ένα κομμάτι από έναν σχηματισμένο μύλο. Ενεργοποιήστε αυτή την επιλογή για να απενεργοποιήσετε τον περιορισμό.",
+  "mayRemoveFromMillsAlways_Detail": "Από προεπιλογή, οι παίκτες πρέπει να αφαιρέσουν άλλα κομμάτια πριν αφαιρέσουν ένα από έναν σχηματισμένο μύλο. Ενεργοποιήστε αυτή την επιλογή για να καταργήσετε αυτόν τον περιορισμό.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Ο παίκτης χάνει αν ο αντίπαλός του τους μπλοκάρει έτσι ώστε να μην μπορούν να μετακινηθούν. Αλλάξτε πλευρά για να μετακινηθείτε αν αυτή η επιλογή είναι απενεργοποιημένη.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Ιπτάμενο",
   "@mayFly": {
@@ -492,7 +492,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Κανόνες ρυθμίσεις",
+  "ruleSettings": "Ρυθμίσεις κανόνων",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -512,7 +512,7 @@
   "@backgroundColor": {
     "description": "Background color"
   },
-  "lineColor": "Χρώμα γραμμής σκάφους",
+  "lineColor": "Χρώμα γραμμής ταμπλό",
   "@lineColor": {
     "description": "Board line color"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Πατήστε σε ένα κομμάτι του αντιπάλου για να το αφαιρέσετε.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Πρέπει πρώτα να δημιουργήσετε έναν μύλο πριν μπορέσετε να αφαιρέσετε ένα κομμάτι.",
   "@needToCreateMillFirst": {
@@ -754,13 +754,13 @@
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "Κατάσταση game over",
+  "gameOverCondition": "Κατάσταση λήξης παιχνιδιού",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
   "aisPlayStyle": "Στυλ παιχνιδιού της AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Παθητικό",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Πατήστε ξανά πίσω για να φύγετε.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Περισσότερα",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Εάν ένας παίκτης σπάσει ένα μύλο για να δημιουργήσει ένα νέο μύλο αμέσως, ένας τέτοιος παίκτης μπορεί να μετακινήσει ένα τέτοιο κομμάτι πίσω στην αρχική διασταύρωση στην επόμενη κίνηση του, αν κάνει ένα νέο μύλο.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Το παιχνίδι τραβιέται αν ένας παίκτης έχει τρία κομμάτια και μετά από δέκα κινήσεις κανένας παίκτης δεν αφαιρεί τα κομμάτια του αντιπάλου",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1026,7 +1026,7 @@
   "@emptyPoint": {
     "description": "Empty point"
   },
-  "noPoint": "Δεν έχει νόημα",
+  "noPoint": "Κανένα σημείο",
   "@noPoint": {
     "description": "No point"
   },
@@ -1122,7 +1122,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{ખસેડો}=1{{count} ખસેડો}other{{count} ચાલ}}",
+  "moveNumber": "{count,plural, =0{Καμία κίνηση}=1{{count} κίνηση}other{{count} κινήσεις}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1268,7 +1268,7 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "Μπορείτε να χρησιμοποιήσετε τον τροχό του ποντικιού για να αλλάξετε την τιμή στον επιλογέα.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "Ο χρόνος σκέψης AI έχει οριστεί στο 0 σημαίνει ότι δεν υπάρχει χρονικό όριο για σκέψη.",
+  "noTimeLimitForThinking": "Ο καθορισμός του χρόνου σκέψης της AI σε 0 σημαίνει ότι δεν υπάρχει χρονικό όριο για σκέψη.",
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "Λάβετε υπόψη ότι η προσαρμογή του χρόνου σκέψης AI μπορεί να μην είναι απολύτως ακριβής. Ο πραγματικός χρόνος σκέψης μπορεί να είναι μικρότερος όταν το επίπεδο δυσκολίας έχει ρυθμιστεί σε χαμηλότερη τιμή και μπορεί να είναι μεγαλύτερος όταν η τεχνητή νοημοσύνη είναι στη μέση της σκέψης όταν ο χρόνος τελειώσει.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
@@ -1512,7 +1512,7 @@
   "@ruleSet": {},
   "laskerMorris": "Λάσκερ Μόρις",
   "@laskerMorris": {},
-  "oneTimeMill": "Μέλνιτσα",
+  "oneTimeMill": "Μύλος μιας χρήσης",
   "@oneTimeMill": {},
   "daSanQi": "Ντασάντσι",
   "@daSanQi": {},

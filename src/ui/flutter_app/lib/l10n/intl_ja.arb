@@ -8,7 +8,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "youWin": "あなたが勝つ！おめでとう！",
+  "youWin": "あなたは勝ちました！おめでとうございます！",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
@@ -70,7 +70,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "noPoint": "意味が無い",
+  "noPoint": "ポイントなし",
   "@noPoint": {
     "description": "No point"
   },
@@ -158,11 +158,11 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "間違ったピースを選択してください。",
+  "tipSelectWrong": "誤ったピースが選択されました。",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "あなたの作品を置きます。",
+  "tipPlace": "ピースを配置してください。",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -170,7 +170,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "あなたが配置しました。",
+  "tipPlaced": "配置されました。",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -182,7 +182,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "削除しました。",
+  "tipRemoved": "削除されました。",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -198,7 +198,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "工場！相手の駒を取ります。",
+  "tipMill": "ミル成立！相手の駒を取ってください。",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -272,7 +272,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "ゲームが輸入されました。",
+  "gameImported": "ゲームがインポートされました。",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -412,7 +412,7 @@
       }
     }
   },
-  "youLose": "あなたが負ける！",
+  "youLose": "あなたは負けました。",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -524,7 +524,7 @@
   },
   "flyPieceCount_Detail": "フライングが有効になっている場合、プレーヤーが特定のピース数に減ると、ゲームの残りの部分のように隣接するポイントに制限されるのではなく、空いているポイントに自由に移動できます。",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "少なくともピース",
   "@piecesAtLeastCount": {
@@ -572,7 +572,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "対戦相手がそれらをブロックして移動できないようにすると、プレイヤーは負けます。このオプションが無効になっている場合は、移動する側を変更します。",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "飛行",
   "@mayFly": {
@@ -738,7 +738,7 @@
   },
   "toRemovePiece": "相手のワンピースをタップして取り除きます。",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "ピースを削除する前に、ミルを作成する必要があります。",
   "@needToCreateMillFirst": {
@@ -866,7 +866,7 @@
   },
   "aisPlayStyle": "AIのプレイスタイル",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "受け身",
   "@passive": {
@@ -938,7 +938,7 @@
   },
   "tapBackAgainToLeave": "戻るにはもう一度タップします。",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "もっと",
   "@more": {
@@ -1102,7 +1102,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "プレーヤーが工場を壊してすぐに新しい工場を作成した場合、そのプレーヤーは、新しい工場を作成する場合、次の移動でそのピースを元のジャンクションに戻すことができます。",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレーヤーが 3 つのピースを持っていて、10 回の移動後にどちらのプレーヤーも対戦相手のピースを削除しない場合、ゲームは引き分けになります。",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1208,7 +1208,7 @@
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "工場！動き続けます。",
+  "continueToMakeMove": "ミル成立！さらに動きを続けてください。",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },

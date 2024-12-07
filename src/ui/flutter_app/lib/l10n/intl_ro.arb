@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Fără înregistrări",
+  "noGameRecord": "Nicio înregistrare",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Moară! Îndepărtează una din piesele adversarului.",
+  "tipMill": "Moară! Îndepărtează una dintre piesele adversarului.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -124,7 +124,7 @@
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Nu poți îndepărta piesă dintr-o moară.",
+  "tipCannotRemovePieceFromMill": "Nu poți îndepărta o piesă dintr-o moară.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -180,7 +180,7 @@
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Exportare jocul",
+  "exportGame": "Exportare joc",
   "@exportGame": {
     "description": "Export game"
   },
@@ -336,7 +336,7 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "Menține mută revizionarea",
+  "keepMuteWhenTakingBack": "Menține sunetul oprit la revenire",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "La Flying activat, și când jucătorul are un număr redus prestabilit de piese, acestea sunt libere să se deplaseze în orice punct neocupat.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Număr minim de piese",
   "@piecesAtLeastCount": {
@@ -428,7 +428,7 @@
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "În mod implicit, jucătorii trebuie să elimine orice alte piese înainte de a scoate o piesă dintr-o moară formată. Activați această obțiune.",
+  "mayRemoveFromMillsAlways_Detail": "În mod implicit, jucătorii trebuie mai întâi să elimine orice alte piese înainte de a îndepărta o piesă dintr-o moară formată. Activați această opțiune pentru a dezactiva această limitare.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Jucătorul va pierde dacă adversarul său îi blochează în așa fel încât să nu poată muta (neavând câmp liber). Schimbă, dacă obțiunea este dezactivată.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Sărituri",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Atinge o piesă a adversarului pentru a o elimina.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Numai după o moară creată poți îndepărta o piesă.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Stilul de joc al AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasiv",
   "@passive": {
@@ -810,9 +810,9 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Atingeți din nou pentru a putea muta.",
+  "tapBackAgainToLeave": "Atingeți butonul Înapoi încă o dată pentru a ieși.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mai mult",
   "@more": {
@@ -846,7 +846,7 @@
   "@mayMoveInPlacingPhase_Detail": {
     "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
   },
-  "drawerColor": "Barva textu nabídky",
+  "drawerColor": "Culoarea meniului",
   "@drawerColor": {
     "description": "Menu color"
   },
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Dacă un jucător sparge o moară pentru a crea imediat o moară nouă, un astfel de jucător poate muta o astfel de piesă înapoi la joncțiunea originală în următoarea sa mutare, dacă face o moară nouă.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Jocul este extras dacă un jucător are trei piese și după zece mutări niciunul dintre jucători nu elimină piesele adversarului",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1176,7 +1176,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piese}} trebuie eliminate.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piesă}other{{count} piese}} trebuie eliminate.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {

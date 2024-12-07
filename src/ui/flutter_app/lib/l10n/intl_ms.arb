@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Sekiranya Flying diaktifkan, apabila pemain dikurangkan menjadi jumlah potongan tertentu, potongannya bebas bergerak ke titik yang tidak dihuni dan bukannya dibatasi ke titik bersebelahan seperti di sepanjang permainan.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Sekeping Paling Sedikit",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Pemain akan kalah jika lawannya menyekat mereka sehingga mereka tidak dapat dipindahkan. Tukar sebelah untuk bergerak jika pilihan ini dilumpuhkan.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Terbang",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Ketuk satu bahagian lawan untuk dikeluarkan.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Anda perlu membuat kilang terlebih dahulu sebelum dapat mengeluarkan sekepingnya.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Gaya permainan AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasif",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Ketik kembali sekali lagi untuk pergi.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Lebih banyak lagi",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Sekiranya pemain memecahkan kilang untuk membuat kilang baru dengan segera, pemain tersebut dapat menggerakkan sekeping itu kembali ke persimpangan asal pada langkah seterusnya jika ia membuat kilang baru.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan digambar jika pemain mempunyai tiga keping dan setelah sepuluh gerakan tidak ada pemain yang mengeluarkan potongan lawan",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Gunakan pangkalan data yang sempurna",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Dayakan pilihan ini untuk menggunakan pangkalan data permainan yang sempurna yang dijana melalui algoritma canggih. Ciri ini menyepadukan kedua-dua strategi pembukaan dan akhir permainan untuk mencadangkan pergerakan yang optimum. Ini adalah pilihan pilihan untuk pemain yang mencari tahap ketepatan tertinggi dalam permainan. Dicipta melalui teknik pengiraan yang teliti, pangkalan data direka untuk menawarkan penyelesaian permainan yang hampir sempurna.\n\nNota: Sekiranya AI gagal mengakses pangkalan data, ia akan beralih kepada algoritma konvensional untuk keputusan permainan. Apabila pangkalan data tersedia, 'Tahap Kesukaran' menjadi hampir tiada tandingan, dan 'Masa Pemikiran AI' mengalami pengurangan drastik. Banyak tetapan dalam pilihan 'AI's Playstyle' akan ditindih, kerana hasil pangkalan data memegang keutamaan tertinggi.\n\nUntuk panduan tentang cara memanfaatkan sepenuhnya pangkalan data yang sempurna ini, klik di sini.",
+  "perfectDatabaseDescription": "Dayakan pilihan ini untuk menggunakan pangkalan data permainan yang sempurna yang dijana melalui algoritma canggih. Ciri ini menyepadukan kedua-dua strategi pembukaan dan akhir permainan untuk mencadangkan pergerakan yang optimum. Ini adalah pilihan pilihan untuk pemain yang mencari tahap ketepatan tertinggi dalam permainan. Dicipta melalui teknik pengiraan yang teliti, pangkalan data direka untuk menawarkan penyelesaian permainan yang hampir sempurna.\n\nNota: Sekiranya AI gagal mengakses pangkalan data, ia akan beralih kepada algoritma konvensional untuk keputusan permainan. Apabila pangkalan data tersedia, 'Tahap Kesukaran' menjadi hampir tiada tandingan, dan 'Masa Pemikiran AI' mengalami pengurangan drastik. Banyak tetapan dalam pilihan 'AI's play style' akan ditindih, kerana hasil pangkalan data memegang keutamaan tertinggi.\n\nUntuk panduan tentang cara memanfaatkan sepenuhnya pangkalan data yang sempurna ini, klik di sini.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Imej latar belakang",
   "@backgroundImage": {},

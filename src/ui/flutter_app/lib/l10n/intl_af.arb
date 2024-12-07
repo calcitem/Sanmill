@@ -44,13 +44,13 @@
   },
   "firstMoveDetail": "In hierdie speletjie is dit makliker vir die tweede speler om te wen in vergelyking met die eerste speler.",
   "@firstMoveDetail": {},
-  "enteredFlyingPhase": "Nou die vliegfase ingegaan het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
+  "enteredFlyingPhase": "Noudat die vliegfase begin het, kan die teenstander se stukke na enige leë punt op die bord spring. Jy kan die vlieënde reël afskakel in die \"Reëlinstellings\".",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Wanneer dooiepunt",
+  "whenStalemate": "Wanneer 'n dooiepunt bereik word",
   "@whenStalemate": {},
   "mintChocolate": "Munt Sjokolade",
   "@mintChocolate": {},
-  "skyBlue": "Lug blou",
+  "skyBlue": "Lugblou",
   "@skyBlue": {},
   "viewAlgorithmGuide": "Wil jy die gebruikersgids vir hierdie algoritme sien?",
   "@viewAlgorithmGuide": {},
@@ -104,11 +104,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Skuif lys",
+  "showMoveList": "Skuiflys",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Skuif lys",
+  "moveList": "Skuiflys",
   "@moveList": {
     "description": "Move list"
   },
@@ -128,7 +128,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Kies die verkeerde stuk.",
+  "tipSelectWrong": "Jy het die verkeerde stuk gekies.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -302,7 +302,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonResign": "{player} het bedank.",
+  "loseReasonResign": "{player} het opgegee.",
   "@loseReasonResign": {
     "description": "Indicate that the player resigned.",
     "placeholders": {
@@ -312,7 +312,7 @@
       }
     }
   },
-  "loseReasonNoWay": "{player} het geen manier om te gaan nie.",
+  "loseReasonNoWay": "{player} het geen skuif om te maak nie.",
   "@loseReasonNoWay": {
     "description": "Indicate that the player has no way to go.",
     "placeholders": {
@@ -322,7 +322,7 @@
       }
     }
   },
-  "loseReasonBoardIsFull": "Die bord is vol, en {player} het geen manier om te gaan nie.",
+  "loseReasonBoardIsFull": "Die bord is vol, en {player} het geen skuif om te maak nie.",
   "@loseReasonBoardIsFull": {
     "description": "Indicate that the player has no way to go because the board is full.",
     "placeholders": {
@@ -492,7 +492,7 @@
   },
   "flyPieceCount_Detail": "As Vlieg geaktiveer is, wanneer 'n speler tot 'n spesifieke stuktelling verminder word, is haar stukke vry om na enige onbesette punt te skuif in plaas daarvan om beperk te word tot aangrensende punte soos in die res van die speletjie.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Stukke Ten minste",
   "@piecesAtLeastCount": {
@@ -544,7 +544,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Die speler sal verloor as sy teenstander hulle blokkeer sodat hulle nie geskuif kan word nie. Verander kant om te skuif as hierdie opsie gedeaktiveer is.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vlieg",
   "@mayFly": {
@@ -718,7 +718,7 @@
   },
   "toRemovePiece": "Tik op die teenstander se een stuk om te verwyder.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Jy moet eers 'n meul skep voordat jy 'n stuk kan verwyder.",
   "@needToCreateMillFirst": {
@@ -852,7 +852,7 @@
   },
   "aisPlayStyle": "KI se speelstyl",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passief",
   "@passive": {
@@ -924,7 +924,7 @@
   },
   "tapBackAgainToLeave": "Tik weer terug om te vertrek.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Meer",
   "@more": {
@@ -1108,7 +1108,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "As 'n speler 'n meul breek om dadelik 'n nuwe meul te skep, kan so speler so 'n stuk terugskuif na die oorspronklike aansluiting in sy volgende skuif as dit 'n nuwe meul maak.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Die wedstryd word gelykop gemaak as 'n speler drie stukke het en na tien skuiwe verwyder geen speler die teenstander se stukke",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1118,7 +1118,7 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "Naby",
+  "close": "Sluit",
   "@close": {
     "description": "Close"
   },
@@ -1452,19 +1452,19 @@
   "@greenMeadow": {},
   "stonyPath": "Klippad",
   "@stonyPath": {},
-  "pastelPink": "Pastel pienk",
+  "pastelPink": "Pastelpienk",
   "@pastelPink": {},
-  "turquoiseSea": "Turkoois see",
+  "turquoiseSea": "Turkooissee",
   "@turquoiseSea": {},
-  "violetDream": "Violet droom",
+  "violetDream": "Violetdroom",
   "@violetDream": {},
-  "playfulGarden": "Speelse tuin",
+  "playfulGarden": "Speelsetuin",
   "@playfulGarden": {},
   "whatIsRetrogradeAnalysis": "Die retrograde-analise-algoritme gebruik multi-waarde retrograde analise om 'n eindspeldatabasis vanaf verskillende beginposisies te bou, en pas dan hierdie databasis toe om spel te optimaliseer. Hierdie benadering val onder die kategorie van Ultra-Strong oplossings.",
   "@whatIsRetrogradeAnalysis": {},
   "usePerfectDatabase": "Gebruik perfekte databasis",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's Playstyle'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",
+  "perfectDatabaseDescription": "Aktiveer hierdie opsie om 'n foutlose speletjiedatabasis te gebruik wat deur die nuutste algoritmes gegenereer word. Hierdie kenmerk integreer beide opening- en eindspelstrategieë om optimale bewegings voor te stel. Dit is die voorkeurkeuse vir spelers wat die hoogste vlak van akkuraatheid in spel soek. Geskep deur noukeurige berekeningstegnieke, is die databasis ontwerp om byna perfekte speloplossings te bied.\n\nLet wel: Indien die KI nie toegang tot die databasis kry nie, sal dit na konvensionele algoritmes wend vir spelbesluite. Wanneer die databasis beskikbaar is, word die 'Moeilikheidsgraad' feitlik onverbeterlik, en 'KI-denktyd' ervaar 'n drastiese vermindering. Baie instellings binne 'AI's play style'-opsies sal tersyde gestel word, aangesien die databasisuitkomste die hoogste prioriteit het.\n\nVir leiding oor hoe om die meeste van hierdie foutlose databasis te maak, klik hier.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Agtergrondbeeld",
   "@backgroundImage": {},

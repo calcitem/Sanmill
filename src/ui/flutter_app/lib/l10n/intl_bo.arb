@@ -304,7 +304,7 @@
   },
   "toRemovePiece": "ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་གཅིག་ལ་རེག་ནས་བསུབ་པ།",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "ཁྱེད་རང་གིས་དངོས་པོ་གཅིག་བཏོན་མ་ཐག དང་པོ་གསུམ་བཟོ་དགོས།",
   "@needToCreateMillFirst": {
@@ -362,7 +362,7 @@
   },
   "tapBackAgainToLeave": "ཡང་བསྐྱར་རྗེས་ལ་རེག་ནས་ཕྱིར་ཐོན།",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "དེ་མིན།",
   "@more": {
@@ -684,7 +684,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "གལ་ཏེ་རྩེད་མོ་བ་ཞིག་གིས་གསུམ་གཅིག་བརྡུངས་ནས་དེ་མ་ཐག་གསུམ་གསར་པ་བཟོས་ན། རྩེད་མོ་བ་དེས་གསུམ་གསར་པ་བཟོས་ན་ཁོང་གི་འགུལ་སྐྱོད་རྗེས་མའི་ནང་དེ་ལྟའི་མཐུད་མཚམས་ཐོག་མར་སྤོ་ཐུབ།",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "རྩེད་འགྲན་པ་ཞིག་ལ་རྡེལ་གསུམ་ལས་མེད་པ་དང་སྤོ་འགུལ་ཐེངས་བཅུའི་རྗེས་སུ་རྩེད་འགྲན་པ་གཉིས་ཀྱི་གང་རུང་གིས་ཀྱང་ཁ་གཏད་རྩེད་འགྲན་པའི་རྡེལ་བསུབ་མེད་ཚེ། རྩེད་མོ་འདི་ནི་གྲུབ་འབྲས་མཉམ་པ་ཡིན།",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -828,7 +828,7 @@
   },
   "flyPieceCount_Detail": "གལ་ཏེ་འཕུར་རྒྱུག་ཆོག་པའི་སྐབས་སུ། རྩེད་འགྲན་པ་གཅིག་གི་རྡེལ་གྲངས་གཏན་འཁེལ་གྱི་གྲངས་འབོར་ཞིག་ཏུ་ཉུང་དུ་ཕྱིན་ཚེ། ཁོ་མོའི་རྡེལ་རྣམས་རྩེད་མོའི་རིང་གི་དུས་མཚམས་གཞན་དག་ཏུ་མཐའ་འཁོར་གྱི་ས་ཚིགས་ཁོ་ནར་སྤོ་འགུལ་བྱེད་ཆོག་པའི་ཚོད་འཛིན་གྱི་འོག་ཏུ་མེད་པར་ས་ཚིགས་སྟོང་པ་གང་རུང་དུ་སྤོ་འགུལ་བྱེད་ཆོག་པ་ཡིན།",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ཉུང་མཐའི་རྡེལ་གྲངས་",
   "@piecesAtLeastCount": {
@@ -880,7 +880,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "གལ་ཏེ་ཁོའི་འགྲན་ཟླས་ཁོ་ལ་འགོག་རྐྱེན་བཟོས་ཏེ་ཁོ་ལ་སྤོ་འགུལ་མི་ཐུབ་པའི་སྐབས་སུ། རྩེད་འགྲན་པ་ཕམ་པར་འགྱུར། གལ་ཏེ་འདེམས་གཞི་འདི་ཤུགས་མེད་དུ་བཏང་ན་སྤོ་འགུལ་ཕྱོགས་བརྗེ།",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "འཕུར་བསྐྱོད།",
   "@mayFly": {
@@ -1120,7 +1120,7 @@
   },
   "aisPlayStyle": "AI རྩེད་སྟངས།",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "བྱ་སྤྱོད་མེད།",
   "@passive": {

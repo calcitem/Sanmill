@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "이미 습니다.",
+  "tipPlaced": "이미 놓았습니다.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -184,7 +184,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "게임을 수입했습니다.",
+  "gameImported": "게임을 불러왔습니다.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -192,7 +192,7 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "불러온 게임이 현재 규칙과 지 않습니다.",
+  "movesAndRulesNotMatch": "불러온 게임이 현재 규칙과 맞지 않습니다.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "플라잉이 활성화 될 시, 특정 수까지 말이 줄어들면 인접한 위치로 이동하는 대신 비어있는 어떤 위치로도 말을 이동시킬 수 있게 됩니다.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "최소 말의 수, 이하면 게임에서 패배",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "상대방에게 막혀 더 이상 이동할 수 없을 때 패배하도록 합니다. 비활성화된 경우 상대방에게 막혀 이동할 수 없을 때 이동에 제한이 없어집니다.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "플라잉",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "상대방의 말 중 하나를 탭하여 제거하세요.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "말을 제거하기 전에 먼저 곤을 만들어야 합니다.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI의 플레이 스타일",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "수동적",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "뒤로 버튼을 한 번 더 탭하여 나가기.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "더 보기",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "플레이어가 즉시 새 '꼰'을 만들기 위해 '꼰'을 부수는 경우, 그러한 플레이어는 새 '꼰'을 만드는 경우 다음 이동에서 그러한 말을 원래 위치로 다시 이동할 수 있습니다.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "10번의 이동 후 양쪽 플레이어 모두 상대방 말을 제거하지 못하고 플레이어가 3개의 말을 가지고 있으면 게임은 무승부입니다",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

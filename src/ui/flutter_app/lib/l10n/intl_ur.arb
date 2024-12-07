@@ -604,7 +604,7 @@
   },
   "flyPieceCount_Detail": "اگر فلائنگ کو فعال کیا جاتا ہے، جب کسی کھلاڑی کو مخصوص ٹکڑوں کی گنتی تک کم کر دیا جاتا ہے، تو اس کے ٹکڑے باقی کھیل کی طرح ملحقہ پوائنٹس تک محدود رہنے کے بجائے کسی بھی غیر مقبوضہ مقام پر جانے کے لیے آزاد ہوتے ہیں۔",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "کم از کم ٹکڑے",
   "@piecesAtLeastCount": {
@@ -652,7 +652,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "کھلاڑی ہار جائے گا اگر اس کا مخالف انہیں روکتا ہے تاکہ وہ منتقل نہ ہوسکیں۔ اگر یہ اختیار غیر فعال ہے تو منتقل کرنے کے لیے سائیڈ کو تبدیل کریں۔",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "nMoveRule": "N- اقدام کا قاعدہ",
   "@nMoveRule": {
@@ -798,7 +798,7 @@
   },
   "toRemovePiece": "ہٹانے کے لیے مخالف کے ایک ٹکڑے پر ٹیپ کریں۔",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "کسی ٹکڑے کو ہٹانے سے پہلے آپ کو پہلے مل بنانے کی ضرورت ہے۔",
   "@needToCreateMillFirst": {
@@ -930,7 +930,7 @@
   },
   "aisPlayStyle": "AI کا پلے اسٹائل",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "غیر فعال",
   "@passive": {
@@ -998,7 +998,7 @@
   },
   "tapBackAgainToLeave": "چھوڑنے کے لیے دوبارہ تھپتھپائیں۔",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "مزید",
   "@more": {
@@ -1174,7 +1174,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "اگر کوئی کھلاڑی فوری طور پر ایک نئی مل بنانے کے لیے مل کو توڑتا ہے، تو ایسا کھلاڑی اپنی اگلی چال میں اس ٹکڑے کو واپس اصل جنکشن پر منتقل کر سکتا ہے اگر وہ نئی مل بناتا ہے۔",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "کھیل ڈرا ہوتا ہے اگر کسی کھلاڑی کے پاس تین ٹکڑے ہوں اور دس چالوں کے بعد کوئی بھی کھلاڑی حریف کے ٹکڑوں کو نہیں ہٹاتا ہے۔",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

@@ -32,11 +32,11 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Umano contro nuvola",
+  "humanVsCloud": "Umano contro Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Umani contro LAN",
+  "humanVsLAN": "Umano contro LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mulino! Prendete il pezzo del vostro avversario.",
+  "tipMill": "Mulino! Rimuovete un pezzo dell'avversario.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -240,11 +240,11 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} dimettersi.",
+  "loseReasonResign": "{player} si è arreso.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} non ha modo di andare.",
+  "loseReasonNoWay": "{player} non ha mosse disponibili.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
@@ -264,7 +264,7 @@
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "È un Draw perché la tavola è piena.",
+  "drawReasonThreefoldRepetition": "È un pareggio a causa della triplice ripetizione.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Se Volare è abilitato, quando un giocatore è ridotto a un determinato numero di pezzi, i suoi pezzi sono liberi di muoversi verso qualsiasi punto non occupato, invece di essere limitati ai punti adiacenti come nel resto del gioco.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pezzi al minimo",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Il giocatore perde se il suo avversario lo blocca in modo che non possa essere mosso. Cambia lato per muovere se questa opzione è disabilitata.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Volare",
   "@mayFly": {
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Esci da",
+  "exit": "Esci",
   "@exit": {
     "description": "Exit"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tocca un pezzo dell'avversario per rimuoverlo.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "È necessario creare un mulino prima di poter rimuovere un pezzo.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Stile di gioco dell'IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passivo",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Tocca di nuovo per uscire.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Più",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Se un giocatore rompe un mulino per creare immediatamente un nuovo mulino, tale giocatore può riportare tale pezzo all'incrocio originale nella sua prossima mossa se fa un nuovo mulino.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "La partita è patta se un giocatore ha tre pezzi e dopo dieci mosse nessun giocatore rimuove i pezzi dell'avversario",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "La pasta è fatta.",
+  "pasteDone": "Incollaggio completato.",
   "@pasteDone": {
     "description": "The paste is done."
   },

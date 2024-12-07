@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Jei įjungtas skraidančios figūrėlės režimas, kai žaidėjo figūrėlių skaičius sumažėja iki tam tikro skaičiaus, jo figūrėlės gali laisvai judėti į bet kurį laisvą tašką, o ne apsiriboti gretimais taškais, kaip likusioje žaidimo dalyje.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Mažiausiai figūrų",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Žaidėjas pralaimi, jei jo priešininkas juos užblokuoja taip, kad jų negalima judinti. Pakeiskite pusę, kad galėtumėte judėti, jei ši parinktis išjungta.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Skrenda",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Bakstelėkite vieną priešininko figūrėlę, kad pašalintumėte.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Prieš pašalindami figūrėlę pirmiausia turite sukurti malūną.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI žaidimo stilius",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasyvus",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Dar kartą bakstelėkite atgal, kad išeitumėte.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Daugiau",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Jei žaidėjas sulaužo malūną ir nedelsdamas sukuria naują malūną, toks žaidėjas gali perkelti tokį kūrinį atgal į pradinę sankryžą kitame savo žingsnyje, jei jis padarys naują malūną.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Žaidimas yra lygus, jei žaidėjas turi tris figūras ir po dešimties judesių nė vienas žaidėjas nepašalina varžovo figūrų",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Naudokite tobulą duomenų bazę",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Įjunkite šią parinktį, kad galėtumėte naudoti nepriekaištingą žaidimų duomenų bazę, sukurtą naudojant pažangiausius algoritmus. Ši funkcija integruoja ir žaidimo pradžios, ir pabaigos strategijas, kad pasiūlytų optimalius judesius. Tai yra tinkamiausias pasirinkimas žaidėjams, kurie siekia aukščiausio lygio žaidimo tikslumo. Sukurta naudojant kruopščius skaičiavimo metodus, duomenų bazė skirta pasiūlyti beveik tobulus žaidimo sprendimus.\n\nPastaba: jei AI nepavyks pasiekti duomenų bazės, jis priims įprastinius žaidimo sprendimų algoritmus. Kai duomenų bazė yra prieinama, „Sunkumo lygis“ tampa beveik neįveikiamas, o „AI mąstymo laikas“ smarkiai sumažėja. Daugelis „AI's Playstyle“ parinkčių nustatymų bus nepaisyti, nes duomenų bazės rezultatai turi didžiausią prioritetą.\n\nNorėdami gauti patarimų, kaip maksimaliai išnaudoti šią nepriekaištingą duomenų bazę, spustelėkite čia.",
+  "perfectDatabaseDescription": "Įjunkite šią parinktį, kad galėtumėte naudoti nepriekaištingą žaidimų duomenų bazę, sukurtą naudojant pažangiausius algoritmus. Ši funkcija integruoja ir žaidimo pradžios, ir pabaigos strategijas, kad pasiūlytų optimalius judesius. Tai yra tinkamiausias pasirinkimas žaidėjams, kurie siekia aukščiausio lygio žaidimo tikslumo. Sukurta naudojant kruopščius skaičiavimo metodus, duomenų bazė skirta pasiūlyti beveik tobulus žaidimo sprendimus.\n\nPastaba: jei AI nepavyks pasiekti duomenų bazės, jis priims įprastinius žaidimo sprendimų algoritmus. Kai duomenų bazė yra prieinama, „Sunkumo lygis“ tampa beveik neįveikiamas, o „AI mąstymo laikas“ smarkiai sumažėja. Daugelis „AI's play style“ parinkčių nustatymų bus nepaisyti, nes duomenų bazės rezultatai turi didžiausią prioritetą.\n\nNorėdami gauti patarimų, kaip maksimaliai išnaudoti šią nepriekaištingą duomenų bazę, spustelėkite čia.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Fono paveikslėlis",
   "@backgroundImage": {},

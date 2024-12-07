@@ -108,7 +108,7 @@
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
-  "tipCannotMove": "لا يمكنك تحريك قطعتك الى هنا.",
+  "tipCannotMove": "لا يمكنك تحريك قطعتك إلى هنا.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "انتهى الوقت ، ضاعت {player}.",
+  "loseReasonTimeOver": "انتهى الوقت، خسر {player}.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "إذا تم تمكين الطيران ، عندما يتم تقليل عدد قطع اللاعب إلى عدد قطع معين ، فإن قطعه تكون حرة في الانتقال إلى أي نقطة غير مشغولة ، بدلاً من أن تكون مقيدة بالنقاط المجاورة كما هو الحال في بقية اللعبة.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "قطع على الأقل",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "سيخسر اللاعب إذا قام خصمه بحظرهم بحيث لا يمكن نقلهم. قم بتغيير الجانب للتحرك إذا تم تعطيل هذا الخيار.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "طيران",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "اضغط على قطعة الخصم لإزالتها.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "تحتاج إلى إنشاء طاحونة أولاً قبل أن تتمكن من إزالة قطعة.",
   "@needToCreateMillFirst": {
@@ -666,11 +666,11 @@
   "@takingBack": {
     "description": "Taking back..."
   },
-  "waiting": "منتظر…",
+  "waiting": "الرجاء الانتظار…",
   "@waiting": {
     "description": "Waiting..."
   },
-  "stepForward": "خطوة للامام",
+  "stepForward": "خطوة للأمام",
   "@stepForward": {
     "description": "Step forward"
   },
@@ -754,15 +754,15 @@
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "اللعبة فوق الشرط",
+  "gameOverCondition": "شرط انتهاء اللعبة",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
   "aisPlayStyle": "أسلوب لعب الذكاء الاصطناعي",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
-  "passive": "مبني للمجهول",
+  "passive": "سلبي",
   "@passive": {
     "description": "Passive"
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "انقر مرة أخرى للمغادرة.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "أكثر",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "إذا كسر لاعب طاحونة لإنشاء طاحونة جديدة على الفور ، فيمكن لهذا اللاعب إعادة هذه القطعة إلى التقاطع الأصلي في حركته التالية إذا قام بعمل طاحونة جديدة.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "تُعادل اللعبة إذا كان للاعب ثلاث قطع وبعد عشر نقلات لا يزيل أي لاعب قطع الخصم",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1314,7 +1314,7 @@
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "إنهاء مع خسارة مأزق.",
   "@endWithStalemateLoss": {},
-  "changeSideToMove": "تغيير الجانب للتحرك.",
+  "changeSideToMove": "تغيير الطرف الذي يتحرك.",
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "قم بإزالة إحدى قطع الخصم وقم بالحركة التالية.",
   "@removeOpponentsPieceAndMakeNextMove": {},
@@ -1326,7 +1326,7 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "يمر الذكاء الاصطناعي حاليًا بمرحلة استجابة متأخرة. يرجى الانتظار لبعض الوقت قبل المتابعة.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "لا يمكنك إزالة قطعة غير متجاورة.",
+  "tipCanNotRemoveNonadjacent": "لا يمكنك إزالة قطعة غير مجاورة.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "في حالة الجمود ، يمكن إزالة قطع الخصم المجاورة لك ، بغض النظر عن تشكيل الطاحونة.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
@@ -1338,7 +1338,7 @@
   "@forestWood": {},
   "greenMeadow": "المرج الأخضر",
   "@greenMeadow": {},
-  "stonyPath": "مسار حجري",
+  "stonyPath": "ممر حجري",
   "@stonyPath": {},
   "midnightBlue": "منتصف الليل الأزرق",
   "@midnightBlue": {},
@@ -1350,7 +1350,7 @@
   "@turquoiseSea": {},
   "violetDream": "الحلم البنفسجي",
   "@violetDream": {},
-  "mintChocolate": "شكولاطة النعناع",
+  "mintChocolate": "شوكولاتة النعناع",
   "@mintChocolate": {},
   "skyBlue": "السماء الزرقاء",
   "@skyBlue": {},
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "استخدام قاعدة بيانات مثالية",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "قم بتمكين هذا الخيار لاستخدام قاعدة بيانات ألعاب خالية من العيوب تم إنشاؤها من خلال خوارزميات متطورة. تدمج هذه الميزة استراتيجيات الافتتاح ونهاية اللعبة لاقتراح التحركات المثالية. هذا هو الخيار المفضل للاعبين الذين يبحثون عن أعلى مستوى من الدقة في اللعب. تم إنشاء قاعدة البيانات من خلال تقنيات حسابية دقيقة، وهي مصممة لتقديم حلول ألعاب شبه مثالية.\n\nملحوظة: إذا فشل الذكاء الاصطناعي في الوصول إلى قاعدة البيانات، فسوف يلجأ إلى الخوارزميات التقليدية لاتخاذ قرارات اللعب. عندما تكون قاعدة البيانات متاحة، يصبح \"مستوى الصعوبة\" لا يمكن التغلب عليه فعليًا، ويشهد \"وقت تفكير الذكاء الاصطناعي\" انخفاضًا كبيرًا. سيتم تجاوز العديد من الإعدادات ضمن خيارات \"AI's Playstyle\"، حيث أن نتائج قاعدة البيانات لها الأولوية القصوى.\n\nللحصول على إرشادات حول كيفية تحقيق أقصى استفادة من قاعدة البيانات الخالية من العيوب، انقر هنا.",
+  "perfectDatabaseDescription": "قم بتمكين هذا الخيار لاستخدام قاعدة بيانات ألعاب خالية من العيوب تم إنشاؤها من خلال خوارزميات متطورة. تدمج هذه الميزة استراتيجيات الافتتاح ونهاية اللعبة لاقتراح التحركات المثالية. هذا هو الخيار المفضل للاعبين الذين يبحثون عن أعلى مستوى من الدقة في اللعب. تم إنشاء قاعدة البيانات من خلال تقنيات حسابية دقيقة، وهي مصممة لتقديم حلول ألعاب شبه مثالية.\n\nملحوظة: إذا فشل الذكاء الاصطناعي في الوصول إلى قاعدة البيانات، فسوف يلجأ إلى الخوارزميات التقليدية لاتخاذ قرارات اللعب. عندما تكون قاعدة البيانات متاحة، يصبح \"مستوى الصعوبة\" لا يمكن التغلب عليه فعليًا، ويشهد \"وقت تفكير الذكاء الاصطناعي\" انخفاضًا كبيرًا. سيتم تجاوز العديد من الإعدادات ضمن خيارات \"AI's play style\"، حيث أن نتائج قاعدة البيانات لها الأولوية القصوى.\n\nللحصول على إرشادات حول كيفية تحقيق أقصى استفادة من قاعدة البيانات الخالية من العيوب، انقر هنا.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "صورة الخلفية",
   "@backgroundImage": {},

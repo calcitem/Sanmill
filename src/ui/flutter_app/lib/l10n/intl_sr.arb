@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Ако је Летење омогућено, када се играч сведе на одређени број комада, њени се делови могу пребацити на било коју ненасељену тачку, уместо да буду ограничени на суседне тачке као у остатку игре.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Најмање комади",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Играч ће изгубити ако их противник блокира тако да се не могу померати. Промените страну да бисте се померили ако је ова опција онемогућена.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Летење",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Додирните противников један комад за уклањање.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Прво морате да направите млин да бисте могли да уклоните комад.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "АИ стил игре",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пасивно",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Додирните поново да бисте изашли.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Више",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч разбије млин да би одмах створио нови млин, такав играч може да врати такав комад назад на првобитни спој у свом следећем потезу ако направи нови млин.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра се извлачи ако играч има три фигуре, а након десет потеза ниједан играч не уклања противничке фигуре",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

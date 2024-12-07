@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Agar \"Uchish\" funksiyasi yoqilgan bo'lsa, o'yinchi ma'lum bir qism soniga kamaytirilganda, uning qismlari o'yinning qolgan qismidagi kabi qo'shni nuqtalarda cheklanish o'rniga har qanday bo'sh joyga ko'chib o'tishlari mumkin.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Kamida bo'laklar",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Raqibi ularni harakatga keltirmaslik uchun to'sib qo'ysa, o'yinchi yutqazadi. Ushbu parametr o'chirilgan bo'lsa, harakatlanish uchun yon tomonni o'zgartiring.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Uchish",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Olib tashlash uchun raqibning bitta qismiga teging.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Parchani olib tashlashdan oldin avval siz tegirmonni yaratishingiz kerak.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI ning o'yin uslubi",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiv",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Ketish uchun yana bir marta bosing.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Ko'proq",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Agar o'yinchi darhol yangi tegirmon yaratish uchun tegirmonni sindirib tashlasa, bunday o'yinchi yangi tegirmon qilsa, keyingi harakatida bunday buyumni asl bog'lanish joyiga qaytarishi mumkin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Agar o'yinchi uchta bo'lakka ega bo'lsa va o'nta harakatdan so'ng ikkala o'yinchi ham raqib qismlarini olib tashlamasa, o'yin o'tkaziladi",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Mukammal ma'lumotlar bazasidan foydalaning",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Eng zamonaviy algoritmlar orqali yaratilgan benuqson oʻyin maʼlumotlar bazasidan foydalanish uchun ushbu parametrni yoqing. Bu xususiyat optimal harakatlarni taklif qilish uchun ochilish va yakuniy strategiyalarni birlashtiradi. Bu o'yinda eng yuqori darajadagi aniqlikka intiladigan o'yinchilar uchun afzal qilingan tanlovdir. Puxta hisoblash texnikasi orqali yaratilgan ma'lumotlar bazasi deyarli mukammal o'yin echimlarini taklif qilish uchun mo'ljallangan.\n\nEslatma: Agar AI ma'lumotlar bazasiga kira olmasa, u o'yin qarorlari uchun an'anaviy algoritmlarga murojaat qiladi. Ma'lumotlar bazasi mavjud bo'lganda, \"Qiyinchilik darajasi\" deyarli engib bo'lmaydigan bo'lib qoladi va \"AI fikrlash vaqti\" keskin qisqaradi. \"AI's Playstyle\" opsiyalaridagi ko'plab sozlamalar bekor qilinadi, chunki ma'lumotlar bazasi natijalari eng yuqori ustuvorlikka ega.\n\nUshbu mukammal ma'lumotlar bazasidan qanday foydalanish bo'yicha ko'rsatmalar uchun bu yerni bosing.",
+  "perfectDatabaseDescription": "Eng zamonaviy algoritmlar orqali yaratilgan benuqson oʻyin maʼlumotlar bazasidan foydalanish uchun ushbu parametrni yoqing. Bu xususiyat optimal harakatlarni taklif qilish uchun ochilish va yakuniy strategiyalarni birlashtiradi. Bu o'yinda eng yuqori darajadagi aniqlikka intiladigan o'yinchilar uchun afzal qilingan tanlovdir. Puxta hisoblash texnikasi orqali yaratilgan ma'lumotlar bazasi deyarli mukammal o'yin echimlarini taklif qilish uchun mo'ljallangan.\n\nEslatma: Agar AI ma'lumotlar bazasiga kira olmasa, u o'yin qarorlari uchun an'anaviy algoritmlarga murojaat qiladi. Ma'lumotlar bazasi mavjud bo'lganda, \"Qiyinchilik darajasi\" deyarli engib bo'lmaydigan bo'lib qoladi va \"AI fikrlash vaqti\" keskin qisqaradi. \"AI's play style\" opsiyalaridagi ko'plab sozlamalar bekor qilinadi, chunki ma'lumotlar bazasi natijalari eng yuqori ustuvorlikka ega.\n\nUshbu mukammal ma'lumotlar bazasidan qanday foydalanish bo'yicha ko'rsatmalar uchun bu yerni bosing.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Orqa fon rasmi",
   "@backgroundImage": {},

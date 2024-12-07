@@ -508,7 +508,7 @@
   },
   "flyPieceCount_Detail": "පියාසර කිරීම සක්‍රීය වූ විට, ක්‍රීඩකයාගේ කැස් සංඛ්‍යාවකට අඩු වූ විට, ඇයගේ කැස් ක්‍රීඩාවේ අනෙකුත් කොටස්වලදී ආසන්න ලක්‍ෂ්‍යයන්ට සීමා කර නොගෙන ඕනෑම අනාරක්‍ෂිත ලක්‍ෂ්‍යයකට චලනය කළ හැකිය.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "isDefenderMoveFirst": "දෙවන ක්‍රීඩකයා පළමුව චලනය කරයි",
   "@isDefenderMoveFirst": {
@@ -540,7 +540,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ප්‍රතිපක්ෂය තමන්ව අවහිර කරන ලෙස චලනය කළ නොහැකි විට ක්‍රීඩකයා පරාජය වේ. මෙම විකල්පය අක්‍රීය කරන ලද්දේ නම්, චලනය සඳහා පැත්ත වෙනස් කරන්න.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly_Detail": "ක්‍රීඩකයෙකුට කැබලි තුනක් හෝ හතරක් (වින්‍යාස කළ හැකි) පමණක් ඉතිරි වී තිබේ නම්, ඇයට කැබලිය කිසිදු නිදහස් ලකුණකට චලනය කළ හැකිය.",
   "@mayFly_Detail": {
@@ -706,7 +706,7 @@
   },
   "toRemovePiece": "ප්‍රතිපක්ෂයේ කැබලියක් ඉවත් කිරීමට එය හඹා යන්න.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "කැබලියක් ඉවත් කිරීමට පළමුව මිල්ලක් සෑදිය යුතුය.",
   "@needToCreateMillFirst": {
@@ -824,7 +824,7 @@
   },
   "aisPlayStyle": "යන්ත්‍ර මානසිකත්වය",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "උදාසීන",
   "@passive": {
@@ -892,7 +892,7 @@
   },
   "tapBackAgainToLeave": "නික්මීමට යළිත් පසුපසට තට්ටු කරන්න.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "වැඩි විස්තර",
   "@more": {
@@ -1076,7 +1076,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "ක්‍රීඩකයෙකු මිල්ලක් කඩා වහාම නව මිල්ලක් සාදනවා නම්, ඔහුට එම කැබලිය ඊලඟ චලනයේදී මුල් සන්ධිස්ථානයට ගෙන යාමට නව මිල්ලක් සාදනවා නම් එය හැකිය.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ක්‍රීඩකයෙකුට කැබලි තුනක් පමණක් තිබෙන විට, හා කිසිදු ක්‍රීඩකයෙකුට චලන දහයක් තුළ ප්‍රතිපක්ෂයේ කැබලියක් ඉවත් කළ නොහැකි විට, ක්‍රීඩාව සම වේ.",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {

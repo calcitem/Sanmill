@@ -20,11 +20,11 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Humanos contra IA",
+  "humanVsAi": "Humano contra IA",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Humanos contra humanos",
+  "humanVsHuman": "Humano contra Humano",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
@@ -32,11 +32,11 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Humanos contra la nube",
+  "humanVsCloud": "Humano contra la nube",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Humanos contra LAN",
+  "humanVsLAN": "Humano contra LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Seleccione la pieza equivocada.",
+  "tipSelectWrong": "Ha seleccionado la pieza equivocada.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Colocada.",
+  "tipPlaced": "Pieza colocada.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Retirada.",
+  "tipRemoved": "Pieza retirada.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -116,7 +116,7 @@
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Continúe tomando la pieza de su oponente.",
+  "tipContinueMill": "Continúe tomando la pieza del oponente.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
@@ -148,15 +148,15 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} para mover.",
+  "tipToMove": "Le toca mover a {player}.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "¡Jugador 1 gana!",
+  "whiteWin": "¡El Jugador 1 gana!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "¡Jugador 2 gana!",
+  "blackWin": "¡El Jugador 2 gana!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -208,7 +208,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Juego iniciado, por favor coloque.",
+  "gameStarted": "El juego ha comenzado, por favor coloque una pieza.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
@@ -224,7 +224,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "Puntaje:",
+  "score": "Puntuación:",
   "@score": {
     "description": "Score"
   },
@@ -236,19 +236,19 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} el número de piezas es inferior a tres.",
+  "loseReasonlessThanThree": "{player} tiene menos de tres piezas.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} renunció.",
+  "loseReasonResign": "{player} se rindió.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} no tiene forma de irse.",
+  "loseReasonNoWay": "{player} no puede moverse.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "El tablero está lleno y el {player} no tiene forma de moverse.",
+  "loseReasonBoardIsFull": "El tablero está lleno y {player} no puede moverse.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
@@ -392,11 +392,11 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Si la opción de volar está activada, cuando un jugador se reduce a un número específico de piezas, sus piezas son libres de moverse a cualquier punto desocupado, en lugar de estar restringidas a puntos adyacentes como en el resto del juego.",
+  "flyPieceCount_Detail": "Si la función de 'volar' está activada, cuando un jugador se reduce a un número específico de piezas, sus piezas son libres de moverse a cualquier punto desocupado, en lugar de estar restringidas a puntos adyacentes como en el resto del juego.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "Piezas al menos",
+  "piecesAtLeastCount": "Mínimo de piezas",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -416,7 +416,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Removido múltiple",
+  "mayRemoveMultiple": "Remoción múltiple",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perderá si su oponente lo bloquea de manera que no pueda moverse. Cambie de bando para mover si esta opción está desactivada.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vuelo",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Toque en la pieza del oponente para removerla.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Para poder remover una pieza es necesario crear un molino.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Estilo de juego de la IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasivo",
   "@passive": {
@@ -806,13 +806,13 @@
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
-  "atEnd": "Al final de la lista de movimientos.",
+  "atEnd": "Está al final de la lista de movimientos.",
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Vuelva a tocar para salir.",
+  "tapBackAgainToLeave": "Toque atrás de nuevo para salir.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Más",
   "@more": {
@@ -834,7 +834,7 @@
   "@language": {
     "description": "Languages"
   },
-  "defaultLanguage": "Idioma por defecto",
+  "defaultLanguage": "Idioma predeterminado",
   "@defaultLanguage": {
     "description": "Default language"
   },
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Si un jugador rompe un molino para crear un nuevo molino inmediatamente, dicho jugador puede mover esa pieza de regreso a la unión original en su próximo movimiento si hace un nuevo molino.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "El juego se empata si un jugador tiene tres piezas y después de diez movimientos ninguno de los jugadores quita las piezas del oponente",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1066,7 +1066,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Dibujar",
+  "draw": "Empate",
   "@draw": {
     "description": "Draw"
   },
@@ -1178,7 +1178,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "noMove": "Sin movimientos.",
+  "noMove": "No hay movimientos.",
   "@noMove": {
     "description": "No move."
   },
@@ -1194,7 +1194,7 @@
   "@cleanedUp": {
     "description": "Cleaned up."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Ficha}=1{{count} Ficha}other{{count} Fichas}} necesitan quitarse.",
+  "pieceCountNeedToRemove": "{count,plural, =0{Ficha}=1{{count} Ficha}other{{count} Fichas}} deben ser quitadas.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1280,7 +1280,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "El algoritmo alfa-beta es un algoritmo de búsqueda para encontrar la mejor jugada. Utiliza el principio minimax y dos valores, alfa y beta, para acortar el abanico de las búsquedas y aumentar la eficiencia. Alfa representa la puntuación mínima que el ordenador está seguro de obtener, mientras que beta representa la puntuación máxima que puede obtener su oponente. El algoritmo ayuda al ordenador a tomar decisiones inteligentes y eficientes en una partida.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "En este juego, es más fácil que gane el segundo jugador que el primero.",
+  "firstMoveDetail": "En este juego, el segundo jugador tiene más facilidad para ganar que el primero.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Según la experiencia humana, si intentas ganar, perderás. En lugar de eso, busca el empate como objetivo y evita perder la partida. Observa a tu oponente y llévalo suavemente a una posición en la que pueda cometer errores. Cuando muestren debilidad, aprovecha la oportunidad y presiona suavemente para ganar. De este modo, podrás ganar la partida.",
   "@drawOnTheHumanExperienceDetail": {},

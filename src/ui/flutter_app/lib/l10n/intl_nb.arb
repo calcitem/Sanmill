@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Hvis Flying er aktivert, når en spiller reduseres til et bestemt antall brikker, er brikkene hennes fritt til å bevege seg til et ledig punkt i stedet for å være begrenset til tilstøtende poeng som i resten av spillet.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Stykker minst",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Spilleren taper hvis motstanderen blokkerer dem slik at de ikke kan flyttes. Bytt side for å flytte hvis dette alternativet er deaktivert.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Flyr",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Trykk på motstanderens brikke for å fjerne.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Du må først lage en mølle før du kan fjerne et stykke.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AIs spillestil",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiv",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Trykk tilbake for å dra.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mer",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Hvis en spiller bryter en mølle for å opprette en ny mølle med en gang, kan en slik spiller flytte en slik brikke tilbake til det opprinnelige krysset i sitt neste trekk hvis den lager en ny mølle.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Spillet trekkes hvis en spiller har tre brikker, og etter ti trekk fjerner ingen av spillerne motstanderens brikker",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1350,7 +1350,7 @@
   "@turquoiseSea": {},
   "violetDream": "Fiolett drøm",
   "@violetDream": {},
-  "mintChocolate": "Mint sjokolade",
+  "mintChocolate": "Muntsjokolade",
   "@mintChocolate": {},
   "skyBlue": "Himmelblå",
   "@skyBlue": {},

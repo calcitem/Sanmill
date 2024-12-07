@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "ಫ್ಲೈಯಿಂಗ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ, ಆಟಗಾರನನ್ನು ನಿರ್ದಿಷ್ಟ ತುಂಡು ಎಣಿಕೆಗೆ ಇಳಿಸಿದಾಗ, ಆಕೆಯ ತುಣುಕುಗಳು ಆಟದ ಉಳಿದ ಭಾಗಗಳಂತೆ ಪಕ್ಕದ ಬಿಂದುಗಳಿಗೆ ಸೀಮಿತವಾಗುವ ಬದಲು ಯಾವುದೇ ಖಾಲಿ ಇಲ್ಲದ ಸ್ಥಳಕ್ಕೆ ಹೋಗಲು ಮುಕ್ತವಾಗಿರುತ್ತದೆ.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ಕನಿಷ್ಠ ತುಣುಕುಗಳು",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ಅವರ ಎದುರಾಳಿಯು ಅವರನ್ನು ಸರಿಸಲಾಗದಂತೆ ನಿರ್ಬಂಧಿಸಿದರೆ ಆಟಗಾರನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾನೆ. ಈ ಆಯ್ಕೆಯನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ ಸರಿಸಲು ಸೈಡ್ ಬದಲಾಯಿಸಿ.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "ಹಾರುವ",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "ತೆಗೆದುಹಾಕಲು ಎದುರಾಳಿಯ ಒಂದು ತುಂಡು ಟ್ಯಾಪ್ ಮಾಡಿ.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "ನೀವು ತುಂಡನ್ನು ತೆಗೆದುಹಾಕುವ ಮೊದಲು ನೀವು ಮೊದಲು ಗಿರಣಿಯನ್ನು ರಚಿಸಬೇಕಾಗಿದೆ.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI ನ ಪ್ಲೇಸ್ಟೈಲ್",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "ನಿಷ್ಕ್ರಿಯ",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "ಬಿಡಲು ಮತ್ತೆ ಟ್ಯಾಪ್ ಮಾಡಿ.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "ಇನ್ನಷ್ಟು",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "ಹೊಸ ಗಿರಣಿಯನ್ನು ರಚಿಸಲು ಆಟಗಾರನು ಗಿರಣಿಯನ್ನು ಮುರಿದರೆ, ಅಂತಹ ಆಟಗಾರನು ಹೊಸ ಗಿರಣಿಯನ್ನು ಮಾಡಿದರೆ ಅಂತಹ ತುಣುಕನ್ನು ತನ್ನ ಮುಂದಿನ ನಡೆಯಲ್ಲಿ ಮೂಲ ಜಂಕ್ಷನ್‌ಗೆ ಹಿಂತಿರುಗಿಸಬಹುದು.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ಆಟಗಾರನು ಮೂರು ತುಣುಕುಗಳನ್ನು ಹೊಂದಿದ್ದರೆ ಮತ್ತು ಹತ್ತು ಚಲನೆಗಳ ನಂತರ ಯಾವುದೇ ಆಟಗಾರನು ಎದುರಾಳಿಯ ತುಣುಕುಗಳನ್ನು ತೆಗೆದುಹಾಕದಿದ್ದರೆ ಆಟವನ್ನು ಎಳೆಯಲಾಗುತ್ತದೆ",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "ಪರಿಪೂರ್ಣ ಡೇಟಾಬೇಸ್ ಬಳಸಿ",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "ಅತ್ಯಾಧುನಿಕ ಅಲ್ಗಾರಿದಮ್‌ಗಳ ಮೂಲಕ ರಚಿಸಲಾದ ದೋಷರಹಿತ ಆಟದ ಡೇಟಾಬೇಸ್ ಅನ್ನು ಬಳಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಈ ವೈಶಿಷ್ಟ್ಯವು ಅತ್ಯುತ್ತಮ ಚಲನೆಗಳನ್ನು ಸೂಚಿಸಲು ಆರಂಭಿಕ ಮತ್ತು ಅಂತ್ಯದ ಆಟದ ತಂತ್ರಗಳನ್ನು ಸಂಯೋಜಿಸುತ್ತದೆ. ಆಟದಲ್ಲಿ ಅತ್ಯುನ್ನತ ಮಟ್ಟದ ನಿಖರತೆಯನ್ನು ಬಯಸುವ ಆಟಗಾರರಿಗೆ ಇದು ಆದ್ಯತೆಯ ಆಯ್ಕೆಯಾಗಿದೆ. ನಿಖರವಾದ ಕಂಪ್ಯೂಟೇಶನಲ್ ತಂತ್ರಗಳ ಮೂಲಕ ರಚಿಸಲಾಗಿದೆ, ಡೇಟಾಬೇಸ್ ಅನ್ನು ಪರಿಪೂರ್ಣವಾದ ಆಟದ ಪರಿಹಾರಗಳನ್ನು ನೀಡಲು ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ.\n\nಗಮನಿಸಿ: ಡೇಟಾಬೇಸ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು AI ವಿಫಲವಾದರೆ, ಇದು ಆಟದ ನಿರ್ಧಾರಗಳಿಗಾಗಿ ಸಾಂಪ್ರದಾಯಿಕ ಅಲ್ಗಾರಿದಮ್‌ಗಳಿಗೆ ತಿರುಗುತ್ತದೆ. ಡೇಟಾಬೇಸ್ ಲಭ್ಯವಿದ್ದಾಗ, 'ಡಿಫಿಕಲ್ಟಿ ಲೆವೆಲ್' ವಾಸ್ತವಿಕವಾಗಿ ಅಜೇಯವಾಗುತ್ತದೆ ಮತ್ತು 'AI ಥಿಂಕಿಂಗ್ ಟೈಮ್' ತೀವ್ರ ಕಡಿತವನ್ನು ಅನುಭವಿಸುತ್ತದೆ. ಡೇಟಾಬೇಸ್ ಫಲಿತಾಂಶಗಳು ಹೆಚ್ಚಿನ ಆದ್ಯತೆಯನ್ನು ಹೊಂದಿರುವ ಕಾರಣ 'AI's Playstyle' ಆಯ್ಕೆಗಳಲ್ಲಿ ಹಲವು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅತಿಕ್ರಮಿಸಲಾಗುತ್ತದೆ.\n\nಈ ದೋಷರಹಿತ ಡೇಟಾಬೇಸ್‌ನಿಂದ ಹೆಚ್ಚಿನದನ್ನು ಹೇಗೆ ಮಾಡುವುದು ಎಂಬುದರ ಕುರಿತು ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ, ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+  "perfectDatabaseDescription": "ಅತ್ಯಾಧುನಿಕ ಅಲ್ಗಾರಿದಮ್‌ಗಳ ಮೂಲಕ ರಚಿಸಲಾದ ದೋಷರಹಿತ ಆಟದ ಡೇಟಾಬೇಸ್ ಅನ್ನು ಬಳಸಲು ಈ ಆಯ್ಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ. ಈ ವೈಶಿಷ್ಟ್ಯವು ಅತ್ಯುತ್ತಮ ಚಲನೆಗಳನ್ನು ಸೂಚಿಸಲು ಆರಂಭಿಕ ಮತ್ತು ಅಂತ್ಯದ ಆಟದ ತಂತ್ರಗಳನ್ನು ಸಂಯೋಜಿಸುತ್ತದೆ. ಆಟದಲ್ಲಿ ಅತ್ಯುನ್ನತ ಮಟ್ಟದ ನಿಖರತೆಯನ್ನು ಬಯಸುವ ಆಟಗಾರರಿಗೆ ಇದು ಆದ್ಯತೆಯ ಆಯ್ಕೆಯಾಗಿದೆ. ನಿಖರವಾದ ಕಂಪ್ಯೂಟೇಶನಲ್ ತಂತ್ರಗಳ ಮೂಲಕ ರಚಿಸಲಾಗಿದೆ, ಡೇಟಾಬೇಸ್ ಅನ್ನು ಪರಿಪೂರ್ಣವಾದ ಆಟದ ಪರಿಹಾರಗಳನ್ನು ನೀಡಲು ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ.\n\nಗಮನಿಸಿ: ಡೇಟಾಬೇಸ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು AI ವಿಫಲವಾದರೆ, ಇದು ಆಟದ ನಿರ್ಧಾರಗಳಿಗಾಗಿ ಸಾಂಪ್ರದಾಯಿಕ ಅಲ್ಗಾರಿದಮ್‌ಗಳಿಗೆ ತಿರುಗುತ್ತದೆ. ಡೇಟಾಬೇಸ್ ಲಭ್ಯವಿದ್ದಾಗ, 'ಡಿಫಿಕಲ್ಟಿ ಲೆವೆಲ್' ವಾಸ್ತವಿಕವಾಗಿ ಅಜೇಯವಾಗುತ್ತದೆ ಮತ್ತು 'AI ಥಿಂಕಿಂಗ್ ಟೈಮ್' ತೀವ್ರ ಕಡಿತವನ್ನು ಅನುಭವಿಸುತ್ತದೆ. ಡೇಟಾಬೇಸ್ ಫಲಿತಾಂಶಗಳು ಹೆಚ್ಚಿನ ಆದ್ಯತೆಯನ್ನು ಹೊಂದಿರುವ ಕಾರಣ 'AI's play style' ಆಯ್ಕೆಗಳಲ್ಲಿ ಹಲವು ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಅತಿಕ್ರಮಿಸಲಾಗುತ್ತದೆ.\n\nಈ ದೋಷರಹಿತ ಡೇಟಾಬೇಸ್‌ನಿಂದ ಹೆಚ್ಚಿನದನ್ನು ಹೇಗೆ ಮಾಡುವುದು ಎಂಬುದರ ಕುರಿತು ಮಾರ್ಗದರ್ಶನಕ್ಕಾಗಿ, ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "ಹಿನ್ನೆಲೆ ಚಿತ್ರ",
   "@backgroundImage": {},

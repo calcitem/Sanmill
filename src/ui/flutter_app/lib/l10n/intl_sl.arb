@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Če je omogočeno letenje, se lahko igralec, ko se število njegovih figur zmanjša na določeno število, prosto premakne na katero koli nezasedeno točko, namesto da bi bil omejen na sosednje točke kot v preostalem delu igre.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Najmanj figur",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Igralec izgubi, če ga nasprotnik blokira, tako da ga ni mogoče premakniti. Če je ta možnost onemogočena, spremenite stran za premikanje.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Leteči",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tapnite na eno nasprotnikovo figuro, da jo odstranite.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Preden lahko odstranite figuro, morate najprej ustvariti mlin.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Igralni slog umetne inteligence",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasivni",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Ponovno se dotaknite nazaj, če želite oditi.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Več",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Če igralec razbije mlin, da takoj ustvari nov mlin, lahko tak igralec pri naslednjem premiku tak kos premakne nazaj na prvotni spoj, če naredi nov mlin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Igra se izžreba, če ima igralec tri figure in po desetih potezah noben igralec ne odstrani nasprotnikovih figur",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1364,7 +1364,7 @@
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
   "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's Playstyle' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
+  "perfectDatabaseDescription": "Omogočite to možnost, če želite uporabljati brezhibno zbirko podatkov o igrah, ustvarjeno z najsodobnejšimi algoritmi. Ta funkcija združuje uvodne in končne strategije za predlaganje optimalnih potez. To je najprimernejša izbira za igralce, ki iščejo najvišjo stopnjo natančnosti igranja. Baza podatkov, ustvarjena z natančnimi računalniškimi tehnikami, je zasnovana tako, da ponuja skoraj popolne rešitve za igre.\n\nOpomba: če AI ne uspe dostopati do baze podatkov, se bo za odločitve glede igranja obrnil na običajne algoritme. Ko je zbirka podatkov na voljo, postane 'Stopnja težavnosti' praktično nepremagljiva, 'Čas za razmišljanje AI' pa se drastično skrajša. Veliko nastavitev v možnostih 'AI's play style' bo preglasenih, saj imajo rezultati baze podatkov najvišjo prednost.\n\nZa navodila o tem, kako kar najbolje izkoristiti to brezhibno bazo podatkov, kliknite tukaj.",
   "@perfectDatabaseDescription": {},
   "usePerfectDatabase": "Uporabite popolno bazo podatkov",
   "@usePerfectDatabase": {},

@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "暂无招法",
+  "noGameRecord": "暂无记录",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "如允许飞子，则当一方剩余多少枚棋子时可以飞棋。",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "少于几个子则输棋",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "走子阶段，当无路可走时输棋，而非转为由对方继续走子。",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "飞子",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "点击对方的一颗棋子以吃子。",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "您需要先形成三连，才能吃掉对方的棋子。",
   "@needToCreateMillFirst": {
@@ -690,11 +690,11 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "不允许吃全三连",
+  "crackMill": "可從三連中吃子",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "若对方所有的子都在三连中, 也不允许吃子。",
+  "crackMill_Detail": "若對方所有的子都在三連中，仍可吃子。",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "机器的棋风",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "消极被动",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "再次按返回键退出应用",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "更多",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "如果一方在一着中解除了一个三连并同时形成了一个新的三连，那么允许其在下一步棋把这个棋子再移回前一着的位置，从而反复连续形成三连。",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三个棋子并十步内双方均未吃子则和棋",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

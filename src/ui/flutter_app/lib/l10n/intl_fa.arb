@@ -8,7 +8,7 @@
   "@welcome": {
     "description": "Welcome"
   },
-  "yes": "آره",
+  "yes": "بله",
   "@yes": {
     "description": "Yes"
   },
@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "مهره اشتباه را انتخاب کنید.",
+  "tipSelectWrong": "شما مهره اشتباهی را انتخاب کرده‌اید.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -212,7 +212,7 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "در حال تجزیه و تحلیل…",
+  "analyzing": "در حال تحلیل…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -284,7 +284,7 @@
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "تو باختی!",
+  "youLose": "شما باختید!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "اگر پرواز کردن فعال باشد ، هنگامی که مهره های بازیکن به تعداد خاصی کاهش یابد ، مهره های او آزاد هستند و به جای محدود شدن به نقاط مجاور ، می توانند ‌به هر نقطه اشغال نشده منتقل شوند.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "حداقل مهره‌ها",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "بازیکن شکست می‌خورد اگر حریف مانع جابجایی مهره‌های او شود . تغییر طرف حرکت در صورت غیرفعال بودن گزینه.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "پرواز کردن",
   "@mayFly": {
@@ -476,7 +476,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "تاریخچه انتقال به بریده‌دان کپی شده.",
+  "moveHistoryCopied": "تاریخچه حرکات در کلیپ‌بورد کپی شد.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -556,7 +556,7 @@
   "@pieceWidth": {
     "description": "Piece width"
   },
-  "fontSize": "اندازه فونت",
+  "fontSize": "اندازه قلم",
   "@fontSize": {
     "description": "Font size"
   },
@@ -596,7 +596,7 @@
   "@player2": {
     "description": "Player 2"
   },
-  "howToPlay": "بازی دوز چیست",
+  "howToPlay": "آموزش بازی",
   "@howToPlay": {
     "description": "How to play"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "برای حذف کردن مهره حریف روی آن ضربه بزنید.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "قبل از اینکه بتوانید مهره ای را حذف کنید ، ابتدا باید یک دوز ایجاد کنید.",
   "@needToCreateMillFirst": {
@@ -760,9 +760,9 @@
   },
   "aisPlayStyle": "سبک بازی هوش مصنوعی",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
-  "passive": "منفعل",
+  "passive": "انفعالی",
   "@passive": {
     "description": "Passive"
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "برای خروج از برنامه ، دوباره روی دکمه برگشت ضربه بزنید.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "بیشتر",
   "@more": {
@@ -958,7 +958,7 @@
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "قطعات",
+  "pieces": "مهره‌ها",
   "@pieces": {
     "description": "Pieces"
   },
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "اگر بازیکنی آسیاب را بشکند تا بلافاصله آسیاب جدیدی ایجاد کند ، اگر یک آسیاب جدید ایجاد کند ، در حرکت بعدی خود می تواند چنین قطعه ای را به محل اصلی برگرداند.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "اگر بازیکنی سه قطعه داشته باشد و پس از ده حرکت بازیکنان مهره های حریف را بردارند بازی به تساوی می رسد",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1026,7 +1026,7 @@
   "@emptyPoint": {
     "description": "Empty point"
   },
-  "noPoint": "فایده ای نداره",
+  "noPoint": "بدون نتیجه",
   "@noPoint": {
     "description": "No point"
   },
@@ -1062,11 +1062,11 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "قرعه کشی است!",
+  "isDraw": "مساوی است!",
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "قرعه کشی",
+  "draw": "مساوی",
   "@draw": {
     "description": "Draw"
   },
@@ -1094,7 +1094,7 @@
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "threefoldRepetitionRule_Detail": "اگر موقعیتی برای سومین بار رخ دهد ، بازی قرعه کشی می شود.",
+  "threefoldRepetitionRule_Detail": "اگر موقعیتی برای سومین بار رخ دهد ، بازی مساوی می شود.",
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "خمیر انجام شده است.",
+  "pasteDone": "عملیات چسباندن انجام شد.",
   "@pasteDone": {
     "description": "The paste is done."
   },

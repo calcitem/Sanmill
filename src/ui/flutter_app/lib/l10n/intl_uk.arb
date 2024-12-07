@@ -40,7 +40,7 @@
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "draw": "Намалювати",
+  "draw": "Нічия",
   "@draw": {
     "description": "Draw"
   },
@@ -106,7 +106,7 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Перемістити список",
+  "showMoveList": "Показати список ходів",
   "@showMoveList": {
     "description": "Move list"
   },
@@ -122,19 +122,19 @@
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Підтвердьте",
+  "confirm": "Підтвердити",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Сксв.",
+  "cancel": "Скасувати",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Виберіть неправильний шматок.",
+  "tipSelectWrong": "Ви обрали неправильну фішку.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Розмістіть свої шматочки.",
+  "tipPlace": "Розмістіть свої фішки.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -198,7 +198,7 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "У вас залишилося три штуки.",
+  "tipHaveThreePiecesLeft": "У вас залишилося три фішки.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -512,7 +512,7 @@
   },
   "flyPieceCount_Detail": "Якщо увімкнено Політ, коли гравець зменшується до певного числа фігур, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість того, щоб бути обмеженими сусідніми точками, як у решті гри.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Принаймні шматочки",
   "@piecesAtLeastCount": {
@@ -560,7 +560,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Гравець програє, якщо його супротивник заблокує їх, щоб їх не можна було перемістити. Змініть сторону, щоб перемістити, якщо ця опція вимкнена.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Політ",
   "@mayFly": {
@@ -730,7 +730,7 @@
   },
   "toRemovePiece": "Торкніться однієї частини супротивника, щоб видалити.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Перш ніж видалити шматок, вам потрібно створити млин.",
   "@needToCreateMillFirst": {
@@ -868,7 +868,7 @@
   },
   "aisPlayStyle": "Стиль гри AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пасивний",
   "@passive": {
@@ -940,7 +940,7 @@
   },
   "tapBackAgainToLeave": "Торкніться назад, щоб вийти.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Більше",
   "@more": {
@@ -1124,7 +1124,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Якщо гравець розбиває млин, щоб негайно створити новий млин, такий гравець може перемістити такий шматок назад до початкового стику у своєму наступному ході, якщо він зробить новий млин.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Гра вважається нічиєю, якщо гравець має три фігури і після десяти ходів жоден із гравців не знімає фігури суперника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

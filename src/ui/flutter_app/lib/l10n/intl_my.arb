@@ -390,7 +390,7 @@
   },
   "flyPieceCount_Detail": "Flying ကို ဖွင့်ထားလျှင် ကစားသမားတစ်ဦးမှ သတ်မှတ်ထားသော အပိုင်းအရေအတွက်သို့ လျှော့ချလိုက်သောအခါ၊ သူမ၏ အပိုင်းများသည် ကျန်ဂိမ်းတွင်ကဲ့သို့ ကပ်လျက်အမှတ်များကို ကန့်သတ်ထားမည့်အစား ၎င်း၏အပိုင်းများကို သိမ်းပိုက်ခြင်းမရှိသော မည်သည့်နေရာသို့မဆို လွတ်လပ်စွာ ရွှေ့ပြောင်းနိုင်သည်။",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "hasDiagonalLines_Detail": "ဘုတ်သို့ ထောင့်ဖြတ်မျဉ်းလေးကြောင်းထည့်ပါ။",
   "@hasDiagonalLines_Detail": {
@@ -426,7 +426,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ပြိုင်ဘက်က သူတို့ကို မရွှေ့နိုင်အောင် ပိတ်ဆို့ထားရင် ကစားသမားက ရှုံးလိမ့်မယ်။ ဤရွေးချယ်မှုကို ပိတ်ထားပါက ရွှေ့ရန် ဘေးကို ပြောင်းပါ။",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly_Detail": "ကစားသမားတစ်ဦးတွင် အပိုင်းသုံးပိုင်း သို့မဟုတ် လေးခုသာ ကျန်ရှိတော့မည်ဆိုလျှင် အပိုင်းအစကို အခမဲ့အမှတ်သို့ ရွှေ့နိုင်သည်။",
   "@mayFly_Detail": {
@@ -560,7 +560,7 @@
   },
   "toRemovePiece": "ဖယ်ရှားရန် ပြိုင်ဘက်၏ တစ်ပိုင်းကို နှိပ်ပါ။",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "အပိုင်းတစ်ခုကို မဖယ်ရှားမီ ကြိတ်စက်တစ်ခု ဖန်တီးရန် လိုအပ်ပါသည်။",
   "@needToCreateMillFirst": {
@@ -706,7 +706,7 @@
   },
   "aisPlayStyle": "AI ၏ကစားဟန်",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "ပိုင်းကန့်သတ်မှု",
   "@passive": {
@@ -778,7 +778,7 @@
   },
   "tapBackAgainToLeave": "ထွက်ခွာရန် နောက်တစ်ကြိမ် ပြန်နှိပ်ပါ။",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "နောက်ထပ်",
   "@more": {
@@ -966,7 +966,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "အကယ်၍ ကစားသမားတစ်ဦးသည် ကြိတ်ဆုံအသစ်တစ်ခုကိုချက်ချင်းဖန်တီးရန် ကြိတ်ခွဲပါက၊ ထိုကစားသမားသည် ၎င်းကို ကြိတ်အသစ်ပြုလုပ်ပါက ၎င်း၏နောက်အပြောင်းအရွှေ့တွင် အဆိုပါအပိုင်းကို မူလလမ်းဆုံသို့ ပြန်ရွှေ့နိုင်သည်။",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ကစားသမားတစ်ဦးတွင် အပိုင်းသုံးပိုင်းရှိပြီး ဆယ်ကြိမ်ရွှေ့ပြီးနောက် ကစားသမားသည် ပြိုင်ဘက်၏အပိုင်းအစများကို မဖယ်ရှားပါက ဂိမ်းကို ရေးဆွဲမည်ဖြစ်သည်",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1464,7 +1464,7 @@
   "@sideToMoveRemovePiece": {},
   "usePerfectDatabase": "ပြီးပြည့်စုံသောဒေတာဘေ့စ်ကိုသုံးပါ။",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "နောက်ဆုံးပေါ် အယ်လဂိုရီသမ်များမှတစ်ဆင့် ထုတ်လုပ်ထားသော ချို့ယွင်းချက်မရှိသော ဂိမ်းဒေတာဘေ့စ်ကို အသုံးပြုရန် ဤရွေးချယ်မှုကို ဖွင့်ပါ။ ဤအင်္ဂါရပ်သည် အကောင်းဆုံးလှုပ်ရှားမှုများကို အကြံပြုရန်အတွက် အဖွင့်နှင့် ဂိမ်းဗျူဟာများ နှစ်ခုလုံးကို ပေါင်းစပ်ထားသည်။ ဤသည်မှာ ဂိမ်းကစားရာတွင် တိကျမှုအမြင့်ဆုံးအဆင့်ကို ရှာဖွေသော ကစားသမားများအတွက် ဦးစားပေးရွေးချယ်မှုဖြစ်သည်။ စေ့စပ်သေချာသော တွက်ချက်နည်းစနစ်များဖြင့် ဖန်တီးထားသည့် ဒေတာဘေ့စ်သည် ပြီးပြည့်စုံလုနီးပါးရှိသော ဂိမ်းဖြေရှင်းချက်များကို ပေးဆောင်ရန် ဒီဇိုင်းထုတ်ထားသည်။\n\nမှတ်ချက်- AI သည် ဒေတာဘေ့စ်သို့ ဝင်ရောက်ရန် ပျက်ကွက်ပါက၊ ၎င်းသည် ဂိမ်းကစားခြင်းဆိုင်ရာ ဆုံးဖြတ်ချက်များအတွက် သမားရိုးကျ algorithms အဖြစ် ပြောင်းလဲသွားမည်ဖြစ်သည်။ ဒေတာဘေ့စ်ကို ရရှိနိုင်သောအခါ 'ခက်ခဲမှုအဆင့်' သည် အနိုင်ယူ၍မရနိုင်လောက်အောင် ဖြစ်လာပြီး 'AI Thinking Time' သည် သိသိသာသာ လျော့ပါးသွားပါသည်။ ဒေတာဘေ့စ်ရလဒ်များသည် အမြင့်ဆုံးဦးစားပေးဖြစ်သောကြောင့် 'AI's Playstyle' ရွေးစရာများအတွင်းရှိ ဆက်တင်အများအပြားကို လွှမ်းမိုးသွားပါမည်။\n\nဤအပြစ်အနာအဆာကင်းသောဒေတာဘေ့စ်ကို မည်ကဲ့သို့အသုံးပြုနည်းလမ်းညွှန်ချက်အတွက် ဤနေရာကိုနှိပ်ပါ။",
+  "perfectDatabaseDescription": "နောက်ဆုံးပေါ် အယ်လဂိုရီသမ်များမှတစ်ဆင့် ထုတ်လုပ်ထားသော ချို့ယွင်းချက်မရှိသော ဂိမ်းဒေတာဘေ့စ်ကို အသုံးပြုရန် ဤရွေးချယ်မှုကို ဖွင့်ပါ။ ဤအင်္ဂါရပ်သည် အကောင်းဆုံးလှုပ်ရှားမှုများကို အကြံပြုရန်အတွက် အဖွင့်နှင့် ဂိမ်းဗျူဟာများ နှစ်ခုလုံးကို ပေါင်းစပ်ထားသည်။ ဤသည်မှာ ဂိမ်းကစားရာတွင် တိကျမှုအမြင့်ဆုံးအဆင့်ကို ရှာဖွေသော ကစားသမားများအတွက် ဦးစားပေးရွေးချယ်မှုဖြစ်သည်။ စေ့စပ်သေချာသော တွက်ချက်နည်းစနစ်များဖြင့် ဖန်တီးထားသည့် ဒေတာဘေ့စ်သည် ပြီးပြည့်စုံလုနီးပါးရှိသော ဂိမ်းဖြေရှင်းချက်များကို ပေးဆောင်ရန် ဒီဇိုင်းထုတ်ထားသည်။\n\nမှတ်ချက်- AI သည် ဒေတာဘေ့စ်သို့ ဝင်ရောက်ရန် ပျက်ကွက်ပါက၊ ၎င်းသည် ဂိမ်းကစားခြင်းဆိုင်ရာ ဆုံးဖြတ်ချက်များအတွက် သမားရိုးကျ algorithms အဖြစ် ပြောင်းလဲသွားမည်ဖြစ်သည်။ ဒေတာဘေ့စ်ကို ရရှိနိုင်သောအခါ 'ခက်ခဲမှုအဆင့်' သည် အနိုင်ယူ၍မရနိုင်လောက်အောင် ဖြစ်လာပြီး 'AI Thinking Time' သည် သိသိသာသာ လျော့ပါးသွားပါသည်။ ဒေတာဘေ့စ်ရလဒ်များသည် အမြင့်ဆုံးဦးစားပေးဖြစ်သောကြောင့် 'AI's play style' ရွေးစရာများအတွင်းရှိ ဆက်တင်အများအပြားကို လွှမ်းမိုးသွားပါမည်။\n\nဤအပြစ်အနာအဆာကင်းသောဒေတာဘေ့စ်ကို မည်ကဲ့သို့အသုံးပြုနည်းလမ်းညွှန်ချက်အတွက် ဤနေရာကိုနှိပ်ပါ။",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "နောက်ခံပုံရိပ်",
   "@backgroundImage": {},

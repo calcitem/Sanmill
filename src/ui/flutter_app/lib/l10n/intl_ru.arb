@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Человек против облака",
+  "humanVsCloud": "Человек против облачного ИИ",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -72,11 +72,11 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Выберите неправильную фигуру.",
+  "tipSelectWrong": "Выберите неверную фигуру.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Ваш ход.",
+  "tipPlace": "Разместите свои фигуры.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Мозгает…",
+  "thinking": "Думает…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -176,11 +176,11 @@
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Открыть игру",
+  "importGame": "Импортировать игру",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Сохранить игру",
+  "exportGame": "Экспортировать игру",
   "@exportGame": {
     "description": "Export game"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Готовы к трудностям? Следующий уровень {level}!",
+  "challengeHarderLevel": "Сыграем на более сложном уровне? Новый уровень будет {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Если функция \"Полет\" включена, когда игрок уменьшает количество фигур до определенного значения, его фигуры могут свободно перемещаться в любую незанятую точку, а не ограничиваться соседними точками, как в остальной части игры.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Наименьшее количество фигур",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Игрок проиграет, если его противник заблокирует его так, что его нельзя будет передвинуть. Смените сторону для хода, если эта опция отключена.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Летающий",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Нажмите на фигуру противника, чтобы удалить ее.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Прежде чем убрать фигуру, необходимо создать мельницу.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Игровой стиль ИИ",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пассивный",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Нажмите назад еще раз, чтобы выйти.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Больше",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Если игрок ломает мельницу, чтобы немедленно создать новую мельницу, такой игрок может переместить такой кусок обратно к исходному соединению своим следующим ходом, если он сделает новую мельницу.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра считается ничьей, если у игрока есть три фишки и после десяти ходов ни один из игроков не убирает фишки соперника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1216,7 +1216,7 @@
   "@noMove": {
     "description": "No move."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piece}} необходимо удалить.",
+  "pieceCountNeedToRemove": "Нужно удалить {count} фигур.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {

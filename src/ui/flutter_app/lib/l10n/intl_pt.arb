@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Humanos vs. Nuvem",
+  "humanVsCloud": "Humano vs. Nuvem",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -240,7 +240,7 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} retiros.",
+  "loseReasonResign": "{player} desistiu.",
   "@loseReasonResign": {
     "description": " resign."
   },
@@ -276,7 +276,7 @@
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Você ganho! Parabéns!",
+  "youWin": "Você ganhou! Parabéns!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Se a opção de voar for ativada, quando um jogador está reduzido a um número específico de peças, suas peças são livres para se mover para qualquer ponto desocupado, ao invés de serem restritas a pontos adjacentes como no resto do jogo.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Peças pelo menos",
   "@piecesAtLeastCount": {
@@ -416,7 +416,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Mudanças múltiplas",
+  "mayRemoveMultiple": "Remoção múltipla",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Você perde se seu oponente o bloqueia de se mover. Troque de lado para se mover se esta opção estiver desativada.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vôo",
   "@mayFly": {
@@ -504,7 +504,7 @@
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "Cor do pedaço",
+  "pieceColor": "Cor da peça",
   "@pieceColor": {
     "description": "Piece color"
   },
@@ -520,7 +520,7 @@
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Cor da peça 2 do jogador",
+  "blackPieceColor": "Cor das peças do jogador 2",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Toque na peça de um oponente para removê-la.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Para remover uma peça, é necessário criar um moinho.",
   "@needToCreateMillFirst": {
@@ -652,7 +652,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " y ",
+  "and": " e ",
   "@and": {},
   "accept": "Aceitar",
   "@accept": {
@@ -662,7 +662,7 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Apoio…",
+  "takingBack": "Desfazendo…",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Estilo de jogo da IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passivo",
   "@passive": {
@@ -802,7 +802,7 @@
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "A IA não é um raciocínio.",
+  "aiIsNotThinking": "A IA não está pensando.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Toque novamente para sair.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mais",
   "@more": {
@@ -886,7 +886,7 @@
   "@top": {
     "description": "Top"
   },
-  "bottom": "Antecedentes",
+  "bottom": "Inferior",
   "@bottom": {
     "description": "Bottom"
   },
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Se um jogador quebra um moinho para criar um novo moinho imediatamente, esse jogador pode mover essa peça de volta para a junta original em sua próxima jogada, se ele fizer um novo moinho.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo é empatado se um jogador tiver três peças e depois de dez jogadas nenhum dos jogadores remove as peças do adversário",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

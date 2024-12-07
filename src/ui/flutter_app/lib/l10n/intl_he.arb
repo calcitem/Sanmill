@@ -546,7 +546,7 @@
   },
   "flyPieceCount_Detail": "אם טיסה מופעלת, כאשר שחקן מצטמצם לספירת כלים ספציפית, הכלים שלו חופשיים לעבור לכל נקודה לא תפוסה במקום להיות מוגבל לנקודות סמוכות כמו בשאר המשחק.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "חתיכות לפחות",
   "@piecesAtLeastCount": {
@@ -594,7 +594,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "השחקן יפסיד אם יריבו יחסום אותם כך שלא ניתן להזיז אותם. שנה צד כדי להזיז אם אפשרות זו מושבתת.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "עַף",
   "@mayFly": {
@@ -756,7 +756,7 @@
   },
   "toRemovePiece": "הקש על החלק האחד של היריב כדי להסיר.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "תחילה עליך ליצור טחנה לפני שתוכל להסיר חתיכה.",
   "@needToCreateMillFirst": {
@@ -874,7 +874,7 @@
   },
   "aisPlayStyle": "סגנון המשחק של AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "פַּסִיבִי",
   "@passive": {
@@ -946,7 +946,7 @@
   },
   "tapBackAgainToLeave": "הקש שוב אחורה כדי לצאת.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "יותר",
   "@more": {
@@ -1126,7 +1126,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "אם שחקן שובר טחנה כדי ליצור טחנת חדשה באופן מיידי, שחקן כזה יכול להזיז את החלק הזה בחזרה לצומת המקורי בצעד הבא שלו אם הוא עושה טחנת חדשה.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "המשחק מוגרל אם לשחקן יש שלושה כלים ואחרי עשרה מהלכים אף אחד מהשחקנים לא מסיר את הכלים של היריב",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Nëse Fluturimi është i aktivizuar, kur një lojtar zvogëlohet në një numër specifik të pjesëve, pjesët e saj janë të lira të lëvizin në çdo pikë të zënë në vend që të kufizohen në pikat ngjitur si në pjesën tjetër të lojës.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pjesë Të paktën",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Lojtari do të humbasë nëse kundërshtari i bllokon ata në mënyrë që ata të mos lëvizen. Ndryshoni anën për të lëvizur nëse ky opsion është me aftësi të kufizuara.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Fluturimi",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Trokitni lehtë mbi një pjesë të kundërshtarit për ta hequr.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Së pari duhet të krijoni një mulli përpara se të hiqni një copë.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Stili i lojës së AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasiv",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Trokit përsëri përsëri për t'u larguar.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Më shumë",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Nëse një lojtar thyen një mulli për të krijuar menjëherë një mulli të ri, një lojtar i tillë mund ta zhvendosë pjesën e tij përsëri në kryqëzimin origjinal në lëvizjen e tij të radhës nëse bën një mulli të ri.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Loja barazohet nëse një lojtar ka tre pjesë dhe pas dhjetë lëvizjeve asnjë lojtar nuk heq pjesët e kundërshtarit",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Kein Rekord",
+  "noGameRecord": "Keine Aufzeichnung",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -132,7 +132,7 @@
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "Du kannst keine gegnerischen Steine nehmen.",
+  "tipCannotMoveOpponentsPieces": "Du kannst die gegnerischen Steine nicht bewegen.",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} ist an der Reihe sich zu bewegen.",
+  "tipToMove": "{player} ist an der Reihe zu ziehen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -368,7 +368,7 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "Zufallszüge",
+  "shufflingEnabled": "Zufällige Züge",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Steine mindestens",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, daß er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Fliegen",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Spielstil des Computers",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiv",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Nochmal drücken, um zu beenden.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mehr",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1066,7 +1066,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Zeichnen",
+  "draw": "Unentschieden",
   "@draw": {
     "description": "Draw"
   },
@@ -1280,7 +1280,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Der Alpha-Beta-Algorithmus ist ein Suchalgorithmus, um den besten Zug zu finden. Es verwendet das Mini-Max-Prinzip und zwei Werte, Alpha und Beta, um den Suchbaum zu verkürzen und die Effizienz zu steigern. Alpha stellt die minimale Punktzahl dar, die der Computer sicher erreichen kann, während Beta die maximale Punktzahl darstellt, die sein Gegner erzielen kann. Der Algorithmus hilft dem Computer, intelligente und effiziente Entscheidungen in einem Spiel zu treffen.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Bei diesem Spiel gewinnt der zweite Spieler leichter als der erste Spieler.",
+  "firstMoveDetail": "In diesem Spiel hat der zweite Spieler leichter die Chance zu gewinnen als der erste.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Nach menschlicher Erfahrung werden Sie verlieren, wenn Sie versuchen zu gewinnen. Wir empfehlen stattdessen ein Unentschieden als Ziel anzustreben und es zu vermeiden es, das Spiel zu verlieren. Beobachten Sie Ihren Gegner und locken Sie ihn sanft in eine Position, in der er Fehler machen kann. Wenn sie Schwäche zeigen, nutzen Sie die Gelegenheit und drängen Sie sanft auf den Sieg. Auf diese Weise können Sie das Spiel gewinnen.",
   "@drawOnTheHumanExperienceDetail": {},

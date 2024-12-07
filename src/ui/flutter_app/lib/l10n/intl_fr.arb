@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Humain vs Réseau",
+  "humanVsCloud": "Humain vs Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Sélectionnez la mauvaise pièce.",
+  "tipSelectWrong": "Sélectionnez la pièce incorrecte.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "Au tour de {player} de se déplacer.",
+  "tipToMove": "C’est au tour de {player} de jouer.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Si l'option de vol est activée, lorsqu'un joueur est réduit à un nombre spécifique de pièces, ses pièces sont libres de se déplacer vers n'importe quel point inoccupé, au lieu d'être limitées aux points adjacents comme dans le reste du jeu.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pièces minimum",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Le joueur perd si son adversaire le bloque de sorte qu'il ne peut pas le déplacer. Changez de côté pour bouger si cette option est désactivée.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vol",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tapez sur une pièce de l'adversaire pour la retirer.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Vous devez d'abord créer un moulin avant de pouvoir retirer une pièce.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Style de jeu de l'IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passif",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Appuyez à nouveau pour quitter.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "En savoir plus",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Si un joueur casse un moulin pour créer un nouveau moulin immédiatement, ce joueur peut déplacer cette pièce vers la jonction d'origine lors de son prochain mouvement s'il fabrique un nouveau moulin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Le jeu est nul si un joueur a trois pièces et après dix coups aucun joueur ne retire les pièces de l'adversaire",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1184,7 +1184,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Placé ({count})",
+  "placedCount": "Placées ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1218,7 +1218,7 @@
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
-  "paste": "Pâte",
+  "paste": "Coller",
   "@paste": {
     "description": "Paste"
   },

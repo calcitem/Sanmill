@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "એઆઈ વિ એ.આઇ",
+  "aiVsAi": "એઆઈ વિ એઆઈ",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -40,7 +40,7 @@
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "લ LANન દ્વારા પરીક્ષણ કરો",
+  "testViaLAN": "LAN દ્વારા પરીક્ષણ કરો",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
@@ -72,31 +72,31 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "ખોટો ભાગ પસંદ કરો.",
+  "tipSelectWrong": "ખોટો ટુકડો પસંદ થયો.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "તમારા ટુકડા મૂકો.",
+  "tipPlace": "ટુકડાઓ મૂકી.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "તમે તેને અહીં મૂકી શકતા નથી.",
+  "tipBanPlace": "અહીં મૂકી શકાતું નથી.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "તમે મૂક્યા.",
+  "tipPlaced": "મૂકી દીધું.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "એક ભાગ કા Removeો.",
+  "tipRemove": "એક ટુકડો દૂર કરો.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "તમે તેને દૂર કરી શકતા નથી.",
+  "tipBanRemove": "દૂર કરવામાં આવી શકતું નથી.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "તમે દૂર કર્યું.",
+  "tipRemoved": "દૂર કરવામાં આવ્યું.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -104,27 +104,27 @@
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "તમે તમારો ભાગ અહીં મૂકી શકતા નથી.",
+  "tipCannotPlace": "અહીં ટુકડો મૂકી શકાતો નથી.",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
-  "tipCannotMove": "તમે તમારા ભાગને અહીં ખસેડી શકતા નથી.",
+  "tipCannotMove": "અહીં ટુકડો ખસેડી શકાતો નથી.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "મિલ! તમારા વિરોધીનો ભાગ લો.",
+  "tipMill": "મિલ! વિરોધીના ટુકડો દૂર કરો.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "તમારા વિરોધીનો ટુકડો લેવાનું ચાલુ રાખો.",
+  "tipContinueMill": "વિરોધીના ટુકડો લઈવાનું ચાલુ રાખો.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "તમારા વિરોધીના ટુકડાઓમાંથી એક પસંદ કરો.",
+  "tipSelectOpponentsPiece": "વિરોધીના ટુકડાઓમાંથી એક પસંદ કરો.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "તમે મિલમાંથી કોઈ ભાગ કા cannotી શકતા નથી.",
+  "tipCannotRemovePieceFromMill": "મિલમાંથી ટુકડો દૂર કરી શકાતો નથી.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -140,11 +140,11 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "તમારી પાસે ત્રણ ટુકડાઓ બાકી છે.",
+  "tipHaveThreePiecesLeft": "ત્રણ ટુકડાઓ બાકી.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "તમને ગમે તે બિંદુ પર જઈ શકો છો.",
+  "tipCanMoveToAnyPoint": "ગમે તે બિંદુ પર જઈ શકાય છે.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -156,7 +156,7 @@
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "ખેલાડી 2 જીતે!",
+  "blackWin": "ખેલાડી 2 જીત્યો!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -164,7 +164,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "ખોવાઈ ગઈ",
+  "lost": "હાર્યો",
   "@lost": {
     "description": "Lost"
   },
@@ -184,11 +184,11 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "રમત આયાત કરી.",
+  "gameImported": "રમત આયાત કરવામાં આવી.",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "{invalidMove} આયાત કરી શકાતું નથી",
+  "cannotImport": "{invalidMove} આયાત કરી શકાતી નથી.",
   "@cannotImport": {
     "description": "Cannot import"
   },
@@ -236,7 +236,7 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} ભાગની ગણતરી ત્રણ કરતા ઓછી છે.",
+  "loseReasonlessThanThree": "{player} પાસે ત્રણ કરતાં ઓછી સંખ્યામાં ટુકડાઓ.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
@@ -244,15 +244,15 @@
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} પાસે જવાનો કોઈ રસ્તો નથી.",
+  "loseReasonNoWay": "{player} માટે આગળ વધવાની કોઈ રીત નથી.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "બોર્ડ ભરાઈ ગયું છે, અને {player} પાસે જવાનો કોઈ રસ્તો નથી.",
+  "loseReasonBoardIsFull": "બોર્ડ ભરાઈ ગયું છે, {player} માટે આગળ વધવાની કોઈ રીત નથી.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "સમય પૂરો થયો, {player} ખોવાઈ ગયો.",
+  "loseReasonTimeOver": "સમય પૂરો, {player} હારી ગયો.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -268,7 +268,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "ખેલ ખતમ! અજ્ Unknownાત કારણ.",
+  "gameOverUnknownReason": "ખેલ ખતમ! અજ્ઞાત કારણ.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -284,7 +284,7 @@
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "તમે ગુમાવશો!",
+  "youLose": "હારી ગયા!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "જો ફ્લાઇંગ સક્ષમ કરવામાં આવે છે, જ્યારે કોઈ ખેલાડીને કોઈ વિશિષ્ટ ભાગની ગણતરી કરવામાં આવે છે, ત્યારે તેના ટુકડાઓ બાકીની રમતની જેમ અડીને આવેલા બિંદુઓ સુધી મર્યાદિત રહેવાને બદલે કોઈપણ અનકiedપિડ પોઇન્ટ પર જવા માટે મુક્ત છે.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ઓછામાં ઓછા ટુકડાઓ",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ખેલાડી હારી જશે જો તેના વિરોધી તેમને અવરોધિત કરે છે જેથી તેઓ ખસેડી ન શકાય. જો આ વિકલ્પ અક્ષમ હોય તો ખસેડવા માટે બાજુ બદલો.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "ઉડતી",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "દૂર કરવા માટે વિરોધીના એક ટુકડા પર ટેપ કરો.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "તમે કોઈ ભાગ કા canી શકો તે પહેલાં તમારે પહેલા મિલ બનાવવાની જરૂર છે.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "એઆઈની પ્લેસ્ટાઇલ",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "નિષ્ક્રીય",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "જવા માટે ફરીથી ટેપ કરો.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "વધુ",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "જો કોઈ ખેલાડી તરત જ નવી મિલ બનાવવા માટે મિલ તોડી નાખે છે, તો આવી ખેલાડી જો નવી મિલ બનાવે છે, તો તે આગળની ચાલમાં આવા ભાગને પાછલા મૂળ જંકશન પર ખસેડી શકે છે.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "રમત દોરવામાં આવે છે જો કોઈ ખેલાડી પાસે ત્રણ ટુકડાઓ હોય અને દસ ચાલ પછી કોઈ પણ ખેલાડી વિરોધીના ટુકડાને દૂર કરે નહીં",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "સંપૂર્ણ ડેટાબેઝનો ઉપયોગ કરો",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "કટીંગ-એજ એલ્ગોરિધમ્સ દ્વારા જનરેટ થયેલ દોષરહિત ગેમ ડેટાબેઝનો ઉપયોગ કરવા માટે આ વિકલ્પને સક્ષમ કરો. શ્રેષ્ઠ ચાલ સૂચવવા માટે આ સુવિધા ઓપનિંગ અને એન્ડગેમ બંને વ્યૂહરચનાઓને એકીકૃત કરે છે. જે ખેલાડીઓ ગેમપ્લેમાં ઉચ્ચતમ સ્તરની ચોકસાઇ શોધે છે તેમના માટે આ પસંદગીની પસંદગી છે. ઝીણવટભરી કોમ્પ્યુટેશનલ તકનીકો દ્વારા બનાવવામાં આવેલ, ડેટાબેઝ નજીકના-સંપૂર્ણ રમત ઉકેલો પ્રદાન કરવા માટે રચાયેલ છે.\n\nનોંધ: જો AI ડેટાબેઝને ઍક્સેસ કરવામાં નિષ્ફળ જાય, તો તે ગેમપ્લેના નિર્ણયો માટે પરંપરાગત અલ્ગોરિધમ્સ તરફ વળશે. જ્યારે ડેટાબેઝ ઉપલબ્ધ હોય છે, ત્યારે 'મુશ્કેલીનું સ્તર' વર્ચ્યુઅલ રીતે અજેય બની જાય છે અને 'AI થિંકિંગ ટાઈમ'માં ભારે ઘટાડો થાય છે. 'AI's Playstyle' વિકલ્પોની અંદર ઘણી સેટિંગ્સ ઓવરરાઇડ કરવામાં આવશે, કારણ કે ડેટાબેઝના પરિણામો સર્વોચ્ચ અગ્રતા ધરાવે છે.\n\nઆ દોષરહિત ડેટાબેઝનો મહત્તમ ઉપયોગ કેવી રીતે કરવો તેના માર્ગદર્શન માટે, અહીં ક્લિક કરો.",
+  "perfectDatabaseDescription": "કટીંગ-એજ એલ્ગોરિધમ્સ દ્વારા જનરેટ થયેલ દોષરહિત ગેમ ડેટાબેઝનો ઉપયોગ કરવા માટે આ વિકલ્પને સક્ષમ કરો. શ્રેષ્ઠ ચાલ સૂચવવા માટે આ સુવિધા ઓપનિંગ અને એન્ડગેમ બંને વ્યૂહરચનાઓને એકીકૃત કરે છે. જે ખેલાડીઓ ગેમપ્લેમાં ઉચ્ચતમ સ્તરની ચોકસાઇ શોધે છે તેમના માટે આ પસંદગીની પસંદગી છે. ઝીણવટભરી કોમ્પ્યુટેશનલ તકનીકો દ્વારા બનાવવામાં આવેલ, ડેટાબેઝ નજીકના-સંપૂર્ણ રમત ઉકેલો પ્રદાન કરવા માટે રચાયેલ છે.\n\nનોંધ: જો AI ડેટાબેઝને ઍક્સેસ કરવામાં નિષ્ફળ જાય, તો તે ગેમપ્લેના નિર્ણયો માટે પરંપરાગત અલ્ગોરિધમ્સ તરફ વળશે. જ્યારે ડેટાબેઝ ઉપલબ્ધ હોય છે, ત્યારે 'મુશ્કેલીનું સ્તર' વર્ચ્યુઅલ રીતે અજેય બની જાય છે અને 'AI થિંકિંગ ટાઈમ'માં ભારે ઘટાડો થાય છે. 'AI's play style' વિકલ્પોની અંદર ઘણી સેટિંગ્સ ઓવરરાઇડ કરવામાં આવશે, કારણ કે ડેટાબેઝના પરિણામો સર્વોચ્ચ અગ્રતા ધરાવે છે.\n\nઆ દોષરહિત ડેટાબેઝનો મહત્તમ ઉપયોગ કેવી રીતે કરવો તેના માર્ગદર્શન માટે, અહીં ક્લિક કરો.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "બેકગ્રાઉન્ડ ઇમેજ",
   "@backgroundImage": {},

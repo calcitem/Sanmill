@@ -390,7 +390,7 @@
   },
   "flyPieceCount_Detail": "ফ্লাইং সক্ষম করা থাকলে, যখন কোনও খেলোয়াড় নির্দিষ্ট টুকরো গণনায় কমে যায়, তার টুকরোটি খেলার বাকি অংশের মতো সংলগ্ন পয়েন্টগুলিতে সীমাবদ্ধ না রেখে যে কোনও অনাকাঙ্ক্ষিত বিন্দুতে চলে যেতে পারে।",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "অন্তত টুকরা",
   "@piecesAtLeastCount": {
@@ -442,7 +442,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "খেলোয়াড় হারাবে যদি তার প্রতিপক্ষ তাদের আটকা দেয় যাতে তারা সরানো যায় না। এই বিকল্পটি অক্ষম থাকলে সরানোর জন্য পাশ পরিবর্তন করুন।",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "উড়ন্ত",
   "@mayFly": {
@@ -610,7 +610,7 @@
   },
   "toRemovePiece": "অপসারণ করতে প্রতিপক্ষের এক টুকরো ট্যাপ করুন।",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "আপনি একটি টুকরা অপসারণ করার আগে আপনাকে প্রথমে একটি মিল তৈরি করতে হবে।",
   "@needToCreateMillFirst": {
@@ -756,7 +756,7 @@
   },
   "aisPlayStyle": "এআই এর প্লে স্টাইল",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "প্যাসিভ",
   "@passive": {
@@ -804,7 +804,7 @@
   },
   "tapBackAgainToLeave": "ছেড়ে যেতে আবার আলতো চাপুন।",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "আরও",
   "@more": {
@@ -992,7 +992,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "যদি কোনও খেলোয়াড় তত্ক্ষণাত্ একটি নতুন মিল তৈরির জন্য কলটি ভেঙে দেয়, এই জাতীয় খেলোয়াড় যদি নতুন মিল তৈরি করে তবে তার পরবর্তী পদক্ষেপে এই জাতীয় টুকরোটি মূল জংশনে ফিরে যেতে পারে।",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "গেমটি টানা যদি কোনও খেলোয়াড়ের তিনটি টুকরা থাকে এবং দশটি চালনার পরে কোনও খেলোয়াড়ই প্রতিপক্ষের টুকরো অপসারণ করে না",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

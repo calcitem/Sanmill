@@ -442,7 +442,7 @@
   },
   "flyPieceCount_Detail": "Калі палёт уключаны, калі гулец зніжае колькасць фігур да пэўнай колькасці, яе фігуры могуць свабодна перамяшчацца ў любую незанятую кропку, а не абмежаваныя суседнімі кропкамі, як у астатняй частцы гульні.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Прынамсі штук",
   "@piecesAtLeastCount": {
@@ -482,7 +482,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Гулец прайграе, калі яго супернік заблакуе іх так, што іх немагчыма перасунуць. Змяніце бок, каб рухацца, калі гэты параметр адключаны.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly_Detail": "Калі ў гульца засталіся толькі тры ці чатыры (канфігуруемыя) фігуры, ён можа перамясціць фігуру ў любую вольную кропку.",
   "@mayFly_Detail": {
@@ -632,7 +632,7 @@
   },
   "toRemovePiece": "Націсніце на адну фігуру суперніка, каб выдаліць.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Вам трэба спачатку стварыць млын, перш чым вы зможаце выдаліць кавалак.",
   "@needToCreateMillFirst": {
@@ -774,7 +774,7 @@
   },
   "aisPlayStyle": "Стыль гульні AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пасіўны",
   "@passive": {
@@ -846,7 +846,7 @@
   },
   "tapBackAgainToLeave": "Націсніце назад яшчэ раз, каб выйсці.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "больш",
   "@more": {
@@ -1030,7 +1030,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Калі гулец разбівае млын, каб неадкладна стварыць новы млын, такі гулец можа перамясціць такі кавалак назад да першапачатковага злучэння сваім наступным ходам, калі ён стварае новы млын.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Гульня лічыцца нічыёй, калі ў гульца ёсць тры фігуры і пасля дзесяці хадоў ні адзін з гульцоў не здымае фігуры суперніка",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {

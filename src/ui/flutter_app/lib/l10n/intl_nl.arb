@@ -20,25 +20,25 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Mens Vs AI",
+  "humanVsAi": "Mens tegen AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Mens Vs Mens",
+  "humanVsHuman": "Mens tegen Mens",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs AI",
+  "aiVsAi": "AI tegen AI",
   "@aiVsAi": {
-    "description": "AI Vs AI"
+    "description": "AI tegen AI"
   },
-  "humanVsCloud": "Mens Vs Cloud",
+  "humanVsCloud": "Mens tegen Cloud",
   "@humanVsCloud": {
-    "description": "Human Vs Cloud"
+    "description": "Human tegen Cloud"
   },
-  "humanVsLAN": "Mens Vs LAN",
+  "humanVsLAN": "Mens tegen LAN",
   "@humanVsLAN": {
-    "description": "Human Vs LAN"
+    "description": "Human tegen LAN"
   },
   "testViaLAN": "Test via LAN",
   "@testViaLAN": {
@@ -48,11 +48,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Verhuis lijst",
+  "showMoveList": "Zetlijst",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Lijst met bewegingen",
+  "moveList": "Zetlijst",
   "@moveList": {
     "description": "Move list"
   },
@@ -220,7 +220,7 @@
   "@error": {
     "description": "Error"
   },
-  "winRate": "Winst",
+  "winRate": "Winstpercentage",
   "@winRate": {
     "description": "Win Rate"
   },
@@ -240,11 +240,11 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} berusten.",
+  "loseReasonResign": "{player} heeft opgegeven.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} heeft geen weg te gaan.",
+  "loseReasonNoWay": "{player} kan niet bewegen.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "De tijd is voorbij, {player} verloren.",
+  "loseReasonTimeOver": "De tijd is om, {player} heeft verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Als Vliegen is ingeschakeld, dan zijn de stukken van een speler die tot een bepaald aantal stukken is gereduceerd, vrij om naar elk onbezet punt te gaan in plaats van naar aangrenzende punten zoals in de rest van het spel.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Minstens Stukken",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "De speler verliest als zijn tegenstander hem blokkeert zodat hij niet kan worden verplaatst. Verander van kant als deze optie is uitgeschakeld.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vliegen",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tik op een stuk van de tegenstander om het te verwijderen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Je moet eerst een molen maken voordat je een stuk kunt verwijderen.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI's speelstijl",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passief",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Tik opnieuw om te vertrekken.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Meer",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Als een speler een molen breekt om onmiddellijk een nieuwe molen te maken, kan zo'n speler zo'n stuk terug verplaatsen naar de oorspronkelijke kruising in zijn volgende zet als hij een nieuwe molen maakt.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Het spel is remise als een speler drie stukken heeft en na tien zetten geen van beide spelers de stukken van de tegenstander verwijdert",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "De pasta is klaar.",
+  "pasteDone": "Plakken voltooid.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1312,13 +1312,13 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Welke actie volgt als er geen stuk kan worden verplaatst?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Eindig met een patstelling.",
+  "endWithStalemateLoss": "Eindig met verlies door patstelling.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Verander de kant om te bewegen.",
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Verwijder een van de stukken van de tegenstander en doe de volgende zet.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Eindig met een patstelling.",
+  "endWithStalemateDraw": "Eindig met remise door patstelling.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Verwijder een van de stukken van de tegenstander en verander de kant om te bewegen.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1354,7 +1354,7 @@
   "@mintChocolate": {},
   "skyBlue": "Hemelsblauw",
   "@skyBlue": {},
-  "playfulGarden": "Speelse tuin",
+  "playfulGarden": "Speelsetuin",
   "@playfulGarden": {},
   "darkMystery": "Duister Mysterie",
   "@darkMystery": {},
