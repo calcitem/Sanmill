@@ -129,12 +129,23 @@ void Thread::idle_loop()
         searching = false;
 
         cv.notify_one(); // Wake up anyone waiting for search finished
-        cv.wait(lk, [&] { return searching; });
+        cv.wait(lk, [&] { return searching || exit; });
 
         if (exit)
             return;
 
         lk.unlock();
+
+        // 增加并行任务执行逻辑
+        if (hasTask) {
+            // 执行分配给该线程的搜索任务
+            do_task();
+            std::lock_guard<std::mutex> lk2(mutex);
+            hasTask = false;
+            searching = false;
+            cv.notify_one(); // 通知 parallel_search 中等待的线程任务完成
+            continue;
+        }
 
         // Note: Stockfish doesn't have this
         if (rootPos == nullptr || rootPos->side_to_move() != us) {
@@ -544,6 +555,60 @@ void Thread::loadEndgameFileToHashMap()
 
 #endif // ENDGAME_LEARNING
 
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+             Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+void Thread::do_task()
+{
+    // Execute a parallel search for a subset of moves.
+    Position *pos = currentTask.pos;
+    Depth depth = currentTask.depth;
+    Depth origDepth = currentTask.originDepth;
+    Value alpha = currentTask.alpha;
+    Value beta = currentTask.beta;
+
+    Value bestValue = -VALUE_INFINITE;
+    Move best_local_move = MOVE_NONE;
+
+    // English comment: For each move in currentTask.moves, do a depth-limited
+    // search.
+    for (Move m : currentTask.moves) {
+        if (Threads.stop.load(std::memory_order_relaxed))
+            break;
+
+        Sanmill::Stack<Position> ss;
+        ss.push(*pos);
+
+        Color before = pos->sideToMove;
+        pos->do_move(m);
+        Color after = pos->sideToMove;
+
+        Move tempBest = MOVE_NONE;
+        Value value = (after != before) ?
+                          -::search(pos, ss, depth - 1, origDepth, -beta,
+                                    -alpha, tempBest) :
+                          ::search(pos, ss, depth - 1, origDepth, alpha, beta,
+                                   tempBest);
+
+        pos->undo_move(ss);
+
+        if (value > bestValue) {
+            bestValue = value;
+            best_local_move = m;
+            if (value > alpha) {
+                alpha = value;
+                if (alpha >= beta) {
+                    break;
+                }
+            }
+        }
+    }
+
+    // Update thread local best result
+    localBestValue = bestValue;
+    localBestMove = best_local_move;
+}
+
 /// ThreadPool::set() creates/destroys threads to match the requested number.
 /// Created and launched threads will immediately go to sleep in idle_loop.
 /// Upon resizing, threads are recreated to allow for binding if necessary.
@@ -610,4 +675,53 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
     }
 
     main()->start_searching();
+}
+
+void ThreadPool::parallel_search(Position *pos, Depth depth, Depth originDepth,
+                                 Value alpha, Value beta,
+                                 const std::vector<Move> &moves)
+{
+    size_t threadCount = size();
+    size_t movesPerThread = (moves.size() + threadCount - 1) / threadCount;
+
+    size_t startIndex = 0;
+    for (size_t i = 0; i < threadCount; i++) {
+        size_t endIndex = std::min(startIndex + movesPerThread, moves.size());
+        std::vector<Move> subset(moves.begin() + startIndex,
+                                 moves.begin() + endIndex);
+        startIndex = endIndex;
+
+        {
+            std::lock_guard<std::mutex> lk((*this)[i]->mutex);
+            (*this)[i]->currentTask.pos = pos;
+            (*this)[i]->currentTask.depth = depth;
+            (*this)[i]->currentTask.originDepth = originDepth;
+            (*this)[i]->currentTask.alpha = alpha;
+            (*this)[i]->currentTask.beta = beta;
+            (*this)[i]->currentTask.moves = std::move(subset);
+            (*this)[i]->hasTask = true;
+            (*this)[i]->searching = true;
+            (*this)[i]->cv.notify_one();
+        }
+    }
+
+    // 等待所有线程任务完成
+    for (Thread *th : *this) {
+        th->wait_for_search_finished();
+    }
+
+    // 合并结果：选出所有线程中最好值的走子
+    Value globalBest = -VALUE_INFINITE;
+    Move globalBestMove = MOVE_NONE;
+    for (Thread *th : *this) {
+        if (th->localBestValue > globalBest) {
+            globalBest = th->localBestValue;
+            globalBestMove = th->localBestMove;
+        }
+    }
+
+    // globalBestMove 与 globalBest 是并行搜索的最终结果
+    // 可将其赋予主线程或返回调用者使用
+    main()->bestMove = globalBestMove;
+    main()->bestvalue = globalBest;
 }

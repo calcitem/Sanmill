@@ -38,6 +38,17 @@
 
 using std::string;
 
+class SearchTask
+{
+public:
+    Position *pos;
+    Depth depth;
+    Depth originDepth;
+    Value alpha, beta;
+    std::vector<Move> moves;
+    // Additional fields if needed
+};
+
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get a
 /// pointer to an entry its life time is unlimited and we don't have
@@ -128,6 +139,13 @@ public:
 
     Color us {WHITE};
 
+    Move localBestMove {MOVE_NONE};
+    Value localBestValue {VALUE_ZERO};
+    bool hasTask = false;   // Indicates if this thread has a pending task
+    SearchTask currentTask; // Task for this thread
+
+    void do_task(); // Execute the assigned search task
+
 private:
     int timeLimit;
 
@@ -167,6 +185,10 @@ struct ThreadPool : std::vector<Thread *>
     void set(size_t);
 
     MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
+
+    void parallel_search(Position *pos, Depth depth, Depth originDepth,
+                         Value alpha, Value beta,
+                         const std::vector<Move> &moves);
 
     std::atomic_bool stop, increaseDepth;
 
