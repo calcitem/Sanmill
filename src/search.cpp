@@ -411,9 +411,11 @@ Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
              Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
+    // bestValue holds the best evaluation found so far
     Value bestValue = -VALUE_INFINITE;
 
-    // Check for terminal position or search abortion
+    // Check if the game is over or if we should stop searching (time control,
+    // etc.)
     if (unlikely(pos->phase == Phase::gameOver) ||
         Threads.stop.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
@@ -428,13 +430,14 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         return bestValue;
     }
 
+    // If we have reached the end of our allowed search depth, switch to
+    // quiescence search
     if (depth <= 0) {
-        // Call quiescence search when depth limit is reached
         return qsearch(pos, ss, depth, originDepth, alpha, beta, bestMove);
     }
 
 #ifdef RULE_50
-    // Rule 50 move draw condition
+    // Check the 50-move rule or an endgame condition that triggers a draw
     if (pos->rule50_count() > rule.nMoveRule ||
         (rule.endgameNMoveRule < rule.nMoveRule && pos->is_three_endgame() &&
          pos->rule50_count() >= rule.endgameNMoveRule)) {
@@ -446,7 +449,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif // RULE_50
 
 #ifdef THREEFOLD_REPETITION_TEST
-    // Check for threefold repetition excluding root depth
+    // Check for threefold repetition (excluding the root depth)
     if (depth != originDepth && pos->has_repeated(ss)) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
@@ -455,7 +458,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     }
 #endif // THREEFOLD_REPETITION_TEST
 
-    // Transposition table lookup
+    // Optional transposition table lookups and endgame learning checks
     Move ttMove = MOVE_NONE;
 
 #if defined(TRANSPOSITION_TABLE_ENABLE) || defined(ENDGAME_LEARNING)
@@ -463,30 +466,27 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif
 
 #ifdef ENDGAME_LEARNING
+    // Probe endgame database (if enabled)
     Endgame endgame;
-
     if (gameOptions.isEndgameLearningEnabled() && posKey &&
         Thread::probeEndgameHash(posKey, endgame)) {
         switch (endgame.type) {
         case EndGameType::whiteWin:
-            bestValue = VALUE_MATE;
-            bestValue += depth;
+            bestValue = VALUE_MATE + depth; // Favor quicker mate
             break;
         case EndGameType::blackWin:
-            bestValue = -VALUE_MATE;
-            bestValue -= depth;
+            bestValue = -VALUE_MATE - depth; // Favor delaying loss
             break;
         default:
             break;
         }
-
         return bestValue;
     }
 #endif /* ENDGAME_LEARNING */
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    const Value oldAlpha = alpha; // To flag BOUND_EXACT when eval above alpha
-                                  // and no available moves
+    // Transposition table probe
+    const Value oldAlpha = alpha;
     Bound type = BOUND_NONE;
 
     const Value probeVal = TranspositionTable::probe(posKey, depth, type
@@ -500,10 +500,11 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #ifdef TRANSPOSITION_TABLE_DEBUG
         Threads.main()->ttHitCount++;
 #endif
-
+        // If we have exact bound, we can return directly
         if (type == BOUND_EXACT) {
             return probeVal;
         }
+        // Adjust alpha or beta based on the table entry
         if (type == BOUND_LOWER) {
             alpha = std::max(alpha, probeVal);
         } else if (type == BOUND_UPPER) {
@@ -522,23 +523,24 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
-    // Check for threefold repetition excluding root depth
+    // Check for threefold repetition rule if enabled and not at root depth
     if (rule.threefoldRepetitionRule && depth != originDepth &&
         pos->has_repeated(ss)) {
-        // Add a small component to draw evaluations to avoid 3-fold blindness
+        // Return a draw score, slightly adjusted
         return VALUE_DRAW + 1;
     }
 
     Value value;
     Depth epsilon;
 
-    // Initialize MovePicker to order and select moves
+    // Create a move picker to generate and order moves
     MovePicker mp(*pos, ttMove);
     const Move nextMove = mp.next_move<LEGAL>();
     const int moveCount = mp.move_count();
 
 #ifndef NNUE_GENERATE_TRAINING_DATA
-    // If only one legal move and at root depth, select it as best move
+    // If there is only one legal move and we are at the root depth, return that
+    // immediately
     if (moveCount == 1 && depth == originDepth) {
         bestMove = nextMove;
         bestValue = VALUE_UNIQUE;
@@ -548,7 +550,7 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifndef DISABLE_PREFETCH
-    // Prefetch transposition table entries for all moves
+    // Prefetch transposition table entries for all generated moves
     for (int i = 0; i < moveCount; i++) {
         TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
     }
@@ -561,7 +563,55 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 #endif // !DISABLE_PREFETCH
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-    // Iterate through all possible moves
+    // If no moves are available, the position is terminal or a previously
+    // handled condition already returned. Just continue with the logic below.
+    if (moveCount == 0) {
+        // No moves: evaluate position
+        bestValue = Eval::evaluate(*pos);
+        // Adjust evaluation for quicker wins or slower losses
+        if (bestValue > 0) {
+            bestValue += depth;
+        } else {
+            bestValue -= depth;
+        }
+#ifdef TRANSPOSITION_TABLE_ENABLE
+        // Store result in TT
+        Bound ttBound = bestValue <= oldAlpha ? BOUND_UPPER :
+                        bestValue >= beta     ? BOUND_LOWER :
+                                                BOUND_EXACT;
+        TranspositionTable::save(bestValue, depth, ttBound, posKey
+#ifdef TT_MOVE_ENABLE
+                                 ,
+                                 bestMove
+#endif
+        );
+#endif
+        return bestValue;
+    }
+
+    // Collect all legal moves in a vector for potential parallel search
+    std::vector<Move> moves;
+    moves.reserve(moveCount);
+    for (int i = 0; i < moveCount; i++) {
+        moves.push_back(mp.moves[i].move);
+    }
+
+    // Check if we should use parallel search
+    // For example, use parallel search if we have multiple threads,
+    // sufficient depth, and more than one move.
+    if (Threads.size() > 1 && depth >= 4 && moveCount > 1) {
+        // Perform parallel search on the collected moves
+        Threads.parallel_search(pos, depth, originDepth, alpha, beta, moves);
+
+        // Retrieve the best move and best value from the main thread
+        bestMove = Threads.main()->bestMove;
+        return Threads.main()->bestvalue;
+    }
+
+    // Otherwise, use single-threaded search logic
+    bestValue = -VALUE_INFINITE;
+
+    // Iterate through all moves and search them individually
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
         const Color before = pos->sideToMove;
@@ -571,45 +621,47 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->do_move(move);
         const Color after = pos->sideToMove;
 
-        // Determine the depth extension
+        // Decide whether to extend the search depth for certain conditions
         epsilon = (gameOptions.getDepthExtension() && moveCount == 1) ? 1 : 0;
 
-        // Perform recursive search
+        // Perform a recursive search on the resulting position
         value = (after != before) ?
                     -search(pos, ss, depth - 1 + epsilon, originDepth, -beta,
                             -alpha, bestMove) :
                     search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
                            beta, bestMove);
 
-        // Undo the move
+        // Undo the move after searching
         pos->undo_move(ss);
 
-        // Check for search abortion
+        // Check if the search should be aborted (e.g., due to time)
         if (Threads.stop.load(std::memory_order_relaxed))
             return VALUE_ZERO;
 
-        // Update best value and best move if necessary
+        // Update bestValue and alpha-beta bounds if we found a better move
         if (value > bestValue) {
             bestValue = value;
 
             if (value > alpha) {
+                // If we are at the root, update bestMove
                 if (depth == originDepth) {
                     bestMove = move;
                 }
 
+                // Narrow the alpha-beta window
                 if (value < beta) {
-                    // Update alpha to the new best value
-                    alpha = value;
+                    alpha = value; // Improved alpha
                 } else {
-                    assert(value >= beta); // Fail high
-                    break;                 // Fail high
+                    // Fail-high node
+                    assert(value >= beta);
+                    break;
                 }
             }
         }
     }
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
-    // Determine the bound type for the transposition table
+    // Determine the transposition table bound type based on the final bestValue
     Bound ttBound;
     if (bestValue <= oldAlpha)
         ttBound = BOUND_UPPER;
@@ -618,12 +670,12 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
     else
         ttBound = BOUND_EXACT;
 
-    // Save the result in the transposition table
+    // Save the search result into the transposition table
     TranspositionTable::save(bestValue, depth, ttBound, posKey
 #ifdef TT_MOVE_ENABLE
                              ,
                              bestMove
-#endif // TT_MOVE_ENABLE
+#endif
     );
 #endif /* TRANSPOSITION_TABLE_ENABLE */
 
