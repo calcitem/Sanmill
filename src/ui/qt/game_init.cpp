@@ -39,6 +39,8 @@
 #include "option.h"
 #include "server.h"
 
+extern ThreadPool Threads;
+
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
 #endif
@@ -161,6 +163,7 @@ void Game::initializeDatabaseDialog()
 
 void Game::initializeSettings()
 {
+    Threads.set(12);
     loadSettings();
     gameReset();
 }
