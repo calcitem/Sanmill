@@ -78,7 +78,14 @@ class PlayAreaState extends State<PlayArea> {
   /// after each move, the chart will reflect the latest advantage trend.
   void _updateUI() {
     setState(() {
-      advantageData.add(_getCurrentAdvantageValue());
+      // AdvantageData is updated only when the AI has an evaluation value returned and the flag is true
+      if (GameController().lastMoveFromAI &&
+          GameController().value != null &&
+          GameController().aiMoveType != AiMoveType.unknown) {
+        advantageData.add(_getCurrentAdvantageValue());
+        GameController().lastMoveFromAI = false; // Reset the flag
+      }
+      // If the call is not triggered by the completion of the AI's move, advantageData will not be updated
     });
   }
 

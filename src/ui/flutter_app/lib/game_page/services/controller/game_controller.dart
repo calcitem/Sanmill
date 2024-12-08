@@ -55,6 +55,8 @@ class GameController {
   bool isPositionSetupMarkedPiece =
       false; // TODO: isPieceMarkedInPositionSetup?
 
+  bool lastMoveFromAI = false;
+
   String? value;
   AiMoveType? aiMoveType;
 
@@ -297,6 +299,11 @@ class GameController {
 
       GameController().value = engineRet.value;
       GameController().aiMoveType = engineRet.aiMoveType;
+
+      if (GameController().value != null &&
+          GameController().aiMoveType != AiMoveType.unknown) {
+        GameController().lastMoveFromAI = true;
+      }
 
       if (GameController().position.winner != PieceColor.nobody) {
         if (isAutoRestart() == true) {
