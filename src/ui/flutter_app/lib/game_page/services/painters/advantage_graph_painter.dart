@@ -40,25 +40,6 @@ class AdvantageGraphPainter extends CustomPainter {
     // Determine how many data points to show (up to 50).
     final int showCount = math.min(50, data.length);
 
-    // If not enough data points, do nothing.
-    if (showCount < 2) {
-      return;
-    }
-
-    // Extract the subset of the data (last showCount moves).
-    final List<int> shownData = data.sublist(data.length - showCount);
-
-    // Paint for the advantage line.
-    final Paint linePaint = Paint()
-      ..color = Color.lerp(
-        DB().colorSettings.whitePieceColor,
-        DB().colorSettings.blackPieceColor,
-        0.5,
-      )!
-          .withOpacity(0.6)
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-
     // Choose between boardBackgroundColor and boardLineColor based on which has
     // a larger difference from darkBackgroundColor.
     final Color bgColor = DB().colorSettings.boardBackgroundColor;
@@ -82,14 +63,59 @@ class AdvantageGraphPainter extends CustomPainter {
     // Zero line (value=0) in the vertical center.
     final double zeroY = margin + chartHeight / 2;
 
+    // Always divide the horizontal axis into 50 segments.
+    // For 50 moves, there are 49 intervals.
+    final double dxStep = chartWidth / 49.0;
+
+    // Clip the canvas to a rounded rectangle to restrict drawing to the rounded area.
+    canvas.clipRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
+        const Radius.circular(5),
+      ),
+    );
+
+    // Draw zero advantage line (spanning full width) even if not enough data points.
+    canvas.drawLine(
+      Offset(margin, zeroY),
+      Offset(margin + 49 * dxStep, zeroY),
+      zeroLinePaint,
+    );
+
+    // Draw a box around the entire advantage graph area with rounded corners.
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
+        const Radius.circular(5),
+      ),
+      zeroLinePaint,
+    );
+
+    // If not enough data points, do not draw the advantage line or fill areas.
+    // Return here after drawing the frame and zero line.
+    // Newly added English comment: Drawing the frame and zero line regardless of data count.
+    if (showCount < 2) {
+      return;
+    }
+
+    // Extract the subset of the data (last showCount moves).
+    final List<int> shownData = data.sublist(data.length - showCount);
+
+    // Paint for the advantage line.
+    final Paint linePaint = Paint()
+      ..color = Color.lerp(
+        DB().colorSettings.whitePieceColor,
+        DB().colorSettings.blackPieceColor,
+        0.5,
+      )!
+          .withOpacity(0.6)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+
     // Maps advantage values [-100, 100] to Y coordinates.
     double valueToPixel(int val) {
       return zeroY - (val * (chartHeight / 200.0));
     }
-
-    // Always divide the horizontal axis into 50 segments.
-    // For 50 moves, there are 49 intervals.
-    final double dxStep = chartWidth / 49.0;
 
     final Path path = Path();
     double? lastY;
@@ -173,34 +199,10 @@ class AdvantageGraphPainter extends CustomPainter {
     bottomFillPath.lineTo(points.first.dx, margin + chartHeight);
     bottomFillPath.close();
 
-    // Clip the canvas to a rounded rectangle to restrict drawing to the rounded area.
-    canvas.clipRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
-        const Radius.circular(5),
-      ),
-    );
-
     // Draw the top area.
     canvas.drawPath(topFillPath, topFillPaint);
     // Draw the bottom area.
     canvas.drawPath(bottomFillPath, bottomFillPaint);
-
-    // Draw zero advantage line (spanning full width).
-    canvas.drawLine(
-      Offset(margin, zeroY),
-      Offset(margin + 49 * dxStep, zeroY),
-      zeroLinePaint,
-    );
-
-    // Draw a box around the entire advantage graph area with rounded corners.
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
-        const Radius.circular(5),
-      ),
-      zeroLinePaint,
-    );
 
     // Finally, draw the advantage line on top.
     canvas.drawPath(path, linePaint);
