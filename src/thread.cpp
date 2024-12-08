@@ -121,53 +121,68 @@ void Thread::idle_loop()
 {
     while (true) {
         std::unique_lock lk(mutex);
-        // CID 338451: Data race condition(MISSING_LOCK)
-        // missing_lock : Accessing this->searching without holding lock
-        // Thread.mutex. Elsewhere, Thread.searching is accessed with
-        // Thread.mutex held 2 out of 3 times(2 of these accesses strongly imply
-        // that it is necessary).
-        searching = false;
 
-        cv.notify_one(); // Wake up anyone waiting for search finished
-        cv.wait(lk, [&] { return searching || exit; });
+        // Wait until we have work (searching == true) or we should exit
+        // 此时不改变 searching, 保持上次的状态即可
+        // 保证每一次 loop 开始都先等待条件满足后再继续
+        cv.notify_all();
+        cv.wait(lk, [this] { return searching || exit; });
 
-        if (exit)
+        if (exit) {
+            // 线程即将结束
             return;
+        }
 
-        lk.unlock();
-
-        // 增加并行任务执行逻辑
+        // 如果有并行搜索任务
         if (hasTask) {
-            // 执行分配给该线程的搜索任务
+            // 有任务：解锁并执行任务
+            lk.unlock();
             do_task();
-            std::lock_guard<std::mutex> lk2(mutex);
+            lk.lock();
+            // 任务完成后标记 searching = false, 通知等待的线程
             hasTask = false;
             searching = false;
-            cv.notify_one(); // 通知 parallel_search 中等待的线程任务完成
+            cv.notify_all();
+            // 任务结束后将继续循环等待新的任务或退出
             continue;
         }
 
-        // Note: Stockfish doesn't have this
-        if (rootPos == nullptr || rootPos->side_to_move() != us) {
+        // 此处表示没有并行任务
+        // 如果 rootPos 为 null 或者不是当前 us 的回合，那么无需搜索
+        if (!rootPos || rootPos->side_to_move() != us) {
+            // 没有可执行的搜索: 将 searching = false 并通知
+            searching = false;
+            cv.notify_all();
+            // 再次循环进入等待状态
             continue;
         }
+
+        // 如果有 rootPos，并且是 us 的回合，则执行主搜索逻辑
+        // 解锁执行搜索
+        lk.unlock();
 
 #ifdef OPENING_BOOK
-        // gameOptions.getOpeningBook()
         if (!openingBookDeque.empty()) {
             char obc[16] = {0};
             sq2str(obc);
             bestMoveString = obc;
             emitCommand();
+
+            // 处理完后重新加锁并将 searching = false
+            lk.lock();
+            searching = false;
+            cv.notify_all();
+            lk.unlock();
         } else {
 #endif
+            // 执行主搜索
             const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-            nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
+            nnueTrainingDataBestValue = (rootPos->sideToMove == WHITE) ?
                                             bestvalue :
                                             -bestvalue;
-#endif /* NNUE_GENERATE_TRAINING_DATA */
+#endif
 
             if (ret == 3 || ret == 50 || ret == 10) {
                 debugPrintf("Draw\n\n");
@@ -175,10 +190,16 @@ void Thread::idle_loop()
                 emitCommand();
             } else {
                 bestMoveString = next_move();
-                if (bestMoveString != "" && bestMoveString != "error!") {
+                if (!bestMoveString.empty() && bestMoveString != "error!") {
                     emitCommand();
                 }
             }
+
+            lk.lock();
+            searching = false; // 搜索完成，通知可能等待此状态的线程
+            cv.notify_all();
+            lk.unlock();
+
 #ifdef OPENING_BOOK
         }
 #endif
@@ -636,7 +657,7 @@ void ThreadPool::set(size_t requested)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
         // Reallocate the hash with the new thread pool size
-        //TT.resize(static_cast<size_t>(Options["Hash"]));
+        // TT.resize(static_cast<size_t>(Options["Hash"]));
 #endif
 
         // Init thread number dependent search params.
