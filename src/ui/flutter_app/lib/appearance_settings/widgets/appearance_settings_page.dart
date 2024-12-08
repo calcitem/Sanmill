@@ -607,8 +607,14 @@ class AppearanceSettingsPage extends StatelessWidget {
         ),
         SettingsListTile.switchTile(
           value: displaySettings.isAdvantageGraphShown,
-          onChanged: (bool val) => DB().displaySettings =
-              displaySettings.copyWith(isAdvantageGraphShown: val),
+          onChanged: (bool val) {
+            DB().displaySettings =
+                displaySettings.copyWith(isAdvantageGraphShown: val);
+            if (val) {
+              rootScaffoldMessengerKey.currentState!
+                  .showSnackBarClear(S.of(context).advantageGraphHint);
+            }
+          },
           titleString: S.of(context).showAdvantageGraph,
         ),
         SettingsListTile(

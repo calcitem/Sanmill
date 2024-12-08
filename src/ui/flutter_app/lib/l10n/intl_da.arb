@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Lad AI bruge åbningsflytninger, som er almindeligt anvendt af professionelle menneskelige spillere i det tidlige spil. Bemærk: Denne funktion er i øjeblikket kun tilgængelig for bestemte regelsæt.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Vis fordelsgraf",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Fordelsgrafen vil kun blive tegnet, efter at AI'en foretager et træk. Den vil ikke blive tegnet, når den menneskelige spiller foretager et træk.",
+  "@advantageGraphHint": {}
 }

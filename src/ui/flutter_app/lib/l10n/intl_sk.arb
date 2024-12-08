@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Dovoľte AI používať otváracie ťahy, ktoré sú bežne používané profesionálnymi ľudskými hráčmi na začiatku hry. Poznámka: Táto funkcia je momentálne dostupná len pre špecifické sady pravidiel.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Zobraziť graf výhody",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf výhody sa nakreslí až po tom, ako urobí ťah AI. Nebude sa kresliť, keď ťah urobí ľudský hráč.",
+  "@advantageGraphHint": {}
 }

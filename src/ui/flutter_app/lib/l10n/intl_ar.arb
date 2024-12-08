@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "دع الذكاء الاصطناعي يستخدم الافتتاحيات التي يستخدمها اللاعبون المحترفون في بداية اللعبة. ملاحظة: هذه الخاصية متاحة حاليًا لمجموعات قواعد محددة فقط.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "إظهار مخطط الميزة",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "سيتم رسم مخطط الأفضلية فقط بعد أن يقوم الذكاء الاصطناعي باللعب. لن يتم رسمه عندما يقوم اللاعب البشري باللعب.",
+  "@advantageGraphHint": {}
 }

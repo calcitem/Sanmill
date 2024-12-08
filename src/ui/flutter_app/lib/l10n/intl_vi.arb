@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "Cho phép AI sử dụng các nước đi mở đầu thường được sử dụng bởi các cầu thủ chuyên nghiệp trong giai đoạn đầu của trò chơi. Lưu ý: Tính năng này hiện chỉ có sẵn cho các bộ quy tắc cụ thể.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Hiển thị biểu đồ lợi thế",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Biểu đồ lợi thế sẽ chỉ được vẽ sau khi AI thực hiện một nước đi. Nó sẽ không được vẽ khi người chơi là con người thực hiện nước đi.",
+  "@advantageGraphHint": {}
 }

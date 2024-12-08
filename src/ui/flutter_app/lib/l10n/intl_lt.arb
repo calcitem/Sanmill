@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Leiskite AI naudoti atidarymo ėjimus, kuriuos dažnai naudoja profesionalūs žmogaus žaidėjai ankstyvosiose žaidimo stadijose. Pastaba: Šiuo metu ši funkcija galima tik tam tikrose taisyklių rinkiniuose.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Rodyti pranašumo grafiką",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Pranašumo grafikas bus nubraižytas tik po to, kai DI atliks ėjimą. Jis nebus nubraižytas, kai ėjimą atliks žmogus.",
+  "@advantageGraphHint": {}
 }

@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Laat de AI openingszetten gebruiken die vaak worden gebruikt door professionele menselijke spelers in het vroege spel. Opmerking: Deze functie is momenteel alleen beschikbaar voor specifieke regelsets.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Voordeelgrafiek weergeven",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "De voordeelgrafiek wordt alleen getekend nadat de AI een zet heeft gedaan. Hij wordt niet getekend wanneer de menselijke speler een zet doet.",
+  "@advantageGraphHint": {}
 }

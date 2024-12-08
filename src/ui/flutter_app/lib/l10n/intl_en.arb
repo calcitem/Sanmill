@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Show advantage graph",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Advantage graph will only be drawn after the AI makes a move. It will not be drawn when the human player makes a move.",
+  "@advantageGraphHint": {}
 }

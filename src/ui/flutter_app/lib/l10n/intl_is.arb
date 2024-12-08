@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "Leyfðu gervigreindinni að nota opnunaráð sem faglegir mannlegir leikmenn nota oft í upphafi leiks. Athugið: Þessi eiginleiki er núna aðeins í boði fyrir ákveðin regluset.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Sýna forskotslínurit",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Forðagröf mun aðeins vera teiknuð eftir að gervigreindin gerir leik. Hún verður ekki teiknuð þegar mannlegur spilari gerir leik.",
+  "@advantageGraphHint": {}
 }

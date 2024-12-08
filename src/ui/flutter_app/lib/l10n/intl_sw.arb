@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "Ruhusu AI kutumia hatua za ufunguzi zinazotumiwa kawaida na wachezaji wa kibinadamu wa kitaalamu katika mchezo wa mapema. Kumbuka: Kipengele hiki kwa sasa kinapatikana tu kwa seti maalum za sheria.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Onyesha grafu ya faida",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Grafu ya faida itachorwa tu baada ya AI kufanya hatua. Haitachorwa wakati mchezaji mwanadamu anafanya hatua.",
+  "@advantageGraphHint": {}
 }

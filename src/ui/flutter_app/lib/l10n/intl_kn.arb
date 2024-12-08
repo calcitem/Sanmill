@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "ಆರಂಭಿಕ ಆಟದಲ್ಲಿ ವೃತ್ತಿಪರ ಮಾನವ ಆಟಗಾರರು ಸಾಮಾನ್ಯವಾಗಿ ಬಳಸುವ ಓಪನಿಂಗ್ ಚಲನೆಗಳನ್ನು AI ಬಳಸಲು ಅನುಮತಿಸಿ. ಗಮನಿಸಿ: ಈ ವೈಶಿಷ್ಟ್ಯ ಪ್ರಸ್ತುತ ಕೆಲವು ನಿಯಮ ಸೆಟ್ಗಳಿಗೆ ಮಾತ್ರ ಲಭ್ಯವಿದೆ.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "ಅಧಿಕ್ಯ ಗ್ರಾಫ್ ತೋರಿಸಿ",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "AI ಚಲನೆಯನ್ನು ಮಾಡಿದ ನಂತರ ಮಾತ್ರ ಪ್ರಯೋಜನ ಗ್ರಾಫ್ ರಚಿಸಲಾಗುತ್ತದೆ. ಮಾನವ ಆಟಗಾರ ಚಲನೆಯನ್ನು ಮಾಡಿದಾಗ ಇದು ರಚಿಸಲಾಗದು.",
+  "@advantageGraphHint": {}
 }

@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "Vumela i-AI ukuthi isebenzise ukuvula amanyathelo ajwayele ukusetshenziswa ngabadlali abaqeqeshiwe abantu ekuqaleni komdlalo. Qaphela: Lesi sici sitholakala okwamanje kumasethi womthetho athize kuphela.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Khombisa ishadi lezinzuzo",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Ishadi lezinzuzo lizodwetshwa kuphela emva kokuthi i-AI yenze umnyakazo. Alizukudwetshwa uma umdlali womuntu enza umnyakazo.",
+  "@advantageGraphHint": {}
 }

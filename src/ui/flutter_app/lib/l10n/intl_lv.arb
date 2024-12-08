@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Ļaujiet AI izmantot atklāšanas gājienus, ko bieži izmanto profesionālie cilvēku spēlētāji spēles sākumā. Piezīme: Šī funkcija pašlaik ir pieejama tikai konkrētiem noteikumu kopumiem.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Parādīt priekšrocību grafiku",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Priekšrocību grafiks tiks uzzīmēts tikai pēc tam, kad MI veiks gājienu. Tas netiks uzzīmēts, kad gājienu veiks cilvēka spēlētājs.",
+  "@advantageGraphHint": {}
 }

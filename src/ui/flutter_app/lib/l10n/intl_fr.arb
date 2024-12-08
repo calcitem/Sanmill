@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Permettez à l'IA d'utiliser des mouvements d'ouverture couramment employés par les joueurs humains professionnels au début du jeu. Remarque: Cette fonctionnalité est actuellement disponible uniquement pour certains ensembles de règles.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Afficher le graphique d’avantage",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Le graphique d'avantage ne sera tracé qu'après que l'IA aura effectué un mouvement. Il ne sera pas tracé lorsque le joueur humain effectuera un mouvement.",
+  "@advantageGraphHint": {}
 }

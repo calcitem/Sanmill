@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Permita que la IA use movimientos de apertura que comúnmente emplean los jugadores humanos profesionales durante el juego inicial. Nota: Esta característica está disponible actualmente solo para conjuntos de reglas específicos.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Mostrar gráfico de ventaja",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "El gráfico de ventaja solo se dibujará después de que la IA haga un movimiento. No se dibujará cuando el jugador humano haga un movimiento.",
+  "@advantageGraphHint": {}
 }

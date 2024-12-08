@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Lassen Sie die KI Eröffnungszüge verwenden, die üblicherweise von professionellen menschlichen Spielern im frühen Spiel verwendet werden. Hinweis: Diese Funktion ist derzeit nur für bestimmte Regelsets verfügbar.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Vorteilsdiagramm anzeigen",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Der Vorteilgraph wird nur gezeichnet, nachdem die KI einen Zug gemacht hat. Er wird nicht gezeichnet, wenn der menschliche Spieler einen Zug macht.",
+  "@advantageGraphHint": {}
 }

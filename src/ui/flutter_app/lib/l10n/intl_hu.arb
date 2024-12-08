@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Engedje meg az AI-nak, hogy az első játékszakaszban a profi emberi játékosok által gyakran használt nyitómozdulatokat alkalmazza. Megjegyzés: Ez a funkció jelenleg csak bizonyos szabálykészletekhez érhető el.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Mutassa az előny grafikonját",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Az előnygráf csak akkor kerül megrajzolásra, miután a mesterséges intelligencia lépést tett. Nem kerül megrajzolásra, amikor az emberi játékos lép.",
+  "@advantageGraphHint": {}
 }

@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Lejo AI të përdorë lëvizjet e hapjes që përdoren zakonisht nga lojtarët profesionistë njerëzorë në fillim të lojës. Shënim: Kjo veçori është aktualisht në dispozicion vetëm për grupe të caktuara rregullash.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Trego grafikun e avantazhit",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Grafiku i avantazhit do të vizatohet vetëm pasi IA të bëjë një lëvizje. Nuk do të vizatohet kur lojtari njerëzor bën një lëvizje.",
+  "@advantageGraphHint": {}
 }

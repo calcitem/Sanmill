@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Consenti all'IA di utilizzare mosse di apertura comunemente impiegate dai giocatori umani professionisti durante le prime fasi del gioco. Nota: questa funzione è attualmente disponibile solo per specifici insiemi di regole.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Mostra grafico del vantaggio",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Il grafico del vantaggio verrà disegnato solo dopo che l'IA effettua una mossa. Non verrà disegnato quando il giocatore umano effettua una mossa.",
+  "@advantageGraphHint": {}
 }

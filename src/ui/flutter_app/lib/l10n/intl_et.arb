@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Lubage AI-l kasutada avakäike, mida kasutavad tavaliselt professionaalsed inimmängijad varajases mängus. Märkus: See funktsioon on hetkel saadaval ainult teatud reeglistike jaoks.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Kuva eelise graafik",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Eelisgraafik joonistatakse ainult pärast seda, kui tehisintellekt on käigu teinud. Seda ei joonistata, kui käigu teeb inimmängija.",
+  "@advantageGraphHint": {}
 }

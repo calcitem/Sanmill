@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Nechte AI používat otevírací tahy, které jsou běžně používány profesionálními hráči v rané fázi hry. Poznámka: Tato funkce je v současné době dostupná pouze pro konkrétní sady pravidel.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Zobrazit graf výhody",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf výhody bude vykreslen pouze poté, co udělá tah AI. Nebude vykreslen, když tah provede lidský hráč.",
+  "@advantageGraphHint": {}
 }

@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Dovolite AI, da uporablja odpiralne poteze, ki jih pogosto uporabljajo profesionalni človeški igralci v zgodnji fazi igre. Opomba: Ta funkcija je trenutno na voljo samo za določene komplete pravil.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Prikaži graf prednosti",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf prednosti bo narisan le po tem, ko bo AI naredil potezo. Ne bo narisan, ko potezo naredi človeški igralec.",
+  "@advantageGraphHint": {}
 }

@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "אפשר לבינה המלאכותית להשתמש במהלכי פתיחה שמקובלים על ידי שחקנים מקצועיים בשלב המוקדם של המשחק. הערה: תכונה זו זמינה כעת רק עבור ערכות חוקים מסוימות.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "הצג גרף יתרון",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "הגרף המציג יתרון יצויר רק לאחר שהבינה המלאכותית מבצעת מהלך. הוא לא יצויר כאשר השחקן האנושי מבצע מהלך.",
+  "@advantageGraphHint": {}
 }

@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "AI-ya oyunun əvvəlində peşəkar insan oyunçular tərəfindən geniş istifadə edilən açılış hərəkətlərini istifadə etməyə icazə ver. Qeyd: Bu xüsusiyyət hazırda yalnız müəyyən qayda dəstləri üçün mövcuddur.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Üstünlük qrafikini göstər",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Üstünlük qrafiki yalnız süni intellekt hərəkət etdikdən sonra çəkiləcək. İnsan oyunçu hərəkət edəndə o çəkilməyəcək.",
+  "@advantageGraphHint": {}
 }

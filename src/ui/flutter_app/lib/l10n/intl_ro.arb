@@ -1519,5 +1519,7 @@
   "useOpeningBook_Detail": "Permiteți IA să utilizeze mișcările de deschidere utilizate frecvent de jucătorii umani profesioniști în timpul jocului timpuriu. Notă: Această funcție este disponibilă în prezent doar pentru seturi de reguli specifice.",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Afișează graficul avantajului",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graficul de avantaj va fi desenat doar după ce IA face o mutare. Nu va fi desenat când jucătorul uman face o mutare.",
+  "@advantageGraphHint": {}
 }

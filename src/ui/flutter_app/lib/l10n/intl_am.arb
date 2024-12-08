@@ -1617,5 +1617,7 @@
   "useOpeningBook_Detail": "በጀርባ ጨዋታ ላይ ባለሙያ ሰው ተጫዋቾች በሚጠቀሙበት ቀጥታ ተንቀሳቃሽ እንዲጠቀም AI ያስተውል። ማስታወሻ: ይህ ባህሪ አሁን ብቻ ለክነት ህጎች ስብስብ ተመድቦ ነው።",
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "የጥቅም ግራፍን አሳይ",
-  "@showAdvantageGraph": {}
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "አቋሙ ግራፊክ ከAI ተንቀሳቃሽ ከተደረገ በኋላ ብቻ ይሳምራል። የሰው ተጫዋች አንቀሳቃሽ ሲደረግ ግራፊኩ አይሳምርም።",
+  "@advantageGraphHint": {}
 }
