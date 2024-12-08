@@ -422,6 +422,8 @@ class PlayAreaState extends State<PlayArea> {
                   // Insert the advantage trend chart below the board and above the next toolbar rows.
                   // Only show if there's data.
                   if (DB().displaySettings.isAdvantageGraphShown &&
+                      GameController().gameInstance.gameMode !=
+                          GameMode.setupPosition &&
                       advantageData.isNotEmpty)
                     SizedBox(
                       height: 150,
