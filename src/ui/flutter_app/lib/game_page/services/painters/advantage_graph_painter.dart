@@ -15,15 +15,15 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
-
 import '../../../shared/database/database.dart';
 
-/// A custom painter to draw the advantage trend line, but only for the most recent 20 moves.
-/// Positive values indicate white advantage, negative indicate black advantage.
-/// If there are more than 20 moves, only the last 20 are shown.
-/// As new moves come in, older moves are discarded from the left side.
+/// A custom painter to draw the advantage trend line for up to 50 moves.
+/// The horizontal axis is always conceptually divided into 50 segments.
+/// If fewer than 50 moves are present, the moves are drawn starting from the left side,
+/// using the same segment spacing, but not scaling to fill the entire width.
+/// Once 50 moves are available, they fill the entire width. As more moves come in,
+/// older moves are discarded and the line shifts left, always showing the last 50 moves.
 class AdvantageGraphPainter extends CustomPainter {
   AdvantageGraphPainter(this.data);
 
@@ -31,8 +31,8 @@ class AdvantageGraphPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // Determine how many data points to show (up to 20).
-    final int showCount = math.min(20, data.length);
+    // Determine how many data points to show (up to 50).
+    final int showCount = math.min(50, data.length);
 
     // If not enough data points, do nothing.
     if (showCount < 2) {
@@ -52,9 +52,27 @@ class AdvantageGraphPainter extends CustomPainter {
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    // Paint for the zero advantage line.
+    // Choose between boardBackgroundColor and boardLineColor based on which has a larger difference from darkBackgroundColor.
+    // Use a simple squared distance in RGB space to determine the color difference.
+    final Color bgColor = DB().colorSettings.boardBackgroundColor;
+    final Color lineColor = DB().colorSettings.boardLineColor;
+    final Color darkBgColor = DB().colorSettings.darkBackgroundColor;
+
+    double colorDiff(Color c1, Color c2) {
+      final int dr = c1.red - c2.red;
+      final int dg = c1.green - c2.green;
+      final int db = c1.blue - c2.blue;
+      return (dr * dr + dg * dg + db * db).toDouble();
+    }
+
+    final Color chosenColor =
+        (colorDiff(bgColor, darkBgColor) > colorDiff(lineColor, darkBgColor))
+            ? bgColor
+            : lineColor;
+
+    // Then use chosenColor for zeroLinePaint.
     final Paint zeroLinePaint = Paint()
-      ..color = DB().colorSettings.boardBackgroundColor
+      ..color = chosenColor
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke;
 
@@ -65,37 +83,69 @@ class AdvantageGraphPainter extends CustomPainter {
     // Zero line (value=0) in the vertical center.
     final double zeroY = margin + chartHeight / 2;
 
-    // Function to map advantage values [-100, 100] to canvas Y coordinates.
+    // Maps advantage values [-100, 100] to Y coordinates.
     double valueToPixel(int val) {
-      // val=100 => top (margin)
-      // val=-100 => bottom (margin+chartHeight)
-      // val=0 => zeroY
       return zeroY - (val * (chartHeight / 200.0));
     }
 
-    // Horizontal step between points for the shownData subset.
-    final int count = shownData.length;
-    final double dxStep = chartWidth / (count - 1);
+    // Always divide the horizontal axis into 50 segments.
+    // For 50 moves, there are 49 intervals.
+    // If fewer than 50 moves, do not scale them to full width;
+    // just place them from the left at fixed spacing.
+    final double dxStep = chartWidth / 49.0;
 
     final Path path = Path();
-    for (int i = 0; i < count; i++) {
+    double? lastY;
+    int? lastVal;
+
+    for (int i = 0; i < showCount; i++) {
+      // The X position always starts from the left and uses the same dxStep.
+      // If fewer than 50 moves, we just won't reach the far right side.
       final double x = margin + i * dxStep;
-      final double y = valueToPixel(shownData[i]);
-      if (i == 0) {
+      final int val = shownData[i];
+      double y;
+
+      // Handle VALUE_UNIQUE:
+      // If val is ±100, keep Y same as previous (if any), else default to zero if first point.
+      if (val == 100 || val == -100) {
+        if (lastY == null) {
+          y = valueToPixel(0);
+        } else {
+          y = lastY;
+        }
+      } else {
+        y = valueToPixel(val);
+      }
+
+      // Check for sudden jump scenario:
+      // If the previous value was out of normal range and current value is 0, consider it a new line start.
+      bool newLineStart = false;
+      if (lastVal != null) {
+        if ((lastVal < -75 || lastVal > 75) && val == 0) {
+          newLineStart = true;
+        }
+      }
+
+      if (i == 0 || newLineStart) {
+        // Move to this point without drawing a line from the previous.
         path.moveTo(x, y);
       } else {
         path.lineTo(x, y);
       }
+
+      lastY = y;
+      lastVal = val;
     }
 
-    // Draw the zero advantage line.
+    // Draw zero advantage line.
+    // Zero line should also span the full 50-segment width (49 intervals).
     canvas.drawLine(
       Offset(margin, zeroY),
-      Offset(size.width - margin, zeroY),
+      Offset(margin + 49 * dxStep, zeroY),
       zeroLinePaint,
     );
 
-    // Draw the line path.
+    // Draw the advantage line path.
     canvas.drawPath(path, linePaint);
   }
 
