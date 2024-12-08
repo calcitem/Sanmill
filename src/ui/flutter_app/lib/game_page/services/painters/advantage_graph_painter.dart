@@ -17,6 +17,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/utils/helpers/color_helpers/color_helper.dart';
 
 /// A custom painter to draw the advantage trend line for up to 50 moves.
 /// The horizontal axis is always conceptually divided into 50 segments.
@@ -24,6 +25,11 @@ import '../../../shared/database/database.dart';
 /// using the same segment spacing, but not scaling to fill the entire width.
 /// Once 50 moves are available, they fill the entire width. As more moves come in,
 /// older moves are discarded and the line shifts left, always showing the last 50 moves.
+///
+/// In addition, the entire graph area is enclosed by a rectangle.
+/// Above the advantage line is filled with DB().colorSettings.blackPieceColor at 50% opacity.
+/// Below the advantage line is filled with DB().colorSettings.whitePieceColor at 50% opacity.
+/// The advantage line thus appears as a boundary line within a semi-transparent overlay.
 class AdvantageGraphPainter extends CustomPainter {
   AdvantageGraphPainter(this.data);
 
@@ -49,28 +55,21 @@ class AdvantageGraphPainter extends CustomPainter {
         DB().colorSettings.blackPieceColor,
         0.5,
       )!
+          .withOpacity(0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
-    // Choose between boardBackgroundColor and boardLineColor based on which has a larger difference from darkBackgroundColor.
-    // Use a simple squared distance in RGB space to determine the color difference.
+    // Choose between boardBackgroundColor and boardLineColor based on which has
+    // a larger difference from darkBackgroundColor.
     final Color bgColor = DB().colorSettings.boardBackgroundColor;
     final Color lineColor = DB().colorSettings.boardLineColor;
     final Color darkBgColor = DB().colorSettings.darkBackgroundColor;
 
-    double colorDiff(Color c1, Color c2) {
-      final int dr = c1.red - c2.red;
-      final int dg = c1.green - c2.green;
-      final int db = c1.blue - c2.blue;
-      return (dr * dr + dg * dg + db * db).toDouble();
-    }
-
     final Color chosenColor =
-        (colorDiff(bgColor, darkBgColor) > colorDiff(lineColor, darkBgColor))
-            ? bgColor
-            : lineColor;
+        pickColorWithMaxDifference(bgColor, lineColor, darkBgColor)
+            .withOpacity(0.5);
 
-    // Then use chosenColor for zeroLinePaint.
+    // Use chosenColor for zeroLinePaint.
     final Paint zeroLinePaint = Paint()
       ..color = chosenColor
       ..strokeWidth = 1
@@ -90,17 +89,16 @@ class AdvantageGraphPainter extends CustomPainter {
 
     // Always divide the horizontal axis into 50 segments.
     // For 50 moves, there are 49 intervals.
-    // If fewer than 50 moves, do not scale them to full width;
-    // just place them from the left at fixed spacing.
     final double dxStep = chartWidth / 49.0;
 
     final Path path = Path();
     double? lastY;
     int? lastVal;
 
+    // Store all points of the advantage line to construct fill areas.
+    final List<Offset> points = <Offset>[];
+
     for (int i = 0; i < showCount; i++) {
-      // The X position always starts from the left and uses the same dxStep.
-      // If fewer than 50 moves, we just won't reach the far right side.
       final double x = margin + i * dxStep;
       final int val = shownData[i];
       double y;
@@ -127,25 +125,84 @@ class AdvantageGraphPainter extends CustomPainter {
       }
 
       if (i == 0 || newLineStart) {
-        // Move to this point without drawing a line from the previous.
         path.moveTo(x, y);
       } else {
         path.lineTo(x, y);
       }
 
+      points.add(Offset(x, y));
       lastY = y;
       lastVal = val;
     }
 
-    // Draw zero advantage line.
-    // Zero line should also span the full 50-segment width (49 intervals).
+    // Create fill paints:
+    // Above the advantage line: blackPieceColor at 30% opacity.
+    final Paint topFillPaint = Paint()
+      ..color = DB().colorSettings.blackPieceColor.withOpacity(0.3)
+      ..style = PaintingStyle.fill;
+
+    // Below the advantage line: whitePieceColor at 30% opacity.
+    final Paint bottomFillPaint = Paint()
+      ..color = DB().colorSettings.whitePieceColor.withOpacity(0.3)
+      ..style = PaintingStyle.fill;
+
+    // Construct a path for the area above the advantage line:
+    // 1. Move along the advantage line from left to right.
+    // 2. From the last point, go straight up to the top boundary.
+    // 3. Go back to the first point along the top boundary.
+    // 4. Close the path.
+    final Path topFillPath = Path()..moveTo(points.first.dx, points.first.dy);
+    for (int i = 1; i < points.length; i++) {
+      topFillPath.lineTo(points[i].dx, points[i].dy);
+    }
+    topFillPath.lineTo(points.last.dx, margin);
+    topFillPath.lineTo(points.first.dx, margin);
+    topFillPath.close();
+
+    // Construct a path for the area below the advantage line:
+    // 1. Move along the advantage line from left to right.
+    // 2. From the last point, go straight down to the bottom boundary.
+    // 3. Go back to the first point along the bottom boundary.
+    // 4. Close the path.
+    final Path bottomFillPath = Path()
+      ..moveTo(points.first.dx, points.first.dy);
+    for (int i = 1; i < points.length; i++) {
+      bottomFillPath.lineTo(points[i].dx, points[i].dy);
+    }
+    bottomFillPath.lineTo(points.last.dx, margin + chartHeight);
+    bottomFillPath.lineTo(points.first.dx, margin + chartHeight);
+    bottomFillPath.close();
+
+    // Clip the canvas to a rounded rectangle to restrict drawing to the rounded area.
+    canvas.clipRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
+        const Radius.circular(5),
+      ),
+    );
+
+    // Draw the top area.
+    canvas.drawPath(topFillPath, topFillPaint);
+    // Draw the bottom area.
+    canvas.drawPath(bottomFillPath, bottomFillPaint);
+
+    // Draw zero advantage line (spanning full width).
     canvas.drawLine(
       Offset(margin, zeroY),
       Offset(margin + 49 * dxStep, zeroY),
       zeroLinePaint,
     );
 
-    // Draw the advantage line path.
+    // Draw a box around the entire advantage graph area with rounded corners.
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        Rect.fromLTWH(margin, margin, chartWidth, chartHeight),
+        const Radius.circular(5),
+      ),
+      zeroLinePaint,
+    );
+
+    // Finally, draw the advantage line on top.
     canvas.drawPath(path, linePaint);
   }
 
