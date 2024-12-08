@@ -1615,5 +1615,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Laat die AI openingstrekke gebruik wat algemeen deur professionele menslike spelers tydens die vroeë spel gebruik word. Let wel: Hierdie funksie is tans slegs beskikbaar vir spesifieke reël stelle.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Wys voordeelgrafiek",
+  "@showAdvantageGraph": {}
 }

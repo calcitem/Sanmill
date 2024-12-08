@@ -1615,5 +1615,7 @@
   "daSanQi": "Đả Tam Kỳ",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Cho phép AI sử dụng các nước đi mở đầu thường được sử dụng bởi các cầu thủ chuyên nghiệp trong giai đoạn đầu của trò chơi. Lưu ý: Tính năng này hiện chỉ có sẵn cho các bộ quy tắc cụ thể.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Hiển thị biểu đồ lợi thế",
+  "@showAdvantageGraph": {}
 }

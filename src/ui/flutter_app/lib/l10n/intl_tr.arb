@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Yapay zekanın, oyunun erken aşamalarında profesyonel insan oyuncular tarafından sıkça kullanılan açılış hamlelerini kullanmasına izin verin. Not: Bu özellik şu anda yalnızca belirli kurallar setleri için mevcuttur.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Avantaj grafiğini göster",
+  "@showAdvantageGraph": {}
 }

@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Дозволете на АИ да користи почетни потези кои обично ги користат професионални човечки играчи во раната фаза на играта. Забелешка: Оваа функционалност моментално е достапна само за одредени сетови на правила.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Прикажи график на предност",
+  "@showAdvantageGraph": {}
 }

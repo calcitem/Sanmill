@@ -1615,5 +1615,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Leyfðu gervigreindinni að nota opnunaráð sem faglegir mannlegir leikmenn nota oft í upphafi leiks. Athugið: Þessi eiginleiki er núna aðeins í boði fyrir ákveðin regluset.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Sýna forskotslínurit",
+  "@showAdvantageGraph": {}
 }

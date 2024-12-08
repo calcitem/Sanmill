@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Lejo AI të përdorë lëvizjet e hapjes që përdoren zakonisht nga lojtarët profesionistë njerëzorë në fillim të lojës. Shënim: Kjo veçori është aktualisht në dispozicion vetëm për grupe të caktuara rregullash.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Trego grafikun e avantazhit",
+  "@showAdvantageGraph": {}
 }

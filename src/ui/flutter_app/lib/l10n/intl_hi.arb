@@ -1517,5 +1517,7 @@
   "daSanQi": "दा सानची",
   "@daSanQi": {},
   "useOpeningBook_Detail": "एआई को शुरुआती खेल के दौरान पेशेवर मानव खिलाड़ियों द्वारा आमतौर पर इस्तेमाल किए जाने वाले ओपनिंग मूव्स का उपयोग करने दें। ध्यान दें: यह सुविधा वर्तमान में केवल विशिष्ट नियम सेटों के लिए उपलब्ध है।",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "लाभ ग्राफ़ दिखाएँ",
+  "@showAdvantageGraph": {}
 }

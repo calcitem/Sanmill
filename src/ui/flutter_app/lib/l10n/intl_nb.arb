@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "La AI bruke åpningsbevegelser som er vanlig brukt av profesjonelle menneskelige spillere i begynnelsen av spillet. Merk: Denne funksjonen er for øyeblikket bare tilgjengelig for spesifikke regelsett.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Vis fordelsgraf",
+  "@showAdvantageGraph": {}
 }

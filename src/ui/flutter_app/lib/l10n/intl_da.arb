@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Lad AI bruge åbningsflytninger, som er almindeligt anvendt af professionelle menneskelige spillere i det tidlige spil. Bemærk: Denne funktion er i øjeblikket kun tilgængelig for bestemte regelsæt.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Vis fordelsgraf",
+  "@showAdvantageGraph": {}
 }

@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Dovolite AI, da uporablja odpiralne poteze, ki jih pogosto uporabljajo profesionalni človeški igralci v zgodnji fazi igre. Opomba: Ta funkcija je trenutno na voljo samo za določene komplete pravil.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Prikaži graf prednosti",
+  "@showAdvantageGraph": {}
 }

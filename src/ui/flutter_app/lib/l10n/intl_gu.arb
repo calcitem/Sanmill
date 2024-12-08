@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "પ્રારંભિક રમત દરમિયાન વ્યાવસાયિક માનવ ખેલાડીઓ દ્વારા સામાન્ય રીતે ઉપયોગમાં લેવાતા પ્રારંભિક ચાલો એઆઈને ઉપયોગ કરવા દો. નોંધ: આ સુવિધા હાલમાં કેટલાક વિશિષ્ટ નિયમ સમૂહો માટે જ ઉપલબ્ધ છે.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "લાભ ગ્રાફ બતાવો",
+  "@showAdvantageGraph": {}
 }

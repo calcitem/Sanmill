@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Ļaujiet AI izmantot atklāšanas gājienus, ko bieži izmanto profesionālie cilvēku spēlētāji spēles sākumā. Piezīme: Šī funkcija pašlaik ir pieejama tikai konkrētiem noteikumu kopumiem.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Parādīt priekšrocību grafiku",
+  "@showAdvantageGraph": {}
 }

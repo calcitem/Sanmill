@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Engedje meg az AI-nak, hogy az első játékszakaszban a profi emberi játékosok által gyakran használt nyitómozdulatokat alkalmazza. Megjegyzés: Ez a funkció jelenleg csak bizonyos szabálykészletekhez érhető el.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mutassa az előny grafikonját",
+  "@showAdvantageGraph": {}
 }

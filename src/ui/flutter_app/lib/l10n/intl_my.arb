@@ -1615,5 +1615,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "AI ကို ကစားပွဲအစမှာ ကစားသမားများက မကြာခဏသုံးစွဲတဲ့ဖွင့်ပွဲကို သုံးစွဲခွင့်ပြုပါ။ မှတ်ချက် - ယခုလိုင်းပေါ်ရှိ ဤအင်္ဂါရပ်သည် သတ်မှတ်ထားသော စည်းမျဉ်းစုံများအတွက်သာ ရရှိနိုင်သည်။",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "အားသာချက်ဂრაფပြပါ",
+  "@showAdvantageGraph": {}
 }

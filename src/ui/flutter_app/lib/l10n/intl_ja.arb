@@ -1615,5 +1615,7 @@
   "daSanQi": "中国モリスバリエーション 2 (ダーサンチー)",
   "@daSanQi": {},
   "useOpeningBook_Detail": "初期ゲームでプロの人間プレーヤーが一般的に使用するオープニングムーブをAIが使用するようにします。注: この機能は現在、特定のルールセットでのみ利用可能です。",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "有利グラフを表示",
+  "@showAdvantageGraph": {}
 }

@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Biarkan AI menggunakan langkah pembukaan yang biasa digunakan oleh pemain manusia profesional semasa permainan awal. Nota: Ciri ini hanya tersedia untuk set peraturan tertentu sahaja.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Tunjukkan graf kelebihan",
+  "@showAdvantageGraph": {}
 }

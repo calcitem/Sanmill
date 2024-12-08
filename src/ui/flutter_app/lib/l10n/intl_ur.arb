@@ -1615,5 +1615,7 @@
   "daSanQi": "دا سانچی",
   "@daSanQi": {},
   "useOpeningBook_Detail": "کھیل کے ابتدائی مرحلے میں پیشہ ورانہ انسانی کھلاڑیوں کی طرف سے عام طور پر استعمال ہونے والی افتتاحی چالوں کا استعمال کرنے دیں۔ نوٹ: یہ خصوصیت فی الحال صرف مخصوص قواعد کے سیٹوں کے لئے دستیاب ہے۔",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "فائدے کا گراف دکھائیں",
+  "@showAdvantageGraph": {}
 }

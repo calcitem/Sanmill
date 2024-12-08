@@ -1615,5 +1615,7 @@
   "daSanQi": "דאסאנצ'י",
   "@daSanQi": {},
   "useOpeningBook_Detail": "אפשר לבינה המלאכותית להשתמש במהלכי פתיחה שמקובלים על ידי שחקנים מקצועיים בשלב המוקדם של המשחק. הערה: תכונה זו זמינה כעת רק עבור ערכות חוקים מסוימות.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "הצג גרף יתרון",
+  "@showAdvantageGraph": {}
 }

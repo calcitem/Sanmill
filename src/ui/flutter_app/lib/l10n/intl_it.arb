@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Consenti all'IA di utilizzare mosse di apertura comunemente impiegate dai giocatori umani professionisti durante le prime fasi del gioco. Nota: questa funzione è attualmente disponibile solo per specifici insiemi di regole.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mostra grafico del vantaggio",
+  "@showAdvantageGraph": {}
 }

@@ -1615,5 +1615,7 @@
   "daSanQi": "ዳሳንቺ",
   "@daSanQi": {},
   "useOpeningBook_Detail": "በጀርባ ጨዋታ ላይ ባለሙያ ሰው ተጫዋቾች በሚጠቀሙበት ቀጥታ ተንቀሳቃሽ እንዲጠቀም AI ያስተውል። ማስታወሻ: ይህ ባህሪ አሁን ብቻ ለክነት ህጎች ስብስብ ተመድቦ ነው።",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "የጥቅም ግራፍን አሳይ",
+  "@showAdvantageGraph": {}
 }

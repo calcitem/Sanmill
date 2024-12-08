@@ -1517,5 +1517,7 @@
   "daSanQi": "打三棋",
   "@daSanQi": {},
   "useOpeningBook_Detail": "讓 AI 在開局階段採用人類專業棋手慣用的著法。注意：此功能目前僅適用於特定棋規。",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "顯示優勢圖",
+  "@showAdvantageGraph": {}
 }

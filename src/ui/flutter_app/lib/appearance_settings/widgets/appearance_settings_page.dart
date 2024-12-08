@@ -605,6 +605,12 @@ class AppearanceSettingsPage extends StatelessWidget {
               .copyWith(isPositionalAdvantageIndicatorShown: val),
           titleString: S.of(context).showPositionalAdvantageIndicator,
         ),
+        SettingsListTile.switchTile(
+          value: displaySettings.isAdvantageGraphShown,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(isAdvantageGraphShown: val),
+          titleString: S.of(context).showAdvantageGraph,
+        ),
         SettingsListTile(
           titleString: S.of(context).boardCornerRadius,
           onTap: () => setBoardCornerRadius(context),

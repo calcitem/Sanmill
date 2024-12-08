@@ -1535,5 +1535,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "ప్రారంభ ఆటలో వృత్తిపరమైన మానవ ఆటగాళ్లు సాధారణంగా ఉపయోగించే ఓపెనింగ్ మూవ్స్‌ను AI వాడనివ్వండి. గమనిక: ఈ ఫీచర్ ప్రస్తుతం కొన్ని నియమాల సెట్ల కోసం మాత్రమే అందుబాటులో ఉంది.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "ఆధిక్యత గ్రాఫ్‌ను చూపించు",
+  "@showAdvantageGraph": {}
 }

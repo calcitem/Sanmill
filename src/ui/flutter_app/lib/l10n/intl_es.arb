@@ -1517,5 +1517,7 @@
   "daSanQi": "Dǎsānqí",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Permita que la IA use movimientos de apertura que comúnmente emplean los jugadores humanos profesionales durante el juego inicial. Nota: Esta característica está disponible actualmente solo para conjuntos de reglas específicos.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mostrar gráfico de ventaja",
+  "@showAdvantageGraph": {}
 }

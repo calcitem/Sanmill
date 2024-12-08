@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Permiteți IA să utilizeze mișcările de deschidere utilizate frecvent de jucătorii umani profesioniști în timpul jocului timpuriu. Notă: Această funcție este disponibilă în prezent doar pentru seturi de reguli specifice.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Afișează graficul avantajului",
+  "@showAdvantageGraph": {}
 }

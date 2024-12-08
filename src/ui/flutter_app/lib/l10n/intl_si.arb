@@ -1615,5 +1615,7 @@
   "daSanQi": "දාසාන්චි",
   "@daSanQi": {},
   "useOpeningBook_Detail": "ආරම්භක ක්‍රීඩා කාලයේ ප්‍රවීණ මානව ක්‍රීඩකයන් විසින් නිතිපතා භාවිතා කරන විවෘත හැරවුම් AI භාවිතා කරන්න. සටහන: මෙම විශේෂාංගය දැනට විශේෂිත නියම කට්ටලයක් සඳහා පමණක් ලබා ඇත.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "වාසිය ග්‍රැෆය පෙන්වන්න",
+  "@showAdvantageGraph": {}
 }

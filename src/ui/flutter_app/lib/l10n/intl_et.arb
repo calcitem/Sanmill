@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Lubage AI-l kasutada avakäike, mida kasutavad tavaliselt professionaalsed inimmängijad varajases mängus. Märkus: See funktsioon on hetkel saadaval ainult teatud reeglistike jaoks.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Kuva eelise graafik",
+  "@showAdvantageGraph": {}
 }

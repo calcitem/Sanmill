@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file for Nine Men's Morris Game, output the complete arb file directly:
 
 ```json
-"useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
-"@useOpeningBook_Detail": {},
+"showAdvantageGraph": "Show advantage graph",
+"@showAdvantageGraph": {},
 ```
 
 into:
@@ -74,11 +74,11 @@ The format is as follows:
 
 ```json
 // intl_en.arb
-  "useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
-  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Show advantage graph",
+  "@showAdvantageGraph": {},
 
 
 // intl_zh.arb
-  "useOpeningBook_Detail": "让 AI 在开局阶段采用人类专业棋手惯用的着法。注意：此功能目前仅适用于特定规则集。",
-  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "显示优势图",
+  "@showAdvantageGraph": {},
 ```

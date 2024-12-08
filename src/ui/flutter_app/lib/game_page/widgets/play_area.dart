@@ -25,10 +25,12 @@ import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../services/mill.dart';
+import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
 import 'modals/game_options_modal.dart';
 import 'toolbars/game_toolbar.dart';
 
+/// The PlayArea widget is the main content of the game page.
 class PlayArea extends StatefulWidget {
   /// Creates a PlayArea widget.
   ///
@@ -43,23 +45,41 @@ class PlayArea extends StatefulWidget {
 }
 
 class PlayAreaState extends State<PlayArea> {
+  /// A list to store historical advantage values.
+  List<int> advantageData = <int>[];
+
   @override
   void initState() {
     super.initState();
-    // Listen to changes in header icons to update the UI accordingly.
+    // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
+
+    // Optionally, initialize advantageData with the current value if needed:
+    advantageData.add(_getCurrentAdvantageValue());
   }
 
   @override
   void dispose() {
-    // Remove the listener when disposing to prevent memory leaks.
     GameController().headerIconsNotifier.removeListener(_updateUI);
     super.dispose();
   }
 
+  /// Retrieve the current advantage value from GameController.
+  /// value > 0 means white advantage, value < 0 means black advantage.
+  /// The range is [-100, 100].
+  int _getCurrentAdvantageValue() {
+    final int value =
+        GameController().value == null ? 0 : int.parse(GameController().value!);
+    return value;
+  }
+
   /// Updates the UI by calling setState.
+  /// Also append the current advantage value to the list so that
+  /// after each move, the chart will reflect the latest advantage trend.
   void _updateUI() {
-    setState(() {});
+    setState(() {
+      advantageData.add(_getCurrentAdvantageValue());
+    });
   }
 
   /// Takes a screenshot and saves it to the specified [storageLocation] with an optional [filename].
@@ -343,7 +363,7 @@ class PlayAreaState extends State<PlayArea> {
         // Check if the toolbar should be displayed at the bottom.
         final bool isToolbarAtBottom = DB().displaySettings.isToolbarAtBottom;
 
-        // Build the main content of the page.
+        // The main column of the page content (without the bottom toolbars).
         final Widget mainContent = SizedBox(
           width: dimension,
           child: SafeArea(
@@ -356,7 +376,7 @@ class PlayAreaState extends State<PlayArea> {
               child: Column(
                 children: <Widget>[
                   GameHeader(),
-                  // Conditionally display the piece count row based on display settings and game mode.
+                  // Display piece counts if needed
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
@@ -365,18 +385,19 @@ class PlayAreaState extends State<PlayArea> {
                     _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  // Display the game board with the selected board image.
+
+                  // The game board
                   NativeScreenshot(
                     controller: ScreenshotService.screenshotController,
                     child: Container(
                       alignment: Alignment.center,
                       child: GameBoard(
-                        boardImage: widget
-                            .boardImage, // Pass the ImageProvider to GameBoard
+                        boardImage: widget.boardImage,
                       ),
                     ),
                   ),
-                  // Conditionally display the removed piece count row.
+
+                  // Display removed piece count if needed
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
@@ -385,12 +406,26 @@ class PlayAreaState extends State<PlayArea> {
                     _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
-                  // Display the setup position toolbar if in setup mode and toolbar is not at bottom.
+
+                  // Insert the advantage trend chart below the board and above the next toolbar rows.
+                  // Only show if there's data.
+                  if (DB().displaySettings.isAdvantageGraphShown &&
+                      advantageData.isNotEmpty)
+                    SizedBox(
+                      height: 150,
+                      width: double.infinity,
+                      child: CustomPaint(
+                        painter: AdvantageGraphPainter(advantageData),
+                      ),
+                    ),
+
+                  // Setup position toolbar if in setup mode and toolbar is not at bottom
                   if (GameController().gameInstance.gameMode ==
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
                     const SetupPositionToolbar(),
-                  // Display the history navigation toolbar based on display settings and game mode.
+
+                  // History navigation toolbar if enabled, not in setup mode, and not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
@@ -402,7 +437,8 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getHistoryNavToolbarItems(context)),
                     ),
-                  // Display the analysis toolbar if enabled in display settings and toolbar is not at bottom.
+
+                  // Analysis toolbar if enabled and not at bottom
                   if (DB().displaySettings.isAnalysisToolbarShown &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
@@ -412,7 +448,8 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getAnalysisToolbarItems(context)),
                     ),
-                  // Display the main toolbar if not in setup mode and toolbar is not at bottom.
+
+                  // Main toolbar if not in setup mode and not at bottom
                   if (GameController().gameInstance.gameMode !=
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
@@ -423,6 +460,7 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getMainToolbarItems(context)),
                     ),
+
                   const SizedBox(height: AppTheme.boardMargin),
                 ],
               ),
@@ -430,7 +468,7 @@ class PlayAreaState extends State<PlayArea> {
           ),
         );
 
-        // If toolbar should be at the bottom, use a Column with main content and toolbar separated.
+        // If toolbar should be at the bottom, separate them.
         if (isToolbarAtBottom) {
           return SizedBox(
             width: dimension,
@@ -440,12 +478,14 @@ class PlayAreaState extends State<PlayArea> {
               left: false,
               child: Column(
                 children: <Widget>[
-                  // Expanded to take up available space above the toolbar
                   Expanded(child: mainContent),
-                  // Display all toolbars at the bottom
+
+                  // Setup position toolbar if in setup mode
                   if (GameController().gameInstance.gameMode ==
                       GameMode.setupPosition)
                     const SetupPositionToolbar(),
+
+                  // History navigation toolbar if enabled and not in setup mode
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition)
@@ -456,7 +496,8 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getHistoryNavToolbarItems(context)),
                     ),
-                  // Display the analysis toolbar if enabled in display settings.
+
+                  // Analysis toolbar if enabled
                   if (DB().displaySettings.isAnalysisToolbarShown)
                     GamePageToolbar(
                       backgroundColor:
@@ -465,7 +506,8 @@ class PlayAreaState extends State<PlayArea> {
                       children: _buildToolbarItems(
                           context, _getAnalysisToolbarItems(context)),
                     ),
-                  // Display the main toolbar if not in setup mode.
+
+                  // Main toolbar if not in setup mode
                   if (GameController().gameInstance.gameMode !=
                       GameMode.setupPosition)
                     GamePageToolbar(
@@ -482,7 +524,7 @@ class PlayAreaState extends State<PlayArea> {
           );
         }
 
-        // If toolbar is not at the bottom, return the main content as is.
+        // If toolbar is not at the bottom, just return the main content.
         return mainContent;
       },
     );

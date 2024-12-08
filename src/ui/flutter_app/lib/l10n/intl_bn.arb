@@ -1517,5 +1517,7 @@
   "daSanQi": "দা সান চি",
   "@daSanQi": {},
   "useOpeningBook_Detail": "প্রাথমিক খেলার সময় পেশাদার মানব প্লেয়ারদের দ্বারা প্রায়শই ব্যবহৃত ওপেনিং চালগুলি এআই ব্যবহার করতে দিন। দ্রষ্টব্য: এই বৈশিষ্ট্য বর্তমানে কেবল নির্দিষ্ট নিয়ম সেটগুলির জন্য উপলব্ধ।",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "সুবিধার গ্রাফ দেখান",
+  "@showAdvantageGraph": {}
 }

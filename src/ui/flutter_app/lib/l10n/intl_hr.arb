@@ -1517,5 +1517,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Dopusti UI-u da koristi otvarajuće poteze koje profesionalni ljudski igrači uobičajeno koriste u početku igre. Napomena: Ova je funkcija trenutačno dostupna samo za određene skupove pravila.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Prikaži graf prednosti",
+  "@showAdvantageGraph": {}
 }

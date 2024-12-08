@@ -1517,5 +1517,7 @@
   "daSanQi": "ต้าซานฉี",
   "@daSanQi": {},
   "useOpeningBook_Detail": "ให้ AI ใช้การเดินเปิดที่มักถูกใช้โดยนักเล่นมืออาชีพในช่วงต้นเกม หมายเหตุ: คุณสมบัตินี้มีให้บริการในปัจจุบันสำหรับชุดกฎเฉพาะเท่านั้น",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "แสดงกราฟความได้เปรียบ",
+  "@showAdvantageGraph": {}
 }

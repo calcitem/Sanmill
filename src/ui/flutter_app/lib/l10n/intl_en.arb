@@ -1615,5 +1615,9 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Show advantage graph",
+  "@showAdvantageGraph": {},
+  "showAdvantageGraph": "Mostrar gráfico de ventaja",
+  "@showAdvantageGraph": {}
 }

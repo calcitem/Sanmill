@@ -1517,5 +1517,7 @@
   "daSanQi": "다삼치",
   "@daSanQi": {},
   "useOpeningBook_Detail": "인공지능이 초기 게임에서 전문적인 인간 플레이어가 흔히 사용하는 오프닝 무브를 사용하도록 허용합니다. 참고: 이 기능은 현재 특정 규칙 세트에서만 사용 가능합니다.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "이점 그래프 표시",
+  "@showAdvantageGraph": {}
 }

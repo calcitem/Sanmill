@@ -1615,5 +1615,7 @@
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
   "useOpeningBook_Detail": "Vumela i-AI ukuthi isebenzise ukuvula amanyathelo ajwayele ukusetshenziswa ngabadlali abaqeqeshiwe abantu ekuqaleni komdlalo. Qaphela: Lesi sici sitholakala okwamanje kumasethi womthetho athize kuphela.",
-  "@useOpeningBook_Detail": {}
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Khombisa ishadi lezinzuzo",
+  "@showAdvantageGraph": {}
 }
