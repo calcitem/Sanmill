@@ -560,8 +560,9 @@ Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
 void Thread::do_task()
 {
-    // Execute a parallel search for a subset of moves.
-    Position *pos = currentTask.pos;
+    // Instead of using pos directly, create a local copy of pos
+    Position localPos = *currentTask.pos;
+
     Depth depth = currentTask.depth;
     Depth origDepth = currentTask.originDepth;
     Value alpha = currentTask.alpha;
@@ -570,27 +571,27 @@ void Thread::do_task()
     Value bestValue = -VALUE_INFINITE;
     Move best_local_move = MOVE_NONE;
 
-    // English comment: For each move in currentTask.moves, do a depth-limited
-    // search.
+    // For each move in the assigned subset
     for (Move m : currentTask.moves) {
         if (Threads.stop.load(std::memory_order_relaxed))
             break;
 
+        // Use the local position copy and stack
         Sanmill::Stack<Position> ss;
-        ss.push(*pos);
+        ss.push(localPos);
 
-        Color before = pos->sideToMove;
-        pos->do_move(m);
-        Color after = pos->sideToMove;
+        const Color before = localPos.sideToMove;
+        localPos.do_move(m);
+        const Color after = localPos.sideToMove;
 
         Move tempBest = MOVE_NONE;
         Value value = (after != before) ?
-                          -::search(pos, ss, depth - 1, origDepth, -beta,
+                          -::search(&localPos, ss, depth - 1, origDepth, -beta,
                                     -alpha, tempBest) :
-                          ::search(pos, ss, depth - 1, origDepth, alpha, beta,
-                                   tempBest);
+                          ::search(&localPos, ss, depth - 1, origDepth, alpha,
+                                   beta, tempBest);
 
-        pos->undo_move(ss);
+        localPos.undo_move(ss);
 
         if (value > bestValue) {
             bestValue = value;
