@@ -68,7 +68,7 @@
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Abbr.",
+  "cancel": "Abbrechen",
   "@cancel": {
     "description": "Cancel"
   },
@@ -1172,7 +1172,7 @@
   "@noMove": {
     "description": "No move."
   },
-  "clean": "Aufr.",
+  "clean": "Leeren",
   "@clean": {
     "description": "Clean"
   },

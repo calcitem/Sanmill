@@ -1172,7 +1172,7 @@
   "@noMove": {
     "description": "No move."
   },
-  "clean": "Aufr.",
+  "clean": "Leeren",
   "@clean": {
     "description": "Clean"
   },
