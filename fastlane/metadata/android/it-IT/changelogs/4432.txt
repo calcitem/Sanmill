@@ -1,0 +1,3 @@
+v5.8.3
+
+Questo aggiornamento include vari miglioramenti e correzioni di bug per rendere l'app migliore per te.
