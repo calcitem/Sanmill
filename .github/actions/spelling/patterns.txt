@@ -115,3 +115,11 @@ Q.*$
 # hit-count: 1 file-count: 1
 # stackexchange -- https://stackexchange.com/feeds/sites
 \b(?:askubuntu|serverfault|stack(?:exchange|overflow)|superuser).com/(?:questions/\w+/[-\w]+|a/)
+
+# hit-count: 14 file-count: 1
+# URL escaped characters
+\%[0-9A-F][A-F]
+
+# hit-count: 2 file-count: 1
+# Internet Archive
+\barchive\.org/web/\d+/(?:[-\w.?,'/\\+&%$#_:]*)
