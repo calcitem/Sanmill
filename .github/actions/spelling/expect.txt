@@ -17,7 +17,6 @@ DEFAULTTONEAREST
 DPICHANGED
 Diagnosticable
 Dieharder
-Dooz
 Dua
 FONTCHANGE
 FRE
@@ -45,7 +44,6 @@ MAKEINTRESOURCE
 MINISIZE
 MOVETYPE
 MVC
-Morabaraba
 NCCREATE
 NEEDREMOVE
 NMM
@@ -80,7 +78,6 @@ WINNT
 WNDCLASS
 Wnd
 ZValue
-Zhi
 amd
 aparat
 audioplayers
@@ -92,7 +89,6 @@ bestmove
 bestvalue
 bitboard
 bitmask
-blogfa
 boarditem
 calcitem
 colorpicker
@@ -101,7 +97,6 @@ csdn
 cupertino
 dalam
 dartpad
-dezyan
 dms
 dooz
 eula
@@ -111,7 +106,6 @@ fst
 fullmove
 gameover
 gamescene
-gamesmuseum
 gameview
 gamewindow
 gitee
@@ -191,7 +185,6 @@ qtime
 rdtscp
 readyok
 researchgate
-rowgames
 runloop
 sanmill
 screenshot
@@ -212,7 +205,6 @@ unimi
 unistd
 upperbound
 usleep
-uwaterloo
 vigna
 vsync
 wifi
