@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Postavili ste.",
+  "tipPlaced": "Figura je postavljena.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Uklonili ste.",
+  "tipRemoved": "Figura je uklonjena.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -444,7 +444,7 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Igrač će izgubiti ako ga protivnik blokira tako da ne može pomaknuti figure. Promijeni stranu za pomicanje ako je ova opcija deaktivirana.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Igrač će izgubiti ako ga protivnik blokira tako da ne može pomaknuti figure. Ako je ova opcija deaktivirana, promijenite stranu micanja umjesto da objavite gubitak igre.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
@@ -612,7 +612,7 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Dodirnite protivničku figuru da biste je uklonili.",
+  "toRemovePiece": "Dodirnite jednu protivničku figuru da biste je uklonili.",
   "@toRemovePiece": {
     "description": "Tap on one of the opponent's pieces to remove it."
   },
@@ -690,7 +690,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Razbijanje mlina",
+  "crackMill": "Višebrojni mlinovi",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi igru. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi igru. Igrač također gubi partiju kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
+  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi igru. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi igru. Igrač također gubi igru kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -810,7 +810,7 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Za napuštanje igre ponovo dodirnite gumb za natrag.",
+  "tapBackAgainToLeave": "Zatvori aplikaciju ponovnim dodirnom na gumb za natrag.",
   "@tapBackAgainToLeave": {
     "description": "Tap Back again to exit."
   },
@@ -942,7 +942,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Položaj postave",
+  "setupPosition": "Pozicija postavljanja",
   "@setupPosition": {
     "description": "Setup position"
   },
@@ -998,7 +998,7 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Ako igrač razbije mlin da bi odmah stvorio novi mlin, taj igrač može vratiti svoju figuru natrag na izvorni čvor u svom sljedećem potezu ako na taj način stvori novi mlin.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ako igrač razbije mlin da bi odmah stvorio novi mlin, igrač može vratiti svoju figuru natrag na izvorni čvor u svom sljedećem potezu ako na taj način stvori novi mlin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
     "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
@@ -1266,7 +1266,7 @@
   "@gotIt": {},
   "youCanModifyRules": "Pravila igre možeš mijenjati u postavkama pravila.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Za mijenjanje vrijednosti u biraču možeš koristiti kotačić miša.",
+  "youCanUseMouseWheelInPicker": "Za prilagođavanje vrijednosti u biraču možeš koristiti kotačić miša.",
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "Vrijeme razmišljanja UI-a postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
   "@noTimeLimitForThinking": {},
@@ -1328,7 +1328,7 @@
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Ne možeš ukloniti nesusjednu figuru.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "Ako dođe do pat pozicije, protivničke figure pored tvojih se mogu ukloniti bez obzira na formaciju mlina.",
+  "stalemateRemovalRegardlessOfMillFormation": "Ako dođe do pat pozicije, možete ukloniti protivničke figure pored vaših bez obzira na formaciju mlina.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS je algoritam prilagođen početnicima koji donosi odluke istražujući i procjenjujući različite poteze kroz simulacije.",
   "@whatIsMcts": {},
@@ -1434,7 +1434,7 @@
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "Jednokratna uporaba mlina",
   "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Svaki mlin može ukloniti samo jednu protivničku figuru. Mlin možeš ponovo formirati, ali se ne može koristiti za dodatna uklanjanja.",
+  "oneTimeUseMill_Detail": "Svaki mlin može ukloniti samo jednu protivničku figuru. Mlin možete ponovo formirati, ali se ne može koristiti za dodatna uklanjanja.",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "Trenutačno postavljena pravila nemaju odgovarajuću savršenu bazu podataka. Za više informacija o savršenoj bazi podataka kliknite ovdje.",
   "@currentRulesNoPerfectDatabase": {},
@@ -1520,6 +1520,6 @@
   "@useOpeningBook_Detail": {},
   "showAdvantageGraph": "Prikaži graf prednosti",
   "@showAdvantageGraph": {},
-  "advantageGraphHint": "Graf prednosti bit će nacrtan samo nakon što AI napravi potez. Neće biti nacrtan kada ljudski igrač napravi potez.",
+  "advantageGraphHint": "Graf prednosti će se nacrtati samo nakon što UI napravi potez. Neće se nacrtati kada ljudski igrač napravi potez.",
   "@advantageGraphHint": {}
 }
