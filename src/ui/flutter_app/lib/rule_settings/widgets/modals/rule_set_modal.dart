@@ -112,6 +112,12 @@ class _RuleSetModal extends StatelessWidget {
               value: RuleSet.nerenchi,
               onChanged: onChanged,
             ),
+            RadioListTile<RuleSet>(
+              title: Text(S.of(context).elfilja),
+              groupValue: ruleSet,
+              value: RuleSet.elfilja,
+              onChanged: onChanged,
+            ),
           ],
         ),
       ),

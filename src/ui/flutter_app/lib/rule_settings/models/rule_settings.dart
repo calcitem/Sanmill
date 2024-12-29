@@ -49,6 +49,8 @@ enum MillFormationActionInPlacingPhase {
   opponentRemovesOwnPiece,
   @HiveField(4)
   markAndDelayRemovingPieces,
+  @HiveField(5)
+  removalBasedOnMillCounts,
 }
 
 @HiveType(typeId: 8)
@@ -220,7 +222,8 @@ enum RuleSet {
   chengSanQi,
   daSanQi,
   mulMulan,
-  nerenchi
+  nerenchi,
+  elfilja
 }
 
 /// Nine Men's Morris Rules
@@ -397,6 +400,21 @@ class NerenchiRuleSettings extends RuleSettings {
         );
 }
 
+/// ELFilja rules in Algeria and parts of Morocco
+///
+/// Those rules are the ELFilja rules.
+class ELFiljaRuleSettings extends RuleSettings {
+  const ELFiljaRuleSettings()
+      : super(
+          piecesCount: 12,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+          boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
+          mayFly: false,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
 /// Rule Set Descriptions and Settings
 const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.current: 'Use the current game settings.',
@@ -412,6 +430,7 @@ const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.daSanQi: 'Da San Qi, another Chinese strategic variant.',
   RuleSet.mulMulan: 'Mul-Mulan, a Indonesian variation of the game.',
   RuleSet.nerenchi: 'Nerenchi, a Sri Lankan adaptation of the game.',
+  RuleSet.elfilja: 'ELFilja, a variant played in Algeria and parts of Morocco.',
 };
 
 /// Rule Set Properties (e.g., Number of Pieces and Rule Settings)
@@ -429,4 +448,5 @@ const Map<RuleSet, RuleSettings> ruleSetProperties = <RuleSet, RuleSettings>{
   RuleSet.daSanQi: DaSanQiRuleSettings(),
   RuleSet.mulMulan: MulMulanRuleSettings(),
   RuleSet.nerenchi: NerenchiRuleSettings(),
+  RuleSet.elfilja: ELFiljaRuleSettings(),
 };

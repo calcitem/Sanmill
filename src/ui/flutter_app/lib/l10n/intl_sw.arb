@@ -1619,5 +1619,11 @@
   "showAdvantageGraph": "Onyesha grafu ya faida",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Grafu ya faida itachorwa tu baada ya AI kufanya hatua. Haitachorwa wakati mchezaji mwanadamu anafanya hatua.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Zima uondoaji hadi vipande vyote viwekwe. Wachezaji huondoa vipande kulingana na idadi ya vinu walivyounda.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Zima uondoaji hadi vipande vyote viwekwe. Wachezaji huondoa vipande kulingana na idadi ya vinu: ikiwa ni sawa, wote huondoa idadi sawa ya vipande; ikiwa mmoja ana zaidi, anaondoa kipande kimoja cha ziada, akidumisha tofauti ya kipande kimoja. Ikiwa ni mchezaji mmoja tu anayebuni kinu, anaondoa vipande viwili huku mwingine akiondoa kimoja. Ikiwa hakuna anayebuni kinu, wote huondoa kipande kimoja.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

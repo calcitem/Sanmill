@@ -271,6 +271,10 @@ class RuleSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
               S.of(context).markAndDelayRemovingPieces_Detail);
           break;
+        case MillFormationActionInPlacingPhase.removalBasedOnMillCounts:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).removalBasedOnMillCounts_Detail);
+          break;
         case null:
           break;
       }

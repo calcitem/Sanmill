@@ -1619,5 +1619,11 @@
   "showAdvantageGraph": "Sýna forskotslínurit",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Forðagröf mun aðeins vera teiknuð eftir að gervigreindin gerir leik. Hún verður ekki teiknuð þegar mannlegur spilari gerir leik.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Slökktu á fjarlægingu þar til öllum pönnum hefur verið komið fyrir. Spilarar fjarlægja peð út frá fjölda myllu sem myndast.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Slökktu á fjarlægingu þar til öllum pönnum hefur verið komið fyrir. Spilarar fjarlægja peð út frá fjölda myllu: ef fjöldinn er sá sami, fjarlægja báðir jafnmörg peð; ef annar hefur fleiri, fjarlægir hann eitt auka peð og viðheldur mismuni upp á eitt peð. Ef aðeins einn býr til myllu, fjarlægir hann tvö peð en hinn eitt. Ef hvorugur býr til myllu, fjarlægja báðir eitt peð.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

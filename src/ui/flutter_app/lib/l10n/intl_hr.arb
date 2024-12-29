@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Prikaži graf prednosti",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Graf prednosti će se nacrtati samo nakon što UI napravi potez. Neće se nacrtati kada ljudski igrač napravi potez.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Onemogući uklanjanje dok sve figure nisu postavljene. Igrači uklanjaju figure na temelju broja mlinova.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Onemogući uklanjanje dok sve figure nisu postavljene. Igrači uklanjaju figure na temelju broja mlinova: ako je broj jednak, obojica uklanjaju isti broj figura; ako netko ima više, uklanja dodatnu figuru i održava razliku od jedne figure. Ako samo jedan formira mlin, uklanja dvije figure, a drugi jednu. Ako nijedan ne formira mlin, obojica uklanjaju po jednu figuru.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

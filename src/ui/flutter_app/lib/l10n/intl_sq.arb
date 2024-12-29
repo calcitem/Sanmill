@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Trego grafikun e avantazhit",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Grafiku i avantazhit do të vizatohet vetëm pasi IA të bëjë një lëvizje. Nuk do të vizatohet kur lojtari njerëzor bën një lëvizje.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Çaktivizoni heqjen derisa të vendosen të gjitha figurat. Lojtarët heqin figura bazuar në numrin e mullinjve të krijuar.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Çaktivizoni heqjen derisa të vendosen të gjitha figurat. Lojtarët heqin figura bazuar në numrin e mullinjve: nëse është e barabartë, të dy heqin të njëjtin numër figurash; nëse njëri ka më shumë, ai heq një figurë shtesë, duke ruajtur një diferencë prej një figure. Nëse vetëm një formon mulli, ai heq dy figura, ndërsa tjetri heq një. Nëse asnjë nuk formon mulli, të dy heqin nga një figurë.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

@@ -1619,5 +1619,11 @@
   "showAdvantageGraph": "有利グラフを表示",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "有利度グラフはAIが手を打った後にのみ描画されます。人間のプレイヤーが手を打つときには描画されません。",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "すべての駒が配置されるまで駒の除去を無効にします。プレイヤーはミルの数に基づいて駒を取り除きます。",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "すべての駒が配置されるまで駒の除去を無効にします。プレイヤーはミルの数に基づいて駒を取り除きます。同数であれば、両者は同じ数の駒を取り除きます。一方が多い場合は、一つ余分に取り除き、駒の差を一つに保ちます。一方のみがミルを形成した場合、そのプレイヤーは二つの駒を取り除き、もう一方は一つの駒を取り除きます。どちらもミルを形成しない場合は、両者とも一つずつ取り除きます。",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "エルフィルジャ",
+  "@elfilja": {}
 }

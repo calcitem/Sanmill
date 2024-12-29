@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Mostrar gráfico de vantagem",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "O gráfico de vantagem só será desenhado depois que a IA fizer uma jogada. Não será desenhado quando o jogador humano fizer uma jogada.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Desative a remoção até que todas as peças sejam colocadas. Os jogadores removem peças com base no número de moinhos que formam.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Desative a remoção até que todas as peças sejam colocadas. Os jogadores removem peças com base no número de moinhos: se for igual, ambos removem a mesma quantidade; se um tiver mais, remove uma peça adicional, mantendo a diferença de apenas uma peça. Se apenas um formar um moinho, ele remove duas peças e o outro remove uma. Se nenhum dos dois formar um moinho, ambos removem uma peça.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }
