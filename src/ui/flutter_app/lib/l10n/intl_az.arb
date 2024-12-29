@@ -1619,5 +1619,11 @@
   "showAdvantageGraph": "Üstünlük qrafikini göstər",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Üstünlük qrafiki yalnız süni intellekt hərəkət etdikdən sonra çəkiləcək. İnsan oyunçu hərəkət edəndə o çəkilməyəcək.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Bütün fişlər yerləşdirilənə qədər çıxarışı dayandırın. Oyunçular fişləri dəyirman sayına əsasən çıxarırlar.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Bütün fişlər yerləşdirilənə qədər çıxarışı dayandırın. Oyunçular fişləri dəyirman sayına əsasən çıxarırlar: əgər saylar bərabərdirsə, hər iki oyunçu eyni sayda fiş çıxarır; birinin sayı çoxdursa, o, əlavə bir fiş çıxararaq fərqi bir fiş səviyyəsində saxlayır. Yalnız bir oyunçu dəyirman yığıbsa, o, iki fiş çıxarır, digər oyunçu isə bir fiş çıxarır. Heç biri dəyirman yığmayıbsa, hər ikisi bir fiş çıxarır.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

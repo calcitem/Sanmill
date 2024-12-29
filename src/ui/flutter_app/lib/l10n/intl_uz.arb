@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Afzallik grafikini ko‘rsatish",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Afzallik grafigi faqat sun’iy intellekt yurish qilgandan keyin chiziladi. Inson o‘yinchisi yurish qilganda chizilmaydi.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Barcha toshlar joylashtirilgunga qadar olib tashlashni oʻchirib qoʻying. Oʻyinchilar tegirmonlar soniga qarab toshlarni olib tashlaydilar.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Barcha toshlar joylashtirilgunga qadar olib tashlashni oʻchirib qoʻying. Oʻyinchilar tegirmonlar soniga qarab toshlarni olib tashlaydilar: agar teng bo‘lsa, har ikkisi ham bir xil miqdorda tosh olib tashlaydi; agar bittada ko‘proq bo‘lsa, u bitta qo‘shimcha tosh olib tashlab, bitta tosh farqini saqlab turadi. Agar faqat bitta oʻyinchi tegirmon tuzsa, u ikki toshni olib tashlaydi, ikkinchisi esa bitta toshni olib tashlaydi. Agar hech kim tegirmon tuzmasa, har ikkisi bitta toshdan olib tashlaydi.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

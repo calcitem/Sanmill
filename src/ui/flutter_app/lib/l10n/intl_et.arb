@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Kuva eelise graafik",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Eelisgraafik joonistatakse ainult pärast seda, kui tehisintellekt on käigu teinud. Seda ei joonistata, kui käigu teeb inimmängija.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Keela eemaldamine, kuni kõik nupud on paigutatud. Mängijad eemaldavad nuppe vastavalt veskite arvule: kui arv on võrdne, eemaldavad mõlemad sama palju; kui ühel on rohkem, eemaldab ta ühe nupu lisaks, hoides vahet ühe nupu jagu. Kui veski moodustab ainult üks mängija, eemaldab ta kaks nuppu, teine aga ühe. Kui kumbki ei moodusta veskit, eemaldavad mõlemad ühe nupu.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

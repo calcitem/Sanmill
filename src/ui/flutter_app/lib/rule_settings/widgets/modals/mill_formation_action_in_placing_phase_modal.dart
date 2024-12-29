@@ -70,6 +70,11 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
         S.of(context).markAndDelayRemovingPieces,
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
       ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removalBasedOnMillCounts,
+        MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+      ),
     ];
   }
 

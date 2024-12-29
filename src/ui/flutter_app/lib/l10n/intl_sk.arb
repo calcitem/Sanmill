@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Zobraziť graf výhody",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Graf výhody sa nakreslí až po tom, ako urobí ťah AI. Nebude sa kresliť, keď ťah urobí ľudský hráč.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Zakážte odstránenie, kým nebudú všetky kamene umiestnené. Hráči odstraňujú kamene na základe počtu mlynov.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Zakážte odstránenie, kým nebudú všetky kamene umiestnené. Hráči odstraňujú kamene na základe počtu mlynov: ak je počet rovnaký, obaja odstránia rovnaký počet kameňov; ak jeden má viac, odstráni o jeden kameň viac, čím udržiava rozdiel jedného kameňa. Ak mlyn vytvorí len jeden hráč, odstráni dva kamene a druhý jeden. Ak mlyn nevytvorí ani jeden, obaja odstránia po jednom kameni.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

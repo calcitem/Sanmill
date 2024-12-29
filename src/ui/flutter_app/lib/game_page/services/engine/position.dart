@@ -763,6 +763,22 @@ class Position {
         GameController().gameInstance.focusIndex = squareToIndex[s];
         SoundManager().playTone(Sound.place);
 
+        if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+          if (pieceInHandCount[PieceColor.white]! == 0 &&
+              pieceInHandCount[PieceColor.black]! == 0) {
+            if (!handlePlacingPhaseEnd()) {
+              changeSideToMove();
+            }
+
+            // Check if Stalemate and change side to move if needed
+            if (_checkIfGameIsOver()) {
+              return true;
+            }
+            return true;
+          }
+        }
+
         // Begin of set side to move
 
         // Board is full at the end of Placing phase
@@ -813,9 +829,16 @@ class Position {
         // End of set side to move
       } else {
         // If forming Mill
-        final int rm = pieceToRemoveCount[sideToMove] =
-            DB().ruleSettings.mayRemoveMultiple ? n : 1;
-        _updateKeyMisc();
+        int rm = 0;
+
+        if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+          rm = pieceToRemoveCount[sideToMove] = 0;
+        } else {
+          rm = pieceToRemoveCount[sideToMove] =
+              DB().ruleSettings.mayRemoveMultiple ? n : 1;
+          _updateKeyMisc();
+        }
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
         SoundManager().playTone(Sound.mill);
@@ -870,7 +893,25 @@ class Position {
             return true;
           }
         } else {
-          action = Act.remove;
+          if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+              MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+            if (pieceInHandCount[PieceColor.white]! == 0 &&
+                pieceInHandCount[PieceColor.black]! == 0) {
+              if (!handlePlacingPhaseEnd()) {
+                changeSideToMove();
+              }
+
+              // Check if Stalemate and change side to move if needed
+              if (_checkIfGameIsOver()) {
+                return true;
+              }
+              return true;
+            } else {
+              changeSideToMove();
+            }
+          } else {
+            action = Act.remove;
+          }
           return true;
         }
       }
@@ -1133,6 +1174,9 @@ class Position {
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
       _removeMarkedStones();
+    } else if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+      _calculateRemovalBasedOnMillCounts();
     } else if (invariant) {
       if (DB().ruleSettings.isDefenderMoveFirst == true) {
         setSideToMove(PieceColor.black);
@@ -1269,6 +1313,46 @@ class Position {
     }
   }
 
+  void _calculateRemovalBasedOnMillCounts() {
+    final int whiteMills = totalMillsCount(PieceColor.white);
+    final int blackMills = totalMillsCount(PieceColor.black);
+
+    int whiteRemove = 1;
+    int blackRemove = 1;
+
+    if (whiteMills == 0 && blackMills == 0) {
+      whiteRemove = 1;
+      blackRemove = 1;
+    } else if (whiteMills > 0 && blackMills == 0) {
+      whiteRemove = 2;
+      blackRemove = 1;
+    } else if (blackMills > 0 && whiteMills == 0) {
+      whiteRemove = 1;
+      blackRemove = 2;
+    } else {
+      if (whiteMills == blackMills) {
+        whiteRemove = whiteMills;
+        blackRemove = blackMills;
+      } else {
+        if (whiteMills > blackMills) {
+          blackRemove = blackMills;
+          whiteRemove = blackRemove + 1;
+        } else if (whiteMills < blackMills) {
+          whiteRemove = whiteMills;
+          blackRemove = whiteRemove + 1;
+        } else {
+          assert(false);
+        }
+      }
+    }
+
+    pieceToRemoveCount[PieceColor.white] = whiteRemove;
+    pieceToRemoveCount[PieceColor.black] = blackRemove;
+
+    // TODO: Bits count is not enough
+    _updateKeyMisc();
+  }
+
   void setSideToMove(PieceColor c) {
     if (sideToMove != c) {
       sideToMove = c;
@@ -1324,6 +1408,11 @@ class Position {
 
     // TODO: pieceToRemoveCount[sideToMove] or
     // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
+    // TODO: If pieceToRemoveCount[sideToMove]! <= 3,
+    //  the top 2 bits can store its value correctly;
+    //  if it is greater than 3, since only 2 bits are left,
+    //  the storage will be truncated or directly get 0,
+    //  and the original value cannot be completely retained.
     st.key |= pieceToRemoveCount[sideToMove]! << (32 - _Zobrist.keyMiscBit);
   }
 

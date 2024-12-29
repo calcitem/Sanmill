@@ -25,6 +25,7 @@ enum class MillFormationActionInPlacingPhase {
     removeOpponentsPieceFromHandThenYourTurn = 2,
     opponentRemovesOwnPiece = 3,
     markAndDelayRemovingPieces = 4,
+    removalBasedOnMillCounts = 5,
 };
 
 enum class BoardFullAction {
@@ -115,7 +116,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 10;
+constexpr auto N_RULES = 11;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

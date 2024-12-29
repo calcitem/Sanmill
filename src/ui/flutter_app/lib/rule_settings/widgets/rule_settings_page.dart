@@ -54,7 +54,8 @@ class RuleSettingsPage extends StatelessWidget {
           ruleSet == RuleSet.chengSanQi ||
           ruleSet == RuleSet.daSanQi ||
           ruleSet == RuleSet.mulMulan ||
-          ruleSet == RuleSet.nerenchi) {
+          ruleSet == RuleSet.nerenchi ||
+          ruleSet == RuleSet.elfilja) {
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).experimental);
       }
@@ -271,6 +272,10 @@ class RuleSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!.showSnackBarClear(
               S.of(context).markAndDelayRemovingPieces_Detail);
           break;
+        case MillFormationActionInPlacingPhase.removalBasedOnMillCounts:
+          rootScaffoldMessengerKey.currentState!
+              .showSnackBarClear(S.of(context).removalBasedOnMillCounts_Detail);
+          break;
         case null:
           break;
       }
@@ -438,11 +443,13 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString:
                   S.of(context).whenFormingMillsDuringPlacingPhase_Detail,
             ),
-            SettingsListTile(
-              onTap: () => _setBoardFullAction(context, ruleSettings),
-              titleString: S.of(context).whenBoardIsFull,
-              subtitleString: S.of(context).whenBoardIsFull_Detail,
-            ),
+            if (DB().ruleSettings.millFormationActionInPlacingPhase !=
+                MillFormationActionInPlacingPhase.removalBasedOnMillCounts)
+              SettingsListTile(
+                onTap: () => _setBoardFullAction(context, ruleSettings),
+                titleString: S.of(context).whenBoardIsFull,
+                subtitleString: S.of(context).whenBoardIsFull_Detail,
+              ),
             SettingsListTile.switchTile(
               value: ruleSettings.mayMoveInPlacingPhase,
               onChanged: (bool val) =>

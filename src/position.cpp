@@ -801,6 +801,22 @@ bool Position::put_piece(Square s, bool updateRecord)
             lastMillFromSquare[sideToMove] = SQ_NONE;
             lastMillToSquare[sideToMove] = SQ_NONE;
 
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                if (pieceInHandCount[WHITE] == 0 &&
+                    pieceInHandCount[BLACK] == 0) {
+                    if (!handle_placing_phase_end()) {
+                        change_side_to_move();
+                    }
+
+                    // Check if Stalemate and change side to move if needed
+                    if (check_if_game_is_over()) {
+                        return true;
+                    }
+                    return true;
+                }
+            }
+
             // Begin of set side to move
 
             // Board is full at the end of Placing phase
@@ -844,10 +860,17 @@ bool Position::put_piece(Square s, bool updateRecord)
             // End of set side to move
         } else {
             // If forming Mill
-            int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
+            int rm = 0;
+
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                rm = pieceToRemoveCount[sideToMove] = 0;
+            } else {
+                rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
                                                           n :
                                                           1;
-            update_key_misc();
+                update_key_misc();
+            }
 
             if (rule.millFormationActionInPlacingPhase ==
                     MillFormationActionInPlacingPhase::
@@ -883,7 +906,25 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true;
                 }
             } else {
-                action = Action::remove;
+                if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                    if (pieceInHandCount[WHITE] == 0 &&
+                        pieceInHandCount[BLACK] == 0) {
+                        if (!handle_placing_phase_end()) {
+                            change_side_to_move();
+                        }
+
+                        // Check if Stalemate and change side to move if needed
+                        if (check_if_game_is_over()) {
+                            return true;
+                        }
+                        return true;
+                    } else {
+                        change_side_to_move();
+                    }
+                } else {
+                    action = Action::remove;
+                }
                 return true;
             }
         }
@@ -1121,6 +1162,9 @@ bool Position::handle_placing_phase_end()
     if (rule.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
         remove_marked_pieces();
+    } else if (rule.millFormationActionInPlacingPhase ==
+               MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+        calculate_removal_based_on_mill_counts();
     } else if (invariant) {
         if (rule.isDefenderMoveFirst == true) {
             set_side_to_move(BLACK);
@@ -1342,6 +1386,47 @@ void Position::remove_marked_pieces()
     }
 }
 
+inline void Position::calculate_removal_based_on_mill_counts()
+{
+    int whiteMills = total_mills_count(WHITE);
+    int blackMills = total_mills_count(BLACK);
+
+    int whiteRemove = 1;
+    int blackRemove = 1;
+
+    if (whiteMills == 0 && blackMills == 0) {
+        whiteRemove = 1;
+        blackRemove = 1;
+    } else if (whiteMills > 0 && blackMills == 0) {
+        whiteRemove = 2;
+        blackRemove = 1;
+    } else if (blackMills > 0 && whiteMills == 0) {
+        whiteRemove = 1;
+        blackRemove = 2;
+    } else {
+        if (whiteMills == blackMills) {
+            whiteRemove = whiteMills;
+            blackRemove = blackMills;
+        } else {
+            if (whiteMills > blackMills) {
+                blackRemove = blackMills;
+                whiteRemove = blackRemove + 1;
+            } else if (whiteMills < blackMills) {
+                whiteRemove = whiteMills;
+                blackRemove = whiteRemove + 1;
+            } else {
+                assert(false);
+            }
+        }
+    }
+
+    pieceToRemoveCount[WHITE] = whiteRemove;
+    pieceToRemoveCount[BLACK] = blackRemove;
+
+    // TODO: Bits count is not enough
+    update_key_misc();
+}
+
 inline void Position::set_side_to_move(Color c)
 {
     if (sideToMove != c) {
@@ -1395,6 +1480,11 @@ Key Position::update_key_misc()
 
     // TODO: pieceToRemoveCount[sideToMove] or
     // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
+    // TODO: If pieceToRemoveCount[sideToMove]! <= 3,
+    //  the top 2 bits can store its value correctly;
+    //  if it is greater than 3, since only 2 bits are left,
+    //  the storage will be truncated or directly get 0,
+    //  and the original value cannot be completely retained.
     st.key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 

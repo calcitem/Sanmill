@@ -256,7 +256,7 @@ void init(OptionsMap &o)
         static_cast<int>(
             MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard),
         static_cast<int>(
-            MillFormationActionInPlacingPhase::markAndDelayRemovingPieces),
+            MillFormationActionInPlacingPhase::removalBasedOnMillCounts),
         on_millFormationActionInPlacingPhase);
     o["MayMoveInPlacingPhase"] << Option(false, on_mayMoveInPlacingPhase);
     o["IsDefenderMoveFirst"] << Option(false, on_isDefenderMoveFirst);

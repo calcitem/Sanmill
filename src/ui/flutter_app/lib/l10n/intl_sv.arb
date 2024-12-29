@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Visa fördelsgraf",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Fördelsgrafen ritas endast efter att AI:n har gjort ett drag. Den ritas inte när den mänskliga spelaren gör ett drag.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Inaktivera borttagning tills alla pjäser är placerade. Spelarna tar bort pjäser baserat på antalet möllor de har.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Inaktivera borttagning tills alla pjäser är placerade. Spelarna tar bort pjäser baserat på antalet möllor: om antalet är lika tar båda bort samma antal pjäser; om den ena har fler tar denne bort en extra pjäs, och behåller en pjäs skillnad. Om bara en spelare bildar en mölla tar den bort två pjäser, medan den andra tar bort en. Om ingen bildar en mölla tar båda bort en pjäs.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

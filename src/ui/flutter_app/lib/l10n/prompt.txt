@@ -1,10 +1,8 @@
 Please translate the following contents of the arb file for Nine Men's Morris Game, output the complete arb file directly:
 
 ```json
-"removalBasedOnMillCounts": "Disable removal until all pieces are placed. Players remove pieces based on mill counts.",
-"@removalBasedOnMillCounts": {},
-"removalBasedOnMillCounts_Detail": "Disable removal until all pieces are placed. Players remove pieces based on mill counts: if equal, both remove the same number; if one has more, they remove one extra, keeping a one-piece difference. If only one forms mills, they remove two pieces, and the other removes one. If neither forms mills, both remove one piece.",
-"@removalBasedOnMillCounts_Detail": {},
+"elfilja ": "ELFilja",
+"@elfilja": {},
 ```
 
 into:
@@ -76,17 +74,13 @@ The format is as follows:
 
 ```json
 // intl_en.arb
-  "removalBasedOnMillCounts": "Disable removal until all pieces are placed. Players remove pieces based on mill counts.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "Disable removal until all pieces are placed. Players remove pieces based on mill counts: if equal, both remove the same number; if one has more, they remove one extra, keeping a one-piece difference. If only one forms mills, they remove two pieces, and the other removes one. If neither forms mills, both remove one piece.",
-  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja ": "ELFilja",
+  "@elfilja": {},
 
 
-// intl_fr.arb
-  "removalBasedOnMillCounts": "La suppression est interdite jusqu'à ce que toutes les pièces soient placées. Les joueurs retirent des pièces en fonction du nombre de moulins formés.",
-  "@removalBasedOnMillCounts": {},
-  "removalBasedOnMillCounts_Detail": "La suppression est interdite jusqu'à ce que toutes les pièces soient placées. Les joueurs retirent des pièces en fonction du nombre de moulins formés : si les nombres sont égaux, les deux retirent le même nombre de pièces ; si l’un d’eux a formé plus de moulins, il retire une pièce supplémentaire tout en maintenant une différence d’une seule pièce. Si un seul joueur forme des moulins, il retire deux pièces tandis que l’autre en retire une. Si aucun des deux ne forme de moulins, chacun retire une de ses propres pièces.",
-  "@removalBasedOnMillCounts_Detail": {},
+// intl_ar.arb
+  "elfilja ": "اﻟﻌرﺑﯾﺔ اﻟﺧﯾﻣﺔ",
+  "@elfilja": {},
 ```
 
 

@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Parādīt priekšrocību grafiku",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Priekšrocību grafiks tiks uzzīmēts tikai pēc tam, kad MI veiks gājienu. Tas netiks uzzīmēts, kad gājienu veiks cilvēka spēlētājs.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz to dzirnavu skaitu.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz dzirnavu skaitu: ja skaits ir vienāds, abi noņem vienādu skaitu figūru; ja vienam ir vairāk, tas noņem vienu papildu figūru, saglabājot starpību vienas figūras apjomā. Ja tikai viens spēlētājs izveido dzirnavas, viņš noņem divas figūras, bet otrs noņem vienu. Ja neviens neizveido dzirnavas, abi noņem pa vienai figūrai.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

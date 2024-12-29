@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Mostrar gráfico de ventaja",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "El gráfico de ventaja solo se dibujará después de que la IA haga un movimiento. No se dibujará cuando el jugador humano haga un movimiento.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Deshabilita la eliminación hasta que todas las piezas estén colocadas, luego retira piezas según el recuento de molinos.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Deshabilita la eliminación hasta que todas las piezas estén colocadas, luego retira piezas según el recuento de molinos: si es igual, ambos retiran la misma cantidad; si uno tiene más, retira una pieza adicional para mantener una diferencia de una pieza. Si solo uno forma molinos, retira dos piezas y el otro una. Si ninguno forma molinos, ambos retiran una pieza.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

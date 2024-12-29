@@ -1619,5 +1619,11 @@
   "showAdvantageGraph": "Show advantage graph",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Advantage graph will only be drawn after the AI makes a move. It will not be drawn when the human player makes a move.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Disable removal until all pieces are placed, then remove pieces based on mill counts.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Disable removal until all pieces are placed, then remove pieces based on mill counts: if equal, both remove the same number; if one has more, they remove one extra, keeping a one-piece difference. If only one forms mills, they remove two pieces, and the other removes one. If neither forms mills, both remove one piece.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

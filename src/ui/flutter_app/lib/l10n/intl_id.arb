@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Tampilkan grafik keunggulan",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Grafik keunggulan hanya akan digambar setelah AI membuat langkah. Grafik tidak akan digambar ketika pemain manusia membuat langkah.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Nonaktifkan penghapusan hingga semua bidak ditempatkan. Pemain menghapus bidak berdasarkan jumlah Mul-mulan.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Nonaktifkan penghapusan hingga semua bidak ditempatkan. Pemain menghapus bidak berdasarkan jumlah Mul-mulan: jika sama, keduanya menghapus jumlah bidak yang sama; jika salah satu memiliki lebih, dia menghapus satu bidak tambahan, sehingga selisih tetap satu bidak. Jika hanya satu pemain yang membentuk Mul-mulan, dia menghapus dua bidak, sedangkan pemain lain menghapus satu. Jika tidak ada yang membentuk Mul-mulan, keduanya menghapus satu bidak.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }

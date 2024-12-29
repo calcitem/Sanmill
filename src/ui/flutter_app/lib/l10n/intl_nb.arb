@@ -1521,5 +1521,11 @@
   "showAdvantageGraph": "Vis fordelsgraf",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "Fordelsgrafen tegnes bare etter at KI-en har gjort et trekk. Den vil ikke tegnes når den menneskelige spilleren gjør et trekk.",
-  "@advantageGraphHint": {}
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Deaktiver fjerning til alle brikker er plassert. Spillerne fjerner brikker basert på antall møller de lager.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Deaktiver fjerning til alle brikker er plassert. Spillerne fjerner brikker basert på antall møller: hvis det er likt, fjerner begge samme antall brikker; hvis en har flere, fjerner vedkommende én ekstra brikke og opprettholder én brikkes forskjell. Hvis bare én danner en mølle, fjerner denne spilleren to brikker, mens den andre fjerner én. Hvis ingen danner en mølle, fjerner begge én brikke.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ELFilja",
+  "@elfilja": {}
 }
