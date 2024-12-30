@@ -17,6 +17,10 @@
 #include "thread_win32_osx.h"
 #include "search_engine.h"
 
+#ifdef OPENING_BOOK
+#include "opening_book.h"
+#endif // OPENING_BOOK
+
 #ifdef QT_GUI_LIB
 #include <QObject>
 #endif // QT_GUI_LIB
@@ -112,15 +116,11 @@ private:
     Q_OBJECT
 
 public:
-    // Removed emitCommand()
-
 signals:
 #else
 public:
-    // Removed emitCommand()
 #endif // QT_GUI_LIB
 
-    // Removed command() signal
 private:
     std::unique_ptr<SearchEngine> searchEngine;
 };

@@ -21,8 +21,8 @@
 #endif
 
 #ifdef OPENING_BOOK
-#include <deque>
-#endif
+#include "opening_book.h"
+#endif // OPENING_BOOK
 
 using std::cout;
 using std::string;
@@ -128,11 +128,9 @@ void Thread::idle_loop()
         }
 
 #ifdef OPENING_BOOK
-        // gameOptions.getOpeningBook()
-        if (!openingBookDeque.empty()) {
-            char obc[16] = {0};
-            sq2str(obc);
-            bestMoveString = obc;
+        // Use Opening Book module to get the best move string
+        if (OpeningBook::has_moves()) {
+            bestMoveString = OpeningBook::get_best_move();
             // emitCommand();
             searchEngine->emitCommand(); // Changed
         } else {
@@ -164,8 +162,6 @@ void Thread::idle_loop()
     }
 }
 
-//////////////////////////////////////////////////////////////////////////
-
 void Thread::setAi(Position *p)
 {
     std::lock_guard lk(mutex);
@@ -185,46 +181,6 @@ void Thread::setAi(Position *p, int time)
 
     timeLimit = time;
 }
-
-#ifdef OPENING_BOOK
-deque<int> openingBookDeque({
-    /* B W */
-    21,
-    23,
-    19,
-    20,
-    17,
-    18,
-    15,
-});
-
-deque<int> openingBookDequeBak;
-
-void sq2str(char *str)
-{
-    int sq = openingBookDeque.front();
-    openingBookDeque.pop_front();
-    openingBookDequeBak.push_back(sq);
-
-    File file = FILE_A;
-    Rank rank = RANK_1;
-    int sig = 1;
-
-    if (sq < 0) {
-        sq = -sq;
-        sig = 0;
-    }
-
-    file = file_of(sq);
-    rank = rank_of(sq);
-
-    if (sig == 1) {
-        snprintf(str, Position::RECORD_LEN_MAX, 16, "(%d,%d)", file, rank);
-    } else {
-        snprintf(str, Position::RECORD_LEN_MAX, "-(%d,%d)", file, rank);
-    }
-}
-#endif // OPENING_BOOK
 
 Depth Thread::get_depth() const
 {
