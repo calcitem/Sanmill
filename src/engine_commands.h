@@ -21,6 +21,7 @@ void initialize_start_fen();
 
 /// The starting FEN string after initialization.
 extern char StartFEN[BUFSIZ];
+
 } // namespace EngineCommands
 
 #endif // ENGINE_COMMANDS_H_INCLUDED

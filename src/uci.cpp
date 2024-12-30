@@ -68,7 +68,6 @@ void setoption(istringstream &is)
 void UCI::loop(int argc, char *argv[])
 {
     const auto pos = new Position;
-    EngineController engineController;
     string token, cmd;
 
     initialize_engine(pos);
@@ -116,7 +115,7 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "go" || token == "position" ||
                  token == "ucinewgame" || token == "d" || token == "compiler") {
             // Pass the entire command to EngineController
-            engineController.handleCommand(cmd, pos);
+            EngineController().getInstance().handleCommand(cmd, pos);
         }
 
         else if (token == "isready")

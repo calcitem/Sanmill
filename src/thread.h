@@ -39,8 +39,8 @@
 using std::string;
 
 /// Thread class keeps together all the thread-related stuff. We use
-/// per-thread pawn and material hash tables so that once we get a
-/// pointer to an entry its life time is unlimited and we don't have
+/// per-thread pawn and material hash tables so that once we get
+/// a pointer to an entry its life time is unlimited and we don't have
 /// to care about someone changing the entry under our feet.
 class Thread
 #ifdef QT_GUI_LIB
@@ -182,4 +182,4 @@ private:
 
 extern ThreadPool Threads;
 
-#endif // #ifndef THREAD_H_INCLUDED
+#endif // THREAD_H_INCLUDED

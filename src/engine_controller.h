@@ -20,7 +20,13 @@ public:
     /// so we can call existing logic (like go(pos), position(pos, is)).
     void handleCommand(const std::string &cmd, Position *pos);
 
+    /// Returns the singleton instance of EngineController
+    static EngineController &getInstance();
+
 private:
+    // Singleton instance
+    static EngineController instance;
+
     // If needed, we could store references to Options, or keep an internal
     // Position.
 };

@@ -174,7 +174,7 @@ void Thread::idle_loop()
     }
 }
 
-////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
 
 void Thread::setAi(Position *p)
 {
@@ -321,10 +321,10 @@ void Thread::analyze(Color c) const
 
     switch (p->get_phase()) {
     case Phase::ready:
-        cout << "Ready phrase" << std::endl;
+        cout << "Ready phase" << std::endl;
         break;
     case Phase::placing:
-        cout << "Placing phrase" << std::endl;
+        cout << "Placing phase" << std::endl;
         break;
     case Phase::moving:
         cout << "Moving phase" << std::endl;
@@ -369,16 +369,16 @@ void Thread::analyze(Color c) const
     }
 
     if (lv == 0 && v > VALUE_EACH_PIECE) {
-        cout << strThem << "Bad move!" << std::endl;
+        cout << strThem << " made a bad move!" << std::endl;
     }
 
     if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << "made a good move, pulled back the balance of power"
+        cout << strThem << " made a good move, pulled back the balance of power"
              << std::endl;
     }
 
     if (lv > 0 && v < 0) {
-        cout << strThem << "made a good move, reversed the situation!"
+        cout << strThem << " made a good move, reversed the situation!"
              << std::endl;
     }
 

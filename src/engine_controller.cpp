@@ -11,6 +11,9 @@
 #include "misc.h"
 #include "engine_commands.h" // Include for EngineCommands
 
+// Initialize the singleton instance
+EngineController EngineController::instance;
+
 EngineController::EngineController()
 {
     // Constructor
@@ -19,6 +22,11 @@ EngineController::EngineController()
 EngineController::~EngineController()
 {
     // Destructor
+}
+
+EngineController &EngineController::getInstance()
+{
+    return instance;
 }
 
 void EngineController::handleCommand(const std::string &cmd, Position *pos)
