@@ -31,7 +31,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-		../../../../mcts.cpp
+	../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp
@@ -44,6 +44,8 @@ add_library( # Sets the name of the library.
         ../../../../tt.cpp
         ../../../../uci.cpp
         ../../../../ucioption.cpp
+        ../../../../engine_controller.cpp
+        ../../../../engine_commands.cpp
         ../../../../perfect/perfect_adaptor.cpp
         ../../../../perfect/perfect_api.cpp
         ../../../../perfect/perfect_common.cpp

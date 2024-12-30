@@ -37,7 +37,7 @@ PGOBENCH = ./$(EXE) bench
 PERFECT_SRCS = $(wildcard perfect/*.cpp)
 SRCS = $(PERFECT_SRCS) bitboard.cpp endgame.cpp evaluate.cpp main.cpp mcts.cpp \
 	mills.cpp misc.cpp movegen.cpp movepick.cpp option.cpp position.cpp rule.cpp \
-	search.cpp thread.cpp tt.cpp uci.cpp ucioption.cpp
+	search.cpp thread.cpp tt.cpp uci.cpp ucioption.cpp engine_controller.cpp engine_commands.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

@@ -42,6 +42,8 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../tt.cpp"
   "../../../../uci.cpp"
   "../../../../ucioption.cpp"
+  "../../../../engine_controller.cpp"
+  "../../../../engine_commands.cpp"
   "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_api.cpp"
   "../../../../perfect/perfect_adaptor.cpp"
