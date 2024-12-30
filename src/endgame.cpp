@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// endgame.cpp
 
 #include "endgame.h"
 #include <string>
@@ -23,6 +9,48 @@ using std::string;
 static constexpr int endgameHashSize = 0x1000000; // 16M
 HashMap<Key, Endgame> endgameHashMap(endgameHashSize);
 
+// Function to probe the endgame hash map
+bool probeEndgameHash(Key posKey, Endgame &endgame)
+{
+    return endgameHashMap.find(posKey, endgame);
+}
+
+// Function to save an endgame entry to the hash map
+int saveEndgameHash(Key posKey, const Endgame &endgame)
+{
+    Key hashValue = endgameHashMap.insert(posKey, endgame);
+    unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
+
+    debugPrintf("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
+                "0x%08I32x, Address: 0x%08I32x\n",
+                posKey, static_cast<int>(endgame.type), hashValue, addr);
+
+    return 0;
+}
+
+// Function to clear the endgame hash map
+void clearEndgameHashMap()
+{
+    endgameHashMap.clear();
+}
+
+// Function to save the endgame hash map to a file
+void saveEndgameHashMapToFile()
+{
+    const string filename = "endgame.txt";
+    endgameHashMap.dump(filename);
+
+    debugPrintf("[endgame] Dump hash map to file\n");
+}
+
+// Function to load the endgame hash map from a file
+void loadEndgameFileToHashMap()
+{
+    const string filename = "endgame.txt";
+    endgameHashMap.load(filename);
+}
+
+// Optional: Function to merge two endgame files into a merged file
 void mergeEndgameFile(const string &file1, const string &file2,
                       const string &mergedFile)
 {
@@ -40,12 +68,13 @@ void mergeEndgameFile(const string &file1, const string &file2,
                 file1.c_str(), mergedFile.c_str());
 }
 
+// Optional: Main function to merge multiple endgame files
 int mergeEndgameFile_main()
 {
     string filename;
 
     for (char ch = '0'; ch <= '9'; ch++) {
-        filename = ch + "/endgame.txt";
+        filename = string(1, ch) + "/endgame.txt";
         mergeEndgameFile("endgame.txt", filename, "endgame.txt");
     }
 

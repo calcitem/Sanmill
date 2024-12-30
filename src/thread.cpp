@@ -1,9 +1,4 @@
-// thread.cpp:
-
-// This file is part of Sanmill.
-// See AUTHORS file for the list of contributors.
-//
-// Copyright...
+// thread.cpp
 
 #include <iomanip>
 #include <sstream>
@@ -241,41 +236,3 @@ string Thread::get_value() const
     string value = std::to_string(bestvalue);
     return value;
 }
-
-#ifdef ENDGAME_LEARNING
-bool Thread::probeEndgameHash(Key posKey, Endgame &endgame)
-{
-    return endgameHashMap.find(posKey, endgame);
-}
-
-int Thread::saveEndgameHash(Key posKey, const Endgame &endgame)
-{
-    Key hashValue = endgameHashMap.insert(posKey, endgame);
-    unsigned addr = hashValue * (sizeof(posKey) + sizeof(endgame));
-
-    debugPrintf("[endgame] Record 0x%08I32x (%d) to Endgame hash map, TTEntry: "
-                "0x%08I32x, Address: 0x%08I32x\n",
-                posKey, endgame.type, hashValue, addr);
-
-    return 0;
-}
-
-void Thread::clearEndgameHashMap()
-{
-    endgameHashMap.clear();
-}
-
-void Thread::saveEndgameHashMapToFile()
-{
-    const string filename = "endgame.txt";
-    endgameHashMap.dump(filename);
-
-    debugPrintf("[endgame] Dump hash map to file\n");
-}
-
-void Thread::loadEndgameFileToHashMap()
-{
-    const string filename = "endgame.txt";
-    endgameHashMap.load(filename);
-}
-#endif // ENDGAME_LEARNING

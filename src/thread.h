@@ -84,14 +84,6 @@ public:
     stopwatch::timer<std::chrono::system_clock>::period sortCycle;
 #endif
 
-#ifdef ENDGAME_LEARNING
-    static bool probeEndgameHash(Key key, Endgame &endgame);
-    static int saveEndgameHash(Key key, const Endgame &endgame);
-    void clearEndgameHashMap();
-    static void saveEndgameHashMapToFile();
-    static void loadEndgameFileToHashMap();
-#endif // ENDGAME_LEARNING
-
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef TRANSPOSITION_TABLE_DEBUG
     size_t tteCount {0};
