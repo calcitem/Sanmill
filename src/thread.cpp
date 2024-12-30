@@ -1,21 +1,9 @@
+// thread.cpp:
+
 // This file is part of Sanmill.
 // See AUTHORS file for the list of contributors.
 //
-// Copyright (C) 2004-2024 The Stockfish developers
-// Copyright (C) 2019-2024 The Sanmill developers
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// Copyright...
 
 #include <iomanip>
 #include <sstream>
@@ -25,7 +13,9 @@
 #include "mills.h"
 #include "option.h"
 #include "thread.h"
+#include "thread_pool.h"
 #include "uci.h"
+#include "search_engine.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -61,6 +51,7 @@ Thread::Thread(size_t n
     idx(n)
     , stdThread(&Thread::idle_loop, this)
     , timeLimit(3600)
+    , searchEngine(std::make_unique<SearchEngine>(this))
 {
     wait_for_search_finished();
 }
@@ -147,13 +138,14 @@ void Thread::idle_loop()
             char obc[16] = {0};
             sq2str(obc);
             bestMoveString = obc;
-            emitCommand();
+            // emitCommand();
+            searchEngine->emitCommand(); // Changed
         } else {
 #endif
             const int ret = search();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-            nnueTrainingDataBestValue = rootPos->sideToMove == WHITE ?
+            nnueTrainingDataBestValue = rootPos->side_toMove == WHITE ?
                                             bestvalue :
                                             -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
@@ -161,11 +153,14 @@ void Thread::idle_loop()
             if (ret == 3 || ret == 50 || ret == 10) {
                 debugPrintf("Draw\n\n");
                 bestMoveString = "draw";
-                emitCommand();
+                // emitCommand();
+                searchEngine->emitCommand(); // Changed
             } else {
-                bestMoveString = next_move();
+                // bestMoveString = next_move();
+                bestMoveString = searchEngine->next_move(); // Changed
                 if (bestMoveString != "" && bestMoveString != "error!") {
-                    emitCommand();
+                    // emitCommand();
+                    searchEngine->emitCommand(); // Changed
                 }
             }
 #ifdef OPENING_BOOK
@@ -194,59 +189,6 @@ void Thread::setAi(Position *p, int time)
     setAi(p);
 
     timeLimit = time;
-}
-
-void Thread::emitCommand()
-{
-    std::ostringstream ss;
-    std::string aiMoveTypeStr;
-
-    if (rootPos->sideToMove == BLACK) {
-        bestvalue = -bestvalue;
-    }
-
-    switch (aiMoveType) {
-    case AiMoveType::traditional:
-        aiMoveTypeStr = "";
-        break;
-    case AiMoveType::perfect:
-        aiMoveTypeStr = " aimovetype perfect";
-        break;
-    case AiMoveType::consensus:
-        aiMoveTypeStr = " aimovetype consensus";
-        break;
-    default:
-        break;
-    }
-
-    ss << "info score " << (int)bestvalue << aiMoveTypeStr << " bestmove "
-       << bestMoveString;
-
-#ifdef QT_GUI_LIB
-    emit command(ss.str()); // Origin: bestMoveString
-#else
-    sync_cout << ss.str();
-    std::cout << sync_endl;
-
-#ifdef FLUTTER_UI
-    println(ss.str().c_str());
-#endif
-
-#ifdef UCI_DO_BEST_MOVE
-    rootPos->command(ss.str());
-    us = rootPos->side_to_move();
-
-    if (bestMoveString.size() > strlen("-(1,2)")) {
-        posKeyHistory.push_back(rootPos->key());
-    } else {
-        posKeyHistory.clear();
-    }
-#endif
-
-#ifdef ANALYZE_POSITION
-    analyze(rootPos->side_to_move());
-#endif
-#endif // QT_GUI_LIB
 }
 
 #ifdef OPENING_BOOK
@@ -289,168 +231,6 @@ void sq2str(char *str)
 }
 #endif // OPENING_BOOK
 
-void Thread::analyze(Color c) const
-{
-#ifndef QT_GUI_LIB
-    static float nWhiteWin = 0;
-    static float nBlackWin = 0;
-    static float nDraw = 0;
-
-    float total;
-    float blackWinRate, whiteWinRate, drawRate;
-#endif // !QT_GUI_LIB
-
-    const int d = originDepth;
-    const int v = bestvalue;
-    const int lv = lastvalue;
-    const bool win = v >= VALUE_MATE;
-    const bool lose = v <= -VALUE_MATE;
-    const int np = v / VALUE_EACH_PIECE;
-
-    const string strUs = (c == WHITE ? "White" : "Black");
-    const string strThem = (c == WHITE ? "Black" : "White");
-
-    const auto flags = cout.flags();
-
-    debugPrintf("Depth: %d\n\n", originDepth);
-
-    const Position *p = rootPos;
-
-    cout << *p << std::endl;
-    cout << std::dec;
-
-    switch (p->get_phase()) {
-    case Phase::ready:
-        cout << "Ready phase" << std::endl;
-        break;
-    case Phase::placing:
-        cout << "Placing phase" << std::endl;
-        break;
-    case Phase::moving:
-        cout << "Moving phase" << std::endl;
-        break;
-    case Phase::gameOver:
-        if (p->get_winner() == DRAW) {
-            cout << "Draw" << std::endl;
-#ifndef QT_GUI_LIB
-            nDraw += 0.5f; // TODO(calcitem)
-#endif
-        } else if (p->get_winner() == WHITE) {
-            cout << "White wins" << std::endl;
-#ifndef QT_GUI_LIB
-            nBlackWin += 0.5f; // TODO(calcitem)
-#endif
-        } else if (p->get_winner() == BLACK) {
-            cout << "Black wins" << std::endl;
-#ifndef QT_GUI_LIB
-            nWhiteWin += 0.5f; // TODO(calcitem)
-#endif
-        }
-        cout << std::endl << std::endl;
-        return;
-    case Phase::none:
-        cout << "None phase" << std::endl;
-        break;
-    }
-
-    if (v == VALUE_UNIQUE) {
-        cout << "Unique move" << std::endl << std::endl << std::endl;
-        return;
-    }
-
-    if (lv < -VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << " made a bad move, " << strUs
-             << " pulled back the balance of power!" << std::endl;
-    }
-
-    if (lv < 0 && v > 0) {
-        cout << strThem << " made a bad move, " << strUs
-             << " reversed the situation!" << std::endl;
-    }
-
-    if (lv == 0 && v > VALUE_EACH_PIECE) {
-        cout << strThem << " made a bad move!" << std::endl;
-    }
-
-    if (lv > VALUE_EACH_PIECE && v == 0) {
-        cout << strThem << " made a good move, pulled back the balance of power"
-             << std::endl;
-    }
-
-    if (lv > 0 && v < 0) {
-        cout << strThem << " made a good move, reversed the situation!"
-             << std::endl;
-    }
-
-    if (lv == 0 && v < -VALUE_EACH_PIECE) {
-        cout << strThem << " made a good move!" << std::endl;
-    }
-
-    if (lv != v) {
-        if (lv < 0 && v < 0) {
-            if (abs(lv) < abs(v)) {
-                cout << strThem << " has expanded its lead" << std::endl;
-            } else if (abs(lv) > abs(v)) {
-                cout << strThem << " has narrowed its lead" << std::endl;
-            }
-        }
-
-        if (lv > 0 && v > 0) {
-            if (abs(lv) < abs(v)) {
-                cout << strThem << " has expanded its lead" << std::endl;
-            } else if (abs(lv) > abs(v)) {
-                cout << strThem << " has narrowed its backwardness"
-                     << std::endl;
-            }
-        }
-    }
-
-    if (win) {
-        cout << strThem << " will lose in " << d << " moves!" << std::endl;
-    } else if (lose) {
-        cout << strThem << " will win in " << d << " moves!" << std::endl;
-    } else if (np == 0) {
-        cout << "The two sides will maintain a balance of power after " << d
-             << " moves" << std::endl;
-    } else if (np > 0) {
-        cout << strThem << " after " << d << " moves will backward " << np
-             << " pieces" << std::endl;
-    } else if (np < 0) {
-        cout << strThem << " after " << d << " moves will lead " << -np
-             << " pieces" << std::endl;
-    }
-
-    if (p->side_to_move() == WHITE) {
-        cout << "White to move" << std::endl;
-    } else {
-        cout << "Black to move" << std::endl;
-    }
-
-#ifndef QT_GUI_LIB
-    total = nBlackWin + nWhiteWin + nDraw;
-
-    if (total < 0.01) {
-        blackWinRate = 0;
-        whiteWinRate = 0;
-        drawRate = 0;
-    } else {
-        blackWinRate = nBlackWin * 100 / total;
-        whiteWinRate = nWhiteWin * 100 / total;
-        drawRate = nDraw * 100 / total;
-    }
-
-    cout << "Score: " << static_cast<int>(nBlackWin) << " : "
-         << static_cast<int>(nWhiteWin) << " : " << static_cast<int>(nDraw)
-         << "\ttotal: " << static_cast<int>(total) << std::endl;
-    cout << std::fixed << std::setprecision(2) << blackWinRate
-         << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
-#endif // !QT_GUI_LIB
-
-    cout.flags(flags);
-
-    cout << std::endl << std::endl;
-}
-
 Depth Thread::get_depth() const
 {
     return Mills::get_search_depth(rootPos);
@@ -460,49 +240,6 @@ string Thread::get_value() const
 {
     string value = std::to_string(bestvalue);
     return value;
-}
-
-string Thread::next_move() const
-{
-#ifdef ENDGAME_LEARNING
-    // Check if very weak
-    if (gameOptions.isEndgameLearningEnabled()) {
-        if (bestvalue <= -VALUE_KNOWN_WIN) {
-            Endgame endgame;
-            endgame.type = rootPos->side_to_move() == WHITE ?
-                               EndGameType::blackWin :
-                               EndGameType::whiteWin;
-            Key endgameHash = rootPos->key(); // TODO(calcitem): Do not generate
-                                              // hash repeatedly
-            saveEndgameHash(endgameHash, endgame);
-        }
-    }
-#endif /* ENDGAME_LEARNING */
-
-    if (gameOptions.getResignIfMostLose() == true) {
-        if (bestvalue <= -VALUE_MATE) {
-            rootPos->set_gameover(~rootPos->sideToMove,
-                                  GameOverReason::loseResign);
-            snprintf(rootPos->record, Position::RECORD_LEN_MAX,
-                     LOSE_REASON_PLAYER_RESIGNS, rootPos->sideToMove);
-            return rootPos->record;
-        }
-    }
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t hashProbeCount = ttHitCount + ttMissCount;
-    if (hashProbeCount) {
-        debugPrintf("[posKey] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                    "%llu%%\n",
-                    hashProbeCount, ttHitCount, ttMissCount,
-                    ttHitCount * 100 / hashProbeCount);
-    }
-#endif // TRANSPOSITION_TABLE_DEBUG
-
-#endif // TRANSPOSITION_TABLE_ENABLE
-
-    return UCI::move(bestMove);
 }
 
 #ifdef ENDGAME_LEARNING
@@ -541,73 +278,4 @@ void Thread::loadEndgameFileToHashMap()
     const string filename = "endgame.txt";
     endgameHashMap.load(filename);
 }
-
 #endif // ENDGAME_LEARNING
-
-/// ThreadPool::set() creates/destroys threads to match the requested number.
-/// Created and launched threads will immediately go to sleep in idle_loop.
-/// Upon resizing, threads are recreated to allow for binding if necessary.
-
-void ThreadPool::set(size_t requested)
-{
-    if (!empty()) {
-        // destroy any existing thread(s)
-        main()->wait_for_search_finished();
-
-        while (!empty()) {
-            delete back();
-            pop_back();
-        }
-    }
-
-    if (requested > 0) {
-        // create new thread(s)
-        push_back(new MainThread(0));
-
-        while (size() < requested)
-            push_back(new Thread(size()));
-        clear();
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-        // Reallocate the hash with the new thread pool size
-        TT.resize(static_cast<size_t>(Options["Hash"]));
-#endif
-
-        // Init thread number dependent search params.
-        Search::init();
-    }
-}
-
-/// ThreadPool::clear() sets threadPool data to initial values.
-
-void ThreadPool::clear() const
-{
-    for (const Thread *th : *this)
-        th->clear();
-}
-
-/// ThreadPool::start_thinking() wakes up main thread waiting in idle_loop() and
-/// returns immediately. Main thread will wake up other threads and start the
-/// search.
-
-void ThreadPool::start_thinking(Position *pos, bool ponderMode)
-{
-    main()->wait_for_search_finished();
-
-    main()->stopOnPonderhit = stop = false;
-    increaseDepth = true;
-    main()->ponder = ponderMode;
-
-    // We use Position::set() to set root position across threads.
-    for (Thread *th : *this) {
-        // Fix CID 338443: Data race condition (MISSING_LOCK)
-        // missing_lock: Accessing th->rootPos without holding lock
-        // Thread.mutex. Elsewhere, Thread.rootPos is accessed with Thread.mutex
-        // held 1 out of 2 times (1 of these accesses strongly imply that it is
-        // necessary).
-        std::lock_guard lk(th->mutex);
-        th->rootPos = pos;
-    }
-
-    main()->start_searching();
-}

@@ -1,21 +1,4 @@
-// This file is part of Sanmill.
-// See AUTHORS file for the list of contributors.
-//
-// Copyright (C) 2004-2024 The Stockfish developers
-// Copyright (C) 2019-2024 The Sanmill developers
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// thread.h
 
 #ifndef THREAD_H_INCLUDED
 #define THREAD_H_INCLUDED
@@ -26,17 +9,22 @@
 #include <condition_variable>
 #include <string>
 #include <vector>
+#include <memory> // For smart pointers
 
 #include "movepick.h"
 #include "position.h"
 #include "search.h"
 #include "thread_win32_osx.h"
+#include "search_engine.h"
 
 #ifdef QT_GUI_LIB
 #include <QObject>
 #endif // QT_GUI_LIB
 
 using std::string;
+
+class SearchEngine;
+struct ThreadPool;
 
 /// Thread class keeps together all the thread-related stuff. We use
 /// per-thread pawn and material hash tables so that once we get
@@ -82,13 +70,10 @@ public:
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    string next_move() const;
     string get_value() const;
     Depth get_depth() const;
 
     int getTimeLimit() const { return timeLimit; }
-
-    void analyze(Color c) const;
 
 #ifdef TIME_STAT
     TimePoint sortTime {0};
@@ -135,49 +120,17 @@ private:
     Q_OBJECT
 
 public:
-    void emitCommand();
+    // Removed emitCommand()
 
 signals:
 #else
 public:
-    void emitCommand();
+    // Removed emitCommand()
 #endif // QT_GUI_LIB
 
-    void command(const string &record, bool update = true);
-};
-
-/// MainThread is a derived class specific for main thread
-
-struct MainThread final : Thread
-{
-    using Thread::Thread;
-
-    bool stopOnPonderhit {false};
-    std::atomic_bool ponder {false};
-};
-
-/// ThreadPool struct handles all the threads-related stuff like init, starting,
-/// parking and, most importantly, launching a thread. All the access to threads
-/// is done through this class.
-
-struct ThreadPool : std::vector<Thread *>
-{
-    void start_thinking(Position *, bool = false);
-    void clear() const;
-    void set(size_t);
-
-    MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
-
-    std::atomic_bool stop, increaseDepth;
-
+    // Removed command() signal
 private:
-    uint64_t accumulate(std::atomic<uint64_t> Thread::*member) const noexcept
-    {
-        uint64_t sum = 0;
-        for (const Thread *th : *this)
-            sum += (th->*member).load(std::memory_order_relaxed);
-        return sum;
-    }
+    std::unique_ptr<SearchEngine> searchEngine;
 };
 
 extern ThreadPool Threads;

@@ -18,6 +18,7 @@
 #include "position.h"
 #include "search.h"
 #include "thread.h"
+#include "thread_pool.h"
 #include "uci.h"
 
 #ifdef FLUTTER_UI

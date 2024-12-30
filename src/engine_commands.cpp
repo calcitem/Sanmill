@@ -4,12 +4,14 @@
 
 #include "thread.h"
 #include "search.h"
+#include "thread_pool.h"
 #include "position.h"
 #include "uci.h"
 
 #include <cstring>
 #include <cassert>
 
+extern ThreadPool Threads;
 namespace EngineCommands {
 
 // FEN string of the initial position, normal mill game

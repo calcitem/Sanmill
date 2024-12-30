@@ -24,6 +24,7 @@
 #include "option.h"
 #include "uci.h"
 #include "thread.h"
+#include "thread_pool.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect_adaptor.h"

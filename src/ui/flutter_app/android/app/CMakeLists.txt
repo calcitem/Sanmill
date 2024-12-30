@@ -46,6 +46,8 @@ add_library( # Sets the name of the library.
         ../../../../ucioption.cpp
         ../../../../engine_controller.cpp
         ../../../../engine_commands.cpp
+        ../../../../search_engine.cpp
+        ../../../../thread_pool.cpp
         ../../../../perfect/perfect_adaptor.cpp
         ../../../../perfect/perfect_api.cpp
         ../../../../perfect/perfect_common.cpp

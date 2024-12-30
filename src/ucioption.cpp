@@ -21,6 +21,7 @@
 
 #include "option.h"
 #include "thread.h"
+#include "thread_pool.h"
 #include "uci.h"
 #include "mills.h"
 

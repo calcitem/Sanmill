@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "thread.h"
+#include "thread_pool.h"
 #include "uci.h"
 
 #ifdef FLUTTER_UI
