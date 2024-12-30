@@ -450,6 +450,19 @@ class TapHandler {
               showTip(S.of(context).tipSelectOpponentsPiece);
             }
             break;
+          case ShouldRemoveSelf():
+            logger
+                .i("$_logTag removePiece: Should Remove our piece, skip [$sq]");
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+                  controller.position.sideToMove.playerName(context);
+              showTip(
+                  "${S.of(context).tipSelectOwnPiece} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S.of(context).tipSelectOwnPiece);
+            }
+            break;
           case CanNotRemoveMill():
             logger.i(
               "$_logTag removePiece: Cannot remove piece from Mill, skip [$sq]",

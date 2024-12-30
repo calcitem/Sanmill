@@ -244,6 +244,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     GameController().position.pieceToRemoveCount[newPieceColor] =
         newPieceCountNeedRemove[newPieceColor]!;
 
+    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+      // TODO: Adapt removalBasedOnMillCounts
+      // final int whiteMills = GameController().position.totalMillsCount(PieceColor.white);
+      // final int blackMills = GameController().position.totalMillsCount(PieceColor.black);
+    }
+
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove[newPieceColor] == 0) {
         GameController()
@@ -608,7 +615,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     if (GameController()
             .position
-            .pieceToRemoveCount[GameController().position.sideToMove]! >
+            .pieceToRemoveCount[GameController().position.sideToMove]!
+            .abs() >
         0) {
       GameController().position.action = Act.remove;
     }

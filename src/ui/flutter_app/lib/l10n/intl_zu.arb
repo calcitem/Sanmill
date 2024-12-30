@@ -1624,5 +1624,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Misa ukususwa kuze kufakwe wonke amaphinikhodi. Abadlali basusa amaphinikhodi ngokuya ngenani lama-Umlabalaba: uma elilinganayo, bobabili basusa inani elifanayo lamaphinikhodi; uma omunye eningi, ususa elilodwa elengeziwe, egcina umehluko owodwa. Uma oyedwa enza i-Umlabalaba, ususa amaphinikhodi amabili, omunye asuse elilodwa. Uma bengakwenzi kokubili i-Umlabalaba, bobabili basusa elilodwa.",
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Khetha esinye sezicezu zakho.",
+  "@tipSelectOwnPiece": {}
 }

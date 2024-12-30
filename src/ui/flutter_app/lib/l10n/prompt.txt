@@ -1,8 +1,8 @@
 Please translate the following contents of the arb file for Nine Men's Morris Game, output the complete arb file directly:
 
 ```json
-"elfilja ": "ELFilja",
-"@elfilja": {},
+  "tipSelectOwnPiece": "Select one of your pieces.",
+  "@tipSelectOwnPiece": {},
 ```
 
 into:
@@ -74,13 +74,13 @@ The format is as follows:
 
 ```json
 // intl_en.arb
-  "elfilja ": "ELFilja",
-  "@elfilja": {},
+  "tipSelectOwnPiece": "Select one of your pieces.",
+  "@tipSelectOwnPiece": {},
 
 
-// intl_ar.arb
-  "elfilja ": "اﻟﻌرﺑﯾﺔ اﻟﺧﯾﻣﺔ",
-  "@elfilja": {},
+// intl_zh.arb
+  "tipSelectOwnPiece": "请选择自己的棋子。",
+  "@tipSelectOwnPiece": {},
 ```
 
 

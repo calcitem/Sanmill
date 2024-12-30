@@ -1625,5 +1625,7 @@
   "removalBasedOnMillCounts_Detail": "Slökktu á fjarlægingu þar til öllum pönnum hefur verið komið fyrir. Spilarar fjarlægja peð út frá fjölda myllu: ef fjöldinn er sá sami, fjarlægja báðir jafnmörg peð; ef annar hefur fleiri, fjarlægir hann eitt auka peð og viðheldur mismuni upp á eitt peð. Ef aðeins einn býr til myllu, fjarlægir hann tvö peð en hinn eitt. Ef hvorugur býr til myllu, fjarlægja báðir eitt peð.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Veldu einn af þínum peðum.",
+  "@tipSelectOwnPiece": {}
 }

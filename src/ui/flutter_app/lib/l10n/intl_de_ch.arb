@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "Deaktiviere das Entfernen, bis alle Steine platziert sind, dann entferne Steine basierend auf der Anzahl der Mühlen: Sind sie gleich, entfernen beide die gleiche Anzahl. Hat einer mehr, entfernt er einen zusätzlichen Stein, um einen Unterschied von einem Stein beizubehalten. Bildet nur einer Mühlen, entfernt dieser zwei Steine und der andere einen. Bildet keiner Mühlen, entfernen beide jeweils einen Stein.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Wähle einen deiner Steine aus.",
+  "@tipSelectOwnPiece": {}
 }

@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "在雙方所有棋子擺完之前，不能吃掉對方棋子。雙方都擺完後，雙方根據己方形成的三連數量來吃掉對方的棋子：如果三連數量相同，則雙方吃掉對方相同數量的棋子；如果一方的三連更多，則最多只比對方多吃掉一枚棋子。如果只有一方形成三連，則該方吃掉兩枚棋子，另一方吃掉一枚。如果雙方都沒有形成三連，則雙方各吃掉一枚棋子。",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "阿拉伯帳篷",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "請選擇自己的棋子",
+  "@tipSelectOwnPiece": {}
 }

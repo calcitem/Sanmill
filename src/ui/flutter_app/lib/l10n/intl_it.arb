@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "Disabilita la rimozione finché tutti i pezzi non sono posizionati. I giocatori rimuovono i pezzi in base al numero di mulini: se il numero è uguale, entrambi rimuovono lo stesso numero di pezzi; se uno ne ha di più, rimuove un pezzo in più, mantenendo la differenza di un solo pezzo. Se solo uno forma un mulino, rimuove due pezzi mentre l'altro ne rimuove uno. Se nessuno forma un mulino, entrambi rimuovono un pezzo.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Seleziona uno dei tuoi pezzi.",
+  "@tipSelectOwnPiece": {}
 }

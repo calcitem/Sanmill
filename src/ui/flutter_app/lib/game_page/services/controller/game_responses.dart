@@ -57,6 +57,10 @@ class CanNotRemoveSelf implements RemoveResponse {
   const CanNotRemoveSelf();
 }
 
+class ShouldRemoveSelf implements RemoveResponse {
+  const ShouldRemoveSelf();
+}
+
 class CanNotRemoveMill implements RemoveResponse {
   const CanNotRemoveMill();
 }

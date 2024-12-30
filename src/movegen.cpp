@@ -100,20 +100,36 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 }
 
 /// generate<REMOVE> generates all removes.
-/// Returns a pointer to the end of the move moves.
+/// Returns a pointer to the end of the move list.
 template <>
 ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
     const Color us = pos.side_to_move();
     const Color them = ~us;
 
+    // Determine if we need to remove our own pieces based on pieceToRemoveCount
+    bool removeOwnPieces = pos.pieceToRemoveCount[us] < 0;
+
+    // Set the color of pieces to remove: own or opponent's
+    const Color removeColor = removeOwnPieces ? us : them;
+
     ExtMove *cur = moveList;
 
+    // Handle stalemate removal
     if (pos.is_stalemate_removal()) {
-        for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
-            if (pos.get_board()[s] & make_piece(them)) {
-                if (pos.is_adjacent_to(s, us) == true) {
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & make_piece(removeColor)) {
+                // If removing opponent's pieces, check adjacency to 'us'
+                // If removing own pieces, adjacency check may differ or be
+                // omitted
+                if (!removeOwnPieces && pos.is_adjacent_to(s, us)) {
+                    *cur++ = static_cast<Move>(-s);
+                }
+                // If removing own pieces, allow removal without adjacency
+                else if (removeOwnPieces) {
                     *cur++ = static_cast<Move>(-s);
                 }
             }
@@ -122,20 +138,27 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    if (pos.is_all_in_mills(them)) {
-        for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+    // Handle removal when all opponent's pieces are in mills
+    if (pos.is_all_in_mills(removeColor)) {
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
-            if (pos.get_board()[s] & make_piece(them)) {
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & make_piece(removeColor)) {
                 *cur++ = static_cast<Move>(-s);
             }
         }
         return cur;
     }
 
-    // not is all in mills
-    for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+    // Handle general removal (not all in mills)
+    for (int i = SQUARE_NB - 1; i >= 0; i--) {
         const Square s = MoveList<LEGAL>::movePriorityList[i];
-        if (pos.get_board()[s] & make_piece(them)) {
+
+        // Check if the square has a piece of the color to remove
+        if (pos.get_board()[s] & make_piece(removeColor)) {
+            // If the rule allows removing from mills always
+            // or the piece is not part of a potential mill, allow removal
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
                 *cur++ = static_cast<Move>(-s);

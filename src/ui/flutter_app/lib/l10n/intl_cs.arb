@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "Zakázat odstranění, dokud nejsou umístěny všechny kameny. Hráči odstraňují kameny na základě počtu mlýnů: pokud je počet stejný, oba odstraní stejný počet; pokud má jeden více, odstraní o jeden navíc, aby zůstal rozdíl jednoho kamene. Pokud mlýn vytvoří pouze jeden hráč, odstraní dvě kameny, zatímco druhý odstraní jeden. Pokud žádný hráč nevytvoří mlýn, oba odstraní jeden kámen.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Vyberte jednu ze svých figurek.",
+  "@tipSelectOwnPiece": {}
 }

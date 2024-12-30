@@ -1625,5 +1625,7 @@
   "removalBasedOnMillCounts_Detail": "Vô hiệu hóa việc loại bỏ cho đến khi tất cả các quân cờ được đặt xuống. Người chơi loại bỏ quân cờ dựa trên số lượng cối xay: nếu bằng nhau, cả hai đều loại bỏ cùng một số lượng quân; nếu một người có nhiều hơn, người đó loại bỏ thêm một quân, giữ chênh lệch ở mức một quân. Nếu chỉ một người tạo được cối xay, người đó loại bỏ hai quân và người còn lại loại bỏ một. Nếu không ai tạo được cối xay, cả hai đều loại bỏ một quân.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Chọn một trong các quân cờ của bạn.",
+  "@tipSelectOwnPiece": {}
 }

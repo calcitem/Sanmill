@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "Tüm taşlar yerleştirilene kadar taşları kaldırma işlemini devre dışı bırak, ardından değirmen sayısına göre taşları kaldır: eşitse her iki taraf da aynı sayıda taş kaldırır; bir tarafın sayısı fazlaysa, aradaki farkın bir taş olarak kalması için bir taş fazladan kaldırır. Yalnız bir taraf değirmen oluşturduysa, o taraf iki taş kaldırır, diğeri bir taş kaldırır. Hiç değirmen oluşmazsa, her iki taraf da birer taş kaldırır.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Taşlarından birini seç.",
+  "@tipSelectOwnPiece": {}
 }

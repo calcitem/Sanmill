@@ -792,8 +792,8 @@ bool Position::put_piece(Square s, bool updateRecord)
         if (n == 0) {
             // If no Mill
 
-            if (pieceToRemoveCount[WHITE] > 0 ||
-                pieceToRemoveCount[BLACK] > 0) {
+            if (pieceToRemoveCount[WHITE] != 0 ||
+                pieceToRemoveCount[BLACK] != 0) {
                 assert(false);
                 return false;
             }
@@ -1033,12 +1033,17 @@ bool Position::remove_piece(Square s, bool updateRecord)
     if (action != Action::remove)
         return false;
 
-    if (pieceToRemoveCount[sideToMove] <= 0)
+    if (pieceToRemoveCount[sideToMove] == 0) {
         return false;
-
-    // if piece is not their
-    if (!(make_piece(~side_to_move()) & board[s]))
-        return false;
+    } else if (pieceToRemoveCount[sideToMove] > 0) {
+        if (!(make_piece(~side_to_move()) & board[s])) {
+            return false;
+        }
+    } else {
+        if (!(make_piece(side_to_move()) & board[s])) {
+            return false;
+        }
+    }
 
     if (is_stalemate_removal()) {
         if (is_adjacent_to(s, sideToMove) == false) {
@@ -1091,11 +1096,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     currentSquare[sideToMove] = SQ_0;
 
-    pieceToRemoveCount[sideToMove]--;
+    if (pieceToRemoveCount[sideToMove] > 0) {
+        pieceToRemoveCount[sideToMove]--;
+    } else {
+        pieceToRemoveCount[sideToMove]++;
+    }
+
     update_key_misc();
 
     // Need to remove rest pieces.
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] != 0) {
         return true;
     }
 
@@ -1108,7 +1118,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
         }
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] != 0) {
         return true;
     }
 
@@ -1144,8 +1154,11 @@ bool Position::select_piece(Square s)
 bool Position::handle_placing_phase_end()
 {
     if (phase != Phase::placing || pieceInHandCount[WHITE] > 0 ||
-        pieceInHandCount[BLACK] > 0 || pieceToRemoveCount[WHITE] > 0 ||
-        pieceToRemoveCount[BLACK] > 0) {
+        pieceInHandCount[BLACK] > 0 ||
+        ((pieceToRemoveCount[WHITE] < 0 ? -pieceToRemoveCount[WHITE] :
+                                          pieceToRemoveCount[WHITE]) > 0) ||
+        ((pieceToRemoveCount[BLACK] < 0 ? -pieceToRemoveCount[BLACK] :
+                                          pieceToRemoveCount[BLACK]) > 0)) {
         return false;
     }
 
@@ -1334,7 +1347,8 @@ bool Position::check_if_game_is_over()
         }
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] > 0 ||
+        pieceToRemoveCount[sideToMove] < 0) {
         action = Action::remove;
     }
 
@@ -1395,8 +1409,8 @@ inline void Position::calculate_removal_based_on_mill_counts()
     int blackRemove = 1;
 
     if (whiteMills == 0 && blackMills == 0) {
-        whiteRemove = 1;
-        blackRemove = 1;
+        whiteRemove = -1;
+        blackRemove = -1;
     } else if (whiteMills > 0 && blackMills == 0) {
         whiteRemove = 2;
         blackRemove = 1;
@@ -1445,7 +1459,8 @@ inline void Position::set_side_to_move(Color c)
         action = Action::place;
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] > 0 ||
+        pieceToRemoveCount[sideToMove] < 0) {
         action = Action::remove;
     }
 }

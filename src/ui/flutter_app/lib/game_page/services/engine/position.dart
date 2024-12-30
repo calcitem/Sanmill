@@ -483,8 +483,8 @@ class Position {
 
     // Parts 8-9: Need to remove
     counts = parts.getRange(8, 10).map(int.parse).toList();
-    if (counts.any((int count) => count < 0 || count > 3)) {
-      logger.e('Invalid need to remove count. Must be 0, 1, 2, or 3.');
+    if (counts.any((int count) => count < -7 || count > 7)) {
+      logger.e('Invalid need to remove count. Must be between -7 and 7.');
       return false;
     }
 
@@ -751,8 +751,8 @@ class Position {
       if (n == 0) {
         // If no Mill
 
-        if (pieceToRemoveCount[PieceColor.white]! > 0 ||
-            pieceToRemoveCount[PieceColor.black]! > 0) {
+        if (pieceToRemoveCount[PieceColor.white]! != 0 ||
+            pieceToRemoveCount[PieceColor.black]! != 0) {
           logger.e("[position] putPiece: pieceToRemoveCount is not 0.");
           return false;
         }
@@ -1041,13 +1041,16 @@ class Position {
       return const IllegalAction();
     }
 
-    if (pieceToRemoveCount[sideToMove]! <= 0) {
+    if (pieceToRemoveCount[sideToMove]! == 0) {
       return const NoPieceToRemove();
-    }
-
-    // If piece is not their
-    if (!(sideToMove.opponent == _board[s])) {
-      return const CanNotRemoveSelf();
+    } else if (pieceToRemoveCount[sideToMove]! > 0) {
+      if (!(sideToMove.opponent == _board[s])) {
+        return const CanNotRemoveSelf();
+      }
+    } else {
+      if (!(sideToMove == _board[s])) {
+        return const ShouldRemoveSelf();
+      }
     }
 
     if (isStalemateRemoval(sideToMove)) {
@@ -1089,7 +1092,12 @@ class Position {
 
     _currentSquare[sideToMove] = 0;
 
-    pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! - 1;
+    if (pieceToRemoveCount[sideToMove]! > 0) {
+      pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! - 1;
+    } else {
+      pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! + 1;
+    }
+
     _updateKeyMisc();
 
     // Need to remove rest pieces.
@@ -1156,8 +1164,8 @@ class Position {
     if (phase != Phase.placing ||
         pieceInHandCount[PieceColor.white]! > 0 ||
         pieceInHandCount[PieceColor.black]! > 0 ||
-        pieceToRemoveCount[PieceColor.white]! > 0 ||
-        pieceToRemoveCount[PieceColor.black]! > 0) {
+        pieceToRemoveCount[PieceColor.white]!.abs() > 0 ||
+        pieceToRemoveCount[PieceColor.black]!.abs() > 0) {
       return false;
     }
 
@@ -1288,7 +1296,8 @@ class Position {
       }
     }
 
-    if (pieceToRemoveCount[sideToMove]! > 0) {
+    if (pieceToRemoveCount[sideToMove]! > 0 ||
+        pieceToRemoveCount[sideToMove]! < 0) {
       action = Act.remove;
     }
 
@@ -1321,8 +1330,8 @@ class Position {
     int blackRemove = 1;
 
     if (whiteMills == 0 && blackMills == 0) {
-      whiteRemove = 1;
-      blackRemove = 1;
+      whiteRemove = -1;
+      blackRemove = -1;
     } else if (whiteMills > 0 && blackMills == 0) {
       whiteRemove = 2;
       blackRemove = 1;
@@ -1372,10 +1381,9 @@ class Position {
       logger.e("[position] setSideToMove: Invalid pieceInHandCount.");
     }
 
-    if (pieceToRemoveCount[sideToMove]! > 0) {
+    if (pieceToRemoveCount[sideToMove]! > 0 ||
+        pieceToRemoveCount[sideToMove]! < 0) {
       action = Act.remove;
-    } else if (pieceToRemoveCount[sideToMove]! < 0) {
-      logger.e("[position] setSideToMove: Invalid pieceToRemoveCount.");
     }
   }
 
@@ -1723,13 +1731,6 @@ extension SetupPosition on Position {
         pos.pieceToRemoveCount[PieceColor.white]!;
     pieceToRemoveCount[PieceColor.black] =
         pos.pieceToRemoveCount[PieceColor.black]!;
-
-    if (pieceToRemoveCount[PieceColor.white]! < 0 ||
-        pieceToRemoveCount[PieceColor.black]! < 0) {
-      logger.e(
-        "[position] copyWith: pieceToRemoveCount is less than 0.",
-      );
-    }
 
     isNeedStalemateRemoval = pos.isNeedStalemateRemoval;
     isStalemateRemoving = pos.isStalemateRemoving;

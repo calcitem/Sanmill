@@ -1527,5 +1527,7 @@
   "removalBasedOnMillCounts_Detail": "Deaktiver fjerning til alle brikker er plassert. Spillerne fjerner brikker basert på antall møller: hvis det er likt, fjerner begge samme antall brikker; hvis en har flere, fjerner vedkommende én ekstra brikke og opprettholder én brikkes forskjell. Hvis bare én danner en mølle, fjerner denne spilleren to brikker, mens den andre fjerner én. Hvis ingen danner en mølle, fjerner begge én brikke.",
   "@removalBasedOnMillCounts_Detail": {},
   "elfilja": "ELFilja",
-  "@elfilja": {}
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Velg en av dine brikker.",
+  "@tipSelectOwnPiece": {}
 }
