@@ -400,9 +400,9 @@ class NerenchiRuleSettings extends RuleSettings {
         );
 }
 
-/// ELFilja rules in Algeria and parts of Morocco
+/// El Filja rules in Algeria and parts of Morocco
 ///
-/// Those rules are the ELFilja rules.
+/// Those rules are the El Filja rules.
 class ELFiljaRuleSettings extends RuleSettings {
   const ELFiljaRuleSettings()
       : super(
@@ -430,7 +430,8 @@ const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.daSanQi: 'Da San Qi, another Chinese strategic variant.',
   RuleSet.mulMulan: 'Mul-Mulan, a Indonesian variation of the game.',
   RuleSet.nerenchi: 'Nerenchi, a Sri Lankan adaptation of the game.',
-  RuleSet.elfilja: 'ELFilja, a variant played in Algeria and parts of Morocco.',
+  RuleSet.elfilja:
+      'El Filja, a variant played in Algeria and parts of Morocco.',
 };
 
 /// Rule Set Properties (e.g., Number of Pieces and Rule Settings)

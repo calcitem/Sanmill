@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Tiltsd meg a bábuk eltávolítását, amíg minden bábu a táblára nem kerül, majd a malmok száma alapján távolíts el bábukat: ha megegyezik, mindkét fél ugyanannyi bábut távolít el; ha az egyiknek több van, akkor egy bábuval többet távolít el, hogy megmaradjon az egy bábu különbség. Ha csak az egyik alakít ki malmokat, akkor ő két bábut távolít el, a másik pedig egyet. Ha egyik sem alakít ki malmot, mindkét fél egy-egy bábut távolít el.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Válassz egyet a bábuid közül.",
   "@tipSelectOwnPiece": {}

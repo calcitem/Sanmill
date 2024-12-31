@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Onemogućite uklanjanje dok sve figure ne budu postavljene. Igrači uklanjaju figure na osnovu broja mlinova: ako je broj jednak, oba uklanjaju isti broj figura; ako jedan ima više, uklanja dodatnu figuru da zadrži razliku od jedne figure. Ako samo jedan formira mlin, uklanja dve figure, a drugi jednu. Ako nijedan ne formira mlin, oba uklanjaju po jednu figuru.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ЕЛФилја",
+  "elfilja": "Ел Фиљџа",
   "@elfilja": {},
   "tipSelectOwnPiece": "Изаберите једну од својих фигура.",
   "@tipSelectOwnPiece": {}

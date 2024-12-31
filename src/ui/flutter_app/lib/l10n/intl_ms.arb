@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Lumpuhkan penyingkiran sehingga semua kepingan diletakkan. Pemain menyingkirkan kepingan berdasarkan bilangan kilang: jika sama, kedua-duanya menyingkirkan jumlah kepingan yang sama; jika seorang mempunyai lebih, dia menyingkirkan satu keping tambahan, mengekalkan perbezaan satu keping. Jika hanya seorang berjaya membentuk kilang, dia menyingkirkan dua kepingan manakala yang lain menyingkirkan satu. Jika tiada sesiapa membentuk kilang, kedua-duanya menyingkirkan satu keping.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Pilih salah satu buah catur anda.",
   "@tipSelectOwnPiece": {}

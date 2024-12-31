@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Wyłącz usuwanie do czasu umieszczenia wszystkich pionków. Gracze usuwają pionki na podstawie liczby młynków: jeśli liczba jest równa, obaj gracze usuwają tę samą liczbę pionków; jeśli jeden ma więcej, usuwa dodatkowego pionka, zachowując różnicę jednego pionka. Jeśli tylko jeden utworzy młyn, usuwa dwa pionki, a drugi usuwa jeden. Jeśli żaden nie utworzy młyna, obaj usuwają po jednym pionku.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Wybierz jedną ze swoich figur.",
   "@tipSelectOwnPiece": {}

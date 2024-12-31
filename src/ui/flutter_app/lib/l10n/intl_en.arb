@@ -1624,7 +1624,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Disable removal until all pieces have been placed, then remove pieces based on mill counts: if they are equal, both remove the same number; if one has more, they remove one extra, keeping a one-piece difference. If only one forms mills, they remove two pieces, and the other removes one. If neither forms mills, both remove one of their own pieces.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Select one of your pieces.",
   "@tipSelectOwnPiece": {}

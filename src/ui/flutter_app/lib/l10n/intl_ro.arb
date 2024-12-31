@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Dezactivați îndepărtarea până când toate piesele sunt plasate. Jucătorii îndepărtează piesele pe baza numărului de mori: dacă este egal, ambii îndepărtează același număr de piese; dacă unul are mai multe, îndepărtează o piesă în plus, menținând o diferență de o piesă. Dacă doar unul formează o moară, acesta îndepărtează două piese, iar celălalt îndepărtează una. Dacă niciunul nu formează o moară, ambii îndepărtează câte o piesă.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Selectează una dintre piesele tale.",
   "@tipSelectOwnPiece": {}

@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Schakel het verwijderen uit totdat alle stukken zijn geplaatst. Spelers verwijderen stukken op basis van het aantal molens: als het gelijk is, verwijderen beide spelers hetzelfde aantal stukken; als de één er meer heeft, verwijdert hij een extra stuk, waarmee het verschil op één stuk blijft. Als slechts één speler een molen vormt, verwijdert hij twee stukken, terwijl de andere speler er één verwijdert. Als geen van beide een molen vormt, verwijderen beide spelers één stuk.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Selecteer een van je stukken.",
   "@tipSelectOwnPiece": {}

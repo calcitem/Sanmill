@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Atspējot noņemšanu, līdz visas figūras ir novietotas. Spēlētāji noņem figūras, pamatojoties uz dzirnavu skaitu: ja skaits ir vienāds, abi noņem vienādu skaitu figūru; ja vienam ir vairāk, tas noņem vienu papildu figūru, saglabājot starpību vienas figūras apjomā. Ja tikai viens spēlētājs izveido dzirnavas, viņš noņem divas figūras, bet otrs noņem vienu. Ja neviens neizveido dzirnavas, abi noņem pa vienai figūrai.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Izvēlies vienu no savām figūrām.",
   "@tipSelectOwnPiece": {}

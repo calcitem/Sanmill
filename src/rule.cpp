@@ -78,7 +78,7 @@ const Rule RULES[N_RULES] = {
      BoardFullAction::firstAndSecondPlayerRemovePiece,
      StalemateAction::removeOpponentsPieceAndMakeNextMove, true, 100, 100,
      true},
-    {"ELFilja", "ELFilja", 12, 3, 3, false,
+    {"El Filja", "El Filja", 12, 3, 3, false,
      MillFormationActionInPlacingPhase::removalBasedOnMillCounts, false, false,
      false, false, true, false,
      BoardFullAction::firstAndSecondPlayerRemovePiece,

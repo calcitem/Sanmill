@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Inaktivera borttagning tills alla pjäser är placerade. Spelarna tar bort pjäser baserat på antalet möllor: om antalet är lika tar båda bort samma antal pjäser; om den ena har fler tar denne bort en extra pjäs, och behåller en pjäs skillnad. Om bara en spelare bildar en mölla tar den bort två pjäser, medan den andra tar bort en. Om ingen bildar en mölla tar båda bort en pjäs.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Välj en av dina pjäser.",
   "@tipSelectOwnPiece": {}

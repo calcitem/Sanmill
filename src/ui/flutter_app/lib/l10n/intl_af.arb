@@ -1624,7 +1624,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Skakel verwydering uit totdat alle stukke geplaas is. Spelers verwyder stukke op grond van Morabaraba-tellings: as dit gelyk is, verwyder albei dieselfde aantal stukke; as een meer het, verwyder hy een ekstra, met ’n verskil van net één stuk. As slegs een Morabaraba vorm, verwyder daardie speler twee stukke en die ander speler een. As geen speler ’n Morabaraba vorm nie, verwyder albei een stuk.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Kies een van jou stukke.",
   "@tipSelectOwnPiece": {}

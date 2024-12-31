@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Išjunkite šalinimą, kol visi žetonai bus padėti. Žaidėjai šalina žetonus pagal suformuotų malūnų skaičių: jei skaičius vienodas, abu pašalina tiek pat žetonų; jei vienas turi daugiau, pašalina vienu daugiau, išlaikydamas vieno žetono skirtumą. Jei tik vienas žaidėjas suformuoja malūną, jis pašalina du žetonus, o kitas – vieną. Jei nei vienas nesuformuoja malūno, abu pašalina po vieną žetoną.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Pasirinkite vieną iš savo figūrų.",
   "@tipSelectOwnPiece": {}

@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Onemogućite uklanjanje dok svi dijelovi nisu postavljeni. Igrači uklanjaju dijelove na osnovu broja mlinova: ako je broj jednak, oba uklanjaju isti broj dijelova; ako jedan ima više, uklanja dodatni dio i održava razliku od jednog dijela. Ako samo jedan formira mlin, uklanja dva dijela, a drugi uklanja jedan. Ako nijedan ne formira mlin, oba uklanjaju po jedan dio.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Odaberite jednu od svojih figura.",
   "@tipSelectOwnPiece": {}

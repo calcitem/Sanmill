@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "Poista nappuloiden poistaminen käytöstä, kunnes kaikki nappulat on asetettu. Pelaajat poistavat nappuloita myllyjen määrän perusteella: jos ne ovat yhtäsuuret, molemmat poistavat saman määrän nappuloita; jos toisella on enemmän, hän poistaa yhden ylimääräisen nappulan, pitäen eron yhdessä nappulassa. Jos vain yksi muodostaa myllyn, hän poistaa kaksi nappulaa ja toinen poistaa yhden. Jos kumpikaan ei muodosta myllyä, molemmat poistavat yhden nappulan.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "ELFilja",
+  "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Valitse yksi omista nappuloistasi.",
   "@tipSelectOwnPiece": {}
