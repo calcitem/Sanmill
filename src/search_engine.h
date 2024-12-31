@@ -4,6 +4,7 @@
 #define SEARCH_ENGINE_H_INCLUDED
 
 #include <string>
+#include <functional>
 #include "position.h"
 #include "misc.h"
 
@@ -31,7 +32,14 @@ public:
     // Timeout check
     bool is_timeout(TimePoint startTime);
 
+    std::atomic_bool searchAborted {false};
+
+    /// Returns the singleton instance of SearchEngine
+    static SearchEngine &getInstance();
+
 private:
+    // Singleton instance
+    static SearchEngine instance;
     Depth originDepth {0};
     Move bestMove {MOVE_NONE};
     Value bestvalue {VALUE_ZERO};

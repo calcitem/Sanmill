@@ -9,6 +9,7 @@
 #include "tt.h"
 #include "thread.h"
 #include "thread_pool.h"
+#include "search_engine.h"
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #include "perfect_adaptor.h"
@@ -23,12 +24,11 @@ void Search::init() noexcept { }
 /// Search::clear() resets search state to its initial value
 void Search::clear()
 {
-    Threads.main()->wait_for_search_finished();
+    Threads.stop_all();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
 #endif
-    Threads.clear();
 }
 
 vector<Key> posKeyHistory;
@@ -100,7 +100,8 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->undo_move(ss);
 
         // Check for search abortion
-        if (Threads.stop.load(std::memory_order_relaxed)) {
+        if (SearchEngine().getInstance().searchAborted.load(
+                std::memory_order_relaxed)) {
             return VALUE_ZERO;
         }
 
@@ -130,7 +131,8 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     // Check for terminal position or search abortion
     if (unlikely(pos->phase == Phase::gameOver) ||
-        Threads.stop.load(std::memory_order_relaxed)) {
+        SearchEngine().getInstance().searchAborted.load(
+            std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // Adjust evaluation to prefer quicker wins or slower losses
@@ -300,7 +302,8 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         pos->undo_move(ss);
 
         // Check for search abortion
-        if (Threads.stop.load(std::memory_order_relaxed))
+        if (SearchEngine().getInstance().searchAborted.load(
+                std::memory_order_relaxed))
             return VALUE_ZERO;
 
         // Update best value and best move if necessary

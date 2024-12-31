@@ -25,6 +25,7 @@
 #include "uci.h"
 #include "tt.h"
 #include "mills.h"
+#include "search.h"
 
 using std::string;
 

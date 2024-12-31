@@ -3,85 +3,47 @@
 #ifndef THREAD_H_INCLUDED
 #define THREAD_H_INCLUDED
 
-#include "config.h"
-
+#include <thread>
 #include <atomic>
 #include <condition_variable>
-#include <string>
-#include <vector>
-#include <memory> // For smart pointers
+#include <functional>
+#include "task_queue.h"
 
-#include "movepick.h"
-#include "position.h"
-#include "search.h"
-#include "thread_win32_osx.h"
-#include "search_engine.h"
-
-#ifdef OPENING_BOOK
-#include "opening_book.h"
-#endif // OPENING_BOOK
-
-#ifdef QT_GUI_LIB
-#include <QObject>
-#endif // QT_GUI_LIB
-
-using std::string;
-
-class SearchEngine;
-struct ThreadPool;
-
-/// Thread class keeps together all the thread-related stuff.
 class Thread
-#ifdef QT_GUI_LIB
-    : public QObject
-#endif
 {
 public:
-    std::mutex mutex;
-    std::condition_variable cv;
-    size_t idx;
-    bool exit = false, searching = true; // Set before starting std::thread
-    NativeThread stdThread;
-    std::unique_ptr<SearchEngine> searchEngine;
+    explicit Thread(size_t index, TaskQueue &taskQueue)
+        : idx(index)
+        , taskQueue_(taskQueue)
+        , worker_(&Thread::idle_loop, this)
+    {
+        idx = index;
+    }
 
-    explicit Thread(size_t n
-#ifdef QT_GUI_LIB
-                    ,
-                    QObject *parent = nullptr
-#endif
-    );
-#ifdef QT_GUI_LIB
-    ~Thread() override;
-#else
-    virtual ~Thread();
-#endif
-    static void clear() noexcept;
-    void idle_loop();
-    void start_searching();
-    void wait_for_search_finished();
+    ~Thread()
+    {
+        if (worker_.joinable())
+            worker_.join();
+    }
 
-    void pause();
-
-    void setAi(Position *p);
-    void setAi(Position *p, int time);
-
-    int getTimeLimit() const { return timeLimit; }
-
-    Color us {WHITE};
-
-#ifdef QT_GUI_LIB
-    Q_OBJECT
-
-public:
-signals:
-#else
-public:
-#endif // QT_GUI_LIB
+    Thread(const Thread &) = delete;
+    Thread &operator=(const Thread &) = delete;
 
 private:
-    int timeLimit;
-};
+    void idle_loop()
+    {
+        while (true) {
+            std::function<void()> task;
+            if (!taskQueue_.pop(task)) {
+                return;
+            }
+            task();
+        }
+    }
 
-extern ThreadPool Threads;
+    size_t idx;
+    TaskQueue &taskQueue_;
+    std::thread worker_;
+};
 
 #endif // THREAD_H_INCLUDED

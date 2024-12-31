@@ -26,8 +26,12 @@
 #include "mills.h"
 #include "position.h"
 #include "thread.h"
+#include "search_engine.h"
 
 using std::string;
+using std::vector;
+
+extern vector<Key> posKeyHistory;
 
 namespace Zobrist {
 constexpr int KEY_MISC_BIT = 2;
@@ -270,7 +274,7 @@ Position::Position()
 /// This function is not very robust - make sure that input FENs are correct,
 /// this is assumed to be the responsibility of the GUI.
 
-Position &Position::set(const string &fenStr, Thread *th)
+Position &Position::set(const string &fenStr)
 {
     /*
        A FEN string defines a particular position using only the ASCII character
@@ -408,8 +412,6 @@ Position &Position::set(const string &fenStr, Thread *th)
         isStalemateRemoving = true;
     }
 #endif
-
-    thisThread = th;
 
     return *this;
 }
@@ -692,6 +694,8 @@ bool Position::reset()
     }
 
     record[0] = '\0';
+
+    SearchEngine().getInstance().searchAborted.store(false); // TODO: Right?
 
     return true;
 }

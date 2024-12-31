@@ -230,7 +230,12 @@
         "algorithm": "cpp",
         "*.h": "cpp",
         "*.c": "c",
-        "*.cpp": "cpp"
+        "*.cpp": "cpp",
+        "__assertion_handler": "cpp",
+        "format": "cpp",
+        "version": "cpp",
+        "forward_list": "cpp",
+        "functional": "cpp"
     },
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/src",

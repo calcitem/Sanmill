@@ -72,6 +72,7 @@ using std::ofstream;
 using std::setfill;
 using std::setw;
 using std::streambuf;
+using std::string;
 using std::stringstream;
 
 namespace {

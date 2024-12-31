@@ -18,6 +18,7 @@
 #include "bitboard.h"
 #include "option.h"
 #include "thread.h"
+#include "position.h"
 
 namespace {
 

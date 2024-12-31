@@ -32,6 +32,7 @@
 #include "rule.h"
 #include "stack.h"
 #include "types.h"
+#include "movegen.h"
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
 #include <ostream>
@@ -80,7 +81,7 @@ public:
     // Position &operator=(const Position &) = delete;
 
     // FEN string input/output
-    Position &set(const std::string &fenStr, Thread *th);
+    Position &set(const std::string &fenStr);
     std::string fen() const;
 #ifdef NNUE_GENERATE_TRAINING_DATA
     string Position::nnueGetOpponentGameResult();
@@ -115,7 +116,6 @@ public:
     // Other properties of the position
     Color side_to_move() const;
     int game_ply() const;
-    Thread *this_thread() const;
     bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
     unsigned int rule50_count() const;
@@ -314,11 +314,6 @@ inline int Position::game_ply() const
 inline unsigned int Position::rule50_count() const
 {
     return st.rule50;
-}
-
-inline Thread *Position::this_thread() const
-{
-    return thisThread;
 }
 
 inline bool Position::select_piece(File f, Rank r)

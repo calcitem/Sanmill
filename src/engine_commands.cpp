@@ -7,9 +7,13 @@
 #include "thread_pool.h"
 #include "position.h"
 #include "uci.h"
+#include "search_engine.h"
 
+#include <string>
 #include <cstring>
 #include <cassert>
+
+using std::string;
 
 extern ThreadPool Threads;
 namespace EngineCommands {
@@ -86,20 +90,18 @@ void go(Position *pos)
 begin:
 #endif
 
-    Threads.start_thinking(pos);
+    Threads.submit([pos]() {
+        SearchEngine().getInstance().setRootPosition(pos);
+        SearchEngine().getInstance().runSearch();
+    });
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
         // TODO(calcitem)
-        while (true) {
-            if (Threads.main()->searching == true) {
-                continue;
-            }
+        Threads.stop_all();
 
-            pos->set(StartFEN, Threads.main());
-            Threads.main()->us = WHITE; // WAR
-            break;
-        }
+        Threads.set(1);
+        go(pos);
 #else
         return;
 #endif
@@ -135,7 +137,7 @@ void position(Position *pos, std::istringstream &is)
 
     posKeyHistory.clear();
 
-    pos->set(fen, Threads.main());
+    pos->set(fen);
 
     // Parse move list (if any)
     while (is >> token && (UCI::to_move(pos, token)) != MOVE_NONE) {
@@ -148,8 +150,8 @@ void position(Position *pos, std::istringstream &is)
         }
     }
 
-    // TODO(calcitem): Stockfish does not have this
-    Threads.main()->us = pos->sideToMove;
+    // TODO: 旧的做法：Threads.main()->us = pos->sideToMove;
+    // 新模型下已无此概念，如有需要，请自行保存/处理。
 }
 
 } // namespace EngineCommands

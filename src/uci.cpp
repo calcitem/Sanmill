@@ -8,6 +8,7 @@
 #include "thread_pool.h"
 #include "uci.h"
 #include "misc.h"
+#include "search_engine.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"
@@ -33,7 +34,7 @@ void initialize_engine(Position *pos)
 {
     // Delegate initialization to EngineCommands
     EngineCommands::initialize_start_fen();
-    pos->set(EngineCommands::StartFEN, Threads.main());
+    pos->set(EngineCommands::StartFEN);
 }
 
 // setoption() is called when engine receives the "setoption" UCI command. The
@@ -98,15 +99,20 @@ void UCI::loop(int argc, char *argv[])
         token.clear(); // Avoid a stale if getline() returns empty or blank line
         is >> skipws >> token;
 
-        if (token == "quit" || token == "stop")
-            Threads.stop = true;
+        if (token == "quit" || token == "stop") {
+            SearchEngine().getInstance().searchAborted.store(true); // TODO: Right?
+            // Threads.stop_all(); // Stop all tasks
+        }
 
         // The GUI sends 'ponderhit' to tell us the user has played the expected
         // move. So 'ponderhit' will be sent if we were told to ponder on the
         // same move the user has played. We should continue searching but
         // switch from pondering to normal search.
-        else if (token == "ponderhit")
-            Threads.main()->ponder = false; // Switch to normal search
+        else if (token == "ponderhit") {
+            Threads.submit([]() {
+                // Add logic to handle "ponderhit" if needed
+            });
+        }
 
         else if (token == "uci")
             sync_cout << "id name " << engine_info(true) << "\n"

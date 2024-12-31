@@ -8,15 +8,26 @@
 #include "mcts.h"
 #include "perfect_api.h"
 #include "tt.h"
+#include "movegen.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
+#include <string>
+
+using std::string;
 
 #ifdef FLUTTER_UI
 #include "engine_main.h"
 #endif
 
+SearchEngine SearchEngine::instance;
+
 SearchEngine::SearchEngine() { }
+
+SearchEngine &SearchEngine::getInstance()
+{
+    return instance;
+}
 
 void SearchEngine::emitCommand()
 {

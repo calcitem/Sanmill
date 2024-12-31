@@ -3,61 +3,46 @@
 #ifndef THREAD_POOL_H_INCLUDED
 #define THREAD_POOL_H_INCLUDED
 
-#include "config.h"
-
-#include <atomic>
-#include <condition_variable>
-#include <string>
 #include <vector>
-#include <memory> // For smart pointers
-
-#include "movepick.h"
-#include "position.h"
-#include "search.h"
+#include <memory>
 #include "thread.h"
-#include "thread_win32_osx.h"
-#include "search_engine.h"
+#include "task_queue.h"
 
-#ifdef QT_GUI_LIB
-#include <QObject>
-#endif // QT_GUI_LIB
-
-using std::string;
-
-class SearchEngine;
-
-/// MainThread is a derived class specific for main thread
-
-struct MainThread final : Thread
+class ThreadPool
 {
-    using Thread::Thread;
+public:
+    ThreadPool() = default;
+    ~ThreadPool() { stop_all(); }
 
-    bool stopOnPonderhit {false};
-    std::atomic_bool ponder {false};
-};
+    void set(size_t n)
+    {
+        stop_all();
+        taskQueue_ = std::make_unique<TaskQueue>();
+        for (size_t i = 0; i < n; ++i) {
+            threads_.emplace_back(std::make_unique<Thread>(i, *taskQueue_));
+        }
+    }
 
-/// ThreadPool struct handles all the threads-related stuff like init, starting,
-/// parking and, most importantly, launching a thread. All the access to threads
-/// is done through this class.
+    void submit(std::function<void()> fn)
+    {
+        if (taskQueue_) {
+            taskQueue_->push(std::move(fn));
+        }
+    }
 
-struct ThreadPool : std::vector<Thread *>
-{
-    void start_thinking(Position *, bool = false);
-    void clear() const;
-    void set(size_t);
-
-    MainThread *main() const { return dynamic_cast<MainThread *>(front()); }
-
-    std::atomic_bool stop, increaseDepth;
+    void stop_all()
+    {
+        if (taskQueue_) {
+            taskQueue_->stop();
+        }
+        threads_.clear();
+    }
 
 private:
-    uint64_t accumulate(std::atomic<uint64_t> Thread::*member) const noexcept
-    {
-        uint64_t sum = 0;
-        for (const Thread *th : *this)
-            sum += (th->*member).load(std::memory_order_relaxed);
-        return sum;
-    }
+    std::vector<std::unique_ptr<Thread>> threads_;
+    std::unique_ptr<TaskQueue> taskQueue_;
 };
+
+extern ThreadPool Threads;
 
 #endif // THREAD_POOL_H_INCLUDED
