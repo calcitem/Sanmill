@@ -2,6 +2,7 @@
 
 #include <iomanip>
 #include <sstream>
+#include <iostream>
 #include <string>
 #include <utility>
 
@@ -10,6 +11,7 @@
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
+#include "tt.h"
 #include "search_engine.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -123,7 +125,8 @@ void Thread::idle_loop()
         lk.unlock();
 
         // Note: Stockfish doesn't have this
-        if (rootPos == nullptr || rootPos->side_to_move() != us) {
+        if (searchEngine->rootPos == nullptr ||
+            searchEngine->rootPos->side_to_move() != us) {
             continue;
         }
 
@@ -135,10 +138,11 @@ void Thread::idle_loop()
             searchEngine->emitCommand(); // Changed
         } else {
 #endif
-            const int ret = search();
+            const int ret = searchEngine->executeSearch();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
-            nnueTrainingDataBestValue = rootPos->side_toMove == WHITE ?
+            nnueTrainingDataBestValue = searchEngine->rootPos->side_toMove ==
+                                                WHITE ?
                                             bestvalue :
                                             -bestvalue;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
@@ -166,7 +170,7 @@ void Thread::setAi(Position *p)
 {
     std::lock_guard lk(mutex);
 
-    this->rootPos = p;
+    searchEngine->rootPos = p;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -180,15 +184,4 @@ void Thread::setAi(Position *p, int time)
     setAi(p);
 
     timeLimit = time;
-}
-
-Depth Thread::get_depth() const
-{
-    return Mills::get_search_depth(rootPos);
-}
-
-string Thread::get_value() const
-{
-    string value = std::to_string(bestvalue);
-    return value;
 }

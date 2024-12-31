@@ -2,6 +2,7 @@
 
 #include "engine_controller.h"
 
+#include <iostream>
 #include <sstream>
 #include <string>
 

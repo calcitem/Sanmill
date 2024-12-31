@@ -57,13 +57,10 @@ public:
 #else
     virtual ~Thread();
 #endif
-    int search();
     static void clear() noexcept;
     void idle_loop();
     void start_searching();
     void wait_for_search_finished();
-
-    Position *rootPos {nullptr};
 
     // Mill Game
 
@@ -100,13 +97,6 @@ public:
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-    Depth originDepth {0};
-
-    Move bestMove {MOVE_NONE};
-    Value bestvalue {VALUE_ZERO};
-    Value lastvalue {VALUE_ZERO};
-    AiMoveType aiMoveType {AiMoveType::unknown};
-
     Color us {WHITE};
 
 private:
@@ -121,7 +111,7 @@ signals:
 public:
 #endif // QT_GUI_LIB
 
-private:
+public:
     std::unique_ptr<SearchEngine> searchEngine;
 };
 

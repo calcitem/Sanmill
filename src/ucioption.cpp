@@ -23,6 +23,7 @@
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
+#include "tt.h"
 #include "mills.h"
 
 using std::string;

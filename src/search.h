@@ -1,21 +1,4 @@
-// This file is part of Sanmill.
-// See AUTHORS file for the list of contributors.
-//
-// Copyright (C) 2004-2024 The Stockfish developers
-// Copyright (C) 2019-2024 The Sanmill developers
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// search.h
 
 #ifndef SEARCH_H_INCLUDED
 #define SEARCH_H_INCLUDED
@@ -23,6 +6,10 @@
 #include <vector>
 
 #include "endgame.h"
+#include "position.h"
+#include "types.h"
+#include "misc.h"
+#include "stack.h"
 
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
@@ -35,10 +22,25 @@ namespace Search {
 void init() noexcept;
 void clear();
 
-} // namespace Search
+// Search algorithms
+Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
+           Depth depth, Depth originDepth, Move &bestMove);
 
-#include "tt.h"
+Value pvs(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+          Depth originDepth, Value alpha, Value beta, Move &bestMove, int i,
+          const Color before, const Color after);
+
+Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+             Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+Value random_search(Position *pos, Move &bestMove);
+
+// Quiescence Search
+Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+} // namespace Search
 
 extern vector<Key> posKeyHistory;
 
-#endif // #ifndef SEARCH_H_INCLUDED
+#endif // SEARCH_H_INCLUDED

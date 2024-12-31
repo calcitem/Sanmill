@@ -20,6 +20,7 @@
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
+#include <iostream>
 
 #ifdef FLUTTER_UI
 #include "engine_main.h"

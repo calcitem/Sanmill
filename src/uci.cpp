@@ -1,11 +1,13 @@
 // uci.cpp
 
+#include <iostream>
 #include <sstream>
 #include <vector>
 
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
+#include "misc.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"

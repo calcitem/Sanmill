@@ -2,6 +2,7 @@
 
 #include "thread_pool.h"
 #include "uci.h"
+#include "tt.h"
 
 /// ThreadPool::set() creates/destroys threads to match the requested number.
 /// Created and launched threads will immediately go to sleep in idle_loop.
@@ -65,7 +66,7 @@ void ThreadPool::start_thinking(Position *pos, bool ponderMode)
         // held 1 out of 2 times (1 of these accesses strongly imply that it is
         // necessary).
         std::lock_guard lk(th->mutex);
-        th->rootPos = pos;
+        main()->searchEngine->rootPos = pos;
     }
 
     main()->start_searching();

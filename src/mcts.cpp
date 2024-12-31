@@ -32,12 +32,6 @@
 #include "types.h"
 #include "uci.h"
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
-           Depth depth, Depth originDepth, Move &bestMove);
-
-Value search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-             Depth originDepth, Value alpha, Value beta, Move &bestMove);
-
 using namespace std;
 
 class ThreadSafeNodeVisits
@@ -211,8 +205,8 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = search(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
-                         -VALUE_INFINITE, VALUE_INFINITE, bestMove);
+    Value value = Search::search(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
+                                 -VALUE_INFINITE, VALUE_INFINITE, bestMove);
 
     return value > 0;
 }
