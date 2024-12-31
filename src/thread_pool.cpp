@@ -4,3 +4,5 @@
 #include "uci.h"
 #include "tt.h"
 #include "search.h"
+
+ThreadPool Threads; // Global object

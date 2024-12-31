@@ -28,5 +28,3 @@
 
 using std::cout;
 using std::string;
-
-ThreadPool Threads; // Global object

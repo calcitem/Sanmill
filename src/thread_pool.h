@@ -12,7 +12,9 @@ class ThreadPool
 {
 public:
     ThreadPool() = default;
-    ~ThreadPool() { stop_all(); }
+    ~ThreadPool() {
+        stop_all();
+    }
 
     void set(size_t n)
     {
