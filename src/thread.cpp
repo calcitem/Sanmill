@@ -130,36 +130,7 @@ void Thread::idle_loop()
             continue;
         }
 
-#ifdef OPENING_BOOK
-        // Use Opening Book module to get the best move string
-        if (OpeningBook::has_moves()) {
-            searchEngine->getBestMoveFromOpeningBook();
-            searchEngine->emitCommand();
-        } else {
-#endif
-            const int ret = searchEngine->executeSearch();
-
-#ifdef NNUE_GENERATE_TRAINING_DATA
-            nnueTrainingDataBestValue = searchEngine->rootPos->side_toMove ==
-                                                WHITE ?
-                                            searchEngine->getBestValue() :
-                                            -searchEngine->getBestValue();
-#endif /* NNUE_GENERATE_TRAINING_DATA */
-
-            if (ret == 3 || ret == 50 || ret == 10) {
-                debugPrintf("Draw\n\n");
-                searchEngine->setBestMoveString("draw");
-                searchEngine->emitCommand();
-            } else {
-                searchEngine->setBestMoveString(searchEngine->next_move());
-                if (!searchEngine->getBestMoveString().empty() &&
-                    searchEngine->getBestMoveString() != "error!") {
-                    searchEngine->emitCommand();
-                }
-            }
-#ifdef OPENING_BOOK
-        }
-#endif
+        searchEngine->runSearch();
     }
 }
 

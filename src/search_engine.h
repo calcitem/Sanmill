@@ -25,6 +25,8 @@ public:
     void setBestMoveString(const std::string &move);
     void getBestMoveFromOpeningBook();
 
+    void runSearch();
+
     Position *rootPos {nullptr};
     // Timeout check
     bool is_timeout(TimePoint startTime);

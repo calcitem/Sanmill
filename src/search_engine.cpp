@@ -588,3 +588,37 @@ out:
 
     return 0;
 }
+
+void SearchEngine::runSearch()
+{
+#ifdef OPENING_BOOK
+    // Use Opening Book module to get the best move string
+    if (OpeningBook::has_moves()) {
+        getBestMoveFromOpeningBook();
+        emitCommand();
+    } else {
+#endif
+        int ret = executeSearch();
+
+#ifdef NNUE_GENERATE_TRAINING_DATA
+        extern Value nnueTrainingDataBestValue;
+        nnueTrainingDataBestValue = rootPos->side_to_move() == WHITE ?
+                                        getBestValue() :
+                                        -getBestValue();
+#endif /* NNUE_GENERATE_TRAINING_DATA */
+
+        if (ret == 3 || ret == 50 || ret == 10) {
+            debugPrintf("Draw\n\n");
+            setBestMoveString("draw");
+            emitCommand();
+        } else {
+            setBestMoveString(next_move());
+            if (!getBestMoveString().empty() && getBestMoveString() != "error"
+                                                                       "!") {
+                emitCommand();
+            }
+        }
+#ifdef OPENING_BOOK
+    }
+#endif
+}
