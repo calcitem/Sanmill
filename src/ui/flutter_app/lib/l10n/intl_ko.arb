@@ -1526,7 +1526,7 @@
   "@removalBasedOnMillCounts": {},
   "removalBasedOnMillCounts_Detail": "모든 말을 배치할 때까지 제거를 비활성화하십시오. 플레이어는 참고누 개수에 따라 말을 제거합니다. 개수가 같다면, 두 플레이어 모두 동일한 수의 말을 제거합니다. 한 쪽이 더 많다면, 한 말을 추가로 제거하여 말의 차이를 하나로 유지합니다. 한 플레이어만 참고누를 만들었다면, 그 플레이어는 두 말을 제거하고 다른 쪽은 한 말을 제거합니다. 둘 다 참고누를 만들지 못했다면, 둘 다 한 말을 제거합니다.",
   "@removalBasedOnMillCounts_Detail": {},
-  "elfilja": "엘필자",
+  "elfilja": "엘 필자",
   "@elfilja": {},
   "tipSelectOwnPiece": "당신의 말 중 하나를 선택하세요.",
   "@tipSelectOwnPiece": {}
