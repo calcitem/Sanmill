@@ -150,8 +150,7 @@ void position(Position *pos, std::istringstream &is)
         }
     }
 
-    // TODO: 旧的做法：Threads.main()->us = pos->sideToMove;
-    // 新模型下已无此概念，如有需要，请自行保存/处理。
+    // TODO: Old：Threads.main()->us = pos->sideToMove;
 }
 
 } // namespace EngineCommands
