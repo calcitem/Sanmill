@@ -47,7 +47,7 @@ void main() {
         .setMockMethodCallHandler(engineChannel, null);
   });
 
-  group("MillController", () {
+  group("GameController", () {
     test("New game should have the same GameMode", () async {
       const GameMode gameMode = GameMode.humanVsAi;
 

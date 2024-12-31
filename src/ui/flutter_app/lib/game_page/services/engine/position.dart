@@ -1799,7 +1799,7 @@ extension SetupPosition on Position {
     _grid[squareToIndex[s]!] = piece;
     _board[s] = piece;
 
-    //MillController().gameInstance.focusIndex = squareToIndex[s];
+    //GameController().gameInstance.focusIndex = squareToIndex[s];
     SoundManager().playTone(GameController().isPositionSetupMarkedPiece
         ? Sound.remove
         : Sound.place);

@@ -21,14 +21,14 @@ class TapHandler {
     required this.context,
   });
 
-  //final position = MillController().position;
+  //final position = GameController().position;
 
   static const String _logTag = "[Tap Handler]";
 
   final BuildContext context;
 
   final GameController controller = GameController();
-  //final gameMode = MillController().gameInstance.gameMode;
+  //final gameMode = GameController().gameInstance.gameMode;
   final void Function(String tip, {bool snackBar}) showTip =
       GameController().headerTipNotifier.showTip;
 

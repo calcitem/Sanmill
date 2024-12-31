@@ -443,7 +443,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   void dispose() {
     GameController().isDisposed = true;
     GameController().engine.stopSearching();
-    //MillController().engine.shutdown();
+    //GameController().engine.shutdown();
     animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
     _removeValueNotifierListener();

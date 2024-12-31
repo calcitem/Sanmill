@@ -44,7 +44,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     GameController().gameInstance.gameMode = GameMode.setupPosition;
 
     positionBackup = GameController().position.clone();
-    //MillController().position.reset();
+    //GameController().position.reset();
 
     newPieceColor = GameController().position.sideToMove;
 
@@ -72,11 +72,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       newPlaced = DB().ruleSettings.piecesCount;
     } else if (newPhase == Phase.placing) {
       /*
-      int c = MillController().recorder.placeCount;
+      int c = GameController().recorder.placeCount;
 
-      if (MillController().position.sideToMove == PieceColor.white) {
+      if (GameController().position.sideToMove == PieceColor.white) {
         newPlaced = (c + 1) ~/ 2;
-      } else if (MillController().position.sideToMove == PieceColor.black) {
+      } else if (GameController().position.sideToMove == PieceColor.black) {
         newPlaced = c ~/ 2;
       }
       */
@@ -373,7 +373,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     //  then it means that more values should be subtracted.
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
-      //int marked = MillController().position.countPieceOnBoard(PieceColor.marked);
+      //int marked = GameController().position.countPieceOnBoard(PieceColor.marked);
       begin = max(white, black); // TODO: How to use marked?
     } else {
       begin = max(white, black);
@@ -594,7 +594,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   bool setSetupPositionDone() {
     // TODO: set position fen, such as piece etc.
-    //MillController().gameInstance.gameMode = gameModeBackup;
+    //GameController().gameInstance.gameMode = gameModeBackup;
 
     // When the number of pieces is less than 3, it is impossible to be in the Moving Phase.
     if (GameController().position.countPieceOnBoard(PieceColor.white) <
@@ -655,7 +655,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       GameController().reset(force: true);
     }
 
-    //MillController().recorder.clear(); // TODO: Set and parse fen.
+    //GameController().recorder.clear(); // TODO: Set and parse fen.
     final String? fen = position.fen;
     if (fen == null) {
       logger.e("FEN is null.");

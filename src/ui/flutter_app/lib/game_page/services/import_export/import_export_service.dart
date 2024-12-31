@@ -48,11 +48,11 @@ class ImportService {
     }
 
     try {
-      import(data!.text!); // MillController().newRecorder = newHistory;
+      import(data!.text!); // GameController().newRecorder = newHistory;
     } catch (exception) {
       final String tip = S.of(context).cannotImport(data!.text!);
       GameController().headerTipNotifier.showTip(tip);
-      //MillController().animationController.forward();
+      //GameController().animationController.forward();
       Navigator.pop(context);
       return;
     }

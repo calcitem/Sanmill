@@ -544,7 +544,7 @@ class RuleSettingsPage extends StatelessWidget {
     GameController().isControllerActive = false;
     GameController().reset();
 
-    //MillController().engine.shutdown();
+    //GameController().engine.shutdown();
 
     return BlockSemantics(
       child: Scaffold(
