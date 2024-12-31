@@ -24,7 +24,7 @@ void Search::init() noexcept { }
 /// Search::clear() resets search state to its initial value
 void Search::clear()
 {
-    //Threads.stop_all();
+    // Threads.stop_all();
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();

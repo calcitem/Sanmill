@@ -357,6 +357,9 @@ int SearchEngine::executeSearch()
     Value fallbackValue = VALUE_UNKNOWN;
 #endif // GABOR_MALOM_PERFECT_AI
 
+    Move bestMoveSoFar = MOVE_NONE;
+    Value bestValSoFar = VALUE_ZERO;
+
     Value value = VALUE_ZERO;
     const Depth d = get_depth();
 
@@ -443,6 +446,9 @@ int SearchEngine::executeSearch()
         beta = VALUE_INFINITE;
     }
 
+    // ---------------------------------------------------------------------
+    // IDS
+    // ---------------------------------------------------------------------
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
         debugPrintf("IDS: ");
 
@@ -457,9 +463,14 @@ int SearchEngine::executeSearch()
             TranspositionTable::clear();
 #endif
 #endif
+            if (searchAborted.load(std::memory_order_relaxed) ||
+                is_timeout(startTime)) {
+                debugPrintf("originDepth = %d, but break at depth = %d\n",
+                            originDepth, i);
+                break;
+            }
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                // MTD(f) algorithm
                 value = Search::MTDF(rootPos, ss, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
@@ -468,6 +479,11 @@ int SearchEngine::executeSearch()
             } else {
                 value = Search::search(rootPos, ss, i, i, alpha, beta,
                                        bestMove);
+            }
+
+            if (!searchAborted.load(std::memory_order_relaxed)) {
+                bestMoveSoFar = bestMove;
+                bestValSoFar = value;
             }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
@@ -481,8 +497,8 @@ int SearchEngine::executeSearch()
 
 #if defined(GABOR_MALOM_PERFECT_AI)
             if (gameOptions.getUsePerfectDatabase() == true) {
-                value = perfect_search(rootPos, bestMove);
-                if (value != VALUE_UNKNOWN) {
+                Value v2 = perfect_search(rootPos, bestMove);
+                if (v2 != VALUE_UNKNOWN) {
                     debugPrintf("perfect_search OK.\n");
                     debugPrintf("DB bestMove = %s\n",
                                 UCI::move(bestMove).c_str());
@@ -508,12 +524,7 @@ next:
             debugPrintf("%d(%d) ", value, value - lastValue);
 
             lastValue = value;
-
-            if (is_timeout(startTime)) {
-                debugPrintf("originDepth = %d, depth = %d\n", originDepth, i);
-                goto out;
-            }
-        }
+        } // end for
 
 #ifdef TIME_STAT
         timeEnd = std::chrono::steady_clock::now();
@@ -523,7 +534,7 @@ next:
                          .count()
                   << "s\n";
 #endif
-    }
+    } // end if(IDS)
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
@@ -537,46 +548,54 @@ next:
         beta = VALUE_INFINITE;
     }
 
-    if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-        value = Search::MTDF(rootPos, ss, value, originDepth, originDepth,
-                             bestMove);
-    } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
-        value = monte_carlo_tree_search(rootPos, bestMove);
-    } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
-        value = Search::random_search(rootPos, bestMove);
-    } else {
-        value = Search::search(rootPos, ss, d, originDepth, alpha, beta,
-                               bestMove);
+    if (!searchAborted.load(std::memory_order_relaxed)) {
+        if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
+            value = Search::MTDF(rootPos, ss, value, originDepth, originDepth,
+                                 bestMove);
+        } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
+            value = monte_carlo_tree_search(rootPos, bestMove);
+        } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
+            value = Search::random_search(rootPos, bestMove);
+        } else {
+            value = Search::search(rootPos, ss, d, originDepth, alpha, beta,
+                                   bestMove);
+        }
+
+        if (!searchAborted.load(std::memory_order_relaxed)) {
+            bestMoveSoFar = bestMove;
+            bestValSoFar = value;
+        }
     }
 
-    fallbackMove = bestMove;
-    fallbackValue = value;
+#if defined(GABOR_MALOM_PERFECT_AI)
+    fallbackMove = bestMoveSoFar;
+    fallbackValue = bestValSoFar;
+#endif // GABOR_MALOM_PERFECT_AI
+
     aiMoveType = AiMoveType::traditional;
 
-    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMove).c_str());
+    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMoveSoFar).c_str());
 
 #if defined(GABOR_MALOM_PERFECT_AI)
-    if (gameOptions.getUsePerfectDatabase() == true) {
-        value = perfect_search(rootPos, bestMove);
-        if (value != VALUE_UNKNOWN) {
+    if (gameOptions.getUsePerfectDatabase() == true &&
+        !searchAborted.load(std::memory_order_relaxed)) {
+        Value v3 = perfect_search(rootPos, bestMoveSoFar);
+        if (v3 != VALUE_UNKNOWN) {
             debugPrintf("perfect_search OK.\n");
-            debugPrintf("DB bestMove = %s\n", UCI::move(bestMove).c_str());
-            if (bestMove == fallbackMove) {
+            debugPrintf("DB bestMove = %s\n", UCI::move(bestMoveSoFar).c_str());
+            if (bestMoveSoFar == fallbackMove) {
                 aiMoveType = AiMoveType::consensus;
             } else {
                 aiMoveType = AiMoveType::perfect;
             }
-            goto out;
         } else {
             debugPrintf("perfect_search failed.\n");
-            bestMove = fallbackMove;
-            value = fallbackValue;
+            bestMoveSoFar = fallbackMove;
+            bestValSoFar = fallbackValue;
             aiMoveType = AiMoveType::traditional;
         }
     }
 #endif // GABOR_MALOM_PERFECT_AI
-
-out:
 
 #ifdef TIME_STAT
     timeEnd = std::chrono::steady_clock::now();
@@ -595,7 +614,8 @@ out:
 #endif
 
     lastvalue = bestvalue;
-    bestvalue = value;
+    bestvalue = bestValSoFar;
+    bestMove = bestMoveSoFar;
 
     return 0;
 }
