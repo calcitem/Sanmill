@@ -30,10 +30,7 @@ using std::string;
 class SearchEngine;
 struct ThreadPool;
 
-/// Thread class keeps together all the thread-related stuff. We use
-/// per-thread pawn and material hash tables so that once we get
-/// a pointer to an entry its life time is unlimited and we don't have
-/// to care about someone changing the entry under our feet.
+/// Thread class keeps together all the thread-related stuff.
 class Thread
 #ifdef QT_GUI_LIB
     : public QObject
@@ -45,6 +42,7 @@ public:
     size_t idx;
     bool exit = false, searching = true; // Set before starting std::thread
     NativeThread stdThread;
+    std::unique_ptr<SearchEngine> searchEngine;
 
     explicit Thread(size_t n
 #ifdef QT_GUI_LIB
@@ -62,45 +60,14 @@ public:
     void start_searching();
     void wait_for_search_finished();
 
-    // Mill Game
-
-    string bestMoveString;
-
     void pause();
 
     void setAi(Position *p);
     void setAi(Position *p, int time);
 
-    string get_value() const;
-    Depth get_depth() const;
-
     int getTimeLimit() const { return timeLimit; }
 
-#ifdef TIME_STAT
-    TimePoint sortTime {0};
-#endif
-#ifdef CYCLE_STAT
-    stopwatch::rdtscp_clock::time_point sortCycle;
-    stopwatch::timer<std::chrono::system_clock>::duration sortCycle {0};
-    stopwatch::timer<std::chrono::system_clock>::period sortCycle;
-#endif
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t tteCount {0};
-    size_t ttHitCount {0};
-    size_t ttMissCount {0};
-    size_t ttInsertNewCount {0};
-    size_t ttAddrHitCount {0};
-    size_t ttReplaceCozDepthCount {0};
-    size_t ttReplaceCozHashCount {0};
-#endif // TRANSPOSITION_TABLE_DEBUG
-#endif // TRANSPOSITION_TABLE_ENABLE
-
     Color us {WHITE};
-
-private:
-    int timeLimit;
 
 #ifdef QT_GUI_LIB
     Q_OBJECT
@@ -111,8 +78,8 @@ signals:
 public:
 #endif // QT_GUI_LIB
 
-public:
-    std::unique_ptr<SearchEngine> searchEngine;
+private:
+    int timeLimit;
 };
 
 extern ThreadPool Threads;

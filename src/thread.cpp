@@ -47,8 +47,8 @@ Thread::Thread(size_t n
 #endif
     idx(n)
     , stdThread(&Thread::idle_loop, this)
+    , searchEngine(std::make_unique<SearchEngine>())
     , timeLimit(3600)
-    , searchEngine(std::make_unique<SearchEngine>(this))
 {
     wait_for_search_finished();
 }
@@ -133,9 +133,8 @@ void Thread::idle_loop()
 #ifdef OPENING_BOOK
         // Use Opening Book module to get the best move string
         if (OpeningBook::has_moves()) {
-            bestMoveString = OpeningBook::get_best_move();
-            // emitCommand();
-            searchEngine->emitCommand(); // Changed
+            searchEngine->getBestMoveFromOpeningBook();
+            searchEngine->emitCommand();
         } else {
 #endif
             const int ret = searchEngine->executeSearch();
@@ -143,21 +142,19 @@ void Thread::idle_loop()
 #ifdef NNUE_GENERATE_TRAINING_DATA
             nnueTrainingDataBestValue = searchEngine->rootPos->side_toMove ==
                                                 WHITE ?
-                                            bestvalue :
-                                            -bestvalue;
+                                            searchEngine->getBestValue() :
+                                            -searchEngine->getBestValue();
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
             if (ret == 3 || ret == 50 || ret == 10) {
                 debugPrintf("Draw\n\n");
-                bestMoveString = "draw";
-                // emitCommand();
-                searchEngine->emitCommand(); // Changed
+                searchEngine->setBestMoveString("draw");
+                searchEngine->emitCommand();
             } else {
-                // bestMoveString = next_move();
-                bestMoveString = searchEngine->next_move(); // Changed
-                if (bestMoveString != "" && bestMoveString != "error!") {
-                    // emitCommand();
-                    searchEngine->emitCommand(); // Changed
+                searchEngine->setBestMoveString(searchEngine->next_move());
+                if (!searchEngine->getBestMoveString().empty() &&
+                    searchEngine->getBestMoveString() != "error!") {
+                    searchEngine->emitCommand();
                 }
             }
 #ifdef OPENING_BOOK
@@ -170,13 +167,7 @@ void Thread::setAi(Position *p)
 {
     std::lock_guard lk(mutex);
 
-    searchEngine->rootPos = p;
-
-#ifdef TRANSPOSITION_TABLE_ENABLE
-#ifdef CLEAR_TRANSPOSITION_TABLE
-    TranspositionTable::clear();
-#endif
-#endif
+    searchEngine->setRootPosition(p);
 }
 
 void Thread::setAi(Position *p, int time)

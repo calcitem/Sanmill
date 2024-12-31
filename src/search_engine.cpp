@@ -16,9 +16,7 @@
 #include "engine_main.h"
 #endif
 
-SearchEngine::SearchEngine(Thread *thread)
-    : thread(thread)
-{ }
+SearchEngine::SearchEngine() { }
 
 void SearchEngine::emitCommand()
 {
@@ -44,7 +42,7 @@ void SearchEngine::emitCommand()
     }
 
     ss << "info score " << static_cast<int>(bestvalue) << aiMoveTypeStr
-       << " bestmove " << thread->bestMoveString;
+       << " bestmove " << bestMoveString;
 
 #ifdef QT_GUI_LIB
     emit thread->command(ss.str()); // Origin: bestMoveString
@@ -59,7 +57,7 @@ void SearchEngine::emitCommand()
     rootPos->command(ss.str());
     thread->us = rootPos->side_to_move();
 
-    if (thread->bestMoveString.size() > strlen("-(1,2)")) {
+    if (bestMoveString.size() > strlen("-(1,2)")) {
         posKeyHistory.push_back(rootPos->key());
     } else {
         posKeyHistory.clear();
@@ -70,6 +68,35 @@ void SearchEngine::emitCommand()
     analyze(rootPos->side_to_move());
 #endif
 #endif // QT_GUI_LIB
+}
+
+void SearchEngine::setRootPosition(Position *p)
+{
+    rootPos = p;
+
+#ifdef TRANSPOSITION_TABLE_ENABLE
+#ifdef CLEAR_TRANSPOSITION_TABLE
+    TranspositionTable::clear();
+#endif
+#endif
+}
+
+void SearchEngine::setBestMoveString(const std::string &move)
+{
+    bestMoveString = move;
+}
+
+std::string SearchEngine::getBestMoveString() const
+{
+    return bestMoveString;
+}
+
+void SearchEngine::getBestMoveFromOpeningBook()
+{
+#ifdef OPENING_BOOK
+    bestMoveString = OpeningBook::get_best_move();
+    emitCommand();
+#endif
 }
 
 string SearchEngine::get_value() const
