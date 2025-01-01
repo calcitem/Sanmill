@@ -53,8 +53,11 @@ private:
     std::string bestMoveString;
 
 #ifdef TIME_STAT
+#ifdef QT_GUI_LIB
     TimePoint sortTime {0};
 #endif
+#endif
+
 #ifdef CYCLE_STAT
     stopwatch::rdtscp_clock::time_point sortCycleStart;
     stopwatch::timer<std::chrono::system_clock>::duration sortCycleDuration {0};
