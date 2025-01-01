@@ -1,8 +1,8 @@
 // This file is part of Sanmill.
 // See AUTHORS file for the list of contributors.
 //
-// Copyright (C) 2004-2024 The Stockfish developers
-// Copyright (C) 2019-2024 The Sanmill developers
+// Copyright (C) 2004-2025 The Stockfish developers
+// Copyright (C) 2019-2025 The Sanmill developers
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
