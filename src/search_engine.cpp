@@ -463,8 +463,14 @@ int SearchEngine::executeSearch()
             TranspositionTable::clear();
 #endif
 #endif
-            if (searchAborted.load(std::memory_order_relaxed) ||
-                is_timeout(startTime)) {
+            if (is_timeout(startTime)) {
+                SearchEngine::getInstance().searchAborted.store(
+                    true, std::memory_order_relaxed);
+                debugPrintf("time out, break\n");
+                break;
+            }
+
+            if (searchAborted.load(std::memory_order_relaxed)) {
                 debugPrintf("originDepth = %d, but break at depth = %d\n",
                             originDepth, i);
                 break;

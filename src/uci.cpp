@@ -100,8 +100,8 @@ void UCI::loop(int argc, char *argv[])
         is >> skipws >> token;
 
         if (token == "quit" || token == "stop") {
-            SearchEngine().getInstance().searchAborted.store(true); // TODO:
-                                                                    // Right?
+            SearchEngine::getInstance().searchAborted.store(
+                true, std::memory_order_relaxed);
             // Threads.stop_all(); // Stop all tasks
         }
 

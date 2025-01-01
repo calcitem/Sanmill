@@ -695,7 +695,8 @@ bool Position::reset()
 
     record[0] = '\0';
 
-    SearchEngine().getInstance().searchAborted.store(false); // TODO: Right?
+    SearchEngine::getInstance().searchAborted.store(false,
+                                                    std::memory_order_relaxed);
 
     return true;
 }
