@@ -561,10 +561,8 @@ next:
                                    bestMove);
         }
 
-        if (!searchAborted.load(std::memory_order_relaxed)) {
-            bestMoveSoFar = bestMove;
-            bestValSoFar = value;
-        }
+        bestMoveSoFar = bestMove;
+        bestValSoFar = value;
     }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
