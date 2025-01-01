@@ -470,7 +470,8 @@ int SearchEngine::executeSearch()
                 break;
             }
 
-            if (searchAborted.load(std::memory_order_relaxed)) {
+            if (searchAborted.load(std::memory_order_relaxed) &&
+                bestMoveSoFar != MOVE_NONE) {
                 debugPrintf("originDepth = %d, but break at depth = %d\n",
                             originDepth, i);
                 break;
@@ -554,7 +555,8 @@ next:
         beta = VALUE_INFINITE;
     }
 
-    if (!searchAborted.load(std::memory_order_relaxed)) {
+    if (!searchAborted.load(std::memory_order_relaxed) ||
+        bestMoveSoFar == MOVE_NONE) {
         if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
             value = Search::MTDF(rootPos, ss, value, originDepth, originDepth,
                                  bestMove);
@@ -648,10 +650,18 @@ void SearchEngine::runSearch()
             emitCommand();
         } else {
             setBestMoveString(next_move());
-            if (!getBestMoveString().empty() && getBestMoveString() != "error"
-                                                                       "!") {
-                emitCommand();
+            if (getBestMoveString().empty() || getBestMoveString() == "error"
+                                                                      "!") {
+                debugPrintf("No valid best move found, set random move.\n");
+#ifdef _WIN32
+    #ifdef _DEBUG
+                assert(false);
+    #endif
+#endif
+                Search::random_search(rootPos, bestMove);
+                setBestMoveString(UCI::move(bestMove));
             }
+            emitCommand();
         }
 #ifdef OPENING_BOOK
     }
