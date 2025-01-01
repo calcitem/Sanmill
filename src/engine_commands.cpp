@@ -93,7 +93,7 @@ begin:
     uint64_t localId = SearchEngine::getInstance().beginNewSearch(pos);
 
     Threads.submit(
-        [pos, localId]() { SearchEngine::getInstance().runSearch(); });
+        []() { SearchEngine::getInstance().runSearch(); });
 
     const auto limit_ms = gameOptions.getMoveTime() * 1000;
 
