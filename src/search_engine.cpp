@@ -666,9 +666,9 @@ void SearchEngine::runSearch()
                                                                       "!") {
                 debugPrintf("No valid best move found, set random move.\n");
 #ifdef _WIN32
-    #ifdef _DEBUG
+#ifdef _DEBUG
                 assert(false);
-    #endif
+#endif
 #endif
                 Search::random_search(rootPos, bestMove);
                 setBestMoveString(UCI::move(bestMove));
