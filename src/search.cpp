@@ -99,23 +99,22 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // Undo the move
         pos->undo_move(ss);
 
-        // Check for search abortion
-        if (SearchEngine().getInstance().searchAborted.load(
-                std::memory_order_relaxed)) {
-            return stand_pat;
-        }
-
-        // If the value is greater or equal to beta, cut off
-        if (value >= beta) {
-            return beta;
-        }
-
         // If the value is better than alpha, update alpha
         if (value > alpha) {
             alpha = value;
             if (depth == originDepth) {
                 bestMove = move;
             }
+
+            // If the value is greater or equal to beta, cut off
+            if (alpha >= beta) {
+                return beta;
+            }
+        }
+
+        if (SearchEngine().getInstance().searchAborted.load(
+                std::memory_order_relaxed)) {
+            return alpha;
         }
     }
 
@@ -301,12 +300,6 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // Undo the move
         pos->undo_move(ss);
 
-        // Check for search abortion
-        if (SearchEngine().getInstance().searchAborted.load(
-                std::memory_order_relaxed)) {
-            return bestValue;
-        }
-
         // Update best value and best move if necessary
         if (value > bestValue) {
             bestValue = value;
@@ -324,6 +317,12 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
                     break;                 // Fail high
                 }
             }
+        }
+
+        // Check for search abortion
+        if (SearchEngine().getInstance().searchAborted.load(
+                std::memory_order_relaxed)) {
+            return bestValue;
         }
     }
 
