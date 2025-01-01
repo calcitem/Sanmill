@@ -90,18 +90,22 @@ void go(Position *pos)
 begin:
 #endif
 
-    Threads.submit([pos]() {
-        SearchEngine().getInstance().setRootPosition(pos);
-        SearchEngine().getInstance().runSearch();
-    });
+    uint64_t localId = SearchEngine::getInstance().beginNewSearch(pos);
+
+    Threads.submit(
+        [pos, localId]() { SearchEngine::getInstance().runSearch(); });
 
     const auto limit_ms = gameOptions.getMoveTime() * 1000;
 
     if (limit_ms > 0) {
-        std::thread([limit_ms]() {
+        std::thread([limit_ms, localId]() {
             std::this_thread::sleep_for(std::chrono::milliseconds(limit_ms));
-            SearchEngine::getInstance().searchAborted.store(
-                true, std::memory_order_relaxed);
+
+            if (SearchEngine::getInstance().currentSearchId.load(
+                    std::memory_order_relaxed) == localId) {
+                SearchEngine::getInstance().searchAborted.store(
+                    true, std::memory_order_relaxed);
+            }
         }).detach();
     }
 

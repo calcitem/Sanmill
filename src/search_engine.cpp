@@ -626,6 +626,18 @@ next:
     return 0;
 }
 
+uint64_t SearchEngine::beginNewSearch(Position *p)
+{
+    uint64_t newId = ++searchCounter;
+    currentSearchId.store(newId, std::memory_order_relaxed);
+
+    searchAborted.store(false, std::memory_order_relaxed);
+
+    setRootPosition(p);
+
+    return newId;
+}
+
 void SearchEngine::runSearch()
 {
 #ifdef OPENING_BOOK

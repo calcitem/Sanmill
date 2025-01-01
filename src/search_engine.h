@@ -26,6 +26,7 @@ public:
     void setBestMoveString(const std::string &move);
     void getBestMoveFromOpeningBook();
 
+    uint64_t beginNewSearch(Position *p);
     void runSearch();
 
     Position *rootPos {nullptr};
@@ -33,6 +34,7 @@ public:
     bool is_timeout(TimePoint startTime);
 
     std::atomic_bool searchAborted {false};
+    std::atomic<uint64_t> currentSearchId {0};
 
     /// Returns the singleton instance of SearchEngine
     static SearchEngine &getInstance();
@@ -40,6 +42,8 @@ public:
 private:
     // Singleton instance
     static SearchEngine instance;
+    std::atomic<uint64_t> searchCounter {0};
+
     Depth originDepth {0};
     Move bestMove {MOVE_NONE};
     Value bestvalue {VALUE_ZERO};
