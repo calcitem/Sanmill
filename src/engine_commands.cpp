@@ -95,6 +95,16 @@ begin:
         SearchEngine().getInstance().runSearch();
     });
 
+    const auto limit_ms = gameOptions.getMoveTime() * 1000;
+
+    if (limit_ms > 0) {
+        std::thread([limit_ms]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(limit_ms));
+            SearchEngine::getInstance().searchAborted.store(
+                true, std::memory_order_relaxed);
+        }).detach();
+    }
+
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
         // TODO(calcitem)
