@@ -102,7 +102,7 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         // Check for search abortion
         if (SearchEngine().getInstance().searchAborted.load(
                 std::memory_order_relaxed)) {
-            return VALUE_ZERO;
+            return stand_pat;
         }
 
         // If the value is greater or equal to beta, cut off
@@ -303,8 +303,9 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // Check for search abortion
         if (SearchEngine().getInstance().searchAborted.load(
-                std::memory_order_relaxed))
-            return VALUE_ZERO;
+                std::memory_order_relaxed)) {
+            return bestValue;
+        }
 
         // Update best value and best move if necessary
         if (value > bestValue) {
