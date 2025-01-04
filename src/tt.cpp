@@ -1,21 +1,4 @@
-// This file is part of Sanmill.
-// See AUTHORS file for the list of contributors.
-//
-// Copyright (C) 2004-2025 The Stockfish developers
-// Copyright (C) 2019-2025 The Sanmill developers
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// tt.cpp
 
 #include "tt.h"
 #include <limits>
@@ -54,18 +37,13 @@ Value TranspositionTable::probe(Key key, Depth depth, Bound &type
 #endif
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    if (depth > tte.depth()) {
-        goto out;
-    }
-
-    type = tte.bound();
-    return tte.value();
-
-out:
-
+    if (tte.depth() >= depth) {
+        type = tte.bound();
 #ifdef TT_MOVE_ENABLE
-    ttMove = tte.tt_move();
-#endif // TT_MOVE_ENABLE
+        ttMove = tte.tt_move();
+#endif
+        return tte.value();
+    }
 
     return VALUE_UNKNOWN;
 }
