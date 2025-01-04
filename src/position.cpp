@@ -1,21 +1,4 @@
-// This file is part of Sanmill.
-// See AUTHORS file for the list of contributors.
-//
-// Copyright (C) 2004-2025 The Stockfish developers
-// Copyright (C) 2019-2025 The Sanmill developers
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+// position.cpp
 
 #include <algorithm>
 #include <iomanip>
@@ -1455,6 +1438,7 @@ inline void Position::set_side_to_move(Color c)
 
     them = ~sideToMove;
 
+    // TODO: Move changing phase/action to other function
     if (pieceInHandCount[sideToMove] == 0) {
         phase = Phase::moving;
         action = Action::select;

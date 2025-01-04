@@ -36,14 +36,6 @@ public:
     std::atomic_bool searchAborted {false};
     std::atomic<uint64_t> currentSearchId {0};
 
-    /// Returns the singleton instance of SearchEngine
-    static SearchEngine &getInstance();
-
-private:
-    // Singleton instance
-    static SearchEngine instance;
-    std::atomic<uint64_t> searchCounter {0};
-
     Depth originDepth {0};
     Move bestMove {MOVE_NONE};
     Value bestvalue {VALUE_ZERO};
@@ -51,6 +43,14 @@ private:
     AiMoveType aiMoveType {AiMoveType::unknown};
 
     std::string bestMoveString;
+
+    /// Returns the singleton instance of SearchEngine
+    static SearchEngine &getInstance();
+
+private:
+    // Singleton instance
+    static SearchEngine instance;
+    std::atomic<uint64_t> searchCounter {0};
 
 #ifdef TIME_STAT
 #ifdef QT_GUI_LIB

@@ -413,6 +413,7 @@ settings.ini
 
 # Executable files
 src/sanmill
+src/test_sanmill
 
 # Sourcetrail files
 *.srctrl*
@@ -445,3 +446,8 @@ out/
 
 # xmake
 .xmake/
+
+# Coverage
+coverage/
+*.gcda
+*.gcno

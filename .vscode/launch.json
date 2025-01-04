@@ -128,6 +128,46 @@
       "cwd": "${workspaceFolder}",
       "environment": [],
       "externalConsole": false
+    },
+    {
+      "name": "Build and Run Console C++",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/sanmill",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/src",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb",
+      "preLaunchTask": "Build Console C++",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "Test Console C++",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/src/test_sanmill",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/src",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "lldb",
+      "preLaunchTask": "Test Console C++",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for lldb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
     }
   ]
 }

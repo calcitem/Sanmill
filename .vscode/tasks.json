@@ -89,6 +89,64 @@
                     "message": 5
                 }
             }
+        },
+        {
+            "label": "Build Console C++",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "all",
+                "-j"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}/src"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "detail": "Build Console C++ application by running 'make all' in src directory."
+        },
+        {
+            "label": "Test Console C++",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "test",
+                "-j"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}/src"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "detail": "Test Console C++ application by running 'make test' in src directory."
         }
     ]
 }

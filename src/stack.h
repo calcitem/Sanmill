@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// stack.h
 
 #ifndef STACK_H_INCLUDED
 #define STACK_H_INCLUDED
@@ -22,20 +8,33 @@
 
 namespace Sanmill {
 
-template <typename T, std::size_t capacity = 128>
+template <typename T, int capacity = 128>
 class Stack
 {
 public:
     Stack() { arr = new T[capacity]; }
 
-    Stack(const Stack &other) { *this = other; }
+    Stack(const Stack &other)
+        : arr(new T[capacity])
+        , p(-1)
+    {
+        *this = other;
+    }
 
     ~Stack() { delete[] arr; }
 
     Stack &operator=(const Stack &other)
     {
-        memcpy(arr, other.arr, length());
-        p = other.p;
+        if (this == &other) {
+            return *this;
+        }
+
+        clear();
+
+        for (int i = 0; i <= other.p; i++) {
+            push_back(other.arr[i]);
+        }
+
         return *this;
     }
 
@@ -95,7 +94,7 @@ public:
     int indexOf(T entry)
     {
         for (int i = 0; i <= p; i++) {
-            if (!memcmp(arr[i], entry, sizeof(T))) {
+            if (arr[i] == entry) {
                 return i;
             }
         }

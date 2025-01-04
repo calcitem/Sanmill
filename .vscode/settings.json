@@ -235,7 +235,16 @@
         "format": "cpp",
         "version": "cpp",
         "forward_list": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "any": "cpp",
+        "csignal": "cpp",
+        "memory": "cpp",
+        "print": "cpp",
+        "span": "cpp",
+        "unordered_set": "cpp",
+        "source_location": "cpp",
+        "thread": "cpp",
+        "utility": "cpp"
     },
     "C_Cpp.default.includePath": [
         "${workspaceFolder}/src",
@@ -245,5 +254,9 @@
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
     "C_Cpp.default.intelliSenseMode": "${default}",
     "C_Cpp.default.compilerPath": "/usr/bin/g++",
-    "cmake.sourceDirectory": "~/Sanmill/src/ui/flutter_app/android/app"
+    "cmake.sourceDirectory": "~/Sanmill/src/ui/flutter_app/android/app",
+    "gtest-adapter.debugConfig": [
+        "Test Console C++"
+    ],
+    "gtest-adapter.supportLocation": true
 }
