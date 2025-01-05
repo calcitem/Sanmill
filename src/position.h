@@ -28,6 +28,7 @@
 #include <string>
 #include <vector>
 
+#include "bitboard.h"
 #include "option.h"
 #include "rule.h"
 #include "stack.h"

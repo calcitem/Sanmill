@@ -22,7 +22,6 @@
 #include <sstream>
 #include <string> // std::string, std::stoi
 
-#include "bitboard.h"
 #include "mills.h"
 #include "position.h"
 #include "thread.h"
