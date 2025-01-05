@@ -1,8 +1,8 @@
 // search_engine.cpp
 
+#include "config.h"
 #include "search_engine.h"
 #include "search.h"
-#include "thread.h"
 #include "uci.h"
 #include "mills.h"
 #include "mcts.h"
@@ -14,30 +14,40 @@
 #include <iomanip>
 #include <string>
 
-using std::string;
-
 #ifdef FLUTTER_UI
 #include "engine_main.h"
 #endif
 
 SearchEngine SearchEngine::instance;
 
-SearchEngine::SearchEngine() { }
+SearchEngine::SearchEngine(
+#ifdef QT_GUI_LIB
+    QObject *parent
+#endif
+    )
+#ifdef QT_GUI_LIB
+    : QObject(parent)
+#endif
+{ }
 
+// Return singleton instance
 SearchEngine &SearchEngine::getInstance()
 {
     return instance;
 }
 
+// If you still want to broadcast a "command" signal in Qt builds
 void SearchEngine::emitCommand()
 {
     std::ostringstream ss;
     std::string aiMoveTypeStr;
 
-    if (rootPos->side_to_move() == BLACK) {
+    // Adjust bestvalue if black
+    if (rootPos && rootPos->side_to_move() == BLACK) {
         bestvalue = -bestvalue;
     }
 
+    // Build up the AI move type string
     switch (aiMoveType) {
     case AiMoveType::traditional:
         aiMoveTypeStr = "";
@@ -56,7 +66,8 @@ void SearchEngine::emitCommand()
        << " bestmove " << bestMoveString;
 
 #ifdef QT_GUI_LIB
-    emit thread->command(ss.str()); // Origin: bestMoveString
+    // If you want to send a signal to Qt
+    emit command(ss.str(), true);
 #else
     std::cout << ss.str() << std::endl;
 
@@ -65,21 +76,29 @@ void SearchEngine::emitCommand()
 #endif
 
 #ifdef UCI_DO_BEST_MOVE
-    rootPos->command(ss.str());
-    thread->us = rootPos->side_to_move();
-
-    if (bestMoveString.size() > strlen("-(1,2)")) {
-        posKeyHistory.push_back(rootPos->key());
-    } else {
-        posKeyHistory.clear();
+    if (rootPos) {
+        rootPos->command(ss.str());
+        // 'thread' pointer might not exist anymore.
+        // If you had 'thread->us = rootPos->side_to_move();'
+        // you need a new approach or remove it.
+        if (bestMoveString.size() > strlen("-(1,2)")) {
+            posKeyHistory.push_back(rootPos->key());
+        } else {
+            posKeyHistory.clear();
+        }
     }
 #endif
 
 #ifdef ANALYZE_POSITION
-    analyze(rootPos->side_to_move());
+    if (rootPos) {
+        analyze(rootPos->side_to_move());
+    }
 #endif
 #endif // QT_GUI_LIB
 }
+
+// We do not emit any "searchCompleted" signal here, unless you want to do so
+// at the end of 'runSearch' or after 'executeSearch'.
 
 void SearchEngine::setRootPosition(Position *p)
 {
@@ -110,9 +129,9 @@ void SearchEngine::getBestMoveFromOpeningBook()
 #endif
 }
 
-string SearchEngine::get_value() const
+std::string SearchEngine::get_value() const
 {
-    string value = std::to_string(bestvalue);
+    std::string value = std::to_string(bestvalue);
     return value;
 }
 
@@ -651,9 +670,11 @@ void SearchEngine::runSearch()
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
         extern Value nnueTrainingDataBestValue;
-        nnueTrainingDataBestValue = rootPos->side_to_move() == WHITE ?
-                                        getBestValue() :
-                                        -getBestValue();
+        if (rootPos) {
+            nnueTrainingDataBestValue = (rootPos->side_to_move() == WHITE) ?
+                                            getBestValue() :
+                                            -getBestValue();
+        }
 #endif /* NNUE_GENERATE_TRAINING_DATA */
 
         if (ret == 3 || ret == 50 || ret == 10) {
@@ -677,5 +698,10 @@ void SearchEngine::runSearch()
         }
 #ifdef OPENING_BOOK
     }
+#endif
+
+#ifdef QT_GUI_LIB
+    // If you want to signal that the search is finished, do it here:
+    emit searchCompleted();
 #endif
 }

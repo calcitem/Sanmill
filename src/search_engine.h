@@ -3,17 +3,38 @@
 #ifndef SEARCH_ENGINE_H_INCLUDED
 #define SEARCH_ENGINE_H_INCLUDED
 
+#include "config.h"
+
 #include <string>
 #include <functional>
+#include <atomic>
+#ifdef QT_GUI_LIB
+#include <QObject>
+#endif
 #include "position.h"
 #include "misc.h"
 
-class Thread;
+/// Forward declarations, if needed.
+// class Thread; // Probably no longer used
 
+/// The SearchEngine class now inherits from QObject to enable Qt signals.
 class SearchEngine
+#ifdef QT_GUI_LIB
+    : public QObject
+#endif
 {
+#ifdef QT_GUI_LIB
+    Q_OBJECT
+#endif
+
 public:
-    explicit SearchEngine();
+    explicit SearchEngine(
+#ifdef QT_GUI_LIB
+        QObject *parent = nullptr
+#endif
+    );
+
+    /// Methods
     void emitCommand();
     std::string next_move() const;
     void analyze(Color c) const;
@@ -29,10 +50,16 @@ public:
     uint64_t beginNewSearch(Position *p);
     void runSearch();
 
+    /// The singleton getter
+    static SearchEngine &getInstance();
+
+    /// Position pointer and relevant data
     Position *rootPos {nullptr};
-    // Timeout check
+
+    /// Timeout check
     bool is_timeout(TimePoint startTime);
 
+    /// Atomic flags and counters
     std::atomic_bool searchAborted {false};
     std::atomic<uint64_t> currentSearchId {0};
 
@@ -41,14 +68,19 @@ public:
     Value bestvalue {VALUE_ZERO};
     Value lastvalue {VALUE_ZERO};
     AiMoveType aiMoveType {AiMoveType::unknown};
-
     std::string bestMoveString;
 
-    /// Returns the singleton instance of SearchEngine
-    static SearchEngine &getInstance();
+#ifdef QT_GUI_LIB
+signals:
+    /// Signal that carries a command string (e.g., for AI moves)
+    void command(const std::string &cmd, bool update);
+
+    /// Signal that notifies listeners that the search has completed
+    void searchCompleted();
+#endif
 
 private:
-    // Singleton instance
+    /// Singleton instance
     static SearchEngine instance;
     std::atomic<uint64_t> searchCounter {0};
 

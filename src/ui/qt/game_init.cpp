@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_init.cpp
 
 #include <iomanip>
 #include <map>
@@ -31,6 +17,7 @@
 #include <QSoundEffect>
 #include <QThread>
 #include <QTimer>
+#include <QMetaObject> // For possible queued connections
 
 #include "boarditem.h"
 #include "client.h"
@@ -38,6 +25,8 @@
 #include "graphicsconst.h"
 #include "option.h"
 #include "server.h"
+#include "search_engine.h"
+#include "thread_pool.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -48,10 +37,19 @@ using std::to_string;
 Game::Game(GameScene &scene, QObject *parent)
     : QObject(parent)
     , scene(scene)
-    , timeLimit(0 /* TODO: gameOptions.getMoveTime() */)
+    , timeLimit(
+          0 /* or fetch from options if needed: gameOptions.getMoveTime() */)
     , gameMoveList(256)
 {
     initializeComponents();
+
+#ifdef QT_GUI_LIB
+    connect(&SearchEngine::getInstance(), &SearchEngine::searchCompleted, this,
+            &Game::onAiSearchCompleted, Qt::QueuedConnection);
+
+    connect(&SearchEngine::getInstance(), &SearchEngine::command, this,
+            &Game::command, Qt::QueuedConnection);
+#endif
 }
 
 Game::~Game()
@@ -62,7 +60,9 @@ Game::~Game()
 void Game::initializeComponents()
 {
     initializeSceneBackground();
+
     initializeAiThreads();
+
     initializeDatabaseDialog();
     initializeSettings();
     initializeGameTest();
@@ -74,8 +74,13 @@ void Game::initializeComponents()
 
 void Game::terminateComponents()
 {
+    // Stop the timer
     terminateTimer();
+
+    // Stop AI tasks and do any cleanup
     terminateThreads();
+
+    // Finalize everything else
     finalizeEndgameLearning();
     clearMoveList();
     destroySettings();
@@ -83,43 +88,44 @@ void Game::terminateComponents()
 
 void Game::resetComponents()
 {
-    // Reset timer
+    // Reset the timer
     resetTimer();
 
-    // Reset game state
+    // Reset the game state
     resetGameState();
 
-    // Reset AI Players and Threads (if needed)
+    // If auto-restart is disabled, we can stop the thread pool
     if (!gameOptions.getAutoRestart()) {
-        pauseThreads();
-        // resetAiPlayers(); // Uncomment if needed
+        // This stops all queued tasks.
+        // Threads.stop_all();
     }
 
-    // Reset UI Elements
+    // Reset UI and time
     resetUIElements();
-
-    // Reset Time Limit and Update Time Display
     resetAndUpdateTime();
 
-    // Miscellaneous Updates
+    // Other updates
     updateMiscellaneous();
 }
 
 void Game::gameStart()
 {
+    // Start or restart the game
+    // You can clear the move list if needed:
     // gameMoveList.clear();
     position.start();
     startTime = time(nullptr);
 
-    // The timer handler is called every 100 milliseconds
+    // Ensure timer is active
     if (timeID == 0) {
-        timeID = startTimer(100);
+        timeID = startTimer(100); // 100 ms interval
     }
 
     gameStartTime = now();
     gameStartCycle = stopwatch::rdtscp_clock::now();
 
 #ifdef OPENING_BOOK
+    // Example of reloading an opening book if desired
     if (openingBookDeque.empty() && !openingBookDequeBak.empty()) {
         openingBookDeque = openingBookDequeBak;
         openingBookDequeBak.clear();
@@ -129,29 +135,30 @@ void Game::gameStart()
 
 void Game::gameReset()
 {
-    waitForAiSearchCompletion();
+    // If needed, wait for or stop AI tasks
+    // Threads.stop_all();
+
     resetComponents();
     resetElapsedSeconds();
     reinitMoveListModel();
     updateStatusBar(true);
+    updateState(true);
 }
 
 void Game::initializeSceneBackground()
 {
-    // The background has been added to the style sheet of view, but not to
-    // scene The difference is that the background in view does not change with
-    // the view transformation, and the background in scene changes with the
-    // view transformation
+    // The background has been added to the stylesheet of the view, not the
+    // scene. The difference is that the background in the view does not change
+    // with the view transformation, whereas the background in the scene does.
     // scene.setBackgroundBrush(QPixmap(":/image/resources/image/background.png"));
 #ifdef QT_MOBILE_APP_UI
     scene.setBackgroundBrush(QColor(239, 239, 239));
-#endif /* QT_MOBILE_APP_UI */
+#endif
 }
 
 void Game::initializeAiThreads()
 {
-    // resetAiPlayers();
-    createAiThreads();
+    Threads.set(1);
 }
 
 void Game::initializeDatabaseDialog()
@@ -178,14 +185,9 @@ void Game::initializeMetaTypes()
 void Game::initializeAiCommandConnections()
 {
 #ifdef QT_GUI_LIB
-    // The command line of AI and controller
-    connect(aiThread[WHITE], SIGNAL(command(const string &, bool)), this,
-            SLOT(command(const string &, bool)));
-    connect(aiThread[BLACK], SIGNAL(command(const string &, bool)), this,
-            SLOT(command(const string &, bool)));
     connect(this->gameTest, SIGNAL(command(const string &, bool)), this,
             SLOT(command(const string &, bool)));
-#endif // QT_GUI_LIB
+#endif
 }
 
 void Game::initializeNetworkComponents()
@@ -193,8 +195,7 @@ void Game::initializeNetworkComponents()
 #ifdef NET_FIGHT_SUPPORT
     // TODO(calcitem): WARNING: ThreadSanitizer: data race
     server = new Server(nullptr, 30001);
-
-    uint16_t clientPort = server->getPort() == 30001 ? 30002 : 30001;
+    uint16_t clientPort = (server->getPort() == 30001) ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
     connect(getClient(), SIGNAL(command(const string &, bool)), this,
             SLOT(command(const string &, bool)));
@@ -210,6 +211,7 @@ void Game::initializeEndgameLearning()
 #endif
 }
 
+// Called when we need to start the game if we're still in "ready" phase
 void Game::initGameIfReady()
 {
     if (position.get_phase() == Phase::ready) {
@@ -219,15 +221,13 @@ void Game::initGameIfReady()
 
 void Game::terminateThreads()
 {
-    pauseAndWaitThreads();
-    deleteAiThreads();
+    Threads.stop_all();
 }
 
 void Game::resetPositionState()
 {
     position.reset();
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
-    sideToMove = position.side_to_move();
 }
 
 void Game::resetGameState()

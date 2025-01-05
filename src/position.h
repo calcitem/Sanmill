@@ -210,12 +210,12 @@ public:
     bool isStalemateRemoving {false};
     int mobilityDiff {0};
     int gamePly {0};
-    Color sideToMove {NOCOLOR};
+    Color sideToMove {NOBODY};
     Thread *thisThread {nullptr};
     StateInfo st;
 
     /// Mill Game
-    Color them {NOCOLOR};
+    Color them {NOBODY};
     Color winner;
     GameOverReason gameOverReason {GameOverReason::None};
 

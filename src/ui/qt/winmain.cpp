@@ -16,7 +16,6 @@
 
 #include "bitboard.h"
 #include "gamewindow.h"
-#include "misc.h"
 #include "position.h"
 
 QString APP_FILENAME_DEFAULT = "mill-pro";

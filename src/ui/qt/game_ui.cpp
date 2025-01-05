@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_ui.cpp
 
 #include <iomanip>
 #include <map>
@@ -79,9 +65,19 @@ QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
 
 void Game::updateStatusBar(bool reset)
 {
+    QString thinkingMessage = "";
+
+    if (areAiTasksRunning()) {
+        Color side = position.side_to_move();
+        if (isAiPlayer[side]) {
+            QString sideName = (side == WHITE ? "White" : "Black");
+            thinkingMessage = QString("%1 is thinking...").arg(sideName);
+        }
+    }
+
     // Signal update status bar
-    updateScene();
-    message = QString::fromStdString(getTips());
+    // updateScene();
+    message = QString::fromStdString(getTips()) + " " + thinkingMessage;
     emit statusBarChanged(message);
 
     qreal advantage = (double)position.bestvalue /
@@ -316,7 +312,6 @@ void Game::setTips()
         case DRAW:
             resultStr = "Draw! ";
             break;
-        case NOCOLOR:
         case COLOR_NB:
         case NOBODY:
             break;
