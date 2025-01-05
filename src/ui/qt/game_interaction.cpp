@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_interaction.cpp
 
 #include <iomanip>
 #include <map>
@@ -45,15 +31,27 @@
 
 using std::to_string;
 
+// Check if AI tasks are active.
+// Implementation detail: if you manage the counter in your code,
+// you would increment g_activeAiTasks when you submit an AI task,
+// and decrement it when the AI task finishes.
+bool Game::areAiTasksRunning()
+{
+    return (g_activeAiTasks.load(std::memory_order_relaxed) > 0);
+}
+
 bool Game::validateClick(QPointF p, File &f, Rank &r)
 {
+    // Convert the clicked point to board coordinates
     if (!scene.pointToPolarCoordinate(p, f, r)) {
         return false;
     }
 
-    // When the computer is playing or searching, the click is invalid
-    if (isAiToMove() || aiThread[WHITE]->searching ||
-        aiThread[BLACK]->searching) {
+    // In the old code, you blocked clicks when the computer was "playing" or
+    // "searching" via aiThread[WHITE]->searching || aiThread[BLACK]->searching.
+    // Now, check if it's AI's turn OR if we have active AI tasks. If so, reject
+    // the click.
+    if (isAiToMove() || areAiTasksRunning()) {
         return false;
     }
 
@@ -62,39 +60,38 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
 
 bool Game::performAction(File f, Rank r, QPointF p)
 {
-    // Judge whether to select, place, move, or remove the piece
     bool result = false;
-    PieceItem *piece;
+    PieceItem *piece = nullptr;
     QGraphicsItem *item = scene.itemAt(p, QTransform());
 
+    // Decide the next action based on the current game phase
     switch (position.get_action()) {
     case Action::place:
         if (position.put_piece(f, r)) {
+            // If we successfully placed a piece and the next action is remove,
+            // that indicates a mill was formed
             if (position.get_action() == Action::remove) {
-                // Play form mill sound effects
                 playSound(GameSound::mill);
             } else {
-                // Playing the sound effect of moving pieces
                 playSound(GameSound::drag);
             }
             result = true;
 
+            // Check for threefold repetition if your game rules allow it
             if (rule.threefoldRepetitionRule && position.has_game_cycle()) {
                 position.set_gameover(DRAW,
                                       GameOverReason::drawThreefoldRepetition);
             }
-
             break;
         }
-
-        // If placing is not successful, try to reselect or move. There is no
-        // break here
+        // If placing failed, fall through to possibly select or move
         [[fallthrough]];
 
     case Action::select:
         piece = qgraphicsitem_cast<PieceItem *>(item);
-        if (!piece)
+        if (!piece) {
             break;
+        }
         if (position.select_piece(f, r)) {
             playSound(GameSound::select);
             result = true;
@@ -113,7 +110,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
         break;
 
     case Action::none:
-        // If it is game over state, no response will be made
+        // If the game is over or there's no valid action, do nothing
         break;
     }
 
@@ -122,6 +119,7 @@ bool Game::performAction(File f, Rank r, QPointF p)
 
 void Game::humanResign()
 {
+    // If there's no winner yet, allow a human to resign
     if (position.get_winner() == NOBODY) {
         resign();
     }

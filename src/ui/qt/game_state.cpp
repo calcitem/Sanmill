@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_state.cpp
 
 #include <iomanip>
 #include <map>
@@ -38,6 +24,9 @@
 #include "graphicsconst.h"
 #include "option.h"
 #include "server.h"
+#include "search.h"
+#include "search_engine.h"
+#include "thread_pool.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -69,37 +58,37 @@ void Game::createRuleEntries(std::map<int, QStringList> &actions)
 // functions
 void Game::updateState(bool result)
 {
-    if (!result)
+    if (!result) {
         return;
+    }
 
     updateMoveList();
     handleGameOutcome();
     updateStatusBar();
     updateMoveListModelFromMoveList();
 
-    sideToMove = position.side_to_move();
     updateScene();
 }
 
 // Update move and position list
 void Game::updateMoveList()
 {
-    // Early return if in a specific phase and action
+    // If we're in placing phase but the engine is still in "place" action, skip
     if (position.get_phase() == Phase::moving &&
         position.get_action() == Action::place) {
         return;
     }
 
-    // Check if gameMoveList is not empty and the last move is the same as the
-    // current record
+    // If the last recorded move is the same as the current position record,
+    // skip
     if (!gameMoveList.empty() && gameMoveList.back() == position.record) {
         return;
     }
 
-    // Add the new move to the list
+    // Add the new move
     gameMoveList.emplace_back(position.record);
 
-    // Update position key history based on the length of the position record
+    // Update position key history
     if (strlen(position.record) > strlen("-(1,2)")) {
         posKeyHistory.push_back(position.key());
     } else {
@@ -112,11 +101,12 @@ void Game::updateMoveListModelFromMoveList()
 {
     currentRow = moveListModel.rowCount() - 1;
     int k = 0;
-    for (const auto &i : *getMoveList()) {
+    for (const auto &moveString : *getMoveList()) {
         if (k++ <= currentRow)
             continue;
         moveListModel.insertRow(++currentRow);
-        moveListModel.setData(moveListModel.index(currentRow), i.c_str());
+        moveListModel.setData(moveListModel.index(currentRow),
+                              moveString.c_str());
     }
 }
 
@@ -127,39 +117,42 @@ void Game::handleGameOutcome()
     if (winner != NOBODY) {
         handleWinOrLoss();
     } else {
-        resumeAiThreads(position.sideToMove);
+        // Old code called: resumeAiThreads(position.sideToMove);
+        // Now, if it's AI's turn, we can simply submit a new AI task.
+        if (isAiPlayer[position.side_to_move()]) {
+            // For example, we can submit an AI task:
+            submitAiTask();
+        }
     }
 }
 
-// Specific handler for win or lose
 void Game::handleWinOrLoss()
 {
     if (gameOptions.getAutoRestart()) {
         performAutoRestartActions();
-    } else {
-        pauseThreads();
     }
 }
 
-// Actions to perform if auto-restart is enabled
 void Game::performAutoRestartActions()
 {
 #ifdef NNUE_GENERATE_TRAINING_DATA
     position.nnueWriteTrainingData();
-#endif /* NNUE_GENERATE_TRAINING_DATA */
+#endif
 
     saveScore();
-    gameReset();
-    gameStart();
-    setEnginesForAiPlayers();
+    gameReset();              // resets the board state
+    gameStart();              // starts a new game
+    setEnginesForAiPlayers(); // re-assign AI players
 }
 
 // Sets the engines for AI players
 void Game::setEnginesForAiPlayers()
 {
+    // If white is an AI, call setEngine(WHITE, true)
     if (isAiPlayer[WHITE]) {
         setEngine(WHITE, true);
     }
+    // If black is an AI, call setEngine(BLACK, true)
     if (isAiPlayer[BLACK]) {
         setEngine(BLACK, true);
     }

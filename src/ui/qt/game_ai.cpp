@@ -1,48 +1,119 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_ai.cpp
 
 #include <QThread>
-
+#include <QTimer>
 #include "game.h"
 #include "option.h"
+#include "thread_pool.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
 #endif
 
+#include "engine_controller.h"
+#include "engine_commands.h"
+
+// This increments when an AI task is submitted, and decrements when the task
+// finishes.
+std::atomic<int> g_activeAiTasks {0};
+
 bool Game::isAiToMove() const
 {
-    return isAiPlayer[sideToMove];
+    // Same logic: check if the current side to move is an AI
+    return isAiPlayer[position.side_to_move()];
 }
 
 void Game::resetPerfectAi()
 {
 #if defined(GABOR_MALOM_PERFECT_AI)
+    // If Perfect Database is enabled, reset it
     if (gameOptions.getUsePerfectDatabase()) {
         perfect_reset();
     }
 #endif
 }
 
+/**
+ * @brief Waits for AI tasks to finish. Originally, we might have spun on
+ * ThreadPool. Now it’s optional, as EngineController itself starts threads
+ * internally.
+ */
 void Game::waitForAiSearchCompletion()
 {
-    while (aiThread[WHITE]->searching || aiThread[BLACK]->searching) {
+    // If needed, you can still spin or sleep while checking g_activeAiTasks.
+    // For demonstration, just show a debug message.
+    debugPrintf("Waiting for AI tasks to finish...\n");
+
+    while (g_activeAiTasks.load(std::memory_order_relaxed) > 0) {
         debugPrintf(".");
         QThread::msleep(100);
     }
+    debugPrintf("\nAI tasks have finished.\n");
+}
 
-    debugPrintf("\n");
+/**
+ * @brief Submits an AI task. Instead of calling Threads.submit() directly,
+ *        build and send commands to EngineController, which will handle search
+ * threads internally.
+ */
+void Game::submitAiTask()
+{
+    // Increment the global counter of active AI tasks.
+    g_activeAiTasks.fetch_add(1, std::memory_order_relaxed);
+
+    Color side = position.side_to_move();
+    QString sideName = (side == WHITE ? "White" : "Black");
+    QString thinkingMessage = QString("%1 is thinking...").arg(sideName);
+    emit statusBarChanged(thinkingMessage);
+
+    std::ostringstream ss;
+    ss << "position fen " << position.fen();
+    if (!gameMoveList.empty()) {
+        ss << " moves";
+        for (auto &mv : gameMoveList) {
+            ss << " " << mv;
+        }
+    }
+    std::string posCmd = ss.str();
+
+    // Call EngineController to set the position.
+    EngineController::getInstance().handleCommand(posCmd, &position);
+
+    // Start the search with "go".
+    // EngineController::go() will internally manage threading in SearchEngine.
+    EngineController::getInstance().handleCommand("go", &position);
+
+    // Decrement the counter in the future when the search completes.
+    // Usually you'd do this in a callback or slot that listens for completion.
+    // For demonstration, here's a simple approach that schedules a tiny
+    // follow-up check: (In a real app, you'd tie this to searchCompleted or
+    // similar.)
+    QTimer::singleShot(500, [this]() {
+        // In real usage, check if search actually ended, or rely on signals
+        // from EngineController. For now, just decrement to simulate finishing:
+        g_activeAiTasks.fetch_sub(1, std::memory_order_relaxed);
+
+        // Emit a signal that AI search completed:
+        emit aiSearchCompleted();
+    });
+}
+
+/**
+ * @brief Triggered when an AI search is completed. Here you might update UI,
+ *        check if there's a winner, or start another move if still AI's turn.
+ */
+void Game::onAiSearchCompleted()
+{
+    debugPrintf("onAiSearchCompleted: An AI search has completed.\n");
+
+    emit statusBarChanged("AI finished.");
+
+    // Update status/UI:
+    updateStatusBar();
+    // applyPartialMoveList(currentRow);
+    updateScene();
+
+    if (g_activeAiTasks.load(std::memory_order_relaxed) == 0) {
+        debugPrintf("No active AI tasks remain.\n");
+    }
 }

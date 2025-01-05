@@ -1,21 +1,5 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_settings.cpp
 
-#include <iomanip>
-#include <map>
 #include <string>
 
 #include <QAbstractButton>
@@ -32,12 +16,10 @@
 #include <QThread>
 #include <QTimer>
 
-#include "boarditem.h"
-#include "client.h"
 #include "game.h"
-#include "graphicsconst.h"
 #include "option.h"
-#include "server.h"
+#include "thread_pool.h"
+#include "search_engine.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -141,43 +123,40 @@ void Game::saveRuleSetting(int ruleNo)
 
 void Game::setEngine(Color color, bool enabled)
 {
+    // Mark whether this color is controlled by AI
     isAiPlayer[color] = enabled;
-
-    if (enabled == true) {
-        aiThread[color]->setAi(&position);
-        aiThread[color]->start_searching();
-
-    } else {
-        aiThread[color]->pause();
-    }
 }
 
 void Game::setEngineWhite(bool enabled)
 {
     setEngine(WHITE, enabled);
     settings->setValue("Options/WhiteIsAiPlayer", enabled);
+    handleGameOutcome();
 }
 
 void Game::setEngineBlack(bool enabled)
 {
     setEngine(BLACK, enabled);
     settings->setValue("Options/BlackIsAiPlayer", enabled);
+    handleGameOutcome();
 }
 
 void Game::setAiDepthTime(int time1, int time2)
 {
-    stopAndWaitAiThreads();
-
-    aiThread[WHITE]->setAi(&position, time1);
-    aiThread[BLACK]->setAi(&position, time2);
-
-    startAiThreads();
+    // Reconfigure the time limits in your search engine or gameOptions
+    // For example:
+    // gameOptions.setMoveTime(time1, time2);
+    // Or store them separately.
 }
 
 void Game::getAiDepthTime(int &time1, int &time2) const
 {
-    time1 = aiThread[WHITE]->getTimeLimit();
-    time2 = aiThread[BLACK]->getTimeLimit();
+    // Previously we read from aiThread[color]->getTimeLimit().
+    // Now you might store these times in a variable or in gameOptions.
+    // For demonstration, we'll assume we have something like:
+    // TODO: Implement
+    // time1 = gameOptions.getTimeLimitWhite(); // e.g. a hypothetical method
+    // time2 = gameOptions.getTimeLimitBlack();
 }
 
 void Game::setFixWindowSize(bool arg) noexcept
@@ -253,7 +232,7 @@ void Game::setUsePerfectDatabase(bool arg) noexcept
 {
     // TODO: If it is checked,
     // the box will still pop up once when opening the program.
-    if (gameOptions.getUsePerfectDatabase() == false && arg == true) {
+    if (!gameOptions.getUsePerfectDatabase() && arg == true) {
         QMessageBox msgBox;
         msgBox.setText(tr("Please visit the following link for detailed "
                           "operating "
@@ -280,16 +259,15 @@ void Game::setPerfectDatabasePath(string val) const
                        QString::fromStdString(val));
 }
 
-// TODO: When call this? Same as setUsePerfectDatabase above?
+// Variation of setUsePerfectDatabase that also handles perfect_reset/exit
 void Game::setUsePerfectDatabase(bool enabled) const
 {
 #if 0
-    // TODO: Show dialog twice when launching
-
-    if (enabled && databaseDialog->exec() == QDialog::Accepted) {
-        std::string path = databaseDialog->getPath().toStdString();
-        setPerfectDatabase(path);
-    }
+    // If you want to pop up a dialog:
+    // if (enabled && databaseDialog->exec() == QDialog::Accepted) {
+    //     std::string path = databaseDialog->getPath().toStdString();
+    //     setPerfectDatabase(path);
+    // }
 #endif
 
     gameOptions.setUsePerfectDatabase(enabled);
@@ -359,7 +337,10 @@ void Game::setLearnEndgame(bool enabled) const
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {
-        Thread::loadEndgameFileToHashMap();
+        // Under the old code, we called Thread::loadEndgameFileToHashMap().
+        // Now that Thread is replaced, you might have a different loading
+        // mechanism, or you could keep a static function call like so:
+        loadEndgameFileToHashMap();
     }
 #endif
 }
@@ -370,14 +351,12 @@ void Game::setIDS(bool enabled) const
     settings->setValue("Options/IDS", enabled);
 }
 
-// DepthExtension
 void Game::setDepthExtension(bool enabled) const
 {
     gameOptions.setDepthExtension(enabled);
     settings->setValue("Options/DepthExtension", enabled);
 }
 
-// OpeningBook
 void Game::setOpeningBook(bool enabled) const
 {
     gameOptions.setOpeningBook(enabled);

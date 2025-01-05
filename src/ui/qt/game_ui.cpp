@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_ui.cpp
 
 #include <iomanip>
 #include <map>
@@ -79,9 +65,19 @@ QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
 
 void Game::updateStatusBar(bool reset)
 {
+    QString thinkingMessage = "";
+
+    if (areAiTasksRunning()) {
+        Color side = position.side_to_move();
+        if (isAiPlayer[side]) {
+            QString sideName = (side == WHITE ? "White" : "Black");
+            thinkingMessage = QString("%1 is thinking...").arg(sideName);
+        }
+    }
+
     // Signal update status bar
-    updateScene();
-    message = QString::fromStdString(getTips());
+    // updateScene();
+    message = QString::fromStdString(getTips()) + " " + thinkingMessage;
     emit statusBarChanged(message);
 
     qreal advantage = (double)position.bestvalue /
@@ -109,24 +105,35 @@ void Game::updateStatusBar(bool reset)
 
 void Game::updateLcdDisplay()
 {
+    switch (position.winner) {
+    case WHITE:
+        score[WHITE]++;
+        break;
+    case BLACK:
+        score[BLACK]++;
+        break;
+    case DRAW:
+        score[DRAW]++;
+        break;
+    case COLOR_NB:
+    case NOBODY:
+        break;
+    }
+
     // Update LCD display
-    emit nGamesPlayedChanged(QString::number(position.gamesPlayedCount, 10));
-    emit score1Changed(QString::number(position.score[WHITE], 10));
-    emit score2Changed(QString::number(position.score[BLACK], 10));
-    emit scoreDrawChanged(QString::number(position.score_draw, 10));
+    emit nGamesPlayedChanged(QString::number(gamesPlayedCount, 10));
+    emit score1Changed(QString::number(score[WHITE], 10));
+    emit score2Changed(QString::number(score[BLACK], 10));
+    emit scoreDrawChanged(QString::number(score[DRAW], 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                                position.score_draw;
+    gamesPlayedCount = score[WHITE] + score[BLACK] + score[DRAW];
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
 
-    if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[WHITE] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_2 = position.score[BLACK] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_draw = position.score_draw * 10000 /
-                           position.gamesPlayedCount;
+    if (gamesPlayedCount != 0) {
+        winningRate_1 = score[WHITE] * 10000 / gamesPlayedCount;
+        winningRate_2 = score[BLACK] * 10000 / gamesPlayedCount;
+        winningRate_draw = score[DRAW] * 10000 / gamesPlayedCount;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -158,7 +165,7 @@ bool Game::updateScene()
     selectCurrentAndDeletedPieces(deletedPiece);
 
     // Update LCD displays
-    updateLcdDisplay();
+    // updateLcdDisplay();
 
     // Update tips
     setTips();
@@ -303,9 +310,9 @@ void Game::setTips()
     case Phase::gameOver:
         appendGameOverReasonToMoveList();
 
-        scoreStr = "Score " + to_string(p.score[WHITE]) + " : " +
-                   to_string(p.score[BLACK]) + ", Draw " +
-                   to_string(p.score_draw);
+        scoreStr = "Score " + to_string(score[WHITE]) + " : " +
+                   to_string(score[BLACK]) + ", Draw " +
+                   to_string(score[DRAW]);
 
         switch (p.winner) {
         case WHITE:
@@ -316,7 +323,6 @@ void Game::setTips()
         case DRAW:
             resultStr = "Draw! ";
             break;
-        case NOCOLOR:
         case COLOR_NB:
         case NOBODY:
             break;

@@ -115,12 +115,11 @@ enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 enum class AiMoveType { unknown, traditional, perfect, consensus };
 
 enum Color : uint8_t {
-    NOCOLOR = 0,
+    NOBODY = 0,
     WHITE = 1,
     BLACK = 2,
     COLOR_NB = 3,
     DRAW = 4,
-    NOBODY = 8
 };
 
 enum class Phase : uint16_t { none, ready, placing, moving, gameOver };

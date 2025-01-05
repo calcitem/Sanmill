@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// game_save.cpp
 
 #include <iomanip>
 #include <map>
@@ -65,25 +51,21 @@ void Game::writePlayerType(QTextStream &textStream, const QString &color,
 // Helper function to write game statistics
 void Game::writeGameStats(QTextStream &textStream) const
 {
-    qint64 gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                              position.score_draw;
+    qint64 gamesPlayedCount = score[WHITE] + score[BLACK] + score[DRAW];
 
     if (gamesPlayedCount == 0) {
         return;
     }
 
     textStream << "Sum\t" + QString::number(gamesPlayedCount) << "\n";
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" +
-                      QString::number(position.score[WHITE] * 10000 /
-                                      gamesPlayedCount)
+    textStream << "White\t" + QString::number(score[WHITE]) + "\t" +
+                      QString::number(score[WHITE] * 10000 / gamesPlayedCount)
                << "\n";
-    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" +
-                      QString::number(position.score[BLACK] * 10000 /
-                                      gamesPlayedCount)
+    textStream << "Black\t" + QString::number(score[BLACK]) + "\t" +
+                      QString::number(score[BLACK] * 10000 / gamesPlayedCount)
                << "\n";
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" +
-                      QString::number(position.score_draw * 10000 /
-                                      gamesPlayedCount)
+    textStream << "Draw\t" + QString::number(score[DRAW]) + "\t" +
+                      QString::number(score[DRAW] * 10000 / gamesPlayedCount)
                << "\n";
 }
 

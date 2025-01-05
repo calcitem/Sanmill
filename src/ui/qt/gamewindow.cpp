@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// gamewindows.cpp
 
 #include <QActionGroup>
 #include <QButtonGroup>
@@ -659,7 +645,6 @@ void MillGameWindow::on_actionNew_N_triggered()
     case DRAW:
         whoWin = "Draw";
         break;
-    case NOCOLOR:
     case NOBODY:
     case COLOR_NB:
         whoWin = "Unknown";
@@ -678,16 +663,6 @@ void MillGameWindow::on_actionNew_N_triggered()
     ui.actionAutoRun_A->setChecked(false);
 
     game->gameReset();
-
-    if (ui.actionEngine2_R->isChecked()) {
-        ui.actionEngine2_R->setChecked(false);
-        ui.actionEngine2_R->setChecked(true);
-    }
-
-    if (ui.actionEngine1_T->isChecked()) {
-        ui.actionEngine1_T->setChecked(false);
-        ui.actionEngine1_T->setChecked(true);
-    }
 }
 
 void MillGameWindow::on_actionOpen_O_triggered()
@@ -862,7 +837,7 @@ void MillGameWindow::on_actionRowChange() const
     }
 
     // Update phrase
-    game->updateBoardState(currentRow);
+    game->updateBoardState(currentRow, true);
 }
 
 void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
@@ -911,7 +886,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
     }
 
     // Renew the situation
-    game->updateBoardState(currentRow);
+    game->updateBoardState(currentRow, true);
 }
 
 void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)

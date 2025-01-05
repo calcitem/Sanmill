@@ -1,35 +1,14 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-/*
- * This class deals with the scene object QGraphicsScene
- * It is the only control module in MVC model of this program
- * It doesn't do any operation on the controls in the main window, only signals
- * the main window You could have overloaded QGraphicsScene to implement it and
- * saved the trouble of writing event filters But it doesn't look good to use
- * one scene class to do so many control module operations
- */
+// game.h
 
 #ifndef GAME_H_INCLUDED
 #define GAME_H_INCLUDED
 
+#include <atomic>
 #include <functional>
 #include <iostream>
 #include <map>
 #include <vector>
+#include <memory> // For smart pointers
 
 #include <QModelIndex>
 #include <QParallelAnimationGroup>
@@ -39,22 +18,27 @@
 #include <QStringListModel>
 #include <QTextStream>
 #include <QTime>
+#include <QObject> // Ensure QObject is included
 
 #include "client.h"
 #include "database.h"
 #include "gamescene.h"
 #include "mills.h"
+#include "misc.h"
 #include "pieceitem.h"
 #include "position.h"
 #include "server.h"
 #include "stopwatch.h"
 #include "ai_shared_memory_dialog.h"
-#include "thread.h"
+// #include "thread.h" // No longer needed
 
 using std::cout;
 using std::endl;
 using std::fixed;
 using std::map;
+using std::vector;
+
+extern std::atomic<int> g_activeAiTasks;
 
 enum class GameSound {
     none,
@@ -94,7 +78,7 @@ public:
 
     using TransformFunc = std::function<void()>;
 
-    //  Main window menu bar details
+    // Main window menu bar details
     static map<int, QStringList> getActions();
 
     int getRuleIndex() const noexcept { return ruleIndex; }
@@ -203,6 +187,7 @@ private:
     void initGameIfReady();
     bool performAction(File f, Rank r, QPointF p);
     void updateState(bool result);
+    bool areAiTasksRunning();
 
     void animatePieceMovement(PieceItem *&deletedPiece);
     void handleMarkedLocations();
@@ -210,6 +195,8 @@ private:
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
     void selectCurrentAndDeletedPieces(PieceItem *deletedPiece);
+
+    void submitAiTask();
 
 signals:
 
@@ -245,6 +232,9 @@ signals:
 
     // A signal that tells the main window to update the advantage bar
     void advantageChanged(qreal value);
+
+    // New signal to notify AI search completion
+    void aiSearchCompleted();
 
 public slots:
 
@@ -339,13 +329,13 @@ public slots:
     // Does alpha beta search deepen iteratively
     void setIDS(bool enabled) const;
 
-    //  DepthExtension
+    // DepthExtension
     void setDepthExtension(bool enabled) const;
 
-    //  OpeningBook
+    // OpeningBook
     void setOpeningBook(bool enabled) const;
 
-    //  DeveloperMode
+    // DeveloperMode
     void setDeveloperMode(bool enabled) const;
 
     // Function to toggle piece color
@@ -386,68 +376,18 @@ public slots:
         isAiPlayer[BLACK] = false;
     }
 
-    void createAiThreads()
-    {
-        aiThread[WHITE] = new Thread(0);
-        aiThread[WHITE]->us = WHITE;
+    // Removed AI thread management methods
+    // void createAiThreads();
+    // void startAiThreads() const;
+    // void stopAndWaitAiThreads() const;
+    // void pauseThreads() const;
+    // void waitThreads() const;
+    // void pauseAndWaitThreads() const;
+    // void resumeAiThreads(Color c) const;
+    // void deleteAiThreads() const;
 
-        aiThread[BLACK] = new Thread(0);
-        aiThread[BLACK]->us = BLACK;
-    }
-
-    void startAiThreads() const
-    {
-        if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->start_searching();
-        }
-
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->start_searching();
-        }
-    }
-
-    void stopAndWaitAiThreads() const
-    {
-        if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->pause();
-            aiThread[WHITE]->wait_for_search_finished();
-        }
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->pause();
-            aiThread[BLACK]->wait_for_search_finished();
-        }
-    }
-
-    void pauseThreads() const
-    {
-        aiThread[WHITE]->pause();
-        aiThread[BLACK]->pause();
-    }
-
-    void waitThreads() const
-    {
-        aiThread[WHITE]->wait_for_search_finished();
-        aiThread[BLACK]->wait_for_search_finished();
-    }
-
-    void pauseAndWaitThreads() const
-    {
-        pauseThreads();
-        waitThreads();
-    }
-
-    void resumeAiThreads(Color c) const
-    {
-        if (isAiPlayer[c]) {
-            aiThread[c]->start_searching();
-        }
-    }
-
-    void deleteAiThreads() const
-    {
-        delete aiThread[WHITE];
-        delete aiThread[BLACK];
-    }
+    // Slot to handle AI search completion
+    void onAiSearchCompleted();
 
     // According to the signal and state of qgraphics scene, select, drop or
     // delete the sub objects
@@ -499,7 +439,7 @@ protected:
 private:
     // Data model of object
     Position position;
-    Color sideToMove;
+    // Color sideToMove;
 
     // Testing
     AiSharedMemoryDialog *gameTest;
@@ -507,8 +447,8 @@ private:
     // Perfect Database Dialog
     DatabaseDialog *databaseDialog {nullptr};
 
-    // 2 AI threads
-    Thread *aiThread[COLOR_NB];
+    // Removed AI thread pointers
+    // Thread *aiThread[COLOR_NB];
 
     // The scene class of game
     GameScene &scene;
@@ -541,9 +481,12 @@ public:
     bool animationEnabled() const { return hasAnimation; }
 
     // True when the computer takes the lead
-    bool isAiPlayer[COLOR_NB];
+    bool isAiPlayer[COLOR_NB] {false};
 
     string getTips() { return tips; }
+
+    unsigned int score[DRAW + 1] {0};
+    unsigned int gamesPlayedCount {0};
 
 private:
     // Fix Windows Size
