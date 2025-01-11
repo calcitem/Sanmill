@@ -4,8 +4,7 @@
 #define ENGINE_CONTROLLER_H_INCLUDED
 
 #include <string>
-
-class Position;
+#include "position.h"
 
 /// EngineController is responsible for handling commands from UciServer (or
 /// UCI::loop).
@@ -26,6 +25,9 @@ public:
 private:
     // Singleton instance
     static EngineController instance;
+
+    // Internal position
+    Position searchPos;
 
     // If needed, we could store references to Options, or keep an internal
     // Position.

@@ -37,7 +37,8 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
     is >> token;
 
     if (token == "go") {
-        EngineCommands::go(pos); // Call the EngineCommands::go function
+        searchPos = *pos;
+        EngineCommands::go(&searchPos); // Call the EngineCommands::go function
     } else if (token == "position") {
         EngineCommands::position(pos, is); // Call the EngineCommands::position
                                            // function
