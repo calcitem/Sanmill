@@ -31,7 +31,7 @@
 
 using std::to_string;
 
-void Game::terminateOrResetTimer()
+void Game::stopActiveTimer()
 {
     if (timeID != 0) {
         killTimer(timeID);
@@ -39,14 +39,14 @@ void Game::terminateOrResetTimer()
     }
 }
 
-void Game::initializeTime()
+void Game::initTimeLimit()
 {
     timeLimit = 0; // Replace this with actual logic if needed
     remainingTime[WHITE] = remainingTime[BLACK] = (timeLimit <= 0) ? 0 :
                                                                      timeLimit;
 }
 
-void Game::emitTimeSignals()
+void Game::emitTimeChangedSignals()
 {
     const QTime qtimeWhite =
         QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
@@ -57,18 +57,18 @@ void Game::emitTimeSignals()
     emit time2Changed(qtimeBlack.toString("hh:mm:ss"));
 }
 
-void Game::resetTimer()
+void Game::stopTimer()
 {
-    terminateOrResetTimer();
+    stopActiveTimer();
 }
 
-void Game::resetAndUpdateTime()
+void Game::reinitTimerAndEmitSignals()
 {
-    initializeTime();
-    emitTimeSignals();
+    initTimeLimit();
+    emitTimeChangedSignals();
 }
 
-void Game::updateTime()
+void Game::updateElapsedTime()
 {
     constexpr int timePoint = -1;
     time_t &ourSeconds = elapsedSeconds[position.side_to_move()];
@@ -80,13 +80,13 @@ void Game::updateTime()
                      currentTime - startTime - theirSeconds;
 }
 
-void Game::timerEvent(QTimerEvent *event)
+void Game::handleTimerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
-    updateTime();
+    updateElapsedTime();
 
-    remainingTime[WHITE] = getElapsedTime(WHITE);
-    remainingTime[BLACK] = getElapsedTime(BLACK);
+    remainingTime[WHITE] = getElapsedSeconds(WHITE);
+    remainingTime[BLACK] = getElapsedSeconds(BLACK);
 
     // If the rule requires a timer, time1 and time2 indicate a countdown
     if (timeLimit > 0) {
@@ -95,15 +95,15 @@ void Game::timerEvent(QTimerEvent *event)
         remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
     }
 
-    emitTimeSignals();
+    emitTimeChangedSignals();
 
     const Color winner = position.get_winner();
     if (winner != NOBODY && timeID != 0) {
-        terminateOrResetTimer();
-        updateStatusBar();
+        stopActiveTimer();
+        refreshStatusBar();
 
 #ifndef DO_NOT_PLAY_WIN_SOUND
-        playSound(GameSound::win);
+        playGameSound(GameSound::win);
 #endif
     }
 
@@ -134,17 +134,17 @@ void Game::timerEvent(QTimerEvent *event)
 #endif
 }
 
-time_t Game::getElapsedTime(int color) const
+time_t Game::getElapsedSeconds(int color) const
 {
     return elapsedSeconds[color];
 }
 
-void Game::resetElapsedSeconds()
+void Game::clearElapsedTimes()
 {
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 }
 
-void Game::terminateTimer()
+void Game::stopGameTimer()
 {
-    terminateOrResetTimer();
+    stopActiveTimer();
 }

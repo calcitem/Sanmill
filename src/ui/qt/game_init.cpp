@@ -41,11 +41,11 @@ Game::Game(GameScene &scene, QObject *parent)
           0 /* or fetch from options if needed: gameOptions.getMoveTime() */)
     , gameMoveList(256)
 {
-    initializeComponents();
+    initComponents();
 
 #ifdef QT_GUI_LIB
     connect(&SearchEngine::getInstance(), &SearchEngine::searchCompleted, this,
-            &Game::onAiSearchCompleted, Qt::QueuedConnection);
+            &Game::handleAiSearchCompleted, Qt::QueuedConnection);
 
     connect(&SearchEngine::getInstance(), &SearchEngine::command, this,
             &Game::command, Qt::QueuedConnection);
@@ -54,45 +54,45 @@ Game::Game(GameScene &scene, QObject *parent)
 
 Game::~Game()
 {
-    terminateComponents();
+    cleanupComponents();
 }
 
-void Game::initializeComponents()
+void Game::initComponents()
 {
-    initializeSceneBackground();
+    initSceneBackground();
 
-    initializeAiThreads();
+    initAiThreads();
 
-    initializeDatabaseDialog();
-    initializeSettings();
-    initializeGameTest();
-    initializeMetaTypes();
-    initializeAiCommandConnections();
-    initializeNetworkComponents();
-    initializeEndgameLearning();
+    initDatabaseDialog();
+    initSettings();
+    initGameTest();
+    initMetaTypes();
+    initAiCommandConnections();
+    initNetworkComponents();
+    initEndgameLearning();
 }
 
-void Game::terminateComponents()
+void Game::cleanupComponents()
 {
     // Stop the timer
-    terminateTimer();
+    stopGameTimer();
 
     // Stop AI tasks and do any cleanup
-    terminateThreads();
+    stopThreads();
 
     // Finalize everything else
-    finalizeEndgameLearning();
+    finishEndgameLearning();
     clearMoveList();
-    destroySettings();
+    cleanupSettings();
 }
 
-void Game::resetComponents()
+void Game::reinitComponents()
 {
     // Reset the timer
-    resetTimer();
+    stopTimer();
 
     // Reset the game state
-    resetGameState();
+    clearGameState();
 
     // If auto-restart is disabled, we can stop the thread pool
     if (!gameOptions.getAutoRestart()) {
@@ -101,11 +101,11 @@ void Game::resetComponents()
     }
 
     // Reset UI and time
-    resetUIElements();
-    resetAndUpdateTime();
+    resetUiComponents();
+    reinitTimerAndEmitSignals();
 
     // Other updates
-    updateMiscellaneous();
+    updateMisc();
 }
 
 void Game::gameStart()
@@ -138,14 +138,14 @@ void Game::gameReset()
     // If needed, wait for or stop AI tasks
     // Threads.stop_all();
 
-    resetComponents();
-    resetElapsedSeconds();
-    reinitMoveListModel();
-    updateStatusBar(true);
-    updateState(true);
+    reinitComponents();
+    clearElapsedTimes();
+    resetMoveListModel();
+    refreshStatusBar(true);
+    updateGameState(true);
 }
 
-void Game::initializeSceneBackground()
+void Game::initSceneBackground()
 {
     // The background has been added to the stylesheet of the view, not the
     // scene. The difference is that the background in the view does not change
@@ -156,33 +156,33 @@ void Game::initializeSceneBackground()
 #endif
 }
 
-void Game::initializeAiThreads()
+void Game::initAiThreads()
 {
     Threads.set(1);
 }
 
-void Game::initializeDatabaseDialog()
+void Game::initDatabaseDialog()
 {
     databaseDialog = new DatabaseDialog();
 }
 
-void Game::initializeSettings()
+void Game::initSettings()
 {
-    loadSettings();
+    loadGameSettings();
     gameReset();
 }
 
-void Game::initializeGameTest()
+void Game::initGameTest()
 {
     gameTest = new AiSharedMemoryDialog();
 }
 
-void Game::initializeMetaTypes()
+void Game::initMetaTypes()
 {
     qRegisterMetaType<std::string>("string");
 }
 
-void Game::initializeAiCommandConnections()
+void Game::initAiCommandConnections()
 {
 #ifdef QT_GUI_LIB
     connect(this->gameTest, SIGNAL(command(const string &, bool)), this,
@@ -190,7 +190,7 @@ void Game::initializeAiCommandConnections()
 #endif
 }
 
-void Game::initializeNetworkComponents()
+void Game::initNetworkComponents()
 {
 #ifdef NET_FIGHT_SUPPORT
     // TODO(calcitem): WARNING: ThreadSanitizer: data race
@@ -202,7 +202,7 @@ void Game::initializeNetworkComponents()
 #endif
 }
 
-void Game::initializeEndgameLearning()
+void Game::initEndgameLearning()
 {
 #ifdef ENDGAME_LEARNING_FORCE
     if (gameOptions.isEndgameLearningEnabled()) {
@@ -219,20 +219,20 @@ void Game::initGameIfReady()
     }
 }
 
-void Game::terminateThreads()
+void Game::stopThreads()
 {
     Threads.stop_all();
 }
 
-void Game::resetPositionState()
+void Game::resetPosition()
 {
     position.reset();
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 }
 
-void Game::resetGameState()
+void Game::clearGameState()
 {
-    resetMoveListReserveFirst();
-    resetPerfectAi();
-    resetPositionState();
+    resetMoveListKeepFirst();
+    resetPerfectAiEngine();
+    resetPosition();
 }

@@ -17,13 +17,13 @@
 // finishes.
 std::atomic<int> g_activeAiTasks {0};
 
-bool Game::isAiToMove() const
+bool Game::isAiSideToMove() const
 {
     // Same logic: check if the current side to move is an AI
     return isAiPlayer[position.side_to_move()];
 }
 
-void Game::resetPerfectAi()
+void Game::resetPerfectAiEngine()
 {
 #if defined(GABOR_MALOM_PERFECT_AI)
     // If Perfect Database is enabled, reset it
@@ -38,7 +38,7 @@ void Game::resetPerfectAi()
  * ThreadPool. Now it’s optional, as EngineController itself starts threads
  * internally.
  */
-void Game::waitForAiSearchCompletion()
+void Game::waitUntilAiSearchDone()
 {
     // If needed, you can still spin or sleep while checking g_activeAiTasks.
     // For demonstration, just show a debug message.
@@ -56,7 +56,7 @@ void Game::waitForAiSearchCompletion()
  *        build and send commands to EngineController, which will handle search
  * threads internally.
  */
-void Game::submitAiTask()
+void Game::submitAiSearch()
 {
     // Increment the global counter of active AI tasks.
     g_activeAiTasks.fetch_add(1, std::memory_order_relaxed);
@@ -102,16 +102,16 @@ void Game::submitAiTask()
  * @brief Triggered when an AI search is completed. Here you might update UI,
  *        check if there's a winner, or start another move if still AI's turn.
  */
-void Game::onAiSearchCompleted()
+void Game::handleAiSearchCompleted()
 {
-    debugPrintf("onAiSearchCompleted: An AI search has completed.\n");
+    debugPrintf("handleAiSearchCompleted: An AI search has completed.\n");
 
     emit statusBarChanged("AI finished.");
 
     // Update status/UI:
-    updateStatusBar();
-    // applyPartialMoveList(currentRow);
-    updateScene();
+    refreshStatusBar();
+    // applyMoveListUntilRow(currentRow);
+    refreshScene();
 
     if (g_activeAiTasks.load(std::memory_order_relaxed) == 0) {
         debugPrintf("No active AI tasks remain.\n");

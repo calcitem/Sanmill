@@ -35,15 +35,15 @@ using std::to_string;
 // Implementation detail: if you manage the counter in your code,
 // you would increment g_activeAiTasks when you submit an AI task,
 // and decrement it when the AI task finishes.
-bool Game::areAiTasksRunning()
+bool Game::hasActiveAiTasks()
 {
     return (g_activeAiTasks.load(std::memory_order_relaxed) > 0);
 }
 
-bool Game::validateClick(QPointF p, File &f, Rank &r)
+bool Game::isValidBoardClick(QPointF p, File &f, Rank &r)
 {
     // Convert the clicked point to board coordinates
-    if (!scene.pointToPolarCoordinate(p, f, r)) {
+    if (!scene.convertToPolarCoordinate(p, f, r)) {
         return false;
     }
 
@@ -51,14 +51,14 @@ bool Game::validateClick(QPointF p, File &f, Rank &r)
     // "searching" via aiThread[WHITE]->searching || aiThread[BLACK]->searching.
     // Now, check if it's AI's turn OR if we have active AI tasks. If so, reject
     // the click.
-    if (isAiToMove() || areAiTasksRunning()) {
+    if (isAiSideToMove() || hasActiveAiTasks()) {
         return false;
     }
 
     return true;
 }
 
-bool Game::performAction(File f, Rank r, QPointF p)
+bool Game::applyBoardAction(File f, Rank r, QPointF p)
 {
     bool result = false;
     PieceItem *piece = nullptr;
@@ -71,9 +71,9 @@ bool Game::performAction(File f, Rank r, QPointF p)
             // If we successfully placed a piece and the next action is remove,
             // that indicates a mill was formed
             if (position.get_action() == Action::remove) {
-                playSound(GameSound::mill);
+                playGameSound(GameSound::mill);
             } else {
-                playSound(GameSound::drag);
+                playGameSound(GameSound::drag);
             }
             result = true;
 
@@ -93,19 +93,19 @@ bool Game::performAction(File f, Rank r, QPointF p)
             break;
         }
         if (position.select_piece(f, r)) {
-            playSound(GameSound::select);
+            playGameSound(GameSound::select);
             result = true;
         } else {
-            playSound(GameSound::banned);
+            playGameSound(GameSound::banned);
         }
         break;
 
     case Action::remove:
         if (position.remove_piece(f, r)) {
-            playSound(GameSound::remove);
+            playGameSound(GameSound::remove);
             result = true;
         } else {
-            playSound(GameSound::banned);
+            playGameSound(GameSound::banned);
         }
         break;
 
@@ -117,10 +117,10 @@ bool Game::performAction(File f, Rank r, QPointF p)
     return result;
 }
 
-void Game::humanResign()
+void Game::resignHumanPlayer()
 {
     // If there's no winner yet, allow a human to resign
     if (position.get_winner() == NOBODY) {
-        resign();
+        resignGame();
     }
 }

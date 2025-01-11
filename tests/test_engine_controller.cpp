@@ -34,7 +34,7 @@ protected:
     {
         // If we need to initialize anything in EngineCommands or Search, do it
         // here. For example: rule.pieceCount = 9;
-        // EngineCommands::initialize_start_fen();
+        // EngineCommands::init_start_fen();
         // Search::init();
     }
 

@@ -27,26 +27,26 @@
 
 using std::to_string;
 
-QString getExecutableDir()
+QString getExecutableDirectory()
 {
     QString executablePath = QCoreApplication::applicationFilePath();
     QFileInfo fileInfo(executablePath);
     return QDir::toNativeSeparators(fileInfo.absolutePath());
 }
 
-QString getSettingsFilename(const QString &settingsFile)
+QString buildSettingsFilePath(const QString &settingsFile)
 {
-    QString executableDir = getExecutableDir();
+    QString executableDir = getExecutableDirectory();
     QDir dir(executableDir);
     QString settingsFilename = dir.filePath(settingsFile);
     return QDir::toNativeSeparators(settingsFilename);
 }
 
-void Game::loadSettings()
+void Game::loadGameSettings()
 {
     bool empty = false;
 
-    QString settingsFilename = getSettingsFilename(SETTINGS_FILE);
+    QString settingsFilename = buildSettingsFilePath(SETTINGS_FILE);
 
     qDebug() << "Settings File Path:" << settingsFilename;
 
@@ -59,10 +59,10 @@ void Game::loadSettings()
 
     settings = new QSettings(settingsFilename, QSettings::IniFormat);
 
-    setEngineWhite(empty ? false :
-                           settings->value("Options/WhiteIsAiPlayer").toBool());
-    setEngineBlack(empty ? true :
-                           settings->value("Options/BlackIsAiPlayer").toBool());
+    setWhiteIsAiPlayer(
+        empty ? false : settings->value("Options/WhiteIsAiPlayer").toBool());
+    setBlackIsAiPlayer(
+        empty ? true : settings->value("Options/BlackIsAiPlayer").toBool());
     setFixWindowSize(empty ? false :
                              settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
@@ -106,42 +106,42 @@ void Game::loadSettings()
     setDeveloperMode(empty ? false :
                              settings->value("Options/DeveloperMode").toBool());
 
-    setRule(empty ? DEFAULT_RULE_NUMBER :
-                    settings->value("Options/RuleNo").toInt());
+    applyRule(empty ? DEFAULT_RULE_NUMBER :
+                      settings->value("Options/RuleNo").toInt());
 }
 
-void Game::destroySettings()
+void Game::cleanupSettings()
 {
     delete settings;
     settings = nullptr;
 }
 
-void Game::saveRuleSetting(int ruleNo)
+void Game::storeRuleSetting(int ruleNo)
 {
     settings->setValue("Options/RuleNo", ruleNo);
 }
 
-void Game::setEngine(Color color, bool enabled)
+void Game::setEngineControl(Color color, bool enabled)
 {
     // Mark whether this color is controlled by AI
     isAiPlayer[color] = enabled;
 }
 
-void Game::setEngineWhite(bool enabled)
+void Game::setWhiteIsAiPlayer(bool enabled)
 {
-    setEngine(WHITE, enabled);
+    setEngineControl(WHITE, enabled);
     settings->setValue("Options/WhiteIsAiPlayer", enabled);
-    handleGameOutcome();
+    processGameOutcome();
 }
 
-void Game::setEngineBlack(bool enabled)
+void Game::setBlackIsAiPlayer(bool enabled)
 {
-    setEngine(BLACK, enabled);
+    setEngineControl(BLACK, enabled);
     settings->setValue("Options/BlackIsAiPlayer", enabled);
-    handleGameOutcome();
+    processGameOutcome();
 }
 
-void Game::setAiDepthTime(int time1, int time2)
+void Game::setAiTimeLimits(int time1, int time2)
 {
     // Reconfigure the time limits in your search engine or gameOptions
     // For example:
@@ -149,7 +149,7 @@ void Game::setAiDepthTime(int time1, int time2)
     // Or store them separately.
 }
 
-void Game::getAiDepthTime(int &time1, int &time2) const
+void Game::getAiTimeLimits(int &time1, int &time2) const
 {
     // Previously we read from aiThread[color]->getTimeLimit().
     // Now you might store these times in a variable or in gameOptions.

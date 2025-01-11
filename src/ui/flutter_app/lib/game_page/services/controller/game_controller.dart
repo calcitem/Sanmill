@@ -234,8 +234,9 @@ class GameController {
           );
     }
 
-    while ((gameInstance.isAiToMove && (isGameRunning || isAutoRestart())) &&
-        GameController().isControllerActive) {
+    while (
+        (gameInstance.isAiSideToMove && (isGameRunning || isAutoRestart())) &&
+            GameController().isControllerActive) {
       if (gameMode == GameMode.aiVsAi) {
         GameController()
             .headerTipNotifier

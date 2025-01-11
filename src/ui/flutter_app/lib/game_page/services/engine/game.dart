@@ -29,13 +29,13 @@ class Game {
 
   static const String _logTag = "[game]";
 
-  bool get isAiToMove {
+  bool get isAiSideToMove {
     assert(GameController().position.sideToMove == PieceColor.white ||
         GameController().position.sideToMove == PieceColor.black);
     return getPlayerByColor(GameController().position.sideToMove).isAi;
   }
 
-  bool get isHumanToMove => !isAiToMove;
+  bool get isHumanToMove => !isAiSideToMove;
 
   int? focusIndex;
   int? blurIndex;

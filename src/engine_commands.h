@@ -17,7 +17,7 @@ void go(Position *pos);
 void position(Position *pos, std::istringstream &is);
 
 /// Initializes the starting FEN based on piece count.
-void initialize_start_fen();
+void init_start_fen();
 
 /// The starting FEN string after initialization.
 extern char StartFEN[BUFSIZ];

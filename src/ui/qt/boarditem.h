@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// boarditem.h
 
 #ifndef BOARDITEM_H_INCLUDED
 #define BOARDITEM_H_INCLUDED
@@ -46,26 +32,26 @@ public:
     int type() const noexcept override { return Type; }
 
     // Enable or disable diagonal lines on the board
-    void setDiagonal(bool enableDiagonal = true);
+    void setDiagonalLineEnabled(bool enableDiagonal = true);
 
     // Get the nearest point on the board to the given point
-    QPointF getNearestPoint(QPointF targetPoint);
+    QPointF findNearestPoint(QPointF targetPoint);
 
     // Convert polar coordinates (File and Rank) to Cartesian point
-    QPointF polarCoordinateToPoint(File f, Rank r) const;
+    QPointF convertFromPolarCoordinate(File f, Rank r) const;
 
     // Convert Cartesian point to polar coordinates (File and Rank)
-    bool pointToPolarCoordinate(QPointF point, File &f, Rank &r) const;
+    bool convertToPolarCoordinate(QPointF point, File &f, Rank &r) const;
 
-    void updateAdvantageBar(qreal newAdvantage);
+    void updateAdvantageValue(qreal newAdvantage);
 
 private:
-    void initPoints();
-    void drawBoard(QPainter *painter);
-    void drawLines(QPainter *painter);
-    void drawCoordinates(QPainter *painter);
-    void drawPolarCoordinates(QPainter *painter);
-    void drawIndicatorBar(QPainter *painter);
+    void initializePoints();
+    void drawBoardBackground(QPainter *painter);
+    void drawBoardLines(QPainter *painter);
+    void drawCoordinateLabels(QPainter *painter);
+    void drawPolarLabels(QPainter *painter);
+    void drawAdvantageBar(QPainter *painter);
 
     // Side length of the square board
     int boardSideLength {BOARD_SIDE_LENGTH};

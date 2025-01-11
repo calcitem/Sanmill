@@ -41,7 +41,7 @@ TEST_F(EngineCommandsTest, InitializeStartFEN_9)
     rule.pieceCount = 9;
 
     // Call function under test
-    EngineCommands::initialize_start_fen();
+    EngineCommands::init_start_fen();
 
     // Check the result
     // The expected string is the global constant 'StartFEN9' in
@@ -73,7 +73,7 @@ TEST_F(EngineCommandsTest, InitializeStartFEN_9)
 TEST_F(EngineCommandsTest, InitializeStartFEN_10)
 {
     rule.pieceCount = 10;
-    EngineCommands::initialize_start_fen();
+    EngineCommands::init_start_fen();
 
     // In engine_commands.cpp:
     // const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0
@@ -89,7 +89,7 @@ TEST_F(EngineCommandsTest, InitializeStartFEN_10)
 TEST_F(EngineCommandsTest, InitializeStartFEN_11)
 {
     rule.pieceCount = 11;
-    EngineCommands::initialize_start_fen();
+    EngineCommands::init_start_fen();
 
     // From engine_commands.cpp:
     // const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0
@@ -105,7 +105,7 @@ TEST_F(EngineCommandsTest, InitializeStartFEN_11)
 TEST_F(EngineCommandsTest, InitializeStartFEN_12)
 {
     rule.pieceCount = 12;
-    EngineCommands::initialize_start_fen();
+    EngineCommands::init_start_fen();
 
     // From engine_commands.cpp:
     // const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0

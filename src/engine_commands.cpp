@@ -32,7 +32,7 @@ char StartFEN[BUFSIZ];
 
 /// Initializes the starting FEN based on pieceCount.
 /// This function should be called once during the engine initialization.
-void initialize_start_fen()
+void init_start_fen()
 {
 #ifdef _MSC_VER
     switch (rule.pieceCount) {
@@ -131,7 +131,7 @@ void position(Position *pos, std::istringstream &is)
     is >> token;
 
     if (token == "startpos") {
-        initialize_start_fen(); // Initialize StartFEN
+        init_start_fen(); // Initialize StartFEN
         fen = StartFEN;
         is >> token; // Consume "moves" token if any
     } else if (token == "fen") {

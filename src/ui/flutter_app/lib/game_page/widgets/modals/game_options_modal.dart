@@ -68,7 +68,7 @@ class GameOptionsModal extends StatelessWidget {
                     .showTip(S.of(context).gameStarted);
                 GameController().headerIconsNotifier.showIcons();
 
-                if (GameController().gameInstance.isAiToMove) {
+                if (GameController().gameInstance.isAiSideToMove) {
                   logger.i("$_logTag New game, AI to move.");
 
                   GameController().engineToGo(context, isMoveNow: false);
@@ -213,7 +213,7 @@ class GameOptionsModal extends StatelessWidget {
                 .showTip(S.of(context).gameStarted);
             GameController().headerIconsNotifier.showIcons();
 
-            if (GameController().gameInstance.isAiToMove) {
+            if (GameController().gameInstance.isAiSideToMove) {
               logger.i("$_logTag New game, AI to move.");
 
               GameController().engineToGo(context, isMoveNow: false);

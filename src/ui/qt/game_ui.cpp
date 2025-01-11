@@ -45,13 +45,13 @@ void Game::setAnimation(bool arg) noexcept
 }
 
 // Set the piece animation
-QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
-                                               const QPointF &startPos,
-                                               const QPointF &endPos,
-                                               int duration)
+QPropertyAnimation *Game::buildPieceAnimation(PieceItem *piece,
+                                              const QPointF &startPos,
+                                              const QPointF &endPos,
+                                              int duration)
 {
     if (!piece) {
-        qDebug() << "piece is nullptr in createPieceAnimation";
+        qDebug() << "piece is nullptr in buildPieceAnimation";
         return nullptr;
     }
 
@@ -63,11 +63,11 @@ QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
     return animation;
 }
 
-void Game::updateStatusBar(bool reset)
+void Game::refreshStatusBar(bool reset)
 {
     QString thinkingMessage = "";
 
-    if (areAiTasksRunning()) {
+    if (hasActiveAiTasks()) {
         Color side = position.side_to_move();
         if (isAiPlayer[side]) {
             QString sideName = (side == WHITE ? "White" : "Black");
@@ -76,7 +76,7 @@ void Game::updateStatusBar(bool reset)
     }
 
     // Signal update status bar
-    // updateScene();
+    // refreshScene();
     message = QString::fromStdString(getTips()) + " " + thinkingMessage;
     emit statusBarChanged(message);
 
@@ -99,11 +99,11 @@ void Game::updateStatusBar(bool reset)
         advantage = 0;
     }
 
-    // TODO: updateStatusBar but also emit advantageChanged
+    // TODO: refreshStatusBar but also emit advantageChanged
     emit advantageChanged(advantage);
 }
 
-void Game::updateLcdDisplay()
+void Game::refreshLcdDisplay()
 {
     switch (position.winner) {
     case WHITE:
@@ -141,7 +141,7 @@ void Game::updateLcdDisplay()
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 }
 
-void Game::reinitMoveListModel()
+void Game::resetMoveListModel()
 {
     moveListModel.removeRows(0, moveListModel.rowCount());
     moveListModel.insertRow(0);
@@ -149,31 +149,31 @@ void Game::reinitMoveListModel()
     currentRow = 0;
 }
 
-bool Game::updateScene()
+bool Game::refreshScene()
 {
     // The deleted pieces are in place
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
     // TODO: Rename
-    animatePieceMovement(deletedPiece);
+    animatePieces(deletedPiece);
 
     // Handle marked locations
-    handleMarkedLocations();
+    processMarkedSquares();
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(deletedPiece);
+    selectActiveAndRemovedPieces(deletedPiece);
 
     // Update LCD displays
-    // updateLcdDisplay();
+    // refreshLcdDisplay();
 
     // Update tips
-    setTips();
+    updateTips();
 
     return true;
 }
 
-void Game::animatePieceMovement(PieceItem *&deletedPiece)
+void Game::animatePieces(PieceItem *&deletedPiece)
 {
     int key;
     QPointF pos;
@@ -198,7 +198,7 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polarCoordinateToPoint(
+                pos = scene.convertFromPolarCoordinate(
                     static_cast<File>(j / RANK_NB),
                     static_cast<Rank>(j % RANK_NB + 1));
                 if (piece && piece->pos() != pos) {
@@ -206,8 +206,8 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    auto *animation = createPieceAnimation(piece, piece->pos(),
-                                                           pos, durationTime);
+                    auto *animation = buildPieceAnimation(piece, piece->pos(),
+                                                          pos, durationTime);
                     if (animation) {
                         animationGroup->addAnimation(animation);
                     }
@@ -221,7 +221,7 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
 
         // If not, place the pieces outside the board
         if (j == RANK_NB * (FILE_NB + 1)) {
-            handleDeletedPiece(piece, key, animationGroup, deletedPiece);
+            handleRemovedPiece(piece, key, animationGroup, deletedPiece);
         }
 
         piece->setSelected(false); // TODO: Need?
@@ -244,7 +244,7 @@ inline std::string Game::charToString(char ch)
     return "Black";
 }
 
-void Game::setTips()
+void Game::updateTips()
 {
     Position &p = position;
 
@@ -308,7 +308,7 @@ void Game::setTips()
         break;
 
     case Phase::gameOver:
-        appendGameOverReasonToMoveList();
+        recordGameOverReason();
 
         scoreStr = "Score " + to_string(score[WHITE]) + " : " +
                    to_string(score[BLACK]) + ", Draw " +
@@ -372,7 +372,7 @@ void Game::setTips()
     tips = to_string(position.bestvalue) + " | " + tips;
 }
 
-void Game::resetUIElements()
+void Game::resetUiComponents()
 {
     // Clear pieces
     qDeleteAll(pieceList);
@@ -380,7 +380,7 @@ void Game::resetUIElements()
     currentPiece = nullptr;
 
     // Redraw pieces
-    scene.setDiagonal(rule.hasDiagonalLines);
+    scene.setDiagonalLineEnabled(rule.hasDiagonalLines);
 
     // Draw all the pieces and put them in the starting position
     // 0: the first piece in the first hand; 1: the first piece in the second
@@ -414,7 +414,7 @@ void Game::resetUIElements()
     }
 }
 
-void Game::showTestWindow() const
+void Game::displayTestWindow() const
 {
     gameTest->show();
 }
@@ -432,13 +432,13 @@ void Game::showNetworkWindow()
 }
 #endif
 
-void Game::updateMiscellaneous()
+void Game::updateMisc()
 {
     // Sound effects play
-    // playSound(":/sound/resources/sound/newgame.wav");
+    // playGameSound(":/sound/resources/sound/newgame.wav");
 }
 
-void Game::setEditing(bool arg) noexcept
+void Game::setEditingModeEnabled(bool arg) noexcept
 {
     isEditing = arg;
 }

@@ -32,7 +32,7 @@
 using std::to_string;
 
 // Helper function to handle snprintf and append to gameMoveList
-void Game::appendRecordToMoveList(const char *format, ...)
+void Game::appendMoveRecord(const char *format, ...)
 {
     char record[64] = {0};
     va_list args;
@@ -51,7 +51,7 @@ void Game::appendRecordToMoveList(const char *format, ...)
     }
 }
 
-void Game::resetMoveListReserveFirst()
+void Game::resetMoveListKeepFirst()
 {
     // Reset game history
     // WAR
@@ -62,7 +62,7 @@ void Game::resetMoveListReserveFirst()
     }
 }
 
-void Game::appendGameOverReasonToMoveList()
+void Game::recordGameOverReason()
 {
     if (position.phase != Phase::gameOver) {
         return;
@@ -70,35 +70,35 @@ void Game::appendGameOverReasonToMoveList()
 
     switch (position.gameOverReason) {
     case GameOverReason::loseNoLegalMoves:
-        appendRecordToMoveList(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
-                               position.winner);
+        appendMoveRecord(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
+                         position.winner);
         break;
     case GameOverReason::loseTimeout:
-        appendRecordToMoveList(LOSE_REASON_TIMEOUT, position.winner);
+        appendMoveRecord(LOSE_REASON_TIMEOUT, position.winner);
         break;
     case GameOverReason::drawThreefoldRepetition:
-        appendRecordToMoveList(DRAW_REASON_THREEFOLD_REPETITION);
+        appendMoveRecord(DRAW_REASON_THREEFOLD_REPETITION);
         break;
     case GameOverReason::drawFiftyMove:
-        appendRecordToMoveList(DRAW_REASON_FIFTY_MOVE);
+        appendMoveRecord(DRAW_REASON_FIFTY_MOVE);
         break;
     case GameOverReason::drawEndgameFiftyMove:
-        appendRecordToMoveList(DRAW_REASON_ENDGAME_FIFTY_MOVE);
+        appendMoveRecord(DRAW_REASON_ENDGAME_FIFTY_MOVE);
         break;
     case GameOverReason::loseFullBoard:
-        appendRecordToMoveList(LOSE_REASON_FULL_BOARD);
+        appendMoveRecord(LOSE_REASON_FULL_BOARD);
         break;
     case GameOverReason::drawFullBoard:
-        appendRecordToMoveList(DRAW_REASON_FULL_BOARD);
+        appendMoveRecord(DRAW_REASON_FULL_BOARD);
         break;
     case GameOverReason::drawStalemateCondition:
-        appendRecordToMoveList(DRAW_REASON_STALEMATE_CONDITION);
+        appendMoveRecord(DRAW_REASON_STALEMATE_CONDITION);
         break;
     case GameOverReason::loseFewerThanThree:
-        appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE, position.winner);
+        appendMoveRecord(LOSE_REASON_LESS_THAN_THREE, position.winner);
         break;
     case GameOverReason::loseResign:
-        appendRecordToMoveList(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
+        appendMoveRecord(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
         break;
     case GameOverReason::None:
         debugPrintf("No Game Over Reason");

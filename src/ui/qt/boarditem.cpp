@@ -1,18 +1,4 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// boarditem.cpp
 
 #include <QPainter>
 
@@ -28,7 +14,7 @@ BoardItem::BoardItem(const QGraphicsItem *parent)
     // Put center of the board in the center of the scene
     setPos(0, 0);
 
-    initPoints();
+    initializePoints();
 }
 
 BoardItem::~BoardItem() = default;
@@ -44,7 +30,7 @@ BoardItem::~BoardItem() = default;
  */
 QRectF BoardItem::boundingRect() const
 {
-    // See drawIndicatorBar() for the origin of the magic numbers
+    // See drawAdvantageBar() for the origin of the magic numbers
     qreal left = std::min(-boardSideLength / 2, -boardSideLength / 2 - 15);
     qreal top = std::min(-boardSideLength / 2,
                          -static_cast<int>(boardSideLength * 0.8) / 2);
@@ -54,7 +40,7 @@ QRectF BoardItem::boundingRect() const
     return QRectF(left, top, right - left, bottom - top);
 }
 
-void BoardItem::drawIndicatorBar(QPainter *painter)
+void BoardItem::drawAdvantageBar(QPainter *painter)
 {
     int barHeight = static_cast<int>(boardSideLength * 0.8);
     int barWidth = 6;
@@ -100,22 +86,22 @@ void BoardItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    drawBoard(painter);
-    drawLines(painter);
-    drawIndicatorBar(painter);
-    drawCoordinates(painter);
+    drawBoardBackground(painter);
+    drawBoardLines(painter);
+    drawAdvantageBar(painter);
+    drawCoordinateLabels(painter);
 #ifdef DRAW_POLAR_COORDINATES
-    drawPolarCoordinates(painter);
+    drawPolarLabels(painter);
 #endif
 }
 
-void BoardItem::setDiagonal(bool enableDiagonal)
+void BoardItem::setDiagonalLineEnabled(bool enableDiagonal)
 {
     hasDiagonalLine = enableDiagonal;
     update(boundingRect());
 }
 
-void BoardItem::initPoints()
+void BoardItem::initializePoints()
 {
     // Initialize 24 points
     for (int f = 0; f < FILE_NB; f++) {
@@ -133,7 +119,7 @@ void BoardItem::initPoints()
     }
 }
 
-void BoardItem::updateAdvantageBar(qreal newAdvantage)
+void BoardItem::updateAdvantageValue(qreal newAdvantage)
 {
     int barHeight = static_cast<int>(boardSideLength * 0.8);
     int barWidth = 10;
@@ -145,7 +131,7 @@ void BoardItem::updateAdvantageBar(qreal newAdvantage)
     update(indicatorBarRect);
 }
 
-void BoardItem::drawBoard(QPainter *painter)
+void BoardItem::drawBoardBackground(QPainter *painter)
 {
 #ifndef QT_MOBILE_APP_UI
     QColor shadowColor(128, 42, 42);
@@ -166,7 +152,7 @@ void BoardItem::drawBoard(QPainter *painter)
 #endif /* QT_MOBILE_APP_UI */
 }
 
-void BoardItem::drawLines(QPainter *painter)
+void BoardItem::drawBoardLines(QPainter *painter)
 {
     // Solid line brush
 #ifdef QT_MOBILE_APP_UI
@@ -199,7 +185,7 @@ void BoardItem::drawLines(QPainter *painter)
     }
 }
 
-void BoardItem::drawCoordinates(QPainter *painter)
+void BoardItem::drawCoordinateLabels(QPainter *painter)
 {
     const int FONT_SIZE = 12;
 
@@ -248,7 +234,7 @@ void BoardItem::drawCoordinates(QPainter *painter)
  *
  * @param painter Pointer to the QPainter object for drawing.
  */
-void BoardItem::drawPolarCoordinates(QPainter *painter)
+void BoardItem::drawPolarLabels(QPainter *painter)
 {
     QPen fontPen(QBrush(Qt::white), LINE_WEIGHT, Qt::SolidLine, Qt::SquareCap,
                  Qt::BevelJoin);
@@ -278,7 +264,7 @@ void BoardItem::drawPolarCoordinates(QPainter *painter)
  * @return Returns the point closest to targetPoint based on the distance
  * threshold.
  */
-QPointF BoardItem::getNearestPoint(const QPointF targetPoint)
+QPointF BoardItem::findNearestPoint(const QPointF targetPoint)
 {
     // Initialize nearestPoint to the origin (0,0) as a starting point for
     // comparison
@@ -298,12 +284,12 @@ QPointF BoardItem::getNearestPoint(const QPointF targetPoint)
     return nearestPoint;
 }
 
-QPointF BoardItem::polarCoordinateToPoint(File f, Rank r) const
+QPointF BoardItem::convertFromPolarCoordinate(File f, Rank r) const
 {
     return points[(static_cast<int>(f) - 1) * RANK_NB + static_cast<int>(r) - 1];
 }
 
-bool BoardItem::pointToPolarCoordinate(QPointF point, File &f, Rank &r) const
+bool BoardItem::convertToPolarCoordinate(QPointF point, File &f, Rank &r) const
 {
     // Iterate through all the points to find the closest one to the target
     // point.

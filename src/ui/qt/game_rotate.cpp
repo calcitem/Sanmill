@@ -32,25 +32,25 @@
 using std::to_string;
 
 // Toggle piece color
-void Game::togglePieceColor()
+void Game::togglePieceColors()
 {
     isInverted = !isInverted;
-    updatePieceColor();
+    updatePieceColors();
 }
 
 // Update piece color based on the value of 'isInverted'
-void Game::updatePieceColor()
+void Game::updatePieceColors()
 {
     // Iterate through all pieces
     for (PieceItem *pieceItem : pieceList) {
         if (pieceItem) {
-            swapColor(pieceItem);
+            swapPieceColor(pieceItem);
         }
     }
 }
 
 // Swap the color of a single piece
-void Game::swapColor(PieceItem *pieceItem)
+void Game::swapPieceColor(PieceItem *pieceItem)
 {
     auto model = pieceItem->getModel();
     if (model == PieceItem::Models::whitePiece) {
@@ -65,83 +65,83 @@ void Game::swapColor(PieceItem *pieceItem)
 
 /*
  * Old code:
- * void Game::executeTransform(const TransformFunc &transform)
+ * void Game::applyTransform(const TransformFunc &transform)
  * {
  *     stopAndWaitAiThreads();   // old code
  *     transform();
- *     updateUIComponents();
+ *     refreshUIComponents();
  *     startAiThreads();         // old code
  * }
  *
  * We replace these calls with the new approach. If you need to forcibly
  * stop tasks prior to transforming, you can call Threads.stop_all().
  * Then, if you want to re-queue AI tasks, you can do so by checking which
- * side is AI and calling submitAiTask(...). But if you do not need that,
+ * side is AI and calling submitAiSearch(...). But if you do not need that,
  * you can simply call transform() and update your UI.
  */
 
-void Game::executeTransform(const TransformFunc &transform)
+void Game::applyTransform(const TransformFunc &transform)
 {
     transform();
-    updateUIComponents();
+    refreshUIComponents();
 }
 
 // Update UI components like move list and scene
-void Game::updateUIComponents()
+void Game::refreshUIComponents()
 {
     int row = 0;
     for (const auto &str : *getMoveList()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
-    syncScene(row - 1);
+    syncSceneWithRow(row - 1);
 }
 
 // Synchronize the current scene based on move list
-void Game::syncScene(int row)
+void Game::syncSceneWithRow(int row)
 {
     if (currentRow == row) {
-        updateScene();
+        refreshScene();
     } else {
-        updateBoardState(currentRow, true);
+        refreshBoardState(currentRow, true);
     }
 }
 
 // Transformation function implementations
-void Game::mirrorAndRotate()
+void Game::flipAndRotateBoard()
 {
-    position.flipHorizontally(gameMoveList);
+    position.flipBoardHorizontally(gameMoveList);
     position.rotate(gameMoveList, 180);
 }
 
 // Define transformation functions
-void Game::flipVertically()
+void Game::flipBoardVertically()
 {
-    executeTransform([this]() { mirrorAndRotate(); });
+    applyTransform([this]() { flipAndRotateBoard(); });
 }
-void Game::flipHorizontally()
+void Game::flipBoardHorizontally()
 {
-    executeTransform([this]() { applyMirror(); });
+    applyTransform([this]() { applyHorizontalFlip(); });
 }
-void Game::rotateClockwise()
+void Game::rotateBoardClockwise()
 {
-    executeTransform([this]() { rotateRight(); });
+    applyTransform([this]() { rotateBoardRight(); });
 }
-void Game::RotateCounterclockwise()
+void Game::rotateBoardCounterclockwise()
 {
-    executeTransform([this]() { rotateLeft(); });
-}
-
-void Game::applyMirror()
-{
-    position.flipHorizontally(gameMoveList);
+    applyTransform([this]() { rotateBoardLeft(); });
 }
 
-void Game::rotateRight()
+void Game::applyHorizontalFlip()
+{
+    position.flipBoardHorizontally(gameMoveList);
+}
+
+void Game::rotateBoardRight()
 {
     position.rotate(gameMoveList, -90);
 }
 
-void Game::rotateLeft()
+void Game::rotateBoardLeft()
 {
     position.rotate(gameMoveList, 90);
 }

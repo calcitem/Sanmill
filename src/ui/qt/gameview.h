@@ -11,11 +11,11 @@ enum class TransformType {
     FlipVertically,
     FlipHorizontally,
     RotateClockwise,
-    RotateCounterclockwise
+    rotateBoardCounterclockwise
 };
 
 // This class is mainly derived to make the view adapt to the scene size and
-// image rotation flipHorizontally operation
+// image rotation flipBoardHorizontally operation
 class GameView : public QGraphicsView
 {
     Q_OBJECT
@@ -25,10 +25,10 @@ public:
     ~GameView() override;
 
 public slots:
-    void flipVertically();
-    void flipHorizontally();
-    void rotateClockwise();
-    void RotateCounterclockwise();
+    void flipBoardVertically();
+    void flipBoardHorizontally();
+    void rotateBoardClockwise();
+    void rotateBoardCounterclockwise();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

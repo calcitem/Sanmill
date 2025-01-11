@@ -26,7 +26,7 @@
 
 using std::to_string;
 
-bool Game::applyPartialMoveList(int row)
+bool Game::applyMoveListUntilRow(int row)
 {
     currentRow = row;
     const QStringList strList = moveListModel.stringList();
@@ -45,22 +45,22 @@ bool Game::applyPartialMoveList(int row)
 
 // Update the board state by applying moves up to a specific row in the list.
 // Optionally force an update even if the current row matches the requested row.
-bool Game::updateBoardState(int row, bool forceUpdate)
+bool Game::refreshBoardState(int row, bool forceUpdate)
 {
     // If current row is the same as requested row and not forced, do nothing
     if (currentRow == row && !forceUpdate)
         return false;
 
     // Apply partial move list up to 'row'
-    applyPartialMoveList(row);
+    applyMoveListUntilRow(row);
 
     // Update the scene to reflect the new position
-    updateScene();
+    refreshScene();
 
     return true;
 }
 
-bool Game::resign()
+bool Game::resignGame()
 {
     const bool result = position.resign(position.sideToMove);
     if (!result) {
@@ -81,13 +81,13 @@ bool Game::resign()
 
     // Play resign sound if a winner is determined
     if (position.get_winner() != NOBODY) {
-        playSound(GameSound::resign);
+        playGameSound(GameSound::resign);
     }
 
     return result;
 }
 
-GameSound Game::identifySoundType(Action action)
+GameSound Game::getSoundTypeForAction(Action action)
 {
     switch (action) {
     case Action::select:
@@ -116,7 +116,7 @@ bool Game::command(const std::string &command, bool update /*= true*/)
     std::string cmd = command;
 
     // Identify sound type before we mutate the Position
-    auto soundType = identifySoundType(position.get_action());
+    auto soundType = getSoundTypeForAction(position.get_action());
 
     // If engine is in 'ready' phase, start the game
     if (position.get_phase() == Phase::ready) {
@@ -180,12 +180,12 @@ bool Game::command(const std::string &command, bool update /*= true*/)
     }
 
     if (update) {
-        playSound(soundType);
-        // Optionally call updateScene() here if needed
-        // updateScene();
+        playGameSound(soundType);
+        // Optionally call refreshScene() here if needed
+        // refreshScene();
     }
 
-    updateStatusBar();
+    refreshStatusBar();
 
     // The move list handling: either create or append to the model
     if (getMoveList()->size() <= 1) {
@@ -216,7 +216,7 @@ bool Game::command(const std::string &command, bool update /*= true*/)
         moveListModel.data(moveListModel.index(currentRow - 1))
             .toString()
             .contains("Time over.")) {
-        playSound(GameSound::win);
+        playGameSound(GameSound::win);
     }
 #endif
 
@@ -233,22 +233,22 @@ bool Game::command(const std::string &command, bool update /*= true*/)
         }
     } else {
         // If the game is finished, print stats, handle auto-restart, etc.
-        printStats();
-        updateLcdDisplay();
+        printGameStatistics();
+        refreshLcdDisplay();
 
         if (gameOptions.getAutoRestart()) {
 #ifdef NNUE_GENERATE_TRAINING_DATA
             position.nnueWriteTrainingData();
 #endif
-            saveScore();
+            saveGameScore();
             gameReset();
             gameStart();
 
             if (isAiPlayer[WHITE]) {
-                setEngine(WHITE, true);
+                setEngineControl(WHITE, true);
             }
             if (isAiPlayer[BLACK]) {
-                setEngine(BLACK, true);
+                setEngineControl(BLACK, true);
             }
         }
 
@@ -280,7 +280,7 @@ bool Game::command(const std::string &command, bool update /*= true*/)
     }
 #endif
 
-    updateStatistics();
+    updateGameStatistics();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     position.nnueGenerateTrainingFen();
@@ -292,7 +292,7 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 /**
  * @brief Prints some debug info about the game duration, and any other stats.
  */
-void Game::printStats()
+void Game::printGameStatistics()
 {
     gameEndTime = now();
     gameDurationTime = gameEndTime - gameStartTime;
@@ -320,7 +320,7 @@ void Game::printStats()
 /**
  * @brief Updates and prints the current scoreboard.
  */
-void Game::updateStatistics()
+void Game::updateGameStatistics()
 {
     int total = score[WHITE] + score[BLACK] + score[DRAW];
     float blackWinRate, whiteWinRate, drawRate;

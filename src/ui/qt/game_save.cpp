@@ -32,7 +32,7 @@
 using std::to_string;
 
 // Helper function to create the save path
-QString Game::createSavePath() const
+QString Game::buildSaveFilePath() const
 {
     const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     const qint64 pid = QCoreApplication::applicationPid();
@@ -41,15 +41,15 @@ QString Game::createSavePath() const
 }
 
 // Helper function to write player type
-void Game::writePlayerType(QTextStream &textStream, const QString &color,
-                           bool isAi) const
+void Game::outputPlayerType(QTextStream &textStream, const QString &color,
+                            bool isAi) const
 {
     textStream << color << ":\t" << (isAi ? "AI Player" : "Human Player")
                << "\n";
 }
 
 // Helper function to write game statistics
-void Game::writeGameStats(QTextStream &textStream) const
+void Game::outputGameStatistics(QTextStream &textStream) const
 {
     qint64 gamesPlayedCount = score[WHITE] + score[BLACK] + score[DRAW];
 
@@ -69,9 +69,9 @@ void Game::writeGameStats(QTextStream &textStream) const
                << "\n";
 }
 
-void Game::saveScore()
+void Game::saveGameScore()
 {
-    QFile file(createSavePath());
+    QFile file(buildSaveFilePath());
 
     if (file.isOpen()) {
         file.close();
@@ -85,18 +85,18 @@ void Game::saveScore()
     textStream << QCoreApplication::applicationFilePath() << "\n\n";
     textStream << gameTest->getKey() << "\n\n";
 
-    writePlayerType(textStream, "White", isAiPlayer[WHITE]);
-    writePlayerType(textStream, "Black", isAiPlayer[BLACK]);
+    outputPlayerType(textStream, "White", isAiPlayer[WHITE]);
+    outputPlayerType(textStream, "Black", isAiPlayer[BLACK]);
 
     textStream << "\n";
 
-    writeGameStats(textStream);
+    outputGameStatistics(textStream);
 
     file.flush();
     file.close();
 }
 
-void Game::finalizeEndgameLearning()
+void Game::finishEndgameLearning()
 {
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {

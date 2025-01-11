@@ -15,7 +15,7 @@ GameScene::GameScene(QObject *parent)
     : QGraphicsScene(parent)
     , board(std::make_unique<BoardItem>())
 {
-    board->setDiagonal(false);
+    board->setDiagonalLineEnabled(false);
     addItem(board.get());
 }
 
@@ -54,7 +54,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void GameScene::handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF p = mouseEvent->scenePos();
-    p = board->getNearestPoint(p);
+    p = board->findNearestPoint(p);
     if (p != QPointF(0, 0)) {
         // Send the nearest drop point of the mouse point
         emit mouseReleased(p);
@@ -68,19 +68,19 @@ void GameScene::handlePieceClick(const QGraphicsItem *item)
     emit mouseReleased(item->scenePos());
 }
 
-QPointF GameScene::polarCoordinateToPoint(File f, Rank r) const
+QPointF GameScene::convertFromPolarCoordinate(File f, Rank r) const
 {
-    return board->polarCoordinateToPoint(f, r);
+    return board->convertFromPolarCoordinate(f, r);
 }
 
-bool GameScene::pointToPolarCoordinate(QPointF pos, File &f, Rank &r) const
+bool GameScene::convertToPolarCoordinate(QPointF pos, File &f, Rank &r) const
 {
-    return board->pointToPolarCoordinate(pos, f, r);
+    return board->convertToPolarCoordinate(pos, f, r);
 }
 
-void GameScene::setDiagonal(bool arg) const
+void GameScene::setDiagonalLineEnabled(bool arg) const
 {
     if (board) {
-        board->setDiagonal(arg);
+        board->setDiagonalLineEnabled(arg);
     }
 }

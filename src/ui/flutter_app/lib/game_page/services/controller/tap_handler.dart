@@ -34,7 +34,7 @@ class TapHandler {
 
   bool get _isGameRunning =>
       GameController().position.winner == PieceColor.nobody;
-  bool get isAiToMove => controller.gameInstance.isAiToMove;
+  bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
   bool get _isBoardEmpty =>
       GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
@@ -103,14 +103,14 @@ class TapHandler {
         _isBoardEmpty) {
       //controller.reset();
 
-      if (isAiToMove) {
+      if (isAiSideToMove) {
         logger.i("$_logTag AI is not thinking. AI is to move.");
 
         return GameController().engineToGo(context, isMoveNow: false);
       }
     }
 
-    if (isAiToMove) {
+    if (isAiSideToMove) {
       logger.i("$_logTag AI's turn, skip tapping.");
       return const EngineResponseSkip();
     }
@@ -551,7 +551,7 @@ class TapHandler {
         }
       }
 
-      if (_isGameRunning && GameController().gameInstance.isAiToMove) {
+      if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
         if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
           return GameController().engineToGo(context, isMoveNow: false);
         }

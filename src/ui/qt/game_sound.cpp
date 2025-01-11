@@ -33,9 +33,9 @@
 using std::to_string;
 
 // Helper function to build sound filename
-static std::string buildFilename(GameSound soundType,
-                                 const std::string &sideStr,
-                                 const std::string &opponentStr)
+static std::string buildSoundFilename(GameSound soundType,
+                                      const std::string &sideStr,
+                                      const std::string &opponentStr)
 {
     std::string filename;
 
@@ -89,7 +89,7 @@ void Game::setSound(bool arg) const noexcept
 }
 
 // Function to play a particular sound based on game state
-void Game::playSound(GameSound soundType)
+void Game::playGameSound(GameSound soundType)
 {
     Color c = position.side_to_move();
 
@@ -104,14 +104,14 @@ void Game::playSound(GameSound soundType)
         sideStr = opponentStr = "DRAW";
     }
 
-    std::string filename = buildFilename(soundType, sideStr, opponentStr);
+    std::string filename = buildSoundFilename(soundType, sideStr, opponentStr);
 #ifndef DO_NOT_PLAY_SOUND
-    performSoundPlay(filename);
+    doPlaySound(filename);
 #endif
 }
 
 // Function to actually perform the sound play operation
-void Game::performSoundPlay(const std::string &filename)
+void Game::doPlaySound(const std::string &filename)
 {
     if (filename.empty()) {
         return;

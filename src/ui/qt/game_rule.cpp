@@ -32,13 +32,13 @@
 using std::to_string;
 
 // Validate the rule index.
-bool Game::isValidRuleIndex(int ruleNo)
+bool Game::isRuleIndexValid(int ruleNo)
 {
     return (ruleNo >= 0 && ruleNo < N_RULES);
 }
 
 // Update limited steps and time.
-void Game::updateLimits(int stepLimited, int timeLimited)
+void Game::setMoveAndTimeLimits(int stepLimited, int timeLimited)
 {
     if (stepLimited != INT_MAX && timeLimited != 0) {
         stepsLimit = stepLimited;
@@ -47,10 +47,10 @@ void Game::updateLimits(int stepLimited, int timeLimited)
 }
 
 // Set a new game rule.
-void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
+void Game::applyRule(int ruleNo, int stepLimited, int timeLimited)
 {
     // Validate the rule number.
-    if (!isValidRuleIndex(ruleNo))
+    if (!isRuleIndexValid(ruleNo))
         return;
 
     // Update rule index.
@@ -60,7 +60,7 @@ void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
     rule.nMoveRule = stepLimited;
 
     // Update other game settings.
-    updateLimits(stepLimited, timeLimited);
+    setMoveAndTimeLimits(stepLimited, timeLimited);
 
     // Reset the model and the game.
     if (!set_rule(ruleNo))
@@ -70,11 +70,11 @@ void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
     gameReset();
 
     // Record and save the new rule setting.
-    saveRuleSetting(ruleNo);
+    storeRuleSetting(ruleNo);
 }
 
 // Create a list entry for the game rule.
-std::pair<int, QStringList> Game::createRuleEntry(int index)
+std::pair<int, QStringList> Game::buildRuleEntry(int index)
 {
     QStringList strList;
     strList.append(tr(RULES[index].name));

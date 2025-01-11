@@ -1928,8 +1928,8 @@ bool Position::is_stalemate_removal()
     return false;
 }
 
-void Position::flipHorizontally(vector<string> &gameMoveList,
-                                bool cmdChange /*= true*/)
+void Position::flipBoardHorizontally(vector<string> &gameMoveList,
+                                     bool cmdChange /*= true*/)
 {
     int f, r;
 

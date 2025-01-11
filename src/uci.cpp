@@ -33,7 +33,7 @@ namespace {
 void initialize_engine(Position *pos)
 {
     // Delegate initialization to EngineCommands
-    EngineCommands::initialize_start_fen();
+    EngineCommands::init_start_fen();
     pos->set(EngineCommands::StartFEN);
 }
 
