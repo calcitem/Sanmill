@@ -311,8 +311,7 @@ void Game::updateTips()
         recordGameOverReason();
 
         scoreStr = "Score " + to_string(score[WHITE]) + " : " +
-                   to_string(score[BLACK]) + ", Draw " +
-                   to_string(score[DRAW]);
+                   to_string(score[BLACK]) + ", Draw " + to_string(score[DRAW]);
 
         switch (p.winner) {
         case WHITE:

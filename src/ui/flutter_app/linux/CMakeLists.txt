@@ -121,7 +121,7 @@ add_executable(${BINARY_NAME}
   "../../../engine_controller.cpp"
   "../../../engine_commands.cpp"
   "../../../opening_book.cpp"
-  "../../../searching_engine.cpp"
+  "../../../search_engine.cpp"
   "../../../thread_pool.cpp"
   "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_api.cpp"

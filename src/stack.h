@@ -4,7 +4,6 @@
 #define STACK_H_INCLUDED
 
 #include <cstddef>
-#include <cassert>
 
 namespace Sanmill {
 
@@ -45,15 +44,7 @@ public:
     void push(const T &obj)
     {
         p++;
-        memcpy(arr + p, &obj, sizeof(T));
-    }
-
-    void push_back(const T &obj)
-    {
-        p++;
         arr[p] = obj;
-
-        assert(p < capacity);
     }
 
     void pop() { p--; }

@@ -1,14 +1,15 @@
 // position.cpp
 
-#include <algorithm>
-#include <iomanip>
-#include <sstream>
-#include <string> // std::string, std::stoi
-
+#include "search_engine.h"
 #include "mills.h"
 #include "position.h"
 #include "thread.h"
-#include "search_engine.h"
+
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+#include <sstream>
+#include <string>
 
 using std::string;
 using std::vector;
@@ -296,7 +297,7 @@ Position &Position::set(const string &fenStr)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
-    std::memset(this, 0, sizeof(Position));
+    *this = Position();
 
     ss >> std::noskipws;
 
@@ -550,7 +551,7 @@ void Position::do_move(Move m)
 
 void Position::undo_move(Sanmill::Stack<Position> &ss)
 {
-    memcpy(this, ss.top(), sizeof(Position));
+    *this = *ss.top();
     ss.pop();
 }
 

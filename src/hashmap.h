@@ -55,7 +55,10 @@ public:
         hashTable = new HashNode<K, V>[hashSize];
 #endif // ALIGNED_LARGE_PAGES
 
-        memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+        for (size_t i = 0; i < hashSize; i++) {
+            hashTable[i].~HashNode<K, V>();
+            new (&hashTable[i]) HashNode<K, V>();
+        }
 #else  // DISABLE_HASHBUCKET
        // create the key table as an array of key buckets
         hashTable = new HashBucket<K, V>[hashSize];
@@ -151,7 +154,10 @@ public:
     void clear() const
     {
 #ifdef DISABLE_HASHBUCKET
-        memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+        for (size_t i = 0; i < hashSize; i++) {
+            hashTable[i].~HashNode<K, V>();
+            new (&hashTable[i]) HashNode<K, V>();
+        }
 #else  // DISABLE_HASHBUCKET
         for (size_t i = 0; i < hashSize; i++) {
             (hashTable[i]).clear();

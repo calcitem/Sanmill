@@ -122,7 +122,7 @@ endif
 
 optimize = no
 debug = yes
-sanitize = address
+sanitize = no
 coverage = no
 bits = 64
 prefetch = no
