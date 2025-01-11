@@ -98,6 +98,7 @@ private slots:
     void on_actionAnimation_A_toggled(bool arg1);
     void on_actionAutoRestart_A_triggered();
 #endif
+    void on_actionOpen_Settings_File_triggered();
     static void on_actionViewHelp_V_triggered();
     static void on_actionWeb_W_triggered();
     static void on_actionAbout_A_triggered();

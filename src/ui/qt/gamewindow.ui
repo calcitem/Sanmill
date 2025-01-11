@@ -227,7 +227,7 @@
      <x>0</x>
      <y>0</y>
      <width>685</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_C">
@@ -294,6 +294,8 @@
     <addaction name="actionAutoRestart_A"/>
     <addaction name="separator"/>
     <addaction name="actionDeveloperMode"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen_Settings_File"/>
    </widget>
    <widget class="QMenu" name="menu_H">
     <property name="title">
@@ -1413,6 +1415,11 @@
    </property>
    <property name="text">
     <string>Use Perfect Database</string>
+   </property>
+  </action>
+  <action name="actionOpen_Settings_File">
+   <property name="text">
+    <string>Open Settings File</string>
    </property>
   </action>
  </widget>

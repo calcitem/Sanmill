@@ -28,6 +28,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPicture>
+#include <QProcess>
 #include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
@@ -235,6 +236,9 @@ void MillGameWindow::initialize()
 
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)), game,
             SLOT(setAutoRestart(bool)));
+
+    connect(ui.actionOpen_Settings_File, &QAction::triggered, this,
+            &MillGameWindow::on_actionOpen_Settings_File_triggered);
 
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)), game,
             SLOT(setAutoChangeFirstMove(bool)));
@@ -1024,6 +1028,57 @@ void MillGameWindow::on_actionEngine_E_triggered()
 
     dialog->disconnect();
     delete dialog;
+}
+
+void MillGameWindow::on_actionOpen_Settings_File_triggered()
+{
+    QString settingsFilePath = QCoreApplication::applicationDirPath() + "/setti"
+                                                                        "ngs."
+                                                                        "ini";
+
+    if (!QFileInfo::exists(settingsFilePath)) {
+        QMessageBox::warning(this, tr("File Not Found"),
+                             tr("The settings.ini file does not exist."));
+        return;
+    }
+
+    QString editorCommand;
+
+#if defined(Q_OS_WIN)
+    editorCommand = "notepad.exe";
+#elif defined(Q_OS_MAC)
+    editorCommand = "open";
+#elif defined(Q_OS_LINUX)
+    editorCommand = "gedit";
+#else
+    editorCommand = QString();
+#endif
+
+    if (!editorCommand.isEmpty()) {
+        QStringList arguments;
+#if defined(Q_OS_MAC)
+        arguments << "-a" << "TextEdit" << settingsFilePath;
+#else
+        arguments << settingsFilePath;
+#endif
+
+        QProcess *process = new QProcess(this);
+        process->start(editorCommand, arguments);
+
+        if (!process->waitForStarted()) {
+            QMessageBox::warning(this, tr("Error"),
+                                 tr("Failed to open the settings file with the "
+                                    "text editor."));
+            delete process;
+            return;
+        }
+
+        connect(process,
+                QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                process, &QObject::deleteLater);
+    } else {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(settingsFilePath));
+    }
 }
 
 void MillGameWindow::on_actionViewHelp_V_triggered()
