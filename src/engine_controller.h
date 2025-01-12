@@ -6,12 +6,14 @@
 #include <string>
 #include "position.h"
 
+class SearchEngine;
+
 /// EngineController is responsible for handling commands from UciServer (or
 /// UCI::loop).
 class EngineController
 {
 public:
-    EngineController();
+    EngineController(SearchEngine &searchEngine);
     ~EngineController();
 
     /// The main entry to handle a command.
@@ -19,15 +21,11 @@ public:
     /// so we can call existing logic (like go(pos), position(pos, is)).
     void handleCommand(const std::string &cmd, Position *pos);
 
-    /// Returns the singleton instance of EngineController
-    static EngineController &getInstance();
-
 private:
-    // Singleton instance
-    static EngineController instance;
-
     // Internal position
     Position searchPos;
+
+    SearchEngine &searchEngine_;
 
     // If needed, we could store references to Options, or keep an internal
     // Position.

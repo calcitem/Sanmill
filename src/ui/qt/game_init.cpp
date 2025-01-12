@@ -40,15 +40,16 @@ Game::Game(GameScene &scene, QObject *parent)
     , timeLimit(
           0 /* or fetch from options if needed: gameOptions.getMoveTime() */)
     , gameMoveList(256)
+    , engineController(searchEngine)
 {
     initComponents();
 
 #ifdef QT_GUI_LIB
-    connect(&SearchEngine::getInstance(), &SearchEngine::searchCompleted, this,
+    connect(&searchEngine, &SearchEngine::searchCompleted, this,
             &Game::handleAiSearchCompleted, Qt::QueuedConnection);
 
-    connect(&SearchEngine::getInstance(), &SearchEngine::command, this,
-            &Game::command, Qt::QueuedConnection);
+    connect(&searchEngine, &SearchEngine::command, this, &Game::command,
+            Qt::QueuedConnection);
 #endif
 }
 
@@ -143,6 +144,8 @@ void Game::gameReset()
     resetMoveListModel();
     refreshStatusBar(true);
     updateGameState(true);
+
+    searchEngine.searchAborted.store(false, std::memory_order_relaxed);
 }
 
 void Game::initSceneBackground()

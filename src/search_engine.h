@@ -16,10 +16,6 @@
 #include "position.h"
 #include "misc.h"
 
-/// Forward declarations, if needed.
-// class Thread; // Probably no longer used
-
-/// The SearchEngine class now inherits from QObject to enable Qt signals.
 class SearchEngine
 #ifdef QT_GUI_LIB
     : public QObject
@@ -52,10 +48,6 @@ public:
     uint64_t beginNewSearch(Position *p);
     void runSearch();
 
-    /// The singleton getter
-    static SearchEngine &getInstance();
-
-    /// Position pointer and relevant data
     Position *rootPos {nullptr};
 
     /// Timeout check
@@ -86,8 +78,6 @@ signals:
 #endif
 
 private:
-    /// Singleton instance
-    static SearchEngine instance;
     std::atomic<uint64_t> searchCounter {0};
 
 #ifdef TIME_STAT

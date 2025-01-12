@@ -229,7 +229,7 @@ bool Game::command(const std::string &command, bool update /*= true*/)
             // 2) Then call "go" to start searching.
 
             // For demonstration, a simple approach is just:
-            EngineController::getInstance().handleCommand("go", &position);
+            engineController.handleCommand("go", &position);
         }
     } else {
         // If the game is finished, print stats, handle auto-restart, etc.
@@ -273,9 +273,9 @@ bool Game::command(const std::string &command, bool update /*= true*/)
     if (!gameOptions.getUsePerfectDatabase()) {
         if (isAiPlayer[WHITE]) {
             // Minimal usage:
-            SearchEngine::getInstance().analyze(WHITE);
+            searchEngine.analyze(WHITE);
         } else if (isAiPlayer[BLACK]) {
-            SearchEngine::getInstance().analyze(BLACK);
+            searchEngine.analyze(BLACK);
         }
     }
 #endif

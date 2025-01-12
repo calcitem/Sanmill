@@ -15,10 +15,13 @@
 #include "option.h"
 #include "position.h"
 #include "search.h"
+#include "search_engine.h"
 #include "types.h"
 #include "uci.h"
 
 using namespace std;
+
+static SearchEngine searchEngine;
 
 class ThreadSafeNodeVisits
 {
@@ -191,9 +194,9 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = Search::search(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
-                                 -VALUE_INFINITE, VALUE_INFINITE, bestMove);
-
+    Value value = Search::search(searchEngine, pos, ss, ALPHA_BETA_DEPTH,
+                                 ALPHA_BETA_DEPTH, -VALUE_INFINITE,
+                                 VALUE_INFINITE, bestMove);
     return value > 0;
 }
 

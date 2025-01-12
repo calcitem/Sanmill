@@ -10,12 +10,11 @@
 #include "thread.h"
 #include "search.h"
 #include "misc.h"
-#include "engine_commands.h" // Include for EngineCommands
+#include "engine_commands.h"
+#include "search_engine.h"
 
-// Initialize the singleton instance
-EngineController EngineController::instance;
-
-EngineController::EngineController()
+EngineController::EngineController(SearchEngine &searchEngine)
+    : searchEngine_(searchEngine)
 {
     // Constructor
 }
@@ -23,11 +22,6 @@ EngineController::EngineController()
 EngineController::~EngineController()
 {
     // Destructor
-}
-
-EngineController &EngineController::getInstance()
-{
-    return instance;
 }
 
 void EngineController::handleCommand(const std::string &cmd, Position *pos)
@@ -38,10 +32,9 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
 
     if (token == "go") {
         searchPos = *pos;
-        EngineCommands::go(&searchPos); // Call the EngineCommands::go function
+        EngineCommands::go(searchEngine_, &searchPos);
     } else if (token == "position") {
-        EngineCommands::position(pos, is); // Call the EngineCommands::position
-                                           // function
+        EngineCommands::position(pos, is);
     } else if (token == "ucinewgame") {
         Search::clear(); // Clear the search state for a new game
         // Additional custom non-UCI commands, mainly for debugging.
@@ -54,10 +47,6 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         sync_cout << compiler_info() << sync_endl;
     } else {
         // Handle additional custom commands if necessary
-        // For example:
-        // else if (token == "customcommand") { ... }
-        // Currently, unknown commands are handled in UCI::loop, so you might
-        // not need to do anything here.
         sync_cout << "Unknown command in EngineController: " << cmd
                   << sync_endl;
     }

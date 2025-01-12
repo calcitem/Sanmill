@@ -12,6 +12,8 @@
 // Example of a global or static variable to track game number:
 static int g_gameNumber = 0;
 
+static SearchEngine searchEngine;
+
 // Global stats structure
 SelfPlayStats g_stats = {0, 0, 0, 0};
 
@@ -28,17 +30,16 @@ int playOneGame()
 
     // 2) Loop until the engine reports Phase::gameOver
     while (pos.get_phase() != Phase::gameOver) {
-        uint64_t localId = SearchEngine::getInstance().beginNewSearch(&pos);
-        Threads.submit([]() { SearchEngine::getInstance().runSearch(); });
+        uint64_t localId = searchEngine.beginNewSearch(&pos);
+        Threads.submit([]() { searchEngine.runSearch(); });
 
         // Wait for either best move or gameover or abort
         {
-            std::unique_lock<std::mutex> lock(
-                SearchEngine::getInstance().bestMoveMutex);
-            SearchEngine::getInstance().bestMoveCV.wait(lock, [&pos] {
-                return SearchEngine::getInstance().bestMoveReady ||
+            std::unique_lock<std::mutex> lock(searchEngine.bestMoveMutex);
+            searchEngine.bestMoveCV.wait(lock, [&pos] {
+                return searchEngine.bestMoveReady ||
                        (pos.get_phase() == Phase::gameOver) ||
-                       SearchEngine::getInstance().searchAborted.load(
+                       searchEngine.searchAborted.load(
                            std::memory_order_relaxed);
             });
 
@@ -47,14 +48,13 @@ int playOneGame()
                 break;
 
             // If we are aborted, break out
-            if (SearchEngine::getInstance().searchAborted.load(
-                    std::memory_order_relaxed))
+            if (searchEngine.searchAborted.load(std::memory_order_relaxed))
                 break;
 
             // Otherwise, we have a ready move
-            if (SearchEngine::getInstance().bestMoveReady) {
-                Move best = SearchEngine::getInstance().bestMove;
-                SearchEngine::getInstance().bestMoveReady = false;
+            if (searchEngine.bestMoveReady) {
+                Move best = searchEngine.bestMove;
+                searchEngine.bestMoveReady = false;
                 lock.unlock(); // release before do_move
 
                 if (best == MOVE_NONE || best == MOVE_NULL) {

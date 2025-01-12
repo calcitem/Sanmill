@@ -7,11 +7,12 @@
 #include <sstream>
 
 class Position;
+class SearchEngine;
 
 namespace EngineCommands {
 
 /// Handles the "go" UCI command to start the search.
-void go(Position *pos);
+void go(SearchEngine &searchEngine, Position *pos);
 
 /// Handles the "position" UCI command to set up the board position.
 void position(Position *pos, std::istringstream &is);
