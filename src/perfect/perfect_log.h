@@ -21,6 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// pefect_log.h
+
 #ifndef PERFECT_LOG_H_INCLUDED
 #define PERFECT_LOG_H_INCLUDED
 

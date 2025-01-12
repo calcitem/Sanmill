@@ -21,6 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// perfect_sector.cpp
+
 #include "perfect_sector.h"
 #include "perfect_common.h"
 #include "perfect_hash.h"

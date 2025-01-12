@@ -21,6 +21,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// perfect_symmetries_slow.cpp
+
 #include "perfect_symmetries_slow.h"
 
 int func_id(int a)

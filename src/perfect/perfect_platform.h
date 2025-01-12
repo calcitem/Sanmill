@@ -19,6 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// perfect_platform.h
+
 #ifndef PERFECT_PLATFORM_H_INCLUDED
 #define PERFECT_PLATFORM_H_INCLUDED
 

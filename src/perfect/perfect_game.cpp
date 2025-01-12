@@ -19,6 +19,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// perfect_game.cpp
+
 #include "perfect_player.h"
 #include "perfect_game.h"
 #include "perfect_game_state.h"

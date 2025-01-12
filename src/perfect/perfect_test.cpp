@@ -23,6 +23,8 @@
 
 // #define no_init_all // Was needed only in VS 2017
 
+// perfect_test.cpp
+
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
 
 #include <cstdio>
