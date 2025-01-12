@@ -704,4 +704,14 @@ void SearchEngine::runSearch()
     // If you want to signal that the search is finished, do it here:
     emit searchCompleted();
 #endif
+
+    // Lock the mutex and signal that bestMove is ready
+    {
+        std::lock_guard<std::mutex> lk(bestMoveMutex);
+        // We assume 'bestMove' is already set in executeSearch()
+        // or you set it after setBestMoveString(). For example:
+        //   this->bestMove = ... // from next_move() or fallback
+        bestMoveReady = true; // Indicate "we have a new best move"
+    }
+    bestMoveCV.notify_one(); // Wake up any thread waiting in playOneGame()
 }

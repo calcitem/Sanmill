@@ -8,6 +8,8 @@
 #include <string>
 #include <functional>
 #include <atomic>
+#include <mutex>
+#include <condition_variable>
 #ifdef QT_GUI_LIB
 #include <QObject>
 #endif
@@ -69,6 +71,10 @@ public:
     Value lastvalue {VALUE_ZERO};
     AiMoveType aiMoveType {AiMoveType::unknown};
     std::string bestMoveString;
+
+    std::mutex bestMoveMutex;
+    std::condition_variable bestMoveCV;
+    bool bestMoveReady {false};
 
 #ifdef QT_GUI_LIB
 signals:

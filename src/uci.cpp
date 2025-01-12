@@ -9,6 +9,7 @@
 #include "uci.h"
 #include "misc.h"
 #include "search_engine.h"
+#include "self_play.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"
@@ -126,6 +127,37 @@ void UCI::loop(int argc, char *argv[])
                  token == "ucinewgame" || token == "d" || token == "compiler") {
             // Pass the entire command to EngineController
             EngineController().getInstance().handleCommand(cmd, pos);
+        } else if (token == "selfplay") {
+            // 1) Decide how many games you want
+            int numberOfGames = 10;
+
+            // 2) For each game, do self-play
+            for (int i = 0; i < numberOfGames; i++) {
+                playOneGame();
+            }
+
+            // 3) Print aggregated stats
+            //    Make sure you #include "SelfPlayStats.h" to access g_stats.
+            sync_cout << "Self-play completed. " << g_stats.totalGames
+                      << " games." << sync_endl;
+            sync_cout << "White wins: " << g_stats.whiteWins
+                      << ", Black wins: " << g_stats.blackWins
+                      << ", Draws: " << g_stats.draws << sync_endl;
+
+            // Calculate win rates etc.
+            // You can do your ratio or percentage here:
+            double whiteRate = 0.0, blackRate = 0.0, drawRate = 0.0;
+            if (g_stats.totalGames > 0) {
+                whiteRate = 100.0 * g_stats.whiteWins / g_stats.totalGames;
+                blackRate = 100.0 * g_stats.blackWins / g_stats.totalGames;
+                drawRate = 100.0 * g_stats.draws / g_stats.totalGames;
+            }
+            sync_cout << "WhiteWinRate: " << whiteRate << "%, "
+                      << "BlackWinRate: " << blackRate << "%, "
+                      << "DrawRate: " << drawRate << "%" << sync_endl;
+
+            // 4) Optionally exit or continue. If you want "quit":
+            // token = "quit";
         }
 
         else if (token == "isready")
