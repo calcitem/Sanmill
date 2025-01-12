@@ -77,11 +77,11 @@ void Game::submitAiSearch()
     std::string posCmd = ss.str();
 
     // Call EngineController to set the position.
-    EngineController::getInstance().handleCommand(posCmd, &position);
+    engineController.handleCommand(posCmd, &position);
 
     // Start the search with "go".
     // EngineController::go() will internally manage threading in SearchEngine.
-    EngineController::getInstance().handleCommand("go", &position);
+    engineController.handleCommand("go", &position);
 
     // Decrement the counter in the future when the search completes.
     // Usually you'd do this in a callback or slot that listens for completion.

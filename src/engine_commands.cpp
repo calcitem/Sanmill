@@ -16,6 +16,7 @@
 using std::string;
 
 extern ThreadPool Threads;
+
 namespace EngineCommands {
 
 // FEN string of the initial position, normal mill game
@@ -78,26 +79,26 @@ void init_start_fen()
 // go() is called when engine receives the "go" UCI command. The function sets
 // the thinking time and other parameters from the input string, then starts
 // the search.
-void go(Position *pos)
+void go(SearchEngine &searchEngine, Position *pos)
 {
 #ifdef UCI_AUTO_RE_GO
 begin:
 #endif
 
-    uint64_t localId = SearchEngine::getInstance().beginNewSearch(pos);
+    uint64_t localId = searchEngine.beginNewSearch(pos);
 
-    Threads.submit([]() { SearchEngine::getInstance().runSearch(); });
+    Threads.submit([&searchEngine]() { searchEngine.runSearch(); });
 
     const auto limit_ms = gameOptions.getMoveTime() * 1000;
 
     if (limit_ms > 0) {
-        std::thread([limit_ms, localId]() {
+        std::thread([&searchEngine, limit_ms, localId]() {
             std::this_thread::sleep_for(std::chrono::milliseconds(limit_ms));
 
-            if (SearchEngine::getInstance().currentSearchId.load(
-                    std::memory_order_relaxed) == localId) {
-                SearchEngine::getInstance().searchAborted.store(
-                    true, std::memory_order_relaxed);
+            if (searchEngine.currentSearchId.load(std::memory_order_relaxed) ==
+                localId) {
+                searchEngine.searchAborted.store(true,
+                                                 std::memory_order_relaxed);
             }
         }).detach();
     }
@@ -108,7 +109,7 @@ begin:
         Threads.stop_all();
 
         Threads.set(1);
-        go(pos);
+        go(searchEngine, pos);
 #else
         return;
 #endif

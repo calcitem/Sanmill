@@ -34,7 +34,8 @@ void Search::clear()
 vector<Key> posKeyHistory;
 
 // Quiescence Search
-Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
+                      Sanmill::Stack<Position> &ss, Depth depth,
                       Depth originDepth, Value alpha, Value beta,
                       Move &bestMove)
 {
@@ -91,10 +92,10 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // Recursively call qsearch
         Value value = (after != before) ?
-                          -qsearch(pos, ss, depth - 1, originDepth, -beta,
-                                   -alpha, bestMove) :
-                          qsearch(pos, ss, depth - 1, originDepth, alpha, beta,
-                                  bestMove);
+                          -qsearch(searchEngine, pos, ss, depth - 1,
+                                   originDepth, -beta, -alpha, bestMove) :
+                          qsearch(searchEngine, pos, ss, depth - 1, originDepth,
+                                  alpha, beta, bestMove);
 
         // Undo the move
         pos->undo_move(ss);
@@ -112,8 +113,7 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
             }
         }
 
-        if (SearchEngine().getInstance().searchAborted.load(
-                std::memory_order_relaxed)) {
+        if (searchEngine.searchAborted.load(std::memory_order_relaxed)) {
             return alpha;
         }
     }
@@ -123,15 +123,15 @@ Value Search::qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 }
 
 /// Search function that performs recursive search with alpha-beta pruning
-Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
+Value Search::search(SearchEngine &searchEngine, Position *pos,
+                     Sanmill::Stack<Position> &ss, Depth depth,
                      Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value bestValue = -VALUE_INFINITE;
 
     // Check for terminal position or search abortion
     if (unlikely(pos->phase == Phase::gameOver) ||
-        SearchEngine().getInstance().searchAborted.load(
-            std::memory_order_relaxed)) {
+        searchEngine.searchAborted.load(std::memory_order_relaxed)) {
         bestValue = Eval::evaluate(*pos);
 
         // Adjust evaluation to prefer quicker wins or slower losses
@@ -146,7 +146,8 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
     if (depth <= 0) {
         // Call quiescence search when depth limit is reached
-        return qsearch(pos, ss, depth, originDepth, alpha, beta, bestMove);
+        return qsearch(searchEngine, pos, ss, depth, originDepth, alpha, beta,
+                       bestMove);
     }
 
 #ifdef RULE_50
@@ -292,10 +293,10 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 
         // Perform recursive search
         value = (after != before) ?
-                    -search(pos, ss, depth - 1 + epsilon, originDepth, -beta,
-                            -alpha, bestMove) :
-                    search(pos, ss, depth - 1 + epsilon, originDepth, alpha,
-                           beta, bestMove);
+                    -search(searchEngine, pos, ss, depth - 1 + epsilon,
+                            originDepth, -beta, -alpha, bestMove) :
+                    search(searchEngine, pos, ss, depth - 1 + epsilon,
+                           originDepth, alpha, beta, bestMove);
 
         // Undo the move
         pos->undo_move(ss);
@@ -320,8 +321,7 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
         }
 
         // Check for search abortion
-        if (SearchEngine().getInstance().searchAborted.load(
-                std::memory_order_relaxed)) {
+        if (searchEngine.searchAborted.load(std::memory_order_relaxed)) {
             return bestValue;
         }
     }
@@ -350,9 +350,9 @@ Value Search::search(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
 }
 
 /// MTDF function implementing the MTD(f) search algorithm
-Value Search::MTDF(Position *pos, Sanmill::Stack<Position> &ss,
-                   Value firstguess, Depth depth, Depth originDepth,
-                   Move &bestMove)
+Value Search::MTDF(SearchEngine &searchEngine, Position *pos,
+                   Sanmill::Stack<Position> &ss, Value firstguess, Depth depth,
+                   Depth originDepth, Move &bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;
@@ -366,8 +366,8 @@ Value Search::MTDF(Position *pos, Sanmill::Stack<Position> &ss,
             beta = g;
         }
 
-        g = search(pos, ss, depth, originDepth, beta - VALUE_MTDF_WINDOW, beta,
-                   bestMove);
+        g = search(searchEngine, pos, ss, depth, originDepth,
+                   beta - VALUE_MTDF_WINDOW, beta, bestMove);
 
         if (g < beta) {
             upperbound = g; // Fail low
@@ -380,32 +380,35 @@ Value Search::MTDF(Position *pos, Sanmill::Stack<Position> &ss,
 }
 
 /// Function that performs Principal Variation Search (PVS)
-Value Search::pvs(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-                  Depth originDepth, Value alpha, Value beta, Move &bestMove,
-                  int i, const Color before, const Color after)
+Value Search::pvs(SearchEngine &searchEngine, Position *pos,
+                  Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth,
+                  Value alpha, Value beta, Move &bestMove, int i,
+                  const Color before, const Color after)
 {
     Value value;
 
     if (i == 0) {
         // First move: full window search
         value = (after != before) ?
-                    -search(pos, ss, depth, originDepth, -beta, -alpha,
-                            bestMove) :
-                    search(pos, ss, depth, originDepth, alpha, beta, bestMove);
+                    -search(searchEngine, pos, ss, depth, originDepth, -beta,
+                            -alpha, bestMove) :
+                    search(searchEngine, pos, ss, depth, originDepth, alpha,
+                           beta, bestMove);
     } else {
         // Subsequent moves: null window search (PVS)
         value = (after != before) ?
-                    -search(pos, ss, depth, originDepth,
+                    -search(searchEngine, pos, ss, depth, originDepth,
                             -alpha - VALUE_PVS_WINDOW, -alpha, bestMove) :
-                    search(pos, ss, depth, originDepth, alpha,
+                    search(searchEngine, pos, ss, depth, originDepth, alpha,
                            alpha + VALUE_PVS_WINDOW, bestMove);
 
         // Re-search if the value is within the search window
         if (value > alpha && value < beta) {
-            value = (after != before) ? -search(pos, ss, depth, originDepth,
-                                                -beta, -alpha, bestMove) :
-                                        search(pos, ss, depth, originDepth,
-                                               alpha, beta, bestMove);
+            value = (after != before) ?
+                        -search(searchEngine, pos, ss, depth, originDepth,
+                                -beta, -alpha, bestMove) :
+                        search(searchEngine, pos, ss, depth, originDepth, alpha,
+                               beta, bestMove);
         }
     }
 

@@ -8,6 +8,7 @@
 #include "thread_pool.h"
 #include "uci.h"
 #include "misc.h"
+#include "engine_controller.h"
 #include "search_engine.h"
 #include "self_play.h"
 
@@ -75,6 +76,9 @@ void UCI::loop(int argc, char *argv[])
     const auto pos = new Position;
     string token, cmd;
 
+    SearchEngine searchEngine;
+    EngineController engineController(searchEngine);
+
     initialize_engine(pos);
 
     for (int i = 1; i < argc; ++i)
@@ -91,7 +95,7 @@ void UCI::loop(int argc, char *argv[])
         LOGD("[uci] input: %s\n", line);
 #else
         if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or
-                                             // EOF
+                                             //  EOF
             cmd = "quit";
 #endif
 
@@ -101,8 +105,7 @@ void UCI::loop(int argc, char *argv[])
         is >> skipws >> token;
 
         if (token == "quit" || token == "stop") {
-            SearchEngine::getInstance().searchAborted.store(
-                true, std::memory_order_relaxed);
+            searchEngine.searchAborted.store(true, std::memory_order_relaxed);
             // Threads.stop_all(); // Stop all tasks
         }
 
@@ -126,10 +129,12 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "go" || token == "position" ||
                  token == "ucinewgame" || token == "d" || token == "compiler") {
             // Pass the entire command to EngineController
-            EngineController().getInstance().handleCommand(cmd, pos);
-        } else if (token == "selfplay") {
+            engineController.handleCommand(cmd, pos);
+        }
+#ifdef SELF_PLAY
+        else if (token == "selfplay") {
             // 1) Decide how many games you want
-            int numberOfGames = 10;
+            int numberOfGames = 1;
 
             // 2) For each game, do self-play
             for (int i = 0; i < numberOfGames; i++) {
@@ -159,7 +164,7 @@ void UCI::loop(int argc, char *argv[])
             // 4) Optionally exit or continue. If you want "quit":
             // token = "quit";
         }
-
+#endif // SELF_PLAY
         else if (token == "isready")
             sync_cout << "readyok" << sync_endl;
         else

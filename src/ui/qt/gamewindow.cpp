@@ -169,7 +169,7 @@ void MillGameWindow::initialize()
     // The main window controller is associated with the action of the signal
     // slot
 
-    connect(ui.actionResign_G, SIGNAL(triggered()), game, SLOT(resign()));
+    // connect(ui.actionResign_G, SIGNAL(triggered()), game, SLOT(resign()));
 
 #ifdef QT_MOBILE_APP_UI
     connect(ui.pushButton_resign, SIGNAL(released()), game, SLOT(resign()));

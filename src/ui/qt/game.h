@@ -21,6 +21,7 @@
 #include <QObject> // Ensure QObject is included
 
 #include "client.h"
+#include "engine_controller.h"
 #include "database.h"
 #include "gamescene.h"
 #include "mills.h"
@@ -28,6 +29,7 @@
 #include "pieceitem.h"
 #include "position.h"
 #include "server.h"
+#include "search_engine.h"
 #include "stopwatch.h"
 #include "ai_shared_memory_dialog.h"
 // #include "thread.h" // No longer needed
@@ -440,6 +442,9 @@ private:
     // Data model of object
     Position position;
     // Color sideToMove;
+
+    SearchEngine searchEngine;
+    EngineController engineController;
 
     // Testing
     AiSharedMemoryDialog *gameTest;

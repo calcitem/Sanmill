@@ -18,8 +18,6 @@
 #include "engine_main.h"
 #endif
 
-SearchEngine SearchEngine::instance;
-
 SearchEngine::SearchEngine(
 #ifdef QT_GUI_LIB
     QObject *parent
@@ -30,13 +28,6 @@ SearchEngine::SearchEngine(
 #endif
 { }
 
-// Return singleton instance
-SearchEngine &SearchEngine::getInstance()
-{
-    return instance;
-}
-
-// If you still want to broadcast a "command" signal in Qt builds
 void SearchEngine::emitCommand()
 {
     std::ostringstream ss;
@@ -483,8 +474,7 @@ int SearchEngine::executeSearch()
 #endif
 #endif
             if (is_timeout(startTime)) {
-                SearchEngine::getInstance().searchAborted.store(
-                    true, std::memory_order_relaxed);
+                searchAborted.store(true, std::memory_order_relaxed);
                 debugPrintf("time out, break\n");
                 break;
             }
@@ -497,13 +487,13 @@ int SearchEngine::executeSearch()
             }
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                value = Search::MTDF(rootPos, ss, value, i, i, bestMove);
+                value = Search::MTDF(*this, rootPos, ss, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 value = Search::random_search(rootPos, bestMove);
             } else {
-                value = Search::search(rootPos, ss, i, i, alpha, beta,
+                value = Search::search(*this, rootPos, ss, i, i, alpha, beta,
                                        bestMove);
             }
 
@@ -577,15 +567,15 @@ next:
     if (!searchAborted.load(std::memory_order_relaxed) ||
         bestMoveSoFar == MOVE_NONE) {
         if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-            value = Search::MTDF(rootPos, ss, value, originDepth, originDepth,
-                                 bestMove);
+            value = Search::MTDF(*this, rootPos, ss, value, originDepth,
+                                 originDepth, bestMove);
         } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
             value = monte_carlo_tree_search(rootPos, bestMove);
         } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
             value = Search::random_search(rootPos, bestMove);
         } else {
-            value = Search::search(rootPos, ss, d, originDepth, alpha, beta,
-                                   bestMove);
+            value = Search::search(*this, rootPos, ss, d, originDepth, alpha,
+                                   beta, bestMove);
         }
 
         bestMoveSoFar = bestMove;
