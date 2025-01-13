@@ -35,6 +35,24 @@ class GameResultAlertDialog extends StatelessWidget {
     return winner.result;
   }
 
+  bool canChallengeNextLevel(GameResult gameResult) {
+    final RuleSettings settings = DB().ruleSettings;
+    final bool isWin = gameResult == GameResult.win;
+    final bool isDraw = gameResult == GameResult.draw;
+
+    if (settings.isLikelyNineMensMorris()) {
+      return isWin || isDraw;
+    } else if (settings.isLikelyTwelveMensMorris()) {
+      if (DB().generalSettings.aiMovesFirst) {
+        return isWin || isDraw;
+      } else {
+        return isWin;
+      }
+    } else {
+      return isWin;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Position position = GameController().position;
@@ -69,7 +87,7 @@ class GameResultAlertDialog extends StatelessWidget {
     logger.t("$_logTag Game over reason string: $content");
 
     final List<Widget> actions;
-    if (_gameResult == GameResult.win &&
+    if (canChallengeNextLevel(_gameResult!) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi) {

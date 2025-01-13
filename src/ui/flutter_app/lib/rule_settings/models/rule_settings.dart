@@ -206,6 +206,15 @@ class RuleSettings {
         !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
         !oneTimeUseMill;
   }
+
+  bool isLikelyTwelveMensMorris() {
+    return piecesCount == 12 &&
+        hasDiagonalLines &&
+        !isDefenderMoveFirst &&
+        !mayMoveInPlacingPhase &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !oneTimeUseMill;
+  }
 }
 
 // Defines an enumeration of all available rule sets for the Mill Game.

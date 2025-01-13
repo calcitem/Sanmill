@@ -31,6 +31,7 @@ import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../main.dart';
+import '../../rule_settings/models/rule_settings.dart';
 import '../../rule_settings/widgets/rule_settings_page.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
