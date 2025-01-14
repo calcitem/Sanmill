@@ -191,6 +191,7 @@ public:
     bool move_piece(Square from, Square to);
 
     int total_mills_count(Color c);
+    int mills_pieces_count_difference() const;
     void calculate_removal_based_on_mill_counts();
     bool is_board_full_removal_at_placing_phase_end();
     bool is_adjacent_to(Square s, Color c);
@@ -402,6 +403,12 @@ inline int Position::piece_to_remove_count(Color c) const
 inline int Position::get_mobility_diff() const
 {
     return mobilityDiff;
+}
+
+inline int Position::mills_pieces_count_difference() const
+{
+    return popcount(formedMillsBB[WHITE]) -
+           popcount(formedMillsBB[BLACK]);
 }
 
 inline bool Position::shouldFocusOnBlockingPaths() const

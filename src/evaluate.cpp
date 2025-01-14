@@ -43,6 +43,15 @@ Value Evaluation::value() const
         break;
 
     case Phase::placing:
+        if (rule.millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+            if (pos.get_action() == Action::remove) {
+                value += VALUE_EACH_PIECE_NEEDREMOVE * pieceToRemoveDiffCount;
+            } else {
+                value += pos.mills_pieces_count_difference();
+            }
+            break;
+        }
     case Phase::moving:
         if (pos.shouldConsiderMobility()) {
             value += pos.get_mobility_diff();
