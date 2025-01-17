@@ -215,6 +215,21 @@ class RuleSettings {
         !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
         !oneTimeUseMill;
   }
+
+  bool isLikelyElFilja() {
+    return piecesCount == 12 &&
+        !hasDiagonalLines &&
+        !hasBannedLocations &&
+        !mayMoveInPlacingPhase &&
+        !isDefenderMoveFirst &&
+        !mayRemoveMultiple &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !mayFly &&
+        millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.removalBasedOnMillCounts &&
+        !restrictRepeatedMillsFormation &&
+        !oneTimeUseMill;
+  }
 }
 
 // Defines an enumeration of all available rule sets for the Mill Game.

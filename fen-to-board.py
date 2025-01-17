@@ -1,3 +1,35 @@
+import sys
+import re
+from itertools import product
+
+def usage():
+    print("Usage: python fen-to-board.py <input_filename>")
+    print("")
+    print("Description:")
+    print("  Reads a FEN string and optional position data from the specified input file,")
+    print("  applies board transformations (rotations, flips, etc.), and writes all unique")
+    print("  transformed states to 'opening-book.txt'.")
+    print("")
+    print("Input file format example (fen.txt):")
+    print('  "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 0 1": <String>[')
+    print('    "d2",')
+    print('    "b4",')
+    print('    "d6",')
+    print('    "f4",')
+    print('    "b2",')
+    print('    "b6",')
+    print('    "f6",')
+    print('    "f2",')
+    print('  ],')
+    print("")
+    print("Example usage:")
+    print("  python3 fen-to-board.py fen.txt")
+    print("")
+    print("Output:")
+    print("  The resulting transformations are stored in 'opening-book.txt'.")
+    print("  You may copy this content into 'opening_book.dart' if desired.")
+    print("")
+
 # Define the initial board as a list of strings
 original_board = [
     "  /*",
@@ -223,15 +255,10 @@ class DualWriter:
         self.console.flush()
         self.file.flush()
 
-# Main code for processing input from a file
-import re
-from itertools import product
-import sys
-
 def main():
     # Check if the input filename is provided as a command-line argument
     if len(sys.argv) < 2:
-        print("Usage: python script.py <input_filename>")
+        usage()
         sys.exit(1)
 
     input_filename = sys.argv[1]
@@ -258,7 +285,6 @@ def main():
 
             # Pattern to match the FEN string inside quotes
             fen_pattern = r'"([^"]+)"'
-
             fen_match = re.search(fen_pattern, input_text)
             if fen_match:
                 fen_string = fen_match.group(1)
@@ -283,9 +309,9 @@ def main():
 
                 # Prepare to generate transformations
                 rotation_steps_list = [0, 2, 4, 6]  # Corresponds to 0°, 90°, 180°, 270°
-                flip_v_options = [False, True]       # Vertical flip
-                flip_h_options = [False, True]       # Horizontal flip
-                flip_io_options = [False, True]      # Inner/outer flip
+                flip_v_options = [False, True]     # Vertical flip
+                flip_h_options = [False, True]     # Horizontal flip
+                flip_io_options = [False, True]    # Inner/outer flip
 
                 # Generate all combinations of transformations
                 transformations = list(product(rotation_steps_list, flip_v_options, flip_h_options, flip_io_options))
@@ -324,8 +350,7 @@ def main():
                             prefix = ''
                             coord = pos
                         transformed_coord = transform_position(coord, transformation)
-                        transformed_pos = prefix + transformed_coord
-                        transformed_positions_list.append(transformed_pos)
+                        transformed_positions_list.append(prefix + transformed_coord)
                     # Generate the transformed FEN string
                     transformed_fen_string = board_state_to_fen(transformed_board_state, rest_of_fen)
                     # Output the Dart code snippet

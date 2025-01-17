@@ -163,9 +163,17 @@ class Engine {
       // Check if the normalized FEN exists in the fenToBestMoves map
       if (isRuleSupportingOpeningBook() &&
           DB().generalSettings.useOpeningBook &&
-          nineMensMorrisFenToBestMoves.containsKey(normalizedFen)) {
-        final List<String> bestMoves =
-            nineMensMorrisFenToBestMoves[normalizedFen]!;
+          (nineMensMorrisFenToBestMoves.containsKey(normalizedFen) ||
+              elFiljaFenToBestMoves.containsKey(normalizedFen))) {
+        final List<String> bestMoves;
+
+        if (DB().ruleSettings.isLikelyNineMensMorris()) {
+          bestMoves = nineMensMorrisFenToBestMoves[normalizedFen]!;
+        } else if (DB().ruleSettings.isLikelyElFilja()) {
+          bestMoves = elFiljaFenToBestMoves[normalizedFen]!;
+        } else {
+          bestMoves = nineMensMorrisFenToBestMoves[normalizedFen]!;
+        }
 
         // Retrieve the shufflingEnabled setting
         final bool shufflingEnabled = DB().generalSettings.shufflingEnabled;
@@ -457,7 +465,8 @@ class Engine {
   static bool isRuleSupportingOpeningBook() {
     final RuleSettings ruleSettings = DB().ruleSettings;
 
-    if (ruleSettings.isLikelyNineMensMorris()) {
+    if (ruleSettings.isLikelyNineMensMorris() ||
+        ruleSettings.isLikelyElFilja()) {
       return true;
     } else {
       return false;

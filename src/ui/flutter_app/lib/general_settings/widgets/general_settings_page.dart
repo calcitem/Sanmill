@@ -359,7 +359,8 @@ class GeneralSettingsPage extends StatelessWidget {
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
             ),
-            if (DB().ruleSettings.isLikelyNineMensMorris())
+            if (DB().ruleSettings.isLikelyNineMensMorris() ||
+                DB().ruleSettings.isLikelyElFilja())
               SettingsListTile.switchTile(
                 value: generalSettings.useOpeningBook,
                 onChanged: (bool val) {

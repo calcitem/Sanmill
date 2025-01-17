@@ -407,8 +407,7 @@ inline int Position::get_mobility_diff() const
 
 inline int Position::mills_pieces_count_difference() const
 {
-    return popcount(formedMillsBB[WHITE]) -
-           popcount(formedMillsBB[BLACK]);
+    return popcount(formedMillsBB[WHITE]) - popcount(formedMillsBB[BLACK]);
 }
 
 inline bool Position::shouldFocusOnBlockingPaths() const

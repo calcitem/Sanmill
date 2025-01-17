@@ -51,7 +51,7 @@ struct wu
     wu(::Id myId)
         : id(myId)
         , twine(false)
-        , child_count(0) {};
+        , child_count(0) { };
 
     // forbid copying
     wu(const wu &o) = delete;
