@@ -244,6 +244,12 @@ extension PhaseExtension on Phase {
           return S.of(context).tipPlace;
         }
       case Phase.moving:
+        if (GameController()
+                .position
+                .pieceToRemoveCount[GameController().position.sideToMove]! !=
+            0) {
+          return S.of(context).tipRemove;
+        }
         return S.of(context).tipMove;
       case Phase.ready:
       case Phase.gameOver:

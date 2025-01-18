@@ -19,6 +19,8 @@ Diagnosticable
 Dieharder
 Dua
 ELFilja
+El
+Filja
 FONTCHANGE
 FRE
 GLIBCXX
