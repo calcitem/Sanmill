@@ -236,7 +236,7 @@ class ToolbarItem extends ButtonStyleButton {
   /// In this list "Theme.foo" is shorthand for
   /// `Theme.of(context).foo`. Color scheme values like
   /// "onSurface(0.38)" are shorthand for
-  /// `onSurface.withOpacity(0.38)`. [WidgetStateProperty] valued
+  /// `onSurface.withValues(alpha: 0.38)`. [WidgetStateProperty] valued
   /// properties that are not followed by a subList have the same
   /// value for all states, otherwise the values are as specified for
   /// each state and "others" means all other states.
@@ -350,14 +350,14 @@ class _ToolbarItemDefaultForeground extends WidgetStateProperty<Color?> {
   @override
   Color? resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.disabled)) {
-      return onSurface?.withOpacity(0.38);
+      return onSurface?.withValues(alpha: 0.38);
     }
     return primary;
   }
 
   @override
   String toString() {
-    return '{disabled: ${onSurface?.withOpacity(0.38)}, otherwise: $primary}';
+    return '{disabled: ${onSurface?.withValues(alpha: 0.38)}, otherwise: $primary}';
   }
 }
 
@@ -370,18 +370,18 @@ class _ToolbarItemDefaultOverlay extends WidgetStateProperty<Color?> {
   @override
   Color? resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.hovered)) {
-      return primary.withOpacity(0.04);
+      return primary.withValues(alpha: 0.04);
     }
     if (states.contains(WidgetState.focused) ||
         states.contains(WidgetState.pressed)) {
-      return primary.withOpacity(0.12);
+      return primary.withValues(alpha: 0.12);
     }
     return null;
   }
 
   @override
   String toString() {
-    return '{hovered: ${primary.withOpacity(0.04)}, focused,pressed: ${primary.withOpacity(0.12)}, otherwise: null}';
+    return '{hovered: ${primary.withValues(alpha: 0.04)}, focused,pressed: ${primary.withValues(alpha: 0.12)}, otherwise: null}';
   }
 }
 

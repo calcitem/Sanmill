@@ -123,7 +123,7 @@ class SettingsListTile extends StatelessWidget {
           title: title,
           subtitle: subTitle,
           trailing: Text(
-            _colorValue!.value.toRadixString(16),
+            _colorValue!.toHexString(),
             style: TextStyle(backgroundColor: _colorValue),
           ),
           onTap: () => showDialog(
@@ -131,7 +131,7 @@ class SettingsListTile extends StatelessWidget {
             barrierDismissible: EnvironmentConfig.test == true,
             builder: (_) => _ColorPickerAlert(
               title: titleString,
-              value: _colorValue!,
+              value: _colorValue,
               onChanged: _colorCallback!,
             ),
           ),
@@ -200,7 +200,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            logger.t("[config] pickerColor.value: ${pickedColor.value}");
+            logger.t("[config] pickerColor.value: $pickedColor");
             widget.onChanged(pickedColor);
             Navigator.pop(context);
           },

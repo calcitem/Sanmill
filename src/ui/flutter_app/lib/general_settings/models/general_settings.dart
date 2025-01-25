@@ -142,77 +142,77 @@ class GeneralSettings {
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
       _$GeneralSettingsFromJson(json);
 
-  @HiveField(0)
+  @HiveField(0, defaultValue: false)
   final bool isPrivacyPolicyAccepted;
 
-  @HiveField(1)
+  @HiveField(1, defaultValue: true)
   final bool toneEnabled;
 
-  @HiveField(2)
+  @HiveField(2, defaultValue: true)
   final bool keepMuteWhenTakingBack;
 
-  @HiveField(3)
+  @HiveField(3, defaultValue: false)
   final bool screenReaderSupport;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: false)
   final bool aiMovesFirst;
 
-  @HiveField(5)
+  @HiveField(5, defaultValue: false)
   final bool aiIsLazy;
 
-  @HiveField(6)
+  @HiveField(6, defaultValue: 1)
   final int skillLevel;
 
-  @HiveField(7)
+  @HiveField(7, defaultValue: 1)
   final int moveTime;
 
-  @HiveField(8)
+  @HiveField(8, defaultValue: false)
   final bool isAutoRestart;
 
-  @HiveField(9)
+  @HiveField(9, defaultValue: false)
   final bool isAutoChangeFirstMove;
 
-  @HiveField(10)
+  @HiveField(10, defaultValue: false)
   final bool resignIfMostLose;
 
-  @HiveField(11)
+  @HiveField(11, defaultValue: true)
   final bool shufflingEnabled;
 
-  @HiveField(12)
+  @HiveField(12, defaultValue: false)
   final bool learnEndgame;
 
   @Deprecated('Use [useOpeningBook] instead')
-  @HiveField(13)
+  @HiveField(13, defaultValue: false)
   final bool openingBook;
 
   @Deprecated(
       'This only represents the old algorithm type. Use [searchAlgorithm] instead')
-  @HiveField(14)
+  @HiveField(14, defaultValue: 2)
   final int algorithm;
 
-  @HiveField(15)
+  @HiveField(15, defaultValue: true)
   final bool drawOnHumanExperience;
 
-  @HiveField(16)
+  @HiveField(16, defaultValue: true)
   final bool considerMobility;
 
   @Deprecated(
     "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
   )
-  @HiveField(17)
+  @HiveField(17, defaultValue: false)
   final bool developerMode;
 
   @Deprecated("Use [EnvironmentConfig.devMode] instead")
-  @HiveField(18)
+  @HiveField(18, defaultValue: false)
   final bool experimentsEnabled;
 
   @Deprecated(
     "As this is not a user facing preference we migrated it into another box",
   )
-  @HiveField(19)
+  @HiveField(19, defaultValue: false)
   final bool usesHiveDB;
 
-  @HiveField(20)
+  @HiveField(20, defaultValue: SearchAlgorithm.mtdf)
   final SearchAlgorithm? searchAlgorithm;
 
   @HiveField(21, defaultValue: true)

@@ -22,15 +22,15 @@ enum PieceColor { none, white, black, marked, nobody, draw }
 
 Color getAverageColor(Color a, Color b) {
   return Color.fromARGB(
-    (a.alpha + b.alpha) ~/ 2,
-    (a.alpha + b.red) ~/ 2,
-    (a.alpha + b.green) ~/ 2,
-    (a.alpha + b.blue) ~/ 2,
+    (a.a + b.a) ~/ 2,
+    (a.a + b.r) ~/ 2,
+    (a.a + b.g) ~/ 2,
+    (a.a + b.b) ~/ 2,
   );
 }
 
 Color getTranslucentColor(Color c, double opacity) {
-  return c.withOpacity(opacity);
+  return c.withValues(alpha: opacity);
 }
 
 extension PieceColorExtension on PieceColor {
@@ -212,7 +212,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get blurPositionColor => mainColor.withOpacity(0.1);
+  Color get blurPositionColor => mainColor.withValues(alpha: 0.1);
 }
 
 enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }

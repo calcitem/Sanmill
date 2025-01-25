@@ -135,7 +135,7 @@ class HistoryRange implements HistoryResponse {
 /// Custom response to throw when importing the game history.
 abstract class ImportResponse {}
 
-class ImportFormatException extends FormatException with ImportResponse {
+class ImportFormatException extends FormatException {
   const ImportFormatException([String? source, int? offset])
       : super("Cannot import ", source, offset);
 }

@@ -82,10 +82,11 @@ class AppearanceSettingsPage extends StatelessWidget {
       BuildContext context, DisplaySettings displaySettings) {
     dynamic callback(PointPaintingStyle? pointPaintingStyle) {
       Navigator.pop(context);
-      DB().displaySettings =
-          displaySettings.copyWith(pointPaintingStyle: pointPaintingStyle);
+      DB().displaySettings = displaySettings.copyWith(
+          pointPaintingStyle: pointPaintingStyle ?? PointPaintingStyle.none);
 
-      logger.t("[config] pointPaintingStyle: $pointPaintingStyle");
+      logger.t(
+          "[config] pointPaintingStyle: ${pointPaintingStyle ?? PointPaintingStyle.none}");
     }
 
     showModalBottomSheet(

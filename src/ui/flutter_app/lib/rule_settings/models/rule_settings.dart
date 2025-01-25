@@ -146,41 +146,41 @@ class RuleSettings {
     }
   }
 
-  @HiveField(0)
+  @HiveField(0, defaultValue: 9)
   final int piecesCount;
-  @HiveField(1)
+  @HiveField(1, defaultValue: 3)
   final int flyPieceCount;
-  @HiveField(2)
+  @HiveField(2, defaultValue: 3)
   final int piecesAtLeastCount;
-  @HiveField(3)
+  @HiveField(3, defaultValue: false)
   final bool hasDiagonalLines;
   @Deprecated('Use [millFormationActionInPlacingPhase] instead')
-  @HiveField(4)
+  @HiveField(4, defaultValue: false)
   final bool hasBannedLocations;
   @HiveField(5, defaultValue: false)
   final bool mayMoveInPlacingPhase;
-  @HiveField(6)
+  @HiveField(6, defaultValue: false)
   final bool isDefenderMoveFirst;
-  @HiveField(7)
+  @HiveField(7, defaultValue: false)
   final bool mayRemoveMultiple;
-  @HiveField(8)
+  @HiveField(8, defaultValue: false)
   final bool mayRemoveFromMillsAlways;
   @Deprecated('Use [millFormationActionInPlacingPhase] instead')
-  @HiveField(9)
+  @HiveField(9, defaultValue: false)
   final bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
   @Deprecated('Use [boardFullAction] instead')
-  @HiveField(10)
+  @HiveField(10, defaultValue: true)
   final bool isWhiteLoseButNotDrawWhenBoardFull;
   @Deprecated('Use [StalemateAction] instead')
-  @HiveField(11)
+  @HiveField(11, defaultValue: true)
   final bool isLoseButNotChangeSideWhenNoWay;
-  @HiveField(12)
+  @HiveField(12, defaultValue: true)
   final bool mayFly;
-  @HiveField(13)
+  @HiveField(13, defaultValue: 100)
   final int nMoveRule;
-  @HiveField(14)
+  @HiveField(14, defaultValue: 100)
   final int endgameNMoveRule;
-  @HiveField(15)
+  @HiveField(15, defaultValue: true)
   final bool threefoldRepetitionRule;
   @HiveField(16, defaultValue: BoardFullAction.firstPlayerLose)
   final BoardFullAction? boardFullAction;

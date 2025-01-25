@@ -236,7 +236,7 @@ class BoardPainter extends CustomPainter {
     final TextSpan textSpan = TextSpan(
       style: TextStyle(
           fontSize: 48,
-          color: DB().colorSettings.boardLineColor.withOpacity(1.0)),
+          color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0)),
       text: pieceInHandCount.toString(),
     );
 
@@ -269,7 +269,7 @@ class BoardPainter extends CustomPainter {
 
   static void _drawVerticalNotation(Canvas canvas, Size size, int index) {
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor.withOpacity(1.0),
+      color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
       fontSize: AppTheme.textScaler.scale(20),
     );
 
@@ -294,7 +294,7 @@ class BoardPainter extends CustomPainter {
 
   static void _drawHorizontalNotation(Canvas canvas, Size size, int index) {
     final TextStyle notationTextStyle = TextStyle(
-      color: DB().colorSettings.boardLineColor.withOpacity(1.0),
+      color: DB().colorSettings.boardLineColor.withValues(alpha: 1.0),
       fontSize: AppTheme.textScaler.scale(20),
     );
 

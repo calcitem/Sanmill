@@ -142,12 +142,14 @@ class _GameHeaderState extends State<GameHeader> {
           Container(
             height: 2,
             width: dividerWhiteLength.toDouble(),
-            color: DB().colorSettings.whitePieceColor.withOpacity(opacity),
+            color:
+                DB().colorSettings.whitePieceColor.withValues(alpha: opacity),
           ),
           Container(
             height: 2,
             width: dividerBlackLength.toDouble(),
-            color: DB().colorSettings.blackPieceColor.withOpacity(opacity),
+            color:
+                DB().colorSettings.blackPieceColor.withValues(alpha: opacity),
           ),
         ],
       ),
@@ -164,8 +166,11 @@ class _GameHeaderState extends State<GameHeader> {
         color: (DB().colorSettings.darkBackgroundColor == Colors.white ||
                 DB().colorSettings.darkBackgroundColor ==
                     const Color.fromARGB(1, 255, 255, 255))
-            ? DB().colorSettings.messageColor.withOpacity(opacity)
-            : DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
+            ? DB().colorSettings.messageColor.withValues(alpha: opacity)
+            : DB()
+                .colorSettings
+                .boardBackgroundColor
+                .withValues(alpha: opacity),
         borderRadius: BorderRadius.circular(2),
       ),
     );

@@ -18,7 +18,7 @@ class HowToPlayScreen extends StatelessWidget {
           backgroundColor: DB()
               .colorSettings
               .darkBackgroundColor
-              .withOpacity(1.0), // Ensure the background color is opaque
+              .withValues(alpha: 1.0), // Ensure the background color is opaque
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).howToPlay,
@@ -31,7 +31,7 @@ class HowToPlayScreen extends StatelessWidget {
         backgroundColor: DB()
             .colorSettings
             .darkBackgroundColor
-            .withOpacity(1.0), // Ensure the background color is opaque
+            .withValues(alpha: 1.0), // Ensure the background color is opaque
         body: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Text(

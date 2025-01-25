@@ -253,9 +253,9 @@ class GeneralSettingsPage extends StatelessWidget {
       Navigator.pop(context);
 
       DB().generalSettings =
-          generalSettings.copyWith(gameScreenRecorderDuration: duration);
+          generalSettings.copyWith(gameScreenRecorderDuration: duration ?? 2);
 
-      logger.t("[config] gameScreenRecorderDuration = $duration");
+      logger.t("[config] gameScreenRecorderDuration = ${duration ?? 2}");
     }
 
     showModalBottomSheet(
@@ -279,9 +279,9 @@ class GeneralSettingsPage extends StatelessWidget {
       Navigator.pop(context);
 
       DB().generalSettings =
-          generalSettings.copyWith(gameScreenRecorderPixelRatio: ratio);
+          generalSettings.copyWith(gameScreenRecorderPixelRatio: ratio ?? 50);
 
-      logger.t("[config] gameScreenRecorderPixelRatio = $ratio");
+      logger.t("[config] gameScreenRecorderPixelRatio = ${ratio ?? 50}");
     }
 
     showModalBottomSheet(

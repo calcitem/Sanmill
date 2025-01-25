@@ -48,7 +48,7 @@ class AdvantageGraphPainter extends CustomPainter {
 
     final Color chosenColor =
         pickColorWithMaxDifference(bgColor, lineColor, darkBgColor)
-            .withOpacity(0.5);
+            .withValues(alpha: 0.5);
 
     // Use chosenColor for zeroLinePaint.
     final Paint zeroLinePaint = Paint()
@@ -108,7 +108,7 @@ class AdvantageGraphPainter extends CustomPainter {
         DB().colorSettings.blackPieceColor,
         0.5,
       )!
-          .withOpacity(0.6)
+          .withValues(alpha: 0.6)
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
@@ -164,12 +164,12 @@ class AdvantageGraphPainter extends CustomPainter {
     // Create fill paints:
     // Above the advantage line: blackPieceColor at 30% opacity.
     final Paint topFillPaint = Paint()
-      ..color = DB().colorSettings.blackPieceColor.withOpacity(0.3)
+      ..color = DB().colorSettings.blackPieceColor.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     // Below the advantage line: whitePieceColor at 30% opacity.
     final Paint bottomFillPaint = Paint()
-      ..color = DB().colorSettings.whitePieceColor.withOpacity(0.3)
+      ..color = DB().colorSettings.whitePieceColor.withValues(alpha: 0.3)
       ..style = PaintingStyle.fill;
 
     // Construct a path for the area above the advantage line:

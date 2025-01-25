@@ -38,7 +38,7 @@ class VignettePainter extends CustomPainter {
       radius: gradientRadius,
       colors: <Color>[
         Colors.transparent,
-        Colors.black.withOpacity(0.5),
+        Colors.black.withValues(alpha: 0.5),
       ],
       stops: const <double>[0.5, 1.0],
     );

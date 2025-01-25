@@ -281,8 +281,8 @@ class PlayAreaState extends State<PlayArea> {
             ),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
-                  ? DB().colorSettings.whitePieceColor.withOpacity(0.8)
-                  : DB().colorSettings.blackPieceColor.withOpacity(0.8),
+                  ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.8)
+                  : DB().colorSettings.blackPieceColor.withValues(alpha: 0.8),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),
@@ -318,8 +318,8 @@ class PlayAreaState extends State<PlayArea> {
             ),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
-                  ? DB().colorSettings.blackPieceColor.withOpacity(0.8)
-                  : DB().colorSettings.whitePieceColor.withOpacity(0.8),
+                  ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.8)
+                  : DB().colorSettings.whitePieceColor.withValues(alpha: 0.8),
               shadows: const <Shadow>[
                 Shadow(
                   offset: Offset(1.0, 1.0),

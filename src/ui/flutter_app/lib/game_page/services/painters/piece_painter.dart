@@ -225,7 +225,7 @@ class PiecePainter extends CustomPainter {
         );
       } else {
         // Draw border of the piece.
-        paint.color = piece.pieceColor.borderColor.withOpacity(opacity);
+        paint.color = piece.pieceColor.borderColor.withValues(alpha: opacity);
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
           paint.style = PaintingStyle.stroke;
@@ -242,7 +242,7 @@ class PiecePainter extends CustomPainter {
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
-        paint.color = piece.pieceColor.mainColor.withOpacity(opacity);
+        paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
         canvas.drawCircle(
           piece.pos,
           pieceInnerRadius,
@@ -301,7 +301,7 @@ class PiecePainter extends CustomPainter {
         );
       } else {
         // Draw border of the piece.
-        paint.color = piece.pieceColor.borderColor.withOpacity(opacity);
+        paint.color = piece.pieceColor.borderColor.withValues(alpha: opacity);
 
         if (DB().colorSettings.boardBackgroundColor == Colors.white) {
           paint.style = PaintingStyle.stroke;
@@ -318,7 +318,7 @@ class PiecePainter extends CustomPainter {
 
         // Fill the piece with main color.
         paint.style = PaintingStyle.fill;
-        paint.color = piece.pieceColor.mainColor.withOpacity(opacity);
+        paint.color = piece.pieceColor.mainColor.withValues(alpha: opacity);
         canvas.drawCircle(
           piece.pos,
           pieceInnerRadius,

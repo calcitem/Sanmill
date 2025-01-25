@@ -102,7 +102,7 @@ class AuraPieceEffectAnimation implements PieceEffectAnimation {
     final ui.Color pieceHighlightColor = DB().colorSettings.pieceHighlightColor;
 
     final Paint paint = Paint()
-      ..color = pieceHighlightColor.withOpacity(opacity)
+      ..color = pieceHighlightColor.withValues(alpha: opacity)
       ..style = PaintingStyle.stroke
       ..strokeWidth = diameter * 0.1;
 
@@ -141,7 +141,7 @@ class BurstPieceEffectAnimation implements PieceEffectAnimation {
       final Offset particlePosition = center + direction * distance;
 
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(opacity)
+        ..color = boardLineColor.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(particlePosition, 2.0, paint);
@@ -175,7 +175,7 @@ class EchoPieceEffectAnimation implements PieceEffectAnimation {
       final double opacity = (1.0 - easedProgress) * 0.4;
 
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(opacity)
+        ..color = boardLineColor.withValues(alpha: opacity)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
 
@@ -200,7 +200,7 @@ class ExpandPieceEffectAnimation implements PieceEffectAnimation {
     final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
 
     final Paint paint = Paint()
-      ..color = boardLineColor.withOpacity(opacity * 0.4)
+      ..color = boardLineColor.withValues(alpha: opacity * 0.4)
       ..style = PaintingStyle.fill;
 
     canvas.save();
@@ -295,7 +295,8 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
       final double opacity = (1.0 - animationValue).clamp(0.0, 1.0);
 
       final Paint paint = Paint()
-        ..color = color.withOpacity(opacity * 0.7) // Reduced opacity for trails
+        ..color =
+            color.withValues(alpha: opacity * 0.7) // Reduced opacity for trails
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
 
@@ -307,7 +308,7 @@ class FireworksPieceEffectAnimation implements PieceEffectAnimation {
           center + initialVelocity * t + Offset(0, 0.5 * g * t * t);
 
       final Paint particlePaint = Paint()
-        ..color = color.withOpacity(opacity)
+        ..color = color.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
 
       // Increase particle size for better visibility
@@ -330,8 +331,8 @@ class GlowPieceEffectAnimation extends PieceEffectAnimation {
       final double fraction = i / numCircles;
       final double radius = (diameter / 2) * (1 + animationValue * fraction);
       final Paint paint = Paint()
-        ..color = pieceHighlightColor
-            .withOpacity((1 - animationValue) * (1 - fraction))
+        ..color = pieceHighlightColor.withValues(
+            alpha: (1 - animationValue) * (1 - fraction))
         ..style = PaintingStyle.fill;
       canvas.drawCircle(center, radius, paint);
     }
@@ -363,7 +364,7 @@ class OrbitPieceEffectAnimation implements PieceEffectAnimation {
 
       final double opacity = (1.0 - animationValue).clamp(0.0, 1.0);
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(opacity)
+        ..color = boardLineColor.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(orbitCenter, diameter * 0.1, paint);
@@ -433,8 +434,8 @@ class RadialPieceEffectAnimation implements PieceEffectAnimation {
       final Paint paint = Paint()
         ..shader = RadialGradient(
           colors: <ui.Color>[
-            boardLineColor.withOpacity(layerOpacity),
-            boardLineColor.withOpacity(0.0),
+            boardLineColor.withValues(alpha: layerOpacity),
+            boardLineColor.withValues(alpha: 0.0),
           ],
           stops: const <double>[
             0.0,
@@ -469,7 +470,7 @@ class RipplePieceEffectAnimation implements PieceEffectAnimation {
       final double opacity = (1.0 - progress).clamp(0.0, 1.0);
 
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(opacity * 0.5)
+        ..color = boardLineColor.withValues(alpha: opacity * 0.5)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 2.0;
 
@@ -506,7 +507,7 @@ class RotatePieceEffectAnimation implements PieceEffectAnimation {
     final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
 
     final Paint paint = Paint()
-      ..color = boardLineColor.withOpacity(opacity * 0.7)
+      ..color = boardLineColor.withValues(alpha: opacity * 0.7)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
@@ -530,7 +531,7 @@ class SparklePieceEffectAnimation extends PieceEffectAnimation {
       final Offset sparkleCenter =
           center + Offset(cos(angle), sin(angle)) * distance;
       final Paint paint = Paint()
-        ..color = pieceHighlightColor.withOpacity(1 - animationValue)
+        ..color = pieceHighlightColor.withValues(alpha: 1 - animationValue)
         ..style = PaintingStyle.fill;
       canvas.drawCircle(sparkleCenter, diameter / 20, paint);
     }
@@ -567,7 +568,7 @@ class SpiralPieceEffectAnimation implements PieceEffectAnimation {
     final ui.Color boardLineColor = DB().colorSettings.boardLineColor;
 
     final Paint paint = Paint()
-      ..color = boardLineColor.withOpacity(opacity * 0.6)
+      ..color = boardLineColor.withValues(alpha: opacity * 0.6)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.0;
 
@@ -592,7 +593,7 @@ class FadePieceEffectAnimation implements PieceEffectAnimation {
 
     // Draw the piece with decreasing opacity.
     final Paint paint = Paint()
-      ..color = boardLineColor.withOpacity(opacity)
+      ..color = boardLineColor.withValues(alpha: opacity)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(center, diameter / 2, paint);
@@ -656,7 +657,7 @@ class ShatterPieceEffectAnimation implements PieceEffectAnimation {
       final Offset shardCenter = center + direction * distance;
 
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(1.0 - animationValue)
+        ..color = boardLineColor.withValues(alpha: 1.0 - animationValue)
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(shardCenter, shardSize / 2, paint);
@@ -696,7 +697,7 @@ class DispersePieceEffectAnimation implements PieceEffectAnimation {
       final Offset particlePosition = center + offset * distance;
 
       final Paint paint = Paint()
-        ..color = boardLineColor.withOpacity(opacity)
+        ..color = boardLineColor.withValues(alpha: opacity)
         ..style = PaintingStyle.fill;
 
       canvas.drawCircle(particlePosition, diameter * 0.05, paint);
@@ -737,7 +738,7 @@ class MeltPieceEffectAnimation implements PieceEffectAnimation {
     canvas.scale(1.0, scaleY);
 
     final Paint paint = Paint()
-      ..color = boardLineColor.withOpacity(opacity)
+      ..color = boardLineColor.withValues(alpha: opacity)
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(Offset.zero, diameter / 2, paint);

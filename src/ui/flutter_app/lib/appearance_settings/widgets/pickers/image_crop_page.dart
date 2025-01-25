@@ -74,7 +74,7 @@ class ImageCropPageState extends State<ImageCropPage> {
                 }
               }
             },
-            maskColor: Colors.black.withOpacity(0.5),
+            maskColor: Colors.black.withValues(alpha: 0.5),
             onMoved:
                 (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
               try {

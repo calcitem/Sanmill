@@ -194,11 +194,11 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
   Future<bool> _promptMakeToolbarsTransparent(
       BuildContext context, DisplaySettings displaySettings) async {
     final bool isNavigationToolbarOpaque =
-        DB().colorSettings.navigationToolbarBackgroundColor.alpha != 0x00;
+        DB().colorSettings.navigationToolbarBackgroundColor.a != 0x00;
     final bool isMainToolbarOpaque =
-        DB().colorSettings.mainToolbarBackgroundColor.alpha != 0x00;
+        DB().colorSettings.mainToolbarBackgroundColor.a != 0x00;
     final bool isAnalysisToolbarOpaque =
-        DB().colorSettings.analysisToolbarBackgroundColor.alpha != 0x00;
+        DB().colorSettings.analysisToolbarBackgroundColor.a != 0x00;
 
     if (isNavigationToolbarOpaque ||
         isMainToolbarOpaque ||

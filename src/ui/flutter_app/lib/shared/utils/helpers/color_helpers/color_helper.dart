@@ -21,10 +21,10 @@ import 'dart:ui';
 Color pickColorWithMaxDifference(
     Color candidate1, Color candidate2, Color reference) {
   double colorDiff(Color c1, Color c2) {
-    final int dr = c1.red - c2.red;
-    final int dg = c1.green - c2.green;
-    final int db = c1.blue - c2.blue;
-    return (dr * dr + dg * dg + db * db).toDouble();
+    final double dr = c1.r - c2.r;
+    final double dg = c1.g - c2.g;
+    final double db = c1.b - c2.b;
+    return dr * dr + dg * dg + db * db;
   }
 
   return (colorDiff(candidate1, reference) > colorDiff(candidate2, reference))

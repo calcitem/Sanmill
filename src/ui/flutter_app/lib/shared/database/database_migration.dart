@@ -129,12 +129,19 @@ class _DatabaseMigration {
     );
 
     final ColorSettings colorSettings = DB().colorSettings;
+    final Color? lerpedColor = Color.lerp(
+      colorSettings.drawerColor,
+      colorSettings.drawerBackgroundColor,
+      0.5,
+    );
+
+    if (lerpedColor == null) {
+      logger.w("Color.lerp returned null. Using default drawerColor.");
+    }
+
     DB().colorSettings = colorSettings.copyWith(
-      drawerColor: Color.lerp(
-        colorSettings.drawerColor,
-        colorSettings.drawerBackgroundColor,
-        0.5,
-      )?.withAlpha(0xFF),
+      drawerColor: lerpedColor?.withAlpha(0xFF) ??
+          colorSettings.drawerColor.withAlpha(0xFF),
     );
 
     logger.t("$_logTag Migrated from v1");

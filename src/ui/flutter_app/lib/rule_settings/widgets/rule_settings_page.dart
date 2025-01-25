@@ -113,9 +113,9 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(int? piecesCount) {
       Navigator.pop(context);
 
-      DB().ruleSettings = ruleSettings.copyWith(piecesCount: piecesCount);
+      DB().ruleSettings = ruleSettings.copyWith(piecesCount: piecesCount ?? 9);
 
-      logger.t("[config] piecesCount = $piecesCount");
+      logger.t("[config] piecesCount = ${piecesCount ?? 9}");
 
       if (DB().generalSettings.usePerfectDatabase) {
         rootScaffoldMessengerKey.currentState!
@@ -136,9 +136,9 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(int? nMoveRule) {
       Navigator.pop(context);
 
-      DB().ruleSettings = ruleSettings.copyWith(nMoveRule: nMoveRule);
+      DB().ruleSettings = ruleSettings.copyWith(nMoveRule: nMoveRule ?? 100);
 
-      logger.t("[config] nMoveRule = $nMoveRule");
+      logger.t("[config] nMoveRule = ${nMoveRule ?? 100}");
     }
 
     showModalBottomSheet(
@@ -162,9 +162,9 @@ class RuleSettingsPage extends StatelessWidget {
       Navigator.pop(context);
 
       DB().ruleSettings =
-          ruleSettings.copyWith(endgameNMoveRule: endgameNMoveRule);
+          ruleSettings.copyWith(endgameNMoveRule: endgameNMoveRule ?? 100);
 
-      logger.t("[config] endgameNMoveRule = $endgameNMoveRule");
+      logger.t("[config] endgameNMoveRule = ${endgameNMoveRule ?? 100}");
     }
 
     showModalBottomSheet(
@@ -180,9 +180,10 @@ class RuleSettingsPage extends StatelessWidget {
     void callback(int? flyPieceCount) {
       Navigator.pop(context);
 
-      DB().ruleSettings = ruleSettings.copyWith(flyPieceCount: flyPieceCount);
+      DB().ruleSettings =
+          ruleSettings.copyWith(flyPieceCount: flyPieceCount ?? 3);
 
-      logger.t("[config] flyPieceCount = $flyPieceCount");
+      logger.t("[config] flyPieceCount = ${flyPieceCount ?? 3}");
     }
 
     showModalBottomSheet(

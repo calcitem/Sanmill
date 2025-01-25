@@ -78,7 +78,7 @@ class AppTheme {
     colorScheme: _colorScheme, // use ColorScheme
     sliderTheme: _sliderThemeData.copyWith(
       activeTrackColor: _colorScheme.primary, // Use colors in ColorScheme
-      inactiveTrackColor: _colorScheme.onSurface.withOpacity(0.5),
+      inactiveTrackColor: _colorScheme.onSurface.withValues(alpha: 0.5),
       thumbColor: _colorScheme.primary,
       // Other slider-related color and style adjustments
     ),
@@ -108,7 +108,7 @@ class AppTheme {
     colorScheme: _darkColorScheme, // Use dark ColorScheme
     sliderTheme: _sliderThemeData.copyWith(
       activeTrackColor: _darkColorScheme.primary,
-      inactiveTrackColor: _darkColorScheme.onSurface.withOpacity(0.5),
+      inactiveTrackColor: _darkColorScheme.onSurface.withValues(alpha: 0.5),
       thumbColor: _colorScheme.primary,
       // Other slider-related color and style adjustments
     ),
@@ -135,12 +135,12 @@ class AppTheme {
     activeTrackColor:
         _colorScheme.primary, // Use the primary color of ColorScheme
     inactiveTrackColor: _colorScheme.onSurface
-        .withOpacity(0.5), // More transparent inactive track color
+        .withValues(alpha: 0.5), // More transparent inactive track color
     thumbColor: _colorScheme.primary, // Use Color type color directly
     thumbShape: const RoundSliderThumbShape(
         enabledThumbRadius: 1.0), // Adjust the slider size
     overlayColor: _colorScheme.primary
-        .withOpacity(0.12), // Overlay color during slider operation
+        .withValues(alpha: 0.12), // Overlay color during slider operation
     overlayShape: const RoundSliderOverlayShape(
         overlayRadius: 1.0), // Radius of the overlay shape
     valueIndicatorShape:
@@ -158,8 +158,9 @@ class AppTheme {
     endIndent: 16,
     space: 1.0,
     thickness: 1.0,
-    color: _colorScheme.onSurface.withOpacity(
-        0.12), //Adjust color transparency according to theme surface color
+    color: _colorScheme.onSurface.withValues(
+        alpha:
+            0.12), //Adjust color transparency according to theme surface color
   );
 
   static final CardTheme _cardTheme = CardTheme(
@@ -178,22 +179,22 @@ class AppTheme {
         return _colorScheme.primary; // Use primary color when enabled
       }
       return _colorScheme.onSurface
-          .withOpacity(0.5); // Use softer colors in off state
+          .withValues(alpha: 0.5); // Use softer colors in off state
     }),
     trackColor:
         WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
       if (states.contains(WidgetState.selected)) {
-        return _colorScheme.primary
-            .withOpacity(0.5); // Use translucent primary color in on state
+        return _colorScheme.primary.withValues(
+            alpha: 0.5); // Use translucent primary color in on state
       }
-      return _colorScheme.onSurface
-          .withOpacity(0.3); // Use a more transparent color in the closed state
+      return _colorScheme.onSurface.withValues(
+          alpha: 0.3); // Use a more transparent color in the closed state
     }),
     trackOutlineColor:
         WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
       if (states.contains(WidgetState.disabled)) {
         return _colorScheme.onSurface
-            .withOpacity(0.5); // Use soft colors in disabled state
+            .withValues(alpha: 0.5); // Use soft colors in disabled state
       }
       return Colors.transparent; // No outer edges in other states
     }),
@@ -204,31 +205,33 @@ class AppTheme {
         WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
       if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
-            .withOpacity(0.5); // Color in disabled state
+            .withValues(alpha: 0.5); // Color in disabled state
       }
       if (states.contains(WidgetState.selected)) {
         return _darkColorScheme
             .primary; // Use the primary color in the on state
       }
-      return _darkColorScheme.onSurface.withOpacity(0.5); // Closed state color
+      return _darkColorScheme.onSurface
+          .withValues(alpha: 0.5); // Closed state color
     }),
     trackColor:
         WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
       if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
-            .withOpacity(0.3); // Track color in disabled state
+            .withValues(alpha: 0.3); // Track color in disabled state
       }
       if (states.contains(WidgetState.selected)) {
-        return _darkColorScheme.primary.withOpacity(0.5); // On track color
+        return _darkColorScheme.primary
+            .withValues(alpha: 0.5); // On track color
       }
       return _darkColorScheme.onSurface
-          .withOpacity(0.1); // Track color in off state
+          .withValues(alpha: 0.1); // Track color in off state
     }),
     trackOutlineColor:
         WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
       if (states.contains(WidgetState.disabled)) {
         return _darkColorScheme.onSurface
-            .withOpacity(0.5); // Outer line color in disabled state
+            .withValues(alpha: 0.5); // Outer line color in disabled state
       }
       return Colors
           .transparent; // Usually there is no need to set the outer edge color
@@ -329,7 +332,7 @@ class AppTheme {
   static const Color modalBottomSheetBackgroundColor = Colors.transparent;
   static const Color gamePageActionSheetTextColor = Colors.yellow;
   static Color gamePageActionSheetTextBackgroundColor =
-      Colors.deepPurple.withOpacity(0.8);
+      Colors.deepPurple.withValues(alpha: 0.8);
 
   /// Settings page
   static const Color listItemDividerColor = UIColors.rosewood20;

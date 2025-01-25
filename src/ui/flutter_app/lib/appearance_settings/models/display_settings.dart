@@ -89,61 +89,61 @@ class DisplaySettings {
       _$DisplaySettingsFromJson(json);
 
   @Deprecated("Use [locale] instead.")
-  @HiveField(0)
+  @HiveField(0, defaultValue: "Default")
   final String languageCode;
 
   @Deprecated(
     "Until other export options are implemented this setting shouldn't be used",
   )
-  @HiveField(1)
+  @HiveField(1, defaultValue: true)
   final bool standardNotationEnabled;
 
-  @HiveField(2)
+  @HiveField(2, defaultValue: true)
   final bool isPieceCountInHandShown;
 
-  @HiveField(3)
+  @HiveField(3, defaultValue: false)
   final bool isNotationsShown;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: false)
   final bool isHistoryNavigationToolbarShown;
 
-  @HiveField(5)
+  @HiveField(5, defaultValue: 2.0)
   final double boardBorderLineWidth;
 
-  @HiveField(6)
+  @HiveField(6, defaultValue: 2.0)
   final double boardInnerLineWidth;
 
   @Deprecated("Use [pointPaintingStyle] instead.")
-  @HiveField(7)
+  @HiveField(7, defaultValue: 0)
   final int pointStyle;
 
-  @HiveField(8)
+  @HiveField(8, defaultValue: 10.0)
   final double pointWidth;
 
-  @HiveField(9)
+  @HiveField(9, defaultValue: 0.9)
   final double pieceWidth;
 
   @Deprecated("Use [fontScale] instead.")
-  @HiveField(10)
+  @HiveField(10, defaultValue: 16.0)
   final double fontSize;
 
-  @HiveField(11)
+  @HiveField(11, defaultValue: kToolbarHeight)
   final double boardTop;
 
   @HiveField(12, defaultValue: 1.0)
   final double animationDuration;
 
-  @HiveField(13)
+  @HiveField(13, defaultValue: null)
   @JsonKey(
     fromJson: LocaleAdapter.localeFromJson,
     toJson: LocaleAdapter.localeToJson,
   )
   final Locale? locale;
 
-  @HiveField(14)
+  @HiveField(14, defaultValue: PointPaintingStyle.none)
   final PointPaintingStyle pointPaintingStyle;
 
-  @HiveField(15)
+  @HiveField(15, defaultValue: 1.0)
   final double fontScale;
 
   @HiveField(16, defaultValue: false)

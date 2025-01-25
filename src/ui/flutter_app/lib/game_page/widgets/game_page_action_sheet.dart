@@ -35,7 +35,7 @@ class GamePageActionSheet extends StatelessWidget {
       bodyColor: textColor,
     );
 
-    final DialogTheme dialogTheme = DialogTheme.of(context).copyWith(
+    final DialogThemeData dialogTheme = DialogTheme.of(context).copyWith(
       backgroundColor: Colors.transparent,
     );
 

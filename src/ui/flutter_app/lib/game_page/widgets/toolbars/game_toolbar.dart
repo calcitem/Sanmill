@@ -15,7 +15,8 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /// Although marked as a library this package is tightly integrated into the app
-library game_toolbar;
+
+library;
 
 import 'dart:math';
 
