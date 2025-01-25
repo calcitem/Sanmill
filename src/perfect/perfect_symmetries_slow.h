@@ -24,21 +24,21 @@
 #ifndef PERFECT_SYMMETRIES_SLOW_H_INCLUDED
 #define PERFECT_SYMMETRIES_SLOW_H_INCLUDED
 
-int func_id(int a);
-int rot90(int a);
-int rot180(int a);
-int rot270(int a);
-int tt_fuggoleges(int a);
-int tt_vizszintes(int a);
-int tt_bslash(int a);
-int tt_slash(int a);
+int id_transform(int a);
+int rotate90(int a);
+int rotate180(int a);
+int rotate270(int a);
+int mirror_vertical(int a);
+int mirror_horizontal(int a);
+int mirror_backslash(int a);
+int mirror_slash(int a);
 int swap(int a);
-int swap_rot90(int a);
-int swap_rot180(int a);
-int swap_rot270(int a);
-int swap_tt_fuggoleges(int a);
-int swap_tt_vizszintes(int a);
-int swap_tt_bslash(int a);
-int swap_tt_slash(int a);
+int swap_rotate90(int a);
+int swap_rotate180(int a);
+int swap_rotate270(int a);
+int swap_mirror_vertical(int a);
+int swap_mirror_horizontal(int a);
+int swap_mirror_backslash(int a);
+int swap_mirror_slash(int a);
 
 #endif // PERFECT_SYMMETRIES_SLOW_H_INCLUDED

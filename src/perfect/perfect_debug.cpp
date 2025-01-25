@@ -29,10 +29,10 @@
 #include <vector>
 
 extern int ruleVariant;
-extern int field2_offset;
-extern int max_ksz;
+extern int field2Offset;
+extern int maxKsz;
 
-const char *toclp(board b)
+const char *to_clp(board b)
 {
     board mask = 1;
     std::vector<int> kit(24, -1);
@@ -57,7 +57,7 @@ const char *toclp(board b)
     return ret;
 }
 
-std::string toclp2(board b)
+std::string to_clp2(board b)
 {
     board mask = 1;
     std::vector<int> kit(24, -1);
@@ -78,7 +78,7 @@ std::string toclp2(board b)
     return ss.str();
 }
 
-std::string toclp3(board b, Id Id)
+std::string to_clp3(board b, Id Id)
 {
     board mask = 1;
     std::vector<int> kit(24, -1);
@@ -95,8 +95,8 @@ std::string toclp3(board b, Id Id)
     for (int i = 0; i < 24; i++)
         ss << kit[i] << ",";
 
-    ss << "0,0,0," << (Id.WF ? 1 : 2) << "," << max_ksz - Id.WF << ","
-       << max_ksz - Id.BF << "," << Id.W << "," << Id.B
+    ss << "0,0,0," << (Id.WF ? 1 : 2) << "," << maxKsz - Id.WF << ","
+       << maxKsz - Id.BF << "," << Id.W << "," << Id.B
        << ",False,60,-1000,0,3,malom2";
 
     return ss.str();

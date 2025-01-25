@@ -26,18 +26,18 @@
 #include <stdexcept>
 #include <string>
 
-std::string sec_val_path = ".";
-std::string sec_val_fname = "";
+std::string secValPath = ".";
+std::string secValFileName = "";
 FILE *f = nullptr;
 
-int field2_offset;
-int field1_size;
-int field2_size;
-int max_ksz;
-sec_val sec_val_min_value;
+int field2Offset;
+int field1Size;
+int field2Size;
+int maxKsz;
+sec_val secValMinValue;
 std::string ruleVariantName;
 
-void failwith(std::string s)
+void fail_with(std::string s)
 {
     throw std::runtime_error(ruleVariantName + ": " + s);
 }

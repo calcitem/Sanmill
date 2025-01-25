@@ -33,11 +33,13 @@ Edit the `settings.ini` file to update the `PerfectDatabasePath` field with the 
 
 * Navigate to `AI` and select `Use Perfect Database`.
 
-- **Note**: Once you activate `Use Perfect Database`, the `Move Randomly` option cannot be disabled and will remain active. This issue will be fixed in future versions.
+**Note**:
+
+Once you activate `Use Perfect Database`, the `Move Randomly` option cannot be disabled and will remain active. This issue will be fixed in future versions.
 
 **Troubleshooting**:
 
-- If the AI doesn't result in all drawn games during self-play, it indicates that the database loading has failed or is incomplete. It's recommended to run the program from the command line to observe console output.
+If the AI doesn't result in all drawn games during self-play, it indicates that the database loading has failed or is incomplete. It's recommended to run the program from the command line to observe console output.
 
 You are now ready to engage in a game against the Perfect AI.
 

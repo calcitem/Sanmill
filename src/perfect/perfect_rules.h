@@ -64,22 +64,22 @@ public:
     static const int lastIrrevLimit = 50;
 
 public:
-    static void initRules();
-    static void cleanup();
+    static void init_rules();
+    static void cleanup_rules();
 
     // Returns -1 if there is no mill on the given field, otherwise returns the
     // sequence number in StdLaskerMalomPoz
-    static int malome(int m, GameState s);
+    static int check_mill(int m, GameState s);
 
     // Tells whether the next player can move '(doesn't handle the kle case)
-    static bool youCanMove(const GameState &s);
+    static bool can_move(const GameState &s);
 
-    static bool mindenEllensegesPieceMalomban(GameState s);
+    static bool all_opponent_pieces_in_mill(GameState s);
 
     // Checking if AlphaBeta is available
-    static bool alphaBetaAvailable();
+    static bool is_alpha_beta_available();
 
-    static void setVariant();
+    static void set_variant();
 };
 
 #endif // PERFECT_RULES_H_INCLUDED

@@ -42,25 +42,25 @@ private:
     std::list<GameState>::iterator current;
 
 public:
-    GameState &s() const;
+    GameState &get_current_game_state() const;
 
     Game(Player *p1, Player *p2);
 
-    Player **plys();
+    Player **get_players();
 
-    Player *ply(int i) const;
+    Player *get_player(int i) const;
 
-    void set_ply(int i, Player *p);
+    void set_player(int i, Player *p);
 
-    void makeMove(CMove *M);
+    void make_move(CMove *M);
 
-    void applySetup(GameState toSet);
+    void apply_setup(GameState toSet);
 
-    void cancelThinking();
+    void cancel_thinking();
 
-    bool playertypeChangingCmdAllowed();
+    bool is_player_type_change_allowed();
 
-    void copyMoveList();
+    void copy_move_list();
 };
 
 #endif // PERFECT_MAIN_H_INCLUDED

@@ -30,7 +30,7 @@ class CMove;
 
 GameState::GameState(const GameState &s)
 {
-    T = s.T;
+    board = s.board;
     phase = s.phase;
     setStoneCount = s.setStoneCount;
     stoneCount = s.stoneCount;
@@ -43,14 +43,14 @@ GameState::GameState(const GameState &s)
     lastIrrev = s.lastIrrev;
 }
 
-int GameState::futureStoneCount(int p)
+int GameState::get_future_piece_count(int p)
 {
     return stoneCount[p] + Rules::maxKSZ - setStoneCount[p];
 }
 
 // Sets the state for Setup Mode: the placed stones are unchanged, but we switch
 // to phase 2.
-void GameState::initSetup()
+void GameState::init_setup()
 {
     moveCount = 10; // Nearly all the same, just don't be too small, see other
                     // comments
@@ -60,14 +60,14 @@ void GameState::initSetup()
     lastIrrev = 0;
 }
 
-void GameState::makeMove(CMove *M)
+void GameState::make_move(CMove *M)
 {
     if (M == nullptr) {
         throw std::invalid_argument("M is null");
     }
 
-    checkInvariants();
-    checkValidMove(M);
+    check_invariants();
+    check_valid_move(M);
 
     moveCount++;
 
@@ -76,20 +76,20 @@ void GameState::makeMove(CMove *M)
     RemovePiece *lk = dynamic_cast<RemovePiece *>(M);
 
     if (sk != nullptr) {
-        T[sk->to] = sideToMove;
+        board[sk->to] = sideToMove;
         setStoneCount[sideToMove]++;
         stoneCount[sideToMove]++;
         lastIrrev = 0;
     } else if (mk != nullptr) {
-        T[mk->from] = -1;
-        T[mk->to] = sideToMove;
+        board[mk->from] = -1;
+        board[mk->to] = sideToMove;
         lastIrrev++;
         if (lastIrrev >= Rules::lastIrrevLimit) {
             over = true;
             winner = -1; // draw
         }
     } else if (lk != nullptr) {
-        T[lk->from] = -1;
+        board[lk->from] = -1;
         stoneCount[1 - sideToMove]--;
         kle = false;
         if (stoneCount[1 - sideToMove] + Rules::maxKSZ -
@@ -101,9 +101,9 @@ void GameState::makeMove(CMove *M)
         lastIrrev = 0;
     }
 
-    if ((sk != nullptr && Rules::malome(sk->to, *this) > -1 &&
+    if ((sk != nullptr && Rules::check_mill(sk->to, *this) > -1 &&
          stoneCount[1 - sideToMove] > 0) ||
-        (mk != nullptr && Rules::malome(mk->to, *this) > -1 &&
+        (mk != nullptr && Rules::check_mill(mk->to, *this) > -1 &&
          stoneCount[1 - sideToMove] > 0)) {
         kle = true;
     } else {
@@ -111,7 +111,7 @@ void GameState::makeMove(CMove *M)
         if (setStoneCount[0] == Rules::maxKSZ &&
             setStoneCount[1] == Rules::maxKSZ && phase == 1)
             phase = 2;
-        if (!Rules::youCanMove(*this)) {
+        if (!Rules::can_move(*this)) {
             over = true;
             block = true;
             winner = 1 - sideToMove;
@@ -124,14 +124,14 @@ void GameState::makeMove(CMove *M)
 
     delete M;
 
-    checkInvariants();
+    check_invariants();
 }
 
-void GameState::checkValidMove(CMove *M)
+void GameState::check_valid_move(CMove *M)
 {
     // Hard to ensure that the 'over and winner = -1' case never occurs. For
     // example, the WithTaking case of PerfectPlayer.MakeMoveInState is tricky,
-    // because the previous makeMove may have already made it a draw.
+    // because the previous make_move may have already made it a draw.
     assert(!over || winner == -1);
 
     SetPiece *sk = dynamic_cast<SetPiece *>(M);
@@ -140,19 +140,19 @@ void GameState::checkValidMove(CMove *M)
 
     if (sk != nullptr) {
         assert(phase == 1);
-        assert(T[sk->to] == -1);
+        assert(board[sk->to] == -1);
     }
     if (mk != nullptr) {
-        assert(T[mk->from] == sideToMove);
-        assert(T[mk->to] == -1);
+        assert(board[mk->from] == sideToMove);
+        assert(board[mk->to] == -1);
     }
     if (lk != nullptr) {
         assert(kle);
-        assert(T[lk->from] == 1 - sideToMove);
+        assert(board[lk->from] == 1 - sideToMove);
     }
 }
 
-void GameState::checkInvariants()
+void GameState::check_invariants()
 {
     assert(setStoneCount[0] >= 0);
     assert(setStoneCount[0] <= Rules::maxKSZ);
@@ -169,7 +169,7 @@ void GameState::checkInvariants()
 // Called when applying a free setup. It sets over and checks whether the
 // position is valid. Returns "" if valid, reason str otherwise. Also called
 // when pasting a position.
-std::string GameState::setOverAndCheckValidSetup()
+std::string GameState::set_over_and_check_valid_setup()
 {
     assert(!over && !block);
 
@@ -246,10 +246,10 @@ std::string GameState::setOverAndCheckValidSetup()
             }
         }
     }
-    if (!kle && !Rules::youCanMove(*this)) { // youCanMove doesn't handle the
-                                             // kle case. However, we should
-                                             // always have a move in kle, see
-                                             // the validity check above.
+    if (!kle && !Rules::can_move(*this)) { // can_move doesn't handle the
+                                           // kle case. However, we should
+                                           // always have a move in kle, see
+                                           // the validity check above.
         over = true;
         block = true;
         winner = 1 - sideToMove;
@@ -289,7 +289,7 @@ GameState::GameState(const std::string &s)
             ss[37] == "malom2") { // you need to be able to interpret older
                                   // formats as well
             for (int i = 0; i < 24; i++) {
-                T[i] = std::stoi(ss[i]);
+                board[i] = std::stoi(ss[i]);
             }
             sideToMove = std::stoi(ss[24]);
             phase = std::stoi(ss[27]);
@@ -304,8 +304,8 @@ GameState::GameState(const std::string &s)
                             0;
 
             // ensure correct count of stones
-            ptrdiff_t count0 = std::count(T.begin(), T.end(), 0);
-            ptrdiff_t count1 = std::count(T.begin(), T.end(), 1);
+            ptrdiff_t count0 = std::count(board.begin(), board.end(), 0);
+            ptrdiff_t count1 = std::count(board.begin(), board.end(), 1);
             if (stoneCount[0] != count0 || stoneCount[1] != count1) {
                 throw InvalidGameStateException("Number of stones is "
                                                 "incorrect.");
@@ -321,11 +321,11 @@ GameState::GameState(const std::string &s)
 }
 
 // for clipboard
-std::string GameState::toString()
+std::string GameState::to_string()
 {
     std::stringstream s;
     for (int i = 0; i < 24; i++) {
-        s << T[i] << ",";
+        s << board[i] << ",";
     }
     s << sideToMove << "," << 0 << "," << 0 << "," << phase << ","
       << setStoneCount[0] << "," << setStoneCount[1] << "," << stoneCount[0]

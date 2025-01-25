@@ -26,31 +26,31 @@
 #include "perfect_player.h"
 #include "perfect_rules.h"
 
-std::vector<int> SetPiece::getFields()
+std::vector<int> SetPiece::get_fields()
 {
     return {to};
 }
 
-std::string SetPiece::toString()
+std::string SetPiece::to_string()
 {
     return mezoToString[to];
 }
 
-std::vector<int> MovePiece::getFields()
+std::vector<int> MovePiece::get_fields()
 {
     return {from, to};
 }
 
-std::string MovePiece::toString()
+std::string MovePiece::to_string()
 {
     return mezoToString[from] + "-" + mezoToString[to];
 }
 
-std::vector<int> RemovePiece::getFields()
+std::vector<int> RemovePiece::get_fields()
 {
     return {from};
 }
-std::string RemovePiece::toString()
+std::string RemovePiece::to_string()
 {
     return "x" + mezoToString[from];
 }

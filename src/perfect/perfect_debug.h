@@ -28,10 +28,10 @@
 
 #include <string>
 
-const char *toclp(board b);
+const char *to_clp(board b);
 
-std::string toclp2(board b);
+std::string to_clp2(board b);
 
-std::string toclp3(board b, Id Id);
+std::string to_clp3(board b, Id Id);
 
 #endif // PERFECT_DEBUG_H_INCLUDED

@@ -52,11 +52,11 @@ extern std::unordered_map<Id, int> sector_sizes;
 struct WID
 {
     int W, B, WF, BF;
-    WID(int w, int b, int wf, int bf)
+    WID(int w, int b, int whiteFree, int blackFree)
         : W(w)
         , B(b)
-        , WF(wf)
-        , BF(bf)
+        , WF(whiteFree)
+        , BF(blackFree)
     { }
     WID(Id Id)
         : W(Id.W)
@@ -65,7 +65,7 @@ struct WID
         , BF(Id.BF)
     { }
     ::Id tonat() { return ::Id(W, B, WF, BF); }
-    void negate();
+    void negate_id();
     WID operator-(WID s);
 
     std::string ToString() { return this->tonat().to_string(); }
@@ -247,7 +247,7 @@ public:
 
     sec_val akey1() { return key1 + (s ? s->sval : virt_unique_sec_val()); }
 
-    std::string toString()
+    std::string to_string()
     {
         assert(::virt_loss_val);
         assert(::virt_win_val);
@@ -277,14 +277,14 @@ class Nwu
 {
 public:
     static std::vector<WID> WuIds;
-    static void initWuGraph()
+    static void initialize_wu_graph()
     {
         init_sector_graph();
         WuIds = std::vector<WID>();
         for (auto it = wu_ids.begin(); it != wu_ids.end(); ++it)
             WuIds.push_back(WID(*it));
     }
-    static std::vector<WID> wuGraphT(WID u)
+    static std::vector<WID> get_wu_graph_t(WID u)
     {
         auto r = std::vector<WID>();
         wu *w = wus[u.tonat()];
@@ -292,13 +292,16 @@ public:
             r.push_back(WID((*it)->id));
         return r;
     }
-    static bool twine(WID w) { return wus[w.tonat()]->twine; }
+    static bool is_twine(WID w) { return wus[w.tonat()]->is_twine; }
 };
 
 class Init
 {
 public:
-    static void init_sym_lookuptables() { ::init_sym_lookuptables(); }
+    static void init_symmetry_lookup_tables()
+    {
+        ::init_symmetry_lookup_tables();
+    }
     static void init_sec_vals() { ::init_sec_vals(); }
 };
 
@@ -306,7 +309,7 @@ class Constants
 {
 public:
     inline static const std::string fname_suffix = FNAME_SUFFIX;
-    const std::string movegenFname = movegen_file;
+    const std::string movegenFname = movegenFile;
 
     enum class Variants { std = STANDARD, mora = MORABARABA, lask = LASKER };
 
@@ -326,7 +329,7 @@ public:
 class Helpers
 {
 public:
-    static std::string toclp(board a) { return ::toclp(a); }
+    static std::string to_clp(board a) { return ::to_clp(a); }
 };
 } // namespace Wrappers
 

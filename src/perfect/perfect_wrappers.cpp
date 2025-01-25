@@ -66,7 +66,7 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
     return std::make_pair(e.first, Wrappers::gui_eval_elem2(e.second, s));
 }
 
-void Wrappers::WID::negate()
+void Wrappers::WID::negate_id()
 {
     int t = W;
     W = B;
@@ -80,6 +80,6 @@ void Wrappers::WID::negate()
 Wrappers::WID operator-(Wrappers::WID s)
 {
     Id r = s.tonat();
-    r.negate();
+    r.negate_id();
     return Wrappers::WID(r);
 }

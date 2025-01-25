@@ -32,16 +32,16 @@
 
 extern int perfect_init();
 
-PerfectPlayer *MalomSolutionAccess::pp = nullptr;
+PerfectPlayer *MalomSolutionAccess::perfectPlayer = nullptr;
 std::exception *MalomSolutionAccess::lastError = nullptr;
 
-int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
-                                     int whiteStonesToPlace,
-                                     int blackStonesToPlace, int playerToMove,
-                                     bool onlyStoneTaking, Value &value,
-                                     const Move &refMove)
+int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
+                                       int whiteStonesToPlace,
+                                       int blackStonesToPlace, int playerToMove,
+                                       bool onlyStoneTaking, Value &value,
+                                       const Move &refMove)
 {
-    initializeIfNeeded();
+    initialize_if_needed();
 
     GameState s;
 
@@ -55,37 +55,37 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
 
     for (int i = 0; i < 24; i++) {
         if ((whiteBitboard & (1 << i)) != 0) {
-            s.T[i] = W;
+            s.board[i] = W;
             s.stoneCount[W] += 1;
         }
         if ((blackBitboard & (1 << i)) != 0) {
-            s.T[i] = B;
+            s.board[i] = B;
             s.stoneCount[B] += 1;
         }
     }
 
     s.phase = ((whiteStonesToPlace == 0 && blackStonesToPlace == 0) ? 2 : 1);
-    mustBeBetween("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::maxKSZ);
-    mustBeBetween("blackStonesToPlace", blackStonesToPlace, 0, Rules::maxKSZ);
+    must_be_between("whiteStonesToPlace", whiteStonesToPlace, 0, Rules::maxKSZ);
+    must_be_between("blackStonesToPlace", blackStonesToPlace, 0, Rules::maxKSZ);
     s.setStoneCount[W] = Rules::maxKSZ - whiteStonesToPlace;
     s.setStoneCount[B] = Rules::maxKSZ - blackStonesToPlace;
     s.kle = onlyStoneTaking;
-    mustBeBetween("playerToMove", playerToMove, 0, 1);
+    must_be_between("playerToMove", playerToMove, 0, 1);
     s.sideToMove = playerToMove;
     s.moveCount = 10;
 
-    if (s.futureStoneCount(W) > Rules::maxKSZ) {
+    if (s.get_future_piece_count(W) > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in whiteBitboard + "
                                     "whiteStonesToPlace > " +
                                     std::to_string(Rules::maxKSZ));
     }
-    if (s.futureStoneCount(B) > Rules::maxKSZ) {
+    if (s.get_future_piece_count(B) > Rules::maxKSZ) {
         throw std::invalid_argument("Number of stones in blackBitboard + "
                                     "blackStonesToPlace > " +
                                     std::to_string(Rules::maxKSZ));
     }
 
-    std::string errorMsg = s.setOverAndCheckValidSetup();
+    std::string errorMsg = s.set_over_and_check_valid_setup();
     if (errorMsg != "") {
         throw std::invalid_argument(errorMsg);
     }
@@ -98,7 +98,10 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
     int ret = 0;
 
     try {
-        ret = pp->chooseRandom(pp->goodMoves(s, value), refMove).toBitBoard();
+        ret = perfectPlayer
+                  ->chooseRandom(perfectPlayer->get_good_moves(s, value),
+                                 refMove)
+                  .toBitBoard();
     } catch (std::out_of_range &) {
         throw std::runtime_error("We don't have a database entry for this "
                                  "position. This can happen either if the "
@@ -109,34 +112,34 @@ int MalomSolutionAccess::getBestMove(int whiteBitboard, int blackBitboard,
 
     // TODO: Considering the performance-critical aspect of our applications,
     // it is advised to reconsider the frequent invocation of
-    // deinitializeIfNeeded() within each getBestMove call. Such a practice
-    // necessitates the re-initialization by initializeIfNeeded() at every
+    // deinitialize_if_needed() within each get_best_move call. Such a practice
+    // necessitates the re-initialization by initialize_if_needed() at every
     // function start, leading to significant performance overheads. An
     // optimized approach for initialization and deinitialization processes
     // should be explored to mitigate these costs.
     // https://github.com/ggevay/malom/pull/3#discussion_r1349745071
-    deinitializeIfNeeded();
+    deinitialize_if_needed();
 
     return ret;
 }
 
-int MalomSolutionAccess::getBestMoveNoException(
+int MalomSolutionAccess::get_best_move_no_exception(
     int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
     int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
     Value &value, const Move &refMove)
 {
     try {
         lastError = nullptr;
-        return getBestMove(whiteBitboard, blackBitboard, whiteStonesToPlace,
-                           blackStonesToPlace, playerToMove, onlyStoneTaking,
-                           value, refMove);
+        return get_best_move(whiteBitboard, blackBitboard, whiteStonesToPlace,
+                             blackStonesToPlace, playerToMove, onlyStoneTaking,
+                             value, refMove);
     } catch (std::exception &e) {
         lastError = &e;
         return 0;
     }
 }
 
-std::string MalomSolutionAccess::getLastError()
+std::string MalomSolutionAccess::get_last_error()
 {
     if (lastError == nullptr) {
         return "No error";
@@ -144,20 +147,20 @@ std::string MalomSolutionAccess::getLastError()
     return lastError->what();
 }
 
-void MalomSolutionAccess::initializeIfNeeded()
+void MalomSolutionAccess::initialize_if_needed()
 {
-    if (pp != nullptr) {
+    if (perfectPlayer != nullptr) {
         return;
     }
 
     perfect_init();
 
-    sec_val_path = gameOptions.getPerfectDatabasePath();
+    secValPath = gameOptions.getPerfectDatabasePath();
 
-    Rules::initRules();
-    setVariantStripped();
+    Rules::init_rules();
+    set_variant_stripped();
 
-    if (!Sectors::hasDatabase()) {
+    if (!Sectors::has_database()) {
         std::string currentPath;
 
 #if defined(__APPLE__)
@@ -175,24 +178,24 @@ void MalomSolutionAccess::initializeIfNeeded()
                                  "working directory (" +
                                  currentPath + ")");
     }
-    pp = new PerfectPlayer();
+    perfectPlayer = new PerfectPlayer();
 }
 
-void MalomSolutionAccess::deinitializeIfNeeded()
+void MalomSolutionAccess::deinitialize_if_needed()
 {
-    if (pp == nullptr) {
+    if (perfectPlayer == nullptr) {
         return;
     }
 
-    Rules::cleanup();
+    Rules::cleanup_rules();
 
-    delete pp;
+    delete perfectPlayer;
 
-    pp = nullptr;
+    perfectPlayer = nullptr;
 }
 
-void MalomSolutionAccess::mustBeBetween(std::string paramName, int value,
-                                        int min, int max)
+void MalomSolutionAccess::must_be_between(std::string paramName, int value,
+                                          int min, int max)
 {
     if (value < min || value > max) {
         throw std::out_of_range(paramName + " must be between " +
@@ -201,7 +204,7 @@ void MalomSolutionAccess::mustBeBetween(std::string paramName, int value,
     }
 }
 
-void MalomSolutionAccess::setVariantStripped()
+void MalomSolutionAccess::set_variant_stripped()
 {
     switch (ruleVariant) {
     case (int)Wrappers::Constants::Variants::std:

@@ -29,8 +29,8 @@
 #include <queue>
 
 extern int ruleVariant;
-extern int field2_offset;
-extern int max_ksz;
+extern int field2Offset;
+extern int maxKsz;
 
 std::vector<Id> std_mora_graph_func(Id u)
 {
@@ -110,7 +110,7 @@ std::vector<Id> graph_func(Id u, bool elim_loops)
     }
 
     for (auto it = r0.begin(); it != r0.end(); it++)
-        it->negate();
+        it->negate_id();
 
     std::set<Id> sr(r0.begin(), r0.end()); // parallel electric discharge
 
@@ -135,11 +135,11 @@ void init_sector_graph()
     std::queue<Id> q;
     std::set<Id> volt;
 #ifndef FULL_SECTOR_GRAPH
-    q.push(Id(0, 0, max_ksz, max_ksz));
+    q.push(Id(0, 0, maxKsz, maxKsz));
     volt.insert(q.front());
 #else
-    for (int i = 3; i <= max_ksz; i++) {
-        for (int j = 3; j <= max_ksz; j++) {
+    for (int i = 3; i <= maxKsz; i++) {
+        for (int j = 3; j <= maxKsz; j++) {
             Id s = Id {0, 0, i, j};
             q.push(s);
             volt.insert(s);
@@ -199,7 +199,7 @@ void init_wu_graph()
             std::vector<Id> &e2 = sector_graph[s2];
             if (std::find(e2.begin(), e2.end(), s1) != e2.end()) {
                 assert(s1 == -s2);
-                wus[s1]->twine = true;
+                wus[s1]->is_twine = true;
                 wus[s2] = wus[s1];
             }
         }
@@ -212,7 +212,7 @@ void init_wu_graph()
 
         add_adj(wu, wu.id);
 
-        if (wu.twine)
+        if (wu.is_twine)
             add_adj(wu, -wu.id);
     }
 

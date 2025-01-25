@@ -26,10 +26,10 @@
 
 #include "perfect_common.h"
 
-void init_sym_lookuptables();
+void init_symmetry_lookup_tables();
 
-board sym24(int op, board a);
-board sym48(int op, board a);
+board sym24_transform(int op, board a);
+board sym48_transform(int op, board a);
 
 extern int8_t inv[];
 

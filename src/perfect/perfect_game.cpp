@@ -29,7 +29,7 @@ class Player;
 class GameState;
 class CMove;
 
-GameState &Game::s() const
+GameState &Game::get_current_game_state() const
 {
     // wrapper of current.value
     return *current;
@@ -43,18 +43,18 @@ Game::Game(Player *p1, Player *p2)
     _ply[1] = p2;
 }
 
-Player **Game::plys()
+Player **Game::get_players()
 {
     return _ply;
 }
 
-Player *Game::ply(int i) const
+Player *Game::get_player(int i) const
 {
     // get players in the game
     return _ply[i];
 }
 
-void Game::set_ply(int i, Player *p)
+void Game::set_player(int i, Player *p)
 {
     // set players in the game
     if (p == nullptr) {
@@ -69,44 +69,44 @@ void Game::set_ply(int i, Player *p)
     if (_ply[i] != nullptr)
         _ply[i]->quit(); // the player replaced by p is kicked out
     _ply[i] = p;
-    p->enter(this);
+    p->enter_game(this);
 }
 
-void Game::makeMove(CMove *M)
+void Game::make_move(CMove *M)
 { // called by player objects when they want to move
     try {
-        ply(1 - s().sideToMove)->followMove(M);
+        get_player(1 - get_current_game_state().sideToMove)->followMove(M);
 
-        history.insert(std::next(current), GameState(s()));
+        history.insert(std::next(current), GameState(get_current_game_state()));
         current++;
 
-        s().makeMove(M);
+        get_current_game_state().make_move(M);
     } catch (std::exception &ex) {
         // If TypeOf ex Is KeyNotFoundException Then Throw
-        std::cerr << "Exception in makeMove\n" << ex.what() << std::endl;
+        std::cerr << "Exception in make_move\n" << ex.what() << std::endl;
     }
 }
 
-void Game::applySetup(GameState toSet)
+void Game::apply_setup(GameState toSet)
 {
     history.insert(std::next(current), toSet);
     current++;
 }
 
-void Game::cancelThinking()
+void Game::cancel_thinking()
 {
     for (int i = 0; i < 2; ++i) {
-        ply(i)->cancelThinking();
+        get_player(i)->cancel_thinking();
     }
 }
 
-bool Game::playertypeChangingCmdAllowed()
+bool Game::is_player_type_change_allowed()
 {
-    // Return TypeOf ply(s.sideToMove) Is HumanPlayer
+    // Return TypeOf get_player(s.sideToMove) Is HumanPlayer
     return true;
 }
 
-void Game::copyMoveList()
+void Game::copy_move_list()
 {
     throw std::runtime_error("NotImplementedException");
 }

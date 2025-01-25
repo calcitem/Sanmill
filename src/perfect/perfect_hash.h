@@ -49,7 +49,7 @@ public:
     Hash(int the_w, int the_b, Sector *sec);
 
     std::pair<int, eval_elem2> hash(board a);
-    board inv_hash(int h);
+    board inverse_hash(int h);
 
     int hash_count {0};
 

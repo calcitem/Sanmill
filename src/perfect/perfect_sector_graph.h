@@ -42,13 +42,13 @@ void init_sector_graph();
 struct wu
 {
     Id id;
-    bool twine;
+    bool is_twine;
     std::set<wu *> parents;
     int child_count;
 
     wu(::Id myId)
         : id(myId)
-        , twine(false)
+        , is_twine(false)
         , child_count(0) { };
 
     // forbid copying

@@ -89,9 +89,9 @@ public:
     static std::map<Wrappers::WID, Wrappers::WSector> sectors;
     static bool created;
 
-    static std::map<Wrappers::WID, Wrappers::WSector> getSectors();
+    static std::map<Wrappers::WID, Wrappers::WSector> get_sectors();
 
-    static bool hasDatabase();
+    static bool has_database();
 };
 
 class Player
@@ -105,7 +105,7 @@ public:
     { }
 
     // The object is informed to enter the specified game
-    virtual void enter(Game *_g);
+    virtual void enter_game(Game *_g);
 
     // The object is informed to exit from the game
     virtual void quit();
@@ -121,14 +121,17 @@ public:
     virtual void over(const GameState &) { }
 
     // Cancel thinking
-    virtual void cancelThinking() { }
+    virtual void cancel_thinking() { }
 
     // Determine the opponent player
 protected:
     Player *opponent()
     {
-        return (g->ply(0) == this) ? g->ply(1) : g->ply(0); // Assuming Game has
-                                                            // a ply function
+        return (g->get_player(0) == this) ? g->get_player(1) :
+                                            g->get_player(0); // Assuming Game
+                                                              // has a
+                                                              // get_player
+                                                              // function
     }
 };
 
@@ -140,47 +143,48 @@ public:
     PerfectPlayer();
     virtual ~PerfectPlayer() { }
 
-    void enter(Game *_g) override;
+    void enter_game(Game *_g) override;
 
     void quit() override { Player::quit(); }
 
-    Wrappers::WSector *getSec(const GameState s);
+    Wrappers::WSector *get_sector(const GameState s);
 
-    std::string toHumanReadableEval(Wrappers::gui_eval_elem2 e);
+    std::string to_human_readable_eval(Wrappers::gui_eval_elem2 e);
 
-    int futurePieceCount(const GameState &s);
+    int get_future_piece_count(const GameState &s);
 
-    bool makesMill(const GameState &s, int from, int to);
+    bool makes_mill(const GameState &s, int from, int to);
 
     bool isMill(const GameState &s, int m);
 
-    std::vector<AdvancedMove> setMoves(const GameState &s);
+    std::vector<AdvancedMove> set_moves(const GameState &s);
 
-    std::vector<AdvancedMove> slideMoves(const GameState &s);
+    std::vector<AdvancedMove> slide_moves(const GameState &s);
 
     // m has a withTaking step, where takeHon is not filled out. This function
     // creates a list, the elements of which are copies of m supplemented with
     // one possible removal each.
-    std::vector<AdvancedMove> withTakingMoves(const GameState &s,
-                                              AdvancedMove &m);
+    std::vector<AdvancedMove> with_taking_moves(const GameState &s,
+                                                AdvancedMove &m);
 
-    std::vector<AdvancedMove> onlyTakingMoves(const GameState &s);
+    std::vector<AdvancedMove> only_taking_moves(const GameState &s);
 
-    std::vector<AdvancedMove> getMoveList(const GameState &s);
+    std::vector<AdvancedMove> get_move_list(const GameState &s);
 
-    GameState makeMoveInState(const GameState &s, AdvancedMove &m);
+    GameState make_move_in_state(const GameState &s, AdvancedMove &m);
 
-    // Assuming gui_eval_elem2 and getSec functions are defined somewhere
-    Wrappers::gui_eval_elem2 moveValue(const GameState &s, AdvancedMove &m);
+    // Assuming gui_eval_elem2 and get_sector functions are defined somewhere
+    Wrappers::gui_eval_elem2 move_value(const GameState &s, AdvancedMove &m);
 
     template <typename T, typename K>
-    std::vector<T> allMaxBy(std::function<K(T)> f, const std::vector<T> &l,
-                            K minValue, Value &value);
+    std::vector<T> get_all_max_by(std::function<K(T)> f,
+                                  const std::vector<T> &l, K minValue,
+                                  Value &value);
 
     // Assuming the definition of gui_eval_elem2::min_value function
-    std::vector<AdvancedMove> goodMoves(const GameState &s, Value &value);
+    std::vector<AdvancedMove> get_good_moves(const GameState &s, Value &value);
 
-    int NGMAfterMove(const GameState &s, AdvancedMove &m);
+    int get_ngma_after_move(const GameState &s, AdvancedMove &m);
 
     template <typename T>
     T chooseRandom(const std::vector<T> &l, const Move &refMove)
@@ -200,12 +204,12 @@ public:
         }
 
         if (m < 0) {
-            advMoveRef.takeHon = to_perfect_sq(to);
+            advMoveRef.takeHon = to_perfect_square(to);
         } else if (m & 0x7f00) {
-            advMoveRef.from = to_perfect_sq(from);
-            advMoveRef.to = to_perfect_sq(to);
+            advMoveRef.from = to_perfect_square(from);
+            advMoveRef.to = to_perfect_square(to);
         } else {
-            advMoveRef.to = to_perfect_sq(to);
+            advMoveRef.to = to_perfect_square(to);
         }
 
         it = std::find_if(l.begin(), l.end(),
@@ -237,9 +241,9 @@ out:
         return l[0];
     }
 
-    void sendMoveToGUI(AdvancedMove m);
+    void send_move_to_gui(AdvancedMove m);
 
-    int numGoodMoves(const GameState &s);
+    int get_num_good_moves(const GameState &s);
 
     int cp;
 
@@ -249,9 +253,9 @@ out:
         double val;
     };
 
-    Wrappers::gui_eval_elem2 eval(GameState s);
+    Wrappers::gui_eval_elem2 evaluate(GameState s);
 
-    int64_t boardNegate(int64_t a);
+    int64_t negate_board(int64_t a);
 };
 
 #endif // PERFECT_PLAYER_H_INCLUDED

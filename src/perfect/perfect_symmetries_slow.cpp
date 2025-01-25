@@ -23,12 +23,12 @@
 
 #include "perfect_symmetries_slow.h"
 
-int func_id(int a)
+int id_transform(int a)
 {
     return a;
 }
 
-int rot90(int a)
+int rotate90(int a)
 {
     int b = 0;
     b |= (((1 << 0) & a) >> 0) << 2;
@@ -58,17 +58,17 @@ int rot90(int a)
     return b;
 }
 
-int rot180(int a)
+int rotate180(int a)
 {
-    return rot90(rot90(a));
+    return rotate90(rotate90(a));
 }
 
-int rot270(int a)
+int rotate270(int a)
 {
-    return rot180(rot90(a));
+    return rotate180(rotate90(a));
 }
 
-int tt_fuggoleges(int a)
+int mirror_vertical(int a)
 {
     int b = 0;
     b |= (((1 << 0) & a) >> 0) << 4;
@@ -98,7 +98,7 @@ int tt_fuggoleges(int a)
     return b;
 }
 
-int tt_vizszintes(int a)
+int mirror_horizontal(int a)
 {
     int b = 0;
     b |= (((1 << 0) & a) >> 0) << 0;
@@ -128,7 +128,7 @@ int tt_vizszintes(int a)
     return b;
 }
 
-int tt_bslash(int a)
+int mirror_backslash(int a)
 {
     int b = 0;
     b |= (((1 << 0) & a) >> 0) << 2;
@@ -158,7 +158,7 @@ int tt_bslash(int a)
     return b;
 }
 
-int tt_slash(int a)
+int mirror_slash(int a)
 {
     int b = 0;
     b |= (((1 << 0) & a) >> 0) << 6;
@@ -218,37 +218,37 @@ int swap(int a)
     return b;
 }
 
-int swap_rot90(int a)
+int swap_rotate90(int a)
 {
-    return swap(rot90(a));
+    return swap(rotate90(a));
 }
 
-int swap_rot180(int a)
+int swap_rotate180(int a)
 {
-    return swap(rot180(a));
+    return swap(rotate180(a));
 }
 
-int swap_rot270(int a)
+int swap_rotate270(int a)
 {
-    return swap(rot270(a));
+    return swap(rotate270(a));
 }
 
-int swap_tt_fuggoleges(int a)
+int swap_mirror_vertical(int a)
 {
-    return swap(tt_fuggoleges(a));
+    return swap(mirror_vertical(a));
 }
 
-int swap_tt_vizszintes(int a)
+int swap_mirror_horizontal(int a)
 {
-    return swap(tt_vizszintes(a));
+    return swap(mirror_horizontal(a));
 }
 
-int swap_tt_bslash(int a)
+int swap_mirror_backslash(int a)
 {
-    return swap(tt_bslash(a));
+    return swap(mirror_backslash(a));
 }
 
-int swap_tt_slash(int a)
+int swap_mirror_slash(int a)
 {
-    return swap(tt_slash(a));
+    return swap(mirror_slash(a));
 }

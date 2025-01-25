@@ -34,9 +34,9 @@ struct Log
     // wrapper project (but there would be no obstacle to adding it)
     static bool log_to_file;
     static FILE *logfile;
-    static void setup_logfile(std::string fname, std::string extension);
-    static std::string fname, fnamelogging, donefname;
-    static void close();
+    static void setup_logfile(std::string fileName, std::string extension);
+    static std::string fileName, fileNameLogging, doneFileName;
+    static void close_log_file();
 };
 
 template <typename... Args>

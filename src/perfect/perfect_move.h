@@ -30,8 +30,8 @@
 class CMove
 {
 public:
-    virtual std::vector<int> getFields() = 0; // Returns the fields included in
-                                              // the step
+    virtual std::vector<int> get_fields() = 0; // Returns the fields included in
+                                               // the step
     virtual ~CMove() = default;
 
 protected:
@@ -48,8 +48,8 @@ public:
     SetPiece(int m)
         : to(m)
     { }
-    std::vector<int> getFields() override;
-    std::string toString();
+    std::vector<int> get_fields() override;
+    std::string to_string();
 };
 
 class MovePiece : public CMove
@@ -60,8 +60,8 @@ public:
         : from(m1)
         , to(m2)
     { }
-    std::vector<int> getFields() override;
-    std::string toString();
+    std::vector<int> get_fields() override;
+    std::string to_string();
 };
 
 class RemovePiece : public CMove
@@ -71,8 +71,8 @@ public:
     RemovePiece(int m)
         : from(m)
     { }
-    std::vector<int> getFields() override;
-    std::string toString();
+    std::vector<int> get_fields() override;
+    std::string to_string();
 };
 
 #endif // PERFECT_MOVE_H_INCLUDED

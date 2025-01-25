@@ -64,14 +64,14 @@ static_assert(false, "sec_val range");
 #ifndef STONE_DIFF
 // byte
 const int eval_struct_size = 3;
-extern int field2_offset;
-extern int field1_size;
-extern int field2_size;
+extern int field2Offset;
+extern int field1Size;
+extern int field2Size;
 #else
 // byte
 const int eval_struct_size = 2;
 // bit
-const int field2_offset = 6;
+const int field2Offset = 6;
 #endif
 using field2_t = int16_t;
 #endif
@@ -91,7 +91,7 @@ const char stone_diff_flag = 0;
 using sec_val = int16_t;
 
 #ifdef DD
-extern sec_val sec_val_min_value;
+extern sec_val secValMinValue;
 #endif
 
 #ifndef DD
@@ -107,15 +107,15 @@ const int version = 2;
 
 extern std::string ruleVariantName;
 
-extern std::string sec_val_path;
-extern std::string sec_val_fname;
+extern std::string secValPath;
+extern std::string secValFileName;
 
 // This file is created by the solver
 // with the -writemovegenlookups switch.
 // The Controller automatically makes
 // this, if the file doesn't exist.
-const std::string movegen_file = (std::string) "C:\\malom_data_aux\\" +
-                                 ruleVariantName + ".movegen";
+const std::string movegenFile = (std::string) "C:\\malom_data_aux\\" +
+                                ruleVariantName + ".movegen";
 
 typedef int64_t board;
 
@@ -199,18 +199,18 @@ struct Id
     int WF {0};
     int BF {0};
 
-    Id(int w, int b, int wf, int bf)
-        : W(w)
-        , B(b)
-        , WF(wf)
-        , BF(bf)
+    Id(int whitePlayer, int blackPlayer, int whiteFree, int blackFree)
+        : W(whitePlayer)
+        , B(blackPlayer)
+        , WF(whiteFree)
+        , BF(blackFree)
     { }
 
     Id() { }
 
     static Id null() { return Id {-1, -1, -1, -1}; }
 
-    void negate()
+    void negate_id()
     {
         std::swap(W, B);
         std::swap(WF, BF);
@@ -219,7 +219,7 @@ struct Id
     Id operator-() const
     {
         Id r = *this;
-        r.negate();
+        r.negate_id();
         return r;
     }
 
@@ -236,7 +236,7 @@ struct Id
         return false;
     }
 
-    bool twine() const { return !eks() && !transient(); }
+    bool is_twine() const { return !eks() && !transient(); }
 
     std::string file_name()
     {
@@ -303,6 +303,6 @@ int sign(T x)
     return x < 0 ? -1 : (x > 0 ? 1 : 0);
 }
 
-void failwith(std::string s);
+void fail_with(std::string s);
 
 #endif // PERFECT_COMMON_H_INCLUDED

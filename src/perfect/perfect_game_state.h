@@ -32,7 +32,7 @@ class GameState
 {
 public:
     // The board (-1: empty, 0: white piece, 1: black piece)
-    std::vector<int> T = std::vector<int>(24, -1);
+    std::vector<int> board = std::vector<int>(24, -1);
     int phase = 1;
     // How many stones the players have set
     std::vector<int> setStoneCount = std::vector<int>(2, 0);
@@ -49,28 +49,28 @@ public:
 
     GameState(const GameState &s);
 
-    int futureStoneCount(int p);
+    int get_future_piece_count(int p);
 
     // Sets the state for Setup Mode: the placed stones are unchanged, but we
     // switch to phase 2.
-    void initSetup();
+    void init_setup();
 
-    void makeMove(CMove *M);
+    void make_move(CMove *M);
 
-    void checkValidMove(CMove *M);
+    void check_valid_move(CMove *M);
 
-    void checkInvariants();
+    void check_invariants();
 
     // Called when applying a free setup. It sets over and checks whether the
     // position is valid. Returns "" if valid, reason str otherwise. Also called
     // when pasting a position.
-    std::string setOverAndCheckValidSetup();
+    std::string set_over_and_check_valid_setup();
 
     // to paste from clipboard
     GameState(const std::string &s);
 
     // for clipboard
-    std::string toString();
+    std::string to_string();
 };
 
 class InvalidGameStateException : public std::exception

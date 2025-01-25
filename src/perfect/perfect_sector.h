@@ -34,15 +34,15 @@
 #endif
 
 extern int ruleVariant;
-extern int field2_offset;
-extern int max_ksz;
+extern int field2Offset;
+extern int maxKsz;
 
 class Hash;
 class Sector;
 
 class Sector
 {
-    char fname[255] {0};
+    char fileName[255] {0};
 
     int eval_size;
 
@@ -70,7 +70,7 @@ public:
     eval_elem_sym2 get_eval_inner(int i);
 
 #ifdef DD
-    std::pair<sec_val, field2_t> extract(int i);
+    std::pair<sec_val, field2_t> extract_value(int i);
 #endif
 
     // Statistics:
