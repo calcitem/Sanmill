@@ -54,30 +54,42 @@ class ImageCropPageState extends State<ImageCropPage> {
             controller: _cropController,
             image: widget.imageData,
             aspectRatio: widget.aspectRatio,
-            onCropped: (Uint8List croppedData) {
+            initialRectBuilder: InitialRectBuilder.withSizeAndRatio(
+              size: 0.8,
+              aspectRatio: widget.aspectRatio,
+            ),
+            onCropped: (CropResult result) {
               if (mounted) {
                 setState(() {
                   _isCropping = false;
                 });
-                Navigator.pop(context, croppedData);
+                if (result is CropSuccess) {
+                  Navigator.pop(context, result.croppedImage);
+                } else if (result is CropFailure) {
+                  // Handle crop failure if necessary
+                  logger.e("Crop failed: ${result.cause}");
+                  if (result.stackTrace != null) {
+                    logger.e("StackTrace: ${result.stackTrace}");
+                  }
+                }
               }
             },
-            initialSize: 0.8,
             maskColor: Colors.black.withOpacity(0.5),
-            onMoved: (ViewportBasedRect cropRect) {
+            onMoved:
+                (ViewportBasedRect viewportRect, ImageBasedRect imageRect) {
               try {
                 setState(() {
                   _currentCropRect = Rect.fromLTWH(
-                    cropRect.left,
-                    cropRect.top,
-                    cropRect.width,
-                    cropRect.height,
+                    viewportRect.left,
+                    viewportRect.top,
+                    viewportRect.width,
+                    viewportRect.height,
                   );
                 });
               } catch (e) {
                 logger.e("Error in onMoved: $e");
                 logger.e(
-                    "CropRect values - left: ${cropRect.left}, top: ${cropRect.top}, width: ${cropRect.width}, height: ${cropRect.height}");
+                    "CropRect values - left: ${viewportRect.left}, top: ${viewportRect.top}, width: ${viewportRect.width}, height: ${viewportRect.height}");
               }
             },
           ),
@@ -111,6 +123,9 @@ class ImageCropPageState extends State<ImageCropPage> {
                 _cropController.crop();
               } catch (e) {
                 logger.e("Error in crop: $e");
+                setState(() {
+                  _isCropping = false;
+                });
               }
             });
           }
