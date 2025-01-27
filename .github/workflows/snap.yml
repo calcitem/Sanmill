@@ -24,8 +24,11 @@ jobs:
 
       - name: Add GitHub Actions user to the lxd group
         run: |
-          sudo usermod -aG lxd $USER
+          sudo usermod -aG lxd $(whoami)
           newgrp lxd
+
+      - name: Verify LXD Installation
+        run: lxd --version
 
       - name: Build snap using LXD
         run: snapcraft --use-lxd
