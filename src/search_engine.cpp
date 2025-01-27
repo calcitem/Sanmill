@@ -703,5 +703,5 @@ void SearchEngine::runSearch()
         //   this->bestMove = ... // from next_move() or fallback
         bestMoveReady = true; // Indicate "we have a new best move"
     }
-    bestMoveCV.notify_one(); // Wake up any thread waiting in playOneGame()
+    bestMoveCV.notify_one();  // Wake up any thread waiting in playOneGame()
 }

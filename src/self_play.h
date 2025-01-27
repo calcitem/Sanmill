@@ -15,4 +15,4 @@ extern SelfPlayStats g_stats;
 
 int playOneGame(); // Returns the result (0=draw, 1=white wins, 2=black wins)
 
-#endif // SELF_PLAY_H_INCLUDED
+#endif             // SELF_PLAY_H_INCLUDED

@@ -134,7 +134,7 @@ void position(Position *pos, std::istringstream &is)
     if (token == "startpos") {
         init_start_fen(); // Initialize StartFEN
         fen = StartFEN;
-        is >> token; // Consume "moves" token if any
+        is >> token;      // Consume "moves" token if any
     } else if (token == "fen") {
         while (is >> token && token != "moves") {
             fen += token + " ";
