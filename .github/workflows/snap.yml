@@ -17,6 +17,16 @@ jobs:
       - name: Install Snapcraft
         uses: samuelmeuli/action-snapcraft@v3
 
+      - name: Install LXD
+        run: |
+          sudo snap install lxd
+          sudo lxd init --auto
+
+      - name: Add GitHub Actions user to the lxd group
+        run: |
+          sudo usermod -aG lxd $USER
+          newgrp lxd
+
       - name: Build snap using LXD
         run: snapcraft --use-lxd
 

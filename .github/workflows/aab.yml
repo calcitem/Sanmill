@@ -115,7 +115,7 @@ jobs:
 
       # Upload to Google Play Store
       - name: Upload to Google Play Store
-        uses: swootte/upload-google-play@v1.1.5
+        uses: swootte/upload-google-play@v1.0.13
         with:
           serviceAccountJson: /tmp/credentials.json  # Path to temporary credentials file
           packageName: com.calcitem.sanmill
