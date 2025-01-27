@@ -7,41 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Snapcraft Build
-    env:
-      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
+    name: Snapcraft Build and Publish
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Install Snapcraft
-        uses: samuelmeuli/action-snapcraft@v3
+      - name: Build snap
+        id: snapcraft
+        uses: snapcore/action-build@v1
 
-      - name: Install LXD
-        run: |
-          sudo snap install lxd
-          sudo lxd init --auto
-
-      - name: Add GitHub Actions user to the lxd group
-        run: |
-          sudo usermod -aG lxd $(whoami)
-          newgrp lxd
-
-      - name: Verify LXD Installation
-        run: lxd --version
-
-      - name: Build snap using LXD
-        run: snapcraft --use-lxd
-
-      - name: List Snap Files
-        run: ls -la *.snap
-
-      - name: Upload Snap Artifact
+      - name: Upload snap artifact
         uses: actions/upload-artifact@v4
         with:
           name: snap
-          path: '*.snap'
+          path: ${{ steps.snapcraft.outputs.snap }}
 
-      - name: Install Snap Locally
-        run: |
-          sudo snap install --dangerous *.snap
+      - name: Publish snap to store
+        uses: snapcore/action-publish@v1
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: edge
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}

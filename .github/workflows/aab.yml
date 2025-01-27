@@ -107,26 +107,21 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
-          token_format: iam_json  # Obtain JSON format credentials
-          workload_identity_provider: "projects/391539675971/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+          workload_identity_provider: "projects/391539675971/locations/global/workloadIdentityPools/play-store-pool/providers/github-provider"
           service_account: "play-store-publisher@sanmill-app.iam.gserviceaccount.com"
-
-      # Write credentials to a temporary file
-      - name: Write credentials to file
-        run: |
-          echo "${{ steps.auth.outputs.credential_json }}" > /tmp/credentials.json
+          create_credentials_file: true
+          export_environment_variables: true
 
       # Upload to Google Play Store
       - name: Upload to Google Play Store
-        uses: swootte/upload-google-play@v1.0.13
+        uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJson: /tmp/credentials.json  # Path to temporary credentials file
+          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
           packageName: com.calcitem.sanmill
-          releaseFile: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
+          releaseFiles: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
           track: internal
-          inAppUpdatePriority: 2
-          userFraction: 1.00
-          whatsNewDirectory: distribution/whatsnew
-          mappingFile: src/ui/flutter_app/build/app/outputs/mapping/release/mapping.txt
           status: draft
-          changesNotSentForReview: true
+          inAppUpdatePriority: 2
+          whatsNewDirectory: .github/workflows/distribution/whatsnew
+          mappingFile: src/ui/flutter_app/build/app/outputs/mapping/release/mapping.txt
+          debugSymbols: src/ui/flutter_app/build/app/intermediates/merged_native_libs/release/out/lib
