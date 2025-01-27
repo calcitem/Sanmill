@@ -40,7 +40,7 @@ class VibrationManager {
 
   Future<void> vibrate(Sound type) async {
     if (Platform.isAndroid || Platform.isIOS) {
-      final bool? hasVibrator = await Vibration.hasVibrator();
+      final bool hasVibrator = await Vibration.hasVibrator();
 
       if (hasVibrator != null && hasVibrator) {
         final int duration = _vibrationDurations[type] ?? 10;
@@ -57,7 +57,7 @@ class VibrationManager {
 
   Future<void> stopVibration() async {
     if (Platform.isAndroid || Platform.isIOS) {
-      final bool? hasVibrator = await Vibration.hasVibrator();
+      final bool hasVibrator = await Vibration.hasVibrator();
 
       if (hasVibrator != null && hasVibrator) {
         Vibration.cancel();
