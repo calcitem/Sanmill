@@ -8,13 +8,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: Snapcraft Build
+    env:
+      SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
-      id: snapcraft
-    - uses: actions/upload-artifact@v4
-      with:
-        name: snap
-        path: ${{ steps.snapcraft.outputs.snap }}
-    - run: |
-        sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+
+      - name: Install Snapcraft
+        uses: samuelmeuli/action-snapcraft@v3
+
+      - name: Build snap using LXD
+        run: snapcraft --use-lxd
+
+      - name: List Snap Files
+        run: ls -la *.snap
+
+      - name: Upload Snap Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snap
+          path: '*.snap'
+
+      - name: Install Snap Locally
+        run: |
+          sudo snap install --dangerous *.snap
