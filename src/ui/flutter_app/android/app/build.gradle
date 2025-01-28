@@ -23,7 +23,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
     namespace "com.calcitem.sanmill"
 
     lintOptions {
@@ -33,7 +33,7 @@ android {
     defaultConfig {
         applicationId "com.calcitem.sanmill"
         minSdkVersion flutter.minSdkVersion
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk{
