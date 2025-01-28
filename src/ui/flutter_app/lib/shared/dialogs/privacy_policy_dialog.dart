@@ -87,10 +87,6 @@ class PrivacyPolicyDialog extends StatelessWidget {
       Localizations.localeOf(context).languageCode.startsWith("zh"),
       "The current locale must start with 'zh'",
     );
-    assert(
-      !DB().generalSettings.isPrivacyPolicyAccepted,
-      "The privacy policy must not be accepted",
-    );
 
     final ThemeData currentTheme = Theme.of(context);
     final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
