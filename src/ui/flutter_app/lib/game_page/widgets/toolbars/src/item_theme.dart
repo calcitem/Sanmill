@@ -46,7 +46,7 @@ class ToolbarItemTheme extends InheritedTheme {
   /// Typical usage is as follows:
   ///
   /// ```dart
-  /// ToolbarItemTheme theme = ToolbarItemTheme.of(context);
+  /// ToolbarItemThemeData theme = ToolbarItemTheme.of(context);
   /// ```
   static ToolbarItemThemeData of(BuildContext context) {
     final ToolbarItemTheme? buttonTheme =
@@ -55,8 +55,11 @@ class ToolbarItemTheme extends InheritedTheme {
   }
 
   @override
-  Widget wrap(BuildContext context, Widget child) =>
-      ToolbarItemTheme(data: data, child: child);
+  Widget wrap(BuildContext context, Widget child) => ToolbarItemTheme(
+        key: const Key('toolbar_item_theme_wrap'),
+        data: data,
+        child: child,
+      );
 
   @override
   bool updateShouldNotify(ToolbarItemTheme oldWidget) => data != oldWidget.data;

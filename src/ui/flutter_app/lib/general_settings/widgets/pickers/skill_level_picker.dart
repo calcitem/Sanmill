@@ -56,15 +56,21 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             : Colors.black; // Text color in light mode
 
     return AlertDialog(
-      backgroundColor: backgroundColor, // Set the AlertDialog's background
+      key: const Key('skill_level_picker_alert_dialog'),
+      backgroundColor: backgroundColor,
+      // Set the AlertDialog's background
       title: Text(
         S.of(context).skillLevel,
+        key: const Key('skill_level_picker_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: ConstrainedBox(
+        key: const Key('skill_level_picker_constrained_box'),
         constraints: const BoxConstraints(maxHeight: 150),
         child: CupertinoPicker(
-          backgroundColor: backgroundColor, // Consistent with the AlertDialog
+          key: const Key('skill_level_picker_cupertino_picker'),
+          backgroundColor: backgroundColor,
+          // Consistent with the AlertDialog
           scrollController: _controller,
           itemExtent: 44,
           children: List<Widget>.generate(
@@ -72,6 +78,8 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             (int level) => Center(
               child: Text(
                 '${level + 1}',
+                key: Key(
+                    'skill_level_picker_cupertino_picker_item_${level + 1}'),
                 style: TextStyle(color: textColor),
               ),
             ),
@@ -84,8 +92,10 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
       actions: <Widget>[
         if (EnvironmentConfig.test == false)
           TextButton(
+            key: const Key('skill_level_picker_cancel_button'),
             child: Text(
               S.of(context).cancel,
+              key: const Key('skill_level_picker_cancel_button_text'),
               style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
               ),
@@ -102,8 +112,10 @@ class _SkillLevelPickerState extends State<_SkillLevelPicker> {
             },
           ),
         TextButton(
+          key: const Key('skill_level_picker_confirm_button'),
           child: Text(
             S.of(context).confirm,
+            key: const Key('skill_level_picker_confirm_button_text'),
             style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
             ),

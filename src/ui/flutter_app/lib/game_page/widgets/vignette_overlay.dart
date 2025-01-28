@@ -26,7 +26,9 @@ class VignetteOverlay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IgnorePointer(
+      key: const Key('vignette_overlay_ignore_pointer'),
       child: CustomPaint(
+        key: const Key('vignette_overlay_custom_paint'),
         size: Size.infinite,
         painter: VignettePainter(gameBoardRect),
       ),

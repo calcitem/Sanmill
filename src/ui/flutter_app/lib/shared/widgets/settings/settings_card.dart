@@ -37,11 +37,13 @@ class SettingsCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         DefaultTextStyle(
+          key: const Key('settings_card_title'),
           style: textStyle,
           textAlign: TextAlign.start,
           child: title,
         ),
         Card(
+          key: const Key('settings_card_card'),
           child: Padding(
             padding: EdgeInsets.zero,
             child: Column(

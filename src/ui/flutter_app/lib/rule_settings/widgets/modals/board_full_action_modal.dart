@@ -28,6 +28,7 @@ class _BoardFullActionModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('board_full_action_modal_semantics'),
       label: S.of(context).whenBoardIsFull,
       child: SingleChildScrollView(
         child: Column(
@@ -44,26 +45,31 @@ class _BoardFullActionModal extends StatelessWidget {
         context,
         S.of(context).firstPlayerLose,
         BoardFullAction.firstPlayerLose,
+        const Key('radio_first_player_lose'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).firstAndSecondPlayerRemovePiece,
         BoardFullAction.firstAndSecondPlayerRemovePiece,
+        const Key('radio_first_and_second_player_remove_piece'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).secondAndFirstPlayerRemovePiece,
         BoardFullAction.secondAndFirstPlayerRemovePiece,
+        const Key('radio_second_and_first_player_remove_piece'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).sideToMoveRemovePiece,
         BoardFullAction.sideToMoveRemovePiece,
+        const Key('radio_side_to_move_remove_piece'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).agreeToDraw,
         BoardFullAction.agreeToDraw,
+        const Key('radio_agree_to_draw'),
       ),
     ];
   }
@@ -72,10 +78,12 @@ class _BoardFullActionModal extends StatelessWidget {
     BuildContext context,
     String title,
     BoardFullAction value,
+    Key key,
   ) {
     return Semantics(
       label: title,
       child: RadioListTile<BoardFullAction>(
+        key: key,
         title: Text(title),
         groupValue: boardFullAction,
         value: value,

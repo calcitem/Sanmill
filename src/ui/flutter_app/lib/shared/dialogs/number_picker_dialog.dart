@@ -49,11 +49,13 @@ class NumberPickerDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         dialogTitle,
+        key: const Key('number_picker_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
         child: CupertinoPicker(
+          key: const Key('number_picker_cupertino_picker'),
           itemExtent: fontSize + 12,
           children: numberItems,
           onSelectedItemChanged: (int number) => selectedValue = number + 1,
@@ -61,6 +63,7 @@ class NumberPickerDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('number_picker_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -69,6 +72,7 @@ class NumberPickerDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         TextButton(
+          key: const Key('number_picker_confirm_button'),
           child: Text(
             S.of(context).confirm,
             style: TextStyle(

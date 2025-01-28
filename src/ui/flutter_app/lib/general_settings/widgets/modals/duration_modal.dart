@@ -28,8 +28,10 @@ class _DurationModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('duration_modal_semantics'),
       label: S.of(context).duration,
       child: Column(
+        key: const Key('duration_modal_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -52,9 +54,14 @@ class _DurationModal extends StatelessWidget {
     int value,
   ) {
     return Semantics(
+      key: Key('duration_modal_radio_list_tile_semantics_$value'),
       label: title,
       child: RadioListTile<int>(
-        title: Text(title),
+        key: Key('duration_modal_radio_list_tile_$value'),
+        title: Text(
+          title,
+          key: Key('duration_modal_radio_list_tile_${value}_title'),
+        ),
         groupValue: duration,
         value: value,
         onChanged: onChanged,

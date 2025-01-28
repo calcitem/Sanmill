@@ -16,6 +16,9 @@
 
 part of '../../custom_drawer/custom_drawer.dart';
 
+/// Custom Drawer Header
+///
+/// Displays the animated header title in the drawer.
 class CustomDrawerHeader extends StatelessWidget {
   const CustomDrawerHeader({
     super.key,
@@ -38,6 +41,7 @@ class CustomDrawerHeader extends StatelessWidget {
     ];
 
     final AnimatedTextKit animatedHeaderText = AnimatedTextKit(
+      key: const Key('custom_drawer_header_animated_text_kit'),
       animatedTexts: <ColorizeAnimatedText>[
         ColorizeAnimatedText(
           headerTitle,
@@ -62,8 +66,12 @@ class CustomDrawerHeader extends StatelessWidget {
     );
 
     return Padding(
+      key: const Key('custom_drawer_header_padding'),
       padding: drawerHeaderPadding,
-      child: ExcludeSemantics(child: animatedHeaderText),
+      child: ExcludeSemantics(
+        key: const Key('custom_drawer_header_exclude_semantics'),
+        child: animatedHeaderText,
+      ),
     );
   }
 }

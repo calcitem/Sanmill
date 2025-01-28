@@ -41,6 +41,7 @@ class MoveOptionsModal extends StatelessWidget {
       children: <Widget>[
         if (!DB().displaySettings.isHistoryNavigationToolbarShown) ...<Widget>[
           SimpleDialogOption(
+            key: const Key('take_back_option'),
             onPressed: () => HistoryNavigator.takeBack(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -49,6 +50,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
           SimpleDialogOption(
+            key: const Key('step_forward_option'),
             onPressed: () => HistoryNavigator.stepForward(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -57,6 +59,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
           SimpleDialogOption(
+            key: const Key('take_back_all_option'),
             onPressed: () => HistoryNavigator.takeBackAll(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -65,6 +68,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
           SimpleDialogOption(
+            key: const Key('step_forward_all_option'),
             onPressed: () => HistoryNavigator.stepForwardAll(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -76,6 +80,7 @@ class MoveOptionsModal extends StatelessWidget {
         if (GameController().gameRecorder.hasPrevious ||
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
+            key: const Key('show_move_list_option'),
             onPressed: () => _showMoveList(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -85,6 +90,7 @@ class MoveOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         ],
         SimpleDialogOption(
+          key: const Key('move_now_option'),
           onPressed: () {
             GameController().moveNow(context);
             Navigator.pop(context);
@@ -97,6 +103,7 @@ class MoveOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
+            key: const Key('close_option'),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).close),

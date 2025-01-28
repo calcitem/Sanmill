@@ -98,7 +98,10 @@ class PrivacyPolicyDialog extends StatelessWidget {
         bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
 
     return AlertDialog(
-      title: Text(S.of(context).privacyPolicy),
+      title: Text(
+        S.of(context).privacyPolicy,
+        key: const Key('privacy_policy_dialog_title'),
+      ),
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
@@ -107,6 +110,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('privacy_policy_accept_button'),
           child: Text(S.of(context).accept),
           onPressed: () {
             _acceptPrivacyPolicy();
@@ -116,6 +120,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
         ),
         if (!kIsWeb && Platform.isAndroid)
           TextButton(
+            key: const Key('privacy_policy_exit_button'),
             child: Text(S.of(context).exit),
             onPressed: () {
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
@@ -138,7 +143,10 @@ Future<void> showPrivacyDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => AlertDialog(
-      title: Text(S.of(context).privacyPolicy),
+      title: Text(
+        S.of(context).privacyPolicy,
+        key: const Key('show_privacy_dialog_title'),
+      ),
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
@@ -147,6 +155,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('show_privacy_accept_button'),
           child: Text(S.of(context).accept),
           onPressed: () {
             PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: true);
@@ -155,6 +164,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
         ),
         if (!kIsWeb && Platform.isAndroid)
           TextButton(
+            key: const Key('show_privacy_exit_button'),
             child: Text(S.of(context).exit),
             onPressed: () {
               PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: false);

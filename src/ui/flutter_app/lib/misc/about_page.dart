@@ -65,18 +65,20 @@ class AboutPage extends StatelessWidget {
             }
           }
           return SettingsListTile(
+            key: const Key('settings_list_tile_version_info'),
             titleString: S.of(context).versionInfo,
             subtitleString: "${Constants.projectName} $version $mode",
             onTap: () => showDialog(
               context: context,
-              builder: (_) => _VersionDialog(
-                appVersion: version,
+              builder: (_) => const _VersionDialog(
+                appVersion: '',
               ),
             ),
           );
         },
       ),
       SettingsListTile(
+        key: const Key('settings_list_tile_feedback'),
         titleString: S.of(context).feedback,
         onTap: () => launchURL(context, Constants.issuesURL),
       ),
@@ -85,10 +87,12 @@ class AboutPage extends StatelessWidget {
           Platform.isWindows ||
           Platform.isLinux)
         SettingsListTile(
+          key: const Key('settings_list_tile_eula'),
           titleString: S.of(context).eula,
           onTap: () => launchURL(context, Constants.endUserLicenseAgreementUrl),
         ),
       SettingsListTile(
+        key: const Key('settings_list_tile_license'),
         titleString: S.of(context).license,
         onTap: () {
           Navigator.push(
@@ -100,15 +104,18 @@ class AboutPage extends StatelessWidget {
         },
       ),
       SettingsListTile(
+        key: const Key('settings_list_tile_source_code'),
         titleString: S.of(context).sourceCode,
         onTap: () => launchURL(context, Constants.repositoryUrl),
       ),
       if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
         SettingsListTile(
+          key: const Key('settings_list_tile_privacy_policy'),
           titleString: S.of(context).privacyPolicy,
           onTap: () => launchURL(context, Constants.privacyPolicyUrl),
         ),
       SettingsListTile(
+        key: const Key('settings_list_tile_oss_licenses'),
         titleString: S.of(context).ossLicenses,
         onTap: () => showLicensePage(
           context: context,
@@ -116,6 +123,7 @@ class AboutPage extends StatelessWidget {
         ),
       ),
       SettingsListTile(
+        key: const Key('settings_list_tile_help_improve_translate'),
         titleString: S.of(context).helpImproveTranslate,
         onTap: () {
           final String locale = Localizations.localeOf(context).languageCode;
@@ -125,6 +133,7 @@ class AboutPage extends StatelessWidget {
         },
       ),
       SettingsListTile(
+        key: const Key('settings_list_tile_thanks'),
         titleString: S.of(context).thanks,
         onTap: () => launchURL(context, Constants.thanksURL),
       ),
@@ -132,9 +141,11 @@ class AboutPage extends StatelessWidget {
 
     return BlockSemantics(
       child: Scaffold(
+        key: const Key('about_page_scaffold'),
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.aboutPageBackgroundColor,
         appBar: AppBar(
+          key: const Key('about_page_appbar'),
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).about,
@@ -142,6 +153,7 @@ class AboutPage extends StatelessWidget {
           ),
         ),
         body: ListView.separated(
+          key: const Key('about_page_listview'),
           itemBuilder: (_, int index) => settingsItems[index],
           separatorBuilder: (_, __) => const Divider(),
           itemCount: settingsItems.length,
@@ -161,6 +173,7 @@ class _VersionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: const Key('version_dialog'),
       title: Text(
         S.of(context).appName,
         style: AppTheme.dialogTitleTextStyle,
@@ -210,6 +223,7 @@ class _VersionDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('version_dialog_more_button'),
           child: Text(
             S.of(context).more,
             style: TextStyle(
@@ -225,6 +239,7 @@ class _VersionDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('version_dialog_ok_button'),
           child: Text(
             S.of(context).ok,
             style: TextStyle(
@@ -264,6 +279,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: const Key('flutter_version_alert_dialog'),
       title: Text(
         S.of(context).more,
         style: AppTheme.dialogTitleTextStyle,
@@ -273,6 +289,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           GestureDetector(
+            key: const Key('version_dialog_gesture_detector'),
             onTap: () {
               setState(() {
                 tapCount++;
@@ -291,6 +308,7 @@ class FlutterVersionAlertState extends State<FlutterVersionAlert> {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('flutter_version_alert_ok_button'),
           child: Text(
             S.of(context).ok,
             style: TextStyle(

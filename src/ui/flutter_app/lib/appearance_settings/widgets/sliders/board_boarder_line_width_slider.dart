@@ -22,8 +22,10 @@ class _BoardBorderLineWidthSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('board_border_line_width_semantics'),
       label: S.of(context).boardBorderLineWidth,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
+        key: const Key('board_border_line_width_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
@@ -32,9 +34,12 @@ class _BoardBorderLineWidthSlider extends StatelessWidget {
           )!;
 
           return Center(
+            key: const Key('board_border_line_width_center'),
             child: SizedBox(
+              key: const Key('board_border_line_width_sized_box'),
               width: MediaQuery.of(context).size.width * 0.8,
               child: Slider(
+                key: const Key('board_border_line_width_slider'),
                 value: displaySettings.boardBorderLineWidth,
                 max: 20.0,
                 divisions: 200,

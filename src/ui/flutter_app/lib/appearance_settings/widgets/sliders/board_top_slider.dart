@@ -22,8 +22,10 @@ class _BoardTopSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('board_top_semantics'),
       label: S.of(context).boardTop,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
+        key: const Key('board_top_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
@@ -32,11 +34,15 @@ class _BoardTopSlider extends StatelessWidget {
           )!;
 
           return Center(
+            key: const Key('board_top_center'),
             child: SizedBox(
+              key: const Key('board_top_sized_box'),
               width: MediaQuery.of(context).size.width * 0.8,
               child: Slider(
+                key: const Key('board_top_slider'),
                 value: displaySettings.boardTop,
-                max: 288.0, // TODO: Overflow, convert to v2 config
+                max: 288.0,
+                // TODO: Overflow, convert to v2 config
                 divisions: 288,
                 label: displaySettings.boardTop.toStringAsFixed(1),
                 onChanged: (double value) {

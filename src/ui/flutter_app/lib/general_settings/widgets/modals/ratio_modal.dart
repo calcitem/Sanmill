@@ -28,8 +28,10 @@ class _RatioModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('ratio_modal_semantics'),
       label: S.of(context).pixelRatio, // TODO: Ratio
       child: Column(
+        key: const Key('ratio_modal_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -51,9 +53,14 @@ class _RatioModal extends StatelessWidget {
     int value,
   ) {
     return Semantics(
+      key: Key('ratio_modal_radio_list_tile_semantics_$value'),
       label: title,
       child: RadioListTile<int>(
-        title: Text(title),
+        key: Key('ratio_modal_radio_list_tile_$value'),
+        title: Text(
+          title,
+          key: Key('ratio_modal_radio_list_tile_${value}_title'),
+        ),
         groupValue: ratio,
         value: value,
         onChanged: onChanged,

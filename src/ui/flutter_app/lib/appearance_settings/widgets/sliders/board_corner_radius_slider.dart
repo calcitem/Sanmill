@@ -22,8 +22,10 @@ class _BoardCornerRadiusSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('board_corner_radius_semantics'),
       label: S.of(context).boardCornerRadius,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
+        key: const Key('board_corner_radius_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
@@ -32,9 +34,12 @@ class _BoardCornerRadiusSlider extends StatelessWidget {
           )!;
 
           return Center(
+            key: const Key('board_corner_radius_center'),
             child: SizedBox(
+              key: const Key('board_corner_radius_sized_box'),
               width: MediaQuery.of(context).size.width * 0.8,
               child: Slider(
+                key: const Key('board_corner_radius_slider'),
                 value: displaySettings.boardCornerRadius,
                 max: 50.0,
                 divisions: 50,

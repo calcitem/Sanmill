@@ -55,6 +55,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
           )!;
 
           return GridView.builder(
+            key: const Key('board_image_gridview'),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
@@ -71,6 +72,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 final bool isSelected = displaySettings.boardImagePath == asset;
 
                 return _BoardImageItem(
+                  key: Key('board_image_item_$index'),
                   asset: asset,
                   isSelect: isSelected,
                   onTap: () =>
@@ -79,6 +81,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
               } else {
                 // Last item: Custom Image Picker
                 return _CustomBoardImageItem(
+                  key: const Key('custom_board_image_item'),
                   isSelected: displaySettings.boardImagePath ==
                       displaySettings.customBoardImagePath,
                   customImagePath: displaySettings.customBoardImagePath,
@@ -207,10 +210,12 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            key: const Key('make_toolbars_transparent_alert_dialog'),
             title: Text(S.of(context).color),
             content: Text(S.of(context).promptMakeToolbarTransparent),
             actions: <Widget>[
               TextButton(
+                key: const Key('make_toolbars_no_button'),
                 onPressed: () => Navigator.of(context).pop(false),
                 child: Text(
                   S.of(context).no,
@@ -220,6 +225,7 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
                 ),
               ),
               TextButton(
+                key: const Key('make_toolbars_yes_button'),
                 onPressed: () => Navigator.of(context).pop(true),
                 child: Text(
                   S.of(context).yes,
@@ -263,6 +269,7 @@ class _BoardImageItem extends StatelessWidget {
     required this.asset,
     this.isSelect = false,
     required this.onTap,
+    super.key,
   });
 
   final String asset;
@@ -272,10 +279,12 @@ class _BoardImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: Key('board_image_gesture_$asset'),
       onTap: onTap, // Calls the callback passed by the parent widget
       child: Stack(
         children: <Widget>[
           Container(
+            key: Key('board_image_container_$asset'),
             decoration: BoxDecoration(
               color: asset.isEmpty
                   ? DB().colorSettings.boardBackgroundColor
@@ -292,11 +301,13 @@ class _BoardImageItem extends StatelessWidget {
             ),
           ),
           Positioned(
+            key: Key('board_image_icon_positioned_$asset'),
             right: 8,
             top: 8,
             child: Icon(
               isSelect ? Icons.check_circle : Icons.check_circle_outline,
               color: Colors.white,
+              key: Key('board_image_icon_$asset'),
             ),
           ),
         ],
@@ -314,6 +325,7 @@ class _CustomBoardImageItem extends StatelessWidget {
     required this.customImagePath,
     required this.onSelect,
     required this.onPickImage,
+    super.key,
   });
 
   final bool isSelected;
@@ -324,6 +336,7 @@ class _CustomBoardImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('custom_board_image_gesture'),
       // Tap to select the image if customImagePath is available, otherwise prompt to pick an image
       onTap: () {
         if (customImagePath != null) {
@@ -336,6 +349,7 @@ class _CustomBoardImageItem extends StatelessWidget {
         children: <Widget>[
           // Background container displaying either an image or a placeholder color
           Container(
+            key: const Key('custom_board_image_container'),
             decoration: BoxDecoration(
               color: customImagePath == null
                   ? Colors.grey // Displays grey if no custom image is selected
@@ -355,6 +369,7 @@ class _CustomBoardImageItem extends StatelessWidget {
                       Icons.add,
                       size: 32,
                       color: Colors.white,
+                      key: Key('custom_board_image_add_icon'),
                     ),
                   )
                 : null,
@@ -363,6 +378,7 @@ class _CustomBoardImageItem extends StatelessWidget {
           if (customImagePath != null)
             Center(
               child: IconButton(
+                key: const Key('custom_board_image_edit_button'),
                 icon: const Icon(
                   Icons.edit,
                   color: Colors.white,
@@ -374,11 +390,13 @@ class _CustomBoardImageItem extends StatelessWidget {
             ),
           // Displays a checkmark icon in the top-right corner if selected
           Positioned(
+            key: const Key('custom_board_image_check_positioned'),
             right: 8,
             top: 8,
             child: Icon(
               isSelected ? Icons.check_circle : Icons.check_circle_outline,
               color: Colors.white,
+              key: const Key('custom_board_image_check_icon'),
             ),
           ),
         ],

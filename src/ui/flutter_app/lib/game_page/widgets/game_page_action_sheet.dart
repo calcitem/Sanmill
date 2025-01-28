@@ -46,6 +46,7 @@ class GamePageActionSheet extends StatelessWidget {
     );
 
     return Theme(
+      key: const Key('game_page_action_sheet_theme'),
       data: theme.copyWith(
         primaryColor: textColor,
         textTheme: textTheme,
@@ -53,6 +54,7 @@ class GamePageActionSheet extends StatelessWidget {
         textButtonTheme: buttonStyle,
       ),
       child: DefaultTextStyle(
+        key: const Key('game_page_action_sheet_default_text_style'),
         style: textTheme.titleLarge!,
         child: child,
       ),
@@ -79,33 +81,45 @@ class GamePageDialog extends StatelessWidget {
         _paddingScaleFactor(TextScaler.noScaling.scale(1.0));
 
     final Builder contentWidget = Builder(
+      key: const Key('game_page_dialog_builder'),
       builder: (BuildContext context) => DefaultTextStyle(
+        key: const Key('game_page_dialog_default_text_style'),
         style: Theme.of(context)
             .textTheme
             .titleLarge!
             .copyWith(color: AppTheme.gamePageActionSheetTextColor),
         textAlign: TextAlign.center,
         child: SingleChildScrollView(
+          key: const Key('game_page_dialog_single_child_scroll_view'),
           padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0) *
               paddingScaleFactor,
-          child: ListBody(children: children),
+          child: ListBody(
+            key: const Key('game_page_dialog_list_body'),
+            children: children,
+          ),
         ),
       ),
     );
 
     final IntrinsicWidth dialogChild = IntrinsicWidth(
+      key: const Key('game_page_dialog_intrinsic_width'),
       stepWidth: 56.0,
       child: ConstrainedBox(
+        key: const Key('game_page_dialog_constrained_box'),
         constraints: const BoxConstraints(minWidth: 280.0),
         child: contentWidget,
       ),
     );
 
     return GamePageActionSheet(
+      key: const Key('game_page_dialog_action_sheet'),
       child: Dialog(
+        key: const Key('game_page_dialog'),
         child: Container(
+          key: const Key('game_page_dialog_container'),
           decoration: AppTheme.dialogDecoration,
           child: Semantics(
+            key: const Key('game_page_dialog_semantics'),
             scopesRoute: true,
             explicitChildNodes: true,
             namesRoute: true,

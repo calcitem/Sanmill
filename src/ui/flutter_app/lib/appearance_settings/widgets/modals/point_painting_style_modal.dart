@@ -30,6 +30,7 @@ class _PointPaintingStyleModal extends StatelessWidget {
     return Semantics(
       label: S.of(context).pointStyle,
       child: Column(
+        key: const Key('point_painting_style_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -42,11 +43,13 @@ class _PointPaintingStyleModal extends StatelessWidget {
         context,
         S.of(context).none,
         PointPaintingStyle.none,
+        key: const Key('radio_none'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).solid,
         PointPaintingStyle.fill,
+        key: const Key('radio_solid'),
       ),
     ];
   }
@@ -54,11 +57,13 @@ class _PointPaintingStyleModal extends StatelessWidget {
   Widget _buildRadioListTile(
     BuildContext context,
     String title,
-    PointPaintingStyle value,
-  ) {
+    PointPaintingStyle value, {
+    required Key key,
+  }) {
     return Semantics(
       label: title,
       child: RadioListTile<PointPaintingStyle>(
+        key: key,
         title: Text(title),
         groupValue: pointPaintingStyle,
         value: value,

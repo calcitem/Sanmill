@@ -73,22 +73,22 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.humanVsAi:
         return GamePage(
           GameMode.humanVsAi,
-          key: const Key("Human-Ai"),
+          key: const Key("human_ai"),
         );
       case _DrawerIndex.humanVsHuman:
         return GamePage(
           GameMode.humanVsHuman,
-          key: const Key("Human-Human"),
+          key: const Key("human_human"),
         );
       case _DrawerIndex.aiVsAi:
         return GamePage(
           GameMode.aiVsAi,
-          key: const Key("Ai-Ai"),
+          key: const Key("ai_ai"),
         );
       case _DrawerIndex.setupPosition:
         return GamePage(
           GameMode.setupPosition,
-          key: const Key("SetupPosition"),
+          key: const Key("setup_position"),
         );
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();
@@ -417,6 +417,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               controller: _controller,
               drawerHeader: CustomDrawerHeader(
                 headerTitle: S.of(context).appName,
+                key: const Key("custom_drawer_header"),
               ),
               drawerItems: drawerItems,
               // TODO: 4 means Setup Position

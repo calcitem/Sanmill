@@ -42,6 +42,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
     final List<String> squareDesc = _buildSquareDescription(context);
 
     return GridView(
+      key: const Key('board_grid_view'),
       scrollDirection: Axis.horizontal,
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 7,
@@ -50,6 +51,7 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
         7 * 7,
         (int index) => Center(
           child: Semantics(
+            key: Key('board_square_$index'),
             // TODO: [Calcitem] Add more descriptive information
             label: squareDesc[index],
           ),

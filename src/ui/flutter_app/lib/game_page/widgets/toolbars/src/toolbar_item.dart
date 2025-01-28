@@ -416,7 +416,11 @@ class _ToolbarItemWithIcon extends ToolbarItem {
   }) : super(
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
-          child: _ToolbarItemChild(icon: icon, label: label),
+          child: _ToolbarItemChild(
+            icon: icon,
+            label: label,
+            key: const Key('toolbar_item_child'),
+          ),
         );
 
   static const TextScaler scaler = TextScaler.noScaling;
@@ -442,6 +446,7 @@ class _ToolbarItemChild extends StatelessWidget {
   const _ToolbarItemChild({
     required this.label,
     required this.icon,
+    super.key,
   });
 
   final Widget label;
@@ -450,6 +455,7 @@ class _ToolbarItemChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: const Key('toolbar_item_child_column'),
       // TODO: [Calcitem] Replace with a Row for horizontal icon + text
       children: <Widget>[icon, label],
     );

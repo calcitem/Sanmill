@@ -28,8 +28,10 @@ class _AlgorithmModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('algorithm_modal_semantics'),
       label: S.of(context).algorithm,
       child: Column(
+        key: const Key('algorithm_modal_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -71,10 +73,16 @@ class _AlgorithmModal extends StatelessWidget {
     String title,
     SearchAlgorithm value,
   ) {
+    final String keySuffix = value.name.toLowerCase();
     return Semantics(
+      key: Key('algorithm_modal_radio_list_tile_semantics_$keySuffix'),
       label: title,
       child: RadioListTile<SearchAlgorithm>(
-        title: Text(title),
+        key: Key('algorithm_modal_radio_list_tile_$keySuffix'),
+        title: Text(
+          title,
+          key: Key('algorithm_modal_radio_list_tile_${keySuffix}_title'),
+        ),
         groupValue: algorithm,
         value: value,
         onChanged: onChanged,

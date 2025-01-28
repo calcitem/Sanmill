@@ -76,6 +76,7 @@ class SettingsListTile extends StatelessWidget {
         titleString,
         style: AppTheme.listTileTitleStyle,
       );
+
   Widget? get subTitle => subtitleString != null
       ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
       : null;
@@ -85,6 +86,7 @@ class SettingsListTile extends StatelessWidget {
     switch (_type) {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
+          key: const Key('switch_tile'),
           value: _switchValue!,
           onChanged: _switchCallback,
           title: title,
@@ -112,6 +114,7 @@ class SettingsListTile extends StatelessWidget {
         }
 
         return ListTile(
+          key: const Key('standard_tile'),
           title: title,
           subtitle: subTitle,
           trailing: trailing,
@@ -120,6 +123,7 @@ class SettingsListTile extends StatelessWidget {
 
       case _SettingsTileType.color:
         return ListTile(
+          key: const Key('color_tile'),
           title: title,
           subtitle: subTitle,
           trailing: Text(
@@ -169,6 +173,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: const Key('color_picker_alert_dialog'),
       title: DB().displaySettings.fontScale == 1.0
           ? Text(
               S.of(context).pick(widget.title),
@@ -179,6 +184,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 1.0,
           child: SlidePicker(
+            key: const Key('color_picker_slide_picker'),
             pickerColor: pickedColor,
             labelTypes: DB().displaySettings.fontScale == 1.0
                 ? const <ColorLabelType>[
@@ -194,6 +200,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('color_picker_confirm_button'),
           child: Text(
             S.of(context).confirm,
             style: TextStyle(
@@ -206,6 +213,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
           },
         ),
         TextButton(
+          key: const Key('color_picker_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(

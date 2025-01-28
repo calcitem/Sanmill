@@ -22,8 +22,10 @@ class _FontSizeSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('font_size_slider_semantics'),
       label: S.of(context).fontSize,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
+        key: const Key('font_size_slider_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
@@ -32,12 +34,16 @@ class _FontSizeSlider extends StatelessWidget {
           )!;
 
           return Column(
+            key: const Key('font_size_slider_column'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
+                key: const Key('font_size_slider_center'),
                 child: SizedBox(
+                  key: const Key('font_size_slider_sized_box'),
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: Slider(
+                    key: const Key('font_size_slider_slider'),
                     value: displaySettings.fontScale,
                     min: 1,
                     max: 2,
@@ -51,7 +57,10 @@ class _FontSizeSlider extends StatelessWidget {
                   ),
                 ),
               ),
-              const Text("ABCDEFG1234567"),
+              const Text(
+                "ABCDEFG1234567",
+                key: Key('font_size_slider_text'),
+              ),
             ],
           );
         },

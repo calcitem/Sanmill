@@ -84,6 +84,7 @@ Future<void> main() async {
 
 class SanmillApp extends StatefulWidget {
   const SanmillApp({super.key});
+
   @override
   SanmillAppState createState() => SanmillAppState();
 }
@@ -216,6 +217,7 @@ class SanmillAppState extends State<SanmillApp> {
 
   Widget _buildHome(BuildContext context) {
     return const Scaffold(
+      key: Key('home_scaffold_key'),
       resizeToAvoidBottomInset: false,
       body: Home(),
     );

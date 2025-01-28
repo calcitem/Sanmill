@@ -28,8 +28,10 @@ class _PieceCountModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('piece_count_semantics'),
       label: S.of(context).piecesCount,
       child: Column(
+        key: const Key('piece_count_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -51,8 +53,10 @@ class _PieceCountModal extends StatelessWidget {
     int value,
   ) {
     return Semantics(
+      key: Key('semantics_$value'),
       label: title,
       child: RadioListTile<int>(
+        key: Key('radio_$value'),
         title: Text(title),
         groupValue: piecesCount,
         value: value,

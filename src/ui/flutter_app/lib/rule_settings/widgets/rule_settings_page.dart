@@ -33,8 +33,8 @@ part 'modals/fly_piece_count_modal.dart';
 part 'modals/mill_formation_action_in_placing_phase_modal.dart';
 part 'modals/n_move_rule_modal.dart';
 part 'modals/piece_count_modal.dart';
-part 'modals/stalemate_action_modal.dart';
 part 'modals/rule_set_modal.dart';
+part 'modals/stalemate_action_modal.dart';
 
 bool visitedRuleSettingsPage = false;
 
@@ -386,11 +386,14 @@ class RuleSettingsPage extends StatelessWidget {
       defaultValue: RuleSettings.fromLocale(locale),
     )!;
     return SettingsList(
+      key: const Key('rule_settings_list'),
       children: <Widget>[
         SettingsCard(
+          key: const Key('rule_settings_card_rule_set'),
           title: Text(S.of(context).ruleSet),
           children: <Widget>[
             SettingsListTile(
+              key: const Key('rule_settings_tile_rule_set'),
               titleString: S.of(context).ruleSet,
               //subtitleString: S.of(context).ruleSet_Detail,
               //trailingString: ruleSettings.ruleSet,
@@ -399,33 +402,39 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
+          key: const Key('rule_settings_card_general'),
           title: Text(S.of(context).general),
           children: <Widget>[
             SettingsListTile(
+              key: const Key('rule_settings_tile_pieces_count'),
               titleString: S.of(context).piecesCount,
               subtitleString: S.of(context).piecesCount_Detail,
               trailingString: ruleSettings.piecesCount.toString(),
               onTap: () => _setNTotalPiecesEachSide(context, ruleSettings),
             ),
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_has_diagonal_lines'),
               value: ruleSettings.hasDiagonalLines,
               onChanged: (bool val) => _setHasDiagonalLines(ruleSettings, val),
               titleString: S.of(context).hasDiagonalLines,
               subtitleString: S.of(context).hasDiagonalLines_Detail,
             ),
             SettingsListTile(
+              key: const Key('rule_settings_tile_n_move_rule'),
               titleString: S.of(context).nMoveRule,
               subtitleString: S.of(context).nMoveRule_Detail,
               trailingString: ruleSettings.nMoveRule.toString(),
               onTap: () => _setNMoveRule(context, ruleSettings),
             ),
             SettingsListTile(
+              key: const Key('rule_settings_tile_endgame_n_move_rule'),
               titleString: S.of(context).endgameNMoveRule,
               subtitleString: S.of(context).endgameNMoveRule_Detail,
               trailingString: ruleSettings.endgameNMoveRule.toString(),
               onTap: () => _setEndgameNMoveRule(context, ruleSettings),
             ),
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_threefold_repetition_rule'),
               value: ruleSettings.threefoldRepetitionRule,
               onChanged: (bool val) =>
                   _setThreefoldRepetitionRule(ruleSettings, val),
@@ -435,9 +444,12 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
+          key: const Key('rule_settings_card_placing_phase'),
           title: Text(S.of(context).placingPhase),
           children: <Widget>[
             SettingsListTile(
+              key: const Key(
+                  'rule_settings_tile_mill_formation_action_in_placing_phase'),
               onTap: () =>
                   _setMillFormationActionInPlacingPhase(context, ruleSettings),
               titleString: S.of(context).whenFormingMillsDuringPlacingPhase,
@@ -447,11 +459,13 @@ class RuleSettingsPage extends StatelessWidget {
             if (DB().ruleSettings.millFormationActionInPlacingPhase !=
                 MillFormationActionInPlacingPhase.removalBasedOnMillCounts)
               SettingsListTile(
+                key: const Key('rule_settings_tile_board_full_action'),
                 onTap: () => _setBoardFullAction(context, ruleSettings),
                 titleString: S.of(context).whenBoardIsFull,
                 subtitleString: S.of(context).whenBoardIsFull_Detail,
               ),
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_may_move_in_placing_phase'),
               value: ruleSettings.mayMoveInPlacingPhase,
               onChanged: (bool val) =>
                   _setMayMoveInPlacingPhase(context, ruleSettings, val),
@@ -461,9 +475,11 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
+          key: const Key('rule_settings_card_moving_phase'),
           title: Text(S.of(context).movingPhase),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_is_defender_move_first'),
               value: ruleSettings.isDefenderMoveFirst,
               onChanged: (bool val) =>
                   _setIsDefenderMoveFirst(ruleSettings, val),
@@ -471,6 +487,8 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).isDefenderMoveFirst_Detail,
             ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'rule_settings_switch_restrict_repeated_mills_formation'),
               value: ruleSettings.restrictRepeatedMillsFormation,
               onChanged: (bool val) =>
                   _setRestrictRepeatedMillsFormation(ruleSettings, val),
@@ -479,6 +497,7 @@ class RuleSettingsPage extends StatelessWidget {
                   S.of(context).restrictRepeatedMillsFormation_Detail,
             ),
             SettingsListTile(
+              key: const Key('rule_settings_tile_stalemate_action'),
               onTap: () => _setStalemateAction(context, ruleSettings),
               titleString: S.of(context).whenStalemate,
               subtitleString: S.of(context).whenStalemate_Detail,
@@ -486,9 +505,11 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
+          key: const Key('rule_settings_card_may_fly'),
           title: Text(S.of(context).mayFly),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_may_fly'),
               value: ruleSettings.mayFly,
               onChanged: (bool val) =>
                   _setAllowFlyingAllowed(ruleSettings, val),
@@ -496,6 +517,7 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).mayFly_Detail,
             ),
             SettingsListTile(
+              key: const Key('rule_settings_tile_fly_piece_count'),
               titleString: S.of(context).flyPieceCount,
               subtitleString: S.of(context).flyPieceCount_Detail,
               trailingString: ruleSettings.flyPieceCount.toString(),
@@ -504,9 +526,12 @@ class RuleSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
+          key: const Key('rule_settings_card_removing'),
           title: Text(S.of(context).removing),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key(
+                  'rule_settings_switch_may_remove_from_mills_always'),
               value: ruleSettings.mayRemoveFromMillsAlways,
               onChanged: (bool val) =>
                   _setAllowRemovePieceInMill(ruleSettings, val),
@@ -514,6 +539,7 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).mayRemoveFromMillsAlways_Detail,
             ),
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_may_remove_multiple'),
               value: ruleSettings.mayRemoveMultiple,
               onChanged: (bool val) =>
                   _setAllowRemoveMultiPiecesWhenCloseMultiMill(
@@ -524,6 +550,7 @@ class RuleSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).mayRemoveMultiple_Detail,
             ),
             SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_one_time_use_mill'),
               value: ruleSettings.oneTimeUseMill,
               onChanged: (bool val) => _setOneTimeUseMill(
                 ruleSettings,
@@ -549,9 +576,11 @@ class RuleSettingsPage extends StatelessWidget {
 
     return BlockSemantics(
       child: Scaffold(
+        key: const Key('rule_settings_scaffold'),
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
+          key: const Key('rule_settings_appbar'),
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).ruleSettings,
@@ -559,6 +588,7 @@ class RuleSettingsPage extends StatelessWidget {
           ),
         ),
         body: ValueListenableBuilder<Box<RuleSettings>>(
+          key: const Key('rule_settings_value_listenable_builder'),
           valueListenable: DB().listenRuleSettings,
           builder: _buildRuleSettings,
         ),

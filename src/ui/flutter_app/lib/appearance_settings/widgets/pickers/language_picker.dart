@@ -41,11 +41,14 @@ class _LanguagePickerState extends State<_LanguagePicker> {
   @override
   Widget build(BuildContext context) {
     final Column languageColumn = Column(
+      key: const Key('language_picker_column'),
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         RadioListTile<Locale?>(
+          key: const Key('language_picker_radio_default'),
           title: Text(
             S.of(context).defaultLanguage,
+            key: const Key('language_picker_radio_default_title'),
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
@@ -58,11 +61,17 @@ class _LanguagePickerState extends State<_LanguagePicker> {
             Navigator.pop(context, _selectedLocale);
           },
         ),
-        const Divider(),
+        const Divider(
+          key: Key('language_picker_divider'),
+        ),
         for (final Locale locale in localeToLanguageName.keys)
           RadioListTile<Locale>(
+            key: Key(
+                'language_picker_radio_${locale.languageCode}_${locale.countryCode}'),
             title: Text(
               localeToLanguageName[locale]!,
+              key: Key(
+                  'language_picker_radio_${locale.languageCode}_${locale.countryCode}_title'),
               style: TextStyle(
                   fontSize:
                       AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
@@ -80,6 +89,7 @@ class _LanguagePickerState extends State<_LanguagePicker> {
     );
 
     return AlertDialog(
+      key: const Key('language_picker_alert_dialog'),
       scrollable: true,
       content: languageColumn,
     );

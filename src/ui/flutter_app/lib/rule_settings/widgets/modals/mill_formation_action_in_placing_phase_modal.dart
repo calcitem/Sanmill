@@ -28,9 +28,12 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('mill_formation_action_in_placing_phase_semantics'),
       label: S.of(context).whenFormingMillsDuringPlacingPhase,
       child: SingleChildScrollView(
+        key: const Key('mill_formation_action_in_placing_phase_scroll_view'),
         child: Column(
+          key: const Key('mill_formation_action_in_placing_phase_column'),
           mainAxisSize: MainAxisSize.min,
           children: _buildRadioListTiles(context),
         ),
@@ -83,9 +86,12 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
     String title,
     MillFormationActionInPlacingPhase value,
   ) {
+    final String keySuffix =
+        title.toLowerCase().replaceAll(' ', '_').replaceAll('then_', 'then_');
     return Semantics(
       label: title,
       child: RadioListTile<MillFormationActionInPlacingPhase>(
+        key: Key("radio_$keySuffix"),
         title: Text(title),
         groupValue: millFormationActionInPlacingPhase,
         value: value,

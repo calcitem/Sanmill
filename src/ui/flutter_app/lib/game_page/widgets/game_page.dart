@@ -71,6 +71,7 @@ class GamePage extends StatelessWidget {
     controller.gameInstance.gameMode = gameMode;
 
     return Scaffold(
+      key: const Key('game_page_scaffold'),
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -81,14 +82,15 @@ class GamePage extends StatelessWidget {
               (maxHeight > 0 && maxHeight < maxWidth) ? maxHeight : maxWidth;
 
           final Rect gameBoardRect = Rect.fromLTWH(
-            (constraints.maxWidth - boardDimension) /
-                2, // Center the board horizontally
+            (constraints.maxWidth - boardDimension) / 2,
+            // Center the board horizontally
             0,
             boardDimension,
             boardDimension,
           );
 
           return Stack(
+            key: const Key('game_page_stack'),
             children: <Widget>[
               // Background image or color
               _buildBackground(),
@@ -97,6 +99,7 @@ class GamePage extends StatelessWidget {
               _buildGameBoard(context, controller),
               // Drawer icon
               Align(
+                key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
                 child:
                     SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
@@ -104,7 +107,10 @@ class GamePage extends StatelessWidget {
 
               // Vignette overlay
               if (DB().displaySettings.vignetteEffectEnabled)
-                VignetteOverlay(gameBoardRect: gameBoardRect),
+                VignetteOverlay(
+                  key: const Key('game_page_vignette_overlay'),
+                  gameBoardRect: gameBoardRect,
+                ),
             ],
           );
         },
@@ -128,11 +134,13 @@ class GamePage extends StatelessWidget {
     if (backgroundImage == null) {
       // No image selected, use a solid color background
       return Container(
+        key: const Key('game_page_background_container'),
         color: DB().colorSettings.darkBackgroundColor,
       );
     } else {
       // Image selected, display it with error handling
       return Image(
+        key: const Key('game_page_background_image'),
         image: backgroundImage,
         fit: BoxFit.cover,
         width: double.infinity,
@@ -142,6 +150,7 @@ class GamePage extends StatelessWidget {
             (BuildContext context, Object error, StackTrace? stackTrace) {
           // Fallback to a solid color background if the image fails to load
           return Container(
+            key: const Key('game_page_background_error_container'),
             color: DB().colorSettings.darkBackgroundColor,
           );
         },
@@ -155,18 +164,24 @@ class GamePage extends StatelessWidget {
         final bool isLandscape = orientation == Orientation.landscape;
 
         return Align(
+          key: const Key('game_page_align_gameboard'),
           alignment: isLandscape ? Alignment.center : Alignment.topCenter,
           child: FutureBuilder<void>(
+            key: const Key('game_page_future_builder'),
             future: controller.startController(),
             builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center();
+                return const Center(
+                  key: Key('game_page_center_loading'),
+                );
               }
 
               return Padding(
+                key: const Key('game_page_padding'),
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppTheme.boardMargin),
                 child: LayoutBuilder(
+                  key: const Key('game_page_inner_layout_builder'),
                   builder: (BuildContext context, BoxConstraints constraints) {
                     final double toolbarHeight =
                         _calculateToolbarHeight(context);
@@ -181,8 +196,10 @@ class GamePage extends StatelessWidget {
                     );
 
                     return ConstrainedBox(
+                      key: const Key('game_page_constrained_box'),
                       constraints: constraint,
                       child: ValueListenableBuilder<Box<DisplaySettings>>(
+                        key: const Key('game_page_value_listenable_builder'),
                         valueListenable: DB().listenDisplaySettings,
                         builder: (BuildContext context,
                             Box<DisplaySettings> box, Widget? child) {
@@ -192,6 +209,7 @@ class GamePage extends StatelessWidget {
                           )!;
 
                           return PlayArea(
+                            key: const Key('game_page_play_area'),
                             boardImage: getBoardImageProvider(
                                 displaySettings), // Pass the ImageProvider
                           );

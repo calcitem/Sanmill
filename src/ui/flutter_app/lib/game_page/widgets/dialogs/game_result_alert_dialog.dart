@@ -101,6 +101,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
       actions = <Widget>[
         TextButton(
+          key: const Key('game_result_alert_dialog_yes_button'),
           child: Text(
             S.of(context).yes,
             style: TextStyle(
@@ -126,6 +127,7 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_no_button'),
           child: Text(
             S.of(context).no,
             style: TextStyle(
@@ -141,6 +143,7 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_cancel_button_challenge'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -152,6 +155,7 @@ class GameResultAlertDialog extends StatelessWidget {
     } else {
       actions = <Widget>[
         TextButton(
+          key: const Key('game_result_alert_dialog_restart_button'),
           child: Text(
             S.of(context).restart,
             style: TextStyle(
@@ -167,6 +171,7 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -178,12 +183,15 @@ class GameResultAlertDialog extends StatelessWidget {
     }
 
     return AlertDialog(
+      key: const Key('game_result_alert_dialog'),
       title: Text(
         dialogTitle,
+        key: const Key('game_result_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: Text(
         content.toString(),
+        key: const Key('game_result_alert_dialog_content'),
         style: TextStyle(
             fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),

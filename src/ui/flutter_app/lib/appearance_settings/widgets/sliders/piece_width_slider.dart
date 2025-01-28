@@ -22,8 +22,10 @@ class _PieceWidthSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('piece_width_slider_semantics'),
       label: S.of(context).pieceWidth,
       child: ValueListenableBuilder<Box<DisplaySettings>>(
+        key: const Key('piece_width_slider_value_listenable_builder'),
         valueListenable: DB().listenDisplaySettings,
         builder: (BuildContext context, Box<DisplaySettings> box, _) {
           final DisplaySettings displaySettings = box.get(
@@ -33,9 +35,12 @@ class _PieceWidthSlider extends StatelessWidget {
 
           // Divided by [MigrationValues.pieceWidth] To represent the old behavior
           return Center(
+            key: const Key('piece_width_slider_center'),
             child: SizedBox(
+              key: const Key('piece_width_slider_sized_box'),
               width: MediaQuery.of(context).size.width * 0.8,
               child: Slider(
+                key: const Key('piece_width_slider_slider'),
                 value: displaySettings.pieceWidth,
                 min: 0.5,
                 divisions: 50,

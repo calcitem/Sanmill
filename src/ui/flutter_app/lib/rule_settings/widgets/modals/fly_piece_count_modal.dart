@@ -28,8 +28,10 @@ class _FlyPieceCountModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('fly_piece_count_semantics'),
       label: S.of(context).flyPieceCount,
       child: Column(
+        key: const Key('fly_piece_count_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),

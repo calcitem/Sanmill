@@ -38,17 +38,22 @@ class LicenseAgreementPage extends StatelessWidget {
 
         return BlockSemantics(
           child: Scaffold(
+            key: const Key('license_agreement_page_scaffold'),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
+              key: const Key('license_agreement_page_appbar'),
               title: Text(
                 S.of(context).license,
                 style: AppTheme.appBarTheme.titleTextStyle,
+                key: const Key('license_agreement_page_appbar_title'),
               ),
             ),
             body: SingleChildScrollView(
+              key: const Key('license_agreement_page_scrollview'),
               padding: const EdgeInsets.all(16),
               child: Text(
                 str,
+                key: const Key('license_agreement_page_body_text'),
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontFamily: "Monospace",
                     ),

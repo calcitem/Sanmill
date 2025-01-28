@@ -72,6 +72,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
+      key: const Key('pop_scope'),
       canPop: false,
       onPopInvokedWithResult: (bool didPop, dynamic result) async {
         if (didPop) {
@@ -81,22 +82,27 @@ class _TutorialDialogState extends State<TutorialDialog> {
         return;
       },
       child: OrientationBuilder(
+        key: const Key('orientation_builder'),
         builder: (BuildContext context, Orientation orientation) {
           if (_orientation != orientation) {
             _orientation = orientation;
             setPiece();
           }
           return Scaffold(
+            key: const Key('scaffold'),
             backgroundColor: DB().colorSettings.darkBackgroundColor,
             body: _isLandscape
                 ? SafeArea(
+                    key: const Key('landscape_safe_area'),
                     child: Stack(
+                      key: const Key('stack_landscape'),
                       children: <Widget>[
                         Align(
                           child: SizedBox(
                             width: landscapeBoardWidth,
                             height: landscapeBoardWidth,
                             child: TutorialBoard(
+                              key: const Key('tutorial_board_landscape'),
                               focusIndex: _focusIndex,
                               blurIndex: _blurIndex,
                               pieceList: _pieceList,
@@ -104,12 +110,14 @@ class _TutorialDialogState extends State<TutorialDialog> {
                           ),
                         ),
                         CustomPaint(
+                          key: const Key('custom_paint_landscape'),
                           painter: TutorialMaskPainter(
                             maskOffset: _maskOffset,
                             maskRadius: pieceWidth * 1.5,
                           ),
                         ),
                         Column(
+                          key: const Key('column_landscape'),
                           children: <Widget>[
                             Container(
                               height: kToolbarHeight,
@@ -119,6 +127,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).previous,
                                     child: IconButton(
+                                      key: const Key('previous_button'),
                                       onPressed:
                                           _curIndex <= 0 ? null : prevStep,
                                       icon: Icon(
@@ -131,6 +140,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   ),
                                   const Spacer(),
                                   IconButton(
+                                    key: const Key('skip_button'),
                                     tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
@@ -151,6 +161,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).next,
                                     child: IconButton(
+                                      key: const Key('next_button'),
                                       onPressed: _curIndex >= _maxIndex
                                           ? null
                                           : nextStep,
@@ -167,6 +178,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                             ),
                             Expanded(
                               child: GestureDetector(
+                                key: const Key('gesture_detector_landscape'),
                                 onTap: () {
                                   if (_curIndex >= _maxIndex) {
                                     _finishTutorial(context);
@@ -176,6 +188,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                 },
                                 behavior: HitTestBehavior.opaque,
                                 child: AnimatedSwitcher(
+                                  key: const Key('animated_switcher_landscape'),
                                   duration: const Duration(milliseconds: 400),
                                   child: getTutorial(),
                                 ),
@@ -187,8 +200,10 @@ class _TutorialDialogState extends State<TutorialDialog> {
                     ),
                   )
                 : Stack(
+                    key: const Key('stack_portrait'),
                     children: <Widget>[
                       SafeArea(
+                        key: const Key('portrait_safe_area'),
                         child: Padding(
                           padding: EdgeInsets.only(
                             left: AppTheme.boardPadding,
@@ -196,6 +211,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                             top: kToolbarHeight + AppTheme.boardPadding,
                           ),
                           child: TutorialBoard(
+                            key: const Key('tutorial_board_portrait'),
                             focusIndex: _focusIndex,
                             blurIndex: _blurIndex,
                             pieceList: _pieceList,
@@ -203,6 +219,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                         ),
                       ),
                       CustomPaint(
+                        key: const Key('custom_paint_portrait'),
                         painter: TutorialMaskPainter(
                           maskOffset: _maskOffset,
                           maskRadius: pieceWidth * 1.5,
@@ -210,6 +227,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                       ),
                       SafeArea(
                         child: Column(
+                          key: const Key('column_portrait'),
                           children: <Widget>[
                             Container(
                               height: kToolbarHeight,
@@ -219,6 +237,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).previous,
                                     child: IconButton(
+                                      key: const Key('previous_button'),
                                       onPressed:
                                           _curIndex <= 0 ? null : prevStep,
                                       icon: Icon(
@@ -231,6 +250,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   ),
                                   const Spacer(),
                                   IconButton(
+                                    key: const Key('finish_button'),
                                     tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
@@ -251,6 +271,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).next,
                                     child: IconButton(
+                                      key: const Key('next_button'),
                                       onPressed: _curIndex >= _maxIndex
                                           ? null
                                           : nextStep,
@@ -267,6 +288,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                             ),
                             Expanded(
                               child: GestureDetector(
+                                key: const Key('gesture_detector_portrait'),
                                 onTap: () {
                                   if (_curIndex >= _maxIndex) {
                                     _finishTutorial(context);
@@ -276,6 +298,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                 },
                                 behavior: HitTestBehavior.opaque,
                                 child: AnimatedSwitcher(
+                                  key: const Key('animated_switcher_portrait'),
                                   duration: const Duration(milliseconds: 400),
                                   child: getTutorial(),
                                 ),

@@ -16,6 +16,9 @@
 
 part of '../../custom_drawer/custom_drawer.dart';
 
+/// Custom Drawer Icon
+///
+/// Displays the drawer icon in the app bar.
 class CustomDrawerIcon extends InheritedWidget {
   const CustomDrawerIcon({
     super.key,

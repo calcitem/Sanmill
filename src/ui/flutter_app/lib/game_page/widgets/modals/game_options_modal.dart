@@ -33,6 +33,7 @@ import '../game_page.dart';
 // ignore: unused_element
 class GameOptionsModal extends StatelessWidget {
   const GameOptionsModal({super.key, required this.onTriggerScreenshot});
+
   final VoidCallback onTriggerScreenshot;
 
   static const String _logTag = "[GameOptionsModal]";
@@ -43,6 +44,7 @@ class GameOptionsModal extends StatelessWidget {
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
+          key: const Key('new_game_option'),
           onPressed: () async {
             //Navigator.pop(context);
 
@@ -105,6 +107,7 @@ class GameOptionsModal extends StatelessWidget {
             (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
+            key: const Key('save_game_option'),
             onPressed: () => GameController.save(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -117,6 +120,7 @@ class GameOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
+            key: const Key('load_game_option'),
             onPressed: () {
               GameController().loadedGameFilenamePrefix = null;
               GameController.load(context);
@@ -129,6 +133,7 @@ class GameOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
+            key: const Key('import_game_option'),
             onPressed: () {
               GameController().loadedGameFilenamePrefix = null;
               GameController.import(context);
@@ -146,6 +151,7 @@ class GameOptionsModal extends StatelessWidget {
             (GameController().gameRecorder.hasPrevious == true ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
+            key: const Key('export_game_option'),
             onPressed: () => GameController.export(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -157,6 +163,7 @@ class GameOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
           SimpleDialogOption(
+            key: const Key('share_gif_option'),
             onPressed: () {
               GameController().gifShare(context);
               Navigator.pop(context);
@@ -170,6 +177,7 @@ class GameOptionsModal extends StatelessWidget {
         if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
+            key: const Key('save_image_option'),
             onPressed: () async {
               Navigator.pop(context);
 
@@ -186,6 +194,7 @@ class GameOptionsModal extends StatelessWidget {
         if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
+            key: const Key('close_option'),
             onPressed: () => Navigator.pop(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -198,6 +207,7 @@ class GameOptionsModal extends StatelessWidget {
 
   Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
     final Widget yesButton = TextButton(
+        key: const Key('yes_button'),
         child: Text(
           S.of(context).yes,
           style: TextStyle(
@@ -240,6 +250,7 @@ class GameOptionsModal extends StatelessWidget {
         });
 
     final Widget noButton = TextButton(
+      key: const Key('no_button'),
       child: Text(
         S.of(context).no,
         style: TextStyle(

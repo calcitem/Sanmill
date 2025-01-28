@@ -59,6 +59,7 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
           )!;
 
           return GridView.builder(
+            key: const Key('background_image_gridview'),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
@@ -74,6 +75,7 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
                 // Index 1 to _bgPaths.length: Built-in images
                 final String asset = index == 0 ? '' : _bgPaths[index - 1];
                 return _BackgroundImageItem(
+                  key: Key('background_image_item_$index'),
                   asset: asset,
                   isSelect: displaySettings.backgroundImagePath == asset,
                   onChanged: () {
@@ -87,6 +89,7 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
               } else {
                 // Last item: Custom Image Picker
                 return _CustomBackgroundImageItem(
+                  key: const Key('custom_background_image_item'),
                   isSelected: displaySettings.backgroundImagePath ==
                       displaySettings.customBackgroundImagePath,
                   customImagePath: displaySettings.customBackgroundImagePath,
@@ -187,6 +190,7 @@ class _BackgroundImageItem extends StatelessWidget {
     required this.asset,
     this.isSelect = false,
     this.onChanged,
+    super.key,
   });
 
   final String asset;
@@ -196,6 +200,7 @@ class _BackgroundImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: Key('background_image_gesture_$asset'),
       onTap: () {
         if (!isSelect) {
           onChanged?.call();
@@ -204,6 +209,7 @@ class _BackgroundImageItem extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           Container(
+            key: Key('background_image_container_$asset'),
             decoration: BoxDecoration(
               color: asset.isEmpty
                   ? DB().colorSettings.darkBackgroundColor
@@ -220,11 +226,13 @@ class _BackgroundImageItem extends StatelessWidget {
             ),
           ),
           Positioned(
+            key: Key('background_image_icon_positioned_$asset'),
             right: 8,
             top: 8,
             child: Icon(
               isSelect ? Icons.check_circle : Icons.check_circle_outline,
               color: Colors.white,
+              key: Key('background_image_icon_$asset'),
             ),
           ),
         ],
@@ -242,6 +250,7 @@ class _CustomBackgroundImageItem extends StatelessWidget {
     required this.customImagePath,
     required this.onSelect,
     required this.onPickImage,
+    super.key,
   });
 
   final bool isSelected;
@@ -252,12 +261,14 @@ class _CustomBackgroundImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('custom_background_gesture'),
       // Tap to select the image if customImagePath is available, otherwise prompt to pick an image
       onTap: customImagePath != null ? onSelect : onPickImage,
       child: Stack(
         children: <Widget>[
           // Background container with image or placeholder color
           Container(
+            key: const Key('custom_background_container'),
             decoration: BoxDecoration(
               color: customImagePath == null
                   ? Colors.grey // Grey color if no custom image is selected
@@ -277,6 +288,7 @@ class _CustomBackgroundImageItem extends StatelessWidget {
                       Icons.add,
                       size: 32,
                       color: Colors.white,
+                      key: Key('custom_background_add_icon'),
                     ),
                   )
                 : null,
@@ -285,6 +297,7 @@ class _CustomBackgroundImageItem extends StatelessWidget {
           if (customImagePath != null)
             Center(
               child: IconButton(
+                key: const Key('custom_background_edit_button'),
                 icon: const Icon(
                   Icons.edit,
                   color: Colors.white,
@@ -296,11 +309,13 @@ class _CustomBackgroundImageItem extends StatelessWidget {
             ),
           // Checkmark icon at the top-right corner when selected
           Positioned(
+            key: const Key('custom_background_check_positioned'),
             right: 8,
             top: 8,
             child: Icon(
               isSelected ? Icons.check_circle : Icons.check_circle_outline,
               color: Colors.white,
+              key: const Key('custom_background_check_icon'),
             ),
           ),
         ],

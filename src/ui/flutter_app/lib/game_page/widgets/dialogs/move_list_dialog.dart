@@ -49,28 +49,35 @@ class MoveListDialog extends StatelessWidget {
 
     return GamePageActionSheet(
       child: AlertDialog(
+        key: const Key('move_list_dialog_alert_dialog'),
         backgroundColor: UIColors.semiTransparentBlack,
         title: Text(
           S.of(context).moveList,
+          key: const Key('move_list_dialog_title_text'),
           style: _getTitleTextStyle(context),
         ),
         content: SizedBox(
+          key: const Key('move_list_dialog_content_sized_box'),
           width: calculateNCharWidth(context, 32),
           height:
               calculateNCharWidth(context, mergedMoves.length * 2 + fenHeight),
           child: ListView(
+            key: const Key('move_list_dialog_list_view'),
             physics: const AlwaysScrollableScrollPhysics(),
             children: <Widget>[
               if (fen != null)
                 InkWell(
+                  key: const Key('move_list_dialog_fen_inkwell'),
                   onTap: () => _importGame(context, mergedMoves, fen, -1),
                   child: Padding(
+                    key: const Key('move_list_dialog_fen_padding'),
                     padding: const EdgeInsets.only(right: 24.0),
                     child: Text.rich(
                       TextSpan(
                         text: "$fen\r\n",
                         style: _getTitleTextStyle(context),
                       ),
+                      key: const Key('move_list_dialog_fen_text'),
                       textDirection: TextDirection.ltr,
                     ),
                   ),
@@ -90,10 +97,12 @@ class MoveListDialog extends StatelessWidget {
         ),
         actions: <Widget>[
           Row(
+            key: const Key('move_list_dialog_actions_row'),
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Expanded(
                 child: TextButton(
+                  key: const Key('move_list_dialog_copy_button'),
                   child: Text(
                     S.of(context).copy,
                     style: _getButtonTextStyle(context),
@@ -108,6 +117,7 @@ class MoveListDialog extends StatelessWidget {
               ),
               Expanded(
                 child: TextButton(
+                  key: const Key('move_list_dialog_paste_button'),
                   child: Text(
                     S.of(context).paste,
                     style: _getButtonTextStyle(context),
@@ -122,6 +132,7 @@ class MoveListDialog extends StatelessWidget {
               ),
               Expanded(
                 child: TextButton(
+                  key: const Key('move_list_dialog_cancel_button'),
                   child: Text(
                     S.of(context).cancel,
                     style: _getButtonTextStyle(context),
@@ -207,21 +218,28 @@ class MoveListDialog extends StatelessWidget {
       spans.add(
         WidgetSpan(
           child: ValueListenableBuilder<int?>(
+            key: Key(
+                'move_list_dialog_move_item_${moveIndex + i}_value_listenable_builder'),
             valueListenable: selectedIndex,
             builder: (BuildContext context, int? value, Widget? child) {
               final bool isSelected = value == moveIndex + i;
               return InkWell(
+                key: Key('move_list_dialog_move_item_${moveIndex + i}_inkwell'),
                 onTap: () {
                   selectedIndex.value = moveIndex + i;
                   _importGame(context, mergedMoves, fen, moveIndex + i);
                 },
                 child: Container(
+                  key: Key(
+                      'move_list_dialog_move_item_${moveIndex + i}_container'),
                   padding: const EdgeInsets.only(right: 24.0),
                   color: isSelected
                       ? AppTheme.gamePageActionSheetTextBackgroundColor
                       : null,
                   child: Text(
                     moveText,
+                    key:
+                        Key('move_list_dialog_move_item_${moveIndex + i}_text'),
                     style: _getTitleTextStyle(context).copyWith(
                       color: isSelected
                           ? AppTheme.gamePageActionSheetTextColor
@@ -238,14 +256,17 @@ class MoveListDialog extends StatelessWidget {
     }
 
     return Padding(
+      key: Key('move_list_dialog_move_item_${index}_padding'),
       padding: EdgeInsets.zero,
       child: ListTile(
+        key: Key('move_list_dialog_move_item_${index}_list_tile'),
         dense: true,
         title: Text.rich(
           TextSpan(
             children: spans,
             style: const TextStyle(height: 1.2),
           ),
+          key: Key('move_list_dialog_move_item_${index}_text_rich'),
           textDirection: TextDirection.ltr,
         ),
         contentPadding: EdgeInsets.zero,
@@ -260,6 +281,7 @@ class MoveListDialog extends StatelessWidget {
       ml = '$fen $ml';
     }
     final SnackBar snackBar = SnackBar(
+      key: const Key('move_list_dialog_import_snack_bar'),
       content: Text(ml),
       duration: const Duration(seconds: 2),
     );

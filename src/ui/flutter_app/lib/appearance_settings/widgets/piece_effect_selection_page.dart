@@ -28,6 +28,7 @@ import '../../shared/themes/app_theme.dart';
 /// Effect item model to hold the name and animation instance.
 class EffectItem {
   EffectItem({required this.name, required this.animation});
+
   final String name;
   final PieceEffectAnimation animation;
 }
@@ -84,15 +85,19 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('piece_effect_selection_page_scaffold'),
       appBar: AppBar(
+        key: const Key('piece_effect_selection_page_appbar'),
         title: Text(
           widget.moveType == MoveType.place
               ? S.of(context).placeEffectAnimation
               : S.of(context).removeEffectAnimation,
+          key: const Key('piece_effect_selection_page_appbar_title'),
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
       ),
       body: GridView.builder(
+        key: const Key('piece_effect_selection_page_gridview_builder'),
         padding: const EdgeInsets.all(8.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3, // 3 items per row
@@ -103,6 +108,7 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
         itemBuilder: (BuildContext context, int index) {
           final EffectItem effectItem = effects[index];
           return EffectGridItem(
+            key: Key('effect_grid_item_$index'),
             effectItem: effectItem,
             onTap: () {
               // Handle the selection logic here.
@@ -127,6 +133,7 @@ class EffectGridItem extends StatefulWidget {
     required this.effectItem,
     required this.onTap,
   });
+
   final EffectItem effectItem;
   final VoidCallback onTap;
 
@@ -165,21 +172,26 @@ class EffectGridItemState extends State<EffectGridItem>
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('effect_grid_item_gesture_detector'),
       onTap: widget.onTap,
       child: Container(
+        key: const Key('effect_grid_item_container'),
         // Set the background color of each grid item here.
         color: DB()
             .colorSettings
             .boardBackgroundColor, // Change to your preferred color.
         child: Column(
+          key: const Key('effect_grid_item_column'),
           children: <Widget>[
             Expanded(
               child: AspectRatio(
                 aspectRatio: 1.0,
                 child: AnimatedBuilder(
+                  key: const Key('effect_grid_item_animated_builder'),
                   animation: _animation,
                   builder: (BuildContext context, Widget? child) {
                     return CustomPaint(
+                      key: const Key('effect_grid_item_custom_paint'),
                       painter: EffectPainter(
                         animation: widget.effectItem.animation,
                         animationValue: _animation.value,
@@ -189,10 +201,14 @@ class EffectGridItemState extends State<EffectGridItem>
                 ),
               ),
             ),
-            const SizedBox(height: 4.0),
+            const SizedBox(
+              key: Key('effect_grid_item_sized_box'),
+              height: 4.0,
+            ),
             // Customize text color here.
             Text(
               widget.effectItem.name,
+              key: const Key('effect_grid_item_text'),
               style: TextStyle(
                 color: DB()
                     .colorSettings
@@ -210,6 +226,7 @@ class EffectGridItemState extends State<EffectGridItem>
 /// Custom painter that uses the PieceEffectAnimation to draw the effect.
 class EffectPainter extends CustomPainter {
   EffectPainter({required this.animation, required this.animationValue});
+
   final PieceEffectAnimation animation;
   final double animationValue;
 

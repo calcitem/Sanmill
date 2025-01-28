@@ -28,8 +28,10 @@ class _NMoveRuleModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('n_move_rule_semantics'),
       label: S.of(context).nMoveRule,
       child: Column(
+        key: const Key('n_move_rule_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -52,8 +54,10 @@ class _NMoveRuleModal extends StatelessWidget {
     int value,
   ) {
     return Semantics(
+      key: Key('semantics_$value'),
       label: title,
       child: RadioListTile<int>(
+        key: Key('radio_$value'),
         title: Text(title),
         groupValue: nMoveRule,
         value: value,

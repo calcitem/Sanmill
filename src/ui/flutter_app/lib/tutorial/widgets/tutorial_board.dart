@@ -35,12 +35,15 @@ class TutorialBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
+      key: const Key('layout_builder'),
       builder: (BuildContext context, BoxConstraints constrains) {
         final double dimension = constrains.maxWidth;
 
         return SizedBox.square(
+          key: const Key('sized_box'),
           dimension: dimension,
           child: CustomPaint(
+            key: const Key('custom_paint'),
             painter: BoardPainter(context, null),
             foregroundPainter: TutorialPainter(
               focusIndex: focusIndex,

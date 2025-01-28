@@ -136,31 +136,43 @@ class PlayAreaState extends State<PlayArea> {
   List<ToolbarItem> _getMainToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem.icon(
+        key: const Key('play_area_toolbar_item_game'),
         onPressed: () => _openModal(
             context,
             GameOptionsModal(
                 onTriggerScreenshot: () => _takeScreenshot("gallery"))),
         icon: const Icon(FluentIcons.table_simple_24_regular),
         label: Text(S.of(context).game,
-            maxLines: 1, overflow: TextOverflow.ellipsis),
+            key: const Key('play_area_toolbar_item_game_label'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis),
       ),
       ToolbarItem.icon(
+        key: const Key('play_area_toolbar_item_options'),
         onPressed: () => _navigateToSettings(context),
         icon: const Icon(FluentIcons.settings_24_regular),
         label: Text(S.of(context).options,
-            maxLines: 1, overflow: TextOverflow.ellipsis),
+            key: const Key('play_area_toolbar_item_options_label'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis),
       ),
       ToolbarItem.icon(
+        key: const Key('play_area_toolbar_item_move'),
         onPressed: () => _openModal(context, _buildMoveModal(context)),
         icon: const Icon(FluentIcons.calendar_agenda_24_regular),
         label: Text(S.of(context).move,
-            maxLines: 1, overflow: TextOverflow.ellipsis),
+            key: const Key('play_area_toolbar_item_move_label'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis),
       ),
       ToolbarItem.icon(
+        key: const Key('play_area_toolbar_item_info'),
         onPressed: () => _openDialog(context, const InfoDialog()),
         icon: const Icon(FluentIcons.book_information_24_regular),
         label: Text(S.of(context).info,
-            maxLines: 1, overflow: TextOverflow.ellipsis),
+            key: const Key('play_area_toolbar_item_info_label'),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis),
       ),
     ];
   }
@@ -184,12 +196,14 @@ class PlayAreaState extends State<PlayArea> {
   List<ToolbarItem> _getHistoryNavToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem(
+        key: const Key('play_area_history_nav_take_back_all'),
         child: Icon(FluentIcons.arrow_previous_24_regular,
             semanticLabel: S.of(context).takeBackAll),
         onPressed: () =>
             HistoryNavigator.takeBackAll(context, pop: false, toolbar: true),
       ),
       ToolbarItem(
+        key: const Key('play_area_history_nav_take_back'),
         child: Icon(FluentIcons.chevron_left_24_regular,
             semanticLabel: S.of(context).takeBack),
         onPressed: () =>
@@ -197,17 +211,20 @@ class PlayAreaState extends State<PlayArea> {
       ),
       if (!Constants.isSmallScreen(context))
         ToolbarItem(
+          key: const Key('play_area_history_nav_move_now'),
           child: Icon(FluentIcons.play_24_regular,
               semanticLabel: S.of(context).moveNow),
           onPressed: () => GameController().moveNow(context),
         ),
       ToolbarItem(
+        key: const Key('play_area_history_nav_step_forward'),
         child: Icon(FluentIcons.chevron_right_24_regular,
             semanticLabel: S.of(context).stepForward),
         onPressed: () =>
             HistoryNavigator.stepForward(context, pop: false, toolbar: true),
       ),
       ToolbarItem(
+        key: const Key('play_area_history_nav_step_forward_all'),
         child: Icon(FluentIcons.arrow_next_24_regular,
             semanticLabel: S.of(context).stepForwardAll),
         onPressed: () =>
@@ -220,6 +237,7 @@ class PlayAreaState extends State<PlayArea> {
   List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem(
+        key: const Key('play_area_analysis_toolbar_take_screenshot'),
         child: Icon(FluentIcons.camera_24_regular,
             semanticLabel: S.of(context).welcome),
         onPressed: () => _takeScreenshot("gallery"),
@@ -235,6 +253,7 @@ class PlayAreaState extends State<PlayArea> {
   /// Builds the row displaying the count of pieces in hand.
   Widget _buildPieceCountRow() {
     return Row(
+      key: const Key('play_area_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
@@ -251,6 +270,7 @@ class PlayAreaState extends State<PlayArea> {
                 !DB().generalSettings.aiMovesFirst
                     ? PieceColor.black
                     : PieceColor.white]!),
+            key: const Key('play_area_piece_count_text_hand'),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
                   ? DB().colorSettings.blackPieceColor
@@ -279,6 +299,7 @@ class PlayAreaState extends State<PlayArea> {
                           ? PieceColor.white
                           : PieceColor.black]!,
             ),
+            key: const Key('play_area_piece_count_text_remaining'),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
                   ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.8)
@@ -300,6 +321,7 @@ class PlayAreaState extends State<PlayArea> {
   /// Builds the row displaying the count of removed pieces.
   Widget _buildRemovedPieceCountRow() {
     return Row(
+      key: const Key('play_area_removed_piece_count_row'),
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Semantics(
@@ -316,6 +338,7 @@ class PlayAreaState extends State<PlayArea> {
                           ? PieceColor.black
                           : PieceColor.white]!,
             ),
+            key: const Key('play_area_removed_piece_count_text_remaining'),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
                   ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.8)
@@ -344,6 +367,7 @@ class PlayAreaState extends State<PlayArea> {
                 !DB().generalSettings.aiMovesFirst
                     ? PieceColor.white
                     : PieceColor.black]!),
+            key: const Key('play_area_removed_piece_count_text_hand'),
             style: TextStyle(
               color: !DB().generalSettings.aiMovesFirst
                   ? DB().colorSettings.whitePieceColor
@@ -365,6 +389,7 @@ class PlayAreaState extends State<PlayArea> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
+      key: const Key('play_area_layout_builder'),
       builder: (BuildContext context, BoxConstraints constraints) {
         // Calculate the dimension of the play area based on screen orientation.
         final double dimension = (constraints.maxWidth) *
@@ -377,17 +402,20 @@ class PlayAreaState extends State<PlayArea> {
 
         // The main column of the page content (without the bottom toolbars).
         final Widget mainContent = SizedBox(
+          key: const Key('play_area_main_content'),
           width: dimension,
           child: SafeArea(
             top: MediaQuery.of(context).orientation == Orientation.portrait,
-            bottom:
-                !isToolbarAtBottom, // Disable bottom safe area if toolbar is at bottom
+            bottom: !isToolbarAtBottom,
+            // Disable bottom safe area if toolbar is at bottom
             right: false,
             left: false,
             child: SingleChildScrollView(
+              key: const Key('play_area_single_child_scroll_view'),
               child: Column(
+                key: const Key('play_area_column'),
                 children: <Widget>[
-                  GameHeader(),
+                  GameHeader(key: const Key('play_area_game_header')),
                   // Display piece counts if needed
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
@@ -400,10 +428,13 @@ class PlayAreaState extends State<PlayArea> {
 
                   // The game board
                   NativeScreenshot(
+                    key: const Key('play_area_native_screenshot'),
                     controller: ScreenshotService.screenshotController,
                     child: Container(
+                      key: const Key('play_area_game_board_container'),
                       alignment: Alignment.center,
                       child: GameBoard(
+                        key: const Key('play_area_game_board'),
                         boardImage: widget.boardImage,
                       ),
                     ),
@@ -426,9 +457,12 @@ class PlayAreaState extends State<PlayArea> {
                           GameMode.setupPosition &&
                       advantageData.isNotEmpty)
                     SizedBox(
+                      key: const Key('play_area_advantage_graph'),
                       height: 150,
                       width: double.infinity,
                       child: CustomPaint(
+                        key:
+                            const Key('play_area_custom_paint_advantage_graph'),
                         painter: AdvantageGraphPainter(advantageData),
                       ),
                     ),
@@ -437,7 +471,8 @@ class PlayAreaState extends State<PlayArea> {
                   if (GameController().gameInstance.gameMode ==
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
-                    const SetupPositionToolbar(),
+                    const SetupPositionToolbar(
+                        key: Key('play_area_setup_position_toolbar')),
 
                   // History navigation toolbar if enabled, not in setup mode, and not at bottom
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
@@ -445,6 +480,7 @@ class PlayAreaState extends State<PlayArea> {
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
+                      key: const Key('play_area_history_nav_toolbar'),
                       backgroundColor:
                           DB().colorSettings.navigationToolbarBackgroundColor,
                       itemColor: DB().colorSettings.navigationToolbarIconColor,
@@ -456,6 +492,7 @@ class PlayAreaState extends State<PlayArea> {
                   if (DB().displaySettings.isAnalysisToolbarShown &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
+                      key: const Key('play_area_analysis_toolbar'),
                       backgroundColor:
                           DB().colorSettings.analysisToolbarBackgroundColor,
                       itemColor: DB().colorSettings.analysisToolbarIconColor,
@@ -468,6 +505,7 @@ class PlayAreaState extends State<PlayArea> {
                           GameMode.setupPosition &&
                       !isToolbarAtBottom)
                     GamePageToolbar(
+                      key: const Key('play_area_main_toolbar'),
                       backgroundColor:
                           DB().colorSettings.mainToolbarBackgroundColor,
                       itemColor: DB().colorSettings.mainToolbarIconColor,
@@ -485,25 +523,29 @@ class PlayAreaState extends State<PlayArea> {
         // If toolbar should be at the bottom, separate them.
         if (isToolbarAtBottom) {
           return SizedBox(
+            key: const Key('play_area_sized_box_toolbar_bottom'),
             width: dimension,
             child: SafeArea(
               top: MediaQuery.of(context).orientation == Orientation.portrait,
               right: false,
               left: false,
               child: Column(
+                key: const Key('play_area_column_toolbar_bottom'),
                 children: <Widget>[
                   Expanded(child: mainContent),
 
                   // Setup position toolbar if in setup mode
                   if (GameController().gameInstance.gameMode ==
                       GameMode.setupPosition)
-                    const SetupPositionToolbar(),
+                    const SetupPositionToolbar(
+                        key: Key('play_area_setup_position_toolbar_bottom')),
 
                   // History navigation toolbar if enabled and not in setup mode
                   if (DB().displaySettings.isHistoryNavigationToolbarShown &&
                       GameController().gameInstance.gameMode !=
                           GameMode.setupPosition)
                     GamePageToolbar(
+                      key: const Key('play_area_history_nav_toolbar_bottom'),
                       backgroundColor:
                           DB().colorSettings.navigationToolbarBackgroundColor,
                       itemColor: DB().colorSettings.navigationToolbarIconColor,
@@ -514,6 +556,7 @@ class PlayAreaState extends State<PlayArea> {
                   // Analysis toolbar if enabled
                   if (DB().displaySettings.isAnalysisToolbarShown)
                     GamePageToolbar(
+                      key: const Key('play_area_analysis_toolbar_bottom'),
                       backgroundColor:
                           DB().colorSettings.analysisToolbarBackgroundColor,
                       itemColor: DB().colorSettings.analysisToolbarIconColor,
@@ -525,6 +568,7 @@ class PlayAreaState extends State<PlayArea> {
                   if (GameController().gameInstance.gameMode !=
                       GameMode.setupPosition)
                     GamePageToolbar(
+                      key: const Key('play_area_main_toolbar_bottom'),
                       backgroundColor:
                           DB().colorSettings.mainToolbarBackgroundColor,
                       itemColor: DB().colorSettings.mainToolbarIconColor,

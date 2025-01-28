@@ -44,26 +44,31 @@ class _StalemateActionModal extends StatelessWidget {
         context,
         S.of(context).endWithStalemateLoss,
         StalemateAction.endWithStalemateLoss,
+        key: const Key('end_with_stalemate_loss'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).changeSideToMove,
         StalemateAction.changeSideToMove,
+        key: const Key('change_side_to_move'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).removeOpponentsPieceAndMakeNextMove,
         StalemateAction.removeOpponentsPieceAndMakeNextMove,
+        key: const Key('remove_opponents_piece_and_make_next_move'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).removeOpponentsPieceAndChangeSideToMove,
         StalemateAction.removeOpponentsPieceAndChangeSideToMove,
+        key: const Key('remove_opponents_piece_and_change_side_to_move'),
       ),
       _buildRadioListTile(
         context,
         S.of(context).endWithStalemateDraw,
         StalemateAction.endWithStalemateDraw,
+        key: const Key('end_with_stalemate_draw'),
       ),
     ];
   }
@@ -71,11 +76,13 @@ class _StalemateActionModal extends StatelessWidget {
   Widget _buildRadioListTile(
     BuildContext context,
     String title,
-    StalemateAction value,
-  ) {
+    StalemateAction value, {
+    Key? key,
+  }) {
     return Semantics(
       label: title,
       child: RadioListTile<StalemateAction>(
+        key: key,
         title: Text(title),
         groupValue: stalemateAction,
         value: value,

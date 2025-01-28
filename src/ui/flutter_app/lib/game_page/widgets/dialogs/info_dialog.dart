@@ -141,10 +141,14 @@ class InfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GamePageActionSheet(
+      key: const Key('info_dialog_game_page_action_sheet'),
       child: AlertDialog(
+        key: const Key('info_dialog_alert_dialog'),
         backgroundColor: UIColors.semiTransparentBlack,
         content: SingleChildScrollView(
+          key: const Key('info_dialog_single_child_scroll_view'),
           child: Text(
+            key: const Key('info_dialog_content_text'),
             _infoText(context),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppTheme.gamePageActionSheetTextColor,
@@ -156,9 +160,9 @@ class InfoDialog extends StatelessWidget {
         actions: <Widget>[
           if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
             TextButton(
+              key: const Key('info_dialog_more_button'),
               child: Text(
                 S.of(context).more,
-                key: const Key('infoDialogMoreButton'),
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.gamePageActionSheetTextColor,
                       fontSize:
@@ -172,6 +176,7 @@ class InfoDialog extends StatelessWidget {
                 final String content = generateOptionsContent();
 
                 final Widget copyButton = TextButton(
+                  key: const Key('info_dialog_copy_button'),
                   child: Text(
                     copy,
                     style: TextStyle(
@@ -192,6 +197,7 @@ class InfoDialog extends StatelessWidget {
                 );
 
                 final Widget okButton = TextButton(
+                    key: const Key('info_dialog_ok_button_more'),
                     child: Text(
                       ok,
                       style: TextStyle(
@@ -203,14 +209,17 @@ class InfoDialog extends StatelessWidget {
                     });
 
                 final AlertDialog alert = AlertDialog(
+                  key: const Key('info_dialog_more_alert_dialog'),
                   title: Text(
                     S.of(context).more,
+                    key: const Key('info_dialog_more_alert_dialog_title'),
                     style: TextStyle(
                         fontSize:
                             AppTheme.textScaler.scale(AppTheme.largeFontSize)),
                   ),
                   content: Text(
                     content,
+                    key: const Key('info_dialog_more_alert_dialog_content'),
                     textDirection: TextDirection.ltr,
                   ),
                   actions: <Widget>[copyButton, okButton],
@@ -226,9 +235,9 @@ class InfoDialog extends StatelessWidget {
               },
             ),
           TextButton(
+            key: const Key('info_dialog_ok_button'),
             child: Text(
               S.of(context).ok,
-              key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
                     fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),

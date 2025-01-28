@@ -281,6 +281,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         animationMap[removeEffectName]?.call() ?? ExplodePieceEffectAnimation();
 
     final AnimatedBuilder customPaint = AnimatedBuilder(
+      key: const Key('animated_builder_custom_paint'),
       animation: Listenable.merge(<Animation<double>>[
         animationManager.placeAnimationController,
         animationManager.moveAnimationController,
@@ -288,17 +289,26 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       ]),
       builder: (_, Widget? child) {
         return FutureBuilder<GameImages>(
+          key: const Key('future_builder_game_images'),
           future: gameImagesFuture,
           builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                key: Key('center_loading'),
+                child: CircularProgressIndicator(),
+              );
             } else if (snapshot.hasError) {
               // Handle errors appropriately
-              return const Center(child: Text('Error loading images'));
+              return const Center(
+                key: Key('center_error'),
+                child: Text('Error loading images'),
+              );
             } else {
               final GameImages? gameImages = snapshot.data;
               return SizedBox.expand(
+                key: const Key('sized_box_expand_custom_paint'),
                 child: CustomPaint(
+                  key: const Key('custom_paint_board_painter'),
                   // Pass the resolved ui.Image? to BoardPainter
                   painter: BoardPainter(context, gameImages?.boardImage),
                   foregroundPainter: PiecePainter(
@@ -317,6 +327,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                   child: DB().generalSettings.screenReaderSupport
                       ? const _BoardSemantics()
                       : Semantics(
+                          key: const Key('semantics_screen_reader'),
                           label: S.of(context).youCanEnableScreenReaderSupport,
                           container: true,
                         ),
@@ -329,6 +340,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     );
 
     return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('value_listenable_builder_display_settings'),
       valueListenable: DB().listenDisplaySettings,
       builder: (BuildContext context, Box<DisplaySettings> box, _) {
         AppTheme.boardPadding =
@@ -339,12 +351,15 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                 4;
 
         return LayoutBuilder(
+          key: const Key('layout_builder_game_board'),
           builder: (BuildContext context, BoxConstraints constrains) {
             final double dimension = constrains.maxWidth;
 
             return SizedBox.square(
+              key: const Key('sized_box_square_game_board'),
               dimension: dimension,
               child: GestureDetector(
+                key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
                   final int? square = squareFromPoint(
@@ -434,7 +449,10 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         gameMode != GameMode.setupPosition) {
       showDialog(
         context: context,
-        builder: (_) => GameResultAlertDialog(winner: winner),
+        builder: (_) => GameResultAlertDialog(
+          key: const Key('game_result_alert_dialog'),
+          winner: winner,
+        ),
       );
     }
   }

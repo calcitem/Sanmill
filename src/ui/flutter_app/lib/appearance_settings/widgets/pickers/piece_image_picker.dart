@@ -45,10 +45,13 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: const Key('piece_image_picker_container'),
       color: DB().colorSettings.boardBackgroundColor,
       child: Semantics(
+        key: const Key('piece_image_picker_semantics'),
         label: S.of(context).pieceImage,
         child: ValueListenableBuilder<Box<DisplaySettings>>(
+          key: const Key('piece_image_picker_value_listenable_builder'),
           valueListenable: DB().listenDisplaySettings,
           builder: (BuildContext context, Box<DisplaySettings> box, _) {
             final DisplaySettings displaySettings = box.get(
@@ -57,9 +60,12 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
             )!;
 
             return Center(
+              key: const Key('piece_image_picker_center'),
               child: Padding(
+                key: const Key('piece_image_picker_padding'),
                 padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Column(
+                  key: const Key('piece_image_picker_column'),
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     // Row for Player 1
@@ -77,7 +83,10 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                       isPlayerOne: true,
                       displaySettings: displaySettings,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(
+                      key: Key('piece_image_picker_sized_box_player1'),
+                      height: 20,
+                    ),
                     // Row for Player 2
                     _buildPlayerRow(
                       context,
@@ -119,12 +128,18 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
     const double aspectRatio = 1.0;
 
     return GestureDetector(
+      key: isPlayerOne
+          ? const Key('player1_row_gesture_detector')
+          : const Key('player2_row_gesture_detector'),
       onHorizontalDragUpdate: (DragUpdateDetails details) {
         scrollController.jumpTo(
           scrollController.offset - details.delta.dx,
         );
       },
       child: Listener(
+        key: isPlayerOne
+            ? const Key('player1_row_listener')
+            : const Key('player2_row_listener'),
         onPointerSignal: (PointerSignalEvent event) {
           if (event is PointerScrollEvent) {
             final double delta = event.scrollDelta.dy;
@@ -132,21 +147,38 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
           }
         },
         child: Row(
+          key:
+              isPlayerOne ? const Key('player1_row') : const Key('player2_row'),
           children: <Widget>[
             Padding(
+              key: isPlayerOne
+                  ? const Key('player1_row_label_padding')
+                  : const Key('player2_row_label_padding'),
               padding: const EdgeInsets.only(left: 16, right: 12),
               child: Text(
                 playerLabel,
+                key: isPlayerOne
+                    ? const Key('player1_row_label_text')
+                    : const Key('player2_row_label_text'),
                 style: TextStyle(color: DB().colorSettings.boardLineColor),
               ),
             ),
             Expanded(
+              key: isPlayerOne
+                  ? const Key('player1_row_expanded')
+                  : const Key('player2_row_expanded'),
               child: SizedBox(
+                key: isPlayerOne
+                    ? const Key('player1_row_sized_box')
+                    : const Key('player2_row_sized_box'),
                 height: 60,
                 child: ListView.builder(
+                  key: isPlayerOne
+                      ? const Key('player1_row_list_view_builder')
+                      : const Key('player2_row_list_view_builder'),
                   scrollDirection: Axis.horizontal,
-                  itemCount:
-                      _pieceBgPaths.length + 1, // Include custom image item
+                  itemCount: _pieceBgPaths.length + 1,
+                  // Include custom image item
                   controller: scrollController,
                   itemBuilder: (BuildContext context, int index) {
                     if (index < _pieceBgPaths.length) {
@@ -154,17 +186,26 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                       final bool isSelectable =
                           index == 0 || asset != otherPlayerSelectedImagePath;
                       return Padding(
+                        key: Key(
+                            'player${isPlayerOne ? '1' : '2'}_piece_padding_$index'),
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: GestureDetector(
+                          key: Key(
+                              'player${isPlayerOne ? '1' : '2'}_piece_gesture_$index'),
                           onTap: isSelectable
                               ? () => onImageSelected(asset)
                               : null,
                           child: asset.isEmpty
                               ? _buildPureColorPiece(
+                                  key: isPlayerOne
+                                      ? const Key('player1_pure_color_piece')
+                                      : const Key('player2_pure_color_piece'),
                                   isSelected: selectedImagePath == asset,
                                   isPlayerOne: isPlayerOne,
                                 )
                               : _PieceImageItem(
+                                  key: Key(
+                                      'player${isPlayerOne ? '1' : '2'}_piece_image_item_$index'),
                                   asset: asset,
                                   isSelect: selectedImagePath == asset,
                                   isSelectable: isSelectable,
@@ -174,8 +215,13 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
                     } else {
                       // Custom Image Item
                       return Padding(
+                        key: Key(
+                            'player${isPlayerOne ? '1' : '2'}_custom_piece_padding'),
                         padding: const EdgeInsets.symmetric(horizontal: 6),
                         child: _CustomPieceImageItem(
+                          key: isPlayerOne
+                              ? const Key('player1_custom_piece_item')
+                              : const Key('player2_custom_piece_item'),
                           isSelected: selectedImagePath == customImagePath,
                           customImagePath: customImagePath,
                           onSelect: () {
@@ -196,8 +242,15 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
               ),
             ),
             Padding(
+              key: isPlayerOne
+                  ? const Key('player1_row_right_padding')
+                  : const Key('player2_row_right_padding'),
               padding: const EdgeInsets.only(right: 16),
-              child: Container(),
+              child: Container(
+                key: isPlayerOne
+                    ? const Key('player1_row_right_container')
+                    : const Key('player2_row_right_container'),
+              ),
             ),
           ],
         ),
@@ -208,8 +261,10 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
   Widget _buildPureColorPiece({
     required bool isSelected,
     required bool isPlayerOne,
+    Key? key,
   }) {
     return Container(
+      key: key,
       width: 60,
       height: 60,
       decoration: BoxDecoration(
@@ -221,6 +276,7 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
       ),
       child: isSelected
           ? const Align(
+              key: Key('pure_color_piece_selected_icon'),
               child: Icon(
                 Icons.check_circle,
                 color: Colors.green,
@@ -255,6 +311,7 @@ class _PieceImagePickerState extends State<_PieceImagePicker> {
       final Uint8List? croppedData = await navigator.push<Uint8List?>(
         MaterialPageRoute<Uint8List?>(
           builder: (BuildContext context) => ImageCropPage(
+            key: const Key('custom_piece_image_crop_page'),
             imageData: imageData,
             aspectRatio: aspectRatio,
             backgroundImageText: S.of(context).pieceImage,
@@ -311,6 +368,7 @@ class _PieceImageItem extends StatelessWidget {
     required this.asset,
     this.isSelect = false,
     this.isSelectable = true,
+    super.key,
   });
 
   final String asset;
@@ -320,10 +378,13 @@ class _PieceImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Opacity(
+      key: Key('piece_image_item_opacity_$asset'),
       opacity: isSelectable ? 1.0 : 0.5,
       child: Stack(
+        key: Key('piece_image_item_stack_$asset'),
         children: <Widget>[
           Container(
+            key: Key('piece_image_item_container_$asset'),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
@@ -338,6 +399,7 @@ class _PieceImageItem extends StatelessWidget {
           ),
           if (isSelect)
             const Align(
+              key: Key('piece_image_item_selected_icon'),
               child: Icon(
                 Icons.check_circle,
                 color: Colors.green,
@@ -358,6 +420,7 @@ class _CustomPieceImageItem extends StatelessWidget {
     required this.customImagePath,
     required this.onSelect,
     required this.onPickImage,
+    super.key,
   });
 
   final bool isSelected;
@@ -368,12 +431,15 @@ class _CustomPieceImageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: const Key('custom_piece_image_gesture_detector'),
       // Tap to select the image if customImagePath is available, otherwise prompt to pick an image
       onTap: customImagePath != null ? onSelect : onPickImage,
       child: Stack(
+        key: const Key('custom_piece_image_stack'),
         children: <Widget>[
           // Background container with image or placeholder color
           Container(
+            key: const Key('custom_piece_image_container'),
             width: 60,
             height: 60,
             decoration: BoxDecoration(
@@ -393,6 +459,7 @@ class _CustomPieceImageItem extends StatelessWidget {
             // Centered add icon when no custom image is selected
             child: customImagePath == null
                 ? const Center(
+                    key: Key('custom_piece_image_add_icon'),
                     child: Icon(
                       Icons.add,
                       size: 32,
@@ -404,7 +471,9 @@ class _CustomPieceImageItem extends StatelessWidget {
           // Centered edit icon when custom image is present
           if (customImagePath != null)
             Center(
+              key: const Key('custom_piece_image_edit_icon_center'),
               child: IconButton(
+                key: const Key('custom_piece_image_edit_button'),
                 icon: const Icon(
                   Icons.edit,
                   color: Colors.white,
@@ -417,6 +486,7 @@ class _CustomPieceImageItem extends StatelessWidget {
           // Checkmark icon when selected
           if (isSelected)
             const Align(
+              key: Key('custom_piece_image_selected_icon'),
               child: Icon(
                 Icons.check_circle,
                 color: Colors.green,

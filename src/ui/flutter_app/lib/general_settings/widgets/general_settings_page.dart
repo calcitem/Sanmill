@@ -47,6 +47,7 @@ part 'sliders/move_time_slider.dart';
 
 class GeneralSettingsPage extends StatelessWidget {
   const GeneralSettingsPage({super.key});
+
   static const String _logTag = "[general_settings_page]";
 
   // Restore
@@ -312,11 +313,19 @@ class GeneralSettingsPage extends StatelessWidget {
             : perfectDatabaseDescription;
 
     return SettingsList(
+      key: const Key('general_settings_page_settings_list'),
       children: <Widget>[
         SettingsCard(
-          title: Text(S.of(context).whoMovesFirst),
+          key: const Key('general_settings_page_settings_card_who_moves_first'),
+          title: Text(
+            S.of(context).whoMovesFirst,
+            key: const Key(
+                'general_settings_page_settings_card_who_moves_first_title'),
+          ),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_who_moves_first_switch_tile'),
               value: !generalSettings.aiMovesFirst,
               onChanged: (bool val) {
                 _setWhoMovesFirst(generalSettings, !val);
@@ -333,9 +342,16 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).difficulty),
+          key: const Key('general_settings_page_settings_card_difficulty'),
+          title: Text(
+            S.of(context).difficulty,
+            key: const Key(
+                'general_settings_page_settings_card_difficulty_title'),
+          ),
           children: <Widget>[
             SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_difficulty_skill_level'),
               titleString: S.of(context).skillLevel,
               trailingString: DB().generalSettings.skillLevel.toString(),
               onTap: () {
@@ -345,6 +361,8 @@ class GeneralSettingsPage extends StatelessWidget {
               },
             ),
             SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_difficulty_move_time'),
               titleString: S.of(context).moveTime,
               trailingString: DB().generalSettings.moveTime.toString(),
               onTap: () => _setMoveTime(context),
@@ -352,9 +370,16 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).aisPlayStyle),
+          key: const Key('general_settings_page_settings_card_ais_play_style'),
+          title: Text(
+            S.of(context).aisPlayStyle,
+            key: const Key(
+                'general_settings_page_settings_card_ais_play_style_title'),
+          ),
           children: <Widget>[
             SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_algorithm'),
               titleString: S.of(context).algorithm,
               trailingString: generalSettings.searchAlgorithm!.name,
               onTap: () => _setAlgorithm(context, generalSettings),
@@ -362,6 +387,8 @@ class GeneralSettingsPage extends StatelessWidget {
             if (DB().ruleSettings.isLikelyNineMensMorris() ||
                 DB().ruleSettings.isLikelyElFilja())
               SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_use_opening_book'),
                 value: generalSettings.useOpeningBook,
                 onChanged: (bool val) {
                   if (val == true) {
@@ -375,6 +402,8 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             if (!kIsWeb)
               SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_use_perfect_database'),
                 value: generalSettings.usePerfectDatabase,
                 onChanged: (bool val) {
                   if (val == true) {
@@ -390,6 +419,8 @@ class GeneralSettingsPage extends StatelessWidget {
                 subtitleString: perfectDatabaseDescriptionFistLine,
               ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_draw_on_human_experience'),
               value: generalSettings.drawOnHumanExperience,
               onChanged: (bool val) {
                 _setDrawOnHumanExperience(generalSettings, val);
@@ -398,6 +429,8 @@ class GeneralSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).drawOnTheHumanExperienceDetail,
             ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_consider_mobility'),
               value: generalSettings.considerMobility,
               onChanged: (bool val) {
                 _setConsiderMobility(generalSettings, val);
@@ -406,6 +439,8 @@ class GeneralSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).considerMobilityOfPiecesDetail,
             ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_focus_on_blocking_paths'),
               value: generalSettings.focusOnBlockingPaths,
               onChanged: (bool val) {
                 _setFocusOnBlockingPaths(generalSettings, val);
@@ -414,6 +449,8 @@ class GeneralSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).focusOnBlockingPaths_Detail,
             ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_ais_play_style_ai_is_lazy'),
               value: generalSettings.aiIsLazy,
               onChanged: (bool val) {
                 _setAiIsLazy(generalSettings, val);
@@ -422,6 +459,8 @@ class GeneralSettingsPage extends StatelessWidget {
               subtitleString: S.of(context).passiveDetail,
             ),
             SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_shuffling_enabled'),
                 value: generalSettings.shufflingEnabled,
                 onChanged: (bool val) {
                   _setShufflingEnabled(generalSettings, val);
@@ -431,26 +470,39 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).playSounds),
+          key: const Key('general_settings_page_settings_card_play_sounds'),
+          title: Text(
+            S.of(context).playSounds,
+            key: const Key(
+                'general_settings_page_settings_card_play_sounds_title'),
+          ),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_play_sounds_tone_enabled'),
               value: generalSettings.toneEnabled,
               onChanged: (bool val) => _setTone(generalSettings, val),
               titleString: S.of(context).playSoundsInTheGame,
             ),
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_play_sounds_keep_mute_when_taking_back'),
               value: generalSettings.keepMuteWhenTakingBack,
               onChanged: (bool val) =>
                   _setKeepMuteWhenTakingBack(generalSettings, val),
               titleString: S.of(context).keepMuteWhenTakingBack,
             ),
             SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_play_sounds_sound_theme'),
               titleString: S.of(context).soundTheme,
               trailingString: generalSettings.soundTheme!.localeName(context),
               onTap: () => _setSoundTheme(context, generalSettings),
             ),
             if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
               SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_play_sounds_vibration_enabled'),
                 value: generalSettings.vibrationEnabled,
                 onChanged: (bool val) => _setVibration(generalSettings, val),
                 titleString: S.of(context).vibration,
@@ -459,9 +511,16 @@ class GeneralSettingsPage extends StatelessWidget {
         ),
         if (!kIsWeb && (Platform.isAndroid || Platform.isIOS))
           SettingsCard(
-            title: Text(S.of(context).accessibility),
+            key: const Key('general_settings_page_settings_card_accessibility'),
+            title: Text(
+              S.of(context).accessibility,
+              key: const Key(
+                  'general_settings_page_settings_card_accessibility_title'),
+            ),
             children: <Widget>[
               SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_accessibility_screen_reader_support'),
                 value: generalSettings.screenReaderSupport,
                 onChanged: (bool val) {
                   _setScreenReaderSupport(generalSettings, val);
@@ -475,9 +534,17 @@ class GeneralSettingsPage extends StatelessWidget {
         // TODO: Fix iOS bug
         if (!kIsWeb && (Platform.isAndroid))
           SettingsCard(
-            title: Text(S.of(context).gameScreenRecorder),
+            key: const Key(
+                'general_settings_page_settings_card_game_screen_recorder'),
+            title: Text(
+              S.of(context).gameScreenRecorder,
+              key: const Key(
+                  'general_settings_page_settings_card_game_screen_recorder_title'),
+            ),
             children: <Widget>[
               SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_game_screen_recorder_support'),
                 value: generalSettings.gameScreenRecorderSupport,
                 onChanged: (bool val) {
                   _setGameScreenRecorderSupport(generalSettings, val);
@@ -489,6 +556,8 @@ class GeneralSettingsPage extends StatelessWidget {
                 titleString: S.of(context).shareGIF,
               ),
               SettingsListTile(
+                key: const Key(
+                    'general_settings_page_settings_card_game_screen_recorder_duration'),
                 titleString: S.of(context).duration,
                 trailingString:
                     generalSettings.gameScreenRecorderDuration.toString(),
@@ -496,6 +565,8 @@ class GeneralSettingsPage extends StatelessWidget {
                     _setGameScreenRecorderDuration(context, generalSettings),
               ),
               SettingsListTile(
+                key: const Key(
+                    'general_settings_page_settings_card_game_screen_recorder_pixel_ratio'),
                 titleString: S.of(context).pixelRatio,
                 trailingString:
                     "${generalSettings.gameScreenRecorderPixelRatio}%",
@@ -505,9 +576,15 @@ class GeneralSettingsPage extends StatelessWidget {
             ],
           ),
         SettingsCard(
-          title: Text(S.of(context).misc),
+          key: const Key('general_settings_page_settings_card_misc'),
+          title: Text(
+            S.of(context).misc,
+            key: const Key('general_settings_page_settings_card_misc_title'),
+          ),
           children: <Widget>[
             SettingsListTile.switchTile(
+              key: const Key(
+                  'general_settings_page_settings_card_misc_auto_restart'),
               value: generalSettings.isAutoRestart,
               onChanged: (bool val) => _setIsAutoRestart(generalSettings, val),
               titleString: S.of(context).isAutoRestart,
@@ -515,9 +592,15 @@ class GeneralSettingsPage extends StatelessWidget {
           ],
         ),
         SettingsCard(
-          title: Text(S.of(context).restore),
+          key: const Key('general_settings_page_settings_card_restore'),
+          title: Text(
+            S.of(context).restore,
+            key: const Key('general_settings_page_settings_card_restore_title'),
+          ),
           children: <Widget>[
             SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_restore_default_settings'),
               titleString: S.of(context).restoreDefaultSettings,
               onTap: () => _restoreFactoryDefaultSettings(context),
             ),
@@ -530,17 +613,22 @@ class GeneralSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlockSemantics(
+      key: const Key('general_settings_page_block_semantics'),
       child: Scaffold(
+        key: const Key('general_settings_page_scaffold'),
         resizeToAvoidBottomInset: false,
         backgroundColor: AppTheme.lightBackgroundColor,
         appBar: AppBar(
+          key: const Key('general_settings_page_app_bar'),
           leading: CustomDrawerIcon.of(context)?.drawerIcon,
           title: Text(
             S.of(context).generalSettings,
+            key: const Key('general_settings_page_app_bar_title'),
             style: AppTheme.appBarTheme.titleTextStyle,
           ),
         ),
         body: ValueListenableBuilder<Box<GeneralSettings>>(
+          key: const Key('general_settings_page_value_listenable_builder'),
           valueListenable: DB().listenGeneralSettings,
           builder: _buildGeneralSettingsList,
         ),

@@ -87,16 +87,21 @@ class _GameHeaderState extends State<GameHeader> {
   @override
   Widget build(BuildContext context) {
     return Align(
+      key: const Key('game_header_align'),
       alignment: Alignment.topCenter,
       child: BlockSemantics(
+        key: const Key('game_header_block_semantics'),
         child: Center(
+          key: const Key('game_header_center'),
           child: Padding(
+            key: const Key('game_header_padding'),
             padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
             child: Column(
+              key: const Key('game_header_column'),
               children: <Widget>[
-                const HeaderIcons(),
+                const HeaderIcons(key: Key('header_icons')),
                 _buildDivider(),
-                const HeaderTip(),
+                const HeaderTip(key: Key('header_tip')),
               ],
             ),
           ),
@@ -130,6 +135,7 @@ class _GameHeaderState extends State<GameHeader> {
     final num dividerBlackLength = valueLimit - value;
 
     return Container(
+      key: const Key('positional_advantage_divider'),
       height: 2,
       width: valueLimit * 2,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
@@ -137,15 +143,18 @@ class _GameHeaderState extends State<GameHeader> {
         borderRadius: BorderRadius.circular(2),
       ),
       child: Row(
+        key: const Key('positional_advantage_row'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
+            key: const Key('divider_white_container'),
             height: 2,
             width: dividerWhiteLength.toDouble(),
             color:
                 DB().colorSettings.whitePieceColor.withValues(alpha: opacity),
           ),
           Container(
+            key: const Key('divider_black_container'),
             height: 2,
             width: dividerBlackLength.toDouble(),
             color:
@@ -159,6 +168,7 @@ class _GameHeaderState extends State<GameHeader> {
   Widget _buildDefaultDivider() {
     const double opacity = 1;
     return Container(
+      key: const Key('default_divider'),
       height: 2,
       width: 180,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
@@ -209,14 +219,18 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<String>(
+      key: const Key('header_tip_value_listenable_builder'),
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String value, Widget? child) {
         return Semantics(
+          key: const Key('header_tip_semantics'),
           enabled: true,
           child: SizedBox(
+            key: const Key('header_tip_sized_box'),
             height: 24 * DB().displaySettings.fontScale,
             child: Text(
               value.isEmpty ? S.of(context).welcome : value,
+              key: const Key('header_tip_text'),
               maxLines: 1,
               style: TextStyle(
                 color: DB().colorSettings.messageColor,
@@ -262,19 +276,23 @@ class HeaderStateIcons extends State<HeaderIcons> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<IconData>(
+      key: const Key('header_icons_value_listenable_builder'),
       valueListenable: _iconDataNotifier,
       builder: (BuildContext context, IconData value, Widget? child) {
         return IconTheme(
+          key: const Key('header_icons_icon_theme'),
           data: IconThemeData(
             color: DB().colorSettings.messageColor,
           ),
           child: Row(
-            key: const Key("HeaderIconRow"),
+            key: const Key('header_icon_row'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(GameController().gameInstance.gameMode.leftHeaderIcon),
-              Icon(value),
-              Icon(GameController().gameInstance.gameMode.rightHeaderIcon),
+              Icon(GameController().gameInstance.gameMode.leftHeaderIcon,
+                  key: const Key('left_header_icon')),
+              Icon(value, key: const Key('current_side_icon')),
+              Icon(GameController().gameInstance.gameMode.rightHeaderIcon,
+                  key: const Key('right_header_icon')),
             ],
           ),
         );

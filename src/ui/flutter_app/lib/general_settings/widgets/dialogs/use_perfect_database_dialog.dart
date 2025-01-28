@@ -39,20 +39,30 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
     }
 
     return AlertDialog(
+      key: const Key('use_perfect_database_dialog_alert_dialog'),
       title: Text(
         S.of(context).appName,
+        key: const Key('use_perfect_database_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
+        key: const Key('use_perfect_database_dialog_content_scroll_view'),
         child: Column(
+          key: const Key('use_perfect_database_dialog_column'),
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             InkWell(
+              key: const Key(
+                  'use_perfect_database_dialog_inkwell_use_perfect_database'),
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
               child: Padding(
+                key: const Key(
+                    'use_perfect_database_dialog_padding_use_perfect_database'),
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   S.of(context).usePerfectDatabase,
+                  key: const Key(
+                      'use_perfect_database_dialog_text_use_perfect_database'),
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.blue,
@@ -63,17 +73,21 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
             const SizedBox(height: 16),
             Text(
               description,
+              key: const Key('use_perfect_database_dialog_description_text'),
               style: TextStyle(
                   fontSize:
                       AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
             ),
             const SizedBox(height: 16),
             InkWell(
+              key: const Key('use_perfect_database_dialog_inkwell_help'),
               onTap: () => launchURL(context, Constants.perfectDatabaseUrl),
               child: Padding(
+                key: const Key('use_perfect_database_dialog_padding_help'),
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   S.of(context).help,
+                  key: const Key('use_perfect_database_dialog_text_help'),
                   style: const TextStyle(
                     decoration: TextDecoration.underline,
                     color: Colors.blue,
@@ -86,9 +100,11 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('use_perfect_database_dialog_ok_button'),
           onPressed: () => _ok(context),
           child: Text(
             S.of(context).ok,
+            key: const Key('use_perfect_database_dialog_ok_button_text'),
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),

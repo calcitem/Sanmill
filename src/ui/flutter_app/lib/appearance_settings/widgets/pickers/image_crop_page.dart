@@ -27,6 +27,7 @@ class ImageCropPage extends StatefulWidget {
     required this.lineType,
     super.key,
   });
+
   final Uint8List imageData;
   final double aspectRatio;
   final String backgroundImageText;
@@ -44,13 +45,18 @@ class ImageCropPageState extends State<ImageCropPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('image_crop_page_scaffold'),
       appBar: AppBar(
-        title: Text(widget.backgroundImageText),
+        title: Text(
+          widget.backgroundImageText,
+          key: const Key('image_crop_page_appbar_title'),
+        ),
       ),
       body: Stack(
         children: <Widget>[
           // Crop widget
           Crop(
+            key: const Key('image_crop_page_crop_widget'),
             controller: _cropController,
             image: widget.imageData,
             aspectRatio: widget.aspectRatio,
@@ -96,12 +102,15 @@ class ImageCropPageState extends State<ImageCropPage> {
           // Reference lines overlay
           if (_currentCropRect != null)
             Positioned(
+              key: const Key('image_crop_page_positioned_reference_lines'),
               left: _currentCropRect!.left,
               top: _currentCropRect!.top,
               width: _currentCropRect!.width,
               height: _currentCropRect!.height,
               child: IgnorePointer(
+                key: const Key('image_crop_page_ignore_pointer'),
                 child: CustomPaint(
+                  key: const Key('image_crop_page_custom_paint'),
                   size: Size(_currentCropRect!.width, _currentCropRect!.height),
                   painter: ReferenceLinesPainter(widget.lineType),
                 ),
@@ -109,12 +118,18 @@ class ImageCropPageState extends State<ImageCropPage> {
             ),
           if (_isCropping)
             const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                key: Key('image_crop_page_circular_progress_indicator'),
+              ),
             ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.check),
+        key: const Key('image_crop_page_floating_action_button'),
+        child: const Icon(
+          Icons.check,
+          key: Key('image_crop_page_fab_icon'),
+        ),
         onPressed: () {
           if (mounted) {
             setState(() {

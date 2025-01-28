@@ -28,8 +28,10 @@ class _SoundThemeModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('sound_theme_modal_semantics'),
       label: S.of(context).soundTheme,
       child: Column(
+        key: const Key('sound_theme_modal_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -61,10 +63,16 @@ class _SoundThemeModal extends StatelessWidget {
     String title,
     SoundTheme value,
   ) {
+    final String keySuffix = value.name.toLowerCase();
     return Semantics(
+      key: Key('sound_theme_modal_radio_list_tile_semantics_$keySuffix'),
       label: title,
       child: RadioListTile<SoundTheme>(
-        title: Text(title),
+        key: Key('sound_theme_modal_radio_list_tile_$keySuffix'),
+        title: Text(
+          title,
+          key: Key('sound_theme_modal_radio_list_tile_${keySuffix}_title'),
+        ),
         groupValue: soundTheme,
         value: value,
         onChanged: onChanged,
