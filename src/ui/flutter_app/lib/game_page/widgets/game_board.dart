@@ -450,7 +450,6 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       showDialog(
         context: context,
         builder: (_) => GameResultAlertDialog(
-          key: const Key('game_result_alert_dialog'),
           winner: winner,
         ),
       );

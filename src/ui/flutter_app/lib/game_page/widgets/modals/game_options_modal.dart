@@ -194,7 +194,7 @@ class GameOptionsModal extends StatelessWidget {
         if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
-            key: const Key('close_option'),
+            key: const Key('game_options_modal_close_option'),
             onPressed: () => Navigator.pop(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),

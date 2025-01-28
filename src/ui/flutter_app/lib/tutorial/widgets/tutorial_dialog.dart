@@ -127,7 +127,8 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).previous,
                                     child: IconButton(
-                                      key: const Key('previous_button'),
+                                      key: const Key(
+                                          'landscape_previous_button'),
                                       onPressed:
                                           _curIndex <= 0 ? null : prevStep,
                                       icon: Icon(
@@ -140,7 +141,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   ),
                                   const Spacer(),
                                   IconButton(
-                                    key: const Key('skip_button'),
+                                    key: const Key('landscape_skip_button'),
                                     tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
@@ -161,7 +162,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).next,
                                     child: IconButton(
-                                      key: const Key('next_button'),
+                                      key: const Key('landscape_next_button'),
                                       onPressed: _curIndex >= _maxIndex
                                           ? null
                                           : nextStep,
@@ -237,7 +238,8 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).previous,
                                     child: IconButton(
-                                      key: const Key('previous_button'),
+                                      key:
+                                          const Key('portrait_previous_button'),
                                       onPressed:
                                           _curIndex <= 0 ? null : prevStep,
                                       icon: Icon(
@@ -250,7 +252,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   ),
                                   const Spacer(),
                                   IconButton(
-                                    key: const Key('finish_button'),
+                                    key: const Key('portrait_finish_button'),
                                     tooltip: isFinally
                                         ? S.of(context).gotIt
                                         : S.of(context).skip,
@@ -271,7 +273,7 @@ class _TutorialDialogState extends State<TutorialDialog> {
                                   Semantics(
                                     label: S.of(context).next,
                                     child: IconButton(
-                                      key: const Key('next_button'),
+                                      key: const Key('portrait_next_button'),
                                       onPressed: _curIndex >= _maxIndex
                                           ? null
                                           : nextStep,

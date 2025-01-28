@@ -219,7 +219,7 @@ class SanmillAppState extends State<SanmillApp> {
     return const Scaffold(
       key: Key('home_scaffold_key'),
       resizeToAvoidBottomInset: false,
-      body: Home(),
+      body: Home(key: Home.homeMainKey),
     );
   }
 

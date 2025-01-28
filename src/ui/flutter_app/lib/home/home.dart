@@ -120,6 +120,8 @@ extension _DrawerScreen on _DrawerIndex {
 class Home extends StatefulWidget {
   const Home({super.key});
 
+  static const Key homeMainKey = Key('home_main');
+
   @override
   HomeState createState() => HomeState();
 }
@@ -315,6 +317,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         <CustomDrawerItem<_DrawerIndex>>[
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_human_vs_ai'),
           itemValue: _DrawerIndex.humanVsAi,
           itemTitle: S.of(context).humanVsAi,
           itemIcon: const Icon(FluentIcons.person_24_regular),
@@ -322,6 +325,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_human_vs_human'),
         itemValue: _DrawerIndex.humanVsHuman,
         itemTitle: S.of(context).humanVsHuman,
         itemIcon: const Icon(FluentIcons.people_24_regular),
@@ -330,6 +334,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_ai_vs_ai'),
           itemValue: _DrawerIndex.aiVsAi,
           itemTitle: S.of(context).aiVsAi,
           itemIcon: const Icon(FluentIcons.bot_24_regular),
@@ -344,6 +349,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               MillFormationActionInPlacingPhase
                   .removeOpponentsPieceFromHandThenOpponentsTurn)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_setup_position'),
           itemValue: _DrawerIndex.setupPosition,
           itemTitle: S.of(context).setupPosition,
           itemIcon: const Icon(FluentIcons.drafts_24_regular),
@@ -351,6 +357,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_general_settings'),
         itemValue: _DrawerIndex.generalSettings,
         itemTitle: S.of(context).generalSettings,
         itemIcon: const Icon(FluentIcons.options_24_regular),
@@ -358,6 +365,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_rule_settings'),
         itemValue: _DrawerIndex.ruleSettings,
         itemTitle: S.of(context).ruleSettings,
         itemIcon: const Icon(FluentIcons.task_list_ltr_24_regular),
@@ -365,6 +373,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_appearance'),
         itemValue: _DrawerIndex.appearance,
         itemTitle: S.of(context).appearance,
         itemIcon: const Icon(FluentIcons.design_ideas_24_regular),
@@ -372,6 +381,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_general_how_to_play'),
         itemValue: _DrawerIndex.howToPlay,
         itemTitle: S.of(context).howToPlay,
         itemIcon: const Icon(FluentIcons.question_circle_24_regular),
@@ -380,6 +390,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_feedback'),
           itemValue: _DrawerIndex.feedback,
           itemTitle: S.of(context).feedback,
           itemIcon: const Icon(FluentIcons.chat_warning_24_regular),
@@ -387,6 +398,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_about'),
         itemValue: _DrawerIndex.about,
         itemTitle: S.of(context).about,
         itemIcon: const Icon(FluentIcons.info_24_regular),
@@ -395,6 +407,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_exit'),
           itemValue: _DrawerIndex.exit,
           itemTitle: S.of(context).exit,
           itemIcon: const Icon(FluentIcons.power_24_regular),
@@ -414,6 +427,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             valueListenable: _controller,
             builder: (_, CustomDrawerValue value, Widget? child) =>
                 CustomDrawer(
+              key: CustomDrawer.drawerMainKey,
               controller: _controller,
               drawerHeader: CustomDrawerHeader(
                 headerTitle: S.of(context).appName,

@@ -103,7 +103,7 @@ class MoveOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
-            key: const Key('close_option'),
+            key: const Key('move_options_modal_close_option'),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).close),

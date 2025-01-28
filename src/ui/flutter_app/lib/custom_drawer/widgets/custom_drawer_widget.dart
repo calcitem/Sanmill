@@ -30,6 +30,8 @@ class CustomDrawer extends StatefulWidget {
     required this.orientation,
   });
 
+  static const Key drawerMainKey = Key('custom_drawer_main');
+
   /// Child widget. (Usually a widget that represents the main screen)
   final Widget mainScreenWidget;
 

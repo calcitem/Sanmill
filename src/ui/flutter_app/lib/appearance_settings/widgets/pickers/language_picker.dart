@@ -66,8 +66,7 @@ class _LanguagePickerState extends State<_LanguagePicker> {
         ),
         for (final Locale locale in localeToLanguageName.keys)
           RadioListTile<Locale>(
-            key: Key(
-                'language_picker_radio_${locale.languageCode}_${locale.countryCode}'),
+            key: Key('language_picker_radio_$locale'),
             title: Text(
               localeToLanguageName[locale]!,
               key: Key(
