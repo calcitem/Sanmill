@@ -207,7 +207,7 @@ class GameOptionsModal extends StatelessWidget {
 
   Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
     final Widget yesButton = TextButton(
-        key: const Key('yes_button'),
+        key: const Key('restart_game_yes_button'),
         child: Text(
           S.of(context).yes,
           style: TextStyle(
@@ -250,7 +250,7 @@ class GameOptionsModal extends StatelessWidget {
         });
 
     final Widget noButton = TextButton(
-      key: const Key('no_button'),
+      key: const Key('restart_game_no_button'),
       child: Text(
         S.of(context).no,
         style: TextStyle(

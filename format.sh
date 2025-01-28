@@ -23,6 +23,9 @@ find . -name "*.dart" |  xargs dart format --fix
 cd ../test
 find . -name "*.dart" |  xargs dart format --fix
 
+cd ../integration_test
+find . -name "*.dart" |  xargs dart format --fix
+
 cd ../../../../
 
 if [ "$1" != "s" ]; then

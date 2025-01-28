@@ -86,7 +86,6 @@ class SettingsListTile extends StatelessWidget {
     switch (_type) {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
-          key: const Key('switch_tile'),
           value: _switchValue!,
           onChanged: _switchCallback,
           title: title,
@@ -114,7 +113,6 @@ class SettingsListTile extends StatelessWidget {
         }
 
         return ListTile(
-          key: const Key('standard_tile'),
           title: title,
           subtitle: subTitle,
           trailing: trailing,
@@ -123,7 +121,6 @@ class SettingsListTile extends StatelessWidget {
 
       case _SettingsTileType.color:
         return ListTile(
-          key: const Key('color_tile'),
           title: title,
           subtitle: subTitle,
           trailing: Text(
