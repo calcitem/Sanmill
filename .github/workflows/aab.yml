@@ -124,4 +124,4 @@ jobs:
           inAppUpdatePriority: 2
           whatsNewDirectory: .github/workflows/distribution/whatsnew
           mappingFile: src/ui/flutter_app/build/app/outputs/mapping/release/mapping.txt
-          debugSymbols: src/ui/flutter_app/build/app/intermediates/merged_native_libs/release/out/lib
+          debugSymbols: src/ui/flutter_app/build/app/outputs/native-debug-symbols/release/native-debug-symbols.zip
