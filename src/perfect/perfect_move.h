@@ -4,8 +4,6 @@
 
 // perfect_move.h
 
-// pefect_move.h
-
 #ifndef PERFECT_MOVE_H_INCLUDED
 #define PERFECT_MOVE_H_INCLUDED
 
