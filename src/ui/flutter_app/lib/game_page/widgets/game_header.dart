@@ -187,12 +187,28 @@ class HeaderTip extends StatefulWidget {
 class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
+  /// Indicates whether the tip is being edited.
+  /// When `true`, shows a TextField for editing.
+  bool _isEditing = false;
+
+  /// FocusNode to detect taps outside the editable area to exit editing mode.
+  late final FocusNode _focusNode;
+
+  /// Controller for the editable text field.
+  late final TextEditingController _editingController;
+
   @override
   void initState() {
     super.initState();
     GameController().headerTipNotifier.addListener(_showTip);
+
+    // Initialize the FocusNode and controller.
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+    _editingController = TextEditingController(text: _messageNotifier.value);
   }
 
+  /// Show a tip message from the notifier.
   void _showTip() {
     final HeaderTipNotifier headerTipNotifier =
         GameController().headerTipNotifier;
@@ -202,7 +218,21 @@ class HeaderTipState extends State<HeaderTip> {
           .showSnackBarClear(headerTipNotifier.message);
     }
 
+    // Update the ValueNotifier to show the new message.
     _messageNotifier.value = headerTipNotifier.message;
+    // Sync with the editing controller if in editing mode.
+    if (_isEditing) {
+      _editingController.text = headerTipNotifier.message;
+    }
+  }
+
+  /// Handle focus changes: if the TextField loses focus, exit editing mode.
+  void _handleFocusChange() {
+    if (!_focusNode.hasFocus && _isEditing) {
+      setState(() {
+        _isEditing = false;
+      });
+    }
   }
 
   @override
@@ -214,18 +244,58 @@ class HeaderTipState extends State<HeaderTip> {
         return Semantics(
           key: const Key('header_tip_semantics'),
           enabled: true,
-          child: SizedBox(
-            key: const Key('header_tip_sized_box'),
-            height: 24 * DB().displaySettings.fontScale,
-            child: Text(
-              value.isEmpty ? S.of(context).welcome : value,
-              key: const Key('header_tip_text'),
-              maxLines: 1,
-              style: TextStyle(
-                color: DB().colorSettings.messageColor,
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
-              ),
+          child: GestureDetector(
+            /// Tapping the text (when not editing) will enter editing mode.
+            onTap: () {
+              if (!_isEditing) {
+                setState(() {
+                  _isEditing = true;
+                  _editingController.text = value;
+                });
+              }
+            },
+            child: SizedBox(
+              key: const Key('header_tip_sized_box'),
+              height: 24 * DB().displaySettings.fontScale,
+              child: _isEditing
+                  ? TextField(
+                      key: const Key('header_tip_textfield'),
+                      controller: _editingController,
+                      focusNode: _focusNode,
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                      onEditingComplete: () {
+                        // When user finishes editing (presses enter), update the message.
+                        setState(() {
+                          _isEditing = false;
+                          _messageNotifier.value = _editingController.text;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                      ),
+                    )
+                  : Text(
+                      value.isEmpty ? S.of(context).welcome : value,
+                      key: const Key('header_tip_text'),
+                      maxLines: 1,
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    ),
             ),
           ),
         );
@@ -236,6 +306,8 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   void dispose() {
     GameController().headerTipNotifier.removeListener(_showTip);
+    _focusNode.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 }
