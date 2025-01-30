@@ -8,6 +8,8 @@ part of '../mill.dart';
 class GameRecorder extends PointedList<ExtMove> {
   GameRecorder({this.lastPositionWithRemove, this.setupPosition});
 
+  Variation? parsedRootVariation; // Store the full annotated structure
+
   String? lastPositionWithRemove = "";
   String? setupPosition;
 
@@ -47,12 +49,18 @@ class GameRecorder extends PointedList<ExtMove> {
       return '[FEN "${GameController().position.fen}"]\r\n[SetUp "1"]\r\n\r\n';
     }
 
+    // Otherwise fallback to the original logic:
     if (isEmpty || index == null) {
       if (GameController().isPositionSetup == true) {
         return buildTagPairs();
       } else {
         return "";
       }
+    }
+
+    // If we have a parsed variation with annotation, we can display it with indentation
+    if (parsedRootVariation != null) {
+      return parsedRootVariation!.toPrettyString().trim();
     }
 
     final StringBuffer moveHistory = StringBuffer();

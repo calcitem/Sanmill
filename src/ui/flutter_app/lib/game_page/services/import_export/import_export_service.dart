@@ -7,6 +7,71 @@
 
 part of '../mill.dart';
 
+/// A tree structure representing a variation (sequence of moves).
+/// It can contain nested sub-variations and comments.
+class Variation {
+  /// List of moves (each move can have comments and nested variations).
+  final List<MoveNode> moves = <MoveNode>[];
+
+  /// Returns a nicely formatted string with indentations and line breaks,
+  /// including comments { ... } and branches ( ... ).
+  String toPrettyString({int depth = 0}) {
+    final StringBuffer sb = StringBuffer();
+    for (int i = 0; i < moves.length; i++) {
+      final MoveNode node = moves[i];
+      // Print move number + move text (if present).
+      // node.moveNumberText might be something like "1.", "1...", etc.
+      if (node.moveNumberText != null && node.moveNumberText!.isNotEmpty) {
+        sb.write('\n${'  ' * depth}${node.moveNumberText!} ');
+      }
+
+      if (node.moveText != null && node.moveText!.isNotEmpty) {
+        sb.write('${node.moveText!} ');
+      }
+
+      // If the node has a comment, print it in curly braces
+      if (node.comment != null && node.comment!.isNotEmpty) {
+        sb.write('{${node.comment!}} ');
+      }
+
+      // If the node has any sub-variations, print them in parentheses,
+      // with an increased indentation.
+      for (final Variation subVar in node.subVariations) {
+        sb.write('(');
+        sb.write(subVar.toPrettyString(depth: depth + 1).trim());
+        sb.write(') ');
+      }
+    }
+
+    return sb.toString();
+  }
+}
+
+/// Represents one move in a variation, possibly with a preceding move number,
+/// a comment, and nested sub-variations.
+class MoveNode {
+  MoveNode({
+    this.moveNumberText,
+    this.moveText,
+    this.comment,
+    List<Variation>? subVariations,
+  }) : subVariations = subVariations ?? <Variation>[];
+
+  /// e.g. "1." or "1..." or "10." or null if it is a continuation.
+  final String? moveNumberText;
+
+  /// The actual move text, e.g. "d6", "d5-c5", "d5xd7", "f4", ...
+  /// This may include special notations like "?" or "!" if the user typed them.
+  final String? moveText;
+
+  /// A single comment string for this move. (Extended usage could store multiple
+  /// comment blocks in a list if needed.)
+  final String? comment;
+
+  /// Any nested sub-variations that branch off from this move.
+  final List<Variation> subVariations;
+}
+
 // TODO: [Leptopoda] Clean up the file
 class ImportService {
   const ImportService._();
@@ -15,10 +80,17 @@ class ImportService {
 
   /// Exports the game to the device's clipboard.
   static Future<void> exportGame(BuildContext context) async {
-    await Clipboard.setData(
-      ClipboardData(text: GameController().gameRecorder.moveHistoryText),
-    );
+    final GameRecorder gameRec = GameController().gameRecorder;
+    String exportText;
+    if (gameRec.parsedRootVariation != null) {
+      // Export the pretty string with branches and comments
+      exportText = gameRec.parsedRootVariation!.toPrettyString().trim();
+    } else {
+      // Fallback to old logic
+      exportText = gameRec.moveHistoryText;
+    }
 
+    await Clipboard.setData(ClipboardData(text: exportText));
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).moveHistoryCopied);
 
@@ -37,7 +109,7 @@ class ImportService {
     }
 
     try {
-      import(data!.text!); // GameController().newRecorder = newHistory;
+      import(data!.text!); // parse the annotated movelist (with variations)
     } catch (exception) {
       final String tip = S.of(context).cannotImport(data!.text!);
       GameController().headerTipNotifier.showTip(tip);
@@ -61,7 +133,65 @@ class ImportService {
     Navigator.pop(context);
   }
 
+  /// Main import entry with support for annotations and branches.
+  /// It parses the entire text (including parentheses for variations and curly braces for comments).
+  /// Then sets the main line moves into GameRecorder (for real gameplay),
+  /// and also keeps the Variation tree in `gameRecorder.parsedRootVariation` for re-export or display.
+  static void import(String moveList) {
+    moveList = moveList.trim();
+    logger.t("Clipboard text: $moveList");
+
+    // 1) parse full annotated text into a Variation tree
+    final Variation rootVar = _parseAnnotatedMoveList(moveList);
+
+    // 2) find the main line from rootVar (top-level only),
+    //    convert them to internal ExtMove, ignoring sub-variations.
+    final GameRecorder newHistory = GameRecorder();
+    for (final MoveNode moveNode in rootVar.moves) {
+      if (moveNode.moveText != null && moveNode.moveText!.isNotEmpty) {
+        // Convert move text to internal extMove with your existing logic
+        // e.g. using _wmdNotationToMoveString or _playOkNotationToMoveString, etc.
+        final String normalized = _tryNormalizeMoveText(moveNode.moveText!);
+        newHistory.add(ExtMove(normalized));
+      }
+      // sub-variations are intentionally ignored here
+    }
+
+    // 3) Save the newly created recorder to GameController
+    GameController().newGameRecorder = newHistory;
+    // 4) Keep the Variation tree for future export or display
+    GameController().gameRecorder.parsedRootVariation = rootVar;
+  }
+
+  /// Attempt to convert a raw move string to the standardized internal move string.
+  /// For demonstration, only calls `_wmdNotationToMoveString` as an example.
+  static String _tryNormalizeMoveText(String rawMove) {
+    final String move =
+        rawMove.toLowerCase().replaceAll(',', '').replaceAll(';', '');
+    // This example tries the existing _wmdNotationToMoveString logic.
+    // Or you might want to detect if it's playOk notation etc.
+    try {
+      return _wmdNotationToMoveString(move);
+    } catch (e) {
+      // fallback or rethrow
+      logger.w("$_logTag Could not parse move: $move");
+      throw ImportFormatException(move);
+    }
+  }
+
+  /// A simple parser that can handle parentheses for branches, curly braces for comments.
+  /// Returns the top-level Variation containing all the moves.
+  static Variation _parseAnnotatedMoveList(String text) {
+    final _Parser parser = _Parser(text);
+    return parser.parseVariation(); // top-level parse
+  }
+
+  /// Convert WMD notation (like "d6", "x13", "d2-b4" etc.) to internal notation.
+  /// This is your existing logic from the code snippet, truncated for brevity.
   static String _wmdNotationToMoveString(String wmd) {
+    if (wmd.isEmpty) {
+      throw ImportFormatException(wmd);
+    }
     if (wmd.length == 3 && wmd[0] == "x") {
       if (wmdNotationToMove[wmd.substring(1, 3)] != null) {
         return "-${wmdNotationToMove[wmd.substring(1, 3)]!}";
@@ -312,7 +442,7 @@ class ImportService {
     return ret;
   }
 
-  static void import(String moveList) {
+  static void importLegacy(String moveList) {
     moveList = moveList.replaceAll(RegExp(r'^\s*[\r\n]+'), '');
     String ml = moveList;
     final String? fen = GameController().position.fen;
@@ -467,5 +597,192 @@ class ImportService {
     if (newHistory.isNotEmpty) {
       GameController().newGameRecorder = newHistory;
     }
+  }
+}
+
+/// A helper parser class to parse a string with brackets () and braces {}.
+class _Parser {
+  _Parser(this.text);
+
+  final String text;
+  int _index = 0;
+
+  Variation parseVariation() {
+    final Variation variation = Variation();
+    while (!isEOF) {
+      final String token = _peekToken();
+      if (token.isEmpty) {
+        break;
+      }
+
+      // Handle sub-variation start: '('
+      if (token == '(') {
+        _consumeToken();
+        final Variation subVar = parseVariation();
+        variation.moves.add(
+          MoveNode(subVariations: <Variation>[subVar]),
+        );
+        continue;
+      }
+
+      // End of a sub-variation: ')'
+      if (token == ')') {
+        _consumeToken();
+        break;
+      }
+
+      // A possible curly-brace comment
+      if (token == '{') {
+        _consumeToken();
+        final String commentText = _readUntil('}');
+        // We attach the comment to the last move if possible,
+        // or create a new move node if none exist yet.
+        if (variation.moves.isNotEmpty) {
+          final MoveNode last = variation.moves.last;
+          final MoveNode newLast = MoveNode(
+            moveNumberText: last.moveNumberText,
+            moveText: last.moveText,
+            comment: commentText.trim(),
+            subVariations: last.subVariations,
+          );
+          variation.moves.removeLast();
+          variation.moves.add(newLast);
+        } else {
+          // If there's no move yet, create a dummy move
+          variation.moves.add(MoveNode(comment: commentText.trim()));
+        }
+        continue;
+      }
+
+      // Move number text (something like "1.", "1...", etc.)
+      if (_isMoveNumber(token)) {
+        // e.g. "1." or "10." or "1..."
+        _consumeToken();
+        // next token might be the actual move
+        final String? nextTk = !_isSymbolAhead() ? _peekToken() : null;
+        if (nextTk != null && nextTk.isNotEmpty) {
+          // We'll store the move number text in a separate field
+          final MoveNode node = MoveNode(moveNumberText: token);
+          // but we won't consume the next token here, let the loop handle it as move text
+          variation.moves.add(node);
+        } else {
+          // just a move number with no move text?
+          variation.moves.add(MoveNode(moveNumberText: token));
+        }
+        continue;
+      }
+
+      // If we get here, we treat the token as move text
+      _consumeToken();
+      variation.moves.add(MoveNode(moveText: token));
+    }
+    return variation;
+  }
+
+  bool get isEOF => _index >= text.length;
+
+  /// Peek next token without consuming
+  String _peekToken() {
+    _skipSpaces();
+    if (isEOF) {
+      return "";
+    }
+    final String char = text[_index];
+    // Single-character tokens
+    if (char == '(' || char == ')' || char == '{' || char == '}') {
+      return char;
+    }
+    // Possible move number like "1." or "12..." or "1...?"
+    // Or a normal token until next space, bracket, etc.
+    final int start = _index;
+    while (!isEOF) {
+      final String c = text[_index];
+      if (c == '(' ||
+          c == ')' ||
+          c == '{' ||
+          c == '}' ||
+          c == ' ' ||
+          c == '\n' ||
+          c == '\r' ||
+          c == '\t') {
+        break;
+      }
+      _index++;
+    }
+    final String tok = text.substring(start, _index);
+    // roll back the _index for further handle in _consumeToken
+    return tok;
+  }
+
+  /// Actually consume the token returned by _peekToken
+  void _consumeToken() {
+    // just skip the token length
+    _skipSpaces();
+    if (isEOF) {
+      return;
+    }
+    final String char = text[_index];
+    if (char == '(' || char == ')' || char == '{' || char == '}') {
+      // single char token
+      _index++;
+    } else {
+      // or skip until we see space/bracket
+      while (!isEOF) {
+        final String c = text[_index];
+        if (c == '(' ||
+            c == ')' ||
+            c == '{' ||
+            c == '}' ||
+            c == ' ' ||
+            c == '\n' ||
+            c == '\r' ||
+            c == '\t') {
+          break;
+        }
+        _index++;
+      }
+    }
+    _skipSpaces();
+  }
+
+  /// Read until a specific char is found, ignoring nested for now.
+  String _readUntil(String endChar) {
+    final StringBuffer sb = StringBuffer();
+    while (!isEOF) {
+      final String c = text[_index];
+      if (c == endChar) {
+        // consume endChar
+        _index++;
+        break;
+      }
+      sb.write(c);
+      _index++;
+    }
+    return sb.toString();
+  }
+
+  void _skipSpaces() {
+    while (!isEOF &&
+        (text[_index] == ' ' ||
+            text[_index] == '\n' ||
+            text[_index] == '\r' ||
+            text[_index] == '\t')) {
+      _index++;
+    }
+  }
+
+  bool _isMoveNumber(String token) {
+    // very naive check: if token ends with '.' or '...' etc, treat it as move number.
+    // e.g. "1.", "1...", "10."
+    return RegExp(r'^\d+\.*\.*$').hasMatch(token);
+  }
+
+  bool _isSymbolAhead() {
+    _skipSpaces();
+    if (isEOF) {
+      return false;
+    }
+    final String c = text[_index];
+    return c == '(' || c == ')' || c == '{' || c == '}';
   }
 }

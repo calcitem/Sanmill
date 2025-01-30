@@ -47,11 +47,10 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    GameController().headerTipNotifier.showTip(S
-        .of(context)
-        .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
+    // Show a tip for "At End" or "Waiting" or similar UI feedback
+    GameController().headerTipNotifier.showTip(S.of(context).atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
 
-    GameController().headerIconsNotifier.showIcons(); // TODO: See above.
+    GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
@@ -193,21 +192,47 @@ class HistoryNavigator {
       [int? number]) async {
     bool ret = true;
 
+    // If newGameRecorder is null, check if we have a parsedRootVariation.
+    // This ensures the main line of an annotated or multi-branch move list
+    // can still be replayed. We ignore sub-variations in auto navigation.
+    if (GameController().newGameRecorder == null) {
+      final Variation? rootVar =
+          GameController().gameRecorder.parsedRootVariation;
+      if (rootVar != null) {
+        final GameRecorder newHistory = GameRecorder(
+          lastPositionWithRemove:
+              GameController().gameRecorder.lastPositionWithRemove,
+          setupPosition: GameController().gameRecorder.setupPosition,
+        );
+
+        for (final MoveNode node in rootVar.moves) {
+          if (node.moveText != null && node.moveText!.isNotEmpty) {
+            // Reuse the same normalization logic as in ImportService
+            final String normalized =
+                ImportService._tryNormalizeMoveText(node.moveText!);
+            newHistory.add(ExtMove(normalized));
+          }
+          // We do NOT recurse into sub-variations here.
+        }
+
+        GameController().newGameRecorder = newHistory;
+      } else {
+        // No Variation? Just use the original recorder
+        GameController().newGameRecorder = GameController().gameRecorder;
+      }
+    }
+
     final HistoryResponse resp =
         navMode.gotoHistory(number); // Only change index
-
     if (resp != const HistoryOK()) {
       return resp;
     }
 
-    // Backup context
+    // Temporarily switch game mode to H2H for internal replays
     final GameMode gameModeBackup = GameController().gameInstance.gameMode;
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
-    if (GameController().newGameRecorder == null) {
-      GameController().newGameRecorder = GameController().gameRecorder;
-    }
-
+    // Clear board and posKeyHistory, then replay from newGameRecorder
     GameController().reset();
     posKeyHistory.clear();
 
@@ -221,13 +246,17 @@ class HistoryNavigator {
       }
     });
 
-    // Restore context
+    // Restore the original game mode
     GameController().gameInstance.gameMode = gameModeBackup;
+
+    // Keep lastPositionWithRemove and other states
     final String? lastPositionWithRemove =
         GameController().gameRecorder.lastPositionWithRemove;
     GameController().gameRecorder = GameController().newGameRecorder!;
     GameController().gameRecorder.lastPositionWithRemove =
         lastPositionWithRemove;
+
+    // Cleanup
     GameController().newGameRecorder = null;
 
     return ret ? const HistoryOK() : const HistoryRule();
@@ -245,7 +274,7 @@ enum HistoryNavMode {
 extension HistoryNavModeExtension on HistoryNavMode {
   /// Moves the [GameRecorder] to the specified position.
   ///
-  /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
+  /// Returns [HistoryResponse] if trying to access a value outside of the bounds.
   HistoryResponse gotoHistory([int? number]) {
     final int? cur = GameController().gameRecorder.index;
     final PointedListIterator<ExtMove> it =
@@ -277,6 +306,7 @@ extension HistoryNavModeExtension on HistoryNavMode {
         if (!it.movePrevious()) {
           return const HistoryRange();
         }
+        break;
     }
 
     return const HistoryOK();
