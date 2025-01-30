@@ -188,7 +188,6 @@ class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
   /// Indicates whether the tip is being edited.
-  /// When `true`, shows a TextField for editing.
   bool _isEditing = false;
 
   /// FocusNode to detect taps outside the editable area to exit editing mode.
@@ -226,13 +225,20 @@ class HeaderTipState extends State<HeaderTip> {
     }
   }
 
-  /// Handle focus changes: if the TextField loses focus, exit editing mode.
+  /// Handle focus changes: if the TextField loses focus, finalize editing.
   void _handleFocusChange() {
     if (!_focusNode.hasFocus && _isEditing) {
-      setState(() {
-        _isEditing = false;
-      });
+      _finalizeEditing();
     }
+  }
+
+  /// This method finalizes editing and updates the displayed text.
+  /// Edited text will be wrapped with curly braces.
+  void _finalizeEditing() {
+    setState(() {
+      _isEditing = false;
+      _messageNotifier.value = "{${_editingController.text}}";
+    });
   }
 
   @override
@@ -250,15 +256,24 @@ class HeaderTipState extends State<HeaderTip> {
               if (!_isEditing) {
                 setState(() {
                   _isEditing = true;
-                  _editingController.text = value;
+                  // Remove braces for raw editing if text was previously saved
+                  // with braces.
+                  final String rawText =
+                      value.replaceAll(RegExp(r'^\{|\}$'), '');
+                  _editingController.text =
+                      rawText.isEmpty ? S.of(context).welcome : rawText;
                 });
               }
             },
             child: SizedBox(
               key: const Key('header_tip_sized_box'),
               height: 24 * DB().displaySettings.fontScale,
-              child: _isEditing
-                  ? TextField(
+              // Use LayoutBuilder to measure the available width for text alignment.
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if (_isEditing) {
+                    // During editing, show a TextField
+                    return TextField(
                       key: const Key('header_tip_textfield'),
                       controller: _editingController,
                       focusNode: _focusNode,
@@ -271,22 +286,24 @@ class HeaderTipState extends State<HeaderTip> {
                         ],
                       ),
                       onEditingComplete: () {
-                        // When user finishes editing (presses enter), update the message.
-                        setState(() {
-                          _isEditing = false;
-                          _messageNotifier.value = _editingController.text;
-                        });
+                        _finalizeEditing();
+                        // Hide the keyboard
+                        FocusScope.of(context).unfocus();
                       },
                       decoration: const InputDecoration(
                         isDense: true,
                         contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
                       ),
-                    )
-                  : Text(
-                      value.isEmpty ? S.of(context).welcome : value,
-                      key: const Key('header_tip_text'),
-                      maxLines: 1,
+                    );
+                  } else {
+                    // When not editing, measure the text width to decide alignment
+                    final String displayText =
+                        value.isEmpty ? S.of(context).welcome : value;
+
+                    // Prepare a TextPainter to measure actual text width.
+                    final TextSpan span = TextSpan(
+                      text: displayText,
                       style: TextStyle(
                         color: DB().colorSettings.messageColor,
                         fontSize:
@@ -295,7 +312,34 @@ class HeaderTipState extends State<HeaderTip> {
                           FontFeature.tabularFigures()
                         ],
                       ),
-                    ),
+                    );
+                    final TextPainter tp = TextPainter(
+                      text: span,
+                      maxLines: 1,
+                      textDirection: TextDirection.ltr,
+                    );
+                    tp.layout(maxWidth: constraints.maxWidth);
+
+                    // If text doesn't exceed max width, center it; otherwise left-align.
+                    final bool fits = !tp.didExceedMaxLines;
+
+                    return Text(
+                      displayText,
+                      key: const Key('header_tip_text'),
+                      maxLines: 1,
+                      textAlign: fits ? TextAlign.center : TextAlign.left,
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    );
+                  }
+                },
+              ),
             ),
           ),
         );
