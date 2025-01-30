@@ -1,23 +1,7 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
 // scan_keys.dart
-//
-// This script scans .dart files in the specified "lib" folder of a Flutter project,
-// extracts all Key(...) / ValueKey(...) usages, collects their occurrences (including
-// file path, line, and column), then generates a Markdown file ("keys_report.md")
-// that presents the data in a tabular format.
-//
-// How to use:
-//   dart run bin/scan_keys.dart <path_to_flutter_project_lib>
-//
-// Example:
-//   dart run bin/scan_keys.dart ./lib
-//
-// After running, a "keys_report.md" file will appear in the project root directory,
-// listing all the discovered Keys.
-//
-// Dependencies:
-//   In pubspec.yaml, ensure you have:
-//     dev_dependencies:
-//       analyzer: ^5.12.0 (or a version compatible with your Dart SDK)
 
 import 'dart:io';
 import 'package:analyzer/dart/analysis/utilities.dart';

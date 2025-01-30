@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
 // thread_win32_osx.h
 
 #ifndef THREAD_WIN32_OSX_H_INCLUDED

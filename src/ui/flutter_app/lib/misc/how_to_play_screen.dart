@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// how_to_play_screen.dart
+
 import 'package:flutter/material.dart';
 
 import '../custom_drawer/custom_drawer.dart';

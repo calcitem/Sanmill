@@ -1,4 +1,7 @@
-// ignore_for_file: deprecated_member_use_from_same_package
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// database_migration.dart
 
 // This file is part of Sanmill.
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
