@@ -139,14 +139,17 @@ class Position {
   ExtMove? _record;
 
   static List<List<List<int>>> get _millTable => _Mills.millTableInit;
+
   static List<List<int>> get _adjacentSquares => _Mills.adjacentSquaresInit;
 
   static List<List<int>> get _millLinesHV => _Mills._horizontalAndVerticalLines;
+
   static List<List<int>> get _millLinesD => _Mills._diagonalLines;
 
   PieceColor pieceOnGrid(int index) => _grid[index];
 
   PieceColor get sideToMove => _sideToMove;
+
   set sideToMove(PieceColor color) {
     _sideToMove = color;
     _them = _sideToMove.opponent;

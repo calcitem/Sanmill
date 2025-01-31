@@ -90,8 +90,8 @@ class LoadService {
       fsType: FilesystemType.file,
       showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
-      fileTileSelectMode:
-          FileTileSelectMode.checkButton, // TODO: whole tile is better.
+      fileTileSelectMode: FileTileSelectMode.checkButton,
+      // TODO: whole tile is better.
       theme: const FilesystemPickerTheme(
         backgroundColor: Colors.greenAccent,
       ),
@@ -257,7 +257,7 @@ class LoadService {
     try {
       ImportService.import(fileContent);
       logger.t('$_logTag File Content: $fileContent');
-      final String tagPairs = ImportService.getTagPairs(fileContent);
+      final String tagPairs = getTagPairs(fileContent);
 
       if (tagPairs.isNotEmpty) {
         rootScaffoldMessengerKey.currentState!

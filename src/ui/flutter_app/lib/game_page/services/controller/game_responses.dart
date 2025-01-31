@@ -120,11 +120,3 @@ class HistoryRange implements HistoryResponse {
     return "${HistoryResponse.tag} Current is equal to moveIndex.";
   }
 }
-
-/// Custom response to throw when importing the game history.
-abstract class ImportResponse {}
-
-class ImportFormatException extends FormatException {
-  const ImportFormatException([String? source, int? offset])
-      : super("Cannot import ", source, offset);
-}

@@ -1,0 +1,361 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// import_service.dart
+
+part of '../mill.dart';
+
+class ImportService {
+  const ImportService._();
+
+  static const String _logTag = "[Importer]";
+
+  /// Tries to import the game saved in the device's clipboard.
+  static Future<void> importGame(BuildContext context) async {
+    // Clear snack bars before clipboard read
+    rootScaffoldMessengerKey.currentState?.clearSnackBars();
+
+    // Pre-fetch context-dependent data
+    final S s = S.of(context);
+    final NavigatorState navigator = Navigator.of(context);
+
+    // Read clipboard data (async)
+    final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
+    final String? text = data?.text;
+
+    // Immediately check if context is still valid
+    if (!context.mounted) {
+      return;
+    }
+
+    // If clipboard is empty or missing text, pop and return
+    if (text == null) {
+      navigator.pop();
+      return;
+    }
+
+    // Perform import logic
+    try {
+      import(text); // GameController().newRecorder = newHistory;
+    } catch (exception) {
+      if (!context.mounted) {
+        return;
+      }
+      final String tip = s.cannotImport(text);
+      GameController().headerTipNotifier.showTip(tip);
+      //GameController().animationController.forward();
+      navigator.pop();
+      return;
+    }
+
+    // Check context again before using it in navigation or showing tips
+    if (!context.mounted) {
+      return;
+    }
+
+    // Navigation or UI updates
+    await HistoryNavigator.takeBackAll(context, pop: false);
+
+    if (!context.mounted) {
+      return;
+    }
+
+    final HistoryResponse? historyResult =
+        await HistoryNavigator.stepForwardAll(context,
+            pop: false); // Error: Don't use 'BuildContext's across async gaps.
+
+    if (historyResult == const HistoryOK()) {
+      GameController().headerTipNotifier.showTip(s.gameImported);
+    } else {
+      final String tip = s.cannotImport(HistoryNavigator.importFailedStr);
+      GameController().headerTipNotifier.showTip(tip);
+      HistoryNavigator.importFailedStr = "";
+    }
+
+    navigator.pop();
+  }
+
+  static String addTagPairs(String moveList) {
+    final DateTime dateTime = DateTime.now();
+    final String date = "${dateTime.year}.${dateTime.month}.${dateTime.day}";
+
+    final int total = Position.score[PieceColor.white]! +
+        Position.score[PieceColor.black]! +
+        Position.score[PieceColor.draw]!;
+
+    final Game gameInstance = GameController().gameInstance;
+    final Player whitePlayer = gameInstance.getPlayerByColor(PieceColor.white);
+    final Player blackPlayer = gameInstance.getPlayerByColor(PieceColor.black);
+
+    String white;
+    String black;
+    String result;
+
+    if (whitePlayer.isAi) {
+      white = "AI";
+    } else {
+      white = "Human";
+    }
+
+    if (blackPlayer.isAi) {
+      black = "AI";
+    } else {
+      black = "Human";
+    }
+
+    switch (GameController().position.winner) {
+      case PieceColor.white:
+        result = "1-0";
+        break;
+      case PieceColor.black:
+        result = "0-1";
+        break;
+      case PieceColor.draw:
+        result = "1/2-1/2";
+        break;
+      case PieceColor.marked:
+      case PieceColor.none:
+      case PieceColor.nobody:
+        result = "*";
+        break;
+    }
+
+    String variantTag;
+    if (DB().ruleSettings.isLikelyNineMensMorris()) {
+      variantTag = '[Variant "Nine Men\'s Morris"]\r\n';
+    } else if (DB().ruleSettings.isLikelyTwelveMensMorris()) {
+      variantTag = '[Variant "Twelve Men\'s Morris"]\r\n';
+    } else if (DB().ruleSettings.isLikelyElFilja()) {
+      variantTag = '[Variant "El Filja"]\r\n';
+    } else {
+      variantTag = '';
+    }
+
+    final String plyCountTag =
+        '[PlyCount "${GameController().gameRecorder.length}"]\r\n';
+
+    String tagPairs = '[Event "Sanmill-Game"]\r\n'
+        '[Site "Sanmill"]\r\n'
+        '[Date "$date"]\r\n'
+        '[Round "$total"]\r\n'
+        '[White "$white"]\r\n'
+        '[Black "$black"]\r\n'
+        '[Result "$result"]\r\n'
+        '$variantTag'
+        '$plyCountTag';
+
+    // Ensure an extra CRLF if moveList does not start with "[FEN"
+    if (!(moveList.length > 3 && moveList.startsWith("[FEN"))) {
+      tagPairs = "$tagPairs\r\n";
+    }
+
+    return tagPairs + moveList;
+  }
+
+  static void import(String moveList) {
+    moveList = moveList.trim();
+    String ml = moveList;
+    String? setupFen;
+
+    logger.t("Clipboard text: $moveList");
+
+    // TODO: Improve this logic
+    if (isPlayOkMoveList(moveList)) {
+      return _importPlayOk(moveList);
+    }
+
+    if (isPureFen(moveList)) {
+      setupFen = moveList;
+      GameController().position.setFen(setupFen);
+      ml = "";
+    }
+
+    if (isGoldTokenMoveList(moveList)) {
+      int start = moveList.indexOf("1\t");
+
+      if (start == -1) {
+        start = moveList.indexOf("1 ");
+      }
+
+      if (start == -1) {
+        start = 0;
+      }
+
+      ml = moveList.substring(start);
+
+      // Remove "Quick Jump" and any text after it to ensure successful import
+      final int quickJumpIndex = ml.indexOf("Quick Jump");
+      if (quickJumpIndex != -1) {
+        ml = ml.substring(0, quickJumpIndex).trim();
+      }
+    }
+
+    final Map<String, String> replacements = <String, String>{
+      "\n": " ",
+      "()": " ",
+      "white": " ",
+      "black": " ",
+      "win": " ",
+      "lose": " ",
+      "draw": " ",
+      "resign": " ",
+      "-/x": "x",
+      "/x": "x",
+      ".a": ". a",
+      ".b": ". b",
+      ".c": ". c",
+      ".d": ". d",
+      ".e": ". e",
+      ".f": ". f",
+      ".g": ". g",
+      // GoldToken
+      "\t": " ",
+      "Place to ": "",
+      ", take ": "x",
+      " -> ": "-"
+    };
+
+    ml = processOutsideBrackets(ml, replacements);
+    _importPgn(ml);
+  }
+
+  static void _importPlayOk(String moveList) {
+    String cleanUpPlayOkMoveList(String moveList) {
+      moveList = removeTagPairs(moveList);
+      final String ret = moveList
+          .replaceAll("\n", " ")
+          .replaceAll(" 1/2-1/2", "")
+          .replaceAll(" 1-0", "")
+          .replaceAll(" 0-1", "")
+          .replaceAll("TXT", "");
+      return ret;
+    }
+
+    final GameRecorder newHistory =
+        GameRecorder(lastPositionWithRemove: GameController().position.fen);
+
+    final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
+
+    for (String i in list) {
+      i = i.trim();
+
+      if (i.isNotEmpty &&
+          !i.endsWith(".") &&
+          !i.startsWith("[") &&
+          !i.endsWith("]")) {
+        final int iX = i.indexOf("x");
+        if (iX == -1) {
+          final String m = _playOkNotationToMoveString(i);
+          newHistory.add(ExtMove(m));
+        } else if (iX != -1) {
+          final String m1 = _playOkNotationToMoveString(i.substring(0, iX));
+          newHistory.add(ExtMove(m1));
+
+          final String m2 = _playOkNotationToMoveString(i.substring(iX));
+          newHistory.add(ExtMove(m2));
+        }
+      }
+    }
+
+    if (newHistory.isNotEmpty) {
+      GameController().newGameRecorder = newHistory;
+    }
+  }
+
+  /// For standard PGN strings containing headers and moves, parse them
+  /// with the pgn.dart parser, convert SAN moves to UCI notation, and store.
+  static void _importPgn(String moveList) {
+    // Parse entire PGN (including headers)
+    final PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
+
+    // If there's a FEN in headers, set up the Position from that FEN
+    final String? fen = game.headers['FEN'];
+    final GameRecorder newHistory = GameRecorder(
+      lastPositionWithRemove: fen ?? GameController().position.fen,
+      setupPosition: fen,
+    );
+
+    if (fen != null && fen.isNotEmpty) {
+      GameController().position.setFen(fen);
+    }
+
+    /// Helper function to split SAN moves correctly
+    List<String> splitSan(String san) {
+      List<String> segments = <String>[];
+
+      if (san.contains('x')) {
+        if (san.startsWith('x')) {
+          // All segments start with 'x'
+          final RegExp regex = RegExp(r'(x[a-g][1-7])');
+          segments = regex
+              .allMatches(san)
+              .map((RegExpMatch m) => m.group(0)!)
+              .toList();
+        } else {
+          final int firstX = san.indexOf('x');
+          if (firstX > 0) {
+            // First segment is before the first 'x'
+            final String firstSegment = san.substring(0, firstX);
+            segments.add(firstSegment);
+            // Remaining part: extract all 'x' followed by two characters
+            final RegExp regex = RegExp(r'(x[a-g][1-7])');
+            final String remainingSan = san.substring(firstX);
+            segments.addAll(regex
+                .allMatches(remainingSan)
+                .map((RegExpMatch m) => m.group(0)!)
+                .toList());
+          } else {
+            // 'x' exists but at position 0
+            final RegExp regex = RegExp(r'(x[a-g][1-7])');
+            segments = regex
+                .allMatches(san)
+                .map((RegExpMatch m) => m.group(0)!)
+                .toList();
+          }
+        }
+      } else {
+        // No 'x', process as single segment
+        segments.add(san);
+      }
+
+      return segments;
+    }
+
+    // Convert each SAN to your WMD notation and add to newHistory
+    for (final PgnNodeData node in game.moves.mainline()) {
+      final String san = node.san.trim().toLowerCase();
+      if (san.isEmpty ||
+          san == "*" ||
+          san == "x" ||
+          san == "xx" ||
+          san == "xxx" ||
+          san == "p") {
+        // Skip pass or asterisks
+        continue;
+      }
+
+      final List<String> segments = splitSan(san);
+
+      for (final String segment in segments) {
+        if (segment.isEmpty) {
+          continue;
+        }
+        try {
+          final String uciMove = _wmdNotationToMoveString(segment);
+          newHistory.add(ExtMove(uciMove));
+        } catch (e) {
+          logger.e("$_logTag Failed to parse move segment '$segment': $e");
+          throw ImportFormatException("Invalid move segment: $segment");
+        }
+      }
+    }
+
+    if (newHistory.isNotEmpty || (fen != null && fen.isNotEmpty)) {
+      GameController().newGameRecorder = newHistory;
+    }
+
+    if (fen != null && fen.isNotEmpty) {
+      GameController().gameRecorder.setupPosition = fen;
+    }
+  }
+}

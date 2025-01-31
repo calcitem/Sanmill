@@ -69,6 +69,7 @@ class GameController {
       ValueNotifier<String?>(null);
 
   String? get initialSharingMoveList => _initialSharingMoveList;
+
   set initialSharingMoveList(String? list) {
     _initialSharingMoveList = list;
     initialSharingMoveListNotifier.value = list;
@@ -79,9 +80,11 @@ class GameController {
   late AnimationManager animationManager;
 
   bool _isInitialized = false;
+
   bool get initialized => _isInitialized;
 
   bool get isPositionSetup => gameRecorder.setupPosition != null;
+
   void clearPositionSetupFlag() => gameRecorder.setupPosition = null;
 
   @visibleForTesting
@@ -427,5 +430,5 @@ class GameController {
 
   /// Starts a game export.
   static Future<void> export(BuildContext context) async =>
-      ImportService.exportGame(context);
+      ExportService.exportGame(context);
 }

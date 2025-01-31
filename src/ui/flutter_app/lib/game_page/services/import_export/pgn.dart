@@ -9,6 +9,48 @@ import '../mill.dart';
 
 typedef PgnHeaders = Map<String, String>;
 
+/// A small stub to replace references to an `fromPgn`.
+/// Adjust if you have a different result-handling approach.
+
+/// Minimal stub to parse a string like `1-0` / `0-1` / `1/2-1/2` / `*`.
+String fromPgn(String? result) {
+  if (result == '1-0' || result == '0-1' || result == '1/2-1/2') {
+    return result!;
+  }
+  return '*';
+}
+
+/// Return the same string for PGN writing.
+String toPgnString(String result) => result;
+
+/// Minimal stub for a `Square` class.
+/// Nine Men's Morris typically uses a-g,1-7. You can adjust as needed.
+@immutable
+class Square {
+  const Square(this.name);
+  final String name;
+
+  static Square? parse(String str) {
+    // For a-g1-7
+    if (str.length == 2) {
+      final int file = str.codeUnitAt(0); // 'a'..'g'
+      final int rank = str.codeUnitAt(1); // '1'..'7'
+      if (file >= 97 && file <= 103 && rank >= 49 && rank <= 55) {
+        return Square(str);
+      }
+    }
+    return null;
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Square && runtimeType == other.runtimeType && name == other.name;
+
+  @override
+  int get hashCode => name.hashCode;
+}
+
 /// A Portable Game Notation (PGN) representation adapted for Nine Men's Morris.
 ///
 /// A PGN game is composed of [PgnHeaders] and moves represented by a [PgnNode] tree.
@@ -81,7 +123,7 @@ class PgnGame<T extends PgnNodeData> {
   final PgnNode<T> moves;
 
   /// Create default headers of a PGN.
-  static PgnHeaders defaultHeaders() => {
+  static PgnHeaders defaultHeaders() => <String, String>{
         'Event': '?',
         'Site': '?',
         'Date': '????.??.??',
@@ -96,22 +138,24 @@ class PgnGame<T extends PgnNodeData> {
 
   /// Parse a PGN string and return a [PgnGame].
   ///
-  /// Provide a optional function [initHeaders] to create different headers other than the default.
+  /// Provide an optional function [initHeaders] to create different headers other than the default.
   ///
   /// The parser will interpret any input as a PGN, creating a tree of
   /// syntactically valid (but not necessarily legal) moves, skipping any invalid
   /// tokens.
   static PgnGame<PgnNodeData> parsePgn(String pgn,
       {PgnHeaders Function() initHeaders = defaultHeaders}) {
-    final List<PgnGame<PgnNodeData>> games = [];
+    final List<PgnGame<PgnNodeData>> games = <PgnGame<PgnNodeData>>[];
     _PgnParser((PgnGame<PgnNodeData> game) {
       games.add(game);
     }, initHeaders)
         .parse(pgn);
 
     if (games.isEmpty) {
-      return PgnGame(
-          headers: initHeaders(), moves: PgnNode(), comments: const []);
+      return PgnGame<PgnNodeData>(
+          headers: initHeaders(),
+          moves: PgnNode<PgnNodeData>(),
+          comments: const <String>[]);
     }
     return games[0];
   }
@@ -119,18 +163,18 @@ class PgnGame<T extends PgnNodeData> {
   /// Parse a multi game PGN string.
   ///
   /// Returns a list of [PgnGame].
-  /// Provide a optional function [initHeaders] to create different headers other than the default
+  /// Provide an optional function [initHeaders] to create different headers other than the default
   ///
   /// The parser will interpret any input as a PGN, creating a tree of
   /// syntactically valid (but not necessarily legal) moves, skipping any invalid
   /// tokens.
   static List<PgnGame<PgnNodeData>> parseMultiGamePgn(String pgn,
       {PgnHeaders Function() initHeaders = defaultHeaders}) {
-    final multiGamePgnSplit = RegExp(r'\n\s+(?=\[)');
-    final List<PgnGame<PgnNodeData>> games = [];
-    final pgnGames = pgn.split(multiGamePgnSplit);
-    for (final pgnGame in pgnGames) {
-      final List<PgnGame<PgnNodeData>> parsedGames = [];
+    final RegExp multiGamePgnSplit = RegExp(r'\n\s+(?=\[)');
+    final List<PgnGame<PgnNodeData>> games = <PgnGame<PgnNodeData>>[];
+    final List<String> pgnGames = pgn.split(multiGamePgnSplit);
+    for (final String pgnGame in pgnGames) {
+      final List<PgnGame<PgnNodeData>> parsedGames = <PgnGame<PgnNodeData>>[];
       _PgnParser((PgnGame<PgnNodeData> game) {
         parsedGames.add(game);
       }, initHeaders)
@@ -142,50 +186,47 @@ class PgnGame<T extends PgnNodeData> {
     return games;
   }
 
-  /// Create a [Position] for a Variant from the headers.
+  /// Create a [Position] for Nine Men's Morris from the headers.
   ///
-  /// Headers can include an optional 'Variant' and 'FEN' key.
+  /// Headers can include an optional 'FEN' key.
+  /// If present, sets the position from the FEN. Otherwise, sets a fresh position [pos.reset()].
   ///
-  /// Throws a [PositionSetupException] if it does not meet basic validity requirements.
-  static Position startingPosition(PgnHeaders headers,
-      {bool? ignoreImpossibleCheck}) {
-    final rule = Rule.fromPgn(headers['Variant']);
-    if (rule == null) throw PositionSetupException.variant;
-    if (!headers.containsKey('FEN')) {
-      return Position.initialPosition(rule);
+  /// If the FEN is invalid, an [Exception] is thrown.
+  static Position startingPosition(PgnHeaders headers) {
+    final Position pos = Position();
+    pos.reset();
+    if (headers.containsKey('FEN')) {
+      final String fen = headers['FEN']!;
+      if (!pos.setFen(fen)) {
+        throw Exception("Invalid FEN: $fen");
+      }
     }
-    final fen = headers['FEN']!;
-    try {
-      return Position.setupPosition(rule, Setup.parseFen(fen),
-          ignoreImpossibleCheck: ignoreImpossibleCheck);
-    } catch (err) {
-      rethrow;
-    }
+    return pos;
   }
 
   /// Make a PGN String from [PgnGame].
   String makePgn() {
-    final builder = StringBuffer();
-    final token = StringBuffer();
+    final StringBuffer builder = StringBuffer();
+    final StringBuffer token = StringBuffer();
 
     if (headers.isNotEmpty) {
-      headers.forEach((key, value) {
+      headers.forEach((String key, String value) {
         builder.writeln('[$key "${_escapeHeader(value)}"]');
       });
       builder.write('\n');
     }
 
-    for (final comment in comments) {
+    for (final String comment in comments) {
       builder.writeln('{ ${_safeComment(comment)} }');
     }
 
-    final fen = headers['FEN'];
-    final initialPly = fen != null ? _getPlyFromSetup(fen) : 0;
+    final String? fen = headers['FEN'];
+    final int initialPly = fen != null ? _getPlyFromSetup(fen) : 0;
 
-    final List<_PgnFrame> stack = [];
+    final List<_PgnFrame> stack = <_PgnFrame>[];
 
     if (moves.children.isNotEmpty) {
-      final variations = moves.children.iterator;
+      final Iterator<PgnChildNode<T>> variations = moves.children.iterator;
       variations.moveNext();
       stack.add(_PgnFrame(
           state: _PgnState.pre,
@@ -198,7 +239,7 @@ class PgnGame<T extends PgnNodeData> {
 
     bool forceMoveNumber = true;
     while (stack.isNotEmpty) {
-      final frame = stack[stack.length - 1];
+      final _PgnFrame frame = stack[stack.length - 1];
 
       if (frame.inVariation) {
         token.write(') ');
@@ -210,7 +251,7 @@ class PgnGame<T extends PgnNodeData> {
         case _PgnState.pre:
           {
             if (frame.node.data.startingComments != null) {
-              for (final comment in frame.node.data.startingComments!) {
+              for (final String comment in frame.node.data.startingComments!) {
                 token.write('{ ${_safeComment(comment)} } ');
               }
               forceMoveNumber = true;
@@ -222,13 +263,13 @@ class PgnGame<T extends PgnNodeData> {
             }
             token.write('${frame.node.data.san} ');
             if (frame.node.data.nags != null) {
-              for (final nag in frame.node.data.nags!) {
+              for (final int nag in frame.node.data.nags!) {
                 token.write('\$$nag ');
               }
               forceMoveNumber = true;
             }
             if (frame.node.data.comments != null) {
-              for (final comment in frame.node.data.comments!) {
+              for (final String comment in frame.node.data.comments!) {
                 token.write('{ ${_safeComment(comment)} } ');
               }
             }
@@ -238,7 +279,7 @@ class PgnGame<T extends PgnNodeData> {
 
         case _PgnState.sidelines:
           {
-            final child = frame.sidelines.moveNext();
+            final bool child = frame.sidelines.moveNext();
             if (child) {
               token.write('( ');
               forceMoveNumber = true;
@@ -253,7 +294,8 @@ class PgnGame<T extends PgnNodeData> {
               frame.inVariation = true;
             } else {
               if (frame.node.children.isNotEmpty) {
-                final variations = frame.node.children.iterator;
+                final Iterator<PgnChildNode<PgnNodeData>> variations =
+                    frame.node.children.iterator;
                 variations.moveNext();
                 stack.add(_PgnFrame(
                     state: _PgnState.pre,
@@ -274,7 +316,7 @@ class PgnGame<T extends PgnNodeData> {
           }
       }
     }
-    token.write(Outcome.toPgnString(Outcome.fromPgn(headers['Result'])));
+    token.write(toPgnString(fromPgn(headers['Result'])));
     builder.writeln(token.toString());
     return builder.toString();
   }
@@ -301,13 +343,13 @@ class PgnNodeData {
 
 /// Parent node containing a list of child nodes (does not contain any data itself).
 class PgnNode<T extends PgnNodeData> {
-  final List<PgnChildNode<T>> children = [];
+  final List<PgnChildNode<T>> children = <PgnChildNode<T>>[];
 
   /// Implements an [Iterable] to iterate the mainline.
   Iterable<T> mainline() sync* {
-    var node = this;
+    PgnNode<T> node = this;
     while (node.children.isNotEmpty) {
-      final child = node.children[0];
+      final PgnChildNode<T> child = node.children[0];
       yield child.data;
       node = child;
     }
@@ -320,21 +362,26 @@ class PgnNode<T extends PgnNodeData> {
   /// The callback should return a tuple of the updated context and node data.
   PgnNode<U> transform<U extends PgnNodeData, C>(
       C context, (C, U)? Function(C context, T data, int childIndex) f) {
-    final root = PgnNode<U>();
-    final stack = [(before: this, after: root, context: context)];
+    final PgnNode<U> root = PgnNode<U>();
+    final List<({PgnNode<U> after, PgnNode<T> before, C context})> stack = <({
+      PgnNode<U> after,
+      PgnNode<T> before,
+      C context
+    })>[(before: this, after: root, context: context)];
 
     while (stack.isNotEmpty) {
-      final frame = stack.removeLast();
+      final ({PgnNode<U> after, PgnNode<T> before, C context}) frame =
+          stack.removeLast();
       for (int childIdx = 0;
           childIdx < frame.before.children.length;
           childIdx++) {
         C ctx = frame.context;
-        final childBefore = frame.before.children[childIdx];
-        final transformData = f(ctx, childBefore.data, childIdx);
+        final PgnChildNode<T> childBefore = frame.before.children[childIdx];
+        final (C, U)? transformData = f(ctx, childBefore.data, childIdx);
         if (transformData != null) {
-          final (newCtx, data) = transformData;
+          final (C newCtx, U data) = transformData;
           ctx = newCtx;
-          final childAfter = PgnChildNode(data);
+          final PgnChildNode<U> childAfter = PgnChildNode<U>(data);
           frame.after.children.add(childAfter);
           stack.add((before: childBefore, after: childAfter, context: ctx));
         }
@@ -354,7 +401,7 @@ class PgnChildNode<T extends PgnNodeData> extends PgnNode<T> {
   T data;
 }
 
-/// Represents the color of a PGN comment.
+/// Represents the color of a PGN comment shape.
 ///
 /// Can be green, red, yellow, and blue.
 enum CommentShapeColor {
@@ -413,13 +460,16 @@ class PgnCommentShape {
 
   /// Parse the PGN for any comment or return null.
   static PgnCommentShape? fromPgn(String str) {
-    final color = CommentShapeColor.parseShapeColor(str.substring(0, 1));
-    final from = Square.parse(str.substring(1, 3));
-    if (color == null || from == null) return null;
+    final CommentShapeColor? color =
+        CommentShapeColor.parseShapeColor(str.substring(0, 1));
+    final Square? from = Square.parse(str.substring(1, 3));
+    if (color == null || from == null) {
+      return null;
+    }
     if (str.length == 3) {
       return PgnCommentShape(color: color, from: from, to: from);
     }
-    final to = Square.parse(str.substring(3, 5));
+    final Square? to = Square.parse(str.substring(3, 5));
     if (str.length == 5 && to != null) {
       return PgnCommentShape(color: color, from: from, to: to);
     }
@@ -481,13 +531,15 @@ class PgnEvaluation {
 
   /// Create a PGN evaluation string
   String toPgn() {
-    var str = '';
+    String str = '';
     if (isPawns()) {
       str = pawns!.toStringAsFixed(2);
     } else {
       str = '#$mate';
     }
-    if (depth != null) str = '$str,$depth';
+    if (depth != null) {
+      str = '$str,$depth';
+    }
     return str;
   }
 }
@@ -497,11 +549,75 @@ class PgnEvaluation {
 class PgnComment {
   const PgnComment(
       {this.text,
-      this.shapes = const IListConst([]),
+      this.shapes = const IListConst<PgnCommentShape>(<PgnCommentShape>[]),
       this.clock,
       this.emt,
       this.eval})
       : assert(text == null || text != '');
+
+  /// Parses a PGN comment string to a [PgnComment].
+  factory PgnComment.fromPgn(String comment) {
+    Duration? emt;
+    Duration? clock;
+    final List<PgnCommentShape> shapes = <PgnCommentShape>[];
+    PgnEvaluation? eval;
+    final String text = comment.replaceAllMapped(
+        RegExp(
+            r'\s?\[%(emt|clk)\s(\d{1,5}):(\d{1,2}):(\d{1,2}(?:\.\d{0,3})?)\]\s?'),
+        (Match match) {
+      final String? annotation = match.group(1);
+      final String? hours = match.group(2);
+      final String? minutes = match.group(3);
+      final String? seconds = match.group(4);
+      final double secondsValue = double.parse(seconds!);
+      final Duration duration = Duration(
+          hours: int.parse(hours!),
+          minutes: int.parse(minutes!),
+          seconds: secondsValue.truncate(),
+          milliseconds:
+              ((secondsValue - secondsValue.truncate()) * 1000).round());
+      if (annotation == 'emt') {
+        emt = duration;
+      } else if (annotation == 'clk') {
+        clock = duration;
+      }
+      return '  ';
+    }).replaceAllMapped(
+        RegExp(
+            r'\s?\[%(?:csl|cal)\s([RGYB][a-g][1-7](?:[a-g][1-7])?(?:,[RGYB][a-g][1-7](?:[a-g][1-7])?)*)\]\s?'),
+        (Match match) {
+      final String? arrows = match.group(1);
+      if (arrows != null) {
+        for (final String arrow in arrows.split(',')) {
+          final PgnCommentShape? shape = PgnCommentShape.fromPgn(arrow);
+          if (shape != null) {
+            shapes.add(shape);
+          }
+        }
+      }
+      return '  ';
+    }).replaceAllMapped(
+        RegExp(
+            r'\s?\[%eval\s(?:#([+-]?\d{1,5})|([+-]?(?:\d{1,5}|\d{0,5}\.\d{1,2})))(?:,(\d{1,5}))?\]\s?'),
+        (Match match) {
+      final String? mate = match.group(1);
+      final String? pawns = match.group(2);
+      final String? d = match.group(3);
+      final int? depth = d != null ? int.parse(d) : null;
+      eval = mate != null
+          ? PgnEvaluation.mate(mate: int.parse(mate), depth: depth)
+          : PgnEvaluation.pawns(
+              pawns: pawns != null ? double.parse(pawns) : null, depth: depth);
+      return '  ';
+    }).trim();
+
+    return PgnComment(
+        text: text.isNotEmpty ? text : null,
+        shapes: IList<PgnCommentShape>(shapes),
+        emt: emt,
+        clock: clock,
+        eval: eval);
+  }
 
   /// Comment string.
   final String? text;
@@ -518,83 +634,33 @@ class PgnComment {
   /// Move evaluation.
   final PgnEvaluation? eval;
 
-  /// Parses a PGN comment string to a [PgnComment].
-  factory PgnComment.fromPgn(String comment) {
-    Duration? emt;
-    Duration? clock;
-    final List<PgnCommentShape> shapes = [];
-    PgnEvaluation? eval;
-    final text = comment.replaceAllMapped(
-        RegExp(
-            r'\s?\[%(emt|clk)\s(\d{1,5}):(\d{1,2}):(\d{1,2}(?:\.\d{0,3})?)\]\s?'),
-        (match) {
-      final annotation = match.group(1);
-      final hours = match.group(2);
-      final minutes = match.group(3);
-      final seconds = match.group(4);
-      final secondsValue = double.parse(seconds!);
-      final duration = Duration(
-          hours: int.parse(hours!),
-          minutes: int.parse(minutes!),
-          seconds: secondsValue.truncate(),
-          milliseconds:
-              ((secondsValue - secondsValue.truncate()) * 1000).round());
-      if (annotation == 'emt') {
-        emt = duration;
-      } else if (annotation == 'clk') {
-        clock = duration;
-      }
-      return '  ';
-    }).replaceAllMapped(
-        RegExp(
-            r'\s?\[%(?:csl|cal)\s([RGYB][a-h][1-8](?:[a-h][1-8])?(?:,[RGYB][a-h][1-8](?:[a-h][1-8])?)*)\]\s?'),
-        (match) {
-      final arrows = match.group(1);
-      if (arrows != null) {
-        for (final arrow in arrows.split(',')) {
-          final shape = PgnCommentShape.fromPgn(arrow);
-          if (shape != null) shapes.add(shape);
-        }
-      }
-      return '  ';
-    }).replaceAllMapped(
-        RegExp(
-            r'\s?\[%eval\s(?:#([+-]?\d{1,5})|([+-]?(?:\d{1,5}|\d{0,5}\.\d{1,2})))(?:,(\d{1,5}))?\]\s?'),
-        (match) {
-      final mate = match.group(1);
-      final pawns = match.group(2);
-      final d = match.group(3);
-      final depth = d != null ? int.parse(d) : null;
-      eval = mate != null
-          ? PgnEvaluation.mate(mate: int.parse(mate), depth: depth)
-          : PgnEvaluation.pawns(
-              pawns: pawns != null ? double.parse(pawns) : null, depth: depth);
-      return '  ';
-    }).trim();
-
-    return PgnComment(
-        text: text.isNotEmpty ? text : null,
-        shapes: IList(shapes),
-        emt: emt,
-        clock: clock,
-        eval: eval);
-  }
-
   /// Make a PGN string from this comment.
   String makeComment() {
-    final List<String> builder = [];
-    if (text != null) builder.add(text!);
-    final circles = shapes
-        .where((shape) => shape.to == shape.from)
-        .map((shape) => shape.toString());
-    if (circles.isNotEmpty) builder.add('[%csl ${circles.join(",")}]');
-    final arrows = shapes
-        .where((shape) => shape.to != shape.from)
-        .map((shape) => shape.toString());
-    if (arrows.isNotEmpty) builder.add('[%cal ${arrows.join(",")}]');
-    if (eval != null) builder.add('[%eval ${eval!.toPgn()}]');
-    if (emt != null) builder.add('[%emt ${_makeClk(emt!)}]');
-    if (clock != null) builder.add('[%clk ${_makeClk(clock!)}]');
+    final List<String> builder = <String>[];
+    if (text != null) {
+      builder.add(text!);
+    }
+    final Iterable<String> circles = shapes
+        .where((PgnCommentShape shape) => shape.to == shape.from)
+        .map((PgnCommentShape shape) => shape.toString());
+    if (circles.isNotEmpty) {
+      builder.add('[%csl ${circles.join(",")}]');
+    }
+    final Iterable<String> arrows = shapes
+        .where((PgnCommentShape shape) => shape.to != shape.from)
+        .map((PgnCommentShape shape) => shape.toString());
+    if (arrows.isNotEmpty) {
+      builder.add('[%cal ${arrows.join(",")}]');
+    }
+    if (eval != null) {
+      builder.add('[%eval ${eval!.toPgn()}]');
+    }
+    if (emt != null) {
+      builder.add('[%emt ${_makeClk(emt!)}]');
+    }
+    if (clock != null) {
+      builder.add('[%clk ${_makeClk(clock!)}]');
+    }
     return builder.join(' ');
   }
 
@@ -619,12 +685,11 @@ class PgnComment {
 
 /// A frame used for parsing a line
 class _ParserFrame {
+  _ParserFrame({required this.parent, required this.root});
   PgnNode<PgnNodeData> parent;
   bool root;
   PgnChildNode<PgnNodeData>? node;
   List<String>? startingComments;
-
-  _ParserFrame({required this.parent, required this.root});
 }
 
 enum _ParserState { bom, pre, headers, moves, comment }
@@ -633,13 +698,6 @@ enum _PgnState { pre, sidelines, end }
 
 /// A frame used for creating PGN
 class _PgnFrame {
-  _PgnState state;
-  int ply;
-  PgnChildNode<PgnNodeData> node;
-  Iterator<PgnChildNode<PgnNodeData>> sidelines;
-  bool startsVariation;
-  bool inVariation;
-
   _PgnFrame(
       {required this.state,
       required this.ply,
@@ -647,26 +705,27 @@ class _PgnFrame {
       required this.sidelines,
       required this.startsVariation,
       required this.inVariation});
+  _PgnState state;
+  int ply;
+  PgnChildNode<PgnNodeData> node;
+  Iterator<PgnChildNode<PgnNodeData>> sidelines;
+  bool startsVariation;
+  bool inVariation;
 }
 
 /// Remove escape sequence from the string
 String _escapeHeader(String value) =>
-    value.replaceAll(RegExp(r'\\'), '\\\\').replaceAll(RegExp('"'), '\\"');
+    value.replaceAll(RegExp(r'\\'), r'\\').replaceAll(RegExp('"'), r'\"');
 
 /// Remove '}' from the comment string
 String _safeComment(String value) => value.replaceAll(RegExp(r'\}'), '');
 
-/// Return ply from a fen if fen is valid else return 0
+/// For Nine Men's Morris, we don't do advanced FEN parsing for ply. Return 0 here.
 int _getPlyFromSetup(String fen) {
-  try {
-    final setup = Setup.parseFen(fen);
-    return (setup.fullmoves - 1) * 2 + (setup.turn == Side.white ? 0 : 1);
-  } catch (e) {
-    return 0;
-  }
+  return 0; // Minimal stub
 }
 
-const _bom = '\ufeff';
+const String _bom = '\ufeff';
 
 bool _isWhitespace(String line) => RegExp(r'^\s*$').hasMatch(line);
 
@@ -674,7 +733,11 @@ bool _isCommentLine(String line) => line.startsWith('%');
 
 /// A class to read a string and create a [PgnGame] (adapted for Nine Men's Morris).
 class _PgnParser {
-  List<String> _lineBuf = [];
+  _PgnParser(this.emitGame, this.initHeaders) {
+    _resetGame();
+    _state = _ParserState.bom;
+  }
+  List<String> _lineBuf = <String>[];
   late bool _found;
   late _ParserState _state = _ParserState.pre;
   late PgnHeaders _gameHeaders;
@@ -683,25 +746,20 @@ class _PgnParser {
   late List<_ParserFrame> _stack;
   late List<String> _commentBuf;
 
-  /// Function to which the parsed game is passed to
+  /// Function to which the parsed game is passed
   final void Function(PgnGame<PgnNodeData>) emitGame;
 
   /// Function to create the headers
   final PgnHeaders Function() initHeaders;
 
-  _PgnParser(this.emitGame, this.initHeaders) {
-    _resetGame();
-    _state = _ParserState.bom;
-  }
-
   void _resetGame() {
     _found = false;
     _state = _ParserState.pre;
     _gameHeaders = initHeaders();
-    _gameMoves = PgnNode();
-    _gameComments = [];
-    _commentBuf = [];
-    _stack = [_ParserFrame(parent: _gameMoves, root: true)];
+    _gameMoves = PgnNode<PgnNodeData>();
+    _gameComments = <String>[];
+    _commentBuf = <String>[];
+    _stack = <_ParserFrame>[_ParserFrame(parent: _gameMoves, root: true)];
   }
 
   void _emit() {
@@ -710,7 +768,7 @@ class _PgnParser {
     }
     if (_found) {
       emitGame(
-        PgnGame(
+        PgnGame<PgnNodeData>(
             headers: _gameHeaders, moves: _gameMoves, comments: _gameComments),
       );
     }
@@ -719,13 +777,14 @@ class _PgnParser {
 
   /// Parse the PGN string
   void parse(String data) {
-    var idx = 0;
+    int idx = 0;
     for (;;) {
-      final nlIdx = data.indexOf('\n', idx);
+      final int nlIdx = data.indexOf('\n', idx);
       if (nlIdx == -1) {
         break;
       }
-      final crIdx = nlIdx > idx && data[nlIdx - 1] == '\r' ? nlIdx - 1 : nlIdx;
+      final int crIdx =
+          nlIdx > idx && data[nlIdx - 1] == '\r' ? nlIdx - 1 : nlIdx;
       _lineBuf.add(data.substring(idx, crIdx));
       idx = nlIdx + 1;
       _handleLine();
@@ -737,9 +796,9 @@ class _PgnParser {
   }
 
   void _handleLine() {
-    var freshLine = true;
-    var line = _lineBuf.join();
-    _lineBuf = [];
+    bool freshLine = true;
+    String line = _lineBuf.join();
+    _lineBuf = <String>[];
     continuedLine:
     for (;;) {
       switch (_state) {
@@ -754,7 +813,9 @@ class _PgnParser {
 
         case _ParserState.pre:
           {
-            if (_isWhitespace(line) || _isCommentLine(line)) return;
+            if (_isWhitespace(line) || _isCommentLine(line)) {
+              return;
+            }
             _found = true;
             _state = _ParserState.headers;
             continue;
@@ -762,23 +823,27 @@ class _PgnParser {
 
         case _ParserState.headers:
           {
-            if (_isCommentLine(line)) return;
-            var moreHeaders = true;
-            final headerReg = RegExp(
+            if (_isCommentLine(line)) {
+              return;
+            }
+            bool moreHeaders = true;
+            final RegExp headerReg = RegExp(
                 r'^\s*\[([A-Za-z0-9][A-Za-z0-9_+#=:-]*)\s+"((?:[^"\\]|\\"|\\\\)*)"\]');
             while (moreHeaders) {
               moreHeaders = false;
-              line = line.replaceFirstMapped(headerReg, (match) {
+              line = line.replaceFirstMapped(headerReg, (Match match) {
                 if (match[1] != null && match[2] != null) {
                   _gameHeaders[match[1]!] =
-                      match[2]!.replaceAll('\\"', '"').replaceAll('\\\\', '\\');
+                      match[2]!.replaceAll(r'\"', '"').replaceAll(r'\\', r'\');
                   moreHeaders = true;
                   freshLine = false;
                 }
                 return '';
               });
             }
-            if (_isWhitespace(line)) return;
+            if (_isWhitespace(line)) {
+              return;
+            }
             _state = _ParserState.moves;
             continue;
           }
@@ -786,20 +851,22 @@ class _PgnParser {
         case _ParserState.moves:
           {
             if (freshLine) {
-              if (_isWhitespace(line) || _isCommentLine(line)) return;
+              if (_isWhitespace(line) || _isCommentLine(line)) {
+                return;
+              }
             }
             // Adapted Nine Men's Morris token regex:
-            final tokenRegex = RegExp(
+            final RegExp tokenRegex = RegExp(
                 r'(?:p|x+|[a-g][1-7](?:[-x][a-g][1-7])*)|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2/');
-            final matches = tokenRegex.allMatches(line);
-            for (final match in matches) {
-              final frame = _stack[_stack.length - 1];
-              var token = match[0];
+            final Iterable<RegExpMatch> matches = tokenRegex.allMatches(line);
+            for (final RegExpMatch match in matches) {
+              final _ParserFrame frame = _stack[_stack.length - 1];
+              final String? token = match[0];
               if (token != null) {
                 if (token == ';') {
                   // Remainder of line is a comment
                   return;
-                } else if (token.startsWith('\$')) {
+                } else if (token.startsWith(r'$')) {
                   _handleNag(int.parse(token.substring(1)));
                 } else if (token == '!') {
                   _handleNag(1);
@@ -823,12 +890,14 @@ class _PgnParser {
                 } else if (token == '(') {
                   _stack.add(_ParserFrame(parent: frame.parent, root: false));
                 } else if (token == ')') {
-                  if (_stack.length > 1) _stack.removeLast();
+                  if (_stack.length > 1) {
+                    _stack.removeLast();
+                  }
                 } else if (token == '{') {
-                  final openIndex = match.end;
+                  final int openIndex = match.end;
                   _state = _ParserState.comment;
                   if (openIndex < line.length) {
-                    final beginIndex =
+                    final int beginIndex =
                         line[openIndex] == ' ' ? openIndex + 1 : openIndex;
                     line = line.substring(beginIndex);
                   } else if (openIndex == line.length) {
@@ -840,7 +909,7 @@ class _PgnParser {
                   if (frame.node != null) {
                     frame.parent = frame.node!;
                   }
-                  frame.node = PgnChildNode(PgnNodeData(
+                  frame.node = PgnChildNode<PgnNodeData>(PgnNodeData(
                       san: token, startingComments: frame.startingComments));
                   frame.startingComments = null;
                   frame.root = false;
@@ -853,12 +922,12 @@ class _PgnParser {
 
         case _ParserState.comment:
           {
-            final closeIndex = line.indexOf('}');
+            final int closeIndex = line.indexOf('}');
             if (closeIndex == -1) {
               _commentBuf.add(line);
               return;
             } else {
-              final endIndex = closeIndex > 0 && line[closeIndex - 1] == ' '
+              final int endIndex = closeIndex > 0 && line[closeIndex - 1] == ' '
                   ? closeIndex - 1
                   : closeIndex;
               _commentBuf.add(line.substring(0, endIndex));
@@ -873,24 +942,24 @@ class _PgnParser {
   }
 
   void _handleNag(int nag) {
-    final frame = _stack[_stack.length - 1];
+    final _ParserFrame frame = _stack[_stack.length - 1];
     if (frame.node != null) {
-      frame.node!.data.nags ??= [];
+      frame.node!.data.nags ??= <int>[];
       frame.node!.data.nags?.add(nag);
     }
   }
 
   void _handleComment() {
-    final frame = _stack[_stack.length - 1];
-    final comment = _commentBuf.join('\n');
-    _commentBuf = [];
+    final _ParserFrame frame = _stack[_stack.length - 1];
+    final String comment = _commentBuf.join('\n');
+    _commentBuf = <String>[];
     if (frame.node != null) {
-      frame.node!.data.comments ??= [];
+      frame.node!.data.comments ??= <String>[];
       frame.node!.data.comments?.add(comment);
     } else if (frame.root) {
       _gameComments.add(comment);
     } else {
-      frame.startingComments ??= [];
+      frame.startingComments ??= <String>[];
       frame.startingComments!.add(comment);
     }
   }
@@ -898,17 +967,17 @@ class _PgnParser {
 
 /// Make the clock to string from seconds
 String _makeClk(Duration duration) {
-  final seconds = duration.inMilliseconds / 1000;
-  final positiveSecs = math.max(0, seconds);
-  final hours = (positiveSecs / 3600).floor();
-  final minutes = ((positiveSecs % 3600) / 60).floor();
-  final maxSec = (positiveSecs % 3600) % 60;
-  final intVal = maxSec.toInt();
-  final frac = (maxSec - intVal) // get the fraction part of seconds
+  final double seconds = duration.inMilliseconds / 1000;
+  final num positiveSecs = math.max(0, seconds);
+  final int hours = (positiveSecs / 3600).floor();
+  final int minutes = ((positiveSecs % 3600) / 60).floor();
+  final num maxSec = (positiveSecs % 3600) % 60;
+  final int intVal = maxSec.toInt();
+  final String frac = (maxSec - intVal) // get the fraction part of seconds
       .toStringAsFixed(3)
       .replaceAll(RegExp(r'\.?0+$'), '')
       .substring(1);
-  final dec =
+  final String dec =
       intVal.toString().padLeft(2, '0'); // get the decimal part of seconds
   return '$hours:${minutes.toString().padLeft(2, "0")}:$dec$frac';
 }
