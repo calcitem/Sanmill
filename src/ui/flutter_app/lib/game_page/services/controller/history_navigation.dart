@@ -3,8 +3,6 @@
 
 // history_navigation.dart
 
-// ignore_for_file: use_build_context_synchronously
-
 part of '../mill.dart';
 
 /// HistoryNavigator
@@ -81,6 +79,10 @@ class HistoryNavigator {
 
     GameController().animationManager.allowAnimations = true;
 
+    if (!context.mounted) {
+      return const HistoryAbort();
+    }
+
     switch (resp) {
       case HistoryOK():
         final ExtMove? lastEffectiveMove = controller.gameRecorder.current;
@@ -111,6 +113,9 @@ class HistoryNavigator {
     _isGoingToHistory = false;
 
     if (pop) {
+      if (!context.mounted) {
+        return const HistoryAbort();
+      }
       Navigator.pop(context);
     }
 

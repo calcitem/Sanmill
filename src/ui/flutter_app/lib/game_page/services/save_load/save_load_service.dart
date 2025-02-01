@@ -3,8 +3,6 @@
 
 // save_load_service.dart
 
-// ignore_for_file: use_build_context_synchronously
-
 part of '../mill.dart';
 
 //@visibleForTesting
@@ -24,6 +22,10 @@ class LoadService {
     dir = Directory(path);
     if (!dir.existsSync()) {
       await dir.create(recursive: true);
+    }
+
+    if (!context.mounted) {
+      return null;
     }
 
     String? resultLabel = await _showTextInputDialog(context);
@@ -81,6 +83,10 @@ class LoadService {
           await entity.delete();
         }
       }
+    }
+
+    if (!context.mounted) {
+      return null;
     }
 
     final String? result = await FilesystemPicker.openDialog(
@@ -181,14 +187,29 @@ class LoadService {
         // Assume original file reading logic if not 'content'
         final String fileContent = await readFileContent(filePath);
         logger.t('$_logTag File Content: $fileContent');
+        if (!context.mounted) {
+          return;
+        }
         final bool importSuccess = await importGameData(context, fileContent);
         if (importSuccess) {
+          if (!context.mounted) {
+            return;
+          }
           await handleHistoryNavigation(context);
+        }
+        if (!context.mounted) {
+          return;
         }
         Navigator.pop(context);
       }
     } catch (exception) {
+      if (!context.mounted) {
+        return;
+      }
       GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
+      if (!context.mounted) {
+        return;
+      }
       Navigator.pop(context);
       return;
     }
@@ -277,12 +298,22 @@ class LoadService {
   static Future<void> handleHistoryNavigation(BuildContext context) async {
     await HistoryNavigator.takeBackAll(context, pop: false);
 
+    if (!context.mounted) {
+      return;
+    }
+
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
+      if (!context.mounted) {
+        return;
+      }
       GameController()
           .headerTipNotifier
           .showTip(S.of(context).done); // "Game loaded."
     } else {
+      if (!context.mounted) {
+        return;
+      }
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
@@ -333,6 +364,9 @@ class LoadService {
                     return;
                   }
                   textFieldController.text = result;
+                  if (!context.mounted) {
+                    return;
+                  }
                   Navigator.pop(context, textFieldController.text);
                 }),
             ElevatedButton(

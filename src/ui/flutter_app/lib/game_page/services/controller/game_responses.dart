@@ -103,6 +103,15 @@ class HistoryOK implements HistoryResponse {
   }
 }
 
+class HistoryAbort implements HistoryResponse {
+  const HistoryAbort();
+
+  @override
+  String toString() {
+    return "${HistoryResponse.tag} History aborted.";
+  }
+}
+
 class HistoryRule implements HistoryResponse {
   const HistoryRule();
 

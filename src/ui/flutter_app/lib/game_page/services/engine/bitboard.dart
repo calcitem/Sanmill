@@ -3,9 +3,7 @@
 
 // bitboard.dart
 
-// ignore_for_file: always_specify_types
-
-List<int> squareBB = List.filled(32, 0);
+List<int> squareBB = List<int>.filled(32, 0);
 
 int squareBb(int s) {
   if (!(8 <= s && s < 32)) {

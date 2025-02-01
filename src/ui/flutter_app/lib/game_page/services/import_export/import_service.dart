@@ -155,7 +155,6 @@ class ImportService {
   static void import(String moveList) {
     moveList = moveList.trim();
     String ml = moveList;
-    String? setupFen;
 
     logger.t("Clipboard text: $moveList");
 
