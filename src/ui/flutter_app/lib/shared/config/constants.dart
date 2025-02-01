@@ -31,6 +31,7 @@ class UrlHelper {
 
 class Constants {
   const Constants._();
+
   static const String appName = "Mill";
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
@@ -52,6 +53,11 @@ class Constants {
     baseChinese: "https://gitee.com",
   );
 
+  static const UrlHelper staticWebpageUrl = UrlHelper(
+    base: "https://$authorAccount.github.io",
+    baseChinese: "https://$authorAccount.github.io",
+  );
+
   static const UrlHelper weblateUrl = UrlHelper(
     base: "https://hosted.weblate.org",
     baseChinese: "https://hosted.weblate.org",
@@ -61,14 +67,16 @@ class Constants {
       sourceControlUrl.fromSubPath(fullRepositoryName);
   static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
   static final UrlHelper wikiURL = repositoryUrl.fromSubPath("wiki", "wikis");
+  static final UrlHelper legalURL =
+      staticWebpageUrl.fromSubPath("$projectNameLower-legal");
   static final UrlHelper endUserLicenseAgreementUrl =
-      wikiURL.fromSubPath("EULA", "EULA_zh");
+      legalURL.fromSubPath("eula", "eula_zh");
   static const String appleStandardEulaUrl =
       "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   static final UrlHelper thirdPartyNoticesURL =
       wikiURL.fromSubPath("third-party_notices");
   static final UrlHelper privacyPolicyUrl =
-      wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
+      legalURL.fromSubPath("privacy-policy", "privacy-policy_zh");
   static final UrlHelper helpImproveTranslateURL =
       weblateUrl.fromSubPath("zen/$projectNameLower/flutter");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");
