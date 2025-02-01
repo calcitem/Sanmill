@@ -9,6 +9,7 @@
 #include "search_engine.h"
 #include "engine_commands.h"
 #include "thread_pool.h"
+#include <iostream>
 #include <thread>
 #include <chrono>
 
@@ -34,9 +35,10 @@ int playOneGame()
     // 2) Loop until the engine reports Phase::gameOver
     while (pos.get_phase() != Phase::gameOver) {
         uint64_t localId = searchEngine.beginNewSearch(&pos);
+        std::cout << "Local ID: " << localId << std::endl;
         Threads.submit([]() { searchEngine.runSearch(); });
 
-        // Wait for either best move or gameover or abort
+        // Wait for either best move or game over or abort
         {
             std::unique_lock<std::mutex> lock(searchEngine.bestMoveMutex);
             searchEngine.bestMoveCV.wait(lock, [&pos] {

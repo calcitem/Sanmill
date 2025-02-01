@@ -55,6 +55,7 @@ Value Evaluation::value() const
             }
             break;
         }
+        [[fallthrough]];
     case Phase::moving:
         if (pos.shouldConsiderMobility()) {
             value += pos.get_mobility_diff();
