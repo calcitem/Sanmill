@@ -160,28 +160,26 @@ class ImportService {
     logger.t("Clipboard text: $moveList");
 
     // TODO: Improve this logic
-    if (isPlayOkMoveList(moveList)) {
-      return _importPlayOk(moveList);
+    if (isPlayOkMoveList(ml)) {
+      return _importPlayOk(ml);
     }
 
-    if (isPureFen(moveList)) {
-      setupFen = moveList;
-      GameController().position.setFen(setupFen);
-      ml = "";
+    if (isPureFen(ml)) {
+      ml = '[FEN "$ml"]\r\n[SetUp "1"]';
     }
 
-    if (isGoldTokenMoveList(moveList)) {
-      int start = moveList.indexOf("1\t");
+    if (isGoldTokenMoveList(ml)) {
+      int start = ml.indexOf("1\t");
 
       if (start == -1) {
-        start = moveList.indexOf("1 ");
+        start = ml.indexOf("1 ");
       }
 
       if (start == -1) {
         start = 0;
       }
 
-      ml = moveList.substring(start);
+      ml = ml.substring(start);
 
       // Remove "Quick Jump" and any text after it to ensure successful import
       final int quickJumpIndex = ml.indexOf("Quick Jump");
