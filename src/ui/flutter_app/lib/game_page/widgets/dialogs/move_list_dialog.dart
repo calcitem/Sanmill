@@ -5,6 +5,14 @@
 
 part of '../game_page.dart';
 
+/// Represents a "temporary move" with move text, a list of NAGs, and annotations.
+class TempMove {
+  String moveText = "";
+  final List<String> nags = <String>[]; // NAG tokens (e.g., !, ?, !?, ?!)
+  final List<String> comments = <String>[]; // Comments (from { ... })
+  bool hasX = false;
+}
+
 class MoveListDialog extends StatelessWidget {
   const MoveListDialog({super.key});
 
@@ -14,6 +22,7 @@ class MoveListDialog extends StatelessWidget {
     String? fen;
     List<String> mergedMoves = _getMergedMoves(controller);
     if (mergedMoves.isNotEmpty) {
+      // If the first token is a PGN/FEN tag block, separate it out.
       if (mergedMoves[0].isNotEmpty) {
         final String firstMove = mergedMoves[0];
         if (firstMove.startsWith('[')) {
@@ -33,7 +42,7 @@ class MoveListDialog extends StatelessWidget {
       });
     }
 
-    // ValueNotifier to track the selected index
+    // ValueNotifier to track the selected index in the move list.
     final ValueNotifier<int?> selectedIndex = ValueNotifier<int?>(null);
 
     return GamePageActionSheet(
@@ -141,60 +150,188 @@ class MoveListDialog extends StatelessWidget {
     );
   }
 
-  List<String> _getMergedMoves(GameController controller) {
-    // Retrieve the move history text
-    final String moveHistoryText = controller.gameRecorder.moveHistoryText;
+  /// 1) Tokenize the move history string, treating annotation blocks `{...}` as single tokens.
+  List<String> _lexTokens(String moveHistoryText) {
+    final List<String> tokens = <String>[];
 
+    int i = 0;
+    while (i < moveHistoryText.length) {
+      final String c = moveHistoryText[i];
+
+      // (A) If we encounter '{', collect until the matching '}' as a single annotation token.
+      if (c == '{') {
+        final int start = i;
+        i++;
+        int braceLevel = 1;
+        while (i < moveHistoryText.length && braceLevel > 0) {
+          if (moveHistoryText[i] == '{') {
+            braceLevel++;
+          } else if (moveHistoryText[i] == '}') {
+            braceLevel--;
+          }
+          i++;
+        }
+        tokens.add(moveHistoryText.substring(start, i).trim());
+        continue;
+      }
+
+      // (B) Skip whitespace
+      if (RegExp(r'\s').hasMatch(c)) {
+        i++;
+        continue;
+      }
+
+      // (C) Otherwise, collect a normal token until whitespace or '{'
+      final int start = i;
+      while (i < moveHistoryText.length) {
+        final String cc = moveHistoryText[i];
+        if (cc == '{' || RegExp(r'\s').hasMatch(cc)) {
+          break;
+        }
+        i++;
+      }
+      tokens.add(moveHistoryText.substring(start, i).trim());
+    }
+
+    tokens.removeWhere((String t) => t.isEmpty);
+    return tokens;
+  }
+
+  /// 2) Merge tokens:
+  ///   - Combine multiple "x" captures into one move (e.g. "d6-d5" + "xd7" => "d6-d5xd7").
+  ///   - If a new capture token appears, discard previous annotations.
+  ///   - Handle NAG tokens (like !, ?, !?, ?!, !!, ??) with **no space** before them,
+  ///     so the final move looks like "d4!" or "d4!?" etc.
+  ///   - Only one space precedes the "{...}" comment block if there are comments.
+  List<String> _mergeMoves(List<String> tokens) {
+    final List<String> results = <String>[];
+
+    TempMove? current;
+
+    // Flush current move to results.
+    void finalizeCurrent() {
+      if (current != null && current!.moveText.isNotEmpty) {
+        // Construct final string: moveText + (NAGs attached) + optional " {comments...}"
+        final StringBuffer sb = StringBuffer(current!.moveText);
+
+        // If we have NAGs, append them directly with no space before them.
+        // e.g., if nags = ["!", "?"] => moveText + "!?"
+        if (current!.nags.isNotEmpty) {
+          sb.write(current!.nags.join());
+        }
+
+        // If we have comments, add exactly one space before the {..} block.
+        if (current!.comments.isNotEmpty) {
+          final String joinedComments =
+              current!.comments.map(_stripBraces).join(' ');
+          sb.write(' {$joinedComments}');
+        }
+
+        results.add(sb.toString());
+      }
+      current = null;
+    }
+
+    // Check if token is a typical NAG.
+    bool isNAG(String token) {
+      const List<String> nagTokens = <String>['!', '?', '!!', '??', '!?', '?!'];
+      return nagTokens.contains(token);
+    }
+
+    for (final String token in tokens) {
+      // (A) If it's an annotation block { ... }, store inside comments.
+      if (token.startsWith('{') && token.endsWith('}')) {
+        current ??= TempMove();
+        final String inside = _stripOuterBraces(token).trim();
+        current!.comments.add(inside);
+        continue;
+      }
+
+      // (B) If this token is a typical NAG (e.g., !, ?, !?, ?!, !!, ??),
+      // attach it directly to the move text with no preceding space.
+      if (isNAG(token)) {
+        current ??= TempMove();
+        current!.nags.add(token);
+        continue;
+      }
+
+      // (C) If token starts with 'x', treat it as a capture.
+      if (token.startsWith('x')) {
+        if (current == null) {
+          current = TempMove()
+            ..moveText = token
+            ..hasX = true;
+        } else {
+          // If previous move did not have 'x', discard previous annotations/NAGs.
+          if (!current!.hasX) {
+            current!.comments.clear();
+            current!.nags
+                .clear(); // NAGs also get discarded if a new 'x' appears
+          }
+          // Merge capture into the moveText
+          current!.moveText += token;
+          current!.hasX = true;
+        }
+        continue;
+      }
+
+      // (D) Otherwise, this is a new move token; finalize the previous one first.
+      finalizeCurrent();
+      current = TempMove()..moveText = token;
+    }
+
+    // Finalize the last move if any.
+    finalizeCurrent();
+    return results;
+  }
+
+  /// Strip outer braces from an annotation block like "{...}".
+  String _stripOuterBraces(String block) {
+    if (block.startsWith('{') && block.endsWith('}') && block.length >= 2) {
+      return block.substring(1, block.length - 1);
+    }
+    return block;
+  }
+
+  /// Remove all braces inside the text to avoid nested braces issues.
+  String _stripBraces(String text) {
+    return text.replaceAll('{', '').replaceAll('}', '');
+  }
+
+  /// Merge all moves, preserving optional [FEN] block (if present) as the first item.
+  List<String> _getMergedMoves(GameController controller) {
+    final String moveHistoryText = controller.gameRecorder.moveHistoryText;
     final List<String> mergedMoves = <String>[];
     String remainingText = moveHistoryText;
 
-    // Check if the first character is '['
-    if (moveHistoryText.startsWith('[')) {
-      // Find the position of the last ']'
-      final int endIndex = moveHistoryText.lastIndexOf(']') + 1;
-      if (endIndex > 0) {
-        // Add the part from '[' to ']' as the first merged move
-        mergedMoves.add(moveHistoryText.substring(0, endIndex));
-        // Update the remaining text to be processed
-        remainingText = moveHistoryText.substring(endIndex).trim();
+    // If the string starts with '[', treat it as FEN/PGN tag block.
+    if (remainingText.startsWith('[')) {
+      final int bracketEnd = remainingText.lastIndexOf(']') + 1;
+      if (bracketEnd > 0) {
+        mergedMoves.add(remainingText.substring(0, bracketEnd));
+        remainingText = remainingText.substring(bracketEnd).trim();
       }
     }
 
-    // Split the remaining text by whitespace, filter, and process
-    final List<String> moves = remainingText
-        .split(RegExp(r'\s+'))
-        .where((String s) => s.isNotEmpty && !s.contains('.'))
-        .toList();
+    // (1) Lexical split (treat { ... } as single token).
+    final List<String> rawTokens = _lexTokens(remainingText);
 
-    // Process each move and merge if necessary
-    for (final String move in moves) {
-      if (move.startsWith('x') &&
-          mergedMoves.isNotEmpty &&
-          !mergedMoves[mergedMoves.length - 1].contains('[') &&
-          !mergedMoves[mergedMoves.length - 1].contains(']')) {
-        mergedMoves[mergedMoves.length - 1] += move;
-      } else {
-        mergedMoves.add(move);
-      }
-    }
+    // (2) Merge tokens (capture merges, NAG merges, annotation merges).
+    final List<String> moves = _mergeMoves(rawTokens);
 
+    mergedMoves.addAll(moves);
     return mergedMoves;
   }
 
-  Widget _buildMoveListItem(BuildContext context, List<String> mergedMoves,
-      String? fen, int index, ValueNotifier<int?> selectedIndex) {
+  Widget _buildMoveListItem(
+    BuildContext context,
+    List<String> mergedMoves,
+    String? fen,
+    int index,
+    ValueNotifier<int?> selectedIndex,
+  ) {
     final int moveIndex = index * 2;
     final List<InlineSpan> spans = <InlineSpan>[];
-
-    spans.add(
-      WidgetSpan(
-        child: Text(
-          '${(index + 1).toString().padLeft(3)}.  ',
-          style: _getTitleTextStyle(context),
-          textDirection: TextDirection.ltr,
-        ),
-      ),
-    );
 
     for (int i = 0; i < 2; i++) {
       if (moveIndex + i >= mergedMoves.length) {

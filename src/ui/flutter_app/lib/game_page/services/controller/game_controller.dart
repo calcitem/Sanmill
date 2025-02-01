@@ -182,7 +182,7 @@ class GameController {
         return const EngineResponseSkip();
       }
 
-      if (!GameController().gameRecorder.isClean) {
+      if (!GameController().gameRecorder.isAtEnd()) {
         return const EngineResponseSkip();
       }
     } else {
@@ -359,9 +359,11 @@ class GameController {
       reversed = true;
     }
 
-    if (!GameController().gameRecorder.isClean) {
+    if (!GameController().gameRecorder.isAtEnd()) {
       logger.i("$tag History is not clean. Prune, and think now.");
-      GameController().gameRecorder.prune();
+      GameController()
+          .gameRecorder
+          .prune(); // bridging method; will remove in Phase 3
     }
 
     final String strTimeout = S.of(context).timeout;
@@ -396,7 +398,9 @@ class GameController {
   }
 
   void showSnakeBarHumanNotation(String humanStr) {
-    final String? n = gameRecorder.lastF?.notation;
+    final List<ExtMove> moves = gameRecorder.mainlineMoves;
+    final ExtMove? lastMove = moves.isNotEmpty ? moves.last : null;
+    final String? n = lastMove?.notation;
 
     if (DB().generalSettings.screenReaderSupport &&
         GameController().position.action != Act.remove &&

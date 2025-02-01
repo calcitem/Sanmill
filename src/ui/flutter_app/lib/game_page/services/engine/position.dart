@@ -614,9 +614,6 @@ class Position {
       case MoveType.none:
         // ignore: only_throw_errors
         throw const EngineNoBestMove();
-      case null:
-        logger.e("Invalid MoveType");
-        break;
     }
 
     if (!ret) {

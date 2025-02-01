@@ -332,7 +332,7 @@ class PgnNodeData {
   final String san;
 
   /// PGN comments before the move.
-  List<String>? startingComments;
+  final List<String>? startingComments;
 
   /// PGN comments after the move.
   List<String>? comments;

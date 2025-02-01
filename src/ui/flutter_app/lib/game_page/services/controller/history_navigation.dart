@@ -198,39 +198,50 @@ class HistoryNavigator {
       [int? number]) async {
     bool ret = true;
 
-    final HistoryResponse resp =
-        navMode.gotoHistory(number); // Only change index
-
+    // 1) Move the recorder index to the correct spot
+    final HistoryResponse resp = navMode.gotoHistory(number);
     if (resp != const HistoryOK()) {
       return resp;
     }
 
-    // Backup context
-    final GameMode gameModeBackup = GameController().gameInstance.gameMode;
+    // 2) Temporarily set the game mode to humanVsHuman
+    final GameMode backupMode = GameController().gameInstance.gameMode;
     GameController().gameInstance.gameMode = GameMode.humanVsHuman;
 
     if (GameController().newGameRecorder == null) {
       GameController().newGameRecorder = GameController().gameRecorder;
     }
 
+    // 3) Reset board, replay moves up to the new index
     GameController().reset();
     posKeyHistory.clear();
 
-    GameController().newGameRecorder!.forEachVisible((ExtMove extMove) async {
-      if (GameController().gameInstance.doMove(extMove) == false) {
-        if (GameController().newGameRecorder != null) {
-          GameController().newGameRecorder!.prune();
+    final GameRecorder tempRec = GameController().newGameRecorder!;
+
+    // Reapply all visible moves using the PGN tree interface instead of legacy index-based access.
+    // Instead of iterating over 0..recorder.index, iterate over the mainlineMoves list.
+    final int? visibleIndex = tempRec.index;
+    if (visibleIndex != null) {
+      // Take the visible moves up to the current index.
+      final Iterable<ExtMove> visibleMoves =
+          tempRec.mainlineMoves.take(visibleIndex + 1);
+
+      for (final ExtMove extMove in visibleMoves) {
+        if (!GameController().gameInstance.doMove(extMove)) {
+          tempRec.prune();
           importFailedStr = extMove.notation;
           ret = false;
+          break;
         }
       }
-    });
+    }
 
-    // Restore context
-    GameController().gameInstance.gameMode = gameModeBackup;
+    // 4) Restore context
+    GameController().gameInstance.gameMode = backupMode;
+
     final String? lastPositionWithRemove =
         GameController().gameRecorder.lastPositionWithRemove;
-    GameController().gameRecorder = GameController().newGameRecorder!;
+    GameController().gameRecorder = tempRec; // adopt the updated recorder
     GameController().gameRecorder.lastPositionWithRemove =
         lastPositionWithRemove;
     GameController().newGameRecorder = null;

@@ -333,6 +333,17 @@ extension GameResultExtension on GameResult {
         return S.of(context).isDraw;
     }
   }
+
+  String toNagString() {
+    switch (this) {
+      case GameResult.win:
+        return "1-0";
+      case GameResult.lose:
+        return "0-1";
+      case GameResult.draw:
+        return "1/2-1/2";
+    }
+  }
 }
 
 const int valueUnique = 100;
