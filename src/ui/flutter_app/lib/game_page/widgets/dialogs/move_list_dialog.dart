@@ -33,6 +33,9 @@ class MoveListDialog extends StatelessWidget {
     }
     final int movesCount = (mergedMoves.length + 1) ~/ 2;
     final int fenHeight = fen == null ? 2 : 14;
+    // Determine if any move contains a comment block.
+    final bool globalHasComment =
+        mergedMoves.any((String move) => move.contains('{'));
 
     if (DB().generalSettings.screenReaderSupport) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -88,6 +91,7 @@ class MoveListDialog extends StatelessWidget {
                   fen,
                   index,
                   selectedIndex,
+                  globalHasComment,
                 ),
               ),
             ],
@@ -150,15 +154,28 @@ class MoveListDialog extends StatelessWidget {
     );
   }
 
-  /// 1) Tokenize the move history string, treating annotation blocks `{...}` as single tokens.
+  /// Returns a text style for move text.
+  /// If any move contains a comment block, the overall font size is reduced.
+  TextStyle _getMoveTextStyle(BuildContext context, bool hasComment) {
+    final TextStyle baseStyle = _getTitleTextStyle(context);
+    if (hasComment) {
+      return baseStyle.copyWith(fontSize: baseStyle.fontSize! * 0.5);
+    }
+    return baseStyle;
+  }
+
+  /// Tokenize the move history string, treating annotation blocks `{...}` as single tokens.
+  /// Filter out:
+  ///   1) Empty/whitespace-only tokens
+  ///   2) Tokens that match "digits + '.' + optional whitespace"
   List<String> _lexTokens(String moveHistoryText) {
     final List<String> tokens = <String>[];
-
     int i = 0;
+
     while (i < moveHistoryText.length) {
       final String c = moveHistoryText[i];
 
-      // (A) If we encounter '{', collect until the matching '}' as a single annotation token.
+      // (A) If we encounter '{', collect until the matching '}' as one annotation token.
       if (c == '{') {
         final int start = i;
         i++;
@@ -171,17 +188,20 @@ class MoveListDialog extends StatelessWidget {
           }
           i++;
         }
-        tokens.add(moveHistoryText.substring(start, i).trim());
+        final String block = moveHistoryText.substring(start, i).trim();
+        if (block.isNotEmpty) {
+          tokens.add(block);
+        }
         continue;
       }
 
-      // (B) Skip whitespace
+      // (B) Skip whitespace characters directly.
       if (RegExp(r'\s').hasMatch(c)) {
         i++;
         continue;
       }
 
-      // (C) Otherwise, collect a normal token until whitespace or '{'
+      // (C) Otherwise, collect a normal token until whitespace or '{'.
       final int start = i;
       while (i < moveHistoryText.length) {
         final String cc = moveHistoryText[i];
@@ -190,10 +210,25 @@ class MoveListDialog extends StatelessWidget {
         }
         i++;
       }
-      tokens.add(moveHistoryText.substring(start, i).trim());
+
+      // Extract and trim the token.
+      final String rawToken = moveHistoryText.substring(start, i);
+      final String trimmed = rawToken.trim();
+
+      // 1) Skip if the token is empty or whitespace-only.
+      if (trimmed.isEmpty) {
+        continue;
+      }
+      // 2) Skip if the token matches "digits + '.' + optional whitespace".
+      //    Example matches: "1.", "12.", "3.   "
+      if (RegExp(r'^\d+\.\s*$').hasMatch(trimmed)) {
+        continue;
+      }
+
+      // If it doesn't match any skip rules, add it to our tokens list.
+      tokens.add(trimmed);
     }
 
-    tokens.removeWhere((String t) => t.isEmpty);
     return tokens;
   }
 
@@ -329,73 +364,100 @@ class MoveListDialog extends StatelessWidget {
     String? fen,
     int index,
     ValueNotifier<int?> selectedIndex,
+    bool globalHasComment,
   ) {
-    final int moveIndex = index * 2;
-    final List<InlineSpan> spans = <InlineSpan>[];
+    // White and black indices
+    final int whiteIndex = index * 2;
+    final int blackIndex = whiteIndex + 1;
 
-    for (int i = 0; i < 2; i++) {
-      if (moveIndex + i >= mergedMoves.length) {
-        break;
-      }
-
-      final String moveText = DB().generalSettings.screenReaderSupport
-          ? mergedMoves[moveIndex + i].toUpperCase()
-          : mergedMoves[moveIndex + i];
-      spans.add(
-        WidgetSpan(
-          child: ValueListenableBuilder<int?>(
-            key: Key(
-                'move_list_dialog_move_item_${moveIndex + i}_value_listenable_builder'),
-            valueListenable: selectedIndex,
-            builder: (BuildContext context, int? value, Widget? child) {
-              final bool isSelected = value == moveIndex + i;
-              return InkWell(
-                key: Key('move_list_dialog_move_item_${moveIndex + i}_inkwell'),
-                onTap: () {
-                  selectedIndex.value = moveIndex + i;
-                  _importGame(context, mergedMoves, fen, moveIndex + i);
-                },
-                child: Container(
-                  key: Key(
-                      'move_list_dialog_move_item_${moveIndex + i}_container'),
-                  padding: const EdgeInsets.only(right: 24.0),
-                  color: isSelected
-                      ? AppTheme.gamePageActionSheetTextBackgroundColor
-                      : null,
-                  child: Text(
-                    moveText,
-                    key:
-                        Key('move_list_dialog_move_item_${moveIndex + i}_text'),
-                    style: _getTitleTextStyle(context).copyWith(
-                      color: isSelected
-                          ? AppTheme.gamePageActionSheetTextColor
-                          : AppTheme.gamePageActionSheetTextColor,
-                    ),
-                    textDirection: TextDirection.ltr,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-      );
+    // If we run out of tokens for the white move, skip the entire row.
+    if (whiteIndex >= mergedMoves.length) {
+      return const SizedBox.shrink();
     }
 
-    return Padding(
-      key: Key('move_list_dialog_move_item_${index}_padding'),
-      padding: EdgeInsets.zero,
-      child: ListTile(
-        key: Key('move_list_dialog_move_item_${index}_list_tile'),
-        dense: true,
-        title: Text.rich(
-          TextSpan(
-            children: spans,
-            style: const TextStyle(height: 1.2),
+    final String whiteMove = mergedMoves[whiteIndex];
+    // blackMove might be missing when the total moves are odd
+    final String? blackMove =
+        (blackIndex < mergedMoves.length) ? mergedMoves[blackIndex] : null;
+
+    // If both whiteMove and blackMove are empty (unlikely unless input is weird), skip the row
+    if (whiteMove.isEmpty && (blackMove?.isEmpty ?? true)) {
+      return const SizedBox.shrink();
+    }
+
+    // Return a tile with up to 3 columns:
+    // 1) Leading = row number (e.g. "1.")
+    // 2) White move
+    // 3) Black move (optional)
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: Text(
+        '${index + 1}.',
+        style: _getTitleTextStyle(context),
+      ),
+      title: Row(
+        children: <Widget>[
+          // White move
+          Expanded(
+            child: ValueListenableBuilder<int?>(
+              valueListenable: selectedIndex,
+              builder: (BuildContext context, int? value, Widget? child) {
+                final bool isSelected = (value == whiteIndex);
+                return InkWell(
+                  onTap: () {
+                    selectedIndex.value = whiteIndex;
+                    _importGame(context, mergedMoves, fen, whiteIndex);
+                  },
+                  child: Container(
+                    color: isSelected
+                        ? AppTheme.gamePageActionSheetTextBackgroundColor
+                        : null,
+                    padding: const EdgeInsets.only(right: 24.0),
+                    child: Text(
+                      whiteMove,
+                      style:
+                          _getMoveTextStyle(context, globalHasComment).copyWith(
+                        color: AppTheme.gamePageActionSheetTextColor,
+                      ),
+                      textDirection: TextDirection.ltr,
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
-          key: Key('move_list_dialog_move_item_${index}_text_rich'),
-          textDirection: TextDirection.ltr,
-        ),
-        contentPadding: EdgeInsets.zero,
+
+          // Black move (only render if exists)
+          if (blackMove != null)
+            Expanded(
+              child: ValueListenableBuilder<int?>(
+                valueListenable: selectedIndex,
+                builder: (BuildContext context, int? value, Widget? child) {
+                  final bool isSelected = (value == blackIndex);
+                  return InkWell(
+                    onTap: () {
+                      selectedIndex.value = blackIndex;
+                      _importGame(context, mergedMoves, fen, blackIndex);
+                    },
+                    child: Container(
+                      color: isSelected
+                          ? AppTheme.gamePageActionSheetTextBackgroundColor
+                          : null,
+                      padding: const EdgeInsets.only(right: 24.0),
+                      child: Text(
+                        blackMove,
+                        style: _getMoveTextStyle(context, globalHasComment)
+                            .copyWith(
+                          color: AppTheme.gamePageActionSheetTextColor,
+                        ),
+                        textDirection: TextDirection.ltr,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+        ],
       ),
     );
   }
