@@ -187,12 +187,27 @@ class HeaderTip extends StatefulWidget {
 class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
+  /// Indicates whether the tip is being edited.
+  bool _isEditing = false;
+
+  /// FocusNode to detect taps outside the editable area to exit editing mode.
+  late final FocusNode _focusNode;
+
+  /// Controller for the editable text field.
+  late final TextEditingController _editingController;
+
   @override
   void initState() {
     super.initState();
     GameController().headerTipNotifier.addListener(_showTip);
+
+    // Initialize the FocusNode and controller.
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+    _editingController = TextEditingController(text: _messageNotifier.value);
   }
 
+  /// Displays a tip message from the notifier.
   void _showTip() {
     final HeaderTipNotifier headerTipNotifier =
         GameController().headerTipNotifier;
@@ -202,7 +217,41 @@ class HeaderTipState extends State<HeaderTip> {
           .showSnackBarClear(headerTipNotifier.message);
     }
 
+    // Sync _messageNotifier with the new tip.
     _messageNotifier.value = headerTipNotifier.message;
+    // If currently editing, also update the editing controller text.
+    if (_isEditing) {
+      _editingController.text = headerTipNotifier.message;
+    }
+  }
+
+  /// Called when focus changes; if editing loses focus, finalize the edit.
+  void _handleFocusChange() {
+    if (!_focusNode.hasFocus && _isEditing) {
+      _finalizeEditing();
+    }
+  }
+
+  /// Finalizes editing, updates the displayed text,
+  /// and stores the text as a comment in the active PGN node.
+  void _finalizeEditing() {
+    setState(() {
+      _isEditing = false;
+      final String rawText = _editingController.text;
+
+      // 1) **No longer add braces** to _messageNotifier.value.
+      _messageNotifier.value = rawText;
+
+      // 2) Retrieve current PGN node and update its comments with unbraced text.
+      final PgnNode<ExtMove>? activeNode =
+          GameController().gameRecorder.activeNode;
+      if (activeNode?.data != null) {
+        activeNode!.data!.comments ??= <String>[];
+        activeNode.data!.comments!.clear();
+        // 3) We store unbraced text in the comment.
+        activeNode.data!.comments!.add(rawText);
+      }
+    });
   }
 
   @override
@@ -210,21 +259,119 @@ class HeaderTipState extends State<HeaderTip> {
     return ValueListenableBuilder<String>(
       key: const Key('header_tip_value_listenable_builder'),
       valueListenable: _messageNotifier,
-      builder: (BuildContext context, String value, Widget? child) {
+      builder: (BuildContext context, String currentDisplay, Widget? child) {
+        // Retrieve the active node’s comment, if any.
+        final PgnNode<ExtMove>? activeNode =
+            GameController().gameRecorder.activeNode;
+        // Join all comments for display. (If you only need the first, adjust accordingly.)
+        final String nodeComment =
+            (activeNode?.data?.comments?.isNotEmpty ?? false)
+                ? activeNode!.data!.comments!.join(' ')
+                : "";
+
+        // If there’s an existing comment in the PGN node, show it in yellow.
+        // Otherwise, use _messageNotifier.value with original color.
+        final bool hasNodeComment = nodeComment.isNotEmpty;
+        final String textToShow = hasNodeComment
+            ? nodeComment // **Do not add braces**
+            : (currentDisplay.isEmpty ? S.of(context).welcome : currentDisplay);
+
+        // Decide the color: yellow if PGN node has a comment, otherwise normal.
+        final Color displayColor =
+            hasNodeComment ? Colors.yellow : DB().colorSettings.messageColor;
+
+        // Now build UI. If editing, show a TextField. If not, show static text.
         return Semantics(
           key: const Key('header_tip_semantics'),
           enabled: true,
-          child: SizedBox(
-            key: const Key('header_tip_sized_box'),
-            height: 24 * DB().displaySettings.fontScale,
-            child: Text(
-              value.isEmpty ? S.of(context).welcome : value,
-              key: const Key('header_tip_text'),
-              maxLines: 1,
-              style: TextStyle(
-                color: DB().colorSettings.messageColor,
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+          child: GestureDetector(
+            onTap: () {
+              // 3) If tapped and we are NOT editing, enter edit mode.
+              if (!_isEditing) {
+                setState(() {
+                  _isEditing = true;
+
+                  // Compare the text currently visible vs. nodeComment.
+                  final String visibleRaw = textToShow;
+                  if (visibleRaw != nodeComment) {
+                    // If they differ, clear the editor.
+                    _editingController.text = "";
+                  } else {
+                    // Otherwise, keep the node comment.
+                    _editingController.text = nodeComment;
+                  }
+                });
+              }
+            },
+            child: SizedBox(
+              key: const Key('header_tip_sized_box'),
+              height: 24 * DB().displaySettings.fontScale,
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if (_isEditing) {
+                    // Editing mode
+                    return TextField(
+                      key: const Key('header_tip_textfield'),
+                      controller: _editingController,
+                      focusNode: _focusNode,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                      onEditingComplete: () {
+                        _finalizeEditing();
+                        // Hide the keyboard
+                        FocusScope.of(context).unfocus();
+                      },
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                      ),
+                    );
+                  } else {
+                    // Read-only mode
+                    final TextSpan span = TextSpan(
+                      text: textToShow,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    );
+                    final TextPainter tp = TextPainter(
+                      text: span,
+                      maxLines: 1,
+                      textDirection: TextDirection.ltr,
+                    );
+                    tp.layout(maxWidth: constraints.maxWidth);
+
+                    // If text doesn't exceed max width, center it; otherwise left-align.
+                    final bool fits = !tp.didExceedMaxLines;
+
+                    return Text(
+                      textToShow,
+                      key: const Key('header_tip_text'),
+                      maxLines: 1,
+                      textAlign: fits ? TextAlign.center : TextAlign.left,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ),
@@ -236,6 +383,8 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   void dispose() {
     GameController().headerTipNotifier.removeListener(_showTip);
+    _focusNode.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 }
