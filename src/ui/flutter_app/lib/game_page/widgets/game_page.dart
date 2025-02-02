@@ -35,6 +35,7 @@ import '../services/animation/animation_manager.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
+import 'moves_list_page.dart';
 import 'play_area.dart';
 import 'toolbars/game_toolbar.dart';
 import 'vignette_overlay.dart';

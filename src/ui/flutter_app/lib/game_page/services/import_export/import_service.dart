@@ -258,6 +258,51 @@ class ImportService {
     }
   }
 
+  /// Replays all nodes to assign a boardLayout to each node's node.data.
+  static void fillAllNodesBoardLayout(PgnNode<ExtMove> root,
+      {String? setupFen}) {
+    final Position pos = Position();
+
+    // If there is a specific initial FEN, set it first.
+    if (setupFen != null && setupFen.isNotEmpty) {
+      pos.setFen(setupFen);
+    } else {
+      // If no custom FEN is provided, use the standard starting FEN
+      // or an empty board FEN, depending on rules.
+      pos.reset();
+    }
+
+    void dfs(PgnNode<ExtMove> node, Position currentPos) {
+      // If node.data is not null, it represents a move.
+      if (node.data != null) {
+        final ExtMove move = node.data!;
+        // Execute this move in the current position.
+        final bool ok = currentPos.doMove(move.move);
+        if (!ok) {
+          // If an illegal move is encountered, choose to throw an
+          // exception or skip it based on requirements.
+          // throw StateError("Unable to replay move: ${move.move}");
+          return;
+        }
+        // After replaying, store the current board layout in node.data.
+        move.boardLayout = currentPos.generateBoardLayoutAfterThisMove();
+      }
+
+      // Iterate through child nodes.
+      for (final PgnNode<ExtMove> child in node.children) {
+        // Clone the current position state before recursion.
+        final Position saved = currentPos.clone();
+        // Recursively process child nodes.
+        dfs(child, currentPos);
+        // Restore the position after recursion.
+        currentPos.copyWith(saved);
+      }
+    }
+
+    // Start a depth-first traversal from the root.
+    dfs(root, pos);
+  }
+
   /// For standard PGN strings containing headers and moves, parse them
   /// with the pgn.dart parser, convert SAN moves to UCI notation, and store.
   static void _importPgn(String moveList) {
@@ -355,6 +400,7 @@ class ImportService {
 
     if (newHistory.mainlineMoves.isNotEmpty ||
         (fen != null && fen.isNotEmpty)) {
+      fillAllNodesBoardLayout(newHistory.pgnRoot, setupFen: fen);
       GameController().newGameRecorder = newHistory;
     }
 

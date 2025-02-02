@@ -233,6 +233,62 @@ class HistoryNavigator {
     return success ? const HistoryOK() : const HistoryRule();
   }
 
+  static Future<HistoryResponse?> gotoNode(
+    BuildContext context,
+    PgnNode<ExtMove> targetNode, {
+    bool pop = true,
+  }) async {
+    // Temporarily disable the controller and stop engine searching
+    GameController().isControllerActive = false;
+    GameController().engine.stopSearching();
+
+    // Build the path from root to the targetNode
+    final List<PgnNode<ExtMove>> path = <PgnNode<ExtMove>>[];
+    PgnNode<ExtMove>? cur = targetNode;
+    while (cur != null) {
+      path.insert(0, cur);
+      cur = cur.parent;
+    }
+
+    // Save the original game mode
+    final GameMode backupMode = GameController().gameInstance.gameMode;
+    // Force into humanVsHuman so we can freely replay moves
+    GameController().gameInstance.gameMode = GameMode.humanVsHuman;
+
+    // Reset the board, clear position history, and replay moves on the path
+    GameController().reset();
+    posKeyHistory.clear();
+
+    bool success = true;
+    for (final PgnNode<ExtMove> node in path) {
+      if (node.data != null) {
+        final bool ok = GameController().gameInstance.doMove(node.data!);
+        if (!ok) {
+          importFailedStr = node.data!.notation;
+          success = false;
+          break;
+        }
+      }
+    }
+
+    // Restore game mode
+    GameController().gameInstance.gameMode = backupMode;
+
+    // Update the active node to the target
+    GameController().gameRecorder.activeNode = targetNode;
+
+    // Re-enable the controller
+    GameController().isControllerActive = true;
+    SoundManager().unMute();
+
+    // Optionally close the current route if pop == true
+    if (pop && context.mounted) {
+      Navigator.pop(context);
+    }
+
+    return success ? const HistoryOK() : const HistoryRule();
+  }
+
   /// Move HEAD up by `n` steps if possible
   static void _takeBack(int n) {
     while (n-- > 0) {

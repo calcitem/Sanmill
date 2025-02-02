@@ -731,7 +731,11 @@ class Position {
       _currentSquare[sideToMove] = 0;
       _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
 
-      _record = ExtMove("(${fileOf(s)},${rankOf(s)})");
+      // Record includes boardLayout
+      _record = ExtMove(
+        "(${fileOf(s)},${rankOf(s)})",
+        boardLayout: generateBoardLayoutAfterThisMove(),
+      );
 
       _updateKey(s);
 
@@ -943,8 +947,11 @@ class Position {
       }
     }
 
+    // Include boardLayout
     _record = ExtMove(
-      "(${fileOf(_currentSquare[sideToMove]!)},${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
+      "(${fileOf(_currentSquare[sideToMove]!)},"
+      "${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
+      boardLayout: generateBoardLayoutAfterThisMove(),
     );
 
     st.rule50++;
@@ -1065,7 +1072,11 @@ class Position {
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
-    _record = ExtMove("-(${fileOf(s)},${rankOf(s)})");
+    // Record includes boardLayout
+    _record = ExtMove(
+      "-(${fileOf(s)},${rankOf(s)})",
+      boardLayout: generateBoardLayoutAfterThisMove(),
+    );
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[_them] != null) {
@@ -1616,6 +1627,44 @@ class Position {
     assert(!result.contains('-('));
 
     return result;
+  }
+
+  // ----------------------------------------------------------------------------------------
+  // Dynamic board layout string in ExtMove
+  // ----------------------------------------------------------------------------------------
+
+  /// generateBoardLayoutAfterThisMove returns a 3-rings layout string,
+  /// each ring has 8 positions, representing the outer/middle/inner ring.
+  /// For example: "OO***@**/@@**O@*@/O@O*@*O*"
+  /// 'O' means White, '@' means Black, '*' means None or empty.
+  String generateBoardLayoutAfterThisMove() {
+    // <-- ADDED
+    // Helper to map PieceColor to a single char
+    String pieceChar(PieceColor c) {
+      if (c == PieceColor.white) {
+        return 'O';
+      }
+      if (c == PieceColor.black) {
+        return '@';
+      }
+      return '*';
+    }
+
+    // We know squares 8..15 = outer ring, 16..23 = middle ring, 24..31 = inner ring
+    String ringToString(int startIndex) {
+      final StringBuffer sb = StringBuffer();
+      for (int i = 0; i < 8; i++) {
+        final PieceColor p = _board[startIndex + i];
+        sb.write(pieceChar(p));
+      }
+      return sb.toString();
+    }
+
+    final String outer = ringToString(8);
+    final String middle = ringToString(16);
+    final String inner = ringToString(24);
+
+    return "$outer/$middle/$inner";
   }
 }
 

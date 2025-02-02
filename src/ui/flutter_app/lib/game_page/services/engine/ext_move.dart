@@ -41,6 +41,7 @@ class ExtMove extends PgnNodeData {
   /// If you prefer, you can unify "move" and "san" as well.
   ExtMove(
     this.move, {
+    this.boardLayout,
     super.nags,
     super.startingComments,
     super.comments,
@@ -62,6 +63,9 @@ class ExtMove extends PgnNodeData {
 
   /// 'to' square (computed from 'move').
   final int to;
+
+  /// The board layout after the move.
+  String? boardLayout;
 
   static const String _logTag = "[Move]";
 
