@@ -45,8 +45,8 @@ class GameOptionsModal extends StatelessWidget {
 
             if (GameController().position.phase == Phase.ready ||
                 (GameController().position.phase == Phase.placing &&
-                    (GameController().gameRecorder.index != null &&
-                        GameController().gameRecorder.index! <= 3)) ||
+                    (GameController().gameRecorder.mainlineMoves.length <=
+                        3)) ||
                 GameController().position.phase == Phase.gameOver) {
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
@@ -91,7 +91,7 @@ class GameOptionsModal extends StatelessWidget {
         ),
         const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             key: const Key('save_game_option'),
@@ -102,7 +102,7 @@ class GameOptionsModal extends StatelessWidget {
             ),
           ),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb)
@@ -131,11 +131,11 @@ class GameOptionsModal extends StatelessWidget {
             ),
           ),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
             key: const Key('export_game_option'),

@@ -132,7 +132,7 @@ class ImportService {
     }
 
     final String plyCountTag =
-        '[PlyCount "${GameController().gameRecorder.length}"]\r\n';
+        '[PlyCount "${GameController().gameRecorder.mainlineMoves.length}"]\r\n';
 
     String tagPairs = '[Event "Sanmill-Game"]\r\n'
         '[Site "Sanmill"]\r\n'
@@ -243,18 +243,18 @@ class ImportService {
         final int iX = i.indexOf("x");
         if (iX == -1) {
           final String m = _playOkNotationToMoveString(i);
-          newHistory.add(ExtMove(m));
+          newHistory.appendMove(ExtMove(m));
         } else if (iX != -1) {
           final String m1 = _playOkNotationToMoveString(i.substring(0, iX));
-          newHistory.add(ExtMove(m1));
+          newHistory.appendMove(ExtMove(m1));
 
           final String m2 = _playOkNotationToMoveString(i.substring(iX));
-          newHistory.add(ExtMove(m2));
+          newHistory.appendMove(ExtMove(m2));
         }
       }
     }
 
-    if (newHistory.isNotEmpty) {
+    if (newHistory.mainlineMoves.isNotEmpty) {
       GameController().newGameRecorder = newHistory;
     }
   }
@@ -339,7 +339,7 @@ class ImportService {
         }
         try {
           final String uciMove = _wmdNotationToMoveString(segment);
-          newHistory.add(ExtMove(uciMove));
+          newHistory.appendMove(ExtMove(uciMove));
         } catch (e) {
           logger.e("$_logTag Failed to parse move segment '$segment': $e");
           throw ImportFormatException("Invalid move segment: $segment");
@@ -347,7 +347,8 @@ class ImportService {
       }
     }
 
-    if (newHistory.isNotEmpty || (fen != null && fen.isNotEmpty)) {
+    if (newHistory.mainlineMoves.isNotEmpty ||
+        (fen != null && fen.isNotEmpty)) {
       GameController().newGameRecorder = newHistory;
     }
 

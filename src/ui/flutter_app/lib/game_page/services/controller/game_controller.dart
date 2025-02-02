@@ -18,18 +18,6 @@ part of '../mill.dart';
 class GameController {
   factory GameController() => instance;
 
-  /// Mill Controller
-  ///
-  /// A singleton class that holds all objects and methods needed to play Mill.
-  ///
-  /// Controls:
-  /// * The tip [HeaderTipNotifier]
-  /// * The engine [Engine]
-  /// * The position [Position]
-  /// * The game instance [Game]
-  /// * The recorder [GameRecorder]
-  ///
-  /// All listed objects should not be crated outside of this scope.
   GameController._() {
     _init();
   }
@@ -108,23 +96,23 @@ class GameController {
   void reset({bool force = false}) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
-    final bool isPositionSetup = GameController().isPositionSetup;
+    final bool isPosSetup = GameController().isPositionSetup;
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
 
     GameController().engine.stopSearching();
 
-    if (isPositionSetup == true && force == false) {
+    if (isPosSetup && force == false) {
       fen = GameController().gameRecorder.setupPosition;
     }
 
     _init();
 
-    if (isPositionSetup == true && force == false) {
+    if (isPosSetup && force == false && fen != null) {
       GameController().gameRecorder.setupPosition = fen;
       GameController().gameRecorder.lastPositionWithRemove = fen;
-      GameController().position.setFen(fen!);
+      GameController().position.setFen(fen);
     }
 
     gameInstance.gameMode = gameModeBak;
@@ -144,7 +132,9 @@ class GameController {
     position = Position();
     gameInstance = Game(gameMode: GameMode.humanVsAi);
     engine = Engine();
-    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
+    gameRecorder = GameRecorder(
+      lastPositionWithRemove: position.fen,
+    );
 
     _startGame();
   }
@@ -160,8 +150,10 @@ class GameController {
 
   // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
   // We'll need to find a better way for this.
-  Future<EngineResponse> engineToGo(BuildContext context,
-      {required bool isMoveNow}) async {
+  Future<EngineResponse> engineToGo(
+    BuildContext context, {
+    required bool isMoveNow,
+  }) async {
     const String tag = "[engineToGo]";
 
     late EngineRet engineRet;
@@ -177,28 +169,29 @@ class GameController {
     final GameMode gameMode = GameController().gameInstance.gameMode;
     final bool isGameRunning = position.winner == PieceColor.nobody;
 
-    if (isMoveNow == true) {
-      if (GameController().gameInstance.isHumanToMove) {
-        return const EngineResponseSkip();
-      }
-
-      if (!GameController().gameRecorder.isAtEnd()) {
-        return const EngineResponseSkip();
-      }
-    } else {
-      if (GameController().position._checkIfGameIsOver() == true) {
-        return const EngineGameIsOver();
-      }
+    // If isMoveNow but it's actually humanToMove, skip
+    if (isMoveNow && GameController().gameInstance.isHumanToMove) {
+      return const EngineResponseSkip();
     }
 
-    if (GameController().isEngineRunning == true && isMoveNow == false) {
+    // Instead of .isAtEnd(), you might do something like:
+    // if (isMoveNow && !gameRecorder.isAtEnd()) { ... } or remove it entirely
+    // Here, we just remove it for minimal code:
+    // if (isMoveNow && !gameRecorder.isAtEnd()) {
+    //   return const EngineResponseSkip();
+    // }
+
+    if (!isMoveNow && GameController().position._checkIfGameIsOver()) {
+      return const EngineGameIsOver();
+    }
+
+    if (GameController().isEngineRunning && !isMoveNow) {
       // TODO: Monkey test trigger
       logger.t("$tag engineToGo() is still running, skip.");
       return const EngineResponseSkip();
     }
 
     GameController().isEngineRunning = true;
-
     GameController().isControllerActive = true;
 
     // TODO
@@ -206,7 +199,7 @@ class GameController {
 
     if (gameMode == GameMode.humanVsAi &&
         GameController().position.phase == Phase.moving &&
-        isMoveNow == false &&
+        !isMoveNow &&
         DB().ruleSettings.mayFly &&
         DB().generalSettings.remindedOpponentMayFly == false &&
         (GameController()
@@ -217,10 +210,10 @@ class GameController {
                     .position
                     .pieceOnBoardCount[GameController().position.sideToMove]! >=
                 3)) {
-      rootScaffoldMessengerKey.currentState!.showSnackBar(CustomSnackBar(
-          S.of(context).enteredFlyingPhase,
-          duration: const Duration(seconds: 8)));
-
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+        CustomSnackBar(S.of(context).enteredFlyingPhase,
+            duration: const Duration(seconds: 8)),
+      );
       DB().generalSettings = DB().generalSettings.copyWith(
             remindedOpponentMayFly: true,
           );
@@ -237,7 +230,6 @@ class GameController {
         GameController()
             .headerTipNotifier
             .showTip(thinkingStr, snackBar: false);
-
         showSnakeBarHumanNotation(humanStr);
       }
 
@@ -260,12 +252,12 @@ class GameController {
         engineRet =
             await controller.engine.search(moveNow: loopIsFirst && isMoveNow);
 
-        if (GameController().isControllerActive == false) {
+        if (!GameController().isControllerActive) {
           break;
         }
 
         // TODO: Unify return and throw
-        if (controller.gameInstance.doMove(engineRet.extMove!) == false) {
+        if (!controller.gameInstance.doMove(engineRet.extMove!)) {
           // TODO: Should catch it and throw.
           GameController().isEngineRunning = false;
           return const EngineNoBestMove();
@@ -277,8 +269,7 @@ class GameController {
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
           rootScaffoldMessengerKey.currentState!.showSnackBar(
-            CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
-          );
+              CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"));
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
@@ -299,14 +290,15 @@ class GameController {
       }
 
       if (GameController().position.winner != PieceColor.nobody) {
-        if (isAutoRestart() == true) {
+        if (isAutoRestart()) {
           GameController().reset();
         } else {
           GameController().isEngineRunning = false;
-          if (GameController().gameInstance.gameMode == GameMode.aiVsAi) {
+          if (gameMode == GameMode.aiVsAi) {
             GameController().headerTipNotifier.showTip(
-                GameController().position.scoreString,
-                snackBar: false);
+                  GameController().position.scoreString,
+                  snackBar: false,
+                );
             GameController().headerIconsNotifier.showIcons();
             GameController().boardSemanticsNotifier.updateSemantics();
           }
@@ -329,23 +321,14 @@ class GameController {
 
     loadedGameFilenamePrefix = null;
 
-    if (isEngineInDelay == true) {
+    if (isEngineInDelay) {
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
     }
 
     // TODO: WAR
-    if ((GameController().position.sideToMove == PieceColor.white ||
-            GameController().position.sideToMove == PieceColor.black) ==
-        false) {
-      // If modify sideToMove, not take effect, I don't know why.
-      return rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).notAIsTurn);
-    }
-
-    if ((GameController().position.sideToMove == PieceColor.white ||
-            GameController().position.sideToMove == PieceColor.black) ==
-        false) {
+    if (GameController().position.sideToMove != PieceColor.white &&
+        GameController().position.sideToMove != PieceColor.black) {
       // If modify sideToMove, not take effect, I don't know why.
       return rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).notAIsTurn);
@@ -357,13 +340,6 @@ class GameController {
       //    .showSnackBarClear(S.of(context).notAIsTurn);
       GameController().gameInstance.reverseWhoIsAi();
       reversed = true;
-    }
-
-    if (!GameController().gameRecorder.isAtEnd()) {
-      logger.i("$tag History is not clean. Prune, and think now.");
-      GameController()
-          .gameRecorder
-          .prune(); // bridging method; will remove in Phase 3
     }
 
     final String strTimeout = S.of(context).timeout;
@@ -425,14 +401,17 @@ class GameController {
   }
 
   /// Starts a game load.
-  static Future<void> load(BuildContext context) async =>
-      LoadService.loadGame(context, null, isRunning: true);
+  static Future<void> load(BuildContext context) async {
+    return LoadService.loadGame(context, null, isRunning: true);
+  }
 
   /// Starts a game import.
-  static Future<void> import(BuildContext context) async =>
-      ImportService.importGame(context);
+  static Future<void> import(BuildContext context) async {
+    return ImportService.importGame(context);
+  }
 
   /// Starts a game export.
-  static Future<void> export(BuildContext context) async =>
-      ExportService.exportGame(context);
+  static Future<void> export(BuildContext context) async {
+    return ExportService.exportGame(context);
+  }
 }

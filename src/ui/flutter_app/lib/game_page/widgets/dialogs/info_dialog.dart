@@ -39,7 +39,7 @@ class InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
-    final String? n1 = controller.gameRecorder.current?.notation;
+    final String? n1 = controller.gameRecorder.activeNode?.data.notation;
 
     // Last Move information
     if (n1 != null) {
@@ -57,13 +57,17 @@ class InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         String moveNotation = "";
-        if (controller.gameRecorder.length == 1) {
+        if (controller.gameRecorder.mainlineMoves.length == 1) {
           // TODO: Right? (Issue #686)
           moveNotation = controller
-              .gameRecorder[controller.gameRecorder.length - 1].notation;
-        } else if (controller.gameRecorder.length >= 2) {
+              .gameRecorder
+              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 1]
+              .notation;
+        } else if (controller.gameRecorder.mainlineMoves.length >= 2) {
           moveNotation = controller
-              .gameRecorder[controller.gameRecorder.length - 2].notation;
+              .gameRecorder
+              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
+              .notation;
         }
         // Apply correct case based on screen reader setting
         moveNotation = DB().generalSettings.screenReaderSupport

@@ -1584,30 +1584,38 @@ class Position {
   @visibleForTesting
   String? get movesSinceLastRemove {
     final GameRecorder recorder = GameController().gameRecorder;
-    if (recorder.isEmpty) {
+    final List<ExtMove> moves = recorder.mainlineMoves;
+    if (moves.isEmpty) {
       return null;
     }
 
-    final PointedListIterator<ExtMove> it = recorder.bidirectionalIterator;
-    it.moveToLast();
+    // 1) Start from the *end* of mainlineMoves
+    int idx = moves.length - 1;
 
+    // 2) Go backwards until we see a "-" (remove move) or run out
+    while (idx >= 0 && !moves[idx].move.startsWith('-')) {
+      idx--;
+    }
+
+    // 3) Now move one step forward from that remove, so that we collect
+    //    everything *after* the remove
+    idx++;
+
+    // 4) Gather the moves from that point to the end
     final StringBuffer buffer = StringBuffer();
-
-    while (it.current != null && !it.current!.move.startsWith("-")) {
-      if (!it.movePrevious()) {
-        break;
-      }
+    for (int i = idx; i < moves.length; i++) {
+      buffer.writeSpace(moves[i].move);
     }
 
-    while (it.moveNext()) {
-      buffer.writeSpace(it.current!.move);
+    final String result = buffer.toString();
+    if (result.isEmpty) {
+      return null;
     }
 
-    final String moves = buffer.toString();
+    // The old code had an assert that the final output does not contain '-('
+    assert(!result.contains('-('));
 
-    assert(!moves.contains('-('));
-
-    return moves.isNotEmpty ? moves : null;
+    return result;
   }
 }
 

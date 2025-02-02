@@ -66,7 +66,7 @@ class MoveOptionsModal extends StatelessWidget {
           ),
           const CustomSpacer(),
         ],
-        if (GameController().gameRecorder.hasPrevious ||
+        if (GameController().gameRecorder.activeNode?.parent != null ||
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             key: const Key('show_move_list_option'),

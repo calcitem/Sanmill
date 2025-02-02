@@ -15,7 +15,6 @@ class HistoryNavigator {
   static const String _logTag = "[HistoryNavigator]";
 
   static String importFailedStr = "";
-
   static bool _isGoingToHistory = false;
 
   static Future<HistoryResponse?> _gotoHistory(
@@ -31,7 +30,7 @@ class HistoryNavigator {
       GameController().loadedGameFilenamePrefix = null;
     }
 
-    if (GameController().isEngineInDelay == true) {
+    if (GameController().isEngineInDelay) {
       rootScaffoldMessengerKey.currentState!
           .showSnackBarClear(S.of(context).aiIsDelaying);
       if (pop) {
@@ -45,27 +44,20 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    GameController().headerTipNotifier.showTip(S
-        .of(context)
-        .atEnd); // TODO: Move to the end of this function. Or change to S.of(context).waiting?
-
-    GameController().headerIconsNotifier.showIcons(); // TODO: See above.
+    // TODO: Move to the end of this function. Or change to S.of(context).waiting?
+    GameController().headerTipNotifier.showTip(S.of(context).atEnd);
+    GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
-      logger.i(
-        "$_logTag Is going to history, ignore Take Back button press.",
-      );
-
+      logger.i("$_logTag Is going to history, ignore Take Back button press.");
       if (pop) {
         Navigator.pop(context);
       }
-
       return const HistoryOK();
     }
 
     _isGoingToHistory = true;
-
     SoundManager().mute();
 
     if (navMode == HistoryNavMode.takeBackAll ||
@@ -74,8 +66,7 @@ class HistoryNavigator {
       GameController().animationManager.allowAnimations = false;
     }
 
-    final HistoryResponse resp =
-        await doEachMove(navMode, number); // doMove() to index
+    final HistoryResponse resp = await doEachMove(navMode, number);
 
     GameController().animationManager.allowAnimations = true;
 
@@ -85,7 +76,8 @@ class HistoryNavigator {
 
     switch (resp) {
       case HistoryOK():
-        final ExtMove? lastEffectiveMove = controller.gameRecorder.current;
+        final ExtMove? lastEffectiveMove =
+            controller.gameRecorder.activeNode?.data;
         if (lastEffectiveMove != null) {
           GameController().headerTipNotifier.showTip(
                 S.of(context).lastMove(lastEffectiveMove.notation),
@@ -127,12 +119,8 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(
-      context,
-      HistoryNavMode.takeBack,
-      pop: pop,
-      toolbar: toolbar,
-    );
+    return _gotoHistory(context, HistoryNavMode.takeBack,
+        pop: pop, toolbar: toolbar);
   }
 
   static Future<HistoryResponse?> stepForward(
@@ -140,12 +128,8 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(
-      context,
-      HistoryNavMode.stepForward,
-      pop: pop,
-      toolbar: toolbar,
-    );
+    return _gotoHistory(context, HistoryNavMode.stepForward,
+        pop: pop, toolbar: toolbar);
   }
 
   static Future<HistoryResponse?> takeBackAll(
@@ -153,12 +137,8 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(
-      context,
-      HistoryNavMode.takeBackAll,
-      pop: pop,
-      toolbar: toolbar,
-    );
+    return _gotoHistory(context, HistoryNavMode.takeBackAll,
+        pop: pop, toolbar: toolbar);
   }
 
   static Future<HistoryResponse?> stepForwardAll(
@@ -166,12 +146,8 @@ class HistoryNavigator {
     bool pop = true,
     bool toolbar = false,
   }) async {
-    return _gotoHistory(
-      context,
-      HistoryNavMode.stepForwardAll,
-      pop: pop,
-      toolbar: toolbar,
-    );
+    return _gotoHistory(context, HistoryNavMode.stepForwardAll,
+        pop: pop, toolbar: toolbar);
   }
 
   static Future<HistoryResponse?> takeBackN(
@@ -191,17 +167,33 @@ class HistoryNavigator {
 
   /// Moves through the History by replaying all relevant moves.
   ///
-  /// Return an [HistoryResponse] when the moves and rules don't match
-  /// or when the end of the list moves has been reached.
+  /// Returns a [HistoryResponse] when the moves and rules don't match
+  /// or when the end of the move path has been reached.
   @visibleForTesting
-  static Future<HistoryResponse> doEachMove(HistoryNavMode navMode,
-      [int? number]) async {
-    bool ret = true;
-
-    // 1) Move the recorder index to the correct spot
-    final HistoryResponse resp = navMode.gotoHistory(number);
-    if (resp != const HistoryOK()) {
-      return resp;
+  static Future<HistoryResponse> doEachMove(
+    HistoryNavMode navMode, [
+    int? number,
+  ]) async {
+    // 1) Adjust the active node according to navMode
+    switch (navMode) {
+      case HistoryNavMode.takeBack:
+        _takeBack(1);
+        break;
+      case HistoryNavMode.takeBackN:
+        if (number == null) {
+          return const HistoryRange();
+        }
+        _takeBack(number);
+        break;
+      case HistoryNavMode.takeBackAll:
+        _takeBackAll();
+        break;
+      case HistoryNavMode.stepForward:
+        _stepForward(1);
+        break;
+      case HistoryNavMode.stepForwardAll:
+        _stepForwardAll();
+        break;
     }
 
     // 2) Temporarily set the game mode to humanVsHuman
@@ -212,41 +204,121 @@ class HistoryNavigator {
       GameController().newGameRecorder = GameController().gameRecorder;
     }
 
-    // 3) Reset board, replay moves up to the new index
+    // 3) Reset board, replay moves from root to current HEAD
     GameController().reset();
     posKeyHistory.clear();
 
     final GameRecorder tempRec = GameController().newGameRecorder!;
 
-    // Reapply all visible moves using the PGN tree interface instead of legacy index-based access.
-    // Instead of iterating over 0..recorder.index, iterate over the mainlineMoves list.
-    final int? visibleIndex = tempRec.index;
-    if (visibleIndex != null) {
-      // Take the visible moves up to the current index.
-      final Iterable<ExtMove> visibleMoves =
-          tempRec.mainlineMoves.take(visibleIndex + 1);
+    final List<ExtMove> pathMoves = _collectPathMoves(tempRec);
 
-      for (final ExtMove extMove in visibleMoves) {
-        if (!GameController().gameInstance.doMove(extMove)) {
-          tempRec.prune();
-          importFailedStr = extMove.notation;
-          ret = false;
-          break;
-        }
+    bool success = true;
+    for (final ExtMove move in pathMoves) {
+      if (!GameController().gameInstance.doMove(move)) {
+        importFailedStr = move.notation;
+        success = false;
+        break;
       }
     }
 
     // 4) Restore context
     GameController().gameInstance.gameMode = backupMode;
 
-    final String? lastPositionWithRemove =
+    final String? lastPosWithRemove =
         GameController().gameRecorder.lastPositionWithRemove;
     GameController().gameRecorder = tempRec; // adopt the updated recorder
-    GameController().gameRecorder.lastPositionWithRemove =
-        lastPositionWithRemove;
+    GameController().gameRecorder.lastPositionWithRemove = lastPosWithRemove;
     GameController().newGameRecorder = null;
 
-    return ret ? const HistoryOK() : const HistoryRule();
+    return success ? const HistoryOK() : const HistoryRule();
+  }
+
+  static void _takeBack(int n) {
+    while (n-- > 0) {
+      final PgnChildNode<ExtMove>? node =
+          GameController().gameRecorder.activeNode;
+      if (node == null) {
+        break;
+      }
+      if (node.parent == null) {
+        break;
+      }
+      // Only cast if the parent is a PgnChildNode; if it's the root (PgnNode) then stop.
+      if (node.parent is PgnChildNode<ExtMove>) {
+        GameController().gameRecorder.activeNode =
+            node.parent as PgnChildNode<ExtMove>?;
+      } else {
+        GameController().gameRecorder.activeNode = null;
+        break;
+      }
+    }
+  }
+
+  static void _takeBackAll() {
+    while (GameController().gameRecorder.activeNode?.parent != null) {
+      final PgnNode<ExtMove>? parent =
+          GameController().gameRecorder.activeNode!.parent;
+      if (parent is PgnChildNode<ExtMove>) {
+        GameController().gameRecorder.activeNode = parent;
+      } else {
+        GameController().gameRecorder.activeNode = null;
+        break;
+      }
+    }
+  }
+
+  static void _stepForward(int n) {
+    while (n-- > 0) {
+      final PgnChildNode<ExtMove>? node =
+          GameController().gameRecorder.activeNode;
+      if (node == null) {
+        final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+        if (root.children.isNotEmpty) {
+          GameController().gameRecorder.activeNode = root.children.first;
+        } else {
+          break;
+        }
+      } else {
+        if (node.children.isNotEmpty) {
+          GameController().gameRecorder.activeNode = node.children.first;
+        } else {
+          break;
+        }
+      }
+    }
+  }
+
+  static void _stepForwardAll() {
+    while (true) {
+      final PgnChildNode<ExtMove>? node =
+          GameController().gameRecorder.activeNode;
+      if (node == null) {
+        final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+        if (root.children.isNotEmpty) {
+          GameController().gameRecorder.activeNode = root.children.first;
+        } else {
+          break;
+        }
+      } else if (node.children.isNotEmpty) {
+        GameController().gameRecorder.activeNode = node.children.first;
+      } else {
+        break;
+      }
+    }
+  }
+
+  static List<ExtMove> _collectPathMoves(GameRecorder rec) {
+    final List<ExtMove> moves = <ExtMove>[];
+    PgnChildNode<ExtMove>? cur = rec.activeNode;
+    while (cur != null && cur.parent != null) {
+      moves.add(cur.data);
+      if (cur.parent is PgnChildNode<ExtMove>) {
+        cur = cur.parent as PgnChildNode<ExtMove>?;
+      } else {
+        break;
+      }
+    }
+    return moves.reversed.toList();
   }
 }
 
@@ -259,51 +331,10 @@ enum HistoryNavMode {
 }
 
 extension HistoryNavModeExtension on HistoryNavMode {
-  /// Moves the [GameRecorder] to the specified position.
-  ///
-  /// Throws [HistoryResponse] When trying to access a value outside of the bounds.
-  HistoryResponse gotoHistory([int? number]) {
-    final int? cur = GameController().gameRecorder.index;
-    final PointedListIterator<ExtMove> it =
-        GameController().gameRecorder.globalIterator;
-
-    switch (this) {
-      case HistoryNavMode.stepForwardAll:
-        it.moveToLast();
-        break;
-      case HistoryNavMode.takeBackAll:
-        it.moveToHead();
-        break;
-      case HistoryNavMode.stepForward:
-        if (!it.moveNext()) {
-          return const HistoryRange();
-        }
-        break;
-      case HistoryNavMode.takeBackN:
-        assert(number != null && cur != null);
-        if (it.index == 0) {
-          it.moveToHead();
-        } else {
-          final int index = cur! - number!;
-          assert(index >= 0);
-          it.moveTo(index);
-        }
-        break;
-      case HistoryNavMode.takeBack:
-        if (!it.movePrevious()) {
-          return const HistoryRange();
-        }
-    }
-
-    return const HistoryOK();
-  }
-
   Future<void> gotoHistoryPlaySound() async {
     if (DB().generalSettings.keepMuteWhenTakingBack) {
       return;
     }
-
-    // Multiplexing sound resources to save space.
     switch (this) {
       case HistoryNavMode.stepForwardAll:
       case HistoryNavMode.stepForward:

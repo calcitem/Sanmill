@@ -7,6 +7,7 @@ part of '../mill.dart';
 
 class Player {
   Player({required this.color, required this.isAi});
+
   final PieceColor color;
   bool isAi;
 }
@@ -69,6 +70,7 @@ class Game {
   }
 
   late GameMode _gameMode;
+
   GameMode get gameMode => _gameMode;
 
   set gameMode(GameMode type) {
@@ -96,29 +98,39 @@ class Game {
   bool doMove(ExtMove extMove) {
     assert(GameController().position.phase != Phase.ready);
 
-    logger.i("$_logTag AI do move: $extMove");
+    logger.i("$_logTag doMove: $extMove");
 
-    if (GameController().position.doMove(extMove.move) == false) {
+    // 1) Attempt to physically do the move on the board
+    if (!GameController().position.doMove(extMove.move)) {
       return false;
     }
 
-    GameController().gameRecorder.add(extMove);
+// 2) Determine if we are at the "end of the activeNode"
+    //    - If "not at the end", create a new branch from the activeNode
+    //    - If "indeed at the end", just append
+    if (!GameController().gameRecorder.isAtEnd()) {
+      // Use our newly added function
+      GameController().gameRecorder.branchNewMoveFromActiveNode(extMove);
+    } else {
+      GameController().gameRecorder.appendMove(extMove);
+    }
 
+    // 3) If the game is still running, check for results
     if (GameController().position.phase != Phase.gameOver) {
       GameController().gameResultNotifier.showResult(force: false);
     }
 
     GifShare().captureView();
 
-    // TODO: moveHistoryText is not lightweight.
+    // Possibly for debug or logging
     if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
       final Catcher2Options options = catcher.getCurrentConfig()!;
+      // TODO: moveHistoryText is not lightweight.
       options.customParameters["MoveList"] =
           GameController().gameRecorder.moveHistoryText;
     }
 
     _logStat();
-
     return true;
   }
 

@@ -118,7 +118,7 @@ class LoadService {
 
     final String strGameSavedTo = S.of(context).gameSavedTo;
 
-    if (!(GameController().gameRecorder.hasPrevious == true ||
+    if (!(GameController().gameRecorder.activeNode?.parent != null ||
         GameController().isPositionSetup == true)) {
       Navigator.pop(context);
       return null;

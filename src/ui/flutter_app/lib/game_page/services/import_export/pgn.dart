@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
 // pgn.dart
 
 import 'dart:math' as math;
@@ -24,14 +27,14 @@ String fromPgn(String? result) {
 String toPgnString(String result) => result;
 
 /// Minimal stub for a `Square` class.
-/// Nine Men's Morris typically uses a-g,1-7. You can adjust as needed.
 @immutable
 class Square {
   const Square(this.name);
+
   final String name;
 
   static Square? parse(String str) {
-    // For a-g1-7
+    // Nine Men's Morris uses a..g, 1..7, etc.
     if (str.length == 2) {
       final int file = str.codeUnitAt(0); // 'a'..'g'
       final int rank = str.codeUnitAt(1); // '1'..'7'
@@ -110,19 +113,12 @@ class Square {
 /// );
 /// ```
 class PgnGame<T extends PgnNodeData> {
-  /// Constructs a new [PgnGame].
   PgnGame({required this.headers, required this.moves, required this.comments});
 
-  /// Headers of the game.
   final PgnHeaders headers;
-
-  /// Initial comments of the game.
   final List<String> comments;
-
-  /// Parent node containing the game.
   final PgnNode<T> moves;
 
-  /// Create default headers of a PGN.
   static PgnHeaders defaultHeaders() => <String, String>{
         'Event': '?',
         'Site': '?',
@@ -133,16 +129,8 @@ class PgnGame<T extends PgnNodeData> {
         'Result': '*'
       };
 
-  /// Create empty headers of a PGN.
   static PgnHeaders emptyHeaders() => <String, String>{};
 
-  /// Parse a PGN string and return a [PgnGame].
-  ///
-  /// Provide an optional function [initHeaders] to create different headers other than the default.
-  ///
-  /// The parser will interpret any input as a PGN, creating a tree of
-  /// syntactically valid (but not necessarily legal) moves, skipping any invalid
-  /// tokens.
   static PgnGame<PgnNodeData> parsePgn(String pgn,
       {PgnHeaders Function() initHeaders = defaultHeaders}) {
     final List<PgnGame<PgnNodeData>> games = <PgnGame<PgnNodeData>>[];
@@ -153,21 +141,14 @@ class PgnGame<T extends PgnNodeData> {
 
     if (games.isEmpty) {
       return PgnGame<PgnNodeData>(
-          headers: initHeaders(),
-          moves: PgnNode<PgnNodeData>(),
-          comments: const <String>[]);
+        headers: initHeaders(),
+        moves: PgnNode<PgnNodeData>(),
+        comments: const <String>[],
+      );
     }
     return games[0];
   }
 
-  /// Parse a multi game PGN string.
-  ///
-  /// Returns a list of [PgnGame].
-  /// Provide an optional function [initHeaders] to create different headers other than the default
-  ///
-  /// The parser will interpret any input as a PGN, creating a tree of
-  /// syntactically valid (but not necessarily legal) moves, skipping any invalid
-  /// tokens.
   static List<PgnGame<PgnNodeData>> parseMultiGamePgn(String pgn,
       {PgnHeaders Function() initHeaders = defaultHeaders}) {
     final RegExp multiGamePgnSplit = RegExp(r'\n\s+(?=\[)');
@@ -186,12 +167,6 @@ class PgnGame<T extends PgnNodeData> {
     return games;
   }
 
-  /// Create a [Position] for Nine Men's Morris from the headers.
-  ///
-  /// Headers can include an optional 'FEN' key.
-  /// If present, sets the position from the FEN. Otherwise, sets a fresh position [pos.reset()].
-  ///
-  /// If the FEN is invalid, an [Exception] is thrown.
   static Position startingPosition(PgnHeaders headers) {
     final Position pos = Position();
     pos.reset();
@@ -204,7 +179,6 @@ class PgnGame<T extends PgnNodeData> {
     return pos;
   }
 
-  /// Make a PGN String from [PgnGame].
   String makePgn() {
     final StringBuffer builder = StringBuffer();
     final StringBuffer token = StringBuffer();
@@ -229,17 +203,18 @@ class PgnGame<T extends PgnNodeData> {
       final Iterator<PgnChildNode<T>> variations = moves.children.iterator;
       variations.moveNext();
       stack.add(_PgnFrame(
-          state: _PgnState.pre,
-          ply: initialPly,
-          node: variations.current,
-          sidelines: variations,
-          startsVariation: false,
-          inVariation: false));
+        state: _PgnState.pre,
+        ply: initialPly,
+        node: variations.current,
+        sidelines: variations,
+        startsVariation: false,
+        inVariation: false,
+      ));
     }
 
     bool forceMoveNumber = true;
     while (stack.isNotEmpty) {
-      final _PgnFrame frame = stack[stack.length - 1];
+      final _PgnFrame frame = stack.last;
 
       if (frame.inVariation) {
         token.write(') ');
@@ -258,7 +233,9 @@ class PgnGame<T extends PgnNodeData> {
             }
             if (forceMoveNumber || frame.ply.isEven) {
               token.write(
-                  '${(frame.ply / 2).floor() + 1}${frame.ply.isOdd ? "..." : "."} ');
+                '${(frame.ply / 2).floor() + 1}'
+                '${frame.ply.isOdd ? "..." : "."} ',
+              );
               forceMoveNumber = false;
             }
             token.write('${frame.node.data.san} ');
@@ -284,13 +261,13 @@ class PgnGame<T extends PgnNodeData> {
               token.write('( ');
               forceMoveNumber = true;
               stack.add(_PgnFrame(
-                  state: _PgnState.pre,
-                  ply: frame.ply,
-                  node: frame.sidelines.current,
-                  sidelines:
-                      <PgnChildNode<PgnNodeData>>[].iterator, // empty iterator
-                  startsVariation: true,
-                  inVariation: false));
+                state: _PgnState.pre,
+                ply: frame.ply,
+                node: frame.sidelines.current,
+                sidelines: <PgnChildNode<PgnNodeData>>[].iterator,
+                startsVariation: true,
+                inVariation: false,
+              ));
               frame.inVariation = true;
             } else {
               if (frame.node.children.isNotEmpty) {
@@ -298,12 +275,13 @@ class PgnGame<T extends PgnNodeData> {
                     frame.node.children.iterator;
                 variations.moveNext();
                 stack.add(_PgnFrame(
-                    state: _PgnState.pre,
-                    ply: frame.ply + 1,
-                    node: variations.current,
-                    sidelines: variations,
-                    startsVariation: false,
-                    inVariation: false));
+                  state: _PgnState.pre,
+                  ply: frame.ply + 1,
+                  node: variations.current,
+                  sidelines: variations,
+                  startsVariation: false,
+                  inVariation: false,
+                ));
               }
               frame.state = _PgnState.end;
             }
@@ -324,9 +302,12 @@ class PgnGame<T extends PgnNodeData> {
 
 /// PGN data for a [PgnNode].
 class PgnNodeData {
-  /// Constructs a new [PgnNodeData].
-  PgnNodeData(
-      {required this.san, this.startingComments, this.comments, this.nags});
+  PgnNodeData({
+    required this.san,
+    this.startingComments,
+    this.comments,
+    this.nags,
+  });
 
   /// SAN representation of the move (adapted for Nine Men's Morris).
   final String san;
@@ -345,7 +326,7 @@ class PgnNodeData {
 class PgnNode<T extends PgnNodeData> {
   final List<PgnChildNode<T>> children = <PgnChildNode<T>>[];
 
-  /// Implements an [Iterable] to iterate the mainline.
+  /// Mainline iteration: always follow [children[0]] if it exists.
   Iterable<T> mainline() sync* {
     PgnNode<T> node = this;
     while (node.children.isNotEmpty) {
@@ -391,14 +372,15 @@ class PgnNode<T extends PgnNodeData> {
   }
 }
 
-/// PGN child Node.
-///
-/// This class has a mutable `data` field.
+/// **Unified** PgnChildNode with a `parent` pointer, used for node-based navigation.
 class PgnChildNode<T extends PgnNodeData> extends PgnNode<T> {
   PgnChildNode(this.data);
 
-  /// PGN Data.
+  /// The actual move data.
   T data;
+
+  /// Optional link back to the parent node. This allows you to climb up.
+  PgnNode<T>? parent;
 }
 
 /// Represents the color of a PGN comment shape.
@@ -444,8 +426,11 @@ enum CommentShapeColor {
 /// Example of a comment shape "%cal Ra1b2" with color: Red from:a1 to:b2.
 @immutable
 class PgnCommentShape {
-  const PgnCommentShape(
-      {required this.color, required this.from, required this.to});
+  const PgnCommentShape({
+    required this.color,
+    required this.from,
+    required this.to,
+  });
 
   final CommentShapeColor color;
   final Square from;
@@ -458,10 +443,10 @@ class PgnCommentShape {
         : '${color.string[0]}${from.name}${to.name}';
   }
 
-  /// Parse the PGN for any comment or return null.
   static PgnCommentShape? fromPgn(String str) {
-    final CommentShapeColor? color =
-        CommentShapeColor.parseShapeColor(str.substring(0, 1));
+    final CommentShapeColor? color = CommentShapeColor.parseShapeColor(
+      str.substring(0, 1),
+    );
     final Square? from = Square.parse(str.substring(1, 3));
     if (color == null || from == null) {
       return null;
@@ -492,44 +477,29 @@ class PgnCommentShape {
 enum EvalType { pawns, mate }
 
 /// Pgn representation of a move evaluation.
-///
-/// A [PgnEvaluation] can be created used `.pawns` or `.mate` constructor.
 @immutable
 class PgnEvaluation {
-  /// Constructor to create a [PgnEvaluation] of type pawns.
-  const PgnEvaluation.pawns(
-      {required this.pawns,
-      this.depth,
-      this.mate,
-      this.evalType = EvalType.pawns});
+  const PgnEvaluation.pawns({
+    required this.pawns,
+    this.depth,
+    this.mate,
+    this.evalType = EvalType.pawns,
+  });
 
-  /// Constructor to create a [PgnEvaluation] of type mate.
-  const PgnEvaluation.mate(
-      {required this.mate,
-      this.depth,
-      this.pawns,
-      this.evalType = EvalType.mate});
+  const PgnEvaluation.mate({
+    required this.mate,
+    this.depth,
+    this.pawns,
+    this.evalType = EvalType.mate,
+  });
 
   final double? pawns;
   final int? mate;
   final int? depth;
   final EvalType evalType;
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PgnEvaluation &&
-          pawns == other.pawns &&
-          depth == other.depth &&
-          mate == other.mate &&
-          evalType == other.evalType;
-
-  @override
-  int get hashCode => Object.hash(pawns, depth, mate, evalType);
-
   bool isPawns() => evalType == EvalType.pawns;
 
-  /// Create a PGN evaluation string
   String toPgn() {
     String str = '';
     if (isPawns()) {
@@ -542,25 +512,37 @@ class PgnEvaluation {
     }
     return str;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is PgnEvaluation &&
+          pawns == other.pawns &&
+          depth == other.depth &&
+          mate == other.mate &&
+          evalType == other.evalType;
+
+  @override
+  int get hashCode => Object.hash(pawns, depth, mate, evalType);
 }
 
 /// A PGN comment.
 @immutable
 class PgnComment {
-  const PgnComment(
-      {this.text,
-      this.shapes = const IListConst<PgnCommentShape>(<PgnCommentShape>[]),
-      this.clock,
-      this.emt,
-      this.eval})
-      : assert(text == null || text != '');
+  const PgnComment({
+    this.text,
+    this.shapes = const IListConst<PgnCommentShape>(<PgnCommentShape>[]),
+    this.clock,
+    this.emt,
+    this.eval,
+  }) : assert(text == null || text != '');
 
-  /// Parses a PGN comment string to a [PgnComment].
   factory PgnComment.fromPgn(String comment) {
     Duration? emt;
     Duration? clock;
     final List<PgnCommentShape> shapes = <PgnCommentShape>[];
     PgnEvaluation? eval;
+
     final String text = comment.replaceAllMapped(
         RegExp(
             r'\s?\[%(emt|clk)\s(\d{1,5}):(\d{1,2}):(\d{1,2}(?:\.\d{0,3})?)\]\s?'),
@@ -571,11 +553,11 @@ class PgnComment {
       final String? seconds = match.group(4);
       final double secondsValue = double.parse(seconds!);
       final Duration duration = Duration(
-          hours: int.parse(hours!),
-          minutes: int.parse(minutes!),
-          seconds: secondsValue.truncate(),
-          milliseconds:
-              ((secondsValue - secondsValue.truncate()) * 1000).round());
+        hours: int.parse(hours!),
+        minutes: int.parse(minutes!),
+        seconds: secondsValue.truncate(),
+        milliseconds: ((secondsValue - secondsValue.truncate()) * 1000).round(),
+      );
       if (annotation == 'emt') {
         emt = duration;
       } else if (annotation == 'clk') {
@@ -612,11 +594,12 @@ class PgnComment {
     }).trim();
 
     return PgnComment(
-        text: text.isNotEmpty ? text : null,
-        shapes: IList<PgnCommentShape>(shapes),
-        emt: emt,
-        clock: clock,
-        eval: eval);
+      text: text.isNotEmpty ? text : null,
+      shapes: IList<PgnCommentShape>(shapes),
+      emt: emt,
+      clock: clock,
+      eval: eval,
+    );
   }
 
   /// Comment string.
@@ -634,7 +617,6 @@ class PgnComment {
   /// Move evaluation.
   final PgnEvaluation? eval;
 
-  /// Make a PGN string from this comment.
   String makeComment() {
     final List<String> builder = <String>[];
     if (text != null) {
@@ -665,8 +647,10 @@ class PgnComment {
   }
 
   @override
-  String toString() =>
-      'PgnComment(text: $text, shapes: $shapes, emt: $emt, clock: $clock, eval: $eval)';
+  String toString() {
+    return 'PgnComment(text: $text, shapes: $shapes, emt: $emt, '
+        'clock: $clock, eval: $eval)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -683,9 +667,10 @@ class PgnComment {
   int get hashCode => Object.hash(text, shapes, clock, emt, eval);
 }
 
-/// A frame used for parsing a line
+/// A parser frame used internally
 class _ParserFrame {
   _ParserFrame({required this.parent, required this.root});
+
   PgnNode<PgnNodeData> parent;
   bool root;
   PgnChildNode<PgnNodeData>? node;
@@ -696,15 +681,16 @@ enum _ParserState { bom, pre, headers, moves, comment }
 
 enum _PgnState { pre, sidelines, end }
 
-/// A frame used for creating PGN
 class _PgnFrame {
-  _PgnFrame(
-      {required this.state,
-      required this.ply,
-      required this.node,
-      required this.sidelines,
-      required this.startsVariation,
-      required this.inVariation});
+  _PgnFrame({
+    required this.state,
+    required this.ply,
+    required this.node,
+    required this.sidelines,
+    required this.startsVariation,
+    required this.inVariation,
+  });
+
   _PgnState state;
   int ply;
   PgnChildNode<PgnNodeData> node;
@@ -973,11 +959,10 @@ String _makeClk(Duration duration) {
   final int minutes = ((positiveSecs % 3600) / 60).floor();
   final num maxSec = (positiveSecs % 3600) % 60;
   final int intVal = maxSec.toInt();
-  final String frac = (maxSec - intVal) // get the fraction part of seconds
+  final String frac = (maxSec - intVal)
       .toStringAsFixed(3)
       .replaceAll(RegExp(r'\.?0+$'), '')
       .substring(1);
-  final String dec =
-      intVal.toString().padLeft(2, '0'); // get the decimal part of seconds
+  final String dec = intVal.toString().padLeft(2, '0');
   return '$hours:${minutes.toString().padLeft(2, "0")}:$dec$frac';
 }

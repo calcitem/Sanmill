@@ -17,12 +17,14 @@ class TapHandler {
   final BuildContext context;
 
   final GameController controller = GameController();
+
   //final gameMode = GameController().gameInstance.gameMode;
   final void Function(String tip, {bool snackBar}) showTip =
       GameController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>
       GameController().position.winner == PieceColor.nobody;
+
   bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
   bool get _isBoardEmpty =>
@@ -526,7 +528,7 @@ class TapHandler {
 
       if (GameController().position._record != null) {
         controller.gameRecorder
-            .addAndDeduplicate(GameController().position._record!);
+            .appendMoveIfDifferent(GameController().position._record!);
         if (GameController().position._record!.type == MoveType.remove) {
           controller.gameRecorder.lastPositionWithRemove =
               GameController().position.fen;
