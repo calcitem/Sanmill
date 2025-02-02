@@ -265,18 +265,19 @@ class ImportService {
     // Parse entire PGN (including headers)
     final PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
 
-    // If there's a FEN in headers, set up the Position from that FEN
+    // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
     final GameRecorder newHistory = GameRecorder(
       lastPositionWithRemove: fen ?? GameController().position.fen,
       setupPosition: fen,
     );
 
+    // Set up the board position using FEN if available
     if (fen != null && fen.isNotEmpty) {
       GameController().position.setFen(fen);
     }
 
-    /// Helper function to split SAN moves correctly
+    /// Helper function to split a SAN move into segments
     List<String> splitSan(String san) {
       List<String> segments = <String>[];
 
@@ -318,7 +319,7 @@ class ImportService {
       return segments;
     }
 
-    // Convert each SAN to your WMD notation and add to newHistory
+    // Convert each SAN move to internal move string and add to newHistory
     for (final PgnNodeData node in game.moves.mainline()) {
       final String san = node.san.trim().toLowerCase();
       if (san.isEmpty ||
@@ -327,7 +328,7 @@ class ImportService {
           san == "xx" ||
           san == "xxx" ||
           san == "p") {
-        // Skip pass or asterisks
+        // Skip pass moves or asterisks
         continue;
       }
 
@@ -339,7 +340,13 @@ class ImportService {
         }
         try {
           final String uciMove = _wmdNotationToMoveString(segment);
-          newHistory.appendMove(ExtMove(uciMove));
+          // Create ExtMove with parsed NAGs and comments from node
+          newHistory.appendMove(ExtMove(
+            uciMove,
+            nags: node.nags,
+            startingComments: node.startingComments,
+            comments: node.comments,
+          ));
         } catch (e) {
           logger.e("$_logTag Failed to parse move segment '$segment': $e");
           throw ImportFormatException("Invalid move segment: $segment");
