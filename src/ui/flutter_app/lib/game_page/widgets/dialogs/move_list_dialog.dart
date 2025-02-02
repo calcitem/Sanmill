@@ -201,11 +201,20 @@ class MoveListDialog extends StatelessWidget {
         continue;
       }
 
+      // If we encounter '(' or ')', treat them as single tokens,
+      // so that we can later handle variations.
+      if (c == '(' || c == ')') {
+        tokens.add(c);
+        i++;
+        continue;
+      }
+
       // (C) Otherwise, collect a normal token until whitespace or '{'.
       final int start = i;
       while (i < moveHistoryText.length) {
         final String cc = moveHistoryText[i];
-        if (cc == '{' || RegExp(r'\s').hasMatch(cc)) {
+        // Stop if we hit '{', '(', ')' or any whitespace.
+        if (cc == '{' || cc == '(' || cc == ')' || RegExp(r'\s').hasMatch(cc)) {
           break;
         }
         i++;
@@ -300,8 +309,7 @@ class MoveListDialog extends StatelessWidget {
           // If previous move did not have 'x', discard previous annotations/NAGs.
           if (!current!.hasX) {
             current!.comments.clear();
-            current!.nags
-                .clear(); // NAGs also get discarded if a new 'x' appears
+            current!.nags.clear(); // Discard NAGs if a new 'x' appears
           }
           // Merge capture into the moveText
           current!.moveText += token;
@@ -310,7 +318,16 @@ class MoveListDialog extends StatelessWidget {
         continue;
       }
 
-      // (D) Otherwise, this is a new move token; finalize the previous one first.
+      // (D) If the token is '(' or ')', treat it as a standalone bracket token.
+      //     Finalize current move first, then store the bracket directly.
+      if (token == '(' || token == ')') {
+        finalizeCurrent();
+        // Directly add parentheses token to results
+        results.add(token);
+        continue;
+      }
+
+      // (E) Otherwise, this is a new move token; finalize the previous one first.
       finalizeCurrent();
       current = TempMove()..moveText = token;
     }
@@ -385,6 +402,10 @@ class MoveListDialog extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    // If the token is '(' or ')', we set it in italic font.
+    final bool isParenWhite = whiteMove == '(' || whiteMove == ')';
+    final bool isParenBlack = blackMove == '(' || blackMove == ')';
+
     // Return a tile with up to 3 columns:
     // 1) Leading = row number (e.g. "1.")
     // 2) White move
@@ -418,6 +439,8 @@ class MoveListDialog extends StatelessWidget {
                       style:
                           _getMoveTextStyle(context, globalHasComment).copyWith(
                         color: AppTheme.gamePageActionSheetTextColor,
+                        fontStyle:
+                            isParenWhite ? FontStyle.italic : FontStyle.normal,
                       ),
                       textDirection: TextDirection.ltr,
                     ),
@@ -449,6 +472,9 @@ class MoveListDialog extends StatelessWidget {
                         style: _getMoveTextStyle(context, globalHasComment)
                             .copyWith(
                           color: AppTheme.gamePageActionSheetTextColor,
+                          fontStyle: isParenBlack
+                              ? FontStyle.italic
+                              : FontStyle.normal,
                         ),
                         textDirection: TextDirection.ltr,
                       ),
