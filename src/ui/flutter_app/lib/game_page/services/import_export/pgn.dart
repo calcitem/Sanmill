@@ -54,6 +54,19 @@ class Square {
   int get hashCode => name.hashCode;
 }
 
+// Use a small helper class instead of a record, so we can mutate .context
+class _TransformStackFrame<U extends PgnNodeData, T extends PgnNodeData, C> {
+  _TransformStackFrame({
+    required this.after,
+    required this.before,
+    required this.context,
+  });
+
+  PgnNode<U> after;
+  PgnNode<T> before;
+  C context;
+}
+
 /// A Portable Game Notation (PGN) representation adapted for Nine Men's Morris.
 ///
 /// A PGN game is composed of [PgnHeaders] and moves represented by a [PgnNode] tree.
@@ -200,7 +213,7 @@ class PgnGame<T extends PgnNodeData> {
     final List<_PgnFrame> stack = <_PgnFrame>[];
 
     if (moves.children.isNotEmpty) {
-      final Iterator<PgnChildNode<T>> variations = moves.children.iterator;
+      final Iterator<PgnNode<T>> variations = moves.children.iterator;
       variations.moveNext();
       stack.add(_PgnFrame(
         state: _PgnState.pre,
@@ -225,8 +238,9 @@ class PgnGame<T extends PgnNodeData> {
       switch (frame.state) {
         case _PgnState.pre:
           {
-            if (frame.node.data.startingComments != null) {
-              for (final String comment in frame.node.data.startingComments!) {
+            // If data is not null, we can read the stored info
+            if (frame.node.data?.startingComments != null) {
+              for (final String comment in frame.node.data!.startingComments!) {
                 token.write('{ ${_safeComment(comment)} } ');
               }
               forceMoveNumber = true;
@@ -238,16 +252,18 @@ class PgnGame<T extends PgnNodeData> {
               );
               forceMoveNumber = false;
             }
-            token.write('${frame.node.data.san} ');
-            if (frame.node.data.nags != null) {
-              for (final int nag in frame.node.data.nags!) {
-                token.write('\$$nag ');
+            if (frame.node.data != null) {
+              token.write('${frame.node.data!.san} ');
+              if (frame.node.data!.nags != null) {
+                for (final int nag in frame.node.data!.nags!) {
+                  token.write('\$$nag ');
+                }
+                forceMoveNumber = true;
               }
-              forceMoveNumber = true;
-            }
-            if (frame.node.data.comments != null) {
-              for (final String comment in frame.node.data.comments!) {
-                token.write('{ ${_safeComment(comment)} } ');
+              if (frame.node.data!.comments != null) {
+                for (final String comment in frame.node.data!.comments!) {
+                  token.write('{ ${_safeComment(comment)} } ');
+                }
               }
             }
             frame.state = _PgnState.sidelines;
@@ -264,14 +280,14 @@ class PgnGame<T extends PgnNodeData> {
                 state: _PgnState.pre,
                 ply: frame.ply,
                 node: frame.sidelines.current,
-                sidelines: <PgnChildNode<PgnNodeData>>[].iterator,
+                sidelines: <PgnNode<PgnNodeData>>[].iterator,
                 startsVariation: true,
                 inVariation: false,
               ));
               frame.inVariation = true;
             } else {
               if (frame.node.children.isNotEmpty) {
-                final Iterator<PgnChildNode<PgnNodeData>> variations =
+                final Iterator<PgnNode<PgnNodeData>> variations =
                     frame.node.children.iterator;
                 variations.moveNext();
                 stack.add(_PgnFrame(
@@ -322,16 +338,30 @@ class PgnNodeData {
   List<int>? nags;
 }
 
-/// Parent node containing a list of child nodes (does not contain any data itself).
+/// Parent node containing a list of child nodes, but can also store data if it's not the root.
+/// If [data] is null, this node is considered the root with no move data. Otherwise it represents a move node.
 class PgnNode<T extends PgnNodeData> {
-  final List<PgnChildNode<T>> children = <PgnChildNode<T>>[];
+  /// Constructor. If [data] is provided, this node represents a move node; otherwise it's a root.
+  PgnNode([this.data]);
+
+  /// The actual move data. If null, this node is considered the root.
+  T? data;
+
+  /// Optional link back to the parent node. This allows you to climb up.
+  PgnNode<T>? parent;
+
+  /// A list of child nodes.
+  final List<PgnNode<T>> children = <PgnNode<T>>[];
 
   /// Mainline iteration: always follow [children[0]] if it exists.
+  /// If the child's data is not null, yield it.
   Iterable<T> mainline() sync* {
     PgnNode<T> node = this;
     while (node.children.isNotEmpty) {
-      final PgnChildNode<T> child = node.children[0];
-      yield child.data;
+      final PgnNode<T> child = node.children[0];
+      if (child.data != null) {
+        yield child.data!;
+      }
       node = child;
     }
   }
@@ -344,43 +374,59 @@ class PgnNode<T extends PgnNodeData> {
   PgnNode<U> transform<U extends PgnNodeData, C>(
       C context, (C, U)? Function(C context, T data, int childIndex) f) {
     final PgnNode<U> root = PgnNode<U>();
-    final List<({PgnNode<U> after, PgnNode<T> before, C context})> stack = <({
-      PgnNode<U> after,
-      PgnNode<T> before,
-      C context
-    })>[(before: this, after: root, context: context)];
+    final List<_TransformStackFrame<U, T, C>> stack =
+        <_TransformStackFrame<U, T, C>>[
+      _TransformStackFrame<U, T, C>(after: root, before: this, context: context)
+    ];
 
     while (stack.isNotEmpty) {
-      final ({PgnNode<U> after, PgnNode<T> before, C context}) frame =
-          stack.removeLast();
+      final _TransformStackFrame<U, T, C> frame = stack.removeLast();
+
+      // If the current 'before' node has data, try to transform it
+      if (frame.before.data != null) {
+        final T originalData = frame.before.data!;
+        // We pass childIdx = -1 here, but we can keep it if we want to differentiate
+        final (C, U)? result = f(frame.context, originalData, -1);
+        if (result == null) {
+          // If it's null, skip the node entirely (including its subtree).
+          continue;
+        }
+        final (C newCtx, U data) = result;
+        frame.context = newCtx; // We can set .context on our class
+
+        // Put this data on 'after' node
+        frame.after.data = data;
+      }
+
+      // Now transform children
       for (int childIdx = 0;
           childIdx < frame.before.children.length;
           childIdx++) {
-        C ctx = frame.context;
-        final PgnChildNode<T> childBefore = frame.before.children[childIdx];
-        final (C, U)? transformData = f(ctx, childBefore.data, childIdx);
+        final PgnNode<T> childBefore = frame.before.children[childIdx];
+        if (childBefore.data == null) {
+          // If child has no data, it may be just a root-like subnode. Skip or handle differently.
+          continue;
+        }
+        final (C, U)? transformData =
+            f(frame.context, childBefore.data!, childIdx);
         if (transformData != null) {
           final (C newCtx, U data) = transformData;
-          ctx = newCtx;
-          final PgnChildNode<U> childAfter = PgnChildNode<U>(data);
+          final PgnNode<U> childAfter = PgnNode<U>(data);
+          childAfter.parent = frame.after;
           frame.after.children.add(childAfter);
-          stack.add((before: childBefore, after: childAfter, context: ctx));
+
+          stack.add(
+            _TransformStackFrame<U, T, C>(
+              after: childAfter,
+              before: childBefore,
+              context: newCtx,
+            ),
+          );
         }
       }
     }
     return root;
   }
-}
-
-/// **Unified** PgnChildNode with a `parent` pointer, used for node-based navigation.
-class PgnChildNode<T extends PgnNodeData> extends PgnNode<T> {
-  PgnChildNode(this.data);
-
-  /// The actual move data.
-  T data;
-
-  /// Optional link back to the parent node. This allows you to climb up.
-  PgnNode<T>? parent;
 }
 
 /// Represents the color of a PGN comment shape.
@@ -673,7 +719,7 @@ class _ParserFrame {
 
   PgnNode<PgnNodeData> parent;
   bool root;
-  PgnChildNode<PgnNodeData>? node;
+  PgnNode<PgnNodeData>? node;
   List<String>? startingComments;
 }
 
@@ -693,8 +739,8 @@ class _PgnFrame {
 
   _PgnState state;
   int ply;
-  PgnChildNode<PgnNodeData> node;
-  Iterator<PgnChildNode<PgnNodeData>> sidelines;
+  PgnNode<PgnNodeData> node;
+  Iterator<PgnNode<PgnNodeData>> sidelines;
   bool startsVariation;
   bool inVariation;
 }
@@ -893,9 +939,10 @@ class _PgnParser {
                 } else {
                   // Any Nine Men's Morris move, pass, or x-series
                   if (frame.node != null) {
+                    // Use ! to avoid assigning a nullable node to a non-null field
                     frame.parent = frame.node!;
                   }
-                  frame.node = PgnChildNode<PgnNodeData>(PgnNodeData(
+                  frame.node = PgnNode<PgnNodeData>(PgnNodeData(
                       san: token, startingComments: frame.startingComments));
                   frame.startingComments = null;
                   frame.root = false;
@@ -929,9 +976,9 @@ class _PgnParser {
 
   void _handleNag(int nag) {
     final _ParserFrame frame = _stack[_stack.length - 1];
-    if (frame.node != null) {
-      frame.node!.data.nags ??= <int>[];
-      frame.node!.data.nags?.add(nag);
+    if (frame.node != null && frame.node!.data != null) {
+      frame.node!.data!.nags ??= <int>[];
+      frame.node!.data!.nags?.add(nag);
     }
   }
 
@@ -939,9 +986,9 @@ class _PgnParser {
     final _ParserFrame frame = _stack[_stack.length - 1];
     final String comment = _commentBuf.join('\n');
     _commentBuf = <String>[];
-    if (frame.node != null) {
-      frame.node!.data.comments ??= <String>[];
-      frame.node!.data.comments?.add(comment);
+    if (frame.node != null && frame.node!.data != null) {
+      frame.node!.data!.comments ??= <String>[];
+      frame.node!.data!.comments?.add(comment);
     } else if (frame.root) {
       _gameComments.add(comment);
     } else {

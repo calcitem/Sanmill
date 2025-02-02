@@ -39,7 +39,7 @@ class InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
-    final String? n1 = controller.gameRecorder.activeNode?.data.notation;
+    final String? n1 = controller.gameRecorder.activeNode?.data?.notation;
 
     // Last Move information
     if (n1 != null) {

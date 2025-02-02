@@ -424,7 +424,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       buffer.writeln();
     }
 
-    final String? n1 = controller.gameRecorder.activeNode?.data.notation;
+    final String? n1 = controller.gameRecorder.activeNode?.data?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for

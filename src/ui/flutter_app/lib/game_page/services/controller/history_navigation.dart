@@ -233,44 +233,33 @@ class HistoryNavigator {
     return success ? const HistoryOK() : const HistoryRule();
   }
 
+  /// Move HEAD up by `n` steps if possible
   static void _takeBack(int n) {
     while (n-- > 0) {
-      final PgnChildNode<ExtMove>? node =
-          GameController().gameRecorder.activeNode;
+      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
       if (node == null) {
         break;
       }
+      // If parent is null => at the root, cannot go further
       if (node.parent == null) {
         break;
       }
-      // Only cast if the parent is a PgnChildNode; if it's the root (PgnNode) then stop.
-      if (node.parent is PgnChildNode<ExtMove>) {
-        GameController().gameRecorder.activeNode =
-            node.parent as PgnChildNode<ExtMove>?;
-      } else {
-        GameController().gameRecorder.activeNode = null;
-        break;
-      }
+      // Just move activeNode to parent
+      GameController().gameRecorder.activeNode = node.parent;
     }
   }
 
+  /// Move HEAD to the root
   static void _takeBackAll() {
-    while (GameController().gameRecorder.activeNode?.parent != null) {
-      final PgnNode<ExtMove>? parent =
-          GameController().gameRecorder.activeNode!.parent;
-      if (parent is PgnChildNode<ExtMove>) {
-        GameController().gameRecorder.activeNode = parent;
-      } else {
-        GameController().gameRecorder.activeNode = null;
-        break;
-      }
-    }
+    // HEAD => pgnRoot
+    GameController().gameRecorder.activeNode =
+        GameController().gameRecorder.pgnRoot;
   }
 
+  /// Move HEAD forward by `n` steps along the first child
   static void _stepForward(int n) {
     while (n-- > 0) {
-      final PgnChildNode<ExtMove>? node =
-          GameController().gameRecorder.activeNode;
+      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
       if (node == null) {
         final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
         if (root.children.isNotEmpty) {
@@ -288,10 +277,10 @@ class HistoryNavigator {
     }
   }
 
+  /// Move HEAD forward to the very end of the main child path
   static void _stepForwardAll() {
     while (true) {
-      final PgnChildNode<ExtMove>? node =
-          GameController().gameRecorder.activeNode;
+      final PgnNode<ExtMove>? node = GameController().gameRecorder.activeNode;
       if (node == null) {
         final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
         if (root.children.isNotEmpty) {
@@ -307,17 +296,18 @@ class HistoryNavigator {
     }
   }
 
+  /// Collect all moves from HEAD up to the root
   static List<ExtMove> _collectPathMoves(GameRecorder rec) {
     final List<ExtMove> moves = <ExtMove>[];
-    PgnChildNode<ExtMove>? cur = rec.activeNode;
+    PgnNode<ExtMove>? cur = rec.activeNode;
     while (cur != null && cur.parent != null) {
-      moves.add(cur.data);
-      if (cur.parent is PgnChildNode<ExtMove>) {
-        cur = cur.parent as PgnChildNode<ExtMove>?;
-      } else {
-        break;
+      // if it has data, add it
+      if (cur.data != null) {
+        moves.add(cur.data!);
       }
+      cur = cur.parent;
     }
+    // Reverse them because we collected from HEAD up to root
     return moves.reversed.toList();
   }
 }

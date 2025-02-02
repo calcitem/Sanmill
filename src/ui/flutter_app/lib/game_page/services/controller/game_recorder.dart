@@ -25,7 +25,7 @@ class GameRecorder {
   /// A pointer to the current node, representing the "HEAD" of the active variation.
   ///
   /// If null, it means no moves yet or we are effectively at root with no child.
-  PgnChildNode<ExtMove>? activeNode;
+  PgnNode<ExtMove>? activeNode;
 
   /// A getter to expose the root node, if external code wants to examine it.
   PgnNode<ExtMove> get pgnRoot => _pgnRoot;
@@ -36,7 +36,7 @@ class GameRecorder {
   /// If you had an old `isAtEnd()` usage, either remove it or define a logic like:
   bool isAtEnd() {
     // For example, we say we are "at end" if activeNode is null or has no children.
-    final PgnChildNode<ExtMove>? node = activeNode;
+    final PgnNode<ExtMove>? node = activeNode;
     if (node == null) {
       return true;
     }
@@ -52,14 +52,14 @@ class GameRecorder {
       while (tail.children.isNotEmpty) {
         tail = tail.children.first;
       }
-      final PgnChildNode<ExtMove> newChild = PgnChildNode<ExtMove>(move);
+      final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
       newChild.parent = tail; // Set parent pointer
       tail.children.add(newChild);
       activeNode = newChild;
     } else {
       // We already have an active node. We'll add the new move as child[0] of that node
       // so it extends the active line. If that node already had children, we insert at front.
-      final PgnChildNode<ExtMove> newChild = PgnChildNode<ExtMove>(move);
+      final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(move);
       newChild.parent = activeNode; // parent is the old active node
       activeNode!.children.insert(0, newChild);
       activeNode = newChild;
@@ -85,7 +85,7 @@ class GameRecorder {
         break;
       }
     }
-    final PgnChildNode<ExtMove> newChild = PgnChildNode<ExtMove>(newMove);
+    final PgnNode<ExtMove> newChild = PgnNode<ExtMove>(newMove);
     newChild.parent = node; // link parent
     node.children.insert(0, newChild);
     activeNode = newChild;

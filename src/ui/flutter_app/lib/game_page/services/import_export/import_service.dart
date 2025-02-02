@@ -61,8 +61,7 @@ class ImportService {
     }
 
     final HistoryResponse? historyResult =
-        await HistoryNavigator.stepForwardAll(context,
-            pop: false); // Error: Don't use 'BuildContext's across async gaps.
+        await HistoryNavigator.stepForwardAll(context, pop: false);
 
     if (historyResult == const HistoryOK()) {
       GameController().headerTipNotifier.showTip(s.gameImported);
