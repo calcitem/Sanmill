@@ -159,7 +159,7 @@ class MoveListDialog extends StatelessWidget {
   TextStyle _getMoveTextStyle(BuildContext context, bool hasComment) {
     final TextStyle baseStyle = _getTitleTextStyle(context);
     if (hasComment) {
-      return baseStyle.copyWith(fontSize: baseStyle.fontSize! * 0.5);
+      return baseStyle.copyWith(fontSize: baseStyle.fontSize! * 0.8);
     }
     return baseStyle;
   }
