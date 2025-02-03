@@ -34,15 +34,18 @@ class MovesListPageState extends State<MovesListPage> {
   void initState() {
     super.initState();
     // Collect all nodes from the PGN tree into _allNodes.
-    final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
-    _collectAllNodes(root);
+    //final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+    //_collectAllNodes(root);
+    _allNodes
+      ..clear()
+      ..addAll(GameController().gameRecorder.mainlineNodes);
   }
 
   /// Recursively walk the PGN tree and add each node to `_allNodes`.
-  void _collectAllNodes(PgnNode<ExtMove> node) {
-    _allNodes.add(node);
-    node.children.forEach(_collectAllNodes);
-  }
+  //void _collectAllNodes(PgnNode<ExtMove> node) {
+  //  _allNodes.add(node);
+  //  node.children.forEach(_collectAllNodes);
+  //}
 
   /// Scrolls the list to the top with an animation.
   void _scrollToTop() {

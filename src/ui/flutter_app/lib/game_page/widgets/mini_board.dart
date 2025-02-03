@@ -231,7 +231,9 @@ class MiniBoardPainter extends CustomPainter {
     List<Offset> outerPoints,
     double pieceRadius,
   ) {
-    if (extMove == null) return;
+    if (extMove == null) {
+      return;
+    }
 
     final MoveType type = extMove!.type;
     if (type == MoveType.none || type == MoveType.draw) {
