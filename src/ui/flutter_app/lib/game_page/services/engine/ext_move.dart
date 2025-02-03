@@ -23,7 +23,8 @@ class MoveParser {
       return MoveType.none;
     } else {
       // TODO: If Setup Position is illegal
-      throw const FormatException();
+      // throw const FormatException();
+      return MoveType.none;
     }
   }
 }
@@ -140,7 +141,7 @@ class ExtMove extends PgnNodeData {
   /// Validate the move string format.
   static void _checkLegal(String move) {
     // TODO: Which one?
-    if (move == "draw" || move == "(none)" || move == "none") {
+    if (move == "draw" || move == "(none)" || move == "none" || move.isEmpty) {
       return; // no further checks
     }
 
@@ -148,7 +149,7 @@ class ExtMove extends PgnNodeData {
       throw FormatException("$_logTag Invalid Move: too long", move);
     }
 
-    if (!(move.startsWith("(") || move.startsWith("-"))) {
+    if (!(move.startsWith("(") || move.startsWith("-") || move.isEmpty)) {
       throw FormatException(
           "$_logTag Invalid Move: must start with '(' or '-'", move, 0);
     }

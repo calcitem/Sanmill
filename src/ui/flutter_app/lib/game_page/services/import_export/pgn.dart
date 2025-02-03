@@ -326,10 +326,10 @@ class PgnNodeData {
   });
 
   /// SAN representation of the move (adapted for Nine Men's Morris).
-  final String san;
+  String san;
 
   /// PGN comments before the move.
-  final List<String>? startingComments;
+  List<String>? startingComments;
 
   /// PGN comments after the move.
   List<String>? comments;

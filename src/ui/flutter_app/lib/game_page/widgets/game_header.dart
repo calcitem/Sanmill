@@ -233,22 +233,47 @@ class HeaderTipState extends State<HeaderTip> {
   }
 
   /// Finalizes editing, updates the displayed text,
-  /// and stores the text as a comment in the active PGN node.
+  /// and stores the text as a comment in the PGN tree.
   void _finalizeEditing() {
     setState(() {
       _isEditing = false;
       final String rawText = _editingController.text;
 
-      // 1) **No longer add braces** to _messageNotifier.value.
+      // (1) We no longer add braces to _messageNotifier.value.
       _messageNotifier.value = rawText;
 
-      // 2) Retrieve current PGN node and update its comments with unbraced text.
-      final PgnNode<ExtMove>? activeNode =
-          GameController().gameRecorder.activeNode;
-      if (activeNode?.data != null) {
-        activeNode!.data!.comments ??= <String>[];
+      // (2) Depending on whether moves exist or not, store in:
+      //     - the first node's startingComments (if no moves),
+      //     - or the active node's comments (if moves have been made).
+      final GameRecorder gameRecorder = GameController().gameRecorder;
+      final PgnNode<ExtMove>? activeNode = gameRecorder.activeNode;
+
+      // Condition: No moves if activeNode == null or activeNode.data == null.
+      final bool noMovesYet = activeNode == null || activeNode.data == null;
+
+      if (noMovesYet) {
+        // If no moves, try to place text into the first node's startingComments.
+        final PgnNode<ExtMove> root = gameRecorder.pgnRoot;
+        if (root.children.isNotEmpty) {
+          // Store in the existing first node's startingComments.
+          final PgnNode<ExtMove> firstNode = root.children.first;
+          firstNode.data?.startingComments ??= <String>[];
+          firstNode.data!.startingComments!.clear();
+          firstNode.data!.startingComments!.add(rawText);
+        } else {
+          // If even the first node is missing, optionally create a new node
+          // with an empty SAN and put the text in its startingComments.
+          final PgnNode<ExtMove> newNode = PgnNode<ExtMove>(
+            ExtMove("", startingComments: <String>[]), // empty move string
+          );
+          newNode.data?.startingComments?.add(rawText);
+          newNode.parent = root;
+          root.children.add(newNode);
+        }
+      } else {
+        // Moves exist => store comment in the active node's comments.
+        activeNode.data!.comments ??= <String>[];
         activeNode.data!.comments!.clear();
-        // 3) We store unbraced text in the comment.
         activeNode.data!.comments!.add(rawText);
       }
     });
@@ -286,7 +311,7 @@ class HeaderTipState extends State<HeaderTip> {
           enabled: true,
           child: GestureDetector(
             onTap: () {
-              // 3) If tapped and we are NOT editing, enter edit mode.
+              // (3) If tapped and we are NOT editing, enter edit mode.
               if (!_isEditing) {
                 setState(() {
                   _isEditing = true;
