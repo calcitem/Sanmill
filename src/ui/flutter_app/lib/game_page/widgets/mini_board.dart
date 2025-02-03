@@ -39,9 +39,9 @@ class MiniBoard extends StatelessWidget {
 
 /// MiniBoardPainter draws a miniature Nine Men's Morris board with equally spaced rings.
 /// Additionally, if [extMove] is provided, it draws a highlight showing the last move:
-/// - Red circle on the piece if placing
-/// - Red arrow from origin to destination if moving
-/// - Red X on removed piece if removing
+/// - Highlight circle on the piece if placing
+/// - Highlight arrow from origin to destination if moving
+/// - Highlight X on removed piece if removing
 class MiniBoardPainter extends CustomPainter {
   MiniBoardPainter({
     required this.boardLayout,
@@ -210,7 +210,7 @@ class MiniBoardPainter extends CustomPainter {
       canvas.drawCircle(pos, pieceRadius, piecePaint);
     }
 
-    // Finally, draw highlights for the last move (red circle/arrow/X):
+    // Finally, draw highlights for the last move (Highlight circle/arrow/X):
     _drawMoveHighlight(
       canvas,
       innerPoints,
@@ -221,9 +221,9 @@ class MiniBoardPainter extends CustomPainter {
   }
 
   /// Draws highlights according to the last move (if any).
-  /// - Placing => red circle around the destination
-  /// - Moving => red arrow from origin to destination
-  /// - Removing => red X at the removed location
+  /// - Placing => Highlight circle around the destination
+  /// - Moving => Highlight arrow from origin to destination
+  /// - Removing => Highlight X at the removed location
   void _drawMoveHighlight(
     Canvas canvas,
     List<Offset> innerPoints,
@@ -255,20 +255,20 @@ class MiniBoardPainter extends CustomPainter {
     );
 
     final Paint highlightPaint = Paint()
-      ..color = Colors.red
+      ..color = DB().colorSettings.pieceHighlightColor
       ..strokeWidth = 2
       ..style = PaintingStyle.stroke;
 
     switch (type) {
       case MoveType.place:
-        // Draw red circle on 'to' location
+        // Draw highlight circle on 'to' location
         if (toPos != null) {
           canvas.drawCircle(toPos, pieceRadius * 1.4, highlightPaint);
         }
         break;
 
       case MoveType.move:
-        // Red arrow from fromPos => toPos
+        // Highlight arrow from fromPos => toPos
         if (fromPos != null && toPos != null) {
           canvas.drawLine(fromPos, toPos, highlightPaint);
           _drawArrowHead(canvas, fromPos, toPos, highlightPaint);
@@ -276,9 +276,9 @@ class MiniBoardPainter extends CustomPainter {
         break;
 
       case MoveType.remove:
-        // Red X at 'toPos'
+        // Highlight X at 'toPos'
         if (toPos != null) {
-          _drawRedX(canvas, toPos, pieceRadius * 2.0, highlightPaint);
+          _drawHighlightX(canvas, toPos, pieceRadius * 2.0, highlightPaint);
         }
         break;
 
@@ -348,9 +348,10 @@ class MiniBoardPainter extends CustomPainter {
     canvas.drawPath(path, paint);
   }
 
-  /// Draw a red X at the given position, with size given by [xSize].
+  /// Draw a highlight X at the given position, with size given by [xSize].
   /// We create two diagonal lines crossing at [center].
-  void _drawRedX(Canvas canvas, Offset center, double xSize, Paint paint) {
+  void _drawHighlightX(
+      Canvas canvas, Offset center, double xSize, Paint paint) {
     final double half = xSize / 2;
     final Offset topLeft = Offset(center.dx - half, center.dy - half);
     final Offset topRight = Offset(center.dx + half, center.dy - half);
