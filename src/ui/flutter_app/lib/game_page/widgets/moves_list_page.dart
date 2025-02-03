@@ -5,15 +5,17 @@
 
 import 'package:flutter/material.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/themes/app_theme.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'mini_board.dart';
 
 /// BranchGraphPage now displays PGN nodes in a vertical list.
 /// Each list item shows:
-/// - A left section (~38.2% width) for a small Nine Men's Morris board
-/// - A right section (~61.8% width) for notation (top) and comment (bottom)
+/// - A left section (~38.2% width) for a small Nine Men's Morris board.
+/// - A right section (~61.8% width) for notation (top) and comment (bottom).
 class MovesListPage extends StatefulWidget {
   const MovesListPage({super.key});
 
@@ -24,6 +26,9 @@ class MovesListPage extends StatefulWidget {
 class MovesListPageState extends State<MovesListPage> {
   /// A flat list of all PGN nodes (collected recursively).
   final List<PgnNode<ExtMove>> _allNodes = <PgnNode<ExtMove>>[];
+
+  /// ScrollController to control the scrolling of the ListView.
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -36,17 +41,79 @@ class MovesListPageState extends State<MovesListPage> {
   /// Recursively walk the PGN tree and add each node to `_allNodes`.
   void _collectAllNodes(PgnNode<ExtMove> node) {
     _allNodes.add(node);
-    // Note: Should use node.children.forEach(_collectAllNodes);
     node.children.forEach(_collectAllNodes);
+  }
+
+  /// Scrolls the list to the top with an animation.
+  void _scrollToTop() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+  }
+
+  /// Scrolls the list to the bottom with an animation.
+  void _scrollToBottom() {
+    // Wait for the next frame to ensure that the list's maxScrollExtent is updated.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Branch Graph"),
+        title: Text(
+          S.of(context).moveList,
+          style: AppTheme.appBarTheme.titleTextStyle,
+        ),
+        actions: <Widget>[
+          PopupMenuButton<String>(
+            onSelected: (String value) {
+              // Handle scroll action based on menu selection.
+              switch (value) {
+                case 'top':
+                  _scrollToTop();
+                  break;
+                case 'bottom':
+                  _scrollToBottom();
+                  break;
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'top',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.arrow_upward, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Scroll to Top'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'bottom',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.arrow_downward, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Scroll to Bottom'),
+                  ],
+                ),
+              ),
+            ],
+            icon: const Icon(Icons.more_vert), // Three vertical dots icon.
+          ),
+        ],
       ),
       body: ListView.builder(
+        controller: _scrollController,
         itemCount: _allNodes.length,
         itemBuilder: (BuildContext context, int index) {
           final PgnNode<ExtMove> node = _allNodes[index];
@@ -67,12 +134,12 @@ class _NodeListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve notation, comment, board layout from node.data
+    // Retrieve notation, comment, and board layout from node.data.
     final ExtMove? moveData = node.data;
     final String notation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
 
-    // Retrieve comment
+    // Retrieve comment from either 'comments' or 'startingComments'.
     String comment = "";
     if (moveData?.comments != null && moveData!.comments!.isNotEmpty) {
       comment = moveData.comments!.join(" ");
@@ -98,7 +165,7 @@ class _NodeListItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            /// Left side: ~38.2% for the board
+            /// Left side: ~38.2% for the board.
             Expanded(
               flex: 382, // 38.2%
               child: Padding(
@@ -109,7 +176,7 @@ class _NodeListItem extends StatelessWidget {
               ),
             ),
 
-            /// Right side: ~61.8% for notation + comment
+            /// Right side: ~61.8% for notation and comment.
             Expanded(
               flex: 618, // 61.8%
               child: Padding(
@@ -117,7 +184,7 @@ class _NodeListItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    // Notation at the top
+                    // Notation at the top.
                     Text(
                       notation,
                       style: TextStyle(
@@ -131,7 +198,7 @@ class _NodeListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    // Comment at the bottom
+                    // Comment at the bottom.
                     Text(
                       comment.isEmpty ? "No comment" : comment,
                       style: TextStyle(
