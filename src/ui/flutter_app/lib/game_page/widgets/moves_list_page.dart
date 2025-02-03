@@ -81,8 +81,8 @@ class MovesListPageState extends State<MovesListPage> {
         ),
         actions: <Widget>[
           PopupMenuButton<String>(
-            onSelected: (String value) {
-              // Handle scroll action based on menu selection.
+            onSelected: (String value) async {
+              // Handle actions based on menu selection.
               switch (value) {
                 case 'top':
                   _scrollToTop();
@@ -90,9 +90,34 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'bottom':
                   _scrollToBottom();
                   break;
+                case 'save_game':
+                  GameController.save(context, shouldPop: false);
+                  break;
+                case 'load_game':
+                  await GameController.load(context, shouldPop: false);
+                  // Refresh the list with new data.
+                  setState(() {
+                    _allNodes
+                      ..clear()
+                      ..addAll(GameController().gameRecorder.mainlineNodes);
+                  });
+                  break;
+                case 'import_game':
+                  await GameController.import(context, shouldPop: false);
+                  // Refresh the list with new data.
+                  setState(() {
+                    _allNodes
+                      ..clear()
+                      ..addAll(GameController().gameRecorder.mainlineNodes);
+                  });
+                  break;
+                case 'export_game':
+                  GameController.export(context, shouldPop: false);
+                  break;
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              // Group 1: Scroll options
               const PopupMenuItem<String>(
                 value: 'top',
                 child: Row(
@@ -110,6 +135,52 @@ class MovesListPageState extends State<MovesListPage> {
                     Icon(Icons.arrow_downward, color: Colors.black54),
                     SizedBox(width: 8),
                     Text('Scroll to Bottom'),
+                  ],
+                ),
+              ),
+              // Divider between scroll and game management options
+              const PopupMenuDivider(),
+              // Group 2: Save and Load game options
+              const PopupMenuItem<String>(
+                value: 'save_game',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.save, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Save game'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'load_game',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.folder_open, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Load game'),
+                  ],
+                ),
+              ),
+              // Divider between Save/Load and Import/Export options
+              const PopupMenuDivider(),
+              // Group 3: Import and Export game options
+              const PopupMenuItem<String>(
+                value: 'import_game',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.file_upload, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Import game'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'export_game',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.file_download, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Export game'),
                   ],
                 ),
               ),

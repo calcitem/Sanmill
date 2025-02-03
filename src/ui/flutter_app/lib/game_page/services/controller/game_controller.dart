@@ -396,22 +396,27 @@ class GameController {
   }
 
   /// Starts a game save.
-  static Future<String?> save(BuildContext context) async {
-    return LoadService.saveGame(context);
+  static Future<String?> save(BuildContext context,
+      {bool shouldPop = true}) async {
+    return LoadService.saveGame(context, shouldPop: shouldPop);
   }
 
   /// Starts a game load.
-  static Future<void> load(BuildContext context) async {
-    return LoadService.loadGame(context, null, isRunning: true);
+  static Future<void> load(BuildContext context,
+      {bool shouldPop = true}) async {
+    return LoadService.loadGame(context, null,
+        isRunning: true, shouldPop: shouldPop);
   }
 
   /// Starts a game import.
-  static Future<void> import(BuildContext context) async {
-    return ImportService.importGame(context);
+  static Future<void> import(BuildContext context,
+      {bool shouldPop = true}) async {
+    return ImportService.importGame(context, shouldPop: shouldPop);
   }
 
   /// Starts a game export.
-  static Future<void> export(BuildContext context) async {
-    return ExportService.exportGame(context);
+  static Future<void> export(BuildContext context,
+      {bool shouldPop = true}) async {
+    return ExportService.exportGame(context, shouldPop: shouldPop);
   }
 }

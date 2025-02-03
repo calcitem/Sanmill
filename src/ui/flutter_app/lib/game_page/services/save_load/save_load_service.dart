@@ -111,7 +111,8 @@ class LoadService {
   }
 
   /// Saves the game to the file.
-  static Future<String?> saveGame(BuildContext context) async {
+  static Future<String?> saveGame(BuildContext context,
+      {bool shouldPop = true}) async {
     if (EnvironmentConfig.test == true) {
       return null;
     }
@@ -120,7 +121,9 @@ class LoadService {
 
     if (!(GameController().gameRecorder.activeNode?.parent != null ||
         GameController().isPositionSetup == true)) {
-      Navigator.pop(context);
+      if (shouldPop) {
+        Navigator.pop(context);
+      }
       return null;
     }
 
@@ -138,7 +141,9 @@ class LoadService {
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
 
-    safePop();
+    if (shouldPop) {
+      safePop();
+    }
 
     // Wait for the dialog to disappear before taking a screenshot
     Future<void>.delayed(const Duration(milliseconds: 500), () {
@@ -156,7 +161,7 @@ class LoadService {
 
   /// Main function to load game from a file.
   static Future<void> loadGame(BuildContext context, String? filePath,
-      {required bool isRunning}) async {
+      {required bool isRunning, bool shouldPop = true}) async {
     filePath ??= await pickFileIfNeeded(context);
 
     if (filePath == null) {
@@ -200,7 +205,9 @@ class LoadService {
         if (!context.mounted) {
           return;
         }
-        Navigator.pop(context);
+        if (shouldPop) {
+          Navigator.pop(context); // Only pop if used in a dialog context.
+        }
       }
     } catch (exception) {
       if (!context.mounted) {
@@ -210,7 +217,9 @@ class LoadService {
       if (!context.mounted) {
         return;
       }
-      Navigator.pop(context);
+      if (shouldPop) {
+        Navigator.pop(context); // Only pop if used in a dialog context.
+      }
       return;
     }
     GameController().loadedGameFilenamePrefix =

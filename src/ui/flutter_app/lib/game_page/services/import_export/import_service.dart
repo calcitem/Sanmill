@@ -11,7 +11,8 @@ class ImportService {
   static const String _logTag = "[Importer]";
 
   /// Tries to import the game saved in the device's clipboard.
-  static Future<void> importGame(BuildContext context) async {
+  static Future<void> importGame(BuildContext context,
+      {bool shouldPop = true}) async {
     // Clear snack bars before clipboard read
     rootScaffoldMessengerKey.currentState?.clearSnackBars();
 
@@ -30,7 +31,9 @@ class ImportService {
 
     // If clipboard is empty or missing text, pop and return
     if (text == null) {
-      navigator.pop();
+      if (shouldPop) {
+        navigator.pop();
+      }
       return;
     }
 
@@ -44,7 +47,9 @@ class ImportService {
       final String tip = s.cannotImport(text);
       GameController().headerTipNotifier.showTip(tip);
       //GameController().animationController.forward();
-      navigator.pop();
+      if (shouldPop) {
+        navigator.pop();
+      }
       return;
     }
 
@@ -71,7 +76,9 @@ class ImportService {
       HistoryNavigator.importFailedStr = "";
     }
 
-    navigator.pop();
+    if (shouldPop) {
+      navigator.pop();
+    }
   }
 
   static String addTagPairs(String moveList) {

@@ -9,7 +9,8 @@ class ExportService {
   const ExportService._();
 
   /// Exports the game to the device's clipboard.
-  static Future<void> exportGame(BuildContext context) async {
+  static Future<void> exportGame(BuildContext context,
+      {bool shouldPop = true}) async {
     await Clipboard.setData(
       ClipboardData(text: GameController().gameRecorder.moveHistoryText),
     );
@@ -21,6 +22,8 @@ class ExportService {
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).moveHistoryCopied);
 
-    Navigator.pop(context);
+    if (shouldPop) {
+      Navigator.pop(context);
+    }
   }
 }
