@@ -34,8 +34,9 @@ class MovesListPageState extends State<MovesListPage> {
   void initState() {
     super.initState();
     // Collect all nodes from the PGN tree into _allNodes.
-    //final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
-    //_collectAllNodes(root);
+    // Example:
+    // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
+    // _collectAllNodes(root);
     _allNodes
       ..clear()
       ..addAll(GameController().gameRecorder.mainlineNodes);
@@ -44,7 +45,9 @@ class MovesListPageState extends State<MovesListPage> {
   /// Recursively walk the PGN tree and add each node to `_allNodes`.
   //void _collectAllNodes(PgnNode<ExtMove> node) {
   //  _allNodes.add(node);
-  //  node.children.forEach(_collectAllNodes);
+  //  for (final PgnNode<ExtMove> child in node.children) {
+  //   _collectAllNodes(child);
+  //  }
   //}
 
   /// Scrolls the list to the top with an animation.
@@ -58,7 +61,7 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Scrolls the list to the bottom with an animation.
   void _scrollToBottom() {
-    // Wait for the next frame to ensure that the list's maxScrollExtent is updated.
+    // Wait for the next frame to ensure the list's maxScrollExtent is correct.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -127,29 +130,84 @@ class MovesListPageState extends State<MovesListPage> {
   }
 }
 
-/// _NodeListItem displays a single PGN node in a row:
-/// Left side (38.2% of width): small Nine Men's Morris board.
-/// Right side (61.8% of width): notation (top) and comment (bottom).
-class _NodeListItem extends StatelessWidget {
+/// _NodeListItem now supports editing the comment field in-place,
+/// similar to how the HeaderTip widget handles comment editing.
+class _NodeListItem extends StatefulWidget {
   const _NodeListItem({required this.node});
 
   final PgnNode<ExtMove> node;
 
   @override
+  _NodeListItemState createState() => _NodeListItemState();
+}
+
+class _NodeListItemState extends State<_NodeListItem> {
+  /// Whether the comment is in editing mode.
+  bool _isEditing = false;
+
+  /// FocusNode to handle tap outside the TextField.
+  late final FocusNode _focusNode;
+
+  /// Controller for editing the comment text.
+  late final TextEditingController _editingController;
+
+  /// Cached comment text displayed in read-only mode.
+  String _comment = "";
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+
+    // Extract the comment from node.data.
+    _comment = _retrieveComment(widget.node);
+
+    _editingController = TextEditingController(text: _comment);
+  }
+
+  /// Retrieve comment from node.data, joined if multiple.
+  String _retrieveComment(PgnNode<ExtMove> node) {
+    if (node.data?.comments != null && node.data!.comments!.isNotEmpty) {
+      return node.data!.comments!.join(" ");
+    } else if (node.data?.startingComments != null &&
+        node.data!.startingComments!.isNotEmpty) {
+      return node.data!.startingComments!.join(" ");
+    }
+    return "";
+  }
+
+  /// Handle losing focus. If editing, finalize the edit.
+  void _handleFocusChange() {
+    if (!_focusNode.hasFocus && _isEditing) {
+      _finalizeEditing();
+    }
+  }
+
+  /// Saves the edited comment back into the PGN node.
+  void _finalizeEditing() {
+    setState(() {
+      _isEditing = false;
+
+      // Store the final text from _editingController.
+      final String newComment = _editingController.text.trim();
+      _comment = newComment.isEmpty ? "No comment" : newComment;
+
+      // Replace or set node.data.comments with unbraced text.
+      widget.node.data?.comments ??= <String>[];
+      widget.node.data?.comments!.clear();
+      if (newComment.isNotEmpty && newComment != "No comment") {
+        widget.node.data?.comments!.add(newComment);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Retrieve notation, comment, and board layout from node.data.
-    final ExtMove? moveData = node.data;
+    // Retrieve notation, boardLayout, etc.
+    final ExtMove? moveData = widget.node.data;
     final String notation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
-
-    // Retrieve comment from either 'comments' or 'startingComments'.
-    String comment = "";
-    if (moveData?.comments != null && moveData!.comments!.isNotEmpty) {
-      comment = moveData.comments!.join(" ");
-    } else if (moveData?.startingComments != null &&
-        moveData!.startingComments!.isNotEmpty) {
-      comment = moveData.startingComments!.join(" ");
-    }
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
@@ -168,9 +226,9 @@ class _NodeListItem extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            /// Left side: ~38.2% for the board.
+            // Left side: ~38.2% for the board.
             Expanded(
-              flex: 382, // 38.2%
+              flex: 382,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: boardLayout.isNotEmpty
@@ -182,9 +240,9 @@ class _NodeListItem extends StatelessWidget {
               ),
             ),
 
-            /// Right side: ~61.8% for notation and comment.
+            // Right side: ~61.8% for notation and comment.
             Expanded(
-              flex: 618, // 61.8%
+              flex: 618,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -204,15 +262,47 @@ class _NodeListItem extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    // Comment at the bottom.
-                    Text(
-                      comment.isEmpty ? "No comment" : comment,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                        color: DB().colorSettings.messageColor,
-                      ),
-                      softWrap: true,
+                    // Comment at the bottom (tap to edit).
+                    GestureDetector(
+                      onTap: () {
+                        if (!_isEditing) {
+                          setState(() {
+                            _isEditing = true;
+                            // Restore text in the editor.
+                            _editingController.text =
+                                (_comment == "No comment") ? "" : _comment;
+                          });
+                        }
+                      },
+                      child: _isEditing
+                          ? TextField(
+                              focusNode: _focusNode,
+                              controller: _editingController,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: DB().colorSettings.messageColor,
+                              ),
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.zero,
+                                border: InputBorder.none,
+                              ),
+                              onEditingComplete: () {
+                                // Finalize editing and hide keyboard.
+                                _finalizeEditing();
+                                FocusScope.of(context).unfocus();
+                              },
+                            )
+                          : Text(
+                              _comment.isEmpty ? "No comment" : _comment,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                                color: DB().colorSettings.messageColor,
+                              ),
+                              softWrap: true,
+                            ),
                     ),
                   ],
                 ),
@@ -222,5 +312,12 @@ class _NodeListItem extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _editingController.dispose();
+    super.dispose();
   }
 }
