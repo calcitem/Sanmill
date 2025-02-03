@@ -171,7 +171,10 @@ class _NodeListItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: boardLayout.isNotEmpty
-                    ? MiniBoard(boardLayout: boardLayout)
+                    ? MiniBoard(
+                        boardLayout: boardLayout,
+                        extMove: moveData,
+                      )
                     : const SizedBox.shrink(),
               ),
             ),
