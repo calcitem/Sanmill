@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-// branch_graph_page.dart
+// moves_list_page.dart
 
 import 'package:flutter/material.dart';
 
@@ -209,6 +209,11 @@ class _NodeListItemState extends State<_NodeListItem> {
     final String notation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
 
+    // Determine the text to display for the comment.
+    final String displayComment = _comment.isEmpty ? "No comment" : _comment;
+    // If the comment is "No comment", display it semi-transparent.
+    final bool isNoComment = displayComment == "No comment";
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Container(
@@ -270,7 +275,9 @@ class _NodeListItemState extends State<_NodeListItem> {
                             _isEditing = true;
                             // Restore text in the editor.
                             _editingController.text =
-                                (_comment == "No comment") ? "" : _comment;
+                                (displayComment == "No comment")
+                                    ? ""
+                                    : displayComment;
                           });
                         }
                       },
@@ -280,7 +287,7 @@ class _NodeListItemState extends State<_NodeListItem> {
                               controller: _editingController,
                               style: TextStyle(
                                 fontSize: 12,
-                                fontStyle: FontStyle.italic,
+                                fontStyle: FontStyle.normal,
                                 color: DB().colorSettings.messageColor,
                               ),
                               decoration: const InputDecoration(
@@ -295,11 +302,17 @@ class _NodeListItemState extends State<_NodeListItem> {
                               },
                             )
                           : Text(
-                              _comment.isEmpty ? "No comment" : _comment,
+                              displayComment,
                               style: TextStyle(
                                 fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                                color: DB().colorSettings.messageColor,
+                                fontStyle: FontStyle.normal,
+                                // Use semi-transparent color if "No comment", otherwise default color.
+                                color: isNoComment
+                                    ? DB()
+                                        .colorSettings
+                                        .messageColor
+                                        .withValues(alpha: 0.5)
+                                    : DB().colorSettings.messageColor,
                               ),
                               softWrap: true,
                             ),
