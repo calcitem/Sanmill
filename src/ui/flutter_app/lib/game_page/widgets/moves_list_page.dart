@@ -448,7 +448,7 @@ class MoveListItemState extends State<MoveListItem> {
                 setState(() {
                   _isEditing = true;
                   _editingController.text =
-                      (displayComment == "No comment") ? "" : displayComment;
+                      displayComment == "No comment" ? "" : displayComment;
                 });
               },
               child: _isEditing
@@ -460,9 +460,11 @@ class MoveListItemState extends State<MoveListItem> {
                         fontStyle: FontStyle.normal,
                         color: DB().colorSettings.messageColor,
                       ),
+                      maxLines: null,
+                      // Allow multiple lines
+                      keyboardType: TextInputType.multiline,
                       decoration: const InputDecoration(
                         isDense: true,
-                        contentPadding: EdgeInsets.zero,
                         border: InputBorder.none,
                       ),
                       onEditingComplete: () {
@@ -560,9 +562,11 @@ class MoveListItemState extends State<MoveListItem> {
                                 fontSize: 12,
                                 color: DB().colorSettings.messageColor,
                               ),
+                              maxLines: null,
+                              // Allow multiple lines
+                              keyboardType: TextInputType.multiline,
                               decoration: const InputDecoration(
                                 isDense: true,
-                                contentPadding: EdgeInsets.zero,
                                 border: InputBorder.none,
                               ),
                               onEditingComplete: () {
@@ -696,9 +700,10 @@ class MoveListItemState extends State<MoveListItem> {
                           fontSize: 12,
                           color: DB().colorSettings.messageColor,
                         ),
+                        // Allow multiple lines
+                        keyboardType: TextInputType.multiline,
                         decoration: const InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.zero,
                           border: InputBorder.none,
                         ),
                         onEditingComplete: () {
