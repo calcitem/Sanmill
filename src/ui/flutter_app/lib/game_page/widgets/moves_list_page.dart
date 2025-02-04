@@ -729,6 +729,23 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   @override
+  void didUpdateWidget(covariant MoveListItem oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // If not editing, update comment if it has changed in the node.
+    if (!_isEditing) {
+      final String newComment = _retrieveComment(widget.node);
+
+      if (newComment != _comment) {
+        setState(() {
+          _comment = newComment;
+          _editingController.text = newComment;
+        });
+      }
+    }
+  }
+
+  @override
   void dispose() {
     _focusNode.dispose();
     _editingController.dispose();
