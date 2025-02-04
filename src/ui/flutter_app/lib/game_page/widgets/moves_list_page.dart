@@ -366,11 +366,11 @@ class MoveListItemState extends State<MoveListItem> {
     setState(() {
       _isEditing = false;
       final String newComment = _editingController.text.trim();
-      _comment = newComment.isEmpty ? "No comment" : newComment;
+      _comment = newComment;
 
       widget.node.data?.comments ??= <String>[];
       widget.node.data?.comments!.clear();
-      if (newComment.isNotEmpty && newComment != "No comment") {
+      if (newComment.isNotEmpty) {
         widget.node.data?.comments!.add(newComment);
       }
     });
@@ -403,9 +403,7 @@ class MoveListItemState extends State<MoveListItem> {
 
   /// Large boards: single column, large board on top, then notation, then comment.
   Widget _buildLargeLayout(String notation, String boardLayout) {
-    final bool isNoComment = _comment.isEmpty || _comment == "No comment";
-    final String displayComment = isNoComment ? "No comment" : _comment;
-
+    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -431,47 +429,50 @@ class MoveListItemState extends State<MoveListItem> {
               ),
             ),
             const SizedBox(height: 6),
-            // Comment (editable)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _isEditing = true;
-                  _editingController.text =
-                      displayComment == "No comment" ? "" : displayComment;
-                });
-              },
-              child: _isEditing
-                  ? TextField(
-                      focusNode: _focusNode,
-                      controller: _editingController,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontStyle: FontStyle.normal,
-                        color: DB().colorSettings.messageColor,
+            // Comment area
+            if (_isEditing)
+              TextField(
+                focusNode: _focusNode,
+                controller: _editingController,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.normal,
+                  color: DB().colorSettings.messageColor,
+                ),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
+                decoration: const InputDecoration(
+                  isDense: true,
+                  border: InputBorder.none,
+                ),
+                onEditingComplete: () {
+                  _finalizeEditing();
+                  FocusScope.of(context).unfocus();
+                },
+              )
+            else
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isEditing = true;
+                    _editingController.text = hasComment ? _comment : "";
+                  });
+                },
+                child: hasComment
+                    ? Text(
+                        _comment,
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontStyle: FontStyle.normal,
+                          color: DB().colorSettings.messageColor,
+                        ),
+                      )
+                    : Icon(
+                        Icons.edit,
+                        size: 16,
+                        color: DB().colorSettings.messageColor.withAlpha(120),
                       ),
-                      maxLines: null,
-                      // Allow multiple lines
-                      keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                      ),
-                      onEditingComplete: () {
-                        _finalizeEditing();
-                        FocusScope.of(context).unfocus();
-                      },
-                    )
-                  : Text(
-                      displayComment,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontStyle: FontStyle.normal,
-                        color: isNoComment
-                            ? DB().colorSettings.messageColor.withAlpha(120)
-                            : DB().colorSettings.messageColor,
-                      ),
-                    ),
-            ),
+              ),
           ],
         ),
       ),
@@ -480,9 +481,7 @@ class MoveListItemState extends State<MoveListItem> {
 
   /// Medium boards (the original layout): board on the left, notation & comment on the right.
   Widget _buildMediumLayout(String notation, String boardLayout) {
-    final bool isNoComment = _comment.isEmpty || _comment == "No comment";
-    final String displayComment = isNoComment ? "No comment" : _comment;
-
+    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Container(
@@ -531,52 +530,52 @@ class MoveListItemState extends State<MoveListItem> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    GestureDetector(
-                      onTap: () {
-                        if (!_isEditing) {
+                    if (_isEditing)
+                      TextField(
+                        focusNode: _focusNode,
+                        controller: _editingController,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: DB().colorSettings.messageColor,
+                        ),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          isDense: true,
+                          border: InputBorder.none,
+                        ),
+                        onEditingComplete: () {
+                          _finalizeEditing();
+                          FocusScope.of(context).unfocus();
+                        },
+                      )
+                    else
+                      GestureDetector(
+                        onTap: () {
                           setState(() {
                             _isEditing = true;
                             _editingController.text =
-                                (displayComment == "No comment")
-                                    ? ""
-                                    : displayComment;
+                                hasComment ? _comment : "";
                           });
-                        }
-                      },
-                      child: _isEditing
-                          ? TextField(
-                              focusNode: _focusNode,
-                              controller: _editingController,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: DB().colorSettings.messageColor,
+                        },
+                        child: hasComment
+                            ? Text(
+                                _comment,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: DB().colorSettings.messageColor,
+                                ),
+                                softWrap: true,
+                              )
+                            : Icon(
+                                Icons.edit,
+                                size: 16,
+                                color: DB()
+                                    .colorSettings
+                                    .messageColor
+                                    .withAlpha(120),
                               ),
-                              maxLines: null,
-                              // Allow multiple lines
-                              keyboardType: TextInputType.multiline,
-                              decoration: const InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                              ),
-                              onEditingComplete: () {
-                                _finalizeEditing();
-                                FocusScope.of(context).unfocus();
-                              },
-                            )
-                          : Text(
-                              displayComment,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: isNoComment
-                                    ? DB()
-                                        .colorSettings
-                                        .messageColor
-                                        .withAlpha(120)
-                                    : DB().colorSettings.messageColor,
-                              ),
-                              softWrap: true,
-                            ),
-                    ),
+                      ),
                   ],
                 ),
               ),
@@ -647,9 +646,7 @@ class MoveListItemState extends State<MoveListItem> {
 
   /// Details layout: single column, each row has notation on the left, comment on the right, no board.
   Widget _buildDetailsLayout(String notation) {
-    final bool isNoComment = _comment.isEmpty || _comment == "No comment";
-    final String displayComment = isNoComment ? "No comment" : _comment;
-
+    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -673,43 +670,48 @@ class MoveListItemState extends State<MoveListItem> {
             const SizedBox(width: 8),
             // Comment (editable) on the right
             Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isEditing = true;
-                    _editingController.text =
-                        (displayComment == "No comment") ? "" : displayComment;
-                  });
-                },
-                child: _isEditing
-                    ? TextField(
-                        focusNode: _focusNode,
-                        controller: _editingController,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: DB().colorSettings.messageColor,
-                        ),
-                        // Allow multiple lines
-                        keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                        ),
-                        onEditingComplete: () {
-                          _finalizeEditing();
-                          FocusScope.of(context).unfocus();
-                        },
-                      )
-                    : Text(
-                        displayComment,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isNoComment
-                              ? DB().colorSettings.messageColor.withAlpha(120)
-                              : DB().colorSettings.messageColor,
-                        ),
+              child: _isEditing
+                  ? TextField(
+                      focusNode: _focusNode,
+                      controller: _editingController,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: DB().colorSettings.messageColor,
                       ),
-              ),
+                      keyboardType: TextInputType.multiline,
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        border: InputBorder.none,
+                      ),
+                      onEditingComplete: () {
+                        _finalizeEditing();
+                        FocusScope.of(context).unfocus();
+                      },
+                    )
+                  : GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _isEditing = true;
+                          _editingController.text = hasComment ? _comment : "";
+                        });
+                      },
+                      child: hasComment
+                          ? Text(
+                              _comment,
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: DB().colorSettings.messageColor,
+                              ),
+                            )
+                          : Icon(
+                              Icons.edit,
+                              size: 16,
+                              color: DB()
+                                  .colorSettings
+                                  .messageColor
+                                  .withAlpha(120),
+                            ),
+                    ),
             ),
           ],
         ),
