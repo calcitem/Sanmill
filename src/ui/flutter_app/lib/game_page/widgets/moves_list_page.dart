@@ -23,7 +23,8 @@ enum MovesViewLayout {
 }
 
 /// BranchGraphPage now displays PGN nodes in potentially different layouts.
-/// The user can pick from a set of layout options via the "View" button.
+/// The user can pick from a set of layout options via a single active icon which,
+/// when tapped, reveals a horizontal row of layout icons.
 class MovesListPage extends StatefulWidget {
   const MovesListPage({super.key});
 
@@ -225,6 +226,22 @@ class MovesListPageState extends State<MovesListPage> {
     }
   }
 
+  /// Maps each layout to its corresponding Fluent icon.
+  IconData _iconForLayout(MovesViewLayout layout) {
+    switch (layout) {
+      case MovesViewLayout.large:
+        return FluentIcons.square_24_regular;
+      case MovesViewLayout.medium:
+        return FluentIcons.apps_list_24_regular;
+      case MovesViewLayout.small:
+        return FluentIcons.grid_24_regular;
+      case MovesViewLayout.list:
+        return FluentIcons.text_column_two_24_regular;
+      case MovesViewLayout.details:
+        return FluentIcons.text_column_two_left_24_regular;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -237,7 +254,6 @@ class MovesListPageState extends State<MovesListPage> {
         actions: <Widget>[
           // Reverse Order Icon
           IconButton(
-            tooltip: 'Reverse Order',
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
               transitionBuilder: (Widget child, Animation<double> anim) =>
@@ -263,37 +279,47 @@ class MovesListPageState extends State<MovesListPage> {
               });
             },
           ),
-          // "View" button to choose a layout.
-          PopupMenuButton<MovesViewLayout>(
-            icon: const Icon(Icons.view_list), // TODO: Need modify
-            onSelected: (MovesViewLayout layout) {
-              setState(() {
-                _currentLayout = layout;
-              });
+          // Layout selection: one active icon in the AppBar.
+          // Tapping it opens a popup with a horizontal row of icons.
+          PopupMenuButton<void>(
+            icon: Icon(_iconForLayout(_currentLayout)),
+            color: DB().colorSettings.mainToolbarBackgroundColor,
+            onSelected: (_) {},
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<void>>[
+                PopupMenuItem<void>(
+                  // Disable direct selection so that only the icons inside react.
+                  enabled: false,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children:
+                        MovesViewLayout.values.map((MovesViewLayout layout) {
+                      final bool isSelected = layout == _currentLayout;
+                      return IconButton(
+                        icon: Icon(
+                          _iconForLayout(layout),
+                          color: isSelected
+                              ? DB()
+                                  .colorSettings
+                                  .mainToolbarIconColor
+                                  .withValues(alpha: 1)
+                              : DB()
+                                  .colorSettings
+                                  .mainToolbarIconColor
+                                  .withValues(alpha: 0.8),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _currentLayout = layout;
+                          });
+                          Navigator.pop(context);
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ];
             },
-            itemBuilder: (BuildContext context) =>
-                <PopupMenuEntry<MovesViewLayout>>[
-              const PopupMenuItem<MovesViewLayout>(
-                value: MovesViewLayout.large,
-                child: Text('Large boards'),
-              ),
-              const PopupMenuItem<MovesViewLayout>(
-                value: MovesViewLayout.medium,
-                child: Text('Medium boards'),
-              ),
-              const PopupMenuItem<MovesViewLayout>(
-                value: MovesViewLayout.small,
-                child: Text('Small boards'),
-              ),
-              const PopupMenuItem<MovesViewLayout>(
-                value: MovesViewLayout.list,
-                child: Text('List'),
-              ),
-              const PopupMenuItem<MovesViewLayout>(
-                value: MovesViewLayout.details,
-                child: Text('Details'),
-              ),
-            ],
           ),
           // The existing "three vertical dots" menu.
           PopupMenuButton<String>(
@@ -320,25 +346,25 @@ class MovesListPageState extends State<MovesListPage> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'top',
                 child: Row(
                   children: <Widget>[
-                    Icon(FluentIcons.arrow_upload_24_regular,
+                    const Icon(FluentIcons.arrow_upload_24_regular,
                         color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Scroll to Top'),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).top),
                   ],
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'bottom',
                 child: Row(
                   children: <Widget>[
-                    Icon(FluentIcons.arrow_download_24_regular,
+                    const Icon(FluentIcons.arrow_download_24_regular,
                         color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Scroll to Bottom'),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).bottom),
                   ],
                 ),
               ),
@@ -503,7 +529,7 @@ class MoveListItemState extends State<MoveListItem> {
                 style: style,
               )
             : Icon(
-                Icons.edit,
+                FluentIcons.edit_16_regular,
                 size: 16,
                 color: style.color?.withAlpha(120),
               ),
@@ -521,16 +547,12 @@ class MoveListItemState extends State<MoveListItem> {
     switch (widget.layout) {
       case MovesViewLayout.large:
         return _buildLargeLayout(notation, boardLayout);
-
       case MovesViewLayout.medium:
         return _buildMediumLayout(notation, boardLayout);
-
       case MovesViewLayout.small:
         return _buildSmallLayout(notation, boardLayout);
-
       case MovesViewLayout.list:
         return _buildListLayout(notation);
-
       case MovesViewLayout.details:
         return _buildDetailsLayout(notation);
     }
@@ -545,7 +567,6 @@ class MoveListItemState extends State<MoveListItem> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Large board
             if (boardLayout.isNotEmpty)
               AspectRatio(
                 aspectRatio: 1.0,
@@ -555,7 +576,6 @@ class MoveListItemState extends State<MoveListItem> {
                 ),
               ),
             const SizedBox(height: 8),
-            // Notation
             Text(
               notation,
               style: TextStyle(
@@ -565,7 +585,6 @@ class MoveListItemState extends State<MoveListItem> {
               ),
             ),
             const SizedBox(height: 6),
-            // Comment area
             _buildEditableComment(
               TextStyle(
                 fontSize: 12,
@@ -678,7 +697,6 @@ class MoveListItemState extends State<MoveListItem> {
               ),
               textAlign: TextAlign.center,
             ),
-            // No comment displayed in small layout
           ],
         ),
       ),
@@ -745,7 +763,6 @@ class MoveListItemState extends State<MoveListItem> {
   @override
   void didUpdateWidget(covariant MoveListItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     // If not editing, update comment if it has changed in the node.
     if (!_isEditing) {
       final String newComment = _retrieveComment(widget.node);
