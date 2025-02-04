@@ -3,6 +3,7 @@
 
 // moves_list_page.dart
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
@@ -33,6 +34,9 @@ class MovesListPage extends StatefulWidget {
 class MovesListPageState extends State<MovesListPage> {
   /// A flat list of all PGN nodes (collected recursively).
   final List<PgnNode<ExtMove>> _allNodes = <PgnNode<ExtMove>>[];
+
+  /// Whether to reverse the order of the nodes.
+  bool _isReversedOrder = false;
 
   /// ScrollController to control the scrolling of the ListView or GridView.
   final ScrollController _scrollController = ScrollController();
@@ -142,13 +146,13 @@ class MovesListPageState extends State<MovesListPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           _emptyStateIcon(
-            icon: Icons.folder_open,
+            icon: FluentIcons.folder_open_24_regular,
             label: S.of(context).loadGame,
             onTap: _loadGame,
           ),
           const SizedBox(width: 40),
           _emptyStateIcon(
-            icon: Icons.file_upload,
+            icon: FluentIcons.clipboard_paste_24_regular,
             label: S.of(context).importGame,
             onTap: _importGame,
           ),
@@ -233,10 +237,24 @@ class MovesListPageState extends State<MovesListPage> {
         actions: <Widget>[
           // Reverse Order Icon
           IconButton(
-            icon: const Icon(Icons.swap_vert),
             tooltip: 'Reverse Order',
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              transitionBuilder: (Widget child, Animation<double> anim) =>
+                  ScaleTransition(scale: anim, child: child),
+              child: _isReversedOrder
+                  ? const Icon(
+                      FluentIcons.arrow_sort_up_24_regular,
+                      key: ValueKey<String>('descending'),
+                    )
+                  : const Icon(
+                      FluentIcons.arrow_sort_down_24_regular,
+                      key: ValueKey<String>('ascending'),
+                    ),
+            ),
             onPressed: () {
               setState(() {
+                _isReversedOrder = !_isReversedOrder;
                 final List<PgnNode<ExtMove>> reversedNodes =
                     _allNodes.reversed.toList();
                 _allNodes
@@ -247,7 +265,7 @@ class MovesListPageState extends State<MovesListPage> {
           ),
           // "View" button to choose a layout.
           PopupMenuButton<MovesViewLayout>(
-            icon: const Icon(Icons.view_list),
+            icon: const Icon(Icons.view_list), // TODO: Need modify
             onSelected: (MovesViewLayout layout) {
               setState(() {
                 _currentLayout = layout;
@@ -306,7 +324,8 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'top',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.arrow_upward, color: Colors.black54),
+                    Icon(FluentIcons.arrow_upload_24_regular,
+                        color: Colors.black54),
                     SizedBox(width: 8),
                     Text('Scroll to Top'),
                   ],
@@ -316,7 +335,8 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'bottom',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.arrow_downward, color: Colors.black54),
+                    Icon(FluentIcons.arrow_download_24_regular,
+                        color: Colors.black54),
                     SizedBox(width: 8),
                     Text('Scroll to Bottom'),
                   ],
@@ -327,7 +347,8 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'save_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.save, color: Colors.black54),
+                    const Icon(FluentIcons.save_24_regular,
+                        color: Colors.black54),
                     const SizedBox(width: 8),
                     Text(S.of(context).saveGame),
                   ],
@@ -337,7 +358,8 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'load_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.folder_open, color: Colors.black54),
+                    const Icon(FluentIcons.folder_open_24_regular,
+                        color: Colors.black54),
                     const SizedBox(width: 8),
                     Text(S.of(context).loadGame),
                   ],
@@ -348,7 +370,8 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'import_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.file_upload, color: Colors.black54),
+                    const Icon(FluentIcons.clipboard_paste_24_regular,
+                        color: Colors.black54),
                     const SizedBox(width: 8),
                     Text(S.of(context).importGame),
                   ],
@@ -358,14 +381,15 @@ class MovesListPageState extends State<MovesListPage> {
                 value: 'export_game',
                 child: Row(
                   children: <Widget>[
-                    const Icon(Icons.file_download, color: Colors.black54),
+                    const Icon(FluentIcons.copy_24_regular,
+                        color: Colors.black54),
                     const SizedBox(width: 8),
                     Text(S.of(context).exportGame),
                   ],
                 ),
               ),
             ],
-            icon: const Icon(Icons.more_vert),
+            icon: const Icon(FluentIcons.more_vertical_24_regular),
           ),
         ],
       ),
