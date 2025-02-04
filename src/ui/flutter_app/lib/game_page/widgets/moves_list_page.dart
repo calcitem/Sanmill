@@ -148,6 +148,20 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
+          // Reverse Order Icon (Moved to the left)
+          IconButton(
+            icon: const Icon(Icons.swap_vert),
+            tooltip: 'Reverse Order',
+            onPressed: () {
+              setState(() {
+                final List<PgnNode<ExtMove>> reversedNodes =
+                    _allNodes.reversed.toList();
+                _allNodes
+                  ..clear()
+                  ..addAll(reversedNodes);
+              });
+            },
+          ),
           // "View" button to choose a layout.
           PopupMenuButton<MovesViewLayout>(
             icon: const Icon(Icons.view_list),
@@ -184,7 +198,6 @@ class MovesListPageState extends State<MovesListPage> {
           // The existing "three vertical dots" menu.
           PopupMenuButton<String>(
             onSelected: (String value) async {
-              // Handle actions based on menu selection.
               switch (value) {
                 case 'top':
                   _scrollToTop();
@@ -216,19 +229,9 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'export_game':
                   GameController.export(context, shouldPop: false);
                   break;
-                case 'reverse_order':
-                  setState(() {
-                    final List<PgnNode<ExtMove>> reversedNodes =
-                        _allNodes.reversed.toList();
-                    _allNodes
-                      ..clear()
-                      ..addAll(reversedNodes);
-                  });
-                  break;
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              // Group 1: Scroll options
               const PopupMenuItem<String>(
                 value: 'top',
                 child: Row(
@@ -250,19 +253,6 @@ class MovesListPageState extends State<MovesListPage> {
                 ),
               ),
               const PopupMenuDivider(),
-              // Reverse Order
-              const PopupMenuItem<String>(
-                value: 'reverse_order',
-                child: Row(
-                  children: <Widget>[
-                    Icon(Icons.swap_vert, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Reverse Order'),
-                  ],
-                ),
-              ),
-              const PopupMenuDivider(),
-              // Save and Load
               const PopupMenuItem<String>(
                 value: 'save_game',
                 child: Row(
@@ -284,7 +274,6 @@ class MovesListPageState extends State<MovesListPage> {
                 ),
               ),
               const PopupMenuDivider(),
-              // Import and Export
               const PopupMenuItem<String>(
                 value: 'import_game',
                 child: Row(
