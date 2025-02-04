@@ -103,7 +103,7 @@ class MovesListPageState extends State<MovesListPage> {
               children: <Widget>[
                 const Icon(Icons.folder_open, size: 64),
                 const SizedBox(height: 8),
-                const Text('Load game'),
+                Text(S.of(context).loadGame),
               ],
             ),
           ),
@@ -125,7 +125,7 @@ class MovesListPageState extends State<MovesListPage> {
               children: <Widget>[
                 const Icon(Icons.file_upload, size: 64),
                 const SizedBox(height: 8),
-                const Text('Import game'),
+                Text(S.of(context).importGame),
               ],
             ),
           ),
@@ -312,44 +312,44 @@ class MovesListPageState extends State<MovesListPage> {
                 ),
               ),
               const PopupMenuDivider(),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'save_game',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.save, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Save game'),
+                    const Icon(Icons.save, color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).saveGame),
                   ],
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'load_game',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.folder_open, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Load game'),
+                    const Icon(Icons.folder_open, color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).loadGame),
                   ],
                 ),
               ),
               const PopupMenuDivider(),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'import_game',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.file_upload, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Import game'),
+                    const Icon(Icons.file_upload, color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).importGame),
                   ],
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'export_game',
                 child: Row(
                   children: <Widget>[
-                    Icon(Icons.file_download, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text('Export game'),
+                    const Icon(Icons.file_download, color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).exportGame),
                   ],
                 ),
               ),
