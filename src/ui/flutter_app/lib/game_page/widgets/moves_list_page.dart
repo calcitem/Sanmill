@@ -95,6 +95,7 @@ class MovesListPageState extends State<MovesListPage> {
                   break;
                 case 'load_game':
                   await GameController.load(context, shouldPop: false);
+                  await Future<void>.delayed(const Duration(milliseconds: 500));
                   // Refresh the list with new data.
                   setState(() {
                     _allNodes
@@ -104,6 +105,7 @@ class MovesListPageState extends State<MovesListPage> {
                   break;
                 case 'import_game':
                   await GameController.import(context, shouldPop: false);
+                  await Future<void>.delayed(const Duration(milliseconds: 500));
                   // Refresh the list with new data.
                   setState(() {
                     _allNodes
