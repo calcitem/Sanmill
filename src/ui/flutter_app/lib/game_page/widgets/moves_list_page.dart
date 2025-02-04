@@ -47,18 +47,47 @@ class MovesListPageState extends State<MovesListPage> {
     // For example:
     // final PgnNode<ExtMove> root = GameController().gameRecorder.pgnRoot;
     // _collectAllNodes(root);
-    _allNodes
-      ..clear()
-      ..addAll(GameController().gameRecorder.mainlineNodes);
+    _refreshAllNodes();
   }
 
-  /// Recursively walk the PGN tree and add each node to `_allNodes`.
+  // Uncomment if you want a fully recursive collecting method.
   // void _collectAllNodes(PgnNode<ExtMove> node) {
   //   _allNodes.add(node);
   //   for (final PgnNode<ExtMove> child in node.children) {
   //     _collectAllNodes(child);
   //   }
   // }
+
+  /// Clears and refreshes _allNodes from the game recorder.
+  void _refreshAllNodes() {
+    _allNodes
+      ..clear()
+      ..addAll(GameController().gameRecorder.mainlineNodes);
+  }
+
+  /// Helper method to load a game, then refresh.
+  Future<void> _loadGame() async {
+    await GameController.load(context, shouldPop: false);
+    // Wait briefly, then refresh our list of nodes.
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    setState(_refreshAllNodes);
+  }
+
+  /// Helper method to import a game, then refresh.
+  Future<void> _importGame() async {
+    await GameController.import(context, shouldPop: false);
+    // Wait briefly, then refresh our list of nodes.
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    setState(_refreshAllNodes);
+  }
+
+  void _saveGame() {
+    GameController.save(context, shouldPop: false);
+  }
+
+  void _exportGame() {
+    GameController.export(context, shouldPop: false);
+  }
 
   /// Scrolls the list/grid to the top with an animation.
   void _scrollToTop() {
@@ -80,68 +109,48 @@ class MovesListPageState extends State<MovesListPage> {
     });
   }
 
+  /// Builds a single large icon with a label, used in the empty state.
+  Widget _emptyStateIcon({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 64,
+            color: DB().colorSettings.messageColor,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: TextStyle(color: DB().colorSettings.messageColor),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Builds a simple empty-state page with two large icons: Load game and Import game.
   Widget _buildEmptyState() {
     return Center(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          // Load Game
-          InkWell(
-            onTap: () async {
-              await GameController.load(context, shouldPop: false);
-              // Wait briefly, then refresh our list of nodes.
-              await Future<void>.delayed(const Duration(milliseconds: 500));
-              setState(() {
-                _allNodes
-                  ..clear()
-                  ..addAll(GameController().gameRecorder.mainlineNodes);
-              });
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.folder_open,
-                  size: 64,
-                  color: DB().colorSettings.messageColor,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  S.of(context).loadGame,
-                  style: TextStyle(color: DB().colorSettings.messageColor),
-                ),
-              ],
-            ),
+          _emptyStateIcon(
+            icon: Icons.folder_open,
+            label: S.of(context).loadGame,
+            onTap: _loadGame,
           ),
           const SizedBox(width: 40),
-          // Import Game
-          InkWell(
-            onTap: () async {
-              await GameController.import(context, shouldPop: false);
-              // Wait briefly, then refresh our list of nodes.
-              await Future<void>.delayed(const Duration(milliseconds: 500));
-              setState(() {
-                _allNodes
-                  ..clear()
-                  ..addAll(GameController().gameRecorder.mainlineNodes);
-              });
-            },
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(
-                  Icons.file_upload,
-                  size: 64,
-                  color: DB().colorSettings.messageColor,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  S.of(context).importGame,
-                  style: TextStyle(color: DB().colorSettings.messageColor),
-                ),
-              ],
-            ),
+          _emptyStateIcon(
+            icon: Icons.file_upload,
+            label: S.of(context).importGame,
+            onTap: _importGame,
           ),
         ],
       ),
@@ -222,7 +231,7 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
-          // Reverse Order Icon (Moved to the left)
+          // Reverse Order Icon
           IconButton(
             icon: const Icon(Icons.swap_vert),
             tooltip: 'Reverse Order',
@@ -239,7 +248,6 @@ class MovesListPageState extends State<MovesListPage> {
           // "View" button to choose a layout.
           PopupMenuButton<MovesViewLayout>(
             icon: const Icon(Icons.view_list),
-            // The "several horizontal lines" icon
             onSelected: (MovesViewLayout layout) {
               setState(() {
                 _currentLayout = layout;
@@ -280,28 +288,16 @@ class MovesListPageState extends State<MovesListPage> {
                   _scrollToBottom();
                   break;
                 case 'save_game':
-                  GameController.save(context, shouldPop: false);
+                  _saveGame();
                   break;
                 case 'load_game':
-                  await GameController.load(context, shouldPop: false);
-                  await Future<void>.delayed(const Duration(milliseconds: 500));
-                  setState(() {
-                    _allNodes
-                      ..clear()
-                      ..addAll(GameController().gameRecorder.mainlineNodes);
-                  });
+                  await _loadGame();
                   break;
                 case 'import_game':
-                  await GameController.import(context, shouldPop: false);
-                  await Future<void>.delayed(const Duration(milliseconds: 500));
-                  setState(() {
-                    _allNodes
-                      ..clear()
-                      ..addAll(GameController().gameRecorder.mainlineNodes);
-                  });
+                  await _importGame();
                   break;
                 case 'export_game':
-                  GameController.export(context, shouldPop: false);
+                  _exportGame();
                   break;
               }
             },
@@ -450,6 +446,47 @@ class MoveListItemState extends State<MoveListItem> {
     });
   }
 
+  /// Builds a reusable widget that either shows a comment or a TextField to edit it.
+  Widget _buildEditableComment(TextStyle style) {
+    final bool hasComment = _comment.isNotEmpty;
+    if (_isEditing) {
+      return TextField(
+        focusNode: _focusNode,
+        controller: _editingController,
+        style: style,
+        maxLines: null,
+        keyboardType: TextInputType.multiline,
+        decoration: const InputDecoration(
+          isDense: true,
+          border: InputBorder.none,
+        ),
+        onEditingComplete: () {
+          _finalizeEditing();
+          FocusScope.of(context).unfocus();
+        },
+      );
+    } else {
+      return GestureDetector(
+        onTap: () {
+          setState(() {
+            _isEditing = true;
+            _editingController.text = hasComment ? _comment : "";
+          });
+        },
+        child: hasComment
+            ? Text(
+                _comment,
+                style: style,
+              )
+            : Icon(
+                Icons.edit,
+                size: 16,
+                color: style.color?.withAlpha(120),
+              ),
+      );
+    }
+  }
+
   /// Builds the appropriate widget based on [widget.layout].
   @override
   Widget build(BuildContext context) {
@@ -477,7 +514,6 @@ class MoveListItemState extends State<MoveListItem> {
 
   /// Large boards: single column, large board on top, then notation, then comment.
   Widget _buildLargeLayout(String notation, String boardLayout) {
-    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -506,58 +542,21 @@ class MoveListItemState extends State<MoveListItem> {
             ),
             const SizedBox(height: 6),
             // Comment area
-            if (_isEditing)
-              TextField(
-                focusNode: _focusNode,
-                controller: _editingController,
-                style: TextStyle(
-                  fontSize: 12,
-                  fontStyle: FontStyle.normal,
-                  color: DB().colorSettings.messageColor,
-                ),
-                maxLines: null,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  isDense: true,
-                  border: InputBorder.none,
-                ),
-                onEditingComplete: () {
-                  _finalizeEditing();
-                  FocusScope.of(context).unfocus();
-                },
-              )
-            else
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _isEditing = true;
-                    _editingController.text = hasComment ? _comment : "";
-                  });
-                },
-                child: hasComment
-                    ? Text(
-                        _comment,
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontStyle: FontStyle.normal,
-                          color: DB().colorSettings.messageColor,
-                        ),
-                      )
-                    : Icon(
-                        Icons.edit,
-                        size: 16,
-                        color: DB().colorSettings.messageColor.withAlpha(120),
-                      ),
+            _buildEditableComment(
+              TextStyle(
+                fontSize: 12,
+                fontStyle: FontStyle.normal,
+                color: DB().colorSettings.messageColor,
               ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  /// Medium boards (the original layout): board on the left, notation & comment on the right.
+  /// Medium boards: board on the left, notation & comment on the right.
   Widget _buildMediumLayout(String notation, String boardLayout) {
-    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Container(
@@ -608,52 +607,12 @@ class MoveListItemState extends State<MoveListItem> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 8),
-                    if (_isEditing)
-                      TextField(
-                        focusNode: _focusNode,
-                        controller: _editingController,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: DB().colorSettings.messageColor,
-                        ),
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                        ),
-                        onEditingComplete: () {
-                          _finalizeEditing();
-                          FocusScope.of(context).unfocus();
-                        },
-                      )
-                    else
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isEditing = true;
-                            _editingController.text =
-                                hasComment ? _comment : "";
-                          });
-                        },
-                        child: hasComment
-                            ? Text(
-                                _comment,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: DB().colorSettings.messageColor,
-                                ),
-                                softWrap: true,
-                              )
-                            : Icon(
-                                Icons.edit,
-                                size: 16,
-                                color: DB()
-                                    .colorSettings
-                                    .messageColor
-                                    .withAlpha(120),
-                              ),
+                    _buildEditableComment(
+                      TextStyle(
+                        fontSize: 12,
+                        color: DB().colorSettings.messageColor,
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -675,7 +634,6 @@ class MoveListItemState extends State<MoveListItem> {
           children: <Widget>[
             if (boardLayout.isNotEmpty)
               Expanded(
-                // Keep it square-ish:
                 child: AspectRatio(
                   aspectRatio: 1.0,
                   child: MiniBoard(
@@ -696,7 +654,7 @@ class MoveListItemState extends State<MoveListItem> {
               ),
               textAlign: TextAlign.center,
             ),
-            // No comment displayed in Small layout.
+            // No comment displayed in small layout
           ],
         ),
       ),
@@ -722,9 +680,8 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Details layout: single column, each row has notation on the left, comment on the right, no board.
+  /// Details layout: single row, notation on the left, comment on the right, no board.
   Widget _buildDetailsLayout(String notation) {
-    final bool hasComment = _comment.isNotEmpty;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -746,50 +703,14 @@ class MoveListItemState extends State<MoveListItem> {
               ),
             ),
             const SizedBox(width: 8),
-            // Comment (editable) on the right
+            // Editable comment on the right
             Expanded(
-              child: _isEditing
-                  ? TextField(
-                      focusNode: _focusNode,
-                      controller: _editingController,
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: DB().colorSettings.messageColor,
-                      ),
-                      keyboardType: TextInputType.multiline,
-                      decoration: const InputDecoration(
-                        isDense: true,
-                        border: InputBorder.none,
-                      ),
-                      onEditingComplete: () {
-                        _finalizeEditing();
-                        FocusScope.of(context).unfocus();
-                      },
-                    )
-                  : GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _isEditing = true;
-                          _editingController.text = hasComment ? _comment : "";
-                        });
-                      },
-                      child: hasComment
-                          ? Text(
-                              _comment,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: DB().colorSettings.messageColor,
-                              ),
-                            )
-                          : Icon(
-                              Icons.edit,
-                              size: 16,
-                              color: DB()
-                                  .colorSettings
-                                  .messageColor
-                                  .withAlpha(120),
-                            ),
-                    ),
+              child: _buildEditableComment(
+                TextStyle(
+                  fontSize: 12,
+                  color: DB().colorSettings.messageColor,
+                ),
+              ),
             ),
           ],
         ),
@@ -804,7 +725,6 @@ class MoveListItemState extends State<MoveListItem> {
     // If not editing, update comment if it has changed in the node.
     if (!_isEditing) {
       final String newComment = _retrieveComment(widget.node);
-
       if (newComment != _comment) {
         setState(() {
           _comment = newComment;
