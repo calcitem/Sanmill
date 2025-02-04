@@ -22,7 +22,7 @@ enum MovesViewLayout {
   details,
 }
 
-/// BranchGraphPage now displays PGN nodes in potentially different layouts.
+/// MovesListPage now displays PGN nodes in potentially different layouts.
 /// The user can pick from a set of layout options via a single active icon which,
 /// when tapped, reveals a horizontal row of layout icons.
 class MovesListPage extends StatefulWidget {

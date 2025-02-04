@@ -132,25 +132,6 @@ class MoveListDialog extends StatelessWidget {
                   },
                 ),
               ),
-              // Branch Graph – when pressed, navigates to BranchGraphPage.
-              Expanded(
-                child: TextButton(
-                  key: const Key('move_list_dialog_branch_graph_button'),
-                  child: Text(
-                    S.of(context).more,
-                    style: _getButtonTextStyle(context),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute<MovesListPage>(
-                        builder: (BuildContext context) =>
-                            const MovesListPage(),
-                      ),
-                    );
-                  },
-                ),
-              ),
               Expanded(
                 child: TextButton(
                   key: const Key('move_list_dialog_cancel_button'),

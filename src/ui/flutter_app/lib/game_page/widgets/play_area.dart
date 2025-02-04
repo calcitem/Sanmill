@@ -17,6 +17,7 @@ import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
 import 'modals/game_options_modal.dart';
+import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
 
 /// The PlayArea widget is the main content of the game page.
@@ -147,7 +148,18 @@ class PlayAreaState extends State<PlayArea> {
       ),
       ToolbarItem.icon(
         key: const Key('play_area_toolbar_item_move'),
-        onPressed: () => _openModal(context, _buildMoveModal(context)),
+        onPressed: () {
+          if (DB().generalSettings.screenReaderSupport) {
+            _openModal(context, _buildMoveModal(context));
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const MovesListPage(),
+              ),
+            );
+          }
+        },
         icon: const Icon(FluentIcons.calendar_agenda_24_regular),
         label: Text(S.of(context).move,
             key: const Key('play_area_toolbar_item_move_label'),

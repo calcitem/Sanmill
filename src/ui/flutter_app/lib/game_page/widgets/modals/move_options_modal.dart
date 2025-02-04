@@ -70,7 +70,19 @@ class MoveOptionsModal extends StatelessWidget {
             GameController().isPositionSetup == true) ...<Widget>[
           SimpleDialogOption(
             key: const Key('show_move_list_option'),
-            onPressed: () => _showMoveList(context),
+            onPressed: () {
+              if (DB().generalSettings.screenReaderSupport) {
+                _showMoveList(context);
+              } else {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) => const MovesListPage(),
+                  ),
+                );
+              }
+            },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
               child: Text(S.of(context).showMoveList),
