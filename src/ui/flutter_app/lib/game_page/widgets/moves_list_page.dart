@@ -116,6 +116,16 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'export_game':
                   GameController.export(context, shouldPop: false);
                   break;
+                case 'reverse_order':
+                  // Reverse the order of the nodes and refresh the list immediately.
+                  setState(() {
+                    final List<PgnNode<ExtMove>> reversedNodes =
+                        _allNodes.reversed.toList();
+                    _allNodes
+                      ..clear()
+                      ..addAll(reversedNodes);
+                  });
+                  break;
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -140,7 +150,20 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
-              // Divider between scroll and game management options
+              // Divider before the Reverse Order option
+              const PopupMenuDivider(),
+              // Group 4: Reverse Order option
+              const PopupMenuItem<String>(
+                value: 'reverse_order',
+                child: Row(
+                  children: <Widget>[
+                    Icon(Icons.swap_vert, color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text('Reverse Order'),
+                  ],
+                ),
+              ),
+              // Divider between Scroll and Save/Load options
               const PopupMenuDivider(),
               // Group 2: Save and Load game options
               const PopupMenuItem<String>(
