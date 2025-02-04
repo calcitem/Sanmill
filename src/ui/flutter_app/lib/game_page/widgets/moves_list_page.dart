@@ -80,8 +80,67 @@ class MovesListPageState extends State<MovesListPage> {
     });
   }
 
+  /// Builds a simple empty-state page with two large icons: Load game and Import game.
+  Widget _buildEmptyState() {
+    return Center(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          // Load Game
+          InkWell(
+            onTap: () async {
+              await GameController.load(context, shouldPop: false);
+              // Wait briefly, then refresh our list of nodes.
+              await Future<void>.delayed(const Duration(milliseconds: 500));
+              setState(() {
+                _allNodes
+                  ..clear()
+                  ..addAll(GameController().gameRecorder.mainlineNodes);
+              });
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.folder_open, size: 64),
+                const SizedBox(height: 8),
+                const Text('Load game'),
+              ],
+            ),
+          ),
+          const SizedBox(width: 40),
+          // Import Game
+          InkWell(
+            onTap: () async {
+              await GameController.import(context, shouldPop: false);
+              // Wait briefly, then refresh our list of nodes.
+              await Future<void>.delayed(const Duration(milliseconds: 500));
+              setState(() {
+                _allNodes
+                  ..clear()
+                  ..addAll(GameController().gameRecorder.mainlineNodes);
+              });
+            },
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Icon(Icons.file_upload, size: 64),
+                const SizedBox(height: 8),
+                const Text('Import game'),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   /// Builds the main body widget according to the chosen view layout.
   Widget _buildBody() {
+    if (_allNodes.isEmpty) {
+      // If there are no moves, show two large icons: Load and Import.
+      return _buildEmptyState();
+    }
+
     switch (_currentLayout) {
       case MovesViewLayout.large:
       case MovesViewLayout.medium:
@@ -416,7 +475,9 @@ class MoveListItemState extends State<MoveListItem> {
               AspectRatio(
                 aspectRatio: 1.0,
                 child: MiniBoard(
-                    boardLayout: boardLayout, extMove: widget.node.data),
+                  boardLayout: boardLayout,
+                  extMove: widget.node.data,
+                ),
               ),
             const SizedBox(height: 8),
             // Notation
@@ -506,7 +567,9 @@ class MoveListItemState extends State<MoveListItem> {
                 padding: const EdgeInsets.all(8.0),
                 child: boardLayout.isNotEmpty
                     ? MiniBoard(
-                        boardLayout: boardLayout, extMove: widget.node.data)
+                        boardLayout: boardLayout,
+                        extMove: widget.node.data,
+                      )
                     : const SizedBox.shrink(),
               ),
             ),
