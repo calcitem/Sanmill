@@ -101,9 +101,16 @@ class MovesListPageState extends State<MovesListPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Icon(Icons.folder_open, size: 64),
+                Icon(
+                  Icons.folder_open,
+                  size: 64,
+                  color: DB().colorSettings.messageColor,
+                ),
                 const SizedBox(height: 8),
-                Text(S.of(context).loadGame),
+                Text(
+                  S.of(context).loadGame,
+                  style: TextStyle(color: DB().colorSettings.messageColor),
+                ),
               ],
             ),
           ),
@@ -123,9 +130,16 @@ class MovesListPageState extends State<MovesListPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                const Icon(Icons.file_upload, size: 64),
+                Icon(
+                  Icons.file_upload,
+                  size: 64,
+                  color: DB().colorSettings.messageColor,
+                ),
                 const SizedBox(height: 8),
-                Text(S.of(context).importGame),
+                Text(
+                  S.of(context).importGame,
+                  style: TextStyle(color: DB().colorSettings.messageColor),
+                ),
               ],
             ),
           ),
@@ -201,6 +215,7 @@ class MovesListPageState extends State<MovesListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.appBarTheme.backgroundColor,
       appBar: AppBar(
         title: Text(
           S.of(context).moveList,
