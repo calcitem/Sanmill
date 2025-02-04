@@ -68,6 +68,24 @@ class MovesListPageState extends State<MovesListPage> {
     _allNodes
       ..clear()
       ..addAll(GameController().gameRecorder.mainlineNodes);
+
+    int currentMoveIndex = 0; // Initialize moveIndex for the first node
+
+    for (int i = 0; i < _allNodes.length; i++) {
+      final PgnNode<ExtMove> node = _allNodes[i];
+
+      if (i == 0) {
+        // First node always gets moveIndex 0
+        node.data?.moveIndex = currentMoveIndex;
+      } else if (node.data?.type == MoveType.remove) {
+        // TODO: WAR: If it's a remove type, use the previous node's moveIndex
+        node.data?.moveIndex = _allNodes[i - 1].data?.moveIndex;
+      } else {
+        // Otherwise, increment the previous node's moveIndex
+        currentMoveIndex = (_allNodes[i - 1].data?.moveIndex ?? 0) + 1;
+        node.data?.moveIndex = currentMoveIndex;
+      }
+    }
   }
 
   /// Helper method to load a game, then refresh.

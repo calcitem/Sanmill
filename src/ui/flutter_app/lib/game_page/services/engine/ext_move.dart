@@ -42,6 +42,7 @@ class ExtMove extends PgnNodeData {
   ExtMove(
     this.move, {
     this.boardLayout,
+    this.moveIndex,
     super.nags,
     super.startingComments,
     super.comments,
@@ -66,6 +67,9 @@ class ExtMove extends PgnNodeData {
 
   /// The board layout after the move.
   String? boardLayout;
+
+  /// The move index.
+  int? moveIndex;
 
   static const String _logTag = "[Move]";
 

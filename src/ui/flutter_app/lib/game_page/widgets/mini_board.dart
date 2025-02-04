@@ -2,35 +2,203 @@
 
 import 'dart:math' as math;
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/database/database.dart';
 import '../services/mill.dart';
+import 'game_page.dart';
 
 /// MiniBoard widget displays a small Nine Men's Morris board given a board layout string.
-/// Now it also accepts an optional [extMove] to highlight the last move.
-class MiniBoard extends StatelessWidget {
+/// When the board is tapped, an overlay navigation icon (FluentIcons.arrow_undo_48_regular)
+/// appears in the center and "breathes" (pulses). Tapping the icon triggers navigation
+/// to the corresponding move. Only one MiniBoard at a time can display the icon.
+class MiniBoard extends StatefulWidget {
   const MiniBoard({
     super.key,
     required this.boardLayout,
-    this.extMove, // Optional: used to highlight the last move
+    this.extMove,
+    this.onNavigateMove, // Callback when navigation icon is tapped.
   });
 
   final String boardLayout;
   final ExtMove? extMove;
 
+  /// Optional callback invoked after navigating the move (if you still want it).
+  /// If not needed, you can remove or refactor.
+  final VoidCallback? onNavigateMove;
+
+  @override
+  MiniBoardState createState() => MiniBoardState();
+}
+
+class MiniBoardState extends State<MiniBoard>
+    with SingleTickerProviderStateMixin {
+  // A static reference to track which MiniBoard is currently active (i.e. showing the icon).
+  static MiniBoardState? _activeBoard;
+
+  // Flag to control the visibility of the navigation icon overlay.
+  bool _showNavigationIcon = false;
+
+  // Animation controller to produce the "breathing" (pulsing) effect.
+  late AnimationController _pulseController;
+
+  // This animation will be used to scale the icon in and out.
+  late Animation<double> _scaleAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the animation controller for a 1-second cycle, repeating forward and reverse.
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat(reverse: true);
+
+    // Create a tween to scale between 0.9 and 1.1, applying a smooth curve.
+    _scaleAnimation = Tween<double>(begin: 0.9, end: 1.1).animate(
+      CurvedAnimation(
+        parent: _pulseController,
+        curve: Curves.easeInOut,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    // If this instance is the active board, reset the static reference.
+    if (_activeBoard == this) {
+      _activeBoard = null;
+    }
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  /// Utility method to hide the navigation icon of the previously active board if it is still mounted.
+  static void _hidePreviousActiveBoard() {
+    // If another board was active, hide its icon if it is still mounted.
+    // This prevents setState on a disposed widget.
+    if (_activeBoard != null && _activeBoard!.mounted) {
+      _activeBoard!.setState(() {
+        _activeBoard!._showNavigationIcon = false;
+      });
+    }
+    // Clear the reference so no invalid setState() calls can happen afterward.
+    _activeBoard = null;
+  }
+
+  /// When the board is tapped, show the navigation icon on this board
+  /// and hide it on any previously active board.
+  void _handleBoardTap() {
+    // Hide the icon on the previously active board if needed.
+    if (_activeBoard != this) {
+      _hidePreviousActiveBoard();
+    }
+    // Make this board the active one.
+    _activeBoard = this;
+
+    setState(() {
+      _showNavigationIcon = true;
+    });
+  }
+
+  /// When navigation icon is tapped, import partial moves up to this extMove's index,
+  /// then jump to that position on the main line.
+  ///
+  /// Implementation references move_list_dialog.dart's _importGame logic:
+  ///  - Build PGN substring up to clickedIndex
+  ///  - Call ImportService.import(...)
+  ///  - Then HistoryNavigator.takeBackAll(...), stepForwardAll(...).
+  void _handleNavigationIconTap() {
+    final ExtMove? em = widget.extMove;
+    if (em != null && em.moveIndex != null && em.moveIndex! >= 0) {
+      final int clickedIndex = em.moveIndex!;
+
+      // 1) Collect mergedMoves from the current GameController
+      final GameController controller = GameController();
+      List<String> mergedMoves = getMergedMoves(controller);
+
+      // 2) Detect if there's a leading fen block
+      String? fen;
+      if (mergedMoves.isNotEmpty && mergedMoves[0].startsWith('[')) {
+        fen = mergedMoves[0];
+        mergedMoves = mergedMoves.sublist(1);
+      }
+
+      // 3) Partial PGN up to (clickedIndex + 1)
+      String ml = mergedMoves.sublist(0, clickedIndex + 1).join(' ');
+      if (fen != null) {
+        ml = '$fen $ml';
+      }
+
+      // 4) Import the PGN
+      try {
+        ImportService.import(ml);
+      } catch (exception) {
+        // If import fails, you can show a tip or revert
+        // For example:
+        final String tip = "Cannot import partial moves: $ml";
+        GameController().headerTipNotifier.showTip(tip);
+        // Then optionally return
+        return;
+      }
+
+      // 5) Rebuild from scratch:
+      HistoryNavigator.takeBackAll(context, pop: false);
+      HistoryNavigator.stepForwardAll(context, pop: false);
+    }
+
+    // Hide the icon after navigating if desired
+    setState(() {
+      _showNavigationIcon = false;
+    });
+
+    // If your parent still wants to handle callback
+    widget.onNavigateMove?.call();
+
+    // Close the page
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Constrain to a square aspect ratio so the board doesn't overflow.
     return AspectRatio(
       aspectRatio: 1.0,
-      child: Container(
-        color: DB().colorSettings.boardBackgroundColor,
-        child: CustomPaint(
-          painter: MiniBoardPainter(
-            boardLayout: boardLayout,
-            extMove: extMove,
-          ),
+      child: GestureDetector(
+        // Tapping anywhere on the board shows the navigation icon (and hides icons on other boards).
+        onTap: _handleBoardTap,
+        child: Stack(
+          children: <Widget>[
+            // The board background and drawing are rendered by CustomPaint.
+            Container(
+              color: DB().colorSettings.boardBackgroundColor,
+              child: CustomPaint(
+                painter: MiniBoardPainter(
+                  boardLayout: widget.boardLayout,
+                  extMove: widget.extMove,
+                ),
+                child: Container(), // Ensures the CustomPaint has a size.
+              ),
+            ),
+            // Display the navigation icon overlay in the center only if:
+            // 1. _showNavigationIcon is true (board is active)
+            // 2. extMove is provided (there is a move to navigate to)
+            if (_showNavigationIcon && widget.extMove != null)
+              Center(
+                child: ScaleTransition(
+                  scale: _scaleAnimation,
+                  child: IconButton(
+                    // Use the Fluent UI arrow icon.
+                    icon: Icon(
+                      FluentIcons.arrow_undo_48_regular,
+                      color: DB().colorSettings.boardLineColor,
+                      size: 48.0,
+                    ),
+                    onPressed: _handleNavigationIconTap,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
     );
