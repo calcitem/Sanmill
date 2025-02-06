@@ -15,6 +15,8 @@
 #include "engine_main.h"
 #endif
 
+#include "cui_interface.cpp"
+
 #ifndef QT_GUI_LIB
 #ifdef UNIT_TEST_MODE
 int console_main(void)
@@ -26,6 +28,9 @@ int main(int argc, char *argv[])
 #endif // FLUTTER_UI
 #endif // UNIT_TEST_MODE
 {
+        // If you want to run just the TUI:
+    return run_ncurses_interface();
+
     std::cout << engine_info() << std::endl;
 
 #ifdef FLUTTER_UI

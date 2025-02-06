@@ -319,6 +319,7 @@ endif
 CXXFLAGS += -Wall -Wcast-qual -fno-exceptions -std=c++17 $(EXTRACXXFLAGS)
 DEPENDFLAGS += -std=c++17
 LDFLAGS += $(EXTRALDFLAGS)
+LDFLAGS +=  -lncurses
 
 # For Sanmill
 CXXFLAGS += -I../include -Iperfect -I.
