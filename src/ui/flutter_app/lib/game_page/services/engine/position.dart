@@ -571,7 +571,7 @@ class Position {
 
     bool ret = false;
 
-    final ExtMove m = ExtMove(move);
+    final ExtMove m = ExtMove(move, side: _sideToMove);
 
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
@@ -734,6 +734,7 @@ class Position {
       // Record includes boardLayout
       _record = ExtMove(
         "(${fileOf(s)},${rankOf(s)})",
+        side: us,
         boardLayout: generateBoardLayoutAfterThisMove(),
       );
 
@@ -951,6 +952,7 @@ class Position {
     _record = ExtMove(
       "(${fileOf(_currentSquare[sideToMove]!)},"
       "${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
+      side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
     );
 
@@ -1075,6 +1077,7 @@ class Position {
     // Record includes boardLayout
     _record = ExtMove(
       "-(${fileOf(s)},${rankOf(s)})",
+      side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
     );
     st.rule50 = 0; // TODO: Need to move out?

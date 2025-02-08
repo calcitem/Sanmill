@@ -187,7 +187,10 @@ class Engine {
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
-            ExtMove('-$move'),
+            ExtMove(
+              '-$move',
+              side: GameController().position.sideToMove,
+            ),
           );
         } else {
           await Future<void>.delayed(const Duration(milliseconds: 100));
@@ -195,7 +198,10 @@ class Engine {
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
-            ExtMove(wmdNotationToMove[selectedMove]!),
+            ExtMove(
+              wmdNotationToMove[selectedMove]!,
+              side: GameController().position.sideToMove,
+            ),
           );
         }
       } else {
@@ -259,7 +265,13 @@ class Engine {
         aiMoveType = AiMoveType.consensus;
       }
 
-      return EngineRet(value, aiMoveType, ExtMove(best));
+      return EngineRet(
+          value,
+          aiMoveType,
+          ExtMove(
+            best,
+            side: GameController().position.sideToMove.opponent,
+          ));
     }
 
     if (response.contains("nobestmove")) {

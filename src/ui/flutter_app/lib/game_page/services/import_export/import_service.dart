@@ -234,6 +234,9 @@ class ImportService {
       return ret;
     }
 
+    final Position localPos = Position();
+    localPos.reset();
+
     final GameRecorder newHistory =
         GameRecorder(lastPositionWithRemove: GameController().position.fen);
 
@@ -249,13 +252,40 @@ class ImportService {
         final int iX = i.indexOf("x");
         if (iX == -1) {
           final String m = _playOkNotationToMoveString(i);
-          newHistory.appendMove(ExtMove(m));
+
+          newHistory.appendMove(ExtMove(
+            m,
+            side: localPos.sideToMove,
+          ));
+
+          final bool ok = localPos.doMove(m);
+          if (!ok) {
+            throw ImportFormatException("Invalid move: $m");
+          }
         } else if (iX != -1) {
           final String m1 = _playOkNotationToMoveString(i.substring(0, iX));
-          newHistory.appendMove(ExtMove(m1));
+
+          newHistory.appendMove(ExtMove(
+            m1,
+            side: localPos.sideToMove,
+          ));
+
+          final bool ok1 = localPos.doMove(m1);
+          if (!ok1) {
+            throw ImportFormatException("Invalid move: $m1");
+          }
 
           final String m2 = _playOkNotationToMoveString(i.substring(iX));
-          newHistory.appendMove(ExtMove(m2));
+
+          newHistory.appendMove(ExtMove(
+            m2,
+            side: localPos.sideToMove,
+          ));
+
+          final bool ok2 = localPos.doMove(m2);
+          if (!ok2) {
+            throw ImportFormatException("Invalid move: $m2");
+          }
         }
       }
     }
@@ -316,8 +346,16 @@ class ImportService {
     // Parse entire PGN (including headers)
     final PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
 
+    final Position localPos = Position();
+
     // Retrieve FEN from headers if present
     final String? fen = game.headers['FEN'];
+    if (fen != null && fen.isNotEmpty) {
+      localPos.setFen(fen);
+    } else {
+      localPos.reset();
+    }
+
     final GameRecorder newHistory = GameRecorder(
       lastPositionWithRemove: fen ?? GameController().position.fen,
       setupPosition: fen,
@@ -394,10 +432,16 @@ class ImportService {
           // Create ExtMove with parsed NAGs and comments from node
           newHistory.appendMove(ExtMove(
             uciMove,
+            side: localPos.sideToMove,
             nags: node.nags,
             startingComments: node.startingComments,
             comments: node.comments,
           ));
+
+          final bool ok = localPos.doMove(uciMove);
+          if (!ok) {
+            throw ImportFormatException("Invalid move: $uciMove");
+          }
         } catch (e) {
           logger.e("$_logTag Failed to parse move segment '$segment': $e");
           throw ImportFormatException("Invalid move segment: $segment");

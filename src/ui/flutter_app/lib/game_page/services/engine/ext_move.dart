@@ -41,6 +41,7 @@ class ExtMove extends PgnNodeData {
   /// If you prefer, you can unify "move" and "san" as well.
   ExtMove(
     this.move, {
+    required this.side,
     this.boardLayout,
     this.moveIndex,
     super.nags,
@@ -58,6 +59,9 @@ class ExtMove extends PgnNodeData {
 
   /// The UCI-like move string, e.g. "(3,5)->(3,4)"
   final String move;
+
+  /// Indicates which side performed the move.
+  final PieceColor side;
 
   /// The parsed MoveType (place/move/remove/draw/none).
   final MoveType type;

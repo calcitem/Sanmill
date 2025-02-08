@@ -562,22 +562,30 @@ class MoveListItemState extends State<MoveListItem> {
     final String notation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
 
+    // If side is white, use white color; if black, use black color.
+    final Color sideColor = (moveData?.side == PieceColor.white)
+        ? DB().colorSettings.whitePieceColor
+        : (moveData?.side == PieceColor.black)
+            ? DB().colorSettings.blackPieceColor
+            : Colors.yellow;
+
     switch (widget.layout) {
       case MovesViewLayout.large:
-        return _buildLargeLayout(notation, boardLayout);
+        return _buildLargeLayout(notation, boardLayout, sideColor);
       case MovesViewLayout.medium:
-        return _buildMediumLayout(notation, boardLayout);
+        return _buildMediumLayout(notation, boardLayout, sideColor);
       case MovesViewLayout.small:
-        return _buildSmallLayout(notation, boardLayout);
+        return _buildSmallLayout(notation, boardLayout, sideColor);
       case MovesViewLayout.list:
-        return _buildListLayout(notation);
+        return _buildListLayout(notation, sideColor);
       case MovesViewLayout.details:
-        return _buildDetailsLayout(notation);
+        return _buildDetailsLayout(notation, sideColor);
     }
   }
 
   /// Large boards: single column, large board on top, then notation, then comment.
-  Widget _buildLargeLayout(String notation, String boardLayout) {
+  Widget _buildLargeLayout(
+      String notation, String boardLayout, Color sideColor) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -599,7 +607,8 @@ class MoveListItemState extends State<MoveListItem> {
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
-                color: DB().colorSettings.messageColor,
+                color:
+                    sideColor, // If side is white, text is white; if side is black, text is black.
               ),
             ),
             const SizedBox(height: 6),
@@ -617,7 +626,8 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// Medium boards: board on the left, notation & comment on the right.
-  Widget _buildMediumLayout(String notation, String boardLayout) {
+  Widget _buildMediumLayout(
+      String notation, String boardLayout, Color sideColor) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Container(
@@ -661,7 +671,8 @@ class MoveListItemState extends State<MoveListItem> {
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: DB().colorSettings.messageColor,
+                        color:
+                            sideColor, // If side is white => white, black => black
                       ),
                       softWrap: true,
                       maxLines: 2,
@@ -685,7 +696,8 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// Small boards: grid with 3 or 5 columns, each cell has mini board on top, notation below, no comment.
-  Widget _buildSmallLayout(String notation, String boardLayout) {
+  Widget _buildSmallLayout(
+      String notation, String boardLayout, Color sideColor) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Container(
@@ -711,7 +723,8 @@ class MoveListItemState extends State<MoveListItem> {
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
-                color: DB().colorSettings.messageColor,
+                color:
+                    sideColor, // If side is white => white, if black => black
               ),
               textAlign: TextAlign.center,
             ),
@@ -722,7 +735,7 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// List layout: 2 columns, show notation only (no board, no comment).
-  Widget _buildListLayout(String notation) {
+  Widget _buildListLayout(String notation, Color sideColor) {
     return Card(
       color: DB().colorSettings.darkBackgroundColor,
       margin: const EdgeInsets.all(6.0),
@@ -732,7 +745,7 @@ class MoveListItemState extends State<MoveListItem> {
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: DB().colorSettings.messageColor,
+            color: sideColor, // If side is white => white, if black => black
           ),
           textAlign: TextAlign.center,
         ),
@@ -741,7 +754,7 @@ class MoveListItemState extends State<MoveListItem> {
   }
 
   /// Details layout: single row, notation on the left, comment on the right, no board.
-  Widget _buildDetailsLayout(String notation) {
+  Widget _buildDetailsLayout(String notation, Color sideColor) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -758,7 +771,8 @@ class MoveListItemState extends State<MoveListItem> {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
-                  color: DB().colorSettings.messageColor,
+                  color:
+                      sideColor, // If side is white => white, if black => black
                 ),
               ),
             ),
