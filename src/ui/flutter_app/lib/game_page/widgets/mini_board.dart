@@ -349,6 +349,13 @@ class MiniBoardPainter extends CustomPainter {
     _drawLine(canvas, outerPoints[7], middlePoints[7], boardPaint);
     _drawLine(canvas, middlePoints[7], innerPoints[7], boardPaint);
 
+    if (DB().ruleSettings.hasDiagonalLines) {
+      canvas.drawLine(outerPoints[0], innerPoints[0], boardPaint);
+      canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
+      canvas.drawLine(outerPoints[4], innerPoints[4], boardPaint);
+      canvas.drawLine(outerPoints[6], innerPoints[6], boardPaint);
+    }
+
     // Draw pieces:
     for (int i = 0; i < 24; i++) {
       final PieceColor pc = boardState[i];
