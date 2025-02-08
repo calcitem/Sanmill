@@ -1,6 +1,7 @@
 // mini_board.dart
 
 import 'dart:math' as math;
+import 'dart:ui' as ui;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
@@ -349,6 +350,7 @@ class MiniBoardPainter extends CustomPainter {
     _drawLine(canvas, outerPoints[7], middlePoints[7], boardPaint);
     _drawLine(canvas, middlePoints[7], innerPoints[7], boardPaint);
 
+    // Possibly draw diagonals if the rule setting is enabled.
     if (DB().ruleSettings.hasDiagonalLines) {
       canvas.drawLine(outerPoints[0], innerPoints[0], boardPaint);
       canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
@@ -376,16 +378,94 @@ class MiniBoardPainter extends CustomPainter {
         pos = outerPoints[((i - 16) + 1) % 8];
       }
 
-      final Paint piecePaint = Paint()
-        ..color = (pc == PieceColor.white)
-            ? DB().colorSettings.whitePieceColor
-            : DB().colorSettings.blackPieceColor
-        ..style = PaintingStyle.fill;
+      // Example: We define the piece diameter by 2 * pieceRadius.
+      final double pieceDiameter = pieceRadius * 2;
 
-      canvas.drawCircle(pos, pieceRadius, piecePaint);
+      // If you have piece images (ui.Image) for white/black, you can fetch them here:
+      // final ui.Image? pieceImage = myPieceImageMap[pc]; // Example only.
+      // For demonstration, we'll assume no images and just do border + fill.
+
+      // The code below mirrors the structure in piece_painter.dart:
+      // 1) If there's an image, use paintImage(...).
+      // 2) Else, draw the border circle, then the fill circle.
+      // 3) Optionally draw a number if needed.
+
+      // --- Start: piece painter style code. ---
+      final Paint paint = Paint();
+      const double opacity = 1.0;
+      final double circleOuterRadius = pieceDiameter / 2.0;
+      final double circleInnerRadius = circleOuterRadius * 0.99;
+
+      // Example border/main color. Adjust to match your piece color logic.
+      final Color borderColor = (pc == PieceColor.white)
+          ? DB().colorSettings.whitePieceColor
+          : DB().colorSettings.blackPieceColor;
+      final Color mainColor = borderColor; // or a different color if desired
+
+      // If you have an actual 'PieceColor' class with borderColor/mainColor,
+      // you can do something like:
+      // final Color borderColor = pc.borderColor.withOpacity(opacity);
+      // final Color mainColor = pc.mainColor.withOpacity(opacity);
+
+      // 1) If there's an image, do paintImage(...).
+      //    For demonstration, we'll assume "no image" => null.
+      const ui.Image? pieceImage = null;
+      if (pieceImage != null) {
+        paintImage(
+          canvas: canvas,
+          rect: Rect.fromCircle(
+            center: pos,
+            radius: circleInnerRadius,
+          ),
+          image: pieceImage,
+          fit: BoxFit.cover,
+        );
+      } else {
+        // Draw border circle:
+        paint.color = borderColor.withValues(alpha: opacity);
+
+        // If background is white, you might prefer stroke for the border:
+        if (DB().colorSettings.boardBackgroundColor == Colors.white) {
+          paint.style = PaintingStyle.stroke;
+          paint.strokeWidth = 4.0;
+        } else {
+          paint.style = PaintingStyle.fill;
+        }
+        canvas.drawCircle(pos, circleOuterRadius, paint);
+
+        // Fill main color:
+        paint.style = PaintingStyle.fill;
+        paint.color = mainColor.withValues(alpha: opacity);
+        canvas.drawCircle(pos, circleInnerRadius, paint);
+      }
+
+      // 2) Optionally draw a number. (If you track piece number, etc.)
+      // We'll skip it here, but the pattern is:
+      /*
+      final TextPainter textPainter = TextPainter(
+        text: TextSpan(
+          text: '12', // or something from your piece metadata
+          style: TextStyle(
+            color: (mainColor.computeLuminance() > 0.5)
+                ? Colors.black
+                : Colors.white,
+            fontSize: circleOuterRadius, // Example
+          ),
+        ),
+        textAlign: TextAlign.center,
+        textDirection: TextDirection.ltr,
+      );
+      textPainter.layout();
+      final Offset textOffset = Offset(
+        pos.dx - textPainter.width / 2,
+        pos.dy - textPainter.height / 2,
+      );
+      textPainter.paint(canvas, textOffset);
+      */
+      // --- End: piece painter style code. ---
     }
 
-    // Finally, draw highlights for the last move (Highlight circle/arrow/X):
+    // Highlight the last move if extMove != null
     _drawMoveHighlight(
       canvas,
       innerPoints,
