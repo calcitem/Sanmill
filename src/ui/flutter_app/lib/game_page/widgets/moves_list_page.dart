@@ -540,6 +540,7 @@ class MoveListItemState extends State<MoveListItem> {
             _isEditing = true;
             _editingController.text = hasComment ? _comment : "";
           });
+          _focusNode.requestFocus();
         },
         child: hasComment
             ? Text(
