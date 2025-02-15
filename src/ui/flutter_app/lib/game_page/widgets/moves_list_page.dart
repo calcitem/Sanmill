@@ -440,6 +440,7 @@ class MovesListPageState extends State<MovesListPage> {
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
+          MiniBoardState.hideActiveBoard();
           FocusScope.of(context).unfocus();
         },
         child: _buildBody(),

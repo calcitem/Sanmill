@@ -88,6 +88,11 @@ class MiniBoardState extends State<MiniBoard>
     _activeBoard = null;
   }
 
+  /// Public static helper for hiding the active board (if any).
+  static void hideActiveBoard() {
+    _hidePreviousActiveBoard();
+  }
+
   /// When the board is tapped, show the navigation icon on this board
   /// and hide it on any previously active board.
   void _handleBoardTap() {
@@ -166,6 +171,7 @@ class MiniBoardState extends State<MiniBoard>
     return AspectRatio(
       aspectRatio: 1.0,
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         // Tapping anywhere on the board shows the navigation icon (and hides icons on other boards).
         onTap: _handleBoardTap,
         child: Stack(
