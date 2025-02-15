@@ -22,9 +22,9 @@ enum MovesViewLayout {
   details,
 }
 
-/// MovesListPage now displays PGN nodes in potentially different layouts.
+/// MovesListPage can display PGN nodes in different layouts.
 /// The user can pick from a set of layout options via a single active icon which,
-/// when tapped, reveals a horizontal row of layout icons.
+/// when tapped, reveals a row of layout icons.
 class MovesListPage extends StatefulWidget {
   const MovesListPage({super.key});
 
@@ -180,10 +180,92 @@ class MovesListPageState extends State<MovesListPage> {
     );
   }
 
+  /// Builds the "3-column list layout": Round, White, Black.
+  Widget _buildThreeColumnListLayout() {
+    // 1. Group all moves by round
+    final Map<int, List<PgnNode<ExtMove>>> roundMap =
+        <int, List<PgnNode<ExtMove>>>{};
+    for (final PgnNode<ExtMove> node in _allNodes) {
+      final ExtMove? data = node.data;
+      if (data == null) {
+        continue;
+      }
+      final int roundIndex = data.roundIndex ?? 0;
+      roundMap.putIfAbsent(roundIndex, () => <PgnNode<ExtMove>>[]).add(node);
+    }
+
+    // Sort rounds ascending
+    final List<int> sortedRounds = roundMap.keys.toList()..sort();
+
+    return SingleChildScrollView(
+      child: Column(
+        children: sortedRounds.map((int roundIndex) {
+          final List<PgnNode<ExtMove>> nodesOfRound = roundMap[roundIndex]!;
+
+          // 2. Separate moves into white vs black
+          final List<String> whites = <String>[];
+          final List<String> blacks = <String>[];
+
+          for (final PgnNode<ExtMove> n in nodesOfRound) {
+            final PieceColor? side = n.data?.side;
+            final String notation = n.data?.notation ?? '';
+            if (side == PieceColor.white) {
+              // Remove the "X." prefix, e.g. "5. e4" -> "e4"
+              final String cleaned =
+                  notation.replaceAll(RegExp(r'^\d+\.\s*'), '');
+              whites.add(cleaned);
+            } else if (side == PieceColor.black) {
+              // Remove the "X..." prefix, e.g. "5... c5" -> "c5"
+              final String cleaned =
+                  notation.replaceAll(RegExp(r'^\d+\.\.\.\s*'), '');
+              blacks.add(cleaned);
+            }
+          }
+
+          final String whiteMoves = whites.join();
+          final String blackMoves = blacks.join();
+
+          return Card(
+            color: DB().colorSettings.darkBackgroundColor,
+            margin: const EdgeInsets.all(6.0),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+              child: Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 30,
+                    child: Text(
+                      "$roundIndex. ",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: DB().colorSettings.messageColor),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      whiteMoves,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: DB().colorSettings.messageColor),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      blackMoves,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: DB().colorSettings.messageColor),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   /// Builds the main body widget according to the chosen view layout.
   Widget _buildBody() {
     if (_allNodes.isEmpty) {
-      // If there are no moves, show two large icons: Load and Import.
       return _buildEmptyState();
     }
 
@@ -191,7 +273,7 @@ class MovesListPageState extends State<MovesListPage> {
       case MovesViewLayout.large:
       case MovesViewLayout.medium:
       case MovesViewLayout.details:
-        // For these three, use a single-column ListView.
+        // Single-column ListView of MoveListItem
         return ListView.builder(
           controller: _scrollController,
           itemCount: _allNodes.length,
@@ -205,7 +287,7 @@ class MovesListPageState extends State<MovesListPage> {
         );
 
       case MovesViewLayout.small:
-        // For small boards, display a grid with 3 or 5 columns.
+        // For small boards, display a grid with 3 or 5 columns
         final bool isPortrait =
             MediaQuery.of(context).orientation == Orientation.portrait;
         final int crossAxisCount = isPortrait ? 3 : 5;
@@ -214,7 +296,7 @@ class MovesListPageState extends State<MovesListPage> {
           controller: _scrollController,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            childAspectRatio: 0.9, // Adjust as desired
+            childAspectRatio: 0.9,
           ),
           itemCount: _allNodes.length,
           itemBuilder: (BuildContext context, int index) {
@@ -226,21 +308,8 @@ class MovesListPageState extends State<MovesListPage> {
         );
 
       case MovesViewLayout.list:
-        // For list layout, 2 columns, notation only.
-        return GridView.builder(
-          controller: _scrollController,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 4.0, // Tweak for desired spacing
-          ),
-          itemCount: _allNodes.length,
-          itemBuilder: (BuildContext context, int index) {
-            return MoveListItem(
-              node: _allNodes[index],
-              layout: _currentLayout,
-            );
-          },
-        );
+        // Now replaced with 3-column layout: Round / White / Black
+        return _buildThreeColumnListLayout();
     }
   }
 
@@ -270,7 +339,7 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
-          // Reverse Order Icon
+          // Reverse order icon
           IconButton(
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -317,14 +386,11 @@ class MovesListPageState extends State<MovesListPage> {
                         icon: Icon(
                           _iconForLayout(layout),
                           color: isSelected
-                              ? DB()
-                                  .colorSettings
-                                  .mainToolbarIconColor
-                                  .withValues(alpha: 1)
+                              ? DB().colorSettings.mainToolbarIconColor
                               : DB()
                                   .colorSettings
                                   .mainToolbarIconColor
-                                  .withValues(alpha: 0.8),
+                                  .withAlpha(180),
                         ),
                         onPressed: () {
                           setState(() {
@@ -339,7 +405,7 @@ class MovesListPageState extends State<MovesListPage> {
               ];
             },
           ),
-          // The existing "three vertical dots" menu.
+          // The "three vertical dots" menu
           PopupMenuButton<String>(
             onSelected: (String value) async {
               switch (value) {
@@ -440,6 +506,7 @@ class MovesListPageState extends State<MovesListPage> {
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
+          // Hide any active mini board and dismiss keyboard
           MiniBoardState.hideActiveBoard();
           FocusScope.of(context).unfocus();
         },
@@ -487,7 +554,7 @@ class MoveListItemState extends State<MoveListItem> {
     _editingController = TextEditingController(text: _comment);
   }
 
-  /// Retrieve comment from node.data, joined if multiple.
+  /// Retrieves comment from node.data, joined if multiple.
   String _retrieveComment(PgnNode<ExtMove> node) {
     final ExtMove? data = node.data;
     if (data?.comments != null && data!.comments!.isNotEmpty) {
@@ -569,15 +636,14 @@ class MoveListItemState extends State<MoveListItem> {
     final ExtMove? moveData = widget.node.data;
     final String notation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
-    // Determine side: used to decide the dot style.
-    final bool isWhite = moveData?.side == PieceColor.white;
-    // Retrieve roundIndex from ExtMove.
+    // Determine side: used to decide how to show "roundIndex..."
+    final bool isWhite = (moveData?.side == PieceColor.white);
     final int? roundIndex = moveData?.roundIndex;
-    // Combine roundIndex and notation.
-    final String roundNotation = roundIndex != null
+    final String roundNotation = (roundIndex != null)
         ? (isWhite ? "$roundIndex. " : "$roundIndex... ")
         : "";
-    // Use messageColor for text style.
+
+    // Common text style
     final TextStyle combinedStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
@@ -595,13 +661,15 @@ class MoveListItemState extends State<MoveListItem> {
         return _buildSmallLayout(
             notation, boardLayout, roundNotation, combinedStyle);
       case MovesViewLayout.list:
-        return _buildListLayout(notation, roundNotation, combinedStyle);
+        // The "list" layout is now handled in MovesListPageState._buildThreeColumnListLayout()
+        // so we can return an empty container here, or anything you prefer.
+        return const SizedBox.shrink();
       case MovesViewLayout.details:
         return _buildDetailsLayout(notation, roundNotation, combinedStyle);
     }
   }
 
-  /// Large boards: single column, large board on top, then combined "roundNotation + notation", then comment.
+  /// Large boards: single column, board on top, then "roundNotation + notation", then comment.
   Widget _buildLargeLayout(
     String notation,
     String boardLayout,
@@ -624,15 +692,11 @@ class MoveListItemState extends State<MoveListItem> {
                 ),
               ),
             const SizedBox(height: 8),
-            Text(
-              roundNotation + notation,
-              style: combinedStyle,
-            ),
+            Text(roundNotation + notation, style: combinedStyle),
             const SizedBox(height: 6),
             _buildEditableComment(
               TextStyle(
                 fontSize: 12,
-                fontStyle: FontStyle.normal,
                 color: DB().colorSettings.messageColor,
               ),
             ),
@@ -642,7 +706,7 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Medium boards: board on the left, then a column with combined "roundNotation + notation" on top and comment below.
+  /// Medium boards: board on the left, "roundNotation + notation" + comment on the right.
   Widget _buildMediumLayout(
     String notation,
     String boardLayout,
@@ -666,7 +730,7 @@ class MoveListItemState extends State<MoveListItem> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Left side: mini board
+            // Left: mini board
             Expanded(
               flex: 382,
               child: Padding(
@@ -679,7 +743,7 @@ class MoveListItemState extends State<MoveListItem> {
                     : const SizedBox.shrink(),
               ),
             ),
-            // Right side: combined notation and comment
+            // Right: text
             Expanded(
               flex: 618,
               child: Padding(
@@ -711,7 +775,7 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Small boards: grid with 3 or 5 columns, each cell shows a mini board on top and combined "roundNotation + notation" below.
+  /// Small boards: grid cells with board on top, then "roundNotation + notation".
   Widget _buildSmallLayout(
     String notation,
     String boardLayout,
@@ -749,25 +813,12 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// List layout: 2 columns, show combined "roundNotation + notation".
-  Widget _buildListLayout(
-      String notation, String roundNotation, TextStyle combinedStyle) {
-    return Card(
-      color: DB().colorSettings.darkBackgroundColor,
-      margin: const EdgeInsets.all(6.0),
-      child: Center(
-        child: Text(
-          roundNotation + notation,
-          style: combinedStyle,
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-
-  /// Details layout: single row, show combined "roundNotation + notation" on the left and comment on the right.
+  /// Details layout: single row: "roundNotation + notation" on the left, comment on the right.
   Widget _buildDetailsLayout(
-      String notation, String roundNotation, TextStyle combinedStyle) {
+    String notation,
+    String roundNotation,
+    TextStyle combinedStyle,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -777,15 +828,12 @@ class MoveListItemState extends State<MoveListItem> {
         ),
         child: Row(
           children: <Widget>[
-            // Left side: combined roundNotation and notation
+            // Left side
             Expanded(
-              child: Text(
-                roundNotation + notation,
-                style: combinedStyle,
-              ),
+              child: Text(roundNotation + notation, style: combinedStyle),
             ),
             const SizedBox(width: 8),
-            // Right side: comment
+            // Right side: editable comment
             Expanded(
               child: _buildEditableComment(
                 TextStyle(
@@ -803,7 +851,7 @@ class MoveListItemState extends State<MoveListItem> {
   @override
   void didUpdateWidget(covariant MoveListItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // If not editing, update comment if it has changed in the node.
+    // If not editing, sync comment if the node changed
     if (!_isEditing) {
       final String newComment = _retrieveComment(widget.node);
       if (newComment != _comment) {
