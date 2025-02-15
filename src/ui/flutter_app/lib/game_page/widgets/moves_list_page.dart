@@ -373,7 +373,7 @@ class MovesListPageState extends State<MovesListPage> {
           // Tapping it opens a popup with a horizontal row of icons.
           PopupMenuButton<void>(
             icon: Icon(_iconForLayout(_currentLayout)),
-            color: DB().colorSettings.mainToolbarBackgroundColor,
+            //color: DB().colorSettings.mainToolbarBackgroundColor,
             onSelected: (_) {},
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<void>>[
@@ -388,12 +388,7 @@ class MovesListPageState extends State<MovesListPage> {
                       return IconButton(
                         icon: Icon(
                           _iconForLayout(layout),
-                          color: isSelected
-                              ? DB().colorSettings.mainToolbarIconColor
-                              : DB()
-                                  .colorSettings
-                                  .mainToolbarIconColor
-                                  .withAlpha(180),
+                          color: isSelected ? Colors.black : Colors.black87,
                         ),
                         onPressed: () {
                           setState(() {
