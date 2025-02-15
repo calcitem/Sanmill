@@ -577,23 +577,30 @@ class MoveListItemState extends State<MoveListItem> {
             ? DB().colorSettings.blackPieceColor
             : Colors.yellow;
 
+    // Retrieve roundIndex from ExtMove
+    final int? roundIndex = moveData?.roundIndex;
+
     switch (widget.layout) {
       case MovesViewLayout.large:
-        return _buildLargeLayout(notation, boardLayout, sideColor);
+        return _buildLargeLayout(notation, boardLayout, sideColor, roundIndex);
       case MovesViewLayout.medium:
-        return _buildMediumLayout(notation, boardLayout, sideColor);
+        return _buildMediumLayout(notation, boardLayout, sideColor, roundIndex);
       case MovesViewLayout.small:
-        return _buildSmallLayout(notation, boardLayout, sideColor);
+        return _buildSmallLayout(notation, boardLayout, sideColor, roundIndex);
       case MovesViewLayout.list:
-        return _buildListLayout(notation, sideColor);
+        return _buildListLayout(notation, sideColor, roundIndex);
       case MovesViewLayout.details:
-        return _buildDetailsLayout(notation, sideColor);
+        return _buildDetailsLayout(notation, sideColor, roundIndex);
     }
   }
 
-  /// Large boards: single column, large board on top, then notation, then comment.
+  /// Large boards: single column, large board on top, then notation (with roundIndex on its left), then comment.
   Widget _buildLargeLayout(
-      String notation, String boardLayout, Color sideColor) {
+    String notation,
+    String boardLayout,
+    Color sideColor,
+    int? roundIndex,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -610,8 +617,9 @@ class MoveListItemState extends State<MoveListItem> {
                 ),
               ),
             const SizedBox(height: 8),
+            // Combine roundIndex and notation as "round. notation"
             Text(
-              notation,
+              (roundIndex != null ? "$roundIndex. " : "") + notation,
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
@@ -633,9 +641,13 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Medium boards: board on the left, notation & comment on the right.
+  /// Medium boards: board on the left, then a column with combined roundIndex and notation on top and comment below.
   Widget _buildMediumLayout(
-      String notation, String boardLayout, Color sideColor) {
+    String notation,
+    String boardLayout,
+    Color sideColor,
+    int? roundIndex,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
       child: Container(
@@ -666,7 +678,7 @@ class MoveListItemState extends State<MoveListItem> {
                     : const SizedBox.shrink(),
               ),
             ),
-            // Right side: notation and comment
+            // Right side: Combined notation and comment
             Expanded(
               flex: 618,
               child: Padding(
@@ -674,8 +686,9 @@ class MoveListItemState extends State<MoveListItem> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+                    // Show "round. notation" in one line
                     Text(
-                      notation,
+                      (roundIndex != null ? "$roundIndex. " : "") + notation,
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -703,9 +716,13 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Small boards: grid with 3 or 5 columns, each cell has mini board on top, notation below, no comment.
+  /// Small boards: grid with 3 or 5 columns, each cell shows a mini board on top and combined "round. notation" below.
   Widget _buildSmallLayout(
-      String notation, String boardLayout, Color sideColor) {
+    String notation,
+    String boardLayout,
+    Color sideColor,
+    int? roundIndex,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(6.0),
       child: Container(
@@ -726,8 +743,9 @@ class MoveListItemState extends State<MoveListItem> {
             else
               const Expanded(child: SizedBox.shrink()),
             const SizedBox(height: 4),
+            // Combine roundIndex and notation
             Text(
-              notation,
+              (roundIndex != null ? "$roundIndex. " : "") + notation,
               style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.bold,
@@ -742,18 +760,19 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// List layout: 2 columns, show notation only (no board, no comment).
-  Widget _buildListLayout(String notation, Color sideColor) {
+  /// List layout: 2 columns, show combined "round. notation".
+  Widget _buildListLayout(String notation, Color sideColor, int? roundIndex) {
     return Card(
       color: DB().colorSettings.darkBackgroundColor,
       margin: const EdgeInsets.all(6.0),
       child: Center(
         child: Text(
-          notation,
+          (roundIndex != null ? "$roundIndex. " : "") + notation,
+          // Combined roundIndex with notation
           style: TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.bold,
-            color: sideColor, // If side is white => white, if black => black
+            color: sideColor,
           ),
           textAlign: TextAlign.center,
         ),
@@ -761,8 +780,12 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Details layout: single row, notation on the left, comment on the right, no board.
-  Widget _buildDetailsLayout(String notation, Color sideColor) {
+  /// Details layout: single row, show combined "round. notation" on the left and comment on the right.
+  Widget _buildDetailsLayout(
+    String notation,
+    Color sideColor,
+    int? roundIndex,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -772,10 +795,10 @@ class MoveListItemState extends State<MoveListItem> {
         ),
         child: Row(
           children: <Widget>[
-            // Notation on the left
+            // Left side: combined roundIndex and notation
             Expanded(
               child: Text(
-                notation,
+                (roundIndex != null ? "$roundIndex. " : "") + notation,
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
@@ -785,7 +808,7 @@ class MoveListItemState extends State<MoveListItem> {
               ),
             ),
             const SizedBox(width: 8),
-            // Editable comment on the right
+            // Right side: comment
             Expanded(
               child: _buildEditableComment(
                 TextStyle(

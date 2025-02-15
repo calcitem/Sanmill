@@ -44,6 +44,7 @@ class ExtMove extends PgnNodeData {
     required this.side,
     this.boardLayout,
     this.moveIndex,
+    this.roundIndex,
     super.nags,
     super.startingComments,
     super.comments,
@@ -74,6 +75,15 @@ class ExtMove extends PgnNodeData {
 
   /// The move index.
   int? moveIndex;
+
+  /// roundIndex is a separate concept from [moveIndex].
+  /// If one side (White or Black) performs multiple consecutive moves,
+  /// they all share the same half-round index. Once we switch side
+  /// (e.g. from White to Black), we stay in the same round number;
+  /// only when switching **back** from Black to White do we increment
+  /// this round index. Thus, each cycle (White half + Black half)
+  /// forms one complete round.
+  int? roundIndex;
 
   static const String _logTag = "[Move]";
 

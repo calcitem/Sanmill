@@ -80,6 +80,12 @@ class Position {
   }
 
   int _gamePly = 0;
+
+  /// _roundNumber tracks which round we are in. Each cycle of White->Black
+  /// is one complete round. Whenever we switch from Black back to White,
+  /// we increment this counter.
+  int _roundNumber = 1;
+
   PieceColor _sideToMove = PieceColor.white;
 
   final StateInfo st = StateInfo();
@@ -736,6 +742,8 @@ class Position {
         "(${fileOf(s)},${rankOf(s)})",
         side: us,
         boardLayout: generateBoardLayoutAfterThisMove(),
+        moveIndex: _gamePly,
+        roundIndex: _roundNumber,
       );
 
       _updateKey(s);
@@ -954,6 +962,8 @@ class Position {
       "${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
+      moveIndex: _gamePly,
+      roundIndex: _roundNumber,
     );
 
     st.rule50++;
@@ -1079,6 +1089,8 @@ class Position {
       "-(${fileOf(s)},${rankOf(s)})",
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
+      moveIndex: _gamePly,
+      roundIndex: _roundNumber,
     );
     st.rule50 = 0; // TODO: Need to move out?
 
@@ -1366,9 +1378,17 @@ class Position {
   }
 
   void setSideToMove(PieceColor c) {
+    final PieceColor oldSide = _sideToMove;
+
     if (sideToMove != c) {
       sideToMove = c;
       // us = c;
+
+      // If we just switched from Black -> White, that means a new round:
+      if (oldSide == PieceColor.black && c == PieceColor.white) {
+        _roundNumber++;
+      }
+
       st.key ^= _Zobrist.side;
     }
 
