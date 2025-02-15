@@ -78,7 +78,7 @@ class MovesListPageState extends State<MovesListPage> {
         // First node always gets moveIndex 0
         node.data?.moveIndex = currentMoveIndex;
       } else if (node.data?.type == MoveType.remove) {
-        // TODO: WAR: If it's a remove type, use the previous node's moveIndex
+        // If it's a remove type, use the previous node's moveIndex
         node.data?.moveIndex = _allNodes[i - 1].data?.moveIndex;
       } else {
         // Otherwise, increment the previous node's moveIndex
@@ -182,7 +182,7 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Builds the "3-column list layout": Round, White, Black.
   Widget _buildThreeColumnListLayout() {
-    // 1. Group all moves by round
+    // 1. Group all moves by round.
     final Map<int, List<PgnNode<ExtMove>>> roundMap =
         <int, List<PgnNode<ExtMove>>>{};
     for (final PgnNode<ExtMove> node in _allNodes) {
@@ -194,15 +194,18 @@ class MovesListPageState extends State<MovesListPage> {
       roundMap.putIfAbsent(roundIndex, () => <PgnNode<ExtMove>>[]).add(node);
     }
 
-    // Sort rounds ascending
-    final List<int> sortedRounds = roundMap.keys.toList()..sort();
+    // Get sorted round indexes in ascending order.
+    final List<int> sortedRoundsAsc = roundMap.keys.toList()..sort();
+    // Use reversed order if _isReversedOrder is true.
+    final List<int> sortedRounds =
+        _isReversedOrder ? sortedRoundsAsc.reversed.toList() : sortedRoundsAsc;
 
     return SingleChildScrollView(
       child: Column(
         children: sortedRounds.map((int roundIndex) {
           final List<PgnNode<ExtMove>> nodesOfRound = roundMap[roundIndex]!;
 
-          // 2. Separate moves into white vs black
+          // 2. Separate moves into white vs black.
           final List<String> whites = <String>[];
           final List<String> blacks = <String>[];
 
@@ -273,12 +276,14 @@ class MovesListPageState extends State<MovesListPage> {
       case MovesViewLayout.large:
       case MovesViewLayout.medium:
       case MovesViewLayout.details:
-        // Single-column ListView of MoveListItem
+        // Single-column ListView of MoveListItem with reversed index if needed.
         return ListView.builder(
           controller: _scrollController,
           itemCount: _allNodes.length,
           itemBuilder: (BuildContext context, int index) {
-            final PgnNode<ExtMove> node = _allNodes[index];
+            final int idx =
+                _isReversedOrder ? (_allNodes.length - 1 - index) : index;
+            final PgnNode<ExtMove> node = _allNodes[idx];
             return MoveListItem(
               node: node,
               layout: _currentLayout,
@@ -287,7 +292,7 @@ class MovesListPageState extends State<MovesListPage> {
         );
 
       case MovesViewLayout.small:
-        // For small boards, display a grid with 3 or 5 columns
+        // For small boards, display a grid with 3 or 5 columns.
         final bool isPortrait =
             MediaQuery.of(context).orientation == Orientation.portrait;
         final int crossAxisCount = isPortrait ? 3 : 5;
@@ -300,15 +305,17 @@ class MovesListPageState extends State<MovesListPage> {
           ),
           itemCount: _allNodes.length,
           itemBuilder: (BuildContext context, int index) {
+            final int idx =
+                _isReversedOrder ? (_allNodes.length - 1 - index) : index;
             return MoveListItem(
-              node: _allNodes[index],
+              node: _allNodes[idx],
               layout: _currentLayout,
             );
           },
         );
 
       case MovesViewLayout.list:
-        // Now replaced with 3-column layout: Round / White / Black
+        // Now replaced with 3-column layout: Round / White / Black.
         return _buildThreeColumnListLayout();
     }
   }
@@ -339,7 +346,7 @@ class MovesListPageState extends State<MovesListPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
-          // Reverse order icon
+          // Reverse order icon.
           IconButton(
             icon: AnimatedSwitcher(
               duration: const Duration(milliseconds: 250),
@@ -357,12 +364,8 @@ class MovesListPageState extends State<MovesListPage> {
             ),
             onPressed: () {
               setState(() {
+                // Only toggle the flag; do not physically reverse _allNodes.
                 _isReversedOrder = !_isReversedOrder;
-                final List<PgnNode<ExtMove>> reversedNodes =
-                    _allNodes.reversed.toList();
-                _allNodes
-                  ..clear()
-                  ..addAll(reversedNodes);
               });
             },
           ),
@@ -405,7 +408,7 @@ class MovesListPageState extends State<MovesListPage> {
               ];
             },
           ),
-          // The "three vertical dots" menu
+          // The "three vertical dots" menu.
           PopupMenuButton<String>(
             onSelected: (String value) async {
               switch (value) {
@@ -506,7 +509,7 @@ class MovesListPageState extends State<MovesListPage> {
       body: GestureDetector(
         behavior: HitTestBehavior.translucent,
         onTap: () {
-          // Hide any active mini board and dismiss keyboard
+          // Hide any active mini board and dismiss keyboard.
           MiniBoardState.hideActiveBoard();
           FocusScope.of(context).unfocus();
         },
@@ -643,7 +646,7 @@ class MoveListItemState extends State<MoveListItem> {
         ? (isWhite ? "$roundIndex. " : "$roundIndex... ")
         : "";
 
-    // Common text style
+    // Common text style.
     final TextStyle combinedStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
@@ -662,7 +665,7 @@ class MoveListItemState extends State<MoveListItem> {
             notation, boardLayout, roundNotation, combinedStyle);
       case MovesViewLayout.list:
         // The "list" layout is now handled in MovesListPageState._buildThreeColumnListLayout()
-        // so we can return an empty container here, or anything you prefer.
+        // so we can return an empty container here.
         return const SizedBox.shrink();
       case MovesViewLayout.details:
         return _buildDetailsLayout(notation, roundNotation, combinedStyle);
@@ -706,7 +709,7 @@ class MoveListItemState extends State<MoveListItem> {
     );
   }
 
-  /// Medium boards: board on the left, "roundNotation + notation" + comment on the right.
+  /// Medium boards: board on the left, "roundNotation + notation" and comment on the right.
   Widget _buildMediumLayout(
     String notation,
     String boardLayout,
@@ -730,7 +733,7 @@ class MoveListItemState extends State<MoveListItem> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            // Left: mini board
+            // Left: mini board.
             Expanded(
               flex: 382,
               child: Padding(
@@ -743,7 +746,7 @@ class MoveListItemState extends State<MoveListItem> {
                     : const SizedBox.shrink(),
               ),
             ),
-            // Right: text
+            // Right: text.
             Expanded(
               flex: 618,
               child: Padding(
@@ -828,12 +831,12 @@ class MoveListItemState extends State<MoveListItem> {
         ),
         child: Row(
           children: <Widget>[
-            // Left side
+            // Left side.
             Expanded(
               child: Text(roundNotation + notation, style: combinedStyle),
             ),
             const SizedBox(width: 8),
-            // Right side: editable comment
+            // Right side: editable comment.
             Expanded(
               child: _buildEditableComment(
                 TextStyle(
@@ -851,7 +854,7 @@ class MoveListItemState extends State<MoveListItem> {
   @override
   void didUpdateWidget(covariant MoveListItem oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // If not editing, sync comment if the node changed
+    // If not editing, sync comment if the node changed.
     if (!_isEditing) {
       final String newComment = _retrieveComment(widget.node);
       if (newComment != _comment) {
