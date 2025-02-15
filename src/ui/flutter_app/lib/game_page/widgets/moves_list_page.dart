@@ -437,7 +437,13 @@ class MovesListPageState extends State<MovesListPage> {
           ),
         ],
       ),
-      body: _buildBody(),
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: _buildBody(),
+      ),
     );
   }
 }
