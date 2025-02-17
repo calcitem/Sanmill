@@ -5,10 +5,12 @@
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
+import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'mini_board.dart';
@@ -110,6 +112,24 @@ class MovesListPageState extends State<MovesListPage> {
 
   void _exportGame() {
     GameController.export(context, shouldPop: false);
+  }
+
+  /// Copies the moveListPrompt (a special format for LLM) into the clipboard.
+  /// Displays a SnackBar indicating success or if there's no prompt data.
+  Future<void> _copyLLMPrompt() async {
+    final String prompt = GameController().gameRecorder.moveListPrompt;
+    if (prompt.isEmpty) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+          const SnackBar(content: Text("No LLM prompt available.")));
+      return;
+    }
+    await Clipboard.setData(ClipboardData(text: prompt));
+
+    if (!mounted) {
+      return;
+    }
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBarClear("LLM prompt copied to clipboard.");
   }
 
   /// Scrolls the list/grid to the top with an animation.
@@ -373,7 +393,7 @@ class MovesListPageState extends State<MovesListPage> {
           // Tapping it opens a popup with a horizontal row of icons.
           PopupMenuButton<void>(
             icon: Icon(_iconForLayout(_currentLayout)),
-            //color: DB().colorSettings.mainToolbarBackgroundColor,
+            // color: DB().colorSettings.mainToolbarBackgroundColor,
             onSelected: (_) {},
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<void>>[
@@ -403,7 +423,7 @@ class MovesListPageState extends State<MovesListPage> {
               ];
             },
           ),
-          // The "three vertical dots" menu.
+          // The "three vertical dots" menu with multiple PopupMenuItem.
           PopupMenuButton<String>(
             onSelected: (String value) async {
               switch (value) {
@@ -424,6 +444,9 @@ class MovesListPageState extends State<MovesListPage> {
                   break;
                 case 'export_game':
                   _exportGame();
+                  break;
+                case 'copy_llm_prompt':
+                  await _copyLLMPrompt();
                   break;
               }
             },
@@ -493,6 +516,18 @@ class MovesListPageState extends State<MovesListPage> {
                         color: Colors.black54),
                     const SizedBox(width: 8),
                     Text(S.of(context).exportGame),
+                  ],
+                ),
+              ),
+              const PopupMenuDivider(),
+              const PopupMenuItem<String>(
+                value: 'copy_llm_prompt',
+                child: Row(
+                  children: <Widget>[
+                    Icon(FluentIcons.text_grammar_wand_24_regular,
+                        color: Colors.black54),
+                    SizedBox(width: 8),
+                    Text("LLM Prompt"),
                   ],
                 ),
               ),
