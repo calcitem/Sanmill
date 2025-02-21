@@ -3,6 +3,7 @@
 
 // home.dart
 
+import 'dart:async';
 import 'dart:io';
 
 import 'package:feedback/feedback.dart';
@@ -20,6 +21,7 @@ import '../game_page/services/gif_share/gif_share.dart';
 import '../game_page/services/gif_share/widgets_to_image.dart';
 import '../game_page/services/mill.dart';
 import '../game_page/services/painters/painters.dart';
+import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_page/widgets/game_page.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/widgets/general_settings_page.dart';
@@ -45,6 +47,7 @@ enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  humanVsLAN,
   setupPosition,
   generalSettings,
   ruleSettings,
@@ -73,6 +76,11 @@ extension _DrawerScreen on _DrawerIndex {
         return GamePage(
           GameMode.aiVsAi,
           key: const Key("ai_ai"),
+        );
+      case _DrawerIndex.humanVsLAN:
+        return GamePage(
+          GameMode.humanVsLAN,
+          key: const Key("human_lan"),
         );
       case _DrawerIndex.setupPosition:
         return GamePage(
@@ -127,7 +135,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
-  void _changeIndex(_DrawerIndex index) {
+  Future<void> _changeIndex(_DrawerIndex index) async {
     _controller.hideDrawer();
 
     // Print the name of the screen being switched to (in English)
@@ -140,6 +148,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
       case _DrawerIndex.aiVsAi:
         logger.i('Switching to AI vs AI');
+        break;
+      case _DrawerIndex.humanVsLAN:
+        logger.i('Switching to Human vs LAN');
         break;
       case _DrawerIndex.setupPosition:
         logger.i('Switching to Setup Position');
@@ -169,6 +180,26 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
     }
 
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
+      return;
+    }
+
+    if (index == _DrawerIndex.humanVsLAN) {
+      // Show LAN config dialog and await result
+      final bool? result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => const LanConfigDialog(),
+      );
+
+      if (result ?? false) {
+        setState(() {
+          _pushRoute(_DrawerIndex.humanVsLAN);
+          _drawerIndex = _DrawerIndex.humanVsLAN;
+          _screenView = GamePage(
+            GameMode.humanVsLAN,
+            key: const Key("human_lan"),
+          );
+        });
+      }
       return;
     }
 
@@ -330,6 +361,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_human_vs_lan'),
+        itemValue: _DrawerIndex.humanVsLAN,
+        itemTitle: S.of(context).humanVsLAN,
+        itemIcon: const Icon(FluentIcons.wifi_1_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
       // TODO: Support removeOpponentsPieceFromHand
       if (DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase

@@ -1627,5 +1627,11 @@
   "elfilja": "El Filja",
   "@elfilja": {},
   "tipSelectOwnPiece": "Select one of your pieces.",
-  "@tipSelectOwnPiece": {}
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "It's not your turn",
+  "@notYourTurn": {},
+  "lanGameSetup": "LAN Game Setup",
+  "@lanGameSetup": {},
+  "start": "Start",
+  "@start": {}
 }

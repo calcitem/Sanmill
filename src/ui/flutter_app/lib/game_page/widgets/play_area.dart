@@ -205,10 +205,38 @@ class PlayAreaState extends State<PlayArea> {
       ),
       ToolbarItem(
         key: const Key('play_area_history_nav_take_back'),
-        child: Icon(FluentIcons.chevron_left_24_regular,
-            semanticLabel: S.of(context).takeBack),
-        onPressed: () =>
-            HistoryNavigator.takeBack(context, pop: false, toolbar: true),
+        child: Icon(
+          FluentIcons.chevron_left_24_regular,
+          semanticLabel: S.of(context).takeBack,
+        ),
+        onPressed: () async {
+          // If the game mode is humanVsLAN, request a LAN take-back
+          if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+            // Capture the ScaffoldMessenger now to use it later after await.
+            final ScaffoldMessengerState scaffoldMessenger =
+                ScaffoldMessenger.of(context);
+            // Request a 1-step take-back and wait for the opponent's response.
+            final bool accepted = await GameController().requestLanTakeBack(1);
+            // Check if the widget is still mounted after the async gap.
+            if (!mounted) {
+              return;
+            }
+            if (accepted) {
+              // Show a snackbar indicating the take-back was accepted.
+              scaffoldMessenger.showSnackBar(
+                const SnackBar(content: Text("Take back accepted")),
+              );
+            } else {
+              // Show a snackbar indicating the take-back was rejected.
+              scaffoldMessenger.showSnackBar(
+                const SnackBar(content: Text("Take back rejected")),
+              );
+            }
+          } else {
+            // For non-LAN modes, simply perform the normal take-back action.
+            HistoryNavigator.takeBack(context, pop: false, toolbar: true);
+          }
+        },
       ),
       if (!Constants.isSmallScreen(context))
         ToolbarItem(

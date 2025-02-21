@@ -8,6 +8,8 @@
 library;
 
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -18,6 +20,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:vibration/vibration.dart';
 
@@ -60,6 +63,7 @@ part 'import_export/export_service.dart';
 part 'import_export/import_exceptions.dart';
 part 'import_export/import_service.dart';
 part 'import_export/notation_parsing.dart';
+part "network/network_service.dart";
 part 'notifiers/board_semantics_notifier.dart';
 part 'notifiers/game_result_notifier.dart';
 part 'notifiers/header_icons_notifier.dart';

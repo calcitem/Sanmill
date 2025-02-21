@@ -550,15 +550,9 @@ enum GameMode {
   humanVsHuman,
   aiVsAi,
   setupPosition,
-
-  /// Not Implemented
-  humanVsCloud,
-
-  /// Not Implemented
+  humanVsCloud, // Not Implemented
   humanVsLAN,
-
-  /// Not Implemented
-  testViaLAN,
+  testViaLAN, // Not Implemented
 }
 
 Map<AiMoveType, IconData> aiMoveTypeIcons = <AiMoveType, IconData>{

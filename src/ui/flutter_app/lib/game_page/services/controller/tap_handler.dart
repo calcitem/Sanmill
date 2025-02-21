@@ -55,6 +55,20 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      if (GameController().isLanOpponentTurn) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).notYourTurn);
+        return const EngineResponseSkip();
+      }
+      if (GameController().networkService == null ||
+          !GameController().networkService!.isConnected) {
+        logger.w("$_logTag No active LAN connection");
+        showTip("No LAN connection", snackBar: true);
+        return const EngineResponseSkip();
+      }
+    }
+
     GameController().loadedGameFilenamePrefix = null;
 
     if (GameController().gameInstance.gameMode == GameMode.setupPosition) {
@@ -73,14 +87,22 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
-    // TODO: WAR
-    if ((GameController().position.sideToMove == PieceColor.white ||
-            GameController().position.sideToMove == PieceColor.black) ==
-        false) {
-      // If modify sideToMove, not take effect, I don't know why.
-      return const EngineResponseSkip();
+    // Handle LAN-specific logic
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      if (GameController().isLanOpponentTurn) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).notYourTurn);
+        return const EngineResponseSkip();
+      }
+      if (GameController().networkService == null ||
+          !GameController().networkService!.isConnected) {
+        logger.w("$_logTag No active LAN connection");
+        showTip("No LAN connection", snackBar: true);
+        return const EngineResponseSkip();
+      }
     }
 
+    // TODO: WAR
     if ((GameController().position.sideToMove == PieceColor.white ||
             GameController().position.sideToMove == PieceColor.black) ==
         false) {
@@ -101,7 +123,8 @@ class TapHandler {
       }
     }
 
-    if (isAiSideToMove) {
+    if (isAiSideToMove &&
+        GameController().gameInstance.gameMode != GameMode.humanVsLAN) {
       logger.i("$_logTag AI's turn, skip tapping.");
       return const EngineResponseSkip();
     }
@@ -509,6 +532,7 @@ class TapHandler {
       ++GameController().position.st.rule50;
       ++GameController().position.st.pliesFromNull;
 
+      // Update position history
       if (GameController().position._record != null &&
           GameController().position._record!.move.length > "-(1,2)".length) {
         if (posKeyHistory.isEmpty ||
@@ -532,6 +556,12 @@ class TapHandler {
         if (GameController().position._record!.type == MoveType.remove) {
           controller.gameRecorder.lastPositionWithRemove =
               GameController().position.fen;
+        }
+
+        // Send move to LAN opponent if applicable
+        if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+          final String moveNotation = GameController().position._record!.move;
+          GameController().sendLanMove(moveNotation);
         }
 
         // TODO: moveHistoryText is not lightweight.

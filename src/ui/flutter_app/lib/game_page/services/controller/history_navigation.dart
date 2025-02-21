@@ -24,6 +24,41 @@ class HistoryNavigator {
     bool toolbar = false,
     int? number,
   }) async {
+    // -----------------------------------------------------------
+    //  LAN mode special rules:
+    //   - Only single-step takeBack is allowed (requires remote approval).
+    //   - All other history nav is disallowed in LAN mode.
+    // -----------------------------------------------------------
+    final GameMode currentMode = GameController().gameInstance.gameMode;
+    if (currentMode == GameMode.humanVsLAN) {
+      if (navMode == HistoryNavMode.takeBack && number == null) {
+        // This is the user tapping a "Take Back 1" button
+        // Request a single-step take back from the opponent
+        final bool success = await _requestLanTakeBack(context, 1);
+        // If user & remote accepted, success=true => done
+        // If rejected or an error, success=false => do nothing
+        if (pop && context.mounted) {
+          Navigator.pop(context);
+        }
+        return success ? const HistoryOK() : const HistoryAbort();
+      } else {
+        // For takeBackN>=2, takeBackAll, stepForward, stepForwardAll => disallow
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content:
+                  Text("In LAN mode, only single-step take back is allowed."),
+            ),
+          );
+        }
+        if (pop && context.mounted) {
+          Navigator.pop(context);
+        }
+        return const HistoryAbort();
+      }
+    }
+
+    // ---------------  Normal (non-LAN) logic  ---------------
     assert(navMode != HistoryNavMode.takeBackN || number != null);
 
     if (pop == true || toolbar == true) {
@@ -50,7 +85,7 @@ class HistoryNavigator {
     GameController().boardSemanticsNotifier.updateSemantics();
 
     if (_isGoingToHistory) {
-      logger.i("$_logTag Is going to history, ignore Take Back button press.");
+      logger.i("$_logTag Is going to history, ignore repeated request.");
       if (pop) {
         Navigator.pop(context);
       }
@@ -66,6 +101,7 @@ class HistoryNavigator {
       GameController().animationManager.allowAnimations = false;
     }
 
+    // Replay moves to get the new board state
     final HistoryResponse resp = await doEachMove(navMode, number);
 
     GameController().animationManager.allowAnimations = true;
@@ -112,6 +148,25 @@ class HistoryNavigator {
     }
 
     return resp;
+  }
+
+  /// Requests a 1-step LAN take back, returns true if accepted, false if rejected or error.
+  static Future<bool> _requestLanTakeBack(
+      BuildContext context, int steps) async {
+    if (steps != 1) {
+      return false;
+    }
+    // This calls a new method in GameController that sends "take back:1:request"
+    // and awaits an async result from the peer.
+    final bool ok = await GameController().requestLanTakeBack(steps);
+    if (!ok && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Take back request was rejected or failed."),
+        ),
+      );
+    }
+    return ok;
   }
 
   static Future<HistoryResponse?> takeBack(

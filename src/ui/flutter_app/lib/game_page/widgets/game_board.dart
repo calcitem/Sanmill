@@ -356,17 +356,36 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
                   if (square == null) {
                     return logger.t(
-                      "${GameBoard._logTag} Tap not on a square $square (ignored).",
-                    );
+                        "${GameBoard._logTag} Tap not on a square, ignored.");
                   }
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
+
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.humanVsLAN) {
+                    if (GameController().isLanOpponentTurn) {
+                      rootScaffoldMessengerKey.currentState!
+                          .showSnackBarClear(S.of(context).notYourTurn);
+                      return;
+                    }
+                    if (GameController().networkService == null ||
+                        !GameController().networkService!.isConnected) {
+                      GameController()
+                          .headerTipNotifier
+                          .showTip("No LAN connection");
+                      return;
+                    }
+                  }
 
                   final String strTimeout = S.of(context).timeout;
                   final String strNoBestMoveErr =
                       S.of(context).error(S.of(context).noMove);
 
-                  switch (await tapHandler.onBoardTap(square)) {
+                  final EngineResponse response =
+                      await tapHandler.onBoardTap(square);
+
+                  // Process engine response for displaying tips, etc.
+                  switch (response) {
                     case EngineResponseOK():
                       GameController()
                           .gameResultNotifier

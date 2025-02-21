@@ -401,14 +401,49 @@ class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
       ValueNotifier<IconData>(GameController().position.sideToMove.icon);
 
+  // Add ValueNotifier for lanHostPlaysWhite
+  final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier =
+      ValueNotifier<bool?>(GameController().lanHostPlaysWhite);
+
   @override
   void initState() {
     super.initState();
     GameController().headerIconsNotifier.addListener(_updateIcons);
+    // Listen to changes in lanHostPlaysWhite via a custom method or direct property observation
+    _refreshLanHostPlaysWhite();
   }
 
   void _updateIcons() {
     _iconDataNotifier.value = GameController().position.sideToMove.icon;
+    _refreshLanHostPlaysWhite();
+  }
+
+  void _refreshLanHostPlaysWhite() {
+    _lanHostPlaysWhiteNotifier.value = GameController().lanHostPlaysWhite;
+  }
+
+// In game_header.dart, HeaderStateIcons class
+  (IconData, IconData) _getLanModeIcons() {
+    final GameController controller = GameController();
+    if (controller.gameInstance.gameMode == GameMode.humanVsLAN) {
+      const IconData humanIcon = FluentIcons.person_24_filled;
+      const IconData wifiIcon = FluentIcons.wifi_1_24_filled;
+      final bool amIHost = controller.networkService?.isHost ?? false;
+
+      if (amIHost) {
+        // Host: White, Left=Person, Right=Wi-Fi
+        return (humanIcon, wifiIcon);
+      } else {
+        // Client: Black, Left=Wi-Fi, Right=Person
+        return (wifiIcon, humanIcon);
+      }
+    }
+
+    // Non-LAN mode fallback
+    return (
+      controller.gameInstance.gameMode.leftHeaderIcon,
+      controller.gameInstance.gameMode.rightHeaderIcon
+    );
   }
 
   @override
@@ -416,21 +451,19 @@ class HeaderStateIcons extends State<HeaderIcons> {
     return ValueListenableBuilder<IconData>(
       key: const Key('header_icons_value_listenable_builder'),
       valueListenable: _iconDataNotifier,
-      builder: (BuildContext context, IconData value, Widget? child) {
+      builder: (BuildContext context, IconData turnIcon, Widget? child) {
+        // Remove lanHostPlaysWhite dependency since it's always true
+        final (IconData leftIcon, IconData rightIcon) = _getLanModeIcons();
         return IconTheme(
           key: const Key('header_icons_icon_theme'),
-          data: IconThemeData(
-            color: DB().colorSettings.messageColor,
-          ),
+          data: IconThemeData(color: DB().colorSettings.messageColor),
           child: Row(
             key: const Key('header_icon_row'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(GameController().gameInstance.gameMode.leftHeaderIcon,
-                  key: const Key('left_header_icon')),
-              Icon(value, key: const Key('current_side_icon')),
-              Icon(GameController().gameInstance.gameMode.rightHeaderIcon,
-                  key: const Key('right_header_icon')),
+              Icon(leftIcon, key: const Key('left_header_icon')),
+              Icon(turnIcon, key: const Key('current_side_icon')),
+              Icon(rightIcon, key: const Key('right_header_icon')),
             ],
           ),
         );
