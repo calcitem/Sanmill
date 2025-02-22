@@ -451,3 +451,6 @@ out/
 coverage/
 *.gcda
 *.gcno
+
+# diff-files
+diff-files*.md
