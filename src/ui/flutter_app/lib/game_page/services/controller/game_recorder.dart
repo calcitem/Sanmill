@@ -518,7 +518,7 @@ Do not use side type boardLayout or other tags in the {Blabla} part.
       return '[FEN "$setupPosition"]\n[SetUp "1"]\n\n$rawOutput\n$boardLayoutNote';
     }
 
-    return "${promptHeader}\n$rawOutput\n$boardLayoutNote\n${promptFooter}";
+    return "$promptHeader\n$rawOutput\n$boardLayoutNote\n$promptFooter";
   }
 
   /// Returns a list of PGN nodes along the mainline (children[0] chain).
