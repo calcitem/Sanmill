@@ -527,7 +527,7 @@ class MovesListPageState extends State<MovesListPage> {
                     Icon(FluentIcons.text_grammar_wand_24_regular,
                         color: Colors.black54),
                     SizedBox(width: 8),
-                    Text("LLM Prompt"),
+                    Text("LLM prompt"),
                   ],
                 ),
               ),

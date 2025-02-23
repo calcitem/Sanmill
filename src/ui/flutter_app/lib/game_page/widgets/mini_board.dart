@@ -177,14 +177,18 @@ class MiniBoardState extends State<MiniBoard>
         child: Stack(
           children: <Widget>[
             // The board background and drawing are rendered by CustomPaint.
-            Container(
-              color: DB().colorSettings.boardBackgroundColor,
-              child: CustomPaint(
-                painter: MiniBoardPainter(
-                  boardLayout: widget.boardLayout,
-                  extMove: widget.extMove,
+            ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(DB().displaySettings.boardCornerRadius),
+              child: Container(
+                color: DB().colorSettings.boardBackgroundColor,
+                child: CustomPaint(
+                  painter: MiniBoardPainter(
+                    boardLayout: widget.boardLayout,
+                    extMove: widget.extMove,
+                  ),
+                  child: Container(), // Ensures the CustomPaint has a size.
                 ),
-                child: Container(), // Ensures the CustomPaint has a size.
               ),
             ),
             // Display the navigation icon overlay in the center only if:
@@ -396,25 +400,12 @@ class MiniBoardPainter extends CustomPainter {
       // 2) Else, draw the border circle, then the fill circle.
       // 3) Optionally draw a number if needed.
 
-      // --- Start: piece painter style code. ---
       final Paint paint = Paint();
       const double opacity = 1.0;
       final double circleOuterRadius = pieceDiameter / 2.0;
       final double circleInnerRadius = circleOuterRadius * 0.99;
 
-      // Example border/main color. Adjust to match your piece color logic.
-      final Color borderColor = (pc == PieceColor.white)
-          ? DB().colorSettings.whitePieceColor
-          : DB().colorSettings.blackPieceColor;
-      final Color mainColor = borderColor; // or a different color if desired
-
-      // If you have an actual 'PieceColor' class with borderColor/mainColor,
-      // you can do something like:
-      // final Color borderColor = pc.borderColor.withOpacity(opacity);
-      // final Color mainColor = pc.mainColor.withOpacity(opacity);
-
-      // 1) If there's an image, do paintImage(...).
-      //    For demonstration, we'll assume "no image" => null.
+      // If you have an actual piece image, use paintImage(...). We'll skip here.
       const ui.Image? pieceImage = null;
       if (pieceImage != null) {
         paintImage(
@@ -427,6 +418,30 @@ class MiniBoardPainter extends CustomPainter {
           fit: BoxFit.cover,
         );
       } else {
+        // Draw shadow similar to large board when no piece image is used.
+        canvas.drawShadow(
+          Path()
+            ..addOval(
+              Rect.fromCircle(center: pos, radius: circleOuterRadius),
+            ),
+          Colors.black,
+          2,
+          true,
+        );
+
+        // Example color usage:
+        // Added an 'else if' to handle 'marked' to align with big board approach.
+        Color borderColor;
+        if (pc == PieceColor.white) {
+          borderColor = DB().colorSettings.whitePieceColor;
+        } else if (pc == PieceColor.black) {
+          borderColor = DB().colorSettings.blackPieceColor;
+        } else if (pc == PieceColor.marked) {
+          borderColor = DB().colorSettings.pieceHighlightColor;
+        } else {
+          borderColor = DB().colorSettings.boardLineColor;
+        }
+
         // Draw border circle:
         paint.color = borderColor.withValues(alpha: opacity);
 
@@ -439,35 +454,12 @@ class MiniBoardPainter extends CustomPainter {
         }
         canvas.drawCircle(pos, circleOuterRadius, paint);
 
-        // Fill main color:
+        // Fill main color (could be the same or different from borderColor).
         paint.style = PaintingStyle.fill;
-        paint.color = mainColor.withValues(alpha: opacity);
+        paint.color = borderColor.withValues(alpha: opacity);
         canvas.drawCircle(pos, circleInnerRadius, paint);
       }
 
-      // 2) Optionally draw a number. (If you track piece number, etc.)
-      // We'll skip it here, but the pattern is:
-      /*
-      final TextPainter textPainter = TextPainter(
-        text: TextSpan(
-          text: '12', // or something from your piece metadata
-          style: TextStyle(
-            color: (mainColor.computeLuminance() > 0.5)
-                ? Colors.black
-                : Colors.white,
-            fontSize: circleOuterRadius, // Example
-          ),
-        ),
-        textAlign: TextAlign.center,
-        textDirection: TextDirection.ltr,
-      );
-      textPainter.layout();
-      final Offset textOffset = Offset(
-        pos.dx - textPainter.width / 2,
-        pos.dy - textPainter.height / 2,
-      );
-      textPainter.paint(canvas, textOffset);
-      */
       // --- End: piece painter style code. ---
     }
 
@@ -482,9 +474,11 @@ class MiniBoardPainter extends CustomPainter {
   }
 
   /// Draws highlights according to the last move (if any).
-  /// - Placing => Highlight circle around the destination
+  /// - Placing => (now we remove the old large circle for place)
   /// - Moving => Highlight arrow from origin to destination
-  /// - Removing => Highlight X at the removed location
+  /// - Removing => Only X at the removed location (no extra circle)
+  /// - Additionally, we do the "focus ring" on toPos and "blur circle" on fromPos,
+  ///   except we skip the focus ring if it's a remove move.
   void _drawMoveHighlight(
     Canvas canvas,
     List<Offset> innerPoints,
@@ -515,6 +509,43 @@ class MiniBoardPainter extends CustomPainter {
       outerPoints,
     );
 
+    // 1) If fromPos is valid, draw a blur circle (filled) in half-transparent color
+    if (fromPos != null && extMove!.from >= 8) {
+      // Attempt to get the piece color for the 'from' square
+      final int? fromIndex = _convertSquareToBoardIndex(extMove!.from);
+      if (fromIndex != null && fromIndex >= 0 && fromIndex < 24) {
+        final PieceColor fromPc = boardState[fromIndex];
+        if (fromPc != PieceColor.none) {
+          // Mimic big board's blur approach: fill color with some opacity
+          final Paint blurPaint = Paint()..style = PaintingStyle.fill;
+          // Approximate the "blurPositionColor" from big board
+          final Color c = (fromPc == PieceColor.white)
+              ? DB().colorSettings.whitePieceColor.withValues(alpha: 0.3)
+              : (fromPc == PieceColor.black)
+                  ? DB().colorSettings.blackPieceColor.withValues(alpha: 0.3)
+                  : DB()
+                      .colorSettings
+                      .pieceHighlightColor
+                      .withValues(alpha: 0.3);
+          blurPaint.color = c;
+
+          // radius ~ pieceRadius * 0.8
+          canvas.drawCircle(fromPos, pieceRadius * 0.8, blurPaint);
+        }
+      }
+    }
+
+    // 2) If it's not a remove move, draw a focus ring on toPos
+    if (type != MoveType.remove && toPos != null && extMove!.to >= 8) {
+      final Paint focusPaint = Paint()
+        ..color = DB().colorSettings.pieceHighlightColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2;
+      // radius ~ pieceRadius
+      canvas.drawCircle(toPos, pieceRadius, focusPaint);
+    }
+
+    // Then do the arrow/X logic (remove original large circle on place).
     final Paint highlightPaint = Paint()
       ..color = DB().colorSettings.pieceHighlightColor
       ..strokeWidth = 2
@@ -522,24 +553,55 @@ class MiniBoardPainter extends CustomPainter {
 
     switch (type) {
       case MoveType.place:
-        // Draw highlight circle on 'to' location
-        if (toPos != null) {
-          canvas.drawCircle(toPos, pieceRadius * 1.4, highlightPaint);
-        }
+        // **Removed** the original "canvas.drawCircle(toPos, pieceRadius*1.4, highlightPaint);"
+        // so that there is no second highlight circle on a newly placed piece.
         break;
 
       case MoveType.move:
-        // Highlight arrow from fromPos => toPos
         if (fromPos != null && toPos != null) {
-          canvas.drawLine(fromPos, toPos, highlightPaint);
-          _drawArrowHead(canvas, fromPos, toPos, highlightPaint);
+          final Offset v = toPos - fromPos;
+          final double magnitude = v.distance;
+          if (magnitude == 0) {
+            return;
+          }
+          final Offset normalizedV = Offset(v.dx / magnitude, v.dy / magnitude);
+          final Offset newFromPos = fromPos + normalizedV * pieceRadius;
+          final Offset newToPos = toPos - normalizedV * pieceRadius;
+          final double arrowSize = pieceRadius * 0.8; // Need to adjust
+
+          canvas.drawLine(newFromPos, newToPos, highlightPaint);
+          _drawArrowHead(
+              canvas, newFromPos, newToPos, highlightPaint, arrowSize);
         }
         break;
 
       case MoveType.remove:
-        // Highlight X at 'toPos'
+        // Only draw X at the removed location, no ring highlight.
         if (toPos != null) {
-          _drawHighlightX(canvas, toPos, pieceRadius * 2.0, highlightPaint);
+          PieceColor removedPieceColor;
+          if (extMove!.side == PieceColor.white) {
+            removedPieceColor = PieceColor.black;
+          } else if (extMove!.side == PieceColor.black) {
+            removedPieceColor = PieceColor.white;
+          } else {
+            removedPieceColor = PieceColor.none;
+          }
+
+          Color xColor;
+          if (removedPieceColor == PieceColor.white) {
+            xColor = DB().colorSettings.whitePieceColor;
+          } else if (removedPieceColor == PieceColor.black) {
+            xColor = DB().colorSettings.blackPieceColor;
+          } else {
+            xColor = DB().colorSettings.pieceHighlightColor;
+          }
+
+          final Paint xPaint = Paint()
+            ..color = xColor
+            ..strokeWidth = 2
+            ..style = PaintingStyle.stroke;
+
+          _drawHighlightX(canvas, toPos, pieceRadius * 2.0, xPaint);
         }
         break;
 
@@ -585,12 +647,30 @@ class MiniBoardPainter extends CustomPainter {
     }
   }
 
+  /// Convert square [sq] to boardState index (0..23).
+  /// This helps retrieve the piece color from boardState.
+  int? _convertSquareToBoardIndex(int sq) {
+    if (sq < 8 || sq > 31) {
+      return null;
+    }
+    // 0..7 = inner, 8..15 = middle, 16..23 = outer in boardState
+    if (sq < 16) {
+      // inner ring
+      return sq - 8; // 8..15 => 0..7
+    } else if (sq < 24) {
+      // middle ring
+      return (sq - 16) + 8; // 16..23 => 8..15
+    } else {
+      // outer ring
+      return (sq - 24) + 16; // 24..31 => 16..23
+    }
+  }
+
   /// Draw a small arrowhead at the "end" of the move line.
-  void _drawArrowHead(Canvas canvas, Offset from, Offset to, Paint paint) {
-    const double arrowSize = 10.0;
+  void _drawArrowHead(
+      Canvas canvas, Offset from, Offset to, Paint paint, double arrowSize) {
     final double angle = math.atan2(to.dy - from.dy, to.dx - from.dx);
 
-    // The arrowhead will be two small lines angled from the endpoint.
     final Offset arrowP1 = Offset(
       to.dx - arrowSize * math.cos(angle - math.pi / 6),
       to.dy - arrowSize * math.sin(angle - math.pi / 6),
