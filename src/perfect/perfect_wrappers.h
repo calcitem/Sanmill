@@ -101,7 +101,7 @@ public:
 
 struct gui_eval_elem2
 {
-private:
+public:
     // could not be simply val instead of sec_val, because val cannot contain
     // a count (as asserted by the ctor)
     sec_val key1;

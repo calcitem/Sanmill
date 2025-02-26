@@ -20,12 +20,20 @@ extern int perfect_init();
 PerfectPlayer *MalomSolutionAccess::perfectPlayer = nullptr;
 std::exception *MalomSolutionAccess::lastError = nullptr;
 
-int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
-                                       int whiteStonesToPlace,
-                                       int blackStonesToPlace, int playerToMove,
-                                       bool onlyStoneTaking, Value &value,
-                                       const Move &refMove)
+// Modified get_best_move function with an extra output parameter "distances"
+// which will contain a vector of pairs (AdvancedMove, int). Each pair holds a
+// legal move and its corresponding raw distance value (extracted from the
+// evaluation of the move). For winning moves (akey1() > 0), a higher key2
+// indicates a faster win (fewer moves remaining); for losing moves (akey1() <
+// 0), a lower key2 indicates a faster loss; for draws, the distance value may
+// not be meaningful.
+int MalomSolutionAccess::get_best_move(
+    int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
+    int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
+    Value &value, const Move &refMove,
+    std::vector<std::pair<AdvancedMove, int>> &distances)
 {
+    // Initialize the engine if needed.
     initialize_if_needed();
 
     GameState s;
@@ -33,11 +41,13 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
     const int W = 0;
     const int B = 1;
 
+    // Ensure that the white and black bitboards do not overlap.
     if ((whiteBitboard & blackBitboard) != 0) {
         throw std::invalid_argument("whiteBitboard and blackBitboard shouldn't "
                                     "have any overlap");
     }
 
+    // Populate the game state based on the bitboard representation.
     for (int i = 0; i < 24; i++) {
         if ((whiteBitboard & (1 << i)) != 0) {
             s.board[i] = W;
@@ -83,11 +93,21 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
     int ret = 0;
 
     try {
-        ret = perfectPlayer
-                  ->chooseRandom(perfectPlayer->get_good_moves(s, value),
-                                 refMove)
-                  .toBitBoard();
-    } catch (std::out_of_range &) {
+        // Compute the legal moves along with their distance values.
+        // This helper function returns a vector of pairs (AdvancedMove, int)
+        // where the int value is the raw "distance" measure extracted from the
+        // evaluation.
+        distances = perfectPlayer->getLegalMoveDistances(s, *perfectPlayer);
+
+        // Get the best moves (as determined by the evaluation function) for the
+        // current state.
+        std::vector<AdvancedMove> goodMoves = perfectPlayer->get_good_moves(
+            s, value);
+
+        // Choose one move from the best moves using the reference move.
+        AdvancedMove bestMove = perfectPlayer->chooseRandom(goodMoves, refMove);
+        ret = bestMove.toBitBoard();
+    } catch (const std::out_of_range &) {
         throw std::runtime_error("We don't have a database entry for this "
                                  "position. This can happen either if the "
                                  "database is corrupted (missing files), or "
@@ -111,13 +131,14 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
 int MalomSolutionAccess::get_best_move_no_exception(
     int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
     int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
-    Value &value, const Move &refMove)
+    Value &value, const Move &refMove,
+    std::vector<std::pair<AdvancedMove, int>> &distances)
 {
     try {
         lastError = nullptr;
         return get_best_move(whiteBitboard, blackBitboard, whiteStonesToPlace,
                              blackStonesToPlace, playerToMove, onlyStoneTaking,
-                             value, refMove);
+                             value, refMove, distances);
     } catch (std::exception &e) {
         lastError = &e;
         return 0;

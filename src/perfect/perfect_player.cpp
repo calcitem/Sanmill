@@ -545,3 +545,54 @@ int64_t PerfectPlayer::negate_board(int64_t a)
 {
     return ((a & mask24) << 24) | ((a & (mask24 << 24)) >> 24);
 }
+
+// This function returns a vector of pairs.
+// Each pair consists of an AdvancedMove and its corresponding distance value.
+// The distance value is extracted from the evaluation (key2 field) of the
+// resulting position. Note:
+// - For winning moves (akey1() > 0), a higher key2 means a faster win (i.e.
+// fewer moves remaining).
+// - For losing moves (akey1() < 0), a lower key2 means a faster loss.
+// - For draws (akey1() == 0), the distance value may not be meaningful.
+std::vector<std::pair<AdvancedMove, int>>
+PerfectPlayer::getLegalMoveDistances(const GameState &state,
+                                     PerfectPlayer &player)
+{
+    // Get all legal moves in the current state.
+    std::vector<AdvancedMove> legalMoves = player.get_move_list(state);
+    std::vector<std::pair<AdvancedMove, int>> moveDistances;
+
+    // Iterate over each legal move.
+    for (const auto &move : legalMoves) {
+        // Apply the move to generate the new state.
+        // Note: make_move_in_state may require a non-const reference to
+        // AdvancedMove, so we use const_cast here if necessary.
+        GameState newState = player.make_move_in_state(
+            state, const_cast<AdvancedMove &>(move));
+
+        // Evaluate the new state.
+        // The evaluation returns a gui_eval_elem2 object which contains key1
+        // (win/loss/draw indicator) and key2 (a measure of the distance to
+        // terminal position).
+        Wrappers::gui_eval_elem2 evalValue =
+            player.evaluate(newState).undo_negate(player.get_sector(state));
+
+        // Extract the raw distance measure (key2).
+        // Depending on the sign of akey1(), interpretation of key2 is
+        // different:
+        // - If akey1() > 0 (winning), a higher key2 means a faster win.
+        // - If akey1() < 0 (losing), a lower key2 means a faster loss.
+        int distanceValue = evalValue.key2; // raw distance measure
+
+        // Optional: Transform distanceValue into a more intuitive metric.
+        // For example, you might define:
+        //     mateInX = (akey1() > 0) ? SOME_CONSTANT - distanceValue :
+        //     SOME_CONSTANT + distanceValue;
+        // Here, we simply use the raw key2 value.
+
+        // Store the move and its corresponding distance value.
+        moveDistances.push_back(std::make_pair(move, distanceValue));
+    }
+
+    return moveDistances;
+}

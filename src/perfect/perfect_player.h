@@ -228,6 +228,9 @@ out:
 
     int get_num_good_moves(const GameState &s);
 
+    std::vector<std::pair<AdvancedMove, int>>
+    getLegalMoveDistances(const GameState &state, PerfectPlayer &player);
+
     int cp;
 
     struct MoveValuePair
