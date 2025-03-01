@@ -221,3 +221,5 @@ xorshift
 zeroland
 zhi
 zobrist
+LLMs
+winmain
