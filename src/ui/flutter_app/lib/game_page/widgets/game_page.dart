@@ -33,6 +33,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/animation/animation_manager.dart';
+import '../services/annotation/annotation_manager.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
@@ -50,8 +51,11 @@ part 'game_header.dart';
 part 'game_page_action_sheet.dart';
 part 'modals/move_options_modal.dart';
 
+/// Main GamePage widget that initializes the game controller and passes it
+/// to a stateful inner widget managing annotation mode.
 class GamePage extends StatelessWidget {
   GamePage(this.gameMode, {super.key}) {
+    // Reset game score when creating a new game page.
     Position.resetScore();
   }
 
@@ -61,22 +65,61 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final GameController controller = GameController();
     controller.gameInstance.gameMode = gameMode;
+    // Use a stateful inner widget to manage annotation mode state.
+    return _GamePageInner(controller: controller);
+  }
+}
 
-    return Scaffold(
+/// Stateful widget that holds the internal state for annotation mode.
+class _GamePageInner extends StatefulWidget {
+  const _GamePageInner({required this.controller});
+
+  final GameController controller;
+
+  @override
+  State<_GamePageInner> createState() => _GamePageInnerState();
+}
+
+class _GamePageInnerState extends State<_GamePageInner> {
+  bool _isAnnotationMode = false;
+  late final AnnotationManager _annotationManager;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize annotation manager from game controller.
+    _annotationManager = widget.controller.annotationManager;
+  }
+
+  // Toggle annotation mode without rebuilding the entire widget tree.
+  void _toggleAnnotationMode() {
+    setState(() {
+      if (_isAnnotationMode) {
+        // Clear annotations when turning off annotation mode.
+        _annotationManager.clear();
+      }
+      _isAnnotationMode = !_isAnnotationMode;
+      widget.controller.isAnnotationMode = _isAnnotationMode;
+    });
+    debugPrint('Annotation mode is now: $_isAnnotationMode');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Build base content (game board, background, etc.)
+    final Widget baseContent = Scaffold(
       key: const Key('game_page_scaffold'),
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          // Constraints of the game board but applied to the entire child
+          // Calculate board dimensions and game board rectangle.
           final double maxWidth = constraints.maxWidth;
           final double maxHeight = constraints.maxHeight;
           final double boardDimension =
               (maxHeight > 0 && maxHeight < maxWidth) ? maxHeight : maxWidth;
-
           final Rect gameBoardRect = Rect.fromLTWH(
             (constraints.maxWidth - boardDimension) / 2,
-            // Center the board horizontally
-            0,
+            0, // Top alignment.
             boardDimension,
             boardDimension,
           );
@@ -84,20 +127,19 @@ class GamePage extends StatelessWidget {
           return Stack(
             key: const Key('game_page_stack'),
             children: <Widget>[
-              // Background image or color
+              // Background image or solid color.
               _buildBackground(),
-
-              // Game board
-              _buildGameBoard(context, controller),
-              // Drawer icon
+              // Game board widget.
+              _buildGameBoard(context, widget.controller),
+              // Drawer icon in the top-left corner.
               Align(
                 key: const Key('game_page_drawer_icon_align'),
                 alignment: AlignmentDirectional.topStart,
-                child:
-                    SafeArea(child: CustomDrawerIcon.of(context)!.drawerIcon),
+                child: SafeArea(
+                  child: CustomDrawerIcon.of(context)!.drawerIcon,
+                ),
               ),
-
-              // Vignette overlay
+              // Vignette overlay if enabled in display settings.
               if (DB().displaySettings.vignetteEffectEnabled)
                 VignetteOverlay(
                   key: const Key('game_page_vignette_overlay'),
@@ -108,39 +150,71 @@ class GamePage extends StatelessWidget {
         },
       ),
     );
+
+    // Build annotation overlay as a separate layer.
+    // It is always part of the widget tree, but its visibility is controlled by Offstage.
+    final Widget annotationOverlay = Offstage(
+      offstage: !_isAnnotationMode,
+      child: AnnotationOverlay(
+        annotationManager: _annotationManager,
+        // Child is an empty container that covers the full area.
+        // This layer handles gesture detection and draws annotations.
+        child: const SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+        ),
+      ),
+    );
+
+    // Build annotation toolbar if enabled in display settings.
+    Widget toolbar = Container();
+    if (DB().displaySettings.isAnnotationToolbarShown) {
+      toolbar = Positioned(
+        left: 0,
+        right: 0,
+        bottom: 0,
+        child: AnnotationToolbar(
+          annotationManager: _annotationManager,
+          isAnnotationMode: _isAnnotationMode,
+          onToggleAnnotationMode: _toggleAnnotationMode,
+        ),
+      );
+    }
+
+    // Return a Stack with base content, annotation overlay, and toolbar.
+    return Stack(
+      children: <Widget>[
+        baseContent,
+        annotationOverlay,
+        toolbar,
+      ],
+    );
   }
 
-  /// Builds the background widget based on user selection.
-  ///
-  /// - If a custom image is selected, it displays the custom image.
-  /// - If a built-in image is selected, it displays the built-in image.
-  /// - If no image is selected, it displays a solid color background.
+  // Builds the background widget based on display settings.
   Widget _buildBackground() {
-    // Retrieve the current display settings from the database
     final DisplaySettings displaySettings = DB().displaySettings;
-
-    // Obtain the appropriate ImageProvider based on the backgroundImagePath
+    // Get background image provider if available.
     final ImageProvider? backgroundImage =
         getBackgroundImageProvider(displaySettings);
 
     if (backgroundImage == null) {
-      // No image selected, use a solid color background
+      // No image selected, return a container with a solid color.
       return Container(
         key: const Key('game_page_background_container'),
         color: DB().colorSettings.darkBackgroundColor,
       );
     } else {
-      // Image selected, display it with error handling
+      // Return image with error handling.
       return Image(
         key: const Key('game_page_background_image'),
         image: backgroundImage,
         fit: BoxFit.cover,
         width: double.infinity,
         height: double.infinity,
-        // Handle any errors that occur while loading the image
         errorBuilder:
             (BuildContext context, Object error, StackTrace? stackTrace) {
-          // Fallback to a solid color background if the image fails to load
+          // Fallback to a solid color if image fails to load.
           return Container(
             key: const Key('game_page_background_error_container'),
             color: DB().colorSettings.darkBackgroundColor,
@@ -150,6 +224,7 @@ class GamePage extends StatelessWidget {
     }
   }
 
+  // Builds the game board widget including orientation handling and layout constraints.
   Widget _buildGameBoard(BuildContext context, GameController controller) {
     return OrientationBuilder(
       builder: (BuildContext context, Orientation orientation) {
@@ -177,7 +252,6 @@ class GamePage extends StatelessWidget {
                   builder: (BuildContext context, BoxConstraints constraints) {
                     final double toolbarHeight =
                         _calculateToolbarHeight(context);
-
                     final double maxWidth = constraints.maxWidth;
                     final double maxHeight =
                         constraints.maxHeight - toolbarHeight;
@@ -199,11 +273,10 @@ class GamePage extends StatelessWidget {
                             DB.displaySettingsKey,
                             defaultValue: const DisplaySettings(),
                           )!;
-
                           return PlayArea(
                             key: const Key('game_page_play_area'),
                             boardImage: getBoardImageProvider(
-                                displaySettings), // Pass the ImageProvider
+                                displaySettings), // Pass the ImageProvider.
                           );
                         },
                       ),
@@ -218,13 +291,16 @@ class GamePage extends StatelessWidget {
     );
   }
 
+  // Calculates the toolbar height based on display settings.
   double _calculateToolbarHeight(BuildContext context) {
     double toolbarHeight =
         GamePageToolbar.height + ButtonTheme.of(context).height;
     if (DB().displaySettings.isHistoryNavigationToolbarShown) {
       toolbarHeight *= 2;
+    } else if (DB().displaySettings.isAnnotationToolbarShown) {
+      toolbarHeight *= 4;
     } else if (DB().displaySettings.isAnalysisToolbarShown) {
-      toolbarHeight *= 3;
+      toolbarHeight *= 5;
     }
     return toolbarHeight;
   }

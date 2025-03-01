@@ -19,10 +19,13 @@ import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
+import '../../../shared/services/screenshot_service.dart';
 import '../../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../services/annotation/annotation_manager.dart';
 import '../../services/mill.dart';
 
+part 'src/annotation_toolbar.dart';
 part 'src/game_page_toolbar.dart';
 part 'src/item_theme.dart';
 part 'src/item_theme_data.dart';
