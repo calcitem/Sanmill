@@ -25,10 +25,18 @@ class PlayArea extends StatefulWidget {
   /// Creates a PlayArea widget.
   ///
   /// The [boardImage] parameter is the ImageProvider for the selected board image.
-  const PlayArea({super.key, required this.boardImage});
+  /// The [child] is typically the GameBoard widget.
+  const PlayArea({
+    super.key,
+    required this.boardImage,
+    required this.child, // new
+  });
 
   /// The ImageProvider for the selected board image.
   final ImageProvider? boardImage;
+
+  /// The child widget to be displayed, typically the GameBoard.
+  final Widget child;
 
   @override
   PlayAreaState createState() => PlayAreaState();
@@ -484,10 +492,8 @@ class PlayAreaState extends State<PlayArea> {
                     child: Container(
                       key: const Key('play_area_game_board_container'),
                       alignment: Alignment.center,
-                      child: GameBoard(
-                        key: const Key('play_area_game_board'),
-                        boardImage: widget.boardImage,
-                      ),
+                      // The 'child' from the constructor is the GameBoard:
+                      child: widget.child,
                     ),
                   ),
 

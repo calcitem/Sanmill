@@ -81,6 +81,9 @@ class _GamePageInner extends StatefulWidget {
 }
 
 class _GamePageInnerState extends State<_GamePageInner> {
+  // GlobalKey to reference the real board's RenderBox
+  final GlobalKey _gameBoardKey = GlobalKey();
+
   bool _isAnnotationMode = false;
   late final AnnotationManager _annotationManager;
 
@@ -157,12 +160,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
       offstage: !_isAnnotationMode,
       child: AnnotationOverlay(
         annotationManager: _annotationManager,
-        // Child is an empty container that covers the full area.
-        // This layer handles gesture detection and draws annotations.
-        child: const SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-        ),
+        // We pass the GlobalKey down so that _snapToBoardFeatures can find the board box
+        gameBoardKey: _gameBoardKey,
+        child: const SizedBox(width: double.infinity, height: double.infinity),
       ),
     );
 
@@ -274,9 +274,13 @@ class _GamePageInnerState extends State<_GamePageInner> {
                             defaultValue: const DisplaySettings(),
                           )!;
                           return PlayArea(
-                            key: const Key('game_page_play_area'),
-                            boardImage: getBoardImageProvider(
-                                displaySettings), // Pass the ImageProvider.
+                            boardImage: getBoardImageProvider(displaySettings),
+                            // Pass the GlobalKey here to the GameBoard:
+                            child: GameBoard(
+                              key: _gameBoardKey,
+                              boardImage:
+                                  getBoardImageProvider(displaySettings),
+                            ),
                           );
                         },
                       ),

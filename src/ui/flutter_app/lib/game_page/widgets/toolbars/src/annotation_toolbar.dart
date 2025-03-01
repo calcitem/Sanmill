@@ -5,11 +5,8 @@
 
 part of '../game_toolbar.dart';
 
-/// A toolbar for annotation tools that can be toggled between
-/// a collapsed view (showing one button) and an expanded view (showing three rows):
-///   1) Tool selection (line/arrow/circle/dot/cross/rect/text) – 'move' tool is excluded.
-///   2) Color selection (single-select with highlight).
-///   3) Control buttons (toggle annotation mode, undo, redo, clear all annotations, screenshot).
+/// AnnotationToolbar allows users to select tools, colors, and actions
+/// for annotating directly on the game board.
 class AnnotationToolbar extends StatefulWidget {
   const AnnotationToolbar({
     super.key,
@@ -19,11 +16,7 @@ class AnnotationToolbar extends StatefulWidget {
   });
 
   final AnnotationManager annotationManager;
-
-  /// Indicates whether the full annotation mode is active.
   final bool isAnnotationMode;
-
-  /// Callback to toggle annotation mode on/off.
   final VoidCallback onToggleAnnotationMode;
 
   @override
@@ -32,20 +25,18 @@ class AnnotationToolbar extends StatefulWidget {
 
 class _AnnotationToolbarState extends State<AnnotationToolbar> {
   final List<Color> _colorOptions = const <Color>[
-    Colors.white, // 1st color
-    Colors.black, // 2nd color
-    Colors.grey, // 3rd color, added between white and red (after black)
-    Colors.red, // 4th color, shifted from original 3rd position
-    Colors.yellow, // 5th color
-    Colors.blue, // 6th color
-    Colors.green, // 7th color
-    Colors.pink, // 8th color, added after green
-    Colors.purple, // 9th color, shifted from original 7th position
-    Colors.indigo, // 10th color
+    Colors.white,
+    Colors.black,
+    Colors.grey,
+    Colors.red,
+    Colors.yellow,
+    Colors.blue,
+    Colors.green,
+    Colors.pink,
+    Colors.purple,
+    Colors.indigo,
   ];
 
-  /// Takes a screenshot and saves it to the specified [storageLocation]
-  /// with an optional [filename].
   Future<void> _takeScreenshot(String storageLocation,
       [String? filename]) async {
     await ScreenshotService.takeScreenshot(storageLocation, filename);
@@ -74,8 +65,6 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
 
   @override
   Widget build(BuildContext context) {
-    // Show full toolbar if annotation mode is active,
-    // otherwise show a single toggle button.
     return Container(
       color: Colors.grey[850],
       padding: const EdgeInsets.symmetric(vertical: 6.0),
@@ -85,29 +74,19 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     );
   }
 
-  /// Builds the collapsed toolbar with just one button.
   Widget _buildCollapsedToolbar(BuildContext context) {
     return Center(
       child: IconButton(
         tooltip: 'Enter Annotation Mode',
-        icon: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 300),
-          transitionBuilder: (Widget child, Animation<double> animation) {
-            return ScaleTransition(scale: animation, child: child);
-          },
-          // Use a regular (outlined) icon when collapsed.
-          child: const Icon(
-            FluentIcons.draw_image_24_regular,
-            key: ValueKey<String>('annotation_off_collapsed'),
-            color: Colors.white,
-          ),
+        icon: const Icon(
+          FluentIcons.draw_image_24_regular,
+          color: Colors.white,
         ),
         onPressed: widget.onToggleAnnotationMode,
       ),
     );
   }
 
-  /// Builds the expanded toolbar with three rows.
   Widget _buildExpandedToolbar(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -121,37 +100,54 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     );
   }
 
-  /// Builds the first row: tool selection (excluding the 'move' tool).
+  /// Builds a row of tool icons. The selected tool has an animated
+  /// highlight and border to indicate the current selection.
   Widget _buildToolRow(BuildContext context) {
+    final AnnotationTool currentTool = widget.annotationManager.currentTool;
     final List<AnnotationTool> tools = AnnotationTool.values
-        .where((AnnotationTool tool) => tool != AnnotationTool.move)
+        .where((AnnotationTool t) => t != AnnotationTool.move)
         .toList();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: tools.map((AnnotationTool tool) {
-        final bool isSelected = (widget.annotationManager.currentTool == tool);
-        return IconButton(
-          icon: Icon(
-            _iconForTool(tool),
-            color: isSelected ? Colors.yellow : Colors.white,
-          ),
-          onPressed: () {
-            setState(() {
-              widget.annotationManager.currentTool = tool;
-            });
+        final bool isSelected = (currentTool == tool);
+        return InkWell(
+          onTap: () {
+            setState(() => widget.annotationManager.currentTool = tool);
           },
-          tooltip: tool.toString(),
+          borderRadius: BorderRadius.circular(8.0),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            decoration: BoxDecoration(
+              // Use a semi-transparent background color when selected.
+              color:
+                  isSelected ? Colors.yellow.withAlpha(25) : Colors.transparent,
+              // Always reserve border space by setting a fixed border.
+              border: Border.all(
+                  color: isSelected ? Colors.yellow : Colors.transparent,
+                  width: 2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Icon(
+              _iconForTool(tool),
+              color: isSelected ? Colors.white : Colors.grey[300],
+            ),
+          ),
         );
       }).toList(),
     );
   }
 
-  /// Builds the second row: color selection icons.
+  /// Builds a horizontal list of color circles. The selected color has
+  /// an animated border to indicate the current selection.
   Widget _buildColorRow(BuildContext context) {
-    final Color currentColor = widget.annotationManager.currentColor;
-    // If a shape is selected, use its color as the active color.
-    final AnnotationShape? selected = widget.annotationManager.selectedShape;
-    final Color activeColor = selected?.color ?? currentColor;
+    final AnnotationShape? selectedShape =
+        widget.annotationManager.selectedShape;
+    final Color activeColor =
+        selectedShape?.color ?? widget.annotationManager.currentColor;
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -162,23 +158,33 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
           return GestureDetector(
             onTap: () {
               setState(() {
-                if (selected != null) {
-                  widget.annotationManager.changeColor(selected, color);
+                if (selectedShape != null) {
+                  widget.annotationManager.changeColor(selectedShape, color);
                 } else {
                   widget.annotationManager.currentColor = color;
                 }
               });
             },
-            child: Container(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
               margin: const EdgeInsets.symmetric(horizontal: 6),
-              width: 24,
-              height: 24,
+              padding: const EdgeInsets.all(3),
               decoration: BoxDecoration(
-                color: color,
+                // Always set a border with a fixed width.
+                border: Border.all(
+                  color: isSelected ? Colors.yellow : Colors.transparent,
+                  width: 2,
+                ),
                 shape: BoxShape.circle,
-                border: isSelected
-                    ? Border.all(color: Colors.white, width: 3)
-                    : null,
+              ),
+              child: Container(
+                width: 24,
+                height: 24,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                ),
               ),
             ),
           );
@@ -187,94 +193,51 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     );
   }
 
-  /// Builds the third row: control buttons.
-  /// Contains:
-  /// - Toggle annotation mode button (exit icon when in annotation mode)
-  /// - Undo button
-  /// - Redo button
-  /// - Clear annotations button (with confirmation dialog)
-  /// - Screenshot button
-  /// Note: Move tool button is hidden but functionality is retained.
+  /// Builds a control row with actions such as exit, undo, redo, clear, and screenshot.
   Widget _buildControlRow(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        // Toggle annotation mode with an exit icon.
-        IconButton(
+        _buildControlButton(
+          context,
           tooltip: 'Exit Annotation Mode',
-          icon: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 300),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              return ScaleTransition(scale: animation, child: child);
-            },
-            // Use an exit arrow icon instead of a filled edit icon.
-            child: const Icon(
-              FluentIcons.games_24_regular, // Changed to games icon
-              key: ValueKey<String>('annotation_exit_expanded'),
-              color: Colors.white,
-            ),
-          ),
-          onPressed: widget.onToggleAnnotationMode,
+          icon: FluentIcons.games_24_regular,
+          onTap: widget.onToggleAnnotationMode,
         ),
-        // Undo button.
-        IconButton(
+        _buildControlButton(
+          context,
           tooltip: 'Undo',
-          icon: const Icon(
-            FluentIcons.arrow_undo_24_regular,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            setState(() {
-              widget.annotationManager.undo();
-            });
-          },
+          icon: FluentIcons.arrow_undo_24_regular,
+          onTap: () => setState(() => widget.annotationManager.undo()),
         ),
-        // Redo button.
-        IconButton(
+        _buildControlButton(
+          context,
           tooltip: 'Redo',
-          icon: const Icon(
-            FluentIcons.arrow_redo_24_regular,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            setState(() {
-              widget.annotationManager.redo();
-            });
-          },
+          icon: FluentIcons.arrow_redo_24_regular,
+          onTap: () => setState(() => widget.annotationManager.redo()),
         ),
-        // Clear annotations button with confirmation.
-        IconButton(
+        _buildControlButton(
+          context,
           tooltip: 'Clear all annotations',
-          icon: const Icon(
-            FluentIcons.delete_24_regular,
-            color: Colors.white,
-          ),
-          onPressed: () async {
+          icon: FluentIcons.delete_24_regular,
+          onTap: () async {
             final bool? confirmed = await _showClearConfirmationDialog(context);
-            if (confirmed != null && confirmed) {
-              // Changed to check for true explicitly
-              setState(() {
-                widget.annotationManager.clear();
-              });
+            if (confirmed != null && confirmed == true) {
+              setState(() => widget.annotationManager.clear());
             }
           },
         ),
-        // Screenshot button.
-        IconButton(
+        _buildControlButton(
+          context,
           tooltip: 'Take Screenshot',
-          icon: const Icon(
-            FluentIcons.camera_24_regular,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            _takeScreenshot("gallery");
-          },
+          icon: FluentIcons.camera_24_regular,
+          onTap: () => _takeScreenshot("gallery"),
         ),
       ],
     );
   }
 
-  /// Maps each AnnotationTool to a FluentUI icon.
+  /// Returns an icon for the given annotation tool.
   IconData _iconForTool(AnnotationTool tool) {
     switch (tool) {
       case AnnotationTool.line:
@@ -294,5 +257,78 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
       case AnnotationTool.move:
         return FluentIcons.arrow_move_24_regular;
     }
+  }
+
+  /// Builds a single control button with an animated hover and press effect.
+  Widget _buildControlButton(
+    BuildContext context, {
+    required String tooltip,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return _ControlButton(
+      tooltip: tooltip,
+      icon: icon,
+      onTap: onTap,
+    );
+  }
+}
+
+/// A reusable control button that shows an animated background highlight
+/// when hovered or pressed.
+class _ControlButton extends StatefulWidget {
+  const _ControlButton({
+    required this.tooltip,
+    required this.icon,
+    required this.onTap,
+  });
+
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback onTap;
+
+  @override
+  State<_ControlButton> createState() => _ControlButtonState();
+}
+
+class _ControlButtonState extends State<_ControlButton> {
+  bool _isHovered = false;
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) {
+          setState(() => _isPressed = false);
+          widget.onTap();
+        },
+        onTapCancel: () => setState(() => _isPressed = false),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeInOut,
+          // Background changes color based on hover and press states.
+          decoration: BoxDecoration(
+            color: _isPressed
+                ? Colors.yellow.withValues(alpha: 0.2)
+                : _isHovered
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : Colors.transparent,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          padding: const EdgeInsets.all(8.0),
+          child: Tooltip(
+            message: widget.tooltip,
+            child: Icon(
+              widget.icon,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
