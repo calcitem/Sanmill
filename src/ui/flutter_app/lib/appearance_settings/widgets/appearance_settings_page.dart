@@ -376,6 +376,10 @@ class AppearanceSettingsPage extends StatelessWidget {
             AppTheme.colorThemes[theme]!.analysisToolbarBackgroundColor,
         analysisToolbarIconColor:
             AppTheme.colorThemes[theme]!.analysisToolbarIconColor,
+        annotationToolbarBackgroundColor:
+            AppTheme.colorThemes[theme]!.annotationToolbarBackgroundColor,
+        annotationToolbarIconColor:
+            AppTheme.colorThemes[theme]!.annotationToolbarIconColor,
       );
     }
 
@@ -541,6 +545,24 @@ class AppearanceSettingsPage extends StatelessWidget {
               analysisToolbarIconColor: val,
             ),
           ),
+        SettingsListTile.color(
+          key: const Key(
+              'color_settings_card_annotation_toolbar_background_color_settings_list_tile'),
+          titleString: S.of(context).annotationToolbarBackgroundColor,
+          value: DB().colorSettings.annotationToolbarBackgroundColor,
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            annotationToolbarBackgroundColor: val,
+          ),
+        ),
+        SettingsListTile.color(
+          key: const Key(
+              'color_settings_card_annotation_toolbar_icon_color_settings_list_tile'),
+          titleString: S.of(context).annotationToolbarIconColor,
+          value: DB().colorSettings.annotationToolbarIconColor,
+          onChanged: (Color val) => DB().colorSettings = colorSettings.copyWith(
+            annotationToolbarIconColor: val,
+          ),
+        ),
         SettingsListTile(
           key: const Key('color_settings_card_import_color_settings_list_tile'),
           titleString: S.of(context).importColorSettings,
@@ -649,6 +671,14 @@ class AppearanceSettingsPage extends StatelessWidget {
                 displaySettings.copyWith(isAnalysisToolbarShown: val),
             titleString: S.of(context).isAnalysisToolbarShown,
           ),
+        SettingsListTile.switchTile(
+          key: const Key(
+              'display_settings_card_annotation_toolbar_shown_switch_tile'),
+          value: displaySettings.isAnnotationToolbarShown,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(isAnnotationToolbarShown: val),
+          titleString: S.of(context).isAnnotationToolbarShown,
+        ),
         SettingsListTile.switchTile(
           key: const Key('display_settings_card_toolbar_at_bottom_switch_tile'),
           value: displaySettings.isToolbarAtBottom,

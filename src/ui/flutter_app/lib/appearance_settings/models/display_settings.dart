@@ -71,6 +71,7 @@ class DisplaySettings {
     this.customBlackPieceImagePath,
     this.boardCornerRadius = 5.0,
     this.isAdvantageGraphShown = false,
+    this.isAnnotationToolbarShown = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -198,6 +199,9 @@ class DisplaySettings {
 
   @HiveField(36, defaultValue: false)
   final bool isAdvantageGraphShown;
+
+  @HiveField(37, defaultValue: false)
+  final bool isAnnotationToolbarShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

@@ -1633,5 +1633,11 @@
   "lanGameSetup": "LAN Game Setup",
   "@lanGameSetup": {},
   "start": "Start",
-  "@start": {}
+  "@start": {},
+  "annotationToolbarBackgroundColor": "Annotation toolbar background color",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Annotation toolbar icon color",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Show annotation toolbar",
+  "@isAnnotationToolbarShown": {}
 }

@@ -61,6 +61,11 @@ class GameController {
   late GameRecorder gameRecorder;
   GameRecorder? newGameRecorder;
 
+  // Add a new boolean to track annotation mode:
+  bool isAnnotationMode = false;
+
+  final AnnotationManager annotationManager = AnnotationManager();
+
   String? _initialSharingMoveList;
   ValueNotifier<String?> initialSharingMoveListNotifier =
       ValueNotifier<String?>(null);

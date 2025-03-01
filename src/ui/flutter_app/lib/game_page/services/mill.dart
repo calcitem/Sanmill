@@ -41,6 +41,7 @@ import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import 'animation/animation_manager.dart';
+import 'annotation/annotation_manager.dart';
 import 'engine/bitboard.dart';
 import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
