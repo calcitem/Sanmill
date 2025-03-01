@@ -29,11 +29,13 @@ int run_perfect_test(int argc, char *argv[])
         secValPath = argv[1];
     }
 
+    std::vector<std::pair<AdvancedMove, int>> distances;
+
     // int res = MalomSolutionAccess::get_best_move(0, 0, 9, 9, 0, false, move);
     int res = MalomSolutionAccess::get_best_move(1, 2, 8, 8, 0, false, value,
-                                                 move); // Correct
-                                                        // output:
-                                                        // 16384
+                                                 move, distances); // Correct
+                                                                   // output:
+                                                                   // 16384
     // int res = MalomSolutionAccess::get_best_move(1 + 2 + 4, 8 + 16 + 32, 100,
     // 0, 0, false, value, move); // tests exception
     //  int res = MalomSolutionAccess::get_best_move(1 + 2 + 4, 1 + 8 + 16 + 32,
