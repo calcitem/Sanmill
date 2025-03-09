@@ -20,23 +20,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Ihminen tekoälyä vastaan",
+  "humanVsAi": "Ihminen vs. tekoäly",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Ihminen ihmistä vastaan",
+  "humanVsHuman": "Ihminen vs. ihmisen",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs AI",
+  "aiVsAi": "Tekoäly vs. tekoäly",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Ihminen vastaan pilvi",
+  "humanVsCloud": "Ihminen vs. pilvi",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Ihminen vastaan LAN",
+  "humanVsLAN": "Ihminen vs. LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -60,7 +60,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "OK",
+  "ok": "Hyvä on",
   "@ok": {
     "description": "OK"
   },
@@ -76,7 +76,7 @@
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Aseta palat paikoilleen.",
+  "tipPlace": "Sijoita nappulasi paikoilleen.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -88,7 +88,7 @@
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Poista pala.",
+  "tipRemove": "Poista nappula.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -100,7 +100,7 @@
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Siirrä pala.",
+  "tipMove": "Siirrä nappula.",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -128,7 +128,7 @@
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "Kappale voi liikkua 1 pisteen verran.",
+  "tipCanMoveOnePoint": "Nappula voi liikkua yhden pisteen.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
@@ -144,11 +144,11 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Voit siirtyä mihin tahansa kohtaan.",
+  "tipCanMoveToAnyPoint": "Voit liikkua mihin tahansa kohtaan.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} siirtääksesi.",
+  "tipToMove": "Siirrettävä {player}.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Ajattelen…",
+  "thinking": "Ajattelemassa…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,11 +188,11 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Ei voi tuoda {invalidMove}",
+  "cannotImport": "Ei voi tuoda {invalidMove}:a",
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Liikkeet ja säännöt eivät täsmää.",
+  "movesAndRulesNotMatch": "Siirrot ja säännöt eivät täsmää.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Käynnistätkö nykyisen pelin uudelleen?",
+  "restartGame": "Käynnistetäänkö nykyinen peli uudelleen?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Peli alkoi, aseta.",
+  "gameStarted": "Peli alkoi; sijoita.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analysointi…",
+  "analyzing": "Analysoidaan…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} kappalemäärä on pienempi kuin kolme.",
+  "loseReasonlessThanThree": "{player}:n nappuloiden määrä on alle kolme.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} eroaa.",
+  "loseReasonResign": "{player} erosi.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} ei voi edetä.",
+  "loseReasonNoWay": "{player}:lla ei ole keinoa mennä.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Lauta on täynnä, eikä {player}:llä ole mitään tietä.",
+  "loseReasonBoardIsFull": "Lauta on täynnä, ja {player}:lla ei ole keinoa mennä.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Aika on ohi, {player} menetetty.",
+  "loseReasonTimeOver": "Aika on ohi, {player} hävisi.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -1254,7 +1254,7 @@
   "@duration": {},
   "pixelRatio": "Pikselisuhde",
   "@pixelRatio": {},
-  "gameScreenRecorder": "Pelin näytön tallennin",
+  "gameScreenRecorder": "Pelin näytön nauhoitin",
   "@gameScreenRecorder": {},
   "previous": "Edellinen",
   "@previous": {},
@@ -1268,7 +1268,7 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "Voit muuttaa arvoa poimijassa hiiren rullalla.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0 tarkoittaa, että ajattelulle ei ole aikarajaa.",
+  "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0:ksi tarkoittaa, että ajattelulle ei ole aikarajaa.",
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "Huomaa, että tekoälyn ajatteluajan säätö ei välttämättä ole täysin tarkka. Todellinen ajatteluaika voi olla lyhyempi, kun vaikeustaso on asetettu pienemmälle arvolle, ja voi olla pidempi, kun tekoäly on puoliajattelu, kun aika loppuu.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
@@ -1280,7 +1280,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Alfa-beta-algoritmi on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa vastustajansa enimmäispistemäärää. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa kuin ensimmäisellä pelaajalla.",
+  "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa ensimmäiseen verrattuna.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Ihmiskokemuksen mukaan jos yrität voittaa, häviät. Pyri sen sijaan tasapeliin ja vältä pelin häviämistä. Tarkkaile vastustajaasi ja houkuttele hellästi asentoon, jossa he voivat tehdä virheitä. Kun he osoittavat heikkoutta, tartu tilaisuuteen ja työnnä hellästi voittoon. Tällä tavalla voit voittaa pelin.",
   "@drawOnTheHumanExperienceDetail": {},
@@ -1308,9 +1308,9 @@
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nyt lentovaiheessa vastustajan nappulat voivat hypätä mihin tahansa tyhjään kohtaan laudalla. Voit kytkeä lentosäännön pois päältä \"Sääntöasetuksissa\".",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Kun umpikuja",
+  "whenStalemate": "Kun pattitilantessa",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "Mitä tapahtuu, kun yhtään kappaletta ei voi siirtää?",
+  "whenStalemate_Detail": "Mitä toimia seuraa kun yhtäkään nappulaa ei voi siirtää?",
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "Loppu umpikujaan.",
   "@endWithStalemateLoss": {},
@@ -1322,11 +1322,11 @@
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Poista yksi vastustajan nappuloista ja vaihda puolta liikkuaksesi.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "AI-vasteen viive",
+  "aiResponseDelayTime": "Tekoälyn vasteviive",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Tekoäly on tällä hetkellä viivästyneen vasteen vaiheessa. Odota hetki ennen kuin jatkat.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä osaa.",
+  "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä nappulaa.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Pattitilanteessa vastustajan nappulat, jotka ovat sinun vieressäsi, voidaan poistaa myllymuodostuksesta riippumatta.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
@@ -1336,27 +1336,27 @@
   "@goldenJade": {},
   "forestWood": "Metsä Puu",
   "@forestWood": {},
-  "greenMeadow": "Vihreä niitty",
+  "greenMeadow": "Vihreä Niitty",
   "@greenMeadow": {},
-  "stonyPath": "Kivinen polku",
+  "stonyPath": "Kivinen Polku",
   "@stonyPath": {},
   "midnightBlue": "Yönsininen",
   "@midnightBlue": {},
   "greenForest": "Vihreä metsä",
   "@greenForest": {},
-  "pastelPink": "Pastelli pinkki",
+  "pastelPink": "Pastelli Pinkki",
   "@pastelPink": {},
-  "turquoiseSea": "Turkoosi meri",
+  "turquoiseSea": "Turkoosi Meri",
   "@turquoiseSea": {},
-  "violetDream": "Violetti unelma",
+  "violetDream": "Violetti Unelma",
   "@violetDream": {},
-  "mintChocolate": "Minttu-suklaa",
+  "mintChocolate": "Minttu-Suklaa",
   "@mintChocolate": {},
   "skyBlue": "Taivaansininen",
   "@skyBlue": {},
-  "playfulGarden": "Leikkisä puutarha",
+  "playfulGarden": "Leikkisä Puutarha",
   "@playfulGarden": {},
-  "darkMystery": "Pimeä mysteeri",
+  "darkMystery": "Tumma Mysteeri",
   "@darkMystery": {},
   "whatIsRetrogradeAnalysis": "Retrograde Analysis -algoritmi käyttää moniarvoista retrogradista analyysiä loppupelitietokannan rakentamiseen eri aloituspaikoista ja käyttää sitten tätä tietokantaa pelin optimoimiseksi. Tämä lähestymistapa kuuluu Ultra-Strong-ratkaisujen luokkaan.",
   "@whatIsRetrogradeAnalysis": {},
@@ -1490,9 +1490,9 @@
   "@useOpeningBook": {},
   "currentRule": "Nykyinen",
   "@currentRule": {},
-  "nineMensMorris": "Nine Men's Morris",
+  "nineMensMorris": "Yhdeksän Miesten Morris",
   "@nineMensMorris": {},
-  "twelveMensMorris": "Twelve Men's Morris",
+  "twelveMensMorris": "Kahdentoista Miesten Morris",
   "@twelveMensMorris": {},
   "morabaraba": "Morabaraba",
   "@morabaraba": {},
@@ -1512,7 +1512,7 @@
   "@ruleSet": {},
   "laskerMorris": "Lasker Morris",
   "@laskerMorris": {},
-  "oneTimeMill": "One-Time Mill",
+  "oneTimeMill": "Kertakäyttöinen Mylly",
   "@oneTimeMill": {},
   "daSanQi": "Da San Qi",
   "@daSanQi": {},
