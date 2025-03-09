@@ -1627,5 +1627,17 @@
   "elfilja": "Ель Фільджа",
   "@elfilja": {},
   "tipSelectOwnPiece": "Виберіть одну зі своїх частин.",
-  "@tipSelectOwnPiece": {}
+  "@tipSelectOwnPiece": {},
+  "lanGameSetup": "Налаштування гри в локальній мережі",
+  "@lanGameSetup": {},
+  "start": "Старт",
+  "@start": {},
+  "notYourTurn": "Не твоя черга",
+  "@notYourTurn": {},
+  "annotationToolbarIconColor": "Колір значка панелі інструментів анотації",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Показати панель інструментів анотації",
+  "@isAnnotationToolbarShown": {},
+  "annotationToolbarBackgroundColor": "Колір тла панелі інструментів анотації",
+  "@annotationToolbarBackgroundColor": {}
 }
