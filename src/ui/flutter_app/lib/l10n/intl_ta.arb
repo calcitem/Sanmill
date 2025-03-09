@@ -1,0 +1,1642 @@
+{
+  "humanVsHuman": "மனிதன் எதிர் மனிதன்",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "செஅ எதிர் செஅ",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "மனித எதிர் முகில்",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "மனித எதிர் லேன்",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "லேன் வழியாக சோதனை",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "நகர்த்து",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "பட்டியலை நகர்த்து",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "பட்டியலை நகர்த்து",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "பதிவு இல்லை",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "confirm": "உறுதிப்படுத்து",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "ரத்துசெய்",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "தவறான துண்டை தேர்ந்தெடு.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "உங்கள் துண்டுகளை வை.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "நீங்கள் அதை இங்கே வைக்க முடியாது.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "துண்டு வைக்கப்பட்டது.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "ஒரு துண்டு அகற்று.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "நீங்கள் அதை அகற்ற முடியாது.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "துண்டு அகற்றப்பட்டது.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "ஒரு துண்டு நகர்த்து.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "உங்கள் பகுதியை இங்கே வைக்க முடியாது.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "உங்கள் பகுதியை இங்கே நகர்த்த முடியாது.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "மில்! உங்கள் எதிரியின் பகுதியை எடுத்துக் கொள்.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "உங்கள் எதிரியின் துண்டுகளில் ஒன்றைத் தேர்ந்தெடு.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipContinueMill": "உங்கள் எதிரியின் பகுதியை தொடர்ந்து எடுத்துக் கொள்.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectPieceToMove": "நகர்த்த உங்கள் பகுதியைத் தேர்ந்தெடு.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipCannotRemovePieceFromMill": "நீங்கள் ஒரு மில்லிலிருந்து ஒரு பகுதியை அகற்ற முடியாது.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "ஒரு துண்டு 1 புள்ளியை நகர்த்த முடியும்.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "உங்கள் எதிரியின் துண்டுகளை நகர்த்த முடியாது.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipHaveThreePiecesLeft": "உங்களிடம் மூன்று துண்டுகள் உள்ளன.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "நீங்கள் விரும்பும் எந்த இடத்திற்கும் செல்லலாம்.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "{player} நகர்த்த.",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "வீரன் 1 வெற்றி!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "வீரன் 2 வெற்றி!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "வெற்றிபெற்றது",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "இழந்தது",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "சிந்தனை…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "புதிய விளையாட்டு",
+  "@newGame": {
+    "description": "New game"
+  },
+  "appName": "மில்",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "நல்வரவு",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "ஆம்",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "இல்லை",
+  "@no": {
+    "description": "No"
+  },
+  "game": "விளையாட்டு",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "மனிதன் எதிர் செஅ",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "ok": "சரி",
+  "@ok": {
+    "description": "OK"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "ஒரு புதிய ஆலை உடனடியாக உருவாக்க ஒரு வீரர் ஒரு ஆலை உடைத்து உடனடியாக ஒரு புதிய ஆலை உருவாக்கினால், அந்த பகுதியை அவர்களின் அடுத்த நகர்வின் அசல் புள்ளிக்கு நகர்த்த முடியும்.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ஒரு வீரருக்கு மூன்று துண்டுகள் இருந்தால் விளையாட்டு வரையப்படுகிறது மற்றும் பத்து நகர்வுகளுக்குப் பிறகு எந்த வீரரும் எதிராளியின் துண்டுகளை அகற்றவில்லை",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ஒரு வீரர் மூன்று துண்டுகளாக இருக்கும்போது, எந்த வீரரும் பத்து நகர்வுகளுக்குள் எதிராளியின் பகுதியை அகற்ற முடியாது, விளையாட்டு ஒரு சமநிலை.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "blackPiece": "கருப்பு துண்டு",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "வெற்று புள்ளி",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "எந்தப் புள்ளியும் இல்லை",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "கட்டம்",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "நகரும் கட்டம்",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "பறக்கும் கட்டம்",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "நகர்த்த வேண்டிய பக்க: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "கடைசி நடவடிக்கை: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "தேர்ந்தெடுக்கப்பட்டது",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "அணுகல்",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "திரை வாசகர் உதவி",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "endgameNMoveRule": "எண்ட்கேம் என்-மூவ் விதி",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "error": "பிழை: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "வெற்றி விகிதம்",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "மதிப்பு:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "வீரன் 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "வீரன் 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} துண்டு எண்ணிக்கை மூன்றுக்கும் குறைவானது.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "நகரும் கட்டத்தில், கடைசி குறிப்பிட்ட எண்ணிக்கையிலான நகர்வுகளில் எந்த பகுதியும் அகற்றப்படவில்லை.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonThreefoldRepetition": "மூன்று மடங்கு மறுபடியும் மறுபடியும் இது ஒரு சமநிலை.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "விளையாட்டு முடிந்தது! தெரியாத காரணம்.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "youWin": "நீங்கள் வென்றீர்கள்! வாழ்த்துக்கள்!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "கடினமான நிலையை அறைகூவல் செய்யவா? புதிய நிலை நிலை {level} ஆக இருக்கும்!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "நீங்கள் இழக்கிறீர்கள்!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "பகுப்பாய்வு செய்",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "பற்றி",
+  "@about": {
+    "description": "About"
+  },
+  "version": "பதிப்பு: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "நன்றி",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "generalSettings": "பொது அமைப்புகள்",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "தொல்லை நிலை",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "செஅ சிந்தனை நேரம்",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "தொல்லை",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "ஒலி விளைவுகள்",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "விளையாட்டில் ஒலிகள்",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "திரும்பப் பெறும்போது ஊமையாக வைத்திருங்கள்",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "தொனி",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "முதல் நகர்வு",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "ai": "செஅ",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "மாற்று",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "விளையாட்டு முடிந்ததும் தானி-மறுதொடக்கம் விளையாட்டு",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "தானி மாற்றம் முதல் நகர்வு",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "தோராயமாக நகர்த்து",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "மற்றவை",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "விதிகள்",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "ஒவ்வொரு வீரருக்கும் இருக்கும் துண்டுகளின் எண்ணிக்கை",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "ஒவ்வொரு வீரருக்கும் எத்தனை துண்டுகள் உள்ளன?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "பறக்கும் துண்டின் எண்ணிக்கை",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "pick": "{element} ஐத் தேர்ந்தெடுங்கள்",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "தகவல்",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "குறிப்பு",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "வீரர்",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "வீரன் 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "வீரன் 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "எப்படி விளையாடுவது",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "துண்டு வைக்க கிடைக்கக்கூடிய எந்த புள்ளியையும் தட்டவும்.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "அதை நகர்த்த ஒரு துண்டைத் தட்டவும்.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "அதை நகர்த்த ஒரு துண்டுடன் இணைக்கப்பட்ட ஒரு புள்ளியைத் தட்டவும்.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "அதை அகற்ற எதிராளியின் துண்டுகளில் ஒன்றைத் தட்டவும்.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "நீங்கள் ஒரு பகுதியை அகற்றுவதற்கு முன்பு முதலில் ஒரு ஆலை உருவாக்க வேண்டும்.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "உங்கள் துண்டுகளுடன் நீங்கள் விளையாட வேண்டும்.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "totalGames": "மொத்த விளையாட்டுகள்",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "முடிவுகள்",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "இடது",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "தனியுரிமைக் கொள்கை",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "தயவுசெய்து கவனமாகப் படித்து, இதை நீங்கள் முழுமையாக புரிந்துகொண்டு உடன்படுகிறீர்கள் என்பதை உறுதிப்படுத்திக் கொள்ளுங்கள் ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". இந்தக் கொள்கையில் நீங்கள் உடன்படவில்லை என்றால், தயவுசெய்து இந்த பயன்பாட்டைப் பயன்படுத்த வேண்டாம். பயன்பாட்டைப் பயன்படுத்துவது இந்த விதிமுறைகளை நீங்கள் ஏற்றுக்கொள்கிறீர்கள் என்பதைக் குறிக்கிறது.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " மற்றும் ",
+  "@and": {},
+  "accept": "ஏற்றுக்கொள்",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "திரும்ப எடுத்துக் கொள்ளுங்கள்",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "திரும்பிச் செல்வது…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "காத்திருக்கிறது…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "முன்னேறவும்",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "அனைத்தையும் திரும்பப் பெறுங்கள்",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "அனைத்தையும் முன்னெடுத்துச் செல்லுங்கள்",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "இப்போது நகர்த்தவும்",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "முடிந்தது.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "கிராக் ஆலை",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "ஒரு வீரருக்கு ஆலைகளில் துண்டுகள் மட்டுமே இருந்தால், ஆலைகளில் உள்ள துண்டுகள் அகற்ற பூட்டாது.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "அனிமேசன் காலம்",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "எதுவுமில்லை",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "கருப்பொருள்",
+  "@theme": {
+    "description": "Theme"
+  },
+  "endgameNMoveRule_Detail": "எந்தவொரு வீரருக்கும் மூன்று துண்டுகள் மட்டுமே இருந்தால், எந்த வீரரும் குறிப்பிட்ட நகர்வுகளுக்குள் ஒரு பகுதியை அகற்றவில்லை என்றால் விளையாட்டு வரையப்படுகிறது.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "எந்தவொரு வீரருக்கும் மூன்று துண்டுகள் மட்டுமே உள்ளன, மேலும் எந்த வீரரும் குறிப்பிட்ட நகர்வுகளுக்குள் ஒரு பகுதியை அகற்றுவதில்லை.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "மூன்று மடங்கு மறுபடியும் விதி",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "மூன்றாவது முறையாக ஒரு நிலை ஏற்பட்டால் விளையாட்டு வரையப்படுகிறது.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "மில்! தொடர்ந்து ஒரு நகர்வு.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointWidth": "புள்ளி அகலம்",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "திடமான",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "வெற்று",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "loadFailed": "சுமை தோல்வியடைந்தது.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "கோப்பு பெயர்",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "உலாவுக…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "விளையாட்டு கோப்புகள்",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "விளையாட்டு சேமிக்கப்படுகிறது",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "காலி",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "எந்த நடவடிக்கையும் இல்லை.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "ஆரம்ப நிலை மீட்டெடுக்கப்பட்டது.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "தூய்மையான",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "தூய்மை செய்யப்பட்டது.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "அகற்று",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "எந்த துண்டுகளையும் அகற்ற முடியாது.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{எண்ணிக்கை, பன்மை, = 0 {Piece} = 1 {{count} துண்டு} பிற {{count} துண்டுகள்}} அகற்ற வேண்டும்.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "வைக்கப்பட்டது ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "வைக்கப்பட்ட கட்டத்தில் துண்டு எண்ணிக்கை.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "தற்போதைய வீரன் {count} துண்டுகளை வைத்துள்ளது.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "கட்டத்தை வைக்காமல், அதை மாற்ற முடியாது.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "ஒட்டு",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "பேச்ட் செய்யப்படுகிறது.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "ஒட்ட முடியாது.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "இடம்பெயர்ந்த மற்றும் அகற்றப்பட்ட துண்டுகளை காட்டு",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "முழுத் திரை",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "அமைப்புகள் நடைமுறைக்கு வருவதற்கான பயன்பாட்டிலிருந்து வெளியேறவும் மீண்டும் திறக்கவும்.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "காடு",
+  "@forest": {},
+  "desktopImage": "டெச்க்டாப் படம்",
+  "@desktopImage": {},
+  "invalidPosition": "தவறான நிலை.",
+  "@invalidPosition": {},
+  "shareGIF": "பகிர்வு gif",
+  "@shareGIF": {},
+  "pixelRatio": "படப்புள்ளி விகிதம்",
+  "@pixelRatio": {},
+  "duration": "காலம்",
+  "@duration": {},
+  "gameScreenRecorder": "கேம் திரை ரெக்கார்டர்",
+  "@gameScreenRecorder": {},
+  "previous": "முந்தைய",
+  "@previous": {},
+  "next": "அடுத்தது",
+  "@next": {},
+  "skip": "தவிர்",
+  "@skip": {},
+  "gotIt": "கிடைத்தது",
+  "@gotIt": {},
+  "youCanModifyRules": "விதி அமைப்புகளில் விளையாட்டின் விதிகளை நீங்கள் மாற்றலாம்.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "பிக்கரில் உள்ள மதிப்பை சரிசெய்ய நீங்கள் சுட்டி சக்கரத்தைப் பயன்படுத்தலாம்.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "AI சிந்தனை நேரம் 0 என அமைக்கப்பட்டால், சிந்திக்க நேர வரம்பு இல்லை.",
+  "@noTimeLimitForThinking": {},
+  "endWithStalemateDraw": "ஒரு முட்டுக்கட்டை டிராவுடன் முடிக்கவும்.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "எதிராளியின் துண்டுகளில் ஒன்றை அகற்றி, நகர்த்த பக்கத்தை மாற்றவும்.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "AI மறுமொழி தாமத நேரம்",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "AI தற்போது தாமதமான மறுமொழி கட்டத்தில் உள்ளது. தொடர்வதற்கு முன் சிறிது நேரம் காத்திருங்கள்.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "நீங்கள் ஒரு அல்லாத துண்டு துண்டுகளை அகற்ற முடியாது.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "ஒரு முட்டுக்கட்டைக்கு, ஆலை உருவாவதைப் பொருட்படுத்தாமல், உங்களுடைய அருகிலுள்ள எதிரியின் துண்டுகளை அகற்றலாம்.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS என்பது ஒரு தொடக்க-நட்பு வழிமுறையாகும், இது உருவகப்படுத்துதல்கள் மூலம் வெவ்வேறு நகர்வுகளை ஆராய்ந்து மதிப்பீடு செய்வதன் மூலம் முடிவுகளை எடுக்கும்.",
+  "@whatIsMcts": {},
+  "goldenJade": "கோல்டன் சேட்",
+  "@goldenJade": {},
+  "forestWood": "வன மரம்",
+  "@forestWood": {},
+  "darkMystery": "இருண்ட மர்மம்",
+  "@darkMystery": {},
+  "midnightBlue": "நள்ளிரவு நீலம்",
+  "@midnightBlue": {},
+  "greenForest": "பசுமை காடு",
+  "@greenForest": {},
+  "greenMeadow": "பச்சை புல்வெளி",
+  "@greenMeadow": {},
+  "stonyPath": "ச்டோனி பாதை",
+  "@stonyPath": {},
+  "pastelPink": "வெளிர் இளஞ்சிவப்பு",
+  "@pastelPink": {},
+  "turquoiseSea": "டர்க்கைச் கடல்",
+  "@turquoiseSea": {},
+  "violetDream": "வயலட் கனவு",
+  "@violetDream": {},
+  "mintChocolate": "புதினா சாக்லேட்",
+  "@mintChocolate": {},
+  "skyBlue": "வானம் நீலம்",
+  "@skyBlue": {},
+  "playfulGarden": "விளையாட்டுத்தனமான தோட்டம்",
+  "@playfulGarden": {},
+  "opponentRemovesOwnPiece_Detail": "நீங்கள் நடவடிக்கை எடுப்பதற்குப் பதிலாக, எதிர்ப்பாளர் தங்கள் சொந்த பகுதியை (களை) வாரியத்திலிருந்து தேர்ந்தெடுத்து நீக்குகிறார், தங்களுக்கு தீங்கு விளைவிக்கும் ஒரு நடவடிக்கையை திறம்பட எடுத்துக்கொள்கிறார்.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "எதிராளியின் துண்டு (களை) அவர்களின் கையில் இருந்து அகற்றவும், பின்னர் அது நகர்வது உங்கள் முறை.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "restrictRepeatedMillsFormation_Detail": "ஒரு ஆலையில் இருந்து ஒரு துண்டு இன்னொரு ஆலையை உருவாக்கியது, அடுத்த திருப்பத்தில் அசல் புள்ளிக்கு மீண்டும் ஒரு ஆலை மீண்டும் உருவாக முடியாது. முதலில் வேறுபட்ட நடவடிக்கை தேவை.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill_Detail": "ஒவ்வொரு ஆலை ஒரு எதிரியின் பகுதியை ஒரு முறை மட்டுமே அகற்ற முடியும். நீங்கள் அதை மீண்டும் சீர்திருத்தலாம், ஆனால் கூடுதல் நீக்குதல்களுக்கு இதைப் பயன்படுத்த முடியாது.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "நீங்கள் அமைத்த தற்போதைய விதிகள் தொடர்புடைய சரியான தரவுத்தளத்தைக் கொண்டிருக்கவில்லை. சரியான தரவுத்தளத்தைப் பற்றிய கூடுதல் தகவலுக்கு, இங்கே சொடுக்கு செய்க.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "பாதைகளைத் தடுப்பதில் கவனம் செலுத்துங்கள்",
+  "@focusOnBlockingPaths": {},
+  "useOpeningBook_Detail": "ஆரம்ப ஆட்டத்தின் போது தொழில்முறை மனித வீரர்களால் பொதுவாகப் பயன்படுத்தப்படும் திறப்பு நகர்வுகளை AI பயன்படுத்தட்டும். குறிப்பு: இந்த நற்பொருத்தம் தற்போது குறிப்பிட்ட விதி தொகுப்புகளுக்கு மட்டுமே கிடைக்கிறது.",
+  "@useOpeningBook_Detail": {},
+  "removalBasedOnMillCounts": "அனைத்து துண்டுகளும் வைக்கப்படும் வரை அகற்றுவதை முடக்கு, பின்னர் ஆலை எண்ணிக்கையின் அடிப்படையில் துண்டுகளை அகற்றவும்.",
+  "@removalBasedOnMillCounts": {},
+  "annotationToolbarBackgroundColor": "சிறுகுறிப்பு கருவிப்பட்டி பின்னணி நிறம்",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "சிறுகுறிப்பு கருவிப்பட்டி படவுரு நிறம்",
+  "@annotationToolbarIconColor": {},
+  "importGame": "விளையாட்டு இறக்குமதி",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "விளையாட்டு ஏற்றுமதி",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "இறக்குமதி செய்யப்பட்ட விளையாட்டு.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "{invalidMove}ஐ இறக்குமதி செய்யமுடியாது",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "நகர்வுகள் மற்றும் விதிகள் பொருந்தவில்லை.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "தயவுசெய்து காத்திருங்கள்.",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "தற்போதைய விளையாட்டை மறுதொடக்கம் செய்யவா?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "மறுதொடக்கம்",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "விளையாட்டு தொடங்கியது, தயவுசெய்து வை.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "பகுப்பாய்வு…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "loseReasonResign": "{player} விலகினார்.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} செல்ல வழி இல்லை.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "பலகை நிரம்பியுள்ளது, மற்றும் {player} க்கு செல்ல வழி இல்லை.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "நேரம் முடிந்துவிட்டது, {player} இழந்தார்.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonBoardIsFull": "பலகை நிரம்பியிருப்பதால் இது ஒரு சமநிலை.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "gameOver": "விளையாட்டு முடிந்தது",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "settings": "அமைப்புகள்",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "விருப்பங்கள்",
+  "@options": {
+    "description": "Options"
+  },
+  "human": "மனிதன்",
+  "@human": {
+    "description": "Human"
+  },
+  "piecesAtLeastCount": "குறைந்தபட்சம் துண்டுகள்",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "statistics": "புள்ளிவிவரங்கள்",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "advanced": "மேம்பட்ட",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "வைப்பது",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "நகரும்",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "நீக்குதல்",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "நிலை மீது விளையாட்டு",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "passive": "செயலற்ற",
+  "@passive": {
+    "description": "Passive"
+  },
+  "mainToolbarIconColor": "முதன்மையான கருவிப்பட்டி படவுரு நிறம்",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "வழிசெலுத்தல் கருவிப்பட்டி பின்னணி நிறம்",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "close": "மூடு",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "வெள்ளை துண்டு",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "isDraw": "இது ஒரு சமநிலை!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "டிரா",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "துண்டு சிறப்பம்சமாக வண்ணம்",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "படிமுறை",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "pointStyle": "புள்ளி நடை",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "languageName": "ஆங்கிலம்",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{எண்ணிக்கை, பன்மை, = 0 {Move} = 1 {{count} நகர்த்து} பிற {{count} நகர்வுகள்}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
+  },
+  "whenBoardIsFull": "பலகை நிரம்பும்போது",
+  "@whenBoardIsFull": {},
+  "rotate": "சுழற்றுங்கள்",
+  "@rotate": {},
+  "horizontalFlip": "எச் ஃபிளிப்",
+  "@horizontalFlip": {},
+  "verticalFlip": "திருப்பத்தில்",
+  "@verticalFlip": {},
+  "innerOuterFlip": "நான் புரட்டுகிறேன்",
+  "@innerOuterFlip": {},
+  "oneTimeUseMill": "ஒரு முறை பயன்பாட்டு ஆலை",
+  "@oneTimeUseMill": {},
+  "showAdvantageGraph": "நன்மை வரைபடத்தைக் காட்டு",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "AI ஒரு நகர்வு செய்த பின்னரே நன்மை வரைபடம் வரையப்படும். மனித வீரர் ஒரு நகர்வை மேற்கொள்ளும்போது அது வரையப்படாது.",
+  "@advantageGraphHint": {},
+  "elfilja": "எல் ஃபில்சா",
+  "@elfilja": {},
+  "notYourTurn": "இது உங்கள் முறை அல்ல",
+  "@notYourTurn": {},
+  "feedback": "கருத்து",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "வெளியேறு",
+  "@exit": {
+    "description": "Exit"
+  },
+  "oneTimeMill": "ஒரு முறை ஆலை",
+  "@oneTimeMill": {},
+  "daSanQi": "அடிமை பிரச் Q i",
+  "@daSanQi": {},
+  "ruleSettings": "விதி அமைப்புகள்",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "நிறம்",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "போர்டு நிறம்",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "துண்டு நிறம்",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "பின்னணி நிறம்",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Board வரி color",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "வீரன் 1 துண்டு வண்ணம்",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "வீரன் 2 துண்டு நிறம்",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "செய்தி நிறம்",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "இடமில்லாத துண்டுகளின் எண்ணிக்கையைக் காட்டு",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "போர்டில் குறிப்புகளைக் காட்டுங்கள்",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "வரலாற்று வழிசெலுத்தல் கருவிப்பட்டியைக் காட்டு",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "காட்சி",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "போர்டு பார்டர்லைன் அகலம்",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "போர்டு உள் வரி அகலம்",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "துண்டு அகலம்",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "எழுத்துரு அளவு",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "WMD குறியீடு",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "மீட்டமை",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "இயல்புநிலை அமைப்புகளை மீட்டெடுக்கவும்",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "nMoveRule_Detail": "ஒரு குறிப்பிட்ட எண்ணிக்கையிலான நகர்வுகளில் அகற்றப்படாவிட்டால் விளையாட்டு வரையப்படுகிறது.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "மறுசீரமைப்பு",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "classicMill": "கிளாசிக் ஆலை",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "கலப்பு ஆலை",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "pleaseSelect": "தயவுசெய்து தேர்ந்தெடு",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "நகலெடு",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்ட வரலாற்றை நகர்த்தவும்.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "உதவி",
+  "@help": {
+    "description": "Help"
+  },
+  "flyPieceCount_Detail": "பறப்பது இயக்கப்பட்டிருந்தால், ஒரு வீரரின் துண்டு எண்ணிக்கை ஒரு குறிப்பிட்ட வாசலுக்குக் கீழே விழும்போது, அவற்றின் துண்டுகள் எந்த விளையாட்டைப் போலவே அருகிலுள்ள புள்ளிகளுக்கும் கட்டுப்படுத்தப்படுவதற்குப் பதிலாக எந்தவொரு காலாவதியான இடத்திற்கும் செல்ல இலவசம்.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "hasDiagonalLines": "மூலைவிட்ட கோடுகள்",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "பலகையில் நான்கு மூலைவிட்ட கோடுகளைச் சேர்.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "இரண்டாவது வீரர் முதலில் நகர்கிறார்",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "இடும் கட்டத்தில் இரண்டாவது இடத்தைப் பிடித்த வீரர் நகரும் கட்டத்தில் முதலில் நகர்கிறார்.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "பல-நீக்கு",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "ஒரு வீரர் ஒரே நேரத்தில் ஒரு ஆலைக்கு மேல் மூடினால், அவள் மூடிய ஆலைகளின் எண்ணிக்கையை அகற்றுவாள்.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "ஆலைகளை அழிக்கவும்",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "இயல்பாக, உருவாக்கப்பட்ட ஆலையிலிருந்து ஒரு பகுதியை அகற்றுவதற்கு முன் வீரர்கள் வேறு எந்த துண்டுகளையும் முதலில் அகற்ற வேண்டும். வரம்பை முடக்க இந்த விருப்பத்தை இயக்கவும்.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "பலகை நிரம்பும்போது இரண்டாவது வீரர் இழக்கிறார்",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "வைக்கும் கட்டத்தின் முடிவில் பலகை நிரம்பியிருக்கும் போது, முதலில் இடும் பக்கம் விளையாட்டை இழக்கிறது. இல்லையெனில், விளையாட்டு ஒரு சமநிலை.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "சட்டப்பூர்வ நகர்வுகள் இல்லாதபோது இழக்கவும்",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "தனது எதிர்ப்பாளர் அவர்களைத் தடுத்தால் வீரர் இழப்பார், அதனால் அவற்றை நகர்த்த முடியாது. இந்த விருப்பம் முடக்கப்பட்டிருந்தால், இழப்பை அறிவிப்பதற்குப் பதிலாக நகர்த்த பக்கத்தை மாற்றவும்.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "பறக்கும்",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "ஒரு வீரருக்கு மூன்று அல்லது நான்கு (உள்ளமைக்கக்கூடிய) துண்டுகள் மட்டுமே எஞ்சியிருந்தால், அவள் எந்த இலவச புள்ளிக்கும் அந்த துண்டுகளை நகர்த்த முடியும்.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "N- நகரும் விதி",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "helpContent": "இந்த விளையாட்டு எதிராளியை மூன்று துண்டுகளுக்கும் குறைவான அல்லது சட்டப்பூர்வ நகர்வுகளுடன் விட்டுச் செல்வதை நோக்கமாகக் கொண்டுள்ளது.\n\n மூன்றாவது முறையாக ஒரு நிலை ஏற்பட்டால் அல்லது கடைசி 100 (கட்டமைக்கக்கூடிய) நகர்வுகளில் அகற்றப்படாவிட்டால் விளையாட்டு தானாகவே ஈர்க்கிறது.\n\n விளையாட்டு மூன்று கட்டங்களாக தொடர்கிறது:\n\n 1. காலியாக உள்ள புள்ளிகளில் துண்டுகளை வைப்பது\n 2. துண்டுகளை அருகிலுள்ள புள்ளிகளுக்கு நகர்த்துவது\n 3. (விருப்ப கட்டம்) வீரரை மூன்று துண்டுகளாகக் குறைக்கும்போது எந்த காலியாக உள்ள புள்ளிகளுக்கும் துண்டுகளை நகர்த்துவது\n\n வைப்பது\n\n விளையாட்டு ஒரு வெற்று பலகையுடன் தொடங்குகிறது, இது இருபத்தி நான்கு புள்ளிகளைக் கொண்ட ஒரு கட்டத்தைக் கொண்டுள்ளது. ஒவ்வொரு வீரரும் அனைத்து துண்டுகளையும் பலகையில் வைக்கும் வரை வீரர்கள் தங்கள் துண்டுகளை காலியாக உள்ள புள்ளிகளில் வைப்பார்கள். ஒரு வீரர் தனது மூன்று துண்டுகளை நேராக வைக்க முடிந்தால், அவர் ஒரு \"ஆலை\" வைத்திருக்கிறார், மேலும் தனது எதிரியின் துண்டுகளில் ஒன்றை பலகையில் இருந்து அகற்றலாம்.\n\n சில விதிமுறைகளில், உருவாக்கப்பட்ட ஆலையிலிருந்து ஒரு பகுதியை அகற்றுவதற்கு முன் வீரர்கள் வேறு எந்த துண்டுகளையும் முதலில் அகற்ற வேண்டும்.\n\n சில விதிகளின் கீழ், துண்டுகள் அகற்றப்பட்ட புள்ளிகளில் நீங்கள் மீண்டும் துண்டுகளை வைக்க முடியாது.\n\n அனைத்து துண்டுகளும் வைக்கப்பட்டவுடன், வீரர்கள் அவற்றை நகர்த்தும் திருப்பங்களை எடுத்துக்கொள்கிறார்கள்.\n\n நகரும்\n\n நகர்த்த, ஒரு வீரர் தனது துண்டுகளில் ஒன்றை ஒரு போர்டு வரியுடன் காலியாக உள்ள அருகிலுள்ள இடத்திற்கு நகர்த்துகிறார். அவரால் முடியாவிட்டால், அவர் விளையாட்டை இழக்கிறார். ஒரு போர்டு வரிசையில் தனது மூன்று துண்டுகளை சீரமைக்கும் ஒரு வீரர் ஒரு ஆலை வைத்திருக்கிறார், மேலும் தனது எதிரியின் துண்டுகளில் ஒன்றை வைக்கும் கட்டத்தைப் போலவே அகற்றலாம். ஒரு வீரர் இரண்டு துண்டுகளாகக் குறைக்கப்பட்டால், புதிய ஆலைகளை உருவாக்க விருப்பமில்லை, இதனால் விளையாட்டை இழக்கிறது. ஒரு வீரர் தனது எதிர்ப்பாளர் நகர்வதைத் தடுத்தால் மூன்று துண்டுகளுக்கு மேல் இருக்கும்போது இழக்க நேரிடும்.\n\n பறக்கும்\n\n விதிகளின் சில வகைகளில், ஒரு வீரருக்கு மூன்று துண்டுகள் மட்டுமே எஞ்சியதும், அவற்றின் துண்டுகள் பறக்கலாம், ஆப் அல்லது காலியாக உள்ள எந்த புள்ளிகளுக்கும் செல்லலாம், அருகிலுள்ளவை மட்டுமல்ல.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "பதிப்பு செய்தி",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "யூலா",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "உரிமம்",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "மூலக் குறியீடு",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "பயன்பாட்டு பதிப்பு",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "பொது",
+  "@general": {
+    "description": "General"
+  },
+  "aisPlayStyle": "AI இன் விளையாட்டு நடை",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "timeout": "நேரம் முடிந்தது",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "தோற்றம்",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "மனித அனுபவத்தை வரையவும்",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "துண்டுகளின் இயக்கம் கவனியுங்கள்",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "துண்டு எண்ணிக்கை:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} கையில்: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "{player} போர்டில்: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "போர்டு மேலே இருந்து ஆஃப்செட்",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "இது செஅ இன் முறை அல்ல.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "செஅ யோசிக்கவில்லை.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "நீங்கள் நகரும் பட்டியலின் முடிவில் இருக்கிறீர்கள்.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "வெளியேற மீண்டும் தட்டவும்.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "மேலும்",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "இது ஒரு சோதனை நற்பொருத்தம்.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "சோதனைகள்",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "திறந்த மூல உரிமங்கள்",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "மொழி",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "இயல்புநிலை மொழி",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "துண்டுகள் வைக்கும் கட்டத்தில் நகரலாம்",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "ceylonMill": "சிலோன் மில்",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "ஆலை உடைக்கப்பட்டு மீண்டும் மீண்டும் செய்யப்படலாம்",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "changeSideToMove": "நகர்த்த பக்கத்தை மாற்றவும்.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "எதிராளியின் துண்டுகளில் ஒன்றை அகற்றி அடுத்த நகர்வை மேற்கொள்ளுங்கள்.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "mayMoveInPlacingPhase_Detail": "தனித்துவமான இடம் மற்றும் நகரும் கட்டங்கள் எதுவும் இல்லை, அதாவது, வீரர்கள் ஒவ்வொரு அசைவிலும் ஒரு பகுதியை பலகையில் வைக்க விரும்புகிறார்களா அல்லது அவர்களின் துண்டுகளில் ஒன்றை நகர்த்த விரும்புகிறீர்களா என்பதை தீர்மானிக்க முடியும் (அவர்கள் மீதமுள்ள துண்டுகள் இருக்கும் வரை).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "பட்டி நிறம்",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "பட்டியல் உரை நிறம்",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "பட்டியல் சிறப்பம்சமாக உருப்படி வண்ணம்",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "முக்கிய கருவிப்பட்டி பின்னணி நிறம்",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "navigationToolbarIconColor": "வழிசெலுத்தல் கருவிப்பட்டி படவுரு நிறம்",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "கருவிப்பட்டியை தானாக மறைக்கவும்",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "திரையில் கருவிப்பட்டி இருப்பிடம்",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "மேலே",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "கீழே",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "நடுவண்",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "திட நிறம்",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "படம்",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "உங்கள் படத்தைத் தேர்வுசெய்க",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "ஒளி",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "இருண்ட",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "கருப்பொருள்கள்",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "தற்போதைய கருப்பொருள்",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "கருப்பொருள் சேமிக்கவும்",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "பகுப்பாய்வு வரைபடத்தைக் காட்டு",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "பகுப்பாய்வு",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "விளையாட்டைச் சேமிக்கவும்",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "விளையாட்டு சுமை",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "அமைவு நிலை",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "சட்ட நகர்வுகளைக் காட்டு",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "கடைசி நகர்வைக் காட்டு",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "அம்புகளைக் காட்டு",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "துண்டுகள்",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "பகுப்பாய்வைக் காட்டு",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "நூல்கள்",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "ஈடுபடுங்கள்",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "மொழிபெயர்ப்பை மேம்படுத்த உதவுங்கள்",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "பயிற்சி",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "whatIsMtdf": "எம்டிடி (எஃப்) என்பது ஆல்பா-பீட்டா தேடல் வழிமுறையின் மாற்றியமைக்கப்பட்ட வடிவமாகும், இது இடைநிலை தேடல் முடிவுகளை மீண்டும் பயன்படுத்துவதன் மூலமும், தேடல் இடத்தை குறைக்க ஒரு நல்ல ஆரம்ப யூகத்தைப் பயன்படுத்துவதன் மூலமும் செயல்திறனை மேம்படுத்துவதை நோக்கமாகக் கொண்டுள்ளது.",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "AI சிந்தனை நேர சரிசெய்தல் முற்றிலும் துல்லியமாக இருக்காது என்பதை நினைவில் கொள்க. சிரம நிலை குறைந்த மதிப்புக்கு அமைக்கப்படும்போது உண்மையான சிந்தனை நேரம் குறுகியதாக இருக்கலாம், மேலும் நேரம் முடிந்ததும் AI நடுப்பகுதியில் சிந்திக்கும்போது நீண்டதாக இருக்கலாம்.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "நீங்கள் சிரம நிலையை அதிகமாக அமைத்தால், ஆனால் AI சிந்தனை நேரத்தை அதிகரிக்கவில்லை என்றால், உண்மையான சிரம நிலை சிந்தனை நேரக் கட்டுப்பாடு காரணமாக குறைந்த மதிப்புக்கு மட்டுப்படுத்தப்படலாம். இயந்திரத்தின் செயல்திறனின் அடிப்படையில் உண்மையான மதிப்பு மாறுபடலாம்.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "பி.வி.எச் (முதன்மை மாறுபாடு தேடல்) என்பது கொடுக்கப்பட்ட நிலையில் சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். இது ஆல்பா-பீட்டா வழிமுறையின் விரிவாக்கமாகும், மேலும் ஒரு நடவடிக்கை மோசமானது அல்லது முதன்மை மாறுபாட்டிலிருந்து ஏற்கனவே பாதுகாப்பான மதிப்பெண்ணை விட மோசமானது அல்ல என்பதை உறுதிப்படுத்த சுழிய அல்லது சுழிய சாளர தேடல்களைப் பயன்படுத்துகிறது. பி.வி.எச் மிகவும் நம்பிக்கைக்குரிய நகர்வுகளில் கவனம் செலுத்துகிறது மற்றும் சப்டோப்டிமல் கிளைகளின் தேவையற்ற தேடல்களைத் தவிர்க்கிறது, இது தேடலின் செயல்திறனை மேம்படுத்த உதவுகிறது.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "ஆல்பா-பீட்டா வழிமுறை சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். தேடல் மரத்தை கத்தரிக்கவும் செயல்திறனை அதிகரிக்கவும் இது மினிமேக்ச் கொள்கை மற்றும் ஆல்பா மற்றும் பீட்டா இரண்டு மதிப்புகளைப் பயன்படுத்துகிறது. ஆல்பா என்பது கணினி பெற முடியும் என்பதில் உறுதியாக இருக்கும் குறைந்தபட்ச மதிப்பெண்ணைக் குறிக்கிறது, அதே நேரத்தில் பீட்டா அதன் எதிரி பெறக்கூடிய அதிகபட்ச மதிப்பெண்ணைக் குறிக்கிறது. ஒரு விளையாட்டில் அறிவுள்ள, திறமையான முடிவுகளை எடுக்க கணினி கணினி உதவுகிறது.",
+  "@whatIsAlphaBeta": {},
+  "whenStalemate": "முட்டுக்கட்டை போது",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "எந்தவொரு பகுதியையும் நகர்த்த முடியாதபோது என்ன நடவடிக்கை பின்வருமாறு?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "தடுக்கப்பட்ட பக்கத்திற்கு ஒரு முட்டுக்கட்டை இழப்புடன் முடிக்கவும்.",
+  "@endWithStalemateLoss": {},
+  "drawOnTheHumanExperienceDetail": "மனித அனுபவத்தின்படி, நீங்கள் வெல்ல முயற்சித்தால், நீங்கள் இழப்பீர்கள். அதற்கு பதிலாக, உங்கள் இலக்காக ஒரு டிராவை நோக்கமாகக் கொண்டு, விளையாட்டை இழப்பதைத் தவிர்க்கவும். உங்கள் எதிரியைக் கவனித்து, அவர்கள் தவறுகளைச் செய்யக்கூடிய ஒரு நிலைக்கு மெதுவாக கவர்ந்திழுக்கவும். அவர்கள் பலவீனத்தைக் காட்டும்போது, வாய்ப்பைக் கைப்பற்றி, வெற்றிக்கு மெதுவாகத் தள்ளுங்கள். இந்த வழியில், நீங்கள் விளையாட்டை வெல்லலாம்.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "இந்த விளையாட்டில், முதல் வீரருடன் ஒப்பிடும்போது இரண்டாவது வீரர் செய் பெறுவது எளிது.",
+  "@firstMoveDetail": {},
+  "passiveDetail": "செயலற்ற விருப்பத்தை செயல்படுத்துவது, ஆக்ரோசமாக வெல்ல முயற்சிப்பதை விட, நிலையில் ஒரு நன்மை இருக்கும்போது AI ஓய்வெடுக்க வழிவகுக்கும்.",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "இந்த விருப்பத்தை இயக்குவது விளையாட்டின் சீரற்ற தன்மையையும் வேடிக்கையையும் அதிகரிக்கிறது, அதே நேரத்தில் அதை முடக்குவது AI ஐ வெல்ல வழிகளை ஆய்வு செய்ய உதவும்.",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "AI அதன் துண்டுகளின் இயக்கத்தை கருத்தில் கொண்டால், அது எதிராளியின் துண்டுகளை விரைவாகப் பிடிப்பதை நோக்கமாகக் கொண்டது மட்டுமல்லாமல், எதிரியின் இயக்கங்களைத் தடுப்பதையும், அவ்வாறே செய்வதிலிருந்து அவற்றைத் தடுப்பதையும் கருத்தில் கொள்ளுங்கள்.",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull_Detail": "வைக்கும் கட்டத்தின் முடிவில், நகரும் கட்டம் தொடங்குவதற்கு முன்பு, பலகை துண்டுகள் நிறைந்திருந்தால் நடவடிக்கை பின்வருமாறு.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "நகரும் கட்டத்தில் முதலில் நகரும் வீரர் எதிராளியின் துண்டுகளில் ஒன்றை நீக்குகிறார்.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "இரு தரப்பினரும் ஒரு சமநிலைக்கு ஒப்புக்கொள்கிறார்கள்.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "உங்கள் எதிரியின் துண்டுகளில் ஒன்றை எடுத்துக் கொள்ளுங்கள்.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "முதல் வீரர் விளையாட்டை இழக்கிறார்.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "முதல் மற்றும் இரண்டாவது வீரர்கள் எதிராளியின் துண்டுகளில் ஒன்றை நீக்குகிறார்கள்.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "இரண்டாவது மற்றும் முதல் வீரர்கள் எதிராளியின் துண்டுகளில் ஒன்றை அகற்றுகிறார்கள்.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "இப்போது பறக்கும் கட்டத்தில் நுழைந்தது, எதிரியின் துண்டுகள் பலகையில் உள்ள எந்த வெற்று இடத்திற்கும் செல்லலாம். \"விதி அமைப்புகள்\" இல் பறக்கும் விதியை நீங்கள் அணைக்கலாம்.",
+  "@enteredFlyingPhase": {},
+  "zhiQi": "zh",
+  "@zhiQi": {},
+  "whatIsRetrogradeAnalysis": "ரெட்ரோகிரேட் பகுப்பாய்வு வழிமுறை வெவ்வேறு தொடக்க நிலைகளிலிருந்து ஒரு எண்ட்கேம் தரவுத்தளத்தை உருவாக்க பல மதிப்புள்ள பிற்போக்கு பகுப்பாய்வைப் பயன்படுத்துகிறது, பின்னர் விளையாட்டை மேம்படுத்த இந்த தரவுத்தளத்தைப் பயன்படுத்துகிறது. இந்த அணுகுமுறை அல்ட்ரா-ச்ட்ராங் தீர்வுகள் வகையின் கீழ் வருகிறது.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "இந்த வழிமுறைக்கான பயனர் வழிகாட்டியைக் காண விரும்புகிறீர்களா?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "நிலை நன்மை குறிகாட்டியைக் காட்டு",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "சரியான தரவுத்தளத்தைப் பயன்படுத்தவும்",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "அதிநவீன வழிமுறைகள் மூலம் உருவாக்கப்படும் குறைபாடற்ற விளையாட்டு தரவுத்தளத்தைப் பயன்படுத்த இந்த விருப்பத்தை இயக்கவும். இந்த நற்பொருத்தம் உகந்த நகர்வுகளை பரிந்துரைக்க திறப்பு மற்றும் எண்ட்கேம் உத்திகள் இரண்டையும் ஒருங்கிணைக்கிறது. விளையாட்டில் மிக உயர்ந்த அளவிலான துல்லியத்தை நாடும் வீரர்களுக்கு இது விருப்பமான தேர்வாகும். துல்லியமான கணக்கீட்டு நுட்பங்கள் மூலம் உருவாக்கப்பட்டது, தரவுத்தளம் சரியான விளையாட்டு தீர்வுகளை வழங்க வடிவமைக்கப்பட்டுள்ளது.\n\n குறிப்பு: AI தரவுத்தளத்தை அணுகத் தவறினால், அது விளையாட்டு முடிவுகளுக்கான வழக்கமான வழிமுறைகளுக்கு மாறும். தரவுத்தளம் கிடைக்கும்போது, 'சிரம நிலை' கிட்டத்தட்ட வெல்ல முடியாததாகிவிடும், மேலும் 'AI சிந்தனை நேரம்' கடுமையான குறைப்பை அனுபவிக்கிறது. தரவுத்தள முடிவுகள் மிக உயர்ந்த முன்னுரிமையைக் கொண்டிருப்பதால், 'AI இன் பிளே பாணி' விருப்பங்களுக்குள் உள்ள பல அமைப்புகள் மீறப்படும்.\n\n இந்த குறைபாடற்ற தரவுத்தளத்தை எவ்வாறு அதிகம் பயன்படுத்துவது என்பதற்கான வழிகாட்டுதலுக்கு, இங்கே சொடுக்கு செய்க.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "பின்னணி படம்",
+  "@backgroundImage": {},
+  "whatIsRandom": "'சரியான தரவுத்தளத்தைப் பயன்படுத்துங்கள்' விருப்பம் இயக்கப்படாதபோது, 'சீரற்ற' அமைப்பு AI ஐ நகர்த்துவதற்கு எந்த வழிமுறைகளையும் பயன்படுத்தாமல் தோராயமாக நகர்த்துவதற்கு காரணமாகிறது. இது பொதுவாக கணிசமாக பலவீனமான விளையாட்டில் விளைகிறது. மாறாக, 'சரியான தரவுத்தளத்தைப் பயன்படுத்துங்கள்' இயக்கப்பட்டால், AI பாரம்பரிய AI வழிமுறைகளுடன் கலப்பதற்கு பதிலாக, முடிவுகளை எடுப்பதற்கான 'சரியான தரவுத்தளத்தை' பிரத்தியேகமாக நம்பியுள்ளது. இந்த பயன்முறையில், AI இன் நகர்வுகள் முற்றிலும் தரவுத்தளத்தின் உள்ளடக்கத்தை அடிப்படையாகக் கொண்டவை, நிகழ்நேர கணக்கீடுகள் அல்லது தேடல் வழிமுறைகளை நம்பியிருப்பதைத் தவிர்க்கிறது.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "எதிரியின் துண்டு (களை) அவர்களின் கையில் இருந்து அகற்றவும்; பின்னர் அது எதிராளியின் இடத்திற்கு திரும்புவது.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "இடும் கட்டத்தின் போது ஆலை உருவாக்கும் போது",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "போர்டில் இருந்து எதிராளியின் துண்டு (களை) அகற்றவும்.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "குழுவிலிருந்து எதிரியின் துண்டு (களை) அகற்றவும்; பின்னர் அது எதிராளியின் இடத்திற்கு திரும்புவது.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "எதிர்ப்பாளர் தங்கள் சொந்த துண்டு (களை) குழுவிலிருந்து நீக்குகிறார்.",
+  "@opponentRemovesOwnPiece": {},
+  "chengSanQi": "செங் சான் கே",
+  "@chengSanQi": {},
+  "mulMulan": "முல்-முலன்",
+  "@mulMulan": {},
+  "nerenchi": "நெரென்ச்",
+  "@nerenchi": {},
+  "ruleSet": "விதி தொகுப்பு",
+  "@ruleSet": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "எதிரியின் கையிலிருந்து துண்டு (களை) அகற்றவும். மல்டி-ரெமோவ் அமைப்பின் படி, பல துண்டுகள் அகற்றப்பட வேண்டும் மற்றும் எதிராளிக்கு கையில் எந்த துண்டுகளும் இல்லை என்றால், எதிரியின் துண்டுகளை பலகையில் இருந்து அகற்றவும். பின்னர், நகர்த்துவதற்கான உங்கள் முறை. நீங்கள் தொடர்ந்து ஆலைகளை உருவாக்கினால், எதிராளியின் துண்டுகளை அகற்றலாம்.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "எதிரியின் கையிலிருந்து துண்டு (களை) அகற்றவும். மல்டி-ரெமோவ் அமைப்பின் படி, பல துண்டுகள் அகற்றப்பட வேண்டும் மற்றும் எதிராளிக்கு கையில் எந்த துண்டுகளும் இல்லை என்றால், எதிரியின் துண்டுகளை பலகையில் இருந்து அகற்றவும். பின்னர், அது நகர்த்துவதற்கான எதிரியின் முறை.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "துண்டுகளை அகற்றுவதில் குறிக்கவும் நேரந்தவறுகை.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "வைக்கும் கட்டத்தின் போது, அகற்றப்பட வேண்டிய துண்டுகள் குறிக்கப்பட்டுள்ளன, மேலும் இரு வீரர்களுக்கும், இந்த புள்ளிகளில் புதிய துண்டுகள் எதுவும் வைக்க முடியாது. நகரும் கட்டத்தில் நுழைந்ததும், இந்த குறிக்கப்பட்ட துண்டுகள் முழுவதுமாக அகற்றப்படுகின்றன, மேலும் வீரர்கள் தங்கள் துண்டுகளை இப்போது காலியாக உள்ள இந்த புள்ளிகளுக்கு நகர்த்தலாம்.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "இடும் கட்டத்தின் போது ஆலை உருவாக்கும் போது எடுக்கக்கூடிய நடவடிக்கைகள்.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "குறிக்கப்பட்டுள்ளது",
+  "@marked": {},
+  "menu": "பட்டியல்",
+  "@menu": {},
+  "monochrome": "ஒரே வண்ணமுடைய",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "பொது அமைப்புகளில் அணுகல் உள்ளமைவில் திரை ரீடர் உதவி சுவிட்சை நீங்கள் இயக்கலாம்.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "துண்டுகளில் எண்களைக் காட்டு",
+  "@showNumbersOnPieces": {},
+  "saveImage": "படத்தை சேமிக்கவும்",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "பகுப்பாய்வு கருவிப்பட்டியைக் காட்டு",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "பகுப்பாய்வு கருவிப்பட்டி பின்னணி நிறம்",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "பகுப்பாய்வு கருவிப்பட்டி படவுரு நிறம்",
+  "@analysisToolbarIconColor": {},
+  "transformed": "மாற்றப்பட்டது.",
+  "@transformed": {},
+  "cannotTransform": "மாற்ற முடியாது.",
+  "@cannotTransform": {},
+  "transparentCanvas": "வெளிப்படையான கேன்வாச்",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "மீண்டும் மீண்டும் ஆலைகள் உருவாவதைக் கட்டுப்படுத்துங்கள்",
+  "@restrictRepeatedMillsFormation": {},
+  "laskerMorris": "லாச்கர் மோரிச்",
+  "@laskerMorris": {},
+  "focusOnBlockingPaths_Detail": "விளையாட்டின் குறிப்பிட்ட கட்டங்களின் போது, ஆலைகளை உருவாக்குவதில் எதிராளியின் இயக்கத்தைத் தடுக்கிறது. ஆலைகளை முடிப்பதன் மூலம் துண்டுகளை அகற்றுவதில் கவனம் செலுத்துவதற்குப் பதிலாக, இந்த கட்டங்களின் போது எதிராளியை சிக்க வைப்பதை AI நோக்கமாகக் கொண்டுள்ளது, மேலும் அவற்றை நகர்த்த முடியாமல், வன்கவர்வு விளையாட்டைக் காட்டிலும் ஒரு வெற்றியைப் பெறுகிறது. இந்த கட்ட-குறிப்பிட்ட மூலோபாயம் எதிராளியின் ஆலைகளை தீவிரமாகத் தடுக்காது.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "துண்டு படம்",
+  "@pieceImage": {},
+  "importColorSettings": "வண்ண அமைப்புகளை இறக்குமதி செய்யுங்கள்",
+  "@importColorSettings": {},
+  "exportColorSettings": "வண்ண அமைப்புகளை ஏற்றுமதி செய்யுங்கள்",
+  "@exportColorSettings": {},
+  "import": "இறக்குமதி",
+  "@import": {},
+  "export": "ஏற்றுமதி",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "முதலில் சாதொபொகு வடிவமைப்பு அமைப்புகளை இடைநிலைப்பலகைக்கு நகலெடுக்கவும்.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "இடைநிலைப்பலகைக்கு நகலெடுக்கப்பட்டது.",
+  "@copiedToClipboard": {},
+  "imported": "இறக்குமதி செய்யப்பட்டது.",
+  "@imported": {},
+  "boardImage": "போர்டு படம்",
+  "@boardImage": {},
+  "autumnLeaves": "இலையுதிர் கால இலைகள்",
+  "@autumnLeaves": {},
+  "legendaryLand": "புகழ்பெற்ற நிலம்",
+  "@legendaryLand": {},
+  "vignetteEffect": "விக்னெட் விளைவு",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "பலகை பின்னணி படம் அமைக்கப்படும்போது கருவிப்பட்டியை முழுமையாக வெளிப்படையானதாக மாற்ற விரும்புகிறீர்களா?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "விளையாட்டில் அதிர்வுகளை இயக்கவும்",
+  "@vibration": {},
+  "soundTheme": "ஒலி கருப்பொருள்",
+  "@soundTheme": {},
+  "ball": "பந்து",
+  "@ball": {},
+  "liquid": "திரவ",
+  "@liquid": {},
+  "wood": "மரம்",
+  "@wood": {},
+  "placeEffectAnimation": "துண்டு வைக்கும் அனிமேசன் விளைவு",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "துண்டு அகற்றும் அனிமேசன் விளைவு",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "கருவிப்பட்டியை கீழே காட்டு",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "போர்டு கார்னர் ஆரம்",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "தொடக்க புத்தகத்தைப் பயன்படுத்தவும்",
+  "@useOpeningBook": {},
+  "currentRule": "மின்னோட்ட்ம், ஓட்டம்",
+  "@currentRule": {},
+  "nineMensMorris": "ஒன்பது ஆண்கள் மோரிச்",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "பன்னிரண்டு ஆண்கள் மோரிச்",
+  "@twelveMensMorris": {},
+  "morabaraba": "நகர்வு",
+  "@morabaraba": {},
+  "dooz": "டுச்",
+  "@dooz": {},
+  "chamGonu": "சாம்",
+  "@chamGonu": {},
+  "removalBasedOnMillCounts_Detail": "அனைத்து துண்டுகளும் வைக்கப்படும் வரை அகற்றுவதை முடக்கு, பின்னர் ஆலை எண்ணிக்கையின் அடிப்படையில் துண்டுகளை அகற்றவும்: அவை சமமாக இருந்தால், இரண்டும் ஒரே எண்ணை அகற்றவும்; ஒருவருக்கு இன்னும் அதிகமாக இருந்தால், அவை ஒரு கூடுதல் வித்தியாசத்தை வைத்திருக்கின்றன. ஒரு ஆலைகளை மட்டுமே உருவாக்கினால், அவை இரண்டு துண்டுகளை அகற்றி, மற்றொன்று ஒன்றை நீக்குகிறது. எந்தவொரு ஆலைகளையும் உருவாக்கவில்லை என்றால், இரண்டும் அவற்றின் சொந்த துண்டுகளில் ஒன்றை அகற்றுகின்றன.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "tipSelectOwnPiece": "உங்கள் துண்டுகளில் ஒன்றைத் தேர்ந்தெடு.",
+  "@tipSelectOwnPiece": {},
+  "lanGameSetup": "லேன் விளையாட்டு அமைப்பு",
+  "@lanGameSetup": {},
+  "start": "தொடங்கு",
+  "@start": {},
+  "isAnnotationToolbarShown": "சிறுகுறிப்பு கருவிப்பட்டியைக் காட்டு",
+  "@isAnnotationToolbarShown": {}
+}
