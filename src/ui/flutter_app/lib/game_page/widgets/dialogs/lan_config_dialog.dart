@@ -20,7 +20,7 @@ class LanConfigDialog extends StatefulWidget {
 class LanConfigDialogState extends State<LanConfigDialog>
     with SingleTickerProviderStateMixin {
   /// Whether acting as host or joining a host.
-  bool _isHost = true;
+  bool isHost = true;
 
   /// Tracks if the server is running (Host mode).
   bool _serverRunning = false;
@@ -467,10 +467,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
                               child: RadioListTile<bool>(
                                 contentPadding: EdgeInsets.zero,
                                 value: true,
-                                groupValue: _isHost,
+                                groupValue: isHost,
                                 onChanged: (bool? val) {
                                   setState(() {
-                                    _isHost = true;
+                                    isHost = true;
                                     _isDiscovering = false;
                                     _isConnecting = false;
                                     _discoverySuccess = false;
@@ -493,10 +493,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
                               child: RadioListTile<bool>(
                                 contentPadding: EdgeInsets.zero,
                                 value: false,
-                                groupValue: _isHost,
+                                groupValue: isHost,
                                 onChanged: (bool? val) {
                                   setState(() {
-                                    _isHost = false;
+                                    isHost = false;
                                     _serverRunning = false;
                                     _iconController.stop();
                                     _protocolMismatchMessage = null;
@@ -516,7 +516,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                         ),
                         const SizedBox(height: 4),
                         // Display network status based on mode.
-                        if (_isHost)
+                        if (isHost)
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -616,7 +616,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                     ),
                     const SizedBox(height: 8),
                     // -- Middle section: Show host info if hosting --
-                    if (_isHost && _serverRunning && _hostInfo.isNotEmpty)
+                    if (isHost && _serverRunning && _hostInfo.isNotEmpty)
                       Center(
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -638,7 +638,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
             ),
             // -- Bottom section: Host or Join UI --
             // For Host mode, keep fixed height; for Join mode, let content size naturally to avoid overflow.
-            if (_isHost)
+            if (isHost)
               Container(
                 height: 100.0,
                 padding: const EdgeInsets.only(top: 4.0),

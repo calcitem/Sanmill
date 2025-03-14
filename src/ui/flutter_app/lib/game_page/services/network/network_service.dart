@@ -3,112 +3,110 @@
 
 // network_service.dart
 
+// ignore_for_file: always_specify_types
+
 part of '../mill.dart';
 
-/// NetworkService handles LAN hosting, client connection, discovery, and heartbeat functionality.
+/// NetworkService handles LAN hosting, client connections, discovery, and heartbeat checks.
+/// It also supports special commands such as "restart:", "take back:", "resign:",
+/// and "response:aiMovesFirst:" to coordinate with the GameController.
 class NetworkService {
   static const String _logTag = "[Network]";
-
-  /// Current protocol version for client-server communication.
   static const String protocolVersion = "1.0";
 
-  ServerSocket? serverSocket;
-  Socket? clientSocket;
+  ServerSocket? _serverSocket;
+  Socket? _clientSocket;
   bool isHost = false;
-  String? opponentAddress;
+  String? _opponentAddress;
 
-  /// Callback for disconnection events.
+  /// Called when the remote side disconnects or any fatal error occurs.
   VoidCallback? onDisconnected;
 
-  /// Callback for when a client connects, providing client IP and port.
+  /// Called whenever a client connects (on the Host side).
   void Function(String clientIp, int clientPort)? onClientConnected;
 
-  /// Callback for protocol mismatch events.
+  /// Called when we detect a protocol mismatch between client and server.
   void Function(String message)? onProtocolMismatch;
 
-  // Queue for processing incoming messages sequentially.
+  /// Whether this service has been disposed; prevents double-disposal or late callbacks.
+  bool _disposed = false;
+
+  /// Whether we have started the host’s heartbeat.
+  bool _heartbeatStarted = false;
+
+  /// Queue of incoming message lines to process in sequence.
   final Queue<String> _messageQueue = Queue<String>();
-  bool _isProcessing = false;
 
-  // UDP socket for discovery.
-  RawDatagramSocket? discoverySocket;
+  /// Prevent re-entrancy when processing the message queue.
+  bool _isProcessingMessages = false;
 
-  // Heartbeat timers and tracking variables.
+  /// Discovery socket for responding to LAN "Discovery?" broadcasts.
+  RawDatagramSocket? _discoverySocket;
+
+  /// Heartbeat timers for the host side (ping and ping-check).
   Timer? _heartbeatTimer;
   Timer? _heartbeatCheckTimer;
+
+  /// Tracks the last time we received a heartbeat or heartbeatAck.
   DateTime _lastHeartbeatReceived = DateTime.now();
 
-  /// Completer to synchronize protocol handshake
+  /// A [Completer] for the client's initial handshake (client->host).
   Completer<bool>? _protocolHandshakeCompleter;
 
-  /// Retrieves all local non-loopback IPv4 addresses.
-  static Future<List<String>> getLocalIpAddresses() async {
-    final List<String> ips = <String>[];
-    try {
-      if (Platform.isAndroid || Platform.isIOS) {
-        final NetworkInfo info = NetworkInfo();
-        final String? wifiIP = await info.getWifiIP();
-        if (wifiIP != null && wifiIP.isNotEmpty) {
-          ips.add(wifiIP);
-        } else {
-          logger.w("$_logTag No Wi‑Fi IP found on mobile platform");
-        }
-      } else {
-        final List<NetworkInterface> interfaces = await NetworkInterface.list(
-          type: InternetAddressType.IPv4,
-        );
-        for (final NetworkInterface interface in interfaces) {
-          for (final InternetAddress addr in interface.addresses) {
-            if (!addr.isLoopback) {
-              ips.add(addr.address);
-            }
-          }
-        }
-        if (ips.isEmpty) {
-          logger.w("$_logTag No non-loopback IPv4 addresses found");
-        }
-      }
-    } catch (e) {
-      logger.e("$_logTag Failed to get local IP addresses: $e");
+  /// Public getter for the underlying server socket,
+  /// needed by external code to check if we're hosting.
+  ServerSocket? get serverSocket => _serverSocket;
+
+  /// Returns true if we are currently connected (as host or client).
+  bool get isConnected {
+    if (_disposed) {
+      return false;
     }
-    return ips;
+    if (isHost) {
+      return _serverSocket != null &&
+          _clientSocket != null &&
+          !_clientSocket!.isClosed;
+    }
+    // For the client, just check if the socket is not closed.
+    return _clientSocket != null && !_clientSocket!.isClosed;
   }
 
-  /// Starts hosting (server mode) on the specified TCP port.
+  /// Starts hosting on the specified [port], allowing exactly one client,
+  /// and begins listening for LAN discovery requests on port 33334.
   Future<void> startHost(int port,
       {void Function(String, int)? onClientConnected}) async {
+    if (_disposed) {
+      throw Exception("NetworkService has been disposed; cannot start host.");
+    }
     this.onClientConnected = onClientConnected;
     try {
-      serverSocket = await ServerSocket.bind(InternetAddress.anyIPv4, port);
+      _serverSocket = await ServerSocket.bind(InternetAddress.anyIPv4, port);
       isHost = true;
       logger.i("$_logTag Hosting LAN game on port $port");
 
-      // Accept incoming client connections.
-      serverSocket!.listen(
+      // Accept only the first incoming client connection;
+      // subsequent connections are closed.
+      _serverSocket!.listen(
         (Socket socket) {
-          clientSocket = socket;
-          opponentAddress = socket.remoteAddress.address;
-          logger.i(
-              "$_logTag Accepted new client at $opponentAddress:${socket.remotePort}");
-
-          // Notify any UI or callback.
-          onClientConnected?.call(opponentAddress!, socket.remotePort);
-
-          // Start listening for data on this socket.
-          _listenToSocket(socket);
-
-          // IMPORTANT:
-          // Only the host actively starts sending heartbeats;
-          // the client will simply respond when it receives one.
-          _startHeartbeat();
+          if (_clientSocket != null && !_clientSocket!.isClosed) {
+            logger.w(
+                "$_logTag Another client attempted to connect; rejecting it.");
+            socket.destroy();
+            return;
+          }
+          // Accept this new client
+          _handleNewClient(socket);
         },
-        onError: (Object error, [StackTrace? stackTrace]) {
+        onError: (Object error, [StackTrace? st]) {
           logger.e("$_logTag Server socket error: $error");
           _handleDisconnection();
         },
+        onDone: () {
+          logger.i("$_logTag Server socket closed.");
+        },
       );
 
-      // Start UDP listener for discovery requests.
+      // Listen for "Discovery?" broadcasts on 33334
       await _startDiscoveryListener(port);
     } catch (e) {
       logger.e("$_logTag Failed to start host: $e");
@@ -116,499 +114,560 @@ class NetworkService {
     }
   }
 
-  /// Sets up a UDP listener on port 33334 to reply to discovery messages.
-  Future<void> _startDiscoveryListener(int serverPort) async {
-    discoverySocket =
-        await RawDatagramSocket.bind(InternetAddress.anyIPv4, 33334);
-    logger.i("$_logTag Discovery socket bound to port 33334");
+  /// Internal helper to finalize a newly connected client in host mode.
+  void _handleNewClient(Socket socket) {
+    _clientSocket = socket;
+    _opponentAddress = socket.remoteAddress.address;
+    logger.i(
+        "$_logTag Accepted client at $_opponentAddress:${socket.remotePort}");
 
-    discoverySocket!.listen((RawSocketEvent event) {
-      if (event == RawSocketEvent.read) {
-        final Datagram? datagram = discoverySocket!.receive();
-        if (datagram != null) {
-          final String message = utf8.decode(datagram.data).trim();
-          if (message == 'Discovery?') {
-            // Retrieve the local IP address and reply with server info.
-            getLocalIpAddress().then((String? localIp) {
-              if (localIp != null) {
-                final String reply = 'Sanmill:$localIp:$serverPort';
-                final Uint8List replyData = utf8.encode(reply);
-                discoverySocket!
-                    .send(replyData, datagram.address, datagram.port);
-                logger.i(
-                    "$_logTag Replied to discovery request from ${datagram.address.address}:${datagram.port} with $reply");
-              }
-            });
-          }
-        }
-      }
-    });
+    // Notify any callback/UI
+    onClientConnected?.call(_opponentAddress!, socket.remotePort);
+
+    // Start reading line-by-line from the client
+    _listenToSocket(socket);
+
+    // If host, begin heartbeat if not already started
+    if (isHost && !_heartbeatStarted) {
+      _startHeartbeat();
+    }
   }
 
-  /// Connects to a host (client mode) with a retry mechanism and protocol check
+  /// Connect as a client to [host]:[port], retrying up to [retryCount] times.
   Future<void> connectToHost(String host, int port,
       {int retryCount = 3}) async {
-    for (int i = 0; i < retryCount; i++) {
+    if (_disposed) {
+      throw Exception("NetworkService is disposed; cannot connect as client.");
+    }
+    isHost = false;
+    for (int attempt = 0; attempt < retryCount; attempt++) {
+      if (_disposed) {
+        break;
+      }
       try {
-        clientSocket = await Socket.connect(host, port);
-        opponentAddress = host;
-        isHost = false; // This side is client
+        final socket = await Socket.connect(host, port);
+        if (_disposed) {
+          // If we became disposed during connect, close and exit
+          socket.destroy();
+          return;
+        }
+        _clientSocket = socket;
+        _opponentAddress = host;
         logger.i("$_logTag Connected to host at $host:$port");
 
-        // Set up socket listener
-        _listenToSocket(clientSocket!);
+        // Start reading line-by-line
+        _listenToSocket(socket);
 
-        // Initialize protocol handshake
+        // Initiate the protocol handshake for the client side.
         _protocolHandshakeCompleter = Completer<bool>();
         sendMove("protocol:$protocolVersion");
 
-        // Wait for protocol handshake to complete (timeout after 5 seconds)
-        final bool protocolSuccess =
-            await _protocolHandshakeCompleter!.future.timeout(
+        // Wait up to 5s for handshake
+        final success = await _protocolHandshakeCompleter!.future.timeout(
           const Duration(seconds: 5),
           onTimeout: () {
             logger.e("$_logTag Protocol handshake timed out");
             return false;
           },
         );
-
-        if (!protocolSuccess) {
-          throw Exception("Protocol handshake failed or mismatched");
+        if (!success) {
+          throw Exception("Protocol handshake failed or mismatched.");
         }
 
-        // Only proceed if protocol matches
-        logger.i(
-            "$_logTag Protocol handshake successful, requesting aiMovesFirst");
+        // Optionally ask host about AI moves first
         sendMove("request:aiMovesFirst");
-        return;
+        return; // Connected and handshake done
       } catch (e) {
-        logger.e("$_logTag Attempt ${i + 1} failed: $e");
-        _handleDisconnection(); // Clean up on failure
-        if (i == retryCount - 1) {
-          throw Exception("Failed to connect after $retryCount attempts: $e");
+        logger.e("$_logTag Connect attempt ${attempt + 1} failed: $e");
+        _handleDisconnection();
+        if (attempt == retryCount - 1) {
+          throw Exception("Failed after $retryCount attempts: $e");
         }
         await Future<void>.delayed(const Duration(seconds: 1));
       }
     }
   }
 
-  /// Retrieves the first available local non-loopback IPv4 address.
-  static Future<String?> getLocalIpAddress() async {
+  /// Binds to port 33334 to respond to "Discovery?" messages with "Sanmill:IP:port".
+  Future<void> _startDiscoveryListener(int serverPort) async {
+    if (_disposed) {
+      return;
+    }
     try {
-      if (Platform.isAndroid || Platform.isIOS) {
-        final NetworkInfo info = NetworkInfo();
-        final String? wifiIP = await info.getWifiIP();
-        if (wifiIP != null && wifiIP.isNotEmpty) {
-          return wifiIP;
-        } else {
-          logger.w("$_logTag No Wi‑Fi IP found on mobile platform");
-          return null;
+      _discoverySocket = await RawDatagramSocket.bind(
+        InternetAddress.anyIPv4,
+        33334,
+      );
+      logger.i("$_logTag Discovery listener on port 33334 started.");
+
+      _discoverySocket!.listen((RawSocketEvent event) {
+        if (_disposed) {
+          return;
         }
-      } else {
-        final List<NetworkInterface> interfaces = await NetworkInterface.list(
-          type: InternetAddressType.IPv4,
-        );
-        for (final NetworkInterface interface in interfaces) {
-          for (final InternetAddress addr in interface.addresses) {
-            if (!addr.isLoopback) {
-              return addr.address;
+        if (event == RawSocketEvent.read) {
+          final dg = _discoverySocket!.receive();
+          if (dg != null) {
+            final message = utf8.decode(dg.data).trim();
+            if (message == 'Discovery?') {
+              _respondToDiscovery(dg, serverPort);
             }
           }
         }
-        logger.w("$_logTag No non-loopback IPv4 address found");
-        return null;
-      }
+      });
     } catch (e) {
-      logger.e("$_logTag Failed to get local IP: $e");
-      return null;
+      logger.e("$_logTag Could not bind discovery socket on port 33334: $e");
     }
   }
 
-  /// Discovers a host by broadcasting a UDP message and waiting for a response.
-  static Future<String?> discoverHost(
-      {Duration timeout = const Duration(seconds: 10)}) async {
-    final Completer<String?> completer = Completer<String?>();
-    final Uint8List discoveryMsg = utf8.encode('Discovery?');
-    RawDatagramSocket? socket;
-    StreamSubscription<RawSocketEvent>? subscription;
+  /// Replies to a "Discovery?" message with "Sanmill:localIp:serverPort".
+  Future<void> _respondToDiscovery(Datagram datagram, int serverPort) async {
+    final localIp = await getLocalIpAddress();
+    if (localIp != null && !_disposed) {
+      final reply = 'Sanmill:$localIp:$serverPort';
+      final replyData = utf8.encode(reply);
+      _discoverySocket?.send(replyData, datagram.address, datagram.port);
+      logger.i("$_logTag Replied to discovery request with $reply");
+    }
+  }
+
+  /// Listens line-by-line from [socket]. If we are the client, we only respond to the host’s heartbeats.
+  void _listenToSocket(Socket socket) {
+    socket
+        .cast<List<int>>() // treat as Stream<List<int>>
+        .transform(utf8.decoder)
+        .transform(const LineSplitter())
+        .listen(
+      (String line) {
+        if (_disposed) {
+          return;
+        }
+        final remotePort = socket.remotePort;
+        final trimmed = line.trim();
+        logger.t(
+            "$_logTag Received from $_opponentAddress:$remotePort => $trimmed");
+
+        // 1) Protocol handshake
+        if (trimmed.startsWith("protocol:")) {
+          _handleProtocol(trimmed);
+          return;
+        }
+        // 2) Heartbeat logic
+        if (trimmed == "heartbeat") {
+          // If we are client, respond with "heartbeatAck"
+          if (!isHost) {
+            _lastHeartbeatReceived = DateTime.now();
+            _clientSocket?.write("heartbeatAck\n");
+            logger
+                .t("$_logTag [Client] Received heartbeat -> sent heartbeatAck");
+          }
+          return;
+        }
+        if (trimmed == "heartbeatAck") {
+          // If we are host, update last heartbeat time
+          if (isHost) {
+            _lastHeartbeatReceived = DateTime.now();
+            logger.t("$_logTag [Host] Received heartbeatAck");
+          }
+          return;
+        }
+
+        // 3) Normal or control messages
+        _messageQueue.add(trimmed);
+        _processMessageQueue();
+      },
+      onError: (error, st) {
+        if (!_disposed) {
+          logger.e("$_logTag Socket error: $error");
+          _handleDisconnection();
+        }
+      },
+      onDone: () {
+        if (!_disposed) {
+          logger.i("$_logTag Remote socket closed by $_opponentAddress");
+          _handleDisconnection();
+        }
+      },
+    );
+  }
+
+  /// Processes queued messages in FIFO order, to avoid concurrency issues.
+  Future<void> _processMessageQueue() async {
+    if (_isProcessingMessages || _disposed) {
+      return;
+    }
+    _isProcessingMessages = true;
+
+    while (_messageQueue.isNotEmpty && !_disposed) {
+      final message = _messageQueue.removeFirst();
+      _handleNetworkMessage(message);
+      await Future<void>.delayed(Duration.zero);
+    }
+    _isProcessingMessages = false;
+  }
+
+  /// Internal method to handle protocol handshake lines.
+  void _handleProtocol(String line) {
+    final parts = line.split(":");
+    if (parts.length < 2) {
+      return;
+    }
+    final theirProtocol = parts[1];
+
+    if (isHost) {
+      // Host responds
+      sendMove("protocol:$protocolVersion");
+      if (theirProtocol != protocolVersion) {
+        final msg =
+            "Protocol mismatch: server=$protocolVersion, client=$theirProtocol";
+        logger.w("$_logTag $msg");
+        onProtocolMismatch?.call(msg);
+        // Optionally disconnect here if needed
+      }
+    } else {
+      // Client verifies server's version
+      if (theirProtocol != protocolVersion) {
+        final msg =
+            "Protocol mismatch: client=$protocolVersion, server=$theirProtocol";
+        logger.w("$_logTag $msg");
+        onProtocolMismatch?.call(msg);
+        _handleDisconnection();
+        _protocolHandshakeCompleter?.complete(false);
+      } else {
+        logger.i("$_logTag Protocol handshake successful");
+        _protocolHandshakeCompleter?.complete(true);
+      }
+    }
+  }
+
+  /// Sends a message (moves/commands) to the other side.
+  void sendMove(String move) {
+    if (_disposed) {
+      throw Exception("NetworkService is disposed; cannot send message.");
+    }
+    if (_clientSocket != null && !_clientSocket!.isClosed) {
+      _clientSocket!.write("$move\n");
+      logger.t("$_logTag Sent => $move");
+    } else {
+      logger.w("$_logTag Attempted to send but no valid client socket.");
+      throw Exception("No active connection to send data.");
+    }
+  }
+
+  /// Launch a periodic heartbeat (host side only), checking for heartbeatAck.
+  void _startHeartbeat() {
+    if (_heartbeatStarted || !isHost || _disposed) {
+      return;
+    }
+    _heartbeatStarted = true;
+    _lastHeartbeatReceived = DateTime.now();
+
+    // Send heartbeat every second
+    _heartbeatTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_disposed || !isHost) {
+        return;
+      }
+      if (_clientSocket == null || _clientSocket!.isClosed) {
+        return;
+      }
+
+      _clientSocket!.write("heartbeat\n");
+      logger.t("$_logTag [Host] => heartbeat");
+    });
+
+    // Check for ACK every second
+    _heartbeatCheckTimer = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (_disposed) {
+        return;
+      }
+      final diff = DateTime.now().difference(_lastHeartbeatReceived);
+      if (diff > const Duration(seconds: 5) && !_disposed) {
+        logger.e("$_logTag Heartbeat timeout (>5s). Disconnecting...");
+        _handleDisconnection();
+      }
+    });
+  }
+
+  /// Handles incoming game-control or normal messages (excluding heartbeat/protocol).
+  void _handleNetworkMessage(String message) {
+    if (_disposed) {
+      return;
+    }
+
+    // Handle "restart:" commands
+    if (message.startsWith("restart:")) {
+      final command = message.split(":")[1];
+      if (command == "request") {
+        logger.i("$_logTag Received restart request");
+        GameController().handleRestartRequest();
+      } else if (command == "accepted") {
+        logger.i("$_logTag Opponent accepted restart request");
+        GameController().reset(lanRestart: true);
+        GameController().headerTipNotifier.showTip("Game restarted");
+      } else if (command == "rejected") {
+        logger.i("$_logTag Opponent rejected restart request");
+        GameController().headerTipNotifier.showTip("Restart request rejected");
+      }
+      return;
+    }
+
+    // Handle "take back:" commands
+    if (message.startsWith("take back:")) {
+      final parts =
+          message.split(':'); // ["take back", "1", "request/accepted..."]
+      if (parts.length < 3) {
+        return; // Malformed
+      }
+      final stepCountStr = parts[1];
+      final command = parts[2];
+      final steps = int.tryParse(stepCountStr) ?? 1;
+
+      if (command == "request") {
+        // Opponent requests a take-back
+        GameController().handleTakeBackRequest(steps);
+      } else if (command == "accepted") {
+        // Opponent accepted our request
+        _performLanTakeBack(steps);
+        GameController().pendingTakeBackCompleter?.complete(true);
+        GameController().pendingTakeBackCompleter = null;
+        GameController().headerTipNotifier.showTip("Take back accepted.");
+      } else if (command == "rejected") {
+        // Opponent rejected
+        GameController().pendingTakeBackCompleter?.complete(false);
+        GameController().pendingTakeBackCompleter = null;
+        GameController().headerTipNotifier.showTip("Take back rejected.");
+      }
+      return;
+    }
+
+    // Handle "resign:"
+    if (message.startsWith("resign:")) {
+      logger.i("$_logTag Received resign request: $message");
+      // You might handle it in GameController, e.g. GameController().handleResignation(...)
+      return;
+    }
+
+    // Handle "response:aiMovesFirst:"
+    if (message.startsWith("response:aiMovesFirst:")) {
+      final valueStr = message.split("response:aiMovesFirst:")[1];
+      final bool hostAiMovesFirst = valueStr.toLowerCase() == "true";
+      _handleAiMovesFirstResponse(hostAiMovesFirst);
+      return;
+    }
+
+    // Otherwise, pass to the game logic
+    logger.i("$_logTag Normal message => $message");
+    GameController().handleLanMove(message);
+  }
+
+  /// Executes the local take-back by rolling back moves, then updates turn for LAN logic.
+  static void _performLanTakeBack(int steps) {
+    // For example, use the HistoryNavigator or direct logic:
+    HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
+    // Possibly update the local turn
+    final localColor = GameController().getLocalColor();
+    GameController().isLanOpponentTurn =
+        GameController().position.sideToMove != localColor;
+  }
+
+  /// Processes "response:aiMovesFirst:true/false" from the host.
+  void _handleAiMovesFirstResponse(bool hostAiMovesFirst) {
+    // If the host picks true => client is the opposite (false), etc.
+    final bool clientAiMovesFirst = !hostAiMovesFirst;
+    DB().generalSettings =
+        DB().generalSettings.copyWith(aiMovesFirst: clientAiMovesFirst);
+    logger.i(
+        "$_logTag Updated client aiMovesFirst=$clientAiMovesFirst (host=$hostAiMovesFirst)");
+
+    // Update UI if needed
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
+  }
+
+  /// Handles disconnection from either side, cleaning up and notifying the GameController.
+  void _handleDisconnection() {
+    if (_disposed) {
+      return; // Already disposed
+    }
+    // Show a tip or mark the game as disconnected
+    logger.i("$_logTag Opponent disconnected from $_opponentAddress");
+    GameController().headerTipNotifier.showTip("Opponent disconnected");
+
+    // If the game is still running, declare a draw or other outcome
+    GameController().isLanOpponentTurn = false;
+    if (GameController().position.phase != Phase.gameOver) {
+      GameController().position._setGameOver(
+            PieceColor.draw,
+            GameOverReason.drawStalemateCondition,
+          );
+      GameController()
+          .headerTipNotifier
+          .showTip("Game Over due to disconnection.");
+    }
+
+    // Dispose local resources
+    _disposeInternals();
+    onDisconnected?.call();
+  }
+
+  /// Public method for external callers to dispose this service.
+  void dispose() {
+    if (_disposed) {
+      return;
+    }
+    logger.i("$_logTag dispose() called by user");
+    _disposeInternals();
+  }
+
+  /// Internal method that releases all network resources, cancels timers, and clears queues.
+  void _disposeInternals() {
+    if (_disposed) {
+      return;
+    }
+    _disposed = true;
 
     try {
-      // Bind to 0.0.0.0 to use all available interfaces.
+      _clientSocket?.destroy();
+    } catch (_) {}
+    try {
+      _serverSocket?.close();
+    } catch (_) {}
+    try {
+      _discoverySocket?.close();
+    } catch (_) {}
+
+    _clientSocket = null;
+    _serverSocket = null;
+    _discoverySocket = null;
+
+    _heartbeatTimer?.cancel();
+    _heartbeatCheckTimer?.cancel();
+    _heartbeatTimer = null;
+    _heartbeatCheckTimer = null;
+
+    _messageQueue.clear();
+    _isProcessingMessages = false;
+    _protocolHandshakeCompleter = null;
+
+    logger.i("$_logTag Network resources fully disposed");
+  }
+
+  /// Retrieves the first non-loopback IPv4 address from local device (mobile or desktop).
+  static Future<String?> getLocalIpAddress() async {
+    try {
+      if (kIsWeb) {
+        // No direct local IP on web
+        return null;
+      }
+      if (Platform.isAndroid || Platform.isIOS) {
+        final info = NetworkInfo();
+        final wifiIP = await info.getWifiIP();
+        if (wifiIP != null && wifiIP.isNotEmpty) {
+          return wifiIP;
+        }
+        logger.w("$_logTag No Wi-Fi IP found on mobile platform.");
+        return null;
+      }
+      final interfaces =
+          await NetworkInterface.list(type: InternetAddressType.IPv4);
+      for (final iface in interfaces) {
+        for (final addr in iface.addresses) {
+          if (!addr.isLoopback) {
+            return addr.address;
+          }
+        }
+      }
+    } catch (e) {
+      logger.e("$_logTag Failed to get local IP addresses: $e");
+    }
+    return null;
+  }
+
+  /// Retrieves **all** non-loopback IPv4 addresses from the device’s interfaces.
+  static Future<List<String>> getLocalIpAddresses() async {
+    final List<String> result = <String>[];
+    try {
+      if (kIsWeb) {
+        return result;
+      }
+      if (Platform.isAndroid || Platform.isIOS) {
+        final info = NetworkInfo();
+        final wifiIP = await info.getWifiIP();
+        if (wifiIP != null && wifiIP.isNotEmpty) {
+          result.add(wifiIP);
+          return result;
+        }
+        logger.w("$_logTag No Wi-Fi IP found on mobile platform.");
+        return result;
+      }
+      final interfaces =
+          await NetworkInterface.list(type: InternetAddressType.IPv4);
+      for (final iface in interfaces) {
+        for (final addr in iface.addresses) {
+          if (!addr.isLoopback) {
+            result.add(addr.address);
+          }
+        }
+      }
+    } catch (e) {
+      logger.e("$_logTag Failed to get local IP addresses: $e");
+    }
+    return result;
+  }
+
+  /// Broadcasts "Discovery?" on port 33334 and waits for "Sanmill:\<IP>:\<port>" up to [timeout].
+  static Future<String?> discoverHost({
+    Duration timeout = const Duration(seconds: 10),
+  }) async {
+    final completer = Completer<String?>();
+    RawDatagramSocket? socket;
+    StreamSubscription<RawSocketEvent>? subscription;
+    try {
+      // Bind an ephemeral port for broadcasting
       socket = await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0);
       socket.broadcastEnabled = true;
 
-      // Listen for responses.
       subscription = socket.listen((RawSocketEvent event) {
         if (event == RawSocketEvent.read) {
-          final Datagram? datagram = socket?.receive();
-          if (datagram != null) {
-            final String message = utf8.decode(datagram.data).trim();
-            if (message.startsWith('Sanmill:')) {
-              final List<String> parts = message.split(':');
+          final dg = socket!.receive();
+          if (dg != null) {
+            final msg = utf8.decode(dg.data).trim();
+            if (msg.startsWith('Sanmill:')) {
+              final parts = msg.split(':');
               if (parts.length == 3) {
-                // Complete with host IP and port.
-                completer.complete('${parts[1]}:${parts[2]}');
-                subscription
-                    ?.cancel(); // Stop listening after first valid response.
+                if (!completer.isCompleted) {
+                  completer.complete('${parts[1]}:${parts[2]}');
+                }
               }
             }
           }
         }
       });
 
-      // Send broadcast message.
-      socket.send(discoveryMsg, InternetAddress("255.255.255.255"), 33334);
+      // Send broadcast
+      socket.send(
+        utf8.encode('Discovery?'),
+        InternetAddress("255.255.255.255"),
+        33334,
+      );
 
-      // Wait for response or timeout.
-      return await completer.future.timeout(timeout, onTimeout: () {
-        subscription?.cancel(); // Cancel subscription on timeout.
-        return null;
-      });
+      // Wait for a response or timeout
+      return await completer.future.timeout(timeout, onTimeout: () => null);
     } catch (e) {
-      logger.e("$_logTag Error during host discovery: $e");
+      logger.e("$_logTag discoverHost error: $e");
       return null;
     } finally {
-      subscription?.cancel(); // Ensure subscription is canceled.
-      socket?.close(); // Ensure socket is closed.
+      subscription?.cancel();
+      socket?.close();
     }
-  }
-
-  /// Listens for incoming messages on the provided socket.
-  void _listenToSocket(Socket socket) {
-    clientSocket = socket;
-    opponentAddress = socket.remoteAddress.address;
-
-    logger
-        .i("$_logTag Client connected: $opponentAddress:${socket.remotePort}");
-
-    /*
-     * Explanation for the heartbeat logic:
-     * - The HOST will periodically send "heartbeat" messages (see _startHeartbeat).
-     * - The CLIENT, upon receiving "heartbeat", will update the timestamp and reply with "heartbeatAck".
-     * - The HOST receives "heartbeatAck" and updates its own timestamp.
-     * - This avoids infinite loops of echoing the same string.
-     *
-     * Alternatively, you could do a fully symmetric approach (both sides ping),
-     * but you must ensure you differentiate ping vs. pong messages to avoid echo loops.
-     */
-
-    socket.listen(
-      (List<int> data) async {
-        if (socket.isClosed) {
-          logger.w("$_logTag Socket closed before processing data");
-          return;
-        }
-        final int remotePort = socket.remotePort;
-        final String message = utf8.decode(data).trim();
-
-        logger
-            .t("$_logTag Received from $opponentAddress:$remotePort: $message");
-
-        // 1) Protocol handshake checks
-        if (message.startsWith("protocol:")) {
-          final String receivedProtocol = message.split(":")[1];
-          if (isHost) {
-            // Server side: reply with protocol version.
-            sendMove("protocol:$protocolVersion");
-            if (receivedProtocol != protocolVersion) {
-              logger.w(
-                  "$_logTag Protocol mismatch: client $receivedProtocol, server $protocolVersion");
-              onProtocolMismatch?.call(
-                  "Protocol mismatch detected: Server=$protocolVersion, Client=$receivedProtocol. Please upgrade the client.");
-            }
-          } else {
-            // Client side: compare the protocol version.
-            if (receivedProtocol != protocolVersion) {
-              logger.w(
-                  "$_logTag Protocol mismatch: client $protocolVersion, server $receivedProtocol");
-              onProtocolMismatch?.call(
-                  "Protocol mismatch detected: Client=$protocolVersion, Server=$receivedProtocol. Please upgrade your software.");
-              _handleDisconnection();
-              _protocolHandshakeCompleter?.complete(false);
-            } else {
-              logger.i("$_logTag Protocol version matches: $protocolVersion");
-              _protocolHandshakeCompleter?.complete(true);
-            }
-          }
-          return;
-        }
-
-        // 2) Host->Client "heartbeat", Client->Host "heartbeatAck"
-        if (message == "heartbeat") {
-          /*
-           * This means the client side just received a heartbeat from the host.
-           * The client should mark lastReceived time and respond with "heartbeatAck".
-           */
-          if (!isHost) {
-            _lastHeartbeatReceived = DateTime.now();
-            logger.t(
-                "$_logTag [Client] Received heartbeat, replying with 'heartbeatAck'");
-            clientSocket?.write("heartbeatAck\n");
-          }
-          return;
-        } else if (message == "heartbeatAck") {
-          /*
-           * This means the host side just received an ACK from the client.
-           * The host updates the timestamp to avoid disconnect.
-           */
-          if (isHost) {
-            _lastHeartbeatReceived = DateTime.now();
-            logger.t("$_logTag [Host] Received heartbeatAck from client");
-          }
-          return;
-        }
-
-        // 3) For other content or moves, queue them up for further processing
-        _messageQueue.add(message);
-        await _processMessages();
-      },
-      onError: (Object error, [StackTrace? stackTrace]) {
-        logger.e(
-            "$_logTag Socket error: $error${stackTrace != null ? '\n$stackTrace' : ''}");
-        _handleDisconnection();
-        _protocolHandshakeCompleter?.complete(false);
-      },
-      onDone: () {
-        logger.i(
-            "$_logTag Socket closed by opponent at $opponentAddress:${socket.remotePort}");
-        _handleDisconnection();
-        _protocolHandshakeCompleter?.complete(false);
-      },
-    );
-
-    // Note:
-    // Only call _startHeartbeat() if we are the HOST.
-    // If isHost == false, this side will simply wait for "heartbeat" and respond with "heartbeatAck".
-    // If you want both sides to send heartbeat, you must adopt a different scheme with separate "ping"/"pong" to avoid infinite loops.
-    if (isHost) {
-      // Heartbeat from the host side
-      // The client will not run this, so no infinite echo occurs.
-      // The client simply responds to "heartbeat" with "heartbeatAck".
-      _lastHeartbeatReceived = DateTime.now();
-      // We may already call _startHeartbeat() after accepting in startHost(),
-      // but calling it here is also safe if you want to ensure it's started per-socket basis.
-      // Just ensure you don't double-start timers.
-      // _startHeartbeat(); // <--- If you want to start here instead,
-      //                    // remove the call in startHost().
-    }
-
-    GameController().boardSemanticsNotifier.updateSemantics();
-  }
-
-  /// Starts heartbeat timers to send heartbeat messages and check for responses.
-  void _startHeartbeat() {
-    // Host side only:
-    _lastHeartbeatReceived = DateTime.now();
-    _heartbeatTimer?.cancel();
-    _heartbeatCheckTimer?.cancel();
-
-    /*
-     * Explanation:
-     * - Every second, host sends "heartbeat" to the client.
-     * - The client is expected to respond with "heartbeatAck".
-     * - On the host side, receiving "heartbeatAck" updates _lastHeartbeatReceived.
-     * - If we haven't heard back from the client in >5 seconds, we assume disconnection.
-     */
-    _heartbeatTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (isHost && clientSocket != null && !clientSocket!.isClosed) {
-        clientSocket!.write("heartbeat\n");
-        logger.t("$_logTag [Host] Sent heartbeat to $opponentAddress");
-      }
-    });
-
-    _heartbeatCheckTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      if (DateTime.now().difference(_lastHeartbeatReceived) >
-          const Duration(seconds: 5)) {
-        logger.e(
-            "$_logTag Heartbeat timeout. No heartbeatAck received for 5 seconds.");
-        _handleDisconnection();
-      }
-    });
-    logger.i("$_logTag Heartbeat timers started (Host mode).");
-  }
-
-  /// Sends a move or message to the opponent
-  void sendMove(String move) {
-    if (clientSocket != null && !clientSocket!.isClosed) {
-      clientSocket!.write("$move\n");
-      logger.t("$_logTag Sent move to $opponentAddress: $move");
-    } else {
-      logger.w("$_logTag Cannot send move: no active connection");
-      throw Exception("No active connection");
-    }
-  }
-
-  /// Handles incoming network messages.
-  void _handleNetworkMessage(String message) {
-    // 1) Check if it's a "restart:" scenario
-    if (message.startsWith("restart:")) {
-      final String command = message.split(":")[1];
-      if (command == "request") {
-        logger.i("$_logTag Received restart request");
-        GameController().handleRestartRequest();
-        return;
-      } else if (command == "accepted") {
-        logger.i("$_logTag Opponent accepted restart request");
-        GameController().reset(lanRestart: true);
-        GameController().headerTipNotifier.showTip("Game restarted");
-        return;
-      } else if (command == "rejected") {
-        logger.i("$_logTag Opponent rejected restart request");
-        GameController().headerTipNotifier.showTip("Restart request rejected");
-        return;
-      }
-    }
-
-    // 2) Check other known message types...
-    if (message.startsWith("take back:")) {
-      final List<String> parts = message.split(':');
-      // e.g. ["take back", "1", "accepted"]
-      if (parts.length < 3) {
-        // Malformed
-        return;
-      }
-      final String stepCountStr = parts[1]; // "1"
-      final String command = parts[2]; // "request" / "accepted" / "rejected"
-      final int steps = int.tryParse(stepCountStr) ?? 1;
-
-      if (command == "request") {
-        // The remote side is *requesting* a take-back.
-        // Show a confirm popup => user can accept or reject.
-        GameController().handleTakeBackRequest(steps);
-      } else if (command == "accepted") {
-        // The remote side accepted our request => do local rollback
-        NetworkService._performLanTakeBack(steps);
-
-        // And complete the local pendingTakeBackCompleter => true
-        GameController().pendingTakeBackCompleter?.complete(true);
-        GameController().pendingTakeBackCompleter = null;
-
-        GameController().headerTipNotifier.showTip("Take back accepted.");
-      } else if (command == "rejected") {
-        // The remote side rejected => do nothing except notify user
-        // Also let our request future know the result
-        GameController().pendingTakeBackCompleter?.complete(false);
-        GameController().pendingTakeBackCompleter = null;
-
-        GameController()
-            .headerTipNotifier
-            .showTip("Take back rejected by opponent.");
-      }
-      return;
-    } else if (message.startsWith("resign:")) {
-      logger.i("$_logTag Received resign request: $message");
-    } else if (message.startsWith("response:aiMovesFirst:")) {
-      final String valueStr = message.split("response:aiMovesFirst:")[1];
-      final bool hostAiMovesFirst = valueStr.toLowerCase() == "true";
-      _handleAiMovesFirstResponse(hostAiMovesFirst);
-    } else {
-      // 3) Pass everything else to handleLanMove
-      GameController().handleLanMove(message);
-    }
-  }
-
-  static void _performLanTakeBack(int steps) {
-    // or: HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-    HistoryNavigator.doEachMove(HistoryNavMode.takeBack, steps);
-    // Possibly also update isLanOpponentTurn if needed
-    final PieceColor localColor = GameController().getLocalColor();
-    GameController().isLanOpponentTurn =
-        GameController().position.sideToMove != localColor;
-  }
-
-  /// Processes queued network messages sequentially.
-  Future<void> _processMessages() async {
-    if (_isProcessing) {
-      return;
-    }
-    _isProcessing = true;
-    while (_messageQueue.isNotEmpty) {
-      final String message = _messageQueue.removeFirst();
-      _handleNetworkMessage(message);
-      await Future<void>.delayed(Duration.zero);
-    }
-    _isProcessing = false;
-  }
-
-  /// Processes the Host's aiMovesFirst response and updates client settings.
-  void _handleAiMovesFirstResponse(bool hostAiMovesFirst) {
-    // Host picks aiMovesFirst => client is the opposite
-    final bool clientAiMovesFirst = !hostAiMovesFirst;
-    DB().generalSettings =
-        DB().generalSettings.copyWith(aiMovesFirst: clientAiMovesFirst);
-    logger.i(
-        "$_logTag Set Client aiMovesFirst to $clientAiMovesFirst (opposite of Host: $hostAiMovesFirst)");
-
-    GameController().headerIconsNotifier.showIcons();
-    GameController().boardSemanticsNotifier.updateSemantics();
-  }
-
-  /// Handles disconnection events and updates game state
-  void _handleDisconnection() {
-    // Cancel heartbeat timers
-    _heartbeatTimer?.cancel();
-    _heartbeatCheckTimer?.cancel();
-    _heartbeatTimer = null;
-    _heartbeatCheckTimer = null;
-
-    logger.i("$_logTag Opponent disconnected from $opponentAddress");
-    GameController().headerTipNotifier.showTip("Opponent disconnected");
-
-    dispose();
-
-    GameController().isLanOpponentTurn = false;
-    if (GameController().position.phase != Phase.gameOver) {
-      GameController()
-          .position
-          ._setGameOver(PieceColor.draw, GameOverReason.drawStalemateCondition);
-      GameController()
-          .headerTipNotifier
-          .showTip("Game Over due to disconnection.");
-    }
-    onDisconnected?.call();
-  }
-
-  /// Cleans up network resources and resets the state.
-  void dispose() {
-    clientSocket?.destroy();
-    serverSocket?.close();
-    discoverySocket?.close();
-    _heartbeatTimer?.cancel();
-    _heartbeatCheckTimer?.cancel();
-
-    clientSocket = null;
-    serverSocket = null;
-    discoverySocket = null;
-    opponentAddress = null;
-    isHost = false;
-    onDisconnected = null;
-    onClientConnected = null;
-    onProtocolMismatch = null;
-    _protocolHandshakeCompleter = null;
-    _messageQueue.clear();
-    _isProcessing = false;
-
-    logger.i("$_logTag Network resources cleaned up");
-  }
-
-  /// Returns true if the connection is active.
-  bool get isConnected {
-    if (isHost) {
-      return serverSocket != null &&
-          clientSocket != null &&
-          !clientSocket!.isClosed;
-    }
-    return clientSocket != null && !clientSocket!.isClosed;
   }
 }
 
-/// Extension to check if a socket is closed more reliably.
+/// Extension to quickly check if a [Socket] is closed.
 extension SocketExtension on Socket {
   bool get isClosed {
     try {
-      // If remotePort is 0, this usually indicates it's closed
       return remotePort == 0;
-    } catch (e) {
+    } catch (_) {
       return true;
     }
   }
