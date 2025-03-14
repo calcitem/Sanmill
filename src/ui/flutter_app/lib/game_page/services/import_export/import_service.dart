@@ -421,19 +421,25 @@ class ImportService {
 
       final List<String> segments = splitSan(san);
 
-      for (final String segment in segments) {
-        if (segment.isEmpty) {
-          continue;
-        }
+      // For moves that split into multiple segments (e.g. "b6xd3"), attach comments only to the last segment.
+      for (int i = 0; i < segments.length; i++) {
+        final String segment = segments[i];
+        if (segment.isEmpty) continue;
         try {
           final String uciMove = _wmdNotationToMoveString(segment);
-          // Create ExtMove with parsed NAGs and comments from node
+          // Only attach comments, nags, and startingComments to the last segment.
+          final List<int>? nags = (i == segments.length - 1) ? node.nags : null;
+          final List<String>? startingComments =
+              (i == segments.length - 1) ? node.startingComments : null;
+          final List<String>? comments =
+              (i == segments.length - 1) ? node.comments : null;
+
           newHistory.appendMove(ExtMove(
             uciMove,
             side: localPos.sideToMove,
-            nags: node.nags,
-            startingComments: node.startingComments,
-            comments: node.comments,
+            nags: nags,
+            startingComments: startingComments,
+            comments: comments,
           ));
 
           final bool ok = localPos.doMove(uciMove);
