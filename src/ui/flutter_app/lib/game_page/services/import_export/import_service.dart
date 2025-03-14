@@ -277,12 +277,16 @@ class ImportService {
         final String m1 = _playOkNotationToMoveString(preMove);
         newHistory.appendMove(ExtMove(m1, side: localPos.sideToMove));
         final bool ok1 = localPos.doMove(m1);
-        if (!ok1) throw ImportFormatException("Invalid move: $m1");
+        if (!ok1) {
+          throw ImportFormatException("Invalid move: $m1");
+        }
 
         final String m2 = _playOkNotationToMoveString(captureMove);
         newHistory.appendMove(ExtMove(m2, side: localPos.sideToMove));
         final bool ok2 = localPos.doMove(m2);
-        if (!ok2) throw ImportFormatException("Invalid move: $m2");
+        if (!ok2) {
+          throw ImportFormatException("Invalid move: $m2");
+        }
       }
     }
 
@@ -424,7 +428,9 @@ class ImportService {
       // For moves that split into multiple segments (e.g. "b6xd3"), attach comments only to the last segment.
       for (int i = 0; i < segments.length; i++) {
         final String segment = segments[i];
-        if (segment.isEmpty) continue;
+        if (segment.isEmpty) {
+          continue;
+        }
         try {
           final String uciMove = _wmdNotationToMoveString(segment);
           // Only attach comments, nags, and startingComments to the last segment.

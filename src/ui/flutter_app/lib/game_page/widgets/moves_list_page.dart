@@ -71,11 +71,15 @@ class MovesListPageState extends State<MovesListPage> {
       ..clear()
       ..addAll(GameController().gameRecorder.mainlineNodes);
 
-    int currentMoveIndex = 0; // Initialize moveIndex for the first node
+    int currentMoveIndex = 0; // Initialize move index for the first node
+    int currentRound = 1; // Initialize round number starting at 1
+    PieceColor?
+        lastNonRemoveSide; // To track the side of the last non-remove move
 
     for (int i = 0; i < _allNodes.length; i++) {
       final PgnNode<ExtMove> node = _allNodes[i];
 
+      // Set moveIndex as before
       if (i == 0) {
         // First node always gets moveIndex 0
         node.data?.moveIndex = currentMoveIndex;
@@ -86,6 +90,25 @@ class MovesListPageState extends State<MovesListPage> {
         // Otherwise, increment the previous node's moveIndex
         currentMoveIndex = (_allNodes[i - 1].data?.moveIndex ?? 0) + 1;
         node.data?.moveIndex = currentMoveIndex;
+      }
+
+      // Calculate and assign roundIndex for each move
+      if (node.data != null) {
+        if (node.data!.type == MoveType.remove) {
+          // For remove moves, assign the same round as the last non-remove move
+          node.data!.roundIndex = currentRound;
+        } else {
+          // For non-remove moves:
+          // If the last non-remove move was made by Black and current move is by White,
+          // it indicates a new round should start.
+          if (lastNonRemoveSide == PieceColor.black &&
+              node.data!.side == PieceColor.white) {
+            currentRound++;
+          }
+          node.data!.roundIndex = currentRound;
+          lastNonRemoveSide =
+              node.data!.side; // Update last non-remove move side
+        }
       }
     }
   }
