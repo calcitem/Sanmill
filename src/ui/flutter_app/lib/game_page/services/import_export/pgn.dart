@@ -889,7 +889,8 @@ class _PgnParser {
             }
             // Adapted Nine Men's Morris token regex:
             final RegExp tokenRegex = RegExp(
-                r'(?:p|x+|[a-g][1-7](?:[-x][a-g][1-7])*)|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2/');
+                r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
+                r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2');
             final Iterable<RegExpMatch> matches = tokenRegex.allMatches(line);
             for (final RegExpMatch match in matches) {
               final _ParserFrame frame = _stack[_stack.length - 1];

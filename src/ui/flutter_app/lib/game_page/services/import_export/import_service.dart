@@ -242,51 +242,47 @@ class ImportService {
 
     final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
 
-    for (String i in list) {
-      i = i.trim();
+    for (String token in list) {
+      token = token.trim();
+      if (token.isEmpty ||
+          token.endsWith(".") ||
+          token.startsWith("[") ||
+          token.endsWith("]")) {
+        continue;
+      }
 
-      if (i.isNotEmpty &&
-          !i.endsWith(".") &&
-          !i.startsWith("[") &&
-          !i.endsWith("]")) {
-        final int iX = i.indexOf("x");
-        if (iX == -1) {
-          final String m = _playOkNotationToMoveString(i);
-
-          newHistory.appendMove(ExtMove(
-            m,
-            side: localPos.sideToMove,
-          ));
-
-          final bool ok = localPos.doMove(m);
-          if (!ok) {
-            throw ImportFormatException("Invalid move: $m");
-          }
-        } else if (iX != -1) {
-          final String m1 = _playOkNotationToMoveString(i.substring(0, iX));
-
-          newHistory.appendMove(ExtMove(
-            m1,
-            side: localPos.sideToMove,
-          ));
-
-          final bool ok1 = localPos.doMove(m1);
-          if (!ok1) {
-            throw ImportFormatException("Invalid move: $m1");
-          }
-
-          final String m2 = _playOkNotationToMoveString(i.substring(iX));
-
-          newHistory.appendMove(ExtMove(
-            m2,
-            side: localPos.sideToMove,
-          ));
-
-          final bool ok2 = localPos.doMove(m2);
-          if (!ok2) {
-            throw ImportFormatException("Invalid move: $m2");
-          }
+      // If the move starts with "x", it means it is a capture move (e.g. "xd3"), and is directly processed as a single move
+      if (token.startsWith("x")) {
+        final String move = _playOkNotationToMoveString(token);
+        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
+        final bool ok = localPos.doMove(move);
+        if (!ok) {
+          throw ImportFormatException("Invalid capture move: $move");
         }
+      }
+      // If there is no "x" in the move, proceed normally
+      else if (!token.contains("x")) {
+        final String move = _playOkNotationToMoveString(token);
+        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
+        final bool ok = localPos.doMove(move);
+        if (!ok) {
+          throw ImportFormatException("Invalid move: $move");
+        }
+      }
+      // If the move contains "x" and is not at the beginning, for example "b6xd3"
+      else {
+        final int idx = token.indexOf("x");
+        final String preMove = token.substring(0, idx);
+        final String captureMove = token.substring(idx); // contains 'x'
+        final String m1 = _playOkNotationToMoveString(preMove);
+        newHistory.appendMove(ExtMove(m1, side: localPos.sideToMove));
+        final bool ok1 = localPos.doMove(m1);
+        if (!ok1) throw ImportFormatException("Invalid move: $m1");
+
+        final String m2 = _playOkNotationToMoveString(captureMove);
+        newHistory.appendMove(ExtMove(m2, side: localPos.sideToMove));
+        final bool ok2 = localPos.doMove(m2);
+        if (!ok2) throw ImportFormatException("Invalid move: $m2");
       }
     }
 
@@ -368,6 +364,8 @@ class ImportService {
 
     /// Helper function to split a SAN move into segments
     List<String> splitSan(String san) {
+      san = san.replaceAll(RegExp(r'\{[^}]*\}'), '').trim();
+
       List<String> segments = <String>[];
 
       if (san.contains('x')) {
