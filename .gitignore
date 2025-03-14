@@ -440,6 +440,7 @@ flutter_export_environment.sh
 .autogit
 build/
 out/
+/src/*.stackdump
 
 # Snapcraft
 *.snap

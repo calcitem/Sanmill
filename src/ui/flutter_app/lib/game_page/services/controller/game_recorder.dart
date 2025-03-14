@@ -568,7 +568,7 @@ Do not use side type boardLayout or other tags in the {Blabla} part.
     if (mergedComments.isNotEmpty) {
       sb.write(' {');
       sb.write(mergedComments.join(' '));
-      sb.write('}');
+      sb.write('} ');
     }
 
     return sb.toString();
