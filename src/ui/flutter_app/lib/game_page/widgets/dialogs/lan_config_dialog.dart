@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-// lan_config_dialog.dart
-
 import 'dart:async';
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../shared/database/database.dart';
 import '../../services/mill.dart';
 
 class LanConfigDialog extends StatefulWidget {
@@ -73,6 +72,14 @@ class LanConfigDialogState extends State<LanConfigDialog>
   /// String to hold the host IP and port info for display.
   String _hostInfo = "";
 
+  /// Whether the Host wants to play White or Black.
+  ///
+  /// * `true` means the Host will be White (moving first).
+  /// * `false` means the Host will be Black (moving second).
+  ///
+  /// We store it locally here, and also write it to `GameController().lanHostPlaysWhite`.
+  bool _hostPlaysWhite = true;
+
   @override
   void initState() {
     super.initState();
@@ -85,6 +92,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
     } else {
       _networkService = NetworkService();
     }
+
+    // If the GameController already has a chosen color for the host, reuse it.
+    // Otherwise default to true (white).
+    _hostPlaysWhite = GameController().lanHostPlaysWhite ?? true;
 
     // Initialize animation and text controllers.
     _iconController = AnimationController(
@@ -161,6 +172,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
     // Assign current instance to the global network service.
     GameController().networkService = _networkService;
 
+    // >>> We save the user's color choice into GameController <<<
+    // So that it persists across "restart" calls.
+    GameController().lanHostPlaysWhite = _hostPlaysWhite;
+
     // Update state to indicate that hosting is starting.
     setState(() {
       _serverRunning = true;
@@ -170,16 +185,19 @@ class LanConfigDialogState extends State<LanConfigDialog>
     final int port = int.tryParse(_portController.text) ?? 33333;
     try {
       // Start hosting and assign the network service when a client connects.
-      await _networkService.startHost(port,
-          onClientConnected: (String clientIp, int clientPort) {
-        GameController().networkService = _networkService;
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Client connected: $clientIp:$clientPort')),
-          );
-          Navigator.pop(context, true);
-        }
-      });
+      await _networkService.startHost(
+        port,
+        onClientConnected: (String clientIp, int clientPort) {
+          GameController().networkService = _networkService;
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Client connected: $clientIp:$clientPort')),
+            );
+            Navigator.pop(context, true);
+          }
+        },
+      );
 
       // Retrieve local IP addresses for display.
       final List<String> localIps = await NetworkService.getLocalIpAddresses();
@@ -215,6 +233,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
     _iconController.stop();
     _networkService.dispose();
     GameController().networkService = null;
+
+    // Create a new NetworkService instance to restart the service.
+    _networkService = NetworkService();
   }
 
   /// Starts the discovery process to find a host on the LAN.
@@ -340,28 +361,87 @@ class LanConfigDialogState extends State<LanConfigDialog>
   }
 
   /// Builds the UI for Host mode.
+  ///
+  /// Added a row of RadioListTile to let the user choose
+  /// whether the host plays White (first mover) or Black (second mover).
   Widget _buildHostUI() {
-    return Center(
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          foregroundColor: Colors.white,
-          backgroundColor: Theme.of(context).colorScheme.secondary,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        // --- Host color selection (White or Black) ---
+        // Disabled if the server is already running.
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Radio<bool>(
+              value: true,
+              groupValue: _hostPlaysWhite,
+              onChanged: _serverRunning
+                  ? null // Disable changes once server is running
+                  : (bool? val) {
+                      setState(() {
+                        _hostPlaysWhite = val ?? true;
+                      });
+                    },
+            ),
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                color: DB().colorSettings.whitePieceColor,
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.grey),
+              ),
+            ),
+            const SizedBox(width: 40),
+            Radio<bool>(
+              value: false,
+              groupValue: _hostPlaysWhite,
+              onChanged: _serverRunning
+                  ? null
+                  : (bool? val) {
+                      setState(() {
+                        _hostPlaysWhite = val ?? false;
+                      });
+                    },
+            ),
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                color: DB().colorSettings.blackPieceColor,
+                shape: BoxShape.circle,
+              ),
+            ),
+          ],
         ),
-        icon: Icon(
-          _serverRunning
-              ? FluentIcons.stop_24_regular
-              : FluentIcons.play_24_filled,
-          size: 20,
+
+        const SizedBox(height: 16),
+
+        // --- Start/Stop hosting button ---
+        Center(
+          child: ElevatedButton.icon(
+            style: ElevatedButton.styleFrom(
+              foregroundColor: Colors.white,
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+            ),
+            icon: Icon(
+              _serverRunning
+                  ? FluentIcons.stop_24_regular
+                  : FluentIcons.play_24_filled,
+              size: 20,
+            ),
+            label: Text(_serverRunning ? "Stop Hosting" : "Start Hosting"),
+            onPressed: () async {
+              if (_serverRunning) {
+                await _stopHosting();
+              } else {
+                await _startHosting();
+              }
+            },
+          ),
         ),
-        label: Text(_serverRunning ? "Stop Hosting" : "Start Hosting"),
-        onPressed: () async {
-          if (_serverRunning) {
-            await _stopHosting();
-          } else {
-            await _startHosting();
-          }
-        },
-      ),
+      ],
     );
   }
 
@@ -637,10 +717,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
               ),
             ),
             // -- Bottom section: Host or Join UI --
-            // For Host mode, keep fixed height; for Join mode, let content size naturally to avoid overflow.
             if (isHost)
               Container(
-                height: 100.0,
+                height: 160.0, // Increased height to fit the new radio row
                 padding: const EdgeInsets.only(top: 4.0),
                 child: _buildHostUI(),
               )

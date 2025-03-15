@@ -168,8 +168,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         logger.i('Switching to How To Play');
         break;
       case _DrawerIndex.feedback:
-        logger.i(
-            'Switching to Feedback'); // Assuming feedback is handled separately
+        logger.i('Switching to Feedback');
         break;
       case _DrawerIndex.about:
         logger.i('Switching to About');
@@ -179,10 +178,26 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
     }
 
+    // ---------------------------------------------------------------------
+    // If leaving LAN mode, disconnect and reset the game.
+    // ---------------------------------------------------------------------
+    if (_drawerIndex == _DrawerIndex.humanVsLAN &&
+        index != _DrawerIndex.humanVsLAN) {
+      logger.i("Leaving LAN mode: disposing network and resetting the board.");
+      // Dispose any existing LAN connection
+      GameController().networkService?.dispose();
+      GameController().networkService = null; // optional
+
+      // Force a fresh game state so the board is cleared
+      GameController().reset(force: true);
+    }
+
+    // If no real change in index (and it's not the special "feedback" case), just return.
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
       return;
     }
 
+    // Handle the LAN-setup dialog, feedback, etc. as before...
     if (index == _DrawerIndex.humanVsLAN) {
       // Show LAN config dialog and await result
       final bool? result = await showDialog<bool>(

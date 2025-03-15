@@ -176,11 +176,136 @@ class GameController {
     );
   }
 
+  /// Sends a resignation request to the LAN opponent.
+  /// This method is called when the local player wants to resign.
+  void requestResignation() {
+    if (gameInstance.gameMode != GameMode.humanVsLAN ||
+        !(networkService?.isConnected ?? false)) {
+      // For non-LAN modes or when not connected, just handle locally
+      logger.i("$_logTag Local resignation in non-LAN mode");
+      _handleLocalResignation();
+      return;
+    }
+
+    // In LAN mode, confirm with the player first
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return;
+    }
+
+    showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Confirm Resignation"),
+          content: const Text("Are you sure you want to resign this game?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false);
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+
+                // Send resignation to opponent
+                try {
+                  networkService!.sendMove("resign:request");
+                  logger.i("$_logTag Sent resignation request");
+
+                  // Get the opponent's color (winner)
+                  final PieceColor localColor = getLocalColor();
+                  final PieceColor winnerColor = localColor.opponent;
+
+                  // Set game over with opponent as winner
+                  position._setGameOver(
+                    winnerColor,
+                    GameOverReason.loseResign, // Using a generic reason
+                  );
+
+                  // Show resignation message
+                  headerTipNotifier.showTip("You resigned. Game over.");
+                  gameResultNotifier.showResult(force: true);
+
+                  // Play sound if enabled
+                  SoundManager().playTone(Sound.lose);
+                } catch (e) {
+                  logger.e("$_logTag Failed to send resignation: $e");
+                  headerTipNotifier.showTip("Failed to send resignation: $e");
+                }
+              },
+              child: const Text("Resign"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Handles a resignation request received from the LAN opponent.
+  /// This sets the local player as the winner and updates the game state.
+  void handleResignation() {
+    if (gameInstance.gameMode != GameMode.humanVsLAN) {
+      logger.w("$_logTag Ignoring resignation request: not in LAN mode");
+      return;
+    }
+
+    try {
+      // Get the local color (winner)
+      final PieceColor localColor = getLocalColor();
+
+      // Set game over with local player as winner
+      position._setGameOver(
+        localColor,
+        GameOverReason.loseResign, // Using a generic reason for now
+      );
+
+      // Update UI
+      headerTipNotifier.showTip("Opponent resigned. You win!");
+      gameResultNotifier.showResult(force: true);
+      isLanOpponentTurn = false;
+
+      // Play sound if enabled
+      SoundManager().playTone(Sound.win);
+
+      logger.i("$_logTag Handled opponent resignation");
+    } catch (e) {
+      logger.e("$_logTag Error handling resignation: $e");
+      headerTipNotifier.showTip("Error handling opponent resignation");
+    }
+  }
+
+  /// Handles resignation in non-LAN modes (e.g., vs AI)
+  void _handleLocalResignation() {
+    // Determine winner (opponent of current player)
+    final PieceColor winnerColor = position.sideToMove.opponent;
+
+    // Set game over state
+    position._setGameOver(
+      winnerColor,
+      GameOverReason.drawStalemateCondition, // Using a generic reason
+    );
+
+    // Update UI
+    headerTipNotifier.showTip("You resigned. Game over.");
+    gameResultNotifier.showResult(force: true);
+
+    // Play sound if enabled
+    SoundManager().playTone(Sound.win);
+
+    logger.i("$_logTag Local player resigned. Winner: $winnerColor");
+  }
+
   /// Modify the reset method so that in LAN restart mode the socket is preserved.
   void reset({bool force = false, bool lanRestart = false}) {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
+    // 保存当前的主机颜色设置
+    final bool? savedHostPlaysWhite = lanHostPlaysWhite;
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
@@ -214,6 +339,9 @@ class GameController {
 
     // Reinitialize game objects
     _init(gameModeBak);
+
+    // 恢复主机颜色设置
+    lanHostPlaysWhite = savedHostPlaysWhite;
 
     // For LAN games, always start with White and set turn based on local color.
     if (gameModeBak == GameMode.humanVsLAN) {
@@ -265,7 +393,8 @@ class GameController {
     void Function(String, int)? onClientConnected,
   }) {
     gameInstance.gameMode = GameMode.humanVsLAN;
-    lanHostPlaysWhite = true; // Host always plays White
+    // 使用传入的hostPlaysWhite参数，而不是重新从GameController获取
+    lanHostPlaysWhite = hostPlaysWhite;
 
     headerIconsNotifier.showIcons();
 

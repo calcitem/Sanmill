@@ -20,7 +20,6 @@ class GameResultAlertDialog extends StatelessWidget {
     if (gameMode == GameMode.aiVsAi || gameMode == GameMode.setupPosition) {
       return null;
     }
-
     return winner.result;
   }
 
@@ -107,7 +106,13 @@ class GameResultAlertDialog extends StatelessWidget {
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );
 
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
+
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
@@ -123,7 +128,12 @@ class GameResultAlertDialog extends StatelessWidget {
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
@@ -151,7 +161,12 @@ class GameResultAlertDialog extends StatelessWidget {
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
