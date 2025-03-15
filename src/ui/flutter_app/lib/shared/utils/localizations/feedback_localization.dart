@@ -73,6 +73,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("sr"): const SrFeedbackLocalizations(), // Serbian
     const Locale("sv"): const SvFeedbackLocalizations(), // Swedish
     const Locale("sw"): const SwFeedbackLocalizations(), // Swahili
+    const Locale("ta"): const TaFeedbackLocalizations(), // Tamil
     const Locale("te"): const TeFeedbackLocalizations(), // Telugu
     const Locale("th"): const ThFeedbackLocalizations(), // Thai
     const Locale("tr"): const TrFeedbackLocalizations(), // Turkish
@@ -1129,6 +1130,29 @@ class SwFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const SwFeedbackLocalizations(),
+    );
+  }
+}
+
+// Tamil
+class TaFeedbackLocalizations extends FeedbackLocalizations {
+  const TaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'அனுப்பு';
+
+  @override
+  String get feedbackDescriptionText => 'என்ன தவறு?';
+
+  @override
+  String get draw => 'வரையுங்கள்';
+
+  @override
+  String get navigate => 'நாவிருந்து';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const TaFeedbackLocalizations(),
     );
   }
 }

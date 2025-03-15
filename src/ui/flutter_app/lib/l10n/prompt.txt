@@ -58,6 +58,7 @@ intl_sq.arb
 intl_sr.arb
 intl_sv.arb
 intl_sw.arb
+intl_ta.arb
 intl_te.arb
 intl_th.arb
 intl_tr.arb

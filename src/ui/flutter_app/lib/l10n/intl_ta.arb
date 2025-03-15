@@ -637,7 +637,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{எண்ணிக்கை, பன்மை, = 0 {Piece} = 1 {{count} துண்டு} பிற {{count} துண்டுகள்}} அகற்ற வேண்டும்.",
+  "pieceCountNeedToRemove": "{count, plural, =0{Piece}=1{{count} துண்டு} other{{count} துண்டுகள்}} அகற்ற வேண்டும்.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -961,11 +961,11 @@
   "@pointStyle": {
     "description": "Point style"
   },
-  "languageName": "ஆங்கிலம்",
+  "languageName": "தமிழ்",
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{எண்ணிக்கை, பன்மை, = 0 {Move} = 1 {{count} நகர்த்து} பிற {{count} நகர்வுகள்}}",
+  "moveNumber": "{count, plural, =0{Move}=1{{count} நகர்த்து} other{{count} நகர்வுகள்}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
