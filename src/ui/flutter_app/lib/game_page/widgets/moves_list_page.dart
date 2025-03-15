@@ -143,7 +143,7 @@ class MovesListPageState extends State<MovesListPage> {
     final String prompt = GameController().gameRecorder.moveListPrompt;
     if (prompt.isEmpty) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
-          const SnackBar(content: Text("No LLM prompt available.")));
+          SnackBar(content: Text(S.of(context).noLlmPromptAvailable)));
       return;
     }
     await Clipboard.setData(ClipboardData(text: prompt));
@@ -152,7 +152,7 @@ class MovesListPageState extends State<MovesListPage> {
       return;
     }
     rootScaffoldMessengerKey.currentState!
-        .showSnackBarClear("LLM prompt copied to clipboard.");
+        .showSnackBarClear(S.of(context).llmPromptCopiedToClipboard);
   }
 
   /// Scrolls the list/grid to the top with an animation.
@@ -543,14 +543,14 @@ class MovesListPageState extends State<MovesListPage> {
                 ),
               ),
               const PopupMenuDivider(),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'copy_llm_prompt',
                 child: Row(
                   children: <Widget>[
-                    Icon(FluentIcons.text_grammar_wand_24_regular,
+                    const Icon(FluentIcons.text_grammar_wand_24_regular,
                         color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text("LLM prompt"),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).llmPrompt),
                   ],
                 ),
               ),

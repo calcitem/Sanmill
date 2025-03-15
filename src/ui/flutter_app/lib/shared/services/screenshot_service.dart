@@ -118,6 +118,7 @@ class ScreenshotService {
         );
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
+        // TODO: Use S.of(context).failedToSaveImageToGallery
         rootScaffoldMessengerKey.currentState!
             .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
       }

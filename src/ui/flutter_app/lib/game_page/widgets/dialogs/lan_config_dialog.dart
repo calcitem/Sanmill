@@ -6,6 +6,7 @@ import 'dart:async';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
+import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../services/mill.dart';
 
@@ -38,9 +39,6 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
   /// Maximum connection attempts allowed (Join mode).
   final int _maxAttempt = 3;
-
-  /// Connection status message (used in Join mode).
-  String _connectionStatusMessage = "Network status: Disconnected";
 
   /// Message to display when a protocol mismatch occurs.
   String? _protocolMismatchMessage;
@@ -109,13 +107,11 @@ class LanConfigDialogState extends State<LanConfigDialog>
     // Setup network service callbacks.
     _networkService.onDisconnected = () {
       if (mounted) {
-        setState(() {
-          _connectionStatusMessage = "Connection lost: heartbeat timeout";
-        });
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                "Connection lost due to heartbeat timeout. Please reconnect."),
+          SnackBar(
+            content: Text(S
+                .of(context)
+                .connectionLostDueToHeartbeatTimeoutPleaseReconnect),
           ),
         );
       }
@@ -192,7 +188,12 @@ class LanConfigDialogState extends State<LanConfigDialog>
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                  content: Text('Client connected: $clientIp:$clientPort')),
+                content: Text(
+                  S
+                      .of(context)
+                      .clientConnected(clientIp, clientPort.toString()),
+                ),
+              ),
             );
             Navigator.pop(context, true);
           }
@@ -215,12 +216,17 @@ class LanConfigDialogState extends State<LanConfigDialog>
         });
         _iconController.stop();
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to start hosting: $e')),
+          SnackBar(
+            content: Text(
+              S.of(context).failedToStartHosting(e.toString()),
+            ),
+          ),
         );
       }
     }
   }
 
+  /// Stops hosting and cleans up resources.
   /// Stops hosting and cleans up resources.
   Future<void> _stopHosting() async {
     if (!mounted) {
@@ -233,6 +239,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
     _iconController.stop();
     _networkService.dispose();
     GameController().networkService = null;
+
+    // Directly update the UI to show that the server has stopped.
+    GameController().headerTipNotifier.showTip(S.of(context).serverIsStopped);
+    GameController().headerIconsNotifier.showIcons();
 
     // Create a new NetworkService instance to restart the service.
     _networkService = NetworkService();
@@ -271,12 +281,16 @@ class LanConfigDialogState extends State<LanConfigDialog>
             _discoverySuccess = true;
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Host discovered: ${parts[0]}:${parts[1]}')),
+            SnackBar(
+              content: Text(
+                S.of(context).hostDiscovered(parts[0], parts[1]),
+              ),
+            ),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No host discovered.')),
+          SnackBar(content: Text(S.of(context).noHostDiscovered)),
         );
       }
     }
@@ -306,8 +320,8 @@ class LanConfigDialogState extends State<LanConfigDialog>
     final bool portValid = port != null && port > 0 && port <= 65535;
 
     setState(() {
-      _ipError = ipValid ? null : "Invalid IP address";
-      _portError = portValid ? null : "Invalid port";
+      _ipError = ipValid ? null : S.of(context).invalidIpAddress;
+      _portError = portValid ? null : S.of(context).invalidPort;
     });
 
     if (!ipValid || !portValid) {
@@ -324,9 +338,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
     while (_currentAttempt < _maxAttempt && !connected && mounted) {
       setState(() {
         _currentAttempt++;
-        _connectionStatusMessage =
-            "Connecting: Attempt $_currentAttempt/$_maxAttempt";
       });
+
+      await Future<void>.delayed(const Duration(milliseconds: 100));
 
       try {
         // Attempt to connect to the host.
@@ -335,19 +349,21 @@ class LanConfigDialogState extends State<LanConfigDialog>
         GameController().networkService = _networkService;
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Connected to host successfully.')),
+            SnackBar(
+              content: Text(S.of(context).connectedToHostSuccessfully),
+            ),
           );
           Navigator.pop(context, true);
         }
         return;
       } catch (e) {
         if (_currentAttempt >= _maxAttempt && mounted) {
-          setState(() {
-            _connectionStatusMessage =
-                "Connection failed after $_maxAttempt attempts.";
-          });
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Failed to connect: $e')),
+            SnackBar(
+              content: Text(
+                S.of(context).failedToConnect(e.toString()),
+              ),
+            ),
           );
         }
         await Future<void>.delayed(const Duration(seconds: 1));
@@ -431,7 +447,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
                   : FluentIcons.play_24_filled,
               size: 20,
             ),
-            label: Text(_serverRunning ? "Stop Hosting" : "Start Hosting"),
+            label: Text(_serverRunning
+                ? S.of(context).stopHosting
+                : S.of(context).startHosting),
             onPressed: () async {
               if (_serverRunning) {
                 await _stopHosting();
@@ -458,7 +476,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
               child: TextField(
                 controller: _ipController,
                 decoration: InputDecoration(
-                  labelText: "Server IP",
+                  labelText: S.of(context).serverIp,
                   errorText: _ipError,
                 ),
               ),
@@ -468,7 +486,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
               child: TextField(
                 controller: _portController,
                 decoration: InputDecoration(
-                  labelText: "Port",
+                  labelText: S.of(context).port,
                   errorText: _portError,
                 ),
                 keyboardType: TextInputType.number,
@@ -493,7 +511,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
                   await _startDiscovery();
                 }
               },
-              child: Text(_isDiscovering ? "Stop" : "Discover"),
+              child: Text(
+                _isDiscovering ? S.of(context).stop : S.of(context).discover,
+              ),
             ),
             const Spacer(),
             ElevatedButton(
@@ -502,7 +522,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                 backgroundColor: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: _onConnect,
-              child: const Text("Connect"),
+              child: Text(S.of(context).connect),
             ),
           ],
         ),
@@ -536,7 +556,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Local Network Settings",
+                          S.of(context).localNetworkSettings,
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 4),
@@ -554,17 +574,15 @@ class LanConfigDialogState extends State<LanConfigDialog>
                                     _isDiscovering = false;
                                     _isConnecting = false;
                                     _discoverySuccess = false;
-                                    _connectionStatusMessage =
-                                        "Network status: Disconnected";
                                     _protocolMismatchMessage = null;
                                   });
                                 },
-                                title: const Row(
+                                title: Row(
                                   children: <Widget>[
-                                    Icon(FluentIcons.desktop_24_regular,
+                                    const Icon(FluentIcons.desktop_24_regular,
                                         size: 20),
-                                    SizedBox(width: 4),
-                                    Text("Host"),
+                                    const SizedBox(width: 4),
+                                    Text(S.of(context).host),
                                   ],
                                 ),
                               ),
@@ -582,12 +600,13 @@ class LanConfigDialogState extends State<LanConfigDialog>
                                     _protocolMismatchMessage = null;
                                   });
                                 },
-                                title: const Row(
+                                title: Row(
                                   children: <Widget>[
-                                    Icon(FluentIcons.plug_connected_24_regular,
+                                    const Icon(
+                                        FluentIcons.plug_connected_24_regular,
                                         size: 20),
-                                    SizedBox(width: 4),
-                                    Text("Join"),
+                                    const SizedBox(width: 4),
+                                    Text(S.of(context).join),
                                   ],
                                 ),
                               ),
@@ -625,8 +644,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
                                       scrollDirection: Axis.horizontal,
                                       child: Text(
                                         _serverRunning
-                                            ? "Waiting a client connection..."
-                                            : "Server is stopped",
+                                            ? S
+                                                .of(context)
+                                                .waitingAClientConnection
+                                            : S.of(context).serverIsStopped,
                                         style: const TextStyle(fontSize: 14.0),
                                       ),
                                     ),
@@ -664,12 +685,18 @@ class LanConfigDialogState extends State<LanConfigDialog>
                                   scrollDirection: Axis.horizontal,
                                   child: Text(
                                     _isDiscovering
-                                        ? "Discovering: $_discoverySeconds s"
+                                        ? S.of(context).discoveringSeconds(
+                                            _discoverySeconds)
                                         : _isConnecting
-                                            ? _connectionStatusMessage
+                                            ? S.of(context).connectingAttempt(
+                                                _currentAttempt, _maxAttempt)
                                             : _discoverySuccess
-                                                ? "Discovery successful, awaiting connection"
-                                                : _connectionStatusMessage,
+                                                ? S
+                                                    .of(context)
+                                                    .discoverySuccessfulAwaitingConnection
+                                                : S
+                                                    .of(context)
+                                                    .networkStatusDisconnected,
                                     style: const TextStyle(fontSize: 14.0),
                                   ),
                                 ),

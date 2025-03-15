@@ -47,8 +47,8 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
     return showDialog<bool>(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Confirm Clear'),
-        content: const Text('Are you sure you want to clear all annotations?'),
+        title: Text(S.of(context).confirmClear),
+        content: Text(S.of(context).areYouSureYouWantToClearAllAnnotations),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(context, false),
@@ -77,7 +77,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
   Widget _buildCollapsedToolbar(BuildContext context) {
     return Center(
       child: IconButton(
-        tooltip: 'Enter Annotation Mode',
+        tooltip: S.of(context).enterAnnotationMode,
         icon: const Icon(
           FluentIcons.draw_image_24_regular,
           color: Colors.white,
@@ -112,33 +112,100 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: tools.map((AnnotationTool tool) {
         final bool isSelected = (currentTool == tool);
-        return InkWell(
-          onTap: () {
-            setState(() => widget.annotationManager.currentTool = tool);
-          },
-          borderRadius: BorderRadius.circular(8.0),
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-            decoration: BoxDecoration(
-              // Use a semi-transparent background color when selected.
-              color:
-                  isSelected ? Colors.yellow.withAlpha(25) : Colors.transparent,
-              // Always reserve border space by setting a fixed border.
-              border: Border.all(
-                  color: isSelected ? Colors.yellow : Colors.transparent,
-                  width: 2),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            padding: const EdgeInsets.all(8),
-            child: Icon(
-              _iconForTool(tool),
-              color: isSelected ? Colors.white : Colors.grey[300],
+        return Semantics(
+          // Provide a semantic label for the tool for screen readers.
+          label: _toolLabel(context, tool),
+          button: true,
+          child: InkWell(
+            onTap: () {
+              setState(() => widget.annotationManager.currentTool = tool);
+            },
+            borderRadius: BorderRadius.circular(8.0),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeInOut,
+              decoration: BoxDecoration(
+                // Use a semi-transparent background color when selected.
+                color: isSelected
+                    ? Colors.yellow.withAlpha(25)
+                    : Colors.transparent,
+                // Always reserve border space by setting a fixed border.
+                border: Border.all(
+                    color: isSelected ? Colors.yellow : Colors.transparent,
+                    width: 2),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              padding: const EdgeInsets.all(8),
+              child: Icon(
+                _iconForTool(tool),
+                color: isSelected ? Colors.white : Colors.grey[300],
+              ),
             ),
           ),
         );
       }).toList(),
     );
+  }
+
+  /// Returns a semantic label for the given annotation tool.
+  /// This label helps screen readers describe the tool to visually impaired users.
+  String _toolLabel(BuildContext context, AnnotationTool tool) {
+    // TODO: l10n: Provide localized tool names for screen readers.
+    switch (tool) {
+      case AnnotationTool.line:
+        return "Line Tool";
+      case AnnotationTool.arrow:
+        return "Arrow Tool";
+      case AnnotationTool.circle:
+        return "Circle Tool";
+      case AnnotationTool.dot:
+        return "Dot Tool";
+      case AnnotationTool.cross:
+        return "Cross Tool";
+      case AnnotationTool.rect:
+        return "Rectangle Tool";
+      case AnnotationTool.text:
+        return "Text Tool";
+      case AnnotationTool.move:
+        return "Move Tool";
+    }
+  }
+
+  /// Helper method to get a color name string from a Color.
+  /// This is used for accessibility labels in the color picker.
+  String _colorName(Color color) {
+    // TODO: l10n: Provide localized color names for screen readers.
+    if (color == Colors.white) {
+      return "white";
+    }
+    if (color == Colors.black) {
+      return "black";
+    }
+    if (color == Colors.grey) {
+      return "grey";
+    }
+    if (color == Colors.red) {
+      return "red";
+    }
+    if (color == Colors.yellow) {
+      return "yellow";
+    }
+    if (color == Colors.blue) {
+      return "blue";
+    }
+    if (color == Colors.green) {
+      return "green";
+    }
+    if (color == Colors.pink) {
+      return "pink";
+    }
+    if (color == Colors.purple) {
+      return "purple";
+    }
+    if (color == Colors.indigo) {
+      return "indigo";
+    }
+    return "unknown";
   }
 
   /// Builds a horizontal list of color circles. The selected color has
@@ -155,35 +222,40 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _colorOptions.map((Color color) {
           final bool isSelected = (color == activeColor);
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                if (selectedShape != null) {
-                  widget.annotationManager.changeColor(selectedShape, color);
-                } else {
-                  widget.annotationManager.currentColor = color;
-                }
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeInOut,
-              margin: const EdgeInsets.symmetric(horizontal: 6),
-              padding: const EdgeInsets.all(3),
-              decoration: BoxDecoration(
-                // Always set a border with a fixed width.
-                border: Border.all(
-                  color: isSelected ? Colors.yellow : Colors.transparent,
-                  width: 2,
-                ),
-                shape: BoxShape.circle,
-              ),
-              child: Container(
-                width: 24,
-                height: 24,
+          return Semantics(
+            // Provide a semantic label for each color circle.
+            label: 'Select ${_colorName(color)} color',
+            button: true,
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (selectedShape != null) {
+                    widget.annotationManager.changeColor(selectedShape, color);
+                  } else {
+                    widget.annotationManager.currentColor = color;
+                  }
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                margin: const EdgeInsets.symmetric(horizontal: 6),
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
-                  color: color,
+                  // Always set a border with a fixed width.
+                  border: Border.all(
+                    color: isSelected ? Colors.yellow : Colors.transparent,
+                    width: 2,
+                  ),
                   shape: BoxShape.circle,
+                ),
+                child: Container(
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    color: color,
+                    shape: BoxShape.circle,
+                  ),
                 ),
               ),
             ),
@@ -200,7 +272,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
       children: <Widget>[
         _buildControlButton(
           context,
-          tooltip: 'Exit Annotation Mode',
+          tooltip: S.of(context).exitAnnotationMode,
           icon: FluentIcons.games_24_regular,
           onTap: widget.onToggleAnnotationMode,
         ),
@@ -218,7 +290,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         ),
         _buildControlButton(
           context,
-          tooltip: 'Clear all annotations',
+          tooltip: S.of(context).clearAllAnnotations,
           icon: FluentIcons.delete_24_regular,
           onTap: () async {
             final bool? confirmed = await _showClearConfirmationDialog(context);
@@ -229,7 +301,7 @@ class _AnnotationToolbarState extends State<AnnotationToolbar> {
         ),
         _buildControlButton(
           context,
-          tooltip: 'Take Screenshot',
+          tooltip: S.of(context).takeScreenshot,
           icon: FluentIcons.camera_24_regular,
           onTap: () => _takeScreenshot("gallery"),
         ),
@@ -297,34 +369,39 @@ class _ControlButtonState extends State<_ControlButton> {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: GestureDetector(
-        onTapDown: (_) => setState(() => _isPressed = true),
-        onTapUp: (_) {
-          setState(() => _isPressed = false);
-          widget.onTap();
-        },
-        onTapCancel: () => setState(() => _isPressed = false),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          curve: Curves.easeInOut,
-          // Background changes color based on hover and press states.
-          decoration: BoxDecoration(
-            color: _isPressed
-                ? Colors.yellow.withValues(alpha: 0.2)
-                : _isHovered
-                    ? Colors.white.withValues(alpha: 0.1)
-                    : Colors.transparent,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          padding: const EdgeInsets.all(8.0),
-          child: Tooltip(
-            message: widget.tooltip,
-            child: Icon(
-              widget.icon,
-              color: Colors.white,
+    // Wrap the interactive control button with Semantics for accessibility.
+    return Semantics(
+      label: widget.tooltip,
+      button: true,
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isHovered = true),
+        onExit: (_) => setState(() => _isHovered = false),
+        child: GestureDetector(
+          onTapDown: (_) => setState(() => _isPressed = true),
+          onTapUp: (_) {
+            setState(() => _isPressed = false);
+            widget.onTap();
+          },
+          onTapCancel: () => setState(() => _isPressed = false),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            // Background changes color based on hover and press states.
+            decoration: BoxDecoration(
+              color: _isPressed
+                  ? Colors.yellow.withValues(alpha: 0.2)
+                  : _isHovered
+                      ? Colors.white.withValues(alpha: 0.1)
+                      : Colors.transparent,
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            padding: const EdgeInsets.all(8.0),
+            child: Tooltip(
+              message: widget.tooltip,
+              child: Icon(
+                widget.icon,
+                color: Colors.white,
+              ),
             ),
           ),
         ),

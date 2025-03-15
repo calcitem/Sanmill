@@ -372,7 +372,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                         !GameController().networkService!.isConnected) {
                       GameController()
                           .headerTipNotifier
-                          .showTip("No LAN connection");
+                          .showTip(S.of(context).noLanConnection);
                       return;
                     }
                   }

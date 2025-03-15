@@ -161,8 +161,8 @@ class HistoryNavigator {
     final bool ok = await GameController().requestLanTakeBack(steps);
     if (!ok && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Take back request was rejected or failed."),
+        SnackBar(
+          content: Text(S.of(context).takeBackRequestWasRejectedOrFailed),
         ),
       );
     }

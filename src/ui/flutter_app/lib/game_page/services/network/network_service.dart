@@ -116,7 +116,14 @@ class NetworkService {
     if (_disposed) {
       throw Exception("NetworkService has been disposed; cannot start host.");
     }
+
+    final context = rootScaffoldMessengerKey.currentContext;
+    final String startedHostingGameWaitingForPlayersToJoin = context != null
+        ? S.of(context).startedHostingGameWaitingForPlayersToJoin
+        : "Started hosting game, waiting for players to join";
+
     this.onClientConnected = onClientConnected;
+
     try {
       // Attempt to release any previously occupied port
       await _serverSocket?.close();
@@ -175,7 +182,7 @@ class NetworkService {
 
       // Notify connection status change
       _notifyConnectionStatusChanged(true,
-          info: "Started hosting game, waiting for players to join...");
+          info: startedHostingGameWaitingForPlayersToJoin);
     } catch (e, st) {
       logger.e("$_logTag Failed to start host: $e");
       logger.e("$_logTag Stack trace: $st");
@@ -309,48 +316,60 @@ class NetworkService {
     logger.i(
         "$_logTag Attempting to reconnect to $_opponentAddress:$_opponentPort");
 
-    // Notify UI that reconnection is in progress
-    GameController().headerTipNotifier.showTip("Attempting to reconnect...");
+    // Capture the current BuildContext and all needed localized strings immediately.
+    final BuildContext? currentContext =
+        rootScaffoldMessengerKey.currentContext;
+    final String attemptingToReconnect = currentContext != null
+        ? S.of(currentContext).attemptingToReconnect
+        : "Attempting to reconnect...";
+    final String reconnectedSuccessfully = currentContext != null
+        ? S.of(currentContext).reconnectedSuccessfully
+        : "Reconnected successfully";
+    final String unableToReconnect = currentContext != null
+        ? S.of(currentContext).unableToReconnectPleaseRestartTheGame
+        : "Unable to reconnect, please restart the game";
+    // Capture the localization object if available, to generate dynamic messages later.
+    final localizations = currentContext != null ? S.of(currentContext) : null;
+
+    // Show the initial reconnect tip.
+    GameController().headerTipNotifier.showTip(attemptingToReconnect);
 
     try {
-      // Use progressive delay for retries
+      // Loop through the allowed reconnect attempts.
       for (int attempt = 0; attempt < _maxReconnectAttempts; attempt++) {
         if (_disposed) {
           break;
         }
 
-        // Update UI to show current reconnection status
-        GameController()
-            .headerTipNotifier
-            .showTip("Reconnecting (${attempt + 1}/$_maxReconnectAttempts)");
+        // Generate the reconnecting message using the captured localization.
+        final String reconnectingMsg = localizations != null
+            ? localizations.reconnecting(attempt + 1, _maxReconnectAttempts)
+            : "Reconnecting (${attempt + 1}/$_maxReconnectAttempts)";
+        GameController().headerTipNotifier.showTip(reconnectingMsg);
 
         try {
-          await connectToHost(_opponentAddress!, _opponentPort!,
-              retryCount: 1); // Try only once each time
+          // Await connection attempt; note that no BuildContext is used here.
+          await connectToHost(_opponentAddress!, _opponentPort!, retryCount: 1);
           _isReconnecting = false;
-          GameController()
-              .headerTipNotifier
-              .showTip("Reconnected successfully!");
+          GameController().headerTipNotifier.showTip(reconnectedSuccessfully);
           return true;
         } catch (e) {
-          // If it's the last attempt, exit the loop and throw an exception
+          // If it's the last attempt, continue to throw an error.
           if (attempt == _maxReconnectAttempts - 1) {
             continue;
           }
-
-          // Gradually increase wait time
+          // Gradually increase the wait time between attempts.
           final waitTime = Duration(seconds: (attempt + 1) * 2);
-          await Future<void>.delayed(waitTime);
+          await Future.delayed(waitTime);
         }
       }
-      // All attempts failed
+      // All attempts failed; throw an exception.
       throw Exception("Reconnection failed");
     } catch (e) {
       logger.e("$_logTag Reconnection failed: $e");
       _isReconnecting = false;
-      GameController()
-          .headerTipNotifier
-          .showTip("Unable to reconnect, please restart the game");
+      // Use the pre-captured string for failure message.
+      GameController().headerTipNotifier.showTip(unableToReconnect);
       return false;
     }
   }
@@ -582,6 +601,7 @@ class NetworkService {
         logger.d("$_logTag Stack trace: $st");
 
         // Gracefully handle connection reset exception
+        // TODO: Use S.of(context).connectionResetByPeer?
         if (e != null && e.toString().contains("Connection reset by peer")) {
           logger
               .w("$_logTag Client disconnected abruptly (during message send)");
@@ -714,6 +734,17 @@ class NetworkService {
           return;
         }
 
+        final context = rootScaffoldMessengerKey.currentContext;
+        final String takeBackAccepted;
+        final String takeBackRejected;
+        if (context != null) {
+          takeBackAccepted = S.of(context).takeBackAccepted;
+          takeBackRejected = S.of(context).takeBackRejected;
+        } else {
+          takeBackAccepted = "Take back accepted";
+          takeBackRejected = "Take back rejected";
+        }
+
         if (command == "request") {
           // Opponent requests a take-back
           GameController().handleTakeBackRequest(steps);
@@ -722,12 +753,12 @@ class NetworkService {
           _performLanTakeBack(steps);
           GameController().pendingTakeBackCompleter?.complete(true);
           GameController().pendingTakeBackCompleter = null;
-          GameController().headerTipNotifier.showTip("Take back accepted.");
+          GameController().headerTipNotifier.showTip(takeBackAccepted);
         } else if (command == "rejected") {
           // Opponent rejected
           GameController().pendingTakeBackCompleter?.complete(false);
           GameController().pendingTakeBackCompleter = null;
-          GameController().headerTipNotifier.showTip("Take back rejected.");
+          GameController().headerTipNotifier.showTip(takeBackRejected);
         } else {
           logger.w("$_logTag Unknown take back command: $command");
         }
@@ -807,25 +838,39 @@ class NetworkService {
     }
 
     final String disconnectReason = error ?? reason ?? "Unknown reason";
-    // Provide a more user-friendly message
-    String userFriendlyMessage = "Disconnected from opponent";
+    // Get the current BuildContext for localization
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String disconnectedFromOpponent = context != null
+        ? S.of(context).disconnectedFromOpponent
+        : "Disconnected from opponent";
+    String userFriendlyMessage = disconnectedFromOpponent;
 
     if (error != null && error.contains("Connection reset by peer")) {
       logger.i(
           "$_logTag Client disconnected abruptly (connection reset by peer)");
-      userFriendlyMessage = "The opponent may have left the game";
+      final String opponentLeftMessage = context != null
+          ? S.of(context).theOpponentMayHaveLeftTheGame
+          : "The opponent may have left the game";
+      userFriendlyMessage = opponentLeftMessage;
     } else if (disconnectReason.contains("timeout")) {
-      userFriendlyMessage = "Connection timed out, network connection unstable";
+      userFriendlyMessage = context != null
+          ? S.of(context).connectionTimedOutNetworkConnectionUnstable
+          : "Connection timed out, network connection unstable";
     } else if (disconnectReason.contains("refused")) {
-      userFriendlyMessage = "Connection refused, the server may be down";
+      userFriendlyMessage = context != null
+          ? S.of(context).connectionRefusedTheServerMayBeDown
+          : "Connection refused, the server may be down";
     }
 
     logger.i("$_logTag Opponent disconnected: $disconnectReason");
 
-    // Use a more user-friendly message
-    GameController().headerTipNotifier.showTip(userFriendlyMessage);
+    // Append localized "game over" message
+    final gameOverText = context != null ? S.of(context).gameOver : "Game over";
+    GameController()
+        .headerTipNotifier
+        .showTip("$userFriendlyMessage, $gameOverText");
 
-    // If the game is still ongoing, declare a draw or other result
+    // Additional disconnection handling...
     GameController().isLanOpponentTurn = false;
     if (GameController().position.phase != Phase.gameOver) {
       GameController().position._setGameOver(
@@ -834,7 +879,7 @@ class NetworkService {
           );
       GameController()
           .headerTipNotifier
-          .showTip("$userFriendlyMessage, game over");
+          .showTip("$userFriendlyMessage, $gameOverText");
     }
 
     // Notify connection status change
@@ -1052,18 +1097,18 @@ class NetworkService {
 
   /// Notify connection status change, with additional information
   void _notifyConnectionStatusChanged(bool isConnected, {String? info}) {
-    // First call the callback
     onConnectionStatusChanged?.call(isConnected);
 
-    // Update UI to show connection status
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String statusInfo =
+        info ?? (context != null ? S.of(context).connected : "Connected");
+
     if (isConnected) {
-      final String statusInfo = info ?? "Connected";
       GameController().headerTipNotifier.showTip(statusInfo);
     } else if (info != null) {
       GameController().headerTipNotifier.showTip(info);
     }
 
-    // Update other UI elements to reflect connection status
     GameController().headerIconsNotifier.showIcons();
   }
 }

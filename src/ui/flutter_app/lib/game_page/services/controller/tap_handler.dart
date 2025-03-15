@@ -64,7 +64,7 @@ class TapHandler {
       if (GameController().networkService == null ||
           !GameController().networkService!.isConnected) {
         logger.w("$_logTag No active LAN connection");
-        showTip("No LAN connection", snackBar: true);
+        showTip(S.of(context).noLanConnection, snackBar: true);
         return const EngineResponseSkip();
       }
     }
@@ -97,7 +97,7 @@ class TapHandler {
       if (GameController().networkService == null ||
           !GameController().networkService!.isConnected) {
         logger.w("$_logTag No active LAN connection");
-        showTip("No LAN connection", snackBar: true);
+        showTip(S.of(context).noLanConnection, snackBar: true);
         return const EngineResponseSkip();
       }
     }

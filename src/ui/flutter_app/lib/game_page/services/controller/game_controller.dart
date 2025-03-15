@@ -92,7 +92,7 @@ class GameController {
   @visibleForTesting
   static GameController instance = GameController._();
 
-  /// Starts up the controller. It will initialize the audio subsystem and heat the engine.
+  /// S.of(context).starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> startController() async {
     if (_isInitialized) {
       return;
@@ -120,13 +120,12 @@ class GameController {
   /// Sends a restart request to the LAN opponent.
   /// This method is called when the local user requests a game restart.
   void requestRestart() {
+    // TODO: Use S.of(context).restartRequestSentWaitingForOpponentSResponse
     if (gameInstance.gameMode == GameMode.humanVsLAN &&
         (networkService?.isConnected ?? false)) {
       // Send a restart request message to the opponent
       networkService!.sendMove("restart:request");
       // Optionally, show a tip that the request has been sent
-      headerTipNotifier
-          .showTip("Restart request sent. Waiting for opponent's response.");
     } else {
       // For non-LAN modes, simply reset the game.
       reset();
@@ -148,8 +147,8 @@ class GameController {
       builder: (BuildContext dialogContext) {
         return AlertDialog(
           title: const Text("Restart Request"),
-          content: const Text(
-              "Opponent requested to restart the game. Do you accept?"),
+          content: Text(
+              S.of(dialogContext).opponentRequestedToRestartTheGameDoYouAccept),
           actions: <Widget>[
             TextButton(
               // If accepted, send accepted message and reset game (LAN socket remains open)
@@ -166,7 +165,8 @@ class GameController {
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
                 networkService?.sendMove("restart:rejected");
-                headerTipNotifier.showTip("Restart request rejected.");
+                headerTipNotifier
+                    .showTip("S.of(context).restartRequestRejected");
               },
               child: const Text("No"),
             ),
@@ -198,8 +198,9 @@ class GameController {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Confirm Resignation"),
-          content: const Text("Are you sure you want to resign this game?"),
+          title: Text(S.of(context).confirmResignation),
+          content:
+              const Text("S.of(context).areYouSureYouWantToResignThisGame"),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -227,7 +228,8 @@ class GameController {
                   );
 
                   // Show resignation message
-                  headerTipNotifier.showTip("You resigned. Game over.");
+                  headerTipNotifier
+                      .showTip("S.of(context).youResignedGameOver");
                   gameResultNotifier.showResult(force: true);
 
                   // Play sound if enabled
@@ -264,7 +266,12 @@ class GameController {
       );
 
       // Update UI
-      headerTipNotifier.showTip("Opponent resigned. You win!");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      if (context != null) {
+        headerTipNotifier.showTip(S.of(context).opponentResignedYouWin);
+      } else {
+        headerTipNotifier.showTip("Opponent resigned, you win");
+      }
       gameResultNotifier.showResult(force: true);
       isLanOpponentTurn = false;
 
@@ -290,7 +297,11 @@ class GameController {
     );
 
     // Update UI
-    headerTipNotifier.showTip("You resigned. Game over.");
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String youResignedGameOver = context != null
+        ? S.of(context).youResignedGameOver
+        : "You resigned, game over";
+    headerTipNotifier.showTip(youResignedGameOver);
     gameResultNotifier.showResult(force: true);
 
     // Play sound if enabled
@@ -340,7 +351,6 @@ class GameController {
     // Reinitialize game objects
     _init(gameModeBak);
 
-    // 恢复主机颜色设置
     lanHostPlaysWhite = savedHostPlaysWhite;
 
     // For LAN games, always start with White and set turn based on local color.
@@ -358,11 +368,9 @@ class GameController {
 
     gameInstance.gameMode = gameModeBak;
     GifShare().captureView(first: true);
-    // Optionally, show a tip that the game has been restarted.
-    headerTipNotifier.showTip("Game restarted.");
   }
 
-  /// Starts the current game.
+  /// S.of(context).starts the current game.
   ///
   /// This method is suitable to use for starting a new game.
   void _startGame() {
@@ -378,7 +386,7 @@ class GameController {
     _startGame();
   }
 
-  /// Starts a LAN game, either as a host or a client.
+  /// S.of(context).starts a LAN game, either as a host or a client.
   ///
   /// [isHost]: If true, the player hosts the game; if false, the player joins as a client.
   /// [hostAddress]: The IP address of the host to connect to (required if not hosting).
@@ -393,7 +401,6 @@ class GameController {
     void Function(String, int)? onClientConnected,
   }) {
     gameInstance.gameMode = GameMode.humanVsLAN;
-    // 使用传入的hostPlaysWhite参数，而不是重新从GameController获取
     lanHostPlaysWhite = hostPlaysWhite;
 
     headerIconsNotifier.showIcons();
@@ -402,6 +409,13 @@ class GameController {
       networkService?.dispose();
       networkService = NetworkService();
     }
+
+    final BuildContext? currentContext =
+        rootScaffoldMessengerKey.currentContext;
+
+    final String connectedWaitingForOpponentSMove = currentContext != null
+        ? S.of(currentContext).connectedWaitingForOpponentSMove
+        : "Connected, waiting for opponent's move";
 
     try {
       if (isHost) {
@@ -430,7 +444,8 @@ class GameController {
         networkService!.connectToHost(hostAddress, port).then((_) {
           final PieceColor localColor = getLocalColor();
           isLanOpponentTurn = (position.sideToMove != localColor);
-          headerTipNotifier.showTip("Connected, waiting for opponent's move",
+
+          headerTipNotifier.showTip(connectedWaitingForOpponentSMove,
               snackBar: false);
           onClientConnected?.call(hostAddress, port);
         });
@@ -488,8 +503,14 @@ class GameController {
         final PieceColor localColor = getLocalColor();
         isLanOpponentTurn = (position.sideToMove != localColor);
         boardSemanticsNotifier.updateSemantics();
+
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        final String ot =
+            context != null ? S.of(context).opponentSTurn : "Opponent's turn";
+        final String yt =
+            context != null ? S.of(context).yourTurn : "Your turn";
         headerTipNotifier.showTip(
-          isLanOpponentTurn ? "Opponent's turn" : "Your turn",
+          isLanOpponentTurn ? ot : yt,
           snackBar: false,
         );
         logger.i("$_logTag Successfully processed LAN move: $moveNotation");
@@ -521,8 +542,12 @@ class GameController {
       final PieceColor localColor = getLocalColor();
       isLanOpponentTurn = (position.sideToMove != localColor);
       logger.i("$_logTag Sent move to LAN opponent: $moveNotation");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String ot =
+          context != null ? S.of(context).opponentSTurn : "Opponent's turn";
+      final String yt = context != null ? S.of(context).yourTurn : "Your turn";
       headerTipNotifier.showTip(
-        isLanOpponentTurn ? "Opponent's turn" : "Your turn",
+        isLanOpponentTurn ? ot : yt,
         snackBar: false,
       );
     } catch (e) {
@@ -543,12 +568,19 @@ class GameController {
 
     // If not connected or it's the opponent's turn, you might block:
     if (networkService == null || !networkService!.isConnected) {
-      headerTipNotifier.showTip("Not connected to LAN opponent.");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String notConnectedToLanOpponent = context != null
+          ? S.of(context).notConnectedToLanOpponent
+          : "You resigned, game over";
+      headerTipNotifier.showTip(notConnectedToLanOpponent);
       return false;
     }
     if (isLanOpponentTurn) {
-      headerTipNotifier
-          .showTip("Cannot request a take back when it's not your turn.");
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String cannotRequestATakeBackWhenItSNotYourTurn = context != null
+          ? S.of(context).cannotRequestATakeBackWhenItSNotYourTurn
+          : "Cannot request a take back when it's not your turn";
+      headerTipNotifier.showTip(cannotRequestATakeBackWhenItSNotYourTurn);
       return false;
     }
 
@@ -558,7 +590,12 @@ class GameController {
     pendingTakeBackCompleter = Completer<bool>();
 
     networkService!.sendMove("take back:$steps:request");
-    headerTipNotifier.showTip("Take back request sent to the opponent.",
+
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    final String takeBackRequestSentToTheOpponent = context != null
+        ? S.of(context).takeBackRequestSentToTheOpponent
+        : "Take back request sent to the opponent";
+    headerTipNotifier.showTip(takeBackRequestSentToTheOpponent,
         snackBar: false);
 
     // We'll wait up to X seconds for the user to respond.
@@ -592,7 +629,7 @@ class GameController {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Take Back Request"),
+          title: Text(S.of(dialogContext).takeBackRequest),
           content:
               Text("Opponent requests to take back $steps move(s). Accept?"),
           actions: <Widget>[
@@ -861,26 +898,26 @@ class GameController {
     GifShare().shareGif();
   }
 
-  /// Starts a game save.
+  /// S.of(context).starts a game save.
   static Future<String?> save(BuildContext context,
       {bool shouldPop = true}) async {
     return LoadService.saveGame(context, shouldPop: shouldPop);
   }
 
-  /// Starts a game load.
+  /// S.of(context).starts a game load.
   static Future<void> load(BuildContext context,
       {bool shouldPop = true}) async {
     return LoadService.loadGame(context, null,
         isRunning: true, shouldPop: shouldPop);
   }
 
-  /// Starts a game import.
+  /// S.of(context).starts a game import.
   static Future<void> import(BuildContext context,
       {bool shouldPop = true}) async {
     return ImportService.importGame(context, shouldPop: shouldPop);
   }
 
-  /// Starts a game export.
+  /// S.of(context).starts a game export.
   static Future<void> export(BuildContext context,
       {bool shouldPop = true}) async {
     return ExportService.exportGame(context, shouldPop: shouldPop);

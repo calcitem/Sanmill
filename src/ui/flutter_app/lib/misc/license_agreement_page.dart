@@ -20,7 +20,7 @@ class LicenseAgreementPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> data) {
         late final String str;
         if (!data.hasData) {
-          str = "Nothing to show";
+          str = S.of(context).nothingToShow;
         } else {
           str = data.data!;
         }

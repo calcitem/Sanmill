@@ -7,6 +7,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
+import '../../../generated/intl/l10n.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/themes/app_theme.dart';
@@ -967,10 +968,10 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
         overlayBox.size.width - details.globalPosition.dx,
         overlayBox.size.height - details.globalPosition.dy,
       ),
-      items: const <PopupMenuEntry<String>>[
+      items: <PopupMenuEntry<String>>[
         PopupMenuItem<String>(
           value: 'delete',
-          child: Text('Delete'),
+          child: Text(S.of(context).delete),
         ),
       ],
     ).then((String? selected) {
@@ -1029,25 +1030,25 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     final String? userText = await showDialog<String>(
       context: context,
       builder: (BuildContext ctx) => AlertDialog(
-        title: const Text("Add Text"),
+        title: Text(S.of(context).addText),
         content: TextField(
           controller: controller,
           autofocus: true,
-          decoration: const InputDecoration(
-            hintText: "Type your annotation",
+          decoration: InputDecoration(
+            hintText: S.of(ctx).typeYourAnnotation,
           ),
           onSubmitted: (String val) => Navigator.pop(ctx, val),
         ),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text("Cancel"),
+            child: Text(S.of(ctx).cancel),
           ),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx, controller.text);
             },
-            child: const Text("OK"),
+            child: Text(S.of(ctx).ok),
           ),
         ],
       ),
