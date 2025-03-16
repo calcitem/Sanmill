@@ -1,3 +1,4 @@
+AClient
 ARGS
 Appium
 Belarusian
@@ -33,6 +34,7 @@ SMs
 SMy
 SNb
 SNl
+SResponse
 SRo
 SRu
 SSi
@@ -43,6 +45,7 @@ SSv
 SSw
 STe
 STh
+STurn
 SUk
 SUr
 SVi
