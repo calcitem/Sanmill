@@ -735,7 +735,7 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI தற்போது தாமதமான மறுமொழி கட்டத்தில் உள்ளது. தொடர்வதற்கு முன் சிறிது நேரம் காத்திருங்கள்.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "நீங்கள் ஒரு அல்லாத துண்டு துண்டுகளை அகற்ற முடியாது.",
+  "tipCanNotRemoveNonadjacent": "நீங்கள் அருகிலுள்ள அல்லாத துண்டுகளை அகற்ற முடியாது.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "ஒரு முட்டுக்கட்டைக்கு, ஆலை உருவாவதைப் பொருட்படுத்தாமல், உங்களுடைய அருகிலுள்ள எதிரியின் துண்டுகளை அகற்றலாம்.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
@@ -1005,7 +1005,7 @@
   },
   "oneTimeMill": "ஒரு முறை ஆலை",
   "@oneTimeMill": {},
-  "daSanQi": "அடிமை பிரச் Q i",
+  "daSanQi": "டா சான் கி",
   "@daSanQi": {},
   "ruleSettings": "விதி அமைப்புகள்",
   "@ruleSettings": {
