@@ -171,6 +171,7 @@ class Database {
   static Future<void> _initDisplaySettings() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
+    Hive.registerAdapter<MovesViewLayout>(MovesViewLayoutAdapter());
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
     _displaySettingsBox =
         await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);

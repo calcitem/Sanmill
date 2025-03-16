@@ -7,6 +7,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../appearance_settings/models/display_settings.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
@@ -14,15 +15,6 @@ import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'mini_board.dart';
-
-/// Defines possible view layouts for this MovesListPage.
-enum MovesViewLayout {
-  large,
-  medium,
-  small,
-  list,
-  details,
-}
 
 /// MovesListPage can display PGN nodes in different layouts.
 /// The user can pick from a set of layout options via a single active icon which,
@@ -44,8 +36,8 @@ class MovesListPageState extends State<MovesListPage> {
   /// ScrollController to control the scrolling of the ListView or GridView.
   final ScrollController _scrollController = ScrollController();
 
-  /// Current layout selection, defaulting to 'medium' (original).
-  MovesViewLayout _currentLayout = MovesViewLayout.medium;
+  /// Current layout selection, loaded from DB settings
+  MovesViewLayout _currentLayout = DB().displaySettings.movesViewLayout;
 
   @override
   void initState() {
@@ -388,6 +380,21 @@ class MovesListPageState extends State<MovesListPage> {
     }
   }
 
+  /// Updates the current layout and saves it to settings
+  void _updateLayout(MovesViewLayout newLayout) {
+    if (newLayout == _currentLayout) {
+      return;
+    }
+
+    setState(() {
+      _currentLayout = newLayout;
+    });
+
+    // Save the setting to DB
+    DB().displaySettings =
+        DB().displaySettings.copyWith(movesViewLayout: newLayout);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -425,12 +432,10 @@ class MovesListPageState extends State<MovesListPage> {
           // Tapping it opens a popup with a horizontal row of icons.
           PopupMenuButton<void>(
             icon: Icon(_iconForLayout(_currentLayout)),
-            // color: DB().colorSettings.mainToolbarBackgroundColor,
             onSelected: (_) {},
             itemBuilder: (BuildContext context) {
               return <PopupMenuEntry<void>>[
                 PopupMenuItem<void>(
-                  // Disable direct selection so that only the icons inside react.
                   enabled: false,
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -443,9 +448,7 @@ class MovesListPageState extends State<MovesListPage> {
                           color: isSelected ? Colors.black : Colors.black87,
                         ),
                         onPressed: () {
-                          setState(() {
-                            _currentLayout = layout;
-                          });
+                          _updateLayout(layout);
                           Navigator.pop(context);
                         },
                       );

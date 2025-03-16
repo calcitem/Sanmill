@@ -23,6 +23,21 @@ enum PointPaintingStyle {
   stroke,
 }
 
+/// Defines possible view layouts for moves list page.
+@HiveType(typeId: 12)
+enum MovesViewLayout {
+  @HiveField(0)
+  large,
+  @HiveField(1)
+  medium,
+  @HiveField(2)
+  small,
+  @HiveField(3)
+  list,
+  @HiveField(4)
+  details,
+}
+
 /// Display Settings data model
 ///
 /// Holds the data needed for the Display Settings
@@ -72,6 +87,7 @@ class DisplaySettings {
     this.boardCornerRadius = 5.0,
     this.isAdvantageGraphShown = false,
     this.isAnnotationToolbarShown = false,
+    this.movesViewLayout = MovesViewLayout.medium,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -202,6 +218,9 @@ class DisplaySettings {
 
   @HiveField(37, defaultValue: false)
   final bool isAnnotationToolbarShown;
+
+  @HiveField(38, defaultValue: MovesViewLayout.medium)
+  final MovesViewLayout movesViewLayout;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);
