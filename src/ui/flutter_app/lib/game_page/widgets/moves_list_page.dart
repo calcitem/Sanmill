@@ -283,21 +283,30 @@ class MovesListPageState extends State<MovesListPage> {
                     child: Text(
                       "$roundIndex. ",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: DB().colorSettings.messageColor),
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontFamily: 'monospace', // Add monospace font
+                      ),
                     ),
                   ),
                   Expanded(
                     child: Text(
                       whiteMoves,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: DB().colorSettings.messageColor),
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontFamily: 'monospace', // Add monospace font
+                      ),
                     ),
                   ),
                   Expanded(
                     child: Text(
                       blackMoves,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: DB().colorSettings.messageColor),
+                      style: TextStyle(
+                        color: DB().colorSettings.messageColor,
+                        fontFamily: 'monospace', // Add monospace font
+                      ),
                     ),
                   ),
                 ],
@@ -699,11 +708,12 @@ class MoveListItemState extends State<MoveListItem> {
         ? (isWhite ? "$roundIndex. " : "$roundIndex... ")
         : "";
 
-    // Common text style.
+    // Common text style with monospace font for notation
     final TextStyle combinedStyle = TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.bold,
       color: DB().colorSettings.messageColor,
+      fontFamily: 'monospace', // Add monospace font
     );
 
     switch (widget.layout) {
