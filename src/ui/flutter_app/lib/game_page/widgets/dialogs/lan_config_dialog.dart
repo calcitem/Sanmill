@@ -109,9 +109,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(S
-                .of(context)
-                .connectionLostDueToHeartbeatTimeoutPleaseReconnect),
+            content: Text(
+              S.of(context).connectionLostDueToHeartbeatTimeoutPleaseReconnect,
+              softWrap: true, // Allow multiline wrapping in Snackbar
+            ),
           ),
         );
       }
@@ -124,7 +125,12 @@ class LanConfigDialogState extends State<LanConfigDialog>
           _isConnecting = false;
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(message)),
+          SnackBar(
+            content: Text(
+              message,
+              softWrap: true, // Allow multiline wrapping in Snackbar
+            ),
+          ),
         );
       }
     };
@@ -168,8 +174,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
     // Assign current instance to the global network service.
     GameController().networkService = _networkService;
 
-    // >>> We save the user's color choice into GameController <<<
-    // So that it persists across "restart" calls.
+    // Save the user's color choice to GameController.
     GameController().lanHostPlaysWhite = _hostPlaysWhite;
 
     // Update state to indicate that hosting is starting.
@@ -192,6 +197,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                   S
                       .of(context)
                       .clientConnected(clientIp, clientPort.toString()),
+                  softWrap: true, // Allow multiline wrapping in Snackbar
                 ),
               ),
             );
@@ -219,6 +225,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
           SnackBar(
             content: Text(
               S.of(context).failedToStartHosting(e.toString()),
+              softWrap: true,
             ),
           ),
         );
@@ -226,7 +233,6 @@ class LanConfigDialogState extends State<LanConfigDialog>
     }
   }
 
-  /// Stops hosting and cleans up resources.
   /// Stops hosting and cleans up resources.
   Future<void> _stopHosting() async {
     if (!mounted) {
@@ -244,7 +250,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
     GameController().headerTipNotifier.showTip(S.of(context).serverIsStopped);
     GameController().headerIconsNotifier.showIcons();
 
-    // Create a new NetworkService instance to restart the service.
+    // Create a new NetworkService instance to restart the service when needed.
     _networkService = NetworkService();
   }
 
@@ -284,13 +290,19 @@ class LanConfigDialogState extends State<LanConfigDialog>
             SnackBar(
               content: Text(
                 S.of(context).hostDiscovered(parts[0], parts[1]),
+                softWrap: true,
               ),
             ),
           );
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(S.of(context).noHostDiscovered)),
+          SnackBar(
+            content: Text(
+              S.of(context).noHostDiscovered,
+              softWrap: true,
+            ),
+          ),
         );
       }
     }
@@ -350,7 +362,10 @@ class LanConfigDialogState extends State<LanConfigDialog>
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(S.of(context).connectedToHostSuccessfully),
+              content: Text(
+                S.of(context).connectedToHostSuccessfully,
+                softWrap: true,
+              ),
             ),
           );
           Navigator.pop(context, true);
@@ -362,6 +377,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
             SnackBar(
               content: Text(
                 S.of(context).failedToConnect(e.toString()),
+                softWrap: true,
               ),
             ),
           );
@@ -376,10 +392,251 @@ class LanConfigDialogState extends State<LanConfigDialog>
     }
   }
 
+  @override
+  Widget build(BuildContext context) {
+    final Color baseColor = Theme.of(context).dialogBackgroundColor;
+    final Size screenSize = MediaQuery.of(context).size;
+
+    return AlertDialog(
+      backgroundColor: baseColor,
+      contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
+      // Fixed width and height for the dialog.
+      content: SizedBox(
+        width: screenSize.width * 0.8,
+        height: screenSize.height * 0.4,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            // Top and center sections scroll if content is too tall.
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // -- Top section: title, role selection, status messages --
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          S.of(context).localNetworkSettings,
+                          style: Theme.of(context).textTheme.titleLarge,
+                          softWrap:
+                              true, // Allows multiline in case of long text
+                          overflow: TextOverflow
+                              .visible, // Ensure text is not cut off
+                        ),
+                        const SizedBox(height: 4),
+
+                        // Role selection (Host or Join)
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                contentPadding: EdgeInsets.zero,
+                                value: true,
+                                groupValue: isHost,
+                                onChanged: (bool? val) {
+                                  setState(() {
+                                    isHost = true;
+                                    _isDiscovering = false;
+                                    _isConnecting = false;
+                                    _discoverySuccess = false;
+                                    _protocolMismatchMessage = null;
+                                  });
+                                },
+                                title: Wrap(
+                                  // Use Wrap instead of Row for flexibility
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 4,
+                                  children: <Widget>[
+                                    const Icon(FluentIcons.desktop_24_regular,
+                                        size: 20),
+                                    Text(S.of(context).host),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: RadioListTile<bool>(
+                                contentPadding: EdgeInsets.zero,
+                                value: false,
+                                groupValue: isHost,
+                                onChanged: (bool? val) {
+                                  setState(() {
+                                    isHost = false;
+                                    _serverRunning = false;
+                                    _iconController.stop();
+                                    _protocolMismatchMessage = null;
+                                  });
+                                },
+                                title: Wrap(
+                                  // Use Wrap instead of Row for flexibility
+                                  crossAxisAlignment: WrapCrossAlignment.center,
+                                  spacing: 4,
+                                  children: <Widget>[
+                                    const Icon(
+                                        FluentIcons.plug_connected_24_regular,
+                                        size: 20),
+                                    Text(S.of(context).join),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+
+                        // Display network status based on mode.
+                        if (isHost)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Wrap(
+                                // Use Wrap instead of Row
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                spacing: 4,
+                                children: <Widget>[
+                                  if (_serverRunning)
+                                    RotationTransition(
+                                      turns: _iconController,
+                                      child: Icon(
+                                        FluentIcons.arrow_clockwise_24_regular,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        size: 20,
+                                      ),
+                                    )
+                                  else
+                                    const Icon(
+                                      FluentIcons.arrow_clockwise_24_regular,
+                                      color: Colors.grey,
+                                      size: 20,
+                                    ),
+                                  Text(
+                                    _serverRunning
+                                        ? S.of(context).waitingAClientConnection
+                                        : S.of(context).serverIsStopped,
+                                    style: const TextStyle(fontSize: 14.0),
+                                    softWrap: true, // Enable multiline wrapping
+                                    overflow: TextOverflow
+                                        .visible, // Ensure text is not cut off
+                                  ),
+                                ],
+                              ),
+                              if (_serverRunning)
+                                const SizedBox(height: 20)
+                              else
+                                const SizedBox(height: 4),
+                            ],
+                          )
+                        else
+                          Wrap(
+                            // Use Wrap instead of Row
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 4,
+                            children: <Widget>[
+                              if (_isDiscovering || _isConnecting)
+                                SizedBox(
+                                  width: 20,
+                                  height: 20,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                )
+                              else
+                                const Icon(
+                                  FluentIcons.warning_24_regular,
+                                  size: 20,
+                                  color: Colors.red,
+                                ),
+                              Text(
+                                _isDiscovering
+                                    ? S
+                                        .of(context)
+                                        .discoveringSeconds(_discoverySeconds)
+                                    : _isConnecting
+                                        ? S.of(context).connectingAttempt(
+                                            _currentAttempt, _maxAttempt)
+                                        : _discoverySuccess
+                                            ? S
+                                                .of(context)
+                                                .discoverySuccessfulAwaitingConnection
+                                            : S
+                                                .of(context)
+                                                .networkStatusDisconnected,
+                                style: const TextStyle(fontSize: 14.0),
+                                softWrap: true,
+                                overflow: TextOverflow
+                                    .visible, // Ensure text is not cut off
+                              ),
+                            ],
+                          ),
+
+                        // Display protocol mismatch message if exists.
+                        if (_protocolMismatchMessage != null) ...<Widget>[
+                          const SizedBox(height: 8),
+                          Text(
+                            _protocolMismatchMessage!,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.red,
+                            ),
+                            softWrap: true, // Allow multiline wrapping
+                            overflow: TextOverflow
+                                .visible, // Ensure text is not cut off
+                          ),
+                        ],
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+
+                    // -- Middle section: Show host info if hosting --
+                    if (isHost && _serverRunning && _hostInfo.isNotEmpty)
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(
+                            _hostInfo,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                            softWrap: true, // Allow multiline wrapping
+                            overflow: TextOverflow
+                                .visible, // Ensure text is not cut off
+                          ),
+                        ),
+                      )
+                    else
+                      const SizedBox(height: 0),
+                  ],
+                ),
+              ),
+            ),
+
+            // -- Bottom section: Host or Join UI --
+            if (isHost)
+              Container(
+                height: 160.0, // Increased height to fit the new radio row
+                padding: const EdgeInsets.only(top: 4.0),
+                child: _buildHostUI(),
+              )
+            else
+              Container(
+                padding: const EdgeInsets.only(top: 4.0),
+                child: _buildJoinUI(),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
   /// Builds the UI for Host mode.
-  ///
-  /// Added a row of RadioListTile to let the user choose
-  /// whether the host plays White (first mover) or Black (second mover).
   Widget _buildHostUI() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -447,9 +704,13 @@ class LanConfigDialogState extends State<LanConfigDialog>
                   : FluentIcons.play_24_filled,
               size: 20,
             ),
-            label: Text(_serverRunning
-                ? S.of(context).stopHosting
-                : S.of(context).startHosting),
+            label: Text(
+              _serverRunning
+                  ? S.of(context).stopHosting
+                  : S.of(context).startHosting,
+              softWrap: true,
+              overflow: TextOverflow.visible,
+            ),
             onPressed: () async {
               if (_serverRunning) {
                 await _stopHosting();
@@ -478,6 +739,8 @@ class LanConfigDialogState extends State<LanConfigDialog>
                 decoration: InputDecoration(
                   labelText: S.of(context).serverIp,
                   errorText: _ipError,
+                  // Allow error text to wrap
+                  errorMaxLines: 3,
                 ),
               ),
             ),
@@ -488,276 +751,63 @@ class LanConfigDialogState extends State<LanConfigDialog>
                 decoration: InputDecoration(
                   labelText: S.of(context).port,
                   errorText: _portError,
+                  // Allow error text to wrap
+                  errorMaxLines: 3,
                 ),
                 keyboardType: TextInputType.number,
               ),
             ),
           ],
         ),
-        // Increased spacing between fields and buttons for better balance
         const SizedBox(height: 24),
+
         // Buttons for discovery and connecting
         Row(
+          mainAxisAlignment:
+              MainAxisAlignment.spaceBetween, // Ensure proper spacing
           children: <Widget>[
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-              ),
-              onPressed: () async {
-                if (_isDiscovering) {
-                  _cancelDiscovery();
-                } else {
-                  await _startDiscovery();
-                }
-              },
-              child: Text(
-                _isDiscovering ? S.of(context).stop : S.of(context).discover,
+            // Use ConstrainedBox instead of Flexible for buttons
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 100),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: () async {
+                  if (_isDiscovering) {
+                    _cancelDiscovery();
+                  } else {
+                    await _startDiscovery();
+                  }
+                },
+                child: Text(
+                  _isDiscovering ? S.of(context).stop : S.of(context).discover,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
               ),
             ),
-            const Spacer(),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
+            const SizedBox(width: 8), // Fixed space between buttons
+            // Use ConstrainedBox instead of Flexible for buttons
+            ConstrainedBox(
+              constraints: const BoxConstraints(minWidth: 100),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                ),
+                onPressed: _onConnect,
+                child: Text(
+                  S.of(context).connect,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
               ),
-              onPressed: _onConnect,
-              child: Text(S.of(context).connect),
             ),
           ],
         ),
       ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Color baseColor = Theme.of(context).dialogBackgroundColor;
-    final Size screenSize = MediaQuery.of(context).size;
-
-    return AlertDialog(
-      backgroundColor: baseColor,
-      contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 12),
-      // Fixed width and height for the dialog.
-      content: SizedBox(
-        width: screenSize.width * 0.8,
-        height: screenSize.height * 0.4,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            // Top and center sections scroll if content is too tall.
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // -- Top section: title, role selection, status messages --
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          S.of(context).localNetworkSettings,
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 4),
-                        // Role selection (Host or Join)
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: RadioListTile<bool>(
-                                contentPadding: EdgeInsets.zero,
-                                value: true,
-                                groupValue: isHost,
-                                onChanged: (bool? val) {
-                                  setState(() {
-                                    isHost = true;
-                                    _isDiscovering = false;
-                                    _isConnecting = false;
-                                    _discoverySuccess = false;
-                                    _protocolMismatchMessage = null;
-                                  });
-                                },
-                                title: Row(
-                                  children: <Widget>[
-                                    const Icon(FluentIcons.desktop_24_regular,
-                                        size: 20),
-                                    const SizedBox(width: 4),
-                                    Text(S.of(context).host),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: RadioListTile<bool>(
-                                contentPadding: EdgeInsets.zero,
-                                value: false,
-                                groupValue: isHost,
-                                onChanged: (bool? val) {
-                                  setState(() {
-                                    isHost = false;
-                                    _serverRunning = false;
-                                    _iconController.stop();
-                                    _protocolMismatchMessage = null;
-                                  });
-                                },
-                                title: Row(
-                                  children: <Widget>[
-                                    const Icon(
-                                        FluentIcons.plug_connected_24_regular,
-                                        size: 20),
-                                    const SizedBox(width: 4),
-                                    Text(S.of(context).join),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        // Display network status based on mode.
-                        if (isHost)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  if (_serverRunning)
-                                    RotationTransition(
-                                      turns: _iconController,
-                                      child: Icon(
-                                        FluentIcons.arrow_clockwise_24_regular,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        size: 20,
-                                      ),
-                                    )
-                                  else
-                                    const Icon(
-                                      FluentIcons.arrow_clockwise_24_regular,
-                                      color: Colors.grey,
-                                      size: 20,
-                                    ),
-                                  const SizedBox(width: 4),
-                                  Flexible(
-                                    child: SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal,
-                                      child: Text(
-                                        _serverRunning
-                                            ? S
-                                                .of(context)
-                                                .waitingAClientConnection
-                                            : S.of(context).serverIsStopped,
-                                        style: const TextStyle(fontSize: 14.0),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (_serverRunning)
-                                const SizedBox(height: 20)
-                              else
-                                const SizedBox(height: 4),
-                            ],
-                          )
-                        else
-                          Row(
-                            children: <Widget>[
-                              if (_isDiscovering || _isConnecting)
-                                SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                )
-                              else
-                                const Icon(
-                                  FluentIcons.warning_24_regular,
-                                  size: 20,
-                                  color: Colors.red,
-                                ),
-                              const SizedBox(width: 4),
-                              Flexible(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Text(
-                                    _isDiscovering
-                                        ? S.of(context).discoveringSeconds(
-                                            _discoverySeconds)
-                                        : _isConnecting
-                                            ? S.of(context).connectingAttempt(
-                                                _currentAttempt, _maxAttempt)
-                                            : _discoverySuccess
-                                                ? S
-                                                    .of(context)
-                                                    .discoverySuccessfulAwaitingConnection
-                                                : S
-                                                    .of(context)
-                                                    .networkStatusDisconnected,
-                                    style: const TextStyle(fontSize: 14.0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        // Display protocol mismatch message if exists.
-                        if (_protocolMismatchMessage != null) ...<Widget>[
-                          const SizedBox(height: 8),
-                          Flexible(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Text(
-                                _protocolMismatchMessage!,
-                                style: const TextStyle(
-                                  fontSize: 14.0,
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    // -- Middle section: Show host info if hosting --
-                    if (isHost && _serverRunning && _hostInfo.isNotEmpty)
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(
-                            _hostInfo,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      )
-                    else
-                      const SizedBox(height: 0),
-                  ],
-                ),
-              ),
-            ),
-            // -- Bottom section: Host or Join UI --
-            if (isHost)
-              Container(
-                height: 160.0, // Increased height to fit the new radio row
-                padding: const EdgeInsets.only(top: 4.0),
-                child: _buildHostUI(),
-              )
-            else
-              Container(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: _buildJoinUI(),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }
