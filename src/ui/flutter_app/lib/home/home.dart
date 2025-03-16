@@ -199,6 +199,10 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
     // Handle the LAN-setup dialog, feedback, etc. as before...
     if (index == _DrawerIndex.humanVsLAN) {
+      // Show experimental feature notification
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).experimental);
+
       // Show LAN config dialog and await result
       final bool? result = await showDialog<bool>(
         context: context,
