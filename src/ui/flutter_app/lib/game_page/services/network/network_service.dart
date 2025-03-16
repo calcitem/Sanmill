@@ -10,7 +10,12 @@ part of '../mill.dart';
 /// NetworkService handles LAN hosting, client connections, discovery, and heartbeat checks.
 /// It also supports special commands such as "restart:", "take back:", "resign:",
 /// and "response:aiMovesFirst:" to coordinate with the GameController.
-class NetworkService {
+class NetworkService with WidgetsBindingObserver {
+  NetworkService() {
+    // Register for app lifecycle events
+    WidgetsBinding.instance.addObserver(this);
+  }
+
   static const String _logTag = "[Network]";
   static const String protocolVersion = "1.0";
 
@@ -76,6 +81,15 @@ class NetworkService {
   int _reconnectAttempts = 0;
   DateTime? _lastConnectionTime;
 
+  /// Flag to track if the app is in background
+  bool _isInBackground = false;
+
+  /// Tracks when the app went to background
+  DateTime? _backgroundStartTime;
+
+  /// Maximum time allowed in background before connection is considered stale
+  static const Duration _maxBackgroundTime = Duration(minutes: 2);
+
   /// Public getter for the underlying server socket,
   /// needed by external code to check if we're hosting.
   ServerSocket? get serverSocket => _serverSocket;
@@ -107,6 +121,144 @@ class NetworkService {
       'lastConnectionTime': _lastConnectionTime?.toIso8601String(),
       'protocolVersion': protocolVersion,
     };
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_disposed) {
+      return;
+    }
+
+    logger.i("$_logTag App lifecycle changed to $state");
+
+    if (state == AppLifecycleState.paused ||
+        state == AppLifecycleState.inactive) {
+      // App is going to background
+      _isInBackground = true;
+      _backgroundStartTime = DateTime.now();
+      logger.i("$_logTag App went to background");
+    } else if (state == AppLifecycleState.resumed) {
+      // App is coming to foreground
+      if (_isInBackground) {
+        _isInBackground = false;
+        _handleAppResumed();
+      }
+    }
+  }
+
+  /// Handles app resume from background, checking connection health
+  void _handleAppResumed() {
+    if (_disposed) {
+      return;
+    }
+
+    logger.i("$_logTag App resumed from background");
+
+    if (_backgroundStartTime != null) {
+      final timeInBackground = DateTime.now().difference(_backgroundStartTime!);
+
+      // If app was in background for too long, connections might be stale
+      if (timeInBackground > _maxBackgroundTime) {
+        logger.w(
+            "$_logTag App was in background for ${timeInBackground.inSeconds}s, "
+            "checking connection status");
+        _checkConnectionAfterResume();
+      } else {
+        logger.i(
+            "$_logTag App was in background for ${timeInBackground.inSeconds}s, "
+            "within acceptable limit");
+
+        // Even for short background periods, check connection status on host
+        if (isHost && _serverSocket != null) {
+          // Delay the check slightly to allow system to stabilize
+          Future.delayed(const Duration(milliseconds: 500), () {
+            _checkConnectionAfterResume();
+          });
+        }
+      }
+    }
+
+    _backgroundStartTime = null;
+  }
+
+  /// Verify connection status after app resume
+  void _checkConnectionAfterResume() {
+    if (_disposed) {
+      return;
+    }
+
+    try {
+      if (isHost && _serverSocket != null) {
+        // For host: Verify server socket is still valid
+        if (_serverSocket!.port == 0) {
+          logger.w("$_logTag Server socket invalid after resume, port = 0");
+          _handleDisconnection(
+              reason: "Server socket invalid after device wake up");
+          return;
+        }
+
+        // Add additional check for server socket validity
+        try {
+          // Test if the server socket is still valid by attempting a simple operation
+          // This will throw an exception if the socket is no longer valid
+          _serverSocket!.address;
+        } catch (e) {
+          logger.w("$_logTag Server socket exception after resume: $e");
+          _handleDisconnection(
+              reason: "Server socket invalid after device wake up: $e");
+          return;
+        }
+
+        // Also check client connection if we have one
+        if (_clientSocket != null && _clientSocket!.isClosed) {
+          logger.w("$_logTag Client socket closed after resume");
+          _handleDisconnection(
+              reason: "Client disconnected while device was asleep");
+          return;
+        }
+
+        // If past checks, send a test heartbeat to verify client connection
+        _sendTestHeartbeatAfterResume();
+      } else if (!isHost && _clientSocket != null) {
+        // For client: Verify connection to host
+        if (_clientSocket!.isClosed) {
+          logger.w("$_logTag Host socket closed after resume");
+          _handleDisconnection(
+              reason: "Host disconnected while device was asleep");
+          return;
+        }
+
+        // Try a test message
+        _sendTestHeartbeatAfterResume();
+      }
+    } catch (e, st) {
+      logger.e("$_logTag Error checking connection after resume: $e");
+      logger.d("$_logTag Stack trace: $st");
+      _handleDisconnection(error: "Connection error after device wake up: $e");
+    }
+  }
+
+  /// Send a test heartbeat after resuming to verify connection
+  void _sendTestHeartbeatAfterResume() {
+    if (_disposed) {
+      return;
+    }
+
+    try {
+      _sendMessageInternal("heartbeat");
+      logger.i("$_logTag Sent test heartbeat after resume");
+
+      // Schedule a delayed check to see if we get a disconnect
+      Future.delayed(const Duration(seconds: 3), () {
+        if (!_disposed && isConnected) {
+          logger.i("$_logTag Connection survived after device wake up");
+        }
+      });
+    } catch (e) {
+      logger.e("$_logTag Error sending test message after resume: $e");
+      _handleDisconnection(
+          error: "Failed to send data after device wake up: $e");
+    }
   }
 
   /// Starts hosting on the specified [port], allowing exactly one client,
@@ -490,6 +642,14 @@ class NetworkService {
         }
       },
     );
+
+    // Listen for asynchronous write errors that may occur after the socket is closed.
+    socket.done.catchError((error, st) {
+      if (!_disposed) {
+        logger.e("$_logTag Socket write error on .done: $error");
+        _handleDisconnection(error: error.toString());
+      }
+    });
   }
 
   /// Processes queued messages in FIFO order, to avoid concurrency issues.
@@ -600,12 +760,19 @@ class NetworkService {
         logger.e("$_logTag Error sending message: $e");
         logger.d("$_logTag Stack trace: $st");
 
-        // Gracefully handle connection reset exception
-        // TODO: Use S.of(context).connectionResetByPeer?
-        if (e != null && e.toString().contains("Connection reset by peer")) {
-          logger
-              .w("$_logTag Client disconnected abruptly (during message send)");
-          _handleDisconnection(error: "Connection reset by peer");
+        // Gracefully handle all types of socket exceptions
+        if (e is SocketException) {
+          logger.w("$_logTag Socket error during send: ${e.message}");
+
+          // Check for common error messages
+          if (e.message.contains("Connection reset by peer") ||
+              e.message.contains("Broken pipe") ||
+              e.message.contains("Software caused connection abort")) {
+            logger.w("$_logTag Connection error detected during message send");
+            _handleDisconnection(error: "Connection error: ${e.message}");
+          } else {
+            _handleDisconnection(error: "Send error: ${e.message}");
+          }
         } else {
           _handleDisconnection(error: "Send error: $e");
         }
@@ -895,6 +1062,9 @@ class NetworkService {
     if (_disposed) {
       return;
     }
+    // Remove lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
+
     logger.i("$_logTag dispose() called by user");
     _disposeInternals();
   }
@@ -912,10 +1082,25 @@ class NetworkService {
       logger.e("$_logTag Error destroying client socket: $e");
     }
     try {
-      _serverSocket?.close();
+      // Add extra safety measures when closing server socket
+      if (_serverSocket != null) {
+        try {
+          // Verify socket is still valid before attempting to close
+          final bool isValid = _serverSocket!.port > 0;
+          if (isValid) {
+            _serverSocket!.close();
+          } else {
+            logger.w(
+                "$_logTag Skipping close of invalid server socket (port = 0)");
+          }
+        } catch (e) {
+          logger.w("$_logTag Error checking server socket validity: $e");
+        }
+      }
     } catch (e) {
       logger.e("$_logTag Error closing server socket: $e");
     }
+
     try {
       _discoverySocket?.close();
     } catch (e) {

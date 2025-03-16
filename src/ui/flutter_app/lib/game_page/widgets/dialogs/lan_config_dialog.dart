@@ -134,6 +134,26 @@ class LanConfigDialogState extends State<LanConfigDialog>
         );
       }
     };
+
+    // Add error handling for network service callbacks
+    _networkService.onConnectionStatusChanged = (bool isConnected) {
+      if (mounted && !isConnected && _serverRunning) {
+        // If we were hosting and lost connection
+        setState(() {
+          _serverRunning = false;
+          _iconController.stop();
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              S.of(context).serverIsStopped,
+              softWrap: true,
+            ),
+          ),
+        );
+      }
+    };
   }
 
   @override
@@ -197,7 +217,7 @@ class LanConfigDialogState extends State<LanConfigDialog>
                   S
                       .of(context)
                       .clientConnected(clientIp, clientPort.toString()),
-                  softWrap: true, // Allow multiline wrapping in Snackbar
+                  softWrap: true,
                 ),
               ),
             );
