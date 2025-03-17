@@ -46,7 +46,6 @@ MADV
 MAKEINTRESOURCE
 MINISIZE
 MOVETYPE
-MVC
 NCCREATE
 NEEDREMOVE
 NMM
@@ -100,7 +99,6 @@ csdn
 cupertino
 dalam
 dartpad
-dms
 dooz
 eula
 elfilja
