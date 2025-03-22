@@ -354,10 +354,10 @@ class AppTheme {
 
   /// Color themes
   // ignore_for_file: avoid_redundant_argument_values
-  static const Map<ColorTheme, ColorSettings> colorThemes =
+  static final Map<ColorTheme, ColorSettings> colorThemes =
       <ColorTheme, ColorSettings>{
-    ColorTheme.light: ColorSettings(),
-    ColorTheme.dark: ColorSettings(
+    ColorTheme.light: const ColorSettings(),
+    ColorTheme.dark: const ColorSettings(
       boardLineColor: UIColors.osloGrey,
       darkBackgroundColor: Colors.black,
       boardBackgroundColor: Colors.black,
@@ -377,7 +377,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Colors.black,
       annotationToolbarIconColor: UIColors.tahitiGold60,
     ),
-    ColorTheme.monochrome: ColorSettings(
+    ColorTheme.monochrome: const ColorSettings(
       boardLineColor: Colors.black,
       darkBackgroundColor: Colors.white,
       boardBackgroundColor: Colors.white,
@@ -397,7 +397,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Colors.white,
       annotationToolbarIconColor: Colors.black,
     ),
-    ColorTheme.transparentCanvas: ColorSettings(
+    ColorTheme.transparentCanvas: const ColorSettings(
       boardLineColor: Colors.black,
       // Background color with minimal opacity (1/255) to prevent saved images
       // from being completely black
@@ -413,7 +413,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color.fromARGB(0, 255, 255, 255),
       annotationToolbarIconColor: Colors.black,
     ),
-    ColorTheme.autumnLeaves: ColorSettings(
+    ColorTheme.autumnLeaves: const ColorSettings(
       boardLineColor: Color(0xFF000000),
       // Black
       darkBackgroundColor: Color(0xFF284B3A),
@@ -449,7 +449,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF8B5A2B),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.legendaryLand: ColorSettings(
+    ColorTheme.legendaryLand: const ColorSettings(
       boardLineColor: Color(0xFF8FBC8F),
       // Dark Sea Green
       darkBackgroundColor: Color(0xFF8B7355),
@@ -485,7 +485,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF8B7355),
       annotationToolbarIconColor: Color(0xFFF0FFF0),
     ),
-    ColorTheme.goldenJade: ColorSettings(
+    ColorTheme.goldenJade: const ColorSettings(
       boardBackgroundColor: Color(0xFFC89B42),
       // golden
       darkBackgroundColor: Color(0xFFE9E7D7),
@@ -521,7 +521,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFFE9E7D7),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.forestWood: ColorSettings(
+    ColorTheme.forestWood: const ColorSettings(
       boardBackgroundColor: Color(0xFFC19A6B),
       // wood brown
       darkBackgroundColor: Color(0xFF8B5A2B),
@@ -557,7 +557,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF8B5A2B),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.greenMeadow: ColorSettings(
+    ColorTheme.greenMeadow: const ColorSettings(
       boardBackgroundColor: Color(0xFF9ACD32),
       // yellow-green
       darkBackgroundColor: Color(0xFF006400),
@@ -593,7 +593,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF006400),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.stonyPath: ColorSettings(
+    ColorTheme.stonyPath: const ColorSettings(
       boardBackgroundColor: Color(0xFFC0C0C0),
       // silver
       darkBackgroundColor: Color(0xFF808080),
@@ -629,7 +629,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF808080),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.midnightBlue: ColorSettings(
+    ColorTheme.midnightBlue: const ColorSettings(
       boardBackgroundColor: Color(0xFF162447),
       // midnight blue
       darkBackgroundColor: Color(0xFF1f4068),
@@ -665,7 +665,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF1f4068),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.greenForest: ColorSettings(
+    ColorTheme.greenForest: const ColorSettings(
       boardBackgroundColor: Color(0xFFa9eec2),
       // light green
       darkBackgroundColor: Color(0xFF4DAA4C),
@@ -701,7 +701,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF4DAA4C),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.pastelPink: ColorSettings(
+    ColorTheme.pastelPink: const ColorSettings(
       boardBackgroundColor: Color(0xFFf7bacf),
       // pastel pink
       darkBackgroundColor: Color(0xFFefc3e6),
@@ -736,7 +736,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFFefc3e6),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.turquoiseSea: ColorSettings(
+    ColorTheme.turquoiseSea: const ColorSettings(
       boardBackgroundColor: Color(0xFFc9ada1),
       // beige
       darkBackgroundColor: Color(0xFF1f7a8c),
@@ -772,7 +772,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF1f7a8c),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.violetDream: ColorSettings(
+    ColorTheme.violetDream: const ColorSettings(
       boardBackgroundColor: Color(0xFF8b77a9),
       // violet
       darkBackgroundColor: Color(0xFF583d72),
@@ -808,7 +808,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF583d72),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.mintChocolate: ColorSettings(
+    ColorTheme.mintChocolate: const ColorSettings(
       boardBackgroundColor: Color(0xFFA1E8AF),
       // mint
       darkBackgroundColor: Color(0xFF0B3D0B),
@@ -845,7 +845,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF0B3D0B),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.skyBlue: ColorSettings(
+    ColorTheme.skyBlue: const ColorSettings(
       boardBackgroundColor: Color(0xFFD0E1F9),
       // light sky blue
       darkBackgroundColor: Color(0xFF4B89AC),
@@ -881,7 +881,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF4B89AC),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.playfulGarden: ColorSettings(
+    ColorTheme.playfulGarden: const ColorSettings(
       boardBackgroundColor: Color(0xFFFBE9A6),
       // light yellow
       darkBackgroundColor: Color(0xFF8AC926),
@@ -917,7 +917,7 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFFB8DCAC),
       annotationToolbarIconColor: Color(0xFFA4A293),
     ),
-    ColorTheme.darkMystery: ColorSettings(
+    ColorTheme.darkMystery: const ColorSettings(
       boardBackgroundColor: Color(0xFF5C5C5C),
       // dark silver
       darkBackgroundColor: Color(0xFF0F0F0F),
@@ -952,6 +952,546 @@ class AppTheme {
       // warm gray
       annotationToolbarBackgroundColor: Color(0xFF0F0F0F),
       annotationToolbarIconColor: Color(0xFFA4A293),
+    ),
+    ColorTheme.ancientEgypt: const ColorSettings(
+      boardBackgroundColor: Color(0xFFE8D0AA),
+      // Sandy background resembling papyrus
+      darkBackgroundColor: Color(0xFF7E5C31),
+      // Deep brown like ancient tombs
+      boardLineColor: Color(0xFF3D2A18),
+      // Dark brown for hieroglyphic-like lines
+      whitePieceColor: Color(0xFFFCF4D9),
+      // Off-white like ancient limestone
+      blackPieceColor: Color(0xFF2D4150),
+      // Deep blue like lapis lazuli
+      pieceHighlightColor: Color(0xFFD4AF37),
+      // Gold highlight for royal pieces
+      messageColor: Color(0xFF3D2A18),
+      // Match boardLineColor for readability
+      drawerColor: Color(0xFF7E5C31),
+      // Match dark background
+      drawerTextColor: Color(0xFFFCF4D9),
+      // Match whitePieceColor
+      drawerHighlightItemColor: Color(0x33D4AF37),
+      // Semi-transparent gold
+      mainToolbarBackgroundColor: Color(0xFF7E5C31),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFCF4D9),
+      // Match white piece color
+      navigationToolbarBackgroundColor: Color(0xFF7E5C31),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFCF4D9),
+      // Match white piece color
+      analysisToolbarBackgroundColor: Color(0xFF7E5C31),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFCF4D9),
+      // Match white piece color
+      annotationToolbarBackgroundColor: Color(0xFF7E5C31),
+      annotationToolbarIconColor: Color(0xFFFCF4D9),
+    ),
+    ColorTheme.gothicIce: const ColorSettings(
+      boardBackgroundColor: Color(0xFFE8F4FC),
+      // Icy light blue background
+      darkBackgroundColor: Color(0xFF1A2C42),
+      // Dark blue, almost black like night sky
+      boardLineColor: Color(0xFF264D73),
+      // Deep blue lines
+      whitePieceColor: Color(0xFFF0F7FF),
+      // Snow white
+      blackPieceColor: Color(0xFF0D1F2D),
+      // Dark night blue
+      pieceHighlightColor: Color(0xFFA1D6E6),
+      // Match dark background
+      messageColor: Color(0xFFA1D6E6),
+      // Match board line color
+      drawerColor: Color(0xFF1A2C42),
+      // Match dark background
+      drawerTextColor: Color(0xFFF0F7FF),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33A1D6E6),
+      // Semi-transparent highlight
+      mainToolbarBackgroundColor: Color(0xFF1A2C42),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFA1D6E6),
+      // Cyan icons
+      navigationToolbarBackgroundColor: Color(0xFF1A2C42),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFA1D6E6),
+      // Cyan icons
+      analysisToolbarBackgroundColor: Color(0xFF1A2C42),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFA1D6E6),
+      // Cyan icons
+      annotationToolbarBackgroundColor: Color(0xFF1A2C42),
+      annotationToolbarIconColor: Color(0xFFA1D6E6),
+    ),
+    ColorTheme.riceField: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF0E9D2),
+      // Light wheat color like dry rice
+      darkBackgroundColor: Color(0xFF678D58),
+      // Green like rice paddies
+      boardLineColor: Color(0xFF4A593D),
+      // Darker green for field divisions
+      whitePieceColor: Color(0xFFF7F3E8),
+      // White like polished rice
+      blackPieceColor: Color(0xFF33290A),
+      // Dark brown like fertile soil
+      pieceHighlightColor: Color(0xFFEACC62),
+      // Gold like ripe rice
+      messageColor: Color(0xFF4A593D),
+      // Match board line color
+      drawerColor: Color(0xFF678D58),
+      // Match dark background
+      drawerTextColor: Color(0xFFF7F3E8),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33EACC62),
+      // Semi-transparent gold
+      mainToolbarBackgroundColor: Color(0xFF678D58),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFF7F3E8),
+      // White icons
+      navigationToolbarBackgroundColor: Color(0xFF678D58),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFF7F3E8),
+      // White icons
+      analysisToolbarBackgroundColor: Color(0xFF678D58),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFF7F3E8),
+      // White icons
+      annotationToolbarBackgroundColor: Color(0xFF678D58),
+      annotationToolbarIconColor: Color(0xFFF7F3E8),
+    ),
+    ColorTheme.chinesePorcelain: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF6FEFF),
+      // White porcelain background
+      darkBackgroundColor: Color(0xFF0F5E87),
+      // Deep blue like traditional porcelain
+      boardLineColor: Color(0xFF13426B),
+      // Slightly darker blue for definition
+      whitePieceColor: Color(0xFFFCFCFC),
+      // Bright white
+      blackPieceColor: Color(0xFF003366),
+      // Deep cobalt blue
+      pieceHighlightColor: Color(0xFF52B2BF),
+      // Turquoise highlight
+      messageColor: Color(0xFF13426B),
+      // Match board line color
+      drawerColor: Color(0xFF0F5E87),
+      // Match dark background
+      drawerTextColor: Color(0xFFFCFCFC),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x3352B2BF),
+      // Semi-transparent turquoise
+      mainToolbarBackgroundColor: Color(0xFF0F5E87),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFCFCFC),
+      // White icons
+      navigationToolbarBackgroundColor: Color(0xFF0F5E87),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFCFCFC),
+      // White icons
+      analysisToolbarBackgroundColor: Color(0xFF0F5E87),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFCFCFC),
+      // White icons
+      annotationToolbarBackgroundColor: Color(0xFF0F5E87),
+      annotationToolbarIconColor: Color(0xFFFCFCFC),
+    ),
+    ColorTheme.desertDusk: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF0C18B),
+      // Sandy orange background
+      darkBackgroundColor: Color(0xFF6A3E35),
+      // Deep brown like desert mountains at dusk
+      boardLineColor: Color(0xFF4A2C28),
+      // Darker brown for definition
+      whitePieceColor: Color(0xFFFEEBC1),
+      // Cream like desert sand
+      blackPieceColor: Color(0xFF42283D),
+      // Deep purple like dusk sky
+      pieceHighlightColor: Color(0xFFE36161),
+      // Sunset red highlight
+      messageColor: Color(0xFF4A2C28),
+      // Match board line color
+      drawerColor: Color(0xFF6A3E35),
+      // Match dark background
+      drawerTextColor: Color(0xFFFEEBC1),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33E36161),
+      // Semi-transparent sunset
+      mainToolbarBackgroundColor: Color(0xFF6A3E35),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFEEBC1),
+      // Light sand colored icons
+      navigationToolbarBackgroundColor: Color(0xFF6A3E35),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFEEBC1),
+      // Light sand colored icons
+      analysisToolbarBackgroundColor: Color(0xFF6A3E35),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFEEBC1),
+      // Light sand colored icons
+      annotationToolbarBackgroundColor: Color(0xFF6A3E35),
+      annotationToolbarIconColor: Color(0xFFFEEBC1),
+    ),
+    ColorTheme.precisionCraft: const ColorSettings(
+      boardBackgroundColor: Color(0xFFEEEEEE),
+      // Clean light gray background representing precision
+      darkBackgroundColor: Color(0xFF333333),
+      // Dark anthracite representing industrial efficiency
+      boardLineColor: Color(0xFF222222),
+      // Strong black lines for clarity and structure
+      whitePieceColor: Color(0xFFF8F8F8),
+      // Pure white for contrast and cleanliness
+      blackPieceColor: Color(0xFF1A1A1A),
+      // Deep black for maximum contrast
+      pieceHighlightColor: Color(0xFFDD0000),
+      // German red highlight for emphasis
+      messageColor: Color(0xFF222222),
+      // Dark text for readability
+      drawerColor: Color(0xFF333333),
+      // Match dark background
+      drawerTextColor: Color(0xFFF8F8F8),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33FFCC00),
+      // Semi-transparent gold (from German flag)
+      mainToolbarBackgroundColor: Color(0xFF333333),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFF8F8F8),
+      // Light icons on dark background
+      navigationToolbarBackgroundColor: Color(0xFF333333),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFF8F8F8),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF333333),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFF8F8F8),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF333333),
+      annotationToolbarIconColor: Color(0xFFF8F8F8),
+    ),
+    ColorTheme.folkEmbroidery: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF5F2E9),
+      // Natural linen color like traditional fabric
+      darkBackgroundColor: Color(0xFF7E4E3B),
+      // Rich brown like wooden furniture
+      boardLineColor: Color(0xFF6B3E26),
+      // Darker brown for embroidery outlines
+      whitePieceColor: Color(0xFFFFFCF0),
+      // Cream like natural fabric
+      blackPieceColor: Color(0xFF2B0F06),
+      // Deep brown almost black
+      pieceHighlightColor: Color(0xFFD92121),
+      // Vibrant red like traditional embroidery
+      messageColor: Color(0xFF6B3E26),
+      // Match board line color
+      drawerColor: Color(0xFF7E4E3B),
+      // Match dark background
+      drawerTextColor: Color(0xFFFFFCF0),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x3345A145),
+      // Semi-transparent green (from Hungarian folklore)
+      mainToolbarBackgroundColor: Color(0xFF7E4E3B),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFFFCF0),
+      // Light icons for contrast
+      navigationToolbarBackgroundColor: Color(0xFF7E4E3B),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFFFCF0),
+      // Light icons for contrast
+      analysisToolbarBackgroundColor: Color(0xFF7E4E3B),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFFFCF0),
+      // Light icons for contrast
+      annotationToolbarBackgroundColor: Color(0xFF7E4E3B),
+      annotationToolbarIconColor: Color(0xFFFFFCF0),
+    ),
+    ColorTheme.carpathianHeritage: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF2E8D5),
+      // Natural wool color
+      darkBackgroundColor: Color(0xFF2C4770),
+      // Deep blue like Carpathian night sky
+      boardLineColor: Color(0xFF1F3356),
+      // Darker blue for definition
+      whitePieceColor: Color(0xFFF9F0DD),
+      // Cream like sheep's wool
+      blackPieceColor: Color(0xFF231F20),
+      // Deep charcoal
+      pieceHighlightColor: Color(0xFFCE1126),
+      // Romanian red for highlight
+      messageColor: Color(0xFF1F3356),
+      // Match board line color
+      drawerColor: Color(0xFF2C4770),
+      // Match dark background
+      drawerTextColor: Color(0xFFF9F0DD),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33FCD116),
+      // Semi-transparent yellow (from Romanian flag)
+      mainToolbarBackgroundColor: Color(0xFF2C4770),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFF9F0DD),
+      // Light colored icons
+      navigationToolbarBackgroundColor: Color(0xFF2C4770),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFF9F0DD),
+      // Light colored icons
+      analysisToolbarBackgroundColor: Color(0xFF2C4770),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFF9F0DD),
+      // Light colored icons
+      annotationToolbarBackgroundColor: Color(0xFF2C4770),
+      annotationToolbarIconColor: Color(0xFFF9F0DD),
+    ),
+    ColorTheme.imperialGrandeur: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF5E7C1),
+      // Golden beige like imperial parchment
+      darkBackgroundColor: Color(0xFF2A1E5C),
+      // Deep imperial purple
+      boardLineColor: Color(0xFF1A1240),
+      // Darker purple for definition
+      whitePieceColor: Color(0xFFF8F3E3),
+      // Ivory like imperial marble
+      blackPieceColor: Color(0xFF0F0A26),
+      // Deep blue-black
+      pieceHighlightColor: Color(0xFFD4AF37),
+      // Imperial gold highlight
+      messageColor: Color(0xFF1A1240),
+      // Match board line color
+      drawerColor: Color(0xFF2A1E5C),
+      // Match dark background
+      drawerTextColor: Color(0xFFF8F3E3),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33CC0000),
+      // Semi-transparent red
+      mainToolbarBackgroundColor: Color(0xFF2A1E5C),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFD4AF37),
+      // Gold icons for imperial feel
+      navigationToolbarBackgroundColor: Color(0xFF2A1E5C),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFD4AF37),
+      // Gold icons
+      analysisToolbarBackgroundColor: Color(0xFF2A1E5C),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFD4AF37),
+      // Gold icons
+      annotationToolbarBackgroundColor: Color(0xFF2A1E5C),
+      annotationToolbarIconColor: Color(0xFFD4AF37),
+    ),
+    ColorTheme.bohemianCrystal: const ColorSettings(
+      boardBackgroundColor: Color(0xFFE6F2FF),
+      // Light blue like crystal reflection
+      darkBackgroundColor: Color(0xFF16456D),
+      // Deep blue like traditional glassware
+      boardLineColor: Color(0xFF0F2F4C),
+      // Darker blue like crystal facets
+      whitePieceColor: Color(0xFFF7FBFF),
+      // Icy white like polished crystal
+      blackPieceColor: Color(0xFF05172A),
+      // Deep navy
+      pieceHighlightColor: Color(0xFF9E0812),
+      // Bohemian garnet red highlight
+      messageColor: Color(0xFF0F2F4C),
+      // Match board line color
+      drawerColor: Color(0xFF16456D),
+      // Match dark background
+      drawerTextColor: Color(0xFFF7FBFF),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x3311457E),
+      // Semi-transparent blue
+      mainToolbarBackgroundColor: Color(0xFF16456D),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFF7FBFF),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF16456D),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFF7FBFF),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF16456D),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFF7FBFF),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF16456D),
+      annotationToolbarIconColor: Color(0xFFF7FBFF),
+    ),
+    ColorTheme.savannaSunrise: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF2E4C0),
+      // Savanna sand color
+      darkBackgroundColor: Color(0xFF4A5E2F),
+      // Deep grass green
+      boardLineColor: Color(0xFF374825),
+      // Darker green like shadows in tall grass
+      whitePieceColor: Color(0xFFFFF8E1),
+      // Cream like animal bone
+      blackPieceColor: Color(0xFF24281A),
+      // Deep dark green almost black
+      pieceHighlightColor: Color(0xFFE05D00),
+      // African sunset orange
+      messageColor: Color(0xFF374825),
+      // Match board line color
+      drawerColor: Color(0xFF4A5E2F),
+      // Match dark background
+      drawerTextColor: Color(0xFFFFF8E1),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33F1C40F),
+      // Semi-transparent yellow like African sun
+      mainToolbarBackgroundColor: Color(0xFF4A5E2F),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFFF8E1),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF4A5E2F),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFFF8E1),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF4A5E2F),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFFF8E1),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF4A5E2F),
+      annotationToolbarIconColor: Color(0xFFFFF8E1),
+    ),
+    ColorTheme.harmonyBalance: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF3F0E9),
+      // Natural paper color like traditional Hanji
+      darkBackgroundColor: Color(0xFF263959),
+      // Deep indigo blue like traditional pottery
+      boardLineColor: Color(0xFF17263B),
+      // Darker blue for definition
+      whitePieceColor: Color(0xFFFAF9F5),
+      // Off-white like rice paper
+      blackPieceColor: Color(0xFF0C1525),
+      // Deep navy almost black
+      pieceHighlightColor: Color(0xFFE63946),
+      // Korean red from traditional palette
+      messageColor: Color(0xFF17263B),
+      // Match board line color
+      drawerColor: Color(0xFF263959),
+      // Match dark background
+      drawerTextColor: Color(0xFFFAF9F5),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33F9B42D),
+      // Semi-transparent gold like dancheong patterns
+      mainToolbarBackgroundColor: Color(0xFF263959),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFAF9F5),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF263959),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFAF9F5),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF263959),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFAF9F5),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF263959),
+      annotationToolbarIconColor: Color(0xFFFAF9F5),
+    ),
+    ColorTheme.cinnamonSpice: const ColorSettings(
+      boardBackgroundColor: Color(0xFFE8D0B8),
+      // Light cinnamon color
+      darkBackgroundColor: Color(0xFF5B4B3B),
+      // Deep brown like cinnamon bark
+      boardLineColor: Color(0xFF3C2F23),
+      // Darker brown for definition
+      whitePieceColor: Color(0xFFFBF5EB),
+      // Cream white like coconut
+      blackPieceColor: Color(0xFF231C14),
+      // Deep brown almost black
+      pieceHighlightColor: Color(0xFF6AA168),
+      // Tea leaf green highlight
+      messageColor: Color(0xFF3C2F23),
+      // Match board line color
+      drawerColor: Color(0xFF5B4B3B),
+      // Match dark background
+      drawerTextColor: Color(0xFFFBF5EB),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33FF9800),
+      // Semi-transparent saffron orange
+      mainToolbarBackgroundColor: Color(0xFF5B4B3B),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFBF5EB),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF5B4B3B),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFBF5EB),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF5B4B3B),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFBF5EB),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF5B4B3B),
+      annotationToolbarIconColor: Color(0xFFFBF5EB),
+    ),
+    ColorTheme.anatolianMosaic: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF1EEEA),
+      // Marble white like traditional stone
+      darkBackgroundColor: Color(0xFF1E5F8C),
+      // Turkish blue like Iznik pottery
+      boardLineColor: Color(0xFF1A4A6E),
+      // Darker blue for definition
+      whitePieceColor: Color(0xFFFAF6F0),
+      // Cream white like limestone
+      blackPieceColor: Color(0xFF0A2638),
+      // Deep blue-black
+      pieceHighlightColor: Color(0xFFD81B60),
+      // Vibrant Ottoman pink highlight
+      messageColor: Color(0xFF1A4A6E),
+      // Match board line color
+      drawerColor: Color(0xFF1E5F8C),
+      // Match dark background
+      drawerTextColor: Color(0xFFFAF6F0),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x33E5A836),
+      // Semi-transparent gold like mosaic inlays
+      mainToolbarBackgroundColor: Color(0xFF1E5F8C),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFAF6F0),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF1E5F8C),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFAF6F0),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF1E5F8C),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFAF6F0),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF1E5F8C),
+      annotationToolbarIconColor: Color(0xFFFAF6F0),
+    ),
+    ColorTheme.carnivalSpirit: const ColorSettings(
+      boardBackgroundColor: Color(0xFFFFF59B),
+      // Bright yellow like carnival costumes
+      darkBackgroundColor: Color(0xFF026873),
+      // Tropical teal blue
+      boardLineColor: Color(0xFF01535E),
+      // Darker teal for definition
+      whitePieceColor: Color(0xFFFFFDEC),
+      // Cream white
+      blackPieceColor: Color(0xFF012E34),
+      // Deep teal almost black
+      pieceHighlightColor: Color(0xFFFF5757),
+      // Vibrant carnival red
+      messageColor: Color(0xFF01535E),
+      // Match board line color
+      drawerColor: Color(0xFF026873),
+      // Match dark background
+      drawerTextColor: Color(0xFFFFFDEC),
+      // Match white piece
+      drawerHighlightItemColor: Color(0x3376FF03),
+      // Semi-transparent lime green
+      mainToolbarBackgroundColor: Color(0xFF026873),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFFFDEC),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF026873),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFFFDEC),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF026873),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFFFDEC),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF026873),
+      annotationToolbarIconColor: Color(0xFFFFFDEC),
     ),
   };
 }
