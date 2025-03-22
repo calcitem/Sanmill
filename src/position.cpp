@@ -7,12 +7,15 @@
 #include "mills.h"
 #include "position.h"
 #include "thread.h"
+#include "evaluate.h"
+#include "uci.h"
 
 #include <algorithm>
 #include <cstring>
 #include <iomanip>
 #include <sstream>
 #include <string>
+#include <iostream>
 
 using std::string;
 using std::vector;
@@ -100,7 +103,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
         |  |  13 12 11  |  |
         |  | /    |   \ |  |
         |  21 -- 20 -- 19  |
-        | /       |     \  |
+        | /       |      \ |\n"
         29 ----- 28 ----- 27
     */
 

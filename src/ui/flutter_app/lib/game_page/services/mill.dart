@@ -40,6 +40,8 @@ import '../../shared/utils/helpers/array_helpers/array_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../services/import_export/pgn.dart' as pgn;
+import 'analysis_mode.dart';
 import 'animation/animation_manager.dart';
 import 'annotation/annotation_manager.dart';
 import 'engine/bitboard.dart';
@@ -73,6 +75,34 @@ part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
 part 'sounds/vibration_manager.dart';
-part "transform/transform.dart";
 
 // TODO: [Leptopoda] Separate the ui from the logic
+
+bool isRuleSupportingPerfectDatabase() {
+  final RuleSettings ruleSettings = DB().ruleSettings;
+
+  if (((ruleSettings.piecesCount == 9 &&
+              !ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == false) ||
+          (ruleSettings.piecesCount == 10 &&
+              !ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == true) ||
+          (ruleSettings.piecesCount == 12 &&
+              ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == false)) &&
+      ruleSettings.flyPieceCount == 3 &&
+      ruleSettings.piecesAtLeastCount == 3 &&
+      ruleSettings.millFormationActionInPlacingPhase ==
+          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard &&
+      ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
+      ruleSettings.restrictRepeatedMillsFormation == false &&
+      ruleSettings.stalemateAction == StalemateAction.endWithStalemateLoss &&
+      ruleSettings.mayFly == true &&
+      ruleSettings.mayRemoveFromMillsAlways == false &&
+      ruleSettings.mayRemoveMultiple == false &&
+      ruleSettings.oneTimeUseMill == false) {
+    return true;
+  } else {
+    return false;
+  }
+}

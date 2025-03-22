@@ -17,7 +17,7 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     String description;
 
-    if (Engine.isRuleSupportingPerfectDatabase() == true) {
+    if (isRuleSupportingPerfectDatabase() == true) {
       description = S.of(context).perfectDatabaseDescription;
 
       // TODO: Fix Twelve Men's Morris DB has draw

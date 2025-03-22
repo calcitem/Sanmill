@@ -397,7 +397,7 @@ class GeneralSettingsPage extends StatelessWidget {
                 onChanged: (bool val) {
                   if (val == true) {
                     _showUsePerfectDatabaseDialog(context);
-                    if (Engine.isRuleSupportingPerfectDatabase() == true) {
+                    if (isRuleSupportingPerfectDatabase() == true) {
                       _setUsePerfectDatabase(generalSettings, true);
                     }
                   } else {

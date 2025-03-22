@@ -18,7 +18,7 @@ void println(const char *str, ...)
 
     va_start(args, str);
 
-    char buffer[256] = {0};
+    char buffer[4096] = {0};
     vsnprintf(buffer, sizeof(buffer), str, args);
 
     va_end(args);

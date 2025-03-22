@@ -39,4 +39,10 @@ public:
     static void set_variant_stripped();
 };
 
+namespace PerfectAPI {
+// Get evaluation value from perfect database
+// Returns VALUE_NONE if position is not in database or cannot be evaluated
+Value getValue(const Position &pos);
+} // namespace PerfectAPI
+
 #endif // PERFECT_MALOM_SOLUTION_H_INCLUDED

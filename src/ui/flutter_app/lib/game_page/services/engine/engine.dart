@@ -111,6 +111,9 @@ class Engine {
   }
 
   Future<EngineRet> search({bool moveNow = false}) async {
+    // Clear any existing analysis markers when AI makes a move
+    AnalysisMode.disable();
+
     String? fen;
     final String normalizedFen;
 
@@ -474,38 +477,6 @@ class Engine {
     }
   }
 
-  static bool isRuleSupportingPerfectDatabase() {
-    final RuleSettings ruleSettings = DB().ruleSettings;
-
-    // TODO: WAR: Perfect Database only support standard 9mm and 12mm and Lasker Morris.
-    if ((ruleSettings.piecesCount == 9 &&
-            !ruleSettings.hasDiagonalLines &&
-            ruleSettings.mayMoveInPlacingPhase == false) ||
-        (ruleSettings.piecesCount == 10 &&
-            !ruleSettings.hasDiagonalLines &&
-            ruleSettings.mayMoveInPlacingPhase == true) ||
-        (ruleSettings.piecesCount == 12 &&
-                ruleSettings.hasDiagonalLines &&
-                ruleSettings.mayMoveInPlacingPhase == false) &&
-            ruleSettings.flyPieceCount == 3 &&
-            ruleSettings.piecesAtLeastCount == 3 &&
-            ruleSettings.millFormationActionInPlacingPhase ==
-                MillFormationActionInPlacingPhase
-                    .removeOpponentsPieceFromBoard &&
-            ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
-            ruleSettings.restrictRepeatedMillsFormation == false &&
-            ruleSettings.stalemateAction ==
-                StalemateAction.endWithStalemateLoss &&
-            ruleSettings.mayFly == true &&
-            ruleSettings.mayRemoveFromMillsAlways == false &&
-            ruleSettings.mayRemoveMultiple == false &&
-            ruleSettings.oneTimeUseMill == false) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   String? _getPositionFen() {
     final String? startPosition =
         GameController().gameRecorder.lastPositionWithRemove;
@@ -542,6 +513,168 @@ class Engine {
     }
 
     return ret;
+  }
+
+  /// Analyze the current position using the perfect database
+  Future<PositionAnalysisResult> analyzePosition() async {
+    // Check if perfect database is supported and enabled
+    if (!isRuleSupportingPerfectDatabase()) {
+      return PositionAnalysisResult.error(
+          "Current rule set does not support perfect database analysis");
+    }
+
+    if (!DB().generalSettings.usePerfectDatabase) {
+      return PositionAnalysisResult.error(
+          "Perfect database is not enabled in settings");
+    }
+
+    final String? fen = GameController().position.fen;
+    if (fen == null) {
+      return PositionAnalysisResult.error("Invalid board position");
+    }
+
+    // Prepare the command to send to the engine
+    final String command = "analyze fen $fen";
+
+    try {
+      // Send command to engine
+      await _send(command);
+
+      // Wait for and parse response
+      final String? response = await _waitResponse(<String>["info analysis"]);
+      if (response == null) {
+        return PositionAnalysisResult.error("Engine did not respond");
+      }
+
+      // Parse the analysis result
+      // Expected format: "info analysis move1=win move2=draw move3=loss ..."
+      // Or format: "info analysis (x,y)=outcome ..."
+      // Also handles formats like "(x,y)->(a,b)=outcome" and "-(x,y)=outcome"
+      final List<MoveAnalysisResult> results = <MoveAnalysisResult>[];
+
+      // Remove prefix "info analysis " and split by space
+      final List<String> parts =
+          response.replaceFirst("info analysis ", "").split(" ");
+
+      for (final String part in parts) {
+        if (part.contains("=")) {
+          final List<String> moveAndOutcome = part.split("=");
+          if (moveAndOutcome.length == 2) {
+            final String moveStr = moveAndOutcome[0];
+            final GameOutcome outcome = _parseOutcome(moveAndOutcome[1]);
+
+            // Handle different move formats
+            if (moveStr.contains("->")) {
+              // Move format: (x,y)->(a,b)
+              final RegExp movePattern =
+                  RegExp(r'\(([\d]+),([\d]+)\)->\(([\d]+),([\d]+)\)');
+              final Match? match = movePattern.firstMatch(moveStr);
+
+              if (match != null && match.groupCount >= 4) {
+                final int fromX = int.parse(match.group(1)!);
+                final int fromY = int.parse(match.group(2)!);
+                final int toX = int.parse(match.group(3)!);
+                final int toY = int.parse(match.group(4)!);
+
+                final String fromSquare = "${_coordToFile(fromX)}$fromY";
+                final String toSquare = "${_coordToFile(toX)}$toY";
+
+                results.add(MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  fromSquare: pgn.Square(fromSquare),
+                  toSquare: pgn.Square(toSquare),
+                ));
+              }
+            } else if (moveStr.startsWith("-")) {
+              // Remove format: -(x,y)
+              final RegExp removePattern = RegExp(r'-\(([\d]+),([\d]+)\)');
+              final Match? match = removePattern.firstMatch(moveStr);
+
+              if (match != null && match.groupCount >= 2) {
+                final int x = int.parse(match.group(1)!);
+                final int y = int.parse(match.group(2)!);
+
+                final String squareName = "${_coordToFile(x)}$y";
+
+                results.add(MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  toSquare: pgn.Square(squareName),
+                ));
+              }
+            } else {
+              // Place format: (x,y)
+              final _MoveSquares? fromTo = _parseMoveString(moveStr);
+              if (fromTo != null) {
+                results.add(MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  fromSquare: fromTo.from,
+                  toSquare: fromTo.to,
+                ));
+              }
+            }
+          }
+        }
+      }
+
+      if (results.isEmpty) {
+        return PositionAnalysisResult.error("No analysis results available");
+      }
+
+      return PositionAnalysisResult(possibleMoves: results);
+    } catch (e) {
+      logger.e("$_logTag Error during analysis: $e");
+      return PositionAnalysisResult.error("Error during analysis: $e");
+    }
+  }
+
+  /// Parse the outcome string from the engine
+  static GameOutcome _parseOutcome(String outcome) {
+    switch (outcome.toLowerCase()) {
+      case "win":
+        return GameOutcome.win;
+      case "draw":
+        return GameOutcome.draw;
+      case "loss":
+        return GameOutcome.loss;
+      case "advantage":
+        return GameOutcome.advantage;
+      case "disadvantage":
+        return GameOutcome.disadvantage;
+      default:
+        return GameOutcome.unknown;
+    }
+  }
+
+  /// Parse a move string in the format "(x,y)" and convert to Square objects
+  static _MoveSquares? _parseMoveString(String moveStr) {
+    // Support for format like "(2,1)"
+    final RegExp coordPattern = RegExp(r'\((\d+),(\d+)\)');
+    final Match? match = coordPattern.firstMatch(moveStr);
+
+    if (match != null && match.groupCount == 2) {
+      final int x = int.parse(match.group(1)!);
+      final int y = int.parse(match.group(2)!);
+
+      // Convert coordinates to PGN squares
+      // Use the coordinates as-is without conversion for Nine Men's Morris
+      final String squareName = "${_coordToFile(x)}$y";
+      final pgn.Square toSquare = pgn.Square(squareName);
+
+      return _MoveSquares(null, toSquare);
+    }
+
+    // Handle other move formats if needed
+    return null;
+  }
+
+  /// Helper to convert numeric coordinates to algebraic notation file
+  static String _coordToFile(int x) {
+    // Convert 1-based coordinates to algebraic notation
+    // Typically: x → file (a, b, c...), y → rank (1, 2, 3...)
+    return String.fromCharCode('a'.codeUnitAt(0) + (x - 1));
   }
 }
 
@@ -647,4 +780,51 @@ extension GameModeExtension on GameMode {
         };
     }
   }
+}
+
+/// Result of the analysis for a single move
+class MoveAnalysisResult {
+  MoveAnalysisResult({
+    required this.move,
+    required this.outcome,
+    this.fromSquare,
+    required this.toSquare,
+  });
+
+  final String move;
+  final GameOutcome outcome;
+  final pgn.Square? fromSquare;
+  final pgn.Square toSquare;
+}
+
+/// Game outcome from analysis
+enum GameOutcome { win, draw, loss, advantage, disadvantage, unknown }
+
+/// Result of the position analysis
+class PositionAnalysisResult {
+  PositionAnalysisResult({
+    required this.possibleMoves,
+    this.isValid = true,
+    this.errorMessage,
+  });
+
+  factory PositionAnalysisResult.error(String message) {
+    return PositionAnalysisResult(
+      possibleMoves: <MoveAnalysisResult>[],
+      isValid: false,
+      errorMessage: message,
+    );
+  }
+
+  final List<MoveAnalysisResult> possibleMoves;
+  final bool isValid;
+  final String? errorMessage;
+}
+
+/// Helper class to store move squares
+class _MoveSquares {
+  _MoveSquares(this.from, this.to);
+
+  final pgn.Square? from;
+  final pgn.Square to;
 }

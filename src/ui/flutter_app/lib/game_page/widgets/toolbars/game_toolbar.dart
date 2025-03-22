@@ -24,6 +24,7 @@ import '../../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../services/annotation/annotation_manager.dart';
 import '../../services/mill.dart';
+import '../../services/transform/transform.dart';
 
 part 'src/annotation_toolbar.dart';
 part 'src/game_page_toolbar.dart';

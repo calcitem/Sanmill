@@ -33,6 +33,12 @@ class BoardPainter extends CustomPainter {
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
     _drawMillLines(offset, canvas, paint, size);
+
+    // Add analysis renderer to draw analysis results
+    if (AnalysisMode.isEnabled) {
+      AnalysisRenderer.render(
+          canvas, size, size.width / 7); // Divide by number of points per row
+    }
   }
 
   Paint _createPaint(

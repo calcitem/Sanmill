@@ -8,6 +8,7 @@
 #include "option.h"
 #include "thread.h"
 #include "position.h"
+#include "perfect_api.h"
 
 namespace {
 
@@ -33,6 +34,14 @@ private:
 
 Value Evaluation::value() const
 {
+    if (gameOptions.getUsePerfectDatabase()) {
+        Value perfectValue = PerfectAPI::getValue(pos);
+
+        if (perfectValue != VALUE_NONE) {
+            return perfectValue;
+        }
+    }
+
     Value value = VALUE_ZERO;
 
     int pieceInHandDiffCount;
