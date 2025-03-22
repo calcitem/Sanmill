@@ -74,6 +74,9 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
         }
         release {
             signingConfig signingConfigs.release

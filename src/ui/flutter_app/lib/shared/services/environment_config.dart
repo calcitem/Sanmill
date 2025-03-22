@@ -15,6 +15,9 @@ class EnvironmentConfig {
   /// Gets whether we build for devMode
   static bool devMode = const bool.fromEnvironment('dev_mode');
 
+  /// Whether to enable Address Sanitizer in dev mode
+  static bool devModeAsan = const bool.fromEnvironment('DEV_MODE');
+
   /// Gets whether we want catcher to be enabled
   /// Defaults to true
   static bool catcher =

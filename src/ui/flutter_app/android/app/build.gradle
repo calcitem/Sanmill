@@ -36,7 +36,7 @@ android {
         targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        ndk{
+        ndk {
             ldLibs "log"
             debugSymbolLevel 'FULL'
         }
@@ -54,6 +54,11 @@ android {
     }
     buildTypes {
         debug {
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
+            minifyEnabled false
+            shrinkResources false
         }
         release {
             signingConfig signingConfigs.debug
@@ -75,5 +80,5 @@ flutter {
 }
 
 dependencies {
-	implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.1.0'
+    implementation 'com.iqiyi.xcrash:xcrash-android-lib:3.1.0'
 }
