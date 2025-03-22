@@ -1072,8 +1072,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF003366),
       // Deep cobalt blue
       pieceHighlightColor: Color(0xFF52B2BF),
-      // Turquoise highlight
-      messageColor: Color(0xFF13426B),
+      // Match dark background
+      messageColor: Color(0xFFFCFCFC),
       // Match board line color
       drawerColor: Color(0xFF0F5E87),
       // Match dark background
@@ -1108,8 +1108,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF42283D),
       // Deep purple like dusk sky
       pieceHighlightColor: Color(0xFFE36161),
-      // Sunset red highlight
-      messageColor: Color(0xFF4A2C28),
+      // Match dark background
+      messageColor: Color(0xFFFEEBC1),
       // Match board line color
       drawerColor: Color(0xFF6A3E35),
       // Match dark background
@@ -1144,8 +1144,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF1A1A1A),
       // Deep black for maximum contrast
       pieceHighlightColor: Color(0xFFDD0000),
-      // German red highlight for emphasis
-      messageColor: Color(0xFF222222),
+      // Match dark background
+      messageColor: Color(0xFFF8F8F8),
       // Dark text for readability
       drawerColor: Color(0xFF333333),
       // Match dark background
@@ -1180,8 +1180,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF2B0F06),
       // Deep brown almost black
       pieceHighlightColor: Color(0xFFD92121),
-      // Vibrant red like traditional embroidery
-      messageColor: Color(0xFF6B3E26),
+      // Match dark background
+      messageColor: Color(0xFFFFFCF0),
       // Match board line color
       drawerColor: Color(0xFF7E4E3B),
       // Match dark background
@@ -1216,8 +1216,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF231F20),
       // Deep charcoal
       pieceHighlightColor: Color(0xFFCE1126),
-      // Romanian red for highlight
-      messageColor: Color(0xFF1F3356),
+      // Match dark background
+      messageColor: Color(0xFFF9F0DD),
       // Match board line color
       drawerColor: Color(0xFF2C4770),
       // Match dark background
@@ -1252,8 +1252,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF0F0A26),
       // Deep blue-black
       pieceHighlightColor: Color(0xFFD4AF37),
-      // Imperial gold highlight
-      messageColor: Color(0xFF1A1240),
+      // Match dark background
+      messageColor: Color(0xFFD4AF37),
       // Match board line color
       drawerColor: Color(0xFF2A1E5C),
       // Match dark background
@@ -1288,8 +1288,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF05172A),
       // Deep navy
       pieceHighlightColor: Color(0xFF9E0812),
-      // Bohemian garnet red highlight
-      messageColor: Color(0xFF0F2F4C),
+      // Match dark background
+      messageColor: Color(0xFFF7FBFF),
       // Match board line color
       drawerColor: Color(0xFF16456D),
       // Match dark background
@@ -1324,8 +1324,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF24281A),
       // Deep dark green almost black
       pieceHighlightColor: Color(0xFFE05D00),
-      // African sunset orange
-      messageColor: Color(0xFF374825),
+      // Match dark background
+      messageColor: Color(0xFFFFF8E1),
       // Match board line color
       drawerColor: Color(0xFF4A5E2F),
       // Match dark background
@@ -1360,8 +1360,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF0C1525),
       // Deep navy almost black
       pieceHighlightColor: Color(0xFFE63946),
-      // Korean red from traditional palette
-      messageColor: Color(0xFF17263B),
+      // Match dark background
+      messageColor: Color(0xFFFAF9F5),
       // Match board line color
       drawerColor: Color(0xFF263959),
       // Match dark background
@@ -1396,8 +1396,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF231C14),
       // Deep brown almost black
       pieceHighlightColor: Color(0xFF6AA168),
-      // Tea leaf green highlight
-      messageColor: Color(0xFF3C2F23),
+      // Match dark background
+      messageColor: Color(0xFFFBF5EB),
       // Match board line color
       drawerColor: Color(0xFF5B4B3B),
       // Match dark background
@@ -1432,8 +1432,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF0A2638),
       // Deep blue-black
       pieceHighlightColor: Color(0xFFD81B60),
-      // Vibrant Ottoman pink highlight
-      messageColor: Color(0xFF1A4A6E),
+      // Match dark background
+      messageColor: Color(0xFFFAF6F0),
       // Match board line color
       drawerColor: Color(0xFF1E5F8C),
       // Match dark background
@@ -1468,8 +1468,8 @@ class AppTheme {
       blackPieceColor: Color(0xFF012E34),
       // Deep teal almost black
       pieceHighlightColor: Color(0xFFFF5757),
-      // Vibrant carnival red
-      messageColor: Color(0xFF01535E),
+      // Match dark background
+      messageColor: Color(0xFFFFFDEC),
       // Match board line color
       drawerColor: Color(0xFF026873),
       // Match dark background
