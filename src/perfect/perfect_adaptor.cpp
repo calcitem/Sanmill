@@ -31,12 +31,12 @@ static std::condition_variable cv;
 
 int get_best_move(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
                   int blackStonesToPlace, int playerToMove,
-                  bool onlyStoneTaking, Value &value, const Move &refMove,
-                  std::vector<std::pair<AdvancedMove, int>> &distances)
+                  bool onlyStoneTaking, Value &value, const Move &refMove)
 {
-    return MalomSolutionAccess::get_best_move(
-        whiteBitboard, blackBitboard, whiteStonesToPlace, blackStonesToPlace,
-        playerToMove, onlyStoneTaking, value, refMove, distances);
+    return MalomSolutionAccess::get_best_move(whiteBitboard, blackBitboard,
+                                              whiteStonesToPlace,
+                                              blackStonesToPlace, playerToMove,
+                                              onlyStoneTaking, value, refMove);
 }
 
 int perfect_init()
@@ -267,7 +267,7 @@ Value perfect_search(const Position *pos, Move &move)
     int blackStonesToPlace = pos->piece_in_hand_count(BLACK);
 
     // 0 if white is to move, 1 if black is to move.
-    int playerToMove = (pos->side_to_move() == WHITE) ? 0 : 1;
+    int playerToMove = pos->side_to_move() == WHITE ? 0 : 1;
 
     // Always set this to false if you want to handle
     // mill-closing and stone-removal as a single move.
@@ -292,22 +292,13 @@ Value perfect_search(const Position *pos, Move &move)
     // TODO: Do not use -fexceptions
 
     try {
-        // Create a vector to hold the move-distance pairs.
-        std::vector<std::pair<AdvancedMove, int>> distances;
-
-        // Call the new get_best_move function that fills in the distances
-        // vector.
         int moveBitboard = get_best_move(whiteBitboard, blackBitboard,
                                          whiteStonesToPlace, blackStonesToPlace,
                                          playerToMove, onlyStoneTaking, value,
-                                         move, distances);
-
-        // Convert the move bitboard into a vector of Move objects.
+                                         move);
         moves = convert_bitboard_move(whiteBitboard, blackBitboard,
                                       playerToMove, moveBitboard);
 
-        // If there are two moves (i.e. a removal is involved),
-        // save the second one for later use.
         if (moves.size() == 2) {
             malomRemoveMove = moves.at(1);
             malomRemoveValue = value;
@@ -317,7 +308,6 @@ Value perfect_search(const Position *pos, Move &move)
         return VALUE_UNKNOWN;
     }
 
-    // Return the first move from the engine.
     move = Move(moves.at(0));
 
     return value;

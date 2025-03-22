@@ -16,17 +16,17 @@ private:
     static std::exception *lastError;
 
 public:
-    static int
-    get_best_move(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
-                  int blackStonesToPlace, int playerToMove,
-                  bool onlyStoneTaking, Value &value, const Move &refMove,
-                  std::vector<std::pair<AdvancedMove, int>> &distances);
+    static int get_best_move(int whiteBitboard, int blackBitboard,
+                             int whiteStonesToPlace, int blackStonesToPlace,
+                             int playerToMove, bool onlyStoneTaking,
+                             Value &value, const Move &refMove);
 
-    static int get_best_move_no_exception(
-        int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
-        int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
-        Value &value, const Move &refMove,
-        std::vector<std::pair<AdvancedMove, int>> &distances);
+    static int get_best_move_no_exception(int whiteBitboard, int blackBitboard,
+                                          int whiteStonesToPlace,
+                                          int blackStonesToPlace,
+                                          int playerToMove,
+                                          bool onlyStoneTaking, Value &value,
+                                          const Move &refMove);
 
     static std::string get_last_error();
 
