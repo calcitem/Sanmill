@@ -3,7 +3,7 @@
 
 // transform.dart
 
-part of '../mill.dart';
+import '../mill.dart';
 
 enum TransformationType {
   identity,

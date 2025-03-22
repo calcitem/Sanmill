@@ -13,6 +13,7 @@ import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
+import '../services/analysis_mode.dart';
 import '../services/mill.dart';
 import '../services/painters/advantage_graph_painter.dart';
 import 'game_page.dart';
@@ -52,6 +53,9 @@ class PlayAreaState extends State<PlayArea> {
     // Listen to changes in header icons (usually triggered after a move).
     GameController().headerIconsNotifier.addListener(_updateUI);
 
+    // Listen for analysis mode state changes
+    AnalysisMode.stateNotifier.addListener(_updateAnalysisButton);
+
     // Optionally, initialize advantageData with the current value:
     advantageData.add(_getCurrentAdvantageValue());
   }
@@ -59,6 +63,7 @@ class PlayAreaState extends State<PlayArea> {
   @override
   void dispose() {
     GameController().headerIconsNotifier.removeListener(_updateUI);
+    AnalysisMode.stateNotifier.removeListener(_updateAnalysisButton);
     super.dispose();
   }
 
@@ -87,6 +92,14 @@ class PlayAreaState extends State<PlayArea> {
         advantageData.add(_getCurrentAdvantageValue());
         GameController().lastMoveFromAI = false;
       }
+    });
+  }
+
+  /// Method to update only the analysis button when state changes
+  void _updateAnalysisButton() {
+    setState(() {
+      // No need to do anything in the setState body
+      // The Icon will check AnalysisMode.isEnabled when rebuilding
     });
   }
 
@@ -256,11 +269,13 @@ class PlayAreaState extends State<PlayArea> {
       if (!Constants.isSmallScreen(context))
         ToolbarItem(
           key: const Key('play_area_history_nav_move_now'),
+          onPressed: (AnalysisMode.isAnalyzing)
+              ? null
+              : () => GameController().moveNow(context),
           child: Icon(
             FluentIcons.play_24_regular,
             semanticLabel: S.of(context).moveNow,
           ),
-          onPressed: () => GameController().moveNow(context),
         ),
       ToolbarItem(
         key: const Key('play_area_history_nav_step_forward'),
@@ -287,14 +302,65 @@ class PlayAreaState extends State<PlayArea> {
   List<ToolbarItem> _getAnalysisToolbarItems(BuildContext context) {
     return <ToolbarItem>[
       ToolbarItem(
-        key: const Key('play_area_analysis_toolbar_take_screenshot'),
+        key: const Key('play_area_analysis_toolbar_engine'),
+        onPressed:
+            (GameController().isEngineRunning || AnalysisMode.isAnalyzing)
+                ? null
+                : () => _analyzePosition(),
         child: Icon(
-          FluentIcons.camera_24_regular,
-          semanticLabel: S.of(context).welcome,
+          AnalysisMode.isEnabled
+              ? FluentIcons.brain_circuit_24_filled
+              : FluentIcons.brain_circuit_24_regular,
+          semanticLabel: S.of(context).analysis,
         ),
-        onPressed: () => _takeScreenshot("gallery"),
       ),
     ];
+  }
+
+  /// Triggers analysis of the current position
+  Future<void> _analyzePosition() async {
+    // If analysis is already enabled, disable it and exit
+    if (AnalysisMode.isEnabled) {
+      AnalysisMode.disable();
+      return;
+    }
+
+    // Check if rules support perfect database
+    if (!isRuleSupportingPerfectDatabase()) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Current rules do not support perfect database analysis"),
+      ));
+      return;
+    }
+
+    // Check if perfect database is enabled
+    if (!DB().generalSettings.usePerfectDatabase) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("perfectDatabaseNotEnabled")),
+      );
+      return;
+    }
+
+    // Set analyzing flag to true
+    AnalysisMode.setAnalyzing(true);
+
+    // Run analysis and display results
+    final PositionAnalysisResult result =
+        await GameController().engine.analyzePosition();
+
+    // Reset analyzing flag
+    AnalysisMode.setAnalyzing(false);
+
+    if (!result.isValid) {
+      return;
+    }
+
+    // Enable analysis mode with the results
+    AnalysisMode.enable(result.possibleMoves);
+
+    // setState is still called here to ensure board is repainted
+    // when user explicitly clicks the analysis button
+    setState(() {});
   }
 
   /// Returns a string of '●' characters based on [count].

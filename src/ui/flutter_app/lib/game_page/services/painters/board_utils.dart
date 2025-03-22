@@ -120,3 +120,13 @@ double deviceWidth(BuildContext context) {
 bool isTablet(BuildContext context) {
   return deviceWidth(context) >= 600;
 }
+
+/// Map engine's coordinate notation to board index
+int? coordinatesToIndex(int x, int y) {
+  // Convert engine coordinates to board index
+  // First convert from engine (x,y) to square
+  final int square = makeSquare(x, y);
+
+  // Then convert from square to board index
+  return squareToIndex[square];
+}

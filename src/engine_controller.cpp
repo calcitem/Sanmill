@@ -48,6 +48,11 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
     } else if (token == "compiler") {
         // Output compiler information
         sync_cout << compiler_info() << sync_endl;
+    } else if (token == "analyze") {
+        analyzePos = *pos;
+        EngineCommands::position(&analyzePos, is);
+        // Call the analyze function instead of analyze_position
+        EngineCommands::analyze(searchEngine_, &analyzePos);
     } else {
         // Handle additional custom commands if necessary
         sync_cout << "Unknown command in EngineController: " << cmd

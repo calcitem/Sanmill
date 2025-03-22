@@ -123,6 +123,16 @@ begin:
 #endif
 }
 
+// analyze() is called when engine receives the "analyze" UCI command.
+// The function evaluates all legal moves for the current position and
+// outputs an analysis report.
+void analyze(SearchEngine &searchEngine, Position *pos)
+{
+    searchEngine.beginNewAnalyze(pos);
+
+    Threads.submit([&searchEngine]() { searchEngine.runAnalyze(); });
+}
+
 // position() is called when engine receives the "position" UCI command.
 // The function sets up the position described in the given FEN string ("fen")
 // or the starting position ("startpos") and then makes the moves given in the

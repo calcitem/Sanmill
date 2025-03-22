@@ -255,3 +255,35 @@ void MalomSolutionAccess::set_variant_stripped()
         Rules::maxKSZ = 12;
     }
 }
+
+namespace PerfectAPI {
+Value getValue(const Position &pos)
+{
+    // Check if perfect database is available and initialized
+    if (!gameOptions.getUsePerfectDatabase()) {
+        return VALUE_NONE;
+    }
+
+    try {
+        // Create a dummy move to receive the result
+        Move perfectMove = MOVE_NONE;
+
+        // Call perfect_search to get evaluation from the database
+        // This function handles all the conversion from Position to the format
+        // used by Perfect AI
+        Value value = perfect_search(&pos, perfectMove);
+
+        // Check if we got a valid value from the perfect database
+        if (value != VALUE_UNKNOWN) {
+            return value;
+        }
+
+        // If we couldn't get a valid value, return VALUE_NONE to fall back to
+        // simple evaluation
+        return VALUE_NONE;
+    } catch (const std::exception &) {
+        // If any error occurs during database access, return VALUE_NONE
+        return VALUE_NONE;
+    }
+}
+} // namespace PerfectAPI

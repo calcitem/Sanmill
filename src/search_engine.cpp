@@ -4,6 +4,7 @@
 // search_engine.cpp
 
 #include "config.h"
+#include "evaluate.h"
 #include "search_engine.h"
 #include "search.h"
 #include "uci.h"
@@ -707,4 +708,92 @@ void SearchEngine::runSearch()
         bestMoveReady = true; // Indicate "we have a new best move"
     }
     bestMoveCV.notify_one();  // Wake up any thread waiting in playOneGame()
+}
+
+uint64_t SearchEngine::beginNewAnalyze(Position *p)
+{
+    uint64_t newId = ++analyzeCounter;
+    currentAnalyzeId.store(newId, std::memory_order_relaxed);
+
+    analyzeInProgress.store(true, std::memory_order_relaxed);
+    analyzeReady = false;
+    analyzeResult.clear();
+
+    setRootPosition(p);
+
+    return newId;
+}
+
+// Emit analyze results
+void SearchEngine::emitAnalyze()
+{
+    // No need to adjust values based on side to move for Analyze
+
+    std::string result = analyzeResult;
+
+#ifdef QT_GUI_LIB
+    // If you want to send a signal to Qt
+    emit command(result, true);
+#else
+    std::cout << result << std::endl;
+
+#ifdef FLUTTER_UI
+    println(result.c_str());
+#endif
+#endif // QT_GUI_LIB
+
+#ifdef QT_GUI_LIB
+    // If you want to signal that the Analyze is finished, do it here:
+    emit analyzeCompleted();
+#endif
+
+    // Lock the mutex and signal that Analyze is ready
+    {
+        std::lock_guard<std::mutex> lk(analyzeMutex);
+        analyzeReady = true;
+    }
+    analyzeCV.notify_one(); // Wake up any thread waiting for Analyze
+}
+
+// New function to run analyze
+void SearchEngine::runAnalyze()
+{
+    // Generate the analyze result for all legal moves in the current position
+    if (!rootPos) {
+        analyzeResult = "Error: No position to analyze";
+        emitAnalyze();
+        return;
+    }
+
+    MoveList<LEGAL> list(*rootPos);
+
+    std::ostringstream ss;
+    ss << "info analysis";
+
+    for (const auto &m : list) {
+        Position newPos = *rootPos;
+        newPos.do_move(m.move);
+
+        std::string moveStr = UCI::move(m.move);
+        std::string outcome;
+
+        Value val = Eval::evaluate(newPos);
+        if (val >= VALUE_MATE)
+            outcome = "win";
+        else if (val > VALUE_EACH_PIECE * 2)
+            outcome = "advantage";
+        else if (val <= -VALUE_MATE)
+            outcome = "loss";
+        else if (val < -VALUE_EACH_PIECE * 2)
+            outcome = "disadvantage";
+        else
+            outcome = "draw";
+        ss << " " << moveStr << "=" << outcome;
+    }
+
+    analyzeResult = ss.str();
+    analyzeInProgress.store(false, std::memory_order_relaxed);
+
+    // Only call println once with the complete result
+    emitAnalyze();
 }

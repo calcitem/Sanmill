@@ -37,6 +37,7 @@ public:
 
     /// Methods
     void emitCommand();
+    void emitAnalyze();
     std::string next_move() const;
     void analyze(Color c) const;
     Depth get_depth() const;
@@ -49,7 +50,9 @@ public:
     void getBestMoveFromOpeningBook();
 
     uint64_t beginNewSearch(Position *p);
+    uint64_t beginNewAnalyze(Position *p);
     void runSearch();
+    void runAnalyze();
 
     Position *rootPos {nullptr};
 
@@ -58,7 +61,9 @@ public:
 
     /// Atomic flags and counters
     std::atomic_bool searchAborted {false};
+    std::atomic_bool analyzeInProgress {false};
     std::atomic<uint64_t> currentSearchId {0};
+    std::atomic<uint64_t> currentAnalyzeId {0};
 
     Depth originDepth {0};
     Move bestMove {MOVE_NONE};
@@ -66,10 +71,15 @@ public:
     Value lastvalue {VALUE_ZERO};
     AiMoveType aiMoveType {AiMoveType::unknown};
     std::string bestMoveString;
+    std::string analyzeResult;
 
     std::mutex bestMoveMutex;
     std::condition_variable bestMoveCV;
     bool bestMoveReady {false};
+
+    std::mutex analyzeMutex;
+    std::condition_variable analyzeCV;
+    bool analyzeReady {false};
 
 #ifdef QT_GUI_LIB
 signals:
@@ -78,10 +88,14 @@ signals:
 
     /// Signal that notifies listeners that the search has completed
     void searchCompleted();
+
+    /// Signal that notifies listeners that the evaluation has completed
+    void evaluationCompleted();
 #endif
 
 private:
     std::atomic<uint64_t> searchCounter {0};
+    std::atomic<uint64_t> analyzeCounter {0};
 
 #ifdef TIME_STAT
 #ifdef QT_GUI_LIB

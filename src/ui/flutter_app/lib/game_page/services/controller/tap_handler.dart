@@ -50,6 +50,15 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
+    // Prevent interaction when analysis is in progress
+    if (AnalysisMode.isAnalyzing) {
+      logger.i("$_logTag Analysis in progress, ignoring tap.");
+      return const EngineResponseSkip();
+    }
+
+    // Clear any existing analysis markers when player makes a move
+    AnalysisMode.disable();
+
     if (!GameController().isControllerReady) {
       logger.i("$_logTag Not ready, ignore tapping.");
       return const EngineResponseSkip();

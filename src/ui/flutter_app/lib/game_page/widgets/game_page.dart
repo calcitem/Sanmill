@@ -32,6 +32,7 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
 import '../services/import_export/pgn.dart';
@@ -92,6 +93,26 @@ class _GamePageInnerState extends State<_GamePageInner> {
     super.initState();
     // Initialize annotation manager from game controller.
     _annotationManager = widget.controller.annotationManager;
+
+    // Listen for analysis mode state changes
+    AnalysisMode.stateNotifier.addListener(_updateAnalysisButton);
+  }
+
+  // Method to update only the analysis button when state changes
+  void _updateAnalysisButton() {
+    // This will force a rebuild of only the analysis button area
+    // without requiring a full board repaint
+    setState(() {
+      // No need to do anything in the setState body
+      // The Icon will check AnalysisMode.isEnabled when rebuilding
+    });
+  }
+
+  @override
+  void dispose() {
+    // Remove listener when the widget is disposed
+    AnalysisMode.stateNotifier.removeListener(_updateAnalysisButton);
+    super.dispose();
   }
 
   // Toggle annotation mode without rebuilding the entire widget tree.
@@ -142,6 +163,32 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   child: CustomDrawerIcon.of(context)!.drawerIcon,
                 ),
               ),
+              // Analysis button in the top-right corner
+              if (DB().generalSettings.usePerfectDatabase &&
+                  isRuleSupportingPerfectDatabase())
+                Align(
+                  key: const Key('game_page_analysis_button_align'),
+                  alignment: AlignmentDirectional.topEnd,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: IconButton(
+                          key: const Key('game_page_analysis_button'),
+                          icon: Icon(
+                            AnalysisMode.isEnabled
+                                ? FluentIcons.beaker_dismiss_24_regular
+                                : FluentIcons.beaker_24_regular,
+                            color: Colors.white,
+                          ),
+                          tooltip: S.of(context).analysis,
+                          onPressed: () => _analyzePosition(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
               // Vignette overlay if enabled in display settings.
               if (DB().displaySettings.vignetteEffectEnabled)
                 VignetteOverlay(
@@ -307,5 +354,42 @@ class _GamePageInnerState extends State<_GamePageInner> {
       toolbarHeight *= 5;
     }
     return toolbarHeight;
+  }
+
+  // Add analysis method to the GamePage class
+  Future<void> _analyzePosition(BuildContext context) async {
+    // If analysis is already enabled, disable it and exit
+    if (AnalysisMode.isEnabled) {
+      AnalysisMode.disable();
+      // No need to call setState here as the listener will handle it
+      return;
+    }
+
+    // Check if rules support perfect database
+    if (!isRuleSupportingPerfectDatabase()) {
+      return;
+    }
+
+    // Check if perfect database is enabled
+    if (!DB().generalSettings.usePerfectDatabase) {
+      return;
+    }
+
+    // Run analysis and display results
+    final PositionAnalysisResult result =
+        await GameController().engine.analyzePosition();
+
+    if (!result.isValid) {
+      return;
+    }
+
+    // Enable analysis mode with the results
+    AnalysisMode.enable(result.possibleMoves);
+
+    // setState is still called here to ensure board is repainted
+    // when user explicitly clicks the analysis button
+    if (mounted) {
+      setState(() {});
+    }
   }
 }

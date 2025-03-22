@@ -17,6 +17,9 @@ namespace EngineCommands {
 /// Handles the "go" UCI command to start the search.
 void go(SearchEngine &searchEngine, Position *pos);
 
+/// Handles the "analyze" UCI command to evaluate all legal moves.
+void analyze(SearchEngine &searchEngine, Position *pos);
+
 /// Handles the "position" UCI command to set up the board position.
 void position(Position *pos, std::istringstream &is);
 

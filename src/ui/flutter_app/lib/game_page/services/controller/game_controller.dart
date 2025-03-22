@@ -315,12 +315,12 @@ class GameController {
     final GameMode gameModeBak = gameInstance.gameMode;
     String? fen = "";
     final bool isPosSetup = isPositionSetup;
-    // 保存当前的主机颜色设置
     final bool? savedHostPlaysWhite = lanHostPlaysWhite;
 
     value = "0";
     aiMoveType = AiMoveType.unknown;
     engine.stopSearching();
+    AnalysisMode.disable();
 
     if (gameModeBak == GameMode.humanVsLAN) {
       // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
@@ -921,5 +921,32 @@ class GameController {
   static Future<void> export(BuildContext context,
       {bool shouldPop = true}) async {
     return ExportService.exportGame(context, shouldPop: shouldPop);
+  }
+
+  // Add method to run and display analysis
+  Future<void> runAnalysis() async {
+    // Set analyzing flag to true before starting analysis
+    AnalysisMode.setAnalyzing(true);
+
+    final PositionAnalysisResult result = await engine.analyzePosition();
+
+    // Reset analyzing flag
+    AnalysisMode.setAnalyzing(false);
+
+    if (result.isValid && result.possibleMoves.isNotEmpty) {
+      // Enable analysis mode with the results
+      AnalysisMode.enable(result.possibleMoves);
+
+      // Force a redraw of the board to show analysis results
+      boardSemanticsNotifier.updateSemantics();
+
+      // Show success message
+      headerTipNotifier
+          .showTip("Analysis complete. Green = win, Yellow = draw, Red = loss");
+    } else {
+      // Show error message if analysis failed
+      final String errorMsg = result.errorMessage ?? "Analysis failed";
+      headerTipNotifier.showTip(errorMsg);
+    }
   }
 }

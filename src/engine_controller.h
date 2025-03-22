@@ -28,6 +28,9 @@ private:
     // Internal position
     Position searchPos;
 
+    // Analyze position
+    Position analyzePos;
+
     SearchEngine &searchEngine_;
 
     // If needed, we could store references to Options, or keep an internal

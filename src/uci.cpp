@@ -130,7 +130,8 @@ void UCI::loop(int argc, char *argv[])
             setoption(is);
 
         else if (token == "go" || token == "position" ||
-                 token == "ucinewgame" || token == "d" || token == "compiler") {
+                 token == "ucinewgame" || token == "d" || token == "compiler" ||
+                 token == "analyze") {
             // Pass the entire command to EngineController
             engineController.handleCommand(cmd, pos);
         }
