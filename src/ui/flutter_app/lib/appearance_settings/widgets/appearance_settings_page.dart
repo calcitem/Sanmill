@@ -32,6 +32,7 @@ import '../models/color_settings.dart';
 import '../models/display_settings.dart';
 import './../../game_page/services/painters/painters.dart';
 import 'piece_effect_selection_page.dart';
+import 'theme_selection_page.dart';
 
 part 'package:sanmill/appearance_settings/widgets/modals/point_painting_style_modal.dart';
 part 'package:sanmill/appearance_settings/widgets/pickers/background_image_picker.dart';
@@ -47,7 +48,6 @@ part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart'
 part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/point_width_slider.dart';
-part 'package:sanmill/shared/themes/theme_modal.dart';
 
 class AppearanceSettingsPage extends StatelessWidget {
   const AppearanceSettingsPage({super.key});
@@ -345,50 +345,54 @@ class AppearanceSettingsPage extends StatelessWidget {
     logger.t("[config] locale = $locale");
   }
 
-  void _setTheme(BuildContext context, ColorSettings colorSettings) {
-    void callback(ColorTheme? theme) {
-      Navigator.pop(context);
+  Future<void> _setTheme(
+      BuildContext context, ColorSettings colorSettings) async {
+    // Navigate to the theme selection page instead of showing modal
+    final ColorTheme? selectedTheme = await Navigator.push<ColorTheme>(
+      context,
+      MaterialPageRoute<ColorTheme>(
+        builder: (BuildContext context) => const ThemeSelectionPage(
+          currentTheme: ColorTheme.current,
+        ),
+      ),
+    );
 
-      if (theme == ColorTheme.current) {
-        return;
-      }
-
-      DB().colorSettings = colorSettings.copyWith(
-        boardLineColor: AppTheme.colorThemes[theme]!.boardLineColor,
-        darkBackgroundColor: AppTheme.colorThemes[theme]!.darkBackgroundColor,
-        boardBackgroundColor: AppTheme.colorThemes[theme]!.boardBackgroundColor,
-        whitePieceColor: AppTheme.colorThemes[theme]!.whitePieceColor,
-        blackPieceColor: AppTheme.colorThemes[theme]!.blackPieceColor,
-        pieceHighlightColor: AppTheme.colorThemes[theme]!.pieceHighlightColor,
-        messageColor: AppTheme.colorThemes[theme]!.messageColor,
-        drawerColor: AppTheme.colorThemes[theme]!.drawerColor,
-        drawerTextColor: AppTheme.colorThemes[theme]!.drawerTextColor,
-        drawerHighlightItemColor:
-            AppTheme.colorThemes[theme]!.drawerHighlightItemColor,
-        mainToolbarBackgroundColor:
-            AppTheme.colorThemes[theme]!.mainToolbarBackgroundColor,
-        mainToolbarIconColor: AppTheme.colorThemes[theme]!.mainToolbarIconColor,
-        navigationToolbarBackgroundColor:
-            AppTheme.colorThemes[theme]!.navigationToolbarBackgroundColor,
-        navigationToolbarIconColor:
-            AppTheme.colorThemes[theme]!.navigationToolbarIconColor,
-        analysisToolbarBackgroundColor:
-            AppTheme.colorThemes[theme]!.analysisToolbarBackgroundColor,
-        analysisToolbarIconColor:
-            AppTheme.colorThemes[theme]!.analysisToolbarIconColor,
-        annotationToolbarBackgroundColor:
-            AppTheme.colorThemes[theme]!.annotationToolbarBackgroundColor,
-        annotationToolbarIconColor:
-            AppTheme.colorThemes[theme]!.annotationToolbarIconColor,
-      );
+    if (selectedTheme == null || selectedTheme == ColorTheme.current) {
+      return; // No theme selected or current theme selected
     }
 
-    showModalBottomSheet(
-      context: context,
-      builder: (_) => _ThemeModal(
-        theme: ColorTheme.current,
-        onChanged: callback,
-      ),
+    // Update the color settings with the selected theme
+    DB().colorSettings = colorSettings.copyWith(
+      boardLineColor: AppTheme.colorThemes[selectedTheme]!.boardLineColor,
+      darkBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.darkBackgroundColor,
+      boardBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.boardBackgroundColor,
+      whitePieceColor: AppTheme.colorThemes[selectedTheme]!.whitePieceColor,
+      blackPieceColor: AppTheme.colorThemes[selectedTheme]!.blackPieceColor,
+      pieceHighlightColor:
+          AppTheme.colorThemes[selectedTheme]!.pieceHighlightColor,
+      messageColor: AppTheme.colorThemes[selectedTheme]!.messageColor,
+      drawerColor: AppTheme.colorThemes[selectedTheme]!.drawerColor,
+      drawerTextColor: AppTheme.colorThemes[selectedTheme]!.drawerTextColor,
+      drawerHighlightItemColor:
+          AppTheme.colorThemes[selectedTheme]!.drawerHighlightItemColor,
+      mainToolbarBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.mainToolbarBackgroundColor,
+      mainToolbarIconColor:
+          AppTheme.colorThemes[selectedTheme]!.mainToolbarIconColor,
+      navigationToolbarBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.navigationToolbarBackgroundColor,
+      navigationToolbarIconColor:
+          AppTheme.colorThemes[selectedTheme]!.navigationToolbarIconColor,
+      analysisToolbarBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.analysisToolbarBackgroundColor,
+      analysisToolbarIconColor:
+          AppTheme.colorThemes[selectedTheme]!.analysisToolbarIconColor,
+      annotationToolbarBackgroundColor:
+          AppTheme.colorThemes[selectedTheme]!.annotationToolbarBackgroundColor,
+      annotationToolbarIconColor:
+          AppTheme.colorThemes[selectedTheme]!.annotationToolbarIconColor,
     );
   }
 

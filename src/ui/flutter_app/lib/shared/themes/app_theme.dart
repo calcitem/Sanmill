@@ -7,7 +7,6 @@ import 'package:feedback/feedback.dart';
 import 'package:flutter/material.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
-import '../../appearance_settings/widgets/appearance_settings_page.dart';
 import '../database/database.dart';
 import 'ui_colors.dart';
 
@@ -1494,4 +1493,42 @@ class AppTheme {
       annotationToolbarIconColor: Color(0xFFFFFDEC),
     ),
   };
+}
+
+enum ColorTheme {
+  current,
+  light,
+  dark,
+  monochrome,
+  transparentCanvas,
+  autumnLeaves,
+  legendaryLand,
+  goldenJade,
+  forestWood,
+  greenMeadow,
+  stonyPath,
+  midnightBlue,
+  greenForest,
+  pastelPink,
+  turquoiseSea,
+  violetDream,
+  mintChocolate,
+  skyBlue,
+  playfulGarden,
+  darkMystery,
+  ancientEgypt,
+  gothicIce,
+  riceField,
+  chinesePorcelain,
+  desertDusk,
+  precisionCraft,
+  folkEmbroidery,
+  carpathianHeritage,
+  imperialGrandeur,
+  bohemianCrystal,
+  savannaSunrise,
+  harmonyBalance,
+  cinnamonSpice,
+  anatolianMosaic,
+  carnivalSpirit,
 }
