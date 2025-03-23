@@ -1,7 +1,7 @@
 name: sanmill
 description: Sanmill is a open-source, powerful UCI-like Nine Men's Morris (and its variants) program.
 publish_to: none
-version: 5.10.0+4600
+version: 5.10.0+4632
 
 environment:
   sdk: ">=3.6.0 <4.0.0"
