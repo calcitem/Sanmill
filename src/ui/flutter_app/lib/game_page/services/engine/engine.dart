@@ -643,6 +643,8 @@ class Engine {
         return GameOutcome.advantage;
       case "disadvantage":
         return GameOutcome.disadvantage;
+      case "unknown":
+        return GameOutcome.unknown;
       default:
         return GameOutcome.unknown;
     }

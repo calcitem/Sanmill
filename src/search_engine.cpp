@@ -778,7 +778,9 @@ void SearchEngine::runAnalyze()
         std::string outcome;
 
         Value val = Eval::evaluate(newPos);
-        if (val >= VALUE_MATE)
+        if (val == VALUE_NONE)
+            outcome = "unknown";
+        else if (val >= VALUE_MATE)
             outcome = "win";
         else if (val > VALUE_EACH_PIECE * 2)
             outcome = "advantage";

@@ -36,10 +36,7 @@ Value Evaluation::value() const
 {
     if (gameOptions.getUsePerfectDatabase()) {
         Value perfectValue = PerfectAPI::getValue(pos);
-
-        if (perfectValue != VALUE_NONE) {
-            return perfectValue;
-        }
+        return perfectValue;
     }
 
     Value value = VALUE_ZERO;
