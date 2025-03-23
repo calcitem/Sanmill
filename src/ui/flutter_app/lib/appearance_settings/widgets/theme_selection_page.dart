@@ -341,10 +341,12 @@ class ThemePreviewItem extends StatelessWidget {
         return S.of(context).anatolianMosaic;
       case ColorTheme.carnivalSpirit:
         return S.of(context).carnivalSpirit;
+      case ColorTheme.spiceMarket:
+        return S.of(context).spiceMarket;
       case ColorTheme.current:
         return S.of(context).currentTheme;
       case ColorTheme.custom:
-        return S.of(context).theme;
+        return S.of(context).custom;
     }
   }
 }

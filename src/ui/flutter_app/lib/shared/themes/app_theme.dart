@@ -1492,6 +1492,42 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF026873),
       annotationToolbarIconColor: Color(0xFFFFFDEC),
     ),
+    ColorTheme.spiceMarket: const ColorSettings(
+      boardBackgroundColor: Color(0xFFF9E2B8),
+      // Warm turmeric yellow board
+      darkBackgroundColor: Color(0xFF9B2335),
+      // Deep burgundy background like dried chili
+      boardLineColor: Color(0xFF6F1D1B),
+      // Dark maroon lines
+      whitePieceColor: Color(0xFFFFFFEB),
+      // Ivory pieces like coconut flesh
+      blackPieceColor: Color(0xFF2E0E02),
+      // Deep brown like cloves
+      pieceHighlightColor: Color(0xFF00A550),
+      // Bright green like fresh curry leaves
+      messageColor: Color(0xFFFFEDBD),
+      // Light cream like ghee
+      drawerColor: Color(0xFF9B2335),
+      // Match dark background
+      drawerTextColor: Color(0xFFFFEDBD),
+      // Match message color
+      drawerHighlightItemColor: Color(0x33F9B529),
+      // Semi-transparent saffron gold
+      mainToolbarBackgroundColor: Color(0xFF9B2335),
+      // Match dark background
+      mainToolbarIconColor: Color(0xFFFFEDBD),
+      // Light icons
+      navigationToolbarBackgroundColor: Color(0xFF9B2335),
+      // Match dark background
+      navigationToolbarIconColor: Color(0xFFFFEDBD),
+      // Light icons
+      analysisToolbarBackgroundColor: Color(0xFF9B2335),
+      // Match dark background
+      analysisToolbarIconColor: Color(0xFFFFEDBD),
+      // Light icons
+      annotationToolbarBackgroundColor: Color(0xFF9B2335),
+      annotationToolbarIconColor: Color(0xFFFFEDBD),
+    ),
     ColorTheme.custom: const ColorSettings(),
   };
 
@@ -1538,5 +1574,6 @@ enum ColorTheme {
   cinnamonSpice,
   anatolianMosaic,
   carnivalSpirit,
+  spiceMarket,
   custom,
 }
