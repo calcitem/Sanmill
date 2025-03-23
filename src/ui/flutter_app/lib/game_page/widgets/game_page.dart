@@ -164,7 +164,9 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 ),
               ),
               // Analysis button in the top-right corner
-              if (DB().generalSettings.usePerfectDatabase &&
+              if (GameController().gameInstance.gameMode ==
+                      GameMode.humanVsHuman &&
+                  DB().generalSettings.usePerfectDatabase &&
                   isRuleSupportingPerfectDatabase())
                 Align(
                   key: const Key('game_page_analysis_button_align'),
