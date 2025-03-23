@@ -8,6 +8,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/color_settings.dart';
 
@@ -35,9 +36,29 @@ class ThemeSelectionPage extends StatelessWidget {
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
         ),
-        itemCount: AppTheme.colorThemes.length,
+        itemCount:
+            AppTheme.colorThemes.length + 1, // Add 1 for the Current option
         itemBuilder: (BuildContext context, int index) {
-          final ColorTheme theme = AppTheme.colorThemes.keys.elementAt(index);
+          // Add Current theme as the first item
+          if (index == 0) {
+            // Get current theme settings directly from the database
+            final ColorSettings currentColors = DB().colorSettings;
+
+            return ThemePreviewItem(
+              theme: ColorTheme.current,
+              colors: currentColors,
+              isSelected: currentTheme == ColorTheme.current,
+              onTap: () {
+                // Just exit without returning a value
+                Navigator.pop(context);
+              },
+            );
+          }
+
+          // Adjust index for the rest of the themes
+          final int themeIndex = index - 1;
+          final ColorTheme theme =
+              AppTheme.colorThemes.keys.elementAt(themeIndex);
           final ColorSettings colors = AppTheme.colorThemes[theme]!;
 
           return ThemePreviewItem(
