@@ -24,6 +24,7 @@ import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -527,7 +528,7 @@ class AppearanceSettingsPage extends StatelessWidget {
             navigationToolbarIconColor: val,
           ),
         ),
-        if (kDebugMode)
+        if (EnvironmentConfig.devMode)
           SettingsListTile.color(
             key: const Key(
                 'color_settings_card_analysis_toolbar_background_color_settings_list_tile'),
@@ -538,7 +539,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               analysisToolbarBackgroundColor: val,
             ),
           ),
-        if (kDebugMode)
+        if (EnvironmentConfig.devMode)
           SettingsListTile.color(
             key: const Key(
                 'color_settings_card_analysis_toolbar_icon_color_settings_list_tile'),
@@ -666,7 +667,7 @@ class AppearanceSettingsPage extends StatelessWidget {
               displaySettings.copyWith(isHistoryNavigationToolbarShown: val),
           titleString: S.of(context).isHistoryNavigationToolbarShown,
         ),
-        if (kDebugMode)
+        if (EnvironmentConfig.devMode)
           SettingsListTile.switchTile(
             key: const Key(
                 'display_settings_card_analysis_toolbar_shown_switch_tile'),
