@@ -1745,5 +1745,7 @@
   "custom": "Έθιμο",
   "@custom": {},
   "spiceMarket": "Αγορά Μπαχαρικών",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Σαρώστε για να εμφανίσετε το συρτάρι",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "Kohandatud",
   "@custom": {},
   "spiceMarket": "Vürtsiturg",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Pühkige, et avada sahtel",
+  "@swipeToRevealTheDrawer": {}
 }

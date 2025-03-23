@@ -1848,5 +1848,7 @@
   "custom": "சான்றிதழ்",
   "@custom": {},
   "spiceMarket": "மஸாலா சந்தை",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "டிராயரை வெளிக்காட்ட ஸ்வைப் செய்யவும்",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "ಪದ್ಧತಿ",
   "@custom": {},
   "spiceMarket": "ಮಸಾಲೆ ಮಾರುಕಟ್ಟೆ",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ಡ್ರಾಯರ್ ತೋರಿಸಲು ಸ್ವೈಪ್ ಮಾಡಿ",
+  "@swipeToRevealTheDrawer": {}
 }

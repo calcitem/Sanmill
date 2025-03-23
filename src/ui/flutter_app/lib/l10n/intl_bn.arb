@@ -1745,5 +1745,7 @@
   "custom": "কাস্টম",
   "@custom": {},
   "spiceMarket": "মসলা বাজার",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ড্রয়ার দেখতে সোয়াইপ করুন",
+  "@swipeToRevealTheDrawer": {}
 }

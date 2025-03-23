@@ -1745,5 +1745,7 @@
   "custom": "Coutume",
   "@custom": {},
   "spiceMarket": "Marché aux épices",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Faites glisser pour révéler le tiroir",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "रिवाज़",
   "@custom": {},
   "spiceMarket": "मसाला बाज़ार",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ड्रॉअर दिखाने के लिए स्वाइप करें",
+  "@swipeToRevealTheDrawer": {}
 }

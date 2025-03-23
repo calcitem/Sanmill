@@ -1745,5 +1745,7 @@
   "custom": "Tilpasset",
   "@custom": {},
   "spiceMarket": "Kryddermarked",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Sveip for å åpne skuffen",
+  "@swipeToRevealTheDrawer": {}
 }

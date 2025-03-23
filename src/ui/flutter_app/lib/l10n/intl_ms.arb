@@ -1745,5 +1745,7 @@
   "custom": "Adat",
   "@custom": {},
   "spiceMarket": "Pasar Rempah",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Leret untuk mendedahkan Laci",
+  "@swipeToRevealTheDrawer": {}
 }

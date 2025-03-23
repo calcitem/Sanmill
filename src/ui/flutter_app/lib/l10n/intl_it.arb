@@ -1745,5 +1745,7 @@
   "custom": "Costume",
   "@custom": {},
   "spiceMarket": "Mercato delle spezie",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Scorri per mostrare il cassetto",
+  "@swipeToRevealTheDrawer": {}
 }

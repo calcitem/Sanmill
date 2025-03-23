@@ -1745,5 +1745,7 @@
   "custom": "Personalizado",
   "@custom": {},
   "spiceMarket": "Mercado de especias",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Desliza para mostrar el cajón",
+  "@swipeToRevealTheDrawer": {}
 }

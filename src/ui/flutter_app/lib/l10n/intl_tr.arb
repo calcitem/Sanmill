@@ -1745,5 +1745,7 @@
   "custom": "Özel",
   "@custom": {},
   "spiceMarket": "Baharat Pazarı",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Çekmeceyi açmak için kaydırın",
+  "@swipeToRevealTheDrawer": {}
 }

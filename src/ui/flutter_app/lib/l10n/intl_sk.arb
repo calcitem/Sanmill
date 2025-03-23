@@ -1745,5 +1745,7 @@
   "custom": "Zvykom",
   "@custom": {},
   "spiceMarket": "Trh s koreninami",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Potiahnutím zobrazíte zásuvku",
+  "@swipeToRevealTheDrawer": {}
 }

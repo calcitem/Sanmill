@@ -1843,5 +1843,7 @@
   "custom": "Desturi",
   "@custom": {},
   "spiceMarket": "Soko la viungo",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swipe kufungua droo",
+  "@swipeToRevealTheDrawer": {}
 }

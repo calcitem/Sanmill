@@ -1843,5 +1843,7 @@
   "custom": "Tùy chỉnh",
   "@custom": {},
   "spiceMarket": "Chợ gia vị",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Vuốt để hiển thị ngăn kéo",
+  "@swipeToRevealTheDrawer": {}
 }

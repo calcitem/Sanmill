@@ -1745,5 +1745,7 @@
   "custom": "Personalizat",
   "@custom": {},
   "spiceMarket": "Piața de condimente",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Glisează pentru a dezvălui sertarul",
+  "@swipeToRevealTheDrawer": {}
 }

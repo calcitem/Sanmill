@@ -1843,5 +1843,7 @@
   "custom": "စိတ်ကြိုက်",
   "@custom": {},
   "spiceMarket": "အမွှေးအကြိုင်ဈေး",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ဧဖ်ဖွင့်ရန် လွှဲဆွဲပါ",
+  "@swipeToRevealTheDrawer": {}
 }

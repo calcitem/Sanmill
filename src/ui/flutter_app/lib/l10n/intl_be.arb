@@ -1843,5 +1843,7 @@
   "custom": "Звычай",
   "@custom": {},
   "spiceMarket": "Рынак спецый",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Правядзіце, каб адкрыць скрыню",
+  "@swipeToRevealTheDrawer": {}
 }

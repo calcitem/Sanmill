@@ -1745,5 +1745,7 @@
   "custom": "Brugerdefinerede",
   "@custom": {},
   "spiceMarket": "Krydderimarked",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Stryg for at afsløre skuffen",
+  "@swipeToRevealTheDrawer": {}
 }

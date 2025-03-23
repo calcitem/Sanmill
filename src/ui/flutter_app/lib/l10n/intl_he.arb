@@ -1843,5 +1843,7 @@
   "custom": "המותאם אישית",
   "@custom": {},
   "spiceMarket": "שוק התבלינים",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "החלק כדי לחשוף את המגירה",
+  "@swipeToRevealTheDrawer": {}
 }

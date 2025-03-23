@@ -1745,5 +1745,7 @@
   "custom": "Personalizado",
   "@custom": {},
   "spiceMarket": "Mercado de especiarias",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Deslize para revelar a gaveta",
+  "@swipeToRevealTheDrawer": {}
 }

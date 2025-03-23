@@ -1843,5 +1843,7 @@
   "custom": "Custom",
   "@custom": {},
   "spiceMarket": "Spice Market",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swipe to reveal the Drawer",
+  "@swipeToRevealTheDrawer": {}
 }

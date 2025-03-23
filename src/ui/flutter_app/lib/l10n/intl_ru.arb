@@ -1745,5 +1745,7 @@
   "custom": "Обычай",
   "@custom": {},
   "spiceMarket": "Рынок специй",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Проведите, чтобы открыть ящик",
+  "@swipeToRevealTheDrawer": {}
 }

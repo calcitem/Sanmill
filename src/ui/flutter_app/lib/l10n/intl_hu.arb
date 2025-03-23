@@ -1745,5 +1745,7 @@
   "custom": "Egyedi",
   "@custom": {},
   "spiceMarket": "Fűszerpiac",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Húzd el az ujjad a fiók megnyitásához",
+  "@swipeToRevealTheDrawer": {}
 }

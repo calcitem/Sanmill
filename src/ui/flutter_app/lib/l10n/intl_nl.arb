@@ -1745,5 +1745,7 @@
   "custom": "Aangepast",
   "@custom": {},
   "spiceMarket": "Specerijenmarkt",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Veeg om de lade te tonen",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1843,5 +1843,7 @@
   "custom": "Pasgemaak",
   "@custom": {},
   "spiceMarket": "Speseryemark",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swiep om die laai te wys",
+  "@swipeToRevealTheDrawer": {}
 }

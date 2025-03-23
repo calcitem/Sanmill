@@ -1843,5 +1843,7 @@
   "custom": "ብጁ",
   "@custom": {},
   "spiceMarket": "ቅመም ገበያ",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "መዝጊያውን ለማሳየት ያንኩ",
+  "@swipeToRevealTheDrawer": {}
 }

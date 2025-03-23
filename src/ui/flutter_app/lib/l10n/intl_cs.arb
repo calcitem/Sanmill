@@ -1745,5 +1745,7 @@
   "custom": "Zvyk",
   "@custom": {},
   "spiceMarket": "Trh s kořením",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Přejetím odhalte zásuvku",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1843,5 +1843,7 @@
   "custom": "カスタム",
   "@custom": {},
   "spiceMarket": "スパイス市場",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "スワイプしてドロワーを表示",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "Brauch",
   "@custom": {},
   "spiceMarket": "Gewürzmarkt",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Wischen, um die Schublade anzuzeigen",
+  "@swipeToRevealTheDrawer": {}
 }

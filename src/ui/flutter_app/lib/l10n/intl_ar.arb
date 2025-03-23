@@ -1745,5 +1745,7 @@
   "custom": "مخصص",
   "@custom": {},
   "spiceMarket": "سوق التوابل",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "اسحب للكشف عن الدرج",
+  "@swipeToRevealTheDrawer": {}
 }

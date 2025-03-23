@@ -1843,5 +1843,7 @@
   "custom": "Isiko",
   "@custom": {},
   "spiceMarket": "Imakethe yezinongo",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swipe ukuze uveze iDrawer",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "Običaj",
   "@custom": {},
   "spiceMarket": "Tržnica začina",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Prevucite da otkrijete ladicu",
+  "@swipeToRevealTheDrawer": {}
 }

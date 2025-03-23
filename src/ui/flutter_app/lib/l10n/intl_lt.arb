@@ -1745,5 +1745,7 @@
   "custom": "Paprotys",
   "@custom": {},
   "spiceMarket": "Prieskonių turgus",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Braukite, kad atidarytumėte stalčių",
+  "@swipeToRevealTheDrawer": {}
 }

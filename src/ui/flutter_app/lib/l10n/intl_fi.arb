@@ -1745,5 +1745,7 @@
   "custom": "Mukautettu",
   "@custom": {},
   "spiceMarket": "Maustemarkkinat",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Pyyhkäise avataksesi laatikon",
+  "@swipeToRevealTheDrawer": {}
 }

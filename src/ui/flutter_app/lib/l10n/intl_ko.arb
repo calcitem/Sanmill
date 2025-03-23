@@ -1745,5 +1745,7 @@
   "custom": "관습",
   "@custom": {},
   "spiceMarket": "향신료 시장",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "서랍을 표시하려면 스와이프하세요",
+  "@swipeToRevealTheDrawer": {}
 }

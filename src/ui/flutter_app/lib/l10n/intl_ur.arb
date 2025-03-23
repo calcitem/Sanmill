@@ -1843,5 +1843,7 @@
   "custom": "رواج",
   "@custom": {},
   "spiceMarket": "مصالحہ بازار",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "درج کو ظاہر کرنے کے لیے سوائپ کریں",
+  "@swipeToRevealTheDrawer": {}
 }

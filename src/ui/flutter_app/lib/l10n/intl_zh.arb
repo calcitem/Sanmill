@@ -1745,5 +1745,7 @@
   "custom": "自定义",
   "@custom": {},
   "spiceMarket": "香市",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "滑动页面可打开抽屉",
+  "@swipeToRevealTheDrawer": {}
 }

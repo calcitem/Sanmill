@@ -1843,5 +1843,7 @@
   "custom": "Adət",
   "@custom": {},
   "spiceMarket": "Ədviyyat Bazarı",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Çəkməni göstərmək üçün sürüşdürün",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "سفارشی",
   "@custom": {},
   "spiceMarket": "بازار ادویه",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "برای نمایش کشو بکشید",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1843,5 +1843,7 @@
   "custom": "චාරිත්‍රය",
   "@custom": {},
   "spiceMarket": "සුගන්ධ ද්‍රව්‍ය වෙළඳපොල",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "drawer එක දිස්වීමට ස්вайප් කරන්න",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "Kebiasaan",
   "@custom": {},
   "spiceMarket": "Pasar Rempah",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Geser untuk membuka Laci",
+  "@swipeToRevealTheDrawer": {}
 }

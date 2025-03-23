@@ -1843,5 +1843,7 @@
   "custom": "རང་བཟོས་",
   "@custom": {},
   "spiceMarket": "སྣུམ་ཉོ་བའི་བོད་ཀྱི་གསར་འགྱུར།",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ཁ་ཤོག་བཀྲམ་ནས་ཤོག་བཤུད་བྱོས།",
+  "@swipeToRevealTheDrawer": {}
 }

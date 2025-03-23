@@ -1843,5 +1843,7 @@
   "custom": "Sérsniðin",
   "@custom": {},
   "spiceMarket": "Kryddmarkaður",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Strjúktu til að sýna skúffuna",
+  "@swipeToRevealTheDrawer": {}
 }

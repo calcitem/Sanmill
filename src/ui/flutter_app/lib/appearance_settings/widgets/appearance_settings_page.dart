@@ -712,6 +712,15 @@ class AppearanceSettingsPage extends StatelessWidget {
           },
           titleString: S.of(context).showAdvantageGraph,
         ),
+        if (Platform.isAndroid || Platform.isIOS)
+          SettingsListTile.switchTile(
+            key: const Key(
+                'display_settings_card_swipe_to_reveal_the_drawer_switch_tile'),
+            value: displaySettings.swipeToRevealTheDrawer,
+            onChanged: (bool val) => DB().displaySettings =
+                displaySettings.copyWith(swipeToRevealTheDrawer: val),
+            titleString: S.of(context).swipeToRevealTheDrawer,
+          ),
         SettingsListTile(
           key: const Key(
               'display_settings_card_board_corner_radius_settings_list_tile'),

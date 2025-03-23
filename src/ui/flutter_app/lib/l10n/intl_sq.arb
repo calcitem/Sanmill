@@ -1745,5 +1745,7 @@
   "custom": "Zakon",
   "@custom": {},
   "spiceMarket": "Tregu i erëzave",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Rrëshqit për të zbuluar sirtarin",
+  "@swipeToRevealTheDrawer": {}
 }

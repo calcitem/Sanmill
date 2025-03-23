@@ -1745,5 +1745,7 @@
   "custom": "กำหนดเอง",
   "@custom": {},
   "spiceMarket": "ตลาดเครื่องเทศ",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ปัดเพื่อเปิดลิ้นชัก",
+  "@swipeToRevealTheDrawer": {}
 }

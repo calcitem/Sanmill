@@ -1745,5 +1745,7 @@
   "custom": "Pasūtījuma",
   "@custom": {},
   "spiceMarket": "Garšvielu tirgus",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Pavelciet, lai atvērtu atvilktni",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "કસ્ટમ",
   "@custom": {},
   "spiceMarket": "મસાલા બજાર",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ડ્રોઅર દર્શાવવા માટે સ્વાઇપ કરો",
+  "@swipeToRevealTheDrawer": {}
 }

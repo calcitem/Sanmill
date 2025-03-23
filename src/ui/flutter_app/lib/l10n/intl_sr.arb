@@ -1745,5 +1745,7 @@
   "custom": "Обичај",
   "@custom": {},
   "spiceMarket": "Пијаца зачина",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Повуците да откријете фиоку",
+  "@swipeToRevealTheDrawer": {}
 }

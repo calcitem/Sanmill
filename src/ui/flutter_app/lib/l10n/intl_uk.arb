@@ -1843,5 +1843,7 @@
   "custom": "Звичай",
   "@custom": {},
   "spiceMarket": "Ринок спецій",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Проведіть, щоб показати шухляду",
+  "@swipeToRevealTheDrawer": {}
 }

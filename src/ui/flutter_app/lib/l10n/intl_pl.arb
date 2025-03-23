@@ -1745,5 +1745,7 @@
   "custom": "Zwyczaj",
   "@custom": {},
   "spiceMarket": "Targ przypraw",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Przeciągnij, aby odsłonić szufladę",
+  "@swipeToRevealTheDrawer": {}
 }

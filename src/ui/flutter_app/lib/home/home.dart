@@ -249,7 +249,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   // Function to check if the current drawer state corresponds to a game
   bool _isGame(_DrawerIndex index) {
-    return index.index < 4;
+    // TODO: Magic Number. The first 4 indices correspond to game modes
+    return index.index < 5;
   }
 
   // Function to handle route changes
@@ -481,13 +482,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
                 key: const Key("custom_drawer_header"),
               ),
               drawerItems: drawerItems,
-              // TODO: 4 means Setup Position
-              disabledGestures: (kIsWeb ||
-                      Platform.isWindows ||
-                      Platform.isLinux ||
-                      Platform.isMacOS) &&
-                  _drawerIndex.index < 4 &&
-                  !value.isDrawerVisible,
+              disabledGestures: (!DB().displaySettings.swipeToRevealTheDrawer &&
+                      !value.isDrawerVisible) ||
+                  ((kIsWeb ||
+                          Platform.isWindows ||
+                          Platform.isLinux ||
+                          Platform.isMacOS) &&
+                      _isGame(_drawerIndex) &&
+                      !value.isDrawerVisible),
               orientation: MediaQuery.of(context).orientation,
               mainScreenWidget: _screenView,
             ),

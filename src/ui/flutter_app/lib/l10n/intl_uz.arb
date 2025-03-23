@@ -1745,5 +1745,7 @@
   "custom": "Odat",
   "@custom": {},
   "spiceMarket": "Ziravorlar bozori",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Tortmani ko‘rsatish uchun suring",
+  "@swipeToRevealTheDrawer": {}
 }

@@ -1745,5 +1745,7 @@
   "custom": "Персонализиран",
   "@custom": {},
   "spiceMarket": "Пазар за подправки",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Плъзнете, за да се покаже чекмеджето",
+  "@swipeToRevealTheDrawer": {}
 }

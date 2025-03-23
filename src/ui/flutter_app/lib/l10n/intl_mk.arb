@@ -1745,5 +1745,7 @@
   "custom": "Обичај",
   "@custom": {},
   "spiceMarket": "Пазар за зачини",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Провлечете за да го откриете фиоката",
+  "@swipeToRevealTheDrawer": {}
 }

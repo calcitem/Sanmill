@@ -1745,5 +1745,7 @@
   "custom": "ఆచారం",
   "@custom": {},
   "spiceMarket": "మసాలా మార్కెట్",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "డ్రాయర్ చూపించడానికి స్వైప్ చేయండి",
+  "@swipeToRevealTheDrawer": {}
 }

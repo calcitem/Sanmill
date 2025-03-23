@@ -1843,5 +1843,7 @@
   "custom": "Սովորություն",
   "@custom": {},
   "spiceMarket": "Համեմունքի շուկա",
-  "@spiceMarket": {}
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Սահեցրեք՝ դարակը բացելու համար",
+  "@swipeToRevealTheDrawer": {}
 }
