@@ -1350,7 +1350,7 @@ class AppTheme {
     ),
     ColorTheme.harmonyBalance: const ColorSettings(
       boardBackgroundColor: Color(0xFFF3F0E9),
-      // Natural paper color like traditional Hanji
+      // Natural paper color
       darkBackgroundColor: Color(0xFF263959),
       // Deep indigo blue like traditional pottery
       boardLineColor: Color(0xFF17263B),
@@ -1368,7 +1368,7 @@ class AppTheme {
       drawerTextColor: Color(0xFFFAF9F5),
       // Match white piece
       drawerHighlightItemColor: Color(0x33F9B42D),
-      // Semi-transparent gold like dancheong patterns
+      // Semi-transparent gold
       mainToolbarBackgroundColor: Color(0xFF263959),
       // Match dark background
       mainToolbarIconColor: Color(0xFFFAF9F5),

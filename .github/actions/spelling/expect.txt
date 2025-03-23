@@ -4,6 +4,7 @@ APIENTRY
 APSTUDIO
 Adaptasi
 BUFSIZ
+carpathian
 CBB
 COINIT
 CONOUT
