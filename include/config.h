@@ -64,7 +64,9 @@ constexpr auto DEFAULT_RULE_NUMBER = 0;
 constexpr auto DEPTH_ADJUST = 0;
 
 #ifdef DEBUG
+#ifndef FLUTTER_UI
 #define TIME_STAT
+#endif
 // #define CYCLE_STAT
 #endif
 
