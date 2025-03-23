@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Mosaïque anatolienne",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Esprit de carnaval",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "Coutume",
+  "@custom": {},
+  "spiceMarket": "Marché aux épices",
+  "@spiceMarket": {}
 }

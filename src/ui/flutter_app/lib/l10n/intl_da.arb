@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatolsk Mosaik",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnevalsånd",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Brugerdefinerede",
+  "@custom": {},
+  "spiceMarket": "Krydderimarked",
+  "@spiceMarket": {}
 }

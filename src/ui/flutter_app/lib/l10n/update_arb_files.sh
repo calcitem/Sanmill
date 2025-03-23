@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Determine the correct sed command based on the system (GNU or BSD)
 SED_CMD="sed"
@@ -7,88 +7,78 @@ if command -v gsed &>/dev/null; then
 fi
 
 # Initialize variables
-filename=""
+arb_filename=""
 block=""
 
 # Function to update the ARB file with the new block
 update_file() {
-    if [[ -n "$filename" && -f "$filename" ]]; then
-        # Prepare the block for insertion
-        # Remove any trailing comma at the end of the block
-        block=$(echo "$block" | $SED_CMD '$ s/,\s*$//')
+    # 1) Remove trailing empty lines
+    block=$(echo "$block" | $SED_CMD -e :a -e '/^[[:space:]]*$/{$d;N;ba}')
 
-        # Remove the trailing comma before the last }
-        block=$(echo "$block" | $SED_CMD '$ s/,\s*}/}/')
+    # 2) Remove any trailing comma from the last line of block
+    block=$(echo "$block" | $SED_CMD '$ s/,[[:space:]]*$//')
 
-        # Use sed to add a comma to the last '}' on a line by itself, then add the new block
-        $SED_CMD -i -e '$ s/}/},/' "$filename"
-        echo "$block" >> "$filename"
-        echo "}" >> "$filename"  # Add back the closing brace
+    # Check if the target ARB filename is set
+    if [[ -z "$arb_filename" ]]; then
+        echo "No ARB filename specified. Skipping update."
+        return
+    fi
 
-        # Remove any line that is just "},"
-        $SED_CMD -i '/^},$/d' "$filename"
+    # If the file exists, we will append to it; if not, create a new file.
+    if [[ -f "$arb_filename" ]]; then
+        tmpfile=$(mktemp)
 
-        # Add comma to line ending with {} if necessary
-        $SED_CMD -i '/^{[^}]*}$/!b;n;s/}$/},/' "$filename"
+        # Remove the last line (which should be '}') and store the remainder
+        $SED_CMD '$d' "$arb_filename" > "$tmpfile"
 
-        # Check for lines ending with {} and add comma if necessary
-        awk '
-        {
-            if (prev_line ~ /\{\}$/ && $0 != "}") {
-                sub(/\{\}$/, "{},", prev_line)
-            }
-            if (NR > 1) {
-                print prev_line
-            }
-            prev_line = $0
-        }
-        END {
-            print prev_line
-        }
-        ' "$filename" > "${filename}.tmp" && mv "${filename}.tmp" "$filename"
+        # If tmpfile is not empty, ensure its last line ends with a comma
+        if [[ -s "$tmpfile" ]]; then
+            last_line=$(tail -n 1 "$tmpfile")
+            if [[ "${last_line: -1}" != "," ]]; then
+                $SED_CMD -i '$ s/[[:space:]]*$/,/' "$tmpfile"
+            fi
+        else
+            # If empty, write an opening brace for a valid JSON object
+            echo "{" > "$tmpfile"
+        fi
 
-        # Remove the trailing comma before the final closing brace if it exists
-        $SED_CMD -i '$s/},/}/' "$filename"
-
-        # Remove any comma before a single closing brace
-        $SED_CMD -i '$!N;/,\n}/s/,//' "$filename"
+        # Rebuild ARB file: existing content + block + closing brace
+        cat "$tmpfile" > "$arb_filename"
+        echo "$block" >> "$arb_filename"
+        echo "}" >> "$arb_filename"
+        rm "$tmpfile"
     else
-        echo "File not found: $filename"
+        echo "File not found: $arb_filename. Creating a new ARB file."
+        {
+            echo "{"
+            echo "$block"
+            echo "}"
+        } > "$arb_filename"
     fi
 }
 
 # Read lines from new-items.txt
-while IFS= read -r line; do
-    # Detect and process file name
+while IFS= read -r line || [[ -n "$line" ]]; do
+    # Detect a comment line with the ARB filename, e.g., // intl_en.arb
     if [[ "$line" =~ ^//[[:space:]]*([^[:space:]]+\.arb)$ ]]; then
-        # If there is a pending update, perform it
         if [[ -n "$block" ]]; then
-            # Remove trailing comma from the block before updating the file
-            block=$(echo "$block" | $SED_CMD '$ s/,\s*$//')
             update_file
-            # Reset block for the next section
             block=""
         fi
-        # Set new filename from the comment
-        filename="${BASH_REMATCH[1]}"
-    elif [[ -z "$line" ]]; then  # Empty line
-        # If line is empty and block is not, update the file
+        arb_filename="${BASH_REMATCH[1]}"
+    elif [[ "$line" =~ ^[[:space:]]*$ ]]; then
         if [[ -n "$block" ]]; then
-            # Remove trailing comma from the block before updating the file
-            block=$(echo "$block" | $SED_CMD '$ s/,\s*$//')
             update_file
-            # Reset block after update
             block=""
         fi
-    else  # Line is part of the content block
-        # Accumulate lines to form the block
-        block+="$line"$'\n'  # Add newline after each line
+    else
+        block+="$line"$'\n'
     fi
 done < "new-items.txt"
 
-# Handle the last block if it exists
+# After the loop, if there's a remaining block, update the last ARB file
 if [[ -n "$block" ]]; then
-    # Remove trailing comma from the block before updating the file
-    block=$(echo "$block" | $SED_CMD '$ s/,\s*$//')
     update_file
 fi
+
+exit 0

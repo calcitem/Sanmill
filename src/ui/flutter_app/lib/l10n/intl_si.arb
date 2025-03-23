@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "අනතෝලියන් මෝසෙයික්",
   "@anatolianMosaic": {},
   "carnivalSpirit": "කානිවල් ආත්මය",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "චාරිත්‍රය",
+  "@custom": {},
+  "spiceMarket": "සුගන්ධ ද්‍රව්‍ය වෙළඳපොල",
+  "@spiceMarket": {}
 }

@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "અનાતોલિયન મોઝેક",
   "@anatolianMosaic": {},
   "carnivalSpirit": "કાર્નિવલ આત્મા",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "કસ્ટમ",
+  "@custom": {},
+  "spiceMarket": "મસાલા બજાર",
+  "@spiceMarket": {}
 }

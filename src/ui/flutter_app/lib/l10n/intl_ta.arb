@@ -1844,5 +1844,9 @@
   "anatolianMosaic": "அனடோலியன் மொசைக்",
   "@anatolianMosaic": {},
   "carnivalSpirit": "கார்னிவல் ஆவி",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "சான்றிதழ்",
+  "@custom": {},
+  "spiceMarket": "மஸாலா சந்தை",
+  "@spiceMarket": {}
 }

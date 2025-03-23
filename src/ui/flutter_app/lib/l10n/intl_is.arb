@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Anatólískt Mósaík",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnival Andi",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Sérsniðin",
+  "@custom": {},
+  "spiceMarket": "Kryddmarkaður",
+  "@spiceMarket": {}
 }

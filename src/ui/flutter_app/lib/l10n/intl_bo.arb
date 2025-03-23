@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "ཨ་ན་ཏོ་ལི་ཡན་གྱི་མོ་སེའི་ཀ།",
   "@anatolianMosaic": {},
   "carnivalSpirit": "ཀར་ནི་ཝལ་གྱི་སེམས་ཉིད།",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "རང་བཟོས་",
+  "@custom": {},
+  "spiceMarket": "སྣུམ་ཉོ་བའི་བོད་ཀྱི་གསར་འགྱུར།",
+  "@spiceMarket": {}
 }

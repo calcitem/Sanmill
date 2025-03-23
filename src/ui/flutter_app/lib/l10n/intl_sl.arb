@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatolski Mozaik",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnevalski Duh",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Po meri",
+  "@custom": {},
+  "spiceMarket": "Tržnica začimb",
+  "@spiceMarket": {}
 }

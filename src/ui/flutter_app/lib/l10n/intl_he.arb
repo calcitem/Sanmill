@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "פסיפס אנטולי",
   "@anatolianMosaic": {},
   "carnivalSpirit": "רוח הקרנבל",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "המותאם אישית",
+  "@custom": {},
+  "spiceMarket": "שוק התבלינים",
+  "@spiceMarket": {}
 }

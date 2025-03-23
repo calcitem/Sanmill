@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "الفسيفساء الأناضولية",
   "@anatolianMosaic": {},
   "carnivalSpirit": "روح الكرنفال",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "مخصص",
+  "@custom": {},
+  "spiceMarket": "سوق التوابل",
+  "@spiceMarket": {}
 }

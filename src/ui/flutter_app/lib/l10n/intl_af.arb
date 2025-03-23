@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Anatoliese Mosaïek",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnavalgees",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Pasgemaak",
+  "@custom": {},
+  "spiceMarket": "Speseryemark",
+  "@spiceMarket": {}
 }

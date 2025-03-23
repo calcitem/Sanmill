@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "اناطولیائی موزیک",
   "@anatolianMosaic": {},
   "carnivalSpirit": "کارنیوال روح",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "رواج",
+  "@custom": {},
+  "spiceMarket": "مصالحہ بازار",
+  "@spiceMarket": {}
 }

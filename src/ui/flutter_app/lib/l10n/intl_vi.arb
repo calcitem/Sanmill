@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Khảm Anatolian",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Tinh Thần Lễ Hội",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Tùy chỉnh",
+  "@custom": {},
+  "spiceMarket": "Chợ gia vị",
+  "@spiceMarket": {}
 }

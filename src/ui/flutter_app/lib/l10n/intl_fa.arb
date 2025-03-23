@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "موزائیک آناتولی",
   "@anatolianMosaic": {},
   "carnivalSpirit": "روح کارناوال",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "سفارشی",
+  "@custom": {},
+  "spiceMarket": "بازار ادویه",
+  "@spiceMarket": {}
 }

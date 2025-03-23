@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "安嵌",
   "@anatolianMosaic": {},
   "carnivalSpirit": "狂欢",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "自定义",
+  "@custom": {},
+  "spiceMarket": "香市",
+  "@spiceMarket": {}
 }

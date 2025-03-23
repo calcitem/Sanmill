@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Ανατολικό Μωσαϊκό",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Καρναβαλικό Πνεύμα",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Έθιμο",
+  "@custom": {},
+  "spiceMarket": "Αγορά Μπαχαρικών",
+  "@spiceMarket": {}
 }

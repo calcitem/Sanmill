@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatolijas Mozaīka",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnevāla Gars",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Pasūtījuma",
+  "@custom": {},
+  "spiceMarket": "Garšvielu tirgus",
+  "@spiceMarket": {}
 }

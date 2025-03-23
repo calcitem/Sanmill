@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Анатолийска Мозайка",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Карнавален Дух",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "Персонализиран",
+  "@custom": {},
+  "spiceMarket": "Пазар за подправки",
+  "@spiceMarket": {}
 }

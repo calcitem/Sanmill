@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Anatolian Mosaic",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Carnival Spirit",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Custom",
+  "@custom": {},
+  "spiceMarket": "Spice Market",
+  "@spiceMarket": {}
 }

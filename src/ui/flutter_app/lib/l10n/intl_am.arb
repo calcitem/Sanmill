@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "አናቶሊያን ሞዛይክ",
   "@anatolianMosaic": {},
   "carnivalSpirit": "ካርኒቫል መንፈስ",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "ብጁ",
+  "@custom": {},
+  "spiceMarket": "ቅመም ገበያ",
+  "@spiceMarket": {}
 }

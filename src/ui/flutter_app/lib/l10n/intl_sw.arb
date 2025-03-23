@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Mozaiki ya Anatolia",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Roho ya Karnivali",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Desturi",
+  "@custom": {},
+  "spiceMarket": "Soko la viungo",
+  "@spiceMarket": {}
 }

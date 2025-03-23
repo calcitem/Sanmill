@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatolialainen Mosaiikki",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnevaalihenki",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Mukautettu",
+  "@custom": {},
+  "spiceMarket": "Maustemarkkinat",
+  "@spiceMarket": {}
 }

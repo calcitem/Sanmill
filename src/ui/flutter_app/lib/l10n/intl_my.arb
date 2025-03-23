@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "အနာတိုလီယန်မိုဆိုင်း",
   "@anatolianMosaic": {},
   "carnivalSpirit": "ကာနီဗယ်စိတ်ဓာတ်",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "စိတ်ကြိုက်",
+  "@custom": {},
+  "spiceMarket": "အမွှေးအကြိုင်ဈေး",
+  "@spiceMarket": {}
 }

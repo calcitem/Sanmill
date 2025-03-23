@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "아나톨리아 모자이크",
   "@anatolianMosaic": {},
   "carnivalSpirit": "카니발 정신",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "관습",
+  "@custom": {},
+  "spiceMarket": "향신료 시장",
+  "@spiceMarket": {}
 }

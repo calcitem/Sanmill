@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Անատոլիական Խճանկար",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Կառնավալի Հոգի",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Սովորություն",
+  "@custom": {},
+  "spiceMarket": "Համեմունքի շուկա",
+  "@spiceMarket": {}
 }

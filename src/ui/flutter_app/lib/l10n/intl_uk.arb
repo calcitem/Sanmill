@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "Анатолійська мозаїка",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Дух карнавалу",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Звичай",
+  "@custom": {},
+  "spiceMarket": "Ринок спецій",
+  "@spiceMarket": {}
 }

@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "I-Mosaic Yase-Anatolian",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Umoya Womkhosi",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Isiko",
+  "@custom": {},
+  "spiceMarket": "Imakethe yezinongo",
+  "@spiceMarket": {}
 }

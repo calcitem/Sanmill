@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Mozaik Anatolia",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Semangat Karnaval",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "Kebiasaan",
+  "@custom": {},
+  "spiceMarket": "Pasar Rempah",
+  "@spiceMarket": {}
 }

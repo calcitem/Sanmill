@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Mozaic Anatolian",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Spiritul Carnavalului",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Personalizat",
+  "@custom": {},
+  "spiceMarket": "Piața de condimente",
+  "@spiceMarket": {}
 }

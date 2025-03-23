@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatóliai Mozaik",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karneváli Szellem",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "Egyedi",
+  "@custom": {},
+  "spiceMarket": "Fűszerpiac",
+  "@spiceMarket": {}
 }

@@ -1839,5 +1839,9 @@
   "anatolianMosaic": "アナトリアのモザイク",
   "@anatolianMosaic": {},
   "carnivalSpirit": "カーニバルの精神",
-  "@carnivalSpirit": {}  
+  "@carnivalSpirit": {},
+  "custom": "カスタム",
+  "@custom": {},
+  "spiceMarket": "スパイス市場",
+  "@spiceMarket": {}
 }

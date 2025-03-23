@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Mozaik Anatolian",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Shpirti i Karnavalit",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Zakon",
+  "@custom": {},
+  "spiceMarket": "Tregu i erëzave",
+  "@spiceMarket": {}
 }

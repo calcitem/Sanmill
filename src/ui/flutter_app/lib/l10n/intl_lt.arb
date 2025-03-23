@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatolijos Mozaika",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnavalo Dvasia",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Paprotys",
+  "@custom": {},
+  "spiceMarket": "Prieskonių turgus",
+  "@spiceMarket": {}
 }

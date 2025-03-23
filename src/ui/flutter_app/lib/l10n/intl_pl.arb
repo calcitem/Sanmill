@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Mozaika Anatolijska",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Duch Karnawału",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Zwyczaj",
+  "@custom": {},
+  "spiceMarket": "Targ przypraw",
+  "@spiceMarket": {}
 }

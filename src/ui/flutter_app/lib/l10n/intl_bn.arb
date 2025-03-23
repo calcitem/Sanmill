@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "আনাতোলিয়ান মোজাইক",
   "@anatolianMosaic": {},
   "carnivalSpirit": "কার্নিভালের আত্মা",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "কাস্টম",
+  "@custom": {},
+  "spiceMarket": "মসলা বাজার",
+  "@spiceMarket": {}
 }

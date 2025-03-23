@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "โมเสกอนาโตเลียน",
   "@anatolianMosaic": {},
   "carnivalSpirit": "จิตวิญญาณแห่งคาร์นิวัล",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "กำหนดเอง",
+  "@custom": {},
+  "spiceMarket": "ตลาดเครื่องเทศ",
+  "@spiceMarket": {}
 }

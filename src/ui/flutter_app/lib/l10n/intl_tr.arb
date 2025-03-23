@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anadolu Mozaiği",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnaval Ruhu",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Özel",
+  "@custom": {},
+  "spiceMarket": "Baharat Pazarı",
+  "@spiceMarket": {}
 }

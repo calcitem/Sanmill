@@ -1741,5 +1741,9 @@
   "anatolianMosaic": "Anatoolia Mosaiik",
   "@anatolianMosaic": {},
   "carnivalSpirit": "Karnevali Vaim",
-  "@carnivalSpirit": {}
+  "@carnivalSpirit": {},
+  "custom": "Kohandatud",
+  "@custom": {},
+  "spiceMarket": "Vürtsiturg",
+  "@spiceMarket": {}
 }
