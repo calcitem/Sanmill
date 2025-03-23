@@ -1747,5 +1747,7 @@
   "spiceMarket": "بازار ادویه",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "برای نمایش کشو بکشید",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "نمایش اطلاعات بازی در تصاویر صفحه",
+  "@showGameInfoOnScreenshots": {}
 }

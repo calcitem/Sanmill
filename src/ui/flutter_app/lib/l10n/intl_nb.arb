@@ -1747,5 +1747,7 @@
   "spiceMarket": "Kryddermarked",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Sveip for å åpne skuffen",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Vis spillinformasjon på skjermbilder",
+  "@showGameInfoOnScreenshots": {}
 }

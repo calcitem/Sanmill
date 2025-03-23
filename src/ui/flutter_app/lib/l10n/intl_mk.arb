@@ -1747,5 +1747,7 @@
   "spiceMarket": "Пазар за зачини",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Провлечете за да го откриете фиоката",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Прикажи информации за играта на екранот",
+  "@showGameInfoOnScreenshots": {}
 }

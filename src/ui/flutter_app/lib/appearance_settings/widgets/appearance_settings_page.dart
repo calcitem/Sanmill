@@ -800,6 +800,14 @@ class AppearanceSettingsPage extends StatelessWidget {
               displaySettings.copyWith(vignetteEffectEnabled: val),
           titleString: S.of(context).vignetteEffect,
         ),
+        SettingsListTile.switchTile(
+          key: const Key(
+              'display_settings_card_screenshot_game_info_shown_switch_tile'),
+          value: displaySettings.isScreenshotGameInfoShown,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(isScreenshotGameInfoShown: val),
+          titleString: S.of(context).showGameInfoOnScreenshots,
+        ),
         SettingsListTile(
           key: const Key(
               'display_settings_card_background_image_settings_list_tile'),

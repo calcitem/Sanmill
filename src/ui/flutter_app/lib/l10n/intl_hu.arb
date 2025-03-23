@@ -1747,5 +1747,7 @@
   "spiceMarket": "Fűszerpiac",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Húzd el az ujjad a fiók megnyitásához",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Játékadatok megjelenítése a képernyőképeken",
+  "@showGameInfoOnScreenshots": {}
 }

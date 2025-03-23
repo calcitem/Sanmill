@@ -1747,5 +1747,7 @@
   "spiceMarket": "Targ przypraw",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Przeciągnij, aby odsłonić szufladę",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Pokaż informacje o grze na zrzutach ekranu",
+  "@showGameInfoOnScreenshots": {}
 }

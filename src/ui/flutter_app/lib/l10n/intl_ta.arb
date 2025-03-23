@@ -1850,5 +1850,7 @@
   "spiceMarket": "மஸாலா சந்தை",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "டிராயரை வெளிக்காட்ட ஸ்வைப் செய்யவும்",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "திரைப்பிடிப்புகளில் விளையாட்டு தகவலைக் காண்பி",
+  "@showGameInfoOnScreenshots": {}
 }

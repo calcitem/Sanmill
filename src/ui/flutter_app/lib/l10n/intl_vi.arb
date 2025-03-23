@@ -1845,5 +1845,7 @@
   "spiceMarket": "Chợ gia vị",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Vuốt để hiển thị ngăn kéo",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Hiển thị thông tin trò chơi trên ảnh chụp màn hình",
+  "@showGameInfoOnScreenshots": {}
 }

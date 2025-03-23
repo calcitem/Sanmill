@@ -1747,5 +1747,7 @@
   "spiceMarket": "향신료 시장",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "서랍을 표시하려면 스와이프하세요",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "스크린샷에 게임 정보 표시",
+  "@showGameInfoOnScreenshots": {}
 }

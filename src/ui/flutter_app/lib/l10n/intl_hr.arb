@@ -1747,5 +1747,7 @@
   "spiceMarket": "Tržnica začina",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Prijeđite prstom za prikaz ladice",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Prikaži informacije o igri na snimkama zaslona",
+  "@showGameInfoOnScreenshots": {}
 }

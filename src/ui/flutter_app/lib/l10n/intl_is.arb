@@ -1845,5 +1845,7 @@
   "spiceMarket": "Kryddmarkaður",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Strjúktu til að sýna skúffuna",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Sýna upplýsingar um leik á skjámyndum",
+  "@showGameInfoOnScreenshots": {}
 }

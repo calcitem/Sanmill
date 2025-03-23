@@ -1747,5 +1747,7 @@
   "spiceMarket": "Пијаца зачина",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Повуците да откријете фиоку",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Прикажи информације о игри на снимцима екрана",
+  "@showGameInfoOnScreenshots": {}
 }

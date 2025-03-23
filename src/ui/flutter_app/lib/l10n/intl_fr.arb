@@ -1747,5 +1747,7 @@
   "spiceMarket": "Marché aux épices",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Faites glisser pour révéler le tiroir",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Afficher les informations du jeu sur les captures d’écran",
+  "@showGameInfoOnScreenshots": {}
 }

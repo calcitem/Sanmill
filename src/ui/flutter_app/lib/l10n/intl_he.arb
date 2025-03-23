@@ -1845,5 +1845,7 @@
   "spiceMarket": "שוק התבלינים",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "החלק כדי לחשוף את המגירה",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "הצג מידע על המשחק בצילומי מסך",
+  "@showGameInfoOnScreenshots": {}
 }

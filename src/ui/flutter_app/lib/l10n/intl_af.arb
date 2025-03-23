@@ -1845,5 +1845,7 @@
   "spiceMarket": "Speseryemark",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Swiep om die laai te wys",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Wys spelinligting op skermgrepe",
+  "@showGameInfoOnScreenshots": {}
 }

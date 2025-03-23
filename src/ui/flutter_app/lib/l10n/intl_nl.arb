@@ -1747,5 +1747,7 @@
   "spiceMarket": "Specerijenmarkt",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Veeg om de lade te tonen",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Toon spelinformatie op schermafbeeldingen",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1845,5 +1845,7 @@
   "spiceMarket": "Spice Market",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Swipe to reveal the Drawer",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Show game info on screenshots",
+  "@showGameInfoOnScreenshots": {}
 }

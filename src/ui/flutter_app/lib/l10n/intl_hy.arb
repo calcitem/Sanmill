@@ -1845,5 +1845,7 @@
   "spiceMarket": "Համեմունքի շուկա",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Սահեցրեք՝ դարակը բացելու համար",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Ցուցադրել խաղի տեղեկությունները նկարված էկրանների վրա",
+  "@showGameInfoOnScreenshots": {}
 }

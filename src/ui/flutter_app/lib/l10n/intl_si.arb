@@ -1845,5 +1845,7 @@
   "spiceMarket": "සුගන්ධ ද්‍රව්‍ය වෙළඳපොල",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "drawer එක දිස්වීමට ස්вайප් කරන්න",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "තිරපතයන්හි ක්‍රීඩා තොරතුරු පෙන්වන්න",
+  "@showGameInfoOnScreenshots": {}
 }

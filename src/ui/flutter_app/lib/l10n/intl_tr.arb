@@ -1747,5 +1747,7 @@
   "spiceMarket": "Baharat Pazarı",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Çekmeceyi açmak için kaydırın",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Ekran görüntülerinde oyun bilgilerini göster",
+  "@showGameInfoOnScreenshots": {}
 }

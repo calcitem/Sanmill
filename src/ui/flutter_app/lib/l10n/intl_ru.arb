@@ -1747,5 +1747,7 @@
   "spiceMarket": "Рынок специй",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Проведите, чтобы открыть ящик",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показывать информацию об игре на скриншотах",
+  "@showGameInfoOnScreenshots": {}
 }

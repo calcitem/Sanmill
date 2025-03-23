@@ -1747,5 +1747,7 @@
   "spiceMarket": "Krydderimarked",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Stryg for at afsløre skuffen",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Vis spiloplysninger på skærmbilleder",
+  "@showGameInfoOnScreenshots": {}
 }

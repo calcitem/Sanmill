@@ -1747,5 +1747,7 @@
   "spiceMarket": "Pasar Rempah",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Geser untuk membuka Laci",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Tampilkan info permainan di tangkapan layar",
+  "@showGameInfoOnScreenshots": {}
 }

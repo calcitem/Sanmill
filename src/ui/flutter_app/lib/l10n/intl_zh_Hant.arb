@@ -1747,5 +1747,7 @@
   "spiceMarket": "香市",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "滑動以顯示抽屜",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "在截圖上顯示棋局資訊",
+  "@showGameInfoOnScreenshots": {}
 }

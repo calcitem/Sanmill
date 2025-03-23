@@ -1747,5 +1747,7 @@
   "spiceMarket": "Vürtsiturg",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Pühkige, et avada sahtel",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Kuva mänguteave ekraanipiltidel",
+  "@showGameInfoOnScreenshots": {}
 }

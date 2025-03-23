@@ -1747,5 +1747,7 @@
   "spiceMarket": "سوق التوابل",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "اسحب للكشف عن الدرج",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "عرض معلومات اللعبة على لقطات الشاشة",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1747,5 +1747,7 @@
   "spiceMarket": "Kryddmarknad",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Svep för att visa lådan",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Visa spelinformation på skärmbilder",
+  "@showGameInfoOnScreenshots": {}
 }

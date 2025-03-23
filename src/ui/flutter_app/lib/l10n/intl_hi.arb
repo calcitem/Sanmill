@@ -1747,5 +1747,7 @@
   "spiceMarket": "मसाला बाज़ार",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "ड्रॉअर दिखाने के लिए स्वाइप करें",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "स्क्रीनशॉट्स पर गेम जानकारी दिखाएँ",
+  "@showGameInfoOnScreenshots": {}
 }

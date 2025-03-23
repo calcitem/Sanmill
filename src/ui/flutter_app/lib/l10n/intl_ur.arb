@@ -1845,5 +1845,7 @@
   "spiceMarket": "مصالحہ بازار",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "درج کو ظاہر کرنے کے لیے سوائپ کریں",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "اسکرین شاٹس پر گیم کی معلومات دکھائیں",
+  "@showGameInfoOnScreenshots": {}
 }

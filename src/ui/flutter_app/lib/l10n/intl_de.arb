@@ -1747,5 +1747,7 @@
   "spiceMarket": "Gewürzmarkt",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Wischen, um die Schublade anzuzeigen",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Spielinformationen auf Screenshots anzeigen",
+  "@showGameInfoOnScreenshots": {}
 }

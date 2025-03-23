@@ -1747,5 +1747,7 @@
   "spiceMarket": "Trh s koreninami",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Potiahnutím zobrazíte zásuvku",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Zobraziť informácie o hre na snímkach obrazovky",
+  "@showGameInfoOnScreenshots": {}
 }

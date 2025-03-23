@@ -1747,5 +1747,7 @@
   "spiceMarket": "Prieskonių turgus",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Braukite, kad atidarytumėte stalčių",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Rodyti žaidimo informaciją ekrano nuotraukose",
+  "@showGameInfoOnScreenshots": {}
 }

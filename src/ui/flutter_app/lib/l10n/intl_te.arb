@@ -1747,5 +1747,7 @@
   "spiceMarket": "మసాలా మార్కెట్",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "డ్రాయర్ చూపించడానికి స్వైప్ చేయండి",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "స్క్రీన్‌షాట్‌లలో గేమ్ సమాచారం చూపించు",
+  "@showGameInfoOnScreenshots": {}
 }

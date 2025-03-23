@@ -1845,5 +1845,7 @@
   "spiceMarket": "Рынак спецый",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Правядзіце, каб адкрыць скрыню",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Паказваць інфармацыю аб гульні на здымках экрана",
+  "@showGameInfoOnScreenshots": {}
 }

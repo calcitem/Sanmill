@@ -1747,5 +1747,7 @@
   "spiceMarket": "Αγορά Μπαχαρικών",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Σαρώστε για να εμφανίσετε το συρτάρι",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Εμφάνιση πληροφοριών παιχνιδιού στα στιγμιότυπα οθόνης",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1747,5 +1747,7 @@
   "spiceMarket": "香市",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "滑动页面可打开抽屉",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "在截图上显示棋局信息",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1747,5 +1747,7 @@
   "spiceMarket": "Maustemarkkinat",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Pyyhkäise avataksesi laatikon",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Näytä pelitiedot kuvakaappauksissa",
+  "@showGameInfoOnScreenshots": {}
 }

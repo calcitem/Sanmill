@@ -1747,5 +1747,7 @@
   "spiceMarket": "মসলা বাজার",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "ড্রয়ার দেখতে সোয়াইপ করুন",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "স্ক্রীনশটে গেম তথ্য দেখান",
+  "@showGameInfoOnScreenshots": {}
 }

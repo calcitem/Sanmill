@@ -1747,5 +1747,7 @@
   "spiceMarket": "મસાલા બજાર",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "ડ્રોઅર દર્શાવવા માટે સ્વાઇપ કરો",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "સ્ક્રીનશૉટમાં ગેમ માહિતી બતાવો",
+  "@showGameInfoOnScreenshots": {}
 }

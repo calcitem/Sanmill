@@ -1845,5 +1845,7 @@
   "spiceMarket": "အမွှေးအကြိုင်ဈေး",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "ဧဖ်ဖွင့်ရန် လွှဲဆွဲပါ",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "ဂိမ်းအချက်အလက်များကို စခရင်ရှော့တွင် ပြပါ",
+  "@showGameInfoOnScreenshots": {}
 }

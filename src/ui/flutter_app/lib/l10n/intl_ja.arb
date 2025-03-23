@@ -1845,5 +1845,7 @@
   "spiceMarket": "スパイス市場",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "スワイプしてドロワーを表示",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "スクリーンショットにゲーム情報を表示",
+  "@showGameInfoOnScreenshots": {}
 }

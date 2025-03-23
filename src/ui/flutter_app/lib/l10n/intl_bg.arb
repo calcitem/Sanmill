@@ -1747,5 +1747,7 @@
   "spiceMarket": "Пазар за подправки",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Плъзнете, за да се покаже чекмеджето",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показвай информация за играта върху екранни снимки",
+  "@showGameInfoOnScreenshots": {}
 }

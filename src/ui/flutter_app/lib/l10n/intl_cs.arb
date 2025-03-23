@@ -1747,5 +1747,7 @@
   "spiceMarket": "Trh s kořením",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Přejetím odhalte zásuvku",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Zobrazit informace o hře na snímcích obrazovky",
+  "@showGameInfoOnScreenshots": {}
 }

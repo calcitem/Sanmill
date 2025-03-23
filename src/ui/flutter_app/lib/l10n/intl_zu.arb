@@ -1845,5 +1845,7 @@
   "spiceMarket": "Imakethe yezinongo",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Swipe ukuze uveze iDrawer",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Bonisa imininingwane yomdlalo ezithombeni zesikrini",
+  "@showGameInfoOnScreenshots": {}
 }

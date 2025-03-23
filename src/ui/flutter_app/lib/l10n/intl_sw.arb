@@ -1845,5 +1845,7 @@
   "spiceMarket": "Soko la viungo",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Swipe kufungua droo",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Onyesha maelezo ya mchezo kwenye picha za skrini",
+  "@showGameInfoOnScreenshots": {}
 }

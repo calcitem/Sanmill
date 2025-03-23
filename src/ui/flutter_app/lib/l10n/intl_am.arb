@@ -1845,5 +1845,7 @@
   "spiceMarket": "ቅመም ገበያ",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "መዝጊያውን ለማሳየት ያንኩ",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "የጨዋታ መረጃን በእስክሪንሹት ላይ አሳይ",
+  "@showGameInfoOnScreenshots": {}
 }

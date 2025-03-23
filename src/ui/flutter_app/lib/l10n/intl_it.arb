@@ -1747,5 +1747,7 @@
   "spiceMarket": "Mercato delle spezie",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Scorri per mostrare il cassetto",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Mostra le informazioni di gioco negli screenshot",
+  "@showGameInfoOnScreenshots": {}
 }

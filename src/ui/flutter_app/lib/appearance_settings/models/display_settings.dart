@@ -89,6 +89,7 @@ class DisplaySettings {
     this.isAnnotationToolbarShown = false,
     this.movesViewLayout = MovesViewLayout.medium,
     this.swipeToRevealTheDrawer = true,
+    this.isScreenshotGameInfoShown = true,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -225,6 +226,9 @@ class DisplaySettings {
 
   @HiveField(39, defaultValue: true)
   final bool swipeToRevealTheDrawer;
+
+  @HiveField(40, defaultValue: true)
+  final bool isScreenshotGameInfoShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

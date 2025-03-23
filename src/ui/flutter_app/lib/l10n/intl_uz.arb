@@ -1747,5 +1747,7 @@
   "spiceMarket": "Ziravorlar bozori",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Tortmani ko‘rsatish uchun suring",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "O‘yin ma'lumotlarini skrinshotlarda ko‘rsatish",
+  "@showGameInfoOnScreenshots": {}
 }

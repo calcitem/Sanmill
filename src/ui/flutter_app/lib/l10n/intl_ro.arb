@@ -1747,5 +1747,7 @@
   "spiceMarket": "Piața de condimente",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Glisează pentru a dezvălui sertarul",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Afișează informații despre joc în capturile de ecran",
+  "@showGameInfoOnScreenshots": {}
 }

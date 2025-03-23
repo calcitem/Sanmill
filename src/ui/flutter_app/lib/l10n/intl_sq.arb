@@ -1747,5 +1747,7 @@
   "spiceMarket": "Tregu i erëzave",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Rrëshqit për të zbuluar sirtarin",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Shfaq informacionin e lojës në pamjet e ekranit",
+  "@showGameInfoOnScreenshots": {}
 }

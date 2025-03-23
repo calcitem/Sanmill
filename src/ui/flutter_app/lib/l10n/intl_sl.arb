@@ -1747,5 +1747,7 @@
   "spiceMarket": "Tržnica začimb",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Podrsajte, da prikažete predal",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Prikaži informacije o igri na posnetkih zaslona",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1747,5 +1747,7 @@
   "spiceMarket": "Garšvielu tirgus",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Pavelciet, lai atvērtu atvilktni",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Rādīt spēles informāciju ekrānuzņēmumos",
+  "@showGameInfoOnScreenshots": {}
 }

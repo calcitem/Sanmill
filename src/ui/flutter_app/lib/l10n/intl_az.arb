@@ -1845,5 +1845,7 @@
   "spiceMarket": "Ədviyyat Bazarı",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "Çəkməni göstərmək üçün sürüşdürün",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Ekran görüntülərində oyun məlumatlarını göstər",
+  "@showGameInfoOnScreenshots": {}
 }

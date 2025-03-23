@@ -1747,5 +1747,7 @@
   "spiceMarket": "ตลาดเครื่องเทศ",
   "@spiceMarket": {},
   "swipeToRevealTheDrawer": "ปัดเพื่อเปิดลิ้นชัก",
-  "@swipeToRevealTheDrawer": {}
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "แสดงข้อมูลเกมบนภาพหน้าจอ",
+  "@showGameInfoOnScreenshots": {}
 }
