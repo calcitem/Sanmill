@@ -66,15 +66,15 @@ class AnalysisMode {
   static Color getColorForOutcome(GameOutcome outcome) {
     switch (outcome) {
       case GameOutcome.win:
-        return Colors.red.shade600; // Changed to red for winning moves
+        return Colors.blue.shade600;
       case GameOutcome.draw:
-        return Colors.grey.shade600; // Changed to grey for drawing moves
+        return Colors.grey.shade600;
       case GameOutcome.loss:
-        return Colors.blue.shade600; // Changed to blue for losing moves
+        return Colors.red.shade600;
       case GameOutcome.advantage:
-        return Colors.orange.shade100;
-      case GameOutcome.disadvantage:
         return Colors.lightBlue.shade100;
+      case GameOutcome.disadvantage:
+        return Colors.orange.shade100;
       case GameOutcome.unknown:
         return Colors.yellow.shade600; // Kept yellow for unknown outcomes
     }

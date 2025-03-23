@@ -83,29 +83,28 @@ class AnalysisRenderer {
     canvas.drawCircle(position, radius, paint);
 
     // Draw symbol inside the circle based on outcome
-    if (outcome != GameOutcome.unknown) {
-      final TextPainter textPainter = TextPainter(
-        text: TextSpan(
-          text: _getSymbolForOutcome(outcome),
-          style: TextStyle(
-            color: AnalysisMode.getColorForOutcome(outcome),
-            fontSize: radius * 0.8,
-            fontWeight: FontWeight.bold,
-          ),
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: _getSymbolForOutcome(outcome),
+        style: TextStyle(
+          color: AnalysisMode.getColorForOutcome(outcome),
+          fontSize: radius * 0.8,
+          fontWeight: FontWeight.bold,
+          fontFamily: 'monospace',
         ),
-        textDirection: TextDirection.ltr,
-      );
+      ),
+      textDirection: TextDirection.ltr,
+    );
 
-      textPainter.layout();
+    textPainter.layout();
 
-      // Center the text in the circle
-      final Offset textOffset = Offset(
-        position.dx - textPainter.width / 2,
-        position.dy - textPainter.height / 2,
-      );
+    // Center the text in the circle
+    final Offset textOffset = Offset(
+      position.dx - textPainter.width / 2,
+      position.dy - textPainter.height / 2,
+    );
 
-      textPainter.paint(canvas, textOffset);
-    }
+    textPainter.paint(canvas, textOffset);
   }
 
   /// Draw an arrow indicating a move with outcome
@@ -202,6 +201,7 @@ class AnalysisRenderer {
           color: circleColor,
           fontSize: radius * 0.6,
           fontWeight: FontWeight.bold,
+          fontFamily: 'monospace',
         ),
       ),
       textDirection: TextDirection.ltr,
