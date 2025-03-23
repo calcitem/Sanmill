@@ -53,7 +53,7 @@ class NetworkService with WidgetsBindingObserver {
   /// Queue of incoming message lines to process in sequence.
   final Queue<String> _messageQueue = Queue<String>();
 
-  /// Prevent re-entrancy when processing the message queue.
+  /// Prevent reentrancy when processing the message queue.
   bool _isProcessingMessages = false;
 
   /// Track whether a reconnection attempt is in progress

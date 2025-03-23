@@ -158,7 +158,7 @@ TEST_F(StackTest, Remove)
     // Attempt removing a value that doesn't exist
     st.remove(999);
     EXPECT_EQ(st.size(), 2) << "Size should not change after removing a "
-                               "non-existent value";
+                               "nonexistent value";
 }
 
 // Test indexOf
