@@ -308,6 +308,9 @@ target_wrapper.*
 # QtCreator CMake
 CMakeLists.txt.user*
 
+# Misc
+*.qtvscr
+
 ###########################################
 
 .metadata

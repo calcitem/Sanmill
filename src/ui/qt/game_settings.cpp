@@ -111,6 +111,14 @@ void Game::loadGameSettings()
 
     applyRule(empty ? DEFAULT_RULE_NUMBER :
                       settings->value("Options/RuleNo").toInt());
+
+    // Load AI time limits
+    int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
+    int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
+    
+    // Configure engine with the loaded time limits
+    engineController.handleCommand("setoption name WhiteTimeLimit value " + std::to_string(time1), nullptr);
+    engineController.handleCommand("setoption name BlackTimeLimit value " + std::to_string(time2), nullptr);
 }
 
 void Game::cleanupSettings()
@@ -146,20 +154,23 @@ void Game::setBlackIsAiPlayer(bool enabled)
 
 void Game::setAiTimeLimits(int time1, int time2)
 {
-    // Reconfigure the time limits in your search engine or gameOptions
-    // For example:
-    // gameOptions.setMoveTime(time1, time2);
-    // Or store them separately.
+    // Store AI time limits in settings
+    settings->setValue("Options/AiTimeLimit1", time1);
+    settings->setValue("Options/AiTimeLimit2", time2);
+    
+    // Pass the time limits to the engine controller
+    //engineController.handleCommand("setoption name WhiteTimeLimit value " + std::to_string(time1), nullptr);
+    //engineController.handleCommand("setoption name BlackTimeLimit value " + std::to_string(time2), nullptr);
+    
+    // Update the UI with the new time limits
+    emit statusBarChanged(tr("AI time limits updated"));
 }
 
 void Game::getAiTimeLimits(int &time1, int &time2) const
 {
-    // Previously we read from aiThread[color]->getTimeLimit().
-    // Now you might store these times in a variable or in gameOptions.
-    // For demonstration, we'll assume we have something like:
-    // TODO: Implement
-    // time1 = gameOptions.getTimeLimitWhite(); // e.g. a hypothetical method
-    // time2 = gameOptions.getTimeLimitBlack();
+    // Retrieve AI time limits from settings with default values of 1 second
+    time1 = settings->value("Options/AiTimeLimit1", 1).toInt();
+    time2 = settings->value("Options/AiTimeLimit2", 1).toInt();
 }
 
 void Game::setFixWindowSize(bool arg) noexcept

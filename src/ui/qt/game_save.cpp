@@ -54,21 +54,21 @@ void Game::outputPlayerType(QTextStream &textStream, const QString &color,
 // Helper function to write game statistics
 void Game::outputGameStatistics(QTextStream &textStream) const
 {
-    qint64 gamesPlayedCount = score[WHITE] + score[BLACK] + score[DRAW];
+    qint64 nGamesPlayed = score[WHITE] + score[BLACK] + score[DRAW];
 
-    if (gamesPlayedCount == 0) {
+    if (nGamesPlayed == 0) {
         return;
     }
 
-    textStream << "Sum\t" + QString::number(gamesPlayedCount) << "\n";
+    textStream << "Sum\t" + QString::number(nGamesPlayed) << "\n";
     textStream << "White\t" + QString::number(score[WHITE]) + "\t" +
-                      QString::number(score[WHITE] * 10000 / gamesPlayedCount)
+                      QString::number(score[WHITE] * 10000 / nGamesPlayed)
                << "\n";
     textStream << "Black\t" + QString::number(score[BLACK]) + "\t" +
-                      QString::number(score[BLACK] * 10000 / gamesPlayedCount)
+                      QString::number(score[BLACK] * 10000 / nGamesPlayed)
                << "\n";
     textStream << "Draw\t" + QString::number(score[DRAW]) + "\t" +
-                      QString::number(score[DRAW] * 10000 / gamesPlayedCount)
+                      QString::number(score[DRAW] * 10000 / nGamesPlayed)
                << "\n";
 }
 

@@ -89,6 +89,9 @@ signals:
     /// Signal that notifies listeners that the search has completed
     void searchCompleted();
 
+    /// Signal that notifies listeners that the analyze has completed
+    void analyzeCompleted();
+
     /// Signal that notifies listeners that the evaluation has completed
     void evaluationCompleted();
 #endif
