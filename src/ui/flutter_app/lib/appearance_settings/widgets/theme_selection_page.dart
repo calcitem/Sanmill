@@ -3,9 +3,12 @@
 
 // theme_selection_page.dart
 
+import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -14,7 +17,7 @@ import '../models/color_settings.dart';
 
 /// A page that displays all available themes as mini boards,
 /// allowing users to visually preview and select a theme.
-class ThemeSelectionPage extends StatelessWidget {
+class ThemeSelectionPage extends StatefulWidget {
   const ThemeSelectionPage({
     super.key,
     required this.currentTheme,
@@ -23,10 +26,42 @@ class ThemeSelectionPage extends StatelessWidget {
   final ColorTheme currentTheme;
 
   @override
+  State<ThemeSelectionPage> createState() => _ThemeSelectionPageState();
+}
+
+class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
+  // List to store custom themes
+  late List<ColorSettings> _customThemes;
+
+  @override
+  void initState() {
+    super.initState();
+    // Load custom themes from database
+    _customThemes = DB().customThemes;
+  }
+
+  // Add this function to share theme JSON
+  void _shareThemeJson(ColorSettings colorSettings) {
+    // Convert the color settings to JSON string
+    final String json = jsonEncode(colorSettings.toJson());
+
+    // Share the JSON string
+    Share.share(json, subject: 'Custom Theme Settings');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Get all theme keys except the "custom" theme
+    final List<ColorTheme> builtInThemes = AppTheme.colorThemes.keys
+        .where((ColorTheme theme) => theme != ColorTheme.custom)
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context).theme),
+        title: Text(
+          S.of(context).theme,
+          style: const TextStyle(fontSize: AppTheme.largeFontSize),
+        ),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(16.0),
@@ -36,8 +71,10 @@ class ThemeSelectionPage extends StatelessWidget {
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
         ),
-        itemCount:
-            AppTheme.colorThemes.length + 1, // Add 1 for the Current option
+        // Update the item count to use builtInThemes instead of all themes
+        itemCount: builtInThemes.length +
+            1 +
+            _customThemes.length, // Add 1 for Current theme + custom themes
         itemBuilder: (BuildContext context, int index) {
           // Add Current theme as the first item
           if (index == 0) {
@@ -47,24 +84,78 @@ class ThemeSelectionPage extends StatelessWidget {
             return ThemePreviewItem(
               theme: ColorTheme.current,
               colors: currentColors,
-              isSelected: currentTheme == ColorTheme.current,
+              isSelected: widget.currentTheme == ColorTheme.current,
               onTap: () {
                 // Just exit without returning a value
                 Navigator.pop(context);
               },
+              hasActionButton: true,
+              actionIcon: FluentIcons.save_20_regular,
+              actionTooltip: 'Save as custom theme',
+              onActionPressed: () {
+                // Save current theme as custom
+                setState(() {
+                  _customThemes.add(currentColors);
+                  // Save to database for persistence
+                  DB().customThemes = _customThemes;
+                });
+              },
+              // Add share button to current theme
+              hasShareButton: true,
+              shareIcon: FluentIcons.share_20_regular,
+              shareTooltip: 'Share current theme',
+              onSharePressed: () => _shareThemeJson(currentColors),
             );
           }
 
-          // Adjust index for the rest of the themes
-          final int themeIndex = index - 1;
-          final ColorTheme theme =
-              AppTheme.colorThemes.keys.elementAt(themeIndex);
+          // Check if this is a custom theme
+          if (index > 0 && index <= _customThemes.length) {
+            final int customIndex = index - 1;
+            final ColorSettings customColors = _customThemes[customIndex];
+
+            return ThemePreviewItem(
+              theme: ColorTheme.custom,
+              colors: customColors,
+              isSelected:
+                  widget.currentTheme == ColorTheme.custom && customIndex == 0,
+              // Only first custom can be selected
+              onTap: () {
+                // Update the custom theme in AppTheme.colorThemes so the system can access it
+                AppTheme.updateCustomTheme(customColors);
+
+                // Save to database
+                DB().colorSettings = customColors;
+
+                // Return the custom theme enum to caller
+                Navigator.pop(context, ColorTheme.custom);
+              },
+              hasActionButton: true,
+              actionIcon: FluentIcons.delete_20_regular,
+              actionTooltip: 'Delete custom theme',
+              onActionPressed: () {
+                // Delete this custom theme
+                setState(() {
+                  _customThemes.removeAt(customIndex);
+                  // Update database
+                  DB().customThemes = _customThemes;
+                });
+              },
+              hasShareButton: true,
+              shareIcon: FluentIcons.share_20_regular,
+              shareTooltip: 'Share custom theme',
+              onSharePressed: () => _shareThemeJson(customColors),
+            );
+          }
+
+          // Adjust index for the built-in themes and use builtInThemes list
+          final int themeIndex = index - 1 - _customThemes.length;
+          final ColorTheme theme = builtInThemes[themeIndex];
           final ColorSettings colors = AppTheme.colorThemes[theme]!;
 
           return ThemePreviewItem(
             theme: theme,
             colors: colors,
-            isSelected: theme == currentTheme,
+            isSelected: theme == widget.currentTheme,
             onTap: () {
               Navigator.pop(context, theme);
             },
@@ -84,12 +175,28 @@ class ThemePreviewItem extends StatelessWidget {
     required this.colors,
     required this.isSelected,
     required this.onTap,
+    this.hasActionButton = false,
+    this.actionIcon,
+    this.actionTooltip,
+    this.onActionPressed,
+    this.hasShareButton = false,
+    this.shareIcon,
+    this.shareTooltip,
+    this.onSharePressed,
   });
 
   final ColorTheme theme;
   final ColorSettings colors;
   final bool isSelected;
   final VoidCallback onTap;
+  final bool hasActionButton;
+  final IconData? actionIcon;
+  final String? actionTooltip;
+  final VoidCallback? onActionPressed;
+  final bool hasShareButton;
+  final IconData? shareIcon;
+  final String? shareTooltip;
+  final VoidCallback? onSharePressed;
 
   @override
   Widget build(BuildContext context) {
@@ -104,25 +211,59 @@ class ThemePreviewItem extends StatelessWidget {
               ? const BorderSide(color: Colors.green, width: 2.0)
               : BorderSide.none,
         ),
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ThemePreviewBoard(colors: colors),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                _getThemeName(context, theme),
-                style: TextStyle(
-                  fontSize: 14.0,
-                  color: colors.messageColor,
+            Column(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ThemePreviewBoard(colors: colors),
+                  ),
                 ),
-                textAlign: TextAlign.center,
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    _getThemeName(context, theme),
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: colors.messageColor,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
             ),
+            // Action button (Save or Delete)
+            if (hasActionButton && actionIcon != null)
+              Positioned(
+                right: 4.0,
+                bottom: 4.0,
+                child: IconButton(
+                  icon: Icon(
+                    actionIcon,
+                    color: colors.messageColor,
+                    size: 20.0,
+                  ),
+                  tooltip: actionTooltip,
+                  onPressed: onActionPressed,
+                ),
+              ),
+            // Share button in bottom-left
+            if (hasShareButton && shareIcon != null)
+              Positioned(
+                left: 4.0,
+                bottom: 4.0,
+                child: IconButton(
+                  icon: Icon(
+                    shareIcon,
+                    color: colors.messageColor,
+                    size: 20.0,
+                  ),
+                  tooltip: shareTooltip,
+                  onPressed: onSharePressed,
+                ),
+              ),
           ],
         ),
       ),
@@ -202,6 +343,8 @@ class ThemePreviewItem extends StatelessWidget {
         return S.of(context).carnivalSpirit;
       case ColorTheme.current:
         return S.of(context).currentTheme;
+      case ColorTheme.custom:
+        return S.of(context).theme;
     }
   }
 }

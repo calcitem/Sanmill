@@ -79,6 +79,11 @@ class Database {
   /// Key at which the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = "colorSettings";
 
+  /// Database boxes to store custom themes
+  static late final Box<dynamic> _customThemesBox;
+  static const String _customThemesBoxName = "customThemes";
+  static const String customThemesKey = "customThemes";
+
   /// Initializes the local database
   static Future<void> init() async {
     await Hive.initFlutter("Sanmill");
@@ -87,6 +92,7 @@ class Database {
     await _initRuleSettings();
     await _initDisplaySettings();
     await _initColorSettings();
+    await _initCustomThemes();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -99,6 +105,7 @@ class Database {
     await _ruleSettingsBox.delete(ruleSettingsKey);
     await _colorSettingsBox.delete(colorSettingsKey);
     await _displaySettingsBox.delete(displaySettingsKey);
+    await _customThemesBox.delete(customThemesKey);
   }
 
   /// GeneralSettings
@@ -243,4 +250,36 @@ class Database {
   /// Gets the given [ColorSettings] from the settings Box
   ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
+
+  /// Initialize custom themes box
+  static Future<void> _initCustomThemes() async {
+    _customThemesBox = await Hive.openBox<dynamic>(_customThemesBoxName);
+  }
+
+  /// Get stored custom themes
+  List<ColorSettings> get customThemes {
+    final dynamic rawData = _customThemesBox.get(customThemesKey);
+
+    if (rawData == null) {
+      return <ColorSettings>[];
+    }
+
+    // Convert List<dynamic> to List<ColorSettings>
+    if (rawData is List) {
+      return rawData.map<ColorSettings>((dynamic item) {
+        if (item is ColorSettings) {
+          return item;
+        } else {
+          return const ColorSettings();
+        }
+      }).toList();
+    }
+
+    return <ColorSettings>[];
+  }
+
+  /// Save custom themes list
+  set customThemes(List<ColorSettings> themes) {
+    _customThemesBox.put(customThemesKey, themes);
+  }
 }

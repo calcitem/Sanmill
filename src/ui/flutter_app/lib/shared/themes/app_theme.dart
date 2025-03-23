@@ -1492,7 +1492,14 @@ class AppTheme {
       annotationToolbarBackgroundColor: Color(0xFF026873),
       annotationToolbarIconColor: Color(0xFFFFFDEC),
     ),
+    ColorTheme.custom: const ColorSettings(),
   };
+
+  /// Updates the custom theme in the colorThemes map
+  static void updateCustomTheme(ColorSettings settings) {
+    // Since colorThemes is a final map, we need to use runtime support to modify it
+    colorThemes[ColorTheme.custom] = settings;
+  }
 }
 
 enum ColorTheme {
@@ -1531,4 +1538,5 @@ enum ColorTheme {
   cinnamonSpice,
   anatolianMosaic,
   carnivalSpirit,
+  custom,
 }
