@@ -12,6 +12,8 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/environment_config.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../models/color_settings.dart';
 
@@ -44,6 +46,12 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
   void _shareThemeJson(ColorSettings colorSettings) {
     // Convert the color settings to JSON string
     final String json = jsonEncode(colorSettings.toJson());
+
+    if (EnvironmentConfig.test) {
+      // Print the JSON string in test mode
+      logger.i(json);
+      return;
+    }
 
     // Share the JSON string
     Share.share(json, subject: 'Custom Theme Settings');
