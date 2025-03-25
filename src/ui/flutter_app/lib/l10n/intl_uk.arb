@@ -1840,11 +1840,11 @@
   "@anatolianMosaic": {},
   "carnivalSpirit": "Дух карнавалу",
   "@carnivalSpirit": {},
-  "custom": "Звичай",
+  "custom": "Спеціальні",
   "@custom": {},
   "spiceMarket": "Ринок спецій",
   "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Проведіть, щоб показати шухляду",
+  "swipeToRevealTheDrawer": "Проведіть пальцем, щоб відкрити ящик",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Показувати інформацію про гру на скріншотах",
   "@showGameInfoOnScreenshots": {}
