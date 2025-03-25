@@ -269,9 +269,7 @@ class PlayAreaState extends State<PlayArea> {
       if (!Constants.isSmallScreen(context))
         ToolbarItem(
           key: const Key('play_area_history_nav_move_now'),
-          onPressed: (AnalysisMode.isAnalyzing)
-              ? null
-              : () => GameController().moveNow(context),
+          onPressed: () => GameController().moveNow(context),
           child: Icon(
             FluentIcons.play_24_regular,
             semanticLabel: S.of(context).moveNow,

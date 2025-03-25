@@ -238,11 +238,6 @@ void MalomSolutionAccess::set_variant_stripped()
 namespace PerfectAPI {
 Value getValue(const Position &pos)
 {
-    // Check if perfect database is available and initialized
-    if (!gameOptions.getUsePerfectDatabase()) {
-        return VALUE_NONE;
-    }
-
     try {
         // Create a dummy move to receive the result
         Move perfectMove = MOVE_NONE;
@@ -258,7 +253,7 @@ Value getValue(const Position &pos)
         }
 
         // If we couldn't get a valid value, return VALUE_NONE to fall back to
-        // simple evaluation
+        // traditional search in the calling function
         return VALUE_NONE;
     } catch (const std::exception &) {
         // If any error occurs during database access, return VALUE_NONE

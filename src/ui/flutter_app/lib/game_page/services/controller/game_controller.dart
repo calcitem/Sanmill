@@ -831,6 +831,11 @@ class GameController {
           .showSnackBarClear(S.of(context).aiIsDelaying);
     }
 
+    if (AnalysisMode.isEnabled || AnalysisMode.isAnalyzing) {
+      return rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).analyzing);
+    }
+
     // TODO: WAR
     if (position.sideToMove != PieceColor.white &&
         position.sideToMove != PieceColor.black) {

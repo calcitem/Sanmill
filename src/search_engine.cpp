@@ -755,15 +755,19 @@ void SearchEngine::emitAnalyze()
     analyzeCV.notify_one(); // Wake up any thread waiting for Analyze
 }
 
-// New function to run analyze
+// Function to run analyze
 void SearchEngine::runAnalyze()
 {
+    std::string outcome;
+
     // Generate the analyze result for all legal moves in the current position
     if (!rootPos) {
         analyzeResult = "Error: No position to analyze";
         emitAnalyze();
         return;
     }
+
+    const Color rootSide = rootPos->side_to_move();
 
     MoveList<LEGAL> list(*rootPos);
 
@@ -775,23 +779,65 @@ void SearchEngine::runAnalyze()
         newPos.do_move(m.move);
 
         std::string moveStr = UCI::move(m.move);
-        std::string outcome;
+        Value val = VALUE_NONE;
 
-        Value val = -PerfectAPI::getValue(newPos);
+        // Try to get value from perfect database first
+        val = PerfectAPI::getValue(newPos);
+
+        if (newPos.side_to_move() != rootSide) {
+            val = -val;
+        }
+
+        if (val != VALUE_NONE) {
+            // If perfect database provided a valid value, use it
+            if (val == VALUE_MATE)
+                outcome = "win";
+            else if (val == -VALUE_MATE)
+                outcome = "loss";
+            else
+                outcome = "draw";
+
+            // Add numerical value to the outcome
+            ss << " " << moveStr << "=" << outcome << "("
+               << static_cast<int>(val) << ")";
+            continue;
+        }
+
+        // If perfect database didn't provide a valid value, use traditional
+        // search
+
+        // Setup for traditional search
+        // Use a temporary search engine that won't impact the main one
+        SearchEngine tempEngine;
+
+        tempEngine.setRootPosition(&newPos);
+
+        // Use a shallow search with a reasonable depth
+        Depth searchDepth = 4;
+
+        Move tempBest = MOVE_NONE;
+        Sanmill::Stack<Position> tempStack;
+
+        val = Search::search(tempEngine, &newPos, tempStack, searchDepth,
+                             searchDepth, -VALUE_INFINITE, VALUE_INFINITE,
+                             tempBest);
+
+        if (newPos.side_to_move() != rootSide) {
+            val = -val;
+        }
 
         if (val == VALUE_NONE)
             outcome = "unknown";
-        else if (val >= VALUE_MATE)
-            outcome = "win";
-        else if (val > VALUE_EACH_PIECE * 2)
+        else if (val >= VALUE_DRAW)
             outcome = "advantage";
-        else if (val <= -VALUE_MATE)
-            outcome = "loss";
-        else if (val < -VALUE_EACH_PIECE * 2)
+        else if (val < VALUE_DRAW)
             outcome = "disadvantage";
         else
-            outcome = "draw";
-        ss << " " << moveStr << "=" << outcome;
+            outcome = "unknown";
+
+        // Add numerical value to the outcome
+        ss << " " << moveStr << "=" << outcome << "(" << static_cast<int>(val)
+           << ")";
     }
 
     analyzeResult = ss.str();

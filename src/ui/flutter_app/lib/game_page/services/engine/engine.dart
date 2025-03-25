@@ -517,17 +517,6 @@ class Engine {
 
   /// Analyze the current position using the perfect database
   Future<PositionAnalysisResult> analyzePosition() async {
-    // Check if perfect database is supported and enabled
-    if (!isRuleSupportingPerfectDatabase()) {
-      return PositionAnalysisResult.error(
-          "Current rule set does not support perfect database analysis");
-    }
-
-    if (!DB().generalSettings.usePerfectDatabase) {
-      return PositionAnalysisResult.error(
-          "Perfect database is not enabled in settings");
-    }
-
     final String? fen = GameController().position.fen;
     if (fen == null) {
       return PositionAnalysisResult.error("Invalid board position");
@@ -631,23 +620,47 @@ class Engine {
   }
 
   /// Parse the outcome string from the engine
-  static GameOutcome _parseOutcome(String outcome) {
-    switch (outcome.toLowerCase()) {
-      case "win":
-        return GameOutcome.win;
-      case "draw":
-        return GameOutcome.draw;
-      case "loss":
-        return GameOutcome.loss;
-      case "advantage":
-        return GameOutcome.advantage;
-      case "disadvantage":
-        return GameOutcome.disadvantage;
-      case "unknown":
-        return GameOutcome.unknown;
-      default:
-        return GameOutcome.unknown;
+  static GameOutcome _parseOutcome(String outcomeStr) {
+    // Extract numerical value if present (format: "outcome(value)")
+    String value = "";
+    final RegExp valuePattern = RegExp(r'([a-z]+)\((-?\d+)\)');
+    final Match? valueMatch = valuePattern.firstMatch(outcomeStr);
+
+    if (valueMatch != null && valueMatch.groupCount >= 2) {
+      outcomeStr = valueMatch.group(1)!; // Extract just the outcome part
+      value = valueMatch.group(2)!; // Extract the numerical value
     }
+
+    // Determine the outcome type
+    GameOutcome baseOutcome;
+    switch (outcomeStr.toLowerCase()) {
+      case "win":
+        baseOutcome = GameOutcome.win;
+        break;
+      case "draw":
+        baseOutcome = GameOutcome.draw;
+        break;
+      case "loss":
+        baseOutcome = GameOutcome.loss;
+        break;
+      case "advantage":
+        baseOutcome = GameOutcome.advantage;
+        break;
+      case "disadvantage":
+        baseOutcome = GameOutcome.disadvantage;
+        break;
+      case "unknown":
+      default:
+        baseOutcome = GameOutcome.unknown;
+        break;
+    }
+
+    // If we have a numerical value, create outcome with the value
+    if (value.isNotEmpty) {
+      return GameOutcome.withValue(baseOutcome, value);
+    }
+
+    return baseOutcome;
   }
 
   /// Parse a move string in the format "(x,y)" and convert to Square objects
@@ -799,9 +812,6 @@ class MoveAnalysisResult {
   final pgn.Square toSquare;
 }
 
-/// Game outcome from analysis
-enum GameOutcome { win, draw, loss, advantage, disadvantage, unknown }
-
 /// Result of the position analysis
 class PositionAnalysisResult {
   PositionAnalysisResult({
@@ -829,4 +839,39 @@ class _MoveSquares {
 
   final pgn.Square? from;
   final pgn.Square to;
+}
+
+/// Game outcome from analysis
+@immutable // 添加这个注解
+class GameOutcome {
+  const GameOutcome(this.name, {this.valueStr});
+
+  final String name;
+
+  // Store the value string from engine evaluation
+  final String? valueStr;
+
+  // Predefined outcome constants
+  static const GameOutcome win = GameOutcome('win');
+  static const GameOutcome draw = GameOutcome('draw');
+  static const GameOutcome loss = GameOutcome('loss');
+  static const GameOutcome advantage = GameOutcome('advantage');
+  static const GameOutcome disadvantage = GameOutcome('disadvantage');
+  static const GameOutcome unknown = GameOutcome('unknown');
+
+  // Factory method to create outcome with value
+  static GameOutcome withValue(GameOutcome baseOutcome, String value) {
+    return GameOutcome(baseOutcome.name, valueStr: value);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is GameOutcome && other.name == name;
+  }
+
+  @override
+  int get hashCode => name.hashCode;
 }

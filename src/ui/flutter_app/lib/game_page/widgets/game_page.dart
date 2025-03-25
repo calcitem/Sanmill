@@ -165,9 +165,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
               ),
               // Analysis button in the top-right corner
               if (GameController().gameInstance.gameMode ==
-                      GameMode.humanVsHuman &&
-                  DB().generalSettings.usePerfectDatabase &&
-                  isRuleSupportingPerfectDatabase())
+                  GameMode.humanVsHuman)
                 Align(
                   key: const Key('game_page_analysis_button_align'),
                   alignment: AlignmentDirectional.topEnd,
@@ -180,8 +178,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
                           key: const Key('game_page_analysis_button'),
                           icon: Icon(
                             AnalysisMode.isEnabled
-                                ? FluentIcons.beaker_dismiss_24_regular
-                                : FluentIcons.beaker_24_regular,
+                                ? FluentIcons.eye_off_24_regular
+                                : FluentIcons.eye_24_regular,
                             color: Colors.white,
                           ),
                           tooltip: S.of(context).analysis,
@@ -364,16 +362,6 @@ class _GamePageInnerState extends State<_GamePageInner> {
     if (AnalysisMode.isEnabled) {
       AnalysisMode.disable();
       // No need to call setState here as the listener will handle it
-      return;
-    }
-
-    // Check if rules support perfect database
-    if (!isRuleSupportingPerfectDatabase()) {
-      return;
-    }
-
-    // Check if perfect database is enabled
-    if (!DB().generalSettings.usePerfectDatabase) {
       return;
     }
 
