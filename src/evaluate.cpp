@@ -34,11 +34,6 @@ private:
 
 Value Evaluation::value() const
 {
-    if (gameOptions.getUsePerfectDatabase()) {
-        Value perfectValue = PerfectAPI::getValue(pos);
-        return perfectValue;
-    }
-
     Value value = VALUE_ZERO;
 
     int pieceInHandDiffCount;

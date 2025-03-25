@@ -777,7 +777,8 @@ void SearchEngine::runAnalyze()
         std::string moveStr = UCI::move(m.move);
         std::string outcome;
 
-        Value val = -Eval::evaluate(newPos);
+        Value val = -PerfectAPI::getValue(newPos);
+
         if (val == VALUE_NONE)
             outcome = "unknown";
         else if (val >= VALUE_MATE)
