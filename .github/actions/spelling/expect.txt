@@ -3,6 +3,7 @@ APARTMENTTHREADED
 APIENTRY
 APSTUDIO
 Adaptasi
+Asan
 BUFSIZ
 carpathian
 CBB
@@ -22,6 +23,7 @@ Dua
 ELFilja
 El
 Filja
+emoji
 FONTCHANGE
 FRE
 GLIBCXX
