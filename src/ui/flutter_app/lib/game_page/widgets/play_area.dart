@@ -227,6 +227,8 @@ class PlayAreaState extends State<PlayArea> {
 
   /// Retrieves the history navigation toolbar items.
   List<ToolbarItem> _getHistoryNavToolbarItems(BuildContext context) {
+    final String takeBackAccepted = S.of(context).takeBackAccepted;
+    final String takeBackRejected = S.of(context).takeBackRejected;
     return <ToolbarItem>[
       ToolbarItem(
         key: const Key('play_area_history_nav_take_back_all'),
@@ -254,11 +256,13 @@ class PlayAreaState extends State<PlayArea> {
             }
             if (accepted) {
               messenger.showSnackBar(
-                const SnackBar(content: Text("Take back accepted")),
+                SnackBar(content: Text(takeBackAccepted)),
               );
             } else {
               messenger.showSnackBar(
-                const SnackBar(content: Text("Take back rejected")),
+                SnackBar(
+                  content: Text(takeBackRejected),
+                ),
               );
             }
           } else {

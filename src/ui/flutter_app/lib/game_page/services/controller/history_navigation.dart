@@ -47,10 +47,11 @@ class HistoryNavigator {
       } else {
         // For takeBackN>=2, takeBackAll, stepForward, stepForwardAll => disallow
         if (context.mounted) {
+          // In LAN mode, only single-step take back is allowed.
+          final String takeBackRejected = S.of(context).takeBackRejected;
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content:
-                  Text("In LAN mode, only single-step take back is allowed."),
+            SnackBar(
+              content: Text(takeBackRejected),
             ),
           );
         }
