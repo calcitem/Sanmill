@@ -54,9 +54,9 @@ class DisplaySettings {
         "Until other export options are implemented this setting shouldn't be used.")
     this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
-    this.isUnplacedAndRemovedPiecesShown = false,
-    this.isNotationsShown = false,
-    this.isHistoryNavigationToolbarShown = false,
+    this.isUnplacedAndRemovedPiecesShown = true,
+    this.isNotationsShown = true,
+    this.isHistoryNavigationToolbarShown = true,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
     @Deprecated("Use [pointPaintingStyle] instead.") this.pointStyle = 0,
@@ -68,7 +68,7 @@ class DisplaySettings {
     this.boardTop = kToolbarHeight,
     this.animationDuration = 1.0,
     @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
-    this.isPositionalAdvantageIndicatorShown = false,
+    this.isPositionalAdvantageIndicatorShown = true,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
     this.isAnalysisToolbarShown = false,
@@ -109,10 +109,10 @@ class DisplaySettings {
   @HiveField(2, defaultValue: true)
   final bool isPieceCountInHandShown;
 
-  @HiveField(3, defaultValue: false)
+  @HiveField(3, defaultValue: true)
   final bool isNotationsShown;
 
-  @HiveField(4, defaultValue: false)
+  @HiveField(4, defaultValue: true)
   final bool isHistoryNavigationToolbarShown;
 
   @HiveField(5, defaultValue: 2.0)
@@ -154,7 +154,7 @@ class DisplaySettings {
   @HiveField(15, defaultValue: 1.0)
   final double fontScale;
 
-  @HiveField(16, defaultValue: false)
+  @HiveField(16, defaultValue: true)
   final bool isUnplacedAndRemovedPiecesShown;
 
   @HiveField(17, defaultValue: false)
@@ -164,7 +164,7 @@ class DisplaySettings {
   @HiveField(18, defaultValue: 0.0)
   final double aiResponseDelayTime;
 
-  @HiveField(19, defaultValue: false)
+  @HiveField(19, defaultValue: true)
   final bool isPositionalAdvantageIndicatorShown;
 
   @HiveField(20, defaultValue: '')
