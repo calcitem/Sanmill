@@ -650,6 +650,7 @@ class AnalysisRenderer {
   static bool _shouldFilterToOnlyBestMoves() {
     // Check if flying is enabled in rules and the current player has few enough pieces
     return DB().ruleSettings.mayFly &&
+        GameController().position.phase == Phase.moving &&
         GameController()
                 .position
                 .pieceOnBoardCount[GameController().position.sideToMove]! <=
