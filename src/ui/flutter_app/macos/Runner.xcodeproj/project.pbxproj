@@ -27,16 +27,6 @@
 		33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F22044A3C60003C045 /* Assets.xcassets */; };
 		33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33CC10F42044A3C60003C045 /* MainMenu.xib */; };
 		33CC11132044BFA00003C045 /* MainFlutterWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33CC11122044BFA00003C045 /* MainFlutterWindow.swift */; };
-		69C824AE2D2522E100E2D507 /* search_engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824AA2D2522E100E2D507 /* search_engine.cpp */; };
-		69C824AF2D2522E100E2D507 /* thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824AD2D2522E100E2D507 /* thread_pool.cpp */; };
-		69C824B02D2522E100E2D507 /* engine_commands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824A42D2522E100E2D507 /* engine_commands.cpp */; };
-		69C824B12D2522E100E2D507 /* opening_book.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824A82D2522E100E2D507 /* opening_book.cpp */; };
-		69C824B22D2522E100E2D507 /* engine_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824A62D2522E100E2D507 /* engine_controller.cpp */; };
-		69C824B82D2523EF00E2D507 /* engine_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B32D2523EE00E2D507 /* engine_controller.cpp */; };
-		69C824B92D2523EF00E2D507 /* search_engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B42D2523EE00E2D507 /* search_engine.cpp */; };
-		69C824BA2D2523EF00E2D507 /* opening_book.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B52D2523EF00E2D507 /* opening_book.cpp */; };
-		69C824BB2D2523EF00E2D507 /* thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B62D2523EF00E2D507 /* thread_pool.cpp */; };
-		69C824BC2D2523EF00E2D507 /* engine_commands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B72D2523EF00E2D507 /* engine_commands.cpp */; };
 		69B1D05B2B5D15D0008BE811 /* tt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0342B5D15D0008BE811 /* tt.cpp */; };
 		69B1D05C2B5D15D0008BE811 /* movegen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0352B5D15D0008BE811 /* movegen.cpp */; };
 		69B1D05D2B5D15D0008BE811 /* bitboard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0362B5D15D0008BE811 /* bitboard.cpp */; };
@@ -78,6 +68,11 @@
 		69B1D0B42B5D1614008BE811 /* perfect_sector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D09D2B5D1614008BE811 /* perfect_sector.cpp */; };
 		69B1D0B52B5D1614008BE811 /* perfect_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0A22B5D1614008BE811 /* perfect_common.cpp */; };
 		69B1D0C62B5D2B43008BE811 /* GeneratedPluginRegistrant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B1D0C52B5D2B42008BE811 /* GeneratedPluginRegistrant.swift */; };
+		69C824B82D2523EF00E2D507 /* engine_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B32D2523EE00E2D507 /* engine_controller.cpp */; };
+		69C824B92D2523EF00E2D507 /* search_engine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B42D2523EE00E2D507 /* search_engine.cpp */; };
+		69C824BA2D2523EF00E2D507 /* opening_book.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B52D2523EF00E2D507 /* opening_book.cpp */; };
+		69C824BB2D2523EF00E2D507 /* thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B62D2523EF00E2D507 /* thread_pool.cpp */; };
+		69C824BC2D2523EF00E2D507 /* engine_commands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B72D2523EF00E2D507 /* engine_commands.cpp */; };
 		69E6536B2B93905B00839000 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69E6534D2B93883600839000 /* InfoPlist.strings */; };
 		BC5221DF3A978AEB33F0F020 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EBBDD702AC2B038A5CBA54C /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
@@ -129,6 +124,7 @@
 		33E51913231747F40026EE4D /* DebugProfile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DebugProfile.entitlements; sourceTree = "<group>"; };
 		33E51914231749380026EE4D /* Release.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Release.entitlements; sourceTree = "<group>"; };
 		33E5194F232828860026EE4D /* AppInfo.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppInfo.xcconfig; sourceTree = "<group>"; };
+		69661CBE2D97ED3D007DB9CE /* RunnerDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RunnerDebug.entitlements; sourceTree = "<group>"; };
 		69B1D0332B5D15CF008BE811 /* Runner-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Runner-Bridging-Header.h"; sourceTree = "<group>"; };
 		69B1D0342B5D15D0008BE811 /* tt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tt.cpp; path = ../../../../../tt.cpp; sourceTree = "<group>"; };
 		69B1D0352B5D15D0008BE811 /* movegen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = movegen.cpp; path = ../../../../../movegen.cpp; sourceTree = "<group>"; };
@@ -317,6 +313,7 @@
 				33CC10EE2044A3C60003C045 /* Products */,
 				D73912EC22F37F3D000D13A0 /* Frameworks */,
 				771E31061245597CE454F61F /* Pods */,
+				69661CBD2D97EBE5007DB9CE /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -354,6 +351,7 @@
 		33FAB671232836740065AC1E /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				69661CBE2D97ED3D007DB9CE /* RunnerDebug.entitlements */,
 				69B1D0C52B5D2B42008BE811 /* GeneratedPluginRegistrant.swift */,
 				69B1D0302B5D1595008BE811 /* engine */,
 				33CC10F02044A3C60003C045 /* AppDelegate.swift */,
@@ -367,20 +365,21 @@
 			path = Runner;
 			sourceTree = "<group>";
 		};
+		69661CBD2D97EBE5007DB9CE /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				69C824B32D2523EE00E2D507 /* engine_controller.cpp */,
+				69C824B42D2523EE00E2D507 /* search_engine.cpp */,
+				69C824B52D2523EF00E2D507 /* opening_book.cpp */,
+				69C824B62D2523EF00E2D507 /* thread_pool.cpp */,
+				69C824B72D2523EF00E2D507 /* engine_commands.cpp */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		69B1D0302B5D1595008BE811 /* engine */ = {
 			isa = PBXGroup;
 			children = (
-				69C824A32D2522E100E2D507 /* engine_commands.h */,
-				69C824A42D2522E100E2D507 /* engine_commands.cpp */,
-				69C824A52D2522E100E2D507 /* engine_controller.h */,
-				69C824A62D2522E100E2D507 /* engine_controller.cpp */,
-				69C824A72D2522E100E2D507 /* opening_book.h */,
-				69C824A82D2522E100E2D507 /* opening_book.cpp */,
-				69C824A92D2522E100E2D507 /* search_engine.h */,
-				69C824AA2D2522E100E2D507 /* search_engine.cpp */,
-				69C824AB2D2522E100E2D507 /* task_queue.h */,
-				69C824AC2D2522E100E2D507 /* thread_pool.h */,
-				69C824AD2D2522E100E2D507 /* thread_pool.cpp */,
 				69B1D0B72B5D1649008BE811 /* config.h */,
 				69B1D0B62B5D1649008BE811 /* version.h */,
 				69B1D0362B5D15D0008BE811 /* bitboard.cpp */,
@@ -1125,7 +1124,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Runner/DebugProfile.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Runner/RunnerDebug.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
