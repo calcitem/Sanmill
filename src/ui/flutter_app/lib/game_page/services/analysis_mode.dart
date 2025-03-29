@@ -72,9 +72,9 @@ class AnalysisMode {
       case GameOutcome.loss:
         return Colors.red.shade600;
       case GameOutcome.advantage:
-        return Colors.blue.shade100;
+        return Colors.blue.shade600;
       case GameOutcome.disadvantage:
-        return Colors.red.shade100;
+        return Colors.red.shade600;
       case GameOutcome.unknown:
       default:
         return Colors.yellow.shade600; // Kept yellow for unknown outcomes
