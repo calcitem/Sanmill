@@ -1,0 +1,3 @@
+v5.12.1
+
+Ta aktualizacja zawiera różne ulepszenia i poprawki błędów, aby aplikacja była lepsza dla ciebie.
