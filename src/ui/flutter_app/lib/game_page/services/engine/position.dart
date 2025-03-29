@@ -225,9 +225,6 @@ class Position {
     buffer.writeSpace(_sideToMove == PieceColor.white ? "w" : "b");
 
     // Phrase
-    if (pieceInHandCount[_sideToMove] == 0 && phase == Phase.placing) {
-      logger.e("Invalid FEN: No piece to place in placing phase.");
-    }
     buffer.writeSpace(phase.fen);
 
     // Action
@@ -463,10 +460,6 @@ class Position {
     if (blackPieceInHand < 0 ||
         blackPieceInHand > DB().ruleSettings.piecesCount) {
       logger.e('Invalid black piece in hand. Must be between 0 and 12.');
-      return false;
-    }
-    if (activeColor == 'b' && phrase == 'p' && blackPieceInHand == 0) {
-      logger.e('Invalid black piece in hand. Must be greater than 0.');
       return false;
     }
 
