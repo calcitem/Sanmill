@@ -66,6 +66,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../perfect/perfect_symmetries.cpp"
   "../../../../perfect/perfect_symmetries_slow.cpp"
   "../../../../perfect/perfect_wrappers.cpp"
+  "../../../../perfect/perfect_strip_db.cpp"
 
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
   "Runner.rc"
