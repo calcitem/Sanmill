@@ -33,6 +33,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
     const Locale("bo"): const BoFeedbackLocalizations(), // Tibetan
     const Locale("bs"): const BsFeedbackLocalizations(), // Bosnian
+    const Locale("ca"): const CaFeedbackLocalizations(), // Catalan
     const Locale("cs"): const CsFeedbackLocalizations(), // Czech
     const Locale("da"): const DaFeedbackLocalizations(), // Danish
     const Locale("de"): const DeFeedbackLocalizations(), // German
@@ -311,6 +312,28 @@ class BsFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const BsFeedbackLocalizations(),
+    );
+  }
+}
+
+class CaFeedbackLocalizations extends FeedbackLocalizations {
+  const CaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Enviar';
+
+  @override
+  String get feedbackDescriptionText => 'Què podem fer millor?';
+
+  @override
+  String get draw => 'Pintar';
+
+  @override
+  String get navigate => 'Navegar';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const CaFeedbackLocalizations(),
     );
   }
 }

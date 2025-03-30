@@ -17,6 +17,7 @@ intl_bg.arb
 intl_bn.arb
 intl_bo.arb
 intl_bs.arb
+intl_ca.arb
 intl_cs.arb
 intl_da.arb
 intl_de.arb
