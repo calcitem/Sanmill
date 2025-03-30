@@ -143,6 +143,7 @@ lld
 llp
 llu
 locbak
+loopbacks
 lowerbound
 lparam
 lpfn
@@ -212,6 +213,7 @@ upperbound
 usleep
 vigna
 vsync
+wlan
 wifi
 wikibooks
 wikipedia
