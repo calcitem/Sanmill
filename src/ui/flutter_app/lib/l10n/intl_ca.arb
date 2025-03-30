@@ -1,0 +1,720 @@
+{
+  "noGameRecord": "Cap registre",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "loseReasonResign": "{player} s'ha rendit.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "aiVsAi": "IA vs. IA",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "tipCanMoveToAnyPoint": "Us podeu moure a qualsevol punt que vulgueu.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "appName": "Molí",
+  "@appName": {
+    "description": "The app name"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
+  "gameImported": "S'ha importat la partida.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "tipToMove": "És el torn del jugador {player}.",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "cannotImport": "No es pot importar {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "loseReasonlessThanThree": "{player} té menys de 3 peces.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "tipRemove": "Retireu una peça.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "white": "Jugador 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "humanVsHuman": "Humà vs. Humà",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "yes": "Sí",
+  "@yes": {
+    "description": "Yes"
+  },
+  "game": "Joc",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Humà vs. IA",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsCloud": "Humà vs. Núvol",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "testViaLAN": "Prova via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Moviment",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Llista de moviments",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Llista de moviments",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "confirm": "Confirma",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Cancel·la",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Ha triat la peça equivocada.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Col·loqueu les peces.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "No podeu col·locar-la aquí.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Peça col·locada.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemoved": "Peça retirada.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Moveu una peça.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Aquí no podeu col·locar la peça.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipMill": "Molí! Preneu una peça de l'oponent.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Continueu prenent una peça de l'oponent.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipCanMoveOnePoint": "Una peça es pot moure 1 punt.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "No podeu moure les peces de l'oponent.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Trieu la peça a moure.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Us queden 3 peces.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "whiteWin": "Guanya el jugador 1!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Guanya el jugador 2!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Victòria",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Derrota",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Pensant…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Partida nova",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importa una partida",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "pleaseWait": "Espereu...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Voleu reiniciar la partida actual?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "gameStarted": "La partida ha començat, col·loqueu les peces.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "winRate": "Taxa de victòries",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Puntuació:",
+  "@score": {
+    "description": "Score"
+  },
+  "black": "Jugador 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonBoardIsFull": "El tauler és ple, i el {player} no pot moure.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "S'ha acabat el temps, {player} ha perdut.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "error": "Error: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "tipCannotMove": "No podeu moure la peça aquí.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "exportGame": "Exporta una partida",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "welcome": "Benvingut",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "restart": "Reinicia",
+  "@restart": {
+    "description": "Restart"
+  },
+  "analyzing": "S'està analitzant…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "loseReasonNoWay": "{player} no pot moure.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Els moviments i les regles no coincideixen.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "tipBanRemove": "No podeu retirar-la.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipCannotRemovePieceFromMill": "No podeu prendre una peça d'un molí.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "humanVsLAN": "Humà vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "ok": "D'acord",
+  "@ok": {
+    "description": "OK"
+  },
+  "tipSelectOpponentsPiece": "Trieu una peça de l'oponent.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "drawReasonRule50": "En la fase de moviment, no s'ha retirat cap peça en l'últim nombre específic de torns.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "pieceColor": "Color de les peces",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "drawReasonBoardIsFull": "És un empat perquè el tauler és ple.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "settings": "Configuració",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Opcions",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Paràmetres generals",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "tone": "To",
+  "@tone": {
+    "description": "Tone"
+  },
+  "alternate": "Alterna",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "shufflingEnabled": "Moviment aleatori",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Miscel·lània",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regles",
+  "@rules": {
+    "description": "Rules"
+  },
+  "flyPieceCount": "El nombre de peces voladores",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "piecesAtLeastCount": "Mínim de peces",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Línies diagonals",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "isDefenderMoveFirst": "El segon jugador mou primer",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "El jugador que mou segon en la fase de col·locació mou primer en la fase de moviments.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Supressió múltiple",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveFromMillsAlways": "Destrueix els molins",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Per defecte, els jugadors han de prendre qualsevol altra peça abans de poder prendre una peca d'un molí format. Marqueu aquesta opció per a desactivar aquesta limitació.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Si el tauler és ple al final de la fase de col·locació, el jugador que col·loca peces primer perd la partida. Altrament, la partia és un empat.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "mayFly": "Vol",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Si a un jugador només li queden tres o quatre (segons la configuració) peces, pot moure la peça a qualsevol punt lliure.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule_Detail": "La partida és un empat si no hi ha s'elimina cap peça en un nombre específic de moviments.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Enrere",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "help": "Ajuda",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Comentaris",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "whitePieceColor": "Color de les peces del jugador 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Color de les peces del jugador 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Color del missatge",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isHistoryNavigationToolbarShown": "Mostra la barra d'eines de l'historial",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "boardBorderLineWidth": "Amplada de la vora del tauler",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Amplada de la línia interior del tauler",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "restore": "Restaura",
+  "@restore": {
+    "description": "Restore"
+  },
+  "player1": "Jugador 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Jugador 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Com es juga",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "needToCreateMillFirst": "Per a poder eliminar una peça, abans heu de crear un molí.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "results": "Resultats",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "queden",
+  "@left": {
+    "description": "left"
+  },
+  "done": "Fet.",
+  "@done": {
+    "description": "Done."
+  },
+  "toPlacePiece": "Toqueu en qualsevol punt lliure per a col·locar la peça.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "flyPieceCount_Detail": "Si l'opció «vol» és activa, si el nombre de peces d'un jugador és inferior a un nombre específic, i durant la resta del joc, les peces d'aquest jugador es poden moure lliurement a qualsevol punt lliure en comptes d'estar restringides als punts adjacents.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "needToPlayWithOwnPieces": "Heu de jugar amb les vostres peces.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "hasDiagonalLines_Detail": "Afegeix quatre línies diagonals en el tauler.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "El segon jugador perd si el tauler és ple",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Perd si no hi ha cap moviment legal",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perd si el seu oponent el bloca de manera que no pot moure cap peça. Si aquesta opció és activa, pasa el torn en comptes de declarar una derrota.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "nMoveRule": "Regla de N moviments",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "copy": "Copia",
+  "@copy": {
+    "description": "Copy"
+  },
+  "pleaseSelect": "Seleccioneu",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "backgroundColor": "Color del fons",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Color de la línia del tauler",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "hint": "Suggeriment",
+  "@hint": {
+    "description": "Hint"
+  },
+  "pieceWidth": "Amplada de les peces",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "ruleSettings": "Configuració de les regles",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "isNotationsShown": "Mostra les anotacions en el tauler",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "fontSize": "Mida de lletra",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "toRemovePiece": "Toqueu en una de les peces de l'oponent per a eliminar-la.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "boardColor": "Color del tauler",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "info": "Informació",
+  "@info": {
+    "description": "Info"
+  },
+  "toMovePiece": "Toqueu en un punt connectat a una peça per a moure-la.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "and": " i ",
+  "@and": {},
+  "waiting": "Espereu…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "moveTime": "Temps de raonament de la IA",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "drawReasonThreefoldRepetition": "És un empat perquè hi ha una repetició triple.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "version": "Versió: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "gameOverUnknownReason": "Final de partida! Raó desconeguda.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "human": "Humà",
+  "@human": {
+    "description": "Human"
+  },
+  "isAutoRestart": "Torna a començar automàticament en acabar la partida",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "moveHistoryCopied": "L'historial de moviments s'ha copiat al porta-retalls.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "standardNotation": "Notació WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "youWin": "Heu guanyat! Enhorabona!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "piecesCount_Detail": "Quantes peces té cada jugador?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "privacyPolicy": "Política de privadesa",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "analyze": "Analitza",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "keepMuteWhenTakingBack": "Silenci en anar enrere",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "piecesCount": "El nombre de peces que té cada jugador",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "thanks": "Agraïments",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "ai": "IA",
+  "@ai": {
+    "description": "AI"
+  },
+  "exit": "Surt",
+  "@exit": {
+    "description": "Exit"
+  },
+  "totalGames": "Total de partides",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "accept": "D'acord",
+  "@accept": {
+    "description": "Accept"
+  },
+  "whoMovesFirst": "Primer moviment",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "mayRemoveMultiple_Detail": "Si un jugador forma més d'un molí a la vegada, prendrà tantes peces com molins ha format.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "color": "Color",
+  "@color": {
+    "description": "Color"
+  },
+  "takeBack": "Enrere",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "player": "jugador",
+  "@player": {
+    "description": "player"
+  },
+  "challengeHarderLevel": "Voleu un nivell més difícil? El nivell nou serà {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Heu perdut!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "isPieceCountInHandShown": "Mostra el nombre de peces sense col·locar",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "stepForward": "Endavant",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "gameOver": "Final de partida",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "difficulty": "Dificultat",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "statistics": "Estadístiques",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "playSounds": "Efectes de so",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Reprodueix sons durant la partida",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "restoreDefaultSettings": "Restaura la configuració predeterminada",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "toSelectPiece": "Toqueu en una peça per a moure-la.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "isAutoChangeFirstMove": "Canvia automàticament el primer moviment",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "about": "Quant a",
+  "@about": {
+    "description": "About"
+  },
+  "skillLevel": "Nivell de dificultat",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  }
+}
