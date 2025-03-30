@@ -29,6 +29,7 @@ class Sector
 
     int eval_size;
 
+public:
     std::map<int, int> em_set;
 
 #ifdef DD
@@ -40,7 +41,6 @@ class Sector
     void write_header(FILE *file);
     void read_em_set(FILE *file);
 
-public:
     int W {0};
     int B {0};
     int WF {0};
