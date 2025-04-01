@@ -504,7 +504,7 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perd si el seu oponent el bloca de manera que no pot moure cap peça. Si aquesta opció és activa, pasa el torn en comptes de declarar una derrota.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perd si el seu oponent el bloca de manera que no pot moure cap peça. Si aquesta opció està desactivada, es canvia el torn en lloc de declarar la derrota.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
@@ -520,7 +520,7 @@
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "La partida és un empat si no hi ha s'elimina cap peça en un nombre específic de moviments.",
+  "nMoveRule_Detail": "La partida és un empat si no s'elimina cap peça en un nombre específic de moviments.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
@@ -1368,7 +1368,7 @@
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "Si establiu el temps de raonament de la IA a 0, no hi ha límit de temps per a pensar.",
   "@noTimeLimitForThinking": {},
-  "whatIsMtdf": "MTD(f) és una variant de l'algorisme de cera alfa-beta que intenta aprofitar l'eficiència reutilitzant els resultats de cerques intermèdies i fent ús d'una bona estimació inicial per a limitar l'espai de cerca.",
+  "whatIsMtdf": "MTD(f) és una variant de l'algorisme de cerca alfa-beta que intenta aprofitar l'eficiència reutilitzant els resultats de cerques intermèdies i fent ús d'una bona estimació inicial per a limitar l'espai de cerca.",
   "@whatIsMtdf": {},
   "noteAiThinkingTimeMayNotBePrecise": "Tingueu en compte que l'ajust del temps de raonament de la IA pot no ser del tot precís. El temps real podria ser més curt en nivells de dificultat baixos o més llarg si la IA està en ple procés de càlcul.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
@@ -1576,7 +1576,7 @@
   "@liquid": {},
   "wood": "Fusta",
   "@wood": {},
-  "placeEffectAnimation": "Efecte d'animació en col·locar un peça",
+  "placeEffectAnimation": "Efecte d'animació en col·locar una peça",
   "@placeEffectAnimation": {},
   "removeEffectAnimation": "Efecte d'animació en eliminar una peça",
   "@removeEffectAnimation": {},
