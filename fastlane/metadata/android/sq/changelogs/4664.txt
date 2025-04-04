@@ -1,0 +1,3 @@
+v6.0.0
+
+Ky përditësim përfshin përmirësime dhe riparime të ndryshme për ta bërë aplikacionin më të mirë për ju.
