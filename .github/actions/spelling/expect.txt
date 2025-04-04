@@ -193,6 +193,7 @@ readyok
 researchgate
 runloop
 sanmill
+SCa
 screenshot
 setoption
 setstacksize
