@@ -54,6 +54,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("is"): const IsFeedbackLocalizations(), // Icelandic
     const Locale("it"): const ItFeedbackLocalizations(), // Italian
     const Locale("ja"): const JaFeedbackLocalizations(), // Japanese
+    const Locale("km"): const KmFeedbackLocalizations(), // Khmer
     const Locale("kn"): const KnFeedbackLocalizations(), // Kannada
     const Locale("ko"): const KoFeedbackLocalizations(), // Korean
     const Locale("lt"): const LtFeedbackLocalizations(), // Lithuanian
@@ -712,6 +713,28 @@ class JaFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'ナビゲーター';
+}
+
+class KmFeedbackLocalizations implements FeedbackLocalizations {
+  const KmFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'បញ្ជូន';
+
+  @override
+  String get feedbackDescriptionText => 'តើ​មាន​បញ្ហា​អ្វី?';
+
+  @override
+  String get draw => 'គូរ';
+
+  @override
+  String get navigate => 'នាំផ្លូវ';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const KmFeedbackLocalizations(),
+    );
+  }
 }
 
 class KnFeedbackLocalizations extends FeedbackLocalizations {

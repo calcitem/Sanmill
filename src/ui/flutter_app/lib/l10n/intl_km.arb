@@ -1,5 +1,6 @@
 {
-  "appName": "Mill",
+  "@@locale": "km",
+  "appName": "មីល",
   "@appName": {
     "description": "The app name"
   },
@@ -1111,7 +1112,7 @@
   "@hollow": {
     "description": "Hollow"
   },
-  "languageName": "ភាសាខ្មែរ",
+  "languageName": "ខ្មែរ",
   "@languageName": {
     "description": "The name of the current language"
   },
@@ -1477,7 +1478,7 @@
   "@join": {},
   "stop": "បញ្ឈប់",
   "@stop": {},
-  "carpathianHeritage": "បេតិកភណ្ឌ Carpathian",
+  "carpathianHeritage": "អាថ៌កំបាំងបាយ័ន",
   "@carpathianHeritage": {},
   "imperialGrandeur": "ភាពអស្ចារ្យរបស់អធិរាជ",
   "@imperialGrandeur": {},

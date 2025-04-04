@@ -39,6 +39,7 @@ intl_id.arb
 intl_is.arb
 intl_it.arb
 intl_ja.arb
+intl_km.arb
 intl_kn.arb
 intl_ko.arb
 intl_lt.arb
