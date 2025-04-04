@@ -27,6 +27,10 @@ class _BoardImagePicker extends StatefulWidget {
 }
 
 class _BoardImagePickerState extends State<_BoardImagePicker> {
+  /// This flag prevents concurrent image picking operations. It is set to `true`
+  /// when an image pick starts and reset to `false` when the operation completes.
+  bool _isPicking = false;
+
   @override
   Widget build(BuildContext context) {
     final String boardImageText = S.of(context).boardImage;
@@ -95,69 +99,88 @@ class _BoardImagePickerState extends State<_BoardImagePicker> {
     required String boardImageText,
     required DisplaySettings displaySettings,
   }) async {
-    final NavigatorState navigator = Navigator.of(context);
+    // If an image pick is already in progress, exit immediately
+    if (_isPicking) {
+      // Optionally, show a message or toast here to indicate a pick is already in progress.
+      return;
+    }
 
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(
-      source: ImageSource.gallery,
-    );
+    _isPicking = true;
+    try {
+      final NavigatorState navigator = Navigator.of(context);
 
-    if (pickedFile != null) {
-      final Uint8List imageData = await pickedFile.readAsBytes();
-
-      if (!mounted) {
-        return;
-      }
-
-      // Navigate to the cropping page
-      final Uint8List? croppedData = await navigator.push<Uint8List?>(
-        MaterialPageRoute<Uint8List?>(
-          builder: (BuildContext context) => ImageCropPage(
-            imageData: imageData,
-            aspectRatio: 1, // Fixed aspect ratio for board images
-            backgroundImageText: boardImageText,
-            lineType: ReferenceLineType.boardLines,
-          ),
-        ),
+      final ImagePicker picker = ImagePicker();
+      final XFile? pickedFile = await picker.pickImage(
+        source: ImageSource.gallery,
       );
 
-      if (croppedData != null) {
-        // Determine the appropriate directory based on the platform
-        //final Directory appDir = await getApplicationDocumentsDirectory();
-        final Directory? appDir = (!kIsWeb && Platform.isAndroid)
-            ? await getExternalStorageDirectory()
-            : await getApplicationDocumentsDirectory();
+      if (pickedFile != null) {
+        final Uint8List imageData = await pickedFile.readAsBytes();
 
-        if (appDir != null) {
-          final String imagesDirPath = '${appDir.path}/images';
-          final Directory imagesDir = Directory(imagesDirPath);
+        if (!mounted) {
+          return;
+        }
 
-          if (!imagesDir.existsSync()) {
-            imagesDir.createSync(recursive: true);
+        // Navigate to the cropping page
+        final Uint8List? croppedData = await navigator.push<Uint8List?>(
+          MaterialPageRoute<Uint8List?>(
+            builder: (BuildContext context) => ImageCropPage(
+              imageData: imageData,
+              aspectRatio: 1, // Fixed aspect ratio for board images
+              backgroundImageText: boardImageText,
+              lineType: ReferenceLineType.boardLines,
+            ),
+          ),
+        );
+
+        if (croppedData != null) {
+          // Determine the appropriate directory based on the platform
+          //final Directory appDir = await getApplicationDocumentsDirectory();
+          final Directory? appDir = (!kIsWeb && Platform.isAndroid)
+              ? await getExternalStorageDirectory()
+              : await getApplicationDocumentsDirectory();
+
+          if (appDir != null) {
+            final String imagesDirPath = '${appDir.path}/images';
+            final Directory imagesDir = Directory(imagesDirPath);
+
+            if (!imagesDir.existsSync()) {
+              imagesDir.createSync(recursive: true);
+            }
+
+            // Generate a unique filename using the current timestamp
+            final String timestamp =
+                DateTime.now().millisecondsSinceEpoch.toString();
+            final String filePath = '$imagesDirPath/$timestamp.png';
+
+            // Save the cropped image to the designated directory
+            final File imageFile = File(filePath);
+            await imageFile.writeAsBytes(croppedData);
+
+            // Capture the previous boardImagePath before updating
+            final String previousPath = displaySettings.boardImagePath;
+
+            // Update displaySettings with the new custom image path
+            DB().displaySettings = displaySettings.copyWith(
+              customBoardImagePath: filePath,
+              boardImagePath: filePath,
+            );
+
+            // Handle the selection and prompt
+            await _handleSelectImage(filePath, previousPath);
           }
-
-          // Generate a unique filename using the current timestamp
-          final String timestamp =
-              DateTime.now().millisecondsSinceEpoch.toString();
-          final String filePath = '$imagesDirPath/$timestamp.png';
-
-          // Save the cropped image to the designated directory
-          final File imageFile = File(filePath);
-          await imageFile.writeAsBytes(croppedData);
-
-          // Capture the previous boardImagePath before updating
-          final String previousPath = displaySettings.boardImagePath;
-
-          // Update displaySettings with the new custom image path
-          DB().displaySettings = displaySettings.copyWith(
-            customBoardImagePath: filePath,
-            boardImagePath: filePath,
-          );
-
-          // Handle the selection and prompt
-          await _handleSelectImage(filePath, previousPath);
         }
       }
+    } on PlatformException catch (e) {
+      // In case the error is 'already_active', handle it gracefully
+      if (e.code == 'already_active') {
+        // You could show a message to the user that the picker is busy
+        logger.e('Another image picking operation is already in progress.');
+      } else {
+        rethrow;
+      }
+    } finally {
+      _isPicking = false;
     }
   }
 
