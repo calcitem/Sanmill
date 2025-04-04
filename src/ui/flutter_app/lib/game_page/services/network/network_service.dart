@@ -211,6 +211,12 @@ class NetworkService with WidgetsBindingObserver {
     this.onClientConnected = onClientConnected;
 
     try {
+      // Get context and message *before* any async gaps
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String infoMsg = context != null
+          ? S.of(context).startedHostingGameWaitingForPlayersToJoin
+          : "Started hosting, waiting for players..."; // Fallback message
+
       await _serverSocket?.close();
       _serverSocket = null;
 
@@ -264,7 +270,8 @@ class NetworkService with WidgetsBindingObserver {
       // Listen for discovery requests on the *same* selected IP
       await _startDiscoveryListener(port, localIpAddress: bindIp);
 
-      _notifyConnectionStatusChanged(true, info: "Started hosting, waiting...");
+      // Now that hosting is confirmed, notify with the pre-fetched message
+      _notifyConnectionStatusChanged(true, info: infoMsg);
     } catch (e, st) {
       logger.e("$_logTag Failed to start host: $e");
       logger.e("$_logTag Stack trace: $st");
