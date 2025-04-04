@@ -19,6 +19,10 @@ final List<String> _pieceBgPaths = <String>[
   Assets.images.blackPieceImage5.path,
   Assets.images.whitePieceImage6.path,
   Assets.images.blackPieceImage6.path,
+  Assets.images.whitePieceImage7.path,
+  Assets.images.blackPieceImage7.path,
+  Assets.images.whitePieceImage8.path,
+  Assets.images.blackPieceImage8.path,
 ];
 
 /// A stateful widget that allows users to pick piece images for both players,

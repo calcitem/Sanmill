@@ -107,6 +107,8 @@ flutter:
     - assets/images/background_image_6.jpg
     - assets/images/background_image_7.jpg
     - assets/images/background_image_8.jpg
+    - assets/images/background_image_9.jpg
+    - assets/images/background_image_10.jpg
     - assets/images/white_piece_image_1.png
     - assets/images/black_piece_image_1.png
     - assets/images/white_piece_image_2.png
@@ -119,6 +121,10 @@ flutter:
     - assets/images/black_piece_image_5.png
     - assets/images/white_piece_image_6.png
     - assets/images/black_piece_image_6.png
+    - assets/images/white_piece_image_7.png
+    - assets/images/black_piece_image_7.png
+    - assets/images/white_piece_image_8.png
+    - assets/images/black_piece_image_8.png
     - assets/images/marked_piece_image.png
     - assets/databases/std.secval
     - assets/databases/std_0_0_9_9.sec2

@@ -15,6 +15,8 @@ final List<String> _bgPaths = <String>[
   Assets.images.backgroundImage6.path,
   Assets.images.backgroundImage7.path,
   Assets.images.backgroundImage8.path,
+  Assets.images.backgroundImage9.path,
+  Assets.images.backgroundImage10.path,
 ];
 
 /// A stateful widget that allows users to pick a background image.
