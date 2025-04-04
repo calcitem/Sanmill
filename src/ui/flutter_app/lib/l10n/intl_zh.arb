@@ -320,7 +320,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "机器思考时间",
+  "moveTime": "AI 思考时间",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -352,7 +352,7 @@
   "@human": {
     "description": "Human"
   },
-  "ai": "机器",
+  "ai": "AI",
   "@ai": {
     "description": "AI"
   },
@@ -368,7 +368,7 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "机器随机走子",
+  "shufflingEnabled": "AI 随机走子",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -690,11 +690,11 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "可從三連中吃子",
+  "crackMill": "可从三连中吃子",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "若對方所有的子都在三連中，仍可吃子。",
+  "crackMill_Detail": "若对方所有的子都在三连中，仍可吃子。",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -758,7 +758,7 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "机器的棋风",
+  "aisPlayStyle": "AI 的棋风",
   "@aisPlayStyle": {
     "description": "AI's play style"
   },
@@ -798,11 +798,11 @@
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "现在不是轮到电脑行棋",
+  "notAIsTurn": "现在不是轮到 AI 行棋",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "电脑并非正在思考中",
+  "aiIsNotThinking": "AI 并非正在思考中",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
@@ -1268,11 +1268,11 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "您可以使用鼠标滚轮来选择值。",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "机器思考时间设置为 0 则表示没有思考时间的限制。",
+  "noTimeLimitForThinking": "AI 思考时间设置为 0 则表示没有思考时间的限制。",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "请注意，机器思考时间的调整可能并不精确。当难度等级设置为较低值时，实际思考时间可能会更短，而当时间耗尽时机器还在思考时，则实际思考时间可能会更长。",
+  "noteAiThinkingTimeMayNotBePrecise": "请注意，AI 思考时间的调整可能并不精确。当难度等级设置为较低值时，实际思考时间可能会更短，而当时间耗尽时 AI 还在思考时，则实际思考时间可能会更长。",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "如果将难度设置得很高，但未增加 AI 的思考时间，实际难度可能会因为思考时间的限制而被压缩在较低的水平。实际的难度水平会因机器性能而异。",
+  "noteActualDifficultyLevelMayBeLimited": "如果将难度设置得很高，但未增加 AI 的思考时间，实际难度可能会因为思考时间的限制而被压缩在较低的水平。实际的难度水平会因 AI 性能而异。",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) 是 Alpha-Beta 搜索算法的一种改进算法，旨在通过重用中间搜索结果和使用良好的初始猜测来缩小搜索空间来提高效率。",
   "@whatIsMtdf": {},
@@ -1366,11 +1366,11 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "使用完美数据库",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果机器无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“机器思考时间”将大幅缩短。“机器的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
+  "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果 AI 无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“AI 思考时间”将大幅缩短。“AI 的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "背景图片",
   "@backgroundImage": {},
-  "whatIsRandom": "当“使用完美数据库”选项未启用时，“随机”设置会导致机器在不使用任何移动选择算法的情况下随机移动棋子。这通常会导致游戏性明显较弱。相反，当启用“使用完美数据库”时，人工智能完全依赖“完美数据库”进行决策，而不是将其与传统的人工智能算法混合。在这种模式下，人工智能的动作完全基于数据库的内容，避免了对实时计算或搜索算法的依赖。",
+  "whatIsRandom": "当“使用完美数据库”选项未启用时，“随机”设置会导致 AI 在不使用任何移动选择算法的情况下随机移动棋子。这通常会导致游戏性明显较弱。相反，当启用“使用完美数据库”时，人工智能完全依赖“完美数据库”进行决策，而不是将其与传统的人工智能算法混合。在这种模式下，人工智能的动作完全基于数据库的内容，避免了对实时计算或搜索算法的依赖。",
   "@whatIsRandom": {},
   "removeOpponentsPieceFromHandThenOpponentsTurn": "吃掉对方手中的棋子；然后轮到对方摆子。",
   "@removeOpponentsPieceFromHandThenOpponentsTurn": {},

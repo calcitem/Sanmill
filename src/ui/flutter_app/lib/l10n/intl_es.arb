@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "¿Desafias al nivel más difícil? ¡El nuevo nivel será el nivel {level}!",
+  "challengeHarderLevel": "¿Desea jugar un nivel más difícil? ¡El nuevo nivel será el nivel {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -420,7 +420,7 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Si una jugadora cierra más de un molino a la vez, podrá remover el número de molinos que haya cerrado.",
+  "mayRemoveMultiple_Detail": "Si una jugadora cierra más de un molino a la vez, podrá retirar el número de molinos que haya cerrado.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
@@ -444,7 +444,7 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perderá si su oponente lo bloquea de manera que no pueda moverse. Cambie de bando para mover si esta opción está desactivada.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perderá si su oponente lo bloquea de manera que no pueda moverse. Si esta opción está desactivada, se cambia el turno en lugar de declarar una derrota.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
     "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
@@ -460,7 +460,7 @@
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "La partida se empata si no ha habido ninguna retirada en un número determinado de movimientos.",
+  "nMoveRule_Detail": "La partida se empata si no ha habido ninguna retirada en un número determinado de movimientos por cada jugador.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
@@ -476,7 +476,7 @@
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "El historial de movimientos se copia en el portapapeles.",
+  "moveHistoryCopied": "El historial de movimientos se ha copiado al portapapeles.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -572,7 +572,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Elige {element}",
+  "pick": "Elija {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -786,13 +786,13 @@
   "@pieceCount": {
     "description": "Piece count"
   },
-  "inHand": "El {player} en la mano: {count}",
+  "inHand": "{player}: {count} en mano",
   "@inHand": {
-    "description": "in hand"
+    "description": "The pieces a player has in his hand."
   },
-  "onBoard": "El {player} en el tablero: {count}",
+  "onBoard": "{player}: {count} en el tablero",
   "@onBoard": {
-    "description": "on board"
+    "description": "The pieces a player has on the board"
   },
   "boardTop": "Desplazamiento del tablero desde la parte superior",
   "@boardTop": {
@@ -1136,6 +1136,10 @@
   "@loadFailed": {
     "description": "Load failed."
   },
+  "filename": "Nombre del archivo",
+  "@filename": {
+    "description": "File name"
+  },
   "browse": "Explorar…",
   "@browse": {
     "description": "Browse…"
@@ -1144,13 +1148,47 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "filename": "Nombre del archivo",
-  "@filename": {
-    "description": "File name"
-  },
   "gameSavedTo": "La partida se guarda en",
   "@gameSavedTo": {
     "description": "The game is saved to"
+  },
+  "empty": "Vacío",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "No hay movimientos.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "Restablecida la posición inicial.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Limpiar",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "Limpio.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Quitar",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "No se pueden retirar las piezas.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "Hay que retirar {count,plural, =0{ficha}=1{{count} ficha}other{{count} fichas}}.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
   },
   "placedCount": "Sit. ({count})",
   "@placedCount": {
@@ -1162,47 +1200,9 @@
       }
     }
   },
-  "noPiecesCanBeRemoved": "No se pueden retirar las piezas.",
-  "@noPiecesCanBeRemoved": {
-    "description": "No pieces can be removed."
-  },
   "placedPieceCount": "Número de piezas colocadas en la fase de colocación.",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
-  },
-  "empty": "Vacío",
-  "@empty": {
-    "description": "Empty point, used in setup position toolbar."
-  },
-  "remove": "Quitar",
-  "@remove": {
-    "description": "Remove"
-  },
-  "noMove": "No hay movimientos.",
-  "@noMove": {
-    "description": "No move."
-  },
-  "clean": "Limpiar",
-  "@clean": {
-    "description": "Clean"
-  },
-  "restoredPosition": "Restablecida la posición inicial.",
-  "@restoredPosition": {
-    "description": "Restored initial position."
-  },
-  "cleanedUp": "Limpio.",
-  "@cleanedUp": {
-    "description": "Cleaned up."
-  },
-  "pieceCountNeedToRemove": "{count,plural, =0{Ficha}=1{{count} Ficha}other{{count} Fichas}} deben ser quitadas.",
-  "@pieceCountNeedToRemove": {
-    "description": "Pieces need to remove.",
-    "placeholders": {
-      "count": {
-        "description": "Number of pieces.",
-        "example": "3"
-      }
-    }
   },
   "hasPlacedPieceCount": "El jugador actual ha colocado {count} piezas.",
   "@hasPlacedPieceCount": {
@@ -1214,7 +1214,7 @@
       }
     }
   },
-  "notPlacingPhase": "No establezca la fase, no puede cambiarla.",
+  "notPlacingPhase": "No es la fase de colocación, no se puede cambiar.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
@@ -1238,7 +1238,7 @@
   "@fullScreen": {
     "description": "Full screen"
   },
-  "reopenToTakeEffect": "Sal y vuelve a abrir la aplicación para que los ajustes surtan efecto.",
+  "reopenToTakeEffect": "Salga y vuelva a abrir la aplicación para que los ajustes surtan efecto.",
   "@reopenToTakeEffect": {
     "description": "Exit and reopen app for settings to take effect."
   },
@@ -1250,10 +1250,10 @@
   "@invalidPosition": {},
   "shareGIF": "Compartir un GIF",
   "@shareGIF": {},
-  "duration": "Duración",
-  "@duration": {},
   "pixelRatio": "Proporción de los píxeles",
   "@pixelRatio": {},
+  "duration": "Duración",
+  "@duration": {},
   "gameScreenRecorder": "Grabador para las pantalla de los juegos",
   "@gameScreenRecorder": {},
   "previous": "Anterior",
@@ -1270,26 +1270,26 @@
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "El tiempo de pensamiento de la IA establecido en 0 significa que no hay límite de tiempo para pensar.",
   "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) es una forma modificada del algoritmo de búsqueda alfa-beta que pretende mejorar la eficiencia reutilizando los resultados intermedios de la búsqueda y utilizando una buena conjetura inicial para reducir el tiempo de búsqueda.",
+  "@whatIsMtdf": {},
   "noteAiThinkingTimeMayNotBePrecise": "Por favor, tenga en cuenta que el ajuste del tiempo de pensamiento de la IA puede no ser del todo preciso. El tiempo real de pensamiento puede ser más corto si la dificultad se establece en un valor más bajo, y puede ser más largo si la IA está pensando cuando se acaba el tiempo.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
   "noteActualDifficultyLevelMayBeLimited": "Si establece la dificultad alta pero no aumenta el tiempo de pensamiento de la IA, la dificultad real puede limitarse a un valor más bajo debido a la limitación del tiempo de pensamiento. El valor real puede variar dependiendo del rendimiento de la máquina.",
   "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f) es una forma modificada del algoritmo de búsqueda alfa-beta que pretende mejorar la eficiencia reutilizando los resultados intermedios de la búsqueda y utilizando una buena conjetura inicial para reducir el tiempo de búsqueda.",
-  "@whatIsMtdf": {},
   "whatIsPvs": "PVS (Principal Variation Search) es un algoritmo de búsqueda para encontrar el mejor movimiento en una posición dada. Es una mejora del algoritmo alfa-beta y utiliza búsquedas de ventana nula o cero para confirmar que un movimiento es peor o no peor que una puntuación ya segura de la variación principal. PVS se enfoca en los movimientos más prometedores y evita búsquedas innecesarias de sucursales subóptimas, lo que ayuda a mejorar la eficiencia de la búsqueda.",
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "El algoritmo alfa-beta es un algoritmo de búsqueda para encontrar la mejor jugada. Utiliza el principio minimax y dos valores, alfa y beta, para acortar el abanico de las búsquedas y aumentar la eficiencia. Alfa representa la puntuación mínima que el ordenador está seguro de obtener, mientras que beta representa la puntuación máxima que puede obtener su oponente. El algoritmo ayuda al ordenador a tomar decisiones inteligentes y eficientes en una partida.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "En este juego, el segundo jugador tiene más facilidad para ganar que el primero.",
-  "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Según la experiencia humana, si intentas ganar, perderás. En lugar de eso, busca el empate como objetivo y evita perder la partida. Observa a tu oponente y llévalo suavemente a una posición en la que pueda cometer errores. Cuando muestren debilidad, aprovecha la oportunidad y presiona suavemente para ganar. De este modo, podrás ganar la partida.",
   "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "En este juego, es más fácil que el segundo jugador gane que el primero.",
+  "@firstMoveDetail": {},
   "passiveDetail": "Activar la opción Pasiva hará que la IA se relaje cuando tenga ventaja en la posición, en lugar de intentar ganar agresivamente lo más rápido posible.",
   "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Si la IA tiene en cuenta la movilidad de sus piezas, no sólo intentará capturar las piezas del oponente lo más rápido posible, sino que también bloqueará los movimientos del oponente y evitará que haga lo mismo.",
-  "@considerMobilityOfPiecesDetail": {},
   "moveRandomlyDetail": "Activar esta opción aumenta la aleatoriedad y la diversión del juego, mientras que desactivarla puede ayudar a estudiar las formas de vencer a la IA.",
   "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Si la IA tiene en cuenta la movilidad de sus piezas, no sólo intentará capturar las piezas del oponente lo más rápido posible, sino que también bloqueará los movimientos del oponente y evitará que haga lo mismo.",
+  "@considerMobilityOfPiecesDetail": {},
   "whenBoardIsFull": "Cuando el tablero está lleno",
   "@whenBoardIsFull": {},
   "whenBoardIsFull_Detail": "Al final de la fase de preparación, antes del inicio de la fase de movimiento, sigue una acción si el tablero está lleno de figuras.",
@@ -1336,14 +1336,16 @@
   "@goldenJade": {},
   "forestWood": "Madera del bosque",
   "@forestWood": {},
-  "greenMeadow": "Pradera Verde",
-  "@greenMeadow": {},
-  "stonyPath": "Camino de Piedra",
-  "@stonyPath": {},
+  "darkMystery": "Misterio oscuro",
+  "@darkMystery": {},
   "midnightBlue": "Azul medianoche",
   "@midnightBlue": {},
   "greenForest": "Bosque verde",
   "@greenForest": {},
+  "greenMeadow": "Pradera Verde",
+  "@greenMeadow": {},
+  "stonyPath": "Camino de Piedra",
+  "@stonyPath": {},
   "pastelPink": "Rosa pastel",
   "@pastelPink": {},
   "turquoiseSea": "Agua del mar turquesa",
@@ -1356,8 +1358,6 @@
   "@skyBlue": {},
   "playfulGarden": "Jardín lúdico",
   "@playfulGarden": {},
-  "darkMystery": "Misterio oscuro",
-  "@darkMystery": {},
   "whatIsRetrogradeAnalysis": "El algoritmo de análisis retrógrado utiliza un análisis retrógrado de valores múltiples para crear una base de datos de finales desde diferentes posiciones iniciales y luego aplica esta base de datos para optimizar el juego. Este enfoque se incluye en la categoría de soluciones ultrafuertes.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "¿Desea consultar la guía del usuario de este algoritmo?",
@@ -1640,7 +1640,7 @@
   "@reconnectedSuccessfully": {},
   "failedToSaveImageToGallery": "No se pudo guardar la imagen en la galería.",
   "@failedToSaveImageToGallery": {},
-  "opponentRequestedToRestartTheGameDoYouAccept": "El oponente solicitó reiniciar el juego. ¿Aceptas?",
+  "opponentRequestedToRestartTheGameDoYouAccept": "El oponente solicitó reiniciar el juego. ¿Acepta?",
   "@opponentRequestedToRestartTheGameDoYouAccept": {},
   "yourTurn": "Tu turno.",
   "@yourTurn": {},
@@ -1663,13 +1663,13 @@
       "maxAttempt": {}
     }
   },
-  "failedToConnect": "Fallo al conectar: {error}",
+  "failedToConnect": "Error al conectar: {error}",
   "@failedToConnect": {
     "placeholders": {
       "error": {}
     }
   },
-  "failedToStartHosting": "Fallo al comenzar a alojar: {error}",
+  "failedToStartHosting": "Error al iniciar el alojamiento: {error}",
   "@failedToStartHosting": {
     "placeholders": {
       "error": {}
@@ -1746,7 +1746,7 @@
   "@custom": {},
   "spiceMarket": "Mercado de especias",
   "@spiceMarket": {},
-  "swipeToRevealTheDrawer": "Desliza para mostrar el cajón",
+  "swipeToRevealTheDrawer": "Deslice para mostrar el cajón.",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Mostrar información del juego en capturas de pantalla",
   "@showGameInfoOnScreenshots": {}
