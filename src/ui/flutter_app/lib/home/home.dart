@@ -502,7 +502,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       return;
     }
 
-    if (!DB().generalSettings.isPrivacyPolicyAccepted &&
+    if (!kDebugMode && // Add kDebugMode check here
+        !DB().generalSettings.isPrivacyPolicyAccepted &&
         Localizations.localeOf(context).languageCode.startsWith("zh") &&
         (!kIsWeb && Platform.isAndroid)) {
       showDialog(
@@ -517,7 +518,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   }
 
   Future<void> _showTutorialDialog() async {
-    if (DB().generalSettings.showTutorial) {
+    // Skip tutorial dialog in debug mode
+    if (!kDebugMode && DB().generalSettings.showTutorial) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const TutorialDialog(),

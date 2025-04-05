@@ -14,7 +14,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: depend_on_referenced_packages
-import 'package:flutter_driver/driver_extension.dart';
 import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:hive_flutter/hive_flutter.dart' show Box;
@@ -42,9 +41,10 @@ Future<void> main() async {
   logger.i('Environment [dev_mode]: ${EnvironmentConfig.devMode}');
   logger.i('Environment [test]: ${EnvironmentConfig.test}');
 
-  if (EnvironmentConfig.test) {
-    enableFlutterDriverExtension();
-  }
+  // IMPORTANT: Remove or comment out for integration_test screenshots
+  // if (EnvironmentConfig.test) {
+  //   enableFlutterDriverExtension();
+  // }
 
   await DB.init();
 
