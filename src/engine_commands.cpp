@@ -88,23 +88,9 @@ void go(SearchEngine &searchEngine, Position *pos)
 begin:
 #endif
 
-    uint64_t localId = searchEngine.beginNewSearch(pos);
+    searchEngine.beginNewSearch(pos);
 
     Threads.submit([&searchEngine]() { searchEngine.runSearch(); });
-
-    const auto limit_ms = gameOptions.getMoveTime() * 1000;
-
-    if (limit_ms > 0) {
-        std::thread([&searchEngine, limit_ms, localId]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(limit_ms));
-
-            if (searchEngine.currentSearchId.load(std::memory_order_relaxed) ==
-                localId) {
-                searchEngine.searchAborted.store(true,
-                                                 std::memory_order_relaxed);
-            }
-        }).detach();
-    }
 
     if (pos->get_phase() == Phase::gameOver) {
 #ifdef UCI_AUTO_RESTART
@@ -147,7 +133,7 @@ void position(Position *pos, std::istringstream &is)
     if (token == "startpos") {
         init_start_fen(); // Initialize StartFEN
         fen = StartFEN;
-        is >> token;      // Consume "moves" token if any
+        is >> token; // Consume "moves" token if any
     } else if (token == "fen") {
         while (is >> token && token != "moves") {
             fen += token + " ";

@@ -65,6 +65,9 @@ public:
     std::atomic<uint64_t> currentSearchId {0};
     std::atomic<uint64_t> currentAnalyzeId {0};
 
+    // Search start time for timeout checks
+    TimePoint searchStartTime;
+
     Depth originDepth {0};
     Move bestMove {MOVE_NONE};
     Value bestvalue {VALUE_ZERO};

@@ -45,6 +45,17 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
     // Evaluate the current position
     Value stand_pat = Eval::evaluate(*pos);
 
+    static uint64_t nodeCounter = 0; // TODO: thread_local
+    const unsigned checkMask = (depth >= -1) ? 255 : 1023;
+
+    if ((++nodeCounter & checkMask) == 0 &&
+        !searchEngine.searchAborted.load(std::memory_order_relaxed)) {
+        if (searchEngine.is_timeout(searchEngine.searchStartTime)) {
+            searchEngine.searchAborted.store(true, std::memory_order_relaxed);
+            return alpha;
+        }
+    }
+
     // Adjust evaluation to prefer quicker wins or slower losses
     if (stand_pat > 0) {
         stand_pat += depth;
@@ -283,6 +294,21 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Iterate through all possible moves
     for (int i = 0; i < moveCount; i++) {
+        static uint64_t nodeCounter = 0; // TODO: thread_local
+
+        const unsigned checkMask = (depth <= 3) ? 31 :
+                                                  ((depth <= 6) ? 127 : 511);
+
+        if ((++nodeCounter & checkMask) == 0 &&
+            searchEngine.searchAborted.load(std::memory_order_relaxed) ==
+                false) {
+            if (searchEngine.is_timeout(searchEngine.searchStartTime)) {
+                searchEngine.searchAborted.store(true,
+                                                 std::memory_order_relaxed);
+                return bestValue;
+            }
+        }
+
         ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;

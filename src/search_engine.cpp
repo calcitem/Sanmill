@@ -646,6 +646,9 @@ uint64_t SearchEngine::beginNewSearch(Position *p)
 
     searchAborted.store(false, std::memory_order_relaxed);
 
+    // Initialize search start time for timeout checks
+    searchStartTime = now();
+
     setRootPosition(p);
 
     return newId;
@@ -707,7 +710,7 @@ void SearchEngine::runSearch()
         //   this->bestMove = ... // from next_move() or fallback
         bestMoveReady = true; // Indicate "we have a new best move"
     }
-    bestMoveCV.notify_one();  // Wake up any thread waiting in playOneGame()
+    bestMoveCV.notify_one(); // Wake up any thread waiting in playOneGame()
 }
 
 uint64_t SearchEngine::beginNewAnalyze(Position *p)

@@ -10,12 +10,12 @@
 #include <stdexcept>
 #include <iostream>
 
-#include "position.h"         // Position
-#include "search.h"           // Search::search(...)
+#include "position.h" // Position
+#include "search.h"   // Search::search(...)
 #include "search_engine.h"
-#include "types.h"            // Value, ...
-#include "misc.h"             // sync_cout, sync_endl
-#include "option.h"           // gameOptions, etc.
+#include "types.h"  // Value, ...
+#include "misc.h"   // sync_cout, sync_endl
+#include "option.h" // gameOptions, etc.
 
 #include "perfect_common.h"   // field2Offset, field1Size, field2Size, ...
 #include "perfect_sector.h"   // Sector, sector->header_size=64 in DD mode
