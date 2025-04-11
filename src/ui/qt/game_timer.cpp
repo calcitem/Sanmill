@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_timer.cpp
 
 #include <iomanip>
 #include <map>
@@ -45,7 +34,7 @@
 
 using std::to_string;
 
-void Game::terminateOrResetTimer()
+void Game::stopActiveTimer()
 {
     if (timeID != 0) {
         killTimer(timeID);
@@ -53,14 +42,14 @@ void Game::terminateOrResetTimer()
     }
 }
 
-void Game::initializeTime()
+void Game::initTimeLimit()
 {
     timeLimit = 0; // Replace this with actual logic if needed
     remainingTime[WHITE] = remainingTime[BLACK] = (timeLimit <= 0) ? 0 :
                                                                      timeLimit;
 }
 
-void Game::emitTimeSignals()
+void Game::emitTimeChangedSignals()
 {
     const QTime qtimeWhite =
         QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
@@ -71,22 +60,22 @@ void Game::emitTimeSignals()
     emit time2Changed(qtimeBlack.toString("hh:mm:ss"));
 }
 
-void Game::resetTimer()
+void Game::stopTimer()
 {
-    terminateOrResetTimer();
+    stopActiveTimer();
 }
 
-void Game::resetAndUpdateTime()
+void Game::reinitTimerAndEmitSignals()
 {
-    initializeTime();
-    emitTimeSignals();
+    initTimeLimit();
+    emitTimeChangedSignals();
 }
 
-void Game::updateTime()
+void Game::updateElapsedTime()
 {
     constexpr int timePoint = -1;
-    time_t &ourSeconds = elapsedSeconds[sideToMove];
-    const time_t theirSeconds = elapsedSeconds[~sideToMove];
+    time_t &ourSeconds = elapsedSeconds[position.side_to_move()];
+    const time_t theirSeconds = elapsedSeconds[~position.side_to_move()];
     currentTime = time(nullptr);
 
     ourSeconds = (timePoint >= ourSeconds) ?
@@ -94,13 +83,13 @@ void Game::updateTime()
                      currentTime - startTime - theirSeconds;
 }
 
-void Game::timerEvent(QTimerEvent *event)
+void Game::handleTimerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event)
-    updateTime();
+    updateElapsedTime();
 
-    remainingTime[WHITE] = getElapsedTime(WHITE);
-    remainingTime[BLACK] = getElapsedTime(BLACK);
+    remainingTime[WHITE] = getElapsedSeconds(WHITE);
+    remainingTime[BLACK] = getElapsedSeconds(BLACK);
 
     // If the rule requires a timer, time1 and time2 indicate a countdown
     if (timeLimit > 0) {
@@ -109,15 +98,15 @@ void Game::timerEvent(QTimerEvent *event)
         remainingTime[BLACK] = timeLimit - remainingTime[BLACK];
     }
 
-    emitTimeSignals();
+    emitTimeChangedSignals();
 
     const Color winner = position.get_winner();
     if (winner != NOBODY && timeID != 0) {
-        terminateOrResetTimer();
-        updateStatusBar();
+        stopActiveTimer();
+        refreshStatusBar();
 
 #ifndef DO_NOT_PLAY_WIN_SOUND
-        playSound(GameSound::win);
+        playGameSound(GameSound::win);
 #endif
     }
 
@@ -148,17 +137,17 @@ void Game::timerEvent(QTimerEvent *event)
 #endif
 }
 
-time_t Game::getElapsedTime(int color) const
+time_t Game::getElapsedSeconds(int color) const
 {
     return elapsedSeconds[color];
 }
 
-void Game::resetElapsedSeconds()
+void Game::clearElapsedTimes()
 {
     elapsedSeconds[WHITE] = elapsedSeconds[BLACK] = 0;
 }
 
-void Game::terminateTimer()
+void Game::stopGameTimer()
 {
-    terminateOrResetTimer();
+    stopActiveTimer();
 }

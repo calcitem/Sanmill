@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_header.dart
 
 part of 'game_page.dart';
 
@@ -87,16 +76,21 @@ class _GameHeaderState extends State<GameHeader> {
   @override
   Widget build(BuildContext context) {
     return Align(
+      key: const Key('game_header_align'),
       alignment: Alignment.topCenter,
       child: BlockSemantics(
+        key: const Key('game_header_block_semantics'),
         child: Center(
+          key: const Key('game_header_center'),
           child: Padding(
+            key: const Key('game_header_padding'),
             padding: EdgeInsets.only(top: DB().displaySettings.boardTop),
             child: Column(
+              key: const Key('game_header_column'),
               children: <Widget>[
-                const HeaderIcons(),
+                const HeaderIcons(key: Key('header_icons')),
                 _buildDivider(),
-                const HeaderTip(),
+                const HeaderTip(key: Key('header_tip')),
               ],
             ),
           ),
@@ -130,6 +124,7 @@ class _GameHeaderState extends State<GameHeader> {
     final num dividerBlackLength = valueLimit - value;
 
     return Container(
+      key: const Key('positional_advantage_divider'),
       height: 2,
       width: valueLimit * 2,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
@@ -137,17 +132,22 @@ class _GameHeaderState extends State<GameHeader> {
         borderRadius: BorderRadius.circular(2),
       ),
       child: Row(
+        key: const Key('positional_advantage_row'),
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Container(
+            key: const Key('divider_white_container'),
             height: 2,
             width: dividerWhiteLength.toDouble(),
-            color: DB().colorSettings.whitePieceColor.withOpacity(opacity),
+            color:
+                DB().colorSettings.whitePieceColor.withValues(alpha: opacity),
           ),
           Container(
+            key: const Key('divider_black_container'),
             height: 2,
             width: dividerBlackLength.toDouble(),
-            color: DB().colorSettings.blackPieceColor.withOpacity(opacity),
+            color:
+                DB().colorSettings.blackPieceColor.withValues(alpha: opacity),
           ),
         ],
       ),
@@ -157,6 +157,7 @@ class _GameHeaderState extends State<GameHeader> {
   Widget _buildDefaultDivider() {
     const double opacity = 1;
     return Container(
+      key: const Key('default_divider'),
       height: 2,
       width: 180,
       margin: const EdgeInsets.only(bottom: AppTheme.boardMargin),
@@ -164,8 +165,11 @@ class _GameHeaderState extends State<GameHeader> {
         color: (DB().colorSettings.darkBackgroundColor == Colors.white ||
                 DB().colorSettings.darkBackgroundColor ==
                     const Color.fromARGB(1, 255, 255, 255))
-            ? DB().colorSettings.messageColor.withOpacity(opacity)
-            : DB().colorSettings.boardBackgroundColor.withOpacity(opacity),
+            ? DB().colorSettings.messageColor.withValues(alpha: opacity)
+            : DB()
+                .colorSettings
+                .boardBackgroundColor
+                .withValues(alpha: opacity),
         borderRadius: BorderRadius.circular(2),
       ),
     );
@@ -183,12 +187,27 @@ class HeaderTip extends StatefulWidget {
 class HeaderTipState extends State<HeaderTip> {
   final ValueNotifier<String> _messageNotifier = ValueNotifier<String>("");
 
+  /// Indicates whether the tip is being edited.
+  bool _isEditing = false;
+
+  /// FocusNode to detect taps outside the editable area to exit editing mode.
+  late final FocusNode _focusNode;
+
+  /// Controller for the editable text field.
+  late final TextEditingController _editingController;
+
   @override
   void initState() {
     super.initState();
     GameController().headerTipNotifier.addListener(_showTip);
+
+    // Initialize the FocusNode and controller.
+    _focusNode = FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+    _editingController = TextEditingController(text: _messageNotifier.value);
   }
 
+  /// Displays a tip message from the notifier.
   void _showTip() {
     final HeaderTipNotifier headerTipNotifier =
         GameController().headerTipNotifier;
@@ -198,25 +217,161 @@ class HeaderTipState extends State<HeaderTip> {
           .showSnackBarClear(headerTipNotifier.message);
     }
 
+    // Sync _messageNotifier with the new tip.
     _messageNotifier.value = headerTipNotifier.message;
+    // If currently editing, also update the editing controller text.
+    if (_isEditing) {
+      _editingController.text = headerTipNotifier.message;
+    }
+  }
+
+  /// Called when focus changes; if editing loses focus, finalize the edit.
+  void _handleFocusChange() {
+    if (!_focusNode.hasFocus && _isEditing) {
+      _finalizeEditing();
+    }
+  }
+
+  /// Finalizes editing, updates the displayed text,
+  /// and stores the text as a comment in the active PGN node.
+  void _finalizeEditing() {
+    setState(() {
+      _isEditing = false;
+      final String rawText = _editingController.text;
+
+      // 1) **No longer add braces** to _messageNotifier.value.
+      _messageNotifier.value = rawText;
+
+      // 2) Retrieve current PGN node and update its comments with unbraced text.
+      final PgnNode<ExtMove>? activeNode =
+          GameController().gameRecorder.activeNode;
+      if (activeNode?.data != null) {
+        activeNode!.data!.comments ??= <String>[];
+        activeNode.data!.comments!.clear();
+        // 3) We store unbraced text in the comment.
+        activeNode.data!.comments!.add(rawText);
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<String>(
+      key: const Key('header_tip_value_listenable_builder'),
       valueListenable: _messageNotifier,
-      builder: (BuildContext context, String value, Widget? child) {
+      builder: (BuildContext context, String currentDisplay, Widget? child) {
+        // Retrieve the active node’s comment, if any.
+        final PgnNode<ExtMove>? activeNode =
+            GameController().gameRecorder.activeNode;
+        // Join all comments for display. (If you only need the first, adjust accordingly.)
+        final String nodeComment =
+            (activeNode?.data?.comments?.isNotEmpty ?? false)
+                ? activeNode!.data!.comments!.join(' ')
+                : "";
+
+        // If there’s an existing comment in the PGN node, show it in yellow.
+        // Otherwise, use _messageNotifier.value with original color.
+        final bool hasNodeComment = nodeComment.isNotEmpty;
+        final String textToShow = hasNodeComment
+            ? nodeComment // **Do not add braces**
+            : (currentDisplay.isEmpty ? S.of(context).welcome : currentDisplay);
+
+        // Decide the color: yellow if PGN node has a comment, otherwise normal.
+        final Color displayColor =
+            hasNodeComment ? Colors.yellow : DB().colorSettings.messageColor;
+
+        // Now build UI. If editing, show a TextField. If not, show static text.
         return Semantics(
+          key: const Key('header_tip_semantics'),
           enabled: true,
-          child: SizedBox(
-            height: 24 * DB().displaySettings.fontScale,
-            child: Text(
-              value.isEmpty ? S.of(context).welcome : value,
-              maxLines: 1,
-              style: TextStyle(
-                color: DB().colorSettings.messageColor,
-                fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
-                fontFeatures: const <FontFeature>[FontFeature.tabularFigures()],
+          child: GestureDetector(
+            onTap: () {
+              // 3) If tapped and we are NOT editing, enter edit mode.
+              if (!_isEditing) {
+                setState(() {
+                  _isEditing = true;
+
+                  // Compare the text currently visible vs. nodeComment.
+                  final String visibleRaw = textToShow;
+                  if (visibleRaw != nodeComment) {
+                    // If they differ, clear the editor.
+                    _editingController.text = "";
+                  } else {
+                    // Otherwise, keep the node comment.
+                    _editingController.text = nodeComment;
+                  }
+                });
+              }
+            },
+            child: SizedBox(
+              key: const Key('header_tip_sized_box'),
+              height: 24 * DB().displaySettings.fontScale,
+              child: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  if (_isEditing) {
+                    // Editing mode
+                    return TextField(
+                      key: const Key('header_tip_textfield'),
+                      controller: _editingController,
+                      focusNode: _focusNode,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                      onEditingComplete: () {
+                        _finalizeEditing();
+                        // Hide the keyboard
+                        FocusScope.of(context).unfocus();
+                      },
+                      decoration: const InputDecoration(
+                        isDense: true,
+                        contentPadding: EdgeInsets.zero,
+                        border: InputBorder.none,
+                      ),
+                    );
+                  } else {
+                    // Read-only mode
+                    final TextSpan span = TextSpan(
+                      text: textToShow,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    );
+                    final TextPainter tp = TextPainter(
+                      text: span,
+                      maxLines: 1,
+                      textDirection: TextDirection.ltr,
+                    );
+                    tp.layout(maxWidth: constraints.maxWidth);
+
+                    // If text doesn't exceed max width, center it; otherwise left-align.
+                    final bool fits = !tp.didExceedMaxLines;
+
+                    return Text(
+                      textToShow,
+                      key: const Key('header_tip_text'),
+                      maxLines: 1,
+                      textAlign: fits ? TextAlign.center : TextAlign.left,
+                      style: TextStyle(
+                        color: displayColor,
+                        fontSize:
+                            AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                        fontFeatures: const <FontFeature>[
+                          FontFeature.tabularFigures()
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ),
@@ -228,6 +383,8 @@ class HeaderTipState extends State<HeaderTip> {
   @override
   void dispose() {
     GameController().headerTipNotifier.removeListener(_showTip);
+    _focusNode.dispose();
+    _editingController.dispose();
     super.dispose();
   }
 }
@@ -244,32 +401,69 @@ class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<IconData> _iconDataNotifier =
       ValueNotifier<IconData>(GameController().position.sideToMove.icon);
 
+  // Add ValueNotifier for lanHostPlaysWhite
+  final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier =
+      ValueNotifier<bool?>(GameController().lanHostPlaysWhite);
+
   @override
   void initState() {
     super.initState();
     GameController().headerIconsNotifier.addListener(_updateIcons);
+    // Listen to changes in lanHostPlaysWhite via a custom method or direct property observation
+    _refreshLanHostPlaysWhite();
   }
 
   void _updateIcons() {
     _iconDataNotifier.value = GameController().position.sideToMove.icon;
+    _refreshLanHostPlaysWhite();
+  }
+
+  void _refreshLanHostPlaysWhite() {
+    _lanHostPlaysWhiteNotifier.value = GameController().lanHostPlaysWhite;
+  }
+
+// In game_header.dart, HeaderStateIcons class
+  (IconData, IconData) _getLanModeIcons() {
+    final GameController controller = GameController();
+    if (controller.gameInstance.gameMode == GameMode.humanVsLAN) {
+      const IconData humanIcon = FluentIcons.person_24_filled;
+      const IconData wifiIcon = FluentIcons.wifi_1_24_filled;
+      final bool amIHost = controller.networkService?.isHost ?? false;
+
+      if (amIHost) {
+        // Host: White, Left=Person, Right=Wi-Fi
+        return (humanIcon, wifiIcon);
+      } else {
+        // Client: Black, Left=Wi-Fi, Right=Person
+        return (wifiIcon, humanIcon);
+      }
+    }
+
+    // Non-LAN mode fallback
+    return (
+      controller.gameInstance.gameMode.leftHeaderIcon,
+      controller.gameInstance.gameMode.rightHeaderIcon
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<IconData>(
+      key: const Key('header_icons_value_listenable_builder'),
       valueListenable: _iconDataNotifier,
-      builder: (BuildContext context, IconData value, Widget? child) {
+      builder: (BuildContext context, IconData turnIcon, Widget? child) {
+        // Remove lanHostPlaysWhite dependency since it's always true
+        final (IconData leftIcon, IconData rightIcon) = _getLanModeIcons();
         return IconTheme(
-          data: IconThemeData(
-            color: DB().colorSettings.messageColor,
-          ),
+          key: const Key('header_icons_icon_theme'),
+          data: IconThemeData(color: DB().colorSettings.messageColor),
           child: Row(
-            key: const Key("HeaderIconRow"),
+            key: const Key('header_icon_row'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(GameController().gameInstance.gameMode.leftHeaderIcon),
-              Icon(value),
-              Icon(GameController().gameInstance.gameMode.rightHeaderIcon),
+              Icon(leftIcon, key: const Key('left_header_icon')),
+              Icon(turnIcon, key: const Key('current_side_icon')),
+              Icon(rightIcon, key: const Key('right_header_icon')),
             ],
           ),
         );

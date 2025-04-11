@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// feedback_localization.dart
 
 import 'package:feedback/feedback.dart';
 import 'package:flutter/foundation.dart';
@@ -44,6 +33,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
     const Locale("bo"): const BoFeedbackLocalizations(), // Tibetan
     const Locale("bs"): const BsFeedbackLocalizations(), // Bosnian
+    const Locale("ca"): const CaFeedbackLocalizations(), // Catalan
     const Locale("cs"): const CsFeedbackLocalizations(), // Czech
     const Locale("da"): const DaFeedbackLocalizations(), // Danish
     const Locale("de"): const DeFeedbackLocalizations(), // German
@@ -64,6 +54,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("is"): const IsFeedbackLocalizations(), // Icelandic
     const Locale("it"): const ItFeedbackLocalizations(), // Italian
     const Locale("ja"): const JaFeedbackLocalizations(), // Japanese
+    const Locale("km"): const KmFeedbackLocalizations(), // Khmer
     const Locale("kn"): const KnFeedbackLocalizations(), // Kannada
     const Locale("ko"): const KoFeedbackLocalizations(), // Korean
     const Locale("lt"): const LtFeedbackLocalizations(), // Lithuanian
@@ -84,6 +75,7 @@ class CustomFeedbackLocalizationsDelegate
     const Locale("sr"): const SrFeedbackLocalizations(), // Serbian
     const Locale("sv"): const SvFeedbackLocalizations(), // Swedish
     const Locale("sw"): const SwFeedbackLocalizations(), // Swahili
+    const Locale("ta"): const TaFeedbackLocalizations(), // Tamil
     const Locale("te"): const TeFeedbackLocalizations(), // Telugu
     const Locale("th"): const ThFeedbackLocalizations(), // Thai
     const Locale("tr"): const TrFeedbackLocalizations(), // Turkish
@@ -321,6 +313,28 @@ class BsFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const BsFeedbackLocalizations(),
+    );
+  }
+}
+
+class CaFeedbackLocalizations extends FeedbackLocalizations {
+  const CaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'Enviar';
+
+  @override
+  String get feedbackDescriptionText => 'Què podem fer millor?';
+
+  @override
+  String get draw => 'Pintar';
+
+  @override
+  String get navigate => 'Navegar';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const CaFeedbackLocalizations(),
     );
   }
 }
@@ -699,6 +713,28 @@ class JaFeedbackLocalizations extends FeedbackLocalizations {
 
   @override
   String get navigate => 'ナビゲーター';
+}
+
+class KmFeedbackLocalizations implements FeedbackLocalizations {
+  const KmFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'បញ្ជូន';
+
+  @override
+  String get feedbackDescriptionText => 'តើ​មាន​បញ្ហា​អ្វី?';
+
+  @override
+  String get draw => 'គូរ';
+
+  @override
+  String get navigate => 'នាំផ្លូវ';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const KmFeedbackLocalizations(),
+    );
+  }
 }
 
 class KnFeedbackLocalizations extends FeedbackLocalizations {
@@ -1140,6 +1176,29 @@ class SwFeedbackLocalizations extends FeedbackLocalizations {
   static Future<FeedbackLocalizations> load(Locale locale) {
     return SynchronousFuture<FeedbackLocalizations>(
       const SwFeedbackLocalizations(),
+    );
+  }
+}
+
+// Tamil
+class TaFeedbackLocalizations extends FeedbackLocalizations {
+  const TaFeedbackLocalizations();
+
+  @override
+  String get submitButtonText => 'அனுப்பு';
+
+  @override
+  String get feedbackDescriptionText => 'என்ன தவறு?';
+
+  @override
+  String get draw => 'வரையுங்கள்';
+
+  @override
+  String get navigate => 'நாவிருந்து';
+
+  static Future<FeedbackLocalizations> load(Locale locale) {
+    return SynchronousFuture<FeedbackLocalizations>(
+      const TaFeedbackLocalizations(),
     );
   }
 }

@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// run_loop.h
+
 #ifndef RUNNER_RUN_LOOP_H_
 #define RUNNER_RUN_LOOP_H_
 

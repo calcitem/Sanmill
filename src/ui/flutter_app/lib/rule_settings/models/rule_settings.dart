@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// rule_settings.dart
 
 import 'dart:ui';
 
@@ -49,6 +38,8 @@ enum MillFormationActionInPlacingPhase {
   opponentRemovesOwnPiece,
   @HiveField(4)
   markAndDelayRemovingPieces,
+  @HiveField(5)
+  removalBasedOnMillCounts,
 }
 
 @HiveType(typeId: 8)
@@ -136,7 +127,7 @@ class RuleSettings {
       case "si": // Sri Lanka
         return const TwelveMensMorrisRuleSettings();
       case "ru": // Russia
-        return const RussianRuleSettings();
+        return const OneTimeMillRuleSettings();
       case "ko": // Korea
         return const ChamGonuRuleSettings();
       default:
@@ -144,41 +135,41 @@ class RuleSettings {
     }
   }
 
-  @HiveField(0)
+  @HiveField(0, defaultValue: 9)
   final int piecesCount;
-  @HiveField(1)
+  @HiveField(1, defaultValue: 3)
   final int flyPieceCount;
-  @HiveField(2)
+  @HiveField(2, defaultValue: 3)
   final int piecesAtLeastCount;
-  @HiveField(3)
+  @HiveField(3, defaultValue: false)
   final bool hasDiagonalLines;
   @Deprecated('Use [millFormationActionInPlacingPhase] instead')
-  @HiveField(4)
+  @HiveField(4, defaultValue: false)
   final bool hasBannedLocations;
   @HiveField(5, defaultValue: false)
   final bool mayMoveInPlacingPhase;
-  @HiveField(6)
+  @HiveField(6, defaultValue: false)
   final bool isDefenderMoveFirst;
-  @HiveField(7)
+  @HiveField(7, defaultValue: false)
   final bool mayRemoveMultiple;
-  @HiveField(8)
+  @HiveField(8, defaultValue: false)
   final bool mayRemoveFromMillsAlways;
   @Deprecated('Use [millFormationActionInPlacingPhase] instead')
-  @HiveField(9)
+  @HiveField(9, defaultValue: false)
   final bool mayOnlyRemoveUnplacedPieceInPlacingPhase;
   @Deprecated('Use [boardFullAction] instead')
-  @HiveField(10)
+  @HiveField(10, defaultValue: true)
   final bool isWhiteLoseButNotDrawWhenBoardFull;
   @Deprecated('Use [StalemateAction] instead')
-  @HiveField(11)
+  @HiveField(11, defaultValue: true)
   final bool isLoseButNotChangeSideWhenNoWay;
-  @HiveField(12)
+  @HiveField(12, defaultValue: true)
   final bool mayFly;
-  @HiveField(13)
+  @HiveField(13, defaultValue: 100)
   final int nMoveRule;
-  @HiveField(14)
+  @HiveField(14, defaultValue: 100)
   final int endgameNMoveRule;
-  @HiveField(15)
+  @HiveField(15, defaultValue: true)
   final bool threefoldRepetitionRule;
   @HiveField(16, defaultValue: BoardFullAction.firstPlayerLose)
   final BoardFullAction? boardFullAction;
@@ -195,6 +186,68 @@ class RuleSettings {
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
+
+  bool isLikelyNineMensMorris() {
+    return piecesCount == 9 &&
+        !hasDiagonalLines &&
+        !isDefenderMoveFirst &&
+        !mayMoveInPlacingPhase &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !oneTimeUseMill;
+  }
+
+  bool isLikelyTwelveMensMorris() {
+    return piecesCount == 12 &&
+        hasDiagonalLines &&
+        !isDefenderMoveFirst &&
+        !mayMoveInPlacingPhase &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !oneTimeUseMill;
+  }
+
+  bool isLikelyElFilja() {
+    return piecesCount == 12 &&
+        !hasDiagonalLines &&
+        !hasBannedLocations &&
+        !mayMoveInPlacingPhase &&
+        !isDefenderMoveFirst &&
+        !mayRemoveMultiple &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !mayFly &&
+        millFormationActionInPlacingPhase ==
+            MillFormationActionInPlacingPhase.removalBasedOnMillCounts &&
+        !restrictRepeatedMillsFormation &&
+        !oneTimeUseMill;
+  }
+}
+
+// Defines an enumeration of all available rule sets for the Mill Game.
+enum RuleSet {
+  current,
+  nineMensMorris,
+  twelveMensMorris,
+  morabaraba,
+  dooz,
+  laskerMorris,
+  oneTimeMill,
+  chamGonu,
+  zhiQi,
+  chengSanQi,
+  daSanQi,
+  mulMulan,
+  nerenchi,
+  elfilja
+}
+
+/// Nine Men's Morris Rules
+///
+/// Those rules are the standard Nine Men's Morris rules.
+class NineMensMorrisRuleSettings extends RuleSettings {
+  const NineMensMorrisRuleSettings()
+      : super(
+          piecesCount: 9,
+          hasDiagonalLines: false,
+        );
 }
 
 /// Twelve Men's Morris Rules
@@ -210,7 +263,8 @@ class TwelveMensMorrisRuleSettings extends RuleSettings {
 
 /// Morabaraba Rules
 ///
-/// Those rules are the standard Morabaraba rules.
+/// https://en.wikipedia.org/wiki/Morabaraba
+/// https://mindsports.nl/index.php/the-pit/542-morabaraba
 class MorabarabaRuleSettings extends RuleSettings {
   const MorabarabaRuleSettings()
       : super(
@@ -222,18 +276,47 @@ class MorabarabaRuleSettings extends RuleSettings {
         );
 }
 
-/// Russian Rules
+/// Dooz Rules
 ///
-/// Those rules are the Russian rules.
-class RussianRuleSettings extends RuleSettings {
-  const RussianRuleSettings()
+/// https://web.archive.org/web/20150919203008/http://dezyan.blogfa.com/post-146.aspx
+/// https://www.aparat.com/v/y916l8o
+/// https://www.aparat.com/v/k974686
+/// https://www.aparat.com/v/o39z663 (mayFly & !mayRemoveFromMillsAlways)
+class DoozRuleSettings extends RuleSettings {
+  const DoozRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          millFormationActionInPlacingPhase: MillFormationActionInPlacingPhase
+              .removeOpponentsPieceFromHandThenOpponentsTurn,
+          boardFullAction: BoardFullAction.sideToMoveRemovePiece,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
+/// Lasker Morris
+///
+/// Those rules are the Lasker Morris rules.
+class LaskerMorrisSettings extends RuleSettings {
+  const LaskerMorrisSettings()
+      : super(
+          piecesCount: 10,
+          mayMoveInPlacingPhase: true,
+        );
+}
+
+/// Russian One-Time Mill Rules
+///
+/// Those rules are the One-Time Mill Rules rules.
+class OneTimeMillRuleSettings extends RuleSettings {
+  const OneTimeMillRuleSettings()
       : super(
           oneTimeUseMill: true,
           mayRemoveFromMillsAlways: true,
         );
 }
 
-/// Cham Gonu Rules
+/// Korean Cham Gonu Rules
 ///
 /// Those rules are the Cham Gonu rules.
 class ChamGonuRuleSettings extends RuleSettings {
@@ -241,9 +324,143 @@ class ChamGonuRuleSettings extends RuleSettings {
       : super(
           piecesCount: 12,
           hasDiagonalLines: true,
-          mayFly: false,
           millFormationActionInPlacingPhase:
               MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          mayFly: false,
           mayRemoveFromMillsAlways: true,
         );
 }
+
+/// Chinese Zhi Qi Rules
+///
+/// https://zh.wikipedia.org/wiki/%E5%8D%81%E4%BA%8C%E5%AD%90%E7%9B%B4%E6%A3%8B
+class ZhiQiRuleSettings extends RuleSettings {
+  const ZhiQiRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
+          mayFly: false,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
+/// Chinese Cheng San Qi Rules
+///
+/// https://baike.baidu.com/item/%E6%88%90%E4%B8%89%E6%A3%8B/241145
+/// https://blog.csdn.net/liuweilhy/article/details/83832180
+class ChengSanQiRuleSettings extends RuleSettings {
+  const ChengSanQiRuleSettings()
+      : super(
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          mayFly: false,
+        );
+}
+
+/// Chinese Da San Qi Rules
+///
+/// https://baike.baidu.com/item/%E6%89%93%E4%B8%89%E6%A3%8B/1766527?fr=ge_ala
+/// https://blog.csdn.net/liuweilhy/article/details/83832180
+class DaSanQiRuleSettings extends RuleSettings {
+  const DaSanQiRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          boardFullAction: BoardFullAction.firstPlayerLose,
+          isDefenderMoveFirst: true,
+          mayFly: false,
+          mayRemoveFromMillsAlways: true,
+          mayRemoveMultiple: true,
+        );
+}
+
+/// Indonesian Javanese Mul-Mulan Rules
+///
+/// https://id.wikibooks.org/wiki/Permainan_Tradisional_%22Catur%22_di_Indonesia/Mul-mulan_(Pulau_Jawa)
+/// https://id.wikibooks.org/wiki/Permainan_Tradisional_%22Catur%22_di_Indonesia/Derek_Dua_Olas_(Lombok)
+/// https://www.researchgate.net/publication/331483882_Adaptasi_Permainan_Tradisional_Mul-Mulan_ke_dalam_Perancangan_Game_Design_Document
+/// TODO: Implement the gotong rule.
+class MulMulanRuleSettings extends RuleSettings {
+  const MulMulanRuleSettings()
+      : super(
+          hasDiagonalLines: true,
+          mayFly: false,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
+/// Sri Lankan Nerenchi Rules
+///
+/// https://zh.wikipedia.org/wiki/%E5%8D%81%E4%BA%8C%E5%AD%90%E7%9B%B4%E6%A3%8B
+/// https://web.archive.org/web/20150924020646/http://www.gamesmuseum.uwaterloo.ca/VirtualExhibits/rowgames/nerenchi.html
+/// https://www.youtube.com/watch?v=9cfaO4GcFSM&ab_channel=HattonNationalBankPLC
+/// https://www.youtube.com/watch?v=9nK7gPKtbKc&t=24s&ab_channel=ShalikaWickramasinghe
+/// https://www.youtube.com/watch?v=iXYCtguLfUA&t=33s&ab_channel=PantherLk (Not Standard?)
+/// TOOD: Each with 12 counters of one color, take turns placing one counter at a time on an empty point, until 22 counters are placed and two points are left empty.
+/// TODO: A player making a Nerenchi during the placement phase, takes an extra turn.
+class NerenchiRuleSettings extends RuleSettings {
+  const NerenchiRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          isDefenderMoveFirst: true,
+          mayRemoveFromMillsAlways: true, // TODO: Right?
+        );
+}
+
+/// El Filja rules in Algeria and parts of Morocco
+///
+/// Those rules are the El Filja rules.
+class ELFiljaRuleSettings extends RuleSettings {
+  const ELFiljaRuleSettings()
+      : super(
+          piecesCount: 12,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+          boardFullAction: BoardFullAction.firstAndSecondPlayerRemovePiece,
+          mayFly: false,
+          mayRemoveFromMillsAlways: true,
+        );
+}
+
+/// Rule Set Descriptions and Settings
+const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
+  RuleSet.current: 'Use the current game settings.',
+  RuleSet.nineMensMorris: "Classic Nine Men's Morris game.",
+  RuleSet.twelveMensMorris: 'Extended version with twelve pieces per player.',
+  RuleSet.morabaraba: 'Traditional South African variant, Morabaraba.',
+  RuleSet.dooz: 'Persian variant called Dooz.',
+  RuleSet.laskerMorris: 'A variation introduced by Emanuel Lasker.',
+  RuleSet.oneTimeMill: 'A one-time mill challenge.',
+  RuleSet.chamGonu: 'Cham Gonu, a traditional Korean board game.',
+  RuleSet.zhiQi: 'Zhi Qi, a historical Chinese mill variant.',
+  RuleSet.chengSanQi: 'Cheng San Qi, another Chinese strategic variant.',
+  RuleSet.daSanQi: 'Da San Qi, another Chinese strategic variant.',
+  RuleSet.mulMulan: 'Mul-Mulan, a Indonesian variation of the game.',
+  RuleSet.nerenchi: 'Nerenchi, a Sri Lankan adaptation of the game.',
+  RuleSet.elfilja:
+      'El Filja, a variant played in Algeria and parts of Morocco.',
+};
+
+/// Rule Set Properties (e.g., Number of Pieces and Rule Settings)
+const Map<RuleSet, RuleSettings> ruleSetProperties = <RuleSet, RuleSettings>{
+  RuleSet.current: RuleSettings(),
+  RuleSet.nineMensMorris: NineMensMorrisRuleSettings(),
+  RuleSet.twelveMensMorris: TwelveMensMorrisRuleSettings(),
+  RuleSet.morabaraba: MorabarabaRuleSettings(),
+  RuleSet.dooz: DoozRuleSettings(),
+  RuleSet.laskerMorris: LaskerMorrisSettings(),
+  RuleSet.oneTimeMill: OneTimeMillRuleSettings(),
+  RuleSet.chamGonu: ChamGonuRuleSettings(),
+  RuleSet.zhiQi: ZhiQiRuleSettings(),
+  RuleSet.chengSanQi: ChengSanQiRuleSettings(),
+  RuleSet.daSanQi: DaSanQiRuleSettings(),
+  RuleSet.mulMulan: MulMulanRuleSettings(),
+  RuleSet.nerenchi: NerenchiRuleSettings(),
+  RuleSet.elfilja: ELFiljaRuleSettings(),
+};

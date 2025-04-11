@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// number_picker_dialog.dart
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,11 +38,13 @@ class NumberPickerDialog extends StatelessWidget {
     return AlertDialog(
       title: Text(
         dialogTitle,
+        key: const Key('number_picker_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 150),
         child: CupertinoPicker(
+          key: const Key('number_picker_cupertino_picker'),
           itemExtent: fontSize + 12,
           children: numberItems,
           onSelectedItemChanged: (int number) => selectedValue = number + 1,
@@ -61,6 +52,7 @@ class NumberPickerDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('number_picker_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -69,6 +61,7 @@ class NumberPickerDialog extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         TextButton(
+          key: const Key('number_picker_confirm_button'),
           child: Text(
             S.of(context).confirm,
             style: TextStyle(

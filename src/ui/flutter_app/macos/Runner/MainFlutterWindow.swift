@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// MainFlutterWindow.swift
+
 import Cocoa
 import FlutterMacOS
 import device_info_plus

@@ -1,23 +1,8 @@
-// Malom, a Nine Men's Morris (and variants) player and solver program.
-// Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-// Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
-//
-// See our webpage (and the paper linked from there):
-// http://compalg.inf.elte.hu/~ggevay/mills/index.php
-//
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// perfect_rules.cpp
 
 #include "perfect_rules.h"
 #include "perfect_api.h"
@@ -46,7 +31,7 @@ uint8_t Rules::aLBoardGraph[24][5];
 std::string Rules::variantName;
 int Rules::maxKSZ = 0;
 
-void Rules::initRules()
+void Rules::init_rules()
 {
     stdLaskerMillPos[0][0] = 1;
     stdLaskerMillPos[0][1] = 2;
@@ -212,7 +197,7 @@ void Rules::initRules()
     }
 }
 
-void Rules::cleanup()
+void Rules::cleanup_rules()
 {
     for (int i = 0; i < 24; ++i) {
         delete[] stdLaskerInvMillPos[i];
@@ -225,15 +210,15 @@ void Rules::cleanup()
 
 // Returns -1 if there is no mill on the given field, otherwise returns the
 // sequence number in StdLaskerMalomPoz
-int Rules::malome(int m, GameState s)
+int Rules::check_mill(int m, GameState s)
 {
     int result = -1;
     // Use the stored length instead of sizeof
     size_t length = invMillPosLengths[m]; // TODO: Right?
     for (size_t i = 0; i < length; i++) {
-        if (s.T[millPos[invMillPos[m][i]][0]] == s.T[m] &&
-            s.T[millPos[invMillPos[m][i]][1]] == s.T[m] &&
-            s.T[millPos[invMillPos[m][i]][2]] == s.T[m]) {
+        if (s.board[millPos[invMillPos[m][i]][0]] == s.board[m] &&
+            s.board[millPos[invMillPos[m][i]][1]] == s.board[m] &&
+            s.board[millPos[invMillPos[m][i]][2]] == s.board[m]) {
             result = invMillPos[m][i];
         }
     }
@@ -241,15 +226,15 @@ int Rules::malome(int m, GameState s)
 }
 
 // Tells whether the next player can move '(doesn't handle the kle case)
-bool Rules::youCanMove(const GameState &s)
+bool Rules::can_move(const GameState &s)
 {
     assert(!s.kle);
     if (s.setStoneCount[s.sideToMove] == maxKSZ &&
         s.stoneCount[s.sideToMove] > 3) {
         for (int i = 0; i <= 23; i++) {
-            if (s.T[i] == s.sideToMove) {
+            if (s.board[i] == s.sideToMove) {
                 for (int j = 1; j <= aLBoardGraph[i][0]; j++) {
-                    if (s.T[aLBoardGraph[i][j]] == -1)
+                    if (s.board[aLBoardGraph[i][j]] == -1)
                         return true;
                 }
             }
@@ -260,17 +245,17 @@ bool Rules::youCanMove(const GameState &s)
     return false;
 }
 
-bool Rules::mindenEllensegesPieceMalomban(GameState s)
+bool Rules::all_opponent_pieces_in_mill(GameState s)
 {
     for (int i = 0; i <= 23; i++) {
-        if (s.T[i] == 1 - s.sideToMove && malome(i, s) == -1)
+        if (s.board[i] == 1 - s.sideToMove && check_mill(i, s) == -1)
             return false;
     }
     return true;
 }
 
 // Checking if AlphaBeta is available
-bool Rules::alphaBetaAvailable()
+bool Rules::is_alpha_beta_available()
 {
     return ruleVariant == (int)Wrappers::Constants::Variants::std &&
            !Wrappers::Constants::extended;
@@ -281,7 +266,7 @@ bool Rules::alphaBetaAvailable()
 #pragma warning(disable : 4127)
 #endif
 
-void Rules::setVariant()
+void Rules::set_variant()
 {
     // Part of this is copy-pasted in MalomAPI
     if (ruleVariant == (int)Wrappers::Constants::Variants::std) {

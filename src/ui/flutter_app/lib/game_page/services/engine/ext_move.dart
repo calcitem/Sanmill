@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// ext_move.dart
 
 part of '../mill.dart';
 
@@ -39,56 +28,98 @@ class MoveParser {
   }
 }
 
-// TODO: We should know who do this move
-@immutable
-class ExtMove {
-  ExtMove(this.move) {
-    _checkLegal();
-
-    final MoveParser moveParser = MoveParser();
-    type = moveParser.parseMoveType(move);
-
-    late int toFile;
-    late int toRank;
-
-    switch (type) {
-      case MoveType.place:
-        toFile = int.parse(move[1]);
-        toRank = int.parse(move[3]);
-        break;
-      case MoveType.move:
-        toFile = int.parse(move[8]);
-        toRank = int.parse(move[10]);
-        break;
-      case MoveType.remove:
-        toFile = int.parse(move[2]);
-        toRank = int.parse(move[4]);
-        break;
-      case MoveType.draw:
-        toFile = 0;
-        toRank = 0;
-        break;
-      case MoveType.none:
-        toFile = -1;
-        toRank = -1;
-        break;
-      case null:
-        logger.e("Invalid MoveType");
-        toFile = -2;
-        toRank = -2;
-        break;
-    }
-
-    to = makeSquare(toFile, toRank);
+/// ExtMove now extends [PgnNodeData] in order to satisfy
+/// the generic bound `T extends PgnNodeData` in `PgnNode<T>`.
+class ExtMove extends PgnNodeData {
+  /// We override PgnNodeData's "san" by passing it into super(...).
+  /// Also we can pass along nags, startingComments, etc.
+  ///
+  /// Because PgnNodeData constructor requires `san` and optionally
+  /// `startingComments`, `comments`, `nags`, we can map them
+  /// from what we already have in ExtMove.
+  ///
+  /// If you prefer, you can unify "move" and "san" as well.
+  ExtMove(
+    this.move, {
+    required this.side,
+    this.boardLayout,
+    this.moveIndex,
+    this.roundIndex,
+    super.nags,
+    super.startingComments,
+    super.comments,
+  })  : type = MoveParser().parseMoveType(move),
+        to = _parseToSquare(move),
+        // Put all your own field initializations first ...
+        super(
+          // ...then call super(...) last
+          san: move,
+        ) {
+    _checkLegal(move);
   }
+
+  /// The UCI-like move string, e.g. "(3,5)->(3,4)"
+  final String move;
+
+  /// Indicates which side performed the move.
+  final PieceColor side;
+
+  /// The parsed MoveType (place/move/remove/draw/none).
+  final MoveType type;
+
+  /// 'to' square (computed from 'move').
+  final int to;
+
+  /// The board layout after the move.
+  String? boardLayout;
+
+  /// The move index.
+  int? moveIndex;
+
+  /// roundIndex is a separate concept from [moveIndex].
+  /// If one side (White or Black) performs multiple consecutive moves,
+  /// they all share the same half-round index. Once we switch side
+  /// (e.g. from White to Black), we stay in the same round number;
+  /// only when switching **back** from Black to White do we increment
+  /// this round index. Thus, each cycle (White half + Black half)
+  /// forms one complete round.
+  int? roundIndex;
 
   static const String _logTag = "[Move]";
 
-  // Square
+  /// 'from' square if type==move; otherwise -1.
   int get from => type == MoveType.move
       ? makeSquare(int.parse(move[1]), int.parse(move[3]))
       : -1;
-  late final int to;
+
+  static int _parseToSquare(String move) {
+    late int file;
+    late int rank;
+    final MoveType t = MoveParser().parseMoveType(move);
+    switch (t) {
+      case MoveType.place:
+        file = int.parse(move[1]);
+        rank = int.parse(move[3]);
+        break;
+      case MoveType.move:
+        file = int.parse(move[8]);
+        rank = int.parse(move[10]);
+        break;
+      case MoveType.remove:
+        file = int.parse(move[2]);
+        rank = int.parse(move[4]);
+        break;
+      case MoveType.draw:
+        file = 0;
+        rank = 0;
+        break;
+      case MoveType.none:
+        file = -1;
+        rank = -1;
+        break;
+    }
+    return makeSquare(file, rank);
+  }
 
   static final Map<int, String> _squareToWmdNotation = <int, String>{
     -1: "(none)", // TODO: Can parse it?
@@ -119,108 +150,73 @@ class ExtMove {
     31: "a7"
   };
 
-  // 'move' is the UCI engine's move-string
-  final String move;
-
   static String sqToNotation(int sq) {
     final String? ret = _squareToWmdNotation[sq];
     return ret ?? "";
   }
 
-  // "notation" is Standard Notation
-  // Sample: xa1, a1-b2, a1
-  String get notation {
-    // Fetch the screen reader support setting
-    final bool useUpperCase = DB().generalSettings.screenReaderSupport;
-
-    switch (type) {
-      case MoveType.remove:
-        return useUpperCase
-            ? "x${_squareToWmdNotation[to]}".toUpperCase()
-            : "x${_squareToWmdNotation[to]}";
-      case MoveType.move:
-        return useUpperCase
-            ? "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}"
-                .toUpperCase()
-            : "${_squareToWmdNotation[from]}-${_squareToWmdNotation[to]}";
-      case MoveType.place:
-        return useUpperCase
-            ? _squareToWmdNotation[to]!.toUpperCase()
-            : _squareToWmdNotation[to]!;
-      case MoveType.draw:
-        return useUpperCase
-            ? _squareToWmdNotation[to]!.toUpperCase()
-            : _squareToWmdNotation[to]!; // TODO: Can parse?
-      case MoveType.none:
-        return useUpperCase
-            ? _squareToWmdNotation[to]!.toUpperCase()
-            : _squareToWmdNotation[to]!; // TODO: Can parse?
-      case null:
-        logger.e("notation: Invalid MoveType");
-        return "";
-    }
-  }
-
-  late final MoveType? type;
-
-  void _checkLegal() {
+  /// Validate the move string format.
+  static void _checkLegal(String move) {
     // TODO: Which one?
     if (move == "draw" || move == "(none)" || move == "none") {
-      return;
+      return; // no further checks
     }
 
     if (move.length > "(3,1)->(2,1)".length) {
-      throw FormatException(
-        "$_logTag Invalid Move: move representation is too long",
-        move,
-      );
+      throw FormatException("$_logTag Invalid Move: too long", move);
     }
 
     if (!(move.startsWith("(") || move.startsWith("-"))) {
       throw FormatException(
-        "$_logTag Invalid Move: invalid first char. Expected '(' or '-' but got a ${move.characters.first}",
-        move,
-        0,
-      );
+          "$_logTag Invalid Move: must start with '(' or '-'", move, 0);
     }
 
     if (!move.endsWith(")")) {
       throw FormatException(
-        "$_logTag Invalid Move: invalid last char. Expected a ')' but got a ${move.characters.last}",
-        move,
-        move.length - 1,
-      );
+          "$_logTag Invalid Move: must end with ')'", move, move.length - 1);
     }
 
-    const String range = "0123456789(,)->";
-
+    const String allowedChars = "0123456789(,)->";
     for (int i = 0; i < move.length; i++) {
-      if (!range.contains(move[i])) {
+      if (!allowedChars.contains(move[i])) {
         throw FormatException(
-          "$_logTag Invalid Move: invalid char at pos $i. Expected one of '$range' but got ${move[i]}",
-          move,
-          i,
-        );
+            "$_logTag Invalid char at $i: ${move[i]}", move, i);
       }
     }
 
-    if (move.length == "(3,1)->(2,1)".length) {
-      if (move.substring(0, 4) == move.substring(7, 11)) {
-        // ignore: only_throw_errors
-        throw "Error: $_logTag Invalid Move: move to the same place";
-      }
+    // Avoid throwing raw strings. Throw an Exception instead:
+    if (move.length == "(3,1)->(2,1)".length &&
+        move.substring(0, 4) == move.substring(7, 11)) {
+      throw Exception("$_logTag Invalid Move: cannot move to the same place.");
     }
   }
 
-  @override
-  int get hashCode => move.hashCode;
-
-  @override
-  bool operator ==(Object other) => other is ExtMove && other.move == move;
+  /// The standard notation for the move,
+  /// e.g. "d6", "d6??", "d5-c5", "xg4", etc.
+  String get notation {
+    final bool useUpperCase = DB().generalSettings.screenReaderSupport;
+    final int f = from;
+    final String? fromStr = _squareToWmdNotation[f];
+    final String? toStr = _squareToWmdNotation[to];
+    switch (type) {
+      case MoveType.remove:
+        return useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
+      case MoveType.move:
+        final String sep = useUpperCase ? "-" : "-";
+        return useUpperCase
+            ? "${fromStr?.toUpperCase()}$sep${toStr?.toUpperCase()}"
+            : "$fromStr$sep$toStr";
+      case MoveType.place:
+      case MoveType.draw:
+      case MoveType.none:
+        return useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+    }
+  }
 }
 
 class EngineRet {
   EngineRet(this.value, this.aiMoveType, this.extMove);
+
   String? value;
   ExtMove? extMove;
   AiMoveType? aiMoveType;

@@ -1,18 +1,8 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// perfect_adaptor.cpp
 
 #include <condition_variable>
 #include <mutex>
@@ -32,27 +22,27 @@
 #define USE_DEPRECATED_CLR_API_WITHOUT_WARNING
 
 extern int ruleVariant;
-extern int max_ksz;
+extern int maxKsz;
 
-static Move malom_remove_move = MOVE_NONE;
-static Value malom_remove_value = VALUE_UNKNOWN;
+static Move malomRemoveMove = MOVE_NONE;
+static Value malomRemoveValue = VALUE_UNKNOWN;
 
 static std::condition_variable cv;
 
-int GetBestMove(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
-                int blackStonesToPlace, int playerToMove, bool onlyStoneTaking,
-                Value &value, const Move &refMove)
+int get_best_move(int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
+                  int blackStonesToPlace, int playerToMove,
+                  bool onlyStoneTaking, Value &value, const Move &refMove)
 {
-    return MalomSolutionAccess::getBestMove(whiteBitboard, blackBitboard,
-                                            whiteStonesToPlace,
-                                            blackStonesToPlace, playerToMove,
-                                            onlyStoneTaking, value, refMove);
+    return MalomSolutionAccess::get_best_move(whiteBitboard, blackBitboard,
+                                              whiteStonesToPlace,
+                                              blackStonesToPlace, playerToMove,
+                                              onlyStoneTaking, value, refMove);
 }
 
 int perfect_init()
 {
-    malom_remove_move = MOVE_NONE;
-    malom_remove_value = VALUE_UNKNOWN;
+    malomRemoveMove = MOVE_NONE;
+    malomRemoveValue = VALUE_UNKNOWN;
 
     if (rule.pieceCount == 9) {
         ruleVariant = (int)Wrappers::Constants::Variants::std;
@@ -68,18 +58,18 @@ int perfect_init()
     switch (ruleVariant) {
     case (int)Wrappers::Constants::Variants::std:
         ruleVariantName = "std";
-        max_ksz = 9;
-        field2_offset = 12;
+        maxKsz = 9;
+        field2Offset = 12;
         break;
     case (int)Wrappers::Constants::Variants::mora:
         ruleVariantName = "mora";
-        max_ksz = 12;
-        field2_offset = 14;
+        maxKsz = 12;
+        field2Offset = 14;
         break;
     case (int)Wrappers::Constants::Variants::lask:
         ruleVariantName = "lask";
-        max_ksz = 10;
-        field2_offset = 14;
+        maxKsz = 10;
+        field2Offset = 14;
         break;
     default:
         assert(false);
@@ -87,20 +77,20 @@ int perfect_init()
     }
 
 #ifdef FULL_SECTOR_GRAPH
-    int max_ksz = 12;
+    int maxKsz = 12;
 #endif
 
-    field1_size = field2_offset;
-    field2_size = 8 * eval_struct_size - field2_offset;
-    sec_val_min_value = -(1 << (field1_size - 1));
+    field1Size = field2Offset;
+    field2Size = 8 * eval_struct_size - field2Offset;
+    secValMinValue = -(1 << (field1Size - 1));
 
-    sectors.resize(max_ksz + 1);
-    for (int i = 0; i <= max_ksz; ++i) {
-        sectors[i].resize(max_ksz + 1);
-        for (int j = 0; j <= max_ksz; ++j) {
-            sectors[i][j].resize(max_ksz + 1);
-            for (int k = 0; k <= max_ksz; ++k) {
-                sectors[i][j][k].resize(max_ksz + 1);
+    sectors.resize(maxKsz + 1);
+    for (int i = 0; i <= maxKsz; ++i) {
+        sectors[i].resize(maxKsz + 1);
+        for (int j = 0; j <= maxKsz; ++j) {
+            sectors[i][j].resize(maxKsz + 1);
+            for (int k = 0; k <= maxKsz; ++k) {
+                sectors[i][j][k].resize(maxKsz + 1);
             }
         }
     }
@@ -110,8 +100,8 @@ int perfect_init()
 
 int perfect_exit()
 {
-    malom_remove_move = MOVE_NONE;
-    malom_remove_value = VALUE_UNKNOWN;
+    malomRemoveMove = MOVE_NONE;
+    malomRemoveValue = VALUE_UNKNOWN;
 
     return 0;
 }
@@ -121,7 +111,7 @@ int perfect_reset()
     return perfect_init();
 }
 
-Square from_perfect_sq(uint32_t sq)
+Square from_perfect_square(uint32_t sq)
 {
     constexpr Square map[] = {SQ_30, SQ_31, SQ_24, SQ_25, SQ_26, SQ_27, SQ_28,
                               SQ_29, SQ_22, SQ_23, SQ_16, SQ_17, SQ_18, SQ_19,
@@ -131,7 +121,7 @@ Square from_perfect_sq(uint32_t sq)
     return map[sq];
 }
 
-int to_perfect_sq(Square sq)
+int to_perfect_square(Square sq)
 {
     constexpr int map[] = {
         -1, -1, -1, -1, -1, -1, -1, -1,
@@ -144,7 +134,7 @@ int to_perfect_sq(Square sq)
     return map[sq];
 }
 
-size_t countBits(int n)
+size_t count_bits(int n)
 {
     int count = 0;
     while (n) {
@@ -154,13 +144,13 @@ size_t countBits(int n)
     return count;
 }
 
-std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
-                                      int playerToMove, int moveBitboard)
+std::vector<Move> convert_bitboard_move(int whiteBitboard, int blackBitboard,
+                                        int playerToMove, int moveBitboard)
 {
     std::vector<Move> moves;
     int usBitboard = playerToMove == 0 ? whiteBitboard : blackBitboard;
     int themBitboard = playerToMove == 1 ? whiteBitboard : blackBitboard;
-    size_t count = countBits(moveBitboard);
+    size_t count = count_bits(moveBitboard);
 
     int from = -1;
     int to = -1;
@@ -178,12 +168,12 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
             if (count == 1) {
                 if (noPiece) {
                     // The stone is placed here
-                    moves.push_back(Move(from_perfect_sq(i)));
+                    moves.push_back(Move(from_perfect_square(i)));
                     return moves;
                 } else if (hasPiece) {
                     if (themHasPiece) {
                         // Only remove their piece
-                        moves.push_back(Move(-from_perfect_sq(i)));
+                        moves.push_back(Move(-from_perfect_square(i)));
                         return moves;
                     } else if (usHasPiece) {
                         // Only remove our piece, not move
@@ -211,15 +201,16 @@ std::vector<Move> convertBitboardMove(int whiteBitboard, int blackBitboard,
         if (from != -1 && to != -1 && removed == -1) {
             // Move
             moves.push_back(
-                make_move(from_perfect_sq(from), from_perfect_sq(to)));
+                make_move(from_perfect_square(from), from_perfect_square(to)));
         } else if (from == -1 && to != -1 && removed != -1) {
             // Place and remove piece
-            moves.push_back(Move(from_perfect_sq(to)));
-            moves.push_back(Move(-from_perfect_sq(removed)));
+            moves.push_back(Move(from_perfect_square(to)));
+            moves.push_back(Move(-from_perfect_square(removed)));
         }
     } else if (count == 3) {
-        moves.push_back(make_move(from_perfect_sq(from), from_perfect_sq(to)));
-        moves.push_back(Move(-from_perfect_sq(removed)));
+        moves.push_back(
+            make_move(from_perfect_square(from), from_perfect_square(to)));
+        moves.push_back(Move(-from_perfect_square(removed)));
     } else {
         assert(false);
     }
@@ -239,11 +230,11 @@ Value perfect_search(const Position *pos, Move &move)
     // ensures accuracy. Additionally, when two moves are returned, the result
     // of 'removing' from the second move might differ from that obtained
     // through a new search.
-    if (malom_remove_move != MOVE_NONE) {
-        // Move ret = malom_remove_move;
-        value = malom_remove_value;
-        malom_remove_move = MOVE_NONE;
-        malom_remove_value = VALUE_UNKNOWN;
+    if (malomRemoveMove != MOVE_NONE) {
+        // Move ret = malomRemoveMove;
+        value = malomRemoveValue;
+        malomRemoveMove = MOVE_NONE;
+        malomRemoveValue = VALUE_UNKNOWN;
         // move = ret;
         // return value;
     }
@@ -261,7 +252,7 @@ Value perfect_search(const Position *pos, Move &move)
     int blackBitboard = 0;
 
     for (int i = 0; i < 24; i++) {
-        auto c = color_of(pos->board[from_perfect_sq(i)]);
+        auto c = color_of(pos->board[from_perfect_square(i)]);
         if (c == WHITE) {
             whiteBitboard |= 1 << i;
         } else if (c == BLACK) {
@@ -301,16 +292,16 @@ Value perfect_search(const Position *pos, Move &move)
     // TODO: Do not use -fexceptions
 
     try {
-        int moveBitboard = GetBestMove(whiteBitboard, blackBitboard,
-                                       whiteStonesToPlace, blackStonesToPlace,
-                                       playerToMove, onlyStoneTaking, value,
-                                       move);
-        moves = convertBitboardMove(whiteBitboard, blackBitboard, playerToMove,
-                                    moveBitboard);
+        int moveBitboard = get_best_move(whiteBitboard, blackBitboard,
+                                         whiteStonesToPlace, blackStonesToPlace,
+                                         playerToMove, onlyStoneTaking, value,
+                                         move);
+        moves = convert_bitboard_move(whiteBitboard, blackBitboard,
+                                      playerToMove, moveBitboard);
 
         if (moves.size() == 2) {
-            malom_remove_move = moves.at(1);
-            malom_remove_value = value;
+            malomRemoveMove = moves.at(1);
+            malomRemoveValue = value;
         }
     } catch (const std::exception &) {
         move = MOVE_NONE;

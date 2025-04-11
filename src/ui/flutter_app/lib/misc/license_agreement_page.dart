@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// license_agreement_page.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -31,24 +20,29 @@ class LicenseAgreementPage extends StatelessWidget {
       builder: (BuildContext context, AsyncSnapshot<String> data) {
         late final String str;
         if (!data.hasData) {
-          str = "Nothing to show";
+          str = S.of(context).nothingToShow;
         } else {
           str = data.data!;
         }
 
         return BlockSemantics(
           child: Scaffold(
+            key: const Key('license_agreement_page_scaffold'),
             resizeToAvoidBottomInset: false,
             appBar: AppBar(
+              key: const Key('license_agreement_page_appbar'),
               title: Text(
                 S.of(context).license,
                 style: AppTheme.appBarTheme.titleTextStyle,
+                key: const Key('license_agreement_page_appbar_title'),
               ),
             ),
             body: SingleChildScrollView(
+              key: const Key('license_agreement_page_scrollview'),
               padding: const EdgeInsets.all(16),
               child: Text(
                 str,
+                key: const Key('license_agreement_page_body_text'),
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(
                       fontFamily: "Monospace",
                     ),

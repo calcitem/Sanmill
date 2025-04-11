@@ -20,25 +20,25 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Mens Vs AI",
+  "humanVsAi": "Mens tegen AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Mens Vs Mens",
+  "humanVsHuman": "Mens tegen Mens",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs AI",
+  "aiVsAi": "AI tegen AI",
   "@aiVsAi": {
-    "description": "AI Vs AI"
+    "description": "AI tegen AI"
   },
-  "humanVsCloud": "Mens Vs Cloud",
+  "humanVsCloud": "Mens tegen Cloud",
   "@humanVsCloud": {
-    "description": "Human Vs Cloud"
+    "description": "Human tegen Cloud"
   },
-  "humanVsLAN": "Mens Vs LAN",
+  "humanVsLAN": "Mens tegen LAN",
   "@humanVsLAN": {
-    "description": "Human Vs LAN"
+    "description": "Human tegen LAN"
   },
   "testViaLAN": "Test via LAN",
   "@testViaLAN": {
@@ -48,11 +48,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Verhuis lijst",
+  "showMoveList": "Zetlijst",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Lijst met bewegingen",
+  "moveList": "Zetlijst",
   "@moveList": {
     "description": "Move list"
   },
@@ -220,7 +220,7 @@
   "@error": {
     "description": "Error"
   },
-  "winRate": "Winst",
+  "winRate": "Winstpercentage",
   "@winRate": {
     "description": "Win Rate"
   },
@@ -240,11 +240,11 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} berusten.",
+  "loseReasonResign": "{player} heeft opgegeven.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} heeft geen weg te gaan.",
+  "loseReasonNoWay": "{player} kan niet bewegen.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "De tijd is voorbij, {player} verloren.",
+  "loseReasonTimeOver": "De tijd is om, {player} heeft verloren.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Als Vliegen is ingeschakeld, dan zijn de stukken van een speler die tot een bepaald aantal stukken is gereduceerd, vrij om naar elk onbezet punt te gaan in plaats van naar aangrenzende punten zoals in de rest van het spel.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Minstens Stukken",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "De speler verliest als zijn tegenstander hem blokkeert zodat hij niet kan worden verplaatst. Verander van kant als deze optie is uitgeschakeld.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vliegen",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tik op een stuk van de tegenstander om het te verwijderen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Je moet eerst een molen maken voordat je een stuk kunt verwijderen.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI's speelstijl",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passief",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Tik opnieuw om te vertrekken.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Meer",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Als een speler een molen breekt om onmiddellijk een nieuwe molen te maken, kan zo'n speler zo'n stuk terug verplaatsen naar de oorspronkelijke kruising in zijn volgende zet als hij een nieuwe molen maakt.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Het spel is remise als een speler drie stukken heeft en na tien zetten geen van beide spelers de stukken van de tegenstander verwijdert",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "De pasta is klaar.",
+  "pasteDone": "Plakken voltooid.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1312,13 +1312,13 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Welke actie volgt als er geen stuk kan worden verplaatst?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Eindig met een patstelling.",
+  "endWithStalemateLoss": "Eindig met verlies door patstelling.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Verander de kant om te bewegen.",
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Verwijder een van de stukken van de tegenstander en doe de volgende zet.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Eindig met een patstelling.",
+  "endWithStalemateDraw": "Eindig met remise door patstelling.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Verwijder een van de stukken van de tegenstander en verander de kant om te bewegen.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1354,7 +1354,7 @@
   "@mintChocolate": {},
   "skyBlue": "Hemelsblauw",
   "@skyBlue": {},
-  "playfulGarden": "Speelse tuin",
+  "playfulGarden": "Speelsetuin",
   "@playfulGarden": {},
   "darkMystery": "Duister Mysterie",
   "@darkMystery": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Richt je op het blokkeren van paden",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Geef prioriteit aan het blokkeren van de beweging van de tegenstander boven het vormen van molens. In plaats van je te concentreren op het verwijderen van stukken door molens te voltooien, probeert de AI de tegenstander in de val te lokken, waardoor ze niet kunnen bewegen en een overwinning te behalen door uithoudingsvermogen in plaats van agressief spel. Deze strategie blokkeert de molens van de tegenstander niet actief.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Stuk afbeelding",
+  "@pieceImage": {},
+  "importColorSettings": "Kleurinstellingen importeren",
+  "@importColorSettings": {},
+  "exportColorSettings": "Kleurinstellingen exporteren",
+  "@exportColorSettings": {},
+  "import": "Importeren",
+  "@import": {},
+  "export": "Exporteren",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kopieer de instellingen in JSON-indeling eerst naar het klembord.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Gekopieerd naar klembord.",
+  "@copiedToClipboard": {},
+  "imported": "Geïmporteerd.",
+  "@imported": {},
+  "boardImage": "Bordafbeelding",
+  "@boardImage": {},
+  "autumnLeaves": "Herfstbladeren",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarisch Land",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetteringseffect",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Wil je de werkbalk volledig transparant maken wanneer een achtergrondafbeelding voor het bord is ingesteld?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Trilling inschakelen in het spel",
+  "@vibration": {},
+  "soundTheme": "Geluids thema",
+  "@soundTheme": {},
+  "ball": "Bal",
+  "@ball": {},
+  "liquid": "Vloeistof",
+  "@liquid": {},
+  "wood": "Hout",
+  "@wood": {},
+  "placeEffectAnimation": "Animatie-effect bij plaatsen van stuk",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animatie-effect bij verwijderen van stuk",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Werkbalk onderaan weergeven",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Hoekstraal van het bord",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gebruik openingsboek",
+  "@useOpeningBook": {},
+  "currentRule": "Huidig",
+  "@currentRule": {},
+  "nineMensMorris": "Molenspel",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Regelset",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Laat de AI openingszetten gebruiken die vaak worden gebruikt door professionele menselijke spelers in het vroege spel. Opmerking: Deze functie is momenteel alleen beschikbaar voor specifieke regelsets.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Voordeelgrafiek weergeven",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "De voordeelgrafiek wordt alleen getekend nadat de AI een zet heeft gedaan. Hij wordt niet getekend wanneer de menselijke speler een zet doet.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Schakel het verwijderen uit totdat alle stukken zijn geplaatst. Spelers verwijderen stukken op basis van het aantal molens.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Schakel het verwijderen uit totdat alle stukken zijn geplaatst. Spelers verwijderen stukken op basis van het aantal molens: als het gelijk is, verwijderen beide spelers hetzelfde aantal stukken; als de één er meer heeft, verwijdert hij een extra stuk, waarmee het verschil op één stuk blijft. Als slechts één speler een molen vormt, verwijdert hij twee stukken, terwijl de andere speler er één verwijdert. Als geen van beide een molen vormt, verwijderen beide spelers één stuk.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Selecteer een van je stukken.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Het is niet jouw beur.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Achtergrondkleur annotatiewerkbalk",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Pictogramkleur annotatiewerkbalk",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Annotatiewerkbalk weergeven",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Annotatiemodus starten",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Weet je zeker dat je alle annotaties wilt wissen?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM-prompt naar klembord gekopieerd.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Verbinding geweigerd, de server is mogelijk uitgevallen.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Detectie geslaagd, wachten op verbinding...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Geen LAN-verbinding",
+  "@noLanConnection": {},
+  "takeScreenshot": "Schermafbeelding maken",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Verbinding met tegenstander verbroken.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Terugnameverzoek",
+  "@takeBackRequest": {},
+  "nothingToShow": "Niets weer te geven.",
+  "@nothingToShow": {},
+  "stopHosting": "Hosten stoppen",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Verbinding door peer gereset.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Verbinding verloren door heartbeat-timeout. Verbind opnieuw.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Hosten starten",
+  "@startHosting": {},
+  "restartRequestRejected": "Herstartverzoek afgewezen.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Niet verbonden met LAN-tegenstander.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM-prompt",
+  "@llmPrompt": {},
+  "gameRestarted": "Spel herstart.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Terugname geweigerd.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Weet je zeker dat je dit spel wilt opgeven?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Tegenstander heeft opgegeven. Jij wint!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Alle annotaties wissen",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Verbonden, wachten op tegenstanders zet...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Netwerkstatus: Verbinding verbroken",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Terugnameverzoek naar tegenstander gestuurd.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Tegenstander heeft mogelijk het spel verlaten",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Succesvol verbonden met host.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Verbinding verbroken: heartbeat-timeout",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Geen host gevonden.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Opgeven bevestigen",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Hosten gestart, wachten op spelers...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Verbindingstijd verlopen, netwerkverbinding instabiel.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Geen LLM-prompt beschikbaar.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Je hebt opgegeven. Spel afgelopen.",
+  "@youResignedGameOver": {},
+  "serverIp": "Server-IP",
+  "@serverIp": {},
+  "confirmClear": "Wissen bevestigen",
+  "@confirmClear": {},
+  "opponentSTurn": "Beurt van tegenstander.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Wachten op clientverbinding...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Terugnameverzoek afgewezen of mislukt.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Tekst toevoegen",
+  "@addText": {},
+  "exitAnnotationMode": "Annotatiemodus verlaten",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Typ je annotatie",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Bezig met opnieuw verbinden...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Herstartverzoek verzonden. Wachten op reactie tegenstander...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server is gestopt.",
+  "@serverIsStopped": {},
+  "restartRequest": "Herstartverzoek",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Kan geen terugname vragen als het niet jouw beurt is.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Terugname geaccepteerd.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Lokaal netwerkinstellingen",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Succesvol opnieuw verbonden!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Opslaan in galerij mislukt.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Tegenstander wil spel herstarten. Accepteer je dit?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Jouw beurt.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Kan niet opnieuw verbinden. Herstart het spel.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Deelnemen",
+  "@join": {},
+  "port": "Poort",
+  "@port": {},
+  "invalidIpAddress": "Ongeldig IP-adres.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Ongeldige poort.",
+  "@invalidPort": {},
+  "connectingAttempt": "Verbinden: Poging {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Verbinding mislukt: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Starten van host mislukt: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host gevonden: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Stoppen",
+  "@stop": {},
+  "discover": "Ontdekken",
+  "@discover": {},
+  "connect": "Verbinden",
+  "@connect": {},
+  "clientConnected": "Client verbonden: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Bezig met ontdekken: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Opnieuw verbinden ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Verbonden",
+  "@connected": {},
+  "delete": "Verwijderen",
+  "@delete": {},
+  "ancientEgypt": "Oud Egypte",
+  "@ancientEgypt": {},
+  "gothicIce": "Gotisch Ijs",
+  "@gothicIce": {},
+  "riceField": "Rijstveld",
+  "@riceField": {},
+  "chinesePorcelain": "Chinees Porselein",
+  "@chinesePorcelain": {},
+  "desertDusk": "Woestijnschemering",
+  "@desertDusk": {},
+  "precisionCraft": "Precisieambacht",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Volkskunst Borduurwerk",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpatisch Erfgoed",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Keizerlijke Pracht",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Boheems Kristal",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanne Zonsopgang",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonie en Balans",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Kaneel Kruid",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolisch Mozaïek",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Carnavalsgeest",
+  "@carnivalSpirit": {},
+  "custom": "Aangepast",
+  "@custom": {},
+  "spiceMarket": "Specerijenmarkt",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Veeg om de lade te tonen",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Toon spelinformatie op schermafbeeldingen",
+  "@showGameInfoOnScreenshots": {}
 }

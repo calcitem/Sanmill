@@ -72,39 +72,39 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "เลือกชิ้นผิด",
+  "tipSelectWrong": "คุณเลือกหมากผิดตัว",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "วางชิ้นส่วนของคุณ",
+  "tipPlace": "วางหมากของคุณ",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "คุณไม่สามารถวางไว้ที่นี่",
+  "tipBanPlace": "คุณไม่สามารถวางหมากตรงนี้ได้",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "คุณวางไว้",
+  "tipPlaced": "คุณวางหมากแล้ว",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "ถอดชิ้นส่วน",
+  "tipRemove": "นำหมากออก",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "คุณไม่สามารถลบออกได้",
+  "tipBanRemove": "คุณไม่สามารถนำออกได้",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "คุณลบออก",
+  "tipRemoved": "คุณนำหมากออกแล้ว",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "ย้ายชิ้น",
+  "tipMove": "ย้ายหมาก",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotPlace": "คุณไม่สามารถวางชิ้นส่วนของคุณที่นี่",
+  "tipCannotPlace": "คุณไม่สามารถวางหมากของคุณที่นี่ได้",
   "@tipCannotPlace": {
     "description": "You can't place your piece here."
   },
@@ -112,39 +112,39 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "มิลล์! ใช้ชิ้นส่วนของฝ่ายตรงข้าม",
+  "tipMill": "มิลล์! หยิบหมากของฝ่ายตรงข้ามออก",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "ดำเนินการต่อเพื่อนำชิ้นส่วนของฝ่ายตรงข้าม",
+  "tipContinueMill": "ทำต่อเพื่อหยิบหมากฝ่ายตรงข้ามออก",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "เลือกชิ้นส่วนของคู่ต่อสู้ของคุณ",
+  "tipSelectOpponentsPiece": "เลือกหมากของฝ่ายตรงข้าม",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "คุณไม่สามารถเอาชิ้นส่วนออกจากโรงสีได้",
+  "tipCannotRemovePieceFromMill": "คุณไม่สามารถนำหมากออกจากมิลล์ได้",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "ชิ้นหนึ่งสามารถเคลื่อนที่ได้ 1 จุด",
+  "tipCanMoveOnePoint": "หมากหนึ่งตัวสามารถเคลื่อนไปได้ 1 จุด",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับชิ้นส่วนของคู่ต่อสู้ได้",
+  "tipCannotMoveOpponentsPieces": "คุณไม่สามารถขยับหมากของฝ่ายตรงข้ามได้",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "เลือกชิ้นส่วนของคุณเพื่อย้าย",
+  "tipSelectPieceToMove": "เลือกหมากของคุณเพื่อย้าย",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "คุณเหลือสามชิ้น",
+  "tipHaveThreePiecesLeft": "คุณเหลือหมากสามตัว",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "คุณสามารถย้ายไปยังจุดใดก็ได้ที่คุณต้องการ",
+  "tipCanMoveToAnyPoint": "คุณสามารถย้ายหมากไปยังจุดใดก็ได้ที่ต้องการ",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "หากเปิดใช้งานการบิน เมื่อผู้เล่นถูกลดจำนวนเป็นจำนวนชิ้นที่กำหนด ชิ้นส่วนของเธอสามารถย้ายไปยังจุดที่ว่างได้ แทนที่จะถูกจำกัดให้อยู่ที่จุดที่อยู่ติดกันเหมือนกับในส่วนที่เหลือของเกม",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ชิ้นอย่างน้อย",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ผู้เล่นจะแพ้หากคู่ต่อสู้บล็อกพวกเขาเพื่อไม่ให้เคลื่อนที่ เปลี่ยนด้านเพื่อย้ายหากตัวเลือกนี้ถูกปิดใช้งาน",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "บิน",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "แตะที่ชิ้นหนึ่งของฝ่ายตรงข้ามเพื่อลบ",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "คุณต้องสร้างโรงสีก่อนจึงจะสามารถถอดชิ้นส่วนได้",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "สไตล์การเล่นของ AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "เฉื่อย",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "แตะกลับอีกครั้งเพื่อออก",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "มากกว่า",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "หากผู้เล่นทำลายโรงโม่เพื่อสร้างโรงสีใหม่ทันที ผู้เล่นดังกล่าวสามารถย้ายชิ้นส่วนดังกล่าวกลับไปที่ทางแยกเดิมในการย้ายครั้งต่อไปหากสร้างโรงสีใหม่",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "เกมจะถูกสุ่มขึ้นถ้าผู้เล่นมีสามชิ้นและหลังจากผ่านไปสิบกระบวนแล้วผู้เล่นจะไม่ถอดชิ้นส่วนของฝ่ายตรงข้าม",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "โฟกัสที่การบล็อกเส้นทาง",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "ให้ความสำคัญกับการขัดขวางการเคลื่อนไหวของฝ่ายตรงข้ามมากกว่าการสร้างมิลล์ แทนที่จะมุ่งเน้นไปที่การลบชิ้นส่วนด้วยการทำมิลล์ให้สมบูรณ์ AI ตั้งใจที่จะดักฝ่ายตรงข้าม ทำให้พวกเขาไม่สามารถเคลื่อนไหวได้และรักษาชัยชนะผ่านการสึกหรอมากกว่าการเล่นอย่างดุเดือด กลยุทธ์นี้ไม่ได้ขัดขวางมิลล์ของฝ่ายตรงข้ามอย่างแข็งขัน",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "รูปหมาก",
+  "@pieceImage": {},
+  "importColorSettings": "นำเข้าการตั้งค่าสี",
+  "@importColorSettings": {},
+  "exportColorSettings": "ส่งออกการตั้งค่าสี",
+  "@exportColorSettings": {},
+  "import": "นำเข้า",
+  "@import": {},
+  "export": "ส่งออก",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "โปรดคัดลอกการตั้งค่ารูปแบบ JSON ไปยังคลิปบอร์ดก่อน",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "คัดลอกไปยังคลิปบอร์ดแล้ว",
+  "@copiedToClipboard": {},
+  "imported": "นำเข้าแล้ว",
+  "@imported": {},
+  "boardImage": "ภาพกระดาน",
+  "@boardImage": {},
+  "autumnLeaves": "ใบไม้ร่วง",
+  "@autumnLeaves": {},
+  "legendaryLand": "ดินแดนในตำนาน",
+  "@legendaryLand": {},
+  "vignetteEffect": "เอฟเฟกต์ขอบมืด",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "คุณต้องการให้แถบเครื่องมือโปร่งใสเต็มที่เมื่อกำหนดภาพพื้นหลังของกระดานแล้วหรือไม่?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "เปิดใช้งานการสั่นในเกม",
+  "@vibration": {},
+  "soundTheme": "ธีมเสียง",
+  "@soundTheme": {},
+  "ball": "ลูกบอล",
+  "@ball": {},
+  "liquid": "ของเหลว",
+  "@liquid": {},
+  "wood": "ไม้",
+  "@wood": {},
+  "placeEffectAnimation": "เอฟเฟกต์แอนิเมชันการวางตัวหมาก",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "เอฟเฟกต์แอนิเมชันการลบตัวหมาก",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "แสดงแถบเครื่องมือที่ด้านล่าง",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "รัศมีมุมของบอร์ด",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ใช้หนังสือเปิด",
+  "@useOpeningBook": {},
+  "currentRule": "ปัจจุบัน",
+  "@currentRule": {},
+  "nineMensMorris": "เกมมอริสเก้าช่อง",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "เกมมอริสสิบสองช่อง",
+  "@twelveMensMorris": {},
+  "morabaraba": "โมราบาราบา",
+  "@morabaraba": {},
+  "dooz": "ดูซ",
+  "@dooz": {},
+  "chamGonu": "ชัมโกนู",
+  "@chamGonu": {},
+  "zhiQi": "จื๋อฉี",
+  "@zhiQi": {},
+  "chengSanQi": "เฉิงซานฉี",
+  "@chengSanQi": {},
+  "mulMulan": "มูล-มูลัน",
+  "@mulMulan": {},
+  "nerenchi": "เนเรนจิ",
+  "@nerenchi": {},
+  "ruleSet": "ชุดกฎ",
+  "@ruleSet": {},
+  "laskerMorris": "ลาสเกอร์ มอริส",
+  "@laskerMorris": {},
+  "oneTimeMill": "เมลนิตซา",
+  "@oneTimeMill": {},
+  "daSanQi": "ต้าซานฉี",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "ให้ AI ใช้การเดินเปิดที่มักถูกใช้โดยนักเล่นมืออาชีพในช่วงต้นเกม หมายเหตุ: คุณสมบัตินี้มีให้บริการในปัจจุบันสำหรับชุดกฎเฉพาะเท่านั้น",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "แสดงกราฟความได้เปรียบ",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "กราฟแสดงความได้เปรียบจะถูกวาดเฉพาะหลังจากที่ AI เดินหมากเท่านั้น จะไม่ถูกวาดเมื่อผู้เล่นมนุษย์เดินหมาก",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "ปิดใช้งานการนำออกจนกว่าจะวางหมากทั้งหมด ผู้เล่นจะนำหมากออกตามจำนวนมิลล์ที่สร้างได้",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "ปิดใช้งานการนำออกจนกว่าจะวางหมากทั้งหมด ผู้เล่นจะนำหมากออกตามจำนวนมิลล์: ถ้าจำนวนเท่ากัน ผู้เล่นทั้งสองฝ่ายจะนำหมากออกในจำนวนเท่ากัน หากฝ่ายใดมีมากกว่า จะนำหมากออกเพิ่มอีกหนึ่งตัวเพื่อคงความต่างไว้ที่หนึ่งตัว หากมีเพียงฝ่ายเดียวที่สร้างมิลล์ เขาจะนำหมากออกสองตัว ส่วนอีกฝ่ายนำออกหนึ่งตัว หากไม่มีใครสร้างมิลล์ ผู้เล่นทั้งสองจะนำออกคนละหนึ่งตัว",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "เอล ฟิลจะ",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "เลือกตัวหมากของคุณ 1 ตัว",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "ยังไม่ถึงตาคุณ",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "สีพื้นหลังแถบเครื่องมือหมายเหตุ",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "สีไอคอนแถบเครื่องมือหมายเหตุ",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "แสดงแถบเครื่องมือหมายเหตุ",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "เข้าสู่โหมดหมายเหตุ",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "คุณแน่ใจหรือไม่ว่าต้องการลบหมายเหตุทั้งหมด?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "คัดลอกข้อความ LLM ไปยังคลิปบอร์ดแล้ว",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "การเชื่อมต่อถูกปฏิเสธ เซิร์ฟเวอร์อาจหยุดทำงาน",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "ค้นพบสำเร็จ กำลังรอการเชื่อมต่อ...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "ไม่มีการเชื่อมต่อ LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "ถ่ายภาพหน้าจอ",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "ตัดการเชื่อมต่อจากคู่ต่อสู้แล้ว",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "คำขอถอยกลับ",
+  "@takeBackRequest": {},
+  "nothingToShow": "ไม่มีข้อมูลแสดง",
+  "@nothingToShow": {},
+  "stopHosting": "หยุดโฮสต์",
+  "@stopHosting": {},
+  "connectionResetByPeer": "การเชื่อมต่อถูกรีเซ็ตโดยอีกฝ่าย",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "การเชื่อมต่อขาดเนื่องจากหมดเวลา กรุณาเชื่อมต่อใหม่",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "เริ่มโฮสต์",
+  "@startHosting": {},
+  "restartRequestRejected": "ปฏิเสธคำขอเริ่มเกมใหม่",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "ไม่ได้เชื่อมต่อกับคู่ต่อสู้ผ่าน LAN",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "ข้อความ LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "เริ่มเกมใหม่แล้ว",
+  "@gameRestarted": {},
+  "takeBackRejected": "ปฏิเสธการถอยกลับ",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "คุณแน่ใจหรือไม่ว่าต้องการยอมแพ้เกมนี้?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "คู่ต่อสู้ยอมแพ้ คุณชนะ!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "ล้างหมายเหตุทั้งหมด",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "เชื่อมต่อแล้ว กำลังรอการเคลื่อนของคู่ต่อสู้...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "สถานะเครือข่าย: ถูกตัดการเชื่อมต่อ",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "ส่งคำขอถอยกลับไปยังคู่ต่อสู้แล้ว",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "คู่ต่อสู้อาจออกจากเกมแล้ว",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "เชื่อมต่อกับโฮสต์สำเร็จ",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "การเชื่อมต่อขาด: หมดเวลา",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "ไม่พบโฮสต์",
+  "@noHostDiscovered": {},
+  "confirmResignation": "ยืนยันการยอมแพ้",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "เริ่มโฮสต์เกมแล้ว กำลังรอผู้เล่นเข้าร่วม...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "การเชื่อมต่อหมดเวลา สัญญาณเครือข่ายไม่เสถียร",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "ไม่มีข้อความ LLM",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "คุณยอมแพ้ เกมจบแล้ว",
+  "@youResignedGameOver": {},
+  "serverIp": "ไอพีเซิร์ฟเวอร์",
+  "@serverIp": {},
+  "confirmClear": "ยืนยันการล้าง",
+  "@confirmClear": {},
+  "opponentSTurn": "ตาของคู่ต่อสู้",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "กำลังรอการเชื่อมต่อจากไคลเอ็นต์...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "คำขอถอยกลับถูกปฏิเสธหรือล้มเหลว",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "เพิ่มข้อความ",
+  "@addText": {},
+  "exitAnnotationMode": "ออกจากโหมดหมายเหตุ",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "พิมพ์หมายเหตุของคุณ",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "กำลังพยายามเชื่อมต่อใหม่...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "ส่งคำขอเริ่มเกมใหม่แล้ว กำลังรอคำตอบจากคู่ต่อสู้...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "เซิร์ฟเวอร์หยุดทำงานแล้ว",
+  "@serverIsStopped": {},
+  "restartRequest": "คำขอเริ่มเกมใหม่",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "ไม่สามารถขอถอยกลับเมื่อไม่ใช่ตาคุณ",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "รับคำขอถอยกลับแล้ว",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "การตั้งค่าเครือข่ายท้องถิ่น",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "เชื่อมต่อใหม่สำเร็จ!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "บันทึกรูปภาพไม่สำเร็จ",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "คู่ต่อสู้ขอเริ่มเกมใหม่ คุณยอมรับหรือไม่?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "ตาคุณแล้ว",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "เชื่อมต่อใหม่ไม่สำเร็จ กรุณาเริ่มเกมใหม่",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "โฮสต์",
+  "@host": {},
+  "join": "เข้าร่วม",
+  "@join": {},
+  "port": "พอร์ต",
+  "@port": {},
+  "invalidIpAddress": "ที่อยู่ไอพีไม่ถูกต้อง",
+  "@invalidIpAddress": {},
+  "invalidPort": "พอร์ตไม่ถูกต้อง",
+  "@invalidPort": {},
+  "connectingAttempt": "กำลังเชื่อมต่อ: ความพยายามที่ {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "เชื่อมต่อล้มเหลว: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "เริ่มโฮสต์ล้มเหลว: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "พบโฮสต์: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "หยุด",
+  "@stop": {},
+  "discover": "ค้นหา",
+  "@discover": {},
+  "connect": "เชื่อมต่อ",
+  "@connect": {},
+  "clientConnected": "เชื่อมต่อไคลเอ็นต์: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "กำลังค้นหา: {seconds} วินาที",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "กำลังเชื่อมต่อใหม่ ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "เชื่อมต่อแล้ว",
+  "@connected": {},
+  "delete": "ลบ",
+  "@delete": {},
+  "ancientEgypt": "อียิปต์โบราณ",
+  "@ancientEgypt": {},
+  "gothicIce": "น้ำแข็งโกธิก",
+  "@gothicIce": {},
+  "riceField": "นาข้าว",
+  "@riceField": {},
+  "chinesePorcelain": "เครื่องเคลือบจีน",
+  "@chinesePorcelain": {},
+  "desertDusk": "ค่ำคืนในทะเลทราย",
+  "@desertDusk": {},
+  "precisionCraft": "งานฝีมือที่แม่นยำ",
+  "@precisionCraft": {},
+  "folkEmbroidery": "งานปักผ้าพื้นบ้าน",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "มรดกคาร์พาเทียน",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "ความยิ่งใหญ่แห่งจักรวรรดิ",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "คริสตัลโบฮีเมียน",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "พระอาทิตย์ขึ้นในสะวันนา",
+  "@savannaSunrise": {},
+  "harmonyBalance": "ความกลมกลืนและสมดุล",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "เครื่องเทศอบเชย",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "โมเสกอนาโตเลียน",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "จิตวิญญาณแห่งคาร์นิวัล",
+  "@carnivalSpirit": {},
+  "custom": "กำหนดเอง",
+  "@custom": {},
+  "spiceMarket": "ตลาดเครื่องเทศ",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ปัดเพื่อเปิดลิ้นชัก",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "แสดงข้อมูลเกมบนภาพหน้าจอ",
+  "@showGameInfoOnScreenshots": {}
 }

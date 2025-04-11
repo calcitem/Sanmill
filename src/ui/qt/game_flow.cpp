@@ -1,22 +1,10 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_flow.cpp
 
 #include <cinttypes>
 #include <iomanip>
-#include <map>
 #include <string>
 
 #include <QAbstractButton>
@@ -33,27 +21,23 @@
 #include <QThread>
 #include <QTimer>
 
-#include "boarditem.h"
-#include "client.h"
 #include "game.h"
-#include "graphicsconst.h"
 #include "option.h"
-#include "server.h"
-
-#if defined(GABOR_MALOM_PERFECT_AI)
-#include "perfect/perfect_adaptor.h"
-#endif
+#include "search.h"
+#include "search_engine.h"
+#include "engine_controller.h"
 
 using std::to_string;
 
-bool Game::applyPartialMoveList(int row)
+bool Game::applyMoveListUntilRow(int row)
 {
     currentRow = row;
     const QStringList strList = moveListModel.stringList();
     debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
 
-    posKeyHistory.clear();
+    // posKeyHistory.clear();
 
+    // Apply each command up to 'row' to the Position
     for (int i = 0; i <= row; i++) {
         debugPrintf("%s\n", strList.at(i).toStdString().c_str());
         position.command(strList.at(i).toStdString().c_str());
@@ -64,53 +48,49 @@ bool Game::applyPartialMoveList(int row)
 
 // Update the board state by applying moves up to a specific row in the list.
 // Optionally force an update even if the current row matches the requested row.
-bool Game::updateBoardState(int row, bool forceUpdate)
+bool Game::refreshBoardState(int row, bool forceUpdate)
 {
-    // Skip updating if the currently viewed row matches the requested row,
-    // unless forceUpdate is true.
+    // If current row is the same as requested row and not forced, do nothing
     if (currentRow == row && !forceUpdate)
         return false;
 
-    // Apply the moves from the move list up to the specified row.
-    applyPartialMoveList(row);
+    // Apply partial move list up to 'row'
+    applyMoveListUntilRow(row);
 
-    // Refresh the game scene to reflect the new board state.
-    updateScene();
+    // Update the scene to reflect the new position
+    refreshScene();
 
     return true;
 }
 
-bool Game::resign()
+bool Game::resignGame()
 {
     const bool result = position.resign(position.sideToMove);
-
     if (!result) {
         return false;
     }
 
-    // Insert the new record line into list model
     currentRow = moveListModel.rowCount() - 1;
     int k = 0;
 
-    // Output command line
+    // Insert any new move strings into the model
     for (const auto &i : *getMoveList()) {
-        // Skip added because the standard list container has no index
         if (k++ <= currentRow) {
             continue;
         }
-
         moveListModel.insertRow(++currentRow);
         moveListModel.setData(moveListModel.index(currentRow), i.c_str());
     }
 
+    // Play resign sound if a winner is determined
     if (position.get_winner() != NOBODY) {
-        playSound(GameSound::resign);
+        playGameSound(GameSound::resign);
     }
 
     return result;
 }
 
-GameSound Game::identifySoundType(Action action)
+GameSound Game::getSoundTypeForAction(Action action)
 {
     switch (action) {
     case Action::select:
@@ -125,7 +105,12 @@ GameSound Game::identifySoundType(Action action)
     return GameSound::none;
 }
 
-bool Game::command(const string &command, bool update /* = true */)
+/**
+ * @brief Processes the given command string, updates the Position,
+ *        and triggers the AI move if needed. Replaces direct thread usage
+ *        with calls to EngineController.
+ */
+bool Game::command(const std::string &command, bool update /*= true*/)
 {
     Q_UNUSED(hasSound)
 
@@ -133,28 +118,18 @@ bool Game::command(const string &command, bool update /* = true */)
     int bestvalue = 0;
     std::string cmd = command;
 
-#ifdef QT_GUI_LIB
-    // Prevents receiving instructions sent by threads that end late
-    if (sender() == aiThread[WHITE] && !isAiPlayer[WHITE]) {
-        return false;
-    }
+    // Identify sound type before we mutate the Position
+    auto soundType = getSoundTypeForAction(position.get_action());
 
-    if (sender() == aiThread[BLACK] && !isAiPlayer[BLACK]) {
-        return false;
-    }
-#endif // QT_GUI_LIB
-
-    auto soundType = identifySoundType(position.get_action());
-
+    // If engine is in 'ready' phase, start the game
     if (position.get_phase() == Phase::ready) {
         gameStart();
     }
 
-    // TODO: Deal with aimovetype. Now remove it for WAR.
+    // Remove "aimovetype" substring if present (legacy logic)
     size_t aimovetype_pos = cmd.find("aimovetype");
     if (aimovetype_pos != std::string::npos) {
         size_t bestmove_pos = cmd.find("bestmove", aimovetype_pos);
-
         if (bestmove_pos != std::string::npos) {
             cmd.erase(aimovetype_pos, bestmove_pos - aimovetype_pos);
         } else {
@@ -169,6 +144,7 @@ bool Game::command(const string &command, bool update /* = true */)
     sscanf(cmd.c_str(), "info score %d bestmove %63s", &bestvalue, moveStr);
 #endif
 
+    // If we didn't find a bestmove token, store the entire cmd into moveStr
     if (strlen(moveStr) == 0 && !cmd.empty()) {
 #ifdef _MSC_VER
         strncpy_s(moveStr, sizeof(moveStr), cmd.c_str(), _TRUNCATE);
@@ -180,6 +156,7 @@ bool Game::command(const string &command, bool update /* = true */)
 
     debugPrintf("Computer: %s\n\n", cmd.c_str());
 
+    // Keep track of the move string
     gameMoveList.emplace_back(moveStr);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
@@ -194,41 +171,40 @@ bool Game::command(const string &command, bool update /* = true */)
         posKeyHistory.clear();
     }
 
+    // Send the command to the Position
     if (!position.command(cmd.c_str())) {
         return false;
     }
 
-    sideToMove = position.side_to_move();
-
+    // If we selected a piece and next action is remove, it might be a mill
     if (soundType == GameSound::drag &&
         position.get_action() == Action::remove) {
         soundType = GameSound::mill;
     }
 
     if (update) {
-        playSound(soundType);
-        // updateScene();
+        playGameSound(soundType);
+        // Optionally call refreshScene() here if needed
+        // refreshScene();
     }
 
-    updateStatusBar();
+    refreshStatusBar();
 
-    // For opening
+    // The move list handling: either create or append to the model
     if (getMoveList()->size() <= 1) {
+        // Clear old moves and add the first record
         moveListModel.removeRows(0, moveListModel.rowCount());
         moveListModel.insertRow(0);
         moveListModel.setData(moveListModel.index(0), position.get_record());
         currentRow = 0;
     } else {
-        // For the current position
+        // Insert new lines for further moves
         currentRow = moveListModel.rowCount() - 1;
-        // Skip the added rows. The iterator does not support the + operator and
-        // can only skip one by one++
         auto i = getMoveList()->begin();
         for (int r = 0; i != getMoveList()->end(); ++i) {
             if (r++ > currentRow)
                 break;
         }
-        // Insert the new score line into list model
         while (i != getMoveList()->end()) {
             moveListModel.insertRow(++currentRow);
             moveListModel.setData(moveListModel.index(currentRow),
@@ -236,42 +212,46 @@ bool Game::command(const string &command, bool update /* = true */)
         }
     }
 
-    // Play win or lose sound
 #ifndef DO_NOT_PLAY_WIN_SOUND
+    // If there's a winner and the previous line ends with "Time over."
     const Color winner = position.get_winner();
     if (winner != NOBODY &&
         moveListModel.data(moveListModel.index(currentRow - 1))
             .toString()
             .contains("Time over.")) {
-        playSound(GameSound::win);
+        playGameSound(GameSound::win);
     }
 #endif
 
-    // AI Settings
-    // If it's not decided yet
+    // If no winner yet, and it's AI's turn, we use EngineController
     if (position.get_winner() == NOBODY) {
-        resumeAiThreads(position.sideToMove);
-    } else {
-        // If it's decided
-        pauseThreads();
+        if (isAiPlayer[position.side_to_move()]) {
+            // Example usage:
+            // 1) Update the engine's "position" with the current FEN + moves
+            //    if you want the engine to see the full position.
+            // 2) Then call "go" to start searching.
 
-        printStats();
+            // For demonstration, a simple approach is just:
+            engineController.handleCommand("go", &position);
+        }
+    } else {
+        // If the game is finished, print stats, handle auto-restart, etc.
+        printGameStatistics();
+        refreshLcdDisplay();
 
         if (gameOptions.getAutoRestart()) {
 #ifdef NNUE_GENERATE_TRAINING_DATA
             position.nnueWriteTrainingData();
-#endif /* NNUE_GENERATE_TRAINING_DATA */
-
-            saveScore();
-
+#endif
+            saveGameScore();
             gameReset();
             gameStart();
 
             if (isAiPlayer[WHITE]) {
-                setEngine(WHITE, true);
+                setEngineControl(WHITE, true);
             }
             if (isAiPlayer[BLACK]) {
-                setEngine(BLACK, true);
+                setEngineControl(BLACK, true);
             }
         }
 
@@ -281,95 +261,71 @@ bool Game::command(const string &command, bool update /* = true */)
 #endif
     }
 
+    // Write the command into the AI test memory if needed
     gameTest->writeToMemory(QString::fromStdString(cmd));
 
 #ifdef NET_FIGHT_SUPPORT
-    // Network: put the method in the server's send list
+    // For network play, broadcast the move
     getServer()->setAction(QString::fromStdString(cmd));
 #endif
 
 #ifdef ANALYZE_POSITION
+    // If we want to analyze the position,
+    // we can send an "analyze" command or directly call SearchEngine::analyze.
+    // For example:
     if (!gameOptions.getUsePerfectDatabase()) {
         if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->analyze(WHITE);
+            // Minimal usage:
+            searchEngine.analyze(WHITE);
         } else if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->analyze(BLACK);
+            searchEngine.analyze(BLACK);
         }
     }
-#endif // ANALYZE_POSITION
+#endif
 
-    updateStatistics();
+    updateGameStatistics();
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     position.nnueGenerateTrainingFen();
-#endif /* NNUE_GENERATE_TRAINING_DATA */
+#endif
 
     return true;
 }
 
-void Game::printStats()
+/**
+ * @brief Prints some debug info about the game duration, and any other stats.
+ */
+void Game::printGameStatistics()
 {
     gameEndTime = now();
     gameDurationTime = gameEndTime - gameStartTime;
-
     gameEndCycle = stopwatch::rdtscp_clock::now();
 
     debugPrintf("Game Duration Time: %" PRId64 "ms\n",
                 static_cast<int64_t>(gameDurationTime));
 
 #ifdef TIME_STAT
-    debugPrintf("Sort Time: %I64d + %I64d = %I64dms\n",
-                aiThread[WHITE]->sortTime, aiThread[BLACK]->sortTime,
-                (aiThread[WHITE]->sortTime + aiThread[BLACK]->sortTime));
-    aiThread[WHITE]->sortTime = aiThread[BLACK]->sortTime = 0;
-#endif // TIME_STAT
+    // No direct thread usage, so we skip the old stats that relied on
+    // per-thread data
+    debugPrintf("Sort Time: <No direct threads to measure>\n");
+#endif
 
 #ifdef CYCLE_STAT
-    debugPrintf("Sort Cycle: %ld + %ld = %ld\n", aiThread[WHITE]->sortCycle,
-                aiThread[BLACK]->sortCycle,
-                (aiThread[WHITE]->sortCycle + aiThread[BLACK]->sortCycle));
-    aiThread[WHITE]->sortCycle = aiThread[BLACK]->sortCycle = 0;
-#endif // CYCLE_STAT
-
-#if 0
-            gameDurationCycle = gameEndCycle - gameStartCycle;
-            debugPrintf("Game Start Cycle: %u\n", gameStartCycle);
-            debugPrintf("Game End Cycle: %u\n", gameEndCycle);
-            debugPrintf("Game Duration Cycle: %u\n", gameDurationCycle);
+    debugPrintf("Sort Cycle: <No direct threads to measure>\n");
 #endif
 
 #ifdef TRANSPOSITION_TABLE_DEBUG
-    size_t hashProbeCount_1 = aiThread[WHITE]->ttHitCount +
-                              aiThread[WHITE]->ttMissCount;
-    size_t hashProbeCount_2 = aiThread[BLACK]->ttHitCount +
-                              aiThread[BLACK]->ttMissCount;
-
-    debugPrintf("[key 1] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                "%llu%%\n",
-                hashProbeCount_1, aiThread[WHITE]->ttHitCount,
-                aiThread[WHITE]->ttMissCount,
-                aiThread[WHITE]->ttHitCount * 100 / hashProbeCount_1);
-
-    debugPrintf("[key 2] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                "%llu%%\n",
-                hashProbeCount_2, aiThread[BLACK]->ttHitCount,
-                aiThread[BLACK]->ttMissCount,
-                aiThread[BLACK]->ttHitCount * 100 / hashProbeCount_2);
-
-    debugPrintf("[key +] probe: %llu, hit: %llu, miss: %llu, hit rate: "
-                "%llu%%\n",
-                hashProbeCount_1 + hashProbeCount_2,
-                aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount,
-                aiThread[WHITE]->ttMissCount + aiThread[BLACK]->ttMissCount,
-                (aiThread[WHITE]->ttHitCount + aiThread[BLACK]->ttHitCount) *
-                    100 / (hashProbeCount_1 + hashProbeCount_2));
-#endif // TRANSPOSITION_TABLE_DEBUG
+    debugPrintf("Transposition Table Debug counters are no longer maintained "
+                "per thread.\n");
+#endif
 }
 
-void Game::updateStatistics()
+/**
+ * @brief Updates and prints the current scoreboard.
+ */
+void Game::updateGameStatistics()
 {
-    int total = position.score[WHITE] + position.score[BLACK] +
-                position.score_draw;
+    int total = score[WHITE] + score[BLACK] + score[DRAW];
     float blackWinRate, whiteWinRate, drawRate;
 
     if (total == 0) {
@@ -377,15 +333,16 @@ void Game::updateStatistics()
         whiteWinRate = 0;
         drawRate = 0;
     } else {
-        blackWinRate = static_cast<float>(position.score[WHITE]) * 100 / total;
-        whiteWinRate = static_cast<float>(position.score[BLACK]) * 100 / total;
-        drawRate = static_cast<float>(position.score_draw) * 100 / total;
+        blackWinRate = static_cast<float>(score[WHITE]) * 100 / total;
+        whiteWinRate = static_cast<float>(score[BLACK]) * 100 / total;
+        drawRate = static_cast<float>(score[DRAW]) * 100 / total;
     }
 
-    const auto flags = cout.flags();
-    cout << "Score: " << position.score[WHITE] << " : " << position.score[BLACK]
-         << " : " << position.score_draw << "\ttotal: " << total << std::endl;
-    cout << std::fixed << std::setprecision(2) << blackWinRate
-         << "% : " << whiteWinRate << "% : " << drawRate << "%" << std::endl;
-    cout.flags(flags);
+    const auto flags = std::cout.flags();
+    std::cout << "Score: " << score[WHITE] << " : " << score[BLACK] << " : "
+              << score[DRAW] << "\ttotal: " << total << std::endl;
+    std::cout << std::fixed << std::setprecision(2) << blackWinRate
+              << "% : " << whiteWinRate << "% : " << drawRate << "%"
+              << std::endl;
+    std::cout.flags(flags);
 }

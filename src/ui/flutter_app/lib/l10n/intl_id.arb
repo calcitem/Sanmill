@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Manusia Vs. Awan",
+  "humanVsCloud": "Manusia Vs. Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -48,11 +48,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Pindahkan daftar",
+  "showMoveList": "Daftar gerakan",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "Pindahkan daftar",
+  "moveList": "Daftar gerakan",
   "@moveList": {
     "description": "Move list"
   },
@@ -84,11 +84,11 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Anda menempatkan.",
+  "tipPlaced": "Telah ditempatkan.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Hapus sepotong.",
+  "tipRemove": "Hapus satu bidak.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Anda dihapus.",
+  "tipRemoved": "Telah dihapus.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -112,11 +112,11 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mul! Ambil bagian lawan.",
+  "tipMill": "Mul! Ambil bidak lawan.",
   "@tipMill": {
     "description": "Mul! Take your opponent's piece."
   },
-  "tipContinueMill": "Lanjutkan untuk mengambil bagian lawan.",
+  "tipContinueMill": "Lanjutkan mengambil bidak lawan.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
@@ -136,7 +136,7 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Pilih bagian Anda untuk dipindahkan.",
+  "tipSelectPieceToMove": "Pilih bidak Anda untuk dipindahkan.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
@@ -240,7 +240,7 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} resign.",
+  "loseReasonResign": "{player} menyerah.",
   "@loseReasonResign": {
     "description": " resign."
   },
@@ -252,7 +252,7 @@
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Waktu telah berakhir, {player} hilang.",
+  "loseReasonTimeOver": "Waktu telah berakhir, {player} kalah.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -308,7 +308,7 @@
   "@settings": {
     "description": "Settings"
   },
-  "options": "Options",
+  "options": "Opsi",
   "@options": {
     "description": "Options"
   },
@@ -372,7 +372,7 @@
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "lain-lain",
+  "misc": "Lainnya",
   "@misc": {
     "description": "Miscellaneous"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Jika Terbang diaktifkan, ketika seorang pemain dikurangi menjadi jumlah bidak tertentu, bidaknya bebas untuk berpindah ke titik kosong mana pun alih-alih dibatasi ke poin yang berdekatan seperti di sisa permainan.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Potongan Setidaknya",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Pemain akan kalah jika lawannya menghalanginya sehingga tidak bisa digerakkan. Ubah sisi untuk bergerak jika opsi ini dinonaktifkan.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Penerbangan",
   "@mayFly": {
@@ -472,11 +472,11 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "Salinan",
+  "copy": "Salin",
   "@copy": {
     "description": "Copy"
   },
-  "moveHistoryCopied": "Pindahkan riwayat yang disalin ke papan klip.",
+  "moveHistoryCopied": "Riwayat gerakan telah disalin ke papan klip.",
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Ketuk salah satu bagian lawan untuk menghapus.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Anda perlu membuat gilingan terlebih dahulu sebelum Anda dapat menghapus sepotong.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Gaya bermain AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasif",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Ketuk kembali lagi untuk pergi.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Lebih",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Jika seorang pemain memecahkan gilingan untuk segera membuat gilingan baru, pemain tersebut dapat memindahkan potongan tersebut kembali ke persimpangan awal pada langkah berikutnya jika pemain tersebut membuat gilingan baru.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Permainan dinyatakan seri jika seorang pemain memiliki tiga buah bidak dan setelah sepuluh gerakan tidak ada pemain yang mengambil bidak lawan",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Fokus pada memblokir jalur",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Prioritaskan untuk menghalangi pergerakan lawan daripada membentuk kincir. Alih-alih fokus pada menghilangkan bidak dengan menyelesaikan kincir, AI bertujuan untuk menjebak lawan, membuat mereka tidak dapat bergerak dan memastikan kemenangan melalui keletihan daripada permainan agresif. Strategi ini tidak secara aktif menghalangi kincir lawan.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Gambar bidak",
+  "@pieceImage": {},
+  "importColorSettings": "Impor pengaturan warna",
+  "@importColorSettings": {},
+  "exportColorSettings": "Ekspor pengaturan warna",
+  "@exportColorSettings": {},
+  "import": "Impor",
+  "@import": {},
+  "export": "Ekspor",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Silakan salin pengaturan format JSON ke clipboard terlebih dahulu.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Disalin ke clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Diimpor.",
+  "@imported": {},
+  "boardImage": "Gambar papan",
+  "@boardImage": {},
+  "autumnLeaves": "Daun-daun Musim Gugur",
+  "@autumnLeaves": {},
+  "legendaryLand": "Tanah Legendaris",
+  "@legendaryLand": {},
+  "vignetteEffect": "Efek vinyet",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Apakah Anda ingin membuat bilah alat sepenuhnya transparan ketika gambar latar belakang papan diatur?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Aktifkan getaran di dalam permainan",
+  "@vibration": {},
+  "soundTheme": "Tema suara",
+  "@soundTheme": {},
+  "ball": "Bola",
+  "@ball": {},
+  "liquid": "Cairan",
+  "@liquid": {},
+  "wood": "Kayu",
+  "@wood": {},
+  "placeEffectAnimation": "Efek animasi penempatan bidak",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efek animasi penghapusan bidak",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Tampilkan bilah alat di bagian bawah",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Radius sudut papan",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Gunakan buku pembuka",
+  "@useOpeningBook": {},
+  "currentRule": "Saat ini",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Set peraturan",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Izinkan AI menggunakan gerakan pembukaan yang biasa digunakan oleh pemain manusia profesional selama awal permainan. Catatan: Fitur ini saat ini hanya tersedia untuk set aturan tertentu.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Tampilkan grafik keunggulan",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Grafik keunggulan hanya akan digambar setelah AI membuat langkah. Grafik tidak akan digambar ketika pemain manusia membuat langkah.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Nonaktifkan penghapusan hingga semua bidak ditempatkan. Pemain menghapus bidak berdasarkan jumlah Mul-mulan.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Nonaktifkan penghapusan hingga semua bidak ditempatkan. Pemain menghapus bidak berdasarkan jumlah Mul-mulan: jika sama, keduanya menghapus jumlah bidak yang sama; jika salah satu memiliki lebih, dia menghapus satu bidak tambahan, sehingga selisih tetap satu bidak. Jika hanya satu pemain yang membentuk Mul-mulan, dia menghapus dua bidak, sedangkan pemain lain menghapus satu. Jika tidak ada yang membentuk Mul-mulan, keduanya menghapus satu bidak.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Pilih salah satu bidak kamu.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Bukan giliran Anda.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Warna latar belakang bilah alat anotasi",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Warna ikon bilah alat anotasi",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Tampilkan bilah alat anotasi",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Masuk mode anotasi",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Apakah Anda yakin ingin menghapus semua anotasi?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Prompt LLM disalin ke clipboard.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Koneksi ditolak, server mungkin sedang down.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Penemuan berhasil, menunggu koneksi...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Tidak ada koneksi LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Ambil Screenshot",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Terputus dari lawan.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Permintaan Menarik Kembali",
+  "@takeBackRequest": {},
+  "nothingToShow": "Tidak ada yang ditampilkan.",
+  "@nothingToShow": {},
+  "stopHosting": "Berhenti Menjadi Host",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Koneksi direset oleh lawan.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Koneksi terputus karena timeout heartbeat. Silakan sambungkan kembali.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Mulai Menjadi Host",
+  "@startHosting": {},
+  "restartRequestRejected": "Permintaan restart ditolak.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Tidak terhubung ke lawan LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Prompt LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Permainan dimulai ulang.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Permintaan menarik kembali ditolak.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Apakah Anda yakin ingin mengundurkan diri dari permainan ini?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Lawan mengundurkan diri. Anda menang!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Hapus semua anotasi",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Terhubung, menunggu langkah lawan...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Status jaringan: Terputus",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Permintaan menarik kembali dikirim ke lawan.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Lawan mungkin telah meninggalkan permainan",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Terhubung ke host berhasil.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Koneksi terputus: timeout heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Tidak ada host yang ditemukan.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Konfirmasi pengunduran diri",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Mulai menjadi host permainan, menunggu pemain untuk bergabung...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Koneksi habis waktu, koneksi jaringan tidak stabil.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Tidak ada prompt LLM yang tersedia.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Anda mengundurkan diri. Permainan selesai.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP Server",
+  "@serverIp": {},
+  "confirmClear": "Konfirmasi hapus",
+  "@confirmClear": {},
+  "opponentSTurn": "Giliran lawan.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Menunggu koneksi klien...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Permintaan menarik kembali ditolak atau gagal.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Tambahkan teks",
+  "@addText": {},
+  "exitAnnotationMode": "Keluar mode anotasi",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Ketik anotasi Anda",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Mencoba menyambungkan kembali...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Permintaan restart dikirim. Menunggu respons lawan...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server dihentikan.",
+  "@serverIsStopped": {},
+  "restartRequest": "Permintaan restart",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Tidak dapat meminta menarik kembali saat bukan giliran Anda.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Permintaan menarik kembali diterima.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Pengaturan jaringan lokal",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Berhasil menyambungkan kembali!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Gagal menyimpan gambar ke Galeri.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Lawan meminta untuk memulai ulang permainan. Apakah Anda setuju?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Giliran Anda.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Tidak dapat menyambungkan kembali, silakan mulai ulang permainan.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Bergabung",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Alamat IP tidak valid.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Port tidak valid.",
+  "@invalidPort": {},
+  "connectingAttempt": "Menyambungkan: Percobaan {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Gagal menyambungkan: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Gagal memulai menjadi host: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host ditemukan: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Berhenti",
+  "@stop": {},
+  "discover": "Temukan",
+  "@discover": {},
+  "connect": "Sambungkan",
+  "@connect": {},
+  "clientConnected": "Klien terhubung: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Mencari: {seconds} d",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Menyambungkan kembali ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Terhubung",
+  "@connected": {},
+  "delete": "Hapus",
+  "@delete": {},
+  "ancientEgypt": "Mesir Kuno",
+  "@ancientEgypt": {},
+  "gothicIce": "Es Gotik",
+  "@gothicIce": {},
+  "riceField": "Ladang Padi",
+  "@riceField": {},
+  "chinesePorcelain": "Porselen Tiongkok",
+  "@chinesePorcelain": {},
+  "desertDusk": "Senja Gurun",
+  "@desertDusk": {},
+  "precisionCraft": "Kerajinan Presisi",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Sulaman Rakyat",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Warisan Karpatia",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Kemegahan Kekaisaran",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Kristal Bohemia",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Matahari Terbit Savana",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmoni dan Keseimbangan",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Rempah Kayu Manis",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Mozaik Anatolia",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Semangat Karnaval",
+  "@carnivalSpirit": {},
+  "custom": "Kebiasaan",
+  "@custom": {},
+  "spiceMarket": "Pasar Rempah",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Geser untuk membuka Laci",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Tampilkan info permainan di tangkapan layar",
+  "@showGameInfoOnScreenshots": {}
 }

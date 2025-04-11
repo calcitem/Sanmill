@@ -16,11 +16,11 @@
   "@no": {
     "description": "No"
   },
-  "game": "Partija",
+  "game": "Igra",
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Čovjek protiv UI",
+  "humanVsAi": "Čovjek protiv UI-a",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
@@ -28,7 +28,7 @@
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "UI protiv UI",
+  "aiVsAi": "UI protiv UI-a",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
@@ -44,7 +44,7 @@
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
-  "move": "Potezi",
+  "move": "Potez",
   "@move": {
     "description": "Move"
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Postavili ste.",
+  "tipPlaced": "Figura je postavljena.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Uklonili ste.",
+  "tipRemoved": "Figura je uklonjena.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -144,7 +144,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo mjesto.",
+  "tipCanMoveToAnyPoint": "Možete se pomaknuti na bilo koje mjesto.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -316,15 +316,15 @@
   "@generalSettings": {
     "description": "General Settings"
   },
-  "skillLevel": "Razina težine",
+  "skillLevel": "Razina složenosti",
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "Vrijeme razmišljanja za UI",
+  "moveTime": "Vrijeme razmišljanja UI-a",
   "@moveTime": {
     "description": "AI thinking time"
   },
-  "difficulty": "Težina",
+  "difficulty": "Složenost",
   "@difficulty": {
     "description": "Difficulty"
   },
@@ -380,7 +380,7 @@
   "@rules": {
     "description": "Rules"
   },
-  "piecesCount": "Broj figura koje svaki igrač ima",
+  "piecesCount": "Broj figura za svakog igrača",
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
@@ -392,9 +392,9 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Ako je skakanje aktivirano, kada igraču preostane određeni broj figura, one se mogu premjestiti na bilo koje neuzeto mjesto. Premještanje nije ograničeno samo na susjedna mjesta kao inače u igri.",
+  "flyPieceCount_Detail": "Ako je skakanje aktivirano, kada igraču preostane određeni broj figura, one se mogu pomaknuti na bilo koje nezauzeto mjesto. Pomicanje nije ograničeno samo na susjedna mjesta kao inače u igri.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Najmanji broj figura",
   "@piecesAtLeastCount": {
@@ -428,7 +428,7 @@
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "Prema zadanim postavkama, igrači moraju najprije ukloniti bilo koje druge figure prije uklanjanja figura iz formiranog mlina. Aktivirajte ovu opciju da biste onemogućili ograničenje.",
+  "mayRemoveFromMillsAlways_Detail": "Standardno je postavljeno da igrači moraju najprije ukloniti bilo koje druge figure prije uklanjanja figura iz formiranog mlina. Aktiviraj ovu opciju za deaktiviranje ograničenja.",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -436,7 +436,7 @@
   "@isWhiteLoseButNotDrawWhenBoardFull": {
     "description": "The second player loses when the board is full"
   },
-  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kada je ploča na kraju faze postavljanja puna, igrač koji prvi postavlja figure gubi igru. Inače je igra neodlučena.",
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Kada je ploča na kraju faze postavljanja puna, igrač koji prvi postavlja figure gubi igru. Inače igra završava neodlučeno.",
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
@@ -444,15 +444,15 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Igrač će izgubiti ako ga protivnik blokira tako da ne može pomaknuti figure. Promijeni stranu za pomicanje ako je ova opcija deaktivirana.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Igrač će izgubiti ako ga protivnik blokira tako da ne može pomaknuti figure. Ako je ova opcija deaktivirana, promijenite stranu micanja umjesto da objavite gubitak igre.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Skakanje",
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "Ako igrač ima samo tri ili četiri (podesive) figure, igrač smije premjestiti figuru na bilo koje slobodno mjesto.",
+  "mayFly_Detail": "Ako igrač ima samo tri ili četiri (podesivo) figure, igrač smije pomaknuti figuru na bilo koje slobodno mjesto.",
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
@@ -532,7 +532,7 @@
   "@isPieceCountInHandShown": {
     "description": "Show count of pieces in hand"
   },
-  "isNotationsShown": "Prikaži oznake na ploči",
+  "isNotationsShown": "Prikaži notacije na ploči",
   "@isNotationsShown": {
     "description": "Show notations on board"
   },
@@ -544,11 +544,11 @@
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "Širina vanjske linije",
+  "boardBorderLineWidth": "Širina rubne linije ploče",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
-  "boardInnerLineWidth": "Širina unutarnjih linija",
+  "boardInnerLineWidth": "Širina unutarnjih linija ploče",
   "@boardInnerLineWidth": {
     "description": "Board inner line width"
   },
@@ -560,7 +560,7 @@
   "@fontSize": {
     "description": "Font size"
   },
-  "standardNotation": "WMD zapisi",
+  "standardNotation": "WMD notacija",
   "@standardNotation": {
     "description": "Standard notation"
   },
@@ -612,9 +612,9 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Dodirnite protivničku figuru da biste je uklonili.",
+  "toRemovePiece": "Dodirnite jednu protivničku figuru da biste je uklonili.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Za uklanjanje figure najprije morate stvoriti mlin.",
   "@needToCreateMillFirst": {
@@ -648,7 +648,7 @@
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
-  "privacyPolicy_Detail_2": ". Ako se ne slažete s ovom politikom, nemojte koristiti ovu aplikaciju. Korištenje aplikacije podrazumijeva da prihvaćate ove uvjete.",
+  "privacyPolicy_Detail_2": ". Ako se ne slažete s ovom politikom nemojte koristiti ovu aplikaciju. Korištenje aplikacije podrazumijeva da prihvaćate ove uvjete.",
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
@@ -658,11 +658,11 @@
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "Vrati figuru na prethodno mjesto",
+  "takeBack": "Vrati figuru natrag",
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Vrati figure na prethodno mjesto …",
+  "takingBack": "Vraćanje figure na prethodno mjesto …",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -690,7 +690,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Razbijanje mlina",
+  "crackMill": "Višebrojni mlinovi",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -702,7 +702,7 @@
   "@animationDuration": {
     "description": "Animation duration"
   },
-  "none": "Ništa",
+  "none": "Bez",
   "@none": {
     "description": "None"
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivih) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Ako igrač uspije postaviti tri figure u redu, on ima „mlin” i igrač smije ukloniti jednu od protivničkih figura s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nKretanje\n\nDa bi se kretao, igrač pomiče jednu od svojih figura duž linije ploče na slobodno susjedno mjesto. Ako to ne može učiniti, izgubio je partiju. Kao u fazi postavljanja, igrač koji poravna tri svoje figure na liniji ploče ima mlin i može ukloniti jednu protivnčku figuru. Bilo koji igrač koji ima manje od dva figura, ne može sastaviti novi mlin i time gubi igru. Igrač također može izgubiti igru kada ima više od tri komada, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati (premještati figure) na bilo koja prazna mjesta, ne samo na susjedna.\n",
+  "helpContent": "Cilj igre je ostaviti protivnika s manje od tri figure ili mu onemogućiti pomicanje figura.\n\nIgra automatski završava neodlučeno ako se pozicija dogodi po treći put ili ako se nijedna figura ne ukloni u zadnjih 100 (podesivo) poteza.\n\nIgra se odvija u tri faze:\n\n1. Postavljanje figura na slobodna mjesta\n2. Pomicanje figura na susjedna mjesta\n3. (opcionalna faza) Premještanje figura na bilo koje slobodno mjesto kada igrač ima samo još tri figure\n\nPostavljanje\n\nIgra započinje praznom pločom koja se sastoji od rešetke s dvadeset četiri mjesta. Igrači naizmjence postavljaju svoje figure na slobodna mjesta sve dok svaki igrač ne postavi sve svoje figure na ploču. Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru s ploče.\n\nU nekim pravilima igrači moraju najprije ukloniti bilo koji drugu figuru prije uklanjanja figura iz formiranog mlina.\n\nU nekim pravilima u fazi postavljanja se mjesta uklonjenih figura ne mogu ponovo zauzeti.\n\nNakon postavljanja svih figura igrači naizmjence pomiču svoje figure.\n\nPomicanje\n\nIgrač pomiče jednu od svojih figura duž linije na slobodno susjedno mjesto. Ako to ne može učiniti gubi igru. Kao u fazi postavljanja, Igrač koji uspije postaviti tri figure u nizu ima „mlin” i smije ukloniti jednu protivničku figuru. Igrač koji ima samo još dvije figure ne može sastaviti novi mlin i gubi igru. Igrač također gubi igru kada ima više od tri figure, ako protivnik blokira njihovo pomicanje.\n\nSkakanje\n\nU nekim varijantama pravila, kada jednom igraču ostanu samo tri figure, igrač može skakati na bilo koja prazna mjesta, ne samo na susjedna.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -742,11 +742,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Post.",
+  "placing": "Postavljanje",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Micanje",
+  "moving": "Pomicanje",
   "@moving": {
     "description": "Moving"
   },
@@ -758,15 +758,15 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "UI stil igre",
+  "aisPlayStyle": "Stil igre UI-a",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Pasivno",
   "@passive": {
     "description": "Passive"
   },
-  "timeout": "Time-out",
+  "timeout": "Pauza",
   "@timeout": {
     "description": "Timeout"
   },
@@ -774,11 +774,11 @@
   "@appearance": {
     "description": "Appearance"
   },
-  "drawOnHumanExperience": "Koristi ljudsko iskustvo",
+  "drawOnHumanExperience": "Koristi ljudsko iskustvo za poteze",
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "Uzmite u obzir pokretljivost figura",
+  "considerMobility": "Uzmi u obzir pokretljivost figura",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
@@ -810,9 +810,9 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Za prekidanje partije ponovo dodirnite gumb „Natrag”.",
+  "tapBackAgainToLeave": "Zatvori aplikaciju ponovnim dodirnom na gumb za natrag.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Više",
   "@more": {
@@ -942,7 +942,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "Položaj postave",
+  "setupPosition": "Pozicija postavljanja",
   "@setupPosition": {
     "description": "Setup position"
   },
@@ -994,13 +994,13 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "Mlin se može više puta pokvariti i prepravljati",
+  "mayBreakAndRemakeMillRepeatedly": "Mlin se može više puta razbiti i ponovo stvoriti",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Ako igrač razbije mlin da bi odmah stvorio novi mlin, taj igrač može vratiti svoju figuru natrag na izvorni čvor u svom sljedećem potezu ako na taj način stvori novi mlin.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Ako igrač razbije mlin da bi odmah stvorio novi mlin, igrač može vratiti svoju figuru natrag na izvorni čvor u svom sljedećem potezu ako na taj način stvori novi mlin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Igra završava neodlučeno ako jedan igrač ima tri figure i ako nakon deset poteza niti jedan igrač ne ukloni protivničke figure",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1110,7 +1110,7 @@
   "@pointWidth": {
     "description": "Point width"
   },
-  "solid": "Puna boja",
+  "solid": "Obojeno",
   "@solid": {
     "description": "Solid"
   },
@@ -1136,7 +1136,7 @@
   "@filename": {
     "description": "File name"
   },
-  "gameFiles": "Datoteke igre",
+  "gameFiles": "Datoteke igri",
   "@gameFiles": {
     "description": "Game files"
   },
@@ -1148,7 +1148,7 @@
   "@browse": {
     "description": "Browse…"
   },
-  "gameSavedTo": "Partija je spremljena u",
+  "gameSavedTo": "Igra je spremljena u",
   "@gameSavedTo": {
     "description": "The game is saved to"
   },
@@ -1254,49 +1254,49 @@
   "@duration": {},
   "pixelRatio": "Omjer piksela",
   "@pixelRatio": {},
-  "gameScreenRecorder": "Snimač zaslona igre",
+  "gameScreenRecorder": "Snimač ekrana igre",
   "@gameScreenRecorder": {},
-  "previous": "Prethodno",
+  "previous": "Prethodna",
   "@previous": {},
-  "next": "Sljedeći",
+  "next": "Sljedeća",
   "@next": {},
-  "skip": "Preskočiti",
+  "skip": "Preskoči",
   "@skip": {},
-  "gotIt": "shvaćam",
+  "gotIt": "Razumijem",
   "@gotIt": {},
-  "youCanModifyRules": "Pravila igre možete mijenjati u postavkama pravila.",
+  "youCanModifyRules": "Pravila igre možeš mijenjati u postavkama pravila.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Možete koristiti kotačić miša za promjenu vrijednosti u biraču.",
+  "youCanUseMouseWheelInPicker": "Za prilagođavanje vrijednosti u biraču možeš koristiti kotačić miša.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "Vrijeme razmišljanja za UI postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
+  "noTimeLimitForThinking": "Vrijeme razmišljanja UI-a postavljeno na 0 znači da nema vremenskog ograničenja za razmišljanje.",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja umjetne inteligencije možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina težine postavljena na nižu vrijednost i može biti duže kada je AI u fazi razmišljanja kada vrijeme istekne.",
+  "noteAiThinkingTimeMayNotBePrecise": "Imajte na umu da prilagodba vremena razmišljanja UI-a možda neće biti sasvim precizna. Stvarno vrijeme razmišljanja može biti kraće kada je razina složenosti postavljena na nižu vrijednost i može biti duže kada je UI usred razmišljanja kada vrijeme istekne.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "Ako postavite visoku razinu težine, ali ne povećate vrijeme AI razmišljanja, stvarna razina težine može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama stroja.",
+  "noteActualDifficultyLevelMayBeLimited": "Ako postaviš visoku razinu složenosti, ali ne povećaš vrijeme razmišljanja UI-a, stvarna razina složenosti može biti ograničena na nižu vrijednost zbog vremenskog ograničenja razmišljanja. Stvarna vrijednost može varirati ovisno o performansama uređaja.",
   "@noteActualDifficultyLevelMayBeLimited": {},
-  "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretraživanja i korištenjem dobrog početnog pogađanja za sužavanje prostora pretraživanja.",
+  "whatIsMtdf": "MTD(f) je modificirani oblik alfa-beta algoritma pretraživanja koji ima za cilj poboljšati učinkovitost ponovnim korištenjem posrednih rezultata pretrage i korištenjem dobrog početnog pogađanja za sužavanje prostora pretrage.",
   "@whatIsMtdf": {},
-  "whatIsPvs": "PVS (Principal Variation Search) je algoritam pretraživanja za pronalaženje najboljeg poteza u određenoj poziciji. To je poboljšanje alfa-beta algoritma i koristi nulte ili nulte pretrage prozora za potvrdu da je potez lošiji ili nije lošiji od već sigurnog rezultata iz glavne varijacije. PVS se fokusira na poteze koji najviše obećavaju i izbjegava nepotrebne pretrage suboptimalnih grana, što pomaže u poboljšanju učinkovitosti pretrage.",
+  "whatIsPvs": "PVS (Principal Variation Search) je algoritam pretraživanja za pronalaženje najboljeg poteza u određenoj poziciji. To je poboljšanje alfa-beta algoritma i koristi nulte ili nulte pretrage prozora za potvrdu da je potez lošiji ili nije lošiji od već sigurnog rezultata iz glavne varijante. PVS se fokusira na poteze koji najviše obećavaju i izbjegava nepotrebne pretrage suboptimalnih grana, što pomaže u poboljšanju učinkovitosti pretrage.",
   "@whatIsPvs": {},
-  "whatIsAlphaBeta": "Alfa-beta algoritam je algoritam pretraživanja za pronalaženje najboljeg poteza. Koristi minimax princip i dvije vrijednosti, alfa i beta, za smanjenje stabla pretraživanja i povećanje učinkovitosti. Alpha predstavlja minimalni rezultat za koji je računalo sigurno da može dobiti, dok beta predstavlja maksimalni rezultat koji njegov protivnik može dobiti. Algoritam pomaže računalu da donosi pametne i učinkovite odluke u igri.",
+  "whatIsAlphaBeta": "Alfa-beta algoritam je algoritam pretraživanja za pronalaženje najboljeg poteza. Koristi minimax princip i dvije vrijednosti, alfa i beta, za smanjenje stabla pretraživanja i povećanje učinkovitosti. Alpha predstavlja minimalni rezultat za koji je računalo sigurno da može dobiti, dok beta predstavlja maksimalni rezultat koji njegov protivnik može dobiti. Algoritam pomaže računalu donositi pametne i učinkovite odluke u igri.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "U ovoj igri lakše je pobijediti drugi igrač nego prvi igrač.",
+  "firstMoveDetail": "U ovoj igri drugi igrač lakše pobjeđuje nego prvi igrač.",
   "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na remi kao svoj cilj i izbjegnite gubitak igre. Promatrajte svog protivnika i nježno ga namamite u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti u igri.",
+  "drawOnTheHumanExperienceDetail": "Prema ljudskom iskustvu, ako pokušate pobijediti, izgubit ćete. Umjesto toga, ciljajte na neodlučeno kao svoj cilj i izbjegnite gubljenje igre. Promatrajte svog protivnika i namamite ga u poziciju u kojoj bi mogao pogriješiti. Kada pokaže slabost, zgrabite priliku i nježno gurnite za pobjedu. Na taj način možete pobijediti igru.",
   "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Omogućavanje pasivne opcije će uzrokovati da se AI opusti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
+  "passiveDetail": "Uključivanjem pasivne opcije će se UI opustiti kada ima prednost u poziciji, umjesto da agresivno pokušava pobijediti što je brže moguće.",
   "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Ako umjetna inteligencija uzme u obzir pokretljivost svojih figura, neće samo nastojati uhvatiti protivničke figure što je brže moguće, već će također razmotriti blokiranje protivničkih pokreta i spriječiti ih da učine isto.",
+  "considerMobilityOfPiecesDetail": "Ako umjetna inteligencija uzme u obzir pokretljivost svojih figura, neće nastojati samo uzimati protivničke figure što je brže moguće, već će također razmotriti blokiranje protivničkih poteza i spriječiti da protivnik učini isto.",
   "@considerMobilityOfPiecesDetail": {},
-  "moveRandomlyDetail": "Uključivanje ove opcije povećava nasumičnost i zabavu igre, dok njezino isključivanje može pomoći u proučavanju načina da se pobijedi AI.",
+  "moveRandomlyDetail": "Uključivanje ove opcije povećava slučajnost i zabavu igre, dok njezino isključivanje može pomoći u proučavanju načina da se UI pobijedi.",
   "@moveRandomlyDetail": {},
   "whenBoardIsFull": "Kad je ploča puna",
   "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "Na kraju faze postavljanja, prije početka faze kretanja, slijedi akcija ako je ploča puna figura.",
+  "whenBoardIsFull_Detail": "Na kraju faze postavljanja, prije početka faze pomicanja, slijedi akcija ako je ploča puna figura.",
   "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "Igrač koji prvi krene u fazi kretanja uklanja jednu od protivničkih figura.",
+  "sideToMoveRemovePiece": "Igrač koji prvi pomiče figure u fazi pomicanja uklanja jednu od protivničkih figura.",
   "@sideToMoveRemovePiece": {},
-  "agreeToDraw": "Obje strane pristaju na remi.",
+  "agreeToDraw": "Obje strane pristaju na neodlučeno.",
   "@agreeToDraw": {},
   "takeOpponentsPiece": "Uzmite jednu od protivničkih figura.",
   "@takeOpponentsPiece": {},
@@ -1306,9 +1306,9 @@
   "@firstAndSecondPlayerRemovePiece": {},
   "secondAndFirstPlayerRemovePiece": "Drugi i prvi igrač uklanjaju jednu protivničku figuru.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Sada kada smo ušli u fazu skakanja, protivničke figure mogu skočiti na bilo koje prazno mjesto na ploči. Možete isključiti pravilo skakanja u „Postavke pravila”.",
+  "enteredFlyingPhase": "Sada kada smo ušli u fazu skakanja, protivničke figure mogu skakati na bilo koje prazno mjesto na ploči. Pravilo skakanja se može isključiti u „Postavke pravila”.",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Kada zastoj",
+  "whenStalemate": "Pat situacija",
   "@whenStalemate": {},
   "whenStalemate_Detail": "Koja radnja slijedi kada se nijedna figura ne može pomaknuti?",
   "@whenStalemate_Detail": {},
@@ -1318,7 +1318,7 @@
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Uklonite jednu od protivničkih figura i napravite sljedeći potez.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Završite s neodlučenim patom.",
+  "endWithStalemateDraw": "Završite igru neodlučeno zbog pat situacije.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Uklonite jednu od protivničkih figura i promijenite stranu kretanja.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1326,9 +1326,9 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "UI je trenutačno u fazi odgođenog odgovora. Pričekajte neko vrijeme prije nastavljanja.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Ne možete ukloniti nesusjedni dio.",
+  "tipCanNotRemoveNonadjacent": "Ne možeš ukloniti nesusjednu figuru.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "Ako je pat pozicija, protivničke figure pored vaših se mogu ukloniti, bez obzira na formaciju mlina.",
+  "stalemateRemovalRegardlessOfMillFormation": "Ako dođe do pat pozicije, možete ukloniti protivničke figure pored vaših bez obzira na formaciju mlina.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS je algoritam prilagođen početnicima koji donosi odluke istražujući i procjenjujući različite poteze kroz simulacije.",
   "@whatIsMcts": {},
@@ -1352,63 +1352,63 @@
   "@violetDream": {},
   "mintChocolate": "Mint čokolada",
   "@mintChocolate": {},
-  "skyBlue": "Plavo nebo",
+  "skyBlue": "Nebesko plava",
   "@skyBlue": {},
   "playfulGarden": "Razigrani vrt",
   "@playfulGarden": {},
   "darkMystery": "Tamna misterija",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "Algoritam retrogradne analize koristi viševrijednu retrogradnu analizu za izgradnju baze podataka o završnici s različitih početnih pozicija, a zatim primjenjuje tu bazu podataka za optimizaciju igranja. Ovaj pristup spada u kategoriju Ultra-Strong rješenja.",
+  "whatIsRetrogradeAnalysis": "Algoritam retrogradne analize koristi viševrijednu retrogradnu analizu za izgradnju baze podataka završetka igre s različitih početnih pozicija, a zatim primjenjuje tu bazu podataka za optimizaciju igranja. Ovaj pristup spada u kategoriju ultra jakog rješenja.",
   "@whatIsRetrogradeAnalysis": {},
   "viewAlgorithmGuide": "Želite li vidjeti korisnički priručnik za ovaj algoritam?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Prikaži indikator položajne prednosti",
   "@showPositionalAdvantageIndicator": {},
-  "perfectDatabaseDescription": "Omogućite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako AI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, 'Difficulty Level' postaje gotovo nepobjediv, a 'AI Thinking Time' doživljava drastično smanjenje. Mnoge postavke unutar opcija 'AI's Playstyle' bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
+  "perfectDatabaseDescription": "Uključite ovu opciju za korištenje besprijekorne baze podataka igara generirane pomoću najsuvremenijih algoritama. Ova značajka integrira strategije otvaranja i završnice kako bi predložila optimalne poteze. Ovo je preferirani izbor za igrače koji traže najvišu razinu preciznosti u igri. Stvorena pomoću detaljnih računalnih tehnika, baza podataka dizajnirana je da ponudi gotovo savršena rješenja za igre.\n\nNapomena: Ako UI ne uspije pristupiti bazi podataka, obratit će se konvencionalnim algoritmima za donošenje odluka u igri. Kada je baza podataka dostupna, „Razina složenosti” postaje gotovo nepobjediva, a „Vrijeme razmišljanja UI-a” doživljava drastično smanjenje. Mnoge postavke unutar opcija „Stil igre UI-a” bit će poništene jer rezultati baze podataka imaju najveći prioritet.\n\nZa smjernice o tome kako najbolje iskoristiti ovu besprijekornu bazu podataka, kliknite ovdje.",
   "@perfectDatabaseDescription": {},
-  "usePerfectDatabase": "Koristite savršenu bazu podataka",
+  "usePerfectDatabase": "Koristi savršenu bazu podataka",
   "@usePerfectDatabase": {},
   "backgroundImage": "Pozadinska slika",
   "@backgroundImage": {},
-  "whatIsRandom": "Kada opcija 'Upotrijebi savršenu bazu podataka' nije omogućena, postavka 'Nasumično' uzrokuje da AI pomiče dijelove nasumično bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Nasuprot tome, kada je omogućena opcija \"Koristi savršenu bazu podataka\", AI se isključivo oslanja na \"Savršenu bazu podataka\" za donošenje odluka, umjesto da je miješa s tradicionalnim algoritmima umjetne inteligencije. U ovom načinu rada, potezi umjetne inteligencije u potpunosti se temelje na sadržaju baze podataka, izbjegavajući oslanjanje na izračune u stvarnom vremenu ili algoritme pretraživanja.",
+  "whatIsRandom": "Kada opcija 'Koristi savršenu bazu podataka' nije omogućena, postavka 'Slučajno' uzrokuje da UI pomiče dijelove slučajno bez korištenja algoritama za odabir poteza. To obično rezultira znatno slabijim igranjem. Nasuprot tome, kada je opcija \"Koristi savršenu bazu podataka\" uključena, UI se za donošenje odluka isključivo oslanja na sadržaj u \"Savršena baza podataka\", umjesto da je miješa s tradicionalnim algoritmima umjetne inteligencije. U ovom načinu rada, potezi umjetne inteligencije u potpunosti se temelje na sadržaju baze podataka, izbjegavajući oslanjanje na kalkulacije u stvarnom vremenu ili algoritme pretraživanja.",
   "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "Uklonite protivnikove figure iz njegove ruke; zatim je na redu protivnik da postavi.",
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Uklonite protivničke figure iz njegove ruke; zatim je protivnik na redu da postavi figuru.",
   "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
-  "whenFormingMillsDuringPlacingPhase": "Prilikom formiranja mlinova tijekom faze postavljanja",
+  "whenFormingMillsDuringPlacingPhase": "Kada se formiraju mlinovi tijekom faze postavljanja",
   "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "Uklonite protivnikove figure s ploče.",
+  "removeOpponentsPieceFromBoard": "Uklonite protivničke figure s ploče.",
   "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "Uklonite protivnikove figure s ploče; zatim je na redu protivnik da postavi.",
+  "removeOpponentsPieceFromBoard_Detail": "Uklonite protivničku figure s ploče; zatim je protivnik na redu da postavi figuru.",
   "@removeOpponentsPieceFromBoard_Detail": {},
   "opponentRemovesOwnPiece": "Protivnik uklanja svoje figure s ploče.",
   "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "Umjesto da vi poduzmete akciju, protivnik bira i uklanja svoje figure s ploče, čime učinkovito poduzima akciju koja je štetna za njega samog.",
+  "opponentRemovesOwnPiece_Detail": "Umjesto da vi poduzmete akciju, protivnik bira i uklanja svoje figure s ploče, čime poduzima akciju koja njemu šteti.",
   "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "Uklonite protivnikove figure iz njegove ruke; zatim ste vi na potezu.",
+  "removeOpponentsPieceFromHandThenYourTurn": "Uklonite protivničke figure iz njegove ruke; zatim ste vi na potezu.",
   "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Uklonite figuru (figure) iz protivnikove ruke. Ako, prema postavci višestrukog uklanjanja, treba ukloniti više figura, a protivnik nema preostalih figura u ruci, nastavite uklanjati protivnikove figure s ploče. Zatim ste vi na potezu. Ako nastavite sa stvaranjem mlinova, možete nastaviti uklanjati protivnikove figure.",
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Ukloni figure iz protivničke ruke. Ako prema postavci višestrukog uklanjanja treba ukloniti više figura, a protivnik nema više figura u ruci, nastavi uklanjati protivničke figure s ploče. Zatim si ti na potezu. Ako nastaviš formirati mlinove, možeš nastaviti uklanjati protivničke figure.",
   "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Uklonite figuru (figure) iz protivnikove ruke. Ako, prema postavci višestrukog uklanjanja, treba ukloniti više figura, a protivnik nema preostalih figura u ruci, nastavite uklanjati protivnikove figure s ploče. Zatim je protivnik na potezu.",
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Ukloni figure iz protivničke ruke. Ako prema postavci višestrukog uklanjanja treba ukloniti više figura, a protivnik nema više figura u ruci, nastavi uklanjati protivničke figure s ploče. Zatim je protivnik na potezu.",
   "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "Označite i odgodite uklanjanje figura.",
+  "markAndDelayRemovingPieces": "Označi i odgodi uklanjanje figura.",
   "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "Tijekom faze postavljanja, figure koje treba ukloniti označavaju se, a niti jedan igrač ne može postaviti nove figure na ove točke. Po ulasku u fazu pomicanja, ove označene figure se potpuno uklanjaju, a igrači tada mogu svoje figure premjestiti na ove sada prazne točke.",
+  "markAndDelayRemovingPieces_Detail": "Tijekom faze postavljanja, figure koje treba ukloniti se označavaju i nijedan jedan igrač ne može postaviti nove figure na ova mjesta. Po ulasku u fazu pomicanja, ove se označene figure potpuno uklanjaju, a igrači tada mogu svoje figure pomaknuti na ova sada prazna mjesta.",
   "@markAndDelayRemovingPieces_Detail": {},
-  "whenFormingMillsDuringPlacingPhase_Detail": "Radnje koje se mogu poduzeti prilikom formiranja mlinova tijekom faze postavljanja.",
+  "whenFormingMillsDuringPlacingPhase_Detail": "Radnje koje se mogu poduzeti prilikom formiranja mlinova u fazi postavljanja.",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "Označeno",
   "@marked": {},
   "menu": "Izbornik",
   "@menu": {},
-  "showNumbersOnPieces": "Prikaz brojeva na figurama",
+  "showNumbersOnPieces": "Prikaži brojeve na figurama",
   "@showNumbersOnPieces": {},
-  "monochrome": "Monokromatski",
+  "monochrome": "Jednobojno",
   "@monochrome": {},
-  "youCanEnableScreenReaderSupport": "Možete uključiti podršku za čitač zaslona u postavkama pristupačnosti unutar Općih postavki.",
+  "youCanEnableScreenReaderSupport": "Podrška za čitač ekrana se može uključiti u konfiguraciji pristupačnosti u „Opće postavke”.",
   "@youCanEnableScreenReaderSupport": {},
   "saveImage": "Spremi sliku",
   "@saveImage": {},
-  "isAnalysisToolbarShown": "Prikazana je alatna traka za analizu",
+  "isAnalysisToolbarShown": "Prikaži alatnu traku za analizu",
   "@isAnalysisToolbarShown": {},
   "analysisToolbarBackgroundColor": "Boja pozadine alatne trake za analizu",
   "@analysisToolbarBackgroundColor": {},
@@ -1416,30 +1416,338 @@
   "@analysisToolbarIconColor": {},
   "transformed": "Transformirano.",
   "@transformed": {},
-  "cannotTransform": "Nemoguće transformirati.",
+  "cannotTransform": "Nije moguće transformirati.",
   "@cannotTransform": {},
-  "rotate": "Rotiraj",
+  "rotate": "Okreni",
   "@rotate": {},
-  "horizontalFlip": "H.Z.",
+  "horizontalFlip": "Vod. okret",
   "@horizontalFlip": {},
-  "verticalFlip": "V.Z.",
+  "verticalFlip": "Okom. okret",
   "@verticalFlip": {},
-  "innerOuterFlip": "U/V Z.",
+  "innerOuterFlip": "U/V okret",
   "@innerOuterFlip": {},
-  "transparentCanvas": "Prozirno Platno",
+  "transparentCanvas": "Prozirno platno",
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "Ograniči ponavljano formiranje mlinova",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "Figura premještena iz jednog mlina u drugi ne može se odmah vratiti na izvornu točku u sljedećem potezu kako bi ponovno formirala mlin. Prvo je potreban drugačiji potez.",
+  "restrictRepeatedMillsFormation_Detail": "Figura koja se pomakne iz jednog mlina za formiranje jednog drugog mlina se ne može odmah vratiti na izvorno mjesto u sljedećem potezu kako bi ponovo formirala mlin. Najprije se mora odigrati jedan drugi potez.",
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "Jednokratna uporaba mlina",
   "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "Svaki mlin može ukloniti samo jedan protivnički dio. Možete ga ponovno formirati, ali se ne može koristiti za dodatna uklanjanja.",
+  "oneTimeUseMill_Detail": "Svaki mlin može ukloniti samo jednu protivničku figuru. Mlin možete ponovo formirati, ali se ne može koristiti za dodatna uklanjanja.",
   "@oneTimeUseMill_Detail": {},
-  "currentRulesNoPerfectDatabase": "Trenutna pravila koja ste postavili nemaju odgovarajuću savršenu bazu podataka. Za više informacija o savršenoj bazi podataka kliknite ovdje.",
+  "currentRulesNoPerfectDatabase": "Trenutačno postavljena pravila nemaju odgovarajuću savršenu bazu podataka. Za više informacija o savršenoj bazi podataka kliknite ovdje.",
   "@currentRulesNoPerfectDatabase": {},
-  "focusOnBlockingPaths": "Fokusirajte se na blokiranje putova",
+  "focusOnBlockingPaths": "Prioriziraj blokiranje pomicanja",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Dajte prednost ometanju kretanja protivnika umjesto stvaranju mlinova. Umjesto da se usredotočite na uklanjanje figura dovršavanjem mlinova, AI nastoji uhvatiti protivnika u zamku, onemogućujući mu kretanje i osiguravajući pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira aktivno protivničke mlinove.",
-  "@focusOnBlockingPaths_Detail": {}
+  "focusOnBlockingPaths_Detail": "Tijekom određenih faza igre prioriziraj ometanje protivnika u pomicanju figura umjesto formiranje mlinova. Umjesto da se usredotoči na uklanjanje figura sastavljanjem mlinova, UI nastoji uhvatiti protivnika u zamku, onemogućiti mu pomicanje figura i osigurati pobjedu iscrpljivanjem, a ne agresivnom igrom. Ova strategija ne blokira protivničke mlinove aktivno.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Slika figure",
+  "@pieceImage": {},
+  "importColorSettings": "Uvezi postavke boja",
+  "@importColorSettings": {},
+  "exportColorSettings": "Izvezi postavke boja",
+  "@exportColorSettings": {},
+  "import": "Uvezi",
+  "@import": {},
+  "export": "Izvezi",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Najprije kopiraj postavke JSON formata u međuspremnik.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopirano u međuspremnik.",
+  "@copiedToClipboard": {},
+  "imported": "Uvezeno.",
+  "@imported": {},
+  "boardImage": "Slika ploče",
+  "@boardImage": {},
+  "autumnLeaves": "Jesensko lišće",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendarna zemlja",
+  "@legendaryLand": {},
+  "vignetteEffect": "Efekt vinjete",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Želiš li koristiti potpuno prozirnu alatnu traku kada je postavljena pozadinska slika ploče?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Uključi vibraciju u igri",
+  "@vibration": {},
+  "soundTheme": "Tema zvuka",
+  "@soundTheme": {},
+  "ball": "Lopta",
+  "@ball": {},
+  "liquid": "Tekućina",
+  "@liquid": {},
+  "wood": "Drvo",
+  "@wood": {},
+  "placeEffectAnimation": "Animacijski efekt postavljanja figure",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animacijski efekt uklanjanja figure",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Prikaži alatnu traku dolje",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Polumjer kuta ploče",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Koristi knjigu postavljanja figura",
+  "@useOpeningBook": {},
+  "currentRule": "Trenutačno",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Skup pravila",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Jednokratni mlin",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Dopusti UI-u da koristi otvarajuće poteze koje profesionalni ljudski igrači uobičajeno koriste u početku igre. Napomena: Ova je funkcija trenutačno dostupna samo za određene skupove pravila.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Prikaži graf prednosti",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Graf prednosti će se nacrtati samo nakon što UI napravi potez. Neće se nacrtati kada ljudski igrač napravi potez.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Onemogući uklanjanje dok sve figure nisu postavljene, zatim uklanjaj figure na temelju broja mlinova.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Onemogući uklanjanje dok sve figure nisu postavljene. Igrači uklanjaju figure na temelju broja mlinova: ako je broj jednak, oba igrača uklanjaju isti broj figura; ako netko ima više, uklanja dodatnu figuru i održava razliku od jedne figure. Ako samo jedan igrač formira mlin, on uklanja dvije figure, a drugi igrač jednu. Ako nijedan igrača ne formira mlin, oba igrača uklanjaju jednu vlastitu figuru.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Odaberi jednu tvoju figuru.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Nije vaš potez.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Boja pozadine alatne trake za bilješke",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Boja ikone alatne trake za bilješke",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Prikaži alatnu traku za bilješke",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Uđi u način bilješki",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Jeste li sigurni da želite ukloniti sve bilješke?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM upit je kopiran u međuspremnik.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Veza je odbijena, poslužitelj možda ne radi.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Otkrivanje uspješno, čeka se veza...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Nema LAN veze",
+  "@noLanConnection": {},
+  "takeScreenshot": "Napravite snimku zaslona",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Veza s protivnikom je prekinuta.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Zahtjev za povrat poteza",
+  "@takeBackRequest": {},
+  "nothingToShow": "Ništa za prikaz.",
+  "@nothingToShow": {},
+  "stopHosting": "Prekinite hostanje",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Veza je resetirana od strane suprotne strane.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Veza izgubljena zbog isteka vremena za heartbeat. Molimo ponovno se povežite.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Započni hostanje",
+  "@startHosting": {},
+  "restartRequestRejected": "Zahtjev za ponovno pokretanje je odbijen.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Niste povezani s LAN protivnikom.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM upit",
+  "@llmPrompt": {},
+  "gameRestarted": "Igra je ponovno pokrenuta.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Povrat poteza je odbijen.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Jeste li sigurni da želite predati ovu igru?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Protivnik se predao. Pobjeđujete!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Obrišite sve bilješke",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Povezano, čeka se protivnikov potez...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Status mreže: Prekinuta veza",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Zahtjev za povrat poteza poslan protivniku.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Protivnik je možda napustio igru",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Uspješno povezano s hostom.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Veza izgubljena: istek vremena za heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nema pronađenih hostova.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Potvrdi predaju",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Počelo hostanje igre, čeka se da se igrači pridruže...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Veza je istekla, mrežna veza je nestabilna.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Nema dostupnog LLM upita.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Predali ste se. Kraj igre.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP poslužitelja",
+  "@serverIp": {},
+  "confirmClear": "Potvrdi brisanje",
+  "@confirmClear": {},
+  "opponentSTurn": "Protivnikov potez.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Čeka se veza klijenta...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Zahtjev za povrat poteza je odbijen ili nije uspio.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Dodaj tekst",
+  "@addText": {},
+  "exitAnnotationMode": "Izađi iz načina bilješki",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Upišite svoju bilješku",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Pokušava se ponovno povezati...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Zahtjev za ponovno pokretanje poslan. Čeka se odgovor protivnika...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Poslužitelj je zaustavljen.",
+  "@serverIsStopped": {},
+  "restartRequest": "Zahtjev za ponovno pokretanje",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Ne možete zatražiti povrat poteza kada nije vaš potez.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Povrat poteza je prihvaćen.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Postavke lokalne mreže",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Uspješno ponovno povezivanje!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Spremanje slike u galeriju nije uspjelo.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Protivnik je zatražio ponovno pokretanje igre. Prihvaćate li?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Vaš potez.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Nije moguće ponovno se povezati, molimo ponovno pokrenite igru.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Pridruži se",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Nevažeća IP adresa.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Nevažeći port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Povezivanje: pokušaj {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Povezivanje nije uspjelo: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Pokretanje hostanja nije uspjelo: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Otkriven host: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Zaustavi",
+  "@stop": {},
+  "discover": "Otkrij",
+  "@discover": {},
+  "connect": "Poveži se",
+  "@connect": {},
+  "clientConnected": "Klijent se povezao: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Otkrivanje: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Ponovno povezivanje ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Povezano",
+  "@connected": {},
+  "delete": "Izbriši",
+  "@delete": {},
+  "ancientEgypt": "Drevni Egipat",
+  "@ancientEgypt": {},
+  "gothicIce": "Gotski Led",
+  "@gothicIce": {},
+  "riceField": "Rižino Polje",
+  "@riceField": {},
+  "chinesePorcelain": "Kineski Porculan",
+  "@chinesePorcelain": {},
+  "desertDusk": "Pustinjski Sumrak",
+  "@desertDusk": {},
+  "precisionCraft": "Precizni Zanat",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Narodni Vez",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpatsko Nasljeđe",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Carigradska Veličanstvenost",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Boemski Kristal",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanski Izlazak Sunca",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonija i Ravnoteža",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Cimetni Začin",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolijski Mozaik",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevalski Duh",
+  "@carnivalSpirit": {},
+  "custom": "Prilagođen",
+  "@custom": {},
+  "spiceMarket": "Tržnica začina",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Prijeđite prstom za prikaz ladice",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Prikaži informacije o igri na snimkama zaslona",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1,23 +1,8 @@
-// Malom, a Nine Men's Morris (and variants) player and solver program.
-// Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-// Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
-//
-// See our webpage (and the paper linked from there):
-// http://compalg.inf.elte.hu/~ggevay/mills/index.php
-//
-//
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// perfect_game_state.h
 
 #ifndef PERFECT_GAME_STATE_H_INCLUDED
 #define PERFECT_GAME_STATE_H_INCLUDED
@@ -30,7 +15,7 @@ class GameState
 {
 public:
     // The board (-1: empty, 0: white piece, 1: black piece)
-    std::vector<int> T = std::vector<int>(24, -1);
+    std::vector<int> board = std::vector<int>(24, -1);
     int phase = 1;
     // How many stones the players have set
     std::vector<int> setStoneCount = std::vector<int>(2, 0);
@@ -47,28 +32,28 @@ public:
 
     GameState(const GameState &s);
 
-    int futureStoneCount(int p);
+    int get_future_piece_count(int p);
 
     // Sets the state for Setup Mode: the placed stones are unchanged, but we
     // switch to phase 2.
-    void initSetup();
+    void init_setup();
 
-    void makeMove(CMove *M);
+    void make_move(CMove *M);
 
-    void checkValidMove(CMove *M);
+    void check_valid_move(CMove *M);
 
-    void checkInvariants();
+    void check_invariants();
 
     // Called when applying a free setup. It sets over and checks whether the
     // position is valid. Returns "" if valid, reason str otherwise. Also called
     // when pasting a position.
-    std::string setOverAndCheckValidSetup();
+    std::string set_over_and_check_valid_setup();
 
     // to paste from clipboard
     GameState(const std::string &s);
 
     // for clipboard
-    std::string toString();
+    std::string to_string();
 };
 
 class InvalidGameStateException : public std::exception

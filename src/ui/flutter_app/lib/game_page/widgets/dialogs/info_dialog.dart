@@ -1,23 +1,12 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// info_dialog.dart
 
 part of '../game_page.dart';
 
-class _InfoDialog extends StatelessWidget {
-  const _InfoDialog();
+class InfoDialog extends StatelessWidget {
+  const InfoDialog({super.key});
 
   String _infoText(BuildContext context) {
     final GameController controller = GameController();
@@ -50,7 +39,7 @@ class _InfoDialog extends StatelessWidget {
       buffer.writeln();
     }
 
-    final String? n1 = controller.gameRecorder.current?.notation;
+    final String? n1 = controller.gameRecorder.activeNode?.data?.notation;
 
     // Last Move information
     if (n1 != null) {
@@ -68,13 +57,17 @@ class _InfoDialog extends StatelessWidget {
 
       if (n1.startsWith("x")) {
         String moveNotation = "";
-        if (controller.gameRecorder.length == 1) {
+        if (controller.gameRecorder.mainlineMoves.length == 1) {
           // TODO: Right? (Issue #686)
           moveNotation = controller
-              .gameRecorder[controller.gameRecorder.length - 1].notation;
-        } else if (controller.gameRecorder.length >= 2) {
+              .gameRecorder
+              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 1]
+              .notation;
+        } else if (controller.gameRecorder.mainlineMoves.length >= 2) {
           moveNotation = controller
-              .gameRecorder[controller.gameRecorder.length - 2].notation;
+              .gameRecorder
+              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
+              .notation;
         }
         // Apply correct case based on screen reader setting
         moveNotation = DB().generalSettings.screenReaderSupport
@@ -141,10 +134,14 @@ class _InfoDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GamePageActionSheet(
+      key: const Key('info_dialog_game_page_action_sheet'),
       child: AlertDialog(
+        key: const Key('info_dialog_alert_dialog'),
         backgroundColor: UIColors.semiTransparentBlack,
         content: SingleChildScrollView(
+          key: const Key('info_dialog_single_child_scroll_view'),
           child: Text(
+            key: const Key('info_dialog_content_text'),
             _infoText(context),
             style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: AppTheme.gamePageActionSheetTextColor,
@@ -156,9 +153,9 @@ class _InfoDialog extends StatelessWidget {
         actions: <Widget>[
           if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS)
             TextButton(
+              key: const Key('info_dialog_more_button'),
               child: Text(
                 S.of(context).more,
-                key: const Key('infoDialogMoreButton'),
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: AppTheme.gamePageActionSheetTextColor,
                       fontSize:
@@ -172,6 +169,7 @@ class _InfoDialog extends StatelessWidget {
                 final String content = generateOptionsContent();
 
                 final Widget copyButton = TextButton(
+                  key: const Key('info_dialog_copy_button'),
                   child: Text(
                     copy,
                     style: TextStyle(
@@ -192,6 +190,7 @@ class _InfoDialog extends StatelessWidget {
                 );
 
                 final Widget okButton = TextButton(
+                    key: const Key('info_dialog_ok_button_more'),
                     child: Text(
                       ok,
                       style: TextStyle(
@@ -203,14 +202,17 @@ class _InfoDialog extends StatelessWidget {
                     });
 
                 final AlertDialog alert = AlertDialog(
+                  key: const Key('info_dialog_more_alert_dialog'),
                   title: Text(
                     S.of(context).more,
+                    key: const Key('info_dialog_more_alert_dialog_title'),
                     style: TextStyle(
                         fontSize:
                             AppTheme.textScaler.scale(AppTheme.largeFontSize)),
                   ),
                   content: Text(
                     content,
+                    key: const Key('info_dialog_more_alert_dialog_content'),
                     textDirection: TextDirection.ltr,
                   ),
                   actions: <Widget>[copyButton, okButton],
@@ -226,9 +228,9 @@ class _InfoDialog extends StatelessWidget {
               },
             ),
           TextButton(
+            key: const Key('info_dialog_ok_button'),
             child: Text(
               S.of(context).ok,
-              key: const Key('infoDialogOkButton'),
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: AppTheme.gamePageActionSheetTextColor,
                     fontSize: AppTheme.textScaler.scale(AppTheme.largeFontSize),

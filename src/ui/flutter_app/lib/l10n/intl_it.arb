@@ -32,11 +32,11 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Umano contro nuvola",
+  "humanVsCloud": "Umano contro Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Umani contro LAN",
+  "humanVsLAN": "Umano contro LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Mulino! Prendete il pezzo del vostro avversario.",
+  "tipMill": "Mulino! Rimuovete un pezzo dell'avversario.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -240,11 +240,11 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} dimettersi.",
+  "loseReasonResign": "{player} si è arreso.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} non ha modo di andare.",
+  "loseReasonNoWay": "{player} non ha mosse disponibili.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
@@ -264,7 +264,7 @@
   "@drawReasonBoardIsFull": {
     "description": "It is a Draw because the board is full"
   },
-  "drawReasonThreefoldRepetition": "È un Draw perché la tavola è piena.",
+  "drawReasonThreefoldRepetition": "È un pareggio a causa della triplice ripetizione.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Se Volare è abilitato, quando un giocatore è ridotto a un determinato numero di pezzi, i suoi pezzi sono liberi di muoversi verso qualsiasi punto non occupato, invece di essere limitati ai punti adiacenti come nel resto del gioco.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pezzi al minimo",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Il giocatore perde se il suo avversario lo blocca in modo che non possa essere mosso. Cambia lato per muovere se questa opzione è disabilitata.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Volare",
   "@mayFly": {
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Esci da",
+  "exit": "Esci",
   "@exit": {
     "description": "Exit"
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tocca un pezzo dell'avversario per rimuoverlo.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "È necessario creare un mulino prima di poter rimuovere un pezzo.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Stile di gioco dell'IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passivo",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Tocca di nuovo per uscire.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Più",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Se un giocatore rompe un mulino per creare immediatamente un nuovo mulino, tale giocatore può riportare tale pezzo all'incrocio originale nella sua prossima mossa se fa un nuovo mulino.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "La partita è patta se un giocatore ha tre pezzi e dopo dieci mosse nessun giocatore rimuove i pezzi dell'avversario",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "La pasta è fatta.",
+  "pasteDone": "Incollaggio completato.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Concentrati sul bloccare i percorsi",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Dai priorità all'ostruzione dei movimenti dell'avversario piuttosto che alla formazione dei mulini. Invece di concentrarsi sulla rimozione dei pezzi completando i mulini, l'IA mira a intrappolare l'avversario, rendendolo incapace di muoversi e garantendo una vittoria per logoramento piuttosto che per gioco aggressivo. Questa strategia non blocca attivamente i mulini dell'avversario.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Immagine del pezzo",
+  "@pieceImage": {},
+  "importColorSettings": "Importa impostazioni colore",
+  "@importColorSettings": {},
+  "exportColorSettings": "Esporta impostazioni colore",
+  "@exportColorSettings": {},
+  "import": "Importa",
+  "@import": {},
+  "export": "Esporta",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Si prega di copiare prima le impostazioni del formato JSON negli appunti.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiato negli appunti.",
+  "@copiedToClipboard": {},
+  "imported": "Importato.",
+  "@imported": {},
+  "boardImage": "Immagine della tavola",
+  "@boardImage": {},
+  "autumnLeaves": "Foglie d'Autunno",
+  "@autumnLeaves": {},
+  "legendaryLand": "Terra Leggendaria",
+  "@legendaryLand": {},
+  "vignetteEffect": "Effetto vignettatura",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Vuoi rendere la barra degli strumenti completamente trasparente quando viene impostata un'immagine di sfondo della tavola?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Attiva la vibrazione nel gioco",
+  "@vibration": {},
+  "soundTheme": "Tema del suono",
+  "@soundTheme": {},
+  "ball": "Palla",
+  "@ball": {},
+  "liquid": "Liquido",
+  "@liquid": {},
+  "wood": "Legno",
+  "@wood": {},
+  "placeEffectAnimation": "Effetto animazione di posizionamento pezzo",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Effetto animazione di rimozione pezzo",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Mostra la barra degli strumenti in basso",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raggio dell'angolo della tavola",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Usa libro di apertura",
+  "@useOpeningBook": {},
+  "currentRule": "Corrente",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Insieme di regole",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Consenti all'IA di utilizzare mosse di apertura comunemente impiegate dai giocatori umani professionisti durante le prime fasi del gioco. Nota: questa funzione è attualmente disponibile solo per specifici insiemi di regole.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mostra grafico del vantaggio",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Il grafico del vantaggio verrà disegnato solo dopo che l'IA effettua una mossa. Non verrà disegnato quando il giocatore umano effettua una mossa.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Disabilita la rimozione finché tutti i pezzi non sono posizionati. I giocatori rimuovono i pezzi in base al numero di mulini formati.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Disabilita la rimozione finché tutti i pezzi non sono posizionati. I giocatori rimuovono i pezzi in base al numero di mulini: se il numero è uguale, entrambi rimuovono lo stesso numero di pezzi; se uno ne ha di più, rimuove un pezzo in più, mantenendo la differenza di un solo pezzo. Se solo uno forma un mulino, rimuove due pezzi mentre l'altro ne rimuove uno. Se nessuno forma un mulino, entrambi rimuovono un pezzo.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Seleziona uno dei tuoi pezzi.",
+  "@tipSelectOwnPiece": {},
+"notYourTurn": "Non è il tuo turno.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti di annotazione",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Colore delle icone della barra degli strumenti di annotazione",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Mostra la barra degli strumenti di annotazione",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Entra in modalità annotazione",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Sei sicuro di voler cancellare tutte le annotazioni?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Prompt LLM copiato negli appunti.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Connessione rifiutata, il server potrebbe essere inattivo.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Rilevamento riuscito, in attesa di connessione...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Nessuna connessione LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Cattura screenshot",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Disconnesso dall'avversario.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Richiesta di ritiro mossa",
+  "@takeBackRequest": {},
+  "nothingToShow": "Niente da mostrare.",
+  "@nothingToShow": {},
+  "stopHosting": "Interrompi hosting",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Connessione resettata dal peer.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Connessione persa a causa del timeout dell'heartbeat. Riconnettiti.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Avvia hosting",
+  "@startHosting": {},
+  "restartRequestRejected": "Richiesta di riavvio respinta.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Non connesso all'avversario LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Prompt LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Gioco riavviato.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Ritiro mossa respinto.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Sei sicuro di voler abbandonare questa partita?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "L'avversario ha abbandonato. Hai vinto!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Cancella tutte le annotazioni",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Connesso, in attesa della mossa dell'avversario...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Stato della rete: Disconnesso",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Richiesta di ritiro mossa inviata all'avversario.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "L'avversario potrebbe aver lasciato la partita",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Connesso all'host con successo.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Connessione persa: timeout dell'heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nessun host rilevato.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Conferma abbandono",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Avviato hosting del gioco, in attesa che i giocatori si uniscano...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Connessione scaduta, connessione di rete instabile.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Nessun prompt LLM disponibile.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Hai abbandonato. Partita terminata.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP del server",
+  "@serverIp": {},
+  "confirmClear": "Conferma cancellazione",
+  "@confirmClear": {},
+  "opponentSTurn": "Turno dell'avversario.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "In attesa di una connessione client...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Richiesta di ritiro mossa respinta o fallita.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Aggiungi testo",
+  "@addText": {},
+  "exitAnnotationMode": "Esci dalla modalità annotazione",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Digita la tua annotazione",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Tentativo di riconnessione...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Richiesta di riavvio inviata. In attesa della risposta dell'avversario...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Il server è fermo.",
+  "@serverIsStopped": {},
+  "restartRequest": "Richiesta di riavvio",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Non puoi richiedere un ritiro mossa quando non è il tuo turno.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Ritiro mossa accettato.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Impostazioni di rete locale",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Riconnesso con successo!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Impossibile salvare l'immagine nella galleria.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "L'avversario ha richiesto di riavviare la partita. Accetti?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Il tuo turno.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Impossibile riconnettersi, riavvia il gioco.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Unisciti",
+  "@join": {},
+  "port": "Porta",
+  "@port": {},
+  "invalidIpAddress": "Indirizzo IP non valido.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Porta non valida.",
+  "@invalidPort": {},
+  "connectingAttempt": "Connessione: Tentativo {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Connessione fallita: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Avvio hosting fallito: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host rilevato: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Ferma",
+  "@stop": {},
+  "discover": "Rileva",
+  "@discover": {},
+  "connect": "Connetti",
+  "@connect": {},
+  "clientConnected": "Client connesso: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Rilevamento: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Riconnessione ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Connesso",
+  "@connected": {},
+  "delete": "Elimina",
+  "@delete": {},
+  "ancientEgypt": "Antico Egitto",
+  "@ancientEgypt": {},
+  "gothicIce": "Ghiaccio Gotico",
+  "@gothicIce": {},
+  "riceField": "Campo di Riso",
+  "@riceField": {},
+  "chinesePorcelain": "Porcellana Cinese",
+  "@chinesePorcelain": {},
+  "desertDusk": "Tramonto del Deserto",
+  "@desertDusk": {},
+  "precisionCraft": "Artigianato di Precisione",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Ricamo Folkloristico",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Eredità dei Carpazi",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Grandezza Imperiale",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Cristallo Boemo",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Alba nella Savana",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Armonia ed Equilibrio",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Spezia di Cannella",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Mosaico Anatolico",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Spirito del Carnevale",
+  "@carnivalSpirit": {},
+  "custom": "Costume",
+  "@custom": {},
+  "spiceMarket": "Mercato delle spezie",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Scorri per mostrare il cassetto",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Mostra le informazioni di gioco negli screenshot",
+  "@showGameInfoOnScreenshots": {}
 }

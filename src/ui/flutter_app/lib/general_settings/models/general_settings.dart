@@ -1,23 +1,14 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// general_settings.dart
 
 import 'package:copy_with_extension/copy_with_extension.dart';
-import 'package:flutter/foundation.dart' show immutable;
+import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import '../../generated/intl/l10n.dart';
 
 part 'general_settings.g.dart';
 
@@ -35,6 +26,16 @@ enum SearchAlgorithm {
   random,
 }
 
+@HiveType(typeId: 11)
+enum SoundTheme {
+  @HiveField(0)
+  ball,
+  @HiveField(1)
+  liquid,
+  @HiveField(2)
+  wood,
+}
+
 extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
@@ -48,6 +49,30 @@ extension SearchAlgorithmName on SearchAlgorithm {
         return 'MCTS';
       case SearchAlgorithm.random:
         return 'Random';
+    }
+  }
+}
+
+extension SoundThemeName on SoundTheme {
+  String get name {
+    switch (this) {
+      case SoundTheme.ball:
+        return 'ball';
+      case SoundTheme.liquid:
+        return 'liquid';
+      case SoundTheme.wood:
+        return 'wood';
+    }
+  }
+
+  String localeName(BuildContext context) {
+    switch (this) {
+      case SoundTheme.ball:
+        return S.of(context).ball;
+      case SoundTheme.liquid:
+        return S.of(context).liquid;
+      case SoundTheme.wood:
+        return S.of(context).wood;
     }
   }
 }
@@ -77,7 +102,7 @@ class GeneralSettings {
     this.resignIfMostLose = false,
     this.shufflingEnabled = true,
     this.learnEndgame = false,
-    this.openingBook = false,
+    @Deprecated('Use [useOpeningBook] instead') this.openingBook = false,
     @Deprecated(
         'This only represents the old algorithm type. Use [searchAlgorithm] instead')
     this.algorithm = 2,
@@ -97,82 +122,86 @@ class GeneralSettings {
     this.gameScreenRecorderPixelRatio = 50,
     this.showTutorial = true,
     this.remindedOpponentMayFly = false,
+    this.vibrationEnabled = false,
+    this.soundTheme = SoundTheme.ball,
+    this.useOpeningBook = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
   factory GeneralSettings.fromJson(Map<String, dynamic> json) =>
       _$GeneralSettingsFromJson(json);
 
-  @HiveField(0)
+  @HiveField(0, defaultValue: false)
   final bool isPrivacyPolicyAccepted;
 
-  @HiveField(1)
+  @HiveField(1, defaultValue: true)
   final bool toneEnabled;
 
-  @HiveField(2)
+  @HiveField(2, defaultValue: true)
   final bool keepMuteWhenTakingBack;
 
-  @HiveField(3)
+  @HiveField(3, defaultValue: false)
   final bool screenReaderSupport;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: false)
   final bool aiMovesFirst;
 
-  @HiveField(5)
+  @HiveField(5, defaultValue: false)
   final bool aiIsLazy;
 
-  @HiveField(6)
+  @HiveField(6, defaultValue: 1)
   final int skillLevel;
 
-  @HiveField(7)
+  @HiveField(7, defaultValue: 1)
   final int moveTime;
 
-  @HiveField(8)
+  @HiveField(8, defaultValue: false)
   final bool isAutoRestart;
 
-  @HiveField(9)
+  @HiveField(9, defaultValue: false)
   final bool isAutoChangeFirstMove;
 
-  @HiveField(10)
+  @HiveField(10, defaultValue: false)
   final bool resignIfMostLose;
 
-  @HiveField(11)
+  @HiveField(11, defaultValue: true)
   final bool shufflingEnabled;
 
-  @HiveField(12)
+  @HiveField(12, defaultValue: false)
   final bool learnEndgame;
 
-  @HiveField(13)
+  @Deprecated('Use [useOpeningBook] instead')
+  @HiveField(13, defaultValue: false)
   final bool openingBook;
 
   @Deprecated(
       'This only represents the old algorithm type. Use [searchAlgorithm] instead')
-  @HiveField(14)
+  @HiveField(14, defaultValue: 2)
   final int algorithm;
 
-  @HiveField(15)
+  @HiveField(15, defaultValue: true)
   final bool drawOnHumanExperience;
 
-  @HiveField(16)
+  @HiveField(16, defaultValue: true)
   final bool considerMobility;
 
   @Deprecated(
     "We won't export the developer settings anymore. People should use the EnvironmentConfig.devMode",
   )
-  @HiveField(17)
+  @HiveField(17, defaultValue: false)
   final bool developerMode;
 
   @Deprecated("Use [EnvironmentConfig.devMode] instead")
-  @HiveField(18)
+  @HiveField(18, defaultValue: false)
   final bool experimentsEnabled;
 
   @Deprecated(
     "As this is not a user facing preference we migrated it into another box",
   )
-  @HiveField(19)
+  @HiveField(19, defaultValue: false)
   final bool usesHiveDB;
 
-  @HiveField(20)
+  @HiveField(20, defaultValue: SearchAlgorithm.mtdf)
   final SearchAlgorithm? searchAlgorithm;
 
   @HiveField(21, defaultValue: true)
@@ -198,6 +227,15 @@ class GeneralSettings {
 
   @HiveField(28, defaultValue: false)
   final bool focusOnBlockingPaths;
+
+  @HiveField(29, defaultValue: false)
+  final bool vibrationEnabled;
+
+  @HiveField(30, defaultValue: SoundTheme.ball)
+  final SoundTheme? soundTheme;
+
+  @HiveField(31, defaultValue: false)
+  final bool useOpeningBook;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

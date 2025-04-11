@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// movegen.cpp
 
 #include "movegen.h"
 #include "mills.h"
@@ -100,20 +89,36 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 }
 
 /// generate<REMOVE> generates all removes.
-/// Returns a pointer to the end of the move moves.
+/// Returns a pointer to the end of the move list.
 template <>
 ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 {
     const Color us = pos.side_to_move();
     const Color them = ~us;
 
+    // Determine if we need to remove our own pieces based on pieceToRemoveCount
+    bool removeOwnPieces = pos.pieceToRemoveCount[us] < 0;
+
+    // Set the color of pieces to remove: own or opponent's
+    const Color removeColor = removeOwnPieces ? us : them;
+
     ExtMove *cur = moveList;
 
+    // Handle stalemate removal
     if (pos.is_stalemate_removal()) {
-        for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
-            if (pos.get_board()[s] & make_piece(them)) {
-                if (pos.is_adjacent_to(s, us) == true) {
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & make_piece(removeColor)) {
+                // If removing opponent's pieces, check adjacency to 'us'
+                // If removing own pieces, adjacency check may differ or be
+                // omitted
+                if (!removeOwnPieces && pos.is_adjacent_to(s, us)) {
+                    *cur++ = static_cast<Move>(-s);
+                }
+                // If removing own pieces, allow removal without adjacency
+                else if (removeOwnPieces) {
                     *cur++ = static_cast<Move>(-s);
                 }
             }
@@ -122,20 +127,27 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    if (pos.is_all_in_mills(them)) {
-        for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+    // Handle removal when all opponent's pieces are in mills
+    if (pos.is_all_in_mills(removeColor)) {
+        for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
-            if (pos.get_board()[s] & make_piece(them)) {
+
+            // Check if the square has a piece of the color to remove
+            if (pos.get_board()[s] & make_piece(removeColor)) {
                 *cur++ = static_cast<Move>(-s);
             }
         }
         return cur;
     }
 
-    // not is all in mills
-    for (auto i = SQUARE_NB - 1; i >= 0; i--) {
+    // Handle general removal (not all in mills)
+    for (int i = SQUARE_NB - 1; i >= 0; i--) {
         const Square s = MoveList<LEGAL>::movePriorityList[i];
-        if (pos.get_board()[s] & make_piece(them)) {
+
+        // Check if the square has a piece of the color to remove
+        if (pos.get_board()[s] & make_piece(removeColor)) {
+            // If the rule allows removing from mills always
+            // or the piece is not part of a potential mill, allow removal
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
                 *cur++ = static_cast<Move>(-s);
@@ -174,9 +186,6 @@ ExtMove *generate<LEGAL>(Position &pos, ExtMove *moveList)
         return generate<REMOVE>(pos, moveList);
 
     case Action::none:
-#ifdef FLUTTER_UI
-        LOGD("generate(): action = %hu\n", pos.get_action());
-#endif
         break;
     }
 

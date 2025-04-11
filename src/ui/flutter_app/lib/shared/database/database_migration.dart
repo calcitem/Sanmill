@@ -1,7 +1,10 @@
-// ignore_for_file: deprecated_member_use_from_same_package
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// database_migration.dart
 
 // This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 //
 // Sanmill is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -41,7 +44,6 @@ class _DatabaseMigration {
   ];
 
   /// Database Box reference
-  // ignore: always_specify_types
   static late Box<dynamic> _databaseBox;
 
   /// Key at which the [_databaseBox] will be saved
@@ -130,12 +132,19 @@ class _DatabaseMigration {
     );
 
     final ColorSettings colorSettings = DB().colorSettings;
+    final Color? lerpedColor = Color.lerp(
+      colorSettings.drawerColor,
+      colorSettings.drawerBackgroundColor,
+      0.5,
+    );
+
+    if (lerpedColor == null) {
+      logger.w("Color.lerp returned null. Using default drawerColor.");
+    }
+
     DB().colorSettings = colorSettings.copyWith(
-      drawerColor: Color.lerp(
-        colorSettings.drawerColor,
-        colorSettings.drawerBackgroundColor,
-        0.5,
-      )?.withAlpha(0xFF),
+      drawerColor: lerpedColor?.withAlpha(0xFF) ??
+          colorSettings.drawerColor.withAlpha(0xFF),
     );
 
     logger.t("$_logTag Migrated from v1");
@@ -209,11 +218,11 @@ class _DatabaseV1 {
     final Directory docDir = await getApplicationDocumentsDirectory();
 
     final File file = File("${docDir.path}/$fileName");
-    // ignore: avoid_slow_async_io
-    if (await file.exists()) {
-      return file;
-    }
-    return null;
+    return _checkFileExists(file);
+  }
+
+  static Future<File?> _checkFileExists(File file) async {
+    return file.existsSync() ? file : null;
   }
 
   /// Checks whether the current DB is still the old KV store by checking the availability of the json file

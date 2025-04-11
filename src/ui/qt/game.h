@@ -1,34 +1,17 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-/*
- * This class deals with the scene object QGraphicsScene
- * It is the only control module in MVC model of this program
- * It doesn't do any operation on the controls in the main window, only signals
- * the main window You could have overloaded QGraphicsScene to implement it and
- * saved the trouble of writing event filters But it doesn't look good to use
- * one scene class to do so many control module operations
- */
+// game.h
 
 #ifndef GAME_H_INCLUDED
 #define GAME_H_INCLUDED
 
+#include <atomic>
 #include <functional>
+#include <iostream>
 #include <map>
 #include <vector>
+#include <memory> // For smart pointers
 
 #include <QModelIndex>
 #include <QParallelAnimationGroup>
@@ -38,22 +21,29 @@
 #include <QStringListModel>
 #include <QTextStream>
 #include <QTime>
+#include <QObject> // Ensure QObject is included
 
 #include "client.h"
+#include "engine_controller.h"
 #include "database.h"
 #include "gamescene.h"
 #include "mills.h"
+#include "misc.h"
 #include "pieceitem.h"
 #include "position.h"
 #include "server.h"
+#include "search_engine.h"
 #include "stopwatch.h"
 #include "ai_shared_memory_dialog.h"
-#include "thread.h"
+// #include "thread.h" // No longer needed
 
 using std::cout;
 using std::endl;
 using std::fixed;
 using std::map;
+using std::vector;
+
+extern std::atomic<int> g_activeAiTasks;
 
 enum class GameSound {
     none,
@@ -93,8 +83,8 @@ public:
 
     using TransformFunc = std::function<void()>;
 
-    //  Main window menu bar details
-    static map<int, QStringList> getActions();
+    // Main window menu bar details
+    static map<int, QStringList> getRuleActions();
 
     int getRuleIndex() const noexcept { return ruleIndex; }
 
@@ -110,25 +100,25 @@ public:
 
     QStringListModel *getMoveListModel() { return &moveListModel; }
 
-    void setAiDepthTime(int time1, int time2);
-    void getAiDepthTime(int &time1, int &time2) const;
+    void setAiTimeLimits(int time1, int time2);
+    void getAiTimeLimits(int &time1, int &time2) const;
 
-    void humanResign();
+    void resignHumanPlayer();
 
     Position *getPosition() noexcept { return &position; }
 
     static char colorToChar(Color color);
     static std::string charToString(char ch);
-    void appendGameOverReasonToMoveList();
-    void setTips();
+    void recordGameOverReason();
+    void updateTips();
 
     const std::vector<std::string> *getMoveList() const
     {
         return &gameMoveList;
     }
 
-    time_t getElapsedTime(int color) const;
-    void updateTime();
+    time_t getElapsedSeconds(int color) const;
+    void updateElapsedTime();
 
 #ifdef NET_FIGHT_SUPPORT
     Server *server;
@@ -140,75 +130,78 @@ public:
 #endif
 
 private:
-    void initializeComponents();
-    void terminateComponents();
-    void resetComponents();
+    void initComponents();
+    void cleanupComponents();
+    void reinitComponents();
 
-    void initializeSceneBackground();
-    void initializeAiThreads();
-    void initializeDatabaseDialog();
-    void initializeSettings();
-    void initializeGameTest();
-    void initializeMetaTypes();
-    void initializeAiCommandConnections();
-    void initializeNetworkComponents();
-    void initializeEndgameLearning();
+    void initSceneBackground();
+    void initAiThreads();
+    void initDatabaseDialog();
+    void initSettings();
+    void initGameTest();
+    void initMetaTypes();
+    void initAiCommandConnections();
+    void initNetworkComponents();
+    void initEndgameLearning();
 
-    void terminateTimer();
-    void terminateThreads();
-    void finalizeEndgameLearning();
+    void stopGameTimer();
+    void stopThreads();
+    void finishEndgameLearning();
     void clearMoveList();
-    void destroySettings();
+    void cleanupSettings();
 
-    static void createRuleEntries(std::map<int, QStringList> &actions);
-    static std::pair<int, QStringList> createRuleEntry(int index);
+    static void buildRuleEntries(std::map<int, QStringList> &actions);
+    static std::pair<int, QStringList> buildRuleEntry(int index);
 
-    void waitForAiSearchCompletion();
-    void resetTimer();
-    void resetGameState();
-    void resetUIElements();
-    void resetAndUpdateTime();
-    void updateMoveList();
-    void updateStatusBar(bool reset = false);
-    void updateLcdDisplay();
-    void updateMiscellaneous();
+    void waitUntilAiSearchDone();
+    void stopTimer();
+    void clearGameState();
+    void resetUiComponents();
+    void reinitTimerAndEmitSignals();
+    void refreshMoveList();
+    void refreshStatusBar(bool reset = false);
+    void refreshLcdDisplay();
+    void updateMisc();
 
-    void resetMoveListReserveFirst();
-    void appendRecordToMoveList(const char *format, ...);
-    void resetPerfectAi();
-    void resetPositionState();
+    void resetMoveListKeepFirst();
+    void appendMoveRecord(const char *format, ...);
+    void resetPerfectAiEngine();
+    void resetPosition();
 
-    bool isValidRuleIndex(int ruleNo);
-    void updateLimits(int stepLimited, int timeLimited);
-    void resetElapsedSeconds();
-    void saveRuleSetting(int ruleNo);
+    bool isRuleIndexValid(int ruleNo);
+    void setMoveAndTimeLimits(int stepLimited, int timeLimited);
+    void clearElapsedTimes();
+    void storeRuleSetting(int ruleNo);
 
-    void reinitMoveListModel();
-    void updateMoveListModelFromMoveList(); // TODO
-    void handleGameOutcome();
-    void handleWinOrLoss();
-    void performAutoRestartActions();
-    void setEnginesForAiPlayers();
+    void resetMoveListModel();
+    void syncMoveListToModel(); // TODO
+    void processGameOutcome();
+    void processWinLoss();
+    void executeAutoRestart();
+    void assignAiEngines();
 
-    QString createSavePath() const;
-    void writePlayerType(QTextStream &textStream, const QString &color,
-                         bool isAi) const;
-    void writeGameStats(QTextStream &textStream) const;
+    QString buildSaveFilePath() const;
+    void outputPlayerType(QTextStream &textStream, const QString &color,
+                          bool isAi) const;
+    void outputGameStatistics(QTextStream &textStream) const;
 
-    static void performSoundPlay(const std::string &filename);
+    static void doPlaySound(const std::string &filename);
 
-    bool validateClick(QPointF p, File &f, Rank &r);
-    bool undoRecentMovesOnReview();
+    bool isValidBoardClick(QPointF p, File &f, Rank &r);
+    bool undoMovesIfReviewing();
     void initGameIfReady();
-    bool performAction(File f, Rank r, QPointF p);
-    void updateState(bool result);
+    bool applyBoardAction(File f, Rank r, QPointF p);
+    void updateGameState(bool result);
+    bool hasActiveAiTasks();
 
-    void animatePieceMovement(PieceItem *&deletedPiece);
-    void handleMarkedLocations();
-    void handleDeletedPiece(PieceItem *piece, int key,
+    void animatePieces(PieceItem *&deletedPiece);
+    void processMarkedSquares();
+    void handleRemovedPiece(PieceItem *piece, int key,
                             QParallelAnimationGroup *animationGroup,
                             PieceItem *&deletedPiece);
-    void selectCurrentAndDeletedPieces(PieceItem *deletedPiece);
+    void selectActiveAndRemovedPieces(PieceItem *deletedPiece);
+
+    void submitAiSearch();
 
 signals:
 
@@ -245,11 +238,14 @@ signals:
     // A signal that tells the main window to update the advantage bar
     void advantageChanged(qreal value);
 
+    // New signal to notify AI search completion
+    void aiSearchCompleted();
+
 public slots:
 
     // Set rules
 
-    void setRule(int ruleNo, int stepLimited = 100, int timeLimited = 0);
+    void applyRule(int ruleNo, int stepLimited = 100, int timeLimited = 0);
 
     // The game begins
     void gameStart();
@@ -258,16 +254,16 @@ public slots:
     void gameReset();
 
     // Set edit state
-    void setEditing(bool arg = true) noexcept;
+    void setEditingModeEnabled(bool arg = true) noexcept;
 
     // Set white and black inversion state
     // void invertPieceColor(bool arg = true);
 
     // If Id is 1, let the computer take the lead; if Id is 2, let the computer
     // take the second place
-    void setEngine(Color color, bool enabled = true);
-    void setEngineWhite(bool enabled);
-    void setEngineBlack(bool enabled);
+    void setEngineControl(Color color, bool enabled = true);
+    void setWhiteIsAiPlayer(bool enabled);
+    void setBlackIsAiPlayer(bool enabled);
 
     // Fix Window Size
     void setFixWindowSize(bool arg) noexcept;
@@ -276,16 +272,16 @@ public slots:
     void setAnimation(bool arg = true) noexcept;
 
     // Set the piece animation
-    QPropertyAnimation *createPieceAnimation(PieceItem *piece,
-                                             const QPointF &startPos,
-                                             const QPointF &endPos,
-                                             int duration);
+    QPropertyAnimation *buildPieceAnimation(PieceItem *piece,
+                                            const QPointF &startPos,
+                                            const QPointF &endPos,
+                                            int duration);
 
     // Is there a drop sound effect
     void setSound(bool arg = true) const noexcept;
 
     // Play the sound
-    void playSound(GameSound soundType);
+    void playGameSound(GameSound soundType);
 
     // Skill Level
     void setSkillLevel(int val) const;
@@ -338,46 +334,46 @@ public slots:
     // Does alpha beta search deepen iteratively
     void setIDS(bool enabled) const;
 
-    //  DepthExtension
+    // DepthExtension
     void setDepthExtension(bool enabled) const;
 
-    //  OpeningBook
+    // OpeningBook
     void setOpeningBook(bool enabled) const;
 
-    //  DeveloperMode
+    // DeveloperMode
     void setDeveloperMode(bool enabled) const;
 
     // Function to toggle piece color
-    void togglePieceColor();
+    void togglePieceColors();
 
     // Function to update piece color based on 'isInverted'
-    void updatePieceColor();
+    void updatePieceColors();
 
     // Function to swap the color of a single piece
-    void swapColor(PieceItem *pieceItem);
+    void swapPieceColor(PieceItem *pieceItem);
 
     // Function to execute a board transformation
-    void executeTransform(const TransformFunc &transform);
+    void applyTransform(const TransformFunc &transform);
 
     // Function to update UI components
-    void updateUIComponents();
+    void refreshUIComponents();
 
     // Function to synchronize the current scene based on move list
-    void syncScene(int row);
+    void syncSceneWithRow(int row);
 
     // Transformation functions
-    void flipVertically();
-    void flipHorizontally();
-    void rotateClockwise();
-    void RotateCounterclockwise();
+    void flipBoardVertically();
+    void flipBoardHorizontally();
+    void rotateBoardClockwise();
+    void rotateBoardCounterclockwise();
 
     // Implementation of the transformation functions
-    void mirrorAndRotate();
-    void applyMirror();
-    void rotateRight();
-    void rotateLeft();
+    void flipAndRotateBoard();
+    void applyHorizontalFlip();
+    void rotateBoardRight();
+    void rotateBoardLeft();
 
-    bool isAiToMove() const;
+    bool isAiSideToMove() const;
 
     void resetAiPlayers()
     {
@@ -385,89 +381,39 @@ public slots:
         isAiPlayer[BLACK] = false;
     }
 
-    void createAiThreads()
-    {
-        aiThread[WHITE] = new Thread(0);
-        aiThread[WHITE]->us = WHITE;
+    // Removed AI thread management methods
+    // void createAiThreads();
+    // void startAiThreads() const;
+    // void stopAndWaitAiThreads() const;
+    // void pauseThreads() const;
+    // void waitThreads() const;
+    // void pauseAndWaitThreads() const;
+    // void resumeAiThreads(Color c) const;
+    // void deleteAiThreads() const;
 
-        aiThread[BLACK] = new Thread(0);
-        aiThread[BLACK]->us = BLACK;
-    }
-
-    void startAiThreads() const
-    {
-        if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->start_searching();
-        }
-
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->start_searching();
-        }
-    }
-
-    void stopAndWaitAiThreads() const
-    {
-        if (isAiPlayer[WHITE]) {
-            aiThread[WHITE]->pause();
-            aiThread[WHITE]->wait_for_search_finished();
-        }
-        if (isAiPlayer[BLACK]) {
-            aiThread[BLACK]->pause();
-            aiThread[BLACK]->wait_for_search_finished();
-        }
-    }
-
-    void pauseThreads() const
-    {
-        aiThread[WHITE]->pause();
-        aiThread[BLACK]->pause();
-    }
-
-    void waitThreads() const
-    {
-        aiThread[WHITE]->wait_for_search_finished();
-        aiThread[BLACK]->wait_for_search_finished();
-    }
-
-    void pauseAndWaitThreads() const
-    {
-        pauseThreads();
-        waitThreads();
-    }
-
-    void resumeAiThreads(Color c) const
-    {
-        if (isAiPlayer[c]) {
-            aiThread[c]->start_searching();
-        }
-    }
-
-    void deleteAiThreads() const
-    {
-        delete aiThread[WHITE];
-        delete aiThread[BLACK];
-    }
+    // Slot to handle AI search completion
+    void handleAiSearchCompleted();
 
     // According to the signal and state of qgraphics scene, select, drop or
     // delete the sub objects
-    bool handleClick(QPointF point);
+    bool handleBoardClick(QPointF point);
 
     // Admit defeat
-    bool resign();
+    bool resignGame();
 
     // Command line execution of score
     bool command(const string &command, bool update = true);
-    GameSound identifySoundType(Action action);
-    void printStats();
-    void updateStatistics();
+    GameSound getSoundTypeForAction(Action action);
+    void printGameStatistics();
+    void updateGameStatistics();
 
     // Historical situation and situation change
-    bool updateBoardState(int row, bool forceUpdate = false);
-    bool applyPartialMoveList(int row);
+    bool refreshBoardState(int row, bool forceUpdate = false);
+    bool applyMoveListUntilRow(int row);
 
     // Update the game display. Only after each step can the situation be
     // refreshed
-    bool updateScene();
+    bool refreshScene();
 
 #ifdef NET_FIGHT_SUPPORT
     // The network configuration window is displayed
@@ -475,12 +421,12 @@ public slots:
 #endif
 
     // Show engine vs. window
-    void showTestWindow() const;
+    void displayTestWindow() const;
 
     // Show Perfect Database dialog
     void showDatabaseDialog() const;
 
-    void saveScore();
+    void saveGameScore();
 
     AiSharedMemoryDialog *getTest() const { return gameTest; }
 
@@ -490,15 +436,18 @@ protected:
     // bool eventFilter(QObject * watched, QEvent * event);
 
     // Timer
-    void initializeTime();
-    void terminateOrResetTimer();
-    void timerEvent(QTimerEvent *event) override;
-    void emitTimeSignals();
+    void initTimeLimit();
+    void stopActiveTimer();
+    void handleTimerEvent(QTimerEvent *event);
+    void emitTimeChangedSignals();
 
 private:
     // Data model of object
     Position position;
-    Color sideToMove;
+    // Color sideToMove;
+
+    SearchEngine searchEngine;
+    EngineController engineController;
 
     // Testing
     AiSharedMemoryDialog *gameTest;
@@ -506,8 +455,8 @@ private:
     // Perfect Database Dialog
     DatabaseDialog *databaseDialog {nullptr};
 
-    // 2 AI threads
-    Thread *aiThread[COLOR_NB];
+    // Removed AI thread pointers
+    // Thread *aiThread[COLOR_NB];
 
     // The scene class of game
     GameScene &scene;
@@ -531,7 +480,7 @@ public:
     const QString SETTINGS_FILE = "settings.ini";
     QSettings *settings {nullptr};
 
-    void loadSettings();
+    void loadGameSettings();
 
     bool fixWindowSizeEnabled() const { return fixWindowSize; }
 
@@ -540,9 +489,12 @@ public:
     bool animationEnabled() const { return hasAnimation; }
 
     // True when the computer takes the lead
-    bool isAiPlayer[COLOR_NB];
+    bool isAiPlayer[COLOR_NB] {false};
 
     string getTips() { return tips; }
+
+    unsigned int score[DRAW + 1] {0};
+    unsigned int gamesPlayedCount {0};
 
 private:
     // Fix Windows Size

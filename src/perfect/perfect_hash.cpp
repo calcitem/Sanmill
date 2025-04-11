@@ -1,25 +1,8 @@
-/*
-Malom, a Nine Men's Morris (and variants) player and solver program.
-Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-See our webpage (and the paper linked from there):
-http://compalg.inf.elte.hu/~ggevay/mills/index.php
-
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// perfect_hash.cpp
 
 #include "perfect_hash.h"
 #include "perfect_common.h"
@@ -111,14 +94,14 @@ Hash::Hash(int the_w, int the_b, Sector *sec)
         if (f_lookup[w] == -1) {
             for (int i = 0; i < 16; i++) {
                 // for(int i=15; i>=0; i--){
-                auto sw = sym24(i, w);
+                auto sw = sym24_transform(i, w);
                 f_lookup[sw] = c;
                 f_sym_lookup[sw] = inv[i];
                 f_sym_lookup2[sw] |= 1 << inv[i];
             }
             /*
-            We call a state canonical that can be hashed (i.e., the inv_hash may
-            return it). A partition is one that has a matching hash. The
+            We call a state canonical that can be hashed (i.e., the inverse_hash
+            may return it). A partition is one that has a matching hash. The
             previous loop sometimes writes to the same place in f_sym_lookup
             more than once. This corresponds to a table that can be symmetrized
             into several canonical states (that is, they match on the white
@@ -213,13 +196,13 @@ Hash::~Hash()
 
 std::pair<int, eval_elem2> Hash::hash(board a)
 {
-    a = sym48(f_sym_lookup[a & mask24], a);
+    a = sym48_transform(f_sym_lookup[a & mask24], a);
     int h1 = f_lookup[a & mask24] * binom[24 - W][B] + g_lookup[collapse(a)];
     eval_elem_sym2 e = s->get_eval_inner(h1);
     if (e.cas() != eval_elem_sym2::Sym)
         return std::make_pair(h1, e);
     else {
-        a = sym48(e.sym(), a);
+        a = sym48_transform(e.sym(), a);
         int h2 = f_lookup[a & mask24] * binom[24 - W][B] +
                  g_lookup[collapse(a)];
         assert(s->get_eval_inner(h2).cas() != eval_elem_sym2::Sym);
@@ -227,7 +210,7 @@ std::pair<int, eval_elem2> Hash::hash(board a)
     }
 }
 
-board Hash::inv_hash(int h)
+board Hash::inverse_hash(int h)
 {
     int m = binom[24 - W][B];
     int f = h / m, g = h % m;

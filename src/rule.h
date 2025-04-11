@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// rule.h
 
 #ifndef RULE_H_INCLUDED
 #define RULE_H_INCLUDED
@@ -25,6 +14,7 @@ enum class MillFormationActionInPlacingPhase {
     removeOpponentsPieceFromHandThenYourTurn = 2,
     opponentRemovesOwnPiece = 3,
     markAndDelayRemovingPieces = 4,
+    removalBasedOnMillCounts = 5,
 };
 
 enum class BoardFullAction {
@@ -115,7 +105,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 10;
+constexpr auto N_RULES = 11;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

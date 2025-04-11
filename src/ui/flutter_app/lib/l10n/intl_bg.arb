@@ -72,23 +72,23 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Изберете грешната част.",
+  "tipSelectWrong": "Избрали сте неправилната фигура.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Поставете парчетата си.",
+  "tipPlace": "Поставете фигурите си.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Не можете да го поставите тук.",
+  "tipBanPlace": "Не можете да я поставите тук.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Поставили сте.",
+  "tipPlaced": "Поставихте фигурите.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Премахнете някое парче.",
+  "tipRemove": "Премахнете фигура.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Премахнали сте.",
+  "tipRemoved": "Премахнахте фигурата.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -112,11 +112,11 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Мелница! Вземете фигурата на противника си.",
+  "tipMill": "Мелница! Премахнете фигура на противника.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Продължете да вземате фигурата на противника си.",
+  "tipContinueMill": "Продължете да премахвате фигурите на противника.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
@@ -124,11 +124,11 @@
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Не можете да извадите фигура от мелница.",
+  "tipCannotRemovePieceFromMill": "Не можете да премахнете фигура от мелница.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "Една фигура може да се придвижи с 1 точка.",
+  "tipCanMoveOnePoint": "Една фигура може да се премести с 1 поле.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
@@ -144,7 +144,7 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Можете да се придвижите до всяка точка, която пожелаете.",
+  "tipCanMoveToAnyPoint": "Можете да се преместите до всяко поле, което пожелаете.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Ако функцията \"Летяща фигура\" е активирана, когато броят на фигурите на даден играч е намален до определен брой, неговите фигури могат да се движат свободно до всяка незаета точка, вместо да бъдат ограничени до съседни точки, както е в останалата част от играта.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Най-малко фигури",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Играчът губи, ако противникът му ги блокира така, че да не могат да бъдат преместени. Променете страната за ход, ако тази опция е деактивирана.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Летящ",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Докоснете върху една от фигурите на противника, за да я премахнете.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Първо трябва да създадете мелница, преди да можете да премахнете фигура.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Стил на игра на AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пасивен",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Докоснете отново назад, за да излезете.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Още",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ако играч счупи мелница, за да създаде веднага нова мелница, той може да премести тази фигура обратно в оригиналния възел в следващия си ход, ако тя създава нова мелница.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Играта е реми, ако един от играчите има три фигури и след десет хода никой от тях не премахне фигурите на противника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Използвайте перфектна база данни",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Активирайте тази опция, за да използвате безупречна база данни за игри, генерирана чрез авангардни алгоритми. Тази функция интегрира както начална, така и крайна стратегия, за да предложи оптимални ходове. Това е предпочитаният избор за играчи, които търсят най-високо ниво на прецизност в играта. Създадена чрез щателни изчислителни техники, базата данни е проектирана да предлага почти перфектни решения за игри.\n\nЗабележка: Ако изкуственият интелект не успее да получи достъп до базата данни, той ще се обърне към конвенционални алгоритми за решения в играта. Когато базата данни е достъпна, „Нивото на трудност“ става практически непобедимо, а „Времето за мислене на AI“ претърпява драстично намаление. Много настройки в опциите на „AI's Playstyle“ ще бъдат заменени, тъй като резултатите от базата данни имат най-висок приоритет.\n\nЗа насоки как да се възползвате максимално от тази безупречна база данни, щракнете тук.",
+  "perfectDatabaseDescription": "Активирайте тази опция, за да използвате безупречна база данни за игри, генерирана чрез авангардни алгоритми. Тази функция интегрира както начална, така и крайна стратегия, за да предложи оптимални ходове. Това е предпочитаният избор за играчи, които търсят най-високо ниво на прецизност в играта. Създадена чрез щателни изчислителни техники, базата данни е проектирана да предлага почти перфектни решения за игри.\n\nЗабележка: Ако изкуственият интелект не успее да получи достъп до базата данни, той ще се обърне към конвенционални алгоритми за решения в играта. Когато базата данни е достъпна, „Нивото на трудност“ става практически непобедимо, а „Времето за мислене на AI“ претърпява драстично намаление. Много настройки в опциите на „AI's play style“ ще бъдат заменени, тъй като резултатите от базата данни имат най-висок приоритет.\n\nЗа насоки как да се възползвате максимално от тази безупречна база данни, щракнете тук.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Фоново изображение",
   "@backgroundImage": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Фокус върху блокиране на пътища",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Приоритизирайте блокирането на движението на противника вместо формирането на тройки. Вместо да се фокусирате върху премахването на фигури чрез завършване на тройки, AI цели да вкара противника в капан, като го направи неспособен да се движи и да осигури победа чрез изтощение, а не чрез агресивна игра. Тази стратегия не блокира активно тройките на противника.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Изображение на фигура",
+  "@pieceImage": {},
+  "importColorSettings": "Импортиране на настройки за цвят",
+  "@importColorSettings": {},
+  "exportColorSettings": "Експортиране на настройки за цвят",
+  "@exportColorSettings": {},
+  "import": "Импорт",
+  "@import": {},
+  "export": "Експорт",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Моля, първо копирайте настройките за формат JSON в клипборда.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Копирано в клипборда.",
+  "@copiedToClipboard": {},
+  "imported": "Импортирано.",
+  "@imported": {},
+  "boardImage": "Изображение на дъска",
+  "@boardImage": {},
+  "autumnLeaves": "Есенни листа",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарна земя",
+  "@legendaryLand": {},
+  "vignetteEffect": "Ефект винетка",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Бихте ли искали да направите лентата с инструменти напълно прозрачна, когато е зададена фоново изображение на дъската?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Активиране на вибрацията в играта",
+  "@vibration": {},
+  "soundTheme": "Тема на звука",
+  "@soundTheme": {},
+  "ball": "Топка",
+  "@ball": {},
+  "liquid": "Течност",
+  "@liquid": {},
+  "wood": "Дърво",
+  "@wood": {},
+  "placeEffectAnimation": "Анимационен ефект при поставяне на фигура",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анимационен ефект при премахване на фигура",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показване на лентата с инструменти в долната част",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус на ъгъла на дъската",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Използвайте книга за откриване",
+  "@useOpeningBook": {},
+  "currentRule": "Текущи",
+  "@currentRule": {},
+  "nineMensMorris": "Девет човека Мелница",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Дванадесет човека Мелница",
+  "@twelveMensMorris": {},
+  "morabaraba": "Моарабараба",
+  "@morabaraba": {},
+  "dooz": "Дуз",
+  "@dooz": {},
+  "chamGonu": "Чамгоно",
+  "@chamGonu": {},
+  "zhiQi": "Джичи",
+  "@zhiQi": {},
+  "chengSanQi": "Ченгсанчи",
+  "@chengSanQi": {},
+  "mulMulan": "Мул-Мулан",
+  "@mulMulan": {},
+  "nerenchi": "Неренчи",
+  "@nerenchi": {},
+  "ruleSet": "Комплект правила",
+  "@ruleSet": {},
+  "laskerMorris": "Ласкер Морис",
+  "@laskerMorris": {},
+  "oneTimeMill": "Еднократна мелница",
+  "@oneTimeMill": {},
+  "daSanQi": "Да Санчи",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Позволете на изкуствения интелект да използва начални ходове, често използвани от професионални човешки играчи по време на ранната игра. Забележка: Тази функция в момента е налична само за специфични комплекти правила.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Покажи графиката на предимството",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Графиката на предимството ще бъде изчертана само след като ИИ направи ход. Няма да бъде изчертана, когато човешкият играч направи ход.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Изключете премахването, докато всички пулове не бъдат поставени. Играчите премахват пулове въз основа на броя мелници.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Изключете премахването, докато всички пулове не бъдат поставени. Играчите премахват пулове въз основа на броя мелници: ако броят е равен, и двамата премахват еднакъв брой; ако единият има повече, той премахва една допълнителна пулка, запазвайки разлика от една пулка. Ако само един образува мелница, той премахва две пулки, а другият – една. Ако нито един не образува мелница, и двамата премахват по една пулка.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "Ел Филджа",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Изберете една от вашите фигури.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Не е ваш ред.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Цвят на фона на лентата с инструменти за анотации",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Цвят на иконите на лентата с инструменти за анотации",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Показване на лентата с инструменти за анотации",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Влизане в режим на анотации",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Сигурни ли сте, че искате да изчистите всички анотации?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Подкана за LLM копирана в клипборда.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Връзката е отказана, сървърът може да е изключен.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Откриването е успешно, очаква се връзка...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Няма LAN връзка",
+  "@noLanConnection": {},
+  "takeScreenshot": "Направи екранна снимка",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Прекъсната връзка с опонента.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Заявка за връщане",
+  "@takeBackRequest": {},
+  "nothingToShow": "Няма нищо за показване.",
+  "@nothingToShow": {},
+  "stopHosting": "Спиране на хостването",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Връзката е нулирана от партньора.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Връзката е загубена поради изтичане на времето за heartbeat. Моля, свържете се отново.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Стартиране на хостване",
+  "@startHosting": {},
+  "restartRequestRejected": "Заявката за рестартиране е отхвърлена.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Не е свързан с LAN опонент.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Подкана за LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Играта е рестартирана.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Връщането е отхвърлено.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Сигурни ли сте, че искате да се откажете от тази игра?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Опонентът се отказа. Вие печелите!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Изчистване на всички анотации",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Свързан, очаква се ход на опонента...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Състояние на мрежата: Прекъснато",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Заявка за връщане е изпратена до опонента.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Опонентът може да е напуснал играта",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Свързан успешно с хоста.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Връзката е загубена: изтичане на времето за heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Няма открит хост.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Потвърдете отказването",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Започнато хостване на игра, очакват се играчи да се присъединят...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Връзката изтече, мрежовата връзка е нестабилна.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Няма налична подкана за LLM.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Вие се отказахте. Играта приключи.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP на сървъра",
+  "@serverIp": {},
+  "confirmClear": "Потвърдете изчистването",
+  "@confirmClear": {},
+  "opponentSTurn": "Ред на опонента.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Очаква се връзка с клиент...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Заявката за връщане е отхвърлена или неуспешна.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Добавяне на текст",
+  "@addText": {},
+  "exitAnnotationMode": "Излизане от режим на анотации",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Въведете вашата анотация",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Опит за повторно свързване...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Заявка за рестартиране е изпратена. Очаква се отговор от опонента...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Сървърът е спрян.",
+  "@serverIsStopped": {},
+  "restartRequest": "Заявка за рестартиране",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Не можете да заявите връщане, когато не е ваш ред.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Връщането е прието.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Настройки на локалната мрежа",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Успешно повторно свързване!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Неуспешно запазване на изображението в галерията.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Опонентът поиска рестартиране на играта. Приемате ли?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ваш ред.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Не може да се свърже отново, моля, рестартирайте играта.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Хост",
+  "@host": {},
+  "join": "Присъединяване",
+  "@join": {},
+  "port": "Порт",
+  "@port": {},
+  "invalidIpAddress": "Невалиден IP адрес.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Невалиден порт.",
+  "@invalidPort": {},
+  "connectingAttempt": "Свързване: Опит {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Неуспешно свързване: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Неуспешно стартиране на хостване: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Открит хост: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Спри",
+  "@stop": {},
+  "discover": "Открий",
+  "@discover": {},
+  "connect": "Свържи се",
+  "@connect": {},
+  "clientConnected": "Клиентът е свързан: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Откриване: {seconds} с",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Повторно свързване ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Свързан",
+  "@connected": {},
+  "delete": "Изтрий",
+  "@delete": {},
+  "ancientEgypt": "Древен Египет",
+  "@ancientEgypt": {},
+  "gothicIce": "Готически Лед",
+  "@gothicIce": {},
+  "riceField": "Оризово Поле",
+  "@riceField": {},
+  "chinesePorcelain": "Китайски Порцелан",
+  "@chinesePorcelain": {},
+  "desertDusk": "Пустинен Здрач",
+  "@desertDusk": {},
+  "precisionCraft": "Прецизно Изкуство",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Народна Бродерия",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Карпатско Наследство",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Имперско Величие",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Бохемски Кристал",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Саванен Изгрев",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Хармония и Баланс",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Канелена Подправка",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Анатолийска Мозайка",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Карнавален Дух",
+  "@carnivalSpirit": {},
+  "custom": "Персонализиран",
+  "@custom": {},
+  "spiceMarket": "Пазар за подправки",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Плъзнете, за да се покаже чекмеджето",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показвай информация за играта върху екранни снимки",
+  "@showGameInfoOnScreenshots": {}
 }

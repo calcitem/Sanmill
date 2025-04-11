@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// types.dart
 
 part of '../mill.dart';
 
@@ -22,15 +11,15 @@ enum PieceColor { none, white, black, marked, nobody, draw }
 
 Color getAverageColor(Color a, Color b) {
   return Color.fromARGB(
-    (a.alpha + b.alpha) ~/ 2,
-    (a.alpha + b.red) ~/ 2,
-    (a.alpha + b.green) ~/ 2,
-    (a.alpha + b.blue) ~/ 2,
+    (a.a + b.a) ~/ 2,
+    (a.a + b.r) ~/ 2,
+    (a.a + b.g) ~/ 2,
+    (a.a + b.b) ~/ 2,
   );
 }
 
 Color getTranslucentColor(Color c, double opacity) {
-  return c.withOpacity(opacity);
+  return c.withValues(alpha: opacity);
 }
 
 extension PieceColorExtension on PieceColor {
@@ -175,7 +164,7 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get pieceColor {
+  Color get mainColor {
     final ColorSettings colorSettings = DB().colorSettings;
     switch (this) {
       case PieceColor.white:
@@ -212,10 +201,10 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get blurPositionColor => pieceColor.withOpacity(0.1);
+  Color get blurPositionColor => mainColor.withValues(alpha: 0.1);
 }
 
-enum AiMoveType { unknown, traditional, perfect, consensus }
+enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
 
 enum Phase { ready, placing, moving, gameOver }
 
@@ -244,6 +233,12 @@ extension PhaseExtension on Phase {
           return S.of(context).tipPlace;
         }
       case Phase.moving:
+        if (GameController()
+                .position
+                .pieceToRemoveCount[GameController().position.sideToMove]! !=
+            0) {
+          return S.of(context).tipRemove;
+        }
         return S.of(context).tipMove;
       case Phase.ready:
       case Phase.gameOver:
@@ -336,6 +331,17 @@ extension GameResultExtension on GameResult {
         return S.of(context).gameOver;
       case GameResult.draw:
         return S.of(context).isDraw;
+    }
+  }
+
+  String toNagString() {
+    switch (this) {
+      case GameResult.win:
+        return "1-0";
+      case GameResult.lose:
+        return "0-1";
+      case GameResult.draw:
+        return "1/2-1/2";
     }
   }
 }

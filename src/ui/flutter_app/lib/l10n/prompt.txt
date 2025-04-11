@@ -1,27 +1,30 @@
-Please translate the following contents of the arb file:
+Please translate the following contents of the arb file for Nine Men's Morris Game, output the complete arb file directly:
 
 ```json
-"currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
-"@currentRulesNoPerfectDatabase": {},
+  "tipSelectOwnPiece": "Select one of your pieces.",
+  "@tipSelectOwnPiece": {},
 ```
 
 into:
 
 ```
 intl_af.arb
+intl_am.arb
 intl_ar.arb
 intl_az.arb
 intl_be.arb
 intl_bg.arb
 intl_bn.arb
+intl_bo.arb
 intl_bs.arb
+intl_ca.arb
 intl_cs.arb
 intl_da.arb
 intl_de.arb
 intl_de_ch.arb
 intl_el.arb
 intl_en.arb
-intl _es.arb
+intl_es.arb
 intl_et.arb
 intl_fa.arb
 intl_fi.arb
@@ -36,7 +39,8 @@ intl_id.arb
 intl_is.arb
 intl_it.arb
 intl_ja.arb
-intl_kn. arb
+intl_km.arb
+intl_kn.arb
 intl_ko.arb
 intl_lt.arb
 intl_lv.arb
@@ -56,6 +60,7 @@ intl_sq.arb
 intl_sr.arb
 intl_sv.arb
 intl_sw.arb
+intl_ta.arb
 intl_te.arb
 intl_th.arb
 intl_tr.arb
@@ -68,11 +73,31 @@ intl_zh_Hant.arb
 intl_zu.arb
 ```
 
-The corresponding content. The format is as follows:
+The format is as follows:
 
 ```json
 // intl_en.arb
-  "currentRulesNoPerfectDatabase": "The current rules you have set do not have a corresponding perfect database. For more information about the perfect database, please click here.",
-  "@currentRulesNoPerfectDatabase": {},
+  "tipSelectOwnPiece": "Select one of your pieces.",
+  "@tipSelectOwnPiece": {},
+
+
+// intl_zh.arb
+  "tipSelectOwnPiece": "请选择自己的棋子。",
+  "@tipSelectOwnPiece": {},
 ```
 
+
+
+Here is a table outlining the translations of the term "mill":
+
+| **Language Code** | **Translation** |
+|-------------------|-----------------|
+| ko                | 참고누           |
+| si                | නෙරෙන්චි         |
+| id                | Mul-mulan       |
+| de                | mühle           |
+| zh_Hant           | 三連             |
+| zu                | Umlabalaba      |
+| af                | Morabaraba      |
+| zh                | 三连             |
+| fa                | دوز              |

@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// win32_window.cpp
+
 #include "win32_window.h"
 
 #include <flutter_windows.h>

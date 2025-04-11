@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_move_list.cpp
 
 #include <iomanip>
 #include <map>
@@ -46,7 +35,7 @@
 using std::to_string;
 
 // Helper function to handle snprintf and append to gameMoveList
-void Game::appendRecordToMoveList(const char *format, ...)
+void Game::appendMoveRecord(const char *format, ...)
 {
     char record[64] = {0};
     va_list args;
@@ -65,7 +54,7 @@ void Game::appendRecordToMoveList(const char *format, ...)
     }
 }
 
-void Game::resetMoveListReserveFirst()
+void Game::resetMoveListKeepFirst()
 {
     // Reset game history
     // WAR
@@ -76,7 +65,7 @@ void Game::resetMoveListReserveFirst()
     }
 }
 
-void Game::appendGameOverReasonToMoveList()
+void Game::recordGameOverReason()
 {
     if (position.phase != Phase::gameOver) {
         return;
@@ -84,35 +73,35 @@ void Game::appendGameOverReasonToMoveList()
 
     switch (position.gameOverReason) {
     case GameOverReason::loseNoLegalMoves:
-        appendRecordToMoveList(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
-                               position.winner);
+        appendMoveRecord(LOSE_REASON_NO_LEGAL_MOVES, position.sideToMove,
+                         position.winner);
         break;
     case GameOverReason::loseTimeout:
-        appendRecordToMoveList(LOSE_REASON_TIMEOUT, position.winner);
+        appendMoveRecord(LOSE_REASON_TIMEOUT, position.winner);
         break;
     case GameOverReason::drawThreefoldRepetition:
-        appendRecordToMoveList(DRAW_REASON_THREEFOLD_REPETITION);
+        appendMoveRecord(DRAW_REASON_THREEFOLD_REPETITION);
         break;
     case GameOverReason::drawFiftyMove:
-        appendRecordToMoveList(DRAW_REASON_FIFTY_MOVE);
+        appendMoveRecord(DRAW_REASON_FIFTY_MOVE);
         break;
     case GameOverReason::drawEndgameFiftyMove:
-        appendRecordToMoveList(DRAW_REASON_ENDGAME_FIFTY_MOVE);
+        appendMoveRecord(DRAW_REASON_ENDGAME_FIFTY_MOVE);
         break;
     case GameOverReason::loseFullBoard:
-        appendRecordToMoveList(LOSE_REASON_FULL_BOARD);
+        appendMoveRecord(LOSE_REASON_FULL_BOARD);
         break;
     case GameOverReason::drawFullBoard:
-        appendRecordToMoveList(DRAW_REASON_FULL_BOARD);
+        appendMoveRecord(DRAW_REASON_FULL_BOARD);
         break;
     case GameOverReason::drawStalemateCondition:
-        appendRecordToMoveList(DRAW_REASON_STALEMATE_CONDITION);
+        appendMoveRecord(DRAW_REASON_STALEMATE_CONDITION);
         break;
     case GameOverReason::loseFewerThanThree:
-        appendRecordToMoveList(LOSE_REASON_LESS_THAN_THREE, position.winner);
+        appendMoveRecord(LOSE_REASON_LESS_THAN_THREE, position.winner);
         break;
     case GameOverReason::loseResign:
-        appendRecordToMoveList(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
+        appendMoveRecord(LOSE_REASON_PLAYER_RESIGNS, ~position.winner);
         break;
     case GameOverReason::None:
         debugPrintf("No Game Over Reason");

@@ -1,6 +1,10 @@
 targets:
   $default:
     builders:
+      copy_with_extension_gen|copy_with_extension_gen:
+        enabled: true
+        generate_for:
+          - "**/models/**.dart"
       json_serializable|json_serializable:
         options:
           field_rename: pascal

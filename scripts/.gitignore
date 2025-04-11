@@ -1,0 +1,9 @@
+*.h
+*.c
+*.cpp
+*.py
+*.swift
+*.go
+*.m
+*.sh
+*.pl

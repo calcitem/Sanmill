@@ -8,7 +8,7 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "youWin": "あなたが勝つ！おめでとう！",
+  "youWin": "あなたは勝ちました！おめでとうございます！",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
@@ -46,7 +46,7 @@
   "@done": {
     "description": "Done."
   },
-  "showLegalMoves": "正当な動きを表示",
+  "showLegalMoves": "有効な手を表示",
   "@showLegalMoves": {
     "description": "Show legal moves"
   },
@@ -70,7 +70,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "noPoint": "意味が無い",
+  "noPoint": "ポイントなし",
   "@noPoint": {
     "description": "No point"
   },
@@ -78,11 +78,11 @@
   "@loadFailed": {
     "description": "Load failed."
   },
-  "paste": "貼付",
+  "paste": "貼り付け",
   "@paste": {
     "description": "Paste"
   },
-  "duration": "間隔",
+  "duration": "時間",
   "@duration": {},
   "noTimeLimitForThinking": "AI 思考時間を 0 に設定すると、思考の時間制限がなくなります。",
   "@noTimeLimitForThinking": {},
@@ -122,7 +122,7 @@
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "人間対LAN",
+  "humanVsLAN": "局域双戦",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -134,11 +134,11 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "リストを移動",
+  "showMoveList": "棋譜リスト",
   "@showMoveList": {
     "description": "Move list"
   },
-  "moveList": "リストを移動",
+  "moveList": "棋譜リスト",
   "@moveList": {
     "description": "Move list"
   },
@@ -158,11 +158,11 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "間違ったピースを選択してください。",
+  "tipSelectWrong": "誤ったピースが選択されました。",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "あなたの作品を置きます。",
+  "tipPlace": "ピースを配置してください。",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -170,11 +170,11 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "あなたが配置しました。",
+  "tipPlaced": "配置されました。",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "一片を取り除く。",
+  "tipRemove": "駒を1つ取り除く。",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -182,7 +182,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "削除しました。",
+  "tipRemoved": "削除されました。",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -198,7 +198,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "工場！相手の駒を取ります。",
+  "tipMill": "ミル成立！相手の駒を取ってください。",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -210,7 +210,7 @@
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "ミルからピースを取り除くことはできません。",
+  "tipCannotRemovePieceFromMill": "ミルから駒を取り除くことはできません。",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -272,7 +272,7 @@
   "@exportGame": {
     "description": "Export game"
   },
-  "gameImported": "ゲームが輸入されました。",
+  "gameImported": "ゲームがインポートされました。",
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
@@ -286,7 +286,7 @@
       }
     }
   },
-  "movesAndRulesNotMatch": "技とルールが一致しない。",
+  "movesAndRulesNotMatch": "指し手とルールが一致しません。",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -294,7 +294,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "現在のゲームを再開しますか?",
+  "restartGame": "現在のゲームをやり直しますか？",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -382,7 +382,7 @@
       }
     }
   },
-  "drawReasonRule50": "移動フェーズでは、最後の特定の数の移動でピースが取り除かれていません。",
+  "drawReasonRule50": "移動フェーズでは、最後の特定の数の移動で駒が取り除かれていません。",
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
@@ -412,7 +412,7 @@
       }
     }
   },
-  "youLose": "あなたが負ける！",
+  "youLose": "あなたは負けました。",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -458,7 +458,7 @@
   "@moveTime": {
     "description": "AI thinking time"
   },
-  "difficulty": "困難",
+  "difficulty": "難易度",
   "@difficulty": {
     "description": "Difficulty"
   },
@@ -470,11 +470,11 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "テイクバック時はミュート",
+  "keepMuteWhenTakingBack": "手戻り中はミュート",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
-  "tone": "調子",
+  "tone": "音色",
   "@tone": {
     "description": "Tone"
   },
@@ -490,11 +490,11 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "代わりの",
+  "alternate": "交互",
   "@alternate": {
     "description": "Alternate"
   },
-  "isAutoRestart": "ゲームオーバー時にゲームを自動再開",
+  "isAutoRestart": "ゲームオーバー時に自動でやり直す",
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
@@ -524,9 +524,9 @@
   },
   "flyPieceCount_Detail": "フライングが有効になっている場合、プレーヤーが特定のピース数に減ると、ゲームの残りの部分のように隣接するポイントに制限されるのではなく、空いているポイントに自由に移動できます。",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "少なくともピース",
+  "piecesAtLeastCount": "最低駒数",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -546,7 +546,7 @@
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "プレーヤーが一度に複数の工場を閉鎖した場合、閉鎖した工場の数が削除されます。",
+  "mayRemoveMultiple_Detail": "プレーヤーが一度に複数のミルを完成させた場合、完成させたミルの数だけ駒を取り除けます。",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
@@ -554,7 +554,7 @@
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
-  "mayRemoveFromMillsAlways_Detail": "デフォルトでは、プレーヤーは形成されたミルからピースを取り除く前に、他のピースを最初に取り除く必要があります。制限を無効にするには、このオプションを有効にします。",
+  "mayRemoveFromMillsAlways_Detail": "デフォルトでは、プレーヤーは形成されたミルから駒を取り除く前に、他の駒を最初に取り除く必要があります。制限を無効にするには、このオプションを有効にします。",
   "@mayRemoveFromMillsAlways_Detail": {
     "description": "mayRemoveFromMillsAlways_Detail"
   },
@@ -570,9 +570,9 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "対戦相手がそれらをブロックして移動できないようにすると、プレイヤーは負けます。このオプションが無効になっている場合は、移動する側を変更します。",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "このオプションが無効になっている場合は、手番を交代します。",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "飛行",
   "@mayFly": {
@@ -598,7 +598,7 @@
   "@pleaseSelect": {
     "description": "Please select"
   },
-  "copy": "複写",
+  "copy": "コピー",
   "@copy": {
     "description": "Copy"
   },
@@ -642,11 +642,11 @@
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "選手1枚カラー",
+  "whitePieceColor": "プレイヤー1の駒の色",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "選手2ピースカラー",
+  "blackPieceColor": "プレイヤー2の駒の色",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
@@ -666,11 +666,11 @@
   "@isHistoryNavigationToolbarShown": {
     "description": "Show history navigation toolbar"
   },
-  "display": "画面",
+  "display": "表示",
   "@display": {
     "description": "Display"
   },
-  "boardBorderLineWidth": "基板境界線幅",
+  "boardBorderLineWidth": "盤の境界線の幅",
   "@boardBorderLineWidth": {
     "description": "Board borderline width"
   },
@@ -736,15 +736,15 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "相手のワンピースをタップして取り除きます。",
+  "toRemovePiece": "相手の駒を1つタップして取り除きます。",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "ピースを削除する前に、ミルを作成する必要があります。",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "あなたはあなたの作品で遊ぶ必要があります。",
+  "needToPlayWithOwnPieces": "自分の駒でプレイする必要があります。",
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
@@ -776,7 +776,7 @@
   "@accept": {
     "description": "Accept"
   },
-  "takeBack": "取り戻す",
+  "takeBack": "待った",
   "@takeBack": {
     "description": "Take back"
   },
@@ -784,11 +784,11 @@
   "@stepForward": {
     "description": "Step forward"
   },
-  "takeBackAll": "すべてを取り戻す",
+  "takeBackAll": "全手戻り",
   "@takeBackAll": {
     "description": "Take back all"
   },
-  "stepForwardAll": "全員で前に進む",
+  "stepForwardAll": "最後まで進む",
   "@stepForwardAll": {
     "description": "Step forward all"
   },
@@ -800,7 +800,7 @@
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "プレーヤーがミルにピースしかない場合、ミルのピースはロックされずに削除されます。",
+  "crackMill_Detail": "プレーヤーがミルに駒しかない場合、ミルの駒はロックされずに削除されます。",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -816,7 +816,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "ゲームの目的は、対戦相手のピースを 3 つ未満にするか、正当な動きをなくすことです。\n\nポジションが 3 回目に発生するか、最後の 100 回 (設定可能) の動きで削除しない場合、ゲームは自動的に引き分けます。\n\nゲームは次の 3 つのフェーズで進行します。\n\n1.空いた場所に駒を置く\n2. ピースを隣接するポイントに移動する\n3. (オプションのフェーズ) プレイヤーを 3 ピースに減らすときに、空いているポイントにピースを移動する\n\n配置する\n\nゲームは、24 ポイントのグリッドで構成される空のボードから始まります。プレイヤーは、各プレイヤーがすべてのピースをボードに配置するまで、空いているポイントに順番にピースを配置します。プレイヤーが自分の駒を 3 つ並べることができる場合、そのプレイヤーは「ミル」を持ち、対戦相手の駒の 1 つをボードから取り除くことができます。\n\n一部のルールでは、プレーヤーは形成されたミルからピースを取り除く前に、他のピースを最初に取り除く必要があります。\n\nルールによっては、配置フェイズで取り除いた駒のポイントに駒を再配置できない場合があります。\n\nすべてのピースを使用すると、プレーヤーは交代で移動します。\n\n移動中\n\n移動するには、プレイヤーは駒の 1 つをボード ラインに沿って空いている隣接ポイントに移動します。それができない場合、彼はゲームに負けたことになります。ボード ライン上に自分の駒を 3 つ並べたプレーヤーはミルを持ち、配置フェイズと同様に対戦相手の駒の 1 つを取り除くことができます。どのプレイヤーも 2 ピースに減り、新しいミルを形成する選択肢がないため、ゲームに負けます。対戦相手が移動をブロックした場合、プレーヤーは 3 個以上のピースを失うこともあります。\n\n飛行\n\nルールのいくつかのバリエーションでは、プレイヤーがピースを 3 つしか残せなくなると、そのピースは、隣接するポイントだけでなく、空いているポイントに飛んだり、ホップしたり、ジャンプしたりできます。\n",
+  "helpContent": "ゲームの目的は、対戦相手の駒を 3 つ未満にするか、正当な動きをなくすことです。\n\n局面が 3 回目に発生するか、最後の 100 回 (設定可能) の動きで削除しない場合、ゲームは自動的に引き分けます。\n\nゲームは次の 3 つのフェーズで進行します。\n\n1.空いた場所に駒を置く\n2. ピースを隣接するポイントに移動する\n3. (オプションのフェーズ) プレイヤーを 3 ピースに減らすときに、空いているポイントにピースを移動する\n\n配置する\n\nゲームは、24 ポイントのグリッドで構成される空のボードから始まります。プレイヤーは、各プレイヤーがすべての駒をボードに配置するまで、空いているポイントに順番に駒を配置します。プレイヤーが自分の駒を 3 つ並べることができる場合、そのプレイヤーは「ミル」を持ち、対戦相手の駒の 1 つをボードから取り除くことができます。\n\n一部のルールでは、プレーヤーは形成されたミルから駒を取り除く前に、他の駒を最初に取り除く必要があります。\n\nルールによっては、配置フェイズで取り除いた駒のポイントに駒を再配置できない場合があります。\n\nすべての駒を使用すると、プレーヤーは交代で移動します。\n\n移動中\n\n移動するには、プレイヤーは駒の 1 つをボード ラインに沿って空いている隣接ポイントに移動します。それができない場合、彼はゲームに負けたことになります。ボード ライン上に自分の駒を 3 つ並べたプレーヤーはミルを持ち、配置フェイズと同様に対戦相手の駒の 1 つを取り除くことができます。どのプレーヤーも 2 駒に減り、新しいミルを形成する選択肢がないため、ゲームに負けます。対戦相手が移動をブロックした場合、プレーヤーは 3 個以上の駒を失うこともあります。\n\n飛行\n\nルールのいくつかのバリエーションでは、プレイヤーが駒を 3 つしか残せなくなると、その駒は、隣接するポイントだけでなく、空いているポイントに飛んだり、ホップしたり、ジャンプしたりできます。\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -840,7 +840,7 @@
   "@appVersion": {
     "description": "App Version"
   },
-  "general": "全般的",
+  "general": "一般",
   "@general": {
     "description": "General"
   },
@@ -856,17 +856,17 @@
   "@moving": {
     "description": "Moving"
   },
-  "removing": "削除する",
+  "removing": "駒取り段階",
   "@removing": {
     "description": "Removing"
   },
-  "gameOverCondition": "ゲームオーバー状態",
+  "gameOverCondition": "ゲーム終了条件",
   "@gameOverCondition": {
     "description": "Game over condition"
   },
   "aisPlayStyle": "AIのプレイスタイル",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "受け身",
   "@passive": {
@@ -906,7 +906,7 @@
       }
     }
   },
-  "onBoard": "{player} オンボード: {count}",
+  "onBoard": "{player} 盤上: {count}",
   "@onBoard": {
     "description": "The pieces a player has on the board",
     "placeholders": {
@@ -938,7 +938,7 @@
   },
   "tapBackAgainToLeave": "戻るにはもう一度タップします。",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "もっと",
   "@more": {
@@ -1036,7 +1036,7 @@
   "@light": {
     "description": "Light"
   },
-  "dark": "暗い",
+  "dark": "ダーク",
   "@dark": {
     "description": "Dark"
   },
@@ -1068,7 +1068,7 @@
   "@loadGame": {
     "description": "Load game"
   },
-  "setupPosition": "設置位置",
+  "setupPosition": "局面設定",
   "@setupPosition": {
     "description": "Setup position"
   },
@@ -1096,13 +1096,13 @@
   "@helpImproveTranslate": {
     "description": "Help improve translate"
   },
-  "mayBreakAndRemakeMillRepeatedly": "製粉機は壊れては作り直しを繰り返してもよい",
+  "mayBreakAndRemakeMillRepeatedly": "ミルは壊してすぐに別のミルを作ってもよい",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "プレーヤーが工場を壊してすぐに新しい工場を作成した場合、そのプレーヤーは、新しい工場を作成する場合、次の移動でそのピースを元のジャンクションに戻すことができます。",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "そのプレーヤーは、新しいミルを作る場合、次の手でその駒を元の点に戻すことができます。",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "プレーヤーが 3 つのピースを持っていて、10 回の移動後にどちらのプレーヤーも対戦相手のピースを削除しない場合、ゲームは引き分けになります。",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1112,7 +1112,7 @@
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
-  "close": "近い",
+  "close": "閉じる",
   "@close": {
     "description": "Close"
   },
@@ -1132,7 +1132,7 @@
   "@placingPhase": {
     "description": "Placing phase"
   },
-  "movingPhase": "移動相",
+  "movingPhase": "移動段階",
   "@movingPhase": {
     "description": "Moving phase"
   },
@@ -1176,7 +1176,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "描く",
+  "draw": "引き分け",
   "@draw": {
     "description": "Draw"
   },
@@ -1192,7 +1192,7 @@
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "endgameNMoveRule_Detail": "いずれかのプレーヤーが 3 つのピースしか持っておらず、どちらのプレーヤーも特定の移動内でピースを削除しない場合、ゲームは引き分けになります。",
+  "endgameNMoveRule_Detail": "いずれかのプレーヤーが 3 つの駒しか持っておらず、どちらのプレーヤーも特定の移動内で駒を削除しない場合、ゲームは引き分けになります。",
   "@endgameNMoveRule_Detail": {
     "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
   },
@@ -1204,11 +1204,11 @@
   "@threefoldRepetitionRule": {
     "description": "Threefold repetition rule"
   },
-  "threefoldRepetitionRule_Detail": "ポジションが 3 回目に発生した場合、ゲームは引き分けになります。",
+  "threefoldRepetitionRule_Detail": "局面が3回同じになった場合、引き分けになります。",
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "工場！動き続けます。",
+  "continueToMakeMove": "ミル成立！さらに動きを続けてください。",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
@@ -1220,7 +1220,7 @@
   "@pointWidth": {
     "description": "Point width"
   },
-  "solid": "個体",
+  "solid": "塗りつぶし",
   "@solid": {
     "description": "Solid"
   },
@@ -1232,7 +1232,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{ステップ}=1{{count} ステップ}other{{count} ステップ}}",
+  "moveNumber": "{count}手",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1262,7 +1262,7 @@
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "noMove": "動きません。",
+  "noMove": "指し手なし",
   "@noMove": {
     "description": "No move."
   },
@@ -1270,7 +1270,7 @@
   "@restoredPosition": {
     "description": "Restored initial position."
   },
-  "clean": "綺麗",
+  "clean": "クリア",
   "@clean": {
     "description": "Clean"
   },
@@ -1286,7 +1286,7 @@
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} 個}other{{count} 個}} 削除する必要があります。",
+  "pieceCountNeedToRemove": "{count}個の駒を削除する必要があります。",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1310,7 +1310,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "現在のプレイヤーは {count} 個のピースを配置しました。",
+  "hasPlacedPieceCount": "現在のプレイヤーは {count} 個の駒を配置しました。",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
@@ -1320,7 +1320,7 @@
       }
     }
   },
-  "notPlacingPhase": "フェーズを配置しないと、変更できません。",
+  "notPlacingPhase": "配置フェーズではありません。変更できません。",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
@@ -1410,15 +1410,15 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "駒を動かせない場合の次のアクションは?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "ブロックされた側の膠着状態の損失で終了します。",
+  "endWithStalemateLoss": "ブロックされた側のステイルメイトによる負けで終了します。",
   "@endWithStalemateLoss": {},
-  "changeSideToMove": "移動する側を変更します。",
+  "changeSideToMove": "手番を交代します。",
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "対戦相手の駒を1つ取り除き、次の動きをします。",
   "@removeOpponentsPieceAndMakeNextMove": {},
   "endWithStalemateDraw": "膠着状態の引き分けで終了。",
   "@endWithStalemateDraw": {},
-  "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1つ取り除き、移動する面を変える。",
+  "removeOpponentsPieceAndChangeSideToMove": "相手の駒を1つ取り除き、手番を交代します。",
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "AI 応答遅延時間",
   "@aiResponseDelayTime": {},
@@ -1462,7 +1462,7 @@
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "局面の有利不利インジケーターを表示",
   "@showPositionalAdvantageIndicator": {},
-  "usePerfectDatabase": "使用完璧なデータベース",
+  "usePerfectDatabase": "完璧なデータベースを使用する",
   "@usePerfectDatabase": {},
   "perfectDatabaseDescription": "このオプションを有効にすると、最先端のアルゴリズムによって生成された完璧なゲームデータベースが使用されます。この機能は、オープニングとエンドゲームの戦略を統合して、最適な手を提案します。ゲームプレイにおいて最高レベルの精度を求めるプレイヤーにとって、これは優先される選択肢です。厳密な計算技術を通じて作成されたこのデータベースは、ほぼ完璧なゲームソリューションを提供するよう設計されています。\n\n注意：AIがデータベースにアクセスできない場合は、ゲームプレイの決定のために従来のアルゴリズムに切り替わります。データベースが利用可能な場合、「難易度レベル」は事実上無敵になり、「AIの思考時間」は大幅に短縮されます。'AIのプレイスタイル' オプション内の多くの設定も上書きされるでしょう、なぜならデータベースの結果が最優先されるからです。\n\nこの完璧なデータベースを最大限に活用する方法については、こちらをクリックしてください。",
   "@perfectDatabaseDescription": {},
@@ -1539,5 +1539,313 @@
   "focusOnBlockingPaths": "ブロッキングパスに集中する",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "ミルの形成よりも対戦相手の動きを妨害することを優先します。ミルを完成させてピースを取り除くことに焦点を当てるのではなく、AIは対戦相手を罠にかけ、動けなくして、攻撃的なプレイではなく消耗戦を通じて勝利を確保します。この戦略は、対戦相手のミルを積極的にブロックするものではありません。",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "駒の画像",
+  "@pieceImage": {},
+  "importColorSettings": "カラー設定をインポート",
+  "@importColorSettings": {},
+  "exportColorSettings": "カラー設定をエクスポート",
+  "@exportColorSettings": {},
+  "import": "インポート",
+  "@import": {},
+  "export": "エクスポート",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "最初に JSON 形式の設定をクリップボードにコピーしてください。",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "クリップボードにコピーされました。",
+  "@copiedToClipboard": {},
+  "imported": "インポートされました。",
+  "@imported": {},
+  "boardImage": "ボード画像",
+  "@boardImage": {},
+  "autumnLeaves": "秋の葉",
+  "@autumnLeaves": {},
+  "legendaryLand": "伝説の地",
+  "@legendaryLand": {},
+  "vignetteEffect": "ビネット効果",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "ボードの背景画像が設定されたときに、ツールバーを完全に透明にしますか？",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "ゲーム内でバイブレーションを有効にする",
+  "@vibration": {},
+  "soundTheme": "サウンドテーマ",
+  "@soundTheme": {},
+  "ball": "ボール",
+  "@ball": {},
+  "liquid": "液体",
+  "@liquid": {},
+  "wood": "木",
+  "@wood": {},
+  "placeEffectAnimation": "駒を置くアニメーション効果",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "駒を取り除くアニメーション効果",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "ツールバーを下部に表示",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "ボードの角の半径",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "オープニングブックを使用する",
+  "@useOpeningBook": {},
+  "currentRule": "現在のルール",
+  "@currentRule": {},
+  "nineMensMorris": "ナイン・メンズ・モリス",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "トゥエルブ・メンズ・モリス",
+  "@twelveMensMorris": {},
+  "morabaraba": "モラバラバ",
+  "@morabaraba": {},
+  "dooz": "ドゥズ",
+  "@dooz": {},
+  "chamGonu": "朝鮮モリス",
+  "@chamGonu": {},
+  "zhiQi": "中国モリス (ジーチー)",
+  "@zhiQi": {},
+  "chengSanQi": "中国モリスバリエーション 1 (チェンサンチー)",
+  "@chengSanQi": {},
+  "mulMulan": "インドネシアモリス",
+  "@mulMulan": {},
+  "nerenchi": "スリランカモリス",
+  "@nerenchi": {},
+  "ruleSet": "ルールセット",
+  "@ruleSet": {},
+  "laskerMorris": "ラスカー・モリス",
+  "@laskerMorris": {},
+  "oneTimeMill": "ワンタイムミル",
+  "@oneTimeMill": {},
+  "daSanQi": "中国モリスバリエーション 2 (ダーサンチー)",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "初期ゲームでプロの人間プレーヤーが一般的に使用するオープニングムーブをAIが使用するようにします。注: この機能は現在、特定のルールセットでのみ利用可能です。",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "有利グラフを表示",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "有利度グラフはAIが手を打った後にのみ描画されます。人間のプレイヤーが手を打つときには描画されません。",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "すべての駒が配置されるまで駒の除去を無効にします。プレイヤーはミルの数に基づいて駒を取り除きます。",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "すべての駒が配置されるまで駒の除去を無効にします。プレイヤーはミルの数に基づいて駒を取り除きます。同数であれば、両者は同じ数の駒を取り除きます。一方が多い場合は、一つ余分に取り除き、駒の差を一つに保ちます。一方のみがミルを形成した場合、そのプレイヤーは二つの駒を取り除き、もう一方は一つの駒を取り除きます。どちらもミルを形成しない場合は、両者とも一つずつ取り除きます。",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "エル・フィルジャ",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "自分のコマを1つ選んでください。",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "あなたのターンではありません。",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "注釈ツールバーの背景色",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "注釈ツールバーのアイコン色",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "注釈ツールバーを表示",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "注釈モードに入る",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "すべての注釈をクリアしてもよろしいですか？",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLMプロンプトがクリップボードにコピーされました。",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "接続が拒否されました。サーバーがダウンしている可能性があります。",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "検出に成功しました。接続を待機中...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "LAN接続がありません",
+  "@noLanConnection": {},
+  "takeScreenshot": "スクリーンショットを撮る",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "対戦相手との接続が切断されました。",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "「待った」の要求",
+  "@takeBackRequest": {},
+  "nothingToShow": "表示するものがありません。",
+  "@nothingToShow": {},
+  "stopHosting": "ホスティングを停止",
+  "@stopHosting": {},
+  "connectionResetByPeer": "ピアによって接続がリセットされました。",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "ハートビートタイムアウトにより接続が失われました。再接続してください。",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "ホスティングを開始",
+  "@startHosting": {},
+  "restartRequestRejected": "再起動リクエストが拒否されました。",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "LANの対戦相手に接続されていません。",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLMプロンプト",
+  "@llmPrompt": {},
+  "gameRestarted": "ゲームをやり直しました。",
+  "@gameRestarted": {},
+  "takeBackRejected": "「待った」は拒否されました。",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "このゲームを投了しますか？",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "相手が投了しました。あなたの勝ちです！",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "すべての注釈をクリア",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "接続されました。対戦相手の動きを待っています...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "ネットワークステータス：切断",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "「待った」の要求を相手に送信しました。",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "対戦相手がゲームを離れた可能性があります",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "ホストに正常に接続しました。",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "接続が失われました：ハートビートタイムアウト",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "ホストが見つかりませんでした。",
+  "@noHostDiscovered": {},
+  "confirmResignation": "投了の確認",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "ゲームのホスティングを開始しました。プレイヤーの参加を待っています...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "接続がタイムアウトしました。ネットワーク接続が不安定です。",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "LLMプロンプトが利用できません。",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "あなたが投了しました。ゲームオーバー。",
+  "@youResignedGameOver": {},
+  "serverIp": "サーバーIP",
+  "@serverIp": {},
+  "confirmClear": "クリアの確認",
+  "@confirmClear": {},
+  "opponentSTurn": "対戦相手のターン。",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "クライアントの接続を待っています...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "「待った」の要求は拒否されたか、失敗しました。",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "テキストを追加",
+  "@addText": {},
+  "exitAnnotationMode": "注釈モードを終了",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "注釈を入力してください",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "再接続を試みています...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "再起動リクエストが送信されました。対戦相手の応答を待っています...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "サーバーが停止しています。",
+  "@serverIsStopped": {},
+  "restartRequest": "再起動リクエスト",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "自分の手番でない時に「待った」はできません。",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "「待った」が承認されました。",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "ローカルネットワーク設定",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "再接続に成功しました！",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "ギャラリーに画像を保存できませんでした。",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "対戦相手がゲームの再起動をリクエストしました。受け入れますか？",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "あなたのターン。",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "再接続できません。ゲームを再起動してください。",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "ホスト",
+  "@host": {},
+  "join": "参加",
+  "@join": {},
+  "port": "ポート",
+  "@port": {},
+  "invalidIpAddress": "無効なIPアドレス。",
+  "@invalidIpAddress": {},
+  "invalidPort": "無効なポート。",
+  "@invalidPort": {},
+  "connectingAttempt": "接続中: 試行 {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "接続に失敗しました: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "ホスティングの開始に失敗しました: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "ホストが見つかりました: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "停止",
+  "@stop": {},
+  "discover": "検出",
+  "@discover": {},
+  "connect": "接続",
+  "@connect": {},
+  "clientConnected": "クライアントが接続しました: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "検出中: {seconds} 秒",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "再接続中 ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "接続済み",
+  "@connected": {},
+  "delete": "削除",
+  "@delete": {},
+  "ancientEgypt": "洛霞",
+  "@ancientEgypt": {},
+  "gothicIce": "氷紋縹",
+  "@gothicIce": {},
+  "riceField": "里海霧",
+  "@riceField": {},
+  "chinesePorcelain": "九谷雅",
+  "@chinesePorcelain": {},
+  "desertDusk": "砂暮焔",
+  "@desertDusk": {},
+  "precisionCraft": "金糸細工",
+  "@precisionCraft": {},
+  "folkEmbroidery": "民芸絵",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "山姥遺産",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "紫宸輝",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "江戸切子光",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "野焼原",
+  "@savannaSunrise": {},
+  "harmonyBalance": "調和は鏡",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "木蘭香",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "螺鈿瑍",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "祭嵐",
+  "@carnivalSpirit": {},
+  "custom": "カスタム",
+  "@custom": {},
+  "spiceMarket": "唐辛子市",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "スワイプしてドロワーを表示",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "スクリーンショットにゲーム情報を表示",
+  "@showGameInfoOnScreenshots": {}
 }

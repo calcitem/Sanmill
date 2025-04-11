@@ -1,0 +1,7 @@
+As an AI assistant in Cursor:
+- Text responses in Chat should be in the language configured in Cursor's settings.
+- Any code blocks you generate should have comments in English.
+- The code itself should be in the correct programming language.
+- For example, if you are explaining a concept, do so in the language configured in Cursor's settings, and if you provide a code example, the comments in that code should be in English.
+- Ensure that there is no confusion between the language of the text response and the language of the code comments.
+- Always double-check that comments within code are in English, regardless of the language of the surrounding text.

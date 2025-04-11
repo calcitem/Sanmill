@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// movepick.cpp
 
 #include "movepick.h"
 #include "option.h"
@@ -55,7 +44,7 @@ void MovePicker::score()
 
 #ifdef TT_MOVE_ENABLE
         if (m == ttMove) {
-            cur->value += RATING_TT;
+            cur->value = RATING_TT;
             continue;
         }
 #endif // TT_MOVE_ENABLE
@@ -165,13 +154,19 @@ void MovePicker::score()
 /// class. It returns a new pseudo legal move every time it is called until
 /// there are no more moves left, picking the move with the highest score from a
 /// list of generated moves.
+template <GenType Type>
 Move MovePicker::next_move()
 {
-    endMoves = generate<LEGAL>(pos, moves);
+    endMoves = generate<Type>(pos, moves);
     moveCount = static_cast<int>(endMoves - moves);
 
-    score<LEGAL>();
+    score<Type>();
     partial_insertion_sort(moves, endMoves, INT_MIN);
 
     return *moves;
 }
+
+template Move MovePicker::next_move<LEGAL>();
+template Move MovePicker::next_move<PLACE>();
+template Move MovePicker::next_move<MOVE>();
+template Move MovePicker::next_move<REMOVE>();

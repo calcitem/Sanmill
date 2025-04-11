@@ -7,14 +7,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Snapcraft Build
+    name: Snapcraft Build and Publish
     steps:
-    - uses: actions/checkout@v4
-    - uses: snapcore/action-build@v1
-      id: snapcraft
-    - uses: actions/upload-artifact@v4
-      with:
-        name: snap
-        path: ${{ steps.snapcraft.outputs.snap }}
-    - run: |
-        sudo snap install --dangerous ${{ steps.snapcraft.outputs.snap }}
+      - uses: actions/checkout@v4
+
+      - name: Build snap
+        id: snapcraft
+        uses: snapcore/action-build@v1
+
+      - name: Upload snap artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: snap
+          path: ${{ steps.snapcraft.outputs.snap }}
+
+      - name: Publish snap to store
+        uses: snapcore/action-publish@v1
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          release: edge
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_TOKEN }}

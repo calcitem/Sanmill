@@ -1,0 +1,3 @@
+v5.0.0
+
+Ovo ažuriranje uključuje razna poboljšanja i ispravke pogrešaka kako bi aplikacija bila bolja za vas.

@@ -1,0 +1,1851 @@
+{
+  "@@locale": "ca",
+  "appName": "Molí",
+  "@appName": {
+    "description": "The app name"
+  },
+  "welcome": "Benvingut",
+  "@welcome": {
+    "description": "Welcome"
+  },
+  "yes": "Sí",
+  "@yes": {
+    "description": "Yes"
+  },
+  "no": "No",
+  "@no": {
+    "description": "No"
+  },
+  "game": "Joc",
+  "@game": {
+    "description": "Game"
+  },
+  "humanVsAi": "Humà vs. IA",
+  "@humanVsAi": {
+    "description": "Human Vs AI"
+  },
+  "humanVsHuman": "Humà vs. Humà",
+  "@humanVsHuman": {
+    "description": "Human Vs Human"
+  },
+  "aiVsAi": "IA vs. IA",
+  "@aiVsAi": {
+    "description": "AI Vs AI"
+  },
+  "humanVsCloud": "Humà vs. Núvol",
+  "@humanVsCloud": {
+    "description": "Human Vs Cloud"
+  },
+  "humanVsLAN": "Humà vs. LAN",
+  "@humanVsLAN": {
+    "description": "Human Vs LAN"
+  },
+  "testViaLAN": "Prova via LAN",
+  "@testViaLAN": {
+    "description": "Test Via LAN"
+  },
+  "move": "Moviment",
+  "@move": {
+    "description": "Move"
+  },
+  "showMoveList": "Llista de moviments",
+  "@showMoveList": {
+    "description": "Move list"
+  },
+  "moveList": "Llista de moviments",
+  "@moveList": {
+    "description": "Move list"
+  },
+  "noGameRecord": "Cap registre",
+  "@noGameRecord": {
+    "description": "No record"
+  },
+  "ok": "D'acord",
+  "@ok": {
+    "description": "OK"
+  },
+  "confirm": "Confirma",
+  "@confirm": {
+    "description": "Confirm"
+  },
+  "cancel": "Cancel·la",
+  "@cancel": {
+    "description": "Cancel"
+  },
+  "tipSelectWrong": "Ha triat la peça equivocada.",
+  "@tipSelectWrong": {
+    "description": "Select the wrong piece."
+  },
+  "tipPlace": "Col·loqueu les peces.",
+  "@tipPlace": {
+    "description": "Place your pieces."
+  },
+  "tipBanPlace": "No podeu col·locar-la aquí.",
+  "@tipBanPlace": {
+    "description": "Cannot place it here."
+  },
+  "tipPlaced": "Peça col·locada.",
+  "@tipPlaced": {
+    "description": "Placed."
+  },
+  "tipRemove": "Retireu una peça.",
+  "@tipRemove": {
+    "description": "Remove a piece."
+  },
+  "tipBanRemove": "No podeu retirar-la.",
+  "@tipBanRemove": {
+    "description": "Cannot remove."
+  },
+  "tipRemoved": "Peça retirada.",
+  "@tipRemoved": {
+    "description": "Removed."
+  },
+  "tipMove": "Moveu una peça.",
+  "@tipMove": {
+    "description": "Move a piece."
+  },
+  "tipCannotPlace": "Aquí no podeu col·locar la peça.",
+  "@tipCannotPlace": {
+    "description": "You can't place your piece here."
+  },
+  "tipCannotMove": "No podeu moure la peça aquí.",
+  "@tipCannotMove": {
+    "description": "You can't move your piece here."
+  },
+  "tipMill": "Molí! Preneu una peça de l'oponent.",
+  "@tipMill": {
+    "description": "Mill! Take your opponent's piece."
+  },
+  "tipContinueMill": "Continueu prenent una peça de l'oponent.",
+  "@tipContinueMill": {
+    "description": "Continue to take your opponent's piece."
+  },
+  "tipSelectOpponentsPiece": "Trieu una peça de l'oponent.",
+  "@tipSelectOpponentsPiece": {
+    "description": "Select one of your opponent's pieces."
+  },
+  "tipCannotRemovePieceFromMill": "No podeu prendre una peça d'un molí.",
+  "@tipCannotRemovePieceFromMill": {
+    "description": "You cannot remove a piece from a mill."
+  },
+  "tipCanMoveOnePoint": "Una peça es pot moure 1 punt.",
+  "@tipCanMoveOnePoint": {
+    "description": "A piece can move 1 point."
+  },
+  "tipCannotMoveOpponentsPieces": "No podeu moure les peces de l'oponent.",
+  "@tipCannotMoveOpponentsPieces": {
+    "description": "You can't move your opponent's pieces."
+  },
+  "tipSelectPieceToMove": "Trieu la peça a moure.",
+  "@tipSelectPieceToMove": {
+    "description": "Select your piece to move."
+  },
+  "tipHaveThreePiecesLeft": "Us queden 3 peces.",
+  "@tipHaveThreePiecesLeft": {
+    "description": "You have 3 pieces left."
+  },
+  "tipCanMoveToAnyPoint": "Us podeu moure a qualsevol punt que vulgueu.",
+  "@tipCanMoveToAnyPoint": {
+    "description": "You can move to any point you like."
+  },
+  "tipToMove": "És el torn del jugador {player}.",
+  "@tipToMove": {
+    "description": "The tip that the given player is to move.",
+    "placeholders": {
+      "player": {
+        "description": "The player whose turn it is.",
+        "example": "Player 1"
+      }
+    }
+  },
+  "whiteWin": "Guanya el jugador 1!",
+  "@whiteWin": {
+    "description": "Player 1 wins!"
+  },
+  "blackWin": "Guanya el jugador 2!",
+  "@blackWin": {
+    "description": "Player 2 wins!"
+  },
+  "won": "Victòria",
+  "@won": {
+    "description": "Won"
+  },
+  "lost": "Derrota",
+  "@lost": {
+    "description": "Lost"
+  },
+  "thinking": "Pensant…",
+  "@thinking": {
+    "description": "Thinking..."
+  },
+  "newGame": "Partida nova",
+  "@newGame": {
+    "description": "New game"
+  },
+  "importGame": "Importa una partida",
+  "@importGame": {
+    "description": "Import game"
+  },
+  "exportGame": "Exporta una partida",
+  "@exportGame": {
+    "description": "Export game"
+  },
+  "gameImported": "S'ha importat la partida.",
+  "@gameImported": {
+    "description": "Game imported from the clipboard."
+  },
+  "cannotImport": "No es pot importar {invalidMove}",
+  "@cannotImport": {
+    "description": "Cannot import",
+    "placeholders": {
+      "invalidMove": {
+        "description": "Invalid move",
+        "example": "x1-y2"
+      }
+    }
+  },
+  "movesAndRulesNotMatch": "Els moviments i les regles no coincideixen.",
+  "@movesAndRulesNotMatch": {
+    "description": "Rules and moves do not match."
+  },
+  "pleaseWait": "Espereu...",
+  "@pleaseWait": {
+    "description": "Please wait..."
+  },
+  "restartGame": "Voleu reiniciar la partida actual?",
+  "@restartGame": {
+    "description": "Restart current game?"
+  },
+  "restart": "Reinicia",
+  "@restart": {
+    "description": "Restart"
+  },
+  "gameStarted": "La partida ha començat, col·loqueu les peces.",
+  "@gameStarted": {
+    "description": "Game started, please place"
+  },
+  "analyzing": "S'està analitzant…",
+  "@analyzing": {
+    "description": "Analyzing ..."
+  },
+  "error": "Error: {message}",
+  "@error": {
+    "description": "Error",
+    "placeholders": {
+      "message": {
+        "description": "The Error message",
+        "example": "Unknown error"
+      }
+    }
+  },
+  "winRate": "Taxa de victòries",
+  "@winRate": {
+    "description": "Win Rate"
+  },
+  "score": "Puntuació:",
+  "@score": {
+    "description": "Score"
+  },
+  "white": "Jugador 1",
+  "@white": {
+    "description": "Player 1"
+  },
+  "black": "Jugador 2",
+  "@black": {
+    "description": "Player 2"
+  },
+  "loseReasonlessThanThree": "{player} té menys de 3 peces.",
+  "@loseReasonlessThanThree": {
+    "description": "Indicate that the player lost because they had less than three pieces left.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonResign": "{player} s'ha rendit.",
+  "@loseReasonResign": {
+    "description": "Indicate that the player resigned.",
+    "placeholders": {
+      "player": {
+        "description": "The player who resigned",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonNoWay": "{player} no pot moure.",
+  "@loseReasonNoWay": {
+    "description": "Indicate that the player has no way to go.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonBoardIsFull": "El tauler és ple, i el {player} no pot moure.",
+  "@loseReasonBoardIsFull": {
+    "description": "Indicate that the player has no way to go because the board is full.",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "loseReasonTimeOver": "S'ha acabat el temps, {player} ha perdut.",
+  "@loseReasonTimeOver": {
+    "description": "Time Over",
+    "placeholders": {
+      "player": {
+        "description": "The player who lost",
+        "example": "Player 1"
+      }
+    }
+  },
+  "drawReasonRule50": "En la fase de moviment, no s'ha retirat cap peça en l'últim nombre específic de torns.",
+  "@drawReasonRule50": {
+    "description": "In the moving phase, no piece has been removed in the last specific number of moves."
+  },
+  "drawReasonBoardIsFull": "És un empat perquè el tauler és ple.",
+  "@drawReasonBoardIsFull": {
+    "description": "It is a Draw because the board is full"
+  },
+  "drawReasonThreefoldRepetition": "És un empat perquè hi ha una repetició triple.",
+  "@drawReasonThreefoldRepetition": {
+    "description": "It is a Draw because of threefold repetition."
+  },
+  "gameOverUnknownReason": "Final de partida! Raó desconeguda.",
+  "@gameOverUnknownReason": {
+    "description": "Game Over! Unknown reason."
+  },
+  "gameOver": "Final de partida",
+  "@gameOver": {
+    "description": "Game Over"
+  },
+  "youWin": "Heu guanyat! Enhorabona!",
+  "@youWin": {
+    "description": "You win! Congratulations!"
+  },
+  "challengeHarderLevel": "Voleu un nivell més difícil? El nivell nou serà {level}!",
+  "@challengeHarderLevel": {
+    "description": "Challenge harder level?",
+    "placeholders": {
+      "level": {
+        "description": "The new level",
+        "example": "5"
+      }
+    }
+  },
+  "youLose": "Heu perdut!",
+  "@youLose": {
+    "description": "You Lose!"
+  },
+  "analyze": "Analitza",
+  "@analyze": {
+    "description": "Analyze"
+  },
+  "about": "Quant a",
+  "@about": {
+    "description": "About"
+  },
+  "version": "Versió: {versionNumber}",
+  "@version": {
+    "description": "Version",
+    "placeholders": {
+      "versionNumber": {
+        "description": "The current version",
+        "example": "1.1.38"
+      }
+    }
+  },
+  "thanks": "Agraïments",
+  "@thanks": {
+    "description": "Thanks"
+  },
+  "settings": "Configuració",
+  "@settings": {
+    "description": "Settings"
+  },
+  "options": "Opcions",
+  "@options": {
+    "description": "Options"
+  },
+  "generalSettings": "Paràmetres generals",
+  "@generalSettings": {
+    "description": "General Settings"
+  },
+  "skillLevel": "Nivell de dificultat",
+  "@skillLevel": {
+    "description": "Difficulty level"
+  },
+  "moveTime": "Temps de raonament de la IA",
+  "@moveTime": {
+    "description": "AI thinking time"
+  },
+  "difficulty": "Dificultat",
+  "@difficulty": {
+    "description": "Difficulty"
+  },
+  "playSounds": "Efectes de so",
+  "@playSounds": {
+    "description": "Sound effects"
+  },
+  "playSoundsInTheGame": "Reprodueix sons durant la partida",
+  "@playSoundsInTheGame": {
+    "description": "Play sounds in the game"
+  },
+  "keepMuteWhenTakingBack": "Silenci en anar enrere",
+  "@keepMuteWhenTakingBack": {
+    "description": "Keep mute when taking back"
+  },
+  "tone": "To",
+  "@tone": {
+    "description": "Tone"
+  },
+  "whoMovesFirst": "Primer moviment",
+  "@whoMovesFirst": {
+    "description": "First move"
+  },
+  "human": "Humà",
+  "@human": {
+    "description": "Human"
+  },
+  "ai": "IA",
+  "@ai": {
+    "description": "AI"
+  },
+  "alternate": "Alterna",
+  "@alternate": {
+    "description": "Alternate"
+  },
+  "isAutoRestart": "Torna a començar automàticament en acabar la partida",
+  "@isAutoRestart": {
+    "description": "Auto-restart game when game over"
+  },
+  "isAutoChangeFirstMove": "Canvia automàticament el primer moviment",
+  "@isAutoChangeFirstMove": {
+    "description": "Auto Change First Move"
+  },
+  "shufflingEnabled": "Moviment aleatori",
+  "@shufflingEnabled": {
+    "description": "Random move"
+  },
+  "misc": "Miscel·lània",
+  "@misc": {
+    "description": "Miscellaneous"
+  },
+  "rules": "Regles",
+  "@rules": {
+    "description": "Rules"
+  },
+  "piecesCount": "El nombre de peces que té cada jugador",
+  "@piecesCount": {
+    "description": "The number of pieces each player has"
+  },
+  "piecesCount_Detail": "Quantes peces té cada jugador?",
+  "@piecesCount_Detail": {
+    "description": "How many pieces does each player have?"
+  },
+  "flyPieceCount": "El nombre de peces voladores",
+  "@flyPieceCount": {
+    "description": "The number of the flying piece"
+  },
+  "flyPieceCount_Detail": "Si l'opció «vol» és activa, si el nombre de peces d'un jugador és inferior a un nombre específic, i durant la resta del joc, les peces d'aquest jugador es poden moure lliurement a qualsevol punt lliure en comptes d'estar restringides als punts adjacents.",
+  "@flyPieceCount_Detail": {
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+  },
+  "piecesAtLeastCount": "Mínim de peces",
+  "@piecesAtLeastCount": {
+    "description": "Pieces At Least"
+  },
+  "hasDiagonalLines": "Línies diagonals",
+  "@hasDiagonalLines": {
+    "description": "Diagonal lines"
+  },
+  "hasDiagonalLines_Detail": "Afegeix quatre línies diagonals en el tauler.",
+  "@hasDiagonalLines_Detail": {
+    "description": "Add four diagonal lines to the board."
+  },
+  "isDefenderMoveFirst": "El segon jugador mou primer",
+  "@isDefenderMoveFirst": {
+    "description": "The second player moves first"
+  },
+  "isDefenderMoveFirst_Detail": "El jugador que mou segon en la fase de col·locació mou primer en la fase de moviments.",
+  "@isDefenderMoveFirst_Detail": {
+    "description": "The player who moves second in the placing phase moves first in the moving phase."
+  },
+  "mayRemoveMultiple": "Supressió múltiple",
+  "@mayRemoveMultiple": {
+    "description": "Multi-remove"
+  },
+  "mayRemoveMultiple_Detail": "Si un jugador forma més d'un molí a la vegada, prendrà tantes peces com molins ha format.",
+  "@mayRemoveMultiple_Detail": {
+    "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
+  },
+  "mayRemoveFromMillsAlways": "Destrueix els molins",
+  "@mayRemoveFromMillsAlways": {
+    "description": "Destroy mills"
+  },
+  "mayRemoveFromMillsAlways_Detail": "Per defecte, els jugadors han de prendre qualsevol altra peça abans de poder prendre una peca d'un molí format. Marqueu aquesta opció per a desactivar aquesta limitació.",
+  "@mayRemoveFromMillsAlways_Detail": {
+    "description": "mayRemoveFromMillsAlways_Detail"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull": "El segon jugador perd si el tauler és ple",
+  "@isWhiteLoseButNotDrawWhenBoardFull": {
+    "description": "The second player loses when the board is full"
+  },
+  "isWhiteLoseButNotDrawWhenBoardFull_Detail": "Si el tauler és ple al final de la fase de col·locació, el jugador que col·loca peces primer perd la partida. Altrament, la partia és un empat.",
+  "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
+    "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
+  },
+  "isLoseButNotChangeSideWhenNoWay": "Perd si no hi ha cap moviment legal",
+  "@isLoseButNotChangeSideWhenNoWay": {
+    "description": "Lose when no legal moves"
+  },
+  "isLoseButNotChangeSideWhenNoWay_Detail": "El jugador perd si el seu oponent el bloca de manera que no pot moure cap peça. Si aquesta opció està desactivada, es canvia el torn en lloc de declarar la derrota.",
+  "@isLoseButNotChangeSideWhenNoWay_Detail": {
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
+  },
+  "mayFly": "Vol",
+  "@mayFly": {
+    "description": "Flying"
+  },
+  "mayFly_Detail": "Si a un jugador només li queden tres o quatre (segons la configuració) peces, pot moure la peça a qualsevol punt lliure.",
+  "@mayFly_Detail": {
+    "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
+  },
+  "nMoveRule": "Regla de N moviments",
+  "@nMoveRule": {
+    "description": "N-move rule"
+  },
+  "nMoveRule_Detail": "La partida és un empat si no s'elimina cap peça en un nombre específic de moviments.",
+  "@nMoveRule_Detail": {
+    "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
+  },
+  "rollback": "Enrere",
+  "@rollback": {
+    "description": "Rollback"
+  },
+  "pleaseSelect": "Seleccioneu",
+  "@pleaseSelect": {
+    "description": "Please select"
+  },
+  "copy": "Copia",
+  "@copy": {
+    "description": "Copy"
+  },
+  "moveHistoryCopied": "L'historial de moviments s'ha copiat al porta-retalls.",
+  "@moveHistoryCopied": {
+    "description": "Move history copied to clipboard"
+  },
+  "help": "Ajuda",
+  "@help": {
+    "description": "Help"
+  },
+  "feedback": "Comentaris",
+  "@feedback": {
+    "description": "Feedback"
+  },
+  "exit": "Surt",
+  "@exit": {
+    "description": "Exit"
+  },
+  "ruleSettings": "Configuració de les regles",
+  "@ruleSettings": {
+    "description": "Rule Settings"
+  },
+  "color": "Color",
+  "@color": {
+    "description": "Color"
+  },
+  "boardColor": "Color del tauler",
+  "@boardColor": {
+    "description": "Board color"
+  },
+  "pieceColor": "Color de les peces",
+  "@pieceColor": {
+    "description": "Piece color"
+  },
+  "backgroundColor": "Color del fons",
+  "@backgroundColor": {
+    "description": "Background color"
+  },
+  "lineColor": "Color de la línia del tauler",
+  "@lineColor": {
+    "description": "Board line color"
+  },
+  "whitePieceColor": "Color de les peces del jugador 1",
+  "@whitePieceColor": {
+    "description": "Player 1 piece color"
+  },
+  "blackPieceColor": "Color de les peces del jugador 2",
+  "@blackPieceColor": {
+    "description": "Player 2 piece color"
+  },
+  "messageColor": "Color del missatge",
+  "@messageColor": {
+    "description": "Message color"
+  },
+  "isPieceCountInHandShown": "Mostra el nombre de peces sense col·locar",
+  "@isPieceCountInHandShown": {
+    "description": "Show count of pieces in hand"
+  },
+  "isNotationsShown": "Mostra les anotacions en el tauler",
+  "@isNotationsShown": {
+    "description": "Show notations on board"
+  },
+  "isHistoryNavigationToolbarShown": "Mostra la barra d'eines de l'historial",
+  "@isHistoryNavigationToolbarShown": {
+    "description": "Show history navigation toolbar"
+  },
+  "display": "Visualització",
+  "@display": {
+    "description": "Display"
+  },
+  "boardBorderLineWidth": "Amplada de la vora del tauler",
+  "@boardBorderLineWidth": {
+    "description": "Board borderline width"
+  },
+  "boardInnerLineWidth": "Amplada de la línia interior del tauler",
+  "@boardInnerLineWidth": {
+    "description": "Board inner line width"
+  },
+  "pieceWidth": "Amplada de les peces",
+  "@pieceWidth": {
+    "description": "Piece width"
+  },
+  "fontSize": "Mida de lletra",
+  "@fontSize": {
+    "description": "Font size"
+  },
+  "standardNotation": "Notació WMD",
+  "@standardNotation": {
+    "description": "Standard notation"
+  },
+  "restore": "Restaura",
+  "@restore": {
+    "description": "Restore"
+  },
+  "restoreDefaultSettings": "Restaura la configuració predeterminada",
+  "@restoreDefaultSettings": {
+    "description": "Restore Default Settings"
+  },
+  "pick": "Trieu {element}",
+  "@pick": {
+    "description": "Used in the color picker.",
+    "placeholders": {
+      "element": {
+        "description": "The element to pick the color for.",
+        "example": "Background color"
+      }
+    }
+  },
+  "info": "Informació",
+  "@info": {
+    "description": "Info"
+  },
+  "hint": "Suggeriment",
+  "@hint": {
+    "description": "Hint"
+  },
+  "player": "jugador",
+  "@player": {
+    "description": "player"
+  },
+  "player1": "Jugador 1",
+  "@player1": {
+    "description": "Player 1"
+  },
+  "player2": "Jugador 2",
+  "@player2": {
+    "description": "Player 2"
+  },
+  "howToPlay": "Com es juga",
+  "@howToPlay": {
+    "description": "How to play"
+  },
+  "toPlacePiece": "Toqueu en qualsevol punt lliure per a col·locar la peça.",
+  "@toPlacePiece": {
+    "description": "Tap on any available point to place the piece."
+  },
+  "toSelectPiece": "Toqueu en una peça per a moure-la.",
+  "@toSelectPiece": {
+    "description": "Tap on a piece to move it."
+  },
+  "toMovePiece": "Toqueu en un punt connectat a una peça per a moure-la.",
+  "@toMovePiece": {
+    "description": "Tap on point connected to piece to move it."
+  },
+  "toRemovePiece": "Toqueu en una de les peces de l'oponent per a eliminar-la.",
+  "@toRemovePiece": {
+    "description": "Tap on one of the opponent's pieces to remove it."
+  },
+  "needToCreateMillFirst": "Per a poder eliminar una peça, abans heu de crear un molí.",
+  "@needToCreateMillFirst": {
+    "description": "You need to create a mill first before you can remove a piece."
+  },
+  "needToPlayWithOwnPieces": "Heu de jugar amb les vostres peces.",
+  "@needToPlayWithOwnPieces": {
+    "description": "You need to play with your pieces."
+  },
+  "statistics": "Estadístiques",
+  "@statistics": {
+    "description": "Statistics"
+  },
+  "totalGames": "Total de partides",
+  "@totalGames": {
+    "description": "Total games"
+  },
+  "results": "Resultats",
+  "@results": {
+    "description": "Results"
+  },
+  "left": "queden",
+  "@left": {
+    "description": "left"
+  },
+  "privacyPolicy": "Política de privadesa",
+  "@privacyPolicy": {
+    "description": "Privacy Policy"
+  },
+  "privacyPolicy_Detail_1": "Llegiu-ho detingudament i assegureu-vos que enteneu i hi esteu d'acord ",
+  "@privacyPolicy_Detail_1": {
+    "description": "Privacy Policy Detail 1"
+  },
+  "privacyPolicy_Detail_2": ". Si no hi esteu d'acord, si us plau, no feu servir aquesta aplicació. Fer servir l'aplicació implica que n'accepteu aquestes condicions.",
+  "@privacyPolicy_Detail_2": {
+    "description": "Privacy Policy Detail 2"
+  },
+  "and": " i ",
+  "@and": {},
+  "accept": "Accepto",
+  "@accept": {
+    "description": "Accept"
+  },
+  "takeBack": "Enrere",
+  "@takeBack": {
+    "description": "Take back"
+  },
+  "takingBack": "Ves enrere…",
+  "@takingBack": {
+    "description": "Taking back..."
+  },
+  "waiting": "Espereu…",
+  "@waiting": {
+    "description": "Waiting..."
+  },
+  "stepForward": "Endavant",
+  "@stepForward": {
+    "description": "Step forward"
+  },
+  "takeBackAll": "Enrere del tot",
+  "@takeBackAll": {
+    "description": "Take back all"
+  },
+  "stepForwardAll": "Endavant del tot",
+  "@stepForwardAll": {
+    "description": "Step forward all"
+  },
+  "moveNow": "Mou ara",
+  "@moveNow": {
+    "description": "Move now"
+  },
+  "done": "Fet.",
+  "@done": {
+    "description": "Done."
+  },
+  "crackMill": "Molí esquerdat",
+  "@crackMill": {
+    "description": "Crack-mill"
+  },
+  "crackMill_Detail": "Si un jugador només té peces formant molins, aquestes peces no queden protegides de la retirada.",
+  "@crackMill_Detail": {
+    "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
+  },
+  "animationDuration": "Durada de l'animació",
+  "@animationDuration": {
+    "description": "Animation duration"
+  },
+  "none": "Cap",
+  "@none": {
+    "description": "None"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme"
+  },
+  "helpContent": "L'objectiu del joc és deixar l'oponent amb menys de tres peces o sense moviments legals.\n\nLa partida empata automàticament si una posició es repeteix per tercera vegada o si no s'elimina cap peça en els darrers 100 (configurable) moviments.\n\nLa partida té tres fases:\n\n1. Col·locar peces en punts buits\n2. Moure peces a punts adjacents\n3. (fase opcional) Moure peces a qualsevol punt buit quan un jugador es queda amb tres peces\n\nCol·locació\n\nLa partida comença amb el tauler buit, que té vint-i-quatre punts. Els jugadors col·loquen les seves peces per torn en punts buits fins que totes les peces estiguin col·locades. Si un jugador aconsegueix fer una línia de tres peces, forma un «molí» i pot retirar del tauler una peça de l'oponent.\n\nEn algunes variants, s'ha de retirar primer qualsevol altra peça abans que no pas una peça que formi part d'un molí.\n\nAmb algunes regles, no es poden tornar a col·locar peces en punts d'on s'han retirat.\n\nQuan totes les peces estan col·locades, els jugadors passen a moure-les.\n\nMoviment\n\nPer a moure, un jugador desplaça una de les seves peces al llarg d'una línia del tauler fins a un punt adjacent buit. Si no pot moure cap peça, perd la partida. Un jugador que alineï tres peces en una línia del tauler fa un molí i pot retirar una peça de l'oponent, igual que a la fase de col·locació. Si un jugador es queda amb dues peces, no pot formar nous molins i perd la partida. També pot perdre si l'oponent el bloca completament.\n\nVol\n\nEn algunes variants, quan un jugador només té tres peces, aquestes poden «volar» o saltar a qualsevol punt buit, no només als punts adjacents.\n",
+  "@helpContent": {
+    "description": "Help Content"
+  },
+  "versionInfo": "Informació de la versió",
+  "@versionInfo": {
+    "description": "Version info"
+  },
+  "eula": "CLUF",
+  "@eula": {
+    "description": "EULA"
+  },
+  "license": "Llicència",
+  "@license": {
+    "description": "License"
+  },
+  "sourceCode": "Codi font",
+  "@sourceCode": {
+    "description": "Source code"
+  },
+  "appVersion": "Versió de l'aplicació",
+  "@appVersion": {
+    "description": "App Version"
+  },
+  "general": "General",
+  "@general": {
+    "description": "General"
+  },
+  "advanced": "Avançat",
+  "@advanced": {
+    "description": "Advanced"
+  },
+  "placing": "Col·locació",
+  "@placing": {
+    "description": "Placing"
+  },
+  "moving": "Moviment",
+  "@moving": {
+    "description": "Moving"
+  },
+  "removing": "Eliminació",
+  "@removing": {
+    "description": "Removing"
+  },
+  "gameOverCondition": "Condició de final de partida",
+  "@gameOverCondition": {
+    "description": "Game over condition"
+  },
+  "aisPlayStyle": "Estil de joc de la IA",
+  "@aisPlayStyle": {
+    "description": "AI's play style"
+  },
+  "passive": "Passiu",
+  "@passive": {
+    "description": "Passive"
+  },
+  "timeout": "Temps límit",
+  "@timeout": {
+    "description": "Timeout"
+  },
+  "appearance": "Aparença",
+  "@appearance": {
+    "description": "Appearance"
+  },
+  "drawOnHumanExperience": "Basat en l'experiència humana",
+  "@drawOnHumanExperience": {
+    "description": "Draw on the human experience"
+  },
+  "considerMobility": "Considera la mobilitat de les peces",
+  "@considerMobility": {
+    "description": "Consider mobility of pieces"
+  },
+  "pieceCount": "Nombre de peces:",
+  "@pieceCount": {
+    "description": "Piece count"
+  },
+  "inHand": "{player} a la mà: {count}",
+  "@inHand": {
+    "description": "The pieces a player has in his hand.",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "Player 1"
+      },
+      "count": {
+        "description": "The count of pieces in hand",
+        "example": "5"
+      }
+    }
+  },
+  "onBoard": "Tauler de {player}: {count}",
+  "@onBoard": {
+    "description": "The pieces a player has on the board",
+    "placeholders": {
+      "player": {
+        "description": "The specified player",
+        "example": "White"
+      },
+      "count": {
+        "description": "The count of pieces on board",
+        "example": "5"
+      }
+    }
+  },
+  "boardTop": "Distància des de la part superior del tauler",
+  "@boardTop": {
+    "description": "Board offset from the top"
+  },
+  "notAIsTurn": "No és el torn de la IA.",
+  "@notAIsTurn": {
+    "description": "It is not the AI's turn."
+  },
+  "aiIsNotThinking": "La IA no està pensant.",
+  "@aiIsNotThinking": {
+    "description": "AI is not thinking."
+  },
+  "atEnd": "Sou al final de la llista de moviments.",
+  "@atEnd": {
+    "description": "At the end of the move list."
+  },
+  "tapBackAgainToLeave": "Torneu a prémer enrere per a sortir.",
+  "@tapBackAgainToLeave": {
+    "description": "Tap Back again to exit."
+  },
+  "more": "Més",
+  "@more": {
+    "description": "More"
+  },
+  "experimental": "Això és una funció experimental.",
+  "@experimental": {
+    "description": "This is an experimental feature."
+  },
+  "experiments": "Experiments",
+  "@experiments": {
+    "description": "Experiments"
+  },
+  "ossLicenses": "Llicències de codi obert",
+  "@ossLicenses": {
+    "description": "Open source licenses"
+  },
+  "language": "Llengua",
+  "@language": {
+    "description": "Languages"
+  },
+  "defaultLanguage": "Llengua per defecte",
+  "@defaultLanguage": {
+    "description": "Default language"
+  },
+  "mayMoveInPlacingPhase": "Les peces es poden moure en la fase de col·locació",
+  "@mayMoveInPlacingPhase": {
+    "description": "The pieces can move in the placing phase"
+  },
+  "mayMoveInPlacingPhase_Detail": "No hi ha fases de col·locació i de moviment separades. És a dir, els jugadors poden decidir a cada torn si volen col·locar una peça al tauler o moure una de les seves peces (sempre que encara tinguin peces per col·locar).",
+  "@mayMoveInPlacingPhase_Detail": {
+    "description": "There are no distinct placing and moving phases, i.e. the players can decide at every move whether they want to place a piece on the board or move one of their pieces (as long as they have remaining pieces to place)."
+  },
+  "drawerColor": "Color del menú",
+  "@drawerColor": {
+    "description": "Menu color"
+  },
+  "drawerTextColor": "Color del text del menú",
+  "@drawerTextColor": {
+    "description": "Menu text color"
+  },
+  "drawerHighlightItemColor": "Color de ressalt del menú",
+  "@drawerHighlightItemColor": {
+    "description": "Menu highlight item color"
+  },
+  "mainToolbarBackgroundColor": "Color de fons de la barra principal",
+  "@mainToolbarBackgroundColor": {
+    "description": "Main toolbar background color"
+  },
+  "mainToolbarIconColor": "Color de la icona de la barra principal",
+  "@mainToolbarIconColor": {
+    "description": "main toolbar icon color"
+  },
+  "navigationToolbarBackgroundColor": "Color de fons de la barra de navegació",
+  "@navigationToolbarBackgroundColor": {
+    "description": "Navigation toolbar background color"
+  },
+  "navigationToolbarIconColor": "Color de la icona de la barra de navegació",
+  "@navigationToolbarIconColor": {
+    "description": "Navigation toolbar icon color"
+  },
+  "autoHideToolbar": "Amaga automàticament la barra d'eines",
+  "@autoHideToolbar": {
+    "description": "Automatically hide the toolbar"
+  },
+  "toolbarLocationOnScreen": "Ubicació de la barra d'eines en la pantalla",
+  "@toolbarLocationOnScreen": {
+    "description": "Toolbar location on screen"
+  },
+  "top": "A dalt",
+  "@top": {
+    "description": "Top"
+  },
+  "bottom": "A baix",
+  "@bottom": {
+    "description": "Bottom"
+  },
+  "center": "Al centre",
+  "@center": {
+    "description": "Center"
+  },
+  "solidColor": "Color sòlid",
+  "@solidColor": {
+    "description": "Solid color"
+  },
+  "picture": "Imatge",
+  "@picture": {
+    "description": "Picture"
+  },
+  "chooseYourPicture": "Trieu la vostra imatge",
+  "@chooseYourPicture": {
+    "description": "Choose your picture"
+  },
+  "light": "Clar",
+  "@light": {
+    "description": "Light"
+  },
+  "dark": "Fosc",
+  "@dark": {
+    "description": "Dark"
+  },
+  "themes": "Temes",
+  "@themes": {
+    "description": "Themes"
+  },
+  "currentTheme": "Tema actual",
+  "@currentTheme": {
+    "description": "Current theme"
+  },
+  "saveTheme": "Desa el tema",
+  "@saveTheme": {
+    "description": "Save theme"
+  },
+  "showAnalysisGraph": "Mostra el diagrama d'anàlisi",
+  "@showAnalysisGraph": {
+    "description": "Show analysis graph"
+  },
+  "analysis": "Anàlisi",
+  "@analysis": {
+    "description": "Analysis"
+  },
+  "saveGame": "Desa la partida",
+  "@saveGame": {
+    "description": "Save game"
+  },
+  "loadGame": "Carrega una partida",
+  "@loadGame": {
+    "description": "Load game"
+  },
+  "setupPosition": "Configura la posició",
+  "@setupPosition": {
+    "description": "Setup position"
+  },
+  "showLegalMoves": "Mostra els moviments legals",
+  "@showLegalMoves": {
+    "description": "Show legal moves"
+  },
+  "showLastMove": "Mostra l'últim moviment",
+  "@showLastMove": {
+    "description": "Show last move"
+  },
+  "showArrows": "Mostra les fletxes",
+  "@showArrows": {
+    "description": "Show arrows"
+  },
+  "pieces": "Peces",
+  "@pieces": {
+    "description": "Pieces"
+  },
+  "showAnalysis": "Mostra l'anàlisi",
+  "@showAnalysis": {
+    "description": "Show analysis"
+  },
+  "threads": "Fils",
+  "@threads": {
+    "description": "Threads"
+  },
+  "getInvolved": "Col·laboració",
+  "@getInvolved": {
+    "description": "Get Involved"
+  },
+  "helpImproveTranslate": "Ajudeu a millorar la traducció",
+  "@helpImproveTranslate": {
+    "description": "Help improve translate"
+  },
+  "tutorial": "Tutorial",
+  "@tutorial": {
+    "description": "Tutorial"
+  },
+  "classicMill": "Marro de nou clàssic",
+  "@classicMill": {
+    "description": "Classic Mill"
+  },
+  "mixedMill": "Marro de nou combinat",
+  "@mixedMill": {
+    "description": "Mixed Mill"
+  },
+  "ceylonMill": "Marro de nou de Ceilan",
+  "@ceylonMill": {
+    "description": "Ceylon Mill"
+  },
+  "mayBreakAndRemakeMillRepeatedly": "El molí es pot trencar i refer repetidament",
+  "@mayBreakAndRemakeMillRepeatedly": {
+    "description": "Mill may be broken and remade repeatedly"
+  },
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Si un jugador trenca un molí per a formar-ne un de nou immediatament, pot tornar a moure la peça a la posició original en el seu següent torn si torna a formar un nou molí.",
+  "@mayBreakAndRemakeMillRepeatedly_Detail": {
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "La partida és un empat si un jugador té tres peces i després de deu moviments cap jugador elimina peces de l'oponent.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
+    "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
+  },
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "Si un jugador té tres peces i cap dels dos jugadors aconsegueix eliminar cap peça de l'oponent en deu moviments, la partida és un empat.",
+  "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
+    "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
+  },
+  "close": "Tanca",
+  "@close": {
+    "description": "Close"
+  },
+  "whitePiece": "Peça blanca",
+  "@whitePiece": {
+    "description": "White piece"
+  },
+  "blackPiece": "Peça negra",
+  "@blackPiece": {
+    "description": "Black piece"
+  },
+  "emptyPoint": "Punt buit",
+  "@emptyPoint": {
+    "description": "Empty point"
+  },
+  "noPoint": "Cap punt",
+  "@noPoint": {
+    "description": "No point"
+  },
+  "placingPhase": "Fase de col·locació",
+  "@placingPhase": {
+    "description": "Placing phase"
+  },
+  "movingPhase": "Fase de moviment",
+  "@movingPhase": {
+    "description": "Moving phase"
+  },
+  "flyingPhase": "Fase de vol",
+  "@flyingPhase": {
+    "description": "Flying phase"
+  },
+  "sideToMove": "Torn de: {player}",
+  "@sideToMove": {
+    "description": "The player whose turn it is.",
+    "placeholders": {
+      "player": {
+        "description": "The player to move",
+        "example": "Player 1"
+      }
+    }
+  },
+  "lastMove": "Últim moviment: {move}",
+  "@lastMove": {
+    "description": "Last move",
+    "placeholders": {
+      "move": {
+        "description": "The last move",
+        "example": "d2-d3"
+      }
+    }
+  },
+  "selected": "Seleccionat",
+  "@selected": {
+    "description": "Selected"
+  },
+  "accessibility": "Accessibilitat",
+  "@accessibility": {
+    "description": "Accessibility"
+  },
+  "screenReaderSupport": "Compatibilitat amb lector de pantalla",
+  "@screenReaderSupport": {
+    "description": "Screen reader support"
+  },
+  "isDraw": "És un empat!",
+  "@isDraw": {
+    "description": "It is a Draw!"
+  },
+  "draw": "Empat",
+  "@draw": {
+    "description": "Draw"
+  },
+  "pieceHighlightColor": "Color de ressalt de la peça",
+  "@pieceHighlightColor": {
+    "description": "Piece highlight color"
+  },
+  "algorithm": "Algorisme",
+  "@algorithm": {
+    "description": "Algorithm"
+  },
+  "endgameNMoveRule": "Regla de N moviments en el final de partida",
+  "@endgameNMoveRule": {
+    "description": "Endgame N-Move rule"
+  },
+  "endgameNMoveRule_Detail": "Si un jugador té només tres peces i cap jugador n'elimina cap dins d'un nombre específic de moviments, la partida és un empat.",
+  "@endgameNMoveRule_Detail": {
+    "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
+  },
+  "drawReasonEndgameRule50": "Qualsevol dels jugadors té només tres peces, i en un nombre específic de moviments no s'elimina cap peça.",
+  "@drawReasonEndgameRule50": {
+    "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
+  },
+  "threefoldRepetitionRule": "Regla de la repetició triple",
+  "@threefoldRepetitionRule": {
+    "description": "Threefold repetition rule"
+  },
+  "threefoldRepetitionRule_Detail": "La partida és un empat si una posició es repeteix per tercera vegada.",
+  "@threefoldRepetitionRule_Detail": {
+    "description": "The game is drawn if a position occurs for the third time."
+  },
+  "continueToMakeMove": "Molí! Continueu per a fer un moviment.",
+  "@continueToMakeMove": {
+    "description": "Mill! Continue to make a move."
+  },
+  "pointStyle": "Estil dels punts",
+  "@pointStyle": {
+    "description": "Point style"
+  },
+  "pointWidth": "Amplada del punt",
+  "@pointWidth": {
+    "description": "Point width"
+  },
+  "solid": "Sòlid",
+  "@solid": {
+    "description": "Solid"
+  },
+  "hollow": "Cercle buit",
+  "@hollow": {
+    "description": "Hollow"
+  },
+  "languageName": "Català",
+  "@languageName": {
+    "description": "The name of the current language"
+  },
+  "moveNumber": "{count,plural, =0{moviment} =1{{count} moviment} other{{count} moviments}}",
+  "@moveNumber": {
+    "description": "Moves to take back",
+    "placeholders": {
+      "count": {
+        "description": "Number of Moves",
+        "example": "3"
+      }
+    }
+  },
+  "loadFailed": "No s'ha pogut carregar.",
+  "@loadFailed": {
+    "description": "Load failed."
+  },
+  "filename": "Nom del fitxer",
+  "@filename": {
+    "description": "File name"
+  },
+  "browse": "Navega…",
+  "@browse": {
+    "description": "Browse…"
+  },
+  "gameFiles": "Fitxers de partides",
+  "@gameFiles": {
+    "description": "Game files"
+  },
+  "gameSavedTo": "La partida es desa a",
+  "@gameSavedTo": {
+    "description": "The game is saved to"
+  },
+  "empty": "Buit",
+  "@empty": {
+    "description": "Empty point, used in setup position toolbar."
+  },
+  "noMove": "No hi ha cap moviment.",
+  "@noMove": {
+    "description": "No move."
+  },
+  "restoredPosition": "S'ha restaurat a la posició inicial.",
+  "@restoredPosition": {
+    "description": "Restored initial position."
+  },
+  "clean": "Neteja",
+  "@clean": {
+    "description": "Clean"
+  },
+  "cleanedUp": "S'ha netejat.",
+  "@cleanedUp": {
+    "description": "Cleaned up."
+  },
+  "remove": "Elimina",
+  "@remove": {
+    "description": "Remove"
+  },
+  "noPiecesCanBeRemoved": "No hi ha cap peça que es pugui eliminar.",
+  "@noPiecesCanBeRemoved": {
+    "description": "No pieces can be removed."
+  },
+  "pieceCountNeedToRemove": "{count,plural, =0{peces} =1{{count} peça} other{{count} peces}} s'han d'eliminar.",
+  "@pieceCountNeedToRemove": {
+    "description": "Pieces need to remove.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces.",
+        "example": "3"
+      }
+    }
+  },
+  "placedCount": "Col·locades ({count})",
+  "@placedCount": {
+    "description": "Placed N pieces. Used in setup position toolbar.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "placedPieceCount": "Nombre de peces col·locades en la fase de col·locació.",
+  "@placedPieceCount": {
+    "description": "Placed piece count in the placing phase. Used in Semantics."
+  },
+  "hasPlacedPieceCount": "El jugador actual ha col·locat {count} peces.",
+  "@hasPlacedPieceCount": {
+    "description": "The current player has placed {count} pieces.",
+    "placeholders": {
+      "count": {
+        "description": "Number of pieces placed.",
+        "example": "3"
+      }
+    }
+  },
+  "notPlacingPhase": "No és la fase de col·locació, no es pot canviar.",
+  "@notPlacingPhase": {
+    "description": "Not placing phase, cannot change it."
+  },
+  "paste": "Enganxa",
+  "@paste": {
+    "description": "Paste"
+  },
+  "pasteDone": "S'ha enganxat.",
+  "@pasteDone": {
+    "description": "The paste is done."
+  },
+  "cannotPaste": "No es pot enganxar.",
+  "@cannotPaste": {
+    "description": "Cannot paste."
+  },
+  "isUnplacedAndRemovedPiecesShown": "Mostra les peces no col·locades i les retirades",
+  "@isUnplacedAndRemovedPiecesShown": {
+    "description": "Show unplaced and removed pieces"
+  },
+  "fullScreen": "Pantalla completa",
+  "@fullScreen": {
+    "description": "Full screen"
+  },
+  "reopenToTakeEffect": "Sortiu i torneu a obrir l'aplicació perquè els canvis tinguin efecte.",
+  "@reopenToTakeEffect": {
+    "description": "Exit and reopen app for settings to take effect."
+  },
+  "forest": "Bosc",
+  "@forest": {},
+  "desktopImage": "Imatge d'escriptori",
+  "@desktopImage": {},
+  "invalidPosition": "Posició no vàlida.",
+  "@invalidPosition": {},
+  "shareGIF": "Comparteix un GIF",
+  "@shareGIF": {},
+  "pixelRatio": "Proporció dels píxels",
+  "@pixelRatio": {},
+  "duration": "Durada",
+  "@duration": {},
+  "gameScreenRecorder": "Enregistrador de pantalla de la partida",
+  "@gameScreenRecorder": {},
+  "previous": "Enrere",
+  "@previous": {},
+  "next": "Endavant",
+  "@next": {},
+  "skip": "Omet",
+  "@skip": {},
+  "gotIt": "Entès",
+  "@gotIt": {},
+  "youCanModifyRules": "Podeu modificar les regles de la partida a la configuració de regles.",
+  "@youCanModifyRules": {},
+  "youCanUseMouseWheelInPicker": "Podeu fer servir la roda del ratolí per a ajustar el valor en el selector.",
+  "@youCanUseMouseWheelInPicker": {},
+  "noTimeLimitForThinking": "Si establiu el temps de raonament de la IA a 0, no hi ha límit de temps per a pensar.",
+  "@noTimeLimitForThinking": {},
+  "whatIsMtdf": "MTD(f) és una variant de l'algorisme de cerca alfa-beta que intenta aprofitar l'eficiència reutilitzant els resultats de cerques intermèdies i fent ús d'una bona estimació inicial per a limitar l'espai de cerca.",
+  "@whatIsMtdf": {},
+  "noteAiThinkingTimeMayNotBePrecise": "Tingueu en compte que l'ajust del temps de raonament de la IA pot no ser del tot precís. El temps real podria ser més curt en nivells de dificultat baixos o més llarg si la IA està en ple procés de càlcul.",
+  "@noteAiThinkingTimeMayNotBePrecise": {},
+  "noteActualDifficultyLevelMayBeLimited": "Si establiu un nivell de dificultat molt alt, però no augmenteu el temps de raonament de la IA, és possible que el nivell real quedi limitat a un valor inferior a causa del temps disponible. El valor concret pot variar segons el rendiment de la màquina.",
+  "@noteActualDifficultyLevelMayBeLimited": {},
+  "whatIsPvs": "PVS (Principal Variation Search) és una millora de l'algorisme alfa-beta que empra cerques amb finestres nul·les per a confirmar si un moviment és pitjor o no que un resultat ja conegut. Se centra en la variant principal i evita explorar branques subòptimes de manera innecessària.",
+  "@whatIsPvs": {},
+  "whatIsAlphaBeta": "L'algorisme alfa-beta és un mètode de cerca per a trobar el millor moviment basat en el principi minimax i en dos valors, alfa i beta, per a retallar l'arbre de cerca. Això permet al programa prendre decisions eficients.",
+  "@whatIsAlphaBeta": {},
+  "drawOnTheHumanExperienceDetail": "Segons l'experiència humana, si intenteu guanyar directament, potser perdreu. En lloc d'això, intenteu aconseguir un empat i eviteu perdre. Observeu l'oponent i induïu-lo subtilment a cometre errors. Quan mostri debilitat, aprofiteu-ho per a guanyar.",
+  "@drawOnTheHumanExperienceDetail": {},
+  "firstMoveDetail": "En aquest joc, sovint és més fàcil que el segon jugador guanyi que no pas el primer.",
+  "@firstMoveDetail": {},
+  "passiveDetail": "Si activeu l'opció «Passiu», la IA no perseguirà la victòria de forma agressiva quan estigui en avantatge, sinó que s'ho prendrà amb més calma.",
+  "@passiveDetail": {},
+  "moveRandomlyDetail": "Activar aquesta opció augmenta l'atzar i la diversió. Desactivar-la pot ajudar a estudiar com vèncer la IA.",
+  "@moveRandomlyDetail": {},
+  "considerMobilityOfPiecesDetail": "Si la IA considera la mobilitat de les seves peces, no només buscarà eliminar peces de l'oponent ràpidament, sinó que també s'esforçarà a blocar els moviments de l'oponent i evitar que faci el mateix.",
+  "@considerMobilityOfPiecesDetail": {},
+  "whenBoardIsFull": "Quan el tauler és ple",
+  "@whenBoardIsFull": {},
+  "whenBoardIsFull_Detail": "Al final de la fase de col·locació, abans de començar la fase de moviment, si el tauler és ple de peces, es duran a terme aquestes accions.",
+  "@whenBoardIsFull_Detail": {},
+  "sideToMoveRemovePiece": "El jugador que mou primer en la fase de moviment retira una de les peces de l'oponent.",
+  "@sideToMoveRemovePiece": {},
+  "agreeToDraw": "Tots dos jugadors acorden un empat.",
+  "@agreeToDraw": {},
+  "takeOpponentsPiece": "Preneu una de les peces de l'oponent.",
+  "@takeOpponentsPiece": {},
+  "firstPlayerLose": "El primer jugador perd la partida.",
+  "@firstPlayerLose": {},
+  "firstAndSecondPlayerRemovePiece": "El primer i el segon jugador retiren una peça de l'oponent.",
+  "@firstAndSecondPlayerRemovePiece": {},
+  "secondAndFirstPlayerRemovePiece": "El segon i el primer jugador retiren una peça de l'oponent.",
+  "@secondAndFirstPlayerRemovePiece": {},
+  "enteredFlyingPhase": "Ara ha començat la fase de vol; les peces de l'oponent poden saltar a qualsevol punt buit del tauler. Podeu desactivar aquesta regla a «Configuració de les regles».",
+  "@enteredFlyingPhase": {},
+  "whenStalemate": "Quan hi ha ofegat",
+  "@whenStalemate": {},
+  "whenStalemate_Detail": "Quina acció s'aplica quan no es pot moure cap peça?",
+  "@whenStalemate_Detail": {},
+  "endWithStalemateLoss": "Acaba amb derrota per ofegat per al costat blocat.",
+  "@endWithStalemateLoss": {},
+  "changeSideToMove": "Canvia el torn a l'oponent.",
+  "@changeSideToMove": {},
+  "removeOpponentsPieceAndMakeNextMove": "Retireu una peça de l'oponent i feu el següent moviment.",
+  "@removeOpponentsPieceAndMakeNextMove": {},
+  "endWithStalemateDraw": "Acaba amb un empat per ofegat.",
+  "@endWithStalemateDraw": {},
+  "removeOpponentsPieceAndChangeSideToMove": "Retireu una peça de l'oponent i canvia el torn a l'altre jugador.",
+  "@removeOpponentsPieceAndChangeSideToMove": {},
+  "aiResponseDelayTime": "Temps de retard en la resposta de la IA",
+  "@aiResponseDelayTime": {},
+  "aiIsDelaying": "La IA està retardant la resposta. Espereu uns moments abans de continuar.",
+  "@aiIsDelaying": {},
+  "tipCanNotRemoveNonadjacent": "No podeu eliminar una peça que no sigui adjacent.",
+  "@tipCanNotRemoveNonadjacent": {},
+  "stalemateRemovalRegardlessOfMillFormation": "En un ofegat, podeu eliminar les peces de l'oponent que siguin adjacents a les vostres, sense tenir en compte la formació d'un molí.",
+  "@stalemateRemovalRegardlessOfMillFormation": {},
+  "whatIsMcts": "MCTS és un algorisme orientat a principiants que pren decisions explorant i avaluant diferents moviments mitjançant simulacions.",
+  "@whatIsMcts": {},
+  "goldenJade": "Jade daurat",
+  "@goldenJade": {},
+  "forestWood": "Fusta del bosc",
+  "@forestWood": {},
+  "darkMystery": "Misteri fosc",
+  "@darkMystery": {},
+  "midnightBlue": "Blau de mitjanit",
+  "@midnightBlue": {},
+  "greenForest": "Bosc verd",
+  "@greenForest": {},
+  "greenMeadow": "Prat verd",
+  "@greenMeadow": {},
+  "stonyPath": "Camí pedregós",
+  "@stonyPath": {},
+  "pastelPink": "Rosa pastel",
+  "@pastelPink": {},
+  "turquoiseSea": "Mar turquesa",
+  "@turquoiseSea": {},
+  "violetDream": "Somni violeta",
+  "@violetDream": {},
+  "mintChocolate": "Xocolata a la menta",
+  "@mintChocolate": {},
+  "skyBlue": "Blau cel",
+  "@skyBlue": {},
+  "playfulGarden": "Jardí juganer",
+  "@playfulGarden": {},
+  "whatIsRetrogradeAnalysis": "L'algoritme d'anàlisi retroactiva usa bases de dades de finals generades des de diferents posicions per a optimitzar el joc. Pertany a les anomenades solucions ultrafortes.",
+  "@whatIsRetrogradeAnalysis": {},
+  "viewAlgorithmGuide": "Voleu veure la guia d'usuari per a aquest algorisme?",
+  "@viewAlgorithmGuide": {},
+  "showPositionalAdvantageIndicator": "Mostra l'indicador d'avantatge posicional",
+  "@showPositionalAdvantageIndicator": {},
+  "usePerfectDatabase": "Usa la base de dades perfecta",
+  "@usePerfectDatabase": {},
+  "perfectDatabaseDescription": "Activeu aquesta opció per a utilitzar una base de dades impecable generada mitjançant algoritmes d'avantguarda. Aquesta funcionalitat integra estratègies tant d'obertura com de final de partida per a suggerir moviments òptims. És l'opció preferida dels jugadors que busquen el màxim nivell de precisió en les partides. Creada amb tècniques computacionals meticuloses, la base de dades està dissenyada per a oferir solucions pràcticament perfectes.\n\nNota: Si la IA no aconsegueix accedir a la base de dades, recorrerà als algoritmes convencionals per a prendre decisions durant la partida. Quan la base de dades està disponible, el «Nivell de dificultat» esdevé pràcticament imbatible, i el «Temps de raonament de la IA» es redueix dràsticament. Molts ajustos dins de les opcions d'«Estil de joc de la IA» seran ignorats, ja que els resultats de la base de dades tenen la màxima prioritat.\n\nPer a obtenir informació sobre com aprofitar al màxim aquesta base de dades impecable, feu clic aquí.",
+  "@perfectDatabaseDescription": {},
+  "backgroundImage": "Imatge de fons",
+  "@backgroundImage": {},
+  "whatIsRandom": "Quan «Utilitza la base de dades perfecta» no està habilitat, l'opció «Aleatori» fa que la IA mogui peces sense usar cap algorisme de selecció de moviments. Això sol donar un joc molt feble. En canvi, si la base de dades perfecta està activada, la IA es basa exclusivament en aquesta, sense càlculs en temps real.",
+  "@whatIsRandom": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "Retireu la peça (o peces) de la mà de l'oponent i després serà el seu torn de col·locar.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
+  "whenFormingMillsDuringPlacingPhase": "Quan es formen molins durant la fase de col·locació",
+  "@whenFormingMillsDuringPlacingPhase": {},
+  "removeOpponentsPieceFromBoard": "Retireu la peça (o peces) de l'oponent del tauler.",
+  "@removeOpponentsPieceFromBoard": {},
+  "removeOpponentsPieceFromBoard_Detail": "Retireu la peça (o peces) de l'oponent del tauler; després serà el seu torn de col·locar.",
+  "@removeOpponentsPieceFromBoard_Detail": {},
+  "opponentRemovesOwnPiece": "L'oponent retira les seves pròpies peces del tauler.",
+  "@opponentRemovesOwnPiece": {},
+  "opponentRemovesOwnPiece_Detail": "En lloc que ho feu vosaltres, l'oponent tria i retira la seva pròpia peça, fent-se mal ell mateix.",
+  "@opponentRemovesOwnPiece_Detail": {},
+  "removeOpponentsPieceFromHandThenYourTurn": "Retireu la peça (o peces) de la mà de l'oponent i després és el vostre torn de moure.",
+  "@removeOpponentsPieceFromHandThenYourTurn": {},
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "Retireu la peça (o peces) de la mà de l'oponent. Si, a causa de la configuració de supressió múltiple, s'han de retirar més peces i l'oponent ja no té peces a la mà, continueu retirant-ne del tauler. Després, és el vostre torn de moure. Si formeu més molins, podeu continuar retirant peces de l'oponent.",
+  "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "Retireu la peça (o peces) de la mà de l'oponent. Si, a causa de la supressió múltiple, cal retirar més peces i l'oponent ja no en té a la mà, continueu retirant-ne del tauler. Després, és el torn de l'oponent de moure.",
+  "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
+  "markAndDelayRemovingPieces": "Marca i retarda l'eliminació de peces.",
+  "@markAndDelayRemovingPieces": {},
+  "markAndDelayRemovingPieces_Detail": "Durant la fase de col·locació, les peces que s'han d'eliminar queden marcades, i cap jugador pot tornar a col·locar-ne en aquests punts. Quan comença la fase de moviment, aquestes peces marcades s'eliminen i els punts tornen a estar lliures.",
+  "@markAndDelayRemovingPieces_Detail": {},
+  "whenFormingMillsDuringPlacingPhase_Detail": "Les accions que es poden fer en formar molins durant la fase de col·locació.",
+  "@whenFormingMillsDuringPlacingPhase_Detail": {},
+  "marked": "Marcat",
+  "@marked": {},
+  "menu": "Menú",
+  "@menu": {},
+  "monochrome": "Monocrom",
+  "@monochrome": {},
+  "youCanEnableScreenReaderSupport": "Podeu habilitar l'opció de compatibilitat amb el lector de pantalla a la configuració d'accessibilitat en els paràmetres generals.",
+  "@youCanEnableScreenReaderSupport": {},
+  "showNumbersOnPieces": "Mostra nombres en les peces",
+  "@showNumbersOnPieces": {},
+  "saveImage": "Desa la imatge",
+  "@saveImage": {},
+  "isAnalysisToolbarShown": "Mostra la barra d'eines d'anàlisi",
+  "@isAnalysisToolbarShown": {},
+  "analysisToolbarBackgroundColor": "Color de fons de la barra d'eines d'anàlisi",
+  "@analysisToolbarBackgroundColor": {},
+  "analysisToolbarIconColor": "Color de la icona de la barra d'eines d'anàlisi",
+  "@analysisToolbarIconColor": {},
+  "transformed": "Transformat.",
+  "@transformed": {},
+  "cannotTransform": "No es pot transformar.",
+  "@cannotTransform": {},
+  "rotate": "Gira",
+  "@rotate": {},
+  "horizontalFlip": "Inverteix horitzontalment",
+  "@horizontalFlip": {},
+  "verticalFlip": "Inverteix verticalment",
+  "@verticalFlip": {},
+  "innerOuterFlip": "Inverteix interior-exterior",
+  "@innerOuterFlip": {},
+  "transparentCanvas": "Llenç transparent",
+  "@transparentCanvas": {},
+  "restrictRepeatedMillsFormation": "Restringeix la formació repetida de molins",
+  "@restrictRepeatedMillsFormation": {},
+  "restrictRepeatedMillsFormation_Detail": "Una peça que es mou des d'un molí per formar-ne un altre no pot tornar immediatament a la posició original en el següent moviment per a formar un nou molí. Cal fer un moviment diferent abans.",
+  "@restrictRepeatedMillsFormation_Detail": {},
+  "oneTimeUseMill": "Molí d'un sol ús",
+  "@oneTimeUseMill": {},
+  "oneTimeUseMill_Detail": "Cada molí només pot eliminar una peça de l'oponent una vegada. El podeu tornar a formar, però no serveix per a més eliminacions.",
+  "@oneTimeUseMill_Detail": {},
+  "currentRulesNoPerfectDatabase": "Les regles actuals que heu configurat no tenen una base de dades perfecta disponible. Per a més informació, feu clic aquí.",
+  "@currentRulesNoPerfectDatabase": {},
+  "focusOnBlockingPaths": "Centreu-vos a blocar els camins",
+  "@focusOnBlockingPaths": {},
+  "focusOnBlockingPaths_Detail": "En determinades fases de la partida, la IA prioritzarà blocar els moviments de l'oponent per a aconseguir la victòria per ofegament, en lloc de formar molins directament.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Imatge de la peça",
+  "@pieceImage": {},
+  "importColorSettings": "Importa la configuració dels colors",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exporta la configuració dels colors",
+  "@exportColorSettings": {},
+  "import": "Importa",
+  "@import": {},
+  "export": "Exporta",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Copieu abans la configuració en format JSON al porta-retalls.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "S'ha copiat al porta-retalls.",
+  "@copiedToClipboard": {},
+  "imported": "S'ha importat.",
+  "@imported": {},
+  "boardImage": "Imatge del tauler",
+  "@boardImage": {},
+  "autumnLeaves": "Fulles de tardor",
+  "@autumnLeaves": {},
+  "legendaryLand": "Terra llegendària",
+  "@legendaryLand": {},
+  "vignetteEffect": "Efecte vinyeta",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Voleu fer la barra d'eines completament transparent quan s'usa una imatge de fons al tauler?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Activa la vibració en el joc",
+  "@vibration": {},
+  "soundTheme": "Tema de so",
+  "@soundTheme": {},
+  "ball": "Pilota",
+  "@ball": {},
+  "liquid": "Líquid",
+  "@liquid": {},
+  "wood": "Fusta",
+  "@wood": {},
+  "placeEffectAnimation": "Efecte d'animació en col·locar una peça",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efecte d'animació en eliminar una peça",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Mostra la barra d'eines en la part inferior",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Radi de les cantonades del tauler",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Usa el llibre d'obertures",
+  "@useOpeningBook": {},
+  "currentRule": "Actual",
+  "@currentRule": {},
+  "nineMensMorris": "Marro de nou",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Marro de dotze",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Conjunt de regles",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Molí d'una vegada",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Permet que la IA usi moviments d'obertura habituals en jugadors professionals durant l'inici de la partida. Nota: aquesta funció només està disponible per a alguns conjunts de regles.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mostra el diagrama d'avantatge",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "El diagrama d'avantatge només es mostrarà després que la IA faci un moviment. No es mostrarà en els moviments fets per un humà.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Inhabilita l'eliminació fins que totes les peces estiguin col·locades, després s'eliminen peces basant-te en el nombre de molins fets.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "No s'elimina cap peça fins que totes estiguin col·locades. Si tots dos formen el mateix nombre de molins, cadascun en retira el mateix nombre. Si un jugador en forma més, retira una peça extra per a mantenir la diferència d'una peça. Si només un jugador forma molins, en retira dues, i l'altre en retira una. Si cap dels dos en forma, tots dos es retiren una peça pròpia.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Trieu una de les vostres peces.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "No és el vostre torn.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Color de fons de la barra d'eines d'anotació",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Color de la icona de la barra d'eines d'anotació",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Mostra la barra d'eines d'anotació",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Entra en mode d'anotació",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Segur que voleu suprimir totes les anotacions?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "S'ha copiat la instrucció LLM al porta-retalls.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "S'ha rebutjat la connexió. Potser el servidor està inactiu.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "S'ha trobat el servidor, s'està esperant la connexió...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "No hi ha connexió LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Fes una captura de pantalla",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "S'ha desconnectat de l'oponent.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Sol·licitud d'anar enrere",
+  "@takeBackRequest": {},
+  "nothingToShow": "Res per mostrar.",
+  "@nothingToShow": {},
+  "stopHosting": "Atura l'allotjament",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Un parell ha reinicialitzat la connexió.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "S'ha perdut la connexió a causa del temps d'espera del batec. Torneu a connectar-vos.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Inicia l'allotjament",
+  "@startHosting": {},
+  "restartRequestRejected": "La sol·licitud de reinici s'ha rebutjat.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "No esteu connectat a un oponent LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Petició LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "La partida s'ha reiniciat.",
+  "@gameRestarted": {},
+  "takeBackRejected": "S'ha rebutjat l'opció d'anar enrere.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Segur que voleu abandonar aquesta partida?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "L'oponent s'ha rendit. Heu guanyat!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Suprimeix totes les anotacions",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Connectat, s'està esperant el moviment de l'oponent...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Estat de la xarxa: desconnectat",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "S'ha enviat la sol·licitud d'anar enrere a l'oponent.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "És possible que l'oponent hagi abandonat la partida",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "S'ha connectat correctament a l'amfitrió.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "S'ha perdut la connexió: temps d'espera del batec excedit",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "No s'ha trobat cap amfitrió.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Confirmeu la rendició",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Heu començat a allotjar la partida, s'està esperant que s'hi uneixin jugadors...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Temps d'espera exhaurit, la connexió de xarxa és inestable.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "No hi ha cap petició LLM disponible.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Us heu rendit. Final de partida.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP del servidor",
+  "@serverIp": {},
+  "confirmClear": "Confirmeu l'eliminació",
+  "@confirmClear": {},
+  "opponentSTurn": "Torn de l'oponent.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "S'està esperant la connexió d'un client...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "La sol·licitud d'anar enrere ha estat rebutjada o ha fallat.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Afegeix text",
+  "@addText": {},
+  "exitAnnotationMode": "Surt del mode d'anotació",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Escriviu l'anotació",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "S'està intentant reconnectar...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "S'ha enviat la sol·licitud de reinici. S'està esperant la resposta de l'oponent...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "El servidor s'ha aturat.",
+  "@serverIsStopped": {},
+  "restartRequest": "Sol·licitud de reinici",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "No podeu sol·licitar anar enrere si no és el vostre torn.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "S'ha acceptat anar enrere.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Configuració de xarxa local",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "S'ha restablert la connexió amb èxit!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "No s'ha pogut desar la imatge a la galeria.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "L'oponent ha sol·licitat reiniciar la partida. Ho accepteu?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "El vostre torn.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "No es pot restablir la connexió, reinicieu la partida.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Amfitrió",
+  "@host": {},
+  "join": "Entra",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Adreça IP no vàlida.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Port no vàlid.",
+  "@invalidPort": {},
+  "connectingAttempt": "S'està connectant: intent {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "No s'ha pogut connectar: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "No s'ha pogut començar a allotjar: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Amfitrió trobat: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Atura",
+  "@stop": {},
+  "discover": "Descobreix",
+  "@discover": {},
+  "connect": "Connecta",
+  "@connect": {},
+  "clientConnected": "Client connectat: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "S'està descobrint: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Reconnexió ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Connectat",
+  "@connected": {},
+  "delete": "Suprimeix",
+  "@delete": {},
+  "ancientEgypt": "Antic Egipte",
+  "@ancientEgypt": {},
+  "gothicIce": "Gel gòtic",
+  "@gothicIce": {},
+  "riceField": "Camp d'arròs",
+  "@riceField": {},
+  "chinesePorcelain": "Porcellana xinesa",
+  "@chinesePorcelain": {},
+  "desertDusk": "Capvespre desèrtic",
+  "@desertDusk": {},
+  "precisionCraft": "Art precís",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Brodat popular",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Patrimoni dels Carpats",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Grandesa imperial",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Cristall de Bohèmia",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Albada a la sabana",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonia i equilibri",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Espècia de canyella",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Mosaic anatoli",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Esperit de Carnaval",
+  "@carnivalSpirit": {},
+  "custom": "Personalitzat",
+  "@custom": {},
+  "spiceMarket": "Mercat d'espècies",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Feu lliscar per a mostrar el menú lateral",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Mostra la informació de la partida en les captures de pantalla",
+  "@showGameInfoOnScreenshots": {}
+}

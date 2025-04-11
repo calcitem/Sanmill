@@ -1,21 +1,8 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-#include <iomanip>
-#include <map>
+// game_settings.cpp
+
 #include <string>
 
 #include <QAbstractButton>
@@ -32,12 +19,10 @@
 #include <QThread>
 #include <QTimer>
 
-#include "boarditem.h"
-#include "client.h"
 #include "game.h"
-#include "graphicsconst.h"
 #include "option.h"
-#include "server.h"
+#include "thread_pool.h"
+#include "search_engine.h"
 
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
@@ -45,23 +30,42 @@
 
 using std::to_string;
 
-void Game::loadSettings()
+QString getExecutableDirectory()
+{
+    QString executablePath = QCoreApplication::applicationFilePath();
+    QFileInfo fileInfo(executablePath);
+    return QDir::toNativeSeparators(fileInfo.absolutePath());
+}
+
+QString buildSettingsFilePath(const QString &settingsFile)
+{
+    QString executableDir = getExecutableDirectory();
+    QDir dir(executableDir);
+    QString settingsFilename = dir.filePath(settingsFile);
+    return QDir::toNativeSeparators(settingsFilename);
+}
+
+void Game::loadGameSettings()
 {
     bool empty = false;
 
-    const QFileInfo file(SETTINGS_FILE);
+    QString settingsFilename = buildSettingsFilePath(SETTINGS_FILE);
+
+    qDebug() << "Settings File Path:" << settingsFilename;
+
+    const QFileInfo file(settingsFilename);
     if (!file.exists()) {
-        cout << SETTINGS_FILE.toStdString() << " is not exists, create it."
+        cout << settingsFilename.toStdString() << " is not exists, create it."
              << std::endl;
         empty = true;
     }
 
-    settings = new QSettings(SETTINGS_FILE, QSettings::IniFormat);
+    settings = new QSettings(settingsFilename, QSettings::IniFormat);
 
-    setEngineWhite(empty ? false :
-                           settings->value("Options/WhiteIsAiPlayer").toBool());
-    setEngineBlack(empty ? true :
-                           settings->value("Options/BlackIsAiPlayer").toBool());
+    setWhiteIsAiPlayer(
+        empty ? false : settings->value("Options/WhiteIsAiPlayer").toBool());
+    setBlackIsAiPlayer(
+        empty ? true : settings->value("Options/BlackIsAiPlayer").toBool());
     setFixWindowSize(empty ? false :
                              settings->value("Options/FixWindowSize").toBool());
     setSound(empty ? true : settings->value("Options/Sound").toBool());
@@ -105,60 +109,74 @@ void Game::loadSettings()
     setDeveloperMode(empty ? false :
                              settings->value("Options/DeveloperMode").toBool());
 
-    setRule(empty ? DEFAULT_RULE_NUMBER :
-                    settings->value("Options/RuleNo").toInt());
+    applyRule(empty ? DEFAULT_RULE_NUMBER :
+                      settings->value("Options/RuleNo").toInt());
+
+    // Load AI time limits
+    int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
+    int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
+
+    // Configure engine with the loaded time limits
+    engineController.handleCommand("setoption name WhiteTimeLimit value " +
+                                       std::to_string(time1),
+                                   nullptr);
+    engineController.handleCommand("setoption name BlackTimeLimit value " +
+                                       std::to_string(time2),
+                                   nullptr);
 }
 
-void Game::destroySettings()
+void Game::cleanupSettings()
 {
     delete settings;
     settings = nullptr;
 }
 
-void Game::saveRuleSetting(int ruleNo)
+void Game::storeRuleSetting(int ruleNo)
 {
     settings->setValue("Options/RuleNo", ruleNo);
 }
 
-void Game::setEngine(Color color, bool enabled)
+void Game::setEngineControl(Color color, bool enabled)
 {
+    // Mark whether this color is controlled by AI
     isAiPlayer[color] = enabled;
-
-    if (enabled == true) {
-        aiThread[color]->setAi(&position);
-        aiThread[color]->start_searching();
-
-    } else {
-        aiThread[color]->pause();
-    }
 }
 
-void Game::setEngineWhite(bool enabled)
+void Game::setWhiteIsAiPlayer(bool enabled)
 {
-    setEngine(WHITE, enabled);
+    setEngineControl(WHITE, enabled);
     settings->setValue("Options/WhiteIsAiPlayer", enabled);
+    processGameOutcome();
 }
 
-void Game::setEngineBlack(bool enabled)
+void Game::setBlackIsAiPlayer(bool enabled)
 {
-    setEngine(BLACK, enabled);
+    setEngineControl(BLACK, enabled);
     settings->setValue("Options/BlackIsAiPlayer", enabled);
+    processGameOutcome();
 }
 
-void Game::setAiDepthTime(int time1, int time2)
+void Game::setAiTimeLimits(int time1, int time2)
 {
-    stopAndWaitAiThreads();
+    // Store AI time limits in settings
+    settings->setValue("Options/AiTimeLimit1", time1);
+    settings->setValue("Options/AiTimeLimit2", time2);
 
-    aiThread[WHITE]->setAi(&position, time1);
-    aiThread[BLACK]->setAi(&position, time2);
+    // Pass the time limits to the engine controller
+    // engineController.handleCommand("setoption name WhiteTimeLimit value " +
+    // std::to_string(time1), nullptr);
+    // engineController.handleCommand("setoption name BlackTimeLimit value " +
+    // std::to_string(time2), nullptr);
 
-    startAiThreads();
+    // Update the UI with the new time limits
+    emit statusBarChanged(tr("AI time limits updated"));
 }
 
-void Game::getAiDepthTime(int &time1, int &time2) const
+void Game::getAiTimeLimits(int &time1, int &time2) const
 {
-    time1 = aiThread[WHITE]->getTimeLimit();
-    time2 = aiThread[BLACK]->getTimeLimit();
+    // Retrieve AI time limits from settings with default values of 1 second
+    time1 = settings->value("Options/AiTimeLimit1", 1).toInt();
+    time2 = settings->value("Options/AiTimeLimit2", 1).toInt();
 }
 
 void Game::setFixWindowSize(bool arg) noexcept
@@ -234,7 +252,7 @@ void Game::setUsePerfectDatabase(bool arg) noexcept
 {
     // TODO: If it is checked,
     // the box will still pop up once when opening the program.
-    if (gameOptions.getUsePerfectDatabase() == false && arg == true) {
+    if (!gameOptions.getUsePerfectDatabase() && arg == true) {
         QMessageBox msgBox;
         msgBox.setText(tr("Please visit the following link for detailed "
                           "operating "
@@ -261,16 +279,15 @@ void Game::setPerfectDatabasePath(string val) const
                        QString::fromStdString(val));
 }
 
-// TODO: When call this? Same as setUsePerfectDatabase above?
+// Variation of setUsePerfectDatabase that also handles perfect_reset/exit
 void Game::setUsePerfectDatabase(bool enabled) const
 {
 #if 0
-    // TODO: Show dialog twice when launching
-
-    if (enabled && databaseDialog->exec() == QDialog::Accepted) {
-        std::string path = databaseDialog->getPath().toStdString();
-        setPerfectDatabase(path);
-    }
+    // If you want to pop up a dialog:
+    // if (enabled && databaseDialog->exec() == QDialog::Accepted) {
+    //     std::string path = databaseDialog->getPath().toStdString();
+    //     setPerfectDatabase(path);
+    // }
 #endif
 
     gameOptions.setUsePerfectDatabase(enabled);
@@ -340,7 +357,10 @@ void Game::setLearnEndgame(bool enabled) const
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {
-        Thread::loadEndgameFileToHashMap();
+        // Under the old code, we called Thread::loadEndgameFileToHashMap().
+        // Now that Thread is replaced, you might have a different loading
+        // mechanism, or you could keep a static function call like so:
+        loadEndgameFileToHashMap();
     }
 #endif
 }
@@ -351,14 +371,12 @@ void Game::setIDS(bool enabled) const
     settings->setValue("Options/IDS", enabled);
 }
 
-// DepthExtension
 void Game::setDepthExtension(bool enabled) const
 {
     gameOptions.setDepthExtension(enabled);
     settings->setValue("Options/DepthExtension", enabled);
 }
 
-// OpeningBook
 void Game::setOpeningBook(bool enabled) const
 {
     gameOptions.setOpeningBook(enabled);

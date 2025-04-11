@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// hashmap.h
 
 #ifndef HASH_MAP_H_INCLUDED
 #define HASH_MAP_H_INCLUDED
@@ -69,7 +58,10 @@ public:
         hashTable = new HashNode<K, V>[hashSize];
 #endif // ALIGNED_LARGE_PAGES
 
-        memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+        for (size_t i = 0; i < hashSize; i++) {
+            hashTable[i].~HashNode<K, V>();
+            new (&hashTable[i]) HashNode<K, V>();
+        }
 #else  // DISABLE_HASHBUCKET
        // create the key table as an array of key buckets
         hashTable = new HashBucket<K, V>[hashSize];
@@ -165,7 +157,10 @@ public:
     void clear() const
     {
 #ifdef DISABLE_HASHBUCKET
-        memset(hashTable, 0, sizeof(HashNode<K, V>) * hashSize);
+        for (size_t i = 0; i < hashSize; i++) {
+            hashTable[i].~HashNode<K, V>();
+            new (&hashTable[i]) HashNode<K, V>();
+        }
 #else  // DISABLE_HASHBUCKET
         for (size_t i = 0; i < hashSize; i++) {
             (hashTable[i]).clear();

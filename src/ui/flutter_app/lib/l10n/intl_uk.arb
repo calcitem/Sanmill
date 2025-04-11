@@ -40,7 +40,7 @@
   "@getInvolved": {
     "description": "Get Involved"
   },
-  "draw": "Намалювати",
+  "draw": "Нічия",
   "@draw": {
     "description": "Draw"
   },
@@ -98,7 +98,7 @@
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "Тестування через локальну мережу",
+  "testViaLAN": "Тест через локальну мережу",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
@@ -106,7 +106,7 @@
   "@move": {
     "description": "Move"
   },
-  "showMoveList": "Перемістити список",
+  "showMoveList": "Показати список ходів",
   "@showMoveList": {
     "description": "Move list"
   },
@@ -122,19 +122,19 @@
   "@ok": {
     "description": "OK"
   },
-  "confirm": "Підтвердьте",
+  "confirm": "Підтвердити",
   "@confirm": {
     "description": "Confirm"
   },
-  "cancel": "Сксв.",
+  "cancel": "Скасувати",
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Виберіть неправильний шматок.",
+  "tipSelectWrong": "Ви обрали неправильну фішку.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Розмістіть свої шматочки.",
+  "tipPlace": "Розмістіть свої фішки.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -142,7 +142,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Ви розмістили.",
+  "tipPlaced": "Частина розміщена.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -154,11 +154,11 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Ви видалили.",
+  "tipRemoved": "Частину вилучено.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Перемістіть шматок.",
+  "tipMove": "Перемістіть фігуру.",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -198,7 +198,7 @@
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "У вас залишилося три штуки.",
+  "tipHaveThreePiecesLeft": "У вас залишилося три фішки.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -228,7 +228,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "Загублено",
+  "lost": "Програл",
   "@lost": {
     "description": "Lost"
   },
@@ -418,7 +418,7 @@
       }
     }
   },
-  "thanks": "Спасибі",
+  "thanks": "Дякую",
   "@thanks": {
     "description": "Thanks"
   },
@@ -510,9 +510,9 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Якщо увімкнено Політ, коли гравець зменшується до певного числа фігур, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість того, щоб бути обмеженими сусідніми точками, як у решті гри.",
+  "flyPieceCount_Detail": "Якщо політ увімкнено, коли кількість фігур гравця падає нижче певного порогу, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість обмеження суміжними точками, як у решті випадків гри.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Принаймні шматочки",
   "@piecesAtLeastCount": {
@@ -530,7 +530,7 @@
   "@isDefenderMoveFirst": {
     "description": "The second player moves first"
   },
-  "isDefenderMoveFirst_Detail": "Гравець, який рухається другим у фазі розміщення, рухається першим у фазі переміщення.",
+  "isDefenderMoveFirst_Detail": "Гравець, який йде другим у фазі розміщення, переходить першим у фазі переміщення.",
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
@@ -560,7 +560,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Гравець програє, якщо його супротивник заблокує їх, щоб їх не можна було перемістити. Змініть сторону, щоб перемістити, якщо ця опція вимкнена.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Політ",
   "@mayFly": {
@@ -606,7 +606,7 @@
   "@exit": {
     "description": "Exit"
   },
-  "ruleSettings": "Правила",
+  "ruleSettings": "Налаштування правила",
   "@ruleSettings": {
     "description": "Rule Settings"
   },
@@ -728,9 +728,9 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Торкніться однієї частини супротивника, щоб видалити.",
+  "toRemovePiece": "Торкніться однієї з фігур супротивника, щоб видалити її.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Перш ніж видалити шматок, вам потрібно створити млин.",
   "@needToCreateMillFirst": {
@@ -818,7 +818,7 @@
   "@none": {
     "description": "None"
   },
-  "helpContent": "Гра спрямована на те, щоб у суперника було менше трьох фігур або не було дозволених ходів.\n\nГра автоматично веде нічию, якщо позиція з’являється втретє або не знімає за останні 100 (конфігурованих) ходів.\n\nГра проходить у три етапи:\n\n1. Розміщення фігур на вільних точках\n2. Переміщення фігур до сусідніх точок\n3. (додаткова фаза) Переміщення фігур на будь-яку вільну точку при зменшенні гравця до трьох фігур\n\nРозміщення\n\nГра починається з порожньої дошки, яка складається з сітки з двадцятьма чотирма очками. Гравці по черзі ставлять свої фігури на вільні очки, поки кожен гравець не розмістить усі фігури на дошці. Якщо гравець може поставити три свої фігури прямо, у нього є «млин» і він може видалити одну з фігур свого суперника з дошки.\n\nЗгідно з деякими правилами, гравці повинні спочатку видалити будь-які інші шматки, перш ніж витягти шматок зі сформованого млина.\n\nЗа деякими правилами ви не можете знову розташувати фігури до точок вилучених фігур у фазі розміщення.\n\nПісля використання всіх фігур гравці рухаються по черзі.\n\nПереміщення\n\nДля переміщення гравець переміщує одну зі своїх фігур уздовж лінії дошки до вільної сусідньої точки. Якщо він не може цього зробити, він програє гру. Гравець, який вирівняв три свої фігури на лінії дошки, має млин і може вилучити одну з фігур свого суперника, як у фазі розміщення. Будь-який гравець скорочується на дві частини, не має можливості створити нові млини, і таким чином програє гру. Гравець також може програти, якщо більше трьох фігур, якщо його супротивник блокує їх рух.\n\nПоліт\n\nУ деяких варіантах правил, коли у гравця залишилося лише три фігури, його фігури можуть літати, стрибати або стрибати на будь-які вільні точки, а не тільки на сусідні.\n",
+  "helpContent": "Мета гри – залишити супернику менше трьох фігур або залишити жодного допустимого ходу. \n\nГра автоматично завершує нічию, якщо позиція виникає втретє або не відбувається жодного видалення протягом останніх 100 (настроюваних) ходів. \n\nГра проходить у три етапи: \n\n1. Розміщення фігур на вільних точках \n2. Переміщення фігур на сусідні точки \n3. (додаткова фаза) Переміщення фігур у будь-яку вільну точку, коли гравець зменшується до трьох фігур \n\nРозміщення \n\nГра починається з порожнього поля, яке складається з сітки з двадцятьма чотирма точками. Гравці по черзі розміщують свої фігури на вільних точках, поки кожен гравець не розмістить усі фігури на дошці. Якщо гравець може поставити три свої фігури прямо, він має «млин» і може видалити одну з фігур свого суперника з дошки. \n\nУ деяких наборах правил гравці повинні спочатку видалити будь-які інші частини, перш ніж витягти частину зі сформованого млина. \n\nЗгідно з певними правилами, ви не можете знову розміщувати фігури на точках, з яких фігури були видалені. \n\nКоли всі фігури розставлені, гравці по черзі пересувають їх. \n\nПереїзд \n\nДля переміщення гравець переміщує одну зі своїх фігур уздовж лінії дошки до вільної сусідньої точки. Якщо він не може, він програє гру. Гравець, який вирівнює три свої фігури на лінії дошки, має млин і може видалити одну з фігур свого суперника, як у фазі розміщення. Якщо гравець зменшується до двох частин, він не має можливості створити нові млини, і, отже, програє гру. Гравець також може програти, коли більше трьох фігур, якщо його суперник блокує їх рух. \n\nполіт \n\nУ деяких варіантах правил, якщо у гравця залишилося лише три фігури, їхні фігури можуть літати, стрибати або стрибати на будь-які вільні точки, а не лише на сусідні.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -850,11 +850,11 @@
   "@advanced": {
     "description": "Advanced"
   },
-  "placing": "Розм.",
+  "placing": "Розміщення",
   "@placing": {
     "description": "Placing"
   },
-  "moving": "Перм.",
+  "moving": "Переїзд",
   "@moving": {
     "description": "Moving"
   },
@@ -866,9 +866,9 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "Стиль гри AI",
+  "aisPlayStyle": "Стиль гри ШІ",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пасивний",
   "@passive": {
@@ -938,9 +938,9 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Торкніться назад, щоб вийти.",
+  "tapBackAgainToLeave": "Знову торкніться Назад, щоб вийти.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Більше",
   "@more": {
@@ -1122,9 +1122,9 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Якщо гравець розбиває млин, щоб негайно створити новий млин, такий гравець може перемістити такий шматок назад до початкового стику у своєму наступному ході, якщо він зробить новий млин.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Якщо гравець розбиває млин, щоб негайно сформувати новий, він може перемістити цю фігуру назад у початкову точку своїм наступним ходом, якщо вона утворює нову млин.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Гра вважається нічиєю, якщо гравець має три фігури і після десяти ходів жоден із гравців не знімає фігури суперника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1364,7 +1364,7 @@
   "@gotIt": {},
   "youCanModifyRules": "Ви можете змінити правила гри в налаштуваннях правил.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "Ви можете використовувати коліщатко миші, щоб змінити значення в панелі вибору.",
+  "youCanUseMouseWheelInPicker": "Ви можете використовувати коліщатко миші, щоб налаштувати значення в панелі вибору.",
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "Час мислення штучного інтелекту, встановлений на 0, означає відсутність обмеження часу на мислення.",
   "@noTimeLimitForThinking": {},
@@ -1410,7 +1410,7 @@
   "@whenStalemate": {},
   "whenStalemate_Detail": "Яка дія виконується, якщо жодну фігуру не можна перемістити?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Закінчиться безвихідною втратою.",
+  "endWithStalemateLoss": "Закінчується програшем у глухий кут для заблокованої сторони.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Змініть сторону для руху.",
   "@changeSideToMove": {},
@@ -1426,7 +1426,7 @@
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "Ви не можете видалити несусідний фрагмент.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "У разі патової ситуації фігури супротивника, які знаходяться поруч із вашими, можуть бути видалені, незалежно від формування млина.",
+  "stalemateRemovalRegardlessOfMillFormation": "У безвихідній ситуації ви можете видалити фігури супротивника поруч із вашими, незважаючи на форму млинів.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS — це зручний для початківців алгоритм, який приймає рішення, досліджуючи та оцінюючи різні рухи за допомогою моделювання.",
   "@whatIsMcts": {},
@@ -1438,7 +1438,7 @@
   "@greenMeadow": {},
   "stonyPath": "Кам'яний шлях",
   "@stonyPath": {},
-  "midnightBlue": "Midnight Blue",
+  "midnightBlue": "Синій опівночі",
   "@midnightBlue": {},
   "greenForest": "Зелений ліс",
   "@greenForest": {},
@@ -1464,7 +1464,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Використовуйте ідеальну базу даних",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Увімкніть цю опцію, щоб використовувати бездоганну базу даних ігор, створену за допомогою передових алгоритмів. Ця функція інтегрує стратегії початку гри та кінцевої стадії, щоб запропонувати оптимальні ходи. Це перший вибір для гравців, які шукають найвищий рівень точності в грі. База даних розроблена за допомогою докладних обчислювальних технік і призначена для надання майже ідеальних рішень в іграх.\n\nПримітка: Якщо штучний інтелект не може отримати доступ до бази даних, він переключиться на традиційні алгоритми для прийняття рішень в грі. Коли база даних доступна, 'Рівень складності' стає практично непереможним, а 'Час мислення ШІ' різко скорочується. Багато налаштувань в опціях 'Стиль гри ШІ' будуть перевизначені, оскільки результати бази даних мають найвищий пріоритет.\n\nДля отримання інструкцій з ефективного використання цієї бездоганної бази даних, натисніть тут.",
+  "perfectDatabaseDescription": "Увімкніть цей параметр, щоб використовувати бездоганну базу даних ігор, згенеровану за допомогою передових алгоритмів. Ця функція об’єднує стратегії відкриття та завершення гри, щоб пропонувати оптимальні ходи. Це кращий вибір для гравців, які прагнуть найвищого рівня точності в ігровому процесі. Створена за допомогою ретельної обчислювальної техніки, база даних розроблена, щоб запропонувати майже ідеальні ігрові рішення. \n\nПримітка: якщо штучному інтелекту не вдається отримати доступ до бази даних, він звернеться до звичайних алгоритмів для прийняття ігрових рішень. Коли база даних доступна, «Рівень складності» стає практично неперевершеним, а «Час на роздуми ШІ» різко скорочується. Багато налаштувань у параметрах «Стилю гри ШІ» буде замінено, оскільки результати бази даних мають найвищий пріоритет. \n\nЩоб отримати вказівки щодо того, як максимально використати цю бездоганну базу даних, натисніть тут.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Фонове зображення",
   "@backgroundImage": {},
@@ -1516,7 +1516,7 @@
   "@transformed": {},
   "cannotTransform": "Не можна трансформувати.",
   "@cannotTransform": {},
-  "rotate": "Об.",
+  "rotate": "Обертати",
   "@rotate": {},
   "horizontalFlip": "ГП",
   "@horizontalFlip": {},
@@ -1539,5 +1539,313 @@
   "focusOnBlockingPaths": "Зосередьтеся на блокуванні шляхів",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "У певних фазах гри віддається пріоритет блокуванню руху супротивника, а не формуванню млинів. Замість того, щоб зосереджуватися на видаленні фігурок, завершуючи млини, ШІ прагне зловити супротивника в пастку саме під час цих фаз, позбавити його можливості рухатися і забезпечити перемогу через виснаження, а не агресивну гру. Ця стратегія, характерна для певних фаз, не активно блокує млини супротивника.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Зображення фігури",
+  "@pieceImage": {},
+  "importColorSettings": "Імпортувати налаштування кольорів",
+  "@importColorSettings": {},
+  "exportColorSettings": "Експортувати налаштування кольорів",
+  "@exportColorSettings": {},
+  "import": "Імпортувати",
+  "@import": {},
+  "export": "Експортувати",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Будь ласка, спочатку скопіюйте налаштування формату JSON до буфера обміну.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Скопійовано в буфер обміну.",
+  "@copiedToClipboard": {},
+  "imported": "Імпортовано.",
+  "@imported": {},
+  "boardImage": "Зображення дошки",
+  "@boardImage": {},
+  "autumnLeaves": "Осіннє Листя",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарна Земля",
+  "@legendaryLand": {},
+  "vignetteEffect": "Ефект віньєтки",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Ви хочете зробити панель інструментів повністю прозорою, коли встановлено фонове зображення дошки?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Увімкнути вібрацію в грі",
+  "@vibration": {},
+  "soundTheme": "Тема звуку",
+  "@soundTheme": {},
+  "ball": "М'яч",
+  "@ball": {},
+  "liquid": "Рідина",
+  "@liquid": {},
+  "wood": "Дерево",
+  "@wood": {},
+  "placeEffectAnimation": "Анімаційний ефект розміщення фігури",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анімаційний ефект видалення фігури",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показати панель інструментів внизу",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радіус кута дошки",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Використовуйте книгу для відкриття",
+  "@useOpeningBook": {},
+  "currentRule": "Поточний",
+  "@currentRule": {},
+  "nineMensMorris": "Морріс дев’яти чоловік",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Морріс дванадцяти чоловік",
+  "@twelveMensMorris": {},
+  "morabaraba": "Морабараба",
+  "@morabaraba": {},
+  "dooz": "Дуз",
+  "@dooz": {},
+  "chamGonu": "Чхамгону",
+  "@chamGonu": {},
+  "zhiQi": "Чжичі",
+  "@zhiQi": {},
+  "chengSanQi": "Ченсанчі",
+  "@chengSanQi": {},
+  "mulMulan": "Мул-Мулан",
+  "@mulMulan": {},
+  "nerenchi": "Неренчі",
+  "@nerenchi": {},
+  "ruleSet": "Набір правил",
+  "@ruleSet": {},
+  "laskerMorris": "Ласкер Морріс",
+  "@laskerMorris": {},
+  "oneTimeMill": "Одноразовий млин",
+  "@oneTimeMill": {},
+  "daSanQi": "Да-Саньці",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Дозвольте ШІ використовувати початкові ходи, які часто використовуються професійними людськими гравцями на ранньому етапі гри. Примітка: Ця функція наразі доступна лише для певних наборів правил.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Показати графік переваг",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Графік переваг буде намальовано лише після того, як ШІ зробить хід. Він не буде намальований, коли хід робить людський гравець.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Вимкніть видалення, доки не буде розміщено всі частини, а потім видаліть частини на основі підрахунків млинів.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Вимкніть видалення, доки не буде розміщено всі частини, а потім видаліть частини на основі підрахунків млинів: якщо вони однакові, обидві видаляють однакову кількість; якщо один має більше, вони видаляють один зайвий, зберігаючи цільну різницю. Якщо тільки один утворює млини, вони знімають два шматки, а інший - один. Якщо жоден не утворює млини, обидва видаляють одну зі своїх частин.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "Ель Фільджа",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Виберіть одну зі своїх частин.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Зараз не ваш хід.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Колір фону панелі інструментів анотацій",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Колір іконок панелі інструментів анотацій",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Показати панель інструментів анотацій",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Увійдіть у режим анотації",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Ви впевнені, що бажаєте очистити всі анотації?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Підказку LLM скопійовано в буфер обміну.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Підключення відмовлено, можливо, сервер не працює.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Виявлення успішне, очікується з'єднання...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Немає підключення до локальної мережі",
+  "@noLanConnection": {},
+  "takeScreenshot": "Зробіть знімок екрана",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Відключений від опонента.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Запит на повернення",
+  "@takeBackRequest": {},
+  "nothingToShow": "Нічого показати.",
+  "@nothingToShow": {},
+  "stopHosting": "Зупинити хостинг",
+  "@stopHosting": {},
+  "connectionResetByPeer": "З’єднання скинуто одноранговим вузлом.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "З’єднання втрачено через час очікування. Підключіться повторно.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Розпочати хостинг",
+  "@startHosting": {},
+  "restartRequestRejected": "Запит на перезапуск відхилено.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Не підключений до суперника локальної мережі.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM підказка",
+  "@llmPrompt": {},
+  "gameRestarted": "Гру перезапущено.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Забрати назад відхилено.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Ви впевнені, що хочете здатися в цій грі?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Опонент здався. Ви перемогли!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Очистити всі анотації",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Підключений, чекає на хід суперника...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Стан мережі: відключено",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Запит на повернення ходу надіслано опоненту.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Можливо, суперник вийшов з гри",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Успішно підключено до хосту.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "З’єднання втрачено: тайм-аут серцебиття",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Хост не знайдено.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Підтвердити здачу",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Розпочато розміщення гри, очікується приєднання гравців...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Час очікування з’єднання минув, з’єднання з мережею нестабільне.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Підказка LLM недоступна.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Ви здалися. Гра завершена.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP сервера",
+  "@serverIp": {},
+  "confirmClear": "Підтвердити очищення",
+  "@confirmClear": {},
+  "opponentSTurn": "Хід суперника.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Очікування підключення клієнта...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Запит на повернення було відхилено або не вдалося.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Додайте текст",
+  "@addText": {},
+  "exitAnnotationMode": "Вийти з режиму анотації",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Введіть свою анотацію",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Спроба повторного підключення...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Запит на перезапуск надіслано. Чекаю на відповідь опонента...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Сервер зупинено.",
+  "@serverIsStopped": {},
+  "restartRequest": "Запит на перезапуск",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Не можна подати запит на повернення, коли не ваша черга.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Забрати назад прийнято.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Налаштування локальної мережі",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Повторне підключення успішно!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Не вдалося зберегти зображення в галерею.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Суперник попросив перезапустити гру. Ви приймаєте?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ваша черга.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Не вдалося повторно підключитися, перезапустіть гру.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Хост",
+  "@host": {},
+  "join": "Приєднуйтесь",
+  "@join": {},
+  "port": "Порт",
+  "@port": {},
+  "invalidIpAddress": "Недійсна IP-адреса.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Недійсний порт.",
+  "@invalidPort": {},
+  "connectingAttempt": "Підключення: Спроба {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Не вдалося підключитися: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Не вдалося запустити хостинг: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Хост виявлено: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Зупинити",
+  "@stop": {},
+  "discover": "Відкрийте для себе",
+  "@discover": {},
+  "connect": "Підключитися",
+  "@connect": {},
+  "clientConnected": "Клієнт підключений: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Відкриття: {seconds} с",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Повторне підключення ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Підключено",
+  "@connected": {},
+  "delete": "Видалити",
+  "@delete": {},
+  "ancientEgypt": "Стародавній Єгипет",
+  "@ancientEgypt": {},
+  "gothicIce": "Готичний лід",
+  "@gothicIce": {},
+  "riceField": "Рисове поле",
+  "@riceField": {},
+  "chinesePorcelain": "Китайська порцеляна",
+  "@chinesePorcelain": {},
+  "desertDusk": "Пустельні сутінки",
+  "@desertDusk": {},
+  "precisionCraft": "Точне ремесло",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Народна вишивка",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Карпатська спадщина",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Імператорська велич",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Богемський кристал",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Саванна Схід сонця",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Гармонія Баланс",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Пряність з корицею",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Анатолійська мозаїка",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Дух карнавалу",
+  "@carnivalSpirit": {},
+  "custom": "Спеціальні",
+  "@custom": {},
+  "spiceMarket": "Ринок спецій",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Проведіть пальцем, щоб відкрити ящик",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показувати інформацію про гру на скріншотах",
+  "@showGameInfoOnScreenshots": {}
 }

@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// piece_count_modal.dart
 
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
@@ -28,8 +17,10 @@ class _PieceCountModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('piece_count_semantics'),
       label: S.of(context).piecesCount,
       child: Column(
+        key: const Key('piece_count_column'),
         mainAxisSize: MainAxisSize.min,
         children: _buildRadioListTiles(context),
       ),
@@ -51,8 +42,10 @@ class _PieceCountModal extends StatelessWidget {
     int value,
   ) {
     return Semantics(
+      key: Key('semantics_$value'),
       label: title,
       child: RadioListTile<int>(
+        key: Key('radio_$value'),
         title: Text(title),
         groupValue: piecesCount,
         value: value,

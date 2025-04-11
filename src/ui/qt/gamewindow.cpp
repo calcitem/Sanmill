@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// gamewindow.cpp
 
 #include <QActionGroup>
 #include <QButtonGroup>
@@ -28,6 +17,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QPicture>
+#include <QProcess>
 #include <QPushButton>
 #include <QScreen>
 #include <QSpinBox>
@@ -157,7 +147,7 @@ void MillGameWindow::initialize()
     game = new Game(*scene, this);
 
     // Add a new menu bar action
-    map<int, QStringList> actions = game->getActions();
+    map<int, QStringList> actions = game->getRuleActions();
 
     for (auto i = actions.begin(); i != actions.end(); ++i) {
         // The key of map stores int index value, and value stores rule name and
@@ -182,17 +172,17 @@ void MillGameWindow::initialize()
     // The main window controller is associated with the action of the signal
     // slot
 
-    connect(ui.actionResign_G, SIGNAL(triggered()), game, SLOT(resign()));
+    // connect(ui.actionResign_G, SIGNAL(triggered()), game, SLOT(resign()));
 
 #ifdef QT_MOBILE_APP_UI
     connect(ui.pushButton_resign, SIGNAL(released()), game, SLOT(resign()));
 #endif
 
     connect(ui.actionEngine1_T, SIGNAL(toggled(bool)), game,
-            SLOT(setEngineWhite(bool)));
+            SLOT(setWhiteIsAiPlayer(bool)));
 
     connect(ui.actionEngine2_R, SIGNAL(toggled(bool)), game,
-            SLOT(setEngineBlack(bool)));
+            SLOT(setBlackIsAiPlayer(bool)));
 
     connect(ui.actionFixWindowSize, SIGNAL(toggled(bool)), game,
             SLOT(setFixWindowSize(bool)));
@@ -236,6 +226,9 @@ void MillGameWindow::initialize()
     connect(ui.actionAutoRestart_A, SIGNAL(toggled(bool)), game,
             SLOT(setAutoRestart(bool)));
 
+    connect(ui.actionOpen_Settings_File, &QAction::triggered, this,
+            &MillGameWindow::on_actionOpen_Settings_File_triggered);
+
     connect(ui.actionAutoChangeFirstMove_C, SIGNAL(toggled(bool)), game,
             SLOT(setAutoChangeFirstMove(bool)));
 
@@ -258,16 +251,17 @@ void MillGameWindow::initialize()
     connect(ui.actionDeveloperMode, SIGNAL(toggled(bool)), game,
             SLOT(setDeveloperMode(bool)));
 
-    connect(ui.actionFlip_F, &QAction::triggered, game, &Game::flipVertically);
+    connect(ui.actionFlip_F, &QAction::triggered, game,
+            &Game::flipBoardVertically);
 
     connect(ui.actionMirror_M, &QAction::triggered, game,
-            &Game::flipHorizontally);
+            &Game::flipBoardHorizontally);
 
     connect(ui.actionTurnRight_R, &QAction::triggered, game,
-            &Game::rotateClockwise);
+            &Game::rotateBoardClockwise);
 
     connect(ui.actionTurnLeft_L, &QAction::triggered, game,
-            &Game::RotateCounterclockwise);
+            &Game::rotateBoardCounterclockwise);
 
     connect(game, SIGNAL(nGamesPlayedChanged(QString)),
             ui.scoreLcdNumber_GamesPlayed, SLOT(display(QString)));
@@ -297,7 +291,7 @@ void MillGameWindow::initialize()
             SLOT(display(QString)));
 
     connect(scene, SIGNAL(mouseReleased(QPointF)), game,
-            SLOT(handleClick(QPointF)));
+            SLOT(handleBoardClick(QPointF)));
 
     // Add a normal display label to the status bar
     auto *statusBarLabel = new QLabel(this);
@@ -313,7 +307,7 @@ void MillGameWindow::initialize()
             &MillGameWindow::handleAdvantageChanged);
 
     ruleActionList[game->getRuleIndex()]->setChecked(true);
-    game->setRule(game->getRuleIndex());
+    game->applyRule(game->getRuleIndex());
 
     // List of associated models and string views
     ui.listView->setModel(game->getMoveListModel());
@@ -484,7 +478,7 @@ void MillGameWindow::initialize()
 
 void MillGameWindow::handleAdvantageChanged(qreal value)
 {
-    scene->board->updateAdvantageBar(value);
+    scene->board->updateAdvantageValue(value);
 }
 
 #ifdef QT_MOBILE_APP_UI
@@ -591,8 +585,8 @@ void MillGameWindow::on_actionLimited_T_triggered()
         const int dStep = comboBox_step->currentData().toInt();
         const int dTime = comboBox_time->currentData().toInt();
         if (gStep != dStep || gTime != dTime) {
-            game->setRule(ruleNo, dStep,
-                          dTime); // TODO(calcitem): Remove dTime
+            game->applyRule(ruleNo, dStep,
+                            dTime); // TODO(calcitem): Remove dTime
             game->setMoveTime(dTime);
         }
     }
@@ -622,7 +616,7 @@ void MillGameWindow::actionRules_triggered()
     ui.actionEngine1_T->setChecked(false);
     ui.actionEngine2_R->setChecked(false);
 
-    game->setRule(ruleNo);
+    game->applyRule(ruleNo);
 }
 
 void MillGameWindow::on_actionNew_N_triggered()
@@ -633,10 +627,10 @@ void MillGameWindow::on_actionNew_N_triggered()
     // If you have not finished playing game and have already taken more than a
     // few steps, you will be lost
     if (strList->stringList().size() > 12) {
-        game->humanResign();
+        game->resignHumanPlayer();
     }
 
-    game->saveScore();
+    game->saveGameScore();
 
 #ifdef SAVE_GAME_BOOK_WHEN_ACTION_NEW_TRIGGERED
     const QString strDateTime = QDateTime::currentDateTime().toString("yyyy-MM-"
@@ -655,7 +649,6 @@ void MillGameWindow::on_actionNew_N_triggered()
     case DRAW:
         whoWin = "Draw";
         break;
-    case NOCOLOR:
     case NOBODY:
     case COLOR_NB:
         whoWin = "Unknown";
@@ -674,16 +667,6 @@ void MillGameWindow::on_actionNew_N_triggered()
     ui.actionAutoRun_A->setChecked(false);
 
     game->gameReset();
-
-    if (ui.actionEngine2_R->isChecked()) {
-        ui.actionEngine2_R->setChecked(false);
-        ui.actionEngine2_R->setChecked(true);
-    }
-
-    if (ui.actionEngine1_T->isChecked()) {
-        ui.actionEngine1_T->setChecked(false);
-        ui.actionEngine1_T->setChecked(true);
-    }
 }
 
 void MillGameWindow::on_actionOpen_O_triggered()
@@ -737,7 +720,7 @@ void MillGameWindow::on_actionOpen_O_triggered()
     }
 
     // Refresh the scene after reading the file.
-    game->updateScene();
+    game->refreshScene();
 }
 
 void MillGameWindow::on_actionSave_S_triggered()
@@ -795,7 +778,7 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
 
     // Let the controller change the color of the pieces
     // game->invertPieceColor(arg1);
-    game->togglePieceColor(); // TODO: Right?
+    game->togglePieceColors(); // TODO: Right?
 }
 
 void MillGameWindow::on_actionRowChange() const
@@ -858,7 +841,7 @@ void MillGameWindow::on_actionRowChange() const
     }
 
     // Update phrase
-    game->updateBoardState(currentRow);
+    game->refreshBoardState(currentRow, true);
 }
 
 void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
@@ -907,7 +890,7 @@ void MillGameWindow::onAutoRunTimeOut(QPrivateSignal signal) const
     }
 
     // Renew the situation
-    game->updateBoardState(currentRow);
+    game->refreshBoardState(currentRow, true);
 }
 
 void MillGameWindow::on_actionAutoRun_A_toggled(bool arg1)
@@ -953,7 +936,7 @@ void MillGameWindow::on_actionEngineFight_E_triggered() const
     ui.actionEngineFight_E->setChecked(true);
     ui.actionInternet_I->setChecked(false);
 
-    game->showTestWindow();
+    game->displayTestWindow();
 }
 
 void MillGameWindow::on_actionEngine_E_triggered()
@@ -1009,7 +992,7 @@ void MillGameWindow::on_actionEngine_E_triggered()
     connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
 
     int time1, time2;
-    game->getAiDepthTime(time1, time2);
+    game->getAiTimeLimits(time1, time2);
     spinBox_time1->setValue(time1);
     spinBox_time2->setValue(time2);
 
@@ -1018,12 +1001,64 @@ void MillGameWindow::on_actionEngine_E_triggered()
         const int time2_new = spinBox_time2->value();
 
         if (time1 != time1_new || time2 != time2_new) {
-            game->setAiDepthTime(time1_new, time2_new);
+            game->setAiTimeLimits(time1_new, time2_new);
         }
     }
 
     dialog->disconnect();
     delete dialog;
+}
+
+void MillGameWindow::on_actionOpen_Settings_File_triggered()
+{
+    QString settingsFilePath = QCoreApplication::applicationDirPath() + "/setti"
+                                                                        "ngs."
+                                                                        "ini";
+
+    if (!QFileInfo::exists(settingsFilePath)) {
+        QMessageBox::warning(this, tr("File Not Found"),
+                             tr("The settings.ini file does not exist."));
+        return;
+    }
+
+    QString editorCommand;
+
+#if defined(Q_OS_WIN)
+    editorCommand = "notepad.exe";
+#elif defined(Q_OS_MAC)
+    editorCommand = "open";
+#elif defined(Q_OS_LINUX)
+    editorCommand = "gedit";
+#else
+    editorCommand = QString();
+#endif
+
+    if (!editorCommand.isEmpty()) {
+        QStringList arguments;
+#if defined(Q_OS_MAC)
+        arguments << "-a"
+                  << "TextEdit" << settingsFilePath;
+#else
+        arguments << settingsFilePath;
+#endif
+
+        QProcess *process = new QProcess(this);
+        process->start(editorCommand, arguments);
+
+        if (!process->waitForStarted()) {
+            QMessageBox::warning(this, tr("Error"),
+                                 tr("Failed to open the settings file with the "
+                                    "text editor."));
+            delete process;
+            return;
+        }
+
+        connect(process,
+                QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+                process, &QObject::deleteLater);
+    } else {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(settingsFilePath));
+    }
 }
 
 void MillGameWindow::on_actionViewHelp_V_triggered()

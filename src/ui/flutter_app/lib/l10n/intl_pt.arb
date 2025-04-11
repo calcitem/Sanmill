@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Humanos vs. Nuvem",
+  "humanVsCloud": "Humano vs. Nuvem",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Você colocou.",
+  "tipPlaced": "Peça colocada.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -92,11 +92,11 @@
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Não pode ser removido.",
+  "tipBanRemove": "Não é possível remover.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Você removeu.",
+  "tipRemoved": "Peça removida.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "Vez do {player} de se mover.",
+  "tipToMove": "Vez de {player}.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -208,7 +208,7 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Jogo iniciado, por favor coloque.",
+  "gameStarted": "Jogo iniciado. Coloque as peças.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
@@ -240,19 +240,19 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} retiros.",
+  "loseReasonResign": "{player} desistiu.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} não tem como ir.",
+  "loseReasonNoWay": "{player} não tem movimentos possíveis.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "O tabuleiro está cheio e {player} não tem como ir.",
+  "loseReasonBoardIsFull": "O tabuleiro está cheio, e {player} não tem movimentos possíveis.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "O tempo acabou, {player} perdido.",
+  "loseReasonTimeOver": "O tempo acabou, {player} perdeu.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -272,11 +272,11 @@
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
-  "gameOver": "O jogo acabou",
+  "gameOver": "Fim de jogo",
   "@gameOver": {
     "description": "Game Over"
   },
-  "youWin": "Você ganho! Parabéns!",
+  "youWin": "Você ganhou! Parabéns!",
   "@youWin": {
     "description": "You win! Congratulations!"
   },
@@ -288,7 +288,7 @@
   "@youLose": {
     "description": "You Lose!"
   },
-  "analyze": "Analise",
+  "analyze": "Analisar",
   "@analyze": {
     "description": "Analyze"
   },
@@ -336,7 +336,7 @@
   "@playSoundsInTheGame": {
     "description": "Play sounds in the game"
   },
-  "keepMuteWhenTakingBack": "Manter silêncio ao recuar",
+  "keepMuteWhenTakingBack": "Manter mudo ao desfazer jogada.",
   "@keepMuteWhenTakingBack": {
     "description": "Keep mute when taking back"
   },
@@ -344,7 +344,7 @@
   "@tone": {
     "description": "Tone"
   },
-  "whoMovesFirst": "Primeiro passo",
+  "whoMovesFirst": "Primeira jogada",
   "@whoMovesFirst": {
     "description": "First move"
   },
@@ -356,7 +356,7 @@
   "@ai": {
     "description": "AI"
   },
-  "alternate": "Toggle",
+  "alternate": "Alternar",
   "@alternate": {
     "description": "Alternate"
   },
@@ -364,15 +364,15 @@
   "@isAutoRestart": {
     "description": "Auto-restart game when game over"
   },
-  "isAutoChangeFirstMove": "Primeiro movimento de comutação automática",
+  "isAutoChangeFirstMove": "Alternar automaticamente a primeira jogada",
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "Mova-se aleatoriamente",
+  "shufflingEnabled": "Movimento aleatório",
   "@shufflingEnabled": {
     "description": "Random move"
   },
-  "misc": "Vários",
+  "misc": "Diversos",
   "@misc": {
     "description": "Miscellaneous"
   },
@@ -392,11 +392,11 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Se a opção de voar for ativada, quando um jogador está reduzido a um número específico de peças, suas peças são livres para se mover para qualquer ponto desocupado, ao invés de serem restritas a pontos adjacentes como no resto do jogo.",
+  "flyPieceCount_Detail": "Se a opção de vôo for ativada, quando um jogador está reduzido a um número específico de peças, suas peças são livres para se mover para qualquer ponto desocupado, ao invés de serem restritas a pontos adjacentes como no resto do jogo.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
-  "piecesAtLeastCount": "Peças pelo menos",
+  "piecesAtLeastCount": "Mínimo de peças",
   "@piecesAtLeastCount": {
     "description": "Pieces At Least"
   },
@@ -416,7 +416,7 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Mudanças múltiplas",
+  "mayRemoveMultiple": "Remoção múltipla",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
@@ -424,7 +424,7 @@
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
-  "mayRemoveFromMillsAlways": "Destruindo moinhos",
+  "mayRemoveFromMillsAlways": "Remover de moinhos sempre",
   "@mayRemoveFromMillsAlways": {
     "description": "Destroy mills"
   },
@@ -440,13 +440,13 @@
   "@isWhiteLoseButNotDrawWhenBoardFull_Detail": {
     "description": "At the end of the placing phase, when the board is full, the side that places first loses the game, otherwise, the game is a draw."
   },
-  "isLoseButNotChangeSideWhenNoWay": "Perde quando não há movimentos legais",
+  "isLoseButNotChangeSideWhenNoWay": "Perder por falta de movimentos",
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Você perde se seu oponente o bloqueia de se mover. Troque de lado para se mover se esta opção estiver desativada.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "O jogador perde se o oponente o bloquear impedindo qualquer movimento. Se esta opção estiver desativada, troca-se o jogador da vez em vez de declarar derrota.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Vôo",
   "@mayFly": {
@@ -456,11 +456,11 @@
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
-  "nMoveRule": "N move regra",
+  "nMoveRule": "Regra dos N movimentos",
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "O jogo é sorteado se não houver recuo em um determinado número de jogadas.",
+  "nMoveRule_Detail": "O jogo é declarado empate se não houver remoção de peças por N movimentos.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
@@ -468,7 +468,7 @@
   "@rollback": {
     "description": "Rollback"
   },
-  "pleaseSelect": "Selecione",
+  "pleaseSelect": "Selecionar",
   "@pleaseSelect": {
     "description": "Please select"
   },
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Saída",
+  "exit": "Sair",
   "@exit": {
     "description": "Exit"
   },
@@ -504,7 +504,7 @@
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "Cor do pedaço",
+  "pieceColor": "Cor da peça",
   "@pieceColor": {
     "description": "Piece color"
   },
@@ -520,7 +520,7 @@
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "Cor da peça 2 do jogador",
+  "blackPieceColor": "Cor das peças do jogador 2",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
@@ -572,7 +572,7 @@
   "@restoreDefaultSettings": {
     "description": "Restore Default Settings"
   },
-  "pick": "Escolha {element}",
+  "pick": "Escolher {element}",
   "@pick": {
     "description": "Pick "
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Toque na peça de um oponente para removê-la.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Para remover uma peça, é necessário criar um moinho.",
   "@needToCreateMillFirst": {
@@ -652,7 +652,7 @@
   "@privacyPolicy_Detail_2": {
     "description": "Privacy Policy Detail 2"
   },
-  "and": " y ",
+  "and": " e ",
   "@and": {},
   "accept": "Aceitar",
   "@accept": {
@@ -662,7 +662,7 @@
   "@takeBack": {
     "description": "Take back"
   },
-  "takingBack": "Apoio…",
+  "takingBack": "Desfazendo…",
   "@takingBack": {
     "description": "Taking back..."
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos legais.\n\nO jogo empata automaticamente se o jogo for reposicionado pela terceira vez, ou se nenhum retiro tiver sido feito nas últimas 100 jogadas (configurável).\n\nO jogo é jogado em três fases:\n\n1. colocação de peças em pontos vazios 2.\n2. Peças em movimento para pontos adjacentes\n3. (fase opcional) Movimento das peças para qualquer ponto livre quando o jogador fica com três peças.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, que consiste em uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos livres até que cada jogador tenha colocado todas as peças no tabuleiro. Se um jogador consegue colocar três de suas peças em linha reta, ele tem um \"moinho\" e pode remover uma das peças de seu oponente do tabuleiro.\n\nEm algumas variações, acontece que os jogadores devem primeiro remover quaisquer outras peças antes de remover uma peça de um moinho formado.\n\nEm algumas variantes, há uma regra de que todos os pontos das peças removidas não podem ser devolvidos ao quadro na fase de colocação.\n\nUma vez que todas as peças tenham sido utilizadas, os jogadores se revezam para se mover.\n\nMovimento\n\nPara se mover, um jogador move uma de suas peças ao longo de uma linha no tabuleiro para um ponto adjacente livre. Se ele não pode fazer isso, perdeu o jogo. Como na fase de preparação, um jogador que alinha três de suas peças em uma linha no tabuleiro tem um moinho e pode remover uma das peças de seu oponente. Qualquer jogador que subtrai duas peças não tem opção de formar novos moinhos e perde o jogo. Um jogador também pode perder com mais de três peças se seu oponente as bloquear de se mover.\n\nVôo\n\nEm uma variante comum, uma vez que um jogador tenha apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto livre, não apenas adjacentes.\n",
+  "helpContent": "O objetivo do jogo é deixar o adversário com menos de três peças ou sem movimentos possíveis.\n\nO jogo é declarado empate se uma mesma posição ocorrer pela terceira vez ou se não houver remoção de peças nas últimas 100 jogadas (configurável).\n\nO jogo se desenvolve em três fases:\n\n1. Colocação: os jogadores alternam-se colocando suas peças em pontos vazios do tabuleiro;\n2. Movimento: os jogadores movem suas peças para pontos adjacentes;\n3. (Fase opcional) Vôo: quando um jogador fica com apenas três peças, ele pode mover suas peças para qualquer ponto vazio.\n\nColocação\n\nO jogo começa com um tabuleiro vazio, composto por uma grade com vinte e quatro pontos. Os jogadores se revezam para colocar suas peças nos pontos vazios até que todas as peças estejam no tabuleiro. Se um jogador conseguir alinhar três de suas peças em linha, ele forma um \"moinho\" e pode remover uma peça do adversário.\n\nEm algumas variações, os jogadores devem remover outras peças antes de remover uma peça de um moinho formado.\n\nEm certas regras, não é permitido recolocar peças nos pontos de onde elas foram removidas.\n\nApós todas as peças serem colocadas, os jogadores se revezam para mover as peças.\n\nMovimento\n\nPara mover, um jogador desloca uma de suas peças ao longo de uma linha do tabuleiro para um ponto adjacente vazio. Se não for possível realizar um movimento, o jogador perde o jogo. Ao alinhar três peças em linha, o jogador forma um moinho e pode remover uma peça do adversário. Um jogador que ficar com apenas duas peças perde o jogo; além disso, se um jogador tiver mais de três peças e não conseguir se mover, também perde.\n\nVôo\n\nEm algumas variantes, quando um jogador fica com apenas três peças, suas peças podem \"voar\", \"pular\" ou \"saltar\" para qualquer ponto vazio, não apenas para os adjacentes.",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -750,7 +750,7 @@
   "@moving": {
     "description": "Moving"
   },
-  "removing": "Retirado",
+  "removing": "Remoção",
   "@removing": {
     "description": "Removing"
   },
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Estilo de jogo da IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passivo",
   "@passive": {
@@ -778,7 +778,7 @@
   "@drawOnHumanExperience": {
     "description": "Draw on the human experience"
   },
-  "considerMobility": "Considere a mobilidade das peças",
+  "considerMobility": "Considerar mobilidade das peças",
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
@@ -802,7 +802,7 @@
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "A IA não é um raciocínio.",
+  "aiIsNotThinking": "A IA não está pensando.",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Toque novamente para sair.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mais",
   "@more": {
@@ -886,7 +886,7 @@
   "@top": {
     "description": "Top"
   },
-  "bottom": "Antecedentes",
+  "bottom": "Inferior",
   "@bottom": {
     "description": "Bottom"
   },
@@ -998,11 +998,11 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Se um jogador quebra um moinho para criar um novo moinho imediatamente, esse jogador pode mover essa peça de volta para a junta original em sua próxima jogada, se ele fizer um novo moinho.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Se um jogador quebra um moinho para criar um novo moinho imediatamente, esse jogador pode mover essa peça de volta para o ponto original em sua próxima jogada se ela formar um novo moinho.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo é empatado se um jogador tiver três peças e depois de dez jogadas nenhum dos jogadores remove as peças do adversário",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "O jogo é empatado se um jogador tiver três peças e depois de dez jogadas nenhum dos jogadores remover as peças do adversário",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
@@ -1078,11 +1078,11 @@
   "@algorithm": {
     "description": "Algorithm"
   },
-  "endgameNMoveRule": "Regra N-Move do Endgame",
+  "endgameNMoveRule": "Regra dos N movimentos",
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "endgameNMoveRule_Detail": "Se um dos jogadores tiver apenas três peças e nenhum dos jogadores remover uma peça dentro de um lance específico, o jogo está empatado.",
+  "endgameNMoveRule_Detail": "Se um dos jogadores tiver apenas três peças e nenhum dos jogadores remover uma peça dentro de um movimento específico, o jogo é declarado empate.",
   "@endgameNMoveRule_Detail": {
     "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
   },
@@ -1122,7 +1122,7 @@
   "@languageName": {
     "description": "The name of the current language"
   },
-  "moveNumber": "{count,plural, =0{Jogada}=1{{count} Jogada}other{{count} Movimentos}}",
+  "moveNumber": "{count,plural, =1{{count} jogada} other{{count} jogadas}}",
   "@moveNumber": {
     "description": "Moves to take back",
     "placeholders": {
@@ -1282,11 +1282,11 @@
   "@whatIsAlphaBeta": {},
   "firstMoveDetail": "Neste jogo, é mais fácil para o segundo jogador vencer em comparação com o primeiro jogador.",
   "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "De acordo com a experiência humana, se você tentar ganhar, perderá. Em vez disso, busque o empate como objetivo e evite perder a partida. Observe seu oponente e conduza-o suavemente a uma posição em que possa cometer erros. Quando mostrarem fraqueza, aproveite a oportunidade e pressione suavemente para ganhar. Dessa forma, você poderá vencer a partida.",
+  "drawOnTheHumanExperienceDetail": "De acordo com a experiência humana, se você tentar ganhar, perderá. Em vez disso, busque o empate como objetivo e evite perder a partida. Observe seu oponente e conduza-o suavemente a uma posição em que possa cometer erros. Quando mostrar fraqueza, aproveite a oportunidade e pressione suavemente para vencer. Dessa forma, você poderá ganhar a partida.",
   "@drawOnTheHumanExperienceDetail": {},
-  "passiveDetail": "Ativar a opção Passiva fará com que a IA relaxe quando tiver vantagem na posição, em vez de tentar ganhar agressivamente o mais rápido possível.",
+  "passiveDetail": "Ativar a opção Passivo fará com que a IA relaxe quando tiver vantagem na posição, em vez de tentar ganhar agressivamente o mais rápido possível.",
   "@passiveDetail": {},
-  "considerMobilityOfPiecesDetail": "Se a IA levar em conta a mobilidade de suas peças, não só tentará capturar as peças do oponente o mais rápido possível, mas também bloqueará os movimentos do oponente e evitará que ele faça o mesmo.",
+  "considerMobilityOfPiecesDetail": "Se a IA levar em conta a mobilidade de suas peças, ela não só tentará capturar as peças do oponente o mais rápido possível, mas também bloqueará os movimentos do adversário e evitará que ele faça o mesmo.",
   "@considerMobilityOfPiecesDetail": {},
   "moveRandomlyDetail": "Ativar essa opção aumenta a aleatoriedade e a diversão do jogo, enquanto desativá-la pode ajudar a estudar formas de vencer a IA.",
   "@moveRandomlyDetail": {},
@@ -1306,19 +1306,19 @@
   "@firstAndSecondPlayerRemovePiece": {},
   "secondAndFirstPlayerRemovePiece": "O segundo e o primeiro jogadores removem uma das peças do adversário.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Agora que entrou na fase voadora, as peças do adversário podem pular para qualquer ponto vazio do tabuleiro. Você pode desativar a regra de vôo nas \"Configurações de regras\".",
+  "enteredFlyingPhase": "Agora que entrou na fase de vôo, as peças do adversário podem pular para qualquer ponto vazio do tabuleiro. Você pode desativar a regra de vôo nas \"Configurações de regras\".",
   "@enteredFlyingPhase": {},
   "whenStalemate": "Quando o impasse",
   "@whenStalemate": {},
   "whenStalemate_Detail": "Que ação se segue quando nenhuma peça pode ser movida?",
   "@whenStalemate_Detail": {},
-  "endWithStalemateLoss": "Terminar com uma perda de impasse.",
+  "endWithStalemateLoss": "Terminar com uma perda por impasse.",
   "@endWithStalemateLoss": {},
   "changeSideToMove": "Mude o lado para mover.",
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "Remova uma das peças do adversário e faça o próximo movimento.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "Terminar com um empate impasse.",
+  "endWithStalemateDraw": "Terminar com um empate por impasse.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Remova uma das peças do adversário e mude o lado para mover.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1440,6 +1440,314 @@
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "Concentre-se em bloquear caminhos",
   "@focusOnBlockingPaths": {},
-  "focusOnBlockingPaths_Detail": "Durante fases específicas do jogo, priorize obstruir o movimento do oponente em vez de formar moinhos. Em vez de focar em remover peças completando moinhos, a IA visa aprisionar o adversário durante essas fases, incapacitando-o de se mover e garantindo a vitória por desgaste em vez de jogo agressivo. Essa estratégia específica de fase não bloqueia ativamente os moinhos do oponente.",
-  "@focusOnBlockingPaths_Detail": {}
+  "focusOnBlockingPaths_Detail": "Durante fases específicas do jogo, priorize obstruir o movimento do oponente em vez de formar moinhos. Em vez de focar em remover peças completando moinhos, a IA visa aprisionar o adversário durante essas fases, incapacitando-o de se mover e garantindo a vitória por desgaste em vez de jogo agressivo.",
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Imagem da peça",
+  "@pieceImage": {},
+  "importColorSettings": "Importar configurações de cor",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exportar configurações de cor",
+  "@exportColorSettings": {},
+  "import": "Importar",
+  "@import": {},
+  "export": "Exportar",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Por favor, copie as configurações do formato JSON para a área de transferência primeiro.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copiado para a área de transferência.",
+  "@copiedToClipboard": {},
+  "imported": "Importado.",
+  "@imported": {},
+  "boardImage": "Imagem do tabuleiro",
+  "@boardImage": {},
+  "autumnLeaves": "Folhas de Outono",
+  "@autumnLeaves": {},
+  "legendaryLand": "Terra Lendária",
+  "@legendaryLand": {},
+  "vignetteEffect": "Efeito vinheta",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Gostaria de tornar a barra de ferramentas totalmente transparente quando uma imagem de fundo do tabuleiro estiver definida?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Ativar vibração no jogo",
+  "@vibration": {},
+  "soundTheme": "Tema de som",
+  "@soundTheme": {},
+  "ball": "Bola",
+  "@ball": {},
+  "liquid": "Líquido",
+  "@liquid": {},
+  "wood": "Madeira",
+  "@wood": {},
+  "placeEffectAnimation": "Efeito de animação ao colocar peça",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Efeito de animação ao remover peça",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Mostrar a barra de ferramentas na parte inferior",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Raio do canto do tabuleiro",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Usar livro de abertura",
+  "@useOpeningBook": {},
+  "currentRule": "Atual",
+  "@currentRule": {},
+  "nineMensMorris": "Trilha",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Trilha de Doze Homens",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Duz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Conjunto de regras",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Moinho único",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Permita que a IA utilize movimentos de abertura comumente empregados por jogadores humanos profissionais durante o início do jogo. Nota: Esta funcionalidade está atualmente disponível apenas para conjuntos de regras específicos.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mostrar gráfico de vantagem",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "O gráfico de vantagem só será desenhado depois que a IA fizer uma jogada. Não será desenhado quando o jogador humano fizer uma jogada.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Desative a remoção até que todas as peças tenham sido colocadas. Em seguida, remova as peças com base na contagem de moinhos.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Desative a remoção até que todas as peças tenham sido colocadas. Em seguida, remova as peças com base na contagem de moinhos: se forem iguais, ambos removem a mesma quantidade; se um tiver mais, remove uma peça extra, mantendo a diferença de apenas uma peça. Se apenas um formar moinhos, ele remove duas peças e o outro remove uma. Se nenhum formar moinhos, ambos removem uma de suas próprias peças.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Selecione uma das suas peças.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Não é a sua vez.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Cor de fundo da barra de ferramentas de anotações",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Cor dos ícones da barra de ferramentas de anotações",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Mostrar barra de ferramentas de anotações",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Entrar no modo de anotação",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Tem certeza de que deseja limpar todas as anotações?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Prompt LLM copiado para a área de transferência.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Conexão recusada, o servidor pode estar fora do ar.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Descoberta bem-sucedida, aguardando conexão...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Sem conexão LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Capturar tela",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Desconectado do oponente.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Pedido de desfazer jogada",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nada para mostrar.",
+  "@nothingToShow": {},
+  "stopHosting": "Parar de hospedar",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Conexão reiniciada pelo par.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Conexão perdida devido ao tempo limite do heartbeat. Por favor, reconecte-se.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Iniciar hospedagem",
+  "@startHosting": {},
+  "restartRequestRejected": "Pedido de reinício rejeitado.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Não conectado ao oponente LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Prompt LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Jogo reiniciado.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Desfazer jogada rejeitado.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Tem certeza de que deseja desistir deste jogo?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "O oponente desistiu. Você venceu!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Limpar todas as anotações",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Conectado, aguardando a jogada do oponente...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Status da rede: Desconectado",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Pedido de desfazer jogada enviado ao oponente.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "O oponente pode ter saído do jogo",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Conectado ao host com sucesso.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Conexão perdida: tempo limite do heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nenhum host encontrado.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Confirmar desistência",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Iniciou a hospedagem do jogo, aguardando jogadores para entrar...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Tempo de conexão esgotado, conexão de rede instável.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Nenhum prompt LLM disponível.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Você desistiu. Fim de jogo.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP do servidor",
+  "@serverIp": {},
+  "confirmClear": "Confirmar limpeza",
+  "@confirmClear": {},
+  "opponentSTurn": "Vez do oponente.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Aguardando conexão de um cliente...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Pedido de desfazer jogada foi rejeitado ou falhou.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Adicionar texto",
+  "@addText": {},
+  "exitAnnotationMode": "Sair do modo de anotação",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Digite sua anotação",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Tentando reconectar...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Pedido de reinício enviado. Aguardando resposta do oponente...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Servidor parado.",
+  "@serverIsStopped": {},
+  "restartRequest": "Pedido de reinício",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Não é possível solicitar desfazer jogada quando não é a sua vez.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Pedido de desfazer jogada aceito.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Configurações de rede local",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Reconectado com sucesso!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Falha ao salvar a imagem na Galeria.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "O oponente solicitou reiniciar o jogo. Você aceita?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Sua vez.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Não foi possível reconectar, por favor reinicie o jogo.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Entrar",
+  "@join": {},
+  "port": "Porta",
+  "@port": {},
+  "invalidIpAddress": "Endereço IP inválido.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Porta inválida.",
+  "@invalidPort": {},
+  "connectingAttempt": "Conectando: Tentativa {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Falha ao conectar: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Falha ao iniciar a hospedagem: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host descoberto: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Parar",
+  "@stop": {},
+  "discover": "Descobrir",
+  "@discover": {},
+  "connect": "Conectar",
+  "@connect": {},
+  "clientConnected": "Cliente conectado: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Descobrindo: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Reconectando ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Conectado",
+  "@connected": {},
+  "delete": "Excluir",
+  "@delete": {},
+  "ancientEgypt": "Herança Marajoara",
+  "@ancientEgypt": {},
+  "gothicIce": "Neve da Serra Gaúcha",
+  "@gothicIce": {},
+  "riceField": "Arrozais do Pantanal",
+  "@riceField": {},
+  "chinesePorcelain": "Faiança das Caldas",
+  "@chinesePorcelain": {},
+  "desertDusk": "Crepúsculo Sertanejo",
+  "@desertDusk": {},
+  "precisionCraft": "Artesanato de Precisão",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Bordado de Viana",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Herança de Minas",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Suntuosidade Imperial",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Cristal Lusitano",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Sol do Cerrado",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonia Tropical",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Aroma de Canela",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Copacabana",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Alegria de Carnaval",
+  "@carnivalSpirit": {},
+  "custom": "Sob Medida",
+  "@custom": {},
+  "spiceMarket": "Mercado Ver-o-Peso",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Deslize para revelar a gaveta",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Mostrar informações do jogo nas capturas de tela",
+  "@showGameInfoOnScreenshots": {}
 }

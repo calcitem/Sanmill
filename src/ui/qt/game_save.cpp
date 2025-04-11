@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_save.cpp
 
 #include <iomanip>
 #include <map>
@@ -46,7 +35,7 @@
 using std::to_string;
 
 // Helper function to create the save path
-QString Game::createSavePath() const
+QString Game::buildSaveFilePath() const
 {
     const QString strDate = QDateTime::currentDateTime().toString("yyyy-MM-dd");
     const qint64 pid = QCoreApplication::applicationPid();
@@ -55,41 +44,37 @@ QString Game::createSavePath() const
 }
 
 // Helper function to write player type
-void Game::writePlayerType(QTextStream &textStream, const QString &color,
-                           bool isAi) const
+void Game::outputPlayerType(QTextStream &textStream, const QString &color,
+                            bool isAi) const
 {
     textStream << color << ":\t" << (isAi ? "AI Player" : "Human Player")
                << "\n";
 }
 
 // Helper function to write game statistics
-void Game::writeGameStats(QTextStream &textStream) const
+void Game::outputGameStatistics(QTextStream &textStream) const
 {
-    qint64 gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                              position.score_draw;
+    qint64 nGamesPlayed = score[WHITE] + score[BLACK] + score[DRAW];
 
-    if (gamesPlayedCount == 0) {
+    if (nGamesPlayed == 0) {
         return;
     }
 
-    textStream << "Sum\t" + QString::number(gamesPlayedCount) << "\n";
-    textStream << "White\t" + QString::number(position.score[WHITE]) + "\t" +
-                      QString::number(position.score[WHITE] * 10000 /
-                                      gamesPlayedCount)
+    textStream << "Sum\t" + QString::number(nGamesPlayed) << "\n";
+    textStream << "White\t" + QString::number(score[WHITE]) + "\t" +
+                      QString::number(score[WHITE] * 10000 / nGamesPlayed)
                << "\n";
-    textStream << "Black\t" + QString::number(position.score[BLACK]) + "\t" +
-                      QString::number(position.score[BLACK] * 10000 /
-                                      gamesPlayedCount)
+    textStream << "Black\t" + QString::number(score[BLACK]) + "\t" +
+                      QString::number(score[BLACK] * 10000 / nGamesPlayed)
                << "\n";
-    textStream << "Draw\t" + QString::number(position.score_draw) + "\t" +
-                      QString::number(position.score_draw * 10000 /
-                                      gamesPlayedCount)
+    textStream << "Draw\t" + QString::number(score[DRAW]) + "\t" +
+                      QString::number(score[DRAW] * 10000 / nGamesPlayed)
                << "\n";
 }
 
-void Game::saveScore()
+void Game::saveGameScore()
 {
-    QFile file(createSavePath());
+    QFile file(buildSaveFilePath());
 
     if (file.isOpen()) {
         file.close();
@@ -103,18 +88,18 @@ void Game::saveScore()
     textStream << QCoreApplication::applicationFilePath() << "\n\n";
     textStream << gameTest->getKey() << "\n\n";
 
-    writePlayerType(textStream, "White", isAiPlayer[WHITE]);
-    writePlayerType(textStream, "Black", isAiPlayer[BLACK]);
+    outputPlayerType(textStream, "White", isAiPlayer[WHITE]);
+    outputPlayerType(textStream, "Black", isAiPlayer[BLACK]);
 
     textStream << "\n";
 
-    writeGameStats(textStream);
+    outputGameStatistics(textStream);
 
     file.flush();
     file.close();
 }
 
-void Game::finalizeEndgameLearning()
+void Game::finishEndgameLearning()
 {
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled()) {

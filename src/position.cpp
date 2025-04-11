@@ -1,30 +1,26 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-#include <algorithm>
-#include <iomanip>
-#include <sstream>
-#include <string> // std::string, std::stoi
+// position.cpp
 
-#include "bitboard.h"
+#include "search_engine.h"
 #include "mills.h"
 #include "position.h"
 #include "thread.h"
+#include "evaluate.h"
+#include "uci.h"
+
+#include <algorithm>
+#include <cstring>
+#include <iomanip>
+#include <sstream>
+#include <string>
+#include <iostream>
 
 using std::string;
+using std::vector;
+
+extern vector<Key> posKeyHistory;
 
 namespace Zobrist {
 constexpr int KEY_MISC_BIT = 2;
@@ -107,7 +103,7 @@ std::ostream &operator<<(std::ostream &os, const Position &pos)
         |  |  13 12 11  |  |
         |  | /    |   \ |  |
         |  21 -- 20 -- 19  |
-        | /       |     \  |
+        | /       |      \ |\n"
         29 ----- 28 ----- 27
     */
 
@@ -267,7 +263,7 @@ Position::Position()
 /// This function is not very robust - make sure that input FENs are correct,
 /// this is assumed to be the responsibility of the GUI.
 
-Position &Position::set(const string &fenStr, Thread *th)
+Position &Position::set(const string &fenStr)
 {
     /*
        A FEN string defines a particular position using only the ASCII character
@@ -307,7 +303,7 @@ Position &Position::set(const string &fenStr, Thread *th)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
-    std::memset(this, 0, sizeof(Position));
+    *this = Position();
 
     ss >> std::noskipws;
 
@@ -405,8 +401,6 @@ Position &Position::set(const string &fenStr, Thread *th)
         isStalemateRemoving = true;
     }
 #endif
-
-    thisThread = th;
 
     return *this;
 }
@@ -563,7 +557,7 @@ void Position::do_move(Move m)
 
 void Position::undo_move(Sanmill::Stack<Position> &ss)
 {
-    memcpy(this, ss.top(), sizeof(Position));
+    *this = *ss.top();
     ss.pop();
 }
 
@@ -789,14 +783,30 @@ bool Position::put_piece(Square s, bool updateRecord)
         if (n == 0) {
             // If no Mill
 
-            if (pieceToRemoveCount[WHITE] > 0 ||
-                pieceToRemoveCount[BLACK] > 0) {
+            if (pieceToRemoveCount[WHITE] != 0 ||
+                pieceToRemoveCount[BLACK] != 0) {
                 assert(false);
                 return false;
             }
 
             lastMillFromSquare[sideToMove] = SQ_NONE;
             lastMillToSquare[sideToMove] = SQ_NONE;
+
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                if (pieceInHandCount[WHITE] == 0 &&
+                    pieceInHandCount[BLACK] == 0) {
+                    if (!handle_placing_phase_end()) {
+                        change_side_to_move();
+                    }
+
+                    // Check if Stalemate and change side to move if needed
+                    if (check_if_game_is_over()) {
+                        return true;
+                    }
+                    return true;
+                }
+            }
 
             // Begin of set side to move
 
@@ -841,10 +851,17 @@ bool Position::put_piece(Square s, bool updateRecord)
             // End of set side to move
         } else {
             // If forming Mill
-            int rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
+            int rm = 0;
+
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                rm = pieceToRemoveCount[sideToMove] = 0;
+            } else {
+                rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
                                                           n :
                                                           1;
-            update_key_misc();
+                update_key_misc();
+            }
 
             if (rule.millFormationActionInPlacingPhase ==
                     MillFormationActionInPlacingPhase::
@@ -880,7 +897,25 @@ bool Position::put_piece(Square s, bool updateRecord)
                     return true;
                 }
             } else {
-                action = Action::remove;
+                if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                    if (pieceInHandCount[WHITE] == 0 &&
+                        pieceInHandCount[BLACK] == 0) {
+                        if (!handle_placing_phase_end()) {
+                            change_side_to_move();
+                        }
+
+                        // Check if Stalemate and change side to move if needed
+                        if (check_if_game_is_over()) {
+                            return true;
+                        }
+                        return true;
+                    } else {
+                        change_side_to_move();
+                    }
+                } else {
+                    action = Action::remove;
+                }
                 return true;
             }
         }
@@ -896,6 +931,10 @@ bool Position::put_piece(Square s, bool updateRecord)
 
 bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 {
+    if (board[s] != NO_PIECE) {
+        return false;
+    }
+
     if (check_if_game_is_over()) {
         return true;
     }
@@ -985,12 +1024,17 @@ bool Position::remove_piece(Square s, bool updateRecord)
     if (action != Action::remove)
         return false;
 
-    if (pieceToRemoveCount[sideToMove] <= 0)
+    if (pieceToRemoveCount[sideToMove] == 0) {
         return false;
-
-    // if piece is not their
-    if (!(make_piece(~side_to_move()) & board[s]))
-        return false;
+    } else if (pieceToRemoveCount[sideToMove] > 0) {
+        if (!(make_piece(~side_to_move()) & board[s])) {
+            return false;
+        }
+    } else {
+        if (!(make_piece(side_to_move()) & board[s])) {
+            return false;
+        }
+    }
 
     if (is_stalemate_removal()) {
         if (is_adjacent_to(s, sideToMove) == false) {
@@ -1043,11 +1087,16 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     currentSquare[sideToMove] = SQ_0;
 
-    pieceToRemoveCount[sideToMove]--;
+    if (pieceToRemoveCount[sideToMove] > 0) {
+        pieceToRemoveCount[sideToMove]--;
+    } else {
+        pieceToRemoveCount[sideToMove]++;
+    }
+
     update_key_misc();
 
     // Need to remove rest pieces.
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] != 0) {
         return true;
     }
 
@@ -1060,7 +1109,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
         }
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] != 0) {
         return true;
     }
 
@@ -1096,8 +1145,11 @@ bool Position::select_piece(Square s)
 bool Position::handle_placing_phase_end()
 {
     if (phase != Phase::placing || pieceInHandCount[WHITE] > 0 ||
-        pieceInHandCount[BLACK] > 0 || pieceToRemoveCount[WHITE] > 0 ||
-        pieceToRemoveCount[BLACK] > 0) {
+        pieceInHandCount[BLACK] > 0 ||
+        ((pieceToRemoveCount[WHITE] < 0 ? -pieceToRemoveCount[WHITE] :
+                                          pieceToRemoveCount[WHITE]) > 0) ||
+        ((pieceToRemoveCount[BLACK] < 0 ? -pieceToRemoveCount[BLACK] :
+                                          pieceToRemoveCount[BLACK]) > 0)) {
         return false;
     }
 
@@ -1114,6 +1166,9 @@ bool Position::handle_placing_phase_end()
     if (rule.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase::markAndDelayRemovingPieces) {
         remove_marked_pieces();
+    } else if (rule.millFormationActionInPlacingPhase ==
+               MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+        calculate_removal_based_on_mill_counts();
     } else if (invariant) {
         if (rule.isDefenderMoveFirst == true) {
             set_side_to_move(BLACK);
@@ -1283,7 +1338,8 @@ bool Position::check_if_game_is_over()
         }
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] > 0 ||
+        pieceToRemoveCount[sideToMove] < 0) {
         action = Action::remove;
     }
 
@@ -1335,6 +1391,47 @@ void Position::remove_marked_pieces()
     }
 }
 
+inline void Position::calculate_removal_based_on_mill_counts()
+{
+    int whiteMills = total_mills_count(WHITE);
+    int blackMills = total_mills_count(BLACK);
+
+    int whiteRemove = 1;
+    int blackRemove = 1;
+
+    if (whiteMills == 0 && blackMills == 0) {
+        whiteRemove = -1;
+        blackRemove = -1;
+    } else if (whiteMills > 0 && blackMills == 0) {
+        whiteRemove = 2;
+        blackRemove = 1;
+    } else if (blackMills > 0 && whiteMills == 0) {
+        whiteRemove = 1;
+        blackRemove = 2;
+    } else {
+        if (whiteMills == blackMills) {
+            whiteRemove = whiteMills;
+            blackRemove = blackMills;
+        } else {
+            if (whiteMills > blackMills) {
+                blackRemove = blackMills;
+                whiteRemove = blackRemove + 1;
+            } else if (whiteMills < blackMills) {
+                whiteRemove = whiteMills;
+                blackRemove = whiteRemove + 1;
+            } else {
+                assert(false);
+            }
+        }
+    }
+
+    pieceToRemoveCount[WHITE] = whiteRemove;
+    pieceToRemoveCount[BLACK] = blackRemove;
+
+    // TODO: Bits count is not enough
+    update_key_misc();
+}
+
 inline void Position::set_side_to_move(Color c)
 {
     if (sideToMove != c) {
@@ -1345,6 +1442,7 @@ inline void Position::set_side_to_move(Color c)
 
     them = ~sideToMove;
 
+    // TODO: Move changing phase/action to other function
     if (pieceInHandCount[sideToMove] == 0) {
         phase = Phase::moving;
         action = Action::select;
@@ -1353,7 +1451,8 @@ inline void Position::set_side_to_move(Color c)
         action = Action::place;
     }
 
-    if (pieceToRemoveCount[sideToMove] > 0) {
+    if (pieceToRemoveCount[sideToMove] > 0 ||
+        pieceToRemoveCount[sideToMove] < 0) {
         action = Action::remove;
     }
 }
@@ -1388,6 +1487,11 @@ Key Position::update_key_misc()
 
     // TODO: pieceToRemoveCount[sideToMove] or
     // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
+    // TODO: If pieceToRemoveCount[sideToMove]! <= 3,
+    //  the top 2 bits can store its value correctly;
+    //  if it is greater than 3, since only 2 bits are left,
+    //  the storage will be truncated or directly get 0,
+    //  and the original value cannot be completely retained.
     st.key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
@@ -1828,8 +1932,8 @@ bool Position::is_stalemate_removal()
     return false;
 }
 
-void Position::flipHorizontally(vector<string> &gameMoveList,
-                                bool cmdChange /*= true*/)
+void Position::flipBoardHorizontally(vector<string> &gameMoveList,
+                                     bool cmdChange /*= true*/)
 {
     int f, r;
 

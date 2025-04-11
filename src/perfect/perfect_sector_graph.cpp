@@ -1,25 +1,8 @@
-/*
-Malom, a Nine Men's Morris (and variants) player and solver program.
-Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-See our webpage (and the paper linked from there):
-http://compalg.inf.elte.hu/~ggevay/mills/index.php
-
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// perfect_sector_graph.cpp
 
 #include "perfect_common.h"
 
@@ -29,8 +12,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <queue>
 
 extern int ruleVariant;
-extern int field2_offset;
-extern int max_ksz;
+extern int field2Offset;
+extern int maxKsz;
 
 std::vector<Id> std_mora_graph_func(Id u)
 {
@@ -110,7 +93,7 @@ std::vector<Id> graph_func(Id u, bool elim_loops)
     }
 
     for (auto it = r0.begin(); it != r0.end(); it++)
-        it->negate();
+        it->negate_id();
 
     std::set<Id> sr(r0.begin(), r0.end()); // parallel electric discharge
 
@@ -135,11 +118,11 @@ void init_sector_graph()
     std::queue<Id> q;
     std::set<Id> volt;
 #ifndef FULL_SECTOR_GRAPH
-    q.push(Id(0, 0, max_ksz, max_ksz));
+    q.push(Id(0, 0, maxKsz, maxKsz));
     volt.insert(q.front());
 #else
-    for (int i = 3; i <= max_ksz; i++) {
-        for (int j = 3; j <= max_ksz; j++) {
+    for (int i = 3; i <= maxKsz; i++) {
+        for (int j = 3; j <= maxKsz; j++) {
             Id s = Id {0, 0, i, j};
             q.push(s);
             volt.insert(s);
@@ -199,7 +182,7 @@ void init_wu_graph()
             std::vector<Id> &e2 = sector_graph[s2];
             if (std::find(e2.begin(), e2.end(), s1) != e2.end()) {
                 assert(s1 == -s2);
-                wus[s1]->twine = true;
+                wus[s1]->is_twine = true;
                 wus[s2] = wus[s1];
             }
         }
@@ -212,7 +195,7 @@ void init_wu_graph()
 
         add_adj(wu, wu.id);
 
-        if (wu.twine)
+        if (wu.is_twine)
             add_adj(wu, -wu.id);
     }
 

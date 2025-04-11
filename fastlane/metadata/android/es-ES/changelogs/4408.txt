@@ -1,0 +1,3 @@
+v5.7.1
+
+Esta actualización incluye varias mejoras y correcciones de errores para mejorar la aplicación para ti.

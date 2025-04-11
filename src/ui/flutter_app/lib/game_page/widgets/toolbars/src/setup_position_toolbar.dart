@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// setup_position_toolbar.dart
 
 part of '../game_toolbar.dart';
 
@@ -44,7 +33,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     GameController().gameInstance.gameMode = GameMode.setupPosition;
 
     positionBackup = GameController().position.clone();
-    //MillController().position.reset();
+    //GameController().position.reset();
 
     newPieceColor = GameController().position.sideToMove;
 
@@ -59,7 +48,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           GameController().position.phase == Phase.placing) {
         newPhase = Phase.placing;
       } else if (GameController().position.phase == Phase.gameOver) {
-        if (GameController().gameRecorder.length >
+        if (GameController().gameRecorder.mainlineMoves.length >
             DB().ruleSettings.piecesCount * 2) {
           newPhase = Phase.moving;
         } else {
@@ -72,11 +61,11 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       newPlaced = DB().ruleSettings.piecesCount;
     } else if (newPhase == Phase.placing) {
       /*
-      int c = MillController().recorder.placeCount;
+      int c = GameController().recorder.placeCount;
 
-      if (MillController().position.sideToMove == PieceColor.white) {
+      if (GameController().position.sideToMove == PieceColor.white) {
         newPlaced = (c + 1) ~/ 2;
-      } else if (MillController().position.sideToMove == PieceColor.black) {
+      } else if (GameController().position.sideToMove == PieceColor.black) {
         newPlaced = c ~/ 2;
       }
       */
@@ -244,6 +233,13 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     GameController().position.pieceToRemoveCount[newPieceColor] =
         newPieceCountNeedRemove[newPieceColor]!;
 
+    if (DB().ruleSettings.millFormationActionInPlacingPhase ==
+        MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
+      // TODO: Adapt removalBasedOnMillCounts
+      // final int whiteMills = GameController().position.totalMillsCount(PieceColor.white);
+      // final int blackMills = GameController().position.totalMillsCount(PieceColor.black);
+    }
+
     if (next == true) {
       if (limit == 0 || newPieceCountNeedRemove[newPieceColor] == 0) {
         GameController()
@@ -366,7 +362,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     //  then it means that more values should be subtracted.
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces) {
-      //int marked = MillController().position.countPieceOnBoard(PieceColor.marked);
+      //int marked = GameController().position.countPieceOnBoard(PieceColor.marked);
       begin = max(white, black); // TODO: How to use marked?
     } else {
       begin = max(white, black);
@@ -428,7 +424,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       buffer.writeln();
     }
 
-    final String? n1 = controller.gameRecorder.current?.notation;
+    final String? n1 = controller.gameRecorder.activeNode?.data?.notation;
     // Last Move information
     if (n1 != null) {
       // $them is only shown with the screen reader. It is convenient for
@@ -441,7 +437,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
       if (n1.startsWith("x")) {
         buffer.writeln(
-          controller.gameRecorder[controller.gameRecorder.length - 2].notation,
+          controller
+              .gameRecorder
+              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
+              .notation,
         );
       }
       buffer.writeComma(n1);
@@ -587,7 +586,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   bool setSetupPositionDone() {
     // TODO: set position fen, such as piece etc.
-    //MillController().gameInstance.gameMode = gameModeBackup;
+    //GameController().gameInstance.gameMode = gameModeBackup;
 
     // When the number of pieces is less than 3, it is impossible to be in the Moving Phase.
     if (GameController().position.countPieceOnBoard(PieceColor.white) <
@@ -608,7 +607,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     if (GameController()
             .position
-            .pieceToRemoveCount[GameController().position.sideToMove]! >
+            .pieceToRemoveCount[GameController().position.sideToMove]!
+            .abs() >
         0) {
       GameController().position.action = Act.remove;
     }
@@ -647,7 +647,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       GameController().reset(force: true);
     }
 
-    //MillController().recorder.clear(); // TODO: Set and parse fen.
+    //GameController().recorder.clear(); // TODO: Set and parse fen.
     final String? fen = position.fen;
     if (fen == null) {
       logger.e("FEN is null.");
@@ -672,6 +672,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   Widget build(BuildContext context) {
     // Piece
     final ToolbarItem whitePieceButton = ToolbarItem.icon(
+      key: const Key('white_piece_button'),
       onPressed: () => setSetupPositionPiece(context, PieceColor.white),
       icon: Icon(
         FluentIcons.circle_24_filled,
@@ -688,6 +689,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
     final ToolbarItem blackPieceButton = ToolbarItem.icon(
+      key: const Key('black_piece_button'),
       onPressed: () => setSetupPositionPiece(context, PieceColor.black),
       icon: Icon(FluentIcons.circle_24_filled,
           color: DB().colorSettings.blackPieceColor),
@@ -698,6 +700,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
     final ToolbarItem markedPointButton = ToolbarItem.icon(
+      key: const Key('marked_point_button'),
       onPressed: () => setSetupPositionPiece(context, PieceColor.marked),
       icon: const Icon(FluentIcons.prohibited_24_regular),
       label: Text(
@@ -707,6 +710,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       ),
     );
     final ToolbarItem emptyPointButton = ToolbarItem.icon(
+      key: const Key('empty_point_button'),
       onPressed: () => setSetupPositionPiece(context, PieceColor.none),
       icon: const Icon(FluentIcons.add_24_regular),
       label: Text(
@@ -718,6 +722,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Rotate
     final ToolbarItem rotateButton = ToolbarItem.icon(
+      key: const Key('rotate_button'),
       onPressed: () => setSetupPositionTransform(
           context, TransformationType.rotate90Degrees),
       icon: const Icon(FluentIcons.arrow_rotate_clockwise_24_regular),
@@ -730,6 +735,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Horizontal Flip
     final ToolbarItem horizontalFlipButton = ToolbarItem.icon(
+      key: const Key('horizontal_flip_button'),
       onPressed: () =>
           setSetupPositionTransform(context, TransformationType.horizontalFlip),
       icon: const Icon(FluentIcons.flip_horizontal_24_regular),
@@ -742,6 +748,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Vertical Flip
     final ToolbarItem verticalFlipButton = ToolbarItem.icon(
+      key: const Key('vertical_flip_button'),
       onPressed: () =>
           setSetupPositionTransform(context, TransformationType.verticalFlip),
       icon: const Icon(FluentIcons.flip_vertical_24_regular),
@@ -754,6 +761,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Inner Outer Flip
     final ToolbarItem innerOuterFlipButton = ToolbarItem.icon(
+      key: const Key('inner_outer_flip_button'),
       onPressed: () =>
           setSetupPositionTransform(context, TransformationType.innerOuterFlip),
       icon: const Icon(FluentIcons.arrow_expand_24_regular),
@@ -766,6 +774,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Clear
     final ToolbarItem clearButton = ToolbarItem.icon(
+      key: const Key('clear_button'),
       onPressed: () {
         GameController().position.reset();
         _updateSetupPositionIcons();
@@ -781,6 +790,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Phase
     final ToolbarItem placingButton = ToolbarItem.icon(
+      key: const Key('placing_button'),
       onPressed: () => <void>{setSetupPositionPhase(context, Phase.placing)},
       icon: const Icon(FluentIcons.grid_dots_24_regular),
       label: Text(
@@ -791,6 +801,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem movingButton = ToolbarItem.icon(
+      key: const Key('moving_button'),
       onPressed: () => <void>{setSetupPositionPhase(context, Phase.moving)},
       icon: const Icon(FluentIcons.arrow_move_24_regular),
       label: Text(
@@ -802,6 +813,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Remove
     final ToolbarItem removeZeroButton = ToolbarItem.icon(
+      key: const Key('remove_zero_button'),
       onPressed: () => <void>{setSetupPositionNeedRemove(0, true)},
       icon: const Icon(FluentIcons.circle_24_regular),
       label: Text(
@@ -812,6 +824,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem removeOneButton = ToolbarItem.icon(
+      key: const Key('remove_one_button'),
       onPressed: () => <void>{setSetupPositionNeedRemove(1, true)},
       icon: const Icon(FluentIcons.number_circle_1_24_regular),
       label: Text(
@@ -822,6 +835,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem removeTwoButton = ToolbarItem.icon(
+      key: const Key('remove_two_button'),
       onPressed: () => <void>{setSetupPositionNeedRemove(2, true)},
       icon: const Icon(FluentIcons.number_circle_2_24_regular),
       label: Text(
@@ -832,6 +846,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem removeThreeButton = ToolbarItem.icon(
+      key: const Key('remove_three_button'),
       onPressed: () => <void>{setSetupPositionNeedRemove(3, true)},
       icon: const Icon(FluentIcons.number_circle_3_24_regular),
       label: Text(
@@ -842,6 +857,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem placedButton = ToolbarItem.icon(
+      key: const Key('placed_button'),
       onPressed: () => <void>{setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
       label: Text(
@@ -852,6 +868,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem copyButton = ToolbarItem.icon(
+      key: const Key('copy_button'),
       onPressed: () => <void>{setSetupPositionCopy(context)},
       icon: const Icon(FluentIcons.copy_24_regular),
       label: Text(
@@ -862,6 +879,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     );
 
     final ToolbarItem pasteButton = ToolbarItem.icon(
+      key: const Key('paste_button'),
       onPressed: () => <void>{setSetupPositionPaste(context)},
       icon: const Icon(FluentIcons.clipboard_paste_24_regular),
       label: Text(
@@ -873,6 +891,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
     // Cancel
     final ToolbarItem cancelButton = ToolbarItem.icon(
+      key: const Key('cancel_button'),
       onPressed: () => <void>{restoreContext()}, // TODO: setState();
       icon: const Icon(FluentIcons.dismiss_24_regular),
       label: Text(
@@ -933,6 +952,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     return Column(
       children: <Widget>[
         SetupPositionButtonsContainer(
+          key: const Key('setup_position_buttons_container_row1'),
           backgroundColor: backgroundColor,
           margin: _margin,
           padding: _padding,
@@ -940,6 +960,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           child: row1,
         ),
         SetupPositionButtonsContainer(
+          key: const Key('setup_position_buttons_container_row2'),
           backgroundColor: backgroundColor,
           margin: _margin,
           padding: _padding,
@@ -947,6 +968,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           child: row2,
         ),
         SetupPositionButtonsContainer(
+          key: const Key('setup_position_buttons_container_row3'),
           backgroundColor: backgroundColor,
           margin: _margin,
           padding: _padding,
@@ -996,6 +1018,7 @@ class SetupPositionButtonsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: key,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: backgroundColor,
@@ -1003,12 +1026,15 @@ class SetupPositionButtonsContainer extends StatelessWidget {
       margin: _margin,
       padding: _padding,
       child: ToolbarItemTheme(
+        key: const Key('toolbar_item_theme_container'),
         data: ToolbarItemThemeData(
           style: ToolbarItem.styleFrom(primary: itemColor),
         ),
         child: Directionality(
+          key: const Key('toolbar_directionality_container'),
           textDirection: TextDirection.ltr,
           child: Row(
+            key: const Key('toolbar_row_container'),
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: child,
           ),
@@ -1040,6 +1066,7 @@ class _PlacedModal extends StatelessWidget {
           children: <Widget>[
             for (int i = begin; i <= DB().ruleSettings.piecesCount; i++)
               RadioListTile<int>(
+                key: Key('placed_option_$i'),
                 title: Text(i.toString()),
                 groupValue: placedGroupValue,
                 value: i,

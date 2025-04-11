@@ -1,0 +1,3 @@
+v5.9.0
+
+Denna uppdatering inkluderar olika förbättringar och buggfixar för att göra appen bättre för dig.

@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_ui.cpp
 
 #include <iomanip>
 #include <map>
@@ -59,13 +48,13 @@ void Game::setAnimation(bool arg) noexcept
 }
 
 // Set the piece animation
-QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
-                                               const QPointF &startPos,
-                                               const QPointF &endPos,
-                                               int duration)
+QPropertyAnimation *Game::buildPieceAnimation(PieceItem *piece,
+                                              const QPointF &startPos,
+                                              const QPointF &endPos,
+                                              int duration)
 {
     if (!piece) {
-        qDebug() << "piece is nullptr in createPieceAnimation";
+        qDebug() << "piece is nullptr in buildPieceAnimation";
         return nullptr;
     }
 
@@ -77,11 +66,21 @@ QPropertyAnimation *Game::createPieceAnimation(PieceItem *piece,
     return animation;
 }
 
-void Game::updateStatusBar(bool reset)
+void Game::refreshStatusBar(bool reset)
 {
+    QString thinkingMessage = "";
+
+    if (hasActiveAiTasks()) {
+        Color side = position.side_to_move();
+        if (isAiPlayer[side]) {
+            QString sideName = (side == WHITE ? "White" : "Black");
+            thinkingMessage = QString("%1 is thinking...").arg(sideName);
+        }
+    }
+
     // Signal update status bar
-    updateScene();
-    message = QString::fromStdString(getTips());
+    // refreshScene();
+    message = QString::fromStdString(getTips()) + " " + thinkingMessage;
     emit statusBarChanged(message);
 
     qreal advantage = (double)position.bestvalue /
@@ -103,30 +102,41 @@ void Game::updateStatusBar(bool reset)
         advantage = 0;
     }
 
-    // TODO: updateStatusBar but also emit advantageChanged
+    // TODO: refreshStatusBar but also emit advantageChanged
     emit advantageChanged(advantage);
 }
 
-void Game::updateLcdDisplay()
+void Game::refreshLcdDisplay()
 {
+    switch (position.winner) {
+    case WHITE:
+        score[WHITE]++;
+        break;
+    case BLACK:
+        score[BLACK]++;
+        break;
+    case DRAW:
+        score[DRAW]++;
+        break;
+    case COLOR_NB:
+    case NOBODY:
+        break;
+    }
+
     // Update LCD display
-    emit nGamesPlayedChanged(QString::number(position.gamesPlayedCount, 10));
-    emit score1Changed(QString::number(position.score[WHITE], 10));
-    emit score2Changed(QString::number(position.score[BLACK], 10));
-    emit scoreDrawChanged(QString::number(position.score_draw, 10));
+    emit nGamesPlayedChanged(QString::number(gamesPlayedCount, 10));
+    emit score1Changed(QString::number(score[WHITE], 10));
+    emit score2Changed(QString::number(score[BLACK], 10));
+    emit scoreDrawChanged(QString::number(score[DRAW], 10));
 
     // Update winning rate LCD display
-    position.gamesPlayedCount = position.score[WHITE] + position.score[BLACK] +
-                                position.score_draw;
+    gamesPlayedCount = score[WHITE] + score[BLACK] + score[DRAW];
     int winningRate_1 = 0, winningRate_2 = 0, winningRate_draw = 0;
 
-    if (position.gamesPlayedCount != 0) {
-        winningRate_1 = position.score[WHITE] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_2 = position.score[BLACK] * 10000 /
-                        position.gamesPlayedCount;
-        winningRate_draw = position.score_draw * 10000 /
-                           position.gamesPlayedCount;
+    if (gamesPlayedCount != 0) {
+        winningRate_1 = score[WHITE] * 10000 / gamesPlayedCount;
+        winningRate_2 = score[BLACK] * 10000 / gamesPlayedCount;
+        winningRate_draw = score[DRAW] * 10000 / gamesPlayedCount;
     }
 
     emit winningRate1Changed(QString::number(winningRate_1, 10));
@@ -134,7 +144,7 @@ void Game::updateLcdDisplay()
     emit winningRateDrawChanged(QString::number(winningRate_draw, 10));
 }
 
-void Game::reinitMoveListModel()
+void Game::resetMoveListModel()
 {
     moveListModel.removeRows(0, moveListModel.rowCount());
     moveListModel.insertRow(0);
@@ -142,31 +152,31 @@ void Game::reinitMoveListModel()
     currentRow = 0;
 }
 
-bool Game::updateScene()
+bool Game::refreshScene()
 {
     // The deleted pieces are in place
     PieceItem *deletedPiece = nullptr;
 
     // Animate pieces and find deleted pieces
     // TODO: Rename
-    animatePieceMovement(deletedPiece);
+    animatePieces(deletedPiece);
 
     // Handle marked locations
-    handleMarkedLocations();
+    processMarkedSquares();
 
     // Select the current and recently deleted pieces
-    selectCurrentAndDeletedPieces(deletedPiece);
+    selectActiveAndRemovedPieces(deletedPiece);
 
     // Update LCD displays
-    updateLcdDisplay();
+    // refreshLcdDisplay();
 
     // Update tips
-    setTips();
+    updateTips();
 
     return true;
 }
 
-void Game::animatePieceMovement(PieceItem *&deletedPiece)
+void Game::animatePieces(PieceItem *&deletedPiece)
 {
     int key;
     QPointF pos;
@@ -191,7 +201,7 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
         // Traverse the board, find and place the pieces on the board
         for (j = SQ_BEGIN; j < SQ_END; j++) {
             if (board[j] == key) {
-                pos = scene.polarCoordinateToPoint(
+                pos = scene.convertFromPolarCoordinate(
                     static_cast<File>(j / RANK_NB),
                     static_cast<Rank>(j % RANK_NB + 1));
                 if (piece && piece->pos() != pos) {
@@ -199,8 +209,8 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
                     piece->setZValue(1);
 
                     // Pieces movement animation
-                    auto *animation = createPieceAnimation(piece, piece->pos(),
-                                                           pos, durationTime);
+                    auto *animation = buildPieceAnimation(piece, piece->pos(),
+                                                          pos, durationTime);
                     if (animation) {
                         animationGroup->addAnimation(animation);
                     }
@@ -214,7 +224,7 @@ void Game::animatePieceMovement(PieceItem *&deletedPiece)
 
         // If not, place the pieces outside the board
         if (j == RANK_NB * (FILE_NB + 1)) {
-            handleDeletedPiece(piece, key, animationGroup, deletedPiece);
+            handleRemovedPiece(piece, key, animationGroup, deletedPiece);
         }
 
         piece->setSelected(false); // TODO: Need?
@@ -237,7 +247,7 @@ inline std::string Game::charToString(char ch)
     return "Black";
 }
 
-void Game::setTips()
+void Game::updateTips()
 {
     Position &p = position;
 
@@ -301,11 +311,10 @@ void Game::setTips()
         break;
 
     case Phase::gameOver:
-        appendGameOverReasonToMoveList();
+        recordGameOverReason();
 
-        scoreStr = "Score " + to_string(p.score[WHITE]) + " : " +
-                   to_string(p.score[BLACK]) + ", Draw " +
-                   to_string(p.score_draw);
+        scoreStr = "Score " + to_string(score[WHITE]) + " : " +
+                   to_string(score[BLACK]) + ", Draw " + to_string(score[DRAW]);
 
         switch (p.winner) {
         case WHITE:
@@ -316,7 +325,6 @@ void Game::setTips()
         case DRAW:
             resultStr = "Draw! ";
             break;
-        case NOCOLOR:
         case COLOR_NB:
         case NOBODY:
             break;
@@ -366,7 +374,7 @@ void Game::setTips()
     tips = to_string(position.bestvalue) + " | " + tips;
 }
 
-void Game::resetUIElements()
+void Game::resetUiComponents()
 {
     // Clear pieces
     qDeleteAll(pieceList);
@@ -374,7 +382,7 @@ void Game::resetUIElements()
     currentPiece = nullptr;
 
     // Redraw pieces
-    scene.setDiagonal(rule.hasDiagonalLines);
+    scene.setDiagonalLineEnabled(rule.hasDiagonalLines);
 
     // Draw all the pieces and put them in the starting position
     // 0: the first piece in the first hand; 1: the first piece in the second
@@ -408,7 +416,7 @@ void Game::resetUIElements()
     }
 }
 
-void Game::showTestWindow() const
+void Game::displayTestWindow() const
 {
     gameTest->show();
 }
@@ -426,13 +434,13 @@ void Game::showNetworkWindow()
 }
 #endif
 
-void Game::updateMiscellaneous()
+void Game::updateMisc()
 {
     // Sound effects play
-    // playSound(":/sound/resources/sound/newgame.wav");
+    // playGameSound(":/sound/resources/sound/newgame.wav");
 }
 
-void Game::setEditing(bool arg) noexcept
+void Game::setEditingModeEnabled(bool arg) noexcept
 {
     isEditing = arg;
 }

@@ -1,0 +1,3 @@
+v5.0.0
+
+Cette mise à jour comprend diverses améliorations et corrections de bugs pour améliorer l'application pour vous.

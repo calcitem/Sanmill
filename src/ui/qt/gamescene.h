@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// gamescene.h
 
 #ifndef GAMESCENE_H_INCLUDED
 #define GAMESCENE_H_INCLUDED
@@ -36,11 +25,11 @@ class GameScene : public QGraphicsScene
 public:
     explicit GameScene(QObject *parent = nullptr);
 
-    QPointF polarCoordinateToPoint(File f, Rank r) const;
+    QPointF convertFromPolarCoordinate(File f, Rank r) const;
 
-    bool pointToPolarCoordinate(QPointF pos, File &f, Rank &r) const;
+    bool convertToPolarCoordinate(QPointF pos, File &f, Rank &r) const;
 
-    void setDiagonal(bool arg = true) const;
+    void setDiagonalLineEnabled(bool arg = true) const;
 
     // Position of player 1's own board and opponent's board
     const QPointF pos_p1 {LINE_INTERVAL * 4, LINE_INTERVAL * 6};

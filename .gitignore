@@ -308,6 +308,9 @@ target_wrapper.*
 # QtCreator CMake
 CMakeLists.txt.user*
 
+# Misc
+*.qtvscr
+
 ###########################################
 
 .metadata
@@ -413,6 +416,7 @@ settings.ini
 
 # Executable files
 src/sanmill
+src/test_sanmill
 
 # Sourcetrail files
 *.srctrl*
@@ -439,9 +443,18 @@ flutter_export_environment.sh
 .autogit
 build/
 out/
+/src/*.stackdump
 
 # Snapcraft
 *.snap
 
 # xmake
 .xmake/
+
+# Coverage
+coverage/
+*.gcda
+*.gcno
+
+# diff-files
+diff-files*.md

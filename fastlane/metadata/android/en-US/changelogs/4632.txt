@@ -1,0 +1,3 @@
+v5.11.0
+
+This update includes various improvements and bug fixes to make the app better for you.

@@ -3,18 +3,35 @@ cmake_policy(SET CMP0069 NEW)
 
 project(sanmill LANGUAGES CXX)
 
-add_definitions(-DNDEBUG -O3 -std=c++17 -flto -D FLUTTER_UI)
+# Get the build mode from environment variables
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Debug mode: use -O0 -g, remove -flto
+    add_definitions(-DDEBUG -O0 -g -fno-omit-frame-pointer -funwind-tables -std=c++17 -D FLUTTER_UI)
+elseif (DEFINED ENV{DEV_MODE} AND "$ENV{DEV_MODE}" STREQUAL "true")
+    # Dev mode: add Address Sanitizer
+    add_definitions(-DDEBUG -O0 -g -fno-omit-frame-pointer -funwind-tables -std=c++17 -D FLUTTER_UI)
+    set(USE_ASAN TRUE)
+else ()
+    # Release mode: use original optimization flags
+    add_definitions(-DNDEBUG -O3 -std=c++17 -flto -D FLUTTER_UI)
+endif ()
+
 #add_definitions(-DDISABLE_PERFECT_AI)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wcast-qual -pedantic -Wextra -Wshadow -fexceptions -DUSE_POPCNT")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
-include(CheckIPOSupported)
-check_ipo_supported(RESULT result)
-if(result)
-	set_property(TARGET sanmill PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-endif()
+# Enable LTO only for release builds
+if (NOT CMAKE_BUILD_TYPE STREQUAL "Debug" AND NOT DEFINED USE_ASAN)
+    include(CheckIPOSupported)
+    check_ipo_supported(RESULT result)
+    if (result)
+        set_property(TARGET sanmill PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+        # We usually do this, but only if we REALLY want LTO in release builds
+        message(STATUS "IPO is enabled for Release build")
+    endif ()
+endif ()
 
 add_library( # Sets the name of the library.
         sanmill
@@ -31,7 +48,7 @@ add_library( # Sets the name of the library.
         ../../../../endgame.cpp
         ../../../../evaluate.cpp
         ../../../../main.cpp
-		../../../../mcts.cpp
+        ../../../../mcts.cpp
         ../../../../mills.cpp
         ../../../../misc.cpp
         ../../../../movegen.cpp
@@ -44,6 +61,11 @@ add_library( # Sets the name of the library.
         ../../../../tt.cpp
         ../../../../uci.cpp
         ../../../../ucioption.cpp
+        ../../../../engine_controller.cpp
+        ../../../../engine_commands.cpp
+        ../../../../search_engine.cpp
+        ../../../../thread_pool.cpp
+        ../../../../opening_book.cpp
         ../../../../perfect/perfect_adaptor.cpp
         ../../../../perfect/perfect_api.cpp
         ../../../../perfect/perfect_common.cpp
@@ -63,11 +85,11 @@ add_library( # Sets the name of the library.
         ../../../../perfect/perfect_symmetries_slow.cpp
         ../../../../perfect/perfect_wrappers.cpp)
 
-#target_compile_options(sanmill PUBLIC -fsanitize=hwaddress -fno-omit-frame-pointer)
-#set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=hwaddress)
-
-#target_compile_options(sanmill PUBLIC -fsanitize=address -fno-omit-frame-pointer)
-#set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=address)
+# Configure Address Sanitizer for dev mode
+if (DEFINED USE_ASAN AND USE_ASAN)
+    target_compile_options(sanmill PUBLIC -fsanitize=address -fno-omit-frame-pointer)
+    set_target_properties(sanmill PROPERTIES LINK_FLAGS -fsanitize=address)
+endif ()
 
 include_directories(
         ../../command

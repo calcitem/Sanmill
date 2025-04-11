@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_logic.cpp
 
 #include <iomanip>
 #include <map>
@@ -45,7 +34,7 @@
 
 using std::to_string;
 
-void Game::handleDeletedPiece(PieceItem *piece, int key,
+void Game::handleRemovedPiece(PieceItem *piece, int key,
                               QParallelAnimationGroup *animationGroup,
                               PieceItem *&deletedPiece)
 {
@@ -69,8 +58,8 @@ void Game::handleDeletedPiece(PieceItem *piece, int key,
 #ifdef GAME_PLACING_SHOW_REMOVED_PIECES
         if (position.get_phase() == Phase::moving) {
 #endif
-            auto *animation = createPieceAnimation(piece, piece->pos(), pos,
-                                                   durationTime);
+            auto *animation = buildPieceAnimation(piece, piece->pos(), pos,
+                                                  durationTime);
             if (animation) {
                 animationGroup->addAnimation(animation);
             }
@@ -80,7 +69,7 @@ void Game::handleDeletedPiece(PieceItem *piece, int key,
     }
 }
 
-void Game::handleMarkedLocations()
+void Game::processMarkedSquares()
 {
     QPointF pos;
     int nTotalPieces = rule.pieceCount * 2;
@@ -92,7 +81,7 @@ void Game::handleMarkedLocations()
         position.get_phase() == Phase::placing) {
         for (int sq = SQ_BEGIN; sq < SQ_END; sq++) {
             if (board[sq] == MARKED_PIECE) {
-                pos = scene.polarCoordinateToPoint(
+                pos = scene.convertFromPolarCoordinate(
                     static_cast<File>(sq / RANK_NB),
                     static_cast<Rank>(sq % RANK_NB + 1));
                 if (nTotalPieces < static_cast<int>(pieceList.size())) {
@@ -121,7 +110,7 @@ void Game::handleMarkedLocations()
     }
 }
 
-void Game::selectCurrentAndDeletedPieces(PieceItem *deletedPiece)
+void Game::selectActiveAndRemovedPieces(PieceItem *deletedPiece)
 {
     const Piece *board = position.get_board();
     int nTotalPieces = rule.pieceCount * 2;
@@ -147,29 +136,29 @@ void Game::selectCurrentAndDeletedPieces(PieceItem *deletedPiece)
 
 // Key slot function, according to the signal and state of qgraphics scene to
 // select, drop or remove sub
-bool Game::handleClick(QPointF point)
+bool Game::handleBoardClick(QPointF point)
 {
     // Click non drop point, do not execute
     File f;
     Rank r;
 
-    if (!validateClick(point, f, r))
+    if (!isValidBoardClick(point, f, r))
         return false;
 
-    if (!undoRecentMovesOnReview())
+    if (!undoMovesIfReviewing())
         return false;
 
     initGameIfReady();
 
-    bool result = performAction(f, r, point);
+    bool result = applyBoardAction(f, r, point);
 
-    updateState(result);
+    updateGameState(result);
 
     return result;
 }
 
 // TODO: Function name
-bool Game::undoRecentMovesOnReview()
+bool Game::undoMovesIfReviewing()
 {
     // Activated when the user clicks on the board while reviewing past moves.
     // This action is considered as a request to undo moves.
@@ -205,7 +194,7 @@ bool Game::undoRecentMovesOnReview()
             if (position.get_winner() == NOBODY) {
                 // Restart game timer
                 timeID = startTimer(100);
-                updateStatusBar();
+                refreshStatusBar();
 #ifndef QT_MOBILE_APP_UI
             }
         } else {

@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// database.dart
 
 import 'dart:convert' show jsonDecode;
 import 'dart:io' show Directory, File, Platform;
@@ -90,6 +79,11 @@ class Database {
   /// Key at which the [_colorSettingsBox] will be saved
   static const String _colorSettingsBoxName = "colorSettings";
 
+  /// Database boxes to store custom themes
+  static late final Box<dynamic> _customThemesBox;
+  static const String _customThemesBoxName = "customThemes";
+  static const String customThemesKey = "customThemes";
+
   /// Initializes the local database
   static Future<void> init() async {
     await Hive.initFlutter("Sanmill");
@@ -98,6 +92,7 @@ class Database {
     await _initRuleSettings();
     await _initDisplaySettings();
     await _initColorSettings();
+    await _initCustomThemes();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -110,6 +105,7 @@ class Database {
     await _ruleSettingsBox.delete(ruleSettingsKey);
     await _colorSettingsBox.delete(colorSettingsKey);
     await _displaySettingsBox.delete(displaySettingsKey);
+    await _customThemesBox.delete(customThemesKey);
   }
 
   /// GeneralSettings
@@ -117,6 +113,7 @@ class Database {
   /// Initializes the [GeneralSettings] reference
   static Future<void> _initGeneralSettings() async {
     Hive.registerAdapter<SearchAlgorithm>(SearchAlgorithmAdapter());
+    Hive.registerAdapter<SoundTheme>(SoundThemeAdapter());
     Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
     _generalSettingsBox =
         await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
@@ -181,6 +178,7 @@ class Database {
   static Future<void> _initDisplaySettings() async {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
+    Hive.registerAdapter<MovesViewLayout>(MovesViewLayoutAdapter());
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
     _displaySettingsBox =
         await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);
@@ -252,4 +250,36 @@ class Database {
   /// Gets the given [ColorSettings] from the settings Box
   ColorSettings get colorSettings =>
       _colorSettingsBox.get(colorSettingsKey) ?? const ColorSettings();
+
+  /// Initialize custom themes box
+  static Future<void> _initCustomThemes() async {
+    _customThemesBox = await Hive.openBox<dynamic>(_customThemesBoxName);
+  }
+
+  /// Get stored custom themes
+  List<ColorSettings> get customThemes {
+    final dynamic rawData = _customThemesBox.get(customThemesKey);
+
+    if (rawData == null) {
+      return <ColorSettings>[];
+    }
+
+    // Convert List<dynamic> to List<ColorSettings>
+    if (rawData is List) {
+      return rawData.map<ColorSettings>((dynamic item) {
+        if (item is ColorSettings) {
+          return item;
+        } else {
+          return const ColorSettings();
+        }
+      }).toList();
+    }
+
+    return <ColorSettings>[];
+  }
+
+  /// Save custom themes list
+  set customThemes(List<ColorSettings> themes) {
+    _customThemesBox.put(customThemesKey, themes);
+  }
 }

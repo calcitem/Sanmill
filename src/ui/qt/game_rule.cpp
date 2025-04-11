@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_rule.cpp
 
 #include <iomanip>
 #include <map>
@@ -46,13 +35,13 @@
 using std::to_string;
 
 // Validate the rule index.
-bool Game::isValidRuleIndex(int ruleNo)
+bool Game::isRuleIndexValid(int ruleNo)
 {
     return (ruleNo >= 0 && ruleNo < N_RULES);
 }
 
 // Update limited steps and time.
-void Game::updateLimits(int stepLimited, int timeLimited)
+void Game::setMoveAndTimeLimits(int stepLimited, int timeLimited)
 {
     if (stepLimited != INT_MAX && timeLimited != 0) {
         stepsLimit = stepLimited;
@@ -61,10 +50,10 @@ void Game::updateLimits(int stepLimited, int timeLimited)
 }
 
 // Set a new game rule.
-void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
+void Game::applyRule(int ruleNo, int stepLimited, int timeLimited)
 {
     // Validate the rule number.
-    if (!isValidRuleIndex(ruleNo))
+    if (!isRuleIndexValid(ruleNo))
         return;
 
     // Update rule index.
@@ -74,7 +63,7 @@ void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
     rule.nMoveRule = stepLimited;
 
     // Update other game settings.
-    updateLimits(stepLimited, timeLimited);
+    setMoveAndTimeLimits(stepLimited, timeLimited);
 
     // Reset the model and the game.
     if (!set_rule(ruleNo))
@@ -84,11 +73,11 @@ void Game::setRule(int ruleNo, int stepLimited, int timeLimited)
     gameReset();
 
     // Record and save the new rule setting.
-    saveRuleSetting(ruleNo);
+    storeRuleSetting(ruleNo);
 }
 
 // Create a list entry for the game rule.
-std::pair<int, QStringList> Game::createRuleEntry(int index)
+std::pair<int, QStringList> Game::buildRuleEntry(int index)
 {
     QStringList strList;
     strList.append(tr(RULES[index].name));

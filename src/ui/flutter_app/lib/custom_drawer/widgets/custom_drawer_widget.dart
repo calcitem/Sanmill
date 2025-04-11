@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// custom_drawer_widget.dart
 
 part of '../../custom_drawer/custom_drawer.dart';
 
@@ -30,6 +19,8 @@ class CustomDrawer extends StatefulWidget {
     required this.orientation,
   });
 
+  static const Key drawerMainKey = Key('custom_drawer_main');
+
   /// Child widget. (Usually a widget that represents the main screen)
   final Widget mainScreenWidget;
 
@@ -40,7 +31,6 @@ class CustomDrawer extends StatefulWidget {
   final bool disabledGestures;
 
   /// Items the drawer holds
-  // ignore: always_specify_types
   final List<CustomDrawerItem<dynamic>> drawerItems;
 
   /// Header widget of the drawer
@@ -101,7 +91,9 @@ class CustomDrawerState extends State<CustomDrawer>
 
   Widget buildListMenus() {
     return SliverToBoxAdapter(
+      key: const Key('custom_drawer_sliver_to_box_adapter'),
       child: ListView.builder(
+        key: const Key('custom_drawer_list_view_builder'),
         controller: ScrollController(),
         padding: const EdgeInsets.only(top: 4.0),
         physics: const BouncingScrollPhysics(),
@@ -132,15 +124,21 @@ class CustomDrawerState extends State<CustomDrawer>
   @override
   Widget build(BuildContext context) {
     final Align drawerWidget = Align(
+      key: const Key('custom_drawer_align'),
       alignment: AlignmentDirectional.topStart,
       child: FractionallySizedBox(
+        key: const Key('custom_drawer_fractionally_sized_box'),
         widthFactor: _drawerOpenRatio,
         child: Material(
+          key: const Key('custom_drawer_material'),
           color: DB().colorSettings.drawerColor,
           child: CustomScrollView(
+            key: const Key('custom_drawer_custom_scroll_view'),
             slivers: <Widget>[
               SliverPinnedToBoxAdapter(
+                key: const Key('custom_drawer_sliver_pinned_to_box_adapter'),
                 child: Container(
+                    key: const Key('custom_drawer_header_container'),
                     decoration:
                         BoxDecoration(color: DB().colorSettings.drawerColor),
                     child: widget.drawerHeader),
@@ -154,6 +152,7 @@ class CustomDrawerState extends State<CustomDrawer>
 
     /// Menu and arrow icon animation overlay
     final IconButton drawerOverlayButton = IconButton(
+      key: const Key('custom_drawer_drawer_overlay_button'),
       icon: AnimatedIcon(
         icon: AnimatedIcons.arrow_menu,
         progress: ReverseAnimation(_drawerAnimationController),
@@ -164,12 +163,14 @@ class CustomDrawerState extends State<CustomDrawer>
     );
 
     final SlideTransition mainScreenView = SlideTransition(
+      key: const Key('custom_drawer_main_screen_slide_transition'),
       position: _mainScreenSlideAnimation,
       textDirection: Directionality.of(context),
       child: ValueListenableBuilder<CustomDrawerValue>(
+        key: const Key('custom_drawer_value_listenable_builder_main_screen'),
         valueListenable: _drawerController,
-        // TODO: [Leptopoda] Why isn't it working with GestureDetector?
         builder: (_, CustomDrawerValue value, Widget? child) => InkWell(
+          key: const Key('custom_drawer_main_screen_inkwell'),
           onTap: _drawerController.hideDrawer,
           focusColor: Colors.transparent,
           child: DB().generalSettings.screenReaderSupport
@@ -180,6 +181,7 @@ class CustomDrawerState extends State<CustomDrawer>
                 ),
         ),
         child: DecoratedBox(
+          key: const Key('custom_drawer_main_screen_decorated_box'),
           decoration: const BoxDecoration(
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -194,6 +196,7 @@ class CustomDrawerState extends State<CustomDrawer>
     );
 
     return GestureDetector(
+      key: const Key('custom_drawer_gesture_detector'),
       onHorizontalDragStart: widget.disabledGestures ? null : _handleDragStart,
       onHorizontalDragUpdate:
           widget.disabledGestures ? null : _handleDragUpdate,
@@ -201,9 +204,11 @@ class CustomDrawerState extends State<CustomDrawer>
       onHorizontalDragCancel:
           widget.disabledGestures ? null : _handleDragCancel,
       child: Stack(
+        key: const Key('custom_drawer_stack'),
         children: <Widget>[
           drawerWidget,
           CustomDrawerIcon(
+            key: const Key('custom_drawer_custom_drawer_icon'),
             drawerIcon: drawerOverlayButton,
             child: mainScreenView,
           ),
@@ -213,7 +218,6 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    // ignore: always_specify_types
     final CustomDrawerItem<dynamic> item = widget.drawerItems[index];
 
     final double itemPadding =
@@ -226,9 +230,11 @@ class CustomDrawerState extends State<CustomDrawer>
 
     if (item.isSelected) {
       final SlideTransition selectedItemOverlay = SlideTransition(
+        key: Key('custom_drawer_selected_item_overlay_$index'),
         position: _drawerOverlaySlideAnimation,
         textDirection: Directionality.of(context),
         child: Container(
+          key: Key('custom_drawer_selected_item_container_$index'),
           width: MediaQuery.of(context).size.width * _drawerOpenRatio * 0.9,
           height: AppTheme.drawerItemHeight +
               (DB().displaySettings.fontScale - 1) * 12,
@@ -242,6 +248,7 @@ class CustomDrawerState extends State<CustomDrawer>
       );
 
       drawerItemWidget = Stack(
+        key: Key('custom_drawer_selected_item_stack_$index'),
         children: <Widget>[
           selectedItemOverlay,
           item,
@@ -251,6 +258,7 @@ class CustomDrawerState extends State<CustomDrawer>
       drawerItemWidget = item;
     }
     return Padding(
+      key: Key('custom_drawer_item_padding_$index'),
       padding: EdgeInsets.symmetric(vertical: itemPadding),
       child: drawerItemWidget,
     );

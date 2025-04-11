@@ -28,11 +28,11 @@
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "boardColor": "bảng màu",
+  "boardColor": "Màu bàn cờ",
   "@boardColor": {
     "description": "Board color"
   },
-  "pieceColor": "mảnh màu",
+  "pieceColor": "Màu quân cờ",
   "@pieceColor": {
     "description": "Piece color"
   },
@@ -60,7 +60,7 @@
   "@howToPlay": {
     "description": "How to play"
   },
-  "toPlacePiece": "Chạm vào bất kỳ điểm có sẵn nào để đặt mảnh ghép.",
+  "toPlacePiece": "Chạm vào bất kỳ điểm trống nào để đặt quân cờ.",
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
@@ -74,7 +74,7 @@
   },
   "toRemovePiece": "Chạm vào một mảnh của đối thủ để loại bỏ.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "theme": "chủ đề",
   "@theme": {
@@ -88,11 +88,11 @@
   "@welcome": {
     "description": "Welcome"
   },
-  "yes": "Đúng",
+  "yes": "Có",
   "@yes": {
     "description": "Yes"
   },
-  "no": "KHÔNG",
+  "no": "Không",
   "@no": {
     "description": "No"
   },
@@ -150,7 +150,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Nếu một người chơi phá vỡ một cối xay để tạo một cối xay mới ngay lập tức, thì người chơi đó có thể di chuyển quân cờ đó trở lại đường giao nhau ban đầu trong nước đi tiếp theo của mình nếu nó tạo ra một cối xay mới.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Ván cờ hòa nếu một đấu thủ có ba quân và sau mười nước đi không đấu thủ nào lấy được quân của đối phương",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -204,7 +204,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "ĐƯỢC RỒI",
+  "ok": "Ok",
   "@ok": {
     "description": "OK"
   },
@@ -216,55 +216,55 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Chọn mảnh ghép sai.",
+  "tipSelectWrong": "Bạn đã chọn sai quân cờ.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Đặt mảnh của bạn.",
+  "tipPlace": "Hãy đặt quân cờ của bạn.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
-  "tipBanPlace": "Bạn không thể đặt nó ở đây.",
+  "tipBanPlace": "Bạn không thể đặt quân cờ ở đây.",
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Bạn đặt.",
+  "tipPlaced": "Đã đặt quân cờ.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Loại bỏ một mảnh.",
+  "tipRemove": "Loại bỏ một quân cờ.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
-  "tipBanRemove": "Bạn không thể loại bỏ nó.",
+  "tipBanRemove": "Bạn không thể loại bỏ quân cờ này.",
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Bạn đã gỡ bỏ.",
+  "tipRemoved": "Đã loại bỏ quân cờ.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Di chuyển một mảnh.",
+  "tipMove": "Di chuyển một quân cờ.",
   "@tipMove": {
     "description": "Move a piece."
   },
-  "tipCannotMove": "Bạn không thể di chuyển mảnh của bạn ở đây.",
+  "tipCannotMove": "Bạn không thể di chuyển quân cờ của mình ở đây.",
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Cối xay! Lấy mảnh của đối thủ của bạn.",
+  "tipMill": "Cối xay! Loại bỏ một quân cờ của đối thủ.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
-  "tipContinueMill": "Tiếp tục lấy mảnh của đối thủ của bạn.",
+  "tipContinueMill": "Tiếp tục loại bỏ quân cờ của đối thủ.",
   "@tipContinueMill": {
     "description": "Continue to take your opponent's piece."
   },
-  "tipSelectOpponentsPiece": "Chọn một trong những mảnh của đối thủ của bạn.",
+  "tipSelectOpponentsPiece": "Chọn một quân cờ của đối thủ.",
   "@tipSelectOpponentsPiece": {
     "description": "Select one of your opponent's pieces."
   },
-  "tipCannotRemovePieceFromMill": "Bạn không thể lấy một mảnh ra khỏi cối xay.",
+  "tipCannotRemovePieceFromMill": "Bạn không thể loại bỏ quân cờ từ cối xay.",
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
@@ -272,11 +272,11 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "Chọn mảnh của bạn để di chuyển.",
+  "tipSelectPieceToMove": "Chọn quân cờ của bạn để di chuyển.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "Bạn còn ba mảnh.",
+  "tipHaveThreePiecesLeft": "Bạn còn ba quân cờ.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -306,7 +306,7 @@
   "@won": {
     "description": "Won"
   },
-  "lost": "Mất",
+  "lost": "Thua",
   "@lost": {
     "description": "Lost"
   },
@@ -378,11 +378,11 @@
   "@score": {
     "description": "Score"
   },
-  "white": "Người 1",
+  "white": "Người chơi 1",
   "@white": {
     "description": "Player 1"
   },
-  "black": "Người 2",
+  "black": "Người chơi 2",
   "@black": {
     "description": "Player 2"
   },
@@ -574,7 +574,7 @@
   },
   "flyPieceCount_Detail": "Nếu Bay được bật, khi một người chơi bị giảm số lượng quân cờ cụ thể, quân cờ của cô ấy có thể tự do di chuyển đến bất kỳ điểm trống nào thay vì bị giới hạn ở các điểm liền kề như trong phần còn lại của trò chơi.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "miếng ít nhất",
   "@piecesAtLeastCount": {
@@ -626,7 +626,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Người chơi sẽ thua nếu đối thủ của anh ta chặn chúng để chúng không thể di chuyển được. Đổi bên để di chuyển nếu tùy chọn này bị tắt.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "bay",
   "@mayFly": {
@@ -668,7 +668,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "Lối ra",
+  "exit": "Thoát",
   "@exit": {
     "description": "Exit"
   },
@@ -902,7 +902,7 @@
   },
   "aisPlayStyle": "lối chơi của AI",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Thụ động",
   "@passive": {
@@ -974,7 +974,7 @@
   },
   "tapBackAgainToLeave": "Nhấn lại một lần nữa để rời đi.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Hơn",
   "@more": {
@@ -1016,11 +1016,11 @@
   "@toolbarLocationOnScreen": {
     "description": "Toolbar location on screen"
   },
-  "top": "Đứng đầu",
+  "top": "Phía trên",
   "@top": {
     "description": "Top"
   },
-  "bottom": "Đáy",
+  "bottom": "Phía dưới",
   "@bottom": {
     "description": "Bottom"
   },
@@ -1040,11 +1040,11 @@
   "@chooseYourPicture": {
     "description": "Choose your picture"
   },
-  "light": "Ánh sáng",
+  "light": "Sáng",
   "@light": {
     "description": "Light"
   },
-  "dark": "Tối tăm",
+  "dark": "Tối",
   "@dark": {
     "description": "Dark"
   },
@@ -1539,5 +1539,313 @@
   "focusOnBlockingPaths": "Tập trung vào việc chặn đường",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Ưu tiên cản trở di chuyển của đối thủ thay vì tạo thành cối xay. Thay vì tập trung vào việc loại bỏ các quân cờ bằng cách hoàn thành cối xay, AI nhằm bẫy đối thủ, khiến họ không thể di chuyển và đảm bảo chiến thắng thông qua sự kiệt sức thay vì lối chơi hung hăng. Chiến lược này không chủ động chặn các cối xay của đối thủ.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Hình ảnh của quân cờ",
+  "@pieceImage": {},
+  "importColorSettings": "Nhập cài đặt màu",
+  "@importColorSettings": {},
+  "exportColorSettings": "Xuất cài đặt màu",
+  "@exportColorSettings": {},
+  "import": "Nhập khẩu",
+  "@import": {},
+  "export": "Xuất khẩu",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Vui lòng sao chép các cài đặt định dạng JSON vào bảng tạm trước.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Đã sao chép vào bảng tạm.",
+  "@copiedToClipboard": {},
+  "imported": "Đã nhập.",
+  "@imported": {},
+  "boardImage": "Hình ảnh bảng",
+  "@boardImage": {},
+  "autumnLeaves": "Lá mùa thu",
+  "@autumnLeaves": {},
+  "legendaryLand": "Vùng Đất Huyền Thoại",
+  "@legendaryLand": {},
+  "vignetteEffect": "Hiệu ứng tối góc",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Bạn có muốn làm cho thanh công cụ hoàn toàn trong suốt khi hình nền bảng được thiết lập không?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Bật rung trong trò chơi",
+  "@vibration": {},
+  "soundTheme": "Chủ đề âm thanh",
+  "@soundTheme": {},
+  "ball": "Bóng",
+  "@ball": {},
+  "liquid": "Chất lỏng",
+  "@liquid": {},
+  "wood": "Gỗ",
+  "@wood": {},
+  "placeEffectAnimation": "Hiệu ứng hoạt hình đặt quân cờ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Hiệu ứng hoạt hình loại bỏ quân cờ",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Hiển thị thanh công cụ ở phía dưới",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Bán kính góc bảng",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Sử dụng sách mở đầu",
+  "@useOpeningBook": {},
+  "currentRule": "Hiện tại",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Duz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Trực Kỳ",
+  "@zhiQi": {},
+  "chengSanQi": "Thành Tam Kỳ",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Bộ quy tắc",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Cối xay một lần",
+  "@oneTimeMill": {},
+  "daSanQi": "Đả Tam Kỳ",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Cho phép AI sử dụng các nước đi mở đầu thường được sử dụng bởi các cầu thủ chuyên nghiệp trong giai đoạn đầu của trò chơi. Lưu ý: Tính năng này hiện chỉ có sẵn cho các bộ quy tắc cụ thể.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Hiển thị biểu đồ lợi thế",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Biểu đồ lợi thế sẽ chỉ được vẽ sau khi AI thực hiện một nước đi. Nó sẽ không được vẽ khi người chơi là con người thực hiện nước đi.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Vô hiệu hóa việc loại bỏ cho đến khi tất cả các quân cờ được đặt xuống. Người chơi loại bỏ quân cờ dựa trên số lượng cối xay họ hình thành.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Vô hiệu hóa việc loại bỏ cho đến khi tất cả các quân cờ được đặt xuống. Người chơi loại bỏ quân cờ dựa trên số lượng cối xay: nếu bằng nhau, cả hai đều loại bỏ cùng một số lượng quân; nếu một người có nhiều hơn, người đó loại bỏ thêm một quân, giữ chênh lệch ở mức một quân. Nếu chỉ một người tạo được cối xay, người đó loại bỏ hai quân và người còn lại loại bỏ một. Nếu không ai tạo được cối xay, cả hai đều loại bỏ một quân.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Chọn một trong các quân cờ của bạn.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Đến lượt của đối thủ.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Màu nền của thanh công cụ chú thích",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Màu biểu tượng của thanh công cụ chú thích",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Hiển thị thanh công cụ chú thích",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Vào chế độ chú thích",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Bạn có chắc chắn muốn xóa tất cả chú thích không?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Đã sao chép lời nhắc LLM vào bảng tạm.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Kết nối bị từ chối, máy chủ có thể đang ngừng hoạt động.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Khám phá thành công, đang chờ kết nối...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Không có kết nối LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Chụp ảnh màn hình",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Đã ngắt kết nối với đối thủ.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Yêu cầu hoàn tác",
+  "@takeBackRequest": {},
+  "nothingToShow": "Không có gì để hiển thị.",
+  "@nothingToShow": {},
+  "stopHosting": "Dừng lưu trữ",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Kết nối bị đặt lại bởi bên kia.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Mất kết nối do hết thời gian heartbeat. Vui lòng kết nối lại.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Bắt đầu lưu trữ",
+  "@startHosting": {},
+  "restartRequestRejected": "Yêu cầu khởi động lại bị từ chối.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Không kết nối với đối thủ LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Lời nhắc LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Trò chơi đã được khởi động lại.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Hoàn tác bị từ chối.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Bạn có chắc chắn muốn từ bỏ trò chơi này không?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Đối thủ đã từ bỏ. Bạn thắng!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Xóa tất cả chú thích",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Đã kết nối, đang chờ nước đi của đối thủ...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Trạng thái mạng: Đã ngắt kết nối",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Yêu cầu hoàn tác đã được gửi đến đối thủ.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Đối thủ có thể đã rời khỏi trò chơi",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Đã kết nối với máy chủ thành công.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Mất kết nối: hết thời gian heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Không tìm thấy máy chủ.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Xác nhận từ bỏ",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Đã bắt đầu lưu trữ trò chơi, đang chờ người chơi tham gia...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Kết nối hết thời gian, kết nối mạng không ổn định.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Không có lời nhắc LLM nào.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Bạn đã từ bỏ. Trò chơi kết thúc.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP máy chủ",
+  "@serverIp": {},
+  "confirmClear": "Xác nhận xóa",
+  "@confirmClear": {},
+  "opponentSTurn": "Lượt của đối thủ.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Đang chờ kết nối từ máy khách...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Yêu cầu hoàn tác đã bị từ chối hoặc thất bại.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Thêm văn bản",
+  "@addText": {},
+  "exitAnnotationMode": "Thoát chế độ chú thích",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Nhập chú thích của bạn",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Đang cố gắng kết nối lại...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Yêu cầu khởi động lại đã được gửi. Đang chờ phản hồi từ đối thủ...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Máy chủ đã dừng.",
+  "@serverIsStopped": {},
+  "restartRequest": "Yêu cầu khởi động lại",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Không thể yêu cầu hoàn tác khi không phải lượt của bạn.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Hoàn tác được chấp nhận.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Cài đặt mạng cục bộ",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Đã kết nối lại thành công!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Không thể lưu hình ảnh vào Thư viện.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Đối thủ yêu cầu khởi động lại trò chơi. Bạn có chấp nhận không?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Lượt của bạn.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Không thể kết nối lại, vui lòng khởi động lại trò chơi.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Máy chủ",
+  "@host": {},
+  "join": "Tham gia",
+  "@join": {},
+  "port": "Cổng",
+  "@port": {},
+  "invalidIpAddress": "Địa chỉ IP không hợp lệ.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Cổng không hợp lệ.",
+  "@invalidPort": {},
+  "connectingAttempt": "Đang kết nối: Lần thử {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Kết nối thất bại: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Không thể bắt đầu lưu trữ: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Đã tìm thấy máy chủ: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Dừng",
+  "@stop": {},
+  "discover": "Khám phá",
+  "@discover": {},
+  "connect": "Kết nối",
+  "@connect": {},
+  "clientConnected": "Máy khách đã kết nối: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Đang khám phá: {seconds} giây",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Đang kết nối lại ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Đã kết nối",
+  "@connected": {},
+  "delete": "Xóa",
+  "@delete": {},
+  "ancientEgypt": "Ai Cập Cổ Đại",
+  "@ancientEgypt": {},
+  "gothicIce": "Băng Gothic",
+  "@gothicIce": {},
+  "riceField": "Ruộng Lúa",
+  "@riceField": {},
+  "chinesePorcelain": "Đồ Sứ Trung Quốc",
+  "@chinesePorcelain": {},
+  "desertDusk": "Hoàng Hôn Sa Mạc",
+  "@desertDusk": {},
+  "precisionCraft": "Thủ Công Chính Xác",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Thêu Dân Gian",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Di Sản Carpathian",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Sự Vĩ Đại Đế Quốc",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Pha Lê Bohemian",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Bình Minh Savanna",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Hòa Hợp và Cân Bằng",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Gia Vị Quế",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Khảm Anatolian",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Tinh Thần Lễ Hội",
+  "@carnivalSpirit": {},
+  "custom": "Tùy chỉnh",
+  "@custom": {},
+  "spiceMarket": "Chợ gia vị",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Vuốt để hiển thị ngăn kéo",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Hiển thị thông tin trò chơi trên ảnh chụp màn hình",
+  "@showGameInfoOnScreenshots": {}
 }

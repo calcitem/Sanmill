@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// mcts.cpp
 
 #include <algorithm>
 #include <chrono>
@@ -29,16 +18,13 @@
 #include "option.h"
 #include "position.h"
 #include "search.h"
+#include "search_engine.h"
 #include "types.h"
 #include "uci.h"
 
-Value MTDF(Position *pos, Sanmill::Stack<Position> &ss, Value firstguess,
-           Depth depth, Depth originDepth, Move &bestMove);
-
-Value qsearch(Position *pos, Sanmill::Stack<Position> &ss, Depth depth,
-              Depth originDepth, Value alpha, Value beta, Move &bestMove);
-
 using namespace std;
+
+static SearchEngine searchEngine;
 
 class ThreadSafeNodeVisits
 {
@@ -186,7 +172,7 @@ Node *expand(Node *node)
     Position *pos = node->position;
 
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move(); // Sort moves
+    mp.next_move<LEGAL>(); // Sort moves
     // const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR,
     // 1);
     const int moveCount = mp.move_count();
@@ -211,9 +197,9 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = qsearch(pos, ss, ALPHA_BETA_DEPTH, ALPHA_BETA_DEPTH,
-                          -VALUE_INFINITE, VALUE_INFINITE, bestMove);
-
+    Value value = Search::search(searchEngine, pos, ss, ALPHA_BETA_DEPTH,
+                                 ALPHA_BETA_DEPTH, -VALUE_INFINITE,
+                                 VALUE_INFINITE, bestMove);
     return value > 0;
 }
 
@@ -312,9 +298,9 @@ void mcts_worker(Position *pos, int max_iterations,
 #ifdef MCTS_ALPHA_BETA
         if (should_use_alpha_beta(node)) { // Check if alpha-beta search should
                                            // be used
-            Value value = qsearch(pos, ss, node->alpha_beta_depth,
-                                  node->alpha_beta_depth, -VALUE_INFINITE,
-                                  VALUE_INFINITE, bestMove);
+            Value value = search(pos, ss, node->alpha_beta_depth,
+                                 node->alpha_beta_depth, -VALUE_INFINITE,
+                                 VALUE_INFINITE, bestMove);
             node->num_visits++;
             if (value > 0) {
                 node->num_wins++;
@@ -382,7 +368,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     }
 
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move();
+    mp.next_move<LEGAL>();
 
     int best_move_index = 0;
     uint32_t max_visits = 0;

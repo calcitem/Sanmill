@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// toolbar_item.dart
 
 part of '../game_toolbar.dart';
 
@@ -236,7 +225,7 @@ class ToolbarItem extends ButtonStyleButton {
   /// In this list "Theme.foo" is shorthand for
   /// `Theme.of(context).foo`. Color scheme values like
   /// "onSurface(0.38)" are shorthand for
-  /// `onSurface.withOpacity(0.38)`. [WidgetStateProperty] valued
+  /// `onSurface.withValues(alpha: 0.38)`. [WidgetStateProperty] valued
   /// properties that are not followed by a subList have the same
   /// value for all states, otherwise the values are as specified for
   /// each state and "others" means all other states.
@@ -350,14 +339,14 @@ class _ToolbarItemDefaultForeground extends WidgetStateProperty<Color?> {
   @override
   Color? resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.disabled)) {
-      return onSurface?.withOpacity(0.38);
+      return onSurface?.withValues(alpha: 0.38);
     }
     return primary;
   }
 
   @override
   String toString() {
-    return '{disabled: ${onSurface?.withOpacity(0.38)}, otherwise: $primary}';
+    return '{disabled: ${onSurface?.withValues(alpha: 0.38)}, otherwise: $primary}';
   }
 }
 
@@ -370,18 +359,18 @@ class _ToolbarItemDefaultOverlay extends WidgetStateProperty<Color?> {
   @override
   Color? resolve(Set<WidgetState> states) {
     if (states.contains(WidgetState.hovered)) {
-      return primary.withOpacity(0.04);
+      return primary.withValues(alpha: 0.04);
     }
     if (states.contains(WidgetState.focused) ||
         states.contains(WidgetState.pressed)) {
-      return primary.withOpacity(0.12);
+      return primary.withValues(alpha: 0.12);
     }
     return null;
   }
 
   @override
   String toString() {
-    return '{hovered: ${primary.withOpacity(0.04)}, focused,pressed: ${primary.withOpacity(0.12)}, otherwise: null}';
+    return '{hovered: ${primary.withValues(alpha: 0.04)}, focused,pressed: ${primary.withValues(alpha: 0.12)}, otherwise: null}';
   }
 }
 
@@ -416,7 +405,11 @@ class _ToolbarItemWithIcon extends ToolbarItem {
   }) : super(
           autofocus: autofocus ?? false,
           clipBehavior: clipBehavior ?? Clip.none,
-          child: _ToolbarItemChild(icon: icon, label: label),
+          child: _ToolbarItemChild(
+            icon: icon,
+            label: label,
+            key: const Key('toolbar_item_child'),
+          ),
         );
 
   static const TextScaler scaler = TextScaler.noScaling;
@@ -442,6 +435,7 @@ class _ToolbarItemChild extends StatelessWidget {
   const _ToolbarItemChild({
     required this.label,
     required this.icon,
+    super.key,
   });
 
   final Widget label;
@@ -450,6 +444,7 @@ class _ToolbarItemChild extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      key: const Key('toolbar_item_child_column'),
       // TODO: [Calcitem] Replace with a Row for horizontal icon + text
       children: <Widget>[icon, label],
     );

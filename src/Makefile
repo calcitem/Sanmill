@@ -1,5 +1,5 @@
 # This file is part of Sanmill.
-# Copyright (C) 2019-2021 The Sanmill developers (see AUTHORS file)
+# Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 #
 # Sanmill is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,7 +13,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 
 ### ==========================================================================
 ### Section 1. General Configuration
@@ -35,12 +34,17 @@ PGOBENCH = ./$(EXE) bench
 
 ### Source and object files
 PERFECT_SRCS = $(wildcard perfect/*.cpp)
-SRCS = $(PERFECT_SRCS) bitboard.cpp endgame.cpp evaluate.cpp main.cpp mcts.cpp \
-	mills.cpp misc.cpp movegen.cpp movepick.cpp option.cpp position.cpp rule.cpp \
-	search.cpp thread.cpp tt.cpp uci.cpp ucioption.cpp
+SRCS = $(PERFECT_SRCS) $(wildcard *.cpp)
 
 OBJS = $(SRCS:.cpp=.o)
 
+# Define library objects excluding main.o
+LIB_OBJS = $(filter-out main.o, $(OBJS))
+
+# Define test library objects with .test.o suffix
+LIB_OBJS_TEST = $(patsubst %.o, %.test.o, $(LIB_OBJS))
+
+# Define VPATH for source file locations
 VPATH = syzygy:nnue:nnue/features
 
 ### Establish the operating system name
@@ -49,9 +53,14 @@ ifeq ($(KERNEL),Linux)
 	OS = $(shell uname -o)
 endif
 
+ifeq ($(KERNEL),Darwin)
+	OS = macOS
+endif
+
 ### ==========================================================================
 ### Section 2. High-level Configuration
 ### ==========================================================================
+
 #
 # flag                --- Comp switch      --- Description
 # ----------------------------------------------------------------------------
@@ -83,10 +92,22 @@ endif
 
 ### 2.1. General and architecture defaults
 
+# Auto-detect ARCH on macOS based on machine architecture if not set by user
+ifeq ($(OS), macOS)
+	UNAME_M := $(shell uname -m)
+	ifeq ($(UNAME_M),arm64)
+		ARCH ?= apple-silicon
+	endif
+	ifeq ($(UNAME_M),x86_64)
+		ARCH ?= x86-64-modern
+	endif
+endif
+
 ifeq ($(ARCH),)
    ARCH = x86-64-modern
    help_skip_sanity = yes
 endif
+
 # explicitly check for the list of supported architectures (as listed with make help),
 # the user can override with `make ARCH=x86-32-vnni256 SUPPORTED_ARCH=true`
 ifeq ($(ARCH), $(filter $(ARCH), \
@@ -99,9 +120,10 @@ else
    SUPPORTED_ARCH=false
 endif
 
-optimize = yes
-debug = no
+optimize = no
+debug = yes
 sanitize = no
+coverage = no
 bits = 64
 prefetch = no
 popcnt = no
@@ -309,7 +331,7 @@ ifeq ($(COMP),gcc)
 	comp=gcc
 	CXX=g++
 	CXXFLAGS += -pedantic -Wextra -Wshadow -fexceptions
-	CXXFLAGS += -Wno-class-memaccess
+	# CXXFLAGS += -Wno-class-memaccess
 
 	ifeq ($(arch),$(filter $(arch),armv7 armv8))
 		ifeq ($(OS),Android)
@@ -461,8 +483,8 @@ endif
 
 ### 3.2.2 Debugging with undefined behavior sanitizers
 ifneq ($(sanitize),no)
-        CXXFLAGS += -g3 -fsanitize=$(sanitize)
-        LDFLAGS += -fsanitize=$(sanitize)
+	CXXFLAGS += -g3 -fsanitize=$(sanitize)
+	LDFLAGS += -fsanitize=$(sanitize)
 endif
 
 ### 3.3 Optimization
@@ -507,7 +529,6 @@ ifeq ($(popcnt),yes)
 		CXXFLAGS += -msse3 -mpopcnt -DUSE_POPCNT
 	endif
 endif
-
 
 ifeq ($(avx2),yes)
 	CXXFLAGS += -DUSE_AVX2
@@ -568,11 +589,11 @@ endif
 ifeq ($(neon),yes)
 	CXXFLAGS += -DUSE_NEON
 	ifeq ($(KERNEL),Linux)
-	ifneq ($(COMP),ndk)
-	ifneq ($(arch),armv8)
-		CXXFLAGS += -mfpu=neon
-	endif
-	endif
+		ifneq ($(COMP),ndk)
+			ifneq ($(arch),armv8)
+				CXXFLAGS += -mfpu=neon
+			endif
+		endif
 	endif
 endif
 
@@ -598,32 +619,32 @@ ifeq ($(debug), no)
 		endif
 		LDFLAGS += $(CXXFLAGS)
 
-# GCC and CLANG use different methods for parallelizing LTO and CLANG pretends to be
-# GCC on some systems.
+	# GCC and CLANG use different methods for parallelizing LTO and CLANG pretends to be
+	# GCC on some systems.
 	else ifeq ($(comp),gcc)
-	ifeq ($(gccisclang),)
-		CXXFLAGS += -flto
-		LDFLAGS += $(CXXFLAGS) -flto=jobserver
-		ifneq ($(findstring MINGW,$(KERNEL)),)
-			LDFLAGS += -save-temps
-		else ifneq ($(findstring MSYS,$(KERNEL)),)
-			LDFLAGS += -save-temps
+		ifeq ($(gccisclang),)
+			CXXFLAGS += -flto
+			LDFLAGS += $(CXXFLAGS) -flto=jobserver
+			ifneq ($(findstring MINGW,$(KERNEL)),)
+				LDFLAGS += -save-temps
+			else ifneq ($(findstring MSYS,$(KERNEL)),)
+				LDFLAGS += -save-temps
+			endif
+		else
+			CXXFLAGS += -flto=thin
+			LDFLAGS += $(CXXFLAGS)
 		endif
-	else
-		CXXFLAGS += -flto=thin
-		LDFLAGS += $(CXXFLAGS)
-	endif
 
-# To use LTO and static linking on windows, the tool chain requires a recent gcc:
-# gcc version 10.1 in msys2 or TDM-GCC version 9.2 are known to work, older might not.
-# So, only enable it for a cross from Linux by default.
+	# To use LTO and static linking on windows, the tool chain requires a recent gcc:
+	# gcc version 10.1 in msys2 or TDM-GCC version 9.2 are known to work, older might not.
+	# So, only enable it for a cross from Linux by default.
 	else ifeq ($(comp),mingw)
-	ifeq ($(KERNEL),Linux)
-	ifneq ($(arch),i386)
-		CXXFLAGS += -flto
-		LDFLAGS += $(CXXFLAGS) -flto=jobserver
-	endif
-	endif
+		ifeq ($(KERNEL),Linux)
+			ifneq ($(arch),i386)
+				CXXFLAGS += -flto
+				LDFLAGS += $(CXXFLAGS) -flto=jobserver
+			endif
+		endif
 	endif
 endif
 endif
@@ -635,10 +656,17 @@ ifeq ($(OS), Android)
 	LDFLAGS += -fPIE -pie
 endif
 
+### 3.10 coverage
+ifeq ($(coverage),yes)
+	CXXFLAGS       += -fprofile-arcs -ftest-coverage --coverage -O0 -g
+	CXXFLAGS       := $(filter-out -flto% -O3,$(CXXFLAGS))
+	CXXFLAGS_TEST  += -fprofile-arcs -ftest-coverage --coverage
+	LDFLAGS        += --coverage
+endif
+
 ### ==========================================================================
 ### Section 4. Public Targets
 ### ==========================================================================
-
 
 help:
 	@echo ""
@@ -655,6 +683,8 @@ help:
 	@echo "strip                   > Strip executable"
 	@echo "install                 > Install executable"
 	@echo "clean                   > Clean up"
+	@echo "test                    > Run unit tests with GoogleTest"
+	@echo "coverage                > Run tests and generate coverage report"
 	@echo ""
 	@echo "Supported archs:"
 	@echo ""
@@ -682,8 +712,8 @@ help:
 	@echo ""
 	@echo "Supported compilers:"
 	@echo ""
-	@echo "gcc                     > Gnu compiler (default)"
-	@echo "mingw                   > Gnu compiler with MinGW under Windows"
+	@echo "gcc                     > GNU compiler (default)"
+	@echo "mingw                   > GNU compiler with MinGW under Windows"
 	@echo "clang                   > LLVM Clang compiler"
 	@echo "icc                     > Intel compiler"
 	@echo "ndk                     > Google NDK to cross-compile for Android"
@@ -709,12 +739,15 @@ else
 endif
 
 
-.PHONY: help build profile-build strip install clean net objclean profileclean \
-        config-sanity icc-profile-use icc-profile-make gcc-profile-use gcc-profile-make \
-        clang-profile-use clang-profile-make
+.PHONY: help build profile-build strip install clean coverage objclean profileclean \
+	config-sanity icc-profile-use icc-profile-make gcc-profile-use gcc-profile-make \
+	clang-profile-use clang-profile-make test check-gtest coverage-report net
 
 build: net config-sanity
 	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) all
+	@echo "CXXFLAGS: $(CXXFLAGS)"
+	@echo "CXXFLAGS_TEST: $(CXXFLAGS_TEST)"
+	@echo "LDFLAGS: $(LDFLAGS)"
 
 profile-build: net config-sanity objclean profileclean
 	@echo ""
@@ -740,15 +773,15 @@ install:
 	-strip $(BINDIR)/$(EXE)
 
 # clean all
-clean: objclean profileclean
+clean: objclean profileclean coverage-clean
 	@rm -f .depend *~ core
 
 # clean binaries and objects
 objclean:
-	@rm -f $(EXE) *.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o ./perfect/*.o
+	@rm -f $(EXE) $(TEST_EXE) *.o *.test.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o ./perfect/*.o ../tests/*.o
 
-# clean auxiliary profiling files
-profileclean:
+# clean auxiliary profiling files and coverage data
+profileclean: coverage-clean
 	@rm -rf profdir
 	@rm -f bench.txt *.gcda *.gcno ./syzygy/*.gcda ./nnue/*.gcda ./nnue/features/*.gcda *.s
 	@rm -f sanmill.profdata *.profraw
@@ -760,7 +793,7 @@ default:
 ### Section 5. Private Targets
 ### ==========================================================================
 
-all: $(EXE) .depend
+all: $(EXE) $(TEST_EXE) .depend
 
 config-sanity: net
 	@echo ""
@@ -768,6 +801,7 @@ config-sanity: net
 	@echo "debug: '$(debug)'"
 	@echo "sanitize: '$(sanitize)'"
 	@echo "optimize: '$(optimize)'"
+	@echo "coverage: '$(coverage)'"
 	@echo "arch: '$(arch)'"
 	@echo "bits: '$(bits)'"
 	@echo "kernel: '$(KERNEL)'"
@@ -817,9 +851,11 @@ config-sanity: net
 	@test "$(comp)" = "gcc" || test "$(comp)" = "icc" || test "$(comp)" = "mingw" || test "$(comp)" = "clang" \
 	|| test "$(comp)" = "armv7a-linux-androideabi16-clang"  || test "$(comp)" = "aarch64-linux-android21-clang"
 
+# Link main executable
 $(EXE): $(OBJS)
 	+$(CXX) -o $@ $(OBJS) $(LDFLAGS)
 
+# Profile-guided optimization targets
 clang-profile-make:
 	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) \
 	EXTRACXXFLAGS='-fprofile-instr-generate ' \
@@ -856,7 +892,123 @@ icc-profile-use:
 	EXTRACXXFLAGS='-prof_use -prof_dir ./profdir' \
 	all
 
-.depend:
-	-@$(CXX) $(DEPENDFLAGS) -MM $(SRCS) > $@ 2> /dev/null
+.depend: Makefile $(SRCS)
+	-@$(CXX) $(CXXFLAGS) $(DEPENDFLAGS) -MM $(SRCS) > $@ 2> /dev/null
 
 -include .depend
+
+### ==========================================================================
+### Section 6. GoogleTest Testing Support
+### ==========================================================================
+# The following section adds support for unit testing using GoogleTest.
+
+### Define test sources and objects
+# Assume that test source files are located in the 'tests' directory
+TEST_SRCS = $(wildcard ../tests/*.cpp)
+TEST_OBJS = $(TEST_SRCS:.cpp=.o)
+
+### Define test executable name
+ifeq ($(COMP),mingw)
+	TEST_EXE = test_sanmill.exe
+else
+	TEST_EXE = test_sanmill
+endif
+
+### Define GoogleTest compiler and linker flags based on OS
+# Use pkg-config where available (common in Unix-like systems)
+ifeq ($(OS), Linux)
+	GTEST_CFLAGS = $(shell pkg-config --cflags gtest)
+	GTEST_LIBS = $(shell pkg-config --libs gtest)
+endif
+
+ifeq ($(OS), macOS)
+	GTEST_CFLAGS = $(shell pkg-config --cflags gtest)
+	GTEST_LIBS = $(shell pkg-config --libs gtest)
+endif
+
+# For Windows (MinGW), assume Google Test is installed in a known location
+ifeq ($(comp),mingw)
+	# Adjust these paths according to your GoogleTest installation
+	GTEST_CFLAGS = -IC:/path/to/gtest/include
+	GTEST_LIBS = -LC:/path/to/gtest/lib -lgtest -lgtest_main -lpthread
+endif
+
+# Add other OS-specific configurations if necessary
+
+### Define separate compiler flags for tests
+CXXFLAGS_TEST = $(CXXFLAGS) $(GTEST_CFLAGS)
+
+### Pattern rule: compile library source files to .test.o with test flags
+%.test.o: %.cpp
+	@echo "Compiling $< for tests..."
+	$(CXX) $(CXXFLAGS_TEST) $(GTEST_CFLAGS) -c $< -o $@
+
+### Ensure GoogleTest is installed
+# This target checks if the GoogleTest package is available via pkg-config or predefined paths
+check-gtest:
+ifeq ($(OS), Linux)
+	@pkg-config --exists gtest || { echo >&2 "GoogleTest is required but it's not installed. Aborting."; exit 1; }
+endif
+ifeq ($(OS), macOS)
+	@pkg-config --exists gtest || { echo >&2 "GoogleTest is required but it's not installed. Aborting."; exit 1; }
+endif
+ifeq ($(comp),mingw)
+	# Simple check: verify that GoogleTest include and lib directories exist
+	@if [ ! -d "C:/path/to/gtest/include" ] || [ ! -d "C:/path/to/gtest/lib" ]; then \
+		echo >&2 "GoogleTest is required but it's not installed in C:/path/to/gtest/. Aborting."; \
+		exit 1; \
+	fi
+endif
+
+### Add a 'test' target to build and run tests
+test: check-gtest $(TEST_EXE)
+	@echo "Running unit tests..."
+	./$(TEST_EXE)
+
+### Rule to build the test executable
+$(TEST_EXE): $(TEST_OBJS) $(LIB_OBJS_TEST)
+	@echo "Linking test executable..."
+	$(CXX) -o $@ $(TEST_OBJS) $(LIB_OBJS_TEST) $(LDFLAGS) $(GTEST_LIBS)
+
+### Compile test source files with GoogleTest flags
+../tests/%.o: ../tests/%.cpp
+	@echo "Compiling $< for tests..."
+	$(CXX) $(CXXFLAGS_TEST) $(GTEST_CFLAGS) -c $< -o $@
+
+### ==========================================================================
+### Section 7. Coverage Support
+### ==========================================================================
+# The following section adds support for generating coverage reports using gcov and gcovr.
+
+### Define coverage-related variables
+PROJECT_ROOT := $(shell pwd)
+COVERAGE_DIR = $(PROJECT_ROOT)/coverage
+COVERAGE_HTML = $(COVERAGE_DIR)/coverage.html
+
+### Add a 'coverage' target to build with coverage, run tests, and generate report
+coverage: coverage-clean
+	@echo "Building with coverage flags..."
+	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) coverage-build
+	@echo "Running tests..."
+	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) test
+	@echo "Generating HTML coverage report..."
+	@mkdir -p $(COVERAGE_DIR)
+	@gcovr -r $(PROJECT_ROOT) --html-details -o $(COVERAGE_HTML) --exclude '/usr/*' --exclude '../tests/*'
+	@echo "Coverage report generated in $(COVERAGE_HTML)"
+
+### Helper target to build with coverage flags
+coverage-build:
+	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) clean all coverage=yes optimize=no debug=yes
+
+ifeq ($(coverage), yes)
+override CXXFLAGS       += -fprofile-arcs -ftest-coverage --coverage -O0 -g
+override CXXFLAGS       := $(filter-out -flto% -O3,$(CXXFLAGS))
+override CXXFLAGS_TEST  += -fprofile-arcs -ftest-coverage --coverage
+override LDFLAGS        += --coverage
+endif
+
+### Add a 'coverage-clean' target to remove previous coverage data
+coverage-clean:
+	@rm -f *.gcda *.gcno *.gcov
+	@rm -rf $(COVERAGE_DIR)
+	@rm -f $(COVERAGE_DIR)/coverage.html

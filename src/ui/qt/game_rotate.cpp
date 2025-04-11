@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_rotate.cpp
 
 #include <iomanip>
 #include <map>
@@ -38,7 +27,7 @@
 #include "graphicsconst.h"
 #include "option.h"
 #include "server.h"
-
+#include "thread_pool.h" // If you want to optionally stop/restart tasks
 #if defined(GABOR_MALOM_PERFECT_AI)
 #include "perfect/perfect_adaptor.h"
 #endif
@@ -46,108 +35,116 @@
 using std::to_string;
 
 // Toggle piece color
-void Game::togglePieceColor()
+void Game::togglePieceColors()
 {
     isInverted = !isInverted;
-    updatePieceColor();
+    updatePieceColors();
 }
 
 // Update piece color based on the value of 'isInverted'
-void Game::updatePieceColor()
+void Game::updatePieceColors()
 {
     // Iterate through all pieces
     for (PieceItem *pieceItem : pieceList) {
         if (pieceItem) {
-            swapColor(pieceItem);
+            swapPieceColor(pieceItem);
         }
     }
 }
 
 // Swap the color of a single piece
-void Game::swapColor(PieceItem *pieceItem)
+void Game::swapPieceColor(PieceItem *pieceItem)
 {
     auto model = pieceItem->getModel();
-    if (model == PieceItem::Models::whitePiece)
+    if (model == PieceItem::Models::whitePiece) {
         pieceItem->setModel(PieceItem::Models::blackPiece);
-    else if (model == PieceItem::Models::blackPiece)
+    } else if (model == PieceItem::Models::blackPiece) {
         pieceItem->setModel(PieceItem::Models::whitePiece);
+    }
 
     // Update display
     pieceItem->update();
 }
 
-// Execute a transformation on the board
-void Game::executeTransform(const TransformFunc &transform)
+/*
+ * Old code:
+ * void Game::applyTransform(const TransformFunc &transform)
+ * {
+ *     stopAndWaitAiThreads();   // old code
+ *     transform();
+ *     refreshUIComponents();
+ *     startAiThreads();         // old code
+ * }
+ *
+ * We replace these calls with the new approach. If you need to forcibly
+ * stop tasks prior to transforming, you can call Threads.stop_all().
+ * Then, if you want to re-queue AI tasks, you can do so by checking which
+ * side is AI and calling submitAiSearch(...). But if you do not need that,
+ * you can simply call transform() and update your UI.
+ */
+
+void Game::applyTransform(const TransformFunc &transform)
 {
-    // Stop AI threads before transformation
-    stopAndWaitAiThreads();
-
-    // Apply transformation
     transform();
-
-    // Update UI components
-    updateUIComponents();
-
-    // Restart AI threads after transformation
-    startAiThreads();
+    refreshUIComponents();
 }
 
 // Update UI components like move list and scene
-void Game::updateUIComponents()
+void Game::refreshUIComponents()
 {
     int row = 0;
     for (const auto &str : *getMoveList()) {
         moveListModel.setData(moveListModel.index(row++), str.c_str());
     }
-    syncScene(row - 1);
+    syncSceneWithRow(row - 1);
 }
 
 // Synchronize the current scene based on move list
-void Game::syncScene(int row)
+void Game::syncSceneWithRow(int row)
 {
     if (currentRow == row) {
-        updateScene();
+        refreshScene();
     } else {
-        updateBoardState(currentRow, true);
+        refreshBoardState(currentRow, true);
     }
 }
 
 // Transformation function implementations
-void Game::mirrorAndRotate()
+void Game::flipAndRotateBoard()
 {
-    position.flipHorizontally(gameMoveList);
+    position.flipBoardHorizontally(gameMoveList);
     position.rotate(gameMoveList, 180);
 }
 
 // Define transformation functions
-void Game::flipVertically()
+void Game::flipBoardVertically()
 {
-    executeTransform([this]() { mirrorAndRotate(); });
+    applyTransform([this]() { flipAndRotateBoard(); });
 }
-void Game::flipHorizontally()
+void Game::flipBoardHorizontally()
 {
-    executeTransform([this]() { applyMirror(); });
+    applyTransform([this]() { applyHorizontalFlip(); });
 }
-void Game::rotateClockwise()
+void Game::rotateBoardClockwise()
 {
-    executeTransform([this]() { rotateRight(); });
+    applyTransform([this]() { rotateBoardRight(); });
 }
-void Game::RotateCounterclockwise()
+void Game::rotateBoardCounterclockwise()
 {
-    executeTransform([this]() { rotateLeft(); });
-}
-
-void Game::applyMirror()
-{
-    position.flipHorizontally(gameMoveList);
+    applyTransform([this]() { rotateBoardLeft(); });
 }
 
-void Game::rotateRight()
+void Game::applyHorizontalFlip()
+{
+    position.flipBoardHorizontally(gameMoveList);
+}
+
+void Game::rotateBoardRight()
 {
     position.rotate(gameMoveList, -90);
 }
 
-void Game::rotateLeft()
+void Game::rotateBoardLeft()
 {
     position.rotate(gameMoveList, 90);
 }

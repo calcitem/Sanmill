@@ -1,0 +1,152 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build C++ Files (macOS)",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "-std=c++17",
+                "${workspaceFolder}/src/*.cpp",
+                "${workspaceFolder}/src/perfect/*.cpp",
+                "-o",
+                "${workspaceFolder}/src/ui/flutter_app/build/macos/Build/Products/Debug/Mill.app",
+                "-I${workspaceFolder}/include",
+                "-I${workspaceFolder}/src/perfect"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Build C++ Files (Linux)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "${workspaceFolder}/src/*.cpp",
+                "${workspaceFolder}/src/perfect/*.cpp",
+                "-o",
+                "${workspaceFolder}/src/ui/flutter_app/build/linux/x64/debug/bundle/mill",
+                "-I${workspaceFolder}/include",
+                "-I${workspaceFolder}/src/perfect"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Build C++ Files (Windows)",
+            "type": "shell",
+            "command": "cl",
+            "args": [
+                "/std:c++17",
+                "${workspaceFolder}\\src\\*.cpp",
+                "${workspaceFolder}\\src\\perfect\\*.cpp",
+                "/Fo:${workspaceFolder}\\src\\ui\\flutter_app\\build\\windows\\x64\\runner\\Debug\\mill.exe",
+                "/I${workspaceFolder}\\include",
+                "/I${workspaceFolder}\\src\\perfect"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        },
+        {
+            "label": "Build Console C++",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "all",
+                "-j"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}/src"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "detail": "Build Console C++ application by running 'make all' in src directory."
+        },
+        {
+            "label": "Test Console C++",
+            "type": "shell",
+            "command": "make",
+            "args": [
+                "test",
+                "-j"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/src"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceFolder}/src"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "detail": "Test Console C++ application by running 'make test' in src directory."
+        }
+    ]
+}

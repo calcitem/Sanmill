@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// display_settings.dart
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +23,21 @@ enum PointPaintingStyle {
   stroke,
 }
 
+/// Defines possible view layouts for moves list page.
+@HiveType(typeId: 12)
+enum MovesViewLayout {
+  @HiveField(0)
+  large,
+  @HiveField(1)
+  medium,
+  @HiveField(2)
+  small,
+  @HiveField(3)
+  list,
+  @HiveField(4)
+  details,
+}
+
 /// Display Settings data model
 ///
 /// Holds the data needed for the Display Settings
@@ -50,9 +54,9 @@ class DisplaySettings {
         "Until other export options are implemented this setting shouldn't be used.")
     this.standardNotationEnabled = true,
     this.isPieceCountInHandShown = true,
-    this.isUnplacedAndRemovedPiecesShown = false,
-    this.isNotationsShown = false,
-    this.isHistoryNavigationToolbarShown = false,
+    this.isUnplacedAndRemovedPiecesShown = true,
+    this.isNotationsShown = true,
+    this.isHistoryNavigationToolbarShown = true,
     this.boardBorderLineWidth = 2.0,
     this.boardInnerLineWidth = 2.0,
     @Deprecated("Use [pointPaintingStyle] instead.") this.pointStyle = 0,
@@ -62,12 +66,30 @@ class DisplaySettings {
     @Deprecated("Use [fontScale] instead.") this.fontSize = 16.0,
     this.fontScale = 1.0,
     this.boardTop = kToolbarHeight,
-    this.animationDuration = 0.0,
-    this.aiResponseDelayTime = 0.0,
-    this.isPositionalAdvantageIndicatorShown = false,
+    this.animationDuration = 1.0,
+    @Deprecated("Deprecated.") this.aiResponseDelayTime = 0.0,
+    this.isPositionalAdvantageIndicatorShown = true,
     this.backgroundImagePath = '',
     this.isNumbersOnPiecesShown = false,
     this.isAnalysisToolbarShown = false,
+    this.whitePieceImagePath = '',
+    this.blackPieceImagePath = '',
+    this.markedPieceImagePath = '',
+    this.boardImagePath = '',
+    this.vignetteEffectEnabled = false,
+    this.placeEffectAnimation = 'Default',
+    this.removeEffectAnimation = 'Default',
+    this.isToolbarAtBottom = false,
+    this.customBackgroundImagePath,
+    this.customBoardImagePath,
+    this.customWhitePieceImagePath,
+    this.customBlackPieceImagePath,
+    this.boardCornerRadius = 5.0,
+    this.isAdvantageGraphShown = false,
+    this.isAnnotationToolbarShown = false,
+    this.movesViewLayout = MovesViewLayout.medium,
+    this.swipeToRevealTheDrawer = true,
+    this.isScreenshotGameInfoShown = true,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -75,73 +97,74 @@ class DisplaySettings {
       _$DisplaySettingsFromJson(json);
 
   @Deprecated("Use [locale] instead.")
-  @HiveField(0)
+  @HiveField(0, defaultValue: "Default")
   final String languageCode;
 
   @Deprecated(
     "Until other export options are implemented this setting shouldn't be used",
   )
-  @HiveField(1)
+  @HiveField(1, defaultValue: true)
   final bool standardNotationEnabled;
 
-  @HiveField(2)
+  @HiveField(2, defaultValue: true)
   final bool isPieceCountInHandShown;
 
-  @HiveField(3)
+  @HiveField(3, defaultValue: true)
   final bool isNotationsShown;
 
-  @HiveField(4)
+  @HiveField(4, defaultValue: true)
   final bool isHistoryNavigationToolbarShown;
 
-  @HiveField(5)
+  @HiveField(5, defaultValue: 2.0)
   final double boardBorderLineWidth;
 
-  @HiveField(6)
+  @HiveField(6, defaultValue: 2.0)
   final double boardInnerLineWidth;
 
   @Deprecated("Use [pointPaintingStyle] instead.")
-  @HiveField(7)
+  @HiveField(7, defaultValue: 0)
   final int pointStyle;
 
-  @HiveField(8)
+  @HiveField(8, defaultValue: 10.0)
   final double pointWidth;
 
-  @HiveField(9)
+  @HiveField(9, defaultValue: 0.9)
   final double pieceWidth;
 
   @Deprecated("Use [fontScale] instead.")
-  @HiveField(10)
+  @HiveField(10, defaultValue: 16.0)
   final double fontSize;
 
-  @HiveField(11)
+  @HiveField(11, defaultValue: kToolbarHeight)
   final double boardTop;
 
-  @HiveField(12)
+  @HiveField(12, defaultValue: 1.0)
   final double animationDuration;
 
-  @HiveField(13)
+  @HiveField(13, defaultValue: null)
   @JsonKey(
     fromJson: LocaleAdapter.localeFromJson,
     toJson: LocaleAdapter.localeToJson,
   )
   final Locale? locale;
 
-  @HiveField(14)
+  @HiveField(14, defaultValue: PointPaintingStyle.none)
   final PointPaintingStyle pointPaintingStyle;
 
-  @HiveField(15)
+  @HiveField(15, defaultValue: 1.0)
   final double fontScale;
 
-  @HiveField(16, defaultValue: false)
+  @HiveField(16, defaultValue: true)
   final bool isUnplacedAndRemovedPiecesShown;
 
   @HiveField(17, defaultValue: false)
   final bool isFullScreen;
 
+  @Deprecated("Deprecated.")
   @HiveField(18, defaultValue: 0.0)
   final double aiResponseDelayTime;
 
-  @HiveField(19, defaultValue: false)
+  @HiveField(19, defaultValue: true)
   final bool isPositionalAdvantageIndicatorShown;
 
   @HiveField(20, defaultValue: '')
@@ -152,6 +175,60 @@ class DisplaySettings {
 
   @HiveField(22, defaultValue: false)
   final bool isAnalysisToolbarShown;
+
+  @HiveField(23, defaultValue: '')
+  final String whitePieceImagePath;
+
+  @HiveField(24, defaultValue: '')
+  final String blackPieceImagePath;
+
+  @HiveField(25, defaultValue: '')
+  final String markedPieceImagePath;
+
+  @HiveField(26, defaultValue: '')
+  final String boardImagePath;
+
+  @HiveField(27, defaultValue: false)
+  final bool vignetteEffectEnabled;
+
+  @HiveField(28, defaultValue: 'Default')
+  final String placeEffectAnimation;
+
+  @HiveField(29, defaultValue: 'Default')
+  final String removeEffectAnimation;
+
+  @HiveField(30, defaultValue: false)
+  final bool isToolbarAtBottom;
+
+  @HiveField(31, defaultValue: null)
+  final String? customBackgroundImagePath;
+
+  @HiveField(32, defaultValue: null)
+  final String? customBoardImagePath;
+
+  @HiveField(33, defaultValue: null)
+  final String? customWhitePieceImagePath;
+
+  @HiveField(34, defaultValue: null)
+  final String? customBlackPieceImagePath;
+
+  @HiveField(35, defaultValue: 5.0)
+  final double boardCornerRadius;
+
+  @HiveField(36, defaultValue: false)
+  final bool isAdvantageGraphShown;
+
+  @HiveField(37, defaultValue: false)
+  final bool isAnnotationToolbarShown;
+
+  @HiveField(38, defaultValue: MovesViewLayout.medium)
+  final MovesViewLayout movesViewLayout;
+
+  @HiveField(39, defaultValue: true)
+  final bool swipeToRevealTheDrawer;
+
+  @HiveField(40, defaultValue: true)
+  final bool isScreenshotGameInfoShown;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

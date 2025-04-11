@@ -5,7 +5,7 @@ setlocal
 set "QtVersion=Qt6"
 
 :: Clean repository
-git clean -fdx
+::git clean -fdx
 
 :: Set Qt directories and system architecture depending on the chosen Qt version
 if "%QtVersion%"=="Qt6" (

@@ -1,25 +1,26 @@
-/*
-  This file is part of Sanmill.
-  Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-  Sanmill is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+// game_options_modal.dart
 
-  Sanmill is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+import 'dart:io';
 
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
-part of '../game_page.dart';
+import '../../../generated/intl/l10n.dart';
+import '../../../shared/config/constants.dart';
+import '../../../shared/database/database.dart';
+import '../../../shared/services/logger.dart';
+import '../../../shared/themes/app_theme.dart';
+import '../../../shared/widgets/custom_spacer.dart';
+import '../../services/mill.dart';
+import '../game_page.dart';
 
-class _GameOptionsModal extends StatelessWidget {
-  const _GameOptionsModal({required this.onTriggerScreenshot});
+// ignore: unused_element
+class GameOptionsModal extends StatelessWidget {
+  const GameOptionsModal({super.key, required this.onTriggerScreenshot});
+
   final VoidCallback onTriggerScreenshot;
 
   static const String _logTag = "[GameOptionsModal]";
@@ -30,6 +31,7 @@ class _GameOptionsModal extends StatelessWidget {
       semanticLabel: S.of(context).game,
       children: <Widget>[
         SimpleDialogOption(
+          key: const Key('new_game_option'),
           onPressed: () async {
             //Navigator.pop(context);
 
@@ -43,13 +45,9 @@ class _GameOptionsModal extends StatelessWidget {
 
             if (GameController().position.phase == Phase.ready ||
                 (GameController().position.phase == Phase.placing &&
-                    (GameController().gameRecorder.index != null &&
-                        GameController().gameRecorder.index! <= 3)) ||
+                    (GameController().gameRecorder.mainlineMoves.length <=
+                        3)) ||
                 GameController().position.phase == Phase.gameOver) {
-              // TODO: This part of the code is repetitive.
-              // ignore: unnecessary_statements
-              GameController().isControllerActive == false;
-
               // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
@@ -59,7 +57,7 @@ class _GameOptionsModal extends StatelessWidget {
                     .showTip(S.of(context).gameStarted);
                 GameController().headerIconsNotifier.showIcons();
 
-                if (GameController().gameInstance.isAiToMove) {
+                if (GameController().gameInstance.isAiSideToMove) {
                   logger.i("$_logTag New game, AI to move.");
 
                   GameController().engineToGo(context, isMoveNow: false);
@@ -93,9 +91,10 @@ class _GameOptionsModal extends StatelessWidget {
         ),
         const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
+            key: const Key('save_game_option'),
             onPressed: () => GameController.save(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -103,11 +102,12 @@ class _GameOptionsModal extends StatelessWidget {
             ),
           ),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
+            key: const Key('load_game_option'),
             onPressed: () {
               GameController().loadedGameFilenamePrefix = null;
               GameController.load(context);
@@ -120,6 +120,7 @@ class _GameOptionsModal extends StatelessWidget {
         const CustomSpacer(),
         if (!kIsWeb)
           SimpleDialogOption(
+            key: const Key('import_game_option'),
             onPressed: () {
               GameController().loadedGameFilenamePrefix = null;
               GameController.import(context);
@@ -130,13 +131,14 @@ class _GameOptionsModal extends StatelessWidget {
             ),
           ),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           const CustomSpacer(),
         if (!kIsWeb &&
-            (GameController().gameRecorder.hasPrevious == true ||
+            (GameController().gameRecorder.mainlineMoves.isNotEmpty ||
                 GameController().isPositionSetup == true))
           SimpleDialogOption(
+            key: const Key('export_game_option'),
             onPressed: () => GameController.export(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -148,6 +150,7 @@ class _GameOptionsModal extends StatelessWidget {
           const CustomSpacer(),
         if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
           SimpleDialogOption(
+            key: const Key('share_gif_option'),
             onPressed: () {
               GameController().gifShare(context);
               Navigator.pop(context);
@@ -161,6 +164,7 @@ class _GameOptionsModal extends StatelessWidget {
         if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
+            key: const Key('save_image_option'),
             onPressed: () async {
               Navigator.pop(context);
 
@@ -177,6 +181,7 @@ class _GameOptionsModal extends StatelessWidget {
         if (DB().generalSettings.screenReaderSupport) const CustomSpacer(),
         if (DB().generalSettings.screenReaderSupport)
           SimpleDialogOption(
+            key: const Key('game_options_modal_close_option'),
             onPressed: () => Navigator.pop(context),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
@@ -189,15 +194,13 @@ class _GameOptionsModal extends StatelessWidget {
 
   Future<Widget?> showRestartGameAlertDialog(BuildContext context) async {
     final Widget yesButton = TextButton(
+        key: const Key('restart_game_yes_button'),
         child: Text(
           S.of(context).yes,
           style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
         ),
         onPressed: () {
-          // ignore: unnecessary_statements
-          GameController().isControllerActive == false;
-
           // TODO: Called stopSearching(); so isEngineGoing is always false?
           if (GameController().isEngineRunning == false) {
             GameController().reset(force: true);
@@ -207,7 +210,7 @@ class _GameOptionsModal extends StatelessWidget {
                 .showTip(S.of(context).gameStarted);
             GameController().headerIconsNotifier.showIcons();
 
-            if (GameController().gameInstance.isAiToMove) {
+            if (GameController().gameInstance.isAiSideToMove) {
               logger.i("$_logTag New game, AI to move.");
 
               GameController().engineToGo(context, isMoveNow: false);
@@ -234,6 +237,7 @@ class _GameOptionsModal extends StatelessWidget {
         });
 
     final Widget noButton = TextButton(
+      key: const Key('restart_game_no_button'),
       child: Text(
         S.of(context).no,
         style: TextStyle(

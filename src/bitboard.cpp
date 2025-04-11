@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// bitboard.cpp
 
 #include <bitset>
 
@@ -27,15 +16,60 @@ Bitboard SquareBB[SQ_32];
 
 std::string Bitboards::pretty(Bitboard b)
 {
-    std::string str = "+---+---+---+---+---+---+---+---+\n";
+    /*
+        a7 ----- d7 ----- g7
+        |         |        |
+        |  b6 -- d6 -- f6  |
+        |  |      |     |  |
+        |  |  c5-d5-e5  |  |
+        a4-b4-c4    e4-f4-g4
+        |  |  c3-d3-e3  |  |
+        |  |      |     |  |
+        |  b2 -- d2 -- f2  |
+        |         |        |
+        a1 ----- d1 ----- g1
 
-    for (File f = FILE_A; f <= FILE_C; ++f) {
-        for (Rank r = RANK_1; r <= RANK_8; ++r) {
-            str += (b & make_square(f, r)) ? "| X " : "|   ";
-        }
+        31 ----- 24 ----- 25
+        |         |        |
+        |  23 -- 16 -- 17  |
+        |  |      |     |  |
+        |  |  15- 8- 9  |  |
+        30-22-14    10-18-26
+        |  |  13-12-11  |  |
+        |  |      |     |  |
+        |  21 -- 20 -- 19  |
+        |         |        |
+        29 ----- 28 ----- 27
+    */
 
-        str += "|\n+---+---+---+---+---+---+---+---+\n";
-    }
+    auto sq = [&](Square s) { return (b & square_bb(s)) ? 'X' : '.'; };
+
+    std::string str;
+    str += " " + std::string(1, sq(SQ_31)) + " ----- " +
+           std::string(1, sq(SQ_24)) + " ----- " + std::string(1, sq(SQ_25)) +
+           "\n";
+    str += "|         |        |\n";
+    str += "|  " + std::string(1, sq(SQ_23)) + " -- " +
+           std::string(1, sq(SQ_16)) + " -- " + std::string(1, sq(SQ_17)) +
+           "  |\n";
+    str += "|  |      |     |  |\n";
+    str += "|  |  " + std::string(1, sq(SQ_15)) + "-" +
+           std::string(1, sq(SQ_8)) + "-" + std::string(1, sq(SQ_9)) +
+           "  |  |\n";
+    str += std::string(1, sq(SQ_30)) + "-" + std::string(1, sq(SQ_22)) + "-" +
+           std::string(1, sq(SQ_14)) + "    " + std::string(1, sq(SQ_10)) +
+           "-" + std::string(1, sq(SQ_18)) + "-" + std::string(1, sq(SQ_26)) +
+           "\n";
+    str += "|  |  " + std::string(1, sq(SQ_13)) + "-" +
+           std::string(1, sq(SQ_12)) + "-" + std::string(1, sq(SQ_11)) +
+           "  |  |\n";
+    str += "|  |      |     |  |\n";
+    str += "|  " + std::string(1, sq(SQ_21)) + " -- " +
+           std::string(1, sq(SQ_20)) + " -- " + std::string(1, sq(SQ_19)) +
+           "  |\n";
+    str += "|         |        |\n";
+    str += std::string(1, sq(SQ_29)) + " ----- " + std::string(1, sq(SQ_28)) +
+           " ----- " + std::string(1, sq(SQ_27)) + "\n";
 
     return str;
 }

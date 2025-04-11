@@ -1,29 +1,27 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+// uci.cpp
+
+#include <iostream>
 #include <sstream>
 #include <vector>
 
 #include "thread.h"
+#include "thread_pool.h"
 #include "uci.h"
+#include "misc.h"
+#include "engine_controller.h"
+#include "search_engine.h"
+#include "self_play.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"
 #include "command_channel.h"
 #endif
+
+#include "engine_controller.h"
+#include "engine_commands.h"
 
 using std::cin;
 using std::istream;
@@ -37,63 +35,11 @@ extern vector<string> setup_bench(Position *, istream &);
 
 namespace {
 
-// FEN string of the initial position, normal mill game
-const char *StartFEN9 = "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0"
-                        "0 1";
-const char *StartFEN10 = "********/********/******** w p p 0 10 0 10 0 0 0 0 0 "
-                         "0"
-                         "0 0 "
-                         "1";
-const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 0 0 0 "
-                         "0"
-                         "0 0 "
-                         "1";
-const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 0 0 0 "
-                         "0"
-                         "0 0 "
-                         "1";
-
-char StartFEN[BUFSIZ];
-
-// position() is called when engine receives the "position" UCI command.
-// The function sets up the position described in the given FEN string ("fen")
-// or the starting position ("startpos") and then makes the moves given in the
-// following move list ("moves").
-
-void position(Position *pos, istringstream &is)
+void initialize_engine(Position *pos)
 {
-    Move m;
-    string token, fen;
-
-    is >> token;
-
-    if (token == "startpos") {
-        fen = StartFEN;
-        is >> token; // Consume "moves" token if any
-    } else if (token == "fen") {
-        while (is >> token && token != "moves") {
-            fen += token + " ";
-        }
-    } else {
-        return;
-    }
-
-    posKeyHistory.clear();
-
-    pos->set(fen, Threads.main());
-
-    // Parse move list (if any)
-    while (is >> token && (m = UCI::to_move(pos, token)) != MOVE_NONE) {
-        pos->do_move(m);
-        if (type_of(m) == MOVETYPE_MOVE) {
-            posKeyHistory.push_back(pos->key());
-        } else {
-            posKeyHistory.clear();
-        }
-    }
-
-    // TODO(calcitem): Stockfish does not have this
-    Threads.main()->us = pos->sideToMove;
+    // Delegate initialization to EngineCommands
+    EngineCommands::init_start_fen();
+    pos->set(EngineCommands::StartFEN);
 }
 
 // setoption() is called when engine receives the "setoption" UCI command. The
@@ -119,40 +65,6 @@ void setoption(istringstream &is)
         sync_cout << "No such option: " << name << sync_endl;
 }
 
-// go() is called when engine receives the "go" UCI command. The function sets
-// the thinking time and other parameters from the input string, then starts
-// the search.
-
-void go(Position *pos)
-{
-#ifdef UCI_AUTO_RE_GO
-begin:
-#endif
-
-    Threads.start_thinking(pos);
-
-    if (pos->get_phase() == Phase::gameOver) {
-#ifdef UCI_AUTO_RESTART
-        // TODO(calcitem)
-        while (true) {
-            if (Threads.main()->searching == true) {
-                continue;
-            }
-
-            pos->set(StartFEN, Threads.main());
-            Threads.main()->us = WHITE; // WAR
-            break;
-        }
-#else
-        return;
-#endif
-    }
-
-#ifdef UCI_AUTO_RE_GO
-    goto begin;
-#endif
-}
-
 } // namespace
 
 /// UCI::loop() waits for a command from stdin, parses it and calls the
@@ -167,47 +79,10 @@ void UCI::loop(int argc, char *argv[])
     const auto pos = new Position;
     string token, cmd;
 
-#ifdef _MSC_VER
-    switch (rule.pieceCount) {
-    case 9:
-        strncpy_s(StartFEN, BUFSIZ, StartFEN9, BUFSIZ - 1);
-        break;
-    case 10:
-        strncpy_s(StartFEN, BUFSIZ, StartFEN10, BUFSIZ - 1);
-        break;
-    case 11:
-        strncpy_s(StartFEN, BUFSIZ, StartFEN11, BUFSIZ - 1);
-        break;
-    case 12:
-        strncpy_s(StartFEN, BUFSIZ, StartFEN12, BUFSIZ - 1);
-        break;
-    default:
-        assert(0);
-        break;
-    }
-#else
-    switch (rule.pieceCount) {
-    case 9:
-        strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
-        break;
-    case 10:
-        strncpy(StartFEN, StartFEN10, BUFSIZ - 1);
-        break;
-    case 11:
-        strncpy(StartFEN, StartFEN11, BUFSIZ - 1);
-        break;
-    case 12:
-        strncpy(StartFEN, StartFEN12, BUFSIZ - 1);
-        break;
-    default:
-        assert(0);
-        break;
-    }
-#endif
+    SearchEngine searchEngine;
+    EngineController engineController(searchEngine);
 
-    StartFEN[BUFSIZ - 1] = '\0';
-
-    pos->set(StartFEN, Threads.main());
+    initialize_engine(pos);
 
     for (int i = 1; i < argc; ++i)
         cmd += std::string(argv[i]) + " ";
@@ -223,7 +98,7 @@ void UCI::loop(int argc, char *argv[])
         LOGD("[uci] input: %s\n", line);
 #else
         if (argc == 1 && !getline(cin, cmd)) // Block here waiting for input or
-                                             // EOF
+                                             //  EOF
             cmd = "quit";
 #endif
 
@@ -232,15 +107,20 @@ void UCI::loop(int argc, char *argv[])
         token.clear(); // Avoid a stale if getline() returns empty or blank line
         is >> skipws >> token;
 
-        if (token == "quit" || token == "stop")
-            Threads.stop = true;
+        if (token == "quit" || token == "stop") {
+            searchEngine.searchAborted.store(true, std::memory_order_relaxed);
+            // Threads.stop_all(); // Stop all tasks
+        }
 
         // The GUI sends 'ponderhit' to tell us the user has played the expected
         // move. So 'ponderhit' will be sent if we were told to ponder on the
         // same move the user has played. We should continue searching but
         // switch from pondering to normal search.
-        else if (token == "ponderhit")
-            Threads.main()->ponder = false; // Switch to normal search
+        else if (token == "ponderhit") {
+            Threads.submit([]() {
+                // Add logic to handle "ponderhit" if needed
+            });
+        }
 
         else if (token == "uci")
             sync_cout << "id name " << engine_info(true) << "\n"
@@ -248,21 +128,49 @@ void UCI::loop(int argc, char *argv[])
 
         else if (token == "setoption")
             setoption(is);
-        else if (token == "go")
-            go(pos);
-        else if (token == "position")
-            position(pos, is);
-        else if (token == "ucinewgame")
-            Search::clear();
+
+        else if (token == "go" || token == "position" ||
+                 token == "ucinewgame" || token == "d" || token == "compiler" ||
+                 token == "analyze") {
+            // Pass the entire command to EngineController
+            engineController.handleCommand(cmd, pos);
+        }
+#ifdef SELF_PLAY
+        else if (token == "selfplay") {
+            // 1) Decide how many games you want
+            int numberOfGames = 1;
+
+            // 2) For each game, do self-play
+            for (int i = 0; i < numberOfGames; i++) {
+                playOneGame();
+            }
+
+            // 3) Print aggregated stats
+            //    Make sure you #include "SelfPlayStats.h" to access g_stats.
+            sync_cout << "Self-play completed. " << g_stats.totalGames
+                      << " games." << sync_endl;
+            sync_cout << "White wins: " << g_stats.whiteWins
+                      << ", Black wins: " << g_stats.blackWins
+                      << ", Draws: " << g_stats.draws << sync_endl;
+
+            // Calculate win rates etc.
+            // You can do your ratio or percentage here:
+            double whiteRate = 0.0, blackRate = 0.0, drawRate = 0.0;
+            if (g_stats.totalGames > 0) {
+                whiteRate = 100.0 * g_stats.whiteWins / g_stats.totalGames;
+                blackRate = 100.0 * g_stats.blackWins / g_stats.totalGames;
+                drawRate = 100.0 * g_stats.draws / g_stats.totalGames;
+            }
+            sync_cout << "WhiteWinRate: " << whiteRate << "%, "
+                      << "BlackWinRate: " << blackRate << "%, "
+                      << "DrawRate: " << drawRate << "%" << sync_endl;
+
+            // 4) Optionally exit or continue. If you want "quit":
+            // token = "quit";
+        }
+#endif // SELF_PLAY
         else if (token == "isready")
             sync_cout << "readyok" << sync_endl;
-
-        // Additional custom non-UCI commands, mainly for debugging.
-        // Do not use these commands during a search!
-        else if (token == "d")
-            sync_cout << *pos << sync_endl;
-        else if (token == "compiler")
-            sync_cout << compiler_info() << sync_endl;
         else
             sync_cout << "Unknown command: " << cmd << sync_endl;
     } while (token != "quit" && argc == 1); // Command line args are one-shot

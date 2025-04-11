@@ -1,23 +1,13 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// tutorial_painter.dart
 
 import 'package:flutter/material.dart';
 
 import '../../../game_page/services/mill.dart';
-import '../../game_page/widgets/painters/painters.dart';
+import '../../game_page/services/painters/painters.dart';
+import '../../game_page/services/painters/piece.dart';
 import '../../shared/database/database.dart';
 
 /// Preview Piece Painter
@@ -34,7 +24,7 @@ class TutorialPainter extends CustomPainter {
 
     final Paint paint = Paint();
     final Path shadowPath = Path();
-    final List<PiecePaintParam> piecesToDraw = <PiecePaintParam>[];
+    final List<Piece> piecesToDraw = <Piece>[];
 
     final double pieceWidth = size.width * DB().displaySettings.pieceWidth / 7;
 
@@ -48,14 +38,13 @@ class TutorialPainter extends CustomPainter {
         }
 
         final Offset pos = pointFromIndex(index, size);
-        final bool animated = focusIndex == index;
 
         piecesToDraw.add(
-          PiecePaintParam(
-            piece: piece,
+          Piece(
+            pieceColor: piece,
             pos: pos,
-            animated: animated,
             diameter: pieceWidth,
+            index: index,
           ),
         );
 
@@ -73,26 +62,26 @@ class TutorialPainter extends CustomPainter {
     paint.style = PaintingStyle.fill;
 
     late Color blurPositionColor;
-    for (final PiecePaintParam piece in piecesToDraw) {
+    for (final Piece piece in piecesToDraw) {
       assert(
-        piece.piece == PieceColor.black ||
-            piece.piece == PieceColor.white ||
-            piece.piece == PieceColor.marked,
+        piece.pieceColor == PieceColor.black ||
+            piece.pieceColor == PieceColor.white ||
+            piece.pieceColor == PieceColor.marked,
       );
-      blurPositionColor = piece.piece.blurPositionColor;
+      blurPositionColor = piece.pieceColor.blurPositionColor;
 
       final double pieceRadius = pieceWidth / 2;
       final double pieceInnerRadius = pieceRadius * 0.99;
 
       // Draw Border of Piece
-      paint.color = piece.piece.borderColor;
+      paint.color = piece.pieceColor.borderColor;
       canvas.drawCircle(
         piece.pos,
         pieceRadius,
         paint,
       );
       // Draw the piece
-      paint.color = piece.piece.pieceColor;
+      paint.color = piece.pieceColor.mainColor;
       canvas.drawCircle(
         piece.pos,
         pieceInnerRadius,

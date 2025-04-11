@@ -38,7 +38,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion 35
     namespace "com.calcitem.sanmill"
 
     lintOptions {
@@ -48,7 +48,7 @@ android {
     defaultConfig {
         applicationId "com.calcitem.sanmill"
         minSdkVersion 19
-        targetSdkVersion 34
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk{
@@ -74,6 +74,9 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            ndk {
+                debugSymbolLevel 'FULL'
+            }
         }
         release {
             signingConfig signingConfigs.release

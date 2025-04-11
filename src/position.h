@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// position.h
 
 #ifndef POSITION_H_INCLUDED
 #define POSITION_H_INCLUDED
@@ -25,10 +14,12 @@
 #include <string>
 #include <vector>
 
+#include "bitboard.h"
 #include "option.h"
 #include "rule.h"
 #include "stack.h"
 #include "types.h"
+#include "movegen.h"
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
 #include <ostream>
@@ -77,7 +68,7 @@ public:
     // Position &operator=(const Position &) = delete;
 
     // FEN string input/output
-    Position &set(const std::string &fenStr, Thread *th);
+    Position &set(const std::string &fenStr);
     std::string fen() const;
 #ifdef NNUE_GENERATE_TRAINING_DATA
     string Position::nnueGetOpponentGameResult();
@@ -112,7 +103,6 @@ public:
     // Other properties of the position
     Color side_to_move() const;
     int game_ply() const;
-    Thread *this_thread() const;
     bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
     unsigned int rule50_count() const;
@@ -143,8 +133,8 @@ public:
 
     bool is_stalemate_removal();
 
-    void flipHorizontally(std::vector<std::string> &gameMoveList,
-                          bool cmdChange = true);
+    void flipBoardHorizontally(std::vector<std::string> &gameMoveList,
+                               bool cmdChange = true);
     void turn(std::vector<std::string> &gameMoveList, bool cmdChange = true);
     void rotate(std::vector<std::string> &gameMoveList, int degrees,
                 bool cmdChange = true);
@@ -204,6 +194,8 @@ public:
     bool move_piece(Square from, Square to);
 
     int total_mills_count(Color c);
+    int mills_pieces_count_difference() const;
+    void calculate_removal_based_on_mill_counts();
     bool is_board_full_removal_at_placing_phase_end();
     bool is_adjacent_to(Square s, Color c);
 
@@ -222,12 +214,12 @@ public:
     bool isStalemateRemoving {false};
     int mobilityDiff {0};
     int gamePly {0};
-    Color sideToMove {NOCOLOR};
+    Color sideToMove {NOBODY};
     Thread *thisThread {nullptr};
     StateInfo st;
 
     /// Mill Game
-    Color them {NOCOLOR};
+    Color them {NOBODY};
     Color winner;
     GameOverReason gameOverReason {GameOverReason::None};
 
@@ -310,11 +302,6 @@ inline int Position::game_ply() const
 inline unsigned int Position::rule50_count() const
 {
     return st.rule50;
-}
-
-inline Thread *Position::this_thread() const
-{
-    return thisThread;
 }
 
 inline bool Position::select_piece(File f, Rank r)
@@ -419,6 +406,11 @@ inline int Position::piece_to_remove_count(Color c) const
 inline int Position::get_mobility_diff() const
 {
     return mobilityDiff;
+}
+
+inline int Position::mills_pieces_count_difference() const
+{
+    return popcount(formedMillsBB[WHITE]) - popcount(formedMillsBB[BLACK]);
 }
 
 inline bool Position::shouldFocusOnBlockingPaths() const

@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// gamescene.cpp
 
 #include <QGraphicsItem>
 #include <QGraphicsScene>
@@ -29,7 +18,7 @@ GameScene::GameScene(QObject *parent)
     : QGraphicsScene(parent)
     , board(std::make_unique<BoardItem>())
 {
-    board->setDiagonal(false);
+    board->setDiagonalLineEnabled(false);
     addItem(board.get());
 }
 
@@ -68,7 +57,7 @@ void GameScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
 void GameScene::handleBoardClick(QGraphicsSceneMouseEvent *mouseEvent)
 {
     QPointF p = mouseEvent->scenePos();
-    p = board->getNearestPoint(p);
+    p = board->findNearestPoint(p);
     if (p != QPointF(0, 0)) {
         // Send the nearest drop point of the mouse point
         emit mouseReleased(p);
@@ -82,19 +71,19 @@ void GameScene::handlePieceClick(const QGraphicsItem *item)
     emit mouseReleased(item->scenePos());
 }
 
-QPointF GameScene::polarCoordinateToPoint(File f, Rank r) const
+QPointF GameScene::convertFromPolarCoordinate(File f, Rank r) const
 {
-    return board->polarCoordinateToPoint(f, r);
+    return board->convertFromPolarCoordinate(f, r);
 }
 
-bool GameScene::pointToPolarCoordinate(QPointF pos, File &f, Rank &r) const
+bool GameScene::convertToPolarCoordinate(QPointF pos, File &f, Rank &r) const
 {
-    return board->pointToPolarCoordinate(pos, f, r);
+    return board->convertToPolarCoordinate(pos, f, r);
 }
 
-void GameScene::setDiagonal(bool arg) const
+void GameScene::setDiagonalLineEnabled(bool arg) const
 {
     if (board) {
-        board->setDiagonal(arg);
+        board->setDiagonalLineEnabled(arg);
     }
 }

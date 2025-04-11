@@ -1,19 +1,9 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
+// home.dart
+
+import 'dart:async';
 import 'dart:io';
 
 import 'package:feedback/feedback.dart';
@@ -30,8 +20,9 @@ import '../custom_drawer/custom_drawer.dart';
 import '../game_page/services/gif_share/gif_share.dart';
 import '../game_page/services/gif_share/widgets_to_image.dart';
 import '../game_page/services/mill.dart';
+import '../game_page/services/painters/painters.dart';
+import '../game_page/widgets/dialogs/lan_config_dialog.dart';
 import '../game_page/widgets/game_page.dart';
-import '../game_page/widgets/painters/painters.dart';
 import '../general_settings/models/general_settings.dart';
 import '../general_settings/widgets/general_settings_page.dart';
 import '../generated/intl/l10n.dart';
@@ -56,6 +47,7 @@ enum _DrawerIndex {
   humanVsAi,
   humanVsHuman,
   aiVsAi,
+  humanVsLAN,
   setupPosition,
   generalSettings,
   ruleSettings,
@@ -73,22 +65,27 @@ extension _DrawerScreen on _DrawerIndex {
       case _DrawerIndex.humanVsAi:
         return GamePage(
           GameMode.humanVsAi,
-          key: const Key("Human-Ai"),
+          key: const Key("human_ai"),
         );
       case _DrawerIndex.humanVsHuman:
         return GamePage(
           GameMode.humanVsHuman,
-          key: const Key("Human-Human"),
+          key: const Key("human_human"),
         );
       case _DrawerIndex.aiVsAi:
         return GamePage(
           GameMode.aiVsAi,
-          key: const Key("Ai-Ai"),
+          key: const Key("ai_ai"),
+        );
+      case _DrawerIndex.humanVsLAN:
+        return GamePage(
+          GameMode.humanVsLAN,
+          key: const Key("human_lan"),
         );
       case _DrawerIndex.setupPosition:
         return GamePage(
           GameMode.setupPosition,
-          key: const Key("SetupPosition"),
+          key: const Key("setup_position"),
         );
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();
@@ -120,6 +117,8 @@ extension _DrawerScreen on _DrawerIndex {
 class Home extends StatefulWidget {
   const Home({super.key});
 
+  static const Key homeMainKey = Key('home_main');
+
   @override
   HomeState createState() => HomeState();
 }
@@ -136,7 +135,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   /// Callback from drawer for replace screen
   /// as user need with passing DrawerIndex (Enum index)
-  void _changeIndex(_DrawerIndex index) {
+  Future<void> _changeIndex(_DrawerIndex index) async {
     _controller.hideDrawer();
 
     // Print the name of the screen being switched to (in English)
@@ -149,6 +148,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
       case _DrawerIndex.aiVsAi:
         logger.i('Switching to AI vs AI');
+        break;
+      case _DrawerIndex.humanVsLAN:
+        logger.i('Switching to Human vs LAN');
         break;
       case _DrawerIndex.setupPosition:
         logger.i('Switching to Setup Position');
@@ -166,8 +168,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         logger.i('Switching to How To Play');
         break;
       case _DrawerIndex.feedback:
-        logger.i(
-            'Switching to Feedback'); // Assuming feedback is handled separately
+        logger.i('Switching to Feedback');
         break;
       case _DrawerIndex.about:
         logger.i('Switching to About');
@@ -177,7 +178,47 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
     }
 
+    // ---------------------------------------------------------------------
+    // If leaving LAN mode, disconnect and reset the game.
+    // ---------------------------------------------------------------------
+    if (_drawerIndex == _DrawerIndex.humanVsLAN &&
+        index != _DrawerIndex.humanVsLAN) {
+      logger.i("Leaving LAN mode: disposing network and resetting the board.");
+      // Dispose any existing LAN connection
+      GameController().networkService?.dispose();
+      GameController().networkService = null; // optional
+
+      // Force a fresh game state so the board is cleared
+      GameController().reset(force: true);
+    }
+
+    // If no real change in index (and it's not the special "feedback" case), just return.
     if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
+      return;
+    }
+
+    // Handle the LAN-setup dialog, feedback, etc. as before...
+    if (index == _DrawerIndex.humanVsLAN) {
+      // Show experimental feature notification
+      rootScaffoldMessengerKey.currentState!
+          .showSnackBarClear(S.of(context).experimental);
+
+      // Show LAN config dialog and await result
+      final bool? result = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) => const LanConfigDialog(),
+      );
+
+      if (result ?? false) {
+        setState(() {
+          _pushRoute(_DrawerIndex.humanVsLAN);
+          _drawerIndex = _DrawerIndex.humanVsLAN;
+          _screenView = GamePage(
+            GameMode.humanVsLAN,
+            key: const Key("human_lan"),
+          );
+        });
+      }
       return;
     }
 
@@ -208,7 +249,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   // Function to check if the current drawer state corresponds to a game
   bool _isGame(_DrawerIndex index) {
-    return index.index < 4;
+    // TODO: Magic Number. The first 4 indices correspond to game modes
+    return index.index < 5;
   }
 
   // Function to handle route changes
@@ -315,6 +357,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         <CustomDrawerItem<_DrawerIndex>>[
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_human_vs_ai'),
           itemValue: _DrawerIndex.humanVsAi,
           itemTitle: S.of(context).humanVsAi,
           itemIcon: const Icon(FluentIcons.person_24_regular),
@@ -322,6 +365,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_human_vs_human'),
         itemValue: _DrawerIndex.humanVsHuman,
         itemTitle: S.of(context).humanVsHuman,
         itemIcon: const Icon(FluentIcons.people_24_regular),
@@ -330,12 +374,21 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_ai_vs_ai'),
           itemValue: _DrawerIndex.aiVsAi,
           itemTitle: S.of(context).aiVsAi,
           itemIcon: const Icon(FluentIcons.bot_24_regular),
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_human_vs_lan'),
+        itemValue: _DrawerIndex.humanVsLAN,
+        itemTitle: S.of(context).humanVsLAN,
+        itemIcon: const Icon(FluentIcons.wifi_1_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
       // TODO: Support removeOpponentsPieceFromHand
       if (DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase
@@ -344,6 +397,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
               MillFormationActionInPlacingPhase
                   .removeOpponentsPieceFromHandThenOpponentsTurn)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_setup_position'),
           itemValue: _DrawerIndex.setupPosition,
           itemTitle: S.of(context).setupPosition,
           itemIcon: const Icon(FluentIcons.drafts_24_regular),
@@ -351,6 +405,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_general_settings'),
         itemValue: _DrawerIndex.generalSettings,
         itemTitle: S.of(context).generalSettings,
         itemIcon: const Icon(FluentIcons.options_24_regular),
@@ -358,6 +413,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_rule_settings'),
         itemValue: _DrawerIndex.ruleSettings,
         itemTitle: S.of(context).ruleSettings,
         itemIcon: const Icon(FluentIcons.task_list_ltr_24_regular),
@@ -365,6 +421,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_appearance'),
         itemValue: _DrawerIndex.appearance,
         itemTitle: S.of(context).appearance,
         itemIcon: const Icon(FluentIcons.design_ideas_24_regular),
@@ -372,6 +429,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         onSelectionChanged: _changeIndex,
       ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_general_how_to_play'),
         itemValue: _DrawerIndex.howToPlay,
         itemTitle: S.of(context).howToPlay,
         itemIcon: const Icon(FluentIcons.question_circle_24_regular),
@@ -380,6 +438,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_feedback'),
           itemValue: _DrawerIndex.feedback,
           itemTitle: S.of(context).feedback,
           itemIcon: const Icon(FluentIcons.chat_warning_24_regular),
@@ -387,6 +446,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           onSelectionChanged: _changeIndex,
         ),
       CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_about'),
         itemValue: _DrawerIndex.about,
         itemTitle: S.of(context).about,
         itemIcon: const Icon(FluentIcons.info_24_regular),
@@ -395,6 +455,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       ),
       if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(
+          key: const Key('drawer_item_exit'),
           itemValue: _DrawerIndex.exit,
           itemTitle: S.of(context).exit,
           itemIcon: const Icon(FluentIcons.power_24_regular),
@@ -414,18 +475,21 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
             valueListenable: _controller,
             builder: (_, CustomDrawerValue value, Widget? child) =>
                 CustomDrawer(
+              key: CustomDrawer.drawerMainKey,
               controller: _controller,
               drawerHeader: CustomDrawerHeader(
                 headerTitle: S.of(context).appName,
+                key: const Key("custom_drawer_header"),
               ),
               drawerItems: drawerItems,
-              // TODO: 4 means Setup Position
-              disabledGestures: (kIsWeb ||
-                      Platform.isWindows ||
-                      Platform.isLinux ||
-                      Platform.isMacOS) &&
-                  _drawerIndex.index < 4 &&
-                  !value.isDrawerVisible,
+              disabledGestures: (!DB().displaySettings.swipeToRevealTheDrawer &&
+                      !value.isDrawerVisible) ||
+                  ((kIsWeb ||
+                          Platform.isWindows ||
+                          Platform.isLinux ||
+                          Platform.isMacOS) &&
+                      _isGame(_drawerIndex) &&
+                      !value.isDrawerVisible),
               orientation: MediaQuery.of(context).orientation,
               mainScreenWidget: _screenView,
             ),

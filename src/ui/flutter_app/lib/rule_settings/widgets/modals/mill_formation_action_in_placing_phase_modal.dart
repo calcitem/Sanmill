@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// mill_formation_action_in_placing_phase_modal.dart
 
 part of 'package:sanmill/rule_settings/widgets/rule_settings_page.dart';
 
@@ -28,9 +17,12 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
+      key: const Key('mill_formation_action_in_placing_phase_semantics'),
       label: S.of(context).whenFormingMillsDuringPlacingPhase,
       child: SingleChildScrollView(
+        key: const Key('mill_formation_action_in_placing_phase_scroll_view'),
         child: Column(
+          key: const Key('mill_formation_action_in_placing_phase_column'),
           mainAxisSize: MainAxisSize.min,
           children: _buildRadioListTiles(context),
         ),
@@ -70,6 +62,11 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
         S.of(context).markAndDelayRemovingPieces,
         MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
       ),
+      _buildRadioListTile(
+        context,
+        S.of(context).removalBasedOnMillCounts,
+        MillFormationActionInPlacingPhase.removalBasedOnMillCounts,
+      ),
     ];
   }
 
@@ -78,9 +75,12 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
     String title,
     MillFormationActionInPlacingPhase value,
   ) {
+    final String keySuffix =
+        title.toLowerCase().replaceAll(' ', '_').replaceAll('then_', 'then_');
     return Semantics(
       label: title,
       child: RadioListTile<MillFormationActionInPlacingPhase>(
+        key: Key("radio_$keySuffix"),
         title: Text(title),
         groupValue: millFormationActionInPlacingPhase,
         value: value,

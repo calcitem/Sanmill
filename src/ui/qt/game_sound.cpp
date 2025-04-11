@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_sound.cpp
 
 #include <iomanip>
 #include <map>
@@ -47,9 +36,9 @@
 using std::to_string;
 
 // Helper function to build sound filename
-static std::string buildFilename(GameSound soundType,
-                                 const std::string &sideStr,
-                                 const std::string &opponentStr)
+static std::string buildSoundFilename(GameSound soundType,
+                                      const std::string &sideStr,
+                                      const std::string &opponentStr)
 {
     std::string filename;
 
@@ -103,7 +92,7 @@ void Game::setSound(bool arg) const noexcept
 }
 
 // Function to play a particular sound based on game state
-void Game::playSound(GameSound soundType)
+void Game::playGameSound(GameSound soundType)
 {
     Color c = position.side_to_move();
 
@@ -118,14 +107,14 @@ void Game::playSound(GameSound soundType)
         sideStr = opponentStr = "DRAW";
     }
 
-    std::string filename = buildFilename(soundType, sideStr, opponentStr);
+    std::string filename = buildSoundFilename(soundType, sideStr, opponentStr);
 #ifndef DO_NOT_PLAY_SOUND
-    performSoundPlay(filename);
+    doPlaySound(filename);
 #endif
 }
 
 // Function to actually perform the sound play operation
-void Game::performSoundPlay(const std::string &filename)
+void Game::doPlaySound(const std::string &filename)
 {
     if (filename.empty()) {
         return;

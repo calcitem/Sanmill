@@ -9,45 +9,64 @@ jobs:
     runs-on: ubuntu-latest
     name: Lint flutter code
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.22.2'
-    - run: bash -x ./flutter-init.sh
-    - run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
-    - name: Analyze Flutter
-      uses: ValentinVignal/action-dart-analyze@v0.15
-      with:
-        fail-on: 'format'
-        working-directory: src/ui/flutter_app
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.4'
+
+      - name: Initialize Flutter
+        run: bash -x ./flutter-init.sh
+
+      - name: Copy Analysis Options
+        run: cp -f ./src/ui/flutter_app/analysis_options.yaml ./
+
+      - name: Analyze Flutter
+        uses: ValentinVignal/action-dart-analyze@v0.17
+        with:
+          fail-on: 'format'
+          working-directory: src/ui/flutter_app
 
   build:
     runs-on: ubuntu-latest
     needs: linter
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
-      - uses: actions/setup-java@v3
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
-      - run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
+
+      - name: Decode signing key
+        run: echo $SIGNING_KEY | base64 -d > src/ui/flutter_app/android/app/key.jks
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.22.2'
 
-      - name: Export environment valuables
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.27.4'
+
+      - name: Export environment variables
         run: export
 
       - name: Create App version
-        run: git fetch --tags; git tag; git log -n1; bash -x ./version.sh
+        run: |
+          git fetch --tags
+          git tag
+          git log -n1
+          bash -x ./version.sh
 
       - name: Print Flutter SDK version
         run: flutter --version
@@ -55,26 +74,54 @@ jobs:
       - name: Install dependencies
         run: bash -x ./flutter-init.sh
 
-
-      # Build
-      - name: Build apk
-        run: cd src/ui/flutter_app; rm android/app/build.gradle; mv android/app/build.gradle_github android/app/build.gradle; flutter build apk -v; flutter build appbundle -v
+      # Build APK and AAB
+      - name: Build APK and AAB
+        run: |
+          cd src/ui/flutter_app
+          rm android/app/build.gradle
+          mv android/app/build.gradle_github android/app/build.gradle
+          flutter build apk -v
+          flutter build appbundle -v
         env:
           KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
           ALIAS: ${{ secrets.ALIAS }}
           KEY_PATH: key.jks
 
-      # Archive apk
-      - name: Archive apk
+      # Archive APK
+      - name: Archive APK
         uses: actions/upload-artifact@v4
         with:
           name: sanmill-flutter-apk-release
           path: src/ui/flutter_app/build/app/outputs/flutter-apk/app-release.apk
 
-      # Archive aab
-      - name: Archive aab
+      # Archive AAB
+      - name: Archive AAB
         uses: actions/upload-artifact@v4
         with:
           name: sanmill-flutter-aab-release
           path: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
+
+      # Authenticate to Google Cloud using Workload Identity Federation
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: "projects/391539675971/locations/global/workloadIdentityPools/play-store-pool/providers/github-provider"
+          service_account: "play-store-publisher@sanmill-app.iam.gserviceaccount.com"
+          create_credentials_file: true
+          export_environment_variables: true
+
+      # Upload to Google Play Store
+      - name: Upload to Google Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
+          packageName: com.calcitem.sanmill
+          releaseFiles: src/ui/flutter_app/build/app/outputs/bundle/release/app-release.aab
+          track: internal
+          status: draft
+          inAppUpdatePriority: 2
+          whatsNewDirectory: .github/workflows/distribution/whatsnew
+          mappingFile: src/ui/flutter_app/build/app/outputs/mapping/release/mapping.txt
+          debugSymbols: src/ui/flutter_app/build/app/outputs/native-debug-symbols/release/native-debug-symbols.zip

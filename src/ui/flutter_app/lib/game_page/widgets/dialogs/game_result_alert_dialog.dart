@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_result_alert_dialog.dart
 
 part of '../game_page.dart';
 
@@ -31,8 +20,25 @@ class GameResultAlertDialog extends StatelessWidget {
     if (gameMode == GameMode.aiVsAi || gameMode == GameMode.setupPosition) {
       return null;
     }
-
     return winner.result;
+  }
+
+  bool canChallengeNextLevel(GameResult gameResult) {
+    final RuleSettings settings = DB().ruleSettings;
+    final bool isWin = gameResult == GameResult.win;
+    final bool isDraw = gameResult == GameResult.draw;
+
+    if (settings.isLikelyNineMensMorris()) {
+      return isWin || isDraw;
+    } else if (settings.isLikelyTwelveMensMorris()) {
+      if (DB().generalSettings.aiMovesFirst) {
+        return isWin || isDraw;
+      } else {
+        return isWin;
+      }
+    } else {
+      return isWin;
+    }
   }
 
   @override
@@ -69,7 +75,7 @@ class GameResultAlertDialog extends StatelessWidget {
     logger.t("$_logTag Game over reason string: $content");
 
     final List<Widget> actions;
-    if (_gameResult == GameResult.win &&
+    if (canChallengeNextLevel(_gameResult!) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
         gameMode == GameMode.humanVsAi) {
@@ -83,6 +89,7 @@ class GameResultAlertDialog extends StatelessWidget {
 
       actions = <Widget>[
         TextButton(
+          key: const Key('game_result_alert_dialog_yes_button'),
           child: Text(
             S.of(context).yes,
             style: TextStyle(
@@ -99,7 +106,13 @@ class GameResultAlertDialog extends StatelessWidget {
               "[config] skillLevel: ${DB().generalSettings.skillLevel}",
             );
 
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
+
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
@@ -108,13 +121,19 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_no_button'),
           child: Text(
             S.of(context).no,
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
@@ -123,6 +142,7 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_cancel_button_challenge'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -134,13 +154,19 @@ class GameResultAlertDialog extends StatelessWidget {
     } else {
       actions = <Widget>[
         TextButton(
+          key: const Key('game_result_alert_dialog_restart_button'),
           child: Text(
             S.of(context).restart,
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            GameController().reset(force: true);
+            // If game mode is LAN, call reset with lanRestart:true to preserve LAN settings
+            if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+              GameController().reset(lanRestart: true);
+            } else {
+              GameController().reset(force: true);
+            }
             GameController()
                 .headerTipNotifier
                 .showTip(S.of(context).gameStarted);
@@ -149,6 +175,7 @@ class GameResultAlertDialog extends StatelessWidget {
           },
         ),
         TextButton(
+          key: const Key('game_result_alert_dialog_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(
@@ -160,12 +187,15 @@ class GameResultAlertDialog extends StatelessWidget {
     }
 
     return AlertDialog(
+      key: const Key('game_result_alert_dialog'),
       title: Text(
         dialogTitle,
+        key: const Key('game_result_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: Text(
         content.toString(),
+        key: const Key('game_result_alert_dialog_content'),
         style: TextStyle(
             fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
       ),

@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Kein Rekord",
+  "noGameRecord": "Keine Aufzeichnung",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -132,7 +132,7 @@
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
-  "tipCannotMoveOpponentsPieces": "Du kannst keine gegnerischen Steine nehmen.",
+  "tipCannotMoveOpponentsPieces": "Du kannst die gegnerischen Steine nicht bewegen.",
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
@@ -148,7 +148,7 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} ist an der Reihe sich zu bewegen.",
+  "tipToMove": "{player} ist an der Reihe zu ziehen.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -368,7 +368,7 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "Zufallszüge",
+  "shufflingEnabled": "Zufällige Züge",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Wenn Fliegen aktiviert ist und ein Spieler auf eine bestimmte Steinzahl reduziert wird, können sich seine Steine frei zu jedem unbesetzten Punkt bewegen, anstatt wie im Rest des Spiels auf benachbarte Punkte beschränkt zu sein.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Steine mindestens",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Der Spieler verliert, wenn der Gegner ihn so blockiert, dass er keinen Steine mehr bewegen kann. Wenn die Option deaktiviert ist wird die Seite gewechselt.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Fliegen",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tippe auf einen gegnerischen Stein, um ihn zu entfernen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Du musst erst eine Mühle machen, bevor du einen Stein entfernen kannst.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Spielstil des Computers",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiv",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Nochmal drücken, um zu beenden.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Mehr",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Wenn ein Spieler eine Mühle zerstört, um sofort eine neue Mühle zu bauen, kann dieser Spieler diesen Stein in seinem nächsten Zug zurück zur ursprünglichen Kreuzung bewegen, wenn er eine neue Mühle baut.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Das Spiel ist unentschieden, wenn ein Spieler drei Steine hat und nach zehn Zügen keiner der Spieler die Steine des Gegners entfernt remove",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1066,7 +1066,7 @@
   "@isDraw": {
     "description": "It is a Draw!"
   },
-  "draw": "Zeichnen",
+  "draw": "Unentschieden",
   "@draw": {
     "description": "Draw"
   },
@@ -1172,7 +1172,7 @@
   "@noMove": {
     "description": "No move."
   },
-  "clean": "Aufr.",
+  "clean": "Leeren",
   "@clean": {
     "description": "Clean"
   },
@@ -1280,7 +1280,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Der Alpha-Beta-Algorithmus ist ein Suchalgorithmus, um den besten Zug zu finden. Es verwendet das Mini-Max-Prinzip und zwei Werte, Alpha und Beta, um den Suchbaum zu verkürzen und die Effizienz zu steigern. Alpha stellt die minimale Punktzahl dar, die der Computer sicher erreichen kann, während Beta die maximale Punktzahl darstellt, die sein Gegner erzielen kann. Der Algorithmus hilft dem Computer, intelligente und effiziente Entscheidungen in einem Spiel zu treffen.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Bei diesem Spiel gewinnt der zweite Spieler leichter als der erste Spieler.",
+  "firstMoveDetail": "In diesem Spiel hat der zweite Spieler leichter die Chance zu gewinnen als der erste.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Nach menschlicher Erfahrung werden Sie verlieren, wenn Sie versuchen zu gewinnen. Wir empfehlen stattdessen ein Unentschieden als Ziel anzustreben und es zu vermeiden es, das Spiel zu verlieren. Beobachten Sie Ihren Gegner und locken Sie ihn sanft in eine Position, in der er Fehler machen kann. Wenn sie Schwäche zeigen, nutzen Sie die Gelegenheit und drängen Sie sanft auf den Sieg. Auf diese Weise können Sie das Spiel gewinnen.",
   "@drawOnTheHumanExperienceDetail": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Wegblockierung fokussieren",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Während bestimmter Phasen des Spiels, priorisieren Sie das Blockieren der Bewegungen des Gegners über das Bilden von Mühlen. Anstatt sich darauf zu konzentrieren, Steine durch das Vervollständigen von Mühlen zu entfernen, zielt die KI während dieser Phasen darauf ab, den Gegner zu fangen, sodass er sich nicht bewegen kann und einen Sieg durch Abnutzung statt durch aggressives Spiel sichert. Diese phasenspezifische Strategie blockiert nicht aktiv die Mühlen des Gegners.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Schachfigurenbild",
+  "@pieceImage": {},
+  "importColorSettings": "Farbeneinstellungen importieren",
+  "@importColorSettings": {},
+  "exportColorSettings": "Farbeneinstellungen exportieren",
+  "@exportColorSettings": {},
+  "import": "Importieren",
+  "@import": {},
+  "export": "Exportieren",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Bitte kopieren Sie zuerst die JSON-Format-Einstellungen in die Zwischenablage.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "In die Zwischenablage kopiert.",
+  "@copiedToClipboard": {},
+  "imported": "Importiert.",
+  "@imported": {},
+  "boardImage": "Brettbild",
+  "@boardImage": {},
+  "autumnLeaves": "Herbstblätter",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendäres Land",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignettierungseffekt",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Möchten Sie die Werkzeugleiste vollständig transparent machen, wenn ein Hintergrundbild für das Board festgelegt ist?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Vibration im Spiel aktivieren",
+  "@vibration": {},
+  "soundTheme": "Soundthema",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Flüssigkeit",
+  "@liquid": {},
+  "wood": "Holz",
+  "@wood": {},
+  "placeEffectAnimation": "Animationseffekt beim Platzieren von Spielfiguren",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Animationseffekt beim Entfernen von Spielfiguren",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Werkzeugleiste unten anzeigen",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Eckenradius des Bretts",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Eröffnungsbuch verwenden",
+  "@useOpeningBook": {},
+  "currentRule": "Aktuell",
+  "@currentRule": {},
+  "nineMensMorris": "Nünistei",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Regelset",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker-Mühle",
+  "@laskerMorris": {},
+  "oneTimeMill": "Einmal-Mühle",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Lassen Sie die KI Eröffnungszüge verwenden, die üblicherweise von professionellen menschlichen Spielern im frühen Spiel verwendet werden. Hinweis: Diese Funktion ist derzeit nur für bestimmte Regelsets verfügbar.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Vorteilsdiagramm anzeigen",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Der Vorteilgraph wird nur gezeichnet, nachdem die KI einen Zug gemacht hat. Er wird nicht gezeichnet, wenn der menschliche Spieler einen Zug macht.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Deaktiviere das Entfernen, bis alle Steine platziert sind, dann entferne Steine basierend auf der Anzahl der Mühlen.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Deaktiviere das Entfernen, bis alle Steine platziert sind, dann entferne Steine basierend auf der Anzahl der Mühlen: Sind sie gleich, entfernen beide die gleiche Anzahl. Hat einer mehr, entfernt er einen zusätzlichen Stein, um einen Unterschied von einem Stein beizubehalten. Bildet nur einer Mühlen, entfernt dieser zwei Steine und der andere einen. Bildet keiner Mühlen, entfernen beide jeweils einen Stein.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Wähle einen deiner Steine aus.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Du bist nicht am Zug.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Hintergrundfarbe der Annotationswerkzeugleiste",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Symbolfarbe der Annotationswerkzeugleiste",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Annotationswerkzeugleiste anzeigen",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Annotationsmodus betreten",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Möchten Sie wirklich alle Anmerkungen löschen?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM-Aufforderung in die Zwischenablage kopiert.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Verbindung verweigert, der Server ist möglicherweise ausgefallen.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Erkennung erfolgreich, warte auf Verbindung...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Keine LAN-Verbindung",
+  "@noLanConnection": {},
+  "takeScreenshot": "Screenshot erstellen",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Vom Gegner getrennt.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Rücknahmeanforderung",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nichts anzuzeigen.",
+  "@nothingToShow": {},
+  "stopHosting": "Hosting beenden",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Verbindung durch Gegenstelle zurückgesetzt.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Verbindung verloren durch Zeitüberschreitung (Heartbeat). Bitte erneut verbinden.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Hosting starten",
+  "@startHosting": {},
+  "restartRequestRejected": "Neustartanfrage abgelehnt.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Nicht mit LAN-Gegner verbunden.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM-Aufforderung",
+  "@llmPrompt": {},
+  "gameRestarted": "Spiel neu gestartet.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Rücknahme abgelehnt.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Sind Sie sicher, dass Sie dieses Spiel aufgeben möchten?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Gegner hat aufgegeben. Sie gewinnen!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Alle Anmerkungen löschen",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Verbunden, warte auf den Zug des Gegners...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Netzwerkstatus: Getrennt",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Rücknahmeanforderung an den Gegner gesendet.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Der Gegner hat das Spiel möglicherweise verlassen",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Erfolgreich mit Host verbunden.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Verbindung verloren: Zeitüberschreitung (Heartbeat)",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Kein Host gefunden.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Aufgabe bestätigen",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Spielhosting gestartet, warte auf Beitritt von Spielern...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Zeitüberschreitung der Verbindung, Netzwerkverbindung instabil.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Keine LLM-Aufforderung verfügbar.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Sie haben aufgegeben. Spiel beendet.",
+  "@youResignedGameOver": {},
+  "serverIp": "Server-IP",
+  "@serverIp": {},
+  "confirmClear": "Löschen bestätigen",
+  "@confirmClear": {},
+  "opponentSTurn": "Der Gegner ist am Zug.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Warte auf Client-Verbindung...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Rücknahmeanforderung wurde abgelehnt oder schlug fehl.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Text hinzufügen",
+  "@addText": {},
+  "exitAnnotationMode": "Annotationsmodus verlassen",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Geben Sie Ihre Anmerkung ein",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Versuche erneut zu verbinden...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Neustartanfrage gesendet. Warte auf die Antwort des Gegners...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server ist gestoppt.",
+  "@serverIsStopped": {},
+  "restartRequest": "Neustartanfrage",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Eine Rücknahme kann nur angefordert werden, wenn Sie am Zug sind.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Rücknahme akzeptiert.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Lokale Netzwerkeinstellungen",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Erfolgreich wieder verbunden!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Bild konnte nicht in der Galerie gespeichert werden.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Der Gegner hat einen Neustart des Spiels angefordert. Akzeptieren Sie?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Sie sind am Zug.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Erneute Verbindung nicht möglich, bitte starten Sie das Spiel neu.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Beitreten",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Ungültige IP-Adresse.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Ungültiger Port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Verbinde: Versuch {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Verbindung fehlgeschlagen: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Hosting konnte nicht gestartet werden: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host gefunden: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Beenden",
+  "@stop": {},
+  "discover": "Suchen",
+  "@discover": {},
+  "connect": "Verbinden",
+  "@connect": {},
+  "clientConnected": "Client verbunden: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Suche: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Wiederverbinden ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Verbunden",
+  "@connected": {},
+  "delete": "Löschen",
+  "@delete": {},
+  "ancientEgypt": "Alpine Frühzeit",
+  "@ancientEgypt": {},
+  "gothicIce": "Gletschergotik",
+  "@gothicIce": {},
+  "riceField": "Alpenweide",
+  "@riceField": {},
+  "chinesePorcelain": "Langenthaler Porzellan",
+  "@chinesePorcelain": {},
+  "desertDusk": "Alpenglühen",
+  "@desertDusk": {},
+  "precisionCraft": "Alpine Uhrmacherkunst",
+  "@precisionCraft": {},
+  "folkEmbroidery": "St. Galler Stickerei",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Alpines Erbe",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Kaiserliche Pracht",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Hergiswiler Glas",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Alpenaufgang",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonie und Balance",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Basler Läckerli",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Alpines Patchwork",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevalsgeist",
+  "@carnivalSpirit": {},
+  "custom": "Alpenbrauchtum",
+  "@custom": {},
+  "spiceMarket": "Kräutermarkt",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Wischen, um die Schublade anzuzeigen",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Spielinformationen auf Screenshots anzeigen",
+  "@showGameInfoOnScreenshots": {}
 }

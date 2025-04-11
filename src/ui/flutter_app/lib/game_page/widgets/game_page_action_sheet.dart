@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_page_action_sheet.dart
 
 part of 'game_page.dart';
 
@@ -35,7 +24,7 @@ class GamePageActionSheet extends StatelessWidget {
       bodyColor: textColor,
     );
 
-    final DialogTheme dialogTheme = DialogTheme.of(context).copyWith(
+    final DialogThemeData dialogTheme = DialogTheme.of(context).copyWith(
       backgroundColor: Colors.transparent,
     );
 
@@ -46,6 +35,7 @@ class GamePageActionSheet extends StatelessWidget {
     );
 
     return Theme(
+      key: const Key('game_page_action_sheet_theme'),
       data: theme.copyWith(
         primaryColor: textColor,
         textTheme: textTheme,
@@ -53,6 +43,7 @@ class GamePageActionSheet extends StatelessWidget {
         textButtonTheme: buttonStyle,
       ),
       child: DefaultTextStyle(
+        key: const Key('game_page_action_sheet_default_text_style'),
         style: textTheme.titleLarge!,
         child: child,
       ),
@@ -79,33 +70,45 @@ class GamePageDialog extends StatelessWidget {
         _paddingScaleFactor(TextScaler.noScaling.scale(1.0));
 
     final Builder contentWidget = Builder(
+      key: const Key('game_page_dialog_builder'),
       builder: (BuildContext context) => DefaultTextStyle(
+        key: const Key('game_page_dialog_default_text_style'),
         style: Theme.of(context)
             .textTheme
             .titleLarge!
             .copyWith(color: AppTheme.gamePageActionSheetTextColor),
         textAlign: TextAlign.center,
         child: SingleChildScrollView(
+          key: const Key('game_page_dialog_single_child_scroll_view'),
           padding: const EdgeInsets.fromLTRB(0.0, 12.0, 0.0, 16.0) *
               paddingScaleFactor,
-          child: ListBody(children: children),
+          child: ListBody(
+            key: const Key('game_page_dialog_list_body'),
+            children: children,
+          ),
         ),
       ),
     );
 
     final IntrinsicWidth dialogChild = IntrinsicWidth(
+      key: const Key('game_page_dialog_intrinsic_width'),
       stepWidth: 56.0,
       child: ConstrainedBox(
+        key: const Key('game_page_dialog_constrained_box'),
         constraints: const BoxConstraints(minWidth: 280.0),
         child: contentWidget,
       ),
     );
 
     return GamePageActionSheet(
+      key: const Key('game_page_dialog_action_sheet'),
       child: Dialog(
+        key: const Key('game_page_dialog'),
         child: Container(
+          key: const Key('game_page_dialog_container'),
           decoration: AppTheme.dialogDecoration,
           child: Semantics(
+            key: const Key('game_page_dialog_semantics'),
             scopesRoute: true,
             explicitChildNodes: true,
             namesRoute: true,

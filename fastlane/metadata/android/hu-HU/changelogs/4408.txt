@@ -1,0 +1,3 @@
+v5.7.1
+
+Ez a frissítés különféle fejlesztéseket és hibajavításokat tartalmaz, hogy jobbá tegye az alkalmazást az Ön számára.

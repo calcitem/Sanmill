@@ -1,20 +1,16 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// game_board.dart
 
 part of 'game_page.dart';
+
+class GameImages {
+  ui.Image? whitePieceImage;
+  ui.Image? blackPieceImage;
+  ui.Image? markedPieceImage;
+  ui.Image? boardImage;
+}
 
 /// Game Board
 ///
@@ -22,7 +18,18 @@ part of 'game_page.dart';
 /// This widget will also handle the input from the user.
 @visibleForTesting
 class GameBoard extends StatefulWidget {
-  const GameBoard({super.key});
+  /// Creates a [GameBoard] widget.
+  ///
+  /// The [boardImage] parameter is the ImageProvider for the selected board image.
+  const GameBoard({
+    super.key,
+    required this.boardImage,
+  });
+
+  /// The ImageProvider for the selected board image.
+  ///
+  /// If null, a default background color will be used.
+  final ImageProvider? boardImage;
 
   static const String _logTag = "[board]";
 
@@ -30,13 +37,42 @@ class GameBoard extends StatefulWidget {
   State<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard>
-    with SingleTickerProviderStateMixin {
+class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   static const String _logTag = "[board]";
+  late Future<GameImages> gameImagesFuture;
+  late AnimationManager animationManager;
+
+  // Define a mapping of animation names to their corresponding constructors.
+  final Map<String, PieceEffectAnimation Function()> animationMap =
+      <String, PieceEffectAnimation Function()>{
+    'Aura': () => AuraPieceEffectAnimation(),
+    'Burst': () => BurstPieceEffectAnimation(),
+    'Echo': () => EchoPieceEffectAnimation(),
+    'Expand': () => ExpandPieceEffectAnimation(),
+    'Explode': () => ExplodePieceEffectAnimation(),
+    'Fireworks': () => FireworksPieceEffectAnimation(),
+    'Glow': () => GlowPieceEffectAnimation(),
+    'Orbit': () => OrbitPieceEffectAnimation(),
+    'Radial': () => RadialPieceEffectAnimation(),
+    'Ripple': () => RipplePieceEffectAnimation(),
+    'Rotate': () => RotatePieceEffectAnimation(),
+    'Sparkle': () => SparklePieceEffectAnimation(),
+    'Spiral': () => SpiralPieceEffectAnimation(),
+    'Fade': () => FadePieceEffectAnimation(),
+    'Shrink': () => ShrinkPieceEffectAnimation(),
+    'Shatter': () => ShatterPieceEffectAnimation(),
+    'Disperse': () => DispersePieceEffectAnimation(),
+    'Vanish': () => VanishPieceEffectAnimation(),
+    'Melt': () => MeltPieceEffectAnimation(),
+
+    // Add any additional animations here.
+  };
 
   @override
   void initState() {
     super.initState();
+    gameImagesFuture = _loadImages();
+    animationManager = AnimationManager(this);
 
     GameController().gameResultNotifier.addListener(_showResult);
 
@@ -44,9 +80,6 @@ class _GameBoardState extends State<GameBoard>
       GameController().reset();
       visitedRuleSettingsPage = false;
     }
-
-    // ignore: unnecessary_statements
-    GameController().isControllerReady == false;
 
     GameController().engine.startup();
 
@@ -57,18 +90,7 @@ class _GameBoardState extends State<GameBoard>
       processInitialSharingMoveList();
     });
 
-    // TODO: Check _initAnimation() on branch master.
-
-    GameController().animationController = AnimationController(
-      vsync: this,
-      duration: Duration(
-        seconds: DB().displaySettings.animationDuration.toInt(),
-      ),
-    );
-
-    // sqrt(1.618) = 1.272
-    GameController().animation = Tween<double>(begin: 1.27, end: 1.0)
-        .animate(GameController().animationController);
+    GameController().animationManager = animationManager;
   }
 
   Future<void> _setReadyState() async {
@@ -80,10 +102,24 @@ class _GameBoardState extends State<GameBoard>
     }
   }
 
+  void _processInitialSharingMoveListListener() {
+    processInitialSharingMoveList();
+  }
+
   void _setupValueNotifierListener() {
-    GameController().initialSharingMoveListNotifier.addListener(() {
-      processInitialSharingMoveList();
-    });
+    GameController()
+        .initialSharingMoveListNotifier
+        .addListener(_processInitialSharingMoveListListener);
+  }
+
+  void _removeValueNotifierListener() {
+    GameController()
+        .initialSharingMoveListNotifier
+        .removeListener(_processInitialSharingMoveListListener);
+  }
+
+  Future<GameImages> _loadImages() async {
+    return loadGameImages();
   }
 
   void processInitialSharingMoveList() {
@@ -109,11 +145,12 @@ class _GameBoardState extends State<GameBoard>
     }
 
     if (mounted && GameController().loadedGameFilenamePrefix != null) {
+      final String loadedGameFilenamePrefix =
+          GameController().loadedGameFilenamePrefix!;
+
       // Delay to show the tip after the navigation tip is shown
       Future<void>.delayed(Duration.zero, () {
-        GameController()
-            .headerTipNotifier
-            .showTip(GameController().loadedGameFilenamePrefix!);
+        GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
     }
 
@@ -125,34 +162,174 @@ class _GameBoardState extends State<GameBoard>
     GameController().initialSharingMoveList = null;
   }
 
+  Future<ui.Image> loadImage(String assetPath) async {
+    final ByteData data = await rootBundle.load(assetPath);
+    final ui.Codec codec =
+        await ui.instantiateImageCodec(data.buffer.asUint8List());
+    final ui.FrameInfo frame = await codec.getNextFrame();
+    return frame.image;
+  }
+
+  Future<ui.Image?> loadImageFromFilePath(String filePath) async {
+    try {
+      if (filePath.startsWith('assets/')) {
+        return loadImage(filePath);
+      }
+
+      final File file = File(filePath);
+      final Uint8List imageData = await file.readAsBytes();
+      final ui.Codec codec = await ui.instantiateImageCodec(imageData);
+      final ui.FrameInfo frame = await codec.getNextFrame();
+      return frame.image;
+    } catch (e) {
+      // Log the error for debugging
+      logger.e("Error loading image from file path: $e");
+      return null;
+    }
+  }
+
+  // Helper method to convert ImageProvider to ui.Image?
+  Future<ui.Image?> _loadImageProvider(ImageProvider? provider) async {
+    if (provider == null) {
+      return null;
+    }
+
+    final Completer<ui.Image> completer = Completer<ui.Image>();
+    final ImageStream stream = provider.resolve(ImageConfiguration.empty);
+    final ImageStreamListener listener = ImageStreamListener(
+      (ImageInfo info, bool _) {
+        completer.complete(info.image);
+      },
+      onError: (Object exception, StackTrace? stackTrace) {
+        completer.completeError(exception, stackTrace);
+      },
+    );
+
+    stream.addListener(listener);
+
+    try {
+      final ui.Image image = await completer.future;
+      return image;
+    } catch (e) {
+      // Handle the error as needed, e.g., log it
+      logger.e("Error loading board image: $e");
+      return null;
+    } finally {
+      stream.removeListener(listener);
+    }
+  }
+
+  // Loading images and creating PiecePainter
+  Future<GameImages> loadGameImages() async {
+    final DisplaySettings displaySettings = DB().displaySettings;
+    final GameImages gameImages = GameImages();
+
+    // Load white piece image from settings, if specified
+    final String whitePieceImagePath = displaySettings.whitePieceImagePath;
+    if (whitePieceImagePath.isEmpty) {
+      gameImages.whitePieceImage = null;
+    } else {
+      gameImages.whitePieceImage =
+          await loadImageFromFilePath(whitePieceImagePath);
+    }
+
+    // Load black piece image from settings, if specified
+    final String blackPieceImagePath = displaySettings.blackPieceImagePath;
+    if (blackPieceImagePath.isEmpty) {
+      gameImages.blackPieceImage = null;
+    } else {
+      gameImages.blackPieceImage =
+          await loadImageFromFilePath(blackPieceImagePath);
+    }
+
+    // Load marked piece image (static asset)
+    gameImages.markedPieceImage =
+        await loadImage('assets/images/marked_piece_image.png');
+
+    // Load board image from ImageProvider
+    gameImages.boardImage = await _loadImageProvider(widget.boardImage);
+
+    return gameImages;
+  }
+
   @override
   Widget build(BuildContext context) {
     final TapHandler tapHandler = TapHandler(
       context: context,
     );
 
+    // Retrieve the selected animation names from user settings.
+    final String placeEffectName = DB().displaySettings.placeEffectAnimation;
+    final String removeEffectName = DB().displaySettings.removeEffectAnimation;
+
+    // Use the map to get the corresponding animation instances.
+    final PieceEffectAnimation placeEffectAnimation =
+        animationMap[placeEffectName]?.call() ?? RadialPieceEffectAnimation();
+
+    final PieceEffectAnimation removeEffectAnimation =
+        animationMap[removeEffectName]?.call() ?? ExplodePieceEffectAnimation();
+
     final AnimatedBuilder customPaint = AnimatedBuilder(
-      animation: GameController().animation,
+      key: const Key('animated_builder_custom_paint'),
+      animation: Listenable.merge(<Animation<double>>[
+        animationManager.placeAnimationController,
+        animationManager.moveAnimationController,
+        animationManager.removeAnimationController,
+      ]),
       builder: (_, Widget? child) {
-        return CustomPaint(
-          painter: BoardPainter(context),
-          foregroundPainter: PiecePainter(
-            animationValue: GameController().animation.value,
-          ),
-          child: child,
+        return FutureBuilder<GameImages>(
+          key: const Key('future_builder_game_images'),
+          future: gameImagesFuture,
+          builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                key: Key('center_loading'),
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              // Handle errors appropriately
+              return const Center(
+                key: Key('center_error'),
+                child: Text('Error loading images'),
+              );
+            } else {
+              final GameImages? gameImages = snapshot.data;
+              return SizedBox.expand(
+                key: const Key('sized_box_expand_custom_paint'),
+                child: CustomPaint(
+                  key: const Key('custom_paint_board_painter'),
+                  // Pass the resolved ui.Image? to BoardPainter
+                  painter: BoardPainter(context, gameImages?.boardImage),
+                  foregroundPainter: PiecePainter(
+                    placeAnimationValue: animationManager.placeAnimation.value,
+                    moveAnimationValue: animationManager.moveAnimation.value,
+                    removeAnimationValue:
+                        animationManager.removeAnimation.value,
+                    pieceImages: <PieceColor, ui.Image?>{
+                      PieceColor.white: gameImages?.whitePieceImage,
+                      PieceColor.black: gameImages?.blackPieceImage,
+                      PieceColor.marked: gameImages?.markedPieceImage,
+                    },
+                    placeEffectAnimation: placeEffectAnimation,
+                    removeEffectAnimation: removeEffectAnimation,
+                  ),
+                  child: DB().generalSettings.screenReaderSupport
+                      ? const _BoardSemantics()
+                      : Semantics(
+                          key: const Key('semantics_screen_reader'),
+                          label: S.of(context).youCanEnableScreenReaderSupport,
+                          container: true,
+                        ),
+                ),
+              );
+            }
+          },
         );
       },
-      child: DB().generalSettings.screenReaderSupport
-          ? const _BoardSemantics()
-          : Semantics(
-              label: S.of(context).youCanEnableScreenReaderSupport,
-              container: true,
-            ),
     );
 
-    GameController().animationController.forward();
-
     return ValueListenableBuilder<Box<DisplaySettings>>(
+      key: const Key('value_listenable_builder_display_settings'),
       valueListenable: DB().listenDisplaySettings,
       builder: (BuildContext context, Box<DisplaySettings> box, _) {
         AppTheme.boardPadding =
@@ -163,12 +340,15 @@ class _GameBoardState extends State<GameBoard>
                 4;
 
         return LayoutBuilder(
+          key: const Key('layout_builder_game_board'),
           builder: (BuildContext context, BoxConstraints constrains) {
             final double dimension = constrains.maxWidth;
 
             return SizedBox.square(
+              key: const Key('sized_box_square_game_board'),
               dimension: dimension,
               child: GestureDetector(
+                key: const Key('gesture_detector_game_board'),
                 child: customPaint,
                 onTapUp: (TapUpDetails d) async {
                   final int? square = squareFromPoint(
@@ -176,17 +356,36 @@ class _GameBoardState extends State<GameBoard>
 
                   if (square == null) {
                     return logger.t(
-                      "${GameBoard._logTag} Tap not on a square $square (ignored).",
-                    );
+                        "${GameBoard._logTag} Tap not on a square, ignored.");
                   }
 
                   logger.t("${GameBoard._logTag} Tap on square <$square>");
+
+                  if (GameController().gameInstance.gameMode ==
+                      GameMode.humanVsLAN) {
+                    if (GameController().isLanOpponentTurn) {
+                      rootScaffoldMessengerKey.currentState!
+                          .showSnackBarClear(S.of(context).notYourTurn);
+                      return;
+                    }
+                    if (GameController().networkService == null ||
+                        !GameController().networkService!.isConnected) {
+                      GameController()
+                          .headerTipNotifier
+                          .showTip(S.of(context).noLanConnection);
+                      return;
+                    }
+                  }
 
                   final String strTimeout = S.of(context).timeout;
                   final String strNoBestMoveErr =
                       S.of(context).error(S.of(context).noMove);
 
-                  switch (await tapHandler.onBoardTap(square)) {
+                  final EngineResponse response =
+                      await tapHandler.onBoardTap(square);
+
+                  // Process engine response for displaying tips, etc.
+                  switch (response) {
                     case EngineResponseOK():
                       GameController()
                           .gameResultNotifier
@@ -204,6 +403,11 @@ class _GameBoardState extends State<GameBoard>
                       GameController()
                           .headerTipNotifier
                           .showTip(strNoBestMoveErr);
+                      break;
+                    case EngineGameIsOver():
+                      GameController()
+                          .gameResultNotifier
+                          .showResult(force: true);
                       break;
                     default:
                       break;
@@ -247,13 +451,15 @@ class _GameBoardState extends State<GameBoard>
 
     GameController().headerIconsNotifier.showIcons();
 
-    if (DB().generalSettings.isAutoRestart == false &&
+    if (GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
         gameMode != GameMode.aiVsAi &&
         gameMode != GameMode.setupPosition) {
       showDialog(
         context: context,
-        builder: (_) => GameResultAlertDialog(winner: winner),
+        builder: (_) => GameResultAlertDialog(
+          winner: winner,
+        ),
       );
     }
   }
@@ -262,220 +468,10 @@ class _GameBoardState extends State<GameBoard>
   void dispose() {
     GameController().isDisposed = true;
     GameController().engine.stopSearching();
-    //MillController().engine.shutdown();
-    GameController().animationController.dispose();
+    //GameController().engine.shutdown();
+    animationManager.dispose();
     GameController().gameResultNotifier.removeListener(_showResult);
-    GameController()
-        .initialSharingMoveListNotifier
-        .removeListener(_setupValueNotifierListener);
-    super.dispose();
-  }
-}
-
-/// Semantics for the Board
-///
-/// This Widget only contains [Semantics] nodes to help impaired people interact with the [GameBoard].
-class _BoardSemantics extends StatefulWidget {
-  const _BoardSemantics();
-
-  @override
-  State<_BoardSemantics> createState() => _BoardSemanticsState();
-}
-
-class _BoardSemanticsState extends State<_BoardSemantics> {
-  @override
-  void initState() {
-    super.initState();
-    GameController().boardSemanticsNotifier.addListener(updateBoardSemantics);
-  }
-
-  void updateBoardSemantics() {
-    setState(() {}); // TODO
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final List<String> squareDesc = _buildSquareDescription(context);
-
-    return GridView(
-      scrollDirection: Axis.horizontal,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 7,
-      ),
-      children: List<Widget>.generate(
-        7 * 7,
-        (int index) => Center(
-          child: Semantics(
-            // TODO: [Calcitem] Add more descriptive information
-            label: squareDesc[index],
-          ),
-        ),
-      ),
-    );
-  }
-
-  /// Builds a list of Strings representing the label of each semantic node.
-  List<String> _buildSquareDescription(BuildContext context) {
-    final List<String> coordinates = <String>[];
-    final List<String> pieceDesc = <String>[];
-    final List<String> squareDesc = <String>[];
-
-    const List<int> map = <int>[
-      /* 1 */
-      1,
-      8,
-      15,
-      22,
-      29,
-      36,
-      43,
-      /* 2 */
-      2,
-      9,
-      16,
-      23,
-      30,
-      37,
-      44,
-      /* 3 */
-      3,
-      10,
-      17,
-      24,
-      31,
-      38,
-      45,
-      /* 4 */
-      4,
-      11,
-      18,
-      25,
-      32,
-      39,
-      46,
-      /* 5 */
-      5,
-      12,
-      19,
-      26,
-      33,
-      40,
-      47,
-      /* 6 */
-      6,
-      13,
-      20,
-      27,
-      34,
-      41,
-      48,
-      /* 7 */
-      7,
-      14,
-      21,
-      28,
-      35,
-      42,
-      49
-    ];
-
-    const List<int> checkPoints = <int>[
-      /* 1 */
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-      1,
-      /* 2 */
-      0,
-      1,
-      0,
-      1,
-      0,
-      1,
-      0,
-      /* 3 */
-      0,
-      0,
-      1,
-      1,
-      1,
-      0,
-      0,
-      /* 4 */
-      1,
-      1,
-      1,
-      0,
-      1,
-      1,
-      1,
-      /* 5 */
-      0,
-      0,
-      1,
-      1,
-      1,
-      0,
-      0,
-      /* 6 */
-      0,
-      1,
-      0,
-      1,
-      0,
-      1,
-      0,
-      /* 7 */
-      1,
-      0,
-      0,
-      1,
-      0,
-      0,
-      1
-    ];
-
-    final bool ltr = Directionality.of(context) == TextDirection.ltr;
-
-    for (final String file
-        in ltr ? horizontalNotations : horizontalNotations.reversed) {
-      for (final String rank in verticalNotations) {
-        coordinates.add("${file.toUpperCase()}$rank");
-      }
-    }
-
-    for (int i = 0; i < 7 * 7; i++) {
-      if (checkPoints[i] == 0) {
-        pieceDesc.add(S.of(context).noPoint);
-      } else {
-        pieceDesc.add(
-          GameController().position.pieceOnGrid(i).pieceName(context),
-        );
-      }
-    }
-
-    squareDesc.clear();
-
-    for (int i = 0; i < 7 * 7; i++) {
-      final String desc = pieceDesc[map[i] - 1];
-      if (desc == S.of(context).emptyPoint) {
-        squareDesc.add("${coordinates[i]}: $desc");
-      } else {
-        squareDesc.add("$desc: ${coordinates[i]}");
-      }
-    }
-
-    return squareDesc;
-  }
-
-  @override
-  void dispose() {
-    GameController()
-        .boardSemanticsNotifier
-        .removeListener(updateBoardSemantics);
+    _removeValueNotifierListener();
     super.dispose();
   }
 }

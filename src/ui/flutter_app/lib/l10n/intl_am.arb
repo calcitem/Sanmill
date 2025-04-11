@@ -20,23 +20,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "ሰው በእርስዎ AI",
+  "humanVsAi": "ሰው ከ AI",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "ሰው በእርስዎ ሰው",
+  "humanVsHuman": "ሰው ከሰው",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI በእርስዎ AI",
+  "aiVsAi": "AI ከ AI",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "ሰው በእርስዎ ክላውድ",
+  "humanVsCloud": "ሰው ከክላውድ",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "ሰው በእርስዎ LAN",
+  "humanVsLAN": "ሰው ከ LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -428,7 +428,7 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "በዘፈቀደ ተንቀሳቀስ",
+  "shufflingEnabled": "ራንደም እንቅስቃሴ",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -454,7 +454,7 @@
   },
   "flyPieceCount_Detail": "መብረር ካስችለ፣ አንድ ተጫዋች በተወሰነ የቁራጭ ቁጥር ሲቀንስ፣ ቁራጮቹ እንደ ጨዋታው ቀሪ ክፍል በጎን ነጥቦች አይገደቡም፣ ነገር ግን ወደ ማንኛውም ባዶ ነጥብ በነጻነት መንቀሳቀስ ይችላሉ።",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "ቢያንስ ያሉ ቁራጮች",
   "@piecesAtLeastCount": {
@@ -506,7 +506,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "ተቃራኒው እንዳይንቀሳቀስ ከዘጋው ተጫዋቹ ይሸነፋል። ይህ አማራጭ ካልተነቃ፣ የመንቀሳቀሻ ጎን ይቀየራል።",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "መብረር",
   "@mayFly": {
@@ -680,7 +680,7 @@
   },
   "toRemovePiece": "ለማስወገድ በተቃራኒው አንድ ቁራጭ ላይ መታ ያድርጉ።",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "ቁራጭ ከማስወገድዎ በፊት መጀመሪያ ሚል መፍጠር አለብዎት።",
   "@needToCreateMillFirst": {
@@ -826,7 +826,7 @@
   },
   "aisPlayStyle": "የሰው ሰራሽ አዕምሮ የጨዋታ ዘዴ",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "ተገዢ",
   "@passive": {
@@ -848,7 +848,7 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "የብልህ ብዛት:",
+  "pieceCount": "የቁራጭ ብዛት:",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -898,7 +898,7 @@
   },
   "tapBackAgainToLeave": "ለመውጣት እንደገና ወደኋላ ይንኩ።",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "ተጨማሪ",
   "@more": {
@@ -1084,15 +1084,15 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "ተጫዋች ቀንንዴን ቢሰብስብ እና አዲስ ቀንንዴ በዚያኑ ጊዜ ሲፈጥር፣ በሚቀጥለው እንቅስቃሴ ውስጥ ያንን ብልህ ወደ መጀመሪያው መስመር ሊመልስ ይችላል፣ እንደዚህ አዲስ ቀንንዴ ቢፈጥር።",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "ተጫዋች ቀንንዴን ቢሰብስብ እና አዲስ ቀንንዴ በዚያኑ ጊዜ ሲፈጥር፣ በሚቀጥለው እንቅስቃሴ ውስጥ ያንን ቁራጭ ወደ መጀመሪያው መስመር ሊመልስ ይችላል፣ እንደዚህ አዲስ ቀንንዴ ቢፈጥር።",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "ተጫዋች ሦስት ቁልፎች ከቀሩ በኋላ እና በአስር እንቅስቃሴዎች አንድ ተጫዋች የተቀናቃኙን ቁልፎች ካልነቀለ ጨዋታው ተንኮል ይሆናል",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
     "description": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces"
   },
-  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ተጫዋች ሦስት ብልህ ከቀሩ በኋላ እና በአስር እንቅስቃሴዎች አንድ ተጫዋች የተቀናቃኙን ብልህ ካልነቀለ ጨዋታው ተንኮል ይሆናል።",
+  "drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": "ተጫዋች ሦስት ቁራጭ ከቀሩ በኋላ እና በአስር እንቅስቃሴዎች አንድ ተጫዋች የተቀናቃኙን ቁራጭ ካልነቀለ ጨዋታው ተንኮል ይሆናል።",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft_Detail": {
     "description": "When a player is down to three pieces, and neither player can remove an opponent's piece within ten moves, the game is a draw."
   },
@@ -1100,11 +1100,11 @@
   "@close": {
     "description": "Close"
   },
-  "whitePiece": "ነጭ ብልህ",
+  "whitePiece": "ነጭ ቁራጭ",
   "@whitePiece": {
     "description": "White piece"
   },
-  "blackPiece": "ጥቁር ብልህ",
+  "blackPiece": "ጥቁር ቁራጭ",
   "@blackPiece": {
     "description": "Black piece"
   },
@@ -1168,7 +1168,7 @@
   "@draw": {
     "description": "Draw"
   },
-  "pieceHighlightColor": "የብልህ መዳብ ቀለም",
+  "pieceHighlightColor": "የቁራጭ መዳብ ቀለም",
   "@pieceHighlightColor": {
     "description": "Piece highlight color"
   },
@@ -1180,11 +1180,11 @@
   "@endgameNMoveRule": {
     "description": "Endgame N-Move rule"
   },
-  "endgameNMoveRule_Detail": "አንድ ተጫዋች ሦስት ብልህ ከቀረው እና በተወሰኑ እንቅስቃሴዎች ውስጥ ከተቀናቃኞቹ ብልህ ከተጠለፈ ጨዋታው ተንኮል ይሆናል።",
+  "endgameNMoveRule_Detail": "አንድ ተጫዋች ሦስት ቁራጭ ከቀረው እና በተወሰኑ እንቅስቃሴዎች ውስጥ ከተቀናቃኞቹ ቁራጭ ከተጠለፈ ጨዋታው ተንኮል ይሆናል።",
   "@endgameNMoveRule_Detail": {
     "description": "If either player has only three pieces and neither player removes a piece within a specific moves, the game is drawn."
   },
-  "drawReasonEndgameRule50": "አንድ ተጫዋች ሦስት ብልህ ከቀረው፣ እና በተወሰኑ እንቅስቃሴዎች ውስጥ ምንም ተጫዋች ብልህ ካልነቀለ።",
+  "drawReasonEndgameRule50": "አንድ ተጫዋች ሦስት ቁራጭ ከቀረው፣ እና በተወሰኑ እንቅስቃሴዎች ውስጥ ምንም ተጫዋች ቁራጭ ካልነቀለ።",
   "@drawReasonEndgameRule50": {
     "description": "Either player has only three pieces and neither player removes a piece within a specific moves."
   },
@@ -1274,11 +1274,11 @@
   "@remove": {
     "description": "Remove"
   },
-  "noPiecesCanBeRemoved": "ምንም ብልህ አይወጣም።",
+  "noPiecesCanBeRemoved": "ምንም ቁራጭ አይወጣም።",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{ብልህ}=1{{count} ብልህ}other{{count} ብልህዎች}} ያስፈልጋል መውጣትን።",
+  "pieceCountNeedToRemove": "{count,plural, =0{ቁራጭ}=1{{count} ቁራጭ}other{{count} ቁራጭዎች}} ያስፈልጋል መውጣትን።",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1298,11 +1298,11 @@
       }
     }
   },
-  "placedPieceCount": "በመዋቅር ዘመን የተደረገ ብልህ ብዛት።",
+  "placedPieceCount": "በመዋቅር ዘመን የተደረገ ቁራጭ ብዛት።",
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "አሁን ተጫዋቹ {count} ብልህ አኖረዋል።",
+  "hasPlacedPieceCount": "አሁን ተጫዋቹ {count} ቁራጭ አኖረዋል።",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
@@ -1328,7 +1328,7 @@
   "@cannotPaste": {
     "description": "Cannot paste."
   },
-  "isUnplacedAndRemovedPiecesShown": "ያልተደረጉና የተወገዱ ብልህን አሳይ",
+  "isUnplacedAndRemovedPiecesShown": "ያልተደረጉና የተወገዱ ቁራጭን አሳይ",
   "@isUnplacedAndRemovedPiecesShown": {
     "description": "Show unplaced and removed pieces"
   },
@@ -1392,7 +1392,7 @@
   "@whenBoardIsFull": {},
   "whenBoardIsFull_Detail": "በማዋቀር ዘመን ማለት መጨረሻ ሲሆን በእንቅስቃሴ ዘመን በመጀመሪያ ማስፈራራት ከተመነ አንዳንድ የተጫዋች የጨዋታ ቦርድ ተጫዋች ተነቀው።",
   "@whenBoardIsFull_Detail": {},
-  "sideToMoveRemovePiece": "በእንቅስቃሴ ዘመን መጀመሪያ የሚንቀሳቀስ ተጫዋች ተፃፊውን ተጫዋች ብልህ ይወጣል።",
+  "sideToMoveRemovePiece": "በእንቅስቃሴ ዘመን መጀመሪያ የሚንቀሳቀስ ተጫዋች ተፃፊውን ተጫዋች ቁራጭ ይወጣል።",
   "@sideToMoveRemovePiece": {},
   "agreeToDraw": "ሁለቱም በኩል ማሟያን ተስማምተዋል።",
   "@agreeToDraw": {},
@@ -1408,7 +1408,7 @@
   "@enteredFlyingPhase": {},
   "whenStalemate": "በማጣበቅ ጊዜ",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "አንድ ብልህ ቢታንክር ምን ይከተላል?",
+  "whenStalemate_Detail": "አንድ ቁራጭ ቢታንክር ምን ይከተላል?",
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "ከተጠበየ በኩል ከታጣበቀው ተጫዋች ግራር ማጣበቅ ለመጨረሻ ሚዛን ተመኘ።",
   "@endWithStalemateLoss": {},
@@ -1424,9 +1424,9 @@
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "AI በዘጠነ ምላሽ ክስተት ውስጥ ነው። እባኮትን በሚቀጥለው መንገድ መቀጠል በመታገዝ አጥብቀው በርካታ ጊዜ ይጠብቁ።",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "በቅርብ አይደለን ብልህ መውጣት አይቻልም።",
+  "tipCanNotRemoveNonadjacent": "በቅርብ አይደለን ቁራጭ መውጣት አይቻልም።",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "በማጣበቅ ጊዜ ከአንተ በቅርብ የሆኑ ተቀናቃኞች ብልህዎች ተከናነበው ሆኑ ይወጣሉ፣ የምንኛንም ተምሳሌት መንግሥት ቢኖሩም ሆነ ቢሌለ።",
+  "stalemateRemovalRegardlessOfMillFormation": "በማጣበቅ ጊዜ ከአንተ በቅርብ የሆኑ ተቀናቃኞች ቁራጭዎች ተከናነበው ሆኑ ይወጣሉ፣ የምንኛንም ተምሳሌት መንግሥት ቢኖሩም ሆነ ቢሌለ።",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS አልጎርዘም በትንክል ለጀማሪዎች ተመን በሚሆን አልጎርዘም ነው። ምርጫዎችን በመለየትና በመመን ከተለያዩ እንቅስቃሴዎች ተነሳ መውሰን ላይ ማሰብ ይሻል።",
   "@whatIsMcts": {},
@@ -1470,27 +1470,27 @@
   "@backgroundImage": {},
   "whatIsRandom": "እንዲያህል በሚገኝና አስተካከላቸው እንቅስቃሴዎች ሳይሆን ራንደም እንቅስቃሴ እንዲሆን ይመክራል።",
   "@whatIsRandom": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn": "ተቀናቃኛውን ብልህ ከእጁ አውጣ እና ቀጣዩ ተጫዋች በማኖሩ ቦርዱ ላይ ብልህ እንዲያኖር ይሁን።",
+  "removeOpponentsPieceFromHandThenOpponentsTurn": "ተቀናቃኛውን ቁራጭ ከእጁ አውጣ እና ቀጣዩ ተጫዋች በማኖሩ ቦርዱ ላይ ቁራጭ እንዲያኖር ይሁን።",
   "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
   "whenFormingMillsDuringPlacingPhase": "በመዋቅር ዘመን በቀንንዴ እያስመሰሉ",
   "@whenFormingMillsDuringPlacingPhase": {},
-  "removeOpponentsPieceFromBoard": "ተቀናቃኙን ብልህ ከቦርድ አውጣ።",
+  "removeOpponentsPieceFromBoard": "ተቀናቃኙን ቁራጭ ከቦርድ አውጣ።",
   "@removeOpponentsPieceFromBoard": {},
-  "removeOpponentsPieceFromBoard_Detail": "ተቀናቃኛውን ብልህ ከቦርድ አውጣ፤ ቀጣዩ ተጫዋች በማኖሩ ቦርዱ ላይ ብልህ እንዲያኖር ይሁን።",
+  "removeOpponentsPieceFromBoard_Detail": "ተቀናቃኛውን ቁራጭ ከቦርድ አውጣ፤ ቀጣዩ ተጫዋች በማኖሩ ቦርዱ ላይ ቁራጭ እንዲያኖር ይሁን።",
   "@removeOpponentsPieceFromBoard_Detail": {},
-  "opponentRemovesOwnPiece": "ተቀናቃኙ የራሱን ብልህ ከቦርድ ያወጣል።",
+  "opponentRemovesOwnPiece": "ተቀናቃኙ የራሱን ቁራጭ ከቦርድ ያወጣል።",
   "@opponentRemovesOwnPiece": {},
-  "opponentRemovesOwnPiece_Detail": "በፋንክሻ እንደ እርስዎ ወደትም እሱ ተቀናቃኙ የራሱን ብልህ ከቦርድ ይወጣል፣ እንደዚህ እርሱ የራሱን ጥረት ይሰርዛል።",
+  "opponentRemovesOwnPiece_Detail": "በፋንክሻ እንደ እርስዎ ወደትም እሱ ተቀናቃኙ የራሱን ቁራጭ ከቦርድ ይወጣል፣ እንደዚህ እርሱ የራሱን ጥረት ይሰርዛል።",
   "@opponentRemovesOwnPiece_Detail": {},
-  "removeOpponentsPieceFromHandThenYourTurn": "ተቀናቃኙን ብልህ ከእጁ አውጣ፣ ከዚያ የእርስዎ የሚከተል እንቅስቃሴ ይሆናል።",
+  "removeOpponentsPieceFromHandThenYourTurn": "ተቀናቃኙን ቁራጭ ከእጁ አውጣ፣ ከዚያ የእርስዎ የሚከተል እንቅስቃሴ ይሆናል።",
   "@removeOpponentsPieceFromHandThenYourTurn": {},
-  "removeOpponentsPieceFromHandThenYourTurn_Detail": "ተቀናቃኙን ብልህ ከእጁ አውጣ። ከተወሰነ ቅንብር መሠረት ብዙ ብልህዎች ሊወጡ እንደሚገባና ተቀናቃኙ እንደሌለ እጁ ላይ ብልህ ካልቀረበት በቦርድ ላይ ከእንቅስቃሴ እንቅስቃሴ አሻግር። ከዚያ እንቅስቃሴ እርስዎ ይሆናል። በቦርድ ላይ ብልህዎች ካሳመሰሉ ማሳመሻዎቹ የሚቀጥል ማወጅ ትክክለኛ መሆን እንዲቻል ትችላላችሁ።",
+  "removeOpponentsPieceFromHandThenYourTurn_Detail": "ተቀናቃኙን ቁራጭ ከእጁ አውጣ። ከተወሰነ ቅንብር መሠረት ብዙ ቁራጭዎች ሊወጡ እንደሚገባና ተቀናቃኙ እንደሌለ እጁ ላይ ቁራጭ ካልቀረበት በቦርድ ላይ ከእንቅስቃሴ እንቅስቃሴ አሻግር። ከዚያ እንቅስቃሴ እርስዎ ይሆናል። በቦርድ ላይ ቁራጭዎች ካሳመሰሉ ማሳመሻዎቹ የሚቀጥል ማወጅ ትክክለኛ መሆን እንዲቻል ትችላላችሁ።",
   "@removeOpponentsPieceFromHandThenYourTurn_Detail": {},
-  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ተቀናቃኙን ብልህ ከእጁ አውጣ። ከተወሰነ ቅንብር መሠረት ብዙ ብልህዎች ሊወጡ እንደሚገባና ተቀናቃኙ እንደሌለ እጁ ላይ ብልህ ካልቀረበት በቦርድ ላይ ከእንቅስቃሴ እንቅስቃሴ አሻግር። ከዚያ ተቀናቃኙ እንቅስቃሴ ይሆናል።",
+  "removeOpponentsPieceFromHandThenOpponentsTurn_Detail": "ተቀናቃኙን ቁራጭ ከእጁ አውጣ። ከተወሰነ ቅንብር መሠረት ብዙ ቁራጭዎች ሊወጡ እንደሚገባና ተቀናቃኙ እንደሌለ እጁ ላይ ቁራጭ ካልቀረበት በቦርድ ላይ ከእንቅስቃሴ እንቅስቃሴ አሻግር። ከዚያ ተቀናቃኙ እንቅስቃሴ ይሆናል።",
   "@removeOpponentsPieceFromHandThenOpponentsTurn_Detail": {},
-  "markAndDelayRemovingPieces": "ብልህዎችን መለየት እና መወጣትን አብራክ።",
+  "markAndDelayRemovingPieces": "ቁራጭዎችን መለየት እና መወጣትን አብራክ።",
   "@markAndDelayRemovingPieces": {},
-  "markAndDelayRemovingPieces_Detail": "በመዋቅር ዘመን ላይ ሊወጡ የሚገባቸው ብልህዎች መለየት ይሆናል፣ በሁለቱም ተጫዋች ለማንኛውም አዲስ ብልህ ቦርድ ላይ ማኖር አይችልም። ወደ እንቅስቃሴ ዘመን ሲገቡ እነዚህን ብልህዎች ሙሉ መወጣት ይሆናል፣ በመጨረሻም ተጫዋች በእነዚህ ባዶ ነጥቦች ላይ ብልህዎቻቸውን ሊንቀሳቅሱ ይችላሉ።",
+  "markAndDelayRemovingPieces_Detail": "በመዋቅር ዘመን ላይ ሊወጡ የሚገባቸው ቁራጭዎች መለየት ይሆናል፣ በሁለቱም ተጫዋች ለማንኛውም አዲስ ቁራጭ ቦርድ ላይ ማኖር አይችልም። ወደ እንቅስቃሴ ዘመን ሲገቡ እነዚህን ቁራጭዎች ሙሉ መወጣት ይሆናል፣ በመጨረሻም ተጫዋች በእነዚህ ባዶ ነጥቦች ላይ ቁራጭዎቻቸውን ሊንቀሳቅሱ ይችላሉ።",
   "@markAndDelayRemovingPieces_Detail": {},
   "whenFormingMillsDuringPlacingPhase_Detail": "በመዋቅር ዘመን በቀንንዴ ሲፈጥሩ የሚቀርቡ እንቅስቃሴዎች።",
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
@@ -1502,7 +1502,7 @@
   "@monochrome": {},
   "youCanEnableScreenReaderSupport": "በመደበኛ ቅንብሮች ማቅረቢያ ውስጥ የማንበቢያ መሳሪያ መጠንክረ አማራጭን ማከናወን ትችላላችሁ።",
   "@youCanEnableScreenReaderSupport": {},
-  "showNumbersOnPieces": "ቁጥሮችን በብልህ ላይ አሳይ",
+  "showNumbersOnPieces": "ቁጥሮችን በቁራጭ ላይ አሳይ",
   "@showNumbersOnPieces": {},
   "saveImage": "ምስል አስቀምጥ",
   "@saveImage": {},
@@ -1528,16 +1528,324 @@
   "@transparentCanvas": {},
   "restrictRepeatedMillsFormation": "በድጋሚ ቀንንዴዎችን መፍጠር አስቀድም",
   "@restrictRepeatedMillsFormation": {},
-  "restrictRepeatedMillsFormation_Detail": "ብልህ ከአንድ ቀንንዴ መንቀሳቀስ እና ከዚያ ሌላ አንድ አዲስ ቀንንዴ ማስመስል እና በሚቀጥለው እንቅስቃሴ ወደ መጀመሪያው ነጥብ መመለስ አይቻልም። ከመጀመሪያ ሌላ እንቅስቃሴ ይፈልጋል።",
+  "restrictRepeatedMillsFormation_Detail": "ቁራጭ ከአንድ ቀንንዴ መንቀሳቀስ እና ከዚያ ሌላ አንድ አዲስ ቀንንዴ ማስመስል እና በሚቀጥለው እንቅስቃሴ ወደ መጀመሪያው ነጥብ መመለስ አይቻልም። ከመጀመሪያ ሌላ እንቅስቃሴ ይፈልጋል።",
   "@restrictRepeatedMillsFormation_Detail": {},
   "oneTimeUseMill": "አንዴ ብቻ ሊጠቀሙ የሚችሉ ቀንንዴ",
   "@oneTimeUseMill": {},
-  "oneTimeUseMill_Detail": "እያንዳንድ ቀንንዴ ከተቀናቃኙ ተጫዋች ብልህ አንድ ጊዜ ብቻ ሊወጣ ይችላል። ሁለተኛ ጊዜ ሊፈጥሩ ይችላሉ ነገር ግን ለተጨማሪ እንዲያወጣ አይችልም።",
+  "oneTimeUseMill_Detail": "እያንዳንድ ቀንንዴ ከተቀናቃኙ ተጫዋች ቁራጭ አንድ ጊዜ ብቻ ሊወጣ ይችላል። ሁለተኛ ጊዜ ሊፈጥሩ ይችላሉ ነገር ግን ለተጨማሪ እንዲያወጣ አይችልም።",
   "@oneTimeUseMill_Detail": {},
   "currentRulesNoPerfectDatabase": "ያሉበትን የጨዋታ ህጎች የሚመሳሰሉት ፍጹም መረጃ ቤት የለም። ስለ ፍጹም መረጃ ቤት ለተጨማሪ መረጃ እዚህ ይጫኑ።",
   "@currentRulesNoPerfectDatabase": {},
   "focusOnBlockingPaths": "በመንገድ ማጒደፍ ላይ ተከናወን",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "በጨዋታው ዘመናት በማለፊያ ላይ በቀንንዴ ማሳመሻ እንደ ዋና ምልከታ ከሆነ የተጫዋች እንቅስቃሴን በማገድ እና በማገልገል እንዲሁም ከጨዋታ እንደሚተሸከም እንቅስቃሴው ማሰባሰብን አያደርግም።",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "የእቃዎች ምስል",
+  "@pieceImage": {},
+  "importColorSettings": "ቀለም ቅንብሮችን አስመጣ",
+  "@importColorSettings": {},
+  "exportColorSettings": "ቀለም ቅንብሮችን አስገባ",
+  "@exportColorSettings": {},
+  "import": "አስመጣ",
+  "@import": {},
+  "export": "አስገባ",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "እባክዎ የJSON ቅንብሮችን ቅርጽ አስቀድሞ ወደ ቅንጥብ ሰሌዳ ይቅዱ።",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "ወደ ቅንጥብ ሰሌዳ ተቀድቷል።",
+  "@copiedToClipboard": {},
+  "imported": "ተመጥቷል።",
+  "@imported": {},
+  "boardImage": "የሰሌዳ ምስል",
+  "@boardImage": {},
+  "autumnLeaves": "አውጣዎቹ",
+  "@autumnLeaves": {},
+  "legendaryLand": "አስደናቂ ምድር",
+  "@legendaryLand": {},
+  "vignetteEffect": "ቪንየት ተጽዕኖ",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "የቦርድ የጀርባ ምስል ተወስኗል በሆነ ጊዜ መሣሪያ ቁልፍ ፍጹም በግልጽ ማድረግ ትፈልጋለህ?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "እንቅስቃሴ በጨዋታው ይክዋን",
+  "@vibration": {},
+  "soundTheme": "የድምጽ ገጽታ",
+  "@soundTheme": {},
+  "ball": "ኳስ",
+  "@ball": {},
+  "liquid": "ፈሳሽ",
+  "@liquid": {},
+  "wood": "ዛፍ",
+  "@wood": {},
+  "placeEffectAnimation": "ቁስ ማስቀመጥ አንድነት ተጽእኖ",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "ቁስ ማስወገድ አንድነት ተጽእኖ",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "መሳሪያ መስመርን በታች አሳይ",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "የሳህን ማዕዘን አካል ክብ አካል",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "መክፈቻ መጽሐፍ ይጠቀሙ",
+  "@useOpeningBook": {},
+  "currentRule": "አሁን",
+  "@currentRule": {},
+  "nineMensMorris": "ዘጠኝ ሰዎች ሞሪስ",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "የአስራ ሁለት ሰዎች ሞሪስ",
+  "@twelveMensMorris": {},
+  "morabaraba": "ሞራባራባ",
+  "@morabaraba": {},
+  "dooz": "ዱዝ",
+  "@dooz": {},
+  "chamGonu": "ቻምጎኑ",
+  "@chamGonu": {},
+  "zhiQi": "ጂቺ",
+  "@zhiQi": {},
+  "chengSanQi": "ቼንሳንቺ",
+  "@chengSanQi": {},
+  "mulMulan": "ሙል-ሙላን",
+  "@mulMulan": {},
+  "nerenchi": "ነሬንቺ",
+  "@nerenchi": {},
+  "ruleSet": "ደንብ ስብስብ",
+  "@ruleSet": {},
+  "laskerMorris": "ላስኬር ሞሪስ",
+  "@laskerMorris": {},
+  "oneTimeMill": "መልኒ፣ጣ",
+  "@oneTimeMill": {},
+  "daSanQi": "ዳሳንቺ",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "በጀርባ ጨዋታ ላይ ባለሙያ ሰው ተጫዋቾች በሚጠቀሙበት ቀጥታ ተንቀሳቃሽ እንዲጠቀም AI ያስተውል። ማስታወሻ: ይህ ባህሪ አሁን ብቻ ለክነት ህጎች ስብስብ ተመድቦ ነው።",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "የጥቅም ግራፍን አሳይ",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "አቋሙ ግራፊክ ከAI ተንቀሳቃሽ ከተደረገ በኋላ ብቻ ይሳምራል። የሰው ተጫዋች አንቀሳቃሽ ሲደረግ ግራፊኩ አይሳምርም።",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "የማስወገድ ሂደቱን እስከ ሁሉም ቅዱሳት እንዲቀመጡ ድረስ አትቻል. ተጫዋቾች ቅዱሳትን በሚቆጣጠሩበት መሠረት ያስወግዳሉ።",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "የማስወገድ ሂደቱን እስከ ሁሉም ቅዱሳት እንዲቀመጡ ድረስ አትቻል። ተጫዋቾች ቅዱሳትን በሚቆጣጠሩበት መሠረት ያስወግዳሉ፡ ከሆነ ብዛት አንድ አይደለም ከሆነ፣ ብዛት በላዩ አንዱ ተጫዋች አንድ ተጨማሪ ያስወግዳል እና የተለየ አንድ ቅዱስ ልዩነት ይቆያል። ከሆነ አንድ ብቻ ከሚከናውነው የቅዱሳት ተውጣጥፋ ሂደት ጋር፣ ያ ተጫዋች ሁለት ቅዱሳት ያስወግዳል እና አስተማማኝ አድርጎ በወደቀው ተጫዋች አንድ ቅዱስ ይወጣል። ከሆነ ሁለቱም ቅዱሳት አይቆጣጠሩም ከሆነ፣ ሁለቱም አንድ ቅዱስ ይወጣሉ።",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "ኢልፊልጃ",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "ከጨዋታ ቁሞችዎ አንዱን ይምረጡ።",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "ይህ የእርስዎ ተከታታይ አይደለም።",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "የማስታወቂያ መሣሪያ መስመር ኋላ ቀለም",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "የማስታወቂያ መሣሪያ አይኮን ቀለም",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "የማስታወቂያ መሣሪያ መስመርን አሳይ",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "ወደ ማስታወቂያ ሁኔታ ግባ",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "ሁሉንም ማስታወቂያዎች ማጥፋት እርግጠኛ ነዎት?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "የLLM ጥያቄ ወደ ክሊፔርድ ተቀይሯል።",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "ግንኙነት ተከላክሏል፣ ሰርቨሩ ዝቅ ሊሆን ይችላል።",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "ማግኘት ተሳክቷል፣ ግንኙነትን በመጠባበቅ ላይ...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "የLAN ግንኙነት የለም።",
+  "@noLanConnection": {},
+  "takeScreenshot": "ስክሪንሽት ውሰዱ",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "ከተወዳዳሪ ግንኙነት ተቋርጧል።",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "የተመለሰ ጥያቄ",
+  "@takeBackRequest": {},
+  "nothingToShow": "ለማሳየት ምንም የለም።",
+  "@nothingToShow": {},
+  "stopHosting": "ማስተናገድን ይቁም",
+  "@stopHosting": {},
+  "connectionResetByPeer": "ግንኙነት በተወዳዳሪ ተመልሷል።",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "ግንኙነት ልብ ጣት ጊዜ አልቋል፣ እባክዎ ዳግም ይገናኙ።",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "ማስተናገድ ይጀምሩ",
+  "@startHosting": {},
+  "restartRequestRejected": "የእንደገና መጀመር ጥያቄ ተቀልቷል።",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "ከLAN ተወዳዳሪ ግንኙነት የለም።",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "የLLM ጥያቄ",
+  "@llmPrompt": {},
+  "gameRestarted": "ጨዋታው እንደገና ጀምሯል።",
+  "@gameRestarted": {},
+  "takeBackRejected": "የመቀለስ ጥያቄ ተቀልቷል።",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "በዚህ ጨዋታ መልቀቅ እርግጠኛ ነዎት?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "ተወዳዳሪ ተሰርዟል። እርስዎ አሸናፊ ሆነዋል!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "ሁሉንም ማስታወቂያዎች አጥፋ",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "ግንኙነት ተደርጓል፣ ተወዳዳሪ የሚከተለውን እንቅስቃሴ በመጠባበቅ ላይ...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "የኔትወርክ ሁኔታ፡ የተቋረጠ",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "የመቀለስ ጥያቄ ወደ ተወዳዳሪ ተላክቷል።",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "ተወዳዳሪ ጨዋታውን ተውቶ ሊሄድ ይችላል።",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "ከማስተናገድ በሚገባ ግንኙነት ተደርጓል።",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "ግንኙነት ጠፍቷል፡ ልብ ጣት ጊዜ አልቋል።",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "ምንም ማስተናገድ አልተገኘም።",
+  "@noHostDiscovered": {},
+  "confirmResignation": "መልቀቅ ይረጋገጡ",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "ጨዋታው ማስተናገድ ጀምሯል፣ ተጫዋቾች ይተባበሩ በመጠባበቅ ላይ...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "ግንኙነት ጊዜው አልቋል፣ የኔትወርክ ግንኙነት የተሰናከለ ነው።",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "የLLM ጥያቄ የለም።",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "እርስዎ ተሰርዟል። ጨዋታ ተጠናቋል።",
+  "@youResignedGameOver": {},
+  "serverIp": "የሰርቨር አይፒ",
+  "@serverIp": {},
+  "confirmClear": "አጥፋን ይረጋገጡ",
+  "@confirmClear": {},
+  "opponentSTurn": "የተወዳዳሪ ተከታታይ ነው።",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "ከተጠቃሚ ግንኙነት በመጠባበቅ ላይ...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "የመቀለስ ጥያቄ ተቀልቷል ወይም አልተሳካም።",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "ጽሑፍ ያክሉ",
+  "@addText": {},
+  "exitAnnotationMode": "የማስታወቂያ ሁኔታ ውጡ",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "ማስታወቂያዎን ያስገቡ",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "ዳግም መገናኘት በሞክር ላይ...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "የእንደገና መጀመር ጥያቄ ተላክቷል። ተወዳዳሪ ምላሽ ይጠበቅ...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "ሰርቨሩ ተቆምቷል።",
+  "@serverIsStopped": {},
+  "restartRequest": "የእንደገና መጀመር ጥያቄ",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "የመቀለስ ጥያቄ ማድረግ አይቻልም ምክንያቱም ይህ የእርስዎ ተከታታይ አይደለም።",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "የመቀለስ ጥያቄ ተቀባ።",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "የአካባቢ ኔትወርክ ቅንብሮች",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "በሚገባ ዳግም ተገናኝቷል!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "ምስል ወደ ጋሌሪ መቆረጥ አልተሳካም።",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "ተወዳዳሪ ጨዋታውን እንደገና መጀመር ጥያቄ ተላክቷል። ተቀባሉ?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "የእርስዎ ተከታታይ ነው።",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "ዳግም መገናኘት አልቻልኩም፣ እባክዎ ጨዋታውን እንደገና ይጀምሩ።",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "ማስተናገድ",
+  "@host": {},
+  "join": "ተባብረው ይገናኙ",
+  "@join": {},
+  "port": "ፖርት",
+  "@port": {},
+  "invalidIpAddress": "የIP አድራሻ የተሳሳተ ነው።",
+  "@invalidIpAddress": {},
+  "invalidPort": "ፖርት የተሳሳተ ነው።",
+  "@invalidPort": {},
+  "connectingAttempt": "በመገናኘት ላይ፡ ሙከራ {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "ግንኙነት ላይ መገናኘት አልተሳካም፡ {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "ማስተናገድ መጀመር አልተሳካም፡ {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "ማስተናገድ ተገኝቷል፡ {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "ቁም",
+  "@stop": {},
+  "discover": "ያግኙ",
+  "@discover": {},
+  "connect": "ግንኙን",
+  "@connect": {},
+  "clientConnected": "ተጠቃሚ ግንኙነት ተደርጓል፡ {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "በሚገኙ ሰከንዶች: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "ዳግም መገናኘት ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "ተገናኝቷል",
+  "@connected": {},
+  "delete": "አስወግድ",
+  "@delete": {},
+  "ancientEgypt": "ጥንታዊ ግብፅ",
+  "@ancientEgypt": {},
+  "gothicIce": "ጎቲክ በረዶ",
+  "@gothicIce": {},
+  "riceField": "ሩዝ መልከዓምድር",
+  "@riceField": {},
+  "chinesePorcelain": "የቻይና ፖርሲሊን",
+  "@chinesePorcelain": {},
+  "desertDusk": "በረሃ ጨለማ",
+  "@desertDusk": {},
+  "precisionCraft": "ትክክለኛ ዕደ-ጥበብ",
+  "@precisionCraft": {},
+  "folkEmbroidery": "የህዝብ ጥልፍ",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "ካርፓቲያን ቅርስ",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "ንጉሳዊ ግርማ",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "ቦሄሚያን ክሪስታል",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "ሳቫና ፀሐይ መውጣት",
+  "@savannaSunrise": {},
+  "harmonyBalance": "ስምምነት ሚዛን",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "ቀረፋ ቅመም",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "አናቶሊያን ሞዛይክ",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "ካርኒቫል መንፈስ",
+  "@carnivalSpirit": {},
+  "custom": "ብጁ",
+  "@custom": {},
+  "spiceMarket": "ቅመም ገበያ",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "መዝጊያውን ለማሳየት ያንኩ",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "የጨዋታ መረጃን በእስክሪንሹት ላይ አሳይ",
+  "@showGameInfoOnScreenshots": {}
 }

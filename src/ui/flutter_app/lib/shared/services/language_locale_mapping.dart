@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// language_locale_mapping.dart
 
 import 'package:flutter/material.dart';
 
@@ -24,6 +13,7 @@ import '../../generated/intl/l10n_be.dart';
 import '../../generated/intl/l10n_bg.dart';
 import '../../generated/intl/l10n_bn.dart';
 import '../../generated/intl/l10n_bs.dart';
+import '../../generated/intl/l10n_ca.dart';
 import '../../generated/intl/l10n_cs.dart';
 import '../../generated/intl/l10n_da.dart';
 import '../../generated/intl/l10n_de.dart';
@@ -44,6 +34,7 @@ import '../../generated/intl/l10n_id.dart';
 import '../../generated/intl/l10n_is.dart';
 import '../../generated/intl/l10n_it.dart';
 import '../../generated/intl/l10n_ja.dart';
+import '../../generated/intl/l10n_km.dart';
 import '../../generated/intl/l10n_kn.dart';
 import '../../generated/intl/l10n_ko.dart';
 import '../../generated/intl/l10n_lt.dart';
@@ -64,6 +55,7 @@ import '../../generated/intl/l10n_sq.dart';
 import '../../generated/intl/l10n_sr.dart';
 import '../../generated/intl/l10n_sv.dart';
 import '../../generated/intl/l10n_sw.dart';
+import '../../generated/intl/l10n_ta.dart';
 import '../../generated/intl/l10n_te.dart';
 import '../../generated/intl/l10n_th.dart';
 import '../../generated/intl/l10n_tr.dart';
@@ -83,6 +75,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("bg"): SBg().languageName, // Bulgarian
   const Locale("bn"): SBn().languageName, // Bengali
   const Locale("bs"): SBs().languageName, // Bosnian
+  const Locale("ca"): SCa().languageName, // Catalan
   const Locale("cs"): SCs().languageName, // Czech
   const Locale("da"): SDa().languageName, // Danish
   const Locale("de"): SDe().languageName, // German
@@ -104,6 +97,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("is"): SIs().languageName, // Icelandic
   const Locale("it"): SIt().languageName, // Italian
   const Locale("ja"): SJa().languageName, // Japanese
+  const Locale("km"): SKm().languageName, // Khmer
   const Locale("kn"): SKn().languageName, // Kannada
   const Locale("ko"): SKo().languageName, // Korean
   const Locale("lt"): SLt().languageName, // Lithuanian
@@ -124,6 +118,7 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("sr"): SSr().languageName, // Serbian
   const Locale("sv"): SSv().languageName, // Swedish
   const Locale("sw"): SSw().languageName, // Swahili
+  const Locale("ta"): STa().languageName, // Tamil
   const Locale("te"): STe().languageName, // Telugu
   const Locale("th"): STh().languageName, // Thai
   const Locale("tr"): STr().languageName, // Turkish

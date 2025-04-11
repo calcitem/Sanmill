@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// types.h
 
 #ifndef TYPES_H_INCLUDED
 #define TYPES_H_INCLUDED
@@ -129,12 +118,11 @@ enum MoveType { MOVETYPE_PLACE, MOVETYPE_MOVE, MOVETYPE_REMOVE };
 enum class AiMoveType { unknown, traditional, perfect, consensus };
 
 enum Color : uint8_t {
-    NOCOLOR = 0,
+    NOBODY = 0,
     WHITE = 1,
     BLACK = 2,
     COLOR_NB = 3,
     DRAW = 4,
-    NOBODY = 8
 };
 
 enum class Phase : uint16_t { none, ready, placing, moving, gameOver };
@@ -202,8 +190,8 @@ enum Value : int8_t {
     VALUE_EACH_PIECE_ONBOARD = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_NEEDREMOVE = VALUE_EACH_PIECE,
 
-    VALUE_MTDF_WINDOW = VALUE_EACH_PIECE,
-    VALUE_PVS_WINDOW = VALUE_EACH_PIECE,
+    VALUE_MTDF_WINDOW = 1,
+    VALUE_PVS_WINDOW = 1,
 
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_NEEDREMOVE +
                            (VALUE_EACH_PIECE_ONBOARD -

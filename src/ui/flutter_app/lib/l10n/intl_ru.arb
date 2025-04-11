@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Человек против облака",
+  "humanVsCloud": "Человек против облачного ИИ",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -72,11 +72,11 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Выберите неправильную фигуру.",
+  "tipSelectWrong": "Выберите неверную фигуру.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Ваш ход.",
+  "tipPlace": "Разместите свои фигуры.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Мозгает…",
+  "thinking": "Думает…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -176,11 +176,11 @@
   "@newGame": {
     "description": "New game"
   },
-  "importGame": "Открыть игру",
+  "importGame": "Импортировать игру",
   "@importGame": {
     "description": "Import game"
   },
-  "exportGame": "Сохранить игру",
+  "exportGame": "Экспортировать игру",
   "@exportGame": {
     "description": "Export game"
   },
@@ -280,7 +280,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Готовы к трудностям? Следующий уровень {level}!",
+  "challengeHarderLevel": "Сыграем на более сложном уровне? Новый уровень будет {level}!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Если функция \"Полет\" включена, когда игрок уменьшает количество фигур до определенного значения, его фигуры могут свободно перемещаться в любую незанятую точку, а не ограничиваться соседними точками, как в остальной части игры.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Наименьшее количество фигур",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Игрок проиграет, если его противник заблокирует его так, что его нельзя будет передвинуть. Смените сторону для хода, если эта опция отключена.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Летающий",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Нажмите на фигуру противника, чтобы удалить ее.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Прежде чем убрать фигуру, необходимо создать мельницу.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Игровой стиль ИИ",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Пассивный",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Нажмите назад еще раз, чтобы выйти.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Больше",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Если игрок ломает мельницу, чтобы немедленно создать новую мельницу, такой игрок может переместить такой кусок обратно к исходному соединению своим следующим ходом, если он сделает новую мельницу.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Игра считается ничьей, если у игрока есть три фишки и после десяти ходов ни один из игроков не убирает фишки соперника",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1216,7 +1216,7 @@
   "@noMove": {
     "description": "No move."
   },
-  "pieceCountNeedToRemove": "{count,plural, =0{Piece}=1{{count} piece}other{{count} piece}} необходимо удалить.",
+  "pieceCountNeedToRemove": "Нужно удалить {count} фигур.",
   "@pieceCountNeedToRemove": {
     "description": "Pieces need to remove.",
     "placeholders": {
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Сосредоточьтесь на блокировке путей",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "В определенные фазы игры отдавайте приоритет препятствию движению противника, а не созданию мельниц. Вместо того чтобы сосредотачиваться на удалении фигурок, завершая мельницы, ИИ стремится поймать противника в ловушку во время этих фаз, лишая его возможности двигаться и обеспечивая победу путем изнурения, а не агрессивной игры. Эта стратегия, специфическая для определенных фаз, не активно блокирует мельницы противника.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Изображение фигуры",
+  "@pieceImage": {},
+  "importColorSettings": "Импорт настроек цвета",
+  "@importColorSettings": {},
+  "exportColorSettings": "Экспорт настроек цвета",
+  "@exportColorSettings": {},
+  "import": "Импорт",
+  "@import": {},
+  "export": "Экспорт",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Пожалуйста, сначала скопируйте настройки формата JSON в буфер обмена.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Скопировано в буфер обмена.",
+  "@copiedToClipboard": {},
+  "imported": "Импортировано.",
+  "@imported": {},
+  "boardImage": "Изображение доски",
+  "@boardImage": {},
+  "autumnLeaves": "Осенние Листья",
+  "@autumnLeaves": {},
+  "legendaryLand": "Легендарная Земля",
+  "@legendaryLand": {},
+  "vignetteEffect": "Эффект виньетки",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Вы хотите сделать панель инструментов полностью прозрачной, когда установлено фоновое изображение доски?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Включить вибрацию в игре",
+  "@vibration": {},
+  "soundTheme": "Тема звука",
+  "@soundTheme": {},
+  "ball": "Мяч",
+  "@ball": {},
+  "liquid": "Жидкость",
+  "@liquid": {},
+  "wood": "Дерево",
+  "@wood": {},
+  "placeEffectAnimation": "Анимационный эффект при размещении фигуры",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Анимационный эффект при удалении фигуры",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Показать панель инструментов внизу",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Радиус угла доски",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Использовать книгу открытий",
+  "@useOpeningBook": {},
+  "currentRule": "Текущий",
+  "@currentRule": {},
+  "nineMensMorris": "Девять мужчин Моррис",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Двенадцать мужчин Моррис",
+  "@twelveMensMorris": {},
+  "morabaraba": "Морабараба",
+  "@morabaraba": {},
+  "dooz": "Доз",
+  "@dooz": {},
+  "chamGonu": "Чамгону",
+  "@chamGonu": {},
+  "zhiQi": "Чжици",
+  "@zhiQi": {},
+  "chengSanQi": "Чэнсанци",
+  "@chengSanQi": {},
+  "mulMulan": "Мул-Мулан",
+  "@mulMulan": {},
+  "nerenchi": "Неренчи",
+  "@nerenchi": {},
+  "ruleSet": "Набор правил",
+  "@ruleSet": {},
+  "laskerMorris": "Ласкер Моррис",
+  "@laskerMorris": {},
+  "oneTimeMill": "Мельница",
+  "@oneTimeMill": {},
+  "daSanQi": "Дацци",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Позвольте ИИ использовать начальные ходы, которые часто применяются профессиональными человеческими игроками на раннем этапе игры. Примечание: Эта функция в настоящее время доступна только для определенных наборов правил.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Показать график преимущества",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "График преимущества будет нарисован только после того, как ИИ сделает ход. Он не будет нарисован, когда ход сделает человек-игрок.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Отключите удаление, пока все фишки не будут размещены, затем удаляйте фишки в соответствии с количеством построенных мельниц.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Отключите удаление, пока все фишки не будут размещены, затем удаляйте фишки в соответствии с количеством построенных мельниц: если количество совпадает, оба игрока удаляют одинаковое число фишек; если у одного больше, он удаляет на одну фишку больше, сохраняя разницу в одну. Если мельницы образует только один, он убирает две фишки, а другой одну. Если никто не образует мельниц, оба убирают по одной фишке.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "Эль Фильджа",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Выберите одну из своих фигур.",
+  "@tipSelectOwnPiece": {},
+"notYourTurn": "Сейчас не ваш ход.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Цвет фона панели аннотаций",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Цвет иконок панели аннотаций",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Показать панель аннотаций",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Войти в режим аннотаций",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Вы уверены, что хотите удалить все аннотации?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Подсказка LLM скопирована в буфер обмена.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Соединение отклонено, сервер может быть недоступен.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Обнаружение успешно, ожидание соединения...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Нет подключения к локальной сети",
+  "@noLanConnection": {},
+  "takeScreenshot": "Сделать скриншот",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Отключено от противника.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Запрос на возврат хода",
+  "@takeBackRequest": {},
+  "nothingToShow": "Нечего показывать.",
+  "@nothingToShow": {},
+  "stopHosting": "Остановить хостинг",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Соединение сброшено пиром.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Соединение потеряно из-за таймаута heartbeat. Пожалуйста, переподключитесь.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Начать хостинг",
+  "@startHosting": {},
+  "restartRequestRejected": "Запрос на перезапуск отклонен.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Не подключено к противнику в локальной сети.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Подсказка LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Игра перезапущена.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Возврат хода отклонен.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Вы уверены, что хотите сдаться в этой игре?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Противник сдался. Вы выиграли!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Удалить все аннотации",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Подключено, ожидание хода противника...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Статус сети: Отключено",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Запрос на возврат хода отправлен противнику.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Противник, возможно, покинул игру",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Успешно подключено к хосту.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Соединение потеряно: таймаут heartbeat",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Хост не обнаружен.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Подтвердить сдачу",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Начало хостинга игры, ожидание присоединения игроков...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Соединение истекло, сетевое соединение нестабильно.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Подсказка LLM недоступна.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Вы сдались. Игра окончена.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP сервера",
+  "@serverIp": {},
+  "confirmClear": "Подтвердить очистку",
+  "@confirmClear": {},
+  "opponentSTurn": "Ход противника.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Ожидание подключения клиента...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Запрос на возврат хода был отклонен или не удался.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Добавить текст",
+  "@addText": {},
+  "exitAnnotationMode": "Выйти из режима аннотаций",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Введите вашу аннотацию",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Попытка переподключения...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Запрос на перезапуск отправлен. Ожидание ответа противника...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Сервер остановлен.",
+  "@serverIsStopped": {},
+  "restartRequest": "Запрос на перезапуск",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Нельзя запросить возврат хода, когда не ваш ход.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Возврат хода принят.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Настройки локальной сети",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Успешно переподключено!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Не удалось сохранить изображение в галерею.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Противник запросил перезапуск игры. Вы принимаете?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Ваш ход.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Невозможно переподключиться, пожалуйста, перезапустите игру.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Хост",
+  "@host": {},
+  "join": "Присоединиться",
+  "@join": {},
+  "port": "Порт",
+  "@port": {},
+  "invalidIpAddress": "Неверный IP-адрес.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Неверный порт.",
+  "@invalidPort": {},
+  "connectingAttempt": "Попытка подключения: {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Не удалось подключиться: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Не удалось начать хостинг: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Хост обнаружен: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Остановить",
+  "@stop": {},
+  "discover": "Обнаружить",
+  "@discover": {},
+  "connect": "Подключиться",
+  "@connect": {},
+  "clientConnected": "Клиент подключен: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Обнаружение: {seconds} с",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Переподключение ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Подключено",
+  "@connected": {},
+  "delete": "Удалить",
+  "@delete": {},
+  "ancientEgypt": "Древний Египет",
+  "@ancientEgypt": {},
+  "gothicIce": "Готический Лёд",
+  "@gothicIce": {},
+  "riceField": "Рисовое Поле",
+  "@riceField": {},
+  "chinesePorcelain": "Китайский Фарфор",
+  "@chinesePorcelain": {},
+  "desertDusk": "Пустынные Сумерки",
+  "@desertDusk": {},
+  "precisionCraft": "Точное Ремесло",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Народная Вышивка",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Карпатское Наследие",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Имперское Величие",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Богемский Хрусталь",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Саванный Рассвет",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Гармония и Баланс",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Коричная Специя",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Анатолийская Мозаика",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Карнавальный Дух",
+  "@carnivalSpirit": {},
+  "custom": "Обычай",
+  "@custom": {},
+  "spiceMarket": "Рынок специй",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Проведите, чтобы открыть ящик",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Показывать информацию об игре на скриншотах",
+  "@showGameInfoOnScreenshots": {}
 }

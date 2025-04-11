@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// constants.dart
 
 import 'dart:io';
 
@@ -42,6 +31,7 @@ class UrlHelper {
 
 class Constants {
   const Constants._();
+
   static const String appName = "Mill";
   static const String authorAccount = "calcitem";
   static const String projectName = "Sanmill";
@@ -63,6 +53,11 @@ class Constants {
     baseChinese: "https://gitee.com",
   );
 
+  static const UrlHelper staticWebpageUrl = UrlHelper(
+    base: "https://$authorAccount.github.io",
+    baseChinese: "https://$authorAccount.github.io",
+  );
+
   static const UrlHelper weblateUrl = UrlHelper(
     base: "https://hosted.weblate.org",
     baseChinese: "https://hosted.weblate.org",
@@ -72,14 +67,16 @@ class Constants {
       sourceControlUrl.fromSubPath(fullRepositoryName);
   static final UrlHelper issuesURL = repositoryUrl.fromSubPath("issues");
   static final UrlHelper wikiURL = repositoryUrl.fromSubPath("wiki", "wikis");
+  static final UrlHelper legalURL =
+      staticWebpageUrl.fromSubPath("$projectNameLower-legal");
   static final UrlHelper endUserLicenseAgreementUrl =
-      wikiURL.fromSubPath("EULA", "EULA_zh");
+      legalURL.fromSubPath("eula", "eula_zh");
   static const String appleStandardEulaUrl =
       "https://www.apple.com/legal/internet-services/itunes/dev/stdeula/";
   static final UrlHelper thirdPartyNoticesURL =
       wikiURL.fromSubPath("third-party_notices");
   static final UrlHelper privacyPolicyUrl =
-      wikiURL.fromSubPath("privacy_policy", "privacy_policy_zh");
+      legalURL.fromSubPath("privacy-policy", "privacy-policy_zh");
   static final UrlHelper helpImproveTranslateURL =
       weblateUrl.fromSubPath("zen/$projectNameLower/flutter");
   static final UrlHelper thanksURL = wikiURL.fromSubPath("thanks");

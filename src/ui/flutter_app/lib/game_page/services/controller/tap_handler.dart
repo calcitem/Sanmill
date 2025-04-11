@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// tap_handler.dart
 
 part of '../mill.dart';
 
@@ -21,20 +10,22 @@ class TapHandler {
     required this.context,
   });
 
-  //final position = MillController().position;
+  //final position = GameController().position;
 
   static const String _logTag = "[Tap Handler]";
 
   final BuildContext context;
 
   final GameController controller = GameController();
-  //final gameMode = MillController().gameInstance.gameMode;
-  // ignore: always_specify_types
-  final showTip = GameController().headerTipNotifier.showTip;
+
+  //final gameMode = GameController().gameInstance.gameMode;
+  final void Function(String tip, {bool snackBar}) showTip =
+      GameController().headerTipNotifier.showTip;
 
   bool get _isGameRunning =>
       GameController().position.winner == PieceColor.nobody;
-  bool get isAiToMove => controller.gameInstance.isAiToMove;
+
+  bool get isAiSideToMove => controller.gameInstance.isAiSideToMove;
 
   bool get _isBoardEmpty =>
       GameController().position.pieceOnBoardCount[PieceColor.white] == 0 &&
@@ -59,9 +50,32 @@ class TapHandler {
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
+    // Prevent interaction when analysis is in progress
+    if (AnalysisMode.isAnalyzing) {
+      logger.i("$_logTag Analysis in progress, ignoring tap.");
+      return const EngineResponseSkip();
+    }
+
+    // Clear any existing analysis markers when player makes a move
+    AnalysisMode.disable();
+
     if (!GameController().isControllerReady) {
       logger.i("$_logTag Not ready, ignore tapping.");
       return const EngineResponseSkip();
+    }
+
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      if (GameController().isLanOpponentTurn) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).notYourTurn);
+        return const EngineResponseSkip();
+      }
+      if (GameController().networkService == null ||
+          !GameController().networkService!.isConnected) {
+        logger.w("$_logTag No active LAN connection");
+        showTip(S.of(context).noLanConnection, snackBar: true);
+        return const EngineResponseSkip();
+      }
     }
 
     GameController().loadedGameFilenamePrefix = null;
@@ -82,14 +96,22 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
-    // TODO: WAR
-    if ((GameController().position.sideToMove == PieceColor.white ||
-            GameController().position.sideToMove == PieceColor.black) ==
-        false) {
-      // If modify sideToMove, not take effect, I don't know why.
-      return const EngineResponseSkip();
+    // Handle LAN-specific logic
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      if (GameController().isLanOpponentTurn) {
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBarClear(S.of(context).notYourTurn);
+        return const EngineResponseSkip();
+      }
+      if (GameController().networkService == null ||
+          !GameController().networkService!.isConnected) {
+        logger.w("$_logTag No active LAN connection");
+        showTip(S.of(context).noLanConnection, snackBar: true);
+        return const EngineResponseSkip();
+      }
     }
 
+    // TODO: WAR
     if ((GameController().position.sideToMove == PieceColor.white ||
             GameController().position.sideToMove == PieceColor.black) ==
         false) {
@@ -103,14 +125,15 @@ class TapHandler {
         _isBoardEmpty) {
       //controller.reset();
 
-      if (isAiToMove) {
+      if (isAiSideToMove) {
         logger.i("$_logTag AI is not thinking. AI is to move.");
 
         return GameController().engineToGo(context, isMoveNow: false);
       }
     }
 
-    if (isAiToMove) {
+    if (isAiSideToMove &&
+        GameController().gameInstance.gameMode != GameMode.humanVsLAN) {
       logger.i("$_logTag AI's turn, skip tapping.");
       return const EngineResponseSkip();
     }
@@ -120,8 +143,6 @@ class TapHandler {
     switch (GameController().position.action) {
       case Act.place:
         if (GameController().position._putPiece(sq)) {
-          GameController().animationController.reset();
-          GameController().animationController.animateTo(1.0);
           if (GameController().position.action == Act.remove) {
             if (GameController()
                 .position
@@ -391,9 +412,6 @@ class TapHandler {
         final GameResponse removeRet =
             GameController().position._removePiece(sq);
 
-        GameController().animationController.reset();
-        GameController().animationController.animateTo(1.0);
-
         switch (removeRet) {
           case GameResponseOK():
             ret = true;
@@ -455,6 +473,19 @@ class TapHandler {
               showTip(S.of(context).tipSelectOpponentsPiece);
             }
             break;
+          case ShouldRemoveSelf():
+            logger
+                .i("$_logTag removePiece: Should Remove our piece, skip [$sq]");
+            if (GameController().gameInstance.gameMode ==
+                GameMode.humanVsHuman) {
+              final String side =
+                  controller.position.sideToMove.playerName(context);
+              showTip(
+                  "${S.of(context).tipSelectOwnPiece} ${S.of(context).tipToMove(side)}");
+            } else {
+              showTip(S.of(context).tipSelectOwnPiece);
+            }
+            break;
           case CanNotRemoveMill():
             logger.i(
               "$_logTag removePiece: Cannot remove piece from Mill, skip [$sq]",
@@ -473,6 +504,7 @@ class TapHandler {
             logger.i(
               "$_logTag removePiece: Cannot remove piece nonadjacent, skip [$sq]",
             );
+
             if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
               final String side =
@@ -509,6 +541,7 @@ class TapHandler {
       ++GameController().position.st.rule50;
       ++GameController().position.st.pliesFromNull;
 
+      // Update position history
       if (GameController().position._record != null &&
           GameController().position._record!.move.length > "-(1,2)".length) {
         if (posKeyHistory.isEmpty ||
@@ -528,10 +561,16 @@ class TapHandler {
 
       if (GameController().position._record != null) {
         controller.gameRecorder
-            .addAndDeduplicate(GameController().position._record!);
+            .appendMoveIfDifferent(GameController().position._record!);
         if (GameController().position._record!.type == MoveType.remove) {
           controller.gameRecorder.lastPositionWithRemove =
               GameController().position.fen;
+        }
+
+        // Send move to LAN opponent if applicable
+        if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+          final String moveNotation = GameController().position._record!.move;
+          GameController().sendLanMove(moveNotation);
         }
 
         // TODO: moveHistoryText is not lightweight.
@@ -542,7 +581,7 @@ class TapHandler {
         }
       }
 
-      if (_isGameRunning && GameController().gameInstance.isAiToMove) {
+      if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
         if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
           return GameController().engineToGo(context, isMoveNow: false);
         }

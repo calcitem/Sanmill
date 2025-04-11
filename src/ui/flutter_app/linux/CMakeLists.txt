@@ -118,6 +118,11 @@ add_executable(${BINARY_NAME}
   "../../../tt.cpp"
   "../../../uci.cpp"
   "../../../ucioption.cpp"
+  "../../../engine_controller.cpp"
+  "../../../engine_commands.cpp"
+  "../../../opening_book.cpp"
+  "../../../search_engine.cpp"
+  "../../../thread_pool.cpp"
   "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_api.cpp"
   "../../../perfect/perfect_adaptor.cpp"
@@ -170,9 +175,7 @@ include(flutter/generated_plugins.cmake)
 # By default, "installing" just makes a relocatable bundle in the build
 # directory.
 set(BUILD_BUNDLE_DIR "${PROJECT_BINARY_DIR}/bundle")
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX "${BUILD_BUNDLE_DIR}" CACHE PATH "..." FORCE)
-endif()
+set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/bundle" CACHE PATH "Installation directory" FORCE)
 
 # Start with a clean build bundle directory every time.
 install(CODE "

@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// settings_list_tile.dart
 
 part of 'settings.dart';
 
@@ -28,7 +17,9 @@ class SettingsListTile extends StatelessWidget {
     this.trailingString,
   })  : _type = _SettingsTileType.standard,
         _switchValue = null,
-        _callback = onTap,
+        _switchCallback = null,
+        _colorCallback = null,
+        _standardCallback = onTap,
         _colorValue = null;
 
   const SettingsListTile.color({
@@ -39,9 +30,11 @@ class SettingsListTile extends StatelessWidget {
     this.subtitleString,
   })  : _type = _SettingsTileType.color,
         _switchValue = null,
-        _callback = onChanged,
-        trailingString = null,
-        _colorValue = value;
+        _colorValue = value,
+        _switchCallback = null,
+        _colorCallback = onChanged,
+        _standardCallback = null,
+        trailingString = null;
 
   const SettingsListTile.switchTile({
     super.key,
@@ -51,8 +44,10 @@ class SettingsListTile extends StatelessWidget {
     this.subtitleString,
   })  : _type = _SettingsTileType.switchTile,
         _switchValue = value,
-        _callback = onChanged,
         _colorValue = null,
+        _switchCallback = onChanged,
+        _colorCallback = null,
+        _standardCallback = null,
         trailingString = null;
 
   final String titleString;
@@ -62,12 +57,15 @@ class SettingsListTile extends StatelessWidget {
   final _SettingsTileType _type;
   final bool? _switchValue;
   final Color? _colorValue;
-  final Function _callback;
+  final ValueChanged<bool>? _switchCallback;
+  final ValueChanged<Color>? _colorCallback;
+  final VoidCallback? _standardCallback;
 
   Widget get title => Text(
         titleString,
         style: AppTheme.listTileTitleStyle,
       );
+
   Widget? get subTitle => subtitleString != null
       ? Text(subtitleString!, style: AppTheme.listTileSubtitleStyle)
       : null;
@@ -78,8 +76,7 @@ class SettingsListTile extends StatelessWidget {
       case _SettingsTileType.switchTile:
         return SwitchListTile(
           value: _switchValue!,
-          // ignore: avoid_dynamic_calls
-          onChanged: (bool val) => _callback(val),
+          onChanged: _switchCallback,
           title: title,
           subtitle: subTitle,
         );
@@ -108,8 +105,7 @@ class SettingsListTile extends StatelessWidget {
           title: title,
           subtitle: subTitle,
           trailing: trailing,
-          // ignore: avoid_dynamic_calls
-          onTap: () => _callback(),
+          onTap: _standardCallback,
         );
 
       case _SettingsTileType.color:
@@ -117,7 +113,7 @@ class SettingsListTile extends StatelessWidget {
           title: title,
           subtitle: subTitle,
           trailing: Text(
-            _colorValue!.value.toRadixString(16),
+            _colorValue!.toHexString(),
             style: TextStyle(backgroundColor: _colorValue),
           ),
           onTap: () => showDialog(
@@ -125,9 +121,8 @@ class SettingsListTile extends StatelessWidget {
             barrierDismissible: EnvironmentConfig.test == true,
             builder: (_) => _ColorPickerAlert(
               title: titleString,
-              value: _colorValue!,
-              // ignore: avoid_dynamic_calls
-              onChanged: (Color val) => _callback(val),
+              value: _colorValue,
+              onChanged: _colorCallback!,
             ),
           ),
         );
@@ -144,7 +139,7 @@ class _ColorPickerAlert extends StatefulWidget {
 
   final Color value;
   final String title;
-  final Function(Color) onChanged;
+  final ValueChanged<Color> onChanged;
 
   @override
   _ColorPickerAlertState createState() => _ColorPickerAlertState();
@@ -164,6 +159,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: const Key('color_picker_alert_dialog'),
       title: DB().displaySettings.fontScale == 1.0
           ? Text(
               S.of(context).pick(widget.title),
@@ -174,6 +170,7 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
         child: SizedBox(
           height: MediaQuery.of(context).size.height * 1.0,
           child: SlidePicker(
+            key: const Key('color_picker_slide_picker'),
             pickerColor: pickedColor,
             labelTypes: DB().displaySettings.fontScale == 1.0
                 ? const <ColorLabelType>[
@@ -189,18 +186,20 @@ class _ColorPickerAlertState extends State<_ColorPickerAlert> {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('color_picker_confirm_button'),
           child: Text(
             S.of(context).confirm,
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
           onPressed: () {
-            logger.t("[config] pickerColor.value: ${pickedColor.value}");
+            logger.t("[config] pickerColor.value: $pickedColor");
             widget.onChanged(pickedColor);
             Navigator.pop(context);
           },
         ),
         TextButton(
+          key: const Key('color_picker_cancel_button'),
           child: Text(
             S.of(context).cancel,
             style: TextStyle(

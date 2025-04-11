@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// privacy_policy_dialog.dart
 
 import 'dart:io';
 
@@ -87,10 +76,6 @@ class PrivacyPolicyDialog extends StatelessWidget {
       Localizations.localeOf(context).languageCode.startsWith("zh"),
       "The current locale must start with 'zh'",
     );
-    assert(
-      !DB().generalSettings.isPrivacyPolicyAccepted,
-      "The privacy policy must not be accepted",
-    );
 
     final ThemeData currentTheme = Theme.of(context);
     final TextStyle bodyLargeTextStyle = currentTheme.textTheme.bodyLarge!;
@@ -98,7 +83,10 @@ class PrivacyPolicyDialog extends StatelessWidget {
         bodyLargeTextStyle.copyWith(color: currentTheme.colorScheme.secondary);
 
     return AlertDialog(
-      title: Text(S.of(context).privacyPolicy),
+      title: Text(
+        S.of(context).privacyPolicy,
+        key: const Key('privacy_policy_dialog_title'),
+      ),
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
@@ -107,6 +95,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('privacy_policy_accept_button'),
           child: Text(S.of(context).accept),
           onPressed: () {
             _acceptPrivacyPolicy();
@@ -116,6 +105,7 @@ class PrivacyPolicyDialog extends StatelessWidget {
         ),
         if (!kIsWeb && Platform.isAndroid)
           TextButton(
+            key: const Key('privacy_policy_exit_button'),
             child: Text(S.of(context).exit),
             onPressed: () {
               SystemChannels.platform.invokeMethod('SystemNavigator.pop');
@@ -138,7 +128,10 @@ Future<void> showPrivacyDialog(BuildContext context) async {
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) => AlertDialog(
-      title: Text(S.of(context).privacyPolicy),
+      title: Text(
+        S.of(context).privacyPolicy,
+        key: const Key('show_privacy_dialog_title'),
+      ),
       contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minHeight: 48),
@@ -147,6 +140,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('show_privacy_accept_button'),
           child: Text(S.of(context).accept),
           onPressed: () {
             PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: true);
@@ -155,6 +149,7 @@ Future<void> showPrivacyDialog(BuildContext context) async {
         ),
         if (!kIsWeb && Platform.isAndroid)
           TextButton(
+            key: const Key('show_privacy_exit_button'),
             child: Text(S.of(context).exit),
             onPressed: () {
               PrivacyPolicyDialog._setPrivacyPolicyAcceptance(value: false);

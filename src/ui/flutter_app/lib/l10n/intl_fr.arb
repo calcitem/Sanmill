@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Humain vs Réseau",
+  "humanVsCloud": "Humain vs Cloud",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -72,7 +72,7 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Sélectionnez la mauvaise pièce.",
+  "tipSelectWrong": "Pièce incorrecte sélectionnée.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Placé.",
+  "tipPlaced": "Pièce placée.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Retiré.",
+  "tipRemoved": "Pièce retirée.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -112,7 +112,7 @@
   "@tipCannotMove": {
     "description": "You can't move your piece here."
   },
-  "tipMill": "Moulin ! Prenez la pièce de votre adversaire.",
+  "tipMill": "Moulin ! Prenez la pièce de votre adversaire.",
   "@tipMill": {
     "description": "Mill! Take your opponent's piece."
   },
@@ -148,9 +148,9 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "Au tour de {player} de se déplacer.",
+  "tipToMove": "C’est au tour de {player} de jouer.",
   "@tipToMove": {
-    "description": " to move."
+    "description": "The tip that the given player is to move."
   },
   "whiteWin": "Joueur 1 gagne !",
   "@whiteWin": {
@@ -216,7 +216,7 @@
   "@analyzing": {
     "description": "Analyzing ..."
   },
-  "error": "Erreur : {message}",
+  "error": "Erreur : {message}",
   "@error": {
     "description": "Error"
   },
@@ -238,19 +238,19 @@
   },
   "loseReasonlessThanThree": "Le nombre de pièces de {player} est inférieur à trois.",
   "@loseReasonlessThanThree": {
-    "description": " piece count is less than three."
+    "description": "Indicate that the player lost because they had less than three pieces left."
   },
   "loseReasonResign": "{player} abandonne.",
   "@loseReasonResign": {
-    "description": " resign."
+    "description": "Indicate that the player resigned."
   },
   "loseReasonNoWay": "{player} n'a nulle part où aller.",
   "@loseReasonNoWay": {
-    "description": " is no way to go."
+    "description": "Indicate that the player has no way to go."
   },
   "loseReasonBoardIsFull": "Le tableau est plein et {player} n'a nulle part où aller.",
   "@loseReasonBoardIsFull": {
-    "description": "The board is full, no way to go."
+    "description": "Indicate that the player has no way to go because the board is full."
   },
   "loseReasonTimeOver": "Le temps est écoulé, {player} a perdu.",
   "@loseReasonTimeOver": {
@@ -268,7 +268,7 @@
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
-  "gameOverUnknownReason": "Fin de la partie ! Raison inconnue.",
+  "gameOverUnknownReason": "Fin de la partie ! Raison inconnue.",
   "@gameOverUnknownReason": {
     "description": "Game Over! Unknown reason."
   },
@@ -280,11 +280,11 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "Défier un niveau plus difficile ? Le nouveau niveau sera le niveau {level} !",
+  "challengeHarderLevel": "Défier un niveau plus difficile ? Le nouveau niveau sera le niveau {level} !",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "Vous avez perdu !",
+  "youLose": "Vous avez perdu !",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -296,7 +296,7 @@
   "@about": {
     "description": "About"
   },
-  "version": "Version : {versionNumber}",
+  "version": "Version : {versionNumber}",
   "@version": {
     "description": "Version"
   },
@@ -384,7 +384,7 @@
   "@piecesCount": {
     "description": "The number of pieces each player has"
   },
-  "piecesCount_Detail": "Combien de pièces possède chaque joueur ?",
+  "piecesCount_Detail": "Combien de pièces possède chaque joueur ?",
   "@piecesCount_Detail": {
     "description": "How many pieces does each player have?"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Si l'option de vol est activée, lorsqu'un joueur est réduit à un nombre spécifique de pièces, ses pièces sont libres de se déplacer vers n'importe quel point inoccupé, au lieu d'être limitées aux points adjacents comme dans le reste du jeu.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pièces minimum",
   "@piecesAtLeastCount": {
@@ -444,9 +444,9 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "Le joueur perd si son adversaire le bloque de sorte qu'il ne peut pas le déplacer. Changez de côté pour bouger si cette option est désactivée.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "Le joueur perd si son adversaire le bloque de sorte qu'il ne peut pas être déplacé. Si cette option est désactivée, le tour passe à l'autre joueur au lieu de déclarer une défaite.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, the turn passes to the other player instead of declaring a loss."
   },
   "mayFly": "Vol",
   "@mayFly": {
@@ -460,7 +460,7 @@
   "@nMoveRule": {
     "description": "N-move rule"
   },
-  "nMoveRule_Detail": "La partie est nulle s'il n'y a pas eu de déplacement dans un nombre spécifique de mouvements par chaque joueur.",
+  "nMoveRule_Detail": "La partie est nulle s'il n'y a pas eu de retrait dans un nombre spécifique de coups par chaque joueur.",
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Tapez sur une pièce de l'adversaire pour la retirer.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Vous devez d'abord créer un moulin avant de pouvoir retirer une pièce.",
   "@needToCreateMillFirst": {
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "Le jeu vise à laisser l'adversaire avec moins de trois pièces ou aucun coup légal.\n\nLa partie est automatiquement nulle si une position se produit pour la troisième fois, ou si aucun retrait n'a été effectué au cours des 100 derniers coups (configurables).\n\nLe jeu se déroule en trois phases :\n\n1. Placement des pièces sur les points vacants\n2. Déplacement des pièces vers les points adjacents\n3. (Phase optionnelle) Déplacement des pièces vers n'importe quel point vacant lorsque le joueur a été réduit à trois pièces.\n\nPlacement\n\nLe jeu commence avec un plateau vide, qui consiste en une grille de vingt-quatre points. Les joueurs placent à tour de rôle leurs pièces sur les points vacants jusqu'à ce que chaque joueur ait placé toutes ses pièces sur le plateau. Si un joueur peut placer trois de ses pièces en ligne droite, il a un « moulin » et peut retirer une des pièces de son adversaire du plateau.\n\nDans certaines variantes des règles, les joueurs doivent d'abord retirer toutes les autres pièces avant de retirer une pièce d'un moulin formé.\n\nDans certaines variantes des règles, tous les points des pièces retirées ne peuvent pas être replacés lors de la phase de placement.\n\nUne fois que toutes les pièces ont été utilisées, les joueurs se déplacent à tour de rôle.\n\nDéplacement\n\nPour se déplacer, un joueur déplace une de ses pièces le long d'une ligne du plateau jusqu'à un point adjacent vacant. S'il ne peut pas le faire, il a perdu la partie. Comme dans la phase de placement, un joueur qui aligne trois de ses pièces sur une ligne du plateau dispose d'un moulin et peut retirer une des pièces de son adversaire. Tout joueur réduit à deux pièces n'ayant pas la possibilité de former de nouveaux moulins perd donc la partie. Un joueur peut également perdre avec plus de trois pièces si son adversaire les bloque de manière à ce qu'elles ne puissent pas être déplacées.\n\nVol\n\nDans certaines variantes des règles, lorsqu'un joueur n'a plus que trois pièces, ses pièces peuvent « voler », « sauter » ou « bondir » vers n'importe quel point vacant, et pas seulement vers des points adjacents.\n",
+  "helpContent": "Le jeu vise à laisser l'adversaire avec moins de trois pièces ou aucun coup légal.\n\nLa partie est automatiquement nulle si une position se produit pour la troisième fois, ou si aucun retrait n'a été effectué au cours des 100 derniers coups (configurables).\n\nLe jeu se déroule en trois phases :\n\n1. Placement des pièces sur les points vacants\n2. Déplacement des pièces vers les points adjacents\n3. (Phase optionnelle) Déplacement des pièces vers n'importe quel point vacant lorsque le joueur a été réduit à trois pièces.\n\nPlacement\n\nLe jeu commence avec un plateau vide, qui consiste en une grille de vingt-quatre points. Les joueurs placent à tour de rôle leurs pièces sur les points vacants jusqu'à ce que chaque joueur ait placé toutes ses pièces sur le plateau. Si un joueur peut placer trois de ses pièces en ligne droite, il a un « moulin » et peut retirer une des pièces de son adversaire du plateau.\n\nDans certaines variantes des règles, les joueurs doivent d'abord retirer toutes les autres pièces avant de retirer une pièce d'un moulin formé.\n\nDans certaines variantes des règles, tous les points des pièces retirées ne peuvent pas être replacés lors de la phase de placement.\n\nUne fois que toutes les pièces ont été utilisées, les joueurs se déplacent à tour de rôle.\n\nDéplacement\n\nPour se déplacer, un joueur déplace une de ses pièces le long d'une ligne du plateau jusqu'à un point adjacent vacant. S'il ne peut pas le faire, il a perdu la partie. Comme dans la phase de placement, un joueur qui aligne trois de ses pièces sur une ligne du plateau dispose d'un moulin et peut retirer une des pièces de son adversaire. Tout joueur réduit à deux pièces n'ayant pas la possibilité de former de nouveaux moulins perd donc la partie. Un joueur peut également perdre avec plus de trois pièces si son adversaire les bloque de manière à ce qu'elles ne puissent pas être déplacées.\n\nVol\n\nDans certaines variantes des règles, lorsqu'un joueur n'a plus que trois pièces, ses pièces peuvent « voler », « sauter » ou « bondir » vers n'importe quel point vacant, et pas seulement vers des points adjacents.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Style de jeu de l'IA",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passif",
   "@passive": {
@@ -782,7 +782,7 @@
   "@considerMobility": {
     "description": "Consider mobility of pieces"
   },
-  "pieceCount": "Nombre de pièces :",
+  "pieceCount": "Nombre de pièces :",
   "@pieceCount": {
     "description": "Piece count"
   },
@@ -790,7 +790,7 @@
   "@inHand": {
     "description": "in hand"
   },
-  "onBoard": "Plateau de {player} : {count}",
+  "onBoard": "Plateau de {player} : {count}",
   "@onBoard": {
     "description": "on board"
   },
@@ -810,9 +810,9 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Appuyez à nouveau pour quitter.",
+  "tapBackAgainToLeave": "Appuyez à nouveau sur Retour pour quitter.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "En savoir plus",
   "@more": {
@@ -998,9 +998,9 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "Si un joueur casse un moulin pour créer un nouveau moulin immédiatement, ce joueur peut déplacer cette pièce vers la jonction d'origine lors de son prochain mouvement s'il fabrique un nouveau moulin.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "Si un joueur casse un moulin pour en former un nouveau immédiatement, il peut redéplacer cette pièce vers le point d'origine lors de son prochain coup si cela forme un autre nouveau moulin.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Le jeu est nul si un joueur a trois pièces et après dix coups aucun joueur ne retire les pièces de l'adversaire",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1042,11 +1042,11 @@
   "@flyingPhase": {
     "description": "Flying phase"
   },
-  "sideToMove": "Au tour de : {player}",
+  "sideToMove": "Au tour de : {player}",
   "@sideToMove": {
     "description": "Side to move"
   },
-  "lastMove": "Dernier coup : {move}",
+  "lastMove": "Dernier coup : {move}",
   "@lastMove": {
     "description": "Last move"
   },
@@ -1062,7 +1062,7 @@
   "@screenReaderSupport": {
     "description": "Screen reader support"
   },
-  "isDraw": "Match nul !",
+  "isDraw": "Match nul !",
   "@isDraw": {
     "description": "It is a Draw!"
   },
@@ -1098,7 +1098,7 @@
   "@threefoldRepetitionRule_Detail": {
     "description": "The game is drawn if a position occurs for the third time."
   },
-  "continueToMakeMove": "Moulin ! Continuez pour effecter un déplacement.",
+  "continueToMakeMove": "Moulin ! Continuez pour effecter un déplacement.",
   "@continueToMakeMove": {
     "description": "Mill! Continue to make a move."
   },
@@ -1184,7 +1184,7 @@
   "@remove": {
     "description": "Remove"
   },
-  "placedCount": "Placé ({count})",
+  "placedCount": "Placées ({count})",
   "@placedCount": {
     "description": "Placed N pieces. Used in setup position toolbar.",
     "placeholders": {
@@ -1218,11 +1218,11 @@
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
-  "paste": "Pâte",
+  "paste": "Coller",
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "La pâte est faite.",
+  "pasteDone": "Collage terminé.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1282,7 +1282,7 @@
   "@whatIsAlphaBeta": {},
   "firstMoveDetail": "Dans ce jeu, il est plus facile pour le deuxième joueur de gagner que pour le premier joueur.",
   "@firstMoveDetail": {},
-  "drawOnTheHumanExperienceDetail": "Selon l'expérience humaine, si vous essayez de gagner, vous perdrez. Au lieu de cela, visez un match nul comme objectif et évitez de perdre la partie. Observez votre adversaire et attirez-le doucement dans une position où il pourrait faire des erreurs. Quand ils montrent de la faiblesse, saisissez l'opportunité et poussez doucement pour la victoire. De cette façon, vous pouvez gagner la partie.",
+  "drawOnTheHumanExperienceDetail": "Selon l'expérience humaine, si vous essayez de gagner, vous perdrez. Au lieu de cela, visez un match nul comme objectif et évitez de perdre la partie. Observez votre adversaire et attirez-le doucement dans une position où il pourrait faire des erreurs. Quand il montre de la faiblesse, saisissez l'opportunité et poussez doucement pour la victoire. De cette façon, vous pouvez gagner la partie.",
   "@drawOnTheHumanExperienceDetail": {},
   "passiveDetail": "L'activation de l'option Passive amènera l'IA à se détendre lorsqu'elle a un avantage dans la position, plutôt que d'essayer agressivement de gagner le plus rapidement possible.",
   "@passiveDetail": {},
@@ -1292,7 +1292,7 @@
   "@moveRandomlyDetail": {},
   "whenBoardIsFull": "Quand le plateau est plein",
   "@whenBoardIsFull": {},
-  "whenBoardIsFull_Detail": "A la fin de la phase de placement, avant le début de la phase de déplacement, l'action suit si le plateau est plein de pièces.",
+  "whenBoardIsFull_Detail": "À la fin de la phase de placement, avant le début de la phase de déplacement, cette action se dénoule si le plateau est plein de pièces.",
   "@whenBoardIsFull_Detail": {},
   "sideToMoveRemovePiece": "Le joueur qui se déplace en premier dans la phase de déplacement retire une des pièces de l'adversaire.",
   "@sideToMoveRemovePiece": {},
@@ -1306,11 +1306,11 @@
   "@firstAndSecondPlayerRemovePiece": {},
   "secondAndFirstPlayerRemovePiece": "Les deuxième et premier joueurs enlèvent une des pièces de l'adversaire.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "Maintenant entrées dans la phase de vol, les pièces de l'adversaire peuvent sauter vers n'importe quel point vide du plateau. Vous pouvez désactiver la règle de vol dans les \"Paramètres de règle\".",
+  "enteredFlyingPhase": "Maintenant la phase de vol débutée, les pièces de l'adversaire peuvent sauter vers n'importe quel point vide du plateau. Vous pouvez désactiver la règle de vol dans les \"Paramètres de règle\".",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Quand l'impasse",
+  "whenStalemate": "Quand il y a impasse",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "Quelle action suit lorsqu'aucune pièce ne peut être déplacée ?",
+  "whenStalemate_Detail": "Quelle action effectuer lorsqu'aucune pièce ne peut être déplacée ?",
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "Terminez par une défaite par impasse pour le camp qui est bloqué.",
   "@endWithStalemateLoss": {},
@@ -1324,15 +1324,15 @@
   "@removeOpponentsPieceAndChangeSideToMove": {},
   "aiResponseDelayTime": "Délai de réponse de l'IA",
   "@aiResponseDelayTime": {},
-  "aiIsDelaying": "AI est actuellement dans une phase de réponse différée. Veuillez patienter un moment avant de continuer.",
+  "aiIsDelaying": "L'IA est actuellement en phase de réponse différée. Veuillez patienter un moment avant de continuer.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Vous ne pouvez pas supprimer une pièce non adjacente.",
+  "tipCanNotRemoveNonadjacent": "Vous ne pouvez pas retirer une pièce non adjacente.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "En cas d'impasse, les pièces de l'adversaire adjacentes aux vôtres peuvent être retirées, quelle que soit la formation du moulin.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS est un algorithme adapté aux débutants qui prend des décisions en explorant et en évaluant différents mouvements à travers des simulations.",
   "@whatIsMcts": {},
-  "goldenJade": "Jade doré",
+  "goldenJade": "Jade dorée",
   "@goldenJade": {},
   "forestWood": "Bois de la forêt",
   "@forestWood": {},
@@ -1344,7 +1344,7 @@
   "@midnightBlue": {},
   "greenForest": "Forêt verte",
   "@greenForest": {},
-  "pastelPink": "Rose Pastel",
+  "pastelPink": "Rose pastel",
   "@pastelPink": {},
   "turquoiseSea": "Mer turquoise",
   "@turquoiseSea": {},
@@ -1354,19 +1354,19 @@
   "@mintChocolate": {},
   "skyBlue": "Bleu ciel",
   "@skyBlue": {},
-  "playfulGarden": "Jardin ludique",
+  "playfulGarden": "Jardin joueur",
   "@playfulGarden": {},
   "darkMystery": "Sombre mystère",
   "@darkMystery": {},
-  "whatIsRetrogradeAnalysis": "L'algorithme d'analyse rétrograde utilise une analyse rétrograde à plusieurs valeurs pour créer une base de données de fin de partie à partir de différentes positions de départ, puis applique cette base de données pour optimiser le gameplay. Cette approche entre dans la catégorie des solutions Ultra-Fortes.",
+  "whatIsRetrogradeAnalysis": "L'algorithme d'Analyse Rétrograde utilise une analyse rétrograde à plusieurs valeurs pour créer une base de données de fin de partie à partir de différentes positions de départ, puis applique cette base de données pour optimiser le gameplay. Cette approche entre dans la catégorie des solutions Ultra-Fortes.",
   "@whatIsRetrogradeAnalysis": {},
-  "viewAlgorithmGuide": "Souhaitez-vous consulter le guide d'utilisation de cet algorithme ?",
+  "viewAlgorithmGuide": "Souhaitez-vous consulter le guide d'utilisation de cet algorithme ?",
   "@viewAlgorithmGuide": {},
   "showPositionalAdvantageIndicator": "Afficher l'indicateur d'avantage positionnel",
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Utilisez la base de données parfaite",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Activez cette option pour utiliser une base de données de jeu impeccable générée par des algorithmes de pointe. Cette fonctionnalité intègre à la fois des stratégies d'ouverture et de fin de partie pour suggérer les meilleurs mouvements. C'est le choix préféré pour les joueurs qui recherchent le plus haut niveau de précision dans le gameplay. Créée grâce à des techniques de calcul minutieuses, la base de données est conçue pour offrir des solutions de jeu pratiquement parfaites.\n\nNote : Si l'IA ne parvient pas à accéder à la base de données, elle se tournera vers des algorithmes conventionnels pour les décisions de jeu. Lorsque la base de données est disponible, le 'Niveau de difficulté' devient pratiquement imbattable, et le 'Temps de réflexion de l'IA' connaît une réduction drastique. De nombreux paramètres dans les options 'Style de jeu de l'IA' seront également écrasés, car les résultats de la base de données ont la priorité la plus élevée.\n\nPour des conseils sur la façon d'exploiter au mieux cette base de données impeccable, cliquez ici.",
+  "perfectDatabaseDescription": "Activez cette option pour utiliser une base de données de jeu impeccable générée par des algorithmes de pointe. Cette fonctionnalité intègre à la fois des stratégies d'ouverture et de fin de partie pour suggérer les meilleurs mouvements. C'est le choix préféré pour les joueurs qui recherchent le plus haut niveau de précision dans le gameplay. Créée grâce à des techniques de calcul minutieuses, la base de données est conçue pour offrir des solutions de jeu pratiquement parfaites.\n\nNote : Si l'IA ne parvient pas à accéder à la base de données, elle se tournera vers des algorithmes conventionnels pour les décisions de jeu. Lorsque la base de données est disponible, le 'Niveau de difficulté' devient pratiquement imbattable, et le 'Temps de réflexion de l'IA' connaît une réduction drastique. De nombreux paramètres dans les options 'Style de jeu de l'IA' seront également écrasés, car les résultats de la base de données ont la priorité la plus élevée.\n\nPour des conseils sur la façon d'exploiter au mieux cette base de données impeccable, cliquez ici.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Image d'arrière-plan",
   "@backgroundImage": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Concentrez-vous sur le blocage des chemins",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Durant des phases spécifiques du jeu, privilégiez l'obstruction des mouvements de l'adversaire plutôt que la formation de moulins. Au lieu de se concentrer sur le retrait des pièces en complétant des moulins, l'IA vise à piéger l'adversaire pendant ces phases, le rendant incapable de se déplacer et assurant une victoire par attrition plutôt que par un jeu agressif. Cette stratégie spécifique à certaines phases ne bloque pas activement les moulins de l'adversaire.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Image de pièce",
+  "@pieceImage": {},
+  "importColorSettings": "Importer les paramètres de couleur",
+  "@importColorSettings": {},
+  "exportColorSettings": "Exporter les paramètres de couleur",
+  "@exportColorSettings": {},
+  "import": "Importer",
+  "@import": {},
+  "export": "Exporter",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Veuillez d'abord copier les paramètres du format JSON dans le presse-papiers.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copié dans le presse-papiers.",
+  "@copiedToClipboard": {},
+  "imported": "Importé.",
+  "@imported": {},
+  "boardImage": "Image du plateau",
+  "@boardImage": {},
+  "autumnLeaves": "Feuilles d'Automne",
+  "@autumnLeaves": {},
+  "legendaryLand": "Terre Légendaire",
+  "@legendaryLand": {},
+  "vignetteEffect": "Effet de vignettage",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Souhaitez-vous rendre la barre d'outils complètement transparente lorsqu'une image de fond du plateau est définie?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Activer la vibration dans le jeu",
+  "@vibration": {},
+  "soundTheme": "Thème sonore",
+  "@soundTheme": {},
+  "ball": "Balle",
+  "@ball": {},
+  "liquid": "Liquide",
+  "@liquid": {},
+  "wood": "Bois",
+  "@wood": {},
+  "placeEffectAnimation": "Effet d'animation lors du placement de la pièce",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Effet d'animation lors du retrait de la pièce",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Afficher la barre d'outils en bas",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Rayon de coin du plateau",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Utiliser le livre d'ouverture",
+  "@useOpeningBook": {},
+  "currentRule": "Actuel",
+  "@currentRule": {},
+  "nineMensMorris": "Morris neuf hommes",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Morris douze hommes",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Douz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Ensemble de règles",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Moulin unique",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Permettez à l'IA d'utiliser des mouvements d'ouverture couramment employés par les joueurs humains professionnels au début du jeu. Remarque: Cette fonctionnalité est actuellement disponible uniquement pour certains ensembles de règles.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Afficher le graphique d’avantage",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Le graphique d'avantage ne sera tracé qu'après que l'IA aura effectué un mouvement. Il ne sera pas tracé lorsque le joueur humain effectuera un mouvement.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "La suppression est interdite jusqu’à ce que toutes les pièces aient été placées, puis les joueurs retirent des pièces en fonction du nombre de moulins formés.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "La suppression est interdite jusqu’à ce que toutes les pièces aient été placées, puis les joueurs retirent des pièces en fonction du nombre de moulins formés : si les nombres sont égaux, les deux retirent le même nombre de pièces ; si l’un d’eux a formé plus de moulins, il retire une pièce supplémentaire, maintenant ainsi une différence d’une seule pièce. Si un seul joueur forme des moulins, il retire deux pièces tandis que l’autre en retire une. Si aucun des deux ne forme de moulins, chacun retire l’une de ses propres pièces.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Sélectionnez l’un de vos pions.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Ce n'est pas votre tour.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Couleur d'arrière-plan de la barre d'outils d'annotation",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Couleur des icônes de la barre d'outils d'annotation",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Afficher la barre d'outils d'annotation",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Entrer en mode annotation",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Êtes-vous sûr de vouloir effacer toutes les annotations ?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "Invite LLM copiée dans le presse-papiers.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Connexion refusée, le serveur peut être hors ligne.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Découverte réussie, en attente de connexion...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Aucune connexion LAN",
+  "@noLanConnection": {},
+  "takeScreenshot": "Prendre une capture d'écran",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Déconnecté de l'adversaire.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Demande de retour en arrière",
+  "@takeBackRequest": {},
+  "nothingToShow": "Rien à afficher.",
+  "@nothingToShow": {},
+  "stopHosting": "Arrêter l'hébergement",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Connexion réinitialisée par l'hôte distant.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Connexion perdue en raison d'un délai d'attente du signal de vie. Veuillez vous reconnecter.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Démarrer l'hébergement",
+  "@startHosting": {},
+  "restartRequestRejected": "Demande de redémarrage rejetée.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Pas connecté à un adversaire LAN.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "Invite LLM",
+  "@llmPrompt": {},
+  "gameRestarted": "Partie relancée.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Retour en arrière refusé.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Êtes-vous sûr de vouloir abandonner cette partie ?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "L'adversaire a abandonné. Vous gagnez !",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Effacer toutes les annotations",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Connecté, en attente du coup de l'adversaire...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "État du réseau : Déconnecté",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Demande de retour en arrière envoyée à l'adversaire.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "L'adversaire a peut-être quitté la partie",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Connecté à l'hôte avec succès.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Connexion perdue : délai d'attente du signal de vie",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Aucun hôte découvert.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Confirmer l'abandon",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Hébergement de la partie démarré, en attente de joueurs...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Délai de connexion dépassé, connexion réseau instable.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Aucune invite LLM disponible.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Vous avez abandonné. Fin de la partie.",
+  "@youResignedGameOver": {},
+  "serverIp": "IP du serveur",
+  "@serverIp": {},
+  "confirmClear": "Confirmer l'effacement",
+  "@confirmClear": {},
+  "opponentSTurn": "C'est le tour de l'adversaire.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "En attente d'une connexion client...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "La demande de retour en arrière a été refusée ou a échoué.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Ajouter du texte",
+  "@addText": {},
+  "exitAnnotationMode": "Quitter le mode annotation",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Tapez votre annotation",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Tentative de reconnexion...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Demande de redémarrage envoyée. En attente de la réponse de l'adversaire...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Le serveur est arrêté.",
+  "@serverIsStopped": {},
+  "restartRequest": "Demande de redémarrage",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Impossible de demander un retour en arrière quand ce n'est pas votre tour.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Retour en arrière accepté.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Paramètres du réseau local",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Reconnexion réussie !",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Échec de l'enregistrement de l'image dans la galerie.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "L'adversaire demande à redémarrer la partie. Acceptez-vous ?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "C'est votre tour.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Impossible de se reconnecter, veuillez redémarrer la partie.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Héberger",
+  "@host": {},
+  "join": "Rejoindre",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Adresse IP invalide.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Port invalide.",
+  "@invalidPort": {},
+  "connectingAttempt": "Connexion : tentative {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Échec de la connexion : {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Échec du démarrage de l'hébergement : {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hôte découvert : {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Arrêter",
+  "@stop": {},
+  "discover": "Découvrir",
+  "@discover": {},
+  "connect": "Se connecter",
+  "@connect": {},
+  "clientConnected": "Client connecté : {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Découverte : {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Reconnexion ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Connecté",
+  "@connected": {},
+  "delete": "Supprimer",
+  "@delete": {},
+  "ancientEgypt": "Égypte ancienne",
+  "@ancientEgypt": {},
+  "gothicIce": "Glace gothique",
+  "@gothicIce": {},
+  "riceField": "Champ de riz",
+  "@riceField": {},
+  "chinesePorcelain": "Porcelaine chinoise",
+  "@chinesePorcelain": {},
+  "desertDusk": "Crépuscule du désert",
+  "@desertDusk": {},
+  "precisionCraft": "Artisanat de précision",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Broderie folklorique",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Héritage des Carpates",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Grandeur impériale",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Cristal de Bohême",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Lever de soleil dans la savane",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonie et équilibre",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Épice de cannelle",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Mosaïque anatolienne",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Esprit de carnaval",
+  "@carnivalSpirit": {},
+  "custom": "Personnalisé",
+  "@custom": {},
+  "spiceMarket": "Marché aux épices",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Faites glisser pour révéler le tiroir",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Afficher les informations de jeu sur les captures d'écran",
+  "@showGameInfoOnScreenshots": {}
 }

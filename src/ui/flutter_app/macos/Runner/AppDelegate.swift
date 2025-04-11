@@ -1,3 +1,8 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// AppDelegate.swift
+
 import Cocoa
 import FlutterMacOS
 import device_info_plus
@@ -5,7 +10,7 @@ import path_provider_foundation
 import share_plus
 import url_launcher_macos
 
-@NSApplicationMain
+@main
 class AppDelegate: FlutterAppDelegate {
     var engine: MillEngine?
 
@@ -69,4 +74,3 @@ class AppDelegate: FlutterAppDelegate {
         return true
     }
 }
-

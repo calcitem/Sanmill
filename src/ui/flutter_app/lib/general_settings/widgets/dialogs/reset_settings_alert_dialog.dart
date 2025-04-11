@@ -1,18 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// reset_settings_alert_dialog.dart
 
 part of 'package:sanmill/general_settings/widgets/general_settings_page.dart';
 
@@ -36,30 +25,38 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      key: const Key('reset_settings_alert_dialog_alert_dialog'),
       title: Text(
         S.of(context).restore,
+        key: const Key('reset_settings_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
       content: SingleChildScrollView(
+        key: const Key('reset_settings_alert_dialog_content_scroll_view'),
         child: Text(
           "${S.of(context).restoreDefaultSettings}?",
+          key: const Key('reset_settings_alert_dialog_content_text'),
           style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
         ),
       ),
       actions: <Widget>[
         TextButton(
+          key: const Key('reset_settings_alert_dialog_ok_button'),
           onPressed: () => _restore(context),
           child: Text(
             S.of(context).ok,
+            key: const Key('reset_settings_alert_dialog_ok_button_text'),
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),
         ),
         TextButton(
+          key: const Key('reset_settings_alert_dialog_cancel_button'),
           onPressed: () => _cancel(context),
           child: Text(
             S.of(context).cancel,
+            key: const Key('reset_settings_alert_dialog_cancel_button_text'),
             style: TextStyle(
                 fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
           ),

@@ -84,7 +84,7 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "You placed.",
+  "tipPlaced": "Piece placed.",
   "@tipPlaced": {
     "description": "Placed."
   },
@@ -96,7 +96,7 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "You removed.",
+  "tipRemoved": "Piece removed.",
   "@tipRemoved": {
     "description": "Removed."
   },
@@ -452,9 +452,9 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point instead of being restricted to adjacent points as in the rest of the game.",
+  "flyPieceCount_Detail": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point instead of being restricted to adjacent points as in the rest of the game.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -504,9 +504,9 @@
   "@isLoseButNotChangeSideWhenNoWay": {
     "description": "Lose when no legal moves"
   },
-  "isLoseButNotChangeSideWhenNoWay_Detail": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled.",
+  "isLoseButNotChangeSideWhenNoWay_Detail": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Flying",
   "@mayFly": {
@@ -678,9 +678,9 @@
   "@toMovePiece": {
     "description": "Tap on point connected to piece to move it."
   },
-  "toRemovePiece": "Tap on the opponent's one piece to remove.",
+  "toRemovePiece": "Tap on one of the opponent's pieces to remove it.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "You need to create a mill first before you can remove a piece.",
   "@needToCreateMillFirst": {
@@ -776,7 +776,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "The game aims to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game automatically draws if a position occurs for the third time or makes no remove in the last 100 (configurable) moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when reducing the player to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player can put three of his pieces straight, he has a \"mill\" and may remove one of his opponent's pieces from the board.\n\nIn some rules, players must remove any other pieces first before removing a piece from a formed mill.\n\nYou cannot place the pieces to the points of removed pieces again in the placing phase in some rules.\n\nOnce use all pieces, players take turns moving.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot do so, he has lost the game. A player who aligns three of his pieces on a board line has a mill and may remove one of his opponent's pieces as in the placing phase. Any player reduces to two pieces, has no option to form new mills, and thus loses the game. A player can also lose when more than three pieces if his opponent blocks them from moving.\n\nFlying\n\nIn some variants of the rules, once a player has only three pieces left, his pieces can fly, hop, or jump to any vacant points, not only adjacent ones.\n",
+  "helpContent": "The game aims to leave the opponent with fewer than three pieces or no legal moves.\n\nThe game automatically draws if a position occurs for the third time or makes no remove in the last 100 (configurable) moves.\n\nThe game proceeds in three phases:\n\n1. Placing pieces on vacant points\n2. Moving pieces to adjacent points\n3. (optional phase) Moving pieces to any vacant point when reducing the player to three pieces\n\nPlacing\n\nThe game begins with an empty board, which consists of a grid with twenty-four points. Players take turns placing their pieces on vacant points until each player has placed all pieces on the board. If a player can put three of his pieces straight, he has a \"mill\" and may remove one of his opponent's pieces from the board.\n\nIn some rule sets, players must remove any other pieces first before removing a piece from a formed mill.\n\nUnder certain rules, you cannot place pieces again on points where pieces have been removed.\n\nOnce all pieces have been placed, players take turns moving them.\n\nMoving\n\nTo move, a player moves one of his pieces along a board line to a vacant adjacent point. If he cannot, he loses the game. A player who aligns three of his pieces on a board line has a mill and may remove one of his opponent's pieces as in the placing phase. If a player is reduced to two pieces, has no option to form new mills, and thus loses the game. A player can also lose when more than three pieces if his opponent blocks them from moving.\n\nFlying\n\nIn some variants of the rules, once a player has only three pieces left, their pieces can fly, hop, or jump to any vacant points, not only adjacent ones.\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -824,9 +824,9 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "AI's playstyle",
+  "aisPlayStyle": "AI's play style",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passive",
   "@passive": {
@@ -896,9 +896,9 @@
   "@atEnd": {
     "description": "At the end of the move list."
   },
-  "tapBackAgainToLeave": "Tap back again to leave.",
+  "tapBackAgainToLeave": "Tap Back again to exit.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "More",
   "@more": {
@@ -1084,9 +1084,9 @@
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
-  "mayBreakAndRemakeMillRepeatedly_Detail": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill.",
+  "mayBreakAndRemakeMillRepeatedly_Detail": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "The game is drawn if a player has three pieces and after ten moves neither player removes the opponent's pieces",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1364,7 +1364,7 @@
   "@gotIt": {},
   "youCanModifyRules": "You can modify the rules of the game in the rule settings.",
   "@youCanModifyRules": {},
-  "youCanUseMouseWheelInPicker": "You can use the mouse wheel to change the value in the picker.",
+  "youCanUseMouseWheelInPicker": "You can use the mouse wheel to adjust the value in the picker.",
   "@youCanUseMouseWheelInPicker": {},
   "noTimeLimitForThinking": "AI Thinking time set to 0 means there is no time limit for thinking.",
   "@noTimeLimitForThinking": {},
@@ -1426,7 +1426,7 @@
   "@aiIsDelaying": {},
   "tipCanNotRemoveNonadjacent": "You cannot remove a nonadjacent piece.",
   "@tipCanNotRemoveNonadjacent": {},
-  "stalemateRemovalRegardlessOfMillFormation": "If stalemate, the opponent's pieces adjacent to yours can be removed, regardless of mill formation.",
+  "stalemateRemovalRegardlessOfMillFormation": "In a stalemate, you can remove the opponent's pieces adjacent to yours, regardless of mill formation.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
   "whatIsMcts": "MCTS is a beginner-friendly algorithm that makes decisions by exploring and evaluating different moves through simulations.",
   "@whatIsMcts": {},
@@ -1464,7 +1464,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Use perfect database",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Enable this option to use a flawless game database generated through cutting-edge algorithms. This feature integrates both opening and endgame strategies to suggest optimal moves. This is the preferred choice for players who seek the highest level of precision in gameplay. Created through meticulous computational techniques, the database is designed to offer near-perfect game solutions.\n\nNote: Should the AI fail to access the database, it will turn to conventional algorithms for gameplay decisions. When the database is available, the 'Difficulty Level' becomes virtually unbeatable, and 'AI Thinking Time' experiences a drastic reduction. Many settings within 'AI's Playstyle' options will be overridden, as the database outcomes hold the highest priority.\n\nFor guidance on how to make the most of this flawless database, click here.",
+  "perfectDatabaseDescription": "Enable this option to use a flawless game database generated through cutting-edge algorithms. This feature integrates both opening and endgame strategies to suggest optimal moves. This is the preferred choice for players who seek the highest level of precision in gameplay. Created through meticulous computational techniques, the database is designed to offer near-perfect game solutions.\n\nNote: Should the AI fail to access the database, it will turn to conventional algorithms for gameplay decisions. When the database is available, the 'Difficulty Level' becomes virtually unbeatable, and 'AI Thinking Time' experiences a drastic reduction. Many settings within 'AI's play style' options will be overridden, as the database outcomes hold the highest priority.\n\nFor guidance on how to make the most of this flawless database, click here.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Background image",
   "@backgroundImage": {},
@@ -1539,5 +1539,313 @@
   "focusOnBlockingPaths": "Focus on blocking paths",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "During specific phases of the game, prioritize obstructing the opponent's movement over forming mills. Instead of focusing on removing pieces by completing mills, the AI aims to trap the opponent during these phases, rendering them unable to move and securing a win through attrition rather than aggressive play. This phase-specific strategy does not actively block the opponent's mills.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Piece image",
+  "@pieceImage": {},
+  "importColorSettings": "Import color settings",
+  "@importColorSettings": {},
+  "exportColorSettings": "Export color settings",
+  "@exportColorSettings": {},
+  "import": "Import",
+  "@import": {},
+  "export": "Export",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Please copy the JSON format settings to the clipboard first.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Copied to clipboard.",
+  "@copiedToClipboard": {},
+  "imported": "Imported.",
+  "@imported": {},
+  "boardImage": "Board image",
+  "@boardImage": {},
+  "autumnLeaves": "Autumn Leaves",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendary Land",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignette effect",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Would you like to make the toolbar fully transparent when a board background image is set?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Enable vibration in the game",
+  "@vibration": {},
+  "soundTheme": "Sound theme",
+  "@soundTheme": {},
+  "ball": "Ball",
+  "@ball": {},
+  "liquid": "Liquid",
+  "@liquid": {},
+  "wood": "Wood",
+  "@wood": {},
+  "placeEffectAnimation": "Piece placing animation effect",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Piece removing animation effect",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Show toolbar at bottom",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Board corner radius",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Use opening book",
+  "@useOpeningBook": {},
+  "currentRule": "Current",
+  "@currentRule": {},
+  "nineMensMorris": "Nine Men's Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Twelve Men's Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Rule set",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "One-Time Mill",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Let the AI use opening moves commonly employed by professional human players during the early game. Note: This feature is currently available only for specific rule sets.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Show advantage graph",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Advantage graph will only be drawn after the AI makes a move. It will not be drawn when the human player makes a move.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Disable removal until all pieces have been placed, then remove pieces based on mill counts.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Disable removal until all pieces have been placed, then remove pieces based on mill counts: if they are equal, both remove the same number; if one has more, they remove one extra, keeping a one-piece difference. If only one forms mills, they remove two pieces, and the other removes one. If neither forms mills, both remove one of their own pieces.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Select one of your pieces.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "It's not your turn.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Annotation toolbar background color",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Annotation toolbar icon color",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Show annotation toolbar",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Enter annotation mode",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Are you sure you want to clear all annotations?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM prompt copied to clipboard.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Connection refused, the server may be down.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Discovery successful, awaiting connection...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "No LAN connection",
+  "@noLanConnection": {},
+  "takeScreenshot": "Take Screenshot",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Disconnected from opponent.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Take Back Request",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nothing to show.",
+  "@nothingToShow": {},
+  "stopHosting": "Stop Hosting",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Connection reset by peer.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Connection lost due to heartbeat timeout. Please reconnect.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Start Hosting",
+  "@startHosting": {},
+  "restartRequestRejected": "Restart request rejected.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Not connected to LAN opponent.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM prompt",
+  "@llmPrompt": {},
+  "gameRestarted": "Game restarted.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Take back rejected.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Are you sure you want to resign this game?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Opponent resigned. You win!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Clear all annotations",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Connected, waiting for opponent's move...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Network status: Disconnected",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Take back request sent to the opponent.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "The opponent may have left the game",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Connected to host successfully.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Connection lost: heartbeat timeout",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "No host discovered.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Confirm resignation",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Started hosting game, waiting for players to join...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Connection timed out, network connection unstable.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "No LLM prompt available.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "You resigned. Game over.",
+  "@youResignedGameOver": {},
+  "serverIp": "Server IP",
+  "@serverIp": {},
+  "confirmClear": "Confirm clear",
+  "@confirmClear": {},
+  "opponentSTurn": "Opponent's turn.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Waiting a client connection...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Take back request was rejected or failed.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Add text",
+  "@addText": {},
+  "exitAnnotationMode": "Exit annotation mode",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Type your annotation",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Attempting to reconnect...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Restart request sent. Waiting for opponent's response...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Server is stopped.",
+  "@serverIsStopped": {},
+  "restartRequest": "Restart request",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Cannot request a take back when it's not your turn.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Take back accepted.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Local network settings",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Reconnected successfully!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Failed to save image to Gallery.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Opponent requested to restart the game. Do you accept?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Your turn.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Unable to reconnect, please restart the game.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Host",
+  "@host": {},
+  "join": "Join",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Invalid IP address.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Invalid port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Connecting: Attempt {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Failed to connect: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Failed to start hosting: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Host discovered: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Stop",
+  "@stop": {},
+  "discover": "Discover",
+  "@discover": {},
+  "connect": "Connect",
+  "@connect": {},
+  "clientConnected": "Client connected: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Discovering: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Reconnecting ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Connected",
+  "@connected": {},
+  "delete": "Delete",
+  "@delete": {},
+  "ancientEgypt": "Ancient Egypt",
+  "@ancientEgypt": {},
+  "gothicIce": "Gothic Ice",
+  "@gothicIce": {},
+  "riceField": "Rice Field",
+  "@riceField": {},
+  "chinesePorcelain": "Chinese Porcelain",
+  "@chinesePorcelain": {},
+  "desertDusk": "Desert Dusk",
+  "@desertDusk": {},
+  "precisionCraft": "Precision Craft",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Folk Embroidery",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Carpathian Heritage",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Imperial Grandeur",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Bohemian Crystal",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savanna Sunrise",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmony Balance",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Cinnamon Spice",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolian Mosaic",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Carnival Spirit",
+  "@carnivalSpirit": {},
+  "custom": "Custom",
+  "@custom": {},
+  "spiceMarket": "Spice Market",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Swipe to reveal the Drawer",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Show game info on screenshots",
+  "@showGameInfoOnScreenshots": {}
 }

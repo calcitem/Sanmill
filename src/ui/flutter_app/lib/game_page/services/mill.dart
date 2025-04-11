@@ -1,34 +1,28 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
+
+// mill.dart
 
 /// Although marked as a library this package is tightly integrated into the app
-library mill;
+
+library;
 
 import 'dart:async';
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:catcher_2/model/catcher_2_options.dart';
 import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:kplayer/kplayer.dart' as kplayer;
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:soundpool/soundpool.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../appearance_settings/models/color_settings.dart';
 import '../../general_settings/models/general_settings.dart';
@@ -43,11 +37,17 @@ import '../../shared/services/native_methods.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/array_helpers/array_helper.dart';
-import '../../shared/utils/helpers/list_helpers/pointed_list.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
+import '../../shared/utils/helpers/string_helpers/string_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../services/import_export/pgn.dart' as pgn;
+import 'analysis_mode.dart';
+import 'animation/animation_manager.dart';
+import 'annotation/annotation_manager.dart';
 import 'engine/bitboard.dart';
 import "gif_share/gif_share.dart";
+import 'import_export/import_helpers.dart';
+import 'import_export/pgn.dart';
 
 part 'controller/game_controller.dart';
 part 'controller/game_recorder.dart';
@@ -58,10 +58,15 @@ part 'engine/engine.dart';
 part 'engine/ext_move.dart';
 part 'engine/game.dart';
 part 'engine/mills.dart';
+part 'engine/opening_book.dart';
 part 'engine/position.dart';
 part 'engine/types.dart';
 part 'engine/zobrist.dart';
-part 'import_export/import_export_service.dart';
+part 'import_export/export_service.dart';
+part 'import_export/import_exceptions.dart';
+part 'import_export/import_service.dart';
+part 'import_export/notation_parsing.dart';
+part "network/network_service.dart";
 part 'notifiers/board_semantics_notifier.dart';
 part 'notifiers/game_result_notifier.dart';
 part 'notifiers/header_icons_notifier.dart';
@@ -69,6 +74,35 @@ part 'notifiers/header_tip_notifier.dart';
 part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
-part "transform/transform.dart";
+part 'sounds/vibration_manager.dart';
 
 // TODO: [Leptopoda] Separate the ui from the logic
+
+bool isRuleSupportingPerfectDatabase() {
+  final RuleSettings ruleSettings = DB().ruleSettings;
+
+  if (((ruleSettings.piecesCount == 9 &&
+              !ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == false) ||
+          (ruleSettings.piecesCount == 10 &&
+              !ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == true) ||
+          (ruleSettings.piecesCount == 12 &&
+              ruleSettings.hasDiagonalLines &&
+              ruleSettings.mayMoveInPlacingPhase == false)) &&
+      ruleSettings.flyPieceCount == 3 &&
+      ruleSettings.piecesAtLeastCount == 3 &&
+      ruleSettings.millFormationActionInPlacingPhase ==
+          MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard &&
+      ruleSettings.boardFullAction == BoardFullAction.firstPlayerLose &&
+      ruleSettings.restrictRepeatedMillsFormation == false &&
+      ruleSettings.stalemateAction == StalemateAction.endWithStalemateLoss &&
+      ruleSettings.mayFly == true &&
+      ruleSettings.mayRemoveFromMillsAlways == false &&
+      ruleSettings.mayRemoveMultiple == false &&
+      ruleSettings.oneTimeUseMill == false) {
+    return true;
+  } else {
+    return false;
+  }
+}

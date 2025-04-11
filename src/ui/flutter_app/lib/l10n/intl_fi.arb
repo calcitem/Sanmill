@@ -20,23 +20,23 @@
   "@game": {
     "description": "Game"
   },
-  "humanVsAi": "Ihminen tekoälyä vastaan",
+  "humanVsAi": "Ihminen vs. tekoäly",
   "@humanVsAi": {
     "description": "Human Vs AI"
   },
-  "humanVsHuman": "Ihminen ihmistä vastaan",
+  "humanVsHuman": "Ihminen vs. ihmisen",
   "@humanVsHuman": {
     "description": "Human Vs Human"
   },
-  "aiVsAi": "AI Vs AI",
+  "aiVsAi": "Tekoäly vs. tekoäly",
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "Ihminen vastaan pilvi",
+  "humanVsCloud": "Ihminen vs. pilvi",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
-  "humanVsLAN": "Ihminen vastaan LAN",
+  "humanVsLAN": "Ihminen vs. LAN",
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
@@ -60,7 +60,7 @@
   "@noGameRecord": {
     "description": "No record"
   },
-  "ok": "OK",
+  "ok": "Hyvä on",
   "@ok": {
     "description": "OK"
   },
@@ -72,11 +72,11 @@
   "@cancel": {
     "description": "Cancel"
   },
-  "tipSelectWrong": "Valitse väärä kappale.",
+  "tipSelectWrong": "Valitsit väärän nappulan.",
   "@tipSelectWrong": {
     "description": "Select the wrong piece."
   },
-  "tipPlace": "Aseta palat paikoilleen.",
+  "tipPlace": "Sijoita nappulasi paikoilleen.",
   "@tipPlace": {
     "description": "Place your pieces."
   },
@@ -84,11 +84,11 @@
   "@tipBanPlace": {
     "description": "Cannot place it here."
   },
-  "tipPlaced": "Sinä sijoitit.",
+  "tipPlaced": "Asetit nappulan.",
   "@tipPlaced": {
     "description": "Placed."
   },
-  "tipRemove": "Poista pala.",
+  "tipRemove": "Poista nappula.",
   "@tipRemove": {
     "description": "Remove a piece."
   },
@@ -96,11 +96,11 @@
   "@tipBanRemove": {
     "description": "Cannot remove."
   },
-  "tipRemoved": "Sinä poistit.",
+  "tipRemoved": "Poistit nappulan.",
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Siirrä pala.",
+  "tipMove": "Siirrä nappula.",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -128,7 +128,7 @@
   "@tipCannotRemovePieceFromMill": {
     "description": "You cannot remove a piece from a mill."
   },
-  "tipCanMoveOnePoint": "Kappale voi liikkua 1 pisteen verran.",
+  "tipCanMoveOnePoint": "Nappula voi liikkua yhden pisteen.",
   "@tipCanMoveOnePoint": {
     "description": "A piece can move 1 point."
   },
@@ -144,11 +144,11 @@
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
-  "tipCanMoveToAnyPoint": "Voit siirtyä mihin tahansa kohtaan.",
+  "tipCanMoveToAnyPoint": "Voit liikkua mihin tahansa kohtaan.",
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "{player} siirtääksesi.",
+  "tipToMove": "Siirrettävä {player}.",
   "@tipToMove": {
     "description": " to move."
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "Ajattelen…",
+  "thinking": "Ajattelemassa…",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -188,11 +188,11 @@
   "@gameImported": {
     "description": "Game imported from the clipboard."
   },
-  "cannotImport": "Ei voi tuoda {invalidMove}",
+  "cannotImport": "Ei voi tuoda {invalidMove}:a",
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Liikkeet ja säännöt eivät täsmää.",
+  "movesAndRulesNotMatch": "Siirrot ja säännöt eivät täsmää.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -200,7 +200,7 @@
   "@pleaseWait": {
     "description": "Please wait..."
   },
-  "restartGame": "Käynnistätkö nykyisen pelin uudelleen?",
+  "restartGame": "Käynnistetäänkö nykyinen peli uudelleen?",
   "@restartGame": {
     "description": "Restart current game?"
   },
@@ -208,11 +208,11 @@
   "@restart": {
     "description": "Restart"
   },
-  "gameStarted": "Peli alkoi, aseta.",
+  "gameStarted": "Peli alkoi; sijoita.",
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "Analysointi…",
+  "analyzing": "Analysoidaan…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -236,23 +236,23 @@
   "@black": {
     "description": "Player 2"
   },
-  "loseReasonlessThanThree": "{player} kappalemäärä on pienempi kuin kolme.",
+  "loseReasonlessThanThree": "{player}:n nappuloiden määrä on alle kolme.",
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "{player} eroaa.",
+  "loseReasonResign": "{player} erosi.",
   "@loseReasonResign": {
     "description": " resign."
   },
-  "loseReasonNoWay": "{player} ei voi edetä.",
+  "loseReasonNoWay": "{player}:lla ei ole keinoa mennä.",
   "@loseReasonNoWay": {
     "description": " is no way to go."
   },
-  "loseReasonBoardIsFull": "Lauta on täynnä, eikä {player}:llä ole mitään tietä.",
+  "loseReasonBoardIsFull": "Lauta on täynnä, ja {player}:lla ei ole keinoa mennä.",
   "@loseReasonBoardIsFull": {
     "description": "The board is full, no way to go."
   },
-  "loseReasonTimeOver": "Aika on ohi, {player} menetetty.",
+  "loseReasonTimeOver": "Aika on ohi, {player} hävisi.",
   "@loseReasonTimeOver": {
     "description": "Time Over"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Jos lentäminen on käytössä, kun pelaajan nappulamäärä vähenee tiettyyn lukumäärään, hänen nappulansa voivat vapaasti siirtyä mihin tahansa tyhjään pisteeseen sen sijaan, että ne olisivat rajoitettuja viereisiin pisteisiin, kuten muussa pelissä.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Vähintään nappuloita",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "Pelaaja häviää, jos hänen vastustajansa estää ne niin, ettei niitä voi siirtää. Vaihda puoli siirtoon, jos tämä vaihtoehto on poistettu käytöstä.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Lentävä",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "Napauta vastustajan yhtä nappulaa poistaaksesi sen.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Sinun on ensin luotava mylly, ennen kuin voit poistaa kappaleen.",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "Tekoälyn pelityyli",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passiivinen",
   "@passive": {
@@ -794,7 +794,7 @@
   "@onBoard": {
     "description": "on board"
   },
-  "boardTop": "Laudan siirtäminen ylhäältäpäin",
+  "boardTop": "Laudan etäisyys yläreunasta",
   "@boardTop": {
     "description": "Board offset from the top"
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Poistu napauttamalla uudelleen takaisin.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Lisää",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Jos pelaaja rikkoo myllyn uuden myllyn luomiseksi välittömästi, pelaaja voi siirtää tällaisen kappaleen takaisin alkuperäiseen risteykseen seuraavalla liikkeellään, jos se tekee uuden myllyn.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "Peli vedetään, jos pelaajalla on kolme nappulaa ja kymmenen siirron jälkeen kumpikaan pelaaja ei poista vastustajan nappuloita",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1166,7 +1166,7 @@
   "@empty": {
     "description": "Empty point, used in setup position toolbar."
   },
-  "noPiecesCanBeRemoved": "Mitään osia ei voi poistaa.",
+  "noPiecesCanBeRemoved": "Yhtään nappulaa ei voi poistaa.",
   "@noPiecesCanBeRemoved": {
     "description": "No pieces can be removed."
   },
@@ -1226,7 +1226,7 @@
   "@pasteDone": {
     "description": "The paste is done."
   },
-  "cannotPaste": "Ei voi liittää.",
+  "cannotPaste": "Liittäminen ei onnistu.",
   "@cannotPaste": {
     "description": "Cannot paste."
   },
@@ -1254,7 +1254,7 @@
   "@duration": {},
   "pixelRatio": "Pikselisuhde",
   "@pixelRatio": {},
-  "gameScreenRecorder": "Pelin näytön tallennin",
+  "gameScreenRecorder": "Pelin näytön nauhoitin",
   "@gameScreenRecorder": {},
   "previous": "Edellinen",
   "@previous": {},
@@ -1268,7 +1268,7 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "Voit muuttaa arvoa poimijassa hiiren rullalla.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0 tarkoittaa, että ajattelulle ei ole aikarajaa.",
+  "noTimeLimitForThinking": "AI Ajatteluajaksi asetettu 0:ksi tarkoittaa, että ajattelulle ei ole aikarajaa.",
   "@noTimeLimitForThinking": {},
   "noteAiThinkingTimeMayNotBePrecise": "Huomaa, että tekoälyn ajatteluajan säätö ei välttämättä ole täysin tarkka. Todellinen ajatteluaika voi olla lyhyempi, kun vaikeustaso on asetettu pienemmälle arvolle, ja voi olla pidempi, kun tekoäly on puoliajattelu, kun aika loppuu.",
   "@noteAiThinkingTimeMayNotBePrecise": {},
@@ -1280,7 +1280,7 @@
   "@whatIsPvs": {},
   "whatIsAlphaBeta": "Alfa-beta-algoritmi on hakualgoritmi parhaan liikkeen löytämiseksi. Se käyttää minimax-periaatetta ja kahta arvoa, alfaa ja betaa, karsimaan hakupuuta ja lisäämään tehokkuutta. Alfa edustaa vähimmäispistemäärää, jonka tietokone on varma, että se voi saada, kun taas beta edustaa vastustajansa enimmäispistemäärää. Algoritmi auttaa tietokonetta tekemään älykkäitä ja tehokkaita päätöksiä pelissä.",
   "@whatIsAlphaBeta": {},
-  "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa kuin ensimmäisellä pelaajalla.",
+  "firstMoveDetail": "Tässä pelissä toisen pelaajan on helpompi voittaa ensimmäiseen verrattuna.",
   "@firstMoveDetail": {},
   "drawOnTheHumanExperienceDetail": "Ihmiskokemuksen mukaan jos yrität voittaa, häviät. Pyri sen sijaan tasapeliin ja vältä pelin häviämistä. Tarkkaile vastustajaasi ja houkuttele hellästi asentoon, jossa he voivat tehdä virheitä. Kun he osoittavat heikkoutta, tartu tilaisuuteen ja työnnä hellästi voittoon. Tällä tavalla voit voittaa pelin.",
   "@drawOnTheHumanExperienceDetail": {},
@@ -1308,9 +1308,9 @@
   "@secondAndFirstPlayerRemovePiece": {},
   "enteredFlyingPhase": "Nyt lentovaiheessa vastustajan nappulat voivat hypätä mihin tahansa tyhjään kohtaan laudalla. Voit kytkeä lentosäännön pois päältä \"Sääntöasetuksissa\".",
   "@enteredFlyingPhase": {},
-  "whenStalemate": "Kun umpikuja",
+  "whenStalemate": "Kun pattitilantessa",
   "@whenStalemate": {},
-  "whenStalemate_Detail": "Mitä tapahtuu, kun yhtään kappaletta ei voi siirtää?",
+  "whenStalemate_Detail": "Mitä toimia seuraa kun yhtäkään nappulaa ei voi siirtää?",
   "@whenStalemate_Detail": {},
   "endWithStalemateLoss": "Loppu umpikujaan.",
   "@endWithStalemateLoss": {},
@@ -1322,11 +1322,11 @@
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "Poista yksi vastustajan nappuloista ja vaihda puolta liikkuaksesi.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
-  "aiResponseDelayTime": "AI-vasteen viive",
+  "aiResponseDelayTime": "Tekoälyn vasteviive",
   "@aiResponseDelayTime": {},
   "aiIsDelaying": "Tekoäly on tällä hetkellä viivästyneen vasteen vaiheessa. Odota hetki ennen kuin jatkat.",
   "@aiIsDelaying": {},
-  "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä osaa.",
+  "tipCanNotRemoveNonadjacent": "Et voi poistaa vierekkäistä nappulaa.",
   "@tipCanNotRemoveNonadjacent": {},
   "stalemateRemovalRegardlessOfMillFormation": "Pattitilanteessa vastustajan nappulat, jotka ovat sinun vieressäsi, voidaan poistaa myllymuodostuksesta riippumatta.",
   "@stalemateRemovalRegardlessOfMillFormation": {},
@@ -1336,27 +1336,27 @@
   "@goldenJade": {},
   "forestWood": "Metsä Puu",
   "@forestWood": {},
-  "greenMeadow": "Vihreä niitty",
+  "greenMeadow": "Vihreä Niitty",
   "@greenMeadow": {},
-  "stonyPath": "Kivinen polku",
+  "stonyPath": "Kivinen Polku",
   "@stonyPath": {},
   "midnightBlue": "Yönsininen",
   "@midnightBlue": {},
   "greenForest": "Vihreä metsä",
   "@greenForest": {},
-  "pastelPink": "Pastelli pinkki",
+  "pastelPink": "Pastelli Pinkki",
   "@pastelPink": {},
-  "turquoiseSea": "Turkoosi meri",
+  "turquoiseSea": "Turkoosi Meri",
   "@turquoiseSea": {},
-  "violetDream": "Violetti unelma",
+  "violetDream": "Violetti Unelma",
   "@violetDream": {},
-  "mintChocolate": "Minttu-suklaa",
+  "mintChocolate": "Minttu-Suklaa",
   "@mintChocolate": {},
   "skyBlue": "Taivaansininen",
   "@skyBlue": {},
-  "playfulGarden": "Leikkisä puutarha",
+  "playfulGarden": "Leikkisä Puutarha",
   "@playfulGarden": {},
-  "darkMystery": "Pimeä mysteeri",
+  "darkMystery": "Tumma Mysteeri",
   "@darkMystery": {},
   "whatIsRetrogradeAnalysis": "Retrograde Analysis -algoritmi käyttää moniarvoista retrogradista analyysiä loppupelitietokannan rakentamiseen eri aloituspaikoista ja käyttää sitten tätä tietokantaa pelin optimoimiseksi. Tämä lähestymistapa kuuluu Ultra-Strong-ratkaisujen luokkaan.",
   "@whatIsRetrogradeAnalysis": {},
@@ -1366,7 +1366,7 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "Käytä täydellistä tietokantaa",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's Playstyle' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
+  "perfectDatabaseDescription": "Ota tämä vaihtoehto käyttöön, jos haluat käyttää virheetöntä pelitietokantaa, joka on luotu huippuluokan algoritmeilla. Tämä ominaisuus integroi sekä avaus- että lopetusstrategiat optimaalisten liikkeiden ehdottamiseksi. Tämä on suositeltu valinta pelaajille, jotka etsivät korkeinta tarkkuutta pelaamisessa. Huolellisen laskentatekniikan avulla luotu tietokanta on suunniteltu tarjoamaan lähes täydellisiä peliratkaisuja.\n\nHuomautus: Jos tekoäly ei pääse käsiksi tietokantaan, se käyttää tavanomaisia algoritmeja pelipäätöksissä. Kun tietokanta on saatavilla, \"Vaikeustaso\" muuttuu käytännössä lyömättömäksi, ja \"AI Thinking Time\" kokee rajusti lyhenemisen. Monet 'AI's play style' -asetusten asetukset ohitetaan, koska tietokannan tuloksilla on korkein prioriteetti.\n\nNapsauta tästä saadaksesi ohjeita tämän virheettömän tietokannan hyödyntämiseen.",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "Taustakuva",
   "@backgroundImage": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Keskity estämään reittejä",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "Priorisoi vastustajan liikkeiden estäminen myllyjen muodostamisen sijaan. Sen sijaan, että keskittyisi poistamaan kappaleita täydentämällä myllyjä, AI pyrkii ansaan vastustajan, estäen heitä liikkumasta ja varmistaa voiton kulutuksella eikä aggressiivisella pelillä. Tämä strategia ei aktiivisesti estä vastustajan myllyjä.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Palakuva",
+  "@pieceImage": {},
+  "importColorSettings": "Tuo väriasetukset",
+  "@importColorSettings": {},
+  "exportColorSettings": "Vie väriasetukset",
+  "@exportColorSettings": {},
+  "import": "Tuo",
+  "@import": {},
+  "export": "Vie",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kopioi ensin JSON-muodon asetukset leikepöydälle.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Kopioitu leikepöydälle.",
+  "@copiedToClipboard": {},
+  "imported": "Tuotu.",
+  "@imported": {},
+  "boardImage": "Laudan kuva",
+  "@boardImage": {},
+  "autumnLeaves": "Syksyn lehdet",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendaarinen Maa",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetointi-efekti",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Haluatko tehdä työkalupalkin täysin läpinäkyväksi, kun lautakuvan taustakuva on asetettu?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Ota värinä käyttöön pelissä",
+  "@vibration": {},
+  "soundTheme": "Äniteema",
+  "@soundTheme": {},
+  "ball": "Pallo",
+  "@ball": {},
+  "liquid": "Neste",
+  "@liquid": {},
+  "wood": "Puu",
+  "@wood": {},
+  "placeEffectAnimation": "Nappulan asettamisen animaatioefekti",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Nappulan poistamisen animaatioefekti",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Näytä työkalupalkki alhaalla",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Lautan kulman säde",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Käytä avausteosta",
+  "@useOpeningBook": {},
+  "currentRule": "Nykyinen",
+  "@currentRule": {},
+  "nineMensMorris": "Yhdeksän Miesten Morris",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Kahdentoista Miesten Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Sääntökokoelma",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker Morris",
+  "@laskerMorris": {},
+  "oneTimeMill": "Kertakäyttöinen Mylly",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Anna tekoälyn käyttää aloitusliikkeitä, joita ammattilaiset ihmispelaajat yleisesti käyttävät pelin alussa. Huomautus: Tämä toiminto on tällä hetkellä saatavilla vain tietyille sääntöjoukoille.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Näytä etugraafi",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Etulyöntikaavio piirretään vasta sen jälkeen, kun tekoäly on tehnyt siirtonsa. Sitä ei piirretä, kun ihmispelaaja tekee siirron.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Poista nappuloiden poistaminen käytöstä, kunnes kaikki nappulat on asetettu. Pelaajat poistavat nappuloita myllyjen määrän perusteella.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Poista nappuloiden poistaminen käytöstä, kunnes kaikki nappulat on asetettu. Pelaajat poistavat nappuloita myllyjen määrän perusteella: jos ne ovat yhtäsuuret, molemmat poistavat saman määrän nappuloita; jos toisella on enemmän, hän poistaa yhden ylimääräisen nappulan, pitäen eron yhdessä nappulassa. Jos vain yksi muodostaa myllyn, hän poistaa kaksi nappulaa ja toinen poistaa yhden. Jos kumpikaan ei muodosta myllyä, molemmat poistavat yhden nappulan.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Valitse yksi omista nappuloistasi.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Ei ole sinun vuorosi.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Annotointipalkin taustaväri",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Annotointipalkin kuvakkeiden väri",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Näytä annotointipalkki",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Siirry annotointitilaan",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Haluatko varmasti poistaa kaikki merkinnät?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM-kehote kopioitu leikepöydälle.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Yhteys estetty, palvelin saattaa olla alhaalla.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Haku onnistui, odotetaan yhteyttä...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Ei LAN-yhteyttä",
+  "@noLanConnection": {},
+  "takeScreenshot": "Ota kuvakaappaus",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Yhteys vastustajaan katkaistu.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Pyydä siirron peruuttamista",
+  "@takeBackRequest": {},
+  "nothingToShow": "Ei mitään näytettävää.",
+  "@nothingToShow": {},
+  "stopHosting": "Lopeta isännöinti",
+  "@stopHosting": {},
+  "connectionResetByPeer": "Yhteys nollattiin vastapuolelta.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "Yhteys katkesi yhteydenvalvonnan aikakatkaisun vuoksi. Yritä yhdistää uudelleen.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Aloita isännöinti",
+  "@startHosting": {},
+  "restartRequestRejected": "Uudelleenkäynnistyspyyntö hylätty.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Ei yhteyttä LAN-vastustajaan.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM-kehote",
+  "@llmPrompt": {},
+  "gameRestarted": "Peli käynnistettiin uudelleen.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Siirron peruutus hylättiin.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Haluatko varmasti luovuttaa tämän pelin?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Vastustaja luovutti. Sinä voitit!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Poista kaikki merkinnät",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Yhdistetty, odotetaan vastustajan siirtoa...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Verkkotila: Ei yhteyttä",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Pyyntö siirron peruutuksesta lähetetty vastustajalle.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Vastustaja on saattanut poistua pelistä",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Yhteys isäntään onnistui.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "Yhteys katkaistu: yhteydenvalvonnan aikakatkaisu",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Isäntää ei löytynyt.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Vahvista luovutus",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "Isännöinti aloitettu, odotetaan pelaajien liittymistä...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Yhteys aikakatkaistiin, verkkoyhteys epävakaa.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Ei LLM-kehotetta saatavilla.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Luovutit. Peli ohi.",
+  "@youResignedGameOver": {},
+  "serverIp": "Palvelimen IP",
+  "@serverIp": {},
+  "confirmClear": "Vahvista tyhjennys",
+  "@confirmClear": {},
+  "opponentSTurn": "Vastustajan vuoro.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Odotetaan asiakkaan yhteyttä...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "Siirron peruutuspyyntö hylättiin tai epäonnistui.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Lisää teksti",
+  "@addText": {},
+  "exitAnnotationMode": "Poistu annotointitilasta",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Kirjoita merkintäsi",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Yritetään yhdistää uudelleen...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Uudelleenkäynnistyspyyntö lähetetty. Odotetaan vastustajan vastausta...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "Palvelin on pysäytetty.",
+  "@serverIsStopped": {},
+  "restartRequest": "Uudelleenkäynnistyspyyntö",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Et voi pyytää siirron peruuttamista, kun ei ole sinun vuorosi.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "Siirron peruutus hyväksyttiin.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Paikallisverkon asetukset",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Uudelleen yhdistäminen onnistui!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "Kuvan tallennus Galleriaan epäonnistui.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Vastustaja pyysi aloittamaan pelin uudelleen. Hyväksytkö?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Sinun vuorosi.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Uudelleenyhdistäminen epäonnistui, käynnistä peli uudelleen.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Isäntä",
+  "@host": {},
+  "join": "Liity",
+  "@join": {},
+  "port": "Portti",
+  "@port": {},
+  "invalidIpAddress": "Virheellinen IP-osoite.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Virheellinen portti.",
+  "@invalidPort": {},
+  "connectingAttempt": "Yhdistetään: yritys {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Yhdistäminen epäonnistui: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Isännöinnin aloittaminen epäonnistui: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Isäntä löydetty: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Lopeta",
+  "@stop": {},
+  "discover": "Etsi",
+  "@discover": {},
+  "connect": "Yhdistä",
+  "@connect": {},
+  "clientConnected": "Asiakas yhdistettiin: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Etsitään: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Yhdistetään uudelleen ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Yhdistetty",
+  "@connected": {},
+  "delete": "Poista",
+  "@delete": {},
+  "ancientEgypt": "Muinainen Egypti",
+  "@ancientEgypt": {},
+  "gothicIce": "Goottilainen Jää",
+  "@gothicIce": {},
+  "riceField": "Riisipelto",
+  "@riceField": {},
+  "chinesePorcelain": "Kiinalainen Posliini",
+  "@chinesePorcelain": {},
+  "desertDusk": "Aavikon Hämärä",
+  "@desertDusk": {},
+  "precisionCraft": "Tarkkuuskäsityö",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Kansankirjonta",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Karpaattien Perintö",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Keisarillinen Loisto",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Böömiläinen Kristalli",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Savannin Auringonnousu",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmonia ja Tasapaino",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Kanelimauste",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Anatolialainen Mosaiikki",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Karnevaalihenki",
+  "@carnivalSpirit": {},
+  "custom": "Mukautettu",
+  "@custom": {},
+  "spiceMarket": "Maustemarkkinat",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Pyyhkäise avataksesi laatikon",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Näytä pelitiedot kuvakaappauksissa",
+  "@showGameInfoOnScreenshots": {}
 }

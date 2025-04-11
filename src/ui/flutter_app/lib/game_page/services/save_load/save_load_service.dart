@@ -1,20 +1,7 @@
-// This file is part of Sanmill.
-// Copyright (C) 2019-2024 The Sanmill developers (see AUTHORS file)
-//
-// Sanmill is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Sanmill is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-// ignore_for_file: use_build_context_synchronously
+// save_load_service.dart
 
 part of '../mill.dart';
 
@@ -35,6 +22,10 @@ class LoadService {
     dir = Directory(path);
     if (!dir.existsSync()) {
       await dir.create(recursive: true);
+    }
+
+    if (!context.mounted) {
+      return null;
     }
 
     String? resultLabel = await _showTextInputDialog(context);
@@ -94,6 +85,10 @@ class LoadService {
       }
     }
 
+    if (!context.mounted) {
+      return null;
+    }
+
     final String? result = await FilesystemPicker.openDialog(
       context: context,
       rootDirectory: dir,
@@ -101,8 +96,8 @@ class LoadService {
       fsType: FilesystemType.file,
       showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
-      fileTileSelectMode:
-          FileTileSelectMode.checkButton, // TODO: whole tile is better.
+      fileTileSelectMode: FileTileSelectMode.checkButton,
+      // TODO: whole tile is better.
       theme: const FilesystemPickerTheme(
         backgroundColor: Colors.greenAccent,
       ),
@@ -116,16 +111,19 @@ class LoadService {
   }
 
   /// Saves the game to the file.
-  static Future<String?> saveGame(BuildContext context) async {
+  static Future<String?> saveGame(BuildContext context,
+      {bool shouldPop = true}) async {
     if (EnvironmentConfig.test == true) {
       return null;
     }
 
     final String strGameSavedTo = S.of(context).gameSavedTo;
 
-    if (!(GameController().gameRecorder.hasPrevious == true ||
+    if (!(GameController().gameRecorder.activeNode?.parent != null ||
         GameController().isPositionSetup == true)) {
-      Navigator.pop(context);
+      if (shouldPop) {
+        Navigator.pop(context);
+      }
       return null;
     }
 
@@ -143,7 +141,9 @@ class LoadService {
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear("$strGameSavedTo $filename");
 
-    safePop();
+    if (shouldPop) {
+      safePop();
+    }
 
     // Wait for the dialog to disappear before taking a screenshot
     Future<void>.delayed(const Duration(milliseconds: 500), () {
@@ -161,7 +161,7 @@ class LoadService {
 
   /// Main function to load game from a file.
   static Future<void> loadGame(BuildContext context, String? filePath,
-      {required bool isRunning}) async {
+      {required bool isRunning, bool shouldPop = true}) async {
     filePath ??= await pickFileIfNeeded(context);
 
     if (filePath == null) {
@@ -192,15 +192,34 @@ class LoadService {
         // Assume original file reading logic if not 'content'
         final String fileContent = await readFileContent(filePath);
         logger.t('$_logTag File Content: $fileContent');
+        if (!context.mounted) {
+          return;
+        }
         final bool importSuccess = await importGameData(context, fileContent);
         if (importSuccess) {
+          if (!context.mounted) {
+            return;
+          }
           await handleHistoryNavigation(context);
         }
-        Navigator.pop(context);
+        if (!context.mounted) {
+          return;
+        }
+        if (shouldPop) {
+          Navigator.pop(context); // Only pop if used in a dialog context.
+        }
       }
     } catch (exception) {
+      if (!context.mounted) {
+        return;
+      }
       GameController().headerTipNotifier.showTip(S.of(context).loadFailed);
-      Navigator.pop(context);
+      if (!context.mounted) {
+        return;
+      }
+      if (shouldPop) {
+        Navigator.pop(context); // Only pop if used in a dialog context.
+      }
       return;
     }
     GameController().loadedGameFilenamePrefix =
@@ -208,10 +227,10 @@ class LoadService {
 
     // Delay to show the tip after the navigation tip is shown
     if (GameController().loadedGameFilenamePrefix != null) {
+      final String loadedGameFilenamePrefix =
+          GameController().loadedGameFilenamePrefix!;
       Future<void>.delayed(Duration.zero, () {
-        GameController()
-            .headerTipNotifier
-            .showTip(GameController().loadedGameFilenamePrefix!);
+        GameController().headerTipNotifier.showTip(loadedGameFilenamePrefix);
       });
     }
   }
@@ -268,7 +287,7 @@ class LoadService {
     try {
       ImportService.import(fileContent);
       logger.t('$_logTag File Content: $fileContent');
-      final String tagPairs = ImportService.getTagPairs(fileContent);
+      final String tagPairs = getTagPairs(fileContent);
 
       if (tagPairs.isNotEmpty) {
         rootScaffoldMessengerKey.currentState!
@@ -288,12 +307,22 @@ class LoadService {
   static Future<void> handleHistoryNavigation(BuildContext context) async {
     await HistoryNavigator.takeBackAll(context, pop: false);
 
+    if (!context.mounted) {
+      return;
+    }
+
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
+      if (!context.mounted) {
+        return;
+      }
       GameController()
           .headerTipNotifier
           .showTip(S.of(context).done); // "Game loaded."
     } else {
+      if (!context.mounted) {
+        return;
+      }
       final String tip =
           S.of(context).cannotImport(HistoryNavigator.importFailedStr);
       GameController().headerTipNotifier.showTip(tip);
@@ -305,7 +334,7 @@ class LoadService {
   static Future<String?> readFileContentFromUri(Uri uri) async {
     String? str;
     try {
-      str = await NativeMethods.readContentUri(uri);
+      str = await readContentUri(uri);
     } catch (e) {
       logger.e('Error reading file at $uri: $e');
       rethrow;
@@ -344,6 +373,9 @@ class LoadService {
                     return;
                   }
                   textFieldController.text = result;
+                  if (!context.mounted) {
+                    return;
+                  }
                   Navigator.pop(context, textFieldController.text);
                 }),
             ElevatedButton(

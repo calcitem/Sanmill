@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "暂无招法",
+  "noGameRecord": "暂无记录",
   "@noGameRecord": {
     "description": "No record"
   },
@@ -320,7 +320,7 @@
   "@skillLevel": {
     "description": "Difficulty level"
   },
-  "moveTime": "机器思考时间",
+  "moveTime": "AI 思考时间",
   "@moveTime": {
     "description": "AI thinking time"
   },
@@ -352,7 +352,7 @@
   "@human": {
     "description": "Human"
   },
-  "ai": "机器",
+  "ai": "AI",
   "@ai": {
     "description": "AI"
   },
@@ -368,7 +368,7 @@
   "@isAutoChangeFirstMove": {
     "description": "Auto Change First Move"
   },
-  "shufflingEnabled": "机器随机走子",
+  "shufflingEnabled": "AI 随机走子",
   "@shufflingEnabled": {
     "description": "Random move"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "如允许飞子，则当一方剩余多少枚棋子时可以飞棋。",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "少于几个子则输棋",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "走子阶段，当无路可走时输棋，而非转为由对方继续走子。",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "飞子",
   "@mayFly": {
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "点击对方的一颗棋子以吃子。",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "您需要先形成三连，才能吃掉对方的棋子。",
   "@needToCreateMillFirst": {
@@ -690,11 +690,11 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "不允许吃全三连",
+  "crackMill": "可从三连中吃子",
   "@crackMill": {
     "description": "Crack-mill"
   },
-  "crackMill_Detail": "若对方所有的子都在三连中, 也不允许吃子。",
+  "crackMill_Detail": "若对方所有的子都在三连中，仍可吃子。",
   "@crackMill_Detail": {
     "description": "If a player has only pieces in mills, the pieces in the mills will not lock to remove."
   },
@@ -710,7 +710,7 @@
   "@theme": {
     "description": "Theme"
   },
-  "helpContent": "直棋是一个非常古老的智力游戏，现已流传到中国各地，演变出“棋三”、“三棋”、“三三棋”、“打三棋”、“成三棋”、“下连”等多个变种。\n\n游戏目标为让对手被吃得仅剩不到三枚棋子。\n\n三次重复局面，或连续百步（可配置）内无吃子，则和棋。 \n\n游戏分三阶段：\n\n1. 在空位上摆子；\n2. 将棋子移动到相邻空位；\n3. 当只剩三枚棋子时，可“飞子”（可选）。\n\n摆子阶段\n\n棋盘上有二十四个空点。玩家交替在空位上落子，直至手中无子。若一方将自己的三枚棋子排成一排，则称为形成一个“三连”，便可吃掉对方的棋子，然后继续行棋。\n\n某些规则变体规定，只能吃掉对方不在“三连”中的子，除非对方所有的子都在“三连”之中。\n\n还有些规则变体规定，在摆子阶段，被吃掉的子所在的空位，双方都不能再在上面摆子。 \n\n当双方手中的棋子都摆完后，则进入走子阶段。\n\n走子阶段\n\n玩家将自己的棋子移动到相邻的点上。若无子可走，则判负。和摆子阶段类似，形成“三连”时便可吃掉对方的棋子。当一方的棋子仅剩两枚，则败局已定，判负。若棋盘上多于三枚棋子，但无子可走，也会被判负。\n\n飞子阶段\n\n某些规则变体中，一旦一方剩三枚棋子时，便可“飞”到任意空位上，无论该空位是否邻接。\n\n",
+  "helpContent": "直棋是一个非常古老的智力游戏，现已流传到中国各地，演变出“棋三”、“三棋”、“三三棋”、“打三棋”、“成三棋”、“下连”等多个变种。\n\n游戏目标为让对手被吃得仅剩不到三枚棋子。\n\n三次重复局面，或连续百步（可配置）内无吃子，则和棋。 \n\n游戏分三阶段：\n\n1. 在空位上摆子；\n2. 将棋子移动到相邻空位；\n3. 当只剩三枚棋子时，可“飞子”（可选）。\n\n摆子阶段\n\n棋盘上有二十四个空点。玩家交替在空位上落子，直至手中无子。若一方将自己的三枚棋子排成一排，则称为形成一个“三连”，便可吃掉对方的棋子，然后继续行棋。\n\n某些规则变体规定，只能吃掉对方不在“三连”中的子，除非对方所有的子都在“三连”之中。\n\n还有些规则变体规定，在摆子阶段，被吃掉的子所在的空位，双方都不能再在上面摆子。 \n\n当双方手中的棋子都摆完后，则进入走子阶段。\n\n走子阶段\n\n玩家将自己的棋子移动到相邻的点上。若无子可走，则判负。和摆子阶段类似，形成“三连”时便可吃掉对方的棋子。当一方的棋子仅剩两枚，则败局已定，判负。若棋盘上多于三枚棋子，但无子可走，也会被判负。\n\n飞子阶段\n\n某些规则变体中，一旦一方剩三枚棋子时，便可“飞”到任意空位上，无论该空位是否邻接。\n",
   "@helpContent": {
     "description": "Help Content"
   },
@@ -758,9 +758,9 @@
   "@gameOverCondition": {
     "description": "Game over condition"
   },
-  "aisPlayStyle": "机器的棋风",
+  "aisPlayStyle": "AI 的棋风",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "消极被动",
   "@passive": {
@@ -798,11 +798,11 @@
   "@boardTop": {
     "description": "Board offset from the top"
   },
-  "notAIsTurn": "现在不是轮到电脑行棋",
+  "notAIsTurn": "现在不是轮到 AI 行棋",
   "@notAIsTurn": {
     "description": "It is not the AI's turn."
   },
-  "aiIsNotThinking": "电脑并非正在思考中",
+  "aiIsNotThinking": "AI 并非正在思考中",
   "@aiIsNotThinking": {
     "description": "AI is not thinking."
   },
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "再次按返回键退出应用",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "更多",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "如果一方在一着中解除了一个三连并同时形成了一个新的三连，那么允许其在下一步棋把这个棋子再移回前一着的位置，从而反复连续形成三连。",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "一方剩下三个棋子并十步内双方均未吃子则和棋",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1268,11 +1268,11 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "您可以使用鼠标滚轮来选择值。",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "机器思考时间设置为 0 则表示没有思考时间的限制。",
+  "noTimeLimitForThinking": "AI 思考时间设置为 0 则表示没有思考时间的限制。",
   "@noTimeLimitForThinking": {},
-  "noteAiThinkingTimeMayNotBePrecise": "请注意，机器思考时间的调整可能并不精确。当难度等级设置为较低值时，实际思考时间可能会更短，而当时间耗尽时机器还在思考时，则实际思考时间可能会更长。",
+  "noteAiThinkingTimeMayNotBePrecise": "请注意，AI 思考时间的调整可能并不精确。当难度等级设置为较低值时，实际思考时间可能会更短，而当时间耗尽时 AI 还在思考时，则实际思考时间可能会更长。",
   "@noteAiThinkingTimeMayNotBePrecise": {},
-  "noteActualDifficultyLevelMayBeLimited": "如果将难度设置得很高，但未增加 AI 的思考时间，实际难度可能会因为思考时间的限制而被压缩在较低的水平。实际的难度水平会因机器性能而异。",
+  "noteActualDifficultyLevelMayBeLimited": "如果将难度设置得很高，但未增加 AI 的思考时间，实际难度可能会因为思考时间的限制而被压缩在较低的水平。实际的难度水平会因 AI 性能而异。",
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsMtdf": "MTD(f) 是 Alpha-Beta 搜索算法的一种改进算法，旨在通过重用中间搜索结果和使用良好的初始猜测来缩小搜索空间来提高效率。",
   "@whatIsMtdf": {},
@@ -1366,11 +1366,11 @@
   "@showPositionalAdvantageIndicator": {},
   "usePerfectDatabase": "使用完美数据库",
   "@usePerfectDatabase": {},
-  "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果机器无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“机器思考时间”将大幅缩短。“机器的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
+  "perfectDatabaseDescription": "开启此选项以使用由尖端算法生成的完美游戏数据库。该功能集成了开局和残局策略以推荐最佳着法，是寻求游戏中最高精确度的玩家的首选。数据库通过精密的计算技术创建，旨在提供接近完美的游戏解决方案。\n\n注意：如果 AI 无法访问数据库，那么将转向传统算法进行游戏决策。当数据库可用时，“难度等级”实际上变得极高，而“AI 思考时间”将大幅缩短。“AI 的棋风”选项中的许多设置也将被覆盖，因为数据库结果具有最高优先级。\n\n如需了解如何使用该完美数据库，请点击这里。",
   "@perfectDatabaseDescription": {},
   "backgroundImage": "背景图片",
   "@backgroundImage": {},
-  "whatIsRandom": "当“使用完美数据库”选项未启用时，“随机”设置会导致机器在不使用任何移动选择算法的情况下随机移动棋子。这通常会导致游戏性明显较弱。相反，当启用“使用完美数据库”时，人工智能完全依赖“完美数据库”进行决策，而不是将其与传统的人工智能算法混合。在这种模式下，人工智能的动作完全基于数据库的内容，避免了对实时计算或搜索算法的依赖。",
+  "whatIsRandom": "当“使用完美数据库”选项未启用时，“随机”设置会导致 AI 在不使用任何移动选择算法的情况下随机移动棋子。这通常会导致游戏性明显较弱。相反，当启用“使用完美数据库”时，人工智能完全依赖“完美数据库”进行决策，而不是将其与传统的人工智能算法混合。在这种模式下，人工智能的动作完全基于数据库的内容，避免了对实时计算或搜索算法的依赖。",
   "@whatIsRandom": {},
   "removeOpponentsPieceFromHandThenOpponentsTurn": "吃掉对方手中的棋子；然后轮到对方摆子。",
   "@removeOpponentsPieceFromHandThenOpponentsTurn": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "专注于封堵路径",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "在游戏的特定阶段中，优先阻碍对手走棋，而不是形成三连。在这些阶段中，AI 不会专注于通过形成三连来吃掉对方的棋子，而是旨在困住对方，使对方的棋子无法移动，并通过消耗战而不是积极进攻来争取胜利。这种针对特定阶段的策略不会主动阻止对方形成三连。",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "棋子图片",
+  "@pieceImage": {},
+  "importColorSettings": "导入颜色设置",
+  "@importColorSettings": {},
+  "exportColorSettings": "导出颜色设置",
+  "@exportColorSettings": {},
+  "import": "导入",
+  "@import": {},
+  "export": "导出",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "请先将 JSON 格式的配置复制到剪贴板。",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "已复制到剪贴板。",
+  "@copiedToClipboard": {},
+  "imported": "已导入。",
+  "@imported": {},
+  "boardImage": "棋盘图片",
+  "@boardImage": {},
+  "autumnLeaves": "秋叶",
+  "@autumnLeaves": {},
+  "legendaryLand": "青绿",
+  "@legendaryLand": {},
+  "vignetteEffect": "暗角效果",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "当设置了棋盘背景图片时，您是否希望工具栏完全透明？",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "游戏中启用振动",
+  "@vibration": {},
+  "soundTheme": "声音主题",
+  "@soundTheme": {},
+  "ball": "球",
+  "@ball": {},
+  "liquid": "水",
+  "@liquid": {},
+  "wood": "木",
+  "@wood": {},
+  "placeEffectAnimation": "摆子的动画效果",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "吃子的动画效果",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "工具栏显示在底部",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "棋盘圆角半径",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "使用开局库",
+  "@useOpeningBook": {},
+  "currentRule": "当前的",
+  "@currentRule": {},
+  "nineMensMorris": "莫里斯九子棋",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "莫里斯十二子棋",
+  "@twelveMensMorris": {},
+  "morabaraba": "莫拉巴拉巴",
+  "@morabaraba": {},
+  "dooz": "波斯多茲",
+  "@dooz": {},
+  "chamGonu": "参古努",
+  "@chamGonu": {},
+  "zhiQi": "直棋",
+  "@zhiQi": {},
+  "chengSanQi": "成三棋",
+  "@chengSanQi": {},
+  "mulMulan": "木兰棋",
+  "@mulMulan": {},
+  "nerenchi": "锡兰直棋",
+  "@nerenchi": {},
+  "ruleSet": "规则集",
+  "@ruleSet": {},
+  "laskerMorris": "拉斯克风车棋",
+  "@laskerMorris": {},
+  "oneTimeMill": "俄罗斯直棋",
+  "@oneTimeMill": {},
+  "daSanQi": "打三棋",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "让 AI 在开局阶段采用人类专业棋手惯用的着法。注意：此功能目前仅适用于特定棋规。",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "显示优势图",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "仅当 AI 行棋后，优势图才会绘制。人类棋手行棋时则不会绘制。",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "在所有棋子摆完之前，不能吃掉对方棋子。摆完后，根据三连数量来吃子。",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "在双方所有棋子摆完之前，不能吃掉对方棋子。双方都摆完后，双方根据己方形成的三连数量来吃掉对方的棋子：如果三连数量相同，则双方吃掉对方相同数量的棋子；如果一方的三连更多，则最多只比对方多吃掉一枚棋子。如果只有一方形成三连，则该方吃掉两枚棋子，另一方吃掉一枚。如果双方都没有形成三连，则双方各移除己方一枚棋子。",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "阿拉伯帐篷",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "请选择自己的棋子",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "还没轮到你行棋",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "标注工具栏背景颜色",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "标注工具栏图标颜色",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "显示标注工具栏",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "进入标注模式",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "您确定要清除所有标注吗？",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "大模型提示词已复制到剪贴板。",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "连接被拒绝，服务器可能已宕机",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "发现成功，等待连接...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "无局域网连接",
+  "@noLanConnection": {},
+  "takeScreenshot": "截图",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "已与对手断开连接。",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "悔棋请求",
+  "@takeBackRequest": {},
+  "nothingToShow": "无可显示内容。",
+  "@nothingToShow": {},
+  "stopHosting": "停止服务",
+  "@stopHosting": {},
+  "connectionResetByPeer": "连接被对方重置",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "由于心跳超时，连接丢失。请重新连接。",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "开始服务",
+  "@startHosting": {},
+  "restartRequestRejected": "重启请求被拒绝。",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "未连接到局域网对手。",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "大模型提示词",
+  "@llmPrompt": {},
+  "gameRestarted": "游戏已重启",
+  "@gameRestarted": {},
+  "takeBackRejected": "悔棋请求被拒绝",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "您确定要认输吗？",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "对手认输。你赢了！",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "清除所有标注",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "已连接，等待对手走棋...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "网络状态：断开",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "已向对手发送悔棋请求。",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "对手可能已离开游戏",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "已成功连接到主机",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "连接丢失：心跳超时",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "未发现主机。",
+  "@noHostDiscovered": {},
+  "confirmResignation": "确认认输",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "已开始服务，等待玩家加入...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "连接超时，网络连接不稳定",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "无可用的大模型提示词",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "你已认输。游戏结束",
+  "@youResignedGameOver": {},
+  "serverIp": "服务器 IP",
+  "@serverIp": {},
+  "confirmClear": "确认清除",
+  "@confirmClear": {},
+  "opponentSTurn": "轮到对方行棋",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "等待客户端连接...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "悔棋请求被拒绝或失败。",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "添加文本",
+  "@addText": {},
+  "exitAnnotationMode": "退出标注模式",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "输入您的标注",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "尝试重新连接...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "重新开始游戏的请求已发送，等待对手回复...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "服务器已停止",
+  "@serverIsStopped": {},
+  "restartRequest": "重启请求",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "并非轮到你行棋，故无法请求悔棋。",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "悔棋请求已被接受",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "本地网络设置",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "重新连接成功！",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "保存图片到图库失败。",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "对手请求重启游戏。你同意吗？",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "轮到你了",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "无法重新连接，请重启游戏",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "主机",
+  "@host": {},
+  "join": "加入",
+  "@join": {},
+  "port": "端口",
+  "@port": {},
+  "invalidIpAddress": "无效的 IP 地址。",
+  "@invalidIpAddress": {},
+  "invalidPort": "无效的端口。",
+  "@invalidPort": {},
+  "connectingAttempt": "正在连接：尝试 {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "连接失败：{error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "启动服务失败：{error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "发现主机：{ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "停止",
+  "@stop": {},
+  "discover": "发现",
+  "@discover": {},
+  "connect": "连接",
+  "@connect": {},
+  "clientConnected": "客户端已连接：{clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "正在发现：{seconds} 秒",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "重连 ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "已连接",
+  "@connected": {},
+  "delete": "删除",
+  "@delete": {},
+  "ancientEgypt": "敦煌",
+  "@ancientEgypt": {},
+  "gothicIce": "凛珥",
+  "@gothicIce": {},
+  "riceField": "禾溟",
+  "@riceField": {},
+  "chinesePorcelain": "瓷蕴",
+  "@chinesePorcelain": {},
+  "desertDusk": "沙焃",
+  "@desertDusk": {},
+  "precisionCraft": "微錾",
+  "@precisionCraft": {},
+  "folkEmbroidery": "乡绮",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "喀琛",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "冕赫",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "波璨",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "莽熹",
+  "@savannaSunrise": {},
+  "harmonyBalance": "和衡",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "桂辛",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "瑰瑍",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "欢猋",
+  "@carnivalSpirit": {},
+  "custom": "自定义",
+  "@custom": {},
+  "spiceMarket": "辛墟",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "滑动页面可打开抽屉",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "在截图上显示棋局信息",
+  "@showGameInfoOnScreenshots": {}
 }

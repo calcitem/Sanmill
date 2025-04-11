@@ -100,7 +100,7 @@
   "@tipRemoved": {
     "description": "Removed."
   },
-  "tipMove": "Lépjen egy koroggal.",
+  "tipMove": "Lépjen egy koronggal.",
   "@tipMove": {
     "description": "Move a piece."
   },
@@ -192,7 +192,7 @@
   "@cannotImport": {
     "description": "Cannot import"
   },
-  "movesAndRulesNotMatch": "Mișcările și regulile nu se potrivesc.",
+  "movesAndRulesNotMatch": "A lépések és a szabályok nem egyeznek.",
   "@movesAndRulesNotMatch": {
     "description": "Rules and moves do not match."
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "Ha az ugrálás (Flying) aktiválva van és a játékos korongjainak száma előre meghatározott értékre csökkentek, ezek bármely szabad mezőre ugorhatnak.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Legkevesebb korong",
   "@piecesAtLeastCount": {
@@ -416,11 +416,11 @@
   "@isDefenderMoveFirst_Detail": {
     "description": "The player who moves second in the placing phase moves first in the moving phase."
   },
-  "mayRemoveMultiple": "Csikicsuki",
+  "mayRemoveMultiple": "Többszörös eltávolítás",
   "@mayRemoveMultiple": {
     "description": "Multi-remove"
   },
-  "mayRemoveMultiple_Detail": "Ha egy játékos ugyanazon koronggal több malmot alakít (csikicsuki), akkor az ellenféltől a létesített malmok számával megeggyező korongot távolíthat el.",
+  "mayRemoveMultiple_Detail": "Ha egy játékos ugyanazzal a koronggal egyszerre több malmot hoz létre, akkor a létrehozott malmok számának megfelelő számú ellenfél-korongot távolíthat el.",
   "@mayRemoveMultiple_Detail": {
     "description": "If a player closes more than one mill at once, she will be able to remove the number of mills she closed."
   },
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "A játékos veszít, ha ellenfele blokkolja összes korongjainak lépési lehetőségét. Ha az opció ki van kapcsolva, akkor változtasson.",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "Ugrás",
   "@mayFly": {
@@ -614,13 +614,13 @@
   },
   "toRemovePiece": "Eltávolítás végett érintse meg az ellenfél egy korongját.",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "Malmot kell alkotnia, mielőtt eltávolíthatna egy korongot.",
   "@needToCreateMillFirst": {
     "description": "You need to create a mill first before you can remove a piece."
   },
-  "needToPlayWithOwnPieces": "Saját koronggal kell játszana.",
+  "needToPlayWithOwnPieces": "Saját korongjaival kell játszania.",
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
@@ -690,7 +690,7 @@
   "@done": {
     "description": "Done."
   },
-  "crackMill": "Nyított-malom",
+  "crackMill": "Nyitott malom",
   "@crackMill": {
     "description": "Crack-mill"
   },
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "AI játékstílusa",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "Passzív",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "Koppintson újra a távozáshoz.",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "Több",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "Ha egy játékos megtöri a malmot, hogy azonnal új malmot hozzon létre, akkor az ilyen darabot a következő lépésével visszahelyezheti az eredeti kereszteződésbe, ha új malmot készít.",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "A játék sorsolásra kerül, ha egy játékosnak három darabja van, és tíz mozdulat után egyik játékos sem távolítja el az ellenfél darabjait",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1214,7 +1214,7 @@
       }
     }
   },
-  "notPlacingPhase": "Nem helyezi el a fázist, nem módosíthatja.",
+  "notPlacingPhase": "Nem az elhelyezési fázisban van, nem módosítható.",
   "@notPlacingPhase": {
     "description": "Not placing phase, cannot change it."
   },
@@ -1222,7 +1222,7 @@
   "@paste": {
     "description": "Paste"
   },
-  "pasteDone": "A paszta kész.",
+  "pasteDone": "A beillesztés megtörtént.",
   "@pasteDone": {
     "description": "The paste is done."
   },
@@ -1306,7 +1306,7 @@
   "@firstAndSecondPlayerRemovePiece": {},
   "secondAndFirstPlayerRemovePiece": "A második és az első játékos eltávolítja az ellenfél egyik bábuját.",
   "@secondAndFirstPlayerRemovePiece": {},
-  "enteredFlyingPhase": "A repülési fázisba lépve az ellenfél bábuja a tábla bármely üres pontjára ugorhat. A repülési szabályt a „Szabálybeállítások” alatt kapcsolhatja ki.",
+  "enteredFlyingPhase": "A repülési fázisba lépve az ellenfeled bármely korongja a tábla bármely üres mezőjére ugorhat.",
   "@enteredFlyingPhase": {},
   "whenStalemate": "Amikor patthelyzet",
   "@whenStalemate": {},
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "Összpontosítson az útvonalak blokkolására",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "A játék bizonyos fázisaiban részesítse előnyben az ellenfél mozgásának akadályozását a malmok kialakításával szemben. Ahelyett, hogy a malmok befejezésével eltávolítaná a darabokat, az MI ezekben a fázisokban törekszik az ellenfél csapdába ejtésére, mozgásképtelenné téve őket és biztosítva a győzelmet kopással, nem pedig agresszív játékkal. Ez a fázisspecifikus stratégia nem akadályozza aktívan az ellenfél malmait.",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "Bábuképek",
+  "@pieceImage": {},
+  "importColorSettings": "Színbeállítások importálása",
+  "@importColorSettings": {},
+  "exportColorSettings": "Színbeállítások exportálása",
+  "@exportColorSettings": {},
+  "import": "Importálás",
+  "@import": {},
+  "export": "Exportálás",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "Kérjük, először másolja a JSON formátumú beállításokat a vágólapra.",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "Vágólapra másolva.",
+  "@copiedToClipboard": {},
+  "imported": "Importálva.",
+  "@imported": {},
+  "boardImage": "Tábla kép",
+  "@boardImage": {},
+  "autumnLeaves": "Őszi levelek",
+  "@autumnLeaves": {},
+  "legendaryLand": "Legendás Föld",
+  "@legendaryLand": {},
+  "vignetteEffect": "Vignetta hatás",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "Szeretné a felső eszköztárat teljesen átlátszóvá tenni, amikor egy tábla háttérkép van beállítva?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "Engedélyezze a rezgést a játékban",
+  "@vibration": {},
+  "soundTheme": "Hang téma",
+  "@soundTheme": {},
+  "ball": "Labda",
+  "@ball": {},
+  "liquid": "Folyadék",
+  "@liquid": {},
+  "wood": "Fa",
+  "@wood": {},
+  "placeEffectAnimation": "Bábu elhelyezési animációs effektus",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "Bábu eltávolítási animációs effektus",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "Eszköztár megjelenítése alul",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "Tábla sarkának sugara",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "Használja a nyitókönyvet",
+  "@useOpeningBook": {},
+  "currentRule": "Jelenlegi",
+  "@currentRule": {},
+  "nineMensMorris": "Malom",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "Tizenkét férfi Morris",
+  "@twelveMensMorris": {},
+  "morabaraba": "Morabaraba",
+  "@morabaraba": {},
+  "dooz": "Dooz",
+  "@dooz": {},
+  "chamGonu": "Cham Gonu",
+  "@chamGonu": {},
+  "zhiQi": "Zhi Qi",
+  "@zhiQi": {},
+  "chengSanQi": "Cheng San Qi",
+  "@chengSanQi": {},
+  "mulMulan": "Mul-Mulan",
+  "@mulMulan": {},
+  "nerenchi": "Nerenchi",
+  "@nerenchi": {},
+  "ruleSet": "Szabálykészlet",
+  "@ruleSet": {},
+  "laskerMorris": "Lasker-malom",
+  "@laskerMorris": {},
+  "oneTimeMill": "Egyszeri Malom",
+  "@oneTimeMill": {},
+  "daSanQi": "Da San Qi",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "Engedje meg az AI-nak, hogy az első játékszakaszban a profi emberi játékosok által gyakran használt nyitómozdulatokat alkalmazza. Megjegyzés: Ez a funkció jelenleg csak bizonyos szabálykészletekhez érhető el.",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "Mutassa az előny grafikonját",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "Az előnygráf csak akkor kerül megrajzolásra, miután a mesterséges intelligencia lépést tett. Nem kerül megrajzolásra, amikor az emberi játékos lép.",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "Tiltsd meg a bábuk eltávolítását, amíg minden bábu a táblára nem kerül, majd a malmok száma alapján távolíts el bábukat.",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "Tiltsd meg a bábuk eltávolítását, amíg minden bábu a táblára nem kerül, majd a malmok száma alapján távolíts el bábukat: ha megegyezik, mindkét fél ugyanannyi bábut távolít el; ha az egyiknek több van, akkor egy bábuval többet távolít el, hogy megmaradjon az egy bábu különbség. Ha csak az egyik alakít ki malmokat, akkor ő két bábut távolít el, a másik pedig egyet. Ha egyik sem alakít ki malmot, mindkét fél egy-egy bábut távolít el.",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "El Filja",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "Válassz egyet a bábuid közül.",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "Nem te következel.",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "Megjegyzősáv háttérszíne",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "Megjegyzősáv ikon színe",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "Megjegyzősáv megjelenítése",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "Lépj be a megjegyzési módba",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "Biztosan törölni akarod az összes megjegyzést?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM prompt vágólapra másolva.",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "Kapcsolat megtagadva, a szerver esetleg leállt.",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "Felderítés sikeres, várakozás a kapcsolatra...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "Nincs LAN-kapcsolat",
+  "@noLanConnection": {},
+  "takeScreenshot": "Képernyőkép készítése",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "Megszakadt a kapcsolat az ellenféllel.",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "Visszalépési kérelem",
+  "@takeBackRequest": {},
+  "nothingToShow": "Nincs megjeleníthető tartalom.",
+  "@nothingToShow": {},
+  "stopHosting": "Hosztolás leállítása",
+  "@stopHosting": {},
+  "connectionResetByPeer": "A kapcsolatot a peer visszaállította.",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "A kapcsolat szívverés-időtúllépés miatt megszakadt. Kérjük, csatlakozz újra.",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "Hosztolás indítása",
+  "@startHosting": {},
+  "restartRequestRejected": "Az újraindítási kérés elutasítva.",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "Nincs kapcsolat LAN-ellenféllel.",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM prompt",
+  "@llmPrompt": {},
+  "gameRestarted": "A játék újraindult.",
+  "@gameRestarted": {},
+  "takeBackRejected": "Visszalépés elutasítva.",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "Biztosan feladod ezt a játékot?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "Az ellenfél feladta. Győztél!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "Összes megjegyzés törlése",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "Csatlakozva, várjuk az ellenfél lépését...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "Hálózati állapot: kapcsolat bontva",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "Visszalépési kérés elküldve az ellenfélnek.",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "Lehet, hogy az ellenfél kilépett a játékból",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "Sikeresen csatlakoztál a hoszthoz.",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "A kapcsolat megszakadt: heartbeat-timeout",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "Nem található hoszt.",
+  "@noHostDiscovered": {},
+  "confirmResignation": "Feladás megerősítése",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "A játék hosztolása elindult, várjuk a csatlakozó játékosokat...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "Időtúllépés, instabil hálózati kapcsolat.",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "Nincs elérhető LLM prompt.",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "Feladtad. Véget ért a játék.",
+  "@youResignedGameOver": {},
+  "serverIp": "Szerver IP",
+  "@serverIp": {},
+  "confirmClear": "Törlés megerősítése",
+  "@confirmClear": {},
+  "opponentSTurn": "Az ellenfél következik.",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "Várakozás klienskapcsolatra...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "A visszalépési kérés elutasítva vagy sikertelen.",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "Szöveg hozzáadása",
+  "@addText": {},
+  "exitAnnotationMode": "Kilépés a megjegyzési módból",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "Írd be a megjegyzésedet",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "Újracsatlakozás folyamatban...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "Újraindítási kérelem elküldve. Várakozás az ellenfél válaszára...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "A szerver le van állítva.",
+  "@serverIsStopped": {},
+  "restartRequest": "Újraindítási kérelem",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "Nem kérhetsz visszalépést, ha nem te következel.",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "A visszalépés elfogadva.",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "Helyi hálózati beállítások",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "Sikeresen újrakapcsolódva!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "A kép mentése a galériába sikertelen.",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "Az ellenfél kérte a játék újraindítását. Elfogadod?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "Te következel.",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "Nem sikerült újracsatlakozni, kérjük, indítsd újra a játékot.",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "Hoszt",
+  "@host": {},
+  "join": "Csatlakozás",
+  "@join": {},
+  "port": "Port",
+  "@port": {},
+  "invalidIpAddress": "Érvénytelen IP-cím.",
+  "@invalidIpAddress": {},
+  "invalidPort": "Érvénytelen port.",
+  "@invalidPort": {},
+  "connectingAttempt": "Csatlakozás: próbálkozás {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "Nem sikerült csatlakozni: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "Nem sikerült elindítani a hosztolást: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "Hoszt felfedezve: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "Leállítás",
+  "@stop": {},
+  "discover": "Felfedezés",
+  "@discover": {},
+  "connect": "Csatlakozás",
+  "@connect": {},
+  "clientConnected": "Kliens csatlakozott: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "Felfedezés: {seconds} s",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "Újracsatlakozás ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "Csatlakozva",
+  "@connected": {},
+  "delete": "Törlés",
+  "@delete": {},
+  "ancientEgypt": "Árpád-kori Örökség",
+  "@ancientEgypt": {},
+  "gothicIce": "Mátyás-kori Gótika",
+  "@gothicIce": {},
+  "riceField": "Búzamező",
+  "@riceField": {},
+  "chinesePorcelain": "Herendi Porcelán",
+  "@chinesePorcelain": {},
+  "desertDusk": "Pusztai Alkony",
+  "@desertDusk": {},
+  "precisionCraft": "Kézműves Elegancia",
+  "@precisionCraft": {},
+  "folkEmbroidery": "Matyó Hímzés",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "Kárpát Örökség",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "Monarchikus Pompa",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "Ajka Kristály",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "Pusztai Hajnal",
+  "@savannaSunrise": {},
+  "harmonyBalance": "Harmónia és Egyensúly",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "Paprikás Fűszer",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "Zsolnay Mozaik",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "Busójárás Szellem",
+  "@carnivalSpirit": {},
+  "custom": "Sajátos",
+  "@custom": {},
+  "spiceMarket": "Paprika Piac",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "Húzd el az ujjad a fiók megnyitásához",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "Játékadatok megjelenítése a képernyőképeken",
+  "@showGameInfoOnScreenshots": {}
 }

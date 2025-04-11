@@ -1,25 +1,8 @@
-/*
-Malom, a Nine Men's Morris (and variants) player and solver program.
-Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-See our webpage (and the paper linked from there):
-http://compalg.inf.elte.hu/~ggevay/mills/index.php
-
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// perfect_sector.cpp
 
 #include "perfect_sector.h"
 #include "perfect_common.h"
@@ -63,8 +46,8 @@ Sector::Sector(::Id the_id)
 
     sector_objs.push_back(this);
 
-    STRCPY(fname, sizeof(fname), id.file_name().c_str());
-    LOG("Creating sector object for %s\n", fname);
+    STRCPY(fileName, sizeof(fileName), id.file_name().c_str());
+    LOG("Creating sector object for %s\n", fileName);
 
 #ifndef WRAPPER
     allocate_hash();
@@ -102,7 +85,7 @@ void Sector::read_header(FILE *file)
     fread1(_stone_diff_flag, file);
     assert(_version == version);
     assert(_eval_struct_size == eval_struct_size);
-    assert(_field2_offset == field2_offset);
+    assert(_field2_offset == field2Offset);
     assert(_stone_diff_flag == stone_diff_flag);
     fseek(f, header_size, SEEK_SET);
 #endif
@@ -112,7 +95,7 @@ void Sector::write_header(FILE *file)
 #ifdef DD
     fwrite1(version, file);
     fwrite1(eval_struct_size, file);
-    fwrite1(field2_offset, file);
+    fwrite1(field2Offset, file);
     fwrite1(stone_diff_flag, file);
     long ffu_size = header_size - ftell(file);
     char *dummy = new char[ffu_size];
@@ -210,11 +193,11 @@ eval_elem2 Sector::get_eval(int i)
 eval_elem_sym2 Sector::get_eval_inner(int i)
 {
 #ifdef DD
-    field2_t spec_field2 = -(1 << (field2_size - 1));
+    field2_t spec_field2 = -(1 << (field2Size - 1));
     // field2_t max_field2 = -(spec_field2 + 1);
 #endif
 
-    std::pair<sec_val, field2_t> resi = extract(i);
+    std::pair<sec_val, field2_t> resi = extract_value(i);
     if (resi.second == spec_field2) {
         assert(em_set.count(i));
         return eval_elem_sym2 {resi.first, em_set[i]};
@@ -232,7 +215,7 @@ eval_elem_sym2 Sector::get_eval_inner(int i)
 {
     size_t ret;
 #ifndef WRAPPER
-    int resi = eval[i];
+    int resi = evaluate[i];
 #else
     fseek(f, i, SEEK_SET);
     unsigned char read;
@@ -269,7 +252,7 @@ T sign_extend(T x, int b)
         return x;
 }
 
-std::pair<sec_val, field2_t> Sector::extract(int i)
+std::pair<sec_val, field2_t> Sector::extract_value(int i)
 {
     unsigned int a = 0;
     static_assert(sizeof(a) >= eval_struct_size, "Increase the size of 'a'! "
@@ -282,7 +265,7 @@ std::pair<sec_val, field2_t> Sector::extract(int i)
                                                  "casts)");
 #ifndef WRAPPER
     for (int j = 0; j < eval_struct_size; j++)
-        a |= (int)eval[eval_struct_size * i + j] << 8 * j;
+        a |= (int)evaluate[eval_struct_size * i + j] << 8 * j;
 #else
     fseek(f, header_size + eval_struct_size * i, SEEK_SET);
     unsigned char read[eval_struct_size];
@@ -295,9 +278,9 @@ std::pair<sec_val, field2_t> Sector::extract(int i)
 #endif
 
     auto r = std::make_pair(
-        sign_extend(static_cast<sec_val>(a & ((1 << field1_size) - 1)),
-                    field1_size),
-        sign_extend(static_cast<field2_t>(a >> field2_offset), field2_size));
+        sign_extend(static_cast<sec_val>(a & ((1 << field1Size) - 1)),
+                    field1Size),
+        sign_extend(static_cast<field2_t>(a >> field2Offset), field2Size));
 
     return r;
 }
@@ -316,11 +299,11 @@ void Sector::allocate_hash()
 
 #ifdef WRAPPER
     if (!f) {
-        std::string filename = std::string(fname);
+        std::string filename = std::string(fileName);
 #ifdef _WIN32
-        filename = sec_val_path + "\\" + filename;
+        filename = secValPath + "\\" + filename;
 #else
-        filename = sec_val_path + "/" + filename;
+        filename = secValPath + "/" + filename;
 #endif
 
         if (FOPEN(&f, filename.c_str(), "rb") == -1) {

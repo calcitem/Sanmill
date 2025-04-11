@@ -4,7 +4,7 @@
   "@appName": {
     "description": "The app name"
   },
-  "welcome": "स्वागत हे",
+  "welcome": "स्वागत है",
   "@welcome": {
     "description": "Welcome"
   },
@@ -12,7 +12,7 @@
   "@yes": {
     "description": "Yes"
   },
-  "no": "नहीं न",
+  "no": "नहीं",
   "@no": {
     "description": "No"
   },
@@ -32,7 +32,7 @@
   "@aiVsAi": {
     "description": "AI Vs AI"
   },
-  "humanVsCloud": "मानव बनाम बादल",
+  "humanVsCloud": "मानव बनाम क्लाउड",
   "@humanVsCloud": {
     "description": "Human Vs Cloud"
   },
@@ -284,7 +284,7 @@
   "@challengeHarderLevel": {
     "description": "Challenge harder level?"
   },
-  "youLose": "तुम हारे!",
+  "youLose": "आप हार गए!",
   "@youLose": {
     "description": "You Lose!"
   },
@@ -292,7 +292,7 @@
   "@analyze": {
     "description": "Analyze"
   },
-  "about": "तकरीबन",
+  "about": "के बारे में",
   "@about": {
     "description": "About"
   },
@@ -352,7 +352,7 @@
   "@human": {
     "description": "Human"
   },
-  "ai": "ऐ",
+  "ai": "एआई",
   "@ai": {
     "description": "AI"
   },
@@ -394,7 +394,7 @@
   },
   "flyPieceCount_Detail": "यदि फ्लाइंग सक्षम है, जब एक खिलाड़ी को एक विशिष्ट पीस काउंट तक कम कर दिया जाता है, तो उसके टुकड़े किसी भी खाली स्थान पर जाने के लिए स्वतंत्र होते हैं, बजाय बाकी गेम की तरह आसन्न बिंदुओं तक सीमित होने के।",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player is reduced to a specific piece count, her pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "टुकड़े कम से कम",
   "@piecesAtLeastCount": {
@@ -446,7 +446,7 @@
   },
   "isLoseButNotChangeSideWhenNoWay_Detail": "खिलाड़ी हार जाएगा यदि उसका प्रतिद्वंद्वी उन्हें ब्लॉक कर देता है ताकि उन्हें स्थानांतरित नहीं किया जा सके। यदि यह विकल्प अक्षम है, तो स्थानांतरित करने के लिए पक्ष बदलें।",
   "@isLoseButNotChangeSideWhenNoWay_Detail": {
-    "description": "The player will lose if his opponent blocks them so that they cannot be moved. Change side to move if this option is disabled."
+    "description": "The player will lose if his opponent blocks them so that they cannot be moved. If this option is disabled, switch the side to move instead of declaring a loss."
   },
   "mayFly": "फ्लाइंग",
   "@mayFly": {
@@ -604,7 +604,7 @@
   "@toPlacePiece": {
     "description": "Tap on any available point to place the piece."
   },
-  "toSelectPiece": "इसे स्थानांतरित करने के लिए एक टुकड़े पर टैप करें।",
+  "toSelectPiece": "टुकड़े को स्थानांतरित करने के लिए उस पर टैप करें।",
   "@toSelectPiece": {
     "description": "Tap on a piece to move it."
   },
@@ -614,7 +614,7 @@
   },
   "toRemovePiece": "हटाने के लिए प्रतिद्वंद्वी के एक टुकड़े पर टैप करें।",
   "@toRemovePiece": {
-    "description": "Tap on the opponent's one piece to remove."
+    "description": "Tap on one of the opponent's pieces to remove it."
   },
   "needToCreateMillFirst": "किसी टुकड़े को निकालने से पहले आपको पहले एक चक्की बनानी होगी।",
   "@needToCreateMillFirst": {
@@ -760,7 +760,7 @@
   },
   "aisPlayStyle": "एआई की खेल शैली",
   "@aisPlayStyle": {
-    "description": "AI's playstyle"
+    "description": "AI's play style"
   },
   "passive": "निष्क्रिय",
   "@passive": {
@@ -812,7 +812,7 @@
   },
   "tapBackAgainToLeave": "जाने के लिए फिर से टैप करें।",
   "@tapBackAgainToLeave": {
-    "description": "Tap back again to leave."
+    "description": "Tap Back again to exit."
   },
   "more": "अधिक",
   "@more": {
@@ -1000,7 +1000,7 @@
   },
   "mayBreakAndRemakeMillRepeatedly_Detail": "यदि कोई खिलाड़ी तुरंत एक नई मिल बनाने के लिए एक मिल तोड़ता है, तो ऐसा खिलाड़ी अपनी अगली चाल में इस तरह के टुकड़े को मूल जंक्शन पर वापस ले जा सकता है यदि वह एक नई मिल बनाता है।",
   "@mayBreakAndRemakeMillRepeatedly_Detail": {
-    "description": "If a player breaks a mill to create a new mill immediately, such player can move such piece back to the original junction in his next move if it makes a new mill."
+    "description": "If a player breaks a mill to immediately form a new one, they can move that piece back to the original point in their next move if it forms another new mill."
   },
   "drawIfNoRemovalWithinTenMovesWhenThreeLeft": "यदि किसी खिलाड़ी के तीन टुकड़े हों और दस चालों के बाद कोई भी खिलाड़ी प्रतिद्वंद्वी के टुकड़ों को नहीं हटाता है तो खेल ड्रा हो जाता है",
   "@drawIfNoRemovalWithinTenMovesWhenThreeLeft": {
@@ -1441,5 +1441,313 @@
   "focusOnBlockingPaths": "अवरुद्ध पथों पर ध्यान केंद्रित करें",
   "@focusOnBlockingPaths": {},
   "focusOnBlockingPaths_Detail": "मिल्स बनाने की बजाय प्रतिद्वंद्वी की चालों को अवरुद्ध करने को प्राथमिकता दें। मिल्स पूरा करके टुकड़ों को हटाने पर ध्यान केंद्रित करने के बजाय, एआई प्रतिद्वंद्वी को फँसाने का लक्ष्य रखता है, जिससे वे हिलने-डुलने में असमर्थ हो जाते हैं और आक्रामक खेल के बजाय थकावट के माध्यम से जीत सुनिश्चित करते हैं। यह रणनीति प्रतिद्वंद्वी के मिल्स को सक्रिय रूप से अवरुद्ध नहीं करती है।",
-  "@focusOnBlockingPaths_Detail": {}
+  "@focusOnBlockingPaths_Detail": {},
+  "pieceImage": "शतरंज की तस्वीर",
+  "@pieceImage": {},
+  "importColorSettings": "रंग सेटिंग्स आयात करें",
+  "@importColorSettings": {},
+  "exportColorSettings": "रंग सेटिंग्स निर्यात करें",
+  "@exportColorSettings": {},
+  "import": "आयात",
+  "@import": {},
+  "export": "निर्यात",
+  "@export": {},
+  "pleaseCopyJsonToClipboard": "कृपया पहले JSON प्रारूप में सेटिंग्स को क्लिपबोर्ड पर कॉपी करें।",
+  "@pleaseCopyJsonToClipboard": {},
+  "copiedToClipboard": "क्लिपबोर्ड पर कॉपी किया गया।",
+  "@copiedToClipboard": {},
+  "imported": "आयात किया गया।",
+  "@imported": {},
+  "boardImage": "बोर्ड छवि",
+  "@boardImage": {},
+  "autumnLeaves": "पतझड़ के पत्ते",
+  "@autumnLeaves": {},
+  "legendaryLand": "पौराणिक भूमि",
+  "@legendaryLand": {},
+  "vignetteEffect": "विगनेट प्रभाव",
+  "@vignetteEffect": {},
+  "promptMakeToolbarTransparent": "क्या आप बोर्ड पृष्ठभूमि छवि सेट करने पर टूलबार को पूरी तरह से पारदर्शी बनाना चाहेंगे?",
+  "@promptMakeToolbarTransparent": {},
+  "vibration": "गेम में वाइब्रेशन सक्षम करें",
+  "@vibration": {},
+  "soundTheme": "ध्वनि विषय",
+  "@soundTheme": {},
+  "ball": "गेंद",
+  "@ball": {},
+  "liquid": "तरल",
+  "@liquid": {},
+  "wood": "लकड़ी",
+  "@wood": {},
+  "placeEffectAnimation": "गोटी रखने का एनीमेशन प्रभाव",
+  "@placeEffectAnimation": {},
+  "removeEffectAnimation": "गोटी हटाने का एनीमेशन प्रभाव",
+  "@removeEffectAnimation": {},
+  "isToolbarAtBottom": "टूलबार को नीचे दिखाएं",
+  "@isToolbarAtBottom": {},
+  "boardCornerRadius": "बोर्ड के कोने की त्रिज्या",
+  "@boardCornerRadius": {},
+  "useOpeningBook": "ओपनिंग बुक का उपयोग करें",
+  "@useOpeningBook": {},
+  "currentRule": "वर्तमान",
+  "@currentRule": {},
+  "ruleSet": "नियम सेट",
+  "@ruleSet": {},
+  "nineMensMorris": "नौ आदमी का खेल",
+  "@nineMensMorris": {},
+  "twelveMensMorris": "बारह आदमी का खेल",
+  "@twelveMensMorris": {},
+  "morabaraba": "मोराबराबा",
+  "@morabaraba": {},
+  "dooz": "डूज़",
+  "@dooz": {},
+  "chamGonu": "चामगोनू",
+  "@chamGonu": {},
+  "zhiQi": "झीची",
+  "@zhiQi": {},
+  "chengSanQi": "चेंगसांची",
+  "@chengSanQi": {},
+  "mulMulan": "मुल-मुलान",
+  "@mulMulan": {},
+  "nerenchi": "नेरेनची",
+  "@nerenchi": {},
+  "laskerMorris": "लैस्कर मॉरिस",
+  "@laskerMorris": {},
+  "oneTimeMill": "मेलनित्सा",
+  "@oneTimeMill": {},
+  "daSanQi": "दा सानची",
+  "@daSanQi": {},
+  "useOpeningBook_Detail": "एआई को शुरुआती खेल के दौरान पेशेवर मानव खिलाड़ियों द्वारा आमतौर पर इस्तेमाल किए जाने वाले ओपनिंग मूव्स का उपयोग करने दें। ध्यान दें: यह सुविधा वर्तमान में केवल विशिष्ट नियम सेटों के लिए उपलब्ध है।",
+  "@useOpeningBook_Detail": {},
+  "showAdvantageGraph": "लाभ ग्राफ़ दिखाएँ",
+  "@showAdvantageGraph": {},
+  "advantageGraphHint": "एडवांटेज ग्राफ़ केवल तभी बनाया जाएगा जब एआई चाल चल चुकी हो। जब मानव खिलाड़ी चाल चलेगा तो यह नहीं बनाया जाएगा।",
+  "@advantageGraphHint": {},
+  "removalBasedOnMillCounts": "जब तक सभी मोहरें रखी न जाएँ, हटाने की क्रिया को निष्क्रिय करें। खिलाड़ी अपने मिल की संख्या के आधार पर मोहरें हटाते हैं।",
+  "@removalBasedOnMillCounts": {},
+  "removalBasedOnMillCounts_Detail": "जब तक सभी मोहरें रखी न जाएँ, हटाने को निष्क्रिय रखें। खिलाड़ी अपने मिल की संख्या के आधार पर मोहरें हटाते हैं: यदि संख्या बराबर है, तो दोनों समान संख्या में मोहरें हटाते हैं; यदि किसी एक के पास अधिक हैं, तो वह एक अतिरिक्त मोहरा हटाता है, जिससे अंतर एक मोहरे का बना रहता है। यदि केवल एक ही मिल बनाता है, तो वह दो मोहरें हटाता है और दूसरा एक हटाता है। यदि कोई भी मिल नहीं बनाता, तो दोनों एक-एक मोहरा हटाते हैं।",
+  "@removalBasedOnMillCounts_Detail": {},
+  "elfilja": "एल फिल्ज़ा",
+  "@elfilja": {},
+  "tipSelectOwnPiece": "अपनी गोटियों में से एक का चयन करें।",
+  "@tipSelectOwnPiece": {},
+  "notYourTurn": "यह आपकी बारी नहीं है।",
+  "@notYourTurn": {},
+  "annotationToolbarBackgroundColor": "एनोटेशन टूलबार पृष्ठभूमि रंग",
+  "@annotationToolbarBackgroundColor": {},
+  "annotationToolbarIconColor": "एनोटेशन टूलबार आइकन रंग",
+  "@annotationToolbarIconColor": {},
+  "isAnnotationToolbarShown": "एनोटेशन टूलबार दिखाएँ",
+  "@isAnnotationToolbarShown": {},
+  "enterAnnotationMode": "एनोटेशन मोड में प्रवेश करें",
+  "@enterAnnotationMode": {},
+  "areYouSureYouWantToClearAllAnnotations": "क्या आप वाकई सभी एनोटेशन साफ़ करना चाहते हैं?",
+  "@areYouSureYouWantToClearAllAnnotations": {},
+  "llmPromptCopiedToClipboard": "LLM प्रॉम्प्ट क्लिपबोर्ड पर कॉपी किया गया।",
+  "@llmPromptCopiedToClipboard": {},
+  "connectionRefusedTheServerMayBeDown": "कनेक्शन अस्वीकृत, सर्वर शायद बंद है।",
+  "@connectionRefusedTheServerMayBeDown": {},
+  "discoverySuccessfulAwaitingConnection": "खोज सफल, कनेक्शन की प्रतीक्षा कर रहा है...",
+  "@discoverySuccessfulAwaitingConnection": {},
+  "noLanConnection": "कोई LAN कनेक्शन नहीं",
+  "@noLanConnection": {},
+  "takeScreenshot": "स्क्रीनशॉट लें",
+  "@takeScreenshot": {},
+  "disconnectedFromOpponent": "प्रतिद्वंद्वी से डिस्कनेक्ट हो गया।",
+  "@disconnectedFromOpponent": {},
+  "takeBackRequest": "वापस लेने का अनुरोध",
+  "@takeBackRequest": {},
+  "nothingToShow": "दिखाने के लिए कुछ नहीं।",
+  "@nothingToShow": {},
+  "stopHosting": "होस्टिंग बंद करें",
+  "@stopHosting": {},
+  "connectionResetByPeer": "पीयर द्वारा कनेक्शन रीसेट किया गया।",
+  "@connectionResetByPeer": {},
+  "connectionLostDueToHeartbeatTimeoutPleaseReconnect": "हार्टबीट टाइमआउट के कारण कनेक्शन खो गया। कृपया पुनः कनेक्ट करें।",
+  "@connectionLostDueToHeartbeatTimeoutPleaseReconnect": {},
+  "startHosting": "होस्टिंग शुरू करें",
+  "@startHosting": {},
+  "restartRequestRejected": "पुनरारंभ अनुरोध अस्वीकृत।",
+  "@restartRequestRejected": {},
+  "notConnectedToLanOpponent": "LAN प्रतिद्वंद्वी से कनेक्ट नहीं है।",
+  "@notConnectedToLanOpponent": {},
+  "llmPrompt": "LLM प्रॉम्प्ट",
+  "@llmPrompt": {},
+  "gameRestarted": "खेल पुनरारंभ किया गया।",
+  "@gameRestarted": {},
+  "takeBackRejected": "वापस लेना अस्वीकृत।",
+  "@takeBackRejected": {},
+  "areYouSureYouWantToResignThisGame": "क्या आप वाकई इस खेल में हार मानना चाहते हैं?",
+  "@areYouSureYouWantToResignThisGame": {},
+  "opponentResignedYouWin": "प्रतिद्वंद्वी ने हार मान ली। आप जीत गए!",
+  "@opponentResignedYouWin": {},
+  "clearAllAnnotations": "सभी एनोटेशन साफ़ करें",
+  "@clearAllAnnotations": {},
+  "connectedWaitingForOpponentSMove": "कनेक्टेड, प्रतिद्वंद्वी की चाल की प्रतीक्षा कर रहा है...",
+  "@connectedWaitingForOpponentSMove": {},
+  "networkStatusDisconnected": "नेटवर्क स्थिति: डिस्कनेक्टेड",
+  "@networkStatusDisconnected": {},
+  "takeBackRequestSentToTheOpponent": "वापस लेने का अनुरोध प्रतिद्वंद्वी को भेजा गया।",
+  "@takeBackRequestSentToTheOpponent": {},
+  "theOpponentMayHaveLeftTheGame": "प्रतिद्वंद्वी ने शायद खेल छोड़ दिया है",
+  "@theOpponentMayHaveLeftTheGame": {},
+  "connectedToHostSuccessfully": "होस्ट से सफलतापूर्वक कनेक्ट हो गया।",
+  "@connectedToHostSuccessfully": {},
+  "connectionLostHeartbeatTimeout": "कनेक्शन खो गया: हार्टबीट टाइमआउट",
+  "@connectionLostHeartbeatTimeout": {},
+  "noHostDiscovered": "कोई होस्ट नहीं मिला।",
+  "@noHostDiscovered": {},
+  "confirmResignation": "हार मानने की पुष्टि करें",
+  "@confirmResignation": {},
+  "startedHostingGameWaitingForPlayersToJoin": "खेल होस्टिंग शुरू की गई, खिलाड़ियों के जुड़ने की प्रतीक्षा कर रहा है...",
+  "@startedHostingGameWaitingForPlayersToJoin": {},
+  "connectionTimedOutNetworkConnectionUnstable": "कनेक्शन का समय समाप्त, नेटवर्क कनेक्शन अस्थिर।",
+  "@connectionTimedOutNetworkConnectionUnstable": {},
+  "noLlmPromptAvailable": "कोई LLM प्रॉम्प्ट उपलब्ध नहीं है।",
+  "@noLlmPromptAvailable": {},
+  "youResignedGameOver": "आपने हार मान ली। खेल समाप्त।",
+  "@youResignedGameOver": {},
+  "serverIp": "सर्वर IP",
+  "@serverIp": {},
+  "confirmClear": "साफ़ करने की पुष्टि करें",
+  "@confirmClear": {},
+  "opponentSTurn": "प्रतिद्वंद्वी की बारी।",
+  "@opponentSTurn": {},
+  "waitingAClientConnection": "क्लाइंट कनेक्शन की प्रतीक्षा कर रहा है...",
+  "@waitingAClientConnection": {},
+  "takeBackRequestWasRejectedOrFailed": "वापस लेने का अनुरोध अस्वीकृत या विफल रहा।",
+  "@takeBackRequestWasRejectedOrFailed": {},
+  "addText": "पाठ जोड़ें",
+  "@addText": {},
+  "exitAnnotationMode": "एनोटेशन मोड से बाहर निकलें",
+  "@exitAnnotationMode": {},
+  "typeYourAnnotation": "अपना एनोटेशन टाइप करें",
+  "@typeYourAnnotation": {},
+  "attemptingToReconnect": "पुनः कनेक्ट करने का प्रयास कर रहा है...",
+  "@attemptingToReconnect": {},
+  "restartRequestSentWaitingForOpponentSResponse": "पुनरारंभ अनुरोध भेजा गया। प्रतिद्वंद्वी के उत्तर की प्रतीक्षा कर रहा है...",
+  "@restartRequestSentWaitingForOpponentSResponse": {},
+  "serverIsStopped": "सर्वर बंद है।",
+  "@serverIsStopped": {},
+  "restartRequest": "पुनरारंभ अनुरोध",
+  "@restartRequest": {},
+  "cannotRequestATakeBackWhenItSNotYourTurn": "जब आपकी बारी नहीं है तो वापस लेने का अनुरोध नहीं कर सकते।",
+  "@cannotRequestATakeBackWhenItSNotYourTurn": {},
+  "takeBackAccepted": "वापस लेना स्वीकार किया गया।",
+  "@takeBackAccepted": {},
+  "localNetworkSettings": "स्थानीय नेटवर्क सेटिंग्स",
+  "@localNetworkSettings": {},
+  "reconnectedSuccessfully": "सफलतापूर्वक पुनः कनेक्ट हो गया!",
+  "@reconnectedSuccessfully": {},
+  "failedToSaveImageToGallery": "गैलरी में छवि सहेजने में विफल।",
+  "@failedToSaveImageToGallery": {},
+  "opponentRequestedToRestartTheGameDoYouAccept": "प्रतिद्वंद्वी ने खेल पुनरारंभ करने का अनुरोध किया है। क्या आप स्वीकार करते हैं?",
+  "@opponentRequestedToRestartTheGameDoYouAccept": {},
+  "yourTurn": "आपकी बारी।",
+  "@yourTurn": {},
+  "unableToReconnectPleaseRestartTheGame": "पुनः कनेक्ट करने में असमर्थ, कृपया खेल पुनरारंभ करें।",
+  "@unableToReconnectPleaseRestartTheGame": {},
+  "host": "होस्ट",
+  "@host": {},
+  "join": "जुड़ें",
+  "@join": {},
+  "port": "पोर्ट",
+  "@port": {},
+  "invalidIpAddress": "अमान्य IP पता।",
+  "@invalidIpAddress": {},
+  "invalidPort": "अमान्य पोर्ट।",
+  "@invalidPort": {},
+  "connectingAttempt": "कनेक्ट कर रहा है: प्रयास {attempt}/{maxAttempt}",
+  "@connectingAttempt": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempt": {}
+    }
+  },
+  "failedToConnect": "कनेक्ट करने में विफल: {error}",
+  "@failedToConnect": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "failedToStartHosting": "होस्टिंग शुरू करने में विफल: {error}",
+  "@failedToStartHosting": {
+    "placeholders": {
+      "error": {}
+    }
+  },
+  "hostDiscovered": "होस्ट मिला: {ip}:{port}",
+  "@hostDiscovered": {
+    "placeholders": {
+      "ip": {},
+      "port": {}
+    }
+  },
+  "stop": "रोकें",
+  "@stop": {},
+  "discover": "खोजें",
+  "@discover": {},
+  "connect": "कनेक्ट करें",
+  "@connect": {},
+  "clientConnected": "क्लाइंट कनेक्टेड: {clientIp}:{clientPort}",
+  "@clientConnected": {
+    "placeholders": {
+      "clientIp": {},
+      "clientPort": {}
+    }
+  },
+  "discoveringSeconds": "खोज रहा है: {seconds} सेकंड",
+  "@discoveringSeconds": {
+    "placeholders": {
+      "seconds": {}
+    }
+  },
+  "reconnecting": "पुनः कनेक्ट कर रहा है ({attempt}/{maxAttempts})",
+  "@reconnecting": {
+    "placeholders": {
+      "attempt": {},
+      "maxAttempts": {}
+    }
+  },
+  "connected": "कनेक्टेड",
+  "@connected": {},
+  "delete": "हटाएँ",
+  "@delete": {},
+  "ancientEgypt": "प्राचीन मिस्र",
+  "@ancientEgypt": {},
+  "gothicIce": "गॉथिक बर्फ",
+  "@gothicIce": {},
+  "riceField": "चावल का खेत",
+  "@riceField": {},
+  "chinesePorcelain": "चीनी चीनी मिट्टी",
+  "@chinesePorcelain": {},
+  "desertDusk": "रेगिस्तान का संध्या",
+  "@desertDusk": {},
+  "precisionCraft": "सटीक शिल्प",
+  "@precisionCraft": {},
+  "folkEmbroidery": "लोक कढ़ाई",
+  "@folkEmbroidery": {},
+  "carpathianHeritage": "कार्पेथियन विरासत",
+  "@carpathianHeritage": {},
+  "imperialGrandeur": "शाही वैभव",
+  "@imperialGrandeur": {},
+  "bohemianCrystal": "बोहेमियन क्रिस्टल",
+  "@bohemianCrystal": {},
+  "savannaSunrise": "सवाना सूर्योदय",
+  "@savannaSunrise": {},
+  "harmonyBalance": "सामंजस्य संतुलन",
+  "@harmonyBalance": {},
+  "cinnamonSpice": "दालचीनी मसाला",
+  "@cinnamonSpice": {},
+  "anatolianMosaic": "अनातोलियन मोज़ेक",
+  "@anatolianMosaic": {},
+  "carnivalSpirit": "कार्निवल आत्मा",
+  "@carnivalSpirit": {},
+  "custom": "रिवाज़",
+  "@custom": {},
+  "spiceMarket": "मसाला बाज़ार",
+  "@spiceMarket": {},
+  "swipeToRevealTheDrawer": "ड्रॉअर दिखाने के लिए स्वाइप करें",
+  "@swipeToRevealTheDrawer": {},
+  "showGameInfoOnScreenshots": "स्क्रीनशॉट्स पर गेम जानकारी दिखाएँ",
+  "@showGameInfoOnScreenshots": {}
 }

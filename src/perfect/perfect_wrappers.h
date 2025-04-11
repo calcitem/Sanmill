@@ -1,25 +1,8 @@
-/*
-Malom, a Nine Men's Morris (and variants) player and solver program.
-Copyright(C) 2007-2016  Gabor E. Gevay, Gabor Danner
-Copyright (C) 2023-2024 The Sanmill developers (see AUTHORS file)
+// SPDX-License-Identifier: GPL-3.0-or-later
+// Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
+// Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-See our webpage (and the paper linked from there):
-http://compalg.inf.elte.hu/~ggevay/mills/index.php
-
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+// perfect_wrappers.h
 
 #ifndef PERFECT_WRAPPER_H_INCLUDED
 #define PERFECT_WRAPPER_H_INCLUDED
@@ -52,11 +35,11 @@ extern std::unordered_map<Id, int> sector_sizes;
 struct WID
 {
     int W, B, WF, BF;
-    WID(int w, int b, int wf, int bf)
+    WID(int w, int b, int whiteFree, int blackFree)
         : W(w)
         , B(b)
-        , WF(wf)
-        , BF(bf)
+        , WF(whiteFree)
+        , BF(blackFree)
     { }
     WID(Id Id)
         : W(Id.W)
@@ -65,7 +48,7 @@ struct WID
         , BF(Id.BF)
     { }
     ::Id tonat() { return ::Id(W, B, WF, BF); }
-    void negate();
+    void negate_id();
     WID operator-(WID s);
 
     std::string ToString() { return this->tonat().to_string(); }
@@ -247,7 +230,7 @@ public:
 
     sec_val akey1() { return key1 + (s ? s->sval : virt_unique_sec_val()); }
 
-    std::string toString()
+    std::string to_string()
     {
         assert(::virt_loss_val);
         assert(::virt_win_val);
@@ -277,14 +260,14 @@ class Nwu
 {
 public:
     static std::vector<WID> WuIds;
-    static void initWuGraph()
+    static void initialize_wu_graph()
     {
         init_sector_graph();
         WuIds = std::vector<WID>();
         for (auto it = wu_ids.begin(); it != wu_ids.end(); ++it)
             WuIds.push_back(WID(*it));
     }
-    static std::vector<WID> wuGraphT(WID u)
+    static std::vector<WID> get_wu_graph_t(WID u)
     {
         auto r = std::vector<WID>();
         wu *w = wus[u.tonat()];
@@ -292,13 +275,16 @@ public:
             r.push_back(WID((*it)->id));
         return r;
     }
-    static bool twine(WID w) { return wus[w.tonat()]->twine; }
+    static bool is_twine(WID w) { return wus[w.tonat()]->is_twine; }
 };
 
 class Init
 {
 public:
-    static void init_sym_lookuptables() { ::init_sym_lookuptables(); }
+    static void init_symmetry_lookup_tables()
+    {
+        ::init_symmetry_lookup_tables();
+    }
     static void init_sec_vals() { ::init_sec_vals(); }
 };
 
@@ -306,7 +292,7 @@ class Constants
 {
 public:
     inline static const std::string fname_suffix = FNAME_SUFFIX;
-    const std::string movegenFname = movegen_file;
+    const std::string movegenFname = movegenFile;
 
     enum class Variants { std = STANDARD, mora = MORABARABA, lask = LASKER };
 
@@ -326,7 +312,7 @@ public:
 class Helpers
 {
 public:
-    static std::string toclp(board a) { return ::toclp(a); }
+    static std::string to_clp(board a) { return ::to_clp(a); }
 };
 } // namespace Wrappers
 
