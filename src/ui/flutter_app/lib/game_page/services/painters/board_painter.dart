@@ -107,7 +107,10 @@ class BoardPainter extends CustomPainter {
     paint.strokeWidth =
         boardInnerLineWidth * (isTablet(context) ? size.width ~/ 256 : 1);
 
-    final Path path = _createLinePath(offset);
+    // Check if current game is Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    final Path path = _createLinePath(offset, isSixMensMorris);
     canvas.drawPath(path, paint);
   }
 
@@ -115,28 +118,57 @@ class BoardPainter extends CustomPainter {
     canvas.drawRect(Rect.fromPoints(offset[0], offset[23]), paint);
   }
 
-  static Path _createLinePath(List<Offset> offset) {
+  static Path _createLinePath(List<Offset> offset,
+      [bool isSixMensMorris = false]) {
     final Path path = Path();
-    path.addRect(Rect.fromPoints(offset[3], offset[20])); // File B
-    path.addRect(Rect.fromPoints(offset[6], offset[17])); // File A
-    _addMiddleHorizontalLines(path, offset);
-    _addDiagonalLinesIfNeeded(path, offset);
+
+    if (isSixMensMorris) {
+      // For Six Men's Morris, only draw the outer and middle squares, skip the inner square
+      path.addRect(
+          Rect.fromPoints(offset[3], offset[20])); // Middle square (File B)
+      // Skip the inner square (File A) for Six Men's Morris
+    } else {
+      // For standard Morris variants, draw all three squares
+      path.addRect(
+          Rect.fromPoints(offset[3], offset[20])); // Middle square (File B)
+      path.addRect(
+          Rect.fromPoints(offset[6], offset[17])); // Inner square (File A)
+    }
+
+    _addMiddleHorizontalLines(path, offset, isSixMensMorris);
+    _addDiagonalLinesIfNeeded(path, offset, isSixMensMorris);
     return path;
   }
 
-  static void _addMiddleHorizontalLines(Path path, List<Offset> offset) {
+  static void _addMiddleHorizontalLines(Path path, List<Offset> offset,
+      [bool isSixMensMorris = false]) {
+    // Outer and middle horizontal connecting lines - always draw these
     path.addLine(offset[1], offset[7]);
     path.addLine(offset[16], offset[22]);
-    path.addLine(offset[9], offset[11]);
-    path.addLine(offset[12], offset[14]);
+
+    if (!isSixMensMorris) {
+      // Inner horizontal connecting lines - only for traditional Morris variants
+      path.addLine(offset[9], offset[11]);
+      path.addLine(offset[12], offset[14]);
+    }
   }
 
-  static void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset) {
+  static void _addDiagonalLinesIfNeeded(Path path, List<Offset> offset,
+      [bool isSixMensMorris = false]) {
     if (DB().ruleSettings.hasDiagonalLines) {
-      path.addLine(offset[0], offset[6]);
-      path.addLine(offset[17], offset[23]);
-      path.addLine(offset[21], offset[15]);
-      path.addLine(offset[8], offset[2]);
+      if (isSixMensMorris) {
+        // For Six Men's Morris with diagonals, only draw diagonals between outer and middle squares
+        path.addLine(offset[0], offset[3]);
+        path.addLine(offset[2], offset[5]);
+        path.addLine(offset[20], offset[23]);
+        path.addLine(offset[18], offset[21]);
+      } else {
+        // For traditional Morris variants with diagonals, draw all diagonals through to inner square
+        path.addLine(offset[0], offset[6]);
+        path.addLine(offset[17], offset[23]);
+        path.addLine(offset[21], offset[15]);
+        path.addLine(offset[8], offset[2]);
+      }
     }
   }
 
@@ -149,6 +181,9 @@ class BoardPainter extends CustomPainter {
     if (!DB().ruleSettings.oneTimeUseMill) {
       return;
     }
+
+    // Check if current game is Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
 
     final Map<PieceColor, List<List<int>>> formedMills =
         GameController().position.formedMills;
@@ -163,6 +198,11 @@ class BoardPainter extends CustomPainter {
     void drawMills(
         PieceColor color, List<List<int>> mills, Color defaultColor) {
       for (final List<int> mill in mills) {
+        // For Six Men's Morris, skip mills that involve inner ring points (8-15)
+        if (isSixMensMorris && (mill.any((int sq) => sq >= 8 && sq < 16))) {
+          continue;
+        }
+
         final Path path = Path();
         path.addLine(
             pointFromSquare(mill[0], size), pointFromSquare(mill[1], size));
@@ -208,9 +248,22 @@ class BoardPainter extends CustomPainter {
 
     paint.style = style;
 
+    // Check if current game is Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
     final double pointRadius = DB().displaySettings.pointWidth;
-    for (final Offset point in points) {
-      canvas.drawCircle(point, pointRadius, paint);
+
+    // For Six Men's Morris, we skip drawing points in the inner square
+    if (isSixMensMorris) {
+      // Draw points only for outer and middle squares using the predefined indices
+      for (final int index in GameConstants.sixMensMorrisValidPointIndices) {
+        canvas.drawCircle(points[index], pointRadius, paint);
+      }
+    } else {
+      // For traditional Morris variants, draw all points
+      for (final Offset point in points) {
+        canvas.drawCircle(point, pointRadius, paint);
+      }
     }
   }
 
@@ -401,7 +454,10 @@ class BoardPainter extends CustomPainter {
     _drawDashedRect(canvas, Rect.fromPoints(offset[0], offset[23]), colors,
         strokeWidth, dashLength, spaceLength);
 
-    final Path path = _createLinePath(offset);
+    // Check if current game is Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    final Path path = _createLinePath(offset, isSixMensMorris);
 
     _drawDashedPath(canvas, path, colors, strokeWidth, dashLength, spaceLength);
 
@@ -409,8 +465,18 @@ class BoardPainter extends CustomPainter {
     if (style != null) {
       final Paint pointPaint = Paint()..style = style;
       final double pointRadius = DB().displaySettings.pointWidth;
-      for (final Offset point in offset) {
-        canvas.drawCircle(point, pointRadius, pointPaint);
+
+      // For Six Men's Morris, we skip drawing points in the inner square
+      if (isSixMensMorris) {
+        // Draw points only for outer and middle squares using the predefined indices
+        for (final int index in GameConstants.sixMensMorrisValidPointIndices) {
+          canvas.drawCircle(offset[index], pointRadius, pointPaint);
+        }
+      } else {
+        // For traditional Morris variants, draw all points
+        for (final Offset point in offset) {
+          canvas.drawCircle(point, pointRadius, pointPaint);
+        }
       }
     }
   }

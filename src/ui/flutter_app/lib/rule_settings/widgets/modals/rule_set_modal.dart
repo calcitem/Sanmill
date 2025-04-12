@@ -124,6 +124,13 @@ class _RuleSetModal extends StatelessWidget {
               value: RuleSet.elfilja,
               onChanged: onChanged,
             ),
+            RadioListTile<RuleSet>(
+              key: const Key('radio_six_mens_morris'),
+              title: Text(S.of(context).sixMensMorris),
+              groupValue: ruleSet,
+              value: RuleSet.sixMensMorris,
+              onChanged: onChanged,
+            ),
           ],
         ),
       ),

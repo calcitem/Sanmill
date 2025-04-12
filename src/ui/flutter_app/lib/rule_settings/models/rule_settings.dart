@@ -196,6 +196,15 @@ class RuleSettings {
         !oneTimeUseMill;
   }
 
+  bool isLikelySixMensMorris() {
+    return piecesCount == 6 &&
+        !hasDiagonalLines &&
+        !isDefenderMoveFirst &&
+        !mayMoveInPlacingPhase &&
+        !mayOnlyRemoveUnplacedPieceInPlacingPhase &&
+        !oneTimeUseMill;
+  }
+
   bool isLikelyTwelveMensMorris() {
     return piecesCount == 12 &&
         hasDiagonalLines &&
@@ -236,7 +245,8 @@ enum RuleSet {
   daSanQi,
   mulMulan,
   nerenchi,
-  elfilja
+  elfilja,
+  sixMensMorris
 }
 
 /// Nine Men's Morris Rules
@@ -246,6 +256,17 @@ class NineMensMorrisRuleSettings extends RuleSettings {
   const NineMensMorrisRuleSettings()
       : super(
           piecesCount: 9,
+          hasDiagonalLines: false,
+        );
+}
+
+/// Six Men's Morris Rules
+///
+/// Those rules are the standard Six Men's Morris rules.
+class SixMensMorrisRuleSettings extends RuleSettings {
+  const SixMensMorrisRuleSettings()
+      : super(
+          piecesCount: 6,
           hasDiagonalLines: false,
         );
 }
@@ -445,6 +466,8 @@ const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.nerenchi: 'Nerenchi, a Sri Lankan adaptation of the game.',
   RuleSet.elfilja:
       'El Filja, a variant played in Algeria and parts of Morocco.',
+  RuleSet.sixMensMorris:
+      "Six Men's Morris, a simpler variant with fewer pieces.",
 };
 
 /// Rule Set Properties (e.g., Number of Pieces and Rule Settings)
@@ -463,4 +486,5 @@ const Map<RuleSet, RuleSettings> ruleSetProperties = <RuleSet, RuleSettings>{
   RuleSet.mulMulan: MulMulanRuleSettings(),
   RuleSet.nerenchi: NerenchiRuleSettings(),
   RuleSet.elfilja: ELFiljaRuleSettings(),
+  RuleSet.sixMensMorris: SixMensMorrisRuleSettings(),
 };

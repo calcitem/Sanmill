@@ -105,7 +105,7 @@ struct Rule
     bool threefoldRepetitionRule;
 };
 
-constexpr auto N_RULES = 11;
+constexpr auto N_RULES = 12;
 extern const Rule RULES[N_RULES];
 extern Rule rule;
 extern bool set_rule(int ruleIdx) noexcept;

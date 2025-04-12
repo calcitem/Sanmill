@@ -239,14 +239,28 @@ class MiniBoardPainter extends CustomPainter {
 
   /// Parse the board layout string into 24 PieceColors.
   /// Format: "outer/middle/inner", each 8 chars.
+  /// For Six Men's Morris, format is "outer/middle/" (no inner ring)
   static List<PieceColor> _parseBoardLayout(String layout) {
     final List<String> parts = layout.split('/');
-    if (parts.length != 3 ||
-        parts[0].length != 8 ||
-        parts[1].length != 8 ||
-        parts[2].length != 8) {
-      // Invalid format => empty board.
-      return List<PieceColor>.filled(24, PieceColor.none);
+
+    // Six Men's Morris uses only 2 rings format
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    if (isSixMensMorris) {
+      // For Six Men's Morris, expect "outer/middle/" format
+      if (parts.length < 2 || parts[0].length != 8 || parts[1].length != 8) {
+        // Invalid format => empty board.
+        return List<PieceColor>.filled(24, PieceColor.none);
+      }
+    } else {
+      // For other variants, expect full "outer/middle/inner" format
+      if (parts.length != 3 ||
+          parts[0].length != 8 ||
+          parts[1].length != 8 ||
+          parts[2].length != 8) {
+        // Invalid format => empty board.
+        return List<PieceColor>.filled(24, PieceColor.none);
+      }
     }
 
     final List<PieceColor> state = <PieceColor>[];
@@ -256,22 +270,31 @@ class MiniBoardPainter extends CustomPainter {
     //
     // parts[0] => outer ring
     // parts[1] => middle ring
-    // parts[2] => inner ring
+    // parts[2] => inner ring (if not Six Men's Morris)
     //
     // BUT the code below does it in reversed fashion to keep painting consistent.
     // If this mismatch is intentional, keep it. Otherwise reorder accordingly.
 
-    // Inner ring from parts[0]
-    for (int i = 0; i < 8; i++) {
-      state.add(_charToPieceColor(parts[0][i]));
+    // Inner ring
+    if (isSixMensMorris) {
+      // For Six Men's Morris, inner ring is empty
+      for (int i = 0; i < 8; i++) {
+        state.add(PieceColor.none);
+      }
+    } else {
+      // Use inner ring from parts[2]
+      for (int i = 0; i < 8; i++) {
+        state.add(_charToPieceColor(parts[2][i]));
+      }
     }
+
     // Middle ring from parts[1]
     for (int i = 0; i < 8; i++) {
       state.add(_charToPieceColor(parts[1][i]));
     }
-    // Outer ring from parts[2]
+    // Outer ring from parts[0]
     for (int i = 0; i < 8; i++) {
-      state.add(_charToPieceColor(parts[2][i]));
+      state.add(_charToPieceColor(parts[0][i]));
     }
     return state;
   }
@@ -335,37 +358,56 @@ class MiniBoardPainter extends CustomPainter {
       marginMiddle,
       minSide - 2 * marginMiddle,
     );
-    final List<Offset> innerPoints = _ringPoints(
-      offsetX,
-      offsetY,
-      marginInner,
-      minSide - 2 * marginInner,
-    );
 
-    // Draw the three rings:
+    // Check if current game is Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    // For Six Men's Morris, we won't use the inner ring
+    final List<Offset> innerPoints = isSixMensMorris
+        ? <Offset>[] // Empty for Six Men's Morris
+        : _ringPoints(
+            offsetX,
+            offsetY,
+            marginInner,
+            minSide - 2 * marginInner,
+          );
+
+    // Draw the rings:
     _drawSquare(canvas, outerPoints, boardPaint);
     _drawSquare(canvas, middlePoints, boardPaint);
-    _drawSquare(canvas, innerPoints, boardPaint);
+    if (!isSixMensMorris) {
+      _drawSquare(canvas, innerPoints, boardPaint);
+    }
 
     // Connect midpoints of each ring:
     _drawLine(canvas, outerPoints[1], middlePoints[1], boardPaint);
-    _drawLine(canvas, middlePoints[1], innerPoints[1], boardPaint);
-
     _drawLine(canvas, outerPoints[3], middlePoints[3], boardPaint);
-    _drawLine(canvas, middlePoints[3], innerPoints[3], boardPaint);
-
     _drawLine(canvas, outerPoints[5], middlePoints[5], boardPaint);
-    _drawLine(canvas, middlePoints[5], innerPoints[5], boardPaint);
-
     _drawLine(canvas, outerPoints[7], middlePoints[7], boardPaint);
-    _drawLine(canvas, middlePoints[7], innerPoints[7], boardPaint);
+
+    // Only draw connections to inner ring for games other than Six Men's Morris
+    if (!isSixMensMorris) {
+      _drawLine(canvas, middlePoints[1], innerPoints[1], boardPaint);
+      _drawLine(canvas, middlePoints[3], innerPoints[3], boardPaint);
+      _drawLine(canvas, middlePoints[5], innerPoints[5], boardPaint);
+      _drawLine(canvas, middlePoints[7], innerPoints[7], boardPaint);
+    }
 
     // Possibly draw diagonals if the rule setting is enabled.
     if (DB().ruleSettings.hasDiagonalLines) {
-      canvas.drawLine(outerPoints[0], innerPoints[0], boardPaint);
-      canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
-      canvas.drawLine(outerPoints[4], innerPoints[4], boardPaint);
-      canvas.drawLine(outerPoints[6], innerPoints[6], boardPaint);
+      if (isSixMensMorris) {
+        // For Six Men's Morris with diagonal lines, only connect outer to middle
+        canvas.drawLine(outerPoints[0], middlePoints[0], boardPaint);
+        canvas.drawLine(outerPoints[2], middlePoints[2], boardPaint);
+        canvas.drawLine(outerPoints[4], middlePoints[4], boardPaint);
+        canvas.drawLine(outerPoints[6], middlePoints[6], boardPaint);
+      } else {
+        // For other variants, connect all the way to the inner ring
+        canvas.drawLine(outerPoints[0], innerPoints[0], boardPaint);
+        canvas.drawLine(outerPoints[2], innerPoints[2], boardPaint);
+        canvas.drawLine(outerPoints[4], innerPoints[4], boardPaint);
+        canvas.drawLine(outerPoints[6], innerPoints[6], boardPaint);
+      }
     }
 
     // Draw pieces:
@@ -376,16 +418,23 @@ class MiniBoardPainter extends CustomPainter {
       }
 
       // Determine ring position for each piece:
-      Offset pos;
+      Offset? pos;
       if (i < 8) {
         // inner ring
-        pos = innerPoints[(i + 1) % 8];
+        if (!isSixMensMorris && innerPoints.isNotEmpty) {
+          pos = innerPoints[(i + 1) % 8];
+        }
       } else if (i < 16) {
         // middle ring
         pos = middlePoints[((i - 8) + 1) % 8];
       } else {
         // outer ring
         pos = outerPoints[((i - 16) + 1) % 8];
+      }
+
+      // Skip drawing pieces on the inner ring for Six Men's Morris
+      if (pos == null) {
+        continue;
       }
 
       // Example: We define the piece diameter by 2 * pieceRadius.
@@ -614,10 +663,11 @@ class MiniBoardPainter extends CustomPainter {
   /// Convert a Nine Men's Morris square [sq] (8..31) to the appropriate
   /// Offset in [innerPoints], [middlePoints], or [outerPoints].
   ///
-  /// - Inner ring:   squares 8..15
+  /// - Inner ring:   squares 8..15 (not used in Six Men's Morris)
   /// - Middle ring:  squares 16..23
   /// - Outer ring:   squares 24..31
   ///
+  /// For Six Men's Morris, we ignore the inner ring squares (8..15)
   /// We add 1 to the index (and mod 8) to match your existing painting logic
   ///   of `pos = ringPoints[(i + 1) % 8]`.
   Offset? _convertSquareToOffset(
@@ -631,11 +681,18 @@ class MiniBoardPainter extends CustomPainter {
       return null;
     }
 
+    // Check if we're playing Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
     // Decide which ring based on the numeric range.
     if (sq < 16) {
       // 8..15 => inner ring
+      if (isSixMensMorris) {
+        // Skip inner ring squares for Six Men's Morris
+        return null;
+      }
       final int index = (sq - 8 + 1) % 8; // ex: sq=8 => index=(0+1)%8=1
-      return innerPoints[index];
+      return innerPoints.isNotEmpty ? innerPoints[index] : null;
     } else if (sq < 24) {
       // 16..23 => middle ring
       final int index = (sq - 16 + 1) % 8;
@@ -649,13 +706,24 @@ class MiniBoardPainter extends CustomPainter {
 
   /// Convert square [sq] to boardState index (0..23).
   /// This helps retrieve the piece color from boardState.
+  ///
+  /// For Six Men's Morris, inner ring indices (0..7) are not used
+  /// but we still maintain the same indexing for consistency.
   int? _convertSquareToBoardIndex(int sq) {
     if (sq < 8 || sq > 31) {
       return null;
     }
+
+    // Check if we're playing Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
     // 0..7 = inner, 8..15 = middle, 16..23 = outer in boardState
     if (sq < 16) {
       // inner ring
+      if (isSixMensMorris) {
+        // Skip inner ring indices for Six Men's Morris
+        return null;
+      }
       return sq - 8; // 8..15 => 0..7
     } else if (sq < 24) {
       // middle ring

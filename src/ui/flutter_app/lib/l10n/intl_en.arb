@@ -1847,5 +1847,7 @@
   "swipeToRevealTheDrawer": "Swipe to reveal the Drawer",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Show game info on screenshots",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "sixMensMorris": "Six Men's Morris",
+  "@sixMensMorris": {}
 }

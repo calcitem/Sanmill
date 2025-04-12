@@ -276,6 +276,9 @@ class Position {
     final String boardStr = l[0];
     final List<String> ring = boardStr.split("/");
 
+    // Check if we're using Six Men's Morris
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
     final Map<String, PieceColor> pieceMap = <String, PieceColor>{
       "*": PieceColor.none,
       "O": PieceColor.white,
@@ -283,13 +286,35 @@ class Position {
       "X": PieceColor.marked,
     };
 
+    // Clear the board first
+    for (int i = 0; i < sqNumber; i++) {
+      _board[i] = PieceColor.none;
+    }
+    for (int i = 0; i < 7 * 7; i++) {
+      _grid[i] = PieceColor.none;
+    }
+
     // Piece placement data
-    for (int file = 1; file <= fileNumber; file++) {
-      for (int rank = 1; rank <= rankNumber; rank++) {
-        final PieceColor p = pieceMap[ring[file - 1][rank - 1]]!;
-        final int sq = makeSquare(file, rank);
-        _board[sq] = p;
-        _grid[squareToIndex[sq]!] = p;
+    if (isSixMensMorris) {
+      // For Six Men's Morris, we have only 2 rings (outer and middle)
+      // Skip the inner ring (file = 3)
+      for (int file = 1; file <= 2; file++) {
+        for (int rank = 1; rank <= rankNumber; rank++) {
+          final PieceColor p = pieceMap[ring[file - 1][rank - 1]]!;
+          final int sq = makeSquare(file, rank);
+          _board[sq] = p;
+          _grid[squareToIndex[sq]!] = p;
+        }
+      }
+    } else {
+      // For other variants, we have all 3 rings
+      for (int file = 1; file <= fileNumber; file++) {
+        for (int rank = 1; rank <= rankNumber; rank++) {
+          final PieceColor p = pieceMap[ring[file - 1][rank - 1]]!;
+          final int sq = makeSquare(file, rank);
+          _board[sq] = p;
+          _grid[squareToIndex[sq]!] = p;
+        }
       }
     }
 
@@ -386,12 +411,27 @@ class Position {
 
     // Part 0: Piece placement
     final String board = parts[0];
-    if (board.length != 26 ||
-        board[8] != '/' ||
-        board[17] != '/' ||
-        !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
-      logger.e('Invalid piece placement format.');
-      return false;
+
+    // Check if we're using Six Men's Morris (which has only 2 rings)
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    if (isSixMensMorris) {
+      // For Six Men's Morris, expect "********/********" format (only 2 rings)
+      if (board.length != 17 ||
+          board[8] != '/' ||
+          !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
+        logger.e('Invalid piece placement format for Six Men\'s Morris.');
+        return false;
+      }
+    } else {
+      // For other variants, expect "********/********/********" format (3 rings)
+      if (board.length != 26 ||
+          board[8] != '/' ||
+          board[17] != '/' ||
+          !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
+        logger.e('Invalid piece placement format.');
+        return false;
+      }
     }
 
     // Part 1: Active color
@@ -425,7 +465,8 @@ class Position {
     }
     if (whitePieceOnBoard < 0 ||
         whitePieceOnBoard > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid white piece on board. Must be between 0 and 12.');
+      logger.e(
+          'Invalid white piece on board. Must be between 0 and ${DB().ruleSettings.piecesCount}.');
       return false;
     }
 
@@ -433,7 +474,8 @@ class Position {
     final int whitePieceInHand = int.parse(parts[5]);
     if (whitePieceInHand < 0 ||
         whitePieceInHand > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid white piece in hand. Must be between 0 and 12.');
+      logger.e(
+          'Invalid white piece in hand. Must be between 0 and ${DB().ruleSettings.piecesCount}.');
       return false;
     }
     if (activeColor == 'w' && phrase == 'p' && whitePieceInHand == 0) {
@@ -451,7 +493,8 @@ class Position {
     }
     if (blackPieceOnBoard < 0 ||
         blackPieceOnBoard > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid black piece on board. Must be between 0 and 12.');
+      logger.e(
+          'Invalid black piece on board. Must be between 0 and ${DB().ruleSettings.piecesCount}.');
       return false;
     }
 
@@ -459,7 +502,8 @@ class Position {
     final int blackPieceInHand = int.parse(parts[7]);
     if (blackPieceInHand < 0 ||
         blackPieceInHand > DB().ruleSettings.piecesCount) {
-      logger.e('Invalid black piece in hand. Must be between 0 and 12.');
+      logger.e(
+          'Invalid black piece in hand. Must be between 0 and ${DB().ruleSettings.piecesCount}.');
       return false;
     }
 
@@ -1653,6 +1697,8 @@ class Position {
   /// each ring has 8 positions, representing the outer/middle/inner ring.
   /// For example: "OO***@**/@@**O@*@/O@O*@*O*"
   /// 'O' means White, '@' means Black, '*' means None or empty.
+  ///
+  /// For Six Men's Morris, only use 2 rings (outer/middle)
   String generateBoardLayoutAfterThisMove() {
     // <-- ADDED
     // Helper to map PieceColor to a single char
@@ -1678,9 +1724,78 @@ class Position {
 
     final String outer = ringToString(8);
     final String middle = ringToString(16);
-    final String inner = ringToString(24);
 
-    return "$outer/$middle/$inner";
+    // Check if the rule is Six Men's Morris (6 pieces per player)
+    if (DB().ruleSettings.piecesCount == 6) {
+      // For Six Men's Morris, only use outer and middle rings
+      return "$outer/$middle/";
+    } else {
+      // For other Morris variants, use all three rings
+      final String inner = ringToString(24);
+      return "$outer/$middle/$inner";
+    }
+  }
+
+  bool isPieceAt(PieceColor c, int s) {
+    // For Six Men's Morris, inner ring squares (8-15) are invalid and should always be considered empty
+    if (DB().ruleSettings.piecesCount == 6 && s >= 8 && s < 16) {
+      return false;
+    }
+    return _board[s] == c;
+  }
+
+  int _formingMillCount(Move m, bool checkOnly = false) {
+    final List<List<List<int>>> millTable = _Mills.millTableInit;
+    final List<List<int>> mills = <List<int>>[];
+    int millCount = 0;
+
+    // For Six Men's Morris, we need to ignore mills that involve the inner ring
+    final bool isSixMensMorris = DB().ruleSettings.piecesCount == 6;
+
+    for (int i = 0; i < 3; i++) {
+      if (millTable[m.to][i][0] == 0 && millTable[m.to][i][1] == 0) {
+        continue;
+      }
+
+      // Skip mills involving inner ring squares for Six Men's Morris
+      if (isSixMensMorris) {
+        final List<int> millSquares = <int>[
+          m.to,
+          millTable[m.to][i][0],
+          millTable[m.to][i][1]
+        ];
+        
+        // Skip if any square in this mill is on the inner ring (8-15)
+        if (millSquares.any((int sq) => sq >= 8 && sq < 16)) {
+          continue;
+        }
+      }
+
+      if (_board[millTable[m.to][i][0]] == _sideToMove &&
+          _board[millTable[m.to][i][1]] == _sideToMove) {
+        millCount += 1;
+
+        if (!checkOnly) {
+          mills.add(<int>[
+            m.to,
+            millTable[m.to][i][0],
+            millTable[m.to][i][1]
+          ]);
+
+          _lastMillFromSquare[_sideToMove] = m.from;
+          _lastMillToSquare[_sideToMove] = m.to;
+        }
+      }
+    }
+
+    if (!checkOnly && mills.isNotEmpty) {
+      for (final List<int> mill in mills) {
+        // TODO: Prevent adding duplicates
+        _addFormedMill(_sideToMove, mill);
+      }
+    }
+
+    return millCount;
   }
 }
 

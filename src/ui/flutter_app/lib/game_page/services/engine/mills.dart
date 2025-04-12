@@ -557,4 +557,31 @@ class _Mills {
     [29, 21, 13],
     [11, 19, 27],
   ];
+
+  // Valid squares for Six Men's Morris (only middle and outer rings)
+  // Inner ring: squares 8..15 (not used in Six Men's Morris)
+  // Middle ring: squares 16..23
+  // Outer ring: squares 24..31
+
+  // Valid point indices for Six Men's Morris in the points array
+  // Points for outer square are at indices: 0, 1, 2, 9, 14, 21, 22, 23
+  // Points for middle square are at indices: 3, 4, 5, 10, 13, 18, 19, 20
+  static const List<int> sixMensMorrisValidPointIndices = <int>[
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    9,
+    10,
+    13,
+    14,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ];
 }

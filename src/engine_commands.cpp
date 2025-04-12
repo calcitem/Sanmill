@@ -31,6 +31,8 @@ const char *StartFEN11 = "********/********/******** w p p 0 11 0 11 0 0 0 0 0 "
                          "0 0 0 1";
 const char *StartFEN12 = "********/********/******** w p p 0 12 0 12 0 0 0 0 0 "
                          "0 0 0 1";
+// FEN string for Six Men's Morris - only has outer and middle rings, no inner ring
+const char *StartFEN6 = "********/******** w p p 0 6 0 6 0 0 0 0 0 0 0 0 1";
 
 char StartFEN[BUFSIZ];
 
@@ -40,6 +42,9 @@ void init_start_fen()
 {
 #ifdef _MSC_VER
     switch (rule.pieceCount) {
+    case 6:
+        strncpy_s(StartFEN, BUFSIZ, StartFEN6, BUFSIZ - 1);
+        break;
     case 9:
         strncpy_s(StartFEN, BUFSIZ, StartFEN9, BUFSIZ - 1);
         break;
@@ -58,6 +63,9 @@ void init_start_fen()
     }
 #else
     switch (rule.pieceCount) {
+    case 6:
+        strncpy(StartFEN, StartFEN6, BUFSIZ - 1);
+        break;
     case 9:
         strncpy(StartFEN, StartFEN9, BUFSIZ - 1);
         break;

@@ -77,6 +77,10 @@ const Rule RULES[N_RULES] = {
      true, false, false, true, false,
      BoardFullAction::secondAndFirstPlayerRemovePiece,
      StalemateAction::endWithStalemateLoss, false, 100, 100, true},
+    {"Six Men's Morris", "Six Men's Morris", 6, 3, 3, false,
+     MillFormationActionInPlacingPhase::removeOpponentsPieceFromBoard, false,
+     false, false, false, false, false, BoardFullAction::firstPlayerLose,
+     StalemateAction::endWithStalemateLoss, true, 100, 100, true},
 };
 
 bool set_rule(int ruleIdx) noexcept
