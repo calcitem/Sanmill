@@ -149,22 +149,28 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Scrolls the list/grid to the top with an animation.
   void _scrollToTop() {
-    _scrollController.animateTo(
-      0,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOut,
-    );
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOut,
+      );
+    }
   }
 
   /// Scrolls the list/grid to the bottom with an animation.
   void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeOut,
-      );
-    });
+    if (_scrollController.hasClients) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+            _scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeOut,
+          );
+        }
+      });
+    }
   }
 
   /// Builds a single large icon with a label, used in the empty state.
@@ -236,6 +242,7 @@ class MovesListPageState extends State<MovesListPage> {
         _isReversedOrder ? sortedRoundsAsc.reversed.toList() : sortedRoundsAsc;
 
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Column(
         children: sortedRounds.map((int roundIndex) {
           final List<PgnNode<ExtMove>> nodesOfRound = roundMap[roundIndex]!;
