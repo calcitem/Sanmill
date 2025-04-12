@@ -1,0 +1,3 @@
+v6.0.3
+
+Ta aktualizacja zawiera różne ulepszenia i poprawki błędów, aby aplikacja była lepsza dla ciebie.
