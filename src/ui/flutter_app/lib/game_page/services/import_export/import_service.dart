@@ -22,15 +22,66 @@ class ImportService {
 
     // Read clipboard data (async)
     final ClipboardData? data = await Clipboard.getData(Clipboard.kTextPlain);
-    final String? text = data?.text;
 
     // Immediately check if context is still valid
     if (!context.mounted) {
       return;
     }
 
+    // Check if data is null - show error message
+    if (data == null) {
+      // Check if currently on MovesListPage - more reliable method
+      bool isInMovesListPage = false;
+      try {
+        // Try to get the runtime type name of the top-level Widget
+        final Type contextWidgetType = context.widget.runtimeType;
+        final String widgetTypeName = contextWidgetType.toString();
+        isInMovesListPage = widgetTypeName.contains('MovesListPage');
+      } catch (e) {
+        // If an exception occurs, default to false
+        isInMovesListPage = false;
+      }
+
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState
+            ?.showSnackBarClear(s.cannotImport("null"));
+      } else {
+        // For other pages, use headerTipNotifier
+        GameController().headerTipNotifier.showTip(s.cannotImport("null"));
+      }
+
+      if (shouldPop) {
+        navigator.pop();
+      }
+      return;
+    }
+
+    final String? text = data.text;
+
     // If clipboard is empty or missing text, pop and return
     if (text == null) {
+      // Check if currently on MovesListPage - more reliable method
+      bool isInMovesListPage = false;
+      try {
+        // Try to get the runtime type name of the top-level Widget
+        final Type contextWidgetType = context.widget.runtimeType;
+        final String widgetTypeName = contextWidgetType.toString();
+        isInMovesListPage = widgetTypeName.contains('MovesListPage');
+      } catch (e) {
+        // If an exception occurs, default to false
+        isInMovesListPage = false;
+      }
+
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState
+            ?.showSnackBarClear(s.cannotImport("null"));
+      } else {
+        // For other pages, use headerTipNotifier
+        GameController().headerTipNotifier.showTip(s.cannotImport("null"));
+      }
+
       if (shouldPop) {
         navigator.pop();
       }
@@ -44,9 +95,28 @@ class ImportService {
       if (!context.mounted) {
         return;
       }
-      final String tip = s.cannotImport(text);
-      GameController().headerTipNotifier.showTip(tip);
-      //GameController().animationController.forward();
+
+      // Check if currently on MovesListPage - more reliable method
+      bool isInMovesListPage = false;
+      try {
+        // Try to get the runtime type name of the top-level Widget
+        final Type contextWidgetType = context.widget.runtimeType;
+        final String widgetTypeName = contextWidgetType.toString();
+        isInMovesListPage = widgetTypeName.contains('MovesListPage');
+      } catch (e) {
+        // If an exception occurs, default to false
+        isInMovesListPage = false;
+      }
+
+      final String tip = s.cannotImport(exception.toString());
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      } else {
+        // For other pages, use headerTipNotifier
+        GameController().headerTipNotifier.showTip(tip);
+      }
+
       if (shouldPop) {
         navigator.pop();
       }
@@ -68,11 +138,36 @@ class ImportService {
     final HistoryResponse? historyResult =
         await HistoryNavigator.stepForwardAll(context, pop: false);
 
+    if (!context.mounted) {
+      return;
+    }
+
+    // Check if currently on MovesListPage - more reliable method
+    bool isInMovesListPage = false;
+    try {
+      // Try to get the runtime type name of the top-level Widget
+      final Type contextWidgetType = context.widget.runtimeType;
+      final String widgetTypeName = contextWidgetType.toString();
+      isInMovesListPage = widgetTypeName.contains('MovesListPage');
+    } catch (e) {
+      // If an exception occurs, default to false
+      isInMovesListPage = false;
+    }
+
     if (historyResult == const HistoryOK()) {
-      GameController().headerTipNotifier.showTip(s.gameImported);
+      if (isInMovesListPage) {
+        rootScaffoldMessengerKey.currentState
+            ?.showSnackBarClear(s.gameImported);
+      } else {
+        GameController().headerTipNotifier.showTip(s.gameImported);
+      }
     } else {
       final String tip = s.cannotImport(HistoryNavigator.importFailedStr);
-      GameController().headerTipNotifier.showTip(tip);
+      if (isInMovesListPage) {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      } else {
+        GameController().headerTipNotifier.showTip(tip);
+      }
       HistoryNavigator.importFailedStr = "";
     }
 
@@ -164,62 +259,80 @@ class ImportService {
 
     logger.t("Clipboard text: $moveList");
 
-    // TODO: Improve this logic
-    if (isPlayOkMoveList(ml)) {
-      return _importPlayOk(ml);
+    // Check if import content is valid
+    if (moveList.isEmpty) {
+      throw const ImportFormatException("Clipboard content is empty");
     }
 
-    if (isPureFen(ml)) {
-      ml = '[FEN "$ml"]\r\n[SetUp "1"]';
+    try {
+      // TODO: Improve this logic
+      if (isPlayOkMoveList(ml)) {
+        _importPlayOk(ml);
+        return;
+      }
+
+      if (isPureFen(ml)) {
+        ml = '[FEN "$ml"]\r\n[SetUp "1"]';
+      }
+
+      if (isGoldTokenMoveList(ml)) {
+        int start = ml.indexOf("1\t");
+
+        if (start == -1) {
+          start = ml.indexOf("1 ");
+        }
+
+        if (start == -1) {
+          start = 0;
+        }
+
+        ml = ml.substring(start);
+
+        // Remove "Quick Jump" and any text after it to ensure successful import
+        final int quickJumpIndex = ml.indexOf("Quick Jump");
+        if (quickJumpIndex != -1) {
+          ml = ml.substring(0, quickJumpIndex).trim();
+        }
+      }
+
+      final Map<String, String> replacements = <String, String>{
+        "\n": " ",
+        "()": " ",
+        "white": " ",
+        "black": " ",
+        "win": " ",
+        "lose": " ",
+        "draw": " ",
+        "resign": " ",
+        "-/x": "x",
+        "/x": "x",
+        ".a": ". a",
+        ".b": ". b",
+        ".c": ". c",
+        ".d": ". d",
+        ".e": ". e",
+        ".f": ". f",
+        ".g": ". g",
+        // GoldToken
+        "\t": " ",
+        "Place to ": "",
+        ", take ": "x",
+        " -> ": "-"
+      };
+
+      ml = processOutsideBrackets(ml, replacements);
+      _importPgn(ml);
+    } catch (e) {
+      // Log the specific error for debugging
+      logger.e("$_logTag Import failed: $e");
+
+      // Log the complete move list that was being imported
+      logger.e("$_logTag Original move list to import:\n$moveList");
+      logger.e("$_logTag Processed move list:\n$ml");
+
+      // Rethrow to allow handling by the calling method
+      rethrow;
     }
-
-    if (isGoldTokenMoveList(ml)) {
-      int start = ml.indexOf("1\t");
-
-      if (start == -1) {
-        start = ml.indexOf("1 ");
-      }
-
-      if (start == -1) {
-        start = 0;
-      }
-
-      ml = ml.substring(start);
-
-      // Remove "Quick Jump" and any text after it to ensure successful import
-      final int quickJumpIndex = ml.indexOf("Quick Jump");
-      if (quickJumpIndex != -1) {
-        ml = ml.substring(0, quickJumpIndex).trim();
-      }
-    }
-
-    final Map<String, String> replacements = <String, String>{
-      "\n": " ",
-      "()": " ",
-      "white": " ",
-      "black": " ",
-      "win": " ",
-      "lose": " ",
-      "draw": " ",
-      "resign": " ",
-      "-/x": "x",
-      "/x": "x",
-      ".a": ". a",
-      ".b": ". b",
-      ".c": ". c",
-      ".d": ". d",
-      ".e": ". e",
-      ".f": ". f",
-      ".g": ". g",
-      // GoldToken
-      "\t": " ",
-      "Place to ": "",
-      ", take ": "x",
-      " -> ": "-"
-    };
-
-    ml = processOutsideBrackets(ml, replacements);
-    _importPgn(ml);
   }
 
   static void _importPlayOk(String moveList) {
@@ -242,6 +355,9 @@ class ImportService {
 
     final List<String> list = cleanUpPlayOkMoveList(moveList).split(" ");
 
+    // Check if parsed notation is empty
+    bool hasValidMoves = false;
+
     for (String token in list) {
       token = token.trim();
       if (token.isEmpty ||
@@ -257,7 +373,7 @@ class ImportService {
         newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
         final bool ok = localPos.doMove(move);
         if (!ok) {
-          throw ImportFormatException("Invalid capture move: $move");
+          throw ImportFormatException(" $token → $move");
         }
       }
       // If there is no "x" in the move, proceed normally
@@ -266,7 +382,7 @@ class ImportService {
         newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
         final bool ok = localPos.doMove(move);
         if (!ok) {
-          throw ImportFormatException("Invalid move: $move");
+          throw ImportFormatException("$token → $move");
         }
       }
       // If the move contains "x" and is not at the beginning, for example "b6xd3"
@@ -278,20 +394,27 @@ class ImportService {
         newHistory.appendMove(ExtMove(m1, side: localPos.sideToMove));
         final bool ok1 = localPos.doMove(m1);
         if (!ok1) {
-          throw ImportFormatException("Invalid move: $m1");
+          throw ImportFormatException(" $preMove → $m1");
         }
 
         final String m2 = _playOkNotationToMoveString(captureMove);
         newHistory.appendMove(ExtMove(m2, side: localPos.sideToMove));
         final bool ok2 = localPos.doMove(m2);
         if (!ok2) {
-          throw ImportFormatException("Invalid move: $m2");
+          throw ImportFormatException(" $captureMove → $m2");
         }
       }
     }
 
     if (newHistory.mainlineMoves.isNotEmpty) {
       GameController().newGameRecorder = newHistory;
+      hasValidMoves = true;
+    }
+
+    // Throw exception if no valid moves found
+    if (!hasValidMoves) {
+      throw const ImportFormatException(
+          "Cannot import: No valid moves found in the notation");
     }
   }
 
@@ -345,6 +468,18 @@ class ImportService {
   static void _importPgn(String moveList) {
     // Parse entire PGN (including headers)
     final PgnGame<PgnNodeData> game = PgnGame.parsePgn(moveList);
+
+    // Check if parsed game is empty or invalid
+    final bool hasValidMoves = game.moves.mainline().isNotEmpty;
+    final bool hasValidFen = game.headers.containsKey('FEN') &&
+        game.headers['FEN'] != null &&
+        game.headers['FEN']!.isNotEmpty;
+
+    if (!hasValidMoves && !hasValidFen) {
+      logger.e(
+          "$_logTag Failed to parse PGN: Empty game with no moves and no FEN");
+      throw const ImportFormatException("");
+    }
 
     final Position localPos = Position();
 
@@ -450,11 +585,11 @@ class ImportService {
 
           final bool ok = localPos.doMove(uciMove);
           if (!ok) {
-            throw ImportFormatException("Invalid move: $uciMove");
+            throw ImportFormatException(" $segment → $uciMove");
           }
         } catch (e) {
           logger.e("$_logTag Failed to parse move segment '$segment': $e");
-          throw ImportFormatException("Invalid move segment: $segment");
+          throw ImportFormatException(" $segment");
         }
       }
     }

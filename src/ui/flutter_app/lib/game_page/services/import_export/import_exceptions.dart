@@ -10,5 +10,11 @@ abstract class ImportResponse {}
 
 class ImportFormatException extends FormatException {
   const ImportFormatException([String? source, int? offset])
-      : super("Cannot import ", source, offset);
+      : super(source ?? "Cannot import", null, offset);
+
+  @override
+  String toString() {
+    // Return only the specific error message without the "FormatException: " prefix
+    return message;
+  }
 }

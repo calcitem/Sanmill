@@ -296,9 +296,32 @@ class LoadService {
 
       return true;
     } catch (exception) {
-      final String tip = S.of(context).cannotImport(fileContent);
-      GameController().headerTipNotifier.showTip(tip);
-      Navigator.pop(context);
+      // Check if currently on MovesListPage - more reliable method
+      bool isInMovesListPage = false;
+      try {
+        // Try to get the runtime type name of the top-level Widget
+        final Type contextWidgetType = context.widget.runtimeType;
+        final String widgetTypeName = contextWidgetType.toString();
+        isInMovesListPage = widgetTypeName.contains('MovesListPage');
+      } catch (e) {
+        // If an exception occurs, default to false
+        isInMovesListPage = false;
+      }
+
+      // Extract the specific error message instead of showing entire file content
+      final String errorMessage = exception.toString();
+      final String tip = S.of(context).cannotImport(errorMessage);
+
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      } else {
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+
+        // For other pages, use headerTipNotifier
+        GameController().headerTipNotifier.showTip(tip);
+      }
+
       return false;
     }
   }
@@ -311,21 +334,59 @@ class LoadService {
       return;
     }
 
+    // Check if currently on MovesListPage - more reliable method
+    bool isInMovesListPage = false;
+    try {
+      // Try to get the runtime type name of the top-level Widget
+      final Type contextWidgetType = context.widget.runtimeType;
+      final String widgetTypeName = contextWidgetType.toString();
+      isInMovesListPage = widgetTypeName.contains('MovesListPage');
+    } catch (e) {
+      // If an exception occurs, default to false
+      isInMovesListPage = false;
+    }
+
     if (await HistoryNavigator.stepForwardAll(context, pop: false) ==
         const HistoryOK()) {
       if (!context.mounted) {
         return;
       }
-      GameController()
-          .headerTipNotifier
-          .showTip(S.of(context).done); // "Game loaded."
+
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState
+            ?.showSnackBarClear(S.of(context).done);
+      } else {
+        // For other pages, use headerTipNotifier
+        GameController()
+            .headerTipNotifier
+            .showTip(S.of(context).done); // "Game loaded."
+      }
     } else {
       if (!context.mounted) {
         return;
       }
-      final String tip =
-          S.of(context).cannotImport(HistoryNavigator.importFailedStr);
-      GameController().headerTipNotifier.showTip(tip);
+
+      // Format error message to be more specific if importFailedStr is available
+      String errorMessage;
+      if (HistoryNavigator.importFailedStr.isNotEmpty) {
+        // Show specific segment that failed to import
+        errorMessage = "${HistoryNavigator.importFailedStr}";
+      } else {
+        // Fallback to general error if no specific info is available
+        errorMessage = "❌";
+      }
+
+      final String tip = S.of(context).cannotImport(errorMessage);
+
+      if (isInMovesListPage) {
+        // For MovesListPage, use SnackBar notification
+        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      } else {
+        // For other pages, use headerTipNotifier
+        GameController().headerTipNotifier.showTip(tip);
+      }
+
       HistoryNavigator.importFailedStr = "";
     }
   }
