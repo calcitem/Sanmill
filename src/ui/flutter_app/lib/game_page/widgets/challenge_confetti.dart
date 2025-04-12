@@ -599,7 +599,7 @@ class ConfettiPainter extends CustomPainter {
       canvas.scale(1.0, particle.scaleY);
 
       final Color baseColor = particle.color;
-      fillPaint.color = baseColor.withOpacity(opacity);
+      fillPaint.color = baseColor.withValues(alpha: opacity);
 
       // Metallic shader
       if (particle.isMetallic) {
@@ -624,7 +624,7 @@ class ConfettiPainter extends CustomPainter {
               highlightVisibility *
               (1.0 - particle.controller.value * 0.6))
           .clamp(0.0, 0.5);
-      highlightPaint.color = Colors.white.withOpacity(highlightOpacity);
+      highlightPaint.color = Colors.white.withValues(alpha: highlightOpacity);
 
       final double pSize = particle.size;
       switch (particle.shape) {
@@ -672,7 +672,7 @@ class ConfettiPainter extends CustomPainter {
       Canvas canvas, double size, Paint paint, Paint highlightPaint) {
     final double radius = size / 2;
     canvas.drawCircle(Offset.zero, radius, paint);
-    if (highlightPaint.color.alpha > 0) {
+    if (highlightPaint.color.a > 0) {
       canvas.drawCircle(
         Offset.zero,
         radius * 0.4,
@@ -691,7 +691,7 @@ class ConfettiPainter extends CustomPainter {
     path.lineTo(halfSize, height / 2);
     path.close();
     canvas.drawPath(path, paint);
-    if (highlightPaint.color.alpha > 0) {
+    if (highlightPaint.color.a > 0) {
       canvas.drawCircle(
         Offset(0, height * 0.1),
         size / 10,
@@ -721,7 +721,7 @@ class ConfettiPainter extends CustomPainter {
     }
     path.close();
     canvas.drawPath(path, paint);
-    if (highlightPaint.color.alpha > 0) {
+    if (highlightPaint.color.a > 0) {
       canvas.drawCircle(
         Offset(0, -size * 0.05),
         size / 10,
