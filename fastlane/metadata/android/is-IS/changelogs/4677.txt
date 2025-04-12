@@ -1,0 +1,3 @@
+v6.0.2
+
+Þessi uppfærsla inniheldur ýmsar endurbætur og villuleiðréttingar til að gera forritið betra fyrir þig.
