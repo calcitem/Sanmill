@@ -30,26 +30,9 @@ class ImportService {
 
     // Check if data is null - show error message
     if (data == null) {
-      // Check if currently on MovesListPage - more reliable method
-      bool isInMovesListPage = false;
-      try {
-        // Try to get the runtime type name of the top-level Widget
-        final Type contextWidgetType = context.widget.runtimeType;
-        final String widgetTypeName = contextWidgetType.toString();
-        isInMovesListPage = widgetTypeName.contains('MovesListPage');
-      } catch (e) {
-        // If an exception occurs, default to false
-        isInMovesListPage = false;
-      }
-
-      if (isInMovesListPage) {
-        // For MovesListPage, use SnackBar notification
-        rootScaffoldMessengerKey.currentState
-            ?.showSnackBarClear(s.cannotImport("null"));
-      } else {
-        // For other pages, use headerTipNotifier
-        GameController().headerTipNotifier.showTip(s.cannotImport("null"));
-      }
+      rootScaffoldMessengerKey.currentState
+          ?.showSnackBarClear(s.cannotImport("null"));
+      GameController().headerTipNotifier.showTip(s.cannotImport("null"));
 
       if (shouldPop) {
         navigator.pop();
@@ -61,26 +44,9 @@ class ImportService {
 
     // If clipboard is empty or missing text, pop and return
     if (text == null) {
-      // Check if currently on MovesListPage - more reliable method
-      bool isInMovesListPage = false;
-      try {
-        // Try to get the runtime type name of the top-level Widget
-        final Type contextWidgetType = context.widget.runtimeType;
-        final String widgetTypeName = contextWidgetType.toString();
-        isInMovesListPage = widgetTypeName.contains('MovesListPage');
-      } catch (e) {
-        // If an exception occurs, default to false
-        isInMovesListPage = false;
-      }
-
-      if (isInMovesListPage) {
-        // For MovesListPage, use SnackBar notification
-        rootScaffoldMessengerKey.currentState
-            ?.showSnackBarClear(s.cannotImport("null"));
-      } else {
-        // For other pages, use headerTipNotifier
-        GameController().headerTipNotifier.showTip(s.cannotImport("null"));
-      }
+      rootScaffoldMessengerKey.currentState
+          ?.showSnackBarClear(s.cannotImport("null"));
+      GameController().headerTipNotifier.showTip(s.cannotImport("null"));
 
       if (shouldPop) {
         navigator.pop();
@@ -96,26 +62,9 @@ class ImportService {
         return;
       }
 
-      // Check if currently on MovesListPage - more reliable method
-      bool isInMovesListPage = false;
-      try {
-        // Try to get the runtime type name of the top-level Widget
-        final Type contextWidgetType = context.widget.runtimeType;
-        final String widgetTypeName = contextWidgetType.toString();
-        isInMovesListPage = widgetTypeName.contains('MovesListPage');
-      } catch (e) {
-        // If an exception occurs, default to false
-        isInMovesListPage = false;
-      }
-
       final String tip = s.cannotImport(exception.toString());
-      if (isInMovesListPage) {
-        // For MovesListPage, use SnackBar notification
-        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
-      } else {
-        // For other pages, use headerTipNotifier
-        GameController().headerTipNotifier.showTip(tip);
-      }
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      GameController().headerTipNotifier.showTip(tip);
 
       if (shouldPop) {
         navigator.pop();
@@ -142,32 +91,14 @@ class ImportService {
       return;
     }
 
-    // Check if currently on MovesListPage - more reliable method
-    bool isInMovesListPage = false;
-    try {
-      // Try to get the runtime type name of the top-level Widget
-      final Type contextWidgetType = context.widget.runtimeType;
-      final String widgetTypeName = contextWidgetType.toString();
-      isInMovesListPage = widgetTypeName.contains('MovesListPage');
-    } catch (e) {
-      // If an exception occurs, default to false
-      isInMovesListPage = false;
-    }
-
     if (historyResult == const HistoryOK()) {
-      if (isInMovesListPage) {
-        rootScaffoldMessengerKey.currentState
-            ?.showSnackBarClear(s.gameImported);
-      } else {
-        GameController().headerTipNotifier.showTip(s.gameImported);
-      }
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(s.gameImported);
+      GameController().headerTipNotifier.showTip(s.gameImported);
     } else {
       final String tip = s.cannotImport(HistoryNavigator.importFailedStr);
-      if (isInMovesListPage) {
-        rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
-      } else {
-        GameController().headerTipNotifier.showTip(tip);
-      }
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(tip);
+      GameController().headerTipNotifier.showTip(tip);
+
       HistoryNavigator.importFailedStr = "";
     }
 
