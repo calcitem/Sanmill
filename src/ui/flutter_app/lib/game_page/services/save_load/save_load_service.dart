@@ -369,7 +369,7 @@ class LoadService {
       String errorMessage;
       if (HistoryNavigator.importFailedStr.isNotEmpty) {
         // Show specific segment that failed to import
-        errorMessage = "${HistoryNavigator.importFailedStr}";
+        errorMessage = HistoryNavigator.importFailedStr;
       } else {
         // Fallback to general error if no specific info is available
         errorMessage = "❌";
