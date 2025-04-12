@@ -74,11 +74,13 @@ class GameResultAlertDialog extends StatelessWidget {
 
     logger.t("$_logTag Game over reason string: $content");
 
-    final List<Widget> actions;
-    if (canChallengeNextLevel(_gameResult!) == true &&
+    final bool canChallenge = canChallengeNextLevel(_gameResult!) == true &&
         DB().generalSettings.searchAlgorithm != SearchAlgorithm.random &&
         !isTopLevel &&
-        gameMode == GameMode.humanVsAi) {
+        gameMode == GameMode.humanVsAi;
+
+    final List<Widget> actions;
+    if (canChallenge) {
       content.writeln();
       content.writeln();
       content.writeln(
@@ -193,11 +195,37 @@ class GameResultAlertDialog extends StatelessWidget {
         key: const Key('game_result_alert_dialog_title'),
         style: AppTheme.dialogTitleTextStyle,
       ),
-      content: Text(
-        content.toString(),
-        key: const Key('game_result_alert_dialog_content'),
-        style: TextStyle(
-            fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+      content: Stack(
+        clipBehavior: Clip.none,
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                content.toString(),
+                key: const Key('game_result_alert_dialog_content'),
+                style: TextStyle(
+                    fontSize:
+                        AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
+              ),
+              if (canChallenge)
+                const SizedBox(
+                  height: 200,
+                  width: double.infinity,
+                  // Reserve space for confetti animation
+                ),
+            ],
+          ),
+          if (canChallenge)
+            const Positioned(
+              left: -50,
+              right: -50,
+              top: 30,
+              bottom: 0,
+              // Use updated ChallengeFireworks widget with confetti
+              child: ChallengeConfetti(),
+            ),
+        ],
       ),
       actions: actions,
     );

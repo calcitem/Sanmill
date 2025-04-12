@@ -11,6 +11,7 @@ dependencies:
   audioplayers: 6.1.0
   catcher_2: 2.1.1
   collection: 1.19.0
+  confetti: 0.8.0
   crop_your_image: 2.0.0
   copy_with_extension: 6.0.1
   cupertino_icons: 1.0.8
