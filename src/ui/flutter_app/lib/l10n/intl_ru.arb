@@ -1530,7 +1530,7 @@
   "@elfilja": {},
   "tipSelectOwnPiece": "Выберите одну из своих фигур.",
   "@tipSelectOwnPiece": {},
-"notYourTurn": "Сейчас не ваш ход.",
+  "notYourTurn": "Сейчас не ваш ход.",
   "@notYourTurn": {},
   "annotationToolbarBackgroundColor": "Цвет фона панели аннотаций",
   "@annotationToolbarBackgroundColor": {},

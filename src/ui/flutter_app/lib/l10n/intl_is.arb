@@ -1628,7 +1628,7 @@
   "@elfilja": {},
   "tipSelectOwnPiece": "Veldu einn af þínum peðum.",
   "@tipSelectOwnPiece": {},
-"notYourTurn": "Þetta er ekki þín umferð.",
+  "notYourTurn": "Þetta er ekki þín umferð.",
   "@notYourTurn": {},
   "annotationToolbarBackgroundColor": "Bakgrunnslitur athugasemda tólastiku",
   "@annotationToolbarBackgroundColor": {},

@@ -1530,7 +1530,7 @@
   "@elfilja": {},
   "tipSelectOwnPiece": "Vælg en af dine brikker.",
   "@tipSelectOwnPiece": {},
-"notYourTurn": "Det er ikke din tur.",
+  "notYourTurn": "Det er ikke din tur.",
   "@notYourTurn": {},
   "annotationToolbarBackgroundColor": "Baggrundsfarve for annotationsværktøjslinje",
   "@annotationToolbarBackgroundColor": {},

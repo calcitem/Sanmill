@@ -1530,7 +1530,7 @@
   "@elfilja": {},
   "tipSelectOwnPiece": "Seleziona uno dei tuoi pezzi.",
   "@tipSelectOwnPiece": {},
-"notYourTurn": "Non è il tuo turno.",
+  "notYourTurn": "Non è il tuo turno.",
   "@notYourTurn": {},
   "annotationToolbarBackgroundColor": "Colore di sfondo della barra degli strumenti di annotazione",
   "@annotationToolbarBackgroundColor": {},
