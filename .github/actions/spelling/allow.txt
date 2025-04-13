@@ -52,6 +52,7 @@ SUr
 SVi
 SZh
 SZu
+sdcard
 Subtags
 USHORT
 UShort
