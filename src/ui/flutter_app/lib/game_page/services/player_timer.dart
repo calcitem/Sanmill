@@ -127,10 +127,18 @@ class PlayerTimer {
       final bool isAIWithUnlimitedTime =
           gameController.gameInstance.isAiSideToMove &&
               DB().generalSettings.moveTime <= 0;
+      // Check if human player has unlimited time setting
+      final bool isHumanWithUnlimitedTime =
+          !gameController.gameInstance.isAiSideToMove &&
+              DB().generalSettings.humanMoveTime <= 0;
 
       // For AI with unlimited time (moveTime=0), LAN mode, or when AI is playing,
+      // or for human with unlimited time (humanMoveTime=0),
       // just update the display but don't set game over
-      if (isLanMode || !isHumanPlayer || isAIWithUnlimitedTime) {
+      if (isLanMode ||
+          !isHumanPlayer ||
+          isAIWithUnlimitedTime ||
+          isHumanWithUnlimitedTime) {
         _remainingTime = 0;
         remainingTimeNotifier.value = 0;
 
