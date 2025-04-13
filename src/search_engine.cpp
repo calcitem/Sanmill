@@ -344,16 +344,27 @@ Depth SearchEngine::get_depth() const
 /// Function to check if the search has timed out
 bool SearchEngine::is_timeout(TimePoint startTime)
 {
+    // Get the time limit in milliseconds.
     const auto limit = gameOptions.getMoveTime() * 1000;
-    const TimePoint elapsed = now() - startTime;
 
-    if (elapsed > limit) {
-#ifdef _WIN32
-        debugPrintf("\nTimeout. elapsed = %lld\n", elapsed);
-#endif
-        return true;
+    // If limit is 0 or less, it signifies infinite time, so never timeout.
+    if (limit <= 0) {
+        return false;
     }
 
+    // Calculate elapsed time since the search started.
+    const TimePoint elapsed = now() - startTime;
+
+    // Check if the elapsed time exceeds the limit.
+    if (elapsed > limit) {
+#ifdef _WIN32
+        // Optional debug output on Windows when timeout occurs.
+        debugPrintf("\nTimeout. elapsed = %lld\n", elapsed);
+#endif
+        return true; // Timeout occurred.
+    }
+
+    // Time limit has not been reached.
     return false;
 }
 
