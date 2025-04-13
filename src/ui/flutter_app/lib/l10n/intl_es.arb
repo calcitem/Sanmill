@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Deslice para mostrar el cajón.",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Mostrar información del juego en capturas de pantalla",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Límite de tiempo humano",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Sin límite de tiempo para los movimientos humanos",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Se aplicará la pérdida por tiempo de espera para el jugador humano",
+  "@timeoutLoseWillBeApplied": {}
 }

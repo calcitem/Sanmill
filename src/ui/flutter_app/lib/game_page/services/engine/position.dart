@@ -628,7 +628,7 @@ class Position {
       if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (DB().ruleSettings.threefoldRepetitionRule && _hasGameCycle) {
-          _setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
+          setGameOver(PieceColor.draw, GameOverReason.drawThreefoldRepetition);
         }
       }
     } else {
@@ -784,7 +784,7 @@ class Position {
           // TODO: BoardFullAction: Support other actions
           switch (DB().ruleSettings.boardFullAction) {
             case BoardFullAction.firstPlayerLose:
-              _setGameOver(PieceColor.black, GameOverReason.loseFullBoard);
+              setGameOver(PieceColor.black, GameOverReason.loseFullBoard);
               return true;
             case BoardFullAction.firstAndSecondPlayerRemovePiece:
               pieceToRemoveCount[PieceColor.white] =
@@ -804,7 +804,7 @@ class Position {
               keepSideToMove();
               break;
             case BoardFullAction.agreeToDraw:
-              _setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
+              setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
               return true;
             case null:
               logger.e("[position] putPiece: Invalid BoardFullAction.");
@@ -1093,7 +1093,7 @@ class Position {
 
     if (pieceOnBoardCount[_them]! + pieceInHandCount[_them]! <
         DB().ruleSettings.piecesAtLeastCount) {
-      _setGameOver(sideToMove, GameOverReason.loseFewerThanThree);
+      setGameOver(sideToMove, GameOverReason.loseFewerThanThree);
       SoundManager().playTone(Sound.remove);
       return const GameResponseOK();
     }
@@ -1219,12 +1219,12 @@ class Position {
       return false;
     }
 
-    _setGameOver(loser.opponent, GameOverReason.loseResign);
+    setGameOver(loser.opponent, GameOverReason.loseResign);
 
     return true;
   }
 
-  void _setGameOver(PieceColor w, GameOverReason reason) {
+  void setGameOver(PieceColor w, GameOverReason reason) {
     phase = Phase.gameOver;
     gameOverReason = reason;
     winner = w;
@@ -1260,20 +1260,20 @@ class Position {
     if (pieceOnBoardCount[sideToMove]! + pieceInHandCount[sideToMove]! <
         DB().ruleSettings.piecesAtLeastCount) {
       // Engine doesn't have this because of improving performance.
-      _setGameOver(sideToMove.opponent, GameOverReason.loseFewerThanThree);
+      setGameOver(sideToMove.opponent, GameOverReason.loseFewerThanThree);
       return true;
     }
 
     if (DB().ruleSettings.nMoveRule > 0 &&
         posKeyHistory.length >= DB().ruleSettings.nMoveRule) {
-      _setGameOver(PieceColor.draw, GameOverReason.drawFiftyMove);
+      setGameOver(PieceColor.draw, GameOverReason.drawFiftyMove);
       return true;
     }
 
     if (DB().ruleSettings.endgameNMoveRule < DB().ruleSettings.nMoveRule &&
         _isThreeEndgame &&
         posKeyHistory.length >= DB().ruleSettings.endgameNMoveRule) {
-      _setGameOver(PieceColor.draw, GameOverReason.drawEndgameFiftyMove);
+      setGameOver(PieceColor.draw, GameOverReason.drawEndgameFiftyMove);
       return true;
     }
 
@@ -1283,7 +1283,7 @@ class Position {
         _isAllSurrounded(sideToMove)) {
       switch (DB().ruleSettings.stalemateAction) {
         case StalemateAction.endWithStalemateLoss:
-          _setGameOver(sideToMove.opponent, GameOverReason.loseNoLegalMoves);
+          setGameOver(sideToMove.opponent, GameOverReason.loseNoLegalMoves);
           return true;
         case StalemateAction.changeSideToMove:
           changeSideToMove(); // TODO(calcitem): Need?
@@ -1296,7 +1296,7 @@ class Position {
           pieceToRemoveCount[sideToMove] = 1;
           break;
         case StalemateAction.endWithStalemateDraw:
-          _setGameOver(PieceColor.draw, GameOverReason.drawStalemateCondition);
+          setGameOver(PieceColor.draw, GameOverReason.drawStalemateCondition);
           return true;
         case null:
           logger.e("[position] _checkIfGameIsOver: Invalid StalemateAction.");

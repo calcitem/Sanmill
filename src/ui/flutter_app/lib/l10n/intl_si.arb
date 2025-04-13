@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "drawer එක දිස්වීමට ස්вайප් කරන්න",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "තිරපතයන්හි ක්‍රීඩා තොරතුරු පෙන්වන්න",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "මානව කාල සීමාව",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "මානව චලනයන් සඳහා කාල සීමාවක් නොමැත",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "මානව ක්‍රීඩකයා සඳහා කල් ඉකුත්වීමේ පරාජය යෙදෙනු ඇත",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -452,9 +452,9 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point instead of being restricted to adjacent points as in the rest of the game.",
+  "flyPieceCount_Detail": "If Flying is enabled, when a player's piece count falls below a certain threshold, their pieces are free to move to any unoccupied point instead of being restricted to adjacent points as in the rest of the game.",
   "@flyPieceCount_Detail": {
-    "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
+    "description": "If Flying is enabled, when a player's piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
   "piecesAtLeastCount": "Pieces At Least",
   "@piecesAtLeastCount": {
@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Swipe to reveal the Drawer",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Show game info on screenshots",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Human time limit",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "No time limit for human moves",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeout lose will be applied for human player",
+  "@timeoutLoseWillBeApplied": {}
 }

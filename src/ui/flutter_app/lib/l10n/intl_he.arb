@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "החלק כדי לחשוף את המגירה",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "הצג מידע על המשחק בצילומי מסך",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "מגבלת זמן אנושית",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "אין מגבלת זמן למהלכים אנושיים",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "הפסד עקב פסק זמן יחול על שחקן אנושי",
+  "@timeoutLoseWillBeApplied": {}
 }

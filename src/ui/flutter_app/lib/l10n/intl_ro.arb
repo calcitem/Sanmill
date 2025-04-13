@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Glisează pentru a dezvălui sertarul",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Afișează informații despre joc în capturile de ecran",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Limită de timp umană",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Fără limită de timp pentru mișcările umane",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Pierderea prin expirarea timpului va fi aplicată jucătorului uman",
+  "@timeoutLoseWillBeApplied": {}
 }

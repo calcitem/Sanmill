@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "서랍을 표시하려면 스와이프하세요",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "스크린샷에 게임 정보 표시",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "사람 시간 제한",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "사람의 이동에는 시간 제한이 없습니다",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "사람 플레이어에게 시간 초과 패배가 적용됩니다",
+  "@timeoutLoseWillBeApplied": {}
 }

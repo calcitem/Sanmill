@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Правядзіце, каб адкрыць скрыню",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Паказваць інфармацыю аб гульні на здымках экрана",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Ліміт часу для ходу чалавека",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Няма абмежавання па часе для хадоў чалавека",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Для гульца-чалавека будзе прымяняцца пройгрыш па тайм-аўту",
+  "@timeoutLoseWillBeApplied": {}
 }

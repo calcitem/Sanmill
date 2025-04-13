@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Strjúktu til að sýna skúffuna",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Sýna upplýsingar um leik á skjámyndum",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Tímamörk manna",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Engin tímamörk fyrir mannlega leiki",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Tímamarkatap verður beitt fyrir mannlegan spilara",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Pyyhkäise avataksesi laatikon",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Näytä pelitiedot kuvakaappauksissa",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Ihmisen aikaraja",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Ei aikarajaa ihmisen siirroille",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Aikarajan ylitys aiheuttaa häviön ihmispelaajalle",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Przeciągnij, aby odsłonić szufladę",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Pokaż informacje o grze na zrzutach ekranu",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Limit czasu dla człowieka",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Brak limitu czasu dla ruchów człowieka",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Przegrana przez przekroczenie czasu zostanie zastosowana dla gracza ludzkiego",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Rrëshqit për të zbuluar sirtarin",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Shfaq informacionin e lojës në pamjet e ekranit",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Kufiri kohor njerëzor",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Nuk ka kufi kohor për lëvizjet njerëzore",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Humbja për skadim kohe do të aplikohet për lojtarin njerëzor",
+  "@timeoutLoseWillBeApplied": {}
 }

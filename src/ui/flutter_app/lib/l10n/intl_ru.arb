@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Проведите, чтобы открыть ящик",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Показывать информацию об игре на скриншотах",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Лимит времени для человека",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Нет лимита времени для ходов человека",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Для игрока-человека будет применено поражение по таймауту",
+  "@timeoutLoseWillBeApplied": {}
 }

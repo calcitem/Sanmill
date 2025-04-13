@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "ড্রয়ার দেখতে সোয়াইপ করুন",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "স্ক্রীনশটে গেম তথ্য দেখান",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "মানুষের চালের সময়সীমা",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "মানুষের চালের জন্য কোন সময়সীমা নেই",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "মানুষ খেলোয়াড়ের জন্য টাইমআউট হার প্রয়োগ করা হবে",
+  "@timeoutLoseWillBeApplied": {}
 }

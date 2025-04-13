@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Prijeđite prstom za prikaz ladice",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Prikaži informacije o igri na snimkama zaslona",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Vremensko ograničenje za ljudski potez",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Nema vremenskog ograničenja za ljudske poteze",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Gubitak zbog isteka vremena primijenit će se za ljudskog igrača",
+  "@timeoutLoseWillBeApplied": {}
 }

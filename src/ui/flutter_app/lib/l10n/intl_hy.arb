@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Սահեցրեք՝ դարակը բացելու համար",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Ցուցադրել խաղի տեղեկությունները նկարված էկրանների վրա",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Մարդու քայլի ժամանակի սահմանափակում",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Մարդու քայլերի համար ժամանակի սահմանափակում չկա",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Մարդ խաղացողի համար կկիրառվի ժամանակի սպառման պարտություն",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "滑动页面可打开抽屉",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "在截图上显示棋局信息",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "人类思考时间限制",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "人类思考时间无限制",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "对于人类而言，超时将被判负",
+  "@timeoutLoseWillBeApplied": {}
 }

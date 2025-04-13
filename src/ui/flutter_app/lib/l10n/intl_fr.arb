@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Faites glisser pour révéler le tiroir",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Afficher les informations de jeu sur les captures d'écran",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Limite de temps humain",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Pas de limite de temps pour les coups humains",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "La perte par dépassement de temps sera appliquée pour le joueur humain",
+  "@timeoutLoseWillBeApplied": {}
 }

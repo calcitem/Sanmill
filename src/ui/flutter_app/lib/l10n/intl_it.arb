@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Scorri per mostrare il cassetto",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Mostra le informazioni di gioco negli screenshot",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Limite di tempo umano",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Nessun limite di tempo per le mosse umane",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "La sconfitta per timeout verrà applicata al giocatore umano",
+  "@timeoutLoseWillBeApplied": {}
 }

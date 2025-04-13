@@ -56,6 +56,11 @@ class GeneralSettingsPage extends StatelessWidget {
         builder: (_) => const _MoveTimeSlider(),
       );
 
+  void _setHumanMoveTime(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _HumanMoveTimeSlider(),
+      );
+
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(aiMovesFirst: value);
 
@@ -355,6 +360,13 @@ class GeneralSettingsPage extends StatelessWidget {
               titleString: S.of(context).moveTime,
               trailingString: DB().generalSettings.moveTime.toString(),
               onTap: () => _setMoveTime(context),
+            ),
+            SettingsListTile(
+              key: const Key(
+                  'general_settings_page_settings_card_difficulty_human_move_time'),
+              titleString: S.of(context).humanMoveTime,
+              trailingString: DB().generalSettings.humanMoveTime.toString(),
+              onTap: () => _setHumanMoveTime(context),
             ),
           ],
         ),

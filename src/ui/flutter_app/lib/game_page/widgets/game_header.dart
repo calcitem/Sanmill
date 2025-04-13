@@ -260,7 +260,7 @@ class HeaderTipState extends State<HeaderTip> {
       key: const Key('header_tip_value_listenable_builder'),
       valueListenable: _messageNotifier,
       builder: (BuildContext context, String currentDisplay, Widget? child) {
-        // Retrieve the active node’s comment, if any.
+        // Retrieve the active node's comment, if any.
         final PgnNode<ExtMove>? activeNode =
             GameController().gameRecorder.activeNode;
         // Join all comments for display. (If you only need the first, adjust accordingly.)
@@ -269,7 +269,7 @@ class HeaderTipState extends State<HeaderTip> {
                 ? activeNode!.data!.comments!.join(' ')
                 : "";
 
-        // If there’s an existing comment in the PGN node, show it in yellow.
+        // If there's an existing comment in the PGN node, show it in yellow.
         // Otherwise, use _messageNotifier.value with original color.
         final bool hasNodeComment = nodeComment.isNotEmpty;
         final String textToShow = hasNodeComment
@@ -405,24 +405,82 @@ class HeaderStateIcons extends State<HeaderIcons> {
   final ValueNotifier<bool?> _lanHostPlaysWhiteNotifier =
       ValueNotifier<bool?>(GameController().lanHostPlaysWhite);
 
+  // Add ValueNotifier for remaining time
+  final ValueNotifier<int> _player1TimeNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> _player2TimeNotifier = ValueNotifier<int>(0);
+
+  // Add a flag to track if it's the first move
+  bool _isFirstMove = true;
+
   @override
   void initState() {
     super.initState();
     GameController().headerIconsNotifier.addListener(_updateIcons);
     // Listen to changes in lanHostPlaysWhite via a custom method or direct property observation
     _refreshLanHostPlaysWhite();
+
+    // Listen for timer updates
+    final PlayerTimer playerTimer = PlayerTimer();
+    playerTimer.remainingTimeNotifier.addListener(_updateTimers);
+
+    // Initialize based on current game state
+    _isFirstMove = GameController().gameRecorder.mainlineMoves.isEmpty;
+  }
+
+  void _updateTimers() {
+    // Get current remaining time
+    final PlayerTimer playerTimer = PlayerTimer();
+    final int remainingTime = playerTimer.remainingTimeNotifier.value;
+
+    // Determine which player is active based on the current side to move
+    final GameController controller = GameController();
+    final bool isPlayer1Turn =
+        controller.position.sideToMove == PieceColor.white;
+
+    // Skip timer update if this is the first move of the game
+    if (_isFirstMove && controller.gameRecorder.mainlineMoves.isEmpty) {
+      return;
+    }
+
+    // Update AI timer even when engine is thinking
+
+    // Update the appropriate timer based on whose turn it is
+    if (isPlayer1Turn) {
+      // For Player 1 (White)
+      if (controller.gameInstance.getPlayerByColor(PieceColor.white).isAi) {
+        // AI as Player 1
+        final int aiMoveTime = DB().generalSettings.moveTime;
+        _player1TimeNotifier.value = aiMoveTime <= 0 ? 0 : remainingTime;
+      } else {
+        // Human as Player 1
+        _player1TimeNotifier.value = remainingTime;
+      }
+    } else {
+      // For Player 2 (Black)
+      if (controller.gameInstance.getPlayerByColor(PieceColor.black).isAi) {
+        // AI as Player 2
+        final int aiMoveTime = DB().generalSettings.moveTime;
+        _player2TimeNotifier.value = aiMoveTime <= 0 ? 0 : remainingTime;
+      } else {
+        // Human as Player 2
+        _player2TimeNotifier.value = remainingTime;
+      }
+    }
   }
 
   void _updateIcons() {
     _iconDataNotifier.value = GameController().position.sideToMove.icon;
     _refreshLanHostPlaysWhite();
+
+    // Update first move flag when moves are made
+    _isFirstMove = GameController().gameRecorder.mainlineMoves.isEmpty;
   }
 
   void _refreshLanHostPlaysWhite() {
     _lanHostPlaysWhiteNotifier.value = GameController().lanHostPlaysWhite;
   }
 
-// In game_header.dart, HeaderStateIcons class
+  // In game_header.dart, HeaderStateIcons class
   (IconData, IconData) _getLanModeIcons() {
     final GameController controller = GameController();
     if (controller.gameInstance.gameMode == GameMode.humanVsLAN) {
@@ -446,6 +504,34 @@ class HeaderStateIcons extends State<HeaderIcons> {
     );
   }
 
+  // Format remaining time based on the requirements
+  String _formatTime(int seconds, bool isAI) {
+    // For AI when AI move time is 0, show "--" to indicate unlimited time
+    final int aiMoveTime = DB().generalSettings.moveTime;
+    if (isAI && aiMoveTime <= 0) {
+      return "--";
+    }
+
+    // If time is less than or equal to 60 seconds, just show seconds with padding
+    if (seconds <= 60) {
+      // Format to always use two digits, e.g., "05" instead of "5"
+      return seconds.toString().padLeft(2, '0');
+    }
+
+    // Otherwise format as MM:SS
+    final int minutes = seconds ~/ 60;
+    final int remainingSeconds = seconds % 60;
+    return '$minutes:${remainingSeconds.toString().padLeft(2, '0')}';
+  }
+
+  // Check if timers should be shown
+  bool _shouldShowTimers() {
+    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+      return false;
+    }
+    return DB().generalSettings.humanMoveTime > 0;
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<IconData>(
@@ -454,6 +540,24 @@ class HeaderStateIcons extends State<HeaderIcons> {
       builder: (BuildContext context, IconData turnIcon, Widget? child) {
         // Remove lanHostPlaysWhite dependency since it's always true
         final (IconData leftIcon, IconData rightIcon) = _getLanModeIcons();
+
+        // Determine if we should show timers
+        final bool showTimers = _shouldShowTimers();
+
+        // Get controller to check game mode and AI status
+        final GameController controller = GameController();
+        final bool isAILeft =
+            controller.gameInstance.gameMode != GameMode.humanVsHuman &&
+                controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+                controller.gameInstance.getPlayerByColor(PieceColor.white).isAi;
+        final bool isAIRight =
+            controller.gameInstance.gameMode != GameMode.humanVsHuman &&
+                controller.gameInstance.gameMode != GameMode.humanVsLAN &&
+                controller.gameInstance.getPlayerByColor(PieceColor.black).isAi;
+
+        // Get text direction for RTL support
+        final TextDirection textDirection = Directionality.of(context);
+
         return IconTheme(
           key: const Key('header_icons_icon_theme'),
           data: IconThemeData(color: DB().colorSettings.messageColor),
@@ -461,9 +565,64 @@ class HeaderStateIcons extends State<HeaderIcons> {
             key: const Key('header_icon_row'),
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              // Player 1 Timer (left side)
+              if (showTimers)
+                ValueListenableBuilder<int>(
+                  valueListenable: _player1TimeNotifier,
+                  builder: (BuildContext context, int time, Widget? child) {
+                    return Container(
+                      width: 40,
+                      alignment: textDirection == TextDirection.rtl
+                          ? Alignment.centerLeft
+                          : Alignment.centerRight,
+                      margin: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        _formatTime(time, isAILeft),
+                        style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 14,
+                          color: DB().colorSettings.messageColor,
+                          fontFeatures: const <ui.FontFeature>[
+                            FontFeature.tabularFigures()
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+
               Icon(leftIcon, key: const Key('left_header_icon')),
-              Icon(turnIcon, key: const Key('current_side_icon')),
+              Padding(
+                padding: EdgeInsets.zero, // Spacing around the center icon
+                child: Icon(turnIcon, key: const Key('current_side_icon')),
+              ),
               Icon(rightIcon, key: const Key('right_header_icon')),
+
+              // Player 2 Timer (right side)
+              if (showTimers)
+                ValueListenableBuilder<int>(
+                  valueListenable: _player2TimeNotifier,
+                  builder: (BuildContext context, int time, Widget? child) {
+                    return Container(
+                      width: 40,
+                      alignment: textDirection == TextDirection.rtl
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
+                      margin: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        _formatTime(time, isAIRight),
+                        style: TextStyle(
+                          fontFamily: 'monospace',
+                          fontSize: 14,
+                          color: DB().colorSettings.messageColor,
+                          fontFeatures: const <ui.FontFeature>[
+                            FontFeature.tabularFigures()
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         );
@@ -474,6 +633,9 @@ class HeaderStateIcons extends State<HeaderIcons> {
   @override
   void dispose() {
     GameController().headerIconsNotifier.removeListener(_updateIcons);
+    // Remove the timer listener
+    final PlayerTimer playerTimer = PlayerTimer();
+    playerTimer.remainingTimeNotifier.removeListener(_updateTimers);
     super.dispose();
   }
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Pühkige, et avada sahtel",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Kuva mänguteave ekraanipiltidel",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Inimkäigu ajalimiit",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Inimkäikudel ajalimiiti pole",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Inimmängija puhul rakendatakse ajaületamise kaotust",
+  "@timeoutLoseWillBeApplied": {}
 }

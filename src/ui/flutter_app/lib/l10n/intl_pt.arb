@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Deslize para revelar a gaveta",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Mostrar informações do jogo nas capturas de tela",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Limite de tempo humano",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Sem limite de tempo para movimentos humanos",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "A perda por tempo limite será aplicada ao jogador humano",
+  "@timeoutLoseWillBeApplied": {}
 }

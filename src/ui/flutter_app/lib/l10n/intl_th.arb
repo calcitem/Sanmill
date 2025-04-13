@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "ปัดเพื่อเปิดลิ้นชัก",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "แสดงข้อมูลเกมบนภาพหน้าจอ",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "จำกัดเวลาของมนุษย์",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "ไม่มีการจำกัดเวลาสำหรับการเคลื่อนไหวของมนุษย์",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "การแพ้เนื่องจากหมดเวลาจะถูกนำไปใช้กับผู้เล่นที่เป็นมนุษย์",
+  "@timeoutLoseWillBeApplied": {}
 }

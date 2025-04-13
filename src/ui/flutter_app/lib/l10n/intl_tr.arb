@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Çekmeceyi açmak için kaydırın",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Ekran görüntülerinde oyun bilgilerini göster",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "İnsan zaman sınırı",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "İnsan hamleleri için zaman sınırı yok",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "İnsan oyuncu için zaman aşımı kaybı uygulanacaktır",
+  "@timeoutLoseWillBeApplied": {}
 }

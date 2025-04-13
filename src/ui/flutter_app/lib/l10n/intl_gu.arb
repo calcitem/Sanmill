@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "ડ્રોઅર દર્શાવવા માટે સ્વાઇપ કરો",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "સ્ક્રીનશૉટમાં ગેમ માહિતી બતાવો",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "માનવ સમય મર્યાદા",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "માનવ ચાલ માટે કોઈ સમય મર્યાદા નથી",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "માનવ ખેલાડી માટે સમયસમાપ્તિ હાર લાગુ કરવામાં આવશે",
+  "@timeoutLoseWillBeApplied": {}
 }

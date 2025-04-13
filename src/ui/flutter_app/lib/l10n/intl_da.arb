@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Stryg for at afsløre skuffen",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Vis spiloplysninger på skærmbilleder",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Tidsgrænse for menneskeligt træk",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Ingen tidsgrænse for menneskelige træk",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeout-tab vil blive anvendt for den menneskelige spiller",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Σαρώστε για να εμφανίσετε το συρτάρι",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Εμφάνιση πληροφοριών παιχνιδιού στα στιγμιότυπα οθόνης",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Χρονικό όριο ανθρώπινης κίνησης",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Δεν υπάρχει χρονικό όριο για τις ανθρώπινες κινήσεις",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Η απώλεια λόγω λήξης χρόνου θα εφαρμοστεί για τον ανθρώπινο παίκτη",
+  "@timeoutLoseWillBeApplied": {}
 }

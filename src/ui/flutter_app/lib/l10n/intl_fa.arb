@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "برای نمایش کشو بکشید",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "نمایش اطلاعات بازی در اسکرین‌شات‌ها",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "محدودیت زمانی حرکت انسان",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "محدودیت زمانی برای حرکات انسان وجود ندارد",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "باخت به دلیل اتمام زمان برای بازیکن انسانی اعمال خواهد شد",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Проведіть пальцем, щоб відкрити ящик",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Показувати інформацію про гру на скріншотах",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Ліміт часу для людини",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Немає обмеження за часом для ходів людини",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Для гравця-людини буде застосовано програш за тайм-аутом",
+  "@timeoutLoseWillBeApplied": {}
 }

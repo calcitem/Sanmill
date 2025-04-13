@@ -914,7 +914,7 @@ class NetworkService with WidgetsBindingObserver {
 
     GameController().isLanOpponentTurn = false;
     if (GameController().position.phase != Phase.gameOver) {
-      GameController().position._setGameOver(
+      GameController().position.setGameOver(
             PieceColor.draw,
             GameOverReason.drawStalemateCondition,
           );

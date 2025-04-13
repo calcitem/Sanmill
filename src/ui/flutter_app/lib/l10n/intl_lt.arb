@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Braukite, kad atidarytumėte stalčių",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Rodyti žaidimo informaciją ekrano nuotraukose",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Žmogaus laiko limitas",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Žmogaus ėjimams laiko limito nėra",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Žmogui žaidėjui bus taikomas pralaimėjimas dėl laiko viršijimo",
+  "@timeoutLoseWillBeApplied": {}
 }

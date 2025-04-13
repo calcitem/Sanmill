@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Pavelciet, lai atvērtu atvilktni",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Rādīt spēles informāciju ekrānuzņēmumos",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Cilvēka laika limits",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Cilvēka gājieniem nav laika ierobežojuma",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Cilvēka spēlētājam tiks piemērots zaudējums laika limita pārsniegšanas dēļ",
+  "@timeoutLoseWillBeApplied": {}
 }

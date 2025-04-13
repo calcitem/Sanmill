@@ -222,7 +222,7 @@ class GameController {
                   final PieceColor winnerColor = localColor.opponent;
 
                   // Set game over with opponent as winner
-                  position._setGameOver(
+                  position.setGameOver(
                     winnerColor,
                     GameOverReason.loseResign, // Using a generic reason
                   );
@@ -260,7 +260,7 @@ class GameController {
       final PieceColor localColor = getLocalColor();
 
       // Set game over with local player as winner
-      position._setGameOver(
+      position.setGameOver(
         localColor,
         GameOverReason.loseResign, // Using a generic reason for now
       );
@@ -291,7 +291,7 @@ class GameController {
     final PieceColor winnerColor = position.sideToMove.opponent;
 
     // Set game over state
-    position._setGameOver(
+    position.setGameOver(
       winnerColor,
       GameOverReason.drawStalemateCondition, // Using a generic reason
     );
@@ -321,6 +321,9 @@ class GameController {
     aiMoveType = AiMoveType.unknown;
     engine.stopSearching();
     AnalysisMode.disable();
+
+    // Reset player timer
+    PlayerTimer().reset();
 
     if (gameModeBak == GameMode.humanVsLAN) {
       // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
@@ -368,6 +371,13 @@ class GameController {
 
     gameInstance.gameMode = gameModeBak;
     GifShare().captureView(first: true);
+
+    // Start timer for player if it's human vs human mode and it's not AI's turn
+    if (gameInstance.gameMode == GameMode.humanVsHuman ||
+        (gameInstance.gameMode == GameMode.humanVsAi &&
+            !gameInstance.isAiSideToMove)) {
+      PlayerTimer().start();
+    }
   }
 
   /// S.of(context).starts the current game.
@@ -384,6 +394,9 @@ class GameController {
     gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
 
     _startGame();
+
+    // Reset player timer
+    PlayerTimer().reset();
   }
 
   /// S.of(context).starts a LAN game, either as a host or a client.
@@ -714,6 +727,14 @@ class GameController {
     isEngineRunning = true;
     isControllerActive = true;
 
+    // Start AI's timer when AI starts thinking
+    // This ensures the countdown appears during AI's turn
+    if (gameInstance.isAiSideToMove && gameMode == GameMode.humanVsAi) {
+      // Start timer only if AI has a time limit (moveTime > 0)
+      // When moveTime is 0, AI has unlimited thinking time
+      PlayerTimer().start();
+    }
+
     // TODO
     logger.t("$tag engine type is $gameMode");
 
@@ -816,6 +837,11 @@ class GameController {
 
     // TODO: Why need not update tip and icons?
     boardSemanticsNotifier.updateSemantics();
+
+    // After AI makes a move, start the human player's timer if needed
+    if (gameInstance.gameMode == GameMode.humanVsAi) {
+      PlayerTimer().start();
+    }
 
     return searched ? const EngineResponseOK() : const EngineResponseHumanOK();
   }

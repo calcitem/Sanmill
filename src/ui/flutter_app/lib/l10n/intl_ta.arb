@@ -1852,5 +1852,11 @@
   "swipeToRevealTheDrawer": "டிராயரை வெளிக்காட்ட ஸ்வைப் செய்யவும்",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "திரைப்பிடிப்புகளில் விளையாட்டு தகவலைக் காண்பி",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "மனித நேர வரம்பு",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "மனித நகர்வுகளுக்கு நேர வரம்பு இல்லை",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "மனித வீரருக்கு நேரம் முடிந்து தோற்கடிக்கப்படும்",
+  "@timeoutLoseWillBeApplied": {}
 }

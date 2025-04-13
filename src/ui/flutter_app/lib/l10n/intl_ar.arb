@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "اسحب للكشف عن الدرج",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "عرض معلومات اللعبة على لقطات الشاشة",
-  "@showGameInfoOnScreenshots": {}
-  }
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "حد الوقت للحركة البشرية",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "لا يوجد حد زمني للحركات البشرية",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "سيتم تطبيق خسارة المهلة للاعب البشري",
+  "@timeoutLoseWillBeApplied": {}
+}

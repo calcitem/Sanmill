@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "ဧဖ်ဖွင့်ရန် လွှဲဆွဲပါ",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "ဂိမ်းအချက်အလက်များကို စခရင်ရှော့တွင် ပြပါ",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "လူ၏အချိန်ကန့်သတ်ချက်",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "လူ့လှုပ်ရှားမှုများအတွက် အချိန်ကန့်သတ်ချက်မရှိပါ။",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "လူသားကစားသမားအတွက် အချိန်ကုန်ဆုံးရှုံးမှု ကျင့်သုံးပါမည်။",
+  "@timeoutLoseWillBeApplied": {}
 }

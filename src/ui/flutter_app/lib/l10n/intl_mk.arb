@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Провлечете за да го откриете фиоката",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Прикажи информации за играта на екранот",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Временско ограничување за човечки потег",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Нема временско ограничување за човечки потези",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "За човечкиот играч ќе се примени загуба поради истек на времето",
+  "@timeoutLoseWillBeApplied": {}
 }

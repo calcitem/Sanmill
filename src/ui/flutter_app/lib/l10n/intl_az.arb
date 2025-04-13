@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Çəkməni göstərmək üçün sürüşdürün",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Ekran görüntülərində oyun məlumatlarını göstər",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "İnsan hərəkəti üçün vaxt məhdudiyyəti",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "İnsan hərəkətləri üçün vaxt məhdudiyyəti yoxdur",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "İnsan oyunçu üçün vaxt aşımı ilə məğlubiyyət tətbiq olunacaq",
+  "@timeoutLoseWillBeApplied": {}
 }

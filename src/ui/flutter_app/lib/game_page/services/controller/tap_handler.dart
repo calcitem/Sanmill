@@ -143,6 +143,9 @@ class TapHandler {
     switch (GameController().position.action) {
       case Act.place:
         if (GameController().position._putPiece(sq)) {
+          // Stop timer when player makes a valid move
+          PlayerTimer().stop();
+
           if (GameController().position.action == Act.remove) {
             if (GameController()
                 .position
@@ -263,6 +266,10 @@ class TapHandler {
           }
           ret = true;
           logger.i("$_logTag putPiece: [$sq]");
+          // Start timer for next player if it's human vs human mode
+          if (GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
+            PlayerTimer().start();
+          }
           break;
         } else {
           logger.i("$_logTag putPiece: skip [$sq]");
@@ -414,8 +421,14 @@ class TapHandler {
 
         switch (removeRet) {
           case GameResponseOK():
+            // Stop timer when player successfully removes a piece
+            PlayerTimer().stop();
+
             ret = true;
             logger.i("$_logTag removePiece: [$sq]");
+
+            //SoundManager().playTone(Sound.remove);
+
             if (GameController().position.pieceToRemoveCount[
                     GameController().position.sideToMove]! >=
                 1) {
@@ -549,7 +562,7 @@ class TapHandler {
           posKeyHistory.add(GameController().position.st.key);
           if (DB().ruleSettings.threefoldRepetitionRule &&
               GameController().position._hasGameCycle) {
-            GameController().position._setGameOver(
+            GameController().position.setGameOver(
                   PieceColor.draw,
                   GameOverReason.drawThreefoldRepetition,
                 );

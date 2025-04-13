@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "ಡ್ರಾಯರ್ ತೋರಿಸಲು ಸ್ವೈಪ್ ಮಾಡಿ",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳಲ್ಲಿ ಆಟದ ಮಾಹಿತಿಯನ್ನು ತೋರಿಸು",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "ಮಾನವ ಸಮಯ ಮಿತಿ",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "ಮಾನವ ಚಲನೆಗಳಿಗೆ ಸಮಯ ಮಿತಿ ಇಲ್ಲ",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "ಮಾನವ ಆಟಗಾರನಿಗೆ ಸಮಯ ಮೀರುವಿಕೆ ಸೋಲು ಅನ್ವಯಿಸಲಾಗುತ್ತದೆ",
+  "@timeoutLoseWillBeApplied": {}
 }

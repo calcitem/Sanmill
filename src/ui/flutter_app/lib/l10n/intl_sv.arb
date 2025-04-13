@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Svep för att visa lådan",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Visa spelinformation på skärmbilder",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Mänsklig tidsgräns",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Ingen tidsgräns för mänskliga drag",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeoutförlust kommer att tillämpas för mänsklig spelare",
+  "@timeoutLoseWillBeApplied": {}
 }

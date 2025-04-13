@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Vuốt để hiển thị ngăn kéo",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Hiển thị thông tin trò chơi trên ảnh chụp màn hình",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Giới hạn thời gian của con người",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Không giới hạn thời gian cho nước đi của con người",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Thua do hết giờ sẽ được áp dụng cho người chơi",
+  "@timeoutLoseWillBeApplied": {}
 }

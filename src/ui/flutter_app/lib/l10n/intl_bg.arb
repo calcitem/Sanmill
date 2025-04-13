@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Плъзнете, за да се покаже чекмеджето",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Показвай информация за играта върху екранни снимки",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Времеви лимит за човешки ход",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Няма времеви лимит за човешки ходове",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Загуба по време ще бъде приложена за човешкия играч",
+  "@timeoutLoseWillBeApplied": {}
 }

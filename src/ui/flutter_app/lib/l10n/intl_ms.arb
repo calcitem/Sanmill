@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Leret untuk mendedahkan Laci",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Tunjukkan maklumat permainan pada tangkapan skrin",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Had masa manusia",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Tiada had masa untuk pergerakan manusia",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Kalah masa tamat akan dikenakan untuk pemain manusia",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Swipe ukuze uveze iDrawer",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Bonisa imininingwane yomdlalo ezithombeni zesikrini",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Umkhawulo wesikhathi somuntu",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Awukho umkhawulo wesikhathi ekunyakazeni komuntu",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Ukulahlekelwa ngenxa yokuphelelwa isikhathi kuzosetshenziswa kumdlali ongumuntu",
+  "@timeoutLoseWillBeApplied": {}
 }

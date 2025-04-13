@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Veeg om de lade te tonen",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Toon spelinformatie op schermafbeeldingen",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Menselijke tijdslimiet",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Geen tijdslimiet voor menselijke zetten",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeoutverlies wordt toegepast voor de menselijke speler",
+  "@timeoutLoseWillBeApplied": {}
 }

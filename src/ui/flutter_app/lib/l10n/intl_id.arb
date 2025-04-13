@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Geser untuk membuka Laci",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Tampilkan info permainan di tangkapan layar",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Batas waktu manusia",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Tidak ada batas waktu untuk gerakan manusia",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Kalah karena batas waktu akan diterapkan untuk pemain manusia",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -38,6 +38,7 @@ import '../services/annotation/annotation_manager.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
+import '../services/player_timer.dart';
 import 'challenge_confetti.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';

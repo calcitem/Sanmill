@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "درج کو ظاہر کرنے کے لیے سوائپ کریں",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "اسکرین شاٹس پر گیم کی معلومات دکھائیں",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "انسانی وقت کی حد",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "انسانی چالوں کے لیے وقت کی کوئی حد نہیں",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "انسانی کھلاڑی کے لیے ٹائم آؤٹ ہار کا اطلاق ہوگا",
+  "@timeoutLoseWillBeApplied": {}
 }

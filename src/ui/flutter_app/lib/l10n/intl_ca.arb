@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Feu lliscar per a mostrar el menú lateral",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Mostra la informació de la partida en les captures de pantalla",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Límit de temps humà",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Sense límit de temps per als moviments humans",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "S'aplicarà la pèrdua per temps d'espera per al jugador humà",
+  "@timeoutLoseWillBeApplied": {}
 }

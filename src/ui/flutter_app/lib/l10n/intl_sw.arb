@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Swipe kufungua droo",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Onyesha maelezo ya mchezo kwenye picha za skrini",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Kikomo cha muda cha binadamu",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Hakuna kikomo cha muda kwa hatua za binadamu",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Kushindwa kwa muda kutatumika kwa mchezaji binadamu",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -97,6 +97,7 @@ class GeneralSettings {
     this.aiIsLazy = false,
     this.skillLevel = 1,
     this.moveTime = 1,
+    this.humanMoveTime = 0,
     this.isAutoRestart = false,
     this.isAutoChangeFirstMove = false,
     this.resignIfMostLose = false,
@@ -236,6 +237,9 @@ class GeneralSettings {
 
   @HiveField(31, defaultValue: false)
   final bool useOpeningBook;
+
+  @HiveField(32, defaultValue: 0)
+  final int humanMoveTime;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Přejetím odhalte zásuvku",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Zobrazit informace o hře na snímcích obrazovky",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Časový limit pro lidský tah",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Žádný časový limit pro lidské tahy",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Pro lidského hráče bude uplatněna prohra z časového limitu",
+  "@timeoutLoseWillBeApplied": {}
 }

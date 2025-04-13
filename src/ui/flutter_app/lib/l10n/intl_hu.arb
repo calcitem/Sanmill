@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Húzd el az ujjad a fiók megnyitásához",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Játékadatok megjelenítése a képernyőképeken",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Emberi időkorlát",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Nincs időkorlát az emberi lépésekre",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Időtúllépéses vesztés lesz alkalmazva az emberi játékosra",
+  "@timeoutLoseWillBeApplied": {}
 }

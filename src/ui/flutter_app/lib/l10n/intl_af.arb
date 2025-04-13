@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "Swiep om die laai te wys",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Wys spelinligting op skermgrepe",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Menslike tydsbeperking",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Geen tydsbeperking vir menslike skuiwe nie",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Tydsverlies sal toegepas word vir menslike speler",
+  "@timeoutLoseWillBeApplied": {}
 }

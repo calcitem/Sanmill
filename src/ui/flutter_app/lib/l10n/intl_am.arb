@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "መዝጊያውን ለማሳየት ያንኩ",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "የጨዋታ መረጃን በእስክሪንሹት ላይ አሳይ",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "የሰው እንቅስቃሴ ጊዜ ገደብ",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "ለሰው እንቅስቃሴዎች ምንም የጊዜ ገደብ የለም",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "ለሰው ተጫዋች የጊዜ ማብቂያ መሸነፍ ይተገበራል",
+  "@timeoutLoseWillBeApplied": {}
 }

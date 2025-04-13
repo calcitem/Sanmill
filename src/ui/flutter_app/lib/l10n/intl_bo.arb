@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "ཁ་ཤོག་བཀྲམ་ནས་ཤོག་བཤུད་བྱོས།",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "གནས་ཚུལ་གྱི་གྲོགས་མཐུད་སྐོར་ཁ་བྱང་ལ་མངོན་འཁོད་བྱེད།",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "མིའི་འགུལ་སྐྱོད་དུས་ཚོད་ཚད་བཀག",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "མིའི་འགུལ་སྐྱོད་ལ་དུས་ཚོད་ཚད་བཀག་མེད།",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "མིའི་རྩེད་མོ་བར་དུས་ཚོད་འདས་ན་ཕམ་ཁ་བརྩི་རྒྱུ་རེད།",
+  "@timeoutLoseWillBeApplied": {}
 }

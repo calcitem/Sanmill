@@ -1847,5 +1847,11 @@
   "swipeToRevealTheDrawer": "スワイプしてドロワーを表示",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "スクリーンショットにゲーム情報を表示",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "人間の制限時間",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "人間の手番に時間制限はありません",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "人間プレイヤーには時間切れによる負けが適用されます",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1847,5 +1847,11 @@
   "carnivalSpirit": "ស្មារតីពិធីបុណ្យ",
   "@carnivalSpirit": {},
   "custom": "ផ្ទាល់ខ្លួន",
-  "@custom": {}
+  "@custom": {},
+  "humanMoveTime": "ដែនកំណត់ពេលវេលារបស់មនុស្ស",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "គ្មានដែនកំណត់ពេលវេលាសម្រាប់ការដើររបស់មនុស្សទេ",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "ការចាញ់ដោយអស់ពេលនឹងត្រូវបានអនុវត្តសម្រាប់អ្នកលេងជាមនុស្ស",
+  "@timeoutLoseWillBeApplied": {}
 }

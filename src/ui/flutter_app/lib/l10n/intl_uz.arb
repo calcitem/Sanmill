@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Tortmani ko‘rsatish uchun suring",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "O‘yin ma'lumotlarini skrinshotlarda ko‘rsatish",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Inson uchun vaqt chegarasi",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Inson harakatlari uchun vaqt chegarasi yo'q",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Inson o'yinchi uchun vaqt tugashi sababli mag'lubiyat qo'llaniladi",
+  "@timeoutLoseWillBeApplied": {}
 }

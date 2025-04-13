@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Sveip for å åpne skuffen",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Vis spillinformasjon på skjermbilder",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Menneskelig tidsbegrensning",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Ingen tidsbegrensning for menneskelige trekk",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Timeout-tap vil bli brukt for menneskelig spiller",
+  "@timeoutLoseWillBeApplied": {}
 }

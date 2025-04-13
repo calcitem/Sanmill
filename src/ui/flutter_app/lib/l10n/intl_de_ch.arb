@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Wischen, um die Schublade anzuzeigen",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Spielinformationen auf Screenshots anzeigen",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Zeitlimit für menschlichen Zug",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Kein Zeitlimit für menschliche Züge",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Zeitüberschreitungsverlust wird für menschlichen Spieler angewendet",
+  "@timeoutLoseWillBeApplied": {}
 }

@@ -1749,5 +1749,11 @@
   "swipeToRevealTheDrawer": "Podrsajte, da prikažete predal",
   "@swipeToRevealTheDrawer": {},
   "showGameInfoOnScreenshots": "Prikaži informacije o igri na posnetkih zaslona",
-  "@showGameInfoOnScreenshots": {}
+  "@showGameInfoOnScreenshots": {},
+  "humanMoveTime": "Časovna omejitev za človeka",
+  "@humanMoveTime": {},
+  "noTimeLimitForHumanMoves": "Brez časovne omejitve za človeške poteze",
+  "@noTimeLimitForHumanMoves": {},
+  "timeoutLoseWillBeApplied": "Izguba zaradi časovne omejitve bo uporabljena za človeškega igralca",
+  "@timeoutLoseWillBeApplied": {}
 }
