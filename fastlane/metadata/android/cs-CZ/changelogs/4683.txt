@@ -1,0 +1,3 @@
+v6.1.0
+
+Tato aktualizace obsahuje různá vylepšení a opravy chyb, aby byla aplikace pro vás lepší.
