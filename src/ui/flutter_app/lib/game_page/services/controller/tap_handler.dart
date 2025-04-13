@@ -266,10 +266,7 @@ class TapHandler {
           }
           ret = true;
           logger.i("$_logTag putPiece: [$sq]");
-          // Start timer for next player if it's human vs human mode
-          if (GameController().gameInstance.gameMode == GameMode.humanVsHuman) {
-            PlayerTimer().start();
-          }
+          // Timer start logic moved to the end of the successful move block (if ret == true)
           break;
         } else {
           logger.i("$_logTag putPiece: skip [$sq]");
@@ -594,10 +591,17 @@ class TapHandler {
         }
       }
 
+      // Start timer for the next player if the game is running and it's a human's turn.
+      // The `sideToMove` has already been updated by the move functions (_putPiece, _removePiece, _movePiece).
+      if (_isGameRunning && !GameController().gameInstance.isAiSideToMove) {
+        logger.d(
+            "$_logTag Starting timer for human opponent after successful move.");
+        PlayerTimer().start();
+      }
+
+      // Check if the next player is AI and needs to start thinking
       if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
-        if (GameController().gameInstance.gameMode == GameMode.humanVsAi) {
-          return GameController().engineToGo(context, isMoveNow: false);
-        }
+        return GameController().engineToGo(context, isMoveNow: false);
       } else {
         return const EngineResponseHumanOK();
       }

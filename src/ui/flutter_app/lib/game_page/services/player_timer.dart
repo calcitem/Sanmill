@@ -43,6 +43,13 @@ class PlayerTimer {
       return;
     }
 
+    // Skip timer entirely for AI vs AI mode
+    if (gameController.gameInstance.gameMode == GameMode.aiVsAi) {
+      _isActive = false; // Ensure timer is marked as inactive
+      remainingTimeNotifier.value = 0; // Reset displayed time
+      return;
+    }
+
     // Check if this is the first move of the game - don't start timer in that case
     if (gameController.gameRecorder.mainlineMoves.isEmpty) {
       return;
@@ -61,8 +68,12 @@ class PlayerTimer {
       return;
     }
 
+    // Stop any existing timer
+    _timer?.cancel();
+
     // Get the time limit from settings based on the current player
-    final int timeLimit = gameController.gameInstance.isAiSideToMove
+    final bool isAiTurn = gameController.gameInstance.isAiSideToMove;
+    final int timeLimit = isAiTurn
         ? DB().generalSettings.moveTime
         : DB().generalSettings.humanMoveTime;
 
@@ -70,9 +81,6 @@ class PlayerTimer {
     if (timeLimit <= 0) {
       return;
     }
-
-    // Cancel any existing timer
-    _timer?.cancel();
 
     // Initialize timer values
     _remainingTime = timeLimit;

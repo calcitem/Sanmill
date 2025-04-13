@@ -526,9 +526,13 @@ class HeaderStateIcons extends State<HeaderIcons> {
 
   // Check if timers should be shown
   bool _shouldShowTimers() {
-    if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
+    final GameMode currentMode = GameController().gameInstance.gameMode;
+
+    // Never show timers in AI vs AI mode or LAN mode
+    if (currentMode == GameMode.aiVsAi || currentMode == GameMode.humanVsLAN) {
       return false;
     }
+
     return DB().generalSettings.humanMoveTime > 0;
   }
 

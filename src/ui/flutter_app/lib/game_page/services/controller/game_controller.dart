@@ -372,12 +372,8 @@ class GameController {
     gameInstance.gameMode = gameModeBak;
     GifShare().captureView(first: true);
 
-    // Start timer for player if it's human vs human mode and it's not AI's turn
-    if (gameInstance.gameMode == GameMode.humanVsHuman ||
-        (gameInstance.gameMode == GameMode.humanVsAi &&
-            !gameInstance.isAiSideToMove)) {
-      PlayerTimer().start();
-    }
+    // Timer is no longer started here.
+    // It will be started in tap_handler after the first human move.
   }
 
   /// S.of(context).starts the current game.
