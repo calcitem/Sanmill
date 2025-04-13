@@ -1,0 +1,3 @@
+v6.1.2
+
+Esta actualización incluye varias mejoras y correcciones de errores para mejorar la aplicación para ti.
