@@ -510,7 +510,7 @@
   "@flyPieceCount": {
     "description": "The number of the flying piece"
   },
-  "flyPieceCount_Detail": "Якщо політ увімкнено, коли кількість фігур гравця падає нижче певного порогу, його фігури можуть вільно переміщатися до будь-якої незайнятої точки замість обмеження суміжними точками, як у решті випадків гри.",
+  "flyPieceCount_Detail": "Якщо політ увімкнено, коли кількість фігур гравця падає нижче певного порогу, його фігури можуть вільно переміщатися на будь-яку незайняту точку, а не обмежуватися сусідніми точками, як у решті гри.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
@@ -1850,8 +1850,8 @@
   "@showGameInfoOnScreenshots": {},
   "humanMoveTime": "Ліміт часу людини",
   "@humanMoveTime": {},
-  "noTimeLimitForHumanMoves": "Немає обмеження за часом для ходів людини",
+  "noTimeLimitForHumanMoves": "Немає обмежень за часом для ходів людини",
   "@noTimeLimitForHumanMoves": {},
-  "timeoutLoseWillBeApplied": "Для гравця-людини буде застосовано програш за тайм-аутом",
+  "timeoutLoseWillBeApplied": "Для гравця-людини буде застосовано програш за тайм-ауту",
   "@timeoutLoseWillBeApplied": {}
 }
