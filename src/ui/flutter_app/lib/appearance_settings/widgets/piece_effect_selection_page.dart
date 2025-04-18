@@ -56,6 +56,28 @@ class PieceEffectSelectionPageState extends State<PieceEffectSelectionPage> {
       EffectItem(name: 'Shatter', animation: ShatterPieceEffectAnimation()),
       EffectItem(name: 'Fireworks', animation: FireworksPieceEffectAnimation()),
       EffectItem(name: 'Explode', animation: ExplodePieceEffectAnimation()),
+      EffectItem(
+          name: 'RippleGradient',
+          animation: RippleGradientPieceEffectAnimation()),
+      EffectItem(name: 'WarpWave', animation: WarpWavePieceEffectAnimation()),
+      EffectItem(name: 'ShockWave', animation: ShockWavePieceEffectAnimation()),
+      EffectItem(name: 'PulseRing', animation: PulseRingPieceEffectAnimation()),
+      EffectItem(
+          name: 'RainbowWave', animation: RainbowWavePieceEffectAnimation()),
+      EffectItem(name: 'Twist', animation: TwistPieceEffectAnimation()),
+      EffectItem(
+          name: 'ShadowPulse', animation: ShadowPulsePieceEffectAnimation()),
+      EffectItem(
+          name: 'RainRipple', animation: RainRipplePieceEffectAnimation()),
+      EffectItem(name: 'NeonFlash', animation: NeonFlashPieceEffectAnimation()),
+      EffectItem(name: 'InkSpread', animation: InkSpreadPieceEffectAnimation()),
+      EffectItem(name: 'BubblePop', animation: BubblePopPieceEffectAnimation()),
+      EffectItem(
+          name: 'ColorSwirl', animation: ColorSwirlPieceEffectAnimation()),
+      EffectItem(name: 'Starburst', animation: StarburstPieceEffectAnimation()),
+      EffectItem(
+          name: 'PixelGlitch', animation: PixelGlitchPieceEffectAnimation()),
+      EffectItem(name: 'FireTrail', animation: FireTrailPieceEffectAnimation()),
     ];
 
     // Initialize the list of effect items.

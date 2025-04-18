@@ -64,6 +64,21 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     'Disperse': () => DispersePieceEffectAnimation(),
     'Vanish': () => VanishPieceEffectAnimation(),
     'Melt': () => MeltPieceEffectAnimation(),
+    'RippleGradient': () => RippleGradientPieceEffectAnimation(),
+    'RainbowWave': () => RainbowWavePieceEffectAnimation(),
+    'Starburst': () => StarburstPieceEffectAnimation(),
+    'Twist': () => TwistPieceEffectAnimation(),
+    'PulseRing': () => PulseRingPieceEffectAnimation(),
+    'PixelGlitch': () => PixelGlitchPieceEffectAnimation(),
+    'FireTrail': () => FireTrailPieceEffectAnimation(),
+    'WarpWave': () => WarpWavePieceEffectAnimation(),
+    'ShockWave': () => ShockWavePieceEffectAnimation(),
+    'ColorSwirl': () => ColorSwirlPieceEffectAnimation(),
+    'NeonFlash': () => NeonFlashPieceEffectAnimation(),
+    'InkSpread': () => InkSpreadPieceEffectAnimation(),
+    'ShadowPulse': () => ShadowPulsePieceEffectAnimation(),
+    'RainRipple': () => RainRipplePieceEffectAnimation(),
+    'BubblePop': () => BubblePopPieceEffectAnimation(),
 
     // Add any additional animations here.
   };

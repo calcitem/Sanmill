@@ -5,6 +5,7 @@
 
 import 'dart:math';
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 
 import '../../../../shared/database/database.dart';
@@ -732,6 +733,593 @@ class MeltPieceEffectAnimation implements PieceEffectAnimation {
 
     canvas.drawCircle(Offset.zero, diameter / 2, paint);
     canvas.restore();
+  }
+}
+
+/// RippleGradient effect animation for placing or removing a piece.
+/// Creates a smooth gradient ripple that radiates outward with a colorful hue shift.
+class RippleGradientPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+
+    // Apply easing to the animation value
+    final double easedAnimation = Curves.easeOut.transform(animationValue);
+
+    // Wave parameters
+    const int numWaves = 3;
+    final double maxRadius = diameter * 2.0;
+
+    // Get colors from settings for the gradient
+    final ui.Color primaryColor = DB().colorSettings.pieceHighlightColor;
+    final ui.Color secondaryColor = DB().colorSettings.boardLineColor;
+
+    for (int i = 0; i < numWaves; i++) {
+      // Calculate wave phase (offset in the animation cycle)
+      final double phase = i / numWaves;
+      final double waveProgress = (easedAnimation + phase) % 1.0;
+
+      // Calculate wave properties
+      final double radius = maxRadius * waveProgress;
+      final double opacity = (1.0 - waveProgress).clamp(0.1, 0.7);
+
+      // Create a gradient that shifts in hue based on wave and time
+      final HSLColor baseHSL = HSLColor.fromColor(primaryColor);
+      final HSLColor targetHSL = HSLColor.fromColor(secondaryColor);
+
+      // Interpolate between colors for a smooth transition
+      final HSLColor innerColor = HSLColor.lerp(baseHSL, targetHSL,
+          (waveProgress + sin(easedAnimation * pi * 2) * 0.3) % 1.0)!;
+
+      final HSLColor outerColor = HSLColor.lerp(targetHSL, baseHSL,
+          (waveProgress + cos(easedAnimation * pi * 2) * 0.3) % 1.0)!;
+
+      // Create a radial gradient shader
+      final Gradient gradient = RadialGradient(
+        colors: <ui.Color>[
+          innerColor.toColor().withValues(alpha: opacity),
+          outerColor.toColor().withValues(alpha: 0.0)
+        ],
+        stops: const <double>[0.2, 1.0],
+      );
+
+      final Paint paint = Paint()
+        ..shader = gradient
+            .createShader(Rect.fromCircle(center: center, radius: radius))
+        ..style = PaintingStyle.fill;
+
+      canvas.drawCircle(center, radius, paint);
+    }
+  }
+}
+
+/// Rainbow wave animation for placing or removing a piece.
+/// Creates a circular rainbow effect that ripples outward.
+class RainbowWavePieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+
+    // Rainbow colors with transparency
+    final List<Color> rainbowColors = <ui.Color>[
+      Colors.red.withValues(alpha: 0.7),
+      Colors.orange.withValues(alpha: 0.7),
+      Colors.yellow.withValues(alpha: 0.7),
+      Colors.green.withValues(alpha: 0.7),
+      Colors.blue.withValues(alpha: 0.7),
+      Colors.indigo.withValues(alpha: 0.7),
+      Colors.purple.withValues(alpha: 0.7),
+    ];
+
+    // Apply easing for smoother animation
+    final double easedAnimation = Curves.easeInOut.transform(animationValue);
+
+    // Calculate maximum radius
+    final double maxRadius = diameter * 1.25;
+    final double baseThickness = diameter * 0.08;
+
+    // Draw rainbow rings that expand outward
+    for (int i = 0; i < rainbowColors.length; i++) {
+      // Apply a phase offset to each color to create a wave effect
+      final double phase = i / rainbowColors.length;
+      final double waveProgress = (easedAnimation + phase) % 1.0;
+
+      // Calculate radius for this ring
+      final double radius = maxRadius * waveProgress;
+
+      // Fade out as the ring expands
+      final double opacity = (1.0 - waveProgress).clamp(0.1, 0.8);
+      final Color ringColor = rainbowColors[i].withValues(alpha: opacity);
+
+      // Create a ring with varying thickness based on the sine wave
+      final double thickness =
+          baseThickness * (0.8 + 0.2 * sin(waveProgress * 2 * pi));
+
+      final Paint paint = Paint()
+        ..color = ringColor
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = thickness;
+
+      canvas.drawCircle(center, radius, paint);
+    }
+
+    // Add a shimmering effect in the center
+    final double shimmerRadius = diameter * 0.4 * (1.0 - easedAnimation);
+    final Paint shimmerPaint = Paint()
+      ..shader = RadialGradient(
+        colors: <ui.Color>[
+          Colors.white.withValues(alpha: 0.8 * (1.0 - easedAnimation)),
+          Colors.white.withValues(alpha: 0.0),
+        ],
+      ).createShader(Rect.fromCircle(center: center, radius: shimmerRadius));
+
+    canvas.drawCircle(center, shimmerRadius, shimmerPaint);
+  }
+}
+
+/// Starburst effect animation for placing or removing a piece.
+/// Creates a star-shaped burst of energy from the center point.
+class StarburstPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+
+    // Calculate eased animation value
+    final double easedAnimation = Curves.easeOutBack.transform(animationValue);
+
+    // Number of points in the star
+    const int numPoints = 12;
+
+    // Maximum radius of the outer points
+    final double maxOuterRadius = diameter * 1.6;
+    final double outerRadius = maxOuterRadius * easedAnimation;
+
+    // Inner radius (between star points)
+    final double innerRadius = outerRadius * 0.4;
+
+    // Get highlight color from settings
+    final ui.Color highlightColor = DB().colorSettings.pieceHighlightColor;
+
+    // Calculate opacity based on animation progress
+    final double opacity = (1.0 - easedAnimation).clamp(0.1, 0.8);
+
+    // Create a star path
+    final Path starPath = Path();
+    for (int i = 0; i < numPoints * 2; i++) {
+      // Alternate between outer and inner points
+      final double radius = i.isEven ? outerRadius : innerRadius;
+      final double angle = (i * pi / numPoints) + (easedAnimation * pi / 2);
+
+      final double x = center.dx + radius * cos(angle);
+      final double y = center.dy + radius * sin(angle);
+
+      if (i == 0) {
+        starPath.moveTo(x, y);
+      } else {
+        starPath.lineTo(x, y);
+      }
+    }
+    starPath.close();
+
+    // Create gradient for the star
+    final Paint starPaint = Paint()
+      ..shader = RadialGradient(
+        colors: <ui.Color>[
+          highlightColor.withValues(alpha: opacity),
+          highlightColor.withValues(alpha: opacity * 0.5),
+          highlightColor.withValues(alpha: 0.0),
+        ],
+        stops: const <double>[0.0, 0.5, 1.0],
+      ).createShader(Rect.fromCircle(
+        center: center,
+        radius: outerRadius,
+      ))
+      ..style = PaintingStyle.fill;
+
+    // Draw the star
+    canvas.drawPath(starPath, starPaint);
+
+    // Add a subtle outline
+    final Paint outlinePaint = Paint()
+      ..color = highlightColor.withValues(alpha: opacity * 0.8)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.5;
+
+    canvas.drawPath(starPath, outlinePaint);
+
+    // Add a center glow
+    final Paint centerGlowPaint = Paint()
+      ..shader = RadialGradient(
+        colors: <ui.Color>[
+          Colors.white.withValues(alpha: opacity),
+          Colors.white.withValues(alpha: 0.0),
+        ],
+      ).createShader(Rect.fromCircle(
+        center: center,
+        radius: diameter * 0.5 * (1.0 - easedAnimation * 0.5),
+      ));
+
+    canvas.drawCircle(
+        center, diameter * 0.5 * (1.0 - easedAnimation * 0.5), centerGlowPaint);
+  }
+}
+
+/// Twist effect animation for placing or removing a piece.
+/// Creates a spiraling, twisted pattern that rotates around the center.
+class TwistPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+
+    // Use a sinusoidal easing for a more fluid twist effect
+    final double easedAnimation = (sin(animationValue * pi - pi / 2) + 1) / 2;
+
+    // Get colors from settings
+    final ui.Color primaryColor = DB().colorSettings.boardLineColor;
+
+    // Calculate opacity based on animation progress
+    final double opacity = (1.0 - animationValue).clamp(0.2, 0.8);
+
+    // Maximum radius of the spiral
+    final double maxRadius = diameter * 1.3;
+
+    // Number of spiral arms
+    const int numArms = 6;
+
+    // Number of points to draw per arm to create the spiral
+    const int pointsPerArm = 30;
+
+    canvas.save();
+    canvas.translate(center.dx, center.dy);
+
+    // Rotate the entire spiral based on animation progress
+    canvas.rotate(easedAnimation * pi * 2);
+
+    // Draw each spiral arm
+    for (int arm = 0; arm < numArms; arm++) {
+      final double armAngleOffset = arm * (2 * pi / numArms);
+
+      // Create the spiral path
+      final Path spiralPath = Path();
+      spiralPath.moveTo(0, 0); // Start at center
+
+      for (int i = 0; i < pointsPerArm; i++) {
+        // Calculate progress along the arm (0 to 1)
+        final double t = i / (pointsPerArm - 1);
+
+        // Calculate radius that increases with t
+        final double radius = maxRadius * t * easedAnimation;
+
+        // Calculate angle that increases with t and has a twist factor
+        final double twistFactor =
+            2.0 + 3.0 * (1.0 - easedAnimation); // Twist more at the beginning
+        final double angle = armAngleOffset + t * twistFactor * pi * 2;
+
+        // Calculate point position
+        final double x = radius * cos(angle);
+        final double y = radius * sin(angle);
+
+        spiralPath.lineTo(x, y);
+      }
+
+      // Create a gradient along the spiral path
+      final Paint spiralPaint = Paint()
+        ..color = primaryColor.withValues(
+            alpha: opacity * (1.0 - arm / numArms * 0.5))
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = diameter *
+            0.05 *
+            (1.0 - easedAnimation * 0.7) // 修复: 使用easedAnimation代替t
+        ..strokeCap = StrokeCap.round;
+
+      canvas.drawPath(spiralPath, spiralPaint);
+    }
+
+    // Add a subtle glow at the center
+    final Paint centerGlowPaint = Paint()
+      ..shader = RadialGradient(
+        colors: <ui.Color>[
+          primaryColor.withValues(alpha: opacity),
+          primaryColor.withValues(alpha: 0.0),
+        ],
+      ).createShader(Rect.fromCircle(
+        center: Offset.zero,
+        radius: diameter * 0.3,
+      ));
+
+    canvas.drawCircle(Offset.zero, diameter * 0.3, centerGlowPaint);
+
+    canvas.restore();
+  }
+}
+
+/// PulseRing effect animation.
+/// Draws two expanding rings that fade out to create a pulsing ripple effect.
+class PulseRingPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeOut.transform(animationValue);
+    final double maxRadius = diameter * 1.5;
+    final ui.Color baseColor = DB().colorSettings.pieceHighlightColor;
+    final double radius = maxRadius * progress;
+    final double opacity = (1.0 - progress).clamp(0.0, 1.0);
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = diameter * 0.05
+      ..color = baseColor.withValues(alpha: opacity);
+    canvas.drawCircle(center, radius, paint);
+  }
+}
+
+/// PixelGlitch effect animation.
+/// Draws small translucent squares at random positions to simulate a glitch.
+class PixelGlitchPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = animationValue;
+    const int glitchCount = 72;
+    final Random rand = Random((progress * 1000).toInt());
+    final ui.Color glitchColor = DB().colorSettings.boardLineColor;
+    final double size = diameter * 1;
+    for (int i = 0; i < glitchCount; i++) {
+      final double angle = rand.nextDouble() * 2 * pi;
+      final double dist = rand.nextDouble() * diameter * 0.5;
+      final Offset pos = center + Offset(cos(angle), sin(angle)) * dist;
+      final double opacity = (1.0 - progress).clamp(0.0, 1.0) * 0.5;
+      final Paint paint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = glitchColor.withValues(alpha: opacity);
+      canvas.drawRect(
+          Rect.fromCenter(center: pos, width: size, height: size), paint);
+    }
+  }
+}
+
+/// FireTrail effect animation.
+/// Emits flame-like streaks that trail outward from center.
+class FireTrailPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeOutQuad.transform(animationValue);
+    const int trailCount = 6;
+    final double maxLength = diameter * 1.2;
+    final ui.Color trailColor = DB().colorSettings.boardLineColor;
+    for (int i = 0; i < trailCount; i++) {
+      final double angle = (2 * pi / trailCount) * i + progress * pi;
+      final double length = maxLength * progress;
+      final Offset end = center + Offset(cos(angle), sin(angle)) * length;
+      final Paint paint = Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = diameter * 0.04
+        ..color = trailColor.withValues(alpha: (1.0 - progress));
+      canvas.drawLine(center, end, paint);
+    }
+  }
+}
+
+/// WarpWave effect animation.
+/// Draws concentric sine-wave circles that appear to warp outward.
+class WarpWavePieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double eased = Curves.easeInOut.transform(animationValue);
+    const int waves = 3;
+    final double baseRadius = diameter * 0.5;
+    final ui.Color waveColor = DB().colorSettings.boardLineColor;
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = diameter * 0.02;
+    const int segments = 60;
+    for (int w = 1; w <= waves; w++) {
+      final double radius = baseRadius * w / waves * (1 + eased * 0.3);
+      final Path path = Path();
+      for (int s = 0; s <= segments; s++) {
+        final double t = s / segments;
+        final double angle = t * 2 * pi;
+        final double offset =
+            sin(t * pi * w + animationValue * pi * 2) * (diameter * 0.02);
+        final double r = radius + offset;
+        final Offset p = center + Offset(cos(angle), sin(angle)) * r;
+        if (s == 0) {
+          path.moveTo(p.dx, p.dy);
+        } else {
+          path.lineTo(p.dx, p.dy);
+        }
+      }
+      paint.color = waveColor.withValues(alpha: (1.0 - eased) * 0.5);
+      canvas.drawPath(path, paint);
+    }
+  }
+}
+
+/// ShockWave effect animation.
+/// Draws a high-velocity shock ring that expands and quickly fades.
+class ShockWavePieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeOutCirc.transform(animationValue);
+    final double maxRadius = diameter * 2.0;
+    final double radius = maxRadius * progress;
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = diameter * 0.1 * (1.0 - progress);
+    paint.color =
+        DB().colorSettings.boardLineColor.withValues(alpha: 1.0 - progress);
+    canvas.drawCircle(center, radius, paint);
+  }
+}
+
+/// ColorSwirl effect animation.
+/// Creates a rotating sweep gradient swirl around the center.
+class ColorSwirlPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double rotation = animationValue * pi * 2;
+    final Rect rect = Rect.fromCircle(center: center, radius: diameter * 0.75);
+    final Gradient gradient = SweepGradient(
+      colors: const <ui.Color>[
+        Colors.red,
+        Colors.orange,
+        Colors.yellow,
+        Colors.green,
+        Colors.blue,
+        Colors.purple,
+        Colors.red,
+      ],
+      transform: GradientRotation(rotation),
+    );
+    final Paint paint = Paint()
+      ..shader = gradient.createShader(rect)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = diameter * 0.05;
+    canvas.drawCircle(center, diameter * 0.75, paint);
+  }
+}
+
+/// NeonFlash effect animation.
+/// Creates a quick neon flash that brightens and then dims.
+class NeonFlashPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeInOutBack.transform(animationValue);
+    final double glowRadius = diameter * (0.5 + 0.5 * progress);
+    final Paint paint = Paint()
+      ..color = Colors.cyan.withValues(alpha: 1.0 - progress)
+      ..maskFilter = ui.MaskFilter.blur(BlurStyle.normal, diameter * 0.1)
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(center, glowRadius, paint);
+  }
+}
+
+/// InkSpread effect animation.
+/// Draws multiple semi-transparent ink circles spreading outward.
+class InkSpreadPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeIn.transform(animationValue);
+    const ui.Color inkColor = Colors.black;
+    for (int i = 1; i <= 3; i++) {
+      final double radius = diameter * progress * (i / 3);
+      final double alpha =
+          ((1.0 - progress) * (1.0 - (i - 1) / 3)).clamp(0.0, 1.0);
+      final Paint paint = Paint()
+        ..color = inkColor.withValues(alpha: alpha * 0.6)
+        ..style = PaintingStyle.fill;
+      canvas.drawCircle(center, radius, paint);
+    }
+  }
+}
+
+/// ShadowPulse effect animation.
+/// Draws a pulsing shadow beneath the piece with a bouncy effect.
+class ShadowPulsePieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeOutExpo.transform(animationValue);
+    final double shadowRadius = diameter * (0.5 + 0.3 * progress);
+    final Paint paint = Paint()
+      ..color = Colors.black.withValues(alpha: (1.0 - progress) * 0.4)
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(center.translate(0, diameter * 0.1), shadowRadius, paint);
+  }
+}
+
+/// RainRipple effect animation.
+/// Draws concentric small ripples to simulate raindrop effects.
+class RainRipplePieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    final double progress = Curves.easeOut.transform(animationValue);
+    final double maxRadius = diameter * 1.2;
+    const int count = 5;
+    final Paint paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = diameter * 0.02;
+    for (int i = 1; i <= count; i++) {
+      final double radius = maxRadius * (i / count) * progress;
+      final double alpha = (1.0 - (radius / maxRadius)).clamp(0.0, 1.0);
+      paint.color = DB().colorSettings.boardLineColor.withValues(alpha: alpha);
+      canvas.drawCircle(center, radius, paint);
+    }
+  }
+}
+
+/// BubblePop effect animation.
+/// Draws expanding bubbles that pop (fade) over time.
+class BubblePopPieceEffectAnimation implements PieceEffectAnimation {
+  @override
+  void draw(
+      Canvas canvas, Offset center, double diameter, double animationValue) {
+    if (DB().displaySettings.animationDuration == 0.0) {
+      return;
+    }
+    Curves.easeOutExpo.transform(animationValue);
+    const int bubbles = 8;
+    final double maxRadius = diameter * 1.5;
+    for (int i = 0; i < bubbles; i++) {
+      final double t = (animationValue + i / bubbles) % 1.0;
+      final double radius = maxRadius * t;
+      final double alpha = (1.0 - t).clamp(0.0, 1.0);
+      final Paint paint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = DB()
+            .colorSettings
+            .pieceHighlightColor
+            .withValues(alpha: alpha * 0.5);
+      canvas.drawCircle(center, radius, paint);
+    }
   }
 }
 
