@@ -1021,7 +1021,7 @@ class TwistPieceEffectAnimation implements PieceEffectAnimation {
         ..style = PaintingStyle.stroke
         ..strokeWidth = diameter *
             0.05 *
-            (1.0 - easedAnimation * 0.7) // 修复: 使用easedAnimation代替t
+            (1.0 - easedAnimation * 0.7) // Fix: Use easedAnimation instead of t
         ..strokeCap = StrokeCap.round;
 
       canvas.drawPath(spiralPath, spiralPaint);

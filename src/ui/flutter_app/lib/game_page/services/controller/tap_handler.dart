@@ -34,7 +34,7 @@ class TapHandler {
   Future<EngineResponse> setupPosition(int sq) async {
     if (GameController().position.action == Act.place ||
         GameController().position.action == Act.select) {
-      GameController().position._putPieceForSetupPosition(sq);
+      GameController().position.putPieceForSetupPosition(sq);
     } else if (GameController().position.action == Act.remove) {
       GameController().position._removePieceForSetupPosition(sq);
     } else {

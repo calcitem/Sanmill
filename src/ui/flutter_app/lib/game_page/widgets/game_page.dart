@@ -13,6 +13,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
 import '../../appearance_settings/widgets/appearance_settings_page.dart';
@@ -32,13 +33,16 @@ import '../../shared/themes/ui_colors.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/widgets/custom_spacer.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../pages/board_recognition_debug_page.dart';
 import '../services/analysis_mode.dart';
 import '../services/animation/animation_manager.dart';
 import '../services/annotation/annotation_manager.dart';
+import '../services/board_image_recognition.dart';
 import '../services/import_export/pgn.dart';
 import '../services/painters/animations/piece_effect_animation.dart';
 import '../services/painters/painters.dart';
 import '../services/player_timer.dart';
+import '../widgets/board_recognition_debug_view.dart';
 import 'challenge_confetti.dart';
 import 'moves_list_page.dart';
 import 'play_area.dart';
@@ -186,6 +190,52 @@ class _GamePageInnerState extends State<_GamePageInner> {
                           ),
                           tooltip: S.of(context).analysis,
                           onPressed: () => _analyzePosition(context),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              // Board image recognition button in the top-right corner (only in Setup Position mode)
+              if (GameController().gameInstance.gameMode ==
+                  GameMode.setupPosition)
+                Align(
+                  key: const Key('game_page_image_recognition_button_align'),
+                  alignment: AlignmentDirectional.topEnd,
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            // Parameters adjustment button (only shown in dev mode)
+                            if (EnvironmentConfig.devMode)
+                              IconButton(
+                                key: const Key(
+                                    'game_page_recognition_params_button'),
+                                icon: const Icon(
+                                  FluentIcons.settings_24_regular,
+                                  color: Colors.white,
+                                ),
+                                tooltip: "Recognition Parameters",
+                                onPressed: () =>
+                                    _showRecognitionParamsDialog(context),
+                              ),
+                            // Camera button for board recognition
+                            IconButton(
+                              key: const Key(
+                                  'game_page_image_recognition_button'),
+                              icon: const Icon(
+                                FluentIcons.camera_24_regular,
+                                color: Colors.white,
+                              ),
+                              tooltip: "Recognize Board From Image",
+                              // Board image recognition
+                              onPressed: () =>
+                                  _recognizeBoardFromImage(context),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -382,6 +432,480 @@ class _GamePageInnerState extends State<_GamePageInner> {
     // when user explicitly clicks the analysis button
     if (mounted) {
       setState(() {});
+    }
+  }
+
+  // Method to handle board image recognition
+  void _recognizeBoardFromImage(BuildContext context) {
+    try {
+      // Pick image from gallery and analyze it directly
+      _pickAndRecognizeImage(context);
+    } catch (e) {
+      // Show error message if recognition fails
+      rootScaffoldMessengerKey.currentState
+          ?.showSnackBarClear("Unable to start image recognition: $e");
+      logger.e("Error initiating board recognition: $e");
+    }
+  }
+
+  /// Display a dialog to adjust board recognition parameters
+  /// These parameters will be stored and used for future recognitions
+  void _showRecognitionParamsDialog(BuildContext context) {
+    // Load current parameters from BoardImageRecognitionService
+    double contrastEnhancementFactor =
+        BoardImageRecognitionService.contrastEnhancementFactor;
+    double pieceThreshold = BoardImageRecognitionService.pieceThreshold;
+    double boardColorDistanceThreshold =
+        BoardImageRecognitionService.boardColorDistanceThreshold;
+    double pieceColorMatchThreshold =
+        BoardImageRecognitionService.pieceColorMatchThreshold;
+    int whiteBrightnessThreshold =
+        BoardImageRecognitionService.whiteBrightnessThreshold;
+    int blackBrightnessThreshold =
+        BoardImageRecognitionService.blackBrightnessThreshold;
+    double blackSaturationThreshold =
+        BoardImageRecognitionService.blackSaturationThreshold;
+    int blackColorVarianceThreshold =
+        BoardImageRecognitionService.blackColorVarianceThreshold;
+
+    showDialog<void>(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            // Function to build a parameter slider
+            Widget buildParameterSlider({
+              required String label,
+              required double value,
+              required double min,
+              required double max,
+              required int divisions,
+              required Function(double) onChanged,
+            }) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Flexible(
+                          flex: 3,
+                          child: Text(
+                            label,
+                            style: const TextStyle(fontWeight: FontWeight.w500),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            value.toStringAsFixed(2),
+                            textAlign: TextAlign.end,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Slider(
+                    value: value,
+                    min: min,
+                    max: max,
+                    divisions: divisions,
+                    onChanged: (double newValue) {
+                      setState(() {
+                        onChanged(newValue);
+                      });
+                    },
+                  ),
+                  const Divider(height: 8),
+                ],
+              );
+            }
+
+            return AlertDialog(
+              title: const Text('Recognition Parameters'),
+              content: SingleChildScrollView(
+                child: Container(
+                  width: 350,
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        'Adjust parameters to improve recognition accuracy',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Contrast Enhancement Factor
+                      buildParameterSlider(
+                        label: 'Contrast Enhancement',
+                        value: contrastEnhancementFactor,
+                        min: 1.0,
+                        max: 3.0,
+                        divisions: 20,
+                        onChanged: (double value) {
+                          contrastEnhancementFactor = value;
+                        },
+                      ),
+
+                      // Piece Detection Threshold
+                      buildParameterSlider(
+                        label: 'Piece Detection Threshold',
+                        value: pieceThreshold,
+                        min: 0.1,
+                        max: 0.5,
+                        divisions: 20,
+                        onChanged: (double value) {
+                          pieceThreshold = value;
+                        },
+                      ),
+
+                      // Board Color Distance Threshold
+                      buildParameterSlider(
+                        label: 'Board Color Distance',
+                        value: boardColorDistanceThreshold,
+                        min: 10.0,
+                        max: 50.0,
+                        divisions: 40,
+                        onChanged: (double value) {
+                          boardColorDistanceThreshold = value;
+                        },
+                      ),
+
+                      // Piece Color Match Threshold
+                      buildParameterSlider(
+                        label: 'Piece Color Match Threshold',
+                        value: pieceColorMatchThreshold,
+                        min: 10.0,
+                        max: 50.0,
+                        divisions: 40,
+                        onChanged: (double value) {
+                          pieceColorMatchThreshold = value;
+                        },
+                      ),
+
+                      // White Brightness Threshold
+                      buildParameterSlider(
+                        label: 'White Brightness Threshold',
+                        value: whiteBrightnessThreshold.toDouble(),
+                        min: 120.0,
+                        max: 220.0,
+                        divisions: 100,
+                        onChanged: (double value) {
+                          whiteBrightnessThreshold = value.round();
+                        },
+                      ),
+
+                      // Black Brightness Threshold
+                      buildParameterSlider(
+                        label: 'Black Brightness Threshold',
+                        value: blackBrightnessThreshold.toDouble(),
+                        min: 80.0,
+                        max: 180.0,
+                        divisions: 100,
+                        onChanged: (double value) {
+                          blackBrightnessThreshold = value.round();
+                        },
+                      ),
+
+                      // Black Saturation Threshold
+                      buildParameterSlider(
+                        label: 'Black Saturation Threshold',
+                        value: blackSaturationThreshold,
+                        min: 0.05,
+                        max: 0.5,
+                        divisions: 15,
+                        onChanged: (double value) {
+                          blackSaturationThreshold = value;
+                        },
+                      ),
+
+                      // Black Color Variance Threshold
+                      buildParameterSlider(
+                        label: 'Black Color Variance',
+                        value: blackColorVarianceThreshold.toDouble(),
+                        min: 10.0,
+                        max: 80.0,
+                        divisions: 35,
+                        onChanged: (double value) {
+                          blackColorVarianceThreshold = value.round();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    // Reset parameters to defaults
+                    setState(() {
+                      contrastEnhancementFactor = 1.8;
+                      pieceThreshold = 0.25;
+                      boardColorDistanceThreshold = 28.0;
+                      pieceColorMatchThreshold = 30.0;
+                      whiteBrightnessThreshold = 170;
+                      blackBrightnessThreshold = 135;
+                      blackSaturationThreshold = 0.25;
+                      blackColorVarianceThreshold = 40;
+                    });
+                  },
+                  child: const Text('Reset to Defaults'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Save parameters to service
+                    BoardImageRecognitionService.updateParameters(
+                      contrastEnhancementFactor: contrastEnhancementFactor,
+                      pieceThreshold: pieceThreshold,
+                      boardColorDistanceThreshold: boardColorDistanceThreshold,
+                      pieceColorMatchThreshold: pieceColorMatchThreshold,
+                      whiteBrightnessThreshold: whiteBrightnessThreshold,
+                      blackBrightnessThreshold: blackBrightnessThreshold,
+                      blackSaturationThreshold: blackSaturationThreshold,
+                      blackColorVarianceThreshold: blackColorVarianceThreshold,
+                    );
+
+                    // Close the dialog
+                    Navigator.of(context).pop();
+
+                    // Display a confirmation message
+                    rootScaffoldMessengerKey.currentState?.showSnackBar(
+                      const SnackBar(
+                        content: Text('Recognition parameters updated'),
+                        duration: Duration(seconds: 2),
+                      ),
+                    );
+                  },
+                  child: const Text('Save Parameters'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  /// Pick an image from gallery and analyze it
+  Future<void> _pickAndRecognizeImage(BuildContext context) async {
+    final ImagePicker picker = ImagePicker();
+
+    // Pick image from gallery (async gap)
+    final XFile? pickedFile = await picker.pickImage(
+      source: ImageSource.gallery,
+    );
+
+    // Early return if user cancels or widget was disposed
+    if (pickedFile == null) {
+      return;
+    }
+    // Check if the context is still mounted after the async gap
+    if (!context.mounted) {
+      return;
+    }
+    // Capture context dependent members BEFORE the await/async gap.
+    // We will re-check mounted *after* the async gap.
+    final NavigatorState currentNavigator = Navigator.of(context);
+    final ScaffoldMessengerState currentMessenger =
+        ScaffoldMessenger.of(context);
+    final BuildContext currentContext = context; // Keep for initial dialog
+
+    // At this point context is still valid for initial dialog
+    const AlertDialog dialogContent = AlertDialog(
+      title: Text("Processing"),
+      content: Row(
+        children: <Widget>[
+          CircularProgressIndicator(),
+          SizedBox(width: 20),
+          Expanded(
+            child: Text("Analyzing game board image..."),
+          ),
+        ],
+      ),
+    );
+
+    bool isDialogShowing = true;
+    // Show the dialog using the captured context
+    showDialog(
+      context: currentContext, // Use captured context for the initial dialog
+      barrierDismissible: false,
+      builder: (_) => dialogContent,
+    );
+
+    try {
+      // Read bytes and recognize (async)
+      final Uint8List imageData = await pickedFile.readAsBytes();
+      final Map<int, PieceColor> recognizedPieces =
+          await BoardImageRecognitionService.recognizeBoardFromImage(imageData);
+
+      // Check if the context is still mounted after the async gap
+      if (!context.mounted) {
+        // Try to dismiss dialog if showing, handle potential errors
+        if (isDialogShowing) {
+          try {
+            currentNavigator.pop();
+          } catch (_) {}
+          isDialogShowing = false;
+        }
+        return;
+      }
+
+      // Dismiss the processing dialog using captured navigator
+      if (isDialogShowing) {
+        currentNavigator.pop();
+        isDialogShowing = false;
+      }
+
+      // Check if dev mode is enabled - only show debug UI in dev mode
+      if (EnvironmentConfig.devMode) {
+        // Use the captured context instead of the original one after the async gap
+        final Size screenSize = MediaQuery.of(currentContext).size;
+
+        showDialog<bool>(
+          context: currentContext, // Use captured context after the async gap
+          barrierDismissible: false,
+          builder: (BuildContext dialogContext) {
+            // Use dialogContext for navigator inside the dialog
+            final NavigatorState dialogNavigator = Navigator.of(dialogContext);
+            return Dialog(
+              // Use insetPadding to make dialog larger
+              insetPadding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.05,
+                vertical: screenSize.height * 0.1,
+              ),
+              child: BoardRecognitionDebugPage.createRecognitionResultDialog(
+                imageBytes: imageData,
+                result: recognizedPieces,
+                boardPoints: BoardImageRecognitionService.lastDetectedPoints,
+                processedWidth:
+                    BoardImageRecognitionService.processedImageWidth,
+                processedHeight:
+                    BoardImageRecognitionService.processedImageHeight,
+                debugInfo: BoardImageRecognitionService.lastDebugInfo,
+                onResult: (bool shouldApply) {
+                  // Close dialog using dialog's navigator
+                  dialogNavigator.pop(shouldApply);
+
+                  // Check if the context is still mounted after the async gap
+                  if (!context.mounted) {
+                    return;
+                  }
+
+                  // Apply the recognized state if user confirmed
+                  if (shouldApply) {
+                    // Pass the captured messenger (captured before await)
+                    _applyRecognizedBoardState(
+                        recognizedPieces, currentMessenger);
+                  }
+                },
+              ),
+            );
+          },
+        );
+      } else {
+        // In normal mode, directly apply recognition results without showing debug view
+        if (recognizedPieces.isNotEmpty) {
+          // Apply the recognized state directly
+          _applyRecognizedBoardState(recognizedPieces, currentMessenger);
+        } else {
+          // Show error if no pieces recognized
+          currentMessenger.showSnackBar(
+            const SnackBar(
+                content: Text(
+                    "No pieces were recognized in the image. Please try again.")),
+          );
+        }
+      }
+    } catch (e) {
+      // Ensure the dialog is closed on error using captured navigator
+      if (isDialogShowing) {
+        try {
+          currentNavigator.pop(); // Use navigator captured before await
+        } catch (_) {}
+        isDialogShowing = false;
+      }
+
+      // Check if the context is still mounted after the async gap before showing snackbar
+      if (!context.mounted) {
+        return;
+      }
+
+      // Use captured messenger for snackbar (captured before await)
+      currentMessenger.showSnackBar(SnackBar(content: Text("识别失败: $e")));
+      logger.e("Error during board recognition: $e");
+    }
+  }
+
+  /// Apply the recognized board state to the game (without using BuildContext)
+  void _applyRecognizedBoardState(Map<int, PieceColor> recognizedPieces,
+      ScaffoldMessengerState? messenger) {
+    try {
+      // Generate FEN string from recognized pieces
+      final String? fen =
+          BoardRecognitionDebugView.generateTempFenString(recognizedPieces);
+
+      if (fen == null) {
+        messenger
+            ?.showSnackBarClear("Failed to generate FEN from recognized board");
+        return;
+      }
+
+      // Reset board first
+      GameController().position.reset();
+
+      // Set FEN string to the position
+      if (GameController().position.setFen(fen)) {
+        // Successfully set FEN
+        // Log successful operation
+        logger.i("Successfully applied FEN from image recognition: $fen");
+
+        // Update position notifier to refresh UI
+        GameController().setupPositionNotifier.updateIcons();
+        GameController().boardSemanticsNotifier.updateSemantics();
+
+        // Show success message with details
+        final int whiteCount =
+            GameController().position.countPieceOnBoard(PieceColor.white);
+        final int blackCount =
+            GameController().position.countPieceOnBoard(PieceColor.black);
+
+        final String message =
+            "Applied position with $whiteCount white and $blackCount black pieces";
+        final String next =
+            GameController().position.sideToMove == PieceColor.white
+                ? "White's move"
+                : "Black's move";
+
+        // Update the game recorder with the setup position
+        GameController().gameRecorder =
+            GameRecorder(lastPositionWithRemove: fen, setupPosition: fen);
+
+        // Copy FEN to clipboard for user convenience
+        Clipboard.setData(ClipboardData(text: fen));
+
+        // Show success message
+        messenger
+            ?.showSnackBarClear("$message, $next (FEN copied to clipboard)");
+      } else {
+        // Failed to set FEN
+        messenger
+            ?.showSnackBarClear("Failed to apply recognized board position");
+        logger.e("Failed to set FEN: $fen");
+      }
+    } catch (e) {
+      logger.e("Error applying recognized board state: $e");
+      messenger?.showSnackBarClear("Recognition failed: $e");
     }
   }
 }

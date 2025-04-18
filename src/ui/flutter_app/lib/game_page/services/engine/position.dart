@@ -1822,7 +1822,7 @@ extension SetupPosition on Position {
     return pos;
   }
 
-  bool _putPieceForSetupPosition(int s) {
+  bool putPieceForSetupPosition(int s) {
     final PieceColor piece = GameController().isPositionSetupMarkedPiece
         ? PieceColor.marked
         : sideToMove;
