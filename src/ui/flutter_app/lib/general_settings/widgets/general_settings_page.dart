@@ -24,6 +24,7 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
+import 'dialogs/llm_config_dialog.dart';
 import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
@@ -66,6 +67,12 @@ class GeneralSettingsPage extends StatelessWidget {
   void _configureLlmPrompt(BuildContext context) => showDialog(
         context: context,
         builder: (_) => const LlmPromptDialog(),
+      );
+
+  // Show LLM provider configuration dialog
+  void _configureLlmProvider(BuildContext context) => showDialog(
+        context: context,
+        builder: (_) => const LlmConfigDialog(),
       );
 
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
@@ -595,9 +602,17 @@ class GeneralSettingsPage extends StatelessWidget {
               SettingsListTile(
                 key: const Key(
                     'general_settings_page_settings_card_llm_prompts_configure'),
-                titleString: "Configure Prompt",
-                subtitleString: "Edit prompt template for LLM analysis",
+                titleString: "配置提示模板",
+                subtitleString: "编辑LLM分析的提示模板",
                 onTap: () => _configureLlmPrompt(context),
+              ),
+              SettingsListTile(
+                key: const Key(
+                    'general_settings_page_settings_card_llm_provider_configure'),
+                titleString: "配置LLM提供商",
+                subtitleString: "设置提供商、模型、API密钥和基础URL",
+                onTap: () => _configureLlmProvider(context),
+                trailingString: DB().generalSettings.llmProvider.name,
               ),
             ],
           ),

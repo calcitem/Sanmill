@@ -37,6 +37,16 @@ enum SoundTheme {
   wood,
 }
 
+@HiveType(typeId: 13)
+enum LlmProvider {
+  @HiveField(0)
+  openai,
+  @HiveField(1)
+  google,
+  @HiveField(2)
+  ollama,
+}
+
 extension SearchAlgorithmName on SearchAlgorithm {
   String get name {
     switch (this) {
@@ -74,6 +84,19 @@ extension SoundThemeName on SoundTheme {
         return S.of(context).liquid;
       case SoundTheme.wood:
         return S.of(context).wood;
+    }
+  }
+}
+
+extension LlmProviderName on LlmProvider {
+  String get name {
+    switch (this) {
+      case LlmProvider.openai:
+        return 'OpenAI';
+      case LlmProvider.google:
+        return 'Google';
+      case LlmProvider.ollama:
+        return 'Ollama';
     }
   }
 }
@@ -129,6 +152,10 @@ class GeneralSettings {
     this.useOpeningBook = false,
     this.llmPromptHeader = '',
     this.llmPromptFooter = '',
+    this.llmProvider = LlmProvider.openai,
+    this.llmModel = '',
+    this.llmApiKey = '',
+    this.llmBaseUrl = '',
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -251,6 +278,18 @@ class GeneralSettings {
   // The footer part of LLM prompt
   @HiveField(34, defaultValue: "")
   final String llmPromptFooter;
+
+  @HiveField(35, defaultValue: LlmProvider.openai)
+  final LlmProvider llmProvider;
+
+  @HiveField(36, defaultValue: "")
+  final String llmModel;
+
+  @HiveField(37, defaultValue: "")
+  final String llmApiKey;
+
+  @HiveField(38, defaultValue: "")
+  final String llmBaseUrl;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

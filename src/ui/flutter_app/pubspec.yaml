@@ -32,6 +32,10 @@ dependencies:
   flutter_sharing_intent: 1.1.1
   hive: 2.2.3
   hive_flutter: 1.1.0
+  langchain: 0.7.7+2
+  langchain_google: 0.6.4+2
+  langchain_ollama: 0.3.2+2
+  langchain_openai: 0.7.3
   image: 4.5.2
   image_gallery_saver_plus: 4.0.1
   image_picker: 1.1.2
