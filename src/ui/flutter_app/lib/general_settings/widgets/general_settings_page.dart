@@ -24,6 +24,7 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../models/general_settings.dart';
+import 'dialogs/llm_prompt_dialog.dart';
 
 part 'dialogs/reset_settings_alert_dialog.dart';
 part 'dialogs/use_perfect_database_dialog.dart';
@@ -59,6 +60,12 @@ class GeneralSettingsPage extends StatelessWidget {
   void _setHumanMoveTime(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _HumanMoveTimeSlider(),
+      );
+
+  // Show LLM prompt configuration dialog
+  void _configureLlmPrompt(BuildContext context) => showDialog(
+        context: context,
+        builder: (_) => const LlmPromptDialog(),
       );
 
   void _setWhoMovesFirst(GeneralSettings generalSettings, bool value) {
@@ -573,6 +580,24 @@ class GeneralSettingsPage extends StatelessWidget {
                     "${generalSettings.gameScreenRecorderPixelRatio}%",
                 onTap: () =>
                     _setGameScreenRecorderPixelRatio(context, generalSettings),
+              ),
+            ],
+          ),
+        if (DB().ruleSettings.isLikelyNineMensMorris())
+          SettingsCard(
+            key: const Key('general_settings_page_settings_card_llm_prompts'),
+            title: Text(
+              S.of(context).llmPrompt,
+              key: const Key(
+                  'general_settings_page_settings_card_llm_prompts_title'),
+            ),
+            children: <Widget>[
+              SettingsListTile(
+                key: const Key(
+                    'general_settings_page_settings_card_llm_prompts_configure'),
+                titleString: "Configure Prompt",
+                subtitleString: "Edit prompt template for LLM analysis",
+                onTap: () => _configureLlmPrompt(context),
               ),
             ],
           ),

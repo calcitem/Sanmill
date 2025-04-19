@@ -946,7 +946,7 @@ class BoardImageRecognitionService {
     int startIndex = (sorted.length * from.clamp(0.0, 1.0)).floor();
     int endIndex = (sorted.length * to.clamp(0.0, 1.0)).floor();
 
-    // 确保开始索引小于结束索引，且两者都在有效范围内
+    // Make sure the start index is less than the end index and both are in the valid range
     startIndex = startIndex.clamp(0, sorted.length - 1);
     endIndex = endIndex.clamp(startIndex + 1, sorted.length);
 

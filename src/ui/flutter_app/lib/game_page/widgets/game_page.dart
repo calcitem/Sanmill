@@ -842,7 +842,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
       }
 
       // Use captured messenger for snackbar (captured before await)
-      currentMessenger.showSnackBar(SnackBar(content: Text("识别失败: $e")));
+      currentMessenger.showSnackBar(
+          SnackBar(content: Text("Image recognition failed: $e")));
       logger.e("Error during board recognition: $e");
     }
   }

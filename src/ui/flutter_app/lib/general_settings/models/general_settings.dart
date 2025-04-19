@@ -9,6 +9,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../generated/intl/l10n.dart';
+import '../../shared/config/prompt_defaults.dart';
 
 part 'general_settings.g.dart';
 
@@ -126,6 +127,8 @@ class GeneralSettings {
     this.vibrationEnabled = false,
     this.soundTheme = SoundTheme.ball,
     this.useOpeningBook = false,
+    this.llmPromptHeader = '',
+    this.llmPromptFooter = '',
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -241,6 +244,18 @@ class GeneralSettings {
   @HiveField(32, defaultValue: 0)
   final int humanMoveTime;
 
+  // The header part of LLM prompt
+  @HiveField(33, defaultValue: "")
+  final String llmPromptHeader;
+
+  // The footer part of LLM prompt
+  @HiveField(34, defaultValue: "")
+  final String llmPromptFooter;
+
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
+
+  // For backwards compatibility with code that uses static properties
+  static String get defaultLlmPromptHeader => PromptDefaults.llmPromptHeader;
+  static String get defaultLlmPromptFooter => PromptDefaults.llmPromptFooter;
 }

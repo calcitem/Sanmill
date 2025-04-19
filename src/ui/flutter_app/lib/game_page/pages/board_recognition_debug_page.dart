@@ -728,29 +728,32 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                             _originalImageHeight = decoded.height;
                             setState(() {
                               _isAdjustingArea = true;
-                              _statusMessage = '调整方框以覆盖棋盘区域。';
+                              _statusMessage =
+                                  'Adjust the box to cover the game board area.';
                             });
                           } else {
                             rootScaffoldMessengerKey.currentState?.showSnackBar(
-                              const SnackBar(content: Text("读取图像尺寸失败。")),
+                              const SnackBar(
+                                  content:
+                                      Text("Failed to read image dimensions.")),
                             );
                           }
                         },
                         icon: const Icon(Icons.crop),
-                        label: const Text('调整棋盘区域'),
+                        label: const Text('Adjust game board Area'),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orangeAccent),
                       ),
                     ),
                     const SizedBox(width: 8),
-                    // 添加高级裁剪按钮
+                    // Add advanced crop button
                     ElevatedButton.icon(
                       onPressed:
                           _lastImageBytes != null && _lastBoardPoints.isNotEmpty
                               ? _showRecognitionResultDialog
                               : null,
                       icon: const Icon(Icons.crop_free),
-                      label: const Text('高级裁剪'),
+                      label: const Text('Advanced Crop'),
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue),
                     ),
@@ -1636,7 +1639,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
     }
   }
 
-  // 在其他方法之间添加_showRecognitionResultDialog方法
+  // Add _showRecognitionResultDialog method between other methods
   /// Shows a dialog for recognition result with cropping capability.
   ///
   /// TODO: This method is currently not used but kept for future implementation
