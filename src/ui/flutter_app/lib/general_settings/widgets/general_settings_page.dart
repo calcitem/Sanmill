@@ -602,15 +602,15 @@ class GeneralSettingsPage extends StatelessWidget {
               SettingsListTile(
                 key: const Key(
                     'general_settings_page_settings_card_llm_prompts_configure'),
-                titleString: "配置提示模板",
-                subtitleString: "编辑LLM分析的提示模板",
+                titleString: "Configure prompt template",
+                subtitleString: "Edit prompt template for LLM analysis",
                 onTap: () => _configureLlmPrompt(context),
               ),
               SettingsListTile(
                 key: const Key(
                     'general_settings_page_settings_card_llm_provider_configure'),
-                titleString: "配置LLM提供商",
-                subtitleString: "设置提供商、模型、API密钥和基础URL",
+                titleString: "Configure LLM provider",
+                subtitleString: "Set provider, model, API key, and base URL",
                 onTap: () => _configureLlmProvider(context),
                 trailingString: DB().generalSettings.llmProvider.name,
               ),

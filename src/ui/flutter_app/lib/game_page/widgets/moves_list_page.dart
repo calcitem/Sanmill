@@ -3,18 +3,39 @@
 
 // moves_list_page.dart
 
+import 'dart:async';
+import 'dart:io' show Platform;
+
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../appearance_settings/models/display_settings.dart';
+import '../../general_settings/widgets/dialogs/llm_config_dialog.dart';
+import '../../general_settings/widgets/dialogs/llm_prompt_dialog.dart';
 import '../../generated/intl/l10n.dart';
+import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/language_locale_mapping.dart';
+import '../../shared/services/llm_service.dart';
+import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'mini_board.dart';
+
+// Key for the LLM prompt dialog screen
+const String _kLlmPromptDialogKey = 'llm_prompt_dialog';
+// Text for "Use current language" checkbox
+const String _kUseCurrentLanguageForLlm = 'Output in current app language';
+// Text for the "Ask LLM" button
+const String _kAskLlmButtonText = 'Ask LLM';
+// Text for when LLM is not configured
+const String _kLlmNotConfigured =
+    'LLM not configured. Please check your settings.';
+// Text for when LLM is loading
+const String _kLlmLoading = 'Loading response...';
 
 /// MovesListPage can display PGN nodes in different layouts.
 /// The user can pick from a set of layout options via a single active icon which,
@@ -131,20 +152,561 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Copies the moveListPrompt (a special format for LLM) into the clipboard.
   /// Displays a SnackBar indicating success or if there's no prompt data.
-  Future<void> _copyLLMPrompt() async {
-    final String prompt = GameController().gameRecorder.moveListPrompt;
-    if (prompt.isEmpty) {
+  Future<void> _copyLLMPrompt(String promptText) async {
+    if (promptText.isEmpty) {
       rootScaffoldMessengerKey.currentState!.showSnackBar(
           SnackBar(content: Text(S.of(context).noLlmPromptAvailable)));
       return;
     }
-    await Clipboard.setData(ClipboardData(text: prompt));
+    await Clipboard.setData(ClipboardData(text: promptText));
 
     if (!mounted) {
       return;
     }
     rootScaffoldMessengerKey.currentState!
         .showSnackBarClear(S.of(context).llmPromptCopiedToClipboard);
+  }
+
+  /// Shows a dialog with LLM prompt content that can be edited and copied
+  Future<void> _showLLMPromptDialog() async {
+    // Get the initial prompt text
+    final String initialPrompt = GameController().gameRecorder.moveListPrompt;
+
+    if (initialPrompt.isEmpty) {
+      rootScaffoldMessengerKey.currentState!.showSnackBar(
+          SnackBar(content: Text(S.of(context).noLlmPromptAvailable)));
+      return;
+    }
+
+    // Create a controller for the text editing
+    final TextEditingController controller =
+        TextEditingController(text: initialPrompt);
+
+    // Flag to track if user wants the response in current app language
+    const bool useCurrentLanguage = true;
+
+    // Show dialog and await result
+    if (!mounted) {
+      return;
+    }
+
+    // Calculate dialog size based on screen size
+    final Size screenSize = MediaQuery.of(context).size;
+    final double dialogWidth = screenSize.width * 0.85;
+    final double dialogHeight = screenSize.height * 0.7;
+
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        // Use app theme colors
+        final Color bgColor = Theme.of(context).dialogBackgroundColor;
+        final Color textColor = DB().colorSettings.messageColor;
+        final Color borderColor =
+            DB().colorSettings.messageColor.withValues(alpha: 0.3);
+
+        // Local state for checkbox
+        bool localUseCurrentLanguage = useCurrentLanguage;
+
+        // LLM state variables
+        bool isLoading = false;
+        String llmResponse = '';
+        bool showLlmResponse = false;
+        final bool isLlmConfigured =
+            LlmService().isLlmConfigured(); // Check if LLM is configured
+
+        return StatefulBuilder(
+          key: const Key(_kLlmPromptDialogKey),
+          builder: (BuildContext context, StateSetter setState) {
+            // Function to generate LLM response
+            Future<void> generateLlmResponse() async {
+              if (!isLlmConfigured) {
+                setState(() {
+                  showLlmResponse = true;
+                  llmResponse = _kLlmNotConfigured;
+                  isLoading = false;
+                });
+                return;
+              }
+
+              setState(() {
+                isLoading = true;
+                showLlmResponse = true;
+                llmResponse = _kLlmLoading;
+              });
+
+              final String promptToUse = _getPromptWithLanguage(
+                  controller.text, localUseCurrentLanguage);
+
+              // Call LLM service for real response
+              final LlmService llmService = LlmService();
+              String fullResponse = '';
+              try {
+                await for (final String chunk
+                    in llmService.generateResponse(promptToUse)) {
+                  // Check if the widget is still mounted before setting state
+                  if (!mounted) {
+                    // Widget was disposed, exit the loop
+                    break;
+                  }
+                  setState(() {
+                    fullResponse += chunk;
+                    llmResponse = fullResponse;
+                  });
+                }
+              } catch (e) {
+                // Check if the widget is still mounted before setting state
+                if (mounted) {
+                  setState(() {
+                    llmResponse = 'Error: $e';
+                  });
+                }
+              } finally {
+                // Check if the widget is still mounted before setting state
+                if (mounted) {
+                  setState(() {
+                    isLoading = false;
+                  });
+                }
+              }
+            }
+
+            // Function to import moves from LLM response
+            void importMovesFromResponse() {
+              final String extractedMoves =
+                  LlmService().extractMoves(llmResponse);
+
+              try {
+                // Import the moves directly without using the clipboard
+                ImportService.import(extractedMoves);
+
+                // Ensure the widget is still in the widget tree before using the context
+                if (!context.mounted) {
+                  return;
+                }
+
+                // Close the dialog first
+                Navigator.of(context).pop();
+
+                // Perform history navigation to refresh the board state
+                HistoryNavigator.takeBackAll(context, pop: false).then((_) {
+                  if (context.mounted) {
+                    // Show success message
+                    rootScaffoldMessengerKey.currentState
+                        ?.showSnackBarClear(S.of(context).gameImported);
+                    GameController()
+                        .headerTipNotifier
+                        .showTip(S.of(context).gameImported);
+
+                    // Wait briefly, then refresh the move list in the parent page
+                    Future<void>.delayed(const Duration(milliseconds: 500))
+                        .then((_) {
+                      if (mounted) {
+                        // Call the parent setState to refresh nodes
+                        this.setState(_refreshAllNodes);
+                      }
+                    });
+                  }
+                });
+              } catch (e) {
+                logger.e('Error importing moves: $e');
+
+                if (context.mounted) {
+                  rootScaffoldMessengerKey.currentState!.showSnackBar(
+                    SnackBar(content: Text('Error importing moves: $e')),
+                  );
+                  Navigator.of(context).pop();
+                }
+              }
+            }
+
+            // Function to show LLM config dialog
+            void showLlmConfigDialog() {
+              Navigator.of(context).pop(); // Close the current dialog first
+              showDialog<void>(
+                context: context,
+                builder: (BuildContext context) => const LlmConfigDialog(),
+              ).then((_) {
+                // Re-open the LLM prompt dialog after config is done
+                if (context.mounted) {
+                  _showLLMPromptDialog();
+                }
+              });
+            }
+
+            // Function to show LLM prompt template dialog
+            void showLlmPromptTemplateDialog() {
+              Navigator.of(context).pop(); // Close the current dialog first
+              showDialog<void>(
+                context: context,
+                builder: (BuildContext context) => const LlmPromptDialog(),
+              ).then((_) {
+                // Re-open the LLM prompt dialog after template editing is done
+                if (context.mounted) {
+                  _showLLMPromptDialog();
+                }
+              });
+            }
+
+            return Dialog(
+              insetPadding: const EdgeInsets.all(16.0),
+              backgroundColor: bgColor,
+              child: SizedBox(
+                width: dialogWidth,
+                height: dialogHeight,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // Dialog title
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            S.of(context).llmPrompt,
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: textColor,
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              // LLM Prompt Template button
+                              IconButton(
+                                onPressed: showLlmPromptTemplateDialog,
+                                icon: const Icon(
+                                    FluentIcons.document_edit_24_regular),
+                                tooltip: 'LLM Prompt Template',
+                                color: DB().colorSettings.pieceHighlightColor,
+                              ),
+                              // LLM Config button
+                              IconButton(
+                                onPressed: showLlmConfigDialog,
+                                icon:
+                                    const Icon(FluentIcons.settings_24_regular),
+                                tooltip: 'LLM Config',
+                                color: DB().colorSettings.pieceHighlightColor,
+                              ),
+                              // Close button - with enhanced visibility
+                              Container(
+                                margin: const EdgeInsets.only(left: 8.0),
+                                child: IconButton(
+                                  iconSize: 26,
+                                  icon: Icon(
+                                    FluentIcons.dismiss_24_filled,
+                                    color:
+                                        DB().colorSettings.pieceHighlightColor,
+                                  ),
+                                  tooltip: S.of(context).close,
+                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      // Content area - either prompt input or LLM response
+                      Expanded(
+                        child: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: showLlmResponse
+                              ? _buildLlmResponseWidget(
+                                  llmResponse,
+                                  isLoading,
+                                  textColor,
+                                  borderColor,
+                                )
+                              : _buildPromptInputWidget(
+                                  controller,
+                                  textColor,
+                                  borderColor,
+                                ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Only show language checkbox when prompt is visible
+                      if (!showLlmResponse)
+                        Row(
+                          children: <Widget>[
+                            Checkbox(
+                              value: localUseCurrentLanguage,
+                              activeColor:
+                                  DB().colorSettings.pieceHighlightColor,
+                              checkColor: Colors.white,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  localUseCurrentLanguage = value ?? true;
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 8),
+                            const Expanded(
+                              child: Text(
+                                // Using app language for output text
+                                _kUseCurrentLanguageForLlm,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.green,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      const SizedBox(height: 16),
+
+                      // Bottom action buttons
+                      if (!showLlmResponse)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // Ask LLM button - left side
+                            ElevatedButton(
+                              onPressed: isLlmConfigured
+                                  ? () => generateLlmResponse()
+                                  : null,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    DB().colorSettings.pieceHighlightColor,
+                                foregroundColor: Colors.white,
+                                disabledBackgroundColor: Colors.grey,
+                              ),
+                              child: const Text(_kAskLlmButtonText),
+                            ),
+                            // Copy button - right side
+                            ElevatedButton(
+                              onPressed: () {
+                                final String promptWithLanguage =
+                                    _getPromptWithLanguage(controller.text,
+                                        localUseCurrentLanguage);
+                                _copyLLMPrompt(promptWithLanguage);
+                                Navigator.of(context).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    DB().colorSettings.pieceHighlightColor,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text(S.of(context).copy),
+                            ),
+                          ],
+                        )
+                      else
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            // Import button - left side (disabled during loading)
+                            ElevatedButton(
+                              onPressed: isLoading
+                                  ? null
+                                  : () => importMovesFromResponse(),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isLoading
+                                    ? Colors.grey
+                                    : DB().colorSettings.pieceHighlightColor,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text(S.of(context).import),
+                            ),
+                            // Copy button - right side
+                            ElevatedButton(
+                              onPressed: isLoading
+                                  ? null
+                                  : () {
+                                      _copyLLMPrompt(llmResponse);
+                                      Navigator.of(context).pop();
+                                    },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: isLoading
+                                    ? Colors.grey
+                                    : DB().colorSettings.pieceHighlightColor,
+                                foregroundColor: Colors.white,
+                              ),
+                              child: Text(S.of(context).copy),
+                            ),
+                          ],
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    // Make sure to dispose of the controller
+    controller.dispose();
+  }
+
+  /// Widget for displaying the LLM prompt input text field
+  Widget _buildPromptInputWidget(
+    TextEditingController controller,
+    Color textColor,
+    Color borderColor,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: borderColor),
+        borderRadius: BorderRadius.circular(4),
+        color: DB().colorSettings.darkBackgroundColor,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          controller: controller,
+          maxLines: null,
+          expands: true,
+          cursorColor: textColor,
+          decoration: InputDecoration(
+            isDense: true,
+            contentPadding: EdgeInsets.zero,
+            border: InputBorder.none,
+            hintText: 'LLM Prompt Content',
+            hintStyle: TextStyle(color: textColor.withValues(alpha: 0.5)),
+          ),
+          style: TextStyle(
+            fontFamily: 'monospace',
+            fontSize: 14,
+            color: textColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  /// Widget for displaying the LLM response with progress indicator if loading
+  Widget _buildLlmResponseWidget(
+    String responseText,
+    bool isLoading,
+    Color textColor,
+    Color borderColor,
+  ) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: borderColor),
+        borderRadius: BorderRadius.circular(4),
+        color: DB().colorSettings.darkBackgroundColor,
+      ),
+      child: isLoading
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                        DB().colorSettings.pieceHighlightColor),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    _kLlmLoading,
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+            )
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(8.0),
+              child: SelectableText(
+                responseText,
+                style: TextStyle(
+                  fontFamily: 'monospace',
+                  fontSize: 14,
+                  color: textColor,
+                ),
+              ),
+            ),
+    );
+  }
+
+  /// Get the current app language name in English
+  String _getCurrentLanguageName() {
+    // Get current locale from settings or system
+    Locale currentLocale;
+
+    // Try to get locale from app settings
+    final Locale? configuredLocale = DB().displaySettings.locale;
+
+    if (configuredLocale == null) {
+      // If null, it means "system default" - try to get platform locale
+      try {
+        final String platformLocale = Platform.localeName;
+        final List<String> parts = platformLocale.split('_');
+        // e.g. "en_US" -> language: "en", country: "US"
+        final String languageCode = parts[0];
+        final String? countryCode = parts.length > 1 ? parts[1] : null;
+
+        if (countryCode != null) {
+          currentLocale = Locale(languageCode, countryCode);
+        } else {
+          currentLocale = Locale(languageCode);
+        }
+      } catch (e) {
+        // Fallback to English if we can't get platform locale
+        currentLocale = const Locale('en');
+      }
+    } else {
+      // Use app's configured locale
+      currentLocale = configuredLocale;
+    }
+
+    // Use the localeToLanguageName map to get the language name in its native form
+    // This map is defined in language_locale_mapping.dart
+    String? languageName;
+
+    // Try exact match first (language + country code if available)
+    if (localeToLanguageName.containsKey(currentLocale)) {
+      languageName = localeToLanguageName[currentLocale];
+    } else {
+      // Try matching just the language code
+      final Locale languageOnlyLocale = Locale(currentLocale.languageCode);
+      if (localeToLanguageName.containsKey(languageOnlyLocale)) {
+        languageName = localeToLanguageName[languageOnlyLocale];
+      }
+    }
+
+    // If language name is found, use it, otherwise fall back to language code
+    return languageName ?? currentLocale.languageCode;
+  }
+
+  /// Adds a language instruction to the prompt if needed
+  String _getPromptWithLanguage(
+      String originalPrompt, bool useCurrentLanguage) {
+    if (!useCurrentLanguage) {
+      return originalPrompt;
+    }
+
+    // Get language name or code
+    final String languageNameOrCode = _getCurrentLanguageName();
+
+    // Get the language code for LLM instruction
+    final String languageCode = DB().displaySettings.locale?.languageCode ??
+        Platform.localeName.split('_')[0];
+
+    // Create a language instruction for the LLM
+    // We include both the language name (possibly in native form) and the language code
+    // This helps the LLM better understand which language to use
+    final String languageInstruction =
+        '\n\nPlease provide your analysis in $languageNameOrCode language (code: $languageCode).\n';
+
+    // Find the prompt footer section if it exists, and insert before it
+    // Otherwise, just append to the end
+    if (originalPrompt.contains(PromptDefaults.llmPromptFooter)) {
+      return originalPrompt.replaceFirst(PromptDefaults.llmPromptFooter,
+          '$languageInstruction${PromptDefaults.llmPromptFooter}');
+    } else {
+      return '$originalPrompt$languageInstruction';
+    }
   }
 
   /// Scrolls the list/grid to the top with an animation.
@@ -488,7 +1050,7 @@ class MovesListPageState extends State<MovesListPage> {
                   _exportGame();
                   break;
                 case 'copy_llm_prompt':
-                  await _copyLLMPrompt();
+                  await _showLLMPromptDialog();
                   break;
               }
             },

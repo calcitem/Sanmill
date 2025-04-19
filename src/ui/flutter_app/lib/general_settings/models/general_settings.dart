@@ -156,6 +156,7 @@ class GeneralSettings {
     this.llmModel = '',
     this.llmApiKey = '',
     this.llmBaseUrl = '',
+    this.llmTemperature = 0.7,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -290,6 +291,9 @@ class GeneralSettings {
 
   @HiveField(38, defaultValue: "")
   final String llmBaseUrl;
+
+  @HiveField(39, defaultValue: 0.7)
+  final double llmTemperature;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);

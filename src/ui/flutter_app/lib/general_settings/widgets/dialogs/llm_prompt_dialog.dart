@@ -136,7 +136,7 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                   children: <Widget>[
                     // Header section
                     const Text(
-                      "Header", // Using literal while waiting for translation
+                      "LLM prompt template Header", // Using literal while waiting for translation
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8.0),
@@ -164,7 +164,7 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
 
                     // Footer section
                     const Text(
-                      "Footer", // Using literal while waiting for translation
+                      "LLM prompt template footer", // Using literal while waiting for translation
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8.0),
@@ -194,22 +194,34 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
             ),
             const SizedBox(height: 16.0),
 
-            // Buttons
+            // Reset button
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: _confirmResetToDefaults,
+                child: Text(
+                    S.of(context).restoreDefaultSettings), // "Reset to Default"
+              ),
+            ),
+
+            const SizedBox(height: 8.0),
+
+            // Cancel and OK buttons (following Android convention)
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                TextButton(
-                  onPressed: _confirmResetToDefaults,
-                  child: Text(S
-                      .of(context)
-                      .restoreDefaultSettings), // "Reset to Default"
-                ),
-                const SizedBox(width: 8.0),
-                TextButton(
+                // Cancel button on the left
+                ElevatedButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text(S.of(context).cancel), // "Cancel"
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                  ),
+                  child: Text(
+                    S.of(context).cancel, // "Cancel"
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
-                const SizedBox(width: 8.0),
+                // OK button on the right
                 ElevatedButton(
                   onPressed: _savePrompts,
                   style: ElevatedButton.styleFrom(
