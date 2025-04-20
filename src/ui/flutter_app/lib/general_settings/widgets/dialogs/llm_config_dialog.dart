@@ -113,7 +113,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
       case LlmProvider.google:
         return 'Google API Key';
       case LlmProvider.ollama:
-        return 'API Key (Optional)';
+        return S.of(context).apiKeyOptional;
     }
   }
 
@@ -257,7 +257,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Common Base URLs'),
+          title: Text(S.of(context).commonBaseUrls),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -297,7 +297,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Commonly used models'),
+          title: Text(S.of(context).commonlyUsedModels),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -415,9 +415,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'LLM Configuration',
-              style: TextStyle(
+            Text(
+              S.of(context).llmConfig,
+              style: const TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -471,7 +471,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                           const Spacer(),
                           TextButton(
                             onPressed: _showBaseUrlSuggestions,
-                            child: const Text("View Common URLs"),
+                            child: Text(S.of(context).viewCommonUrls),
                           ),
                         ],
                       ),
@@ -499,7 +499,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                         // Add a suggestion button to help users
                         TextButton(
                           onPressed: _showModelSuggestions,
-                          child: const Text("View Common Models"),
+                          child: Text(S.of(context).viewCommonModels),
                         ),
                       ],
                     ),
@@ -510,7 +510,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(),
                         hintText: _getModelHint(),
-                        helperText: "You can enter any model name",
+                        helperText: S.of(context).youCanEnterAnyModelName,
                         // "You can enter any model name"
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 8.0),
@@ -532,7 +532,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                         suffixIcon: _selectedProvider != LlmProvider.ollama
                             ? IconButton(
                                 icon: const Icon(Icons.open_in_new),
-                                tooltip: 'Get API Key',
+                                tooltip: S.of(context).getApiKey,
                                 onPressed: _launchApiKeyUrl,
                               )
                             : null,

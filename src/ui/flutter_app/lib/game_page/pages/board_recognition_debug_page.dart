@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
@@ -32,6 +33,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     required int processedHeight,
     required Function(bool) onResult,
     BoardRecognitionDebugInfo? debugInfo,
+    required BuildContext context,
   }) {
     // Count pieces by color
     int whiteCount = 0;
@@ -49,7 +51,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
 
     // Return the dialog content widget
     return AlertDialog(
-      title: const Text('Identification results'),
+      title: Text(S.of(context).identificationResults),
       contentPadding: const EdgeInsets.fromLTRB(8, 20, 8, 24),
       content: ConstrainedBox(
         constraints: const BoxConstraints(minWidth: 300, maxWidth: 800),
@@ -165,21 +167,21 @@ class BoardRecognitionDebugPage extends StatefulWidget {
               ],
 
               const SizedBox(height: 8),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Card(
                   child: Padding(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          'View Tips',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          S.of(context).viewTips,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text(
+                        const Text(
                             'Use the buttons above to select different processing stages, and swipe left or right to view all stages.'),
-                        Text(
+                        const Text(
                             'If the recognition is not accurate, try taking a picture of the board in better lighting conditions.'),
                       ],
                     ),
@@ -208,11 +210,11 @@ class BoardRecognitionDebugPage extends StatefulWidget {
               );
             },
             icon: const Icon(Icons.copy),
-            label: const Text('Copy FEN'),
+            label: Text(S.of(context).copyFen),
           ),
         ElevatedButton(
           onPressed: () => onResult(true),
-          child: const Text('Apply to board'),
+          child: Text(S.of(context).applyThisResultToBoard),
         ),
       ],
     );
@@ -221,7 +223,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
   /// Apply the recognition result to the game board using FEN
   /// This function generates a FEN string from the result and uses setFen to update the position.
   static Future<void> applyRecognitionResultToBoard(
-      Map<int, PieceColor> result) async {
+      Map<int, PieceColor> result, BuildContext context) async {
     logger.i("---------------- BOARD RECOGNITION DEBUG ----------------");
     logger.i("Starting recognition result application process");
 
@@ -261,6 +263,10 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       return;
     }
     logger.i("Generated FEN: '$fen'");
+
+    // Capture localized strings early to avoid using `context` after async gaps
+    final String msgFenApplied =
+        S.of(context).boardPositionAppliedFenCopiedToClipboard;
 
     // Automatically copy FEN to clipboard
     await Clipboard.setData(ClipboardData(text: fen));
@@ -433,7 +439,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const Text("Board position applied. FEN copied to clipboard."),
+            Text(msgFenApplied),
             SelectableText("FEN: $fen",
                 style: const TextStyle(fontFamily: 'monospace', fontSize: 10)),
             const SizedBox(height: 8),
@@ -508,13 +514,14 @@ class BoardRecognitionDebugPage extends StatefulWidget {
             processedWidth: processedWidth,
             processedHeight: processedHeight,
             debugInfo: debugInfo ?? BoardImageRecognitionService.lastDebugInfo,
+            context: context,
             onResult: (bool value) {
               Navigator.of(context).pop();
 
               // If the user clicked "Apply to board" (value is true)
               if (value) {
                 // Apply the recognition result to the game board
-                applyRecognitionResultToBoard(result);
+                applyRecognitionResultToBoard(result, context);
               }
 
               completer.complete(value);
@@ -566,6 +573,12 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
   bool _showParameterPanel = false;
 
   // --- End of recognition parameters ---
+
+  @override
+  void initState() {
+    super.initState();
+    _statusMessage = 'Please select a game board image to identify';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -740,7 +753,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                           }
                         },
                         icon: const Icon(Icons.crop),
-                        label: const Text('Adjust game board Area'),
+                        label: Text(S.of(context).adjustBoardArea),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.orangeAccent),
                       ),
@@ -776,7 +789,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                         onPressed:
                             _isProcessing ? null : _pickAndRecognizeImage,
                         icon: const Icon(Icons.photo_library),
-                        label: const Text('Select from album'),
+                        label: Text(S.of(context).selectFromAlbum),
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -785,7 +798,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                         onPressed:
                             _isProcessing ? null : _captureAndRecognizeImage,
                         icon: const Icon(Icons.camera_alt),
-                        label: const Text('Photo shoot'),
+                        label: Text(S.of(context).photoShoot),
                       ),
                     ),
                   ],
@@ -800,7 +813,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                   onPressed: () async {
                     // Apply recognition result to board and wait for completion
                     await BoardRecognitionDebugPage
-                        .applyRecognitionResultToBoard(_lastResult);
+                        .applyRecognitionResultToBoard(_lastResult, context);
 
                     // Get the FEN string after applying to board
                     final String? fen = GameController().position.fen;
@@ -819,7 +832,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
                     }
                   },
                   icon: const Icon(Icons.done),
-                  label: const Text('Apply this result to board'),
+                  label: Text(S.of(context).applyThisResultToBoard),
                 ),
               ),
 
@@ -1342,7 +1355,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
   Future<void> _processImage(Uint8List bytes) async {
     setState(() {
       _isProcessing = true; // Added processing state
-      _statusMessage = 'Identifying board...';
+      _statusMessage = S.of(context).identifyingBoard;
     });
 
     // Store original image bytes
@@ -1585,7 +1598,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
 
     setState(() {
       _isProcessing = true;
-      _statusMessage = 'Selecting image from album...';
+      _statusMessage = S.of(context).selectingImageFromAlbum;
     });
 
     try {
@@ -1594,7 +1607,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       if (image == null) {
         setState(() {
           _isProcessing = false;
-          _statusMessage = 'No image selected';
+          _statusMessage = S.of(context).noImageSelected;
         });
         return;
       }
@@ -1616,7 +1629,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
 
     setState(() {
       _isProcessing = true;
-      _statusMessage = 'Taking picture...';
+      _statusMessage = S.of(context).takingPicture;
     });
 
     try {
@@ -1701,7 +1714,7 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Adjust Board Area'),
+          title: Text(S.of(context).adjustBoardArea),
           content: Container(
             width: double.maxFinite,
             height: 400,

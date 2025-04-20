@@ -346,7 +346,7 @@ class BoardImageRecognitionService {
           // boardRect was not null initially, but discarded due to size
         } else {
           logger.w(
-              "Board detection failed using all methods. Falling back to using the entire image as the board.");
+              "Board detection failed using all methods. Falling back to using the entire image as the board area.");
         }
 
         // Determine the largest square that fits within the processed image

@@ -92,11 +92,11 @@ extension LlmProviderName on LlmProvider {
   String get name {
     switch (this) {
       case LlmProvider.openai:
-        return 'OpenAI';
+        return 'OpenAI API';
       case LlmProvider.google:
-        return 'Google';
+        return 'Google Gemini API';
       case LlmProvider.ollama:
-        return 'Ollama';
+        return 'Ollama API';
     }
   }
 }
@@ -300,5 +300,6 @@ class GeneralSettings {
 
   // For backwards compatibility with code that uses static properties
   static String get defaultLlmPromptHeader => PromptDefaults.llmPromptHeader;
+
   static String get defaultLlmPromptFooter => PromptDefaults.llmPromptFooter;
 }

@@ -27,13 +27,7 @@ import 'mini_board.dart';
 
 // Key for the LLM prompt dialog screen
 const String _kLlmPromptDialogKey = 'llm_prompt_dialog';
-// Text for "Use current language" checkbox
-const String _kUseCurrentLanguageForLlm = 'Output in current app language';
-// Text for the "Ask LLM" button
-const String _kAskLlmButtonText = 'Ask LLM';
-// Text for when LLM is not configured
-const String _kLlmNotConfigured =
-    'LLM not configured. Please check your settings.';
+// Text for the S.of(context).askLlm button
 // Text for when LLM is loading
 const String _kLlmLoading = 'Loading response...';
 
@@ -222,7 +216,8 @@ class MovesListPageState extends State<MovesListPage> {
               if (!isLlmConfigured) {
                 setState(() {
                   showLlmResponse = true;
-                  llmResponse = _kLlmNotConfigured;
+                  llmResponse =
+                      S.of(context).llmNotConfiguredPleaseCheckYourSettings;
                   isLoading = false;
                 });
                 return;
@@ -242,7 +237,7 @@ class MovesListPageState extends State<MovesListPage> {
               String fullResponse = '';
               try {
                 await for (final String chunk
-                    in llmService.generateResponse(promptToUse)) {
+                    in llmService.generateResponse(promptToUse, context)) {
                   // Check if the widget is still mounted before setting state
                   if (!mounted) {
                     // Widget was disposed, exit the loop
@@ -378,7 +373,7 @@ class MovesListPageState extends State<MovesListPage> {
                                 onPressed: showLlmPromptTemplateDialog,
                                 icon: const Icon(
                                     FluentIcons.document_edit_24_regular),
-                                tooltip: 'LLM Prompt Template',
+                                tooltip: S.of(context).llmPromptTemplate,
                                 color: DB().colorSettings.pieceHighlightColor,
                               ),
                               // LLM Config button
@@ -386,7 +381,7 @@ class MovesListPageState extends State<MovesListPage> {
                                 onPressed: showLlmConfigDialog,
                                 icon:
                                     const Icon(FluentIcons.settings_24_regular),
-                                tooltip: 'LLM Config',
+                                tooltip: S.of(context).llmConfig,
                                 color: DB().colorSettings.pieceHighlightColor,
                               ),
                               // Close button - with enhanced visibility
@@ -446,11 +441,11 @@ class MovesListPageState extends State<MovesListPage> {
                               },
                             ),
                             const SizedBox(width: 8),
-                            const Expanded(
+                            Expanded(
                               child: Text(
                                 // Using app language for output text
-                                _kUseCurrentLanguageForLlm,
-                                style: TextStyle(
+                                S.of(context).outputInCurrentLanguage,
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.green,
                                 ),
@@ -477,7 +472,7 @@ class MovesListPageState extends State<MovesListPage> {
                                 foregroundColor: Colors.white,
                                 disabledBackgroundColor: Colors.grey,
                               ),
-                              child: const Text(_kAskLlmButtonText),
+                              child: Text(S.of(context).askLlm),
                             ),
                             // Copy button - right side
                             ElevatedButton(
@@ -569,7 +564,7 @@ class MovesListPageState extends State<MovesListPage> {
             isDense: true,
             contentPadding: EdgeInsets.zero,
             border: InputBorder.none,
-            hintText: 'LLM Prompt Content',
+            hintText: S.of(context).llmPromptContent,
             hintStyle: TextStyle(color: textColor.withValues(alpha: 0.5)),
           ),
           style: TextStyle(
@@ -606,7 +601,7 @@ class MovesListPageState extends State<MovesListPage> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    _kLlmLoading,
+                    S.of(context).loadingResponse,
                     style: TextStyle(
                       color: textColor,
                       fontSize: 16,

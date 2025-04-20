@@ -9,6 +9,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
+import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../services/board_image_recognition.dart';
@@ -255,7 +256,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text(
-              'Board Recognition Result',
+              S.of(context).boardRecognitionResult,
               style: Theme.of(context).textTheme.titleMedium,
               textAlign: TextAlign.center,
             ),
@@ -377,7 +378,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'No valid board detected',
+                    S.of(context).noValidBoardDetected,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -432,14 +433,14 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.red, width: 3),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.error_outline, color: Colors.red, size: 48),
-                  SizedBox(height: 8),
+                  const Icon(Icons.error_outline, color: Colors.red, size: 48),
+                  const SizedBox(height: 8),
                   Text(
-                    'No board point detected!',
-                    style: TextStyle(
+                    S.of(context).noBoardPointDetected,
+                    style: const TextStyle(
                       color: Colors.red,
                       fontWeight: FontWeight.bold,
                       fontSize: 22,
@@ -470,9 +471,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 color: Colors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                'Color analysis failed!',
-                style: TextStyle(
+              child: Text(
+                S.of(context).colorAnalysisFailed,
+                style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -502,9 +503,9 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                 color: Colors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: const Text(
-                'No board point detected, cannot identify piece!',
-                style: TextStyle(
+              child: Text(
+                S.of(context).noBoardPointDetectedCannotIdentifyPiece,
+                style: const TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -528,20 +529,21 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
       case DebugStage.finalResult:
         if (widget.boardPoints.isEmpty) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'Final Recognition Failed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Entire Recognition Process Failed to Complete'),
-                Text('Suggestion: Try Taking a Clearer Picture of the Board'),
+                const SizedBox(height: 4),
+                Text(S.of(context).entireRecognitionProcessFailedToComplete),
+                Text(
+                    S.of(context).suggestionTryTakingAClearerPictureOfTheBoard),
               ],
             ),
           );
@@ -602,7 +604,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Click "Apply to board" to set up this position',
+                            'Click S.of(context).applyToBoard to set up this position',
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 11,
@@ -781,23 +783,24 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
       case DebugStage.boardDetection:
         final math.Rectangle<int>? rect = widget.debugInfo?.boardRect;
         if (rect == null) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  'Board Detection Failed!',
-                  style: TextStyle(
+                  S.of(context).boardDetectionFailed,
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Possible Reasons:'),
-                Text('1. Insufficient Board Area Contrast'),
-                Text('2. Board is Obstructed or Out of Image Range'),
-                Text('3. Poor Lighting Conditions Causing Board Boundary Blur'),
-                Text(
+                const SizedBox(height: 4),
+                const Text('Possible Reasons:'),
+                const Text('1. Insufficient Board Area Contrast'),
+                const Text('2. Board is Obstructed or Out of Image Range'),
+                const Text(
+                    '3. Poor Lighting Conditions Causing Board Boundary Blur'),
+                const Text(
                     'Suggestion: Try Taking a Picture in a Well-lit Environment to Ensure Complete and Clear Visibility of the Board'),
               ],
             ),
@@ -966,20 +969,21 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
 
       case DebugStage.finalResult:
         if (widget.boardPoints.isEmpty) {
-          return const SingleChildScrollView(
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
+                const Text(
                   'Final Recognition Failed',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
                   ),
                 ),
-                SizedBox(height: 4),
-                Text('Entire Recognition Process Failed to Complete'),
-                Text('Suggestion: Try Taking a Clearer Picture of the Board'),
+                const SizedBox(height: 4),
+                Text(S.of(context).entireRecognitionProcessFailedToComplete),
+                Text(
+                    S.of(context).suggestionTryTakingAClearerPictureOfTheBoard),
               ],
             ),
           );
@@ -1040,7 +1044,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                           ),
                           const SizedBox(height: 4),
                           const Text(
-                            'Click "Apply to board" to set up this position',
+                            'Click S.of(context).applyToBoard to set up this position',
                             style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontSize: 11,

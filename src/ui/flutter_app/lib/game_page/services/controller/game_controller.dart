@@ -206,7 +206,7 @@ class GameController {
               onPressed: () {
                 Navigator.of(dialogContext).pop(false);
               },
-              child: const Text("Cancel"),
+              child: Text(S.of(context).cancel),
             ),
             TextButton(
               onPressed: () {

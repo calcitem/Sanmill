@@ -81,9 +81,10 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Reset Confirmation"),
-          content: const Text(
-              "Are you sure you want to reset the prompt templates to default values?"),
+          title: Text(S.of(context).restoreDefaultSettings),
+          content: Text(S
+              .of(context)
+              .areYouSureYouWantToResetThePromptTemplatesToDefaultValues),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
@@ -135,9 +136,10 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Header section
-                    const Text(
-                      "LLM prompt template Header", // Using literal while waiting for translation
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      S.of(context).llmPromptTemplateHeader,
+                      // Using literal while waiting for translation
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8.0),
                     Container(
@@ -151,11 +153,12 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                           controller: _headerController,
                           maxLines: null,
                           keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.all(8.0),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(8.0),
                             border: InputBorder.none,
-                            hintText:
-                                "If left empty, default template will be used",
+                            hintText: S
+                                .of(context)
+                                .ifLeftEmptyDefaultTemplateWillBeUsed,
                           ),
                         ),
                       ),
@@ -163,9 +166,10 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                     const SizedBox(height: 16.0),
 
                     // Footer section
-                    const Text(
-                      "LLM prompt template footer", // Using literal while waiting for translation
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      S.of(context).llmPromptTemplateFooter,
+                      // Using literal while waiting for translation
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8.0),
                     Container(
@@ -179,11 +183,12 @@ class _LlmPromptDialogState extends State<LlmPromptDialog> {
                           controller: _footerController,
                           maxLines: null,
                           keyboardType: TextInputType.multiline,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.all(8.0),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(8.0),
                             border: InputBorder.none,
-                            hintText:
-                                "If left empty, default template will be used",
+                            hintText: S
+                                .of(context)
+                                .ifLeftEmptyDefaultTemplateWillBeUsed,
                           ),
                         ),
                       ),

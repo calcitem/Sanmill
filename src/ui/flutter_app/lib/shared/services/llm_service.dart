@@ -6,41 +6,44 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import '../../general_settings/models/general_settings.dart';
+import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
 import 'logger.dart';
 
-/// Service for interacting with various LLM providers
+/// A service to interact with LLM providers like OpenAI API
 class LlmService {
-  /// Factory constructor that returns the singleton instance
-  factory LlmService() => _instance;
+  /// Factory constructor
+  factory LlmService() {
+    return _instance;
+  }
 
   /// Private constructor
   LlmService._internal();
 
-  /// Singleton instance
+  /// Singleton instance of LlmService
   static final LlmService _instance = LlmService._internal();
 
-  /// HTTP client for API calls
+  /// HTTP client for API requests
   final http.Client _httpClient = http.Client();
 
-  /// Generate a response from the LLM for the given prompt
   /// Returns a stream of string chunks as they are received
-  Stream<String> generateResponse(String prompt) async* {
+  Stream<String> generateResponse(String prompt, BuildContext context) async* {
     final GeneralSettings settings = DB().generalSettings;
 
     // Check if LLM is configured
     if (!isLlmConfigured()) {
-      yield 'Error: LLM not properly configured. Please check your settings.';
+      yield S.of(context).llmNotConfiguredPleaseCheckYourSettings;
       return;
     }
 
     try {
       // System prompt to guide the LLM's role
-      const String systemPrompt = "You are a Nine Men's Morris game expert. "
-          'Analyze the moves and provide insights.';
+      final String systemPrompt = "You are a Nine Men's Morris game expert. "
+          '${S.of(context).analyzeTheMovesAndProvideInsights}';
 
       switch (settings.llmProvider) {
         case LlmProvider.openai:

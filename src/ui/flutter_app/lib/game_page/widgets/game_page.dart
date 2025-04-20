@@ -230,7 +230,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                 FluentIcons.camera_24_regular,
                                 color: Colors.white,
                               ),
-                              tooltip: "Recognize Board From Image",
+                              tooltip: S.of(context).recognizeBoardFromImage,
                               // Board image recognition
                               onPressed: () =>
                                   _recognizeBoardFromImage(context),
@@ -654,13 +654,13 @@ class _GamePageInnerState extends State<_GamePageInner> {
                       blackColorVarianceThreshold = 40;
                     });
                   },
-                  child: const Text('Reset to Defaults'),
+                  child: Text(S.of(context).resetToDefaults),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Cancel'),
+                  child: Text(S.of(context).cancel),
                 ),
                 ElevatedButton(
                   onPressed: () {
@@ -681,9 +681,10 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                     // Display a confirmation message
                     rootScaffoldMessengerKey.currentState?.showSnackBar(
-                      const SnackBar(
-                        content: Text('Recognition parameters updated'),
-                        duration: Duration(seconds: 2),
+                      SnackBar(
+                        content:
+                            Text(S.of(context).recognitionParametersUpdated),
+                        duration: const Duration(seconds: 2),
                       ),
                     );
                   },
@@ -722,14 +723,14 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final BuildContext currentContext = context; // Keep for initial dialog
 
     // At this point context is still valid for initial dialog
-    const AlertDialog dialogContent = AlertDialog(
-      title: Text("Processing"),
+    final AlertDialog dialogContent = AlertDialog(
+      title: Text(S.of(context).waiting),
       content: Row(
         children: <Widget>[
-          CircularProgressIndicator(),
-          SizedBox(width: 20),
+          const CircularProgressIndicator(),
+          const SizedBox(width: 20),
           Expanded(
-            child: Text("Analyzing game board image..."),
+            child: Text(S.of(context).analyzingGameBoardImage),
           ),
         ],
       ),
@@ -793,6 +794,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                 processedHeight:
                     BoardImageRecognitionService.processedImageHeight,
                 debugInfo: BoardImageRecognitionService.lastDebugInfo,
+                context: dialogContext,
                 onResult: (bool shouldApply) {
                   // Close dialog using dialog's navigator
                   dialogNavigator.pop(shouldApply);
@@ -806,7 +808,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                   if (shouldApply) {
                     // Pass the captured messenger (captured before await)
                     _applyRecognizedBoardState(
-                        recognizedPieces, currentMessenger);
+                        recognizedPieces, currentMessenger, context);
                   }
                 },
               ),
@@ -817,13 +819,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
         // In normal mode, directly apply recognition results without showing debug view
         if (recognizedPieces.isNotEmpty) {
           // Apply the recognized state directly
-          _applyRecognizedBoardState(recognizedPieces, currentMessenger);
+          _applyRecognizedBoardState(
+              recognizedPieces, currentMessenger, context);
         } else {
           // Show error if no pieces recognized
           currentMessenger.showSnackBar(
-            const SnackBar(
-                content: Text(
-                    "No pieces were recognized in the image. Please try again.")),
+            SnackBar(
+                content: Text(S
+                    .of(context)
+                    .noPiecesWereRecognizedInTheImagePleaseTryAgain)),
           );
         }
       }
@@ -850,15 +854,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
   /// Apply the recognized board state to the game (without using BuildContext)
   void _applyRecognizedBoardState(Map<int, PieceColor> recognizedPieces,
-      ScaffoldMessengerState? messenger) {
+      ScaffoldMessengerState? messenger, BuildContext context) {
     try {
       // Generate FEN string from recognized pieces
       final String? fen =
           BoardRecognitionDebugView.generateTempFenString(recognizedPieces);
 
       if (fen == null) {
-        messenger
-            ?.showSnackBarClear("Failed to generate FEN from recognized board");
+        messenger?.showSnackBarClear(
+            S.of(context).failedToGenerateFenFromRecognizedBoard);
         return;
       }
 
@@ -885,8 +889,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
             "Applied position with $whiteCount white and $blackCount black pieces";
         final String next =
             GameController().position.sideToMove == PieceColor.white
-                ? "White's move"
-                : "Black's move";
+                ? S.of(context).whiteSMove
+                : S.of(context).blackSMove;
 
         // Update the game recorder with the setup position
         GameController().gameRecorder =
@@ -900,8 +904,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
             ?.showSnackBarClear("$message, $next (FEN copied to clipboard)");
       } else {
         // Failed to set FEN
-        messenger
-            ?.showSnackBarClear("Failed to apply recognized board position");
+        messenger?.showSnackBarClear(
+            S.of(context).failedToApplyRecognizedBoardPosition);
         logger.e("Failed to set FEN: $fen");
       }
     } catch (e) {
