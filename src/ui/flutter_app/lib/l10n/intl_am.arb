@@ -940,7 +940,7 @@
   "@drawerTextColor": {
     "description": "Menu text color"
   },
-  "drawerHighlightItemColor": "የምናሌ 亮点 አካል ቀለም",
+  "drawerHighlightItemColor": "የመሳቢያው ንጥል ማድመቂያ ቀለም",
   "@drawerHighlightItemColor": {
     "description": "Menu highlight item color"
   },

@@ -842,7 +842,7 @@ class _MoveSquares {
 }
 
 /// Game outcome from analysis
-@immutable // 添加这个注解
+@immutable
 class GameOutcome {
   const GameOutcome(this.name, {this.valueStr});
 
