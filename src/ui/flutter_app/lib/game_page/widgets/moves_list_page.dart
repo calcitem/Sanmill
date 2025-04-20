@@ -341,7 +341,7 @@ class MovesListPageState extends State<MovesListPage> {
 
                 if (context.mounted) {
                   rootScaffoldMessengerKey.currentState!.showSnackBar(
-                    SnackBar(content: Text('Error importing moves: $e')),
+                    SnackBar(content: Text(S.of(context).cannotImport(e))),
                   );
                   Navigator.of(context).pop();
                 }
@@ -748,23 +748,27 @@ class MovesListPageState extends State<MovesListPage> {
     Widget funLoadingDots(Color highlightColor) {
       // Active dot cycles every second
       final int activeDot = elapsedSeconds % 4;
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: List<Widget>.generate(4, (int index) {
-          final bool isActive = index == activeDot;
-          return AnimatedContainer(
-            duration: const Duration(milliseconds: 300),
-            margin: const EdgeInsets.symmetric(horizontal: 4.0),
-            width: isActive ? 12 : 8,
-            height: isActive ? 12 : 8,
-            decoration: BoxDecoration(
-              color: isActive
-                  ? highlightColor
-                  : highlightColor.withValues(alpha: 0.3),
-              shape: BoxShape.circle,
-            ),
-          );
-        }),
+      return SizedBox(
+        // Fixed height container to prevent layout jumps
+        height: 12.0,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List<Widget>.generate(4, (int index) {
+            final bool isActive = index == activeDot;
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              margin: const EdgeInsets.symmetric(horizontal: 4.0),
+              width: isActive ? 12 : 8,
+              height: isActive ? 12 : 8,
+              decoration: BoxDecoration(
+                color: isActive
+                    ? highlightColor
+                    : highlightColor.withValues(alpha: 0.3),
+                shape: BoxShape.circle,
+              ),
+            );
+          }),
+        ),
       );
     }
 
@@ -780,18 +784,24 @@ class MovesListPageState extends State<MovesListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  // Add padding at the top to move dots away from edge
+                  const SizedBox(height: 24.0),
                   // Game title and waiting message
-                  Row(
+                  Column(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       funLoadingDots(DB().colorSettings.pieceHighlightColor),
-                      const SizedBox(width: 8),
+                      const SizedBox(
+                          height: 8), // Vertical spacing between dots and text
                       Text(
                         waitingMessage,
                         style: TextStyle(
                           color: textColor,
                           fontSize: 14,
                         ),
+                        textAlign:
+                            TextAlign.center, // Center the text horizontally
                       ),
                     ],
                   ),

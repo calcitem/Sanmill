@@ -88,7 +88,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                             color: Colors.green,
                             size: 24,
                           ),
-                          Text('White pieces: $whiteCount'),
+                          Text("${S.of(context).whitePiece}: $whiteCount"),
                         ],
                       ),
                     ),
@@ -101,7 +101,7 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                             color: Colors.red,
                             size: 24,
                           ),
-                          Text('Black pieces: $blackCount'),
+                          Text("${S.of(context).blackPiece}: $blackCount"),
                         ],
                       ),
                     ),
@@ -132,12 +132,15 @@ class BoardRecognitionDebugPage extends StatefulWidget {
                           // Copy button for FEN string
                           ElevatedButton.icon(
                             onPressed: () async {
+                              // Capture localized string before async gap
+                              final String copiedMsg =
+                                  S.of(context).fenCopiedToClipboard;
                               await Clipboard.setData(ClipboardData(text: fen));
                               rootScaffoldMessengerKey.currentState
                                   ?.showSnackBar(
-                                const SnackBar(
-                                  content: Text('FEN copied to clipboard'),
-                                  duration: Duration(seconds: 2),
+                                SnackBar(
+                                  content: Text(copiedMsg),
+                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                             },
@@ -195,17 +198,18 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => onResult(false),
-          child: const Text('Cancel'),
+          child: Text(S.of(context).cancel),
         ),
         // Copy FEN button in action bar (additional option)
         if (fen != null)
           TextButton.icon(
             onPressed: () async {
+              final String copiedMsg = S.of(context).fenCopiedToClipboard;
               await Clipboard.setData(ClipboardData(text: fen));
               rootScaffoldMessengerKey.currentState?.showSnackBar(
-                const SnackBar(
-                  content: Text('FEN copied to clipboard'),
-                  duration: Duration(seconds: 2),
+                SnackBar(
+                  content: Text(copiedMsg),
+                  duration: const Duration(seconds: 2),
                 ),
               );
             },
@@ -241,6 +245,12 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     }
     logger.i("White pieces: $whitePieces, Black pieces: $blackPieces");
 
+    // Capture localized strings early to avoid using `context` after async gaps
+    final String msgFenApplied =
+        S.of(context).boardPositionAppliedFenCopiedToClipboard;
+    // Use a simple error string instead of S.of(context).error
+    const String errorPrefix = "Error";
+
     // Display input data in snackbar
     rootScaffoldMessengerKey.currentState?.clearSnackBars();
     rootScaffoldMessengerKey.currentState?.showSnackBar(
@@ -258,15 +268,12 @@ class BoardRecognitionDebugPage extends StatefulWidget {
     if (fen == null) {
       logger.e("Failed to generate FEN string from recognition result.");
       rootScaffoldMessengerKey.currentState?.showSnackBar(
-        const SnackBar(content: Text("Error: Could not generate board state.")),
+        const SnackBar(
+            content: Text("$errorPrefix: Could not generate board state.")),
       );
       return;
     }
     logger.i("Generated FEN: '$fen'");
-
-    // Capture localized strings early to avoid using `context` after async gaps
-    final String msgFenApplied =
-        S.of(context).boardPositionAppliedFenCopiedToClipboard;
 
     // Automatically copy FEN to clipboard
     await Clipboard.setData(ClipboardData(text: fen));
@@ -306,7 +313,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
       logger.e("Invalid FEN generated: '$fen'");
       rootScaffoldMessengerKey.currentState?.showSnackBar(
         SnackBar(
-            content: Text("Error: Invalid board state generated (FEN: $fen).")),
+            content: Text(
+                "$errorPrefix: Invalid board state generated (FEN: $fen).")),
       );
       return;
     }
@@ -342,7 +350,8 @@ class BoardRecognitionDebugPage extends StatefulWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              const Text("Error: Failed to apply board state automatically."),
+              const Text(
+                  "$errorPrefix: Failed to apply board state automatically."),
               const Text(
                   "Please try setting up the position manually using the copied FEN."),
               Text("FEN: $fen",
