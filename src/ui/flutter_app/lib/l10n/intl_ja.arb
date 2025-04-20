@@ -1963,5 +1963,69 @@
   "noImageSelected": "画像が選択されていません",
   "@noImageSelected": {},
   "blackSMove": "黒の手番",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "大規模言語モデル",
+  "@llm": {},
+  "llmProvider": "プロバイダー",
+  "@llmProvider": {},
+  "baseUrl": "ベースURL",
+  "@baseUrl": {},
+  "model": "モデル",
+  "@model": {},
+  "temperature": "温度",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "コマンドを受信しました！ AIが処理中です...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "深い思考を進行中です。しばらくお待ちください...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "まもなく表示します...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "認識パラメータ",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "認識精度を向上させるためにパラメータを調整します",
+  "@adjustParamsDesc": {},
+  "saveParameters": "パラメータを保存",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "画像認識を開始できません: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "画像認識に失敗しました: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} 個の白石と {blackCount} 個の黒石で配置を適用しました",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "（FEN をクリップボードにコピーしました）",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "認識に失敗しました: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

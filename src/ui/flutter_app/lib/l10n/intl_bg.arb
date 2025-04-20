@@ -1865,5 +1865,69 @@
   "noImageSelected": "Няма избрано изображение",
   "@noImageSelected": {},
   "blackSMove": "Ход на черните",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Голям езиков модел",
+  "@llm": {},
+  "llmProvider": "Доставчик",
+  "@llmProvider": {},
+  "baseUrl": "Базов URL",
+  "@baseUrl": {},
+  "model": "Модел",
+  "@model": {},
+  "temperature": "Температура",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Командата е получена! AI обработва...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Тече дълбоко мислене, моля изчакайте...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Представяне скоро...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Параметри за разпознаване",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Коригирайте параметрите, за да подобрите точността на разпознаване",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Запази параметрите",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Не може да се стартира разпознаване на изображението: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Разпознаването на изображението неуспешно: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Приложена позиция с {whiteCount} бели и {blackCount} черни пулчета",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN е копирано в клипборда)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Разпознаването неуспешно: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1963,5 +1963,69 @@
   "noImageSelected": "ཡྙན་ཚིག་བཀོད་མ་ཡིན།",
   "@noImageSelected": {},
   "blackSMove": "དཀྱིལ་ནུབ་གི་འགུས་པ།",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "ཆེན་པོའི་སྐད་ཡིག་མཛོད",
+  "@llm": {},
+  "llmProvider": "བྱིན་སྤྲོད་པ་",
+  "@llmProvider": {},
+  "baseUrl": "གཞི་རྟགས URL",
+  "@baseUrl": {},
+  "model": "དཔེ་གཞི",
+  "@model": {},
+  "temperature": "སྤུ་དེབ",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "བཀོད་འདོད་བྱས་ཡོད! AI འགྲོ་སྒྲིག་བྱེད་པར་འཁོད...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ཞིབ་འཆད་འདུག གནང་བ་ལོག་ནས་གསོལ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "མགོན་མཐུད་དུས་ལྟར་བསྟན་རྒྱུ...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "ངེས་འཛིན་གཞི་ཁུངས།",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "ངེས་འཛིན་ཡང་དག་པ་ལེགས་པར་བཟོ་ནས་གཞི་ཁུངས་བསྒྱུར་བཅོས།",
+  "@adjustParamsDesc": {},
+  "saveParameters": "གཞི་ཁུངས་ཉར་ཚགས།",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "པར་ངེས་འཛིན་འགོ་བཙུགས་ཐུབ་མེད་: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "པར་ངེས་འཛིན་ཕན་ཚུན་བྱས་མ་ཐུབ་: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "དཀར {whiteCount} དང་ ནག {blackCount} སྡོམ་ལ་གཞི་རིམ་བཙུགས་ཡོད།",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ངོས་དེབ་ལ་འདྲ་བཤུས་ཡོད།)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "ངེས་འཛིན་ཕན་ཚུན་བྱས་མ་ཐུབ་: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nincs kép kiválasztva",
   "@noImageSelected": {},
   "blackSMove": "Fekete következik",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Nagy nyelvi modell",
+  "@llm": {},
+  "llmProvider": "Szolgáltató",
+  "@llmProvider": {},
+  "baseUrl": "Alap URL",
+  "@baseUrl": {},
+  "model": "Modell",
+  "@model": {},
+  "temperature": "Hőmérséklet",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Parancs fogadva! A mesterséges intelligencia feldolgoz...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Mély gondolkodás folyamatban, kérjük, várjon...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Hamarosan bemutatjuk...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Felismerési paraméterek",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Paraméterek beállítása a felismerés pontosságának javításához",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Paraméterek mentése",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nem sikerült elindítani a képfelismerést: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "A képfelismerés sikertelen: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Alkalmazott állás {whiteCount} fehér és {blackCount} fekete bábuval",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN a vágólapra másolva)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "A felismerés sikertelen: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

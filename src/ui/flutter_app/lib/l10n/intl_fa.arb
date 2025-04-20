@@ -1865,5 +1865,69 @@
   "noImageSelected": "هیچ تصویری انتخاب نشده است",
   "@noImageSelected": {},
   "blackSMove": "نوبت سیاه",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "مدل زبانی بزرگ",
+  "@llm": {},
+  "llmProvider": "ارائه‌دهنده",
+  "@llmProvider": {},
+  "baseUrl": "نشانی پایه",
+  "@baseUrl": {},
+  "model": "مدل",
+  "@model": {},
+  "temperature": "دما",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "دستور دریافت شد! هوش مصنوعی در حال پردازش است...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "تفکر عمیق در حال انجام است، لطفاً صبر کنید...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "به زودی ارائه می‌شود...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "پارامترهای تشخیص",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "پارامترها را برای بهبود دقت تشخیص تنظیم کنید",
+  "@adjustParamsDesc": {},
+  "saveParameters": "ذخیره پارامترها",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "شروع تشخیص تصویر ممکن نیست: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "تشخیص تصویر ناموفق بود: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "وضعیت اعمال‌شده با {whiteCount} مهره سفید و {blackCount} مهره سیاه",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(‏FEN در کلیپ‌بورد کپی شد)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "تشخیص ناموفق بود: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

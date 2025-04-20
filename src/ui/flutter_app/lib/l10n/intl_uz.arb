@@ -1865,5 +1865,69 @@
   "noImageSelected": "Hech qanday rasm tanlanmadi",
   "@noImageSelected": {},
   "blackSMove": "Qora yurishi",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Katta Til Modeli",
+  "@llm": {},
+  "llmProvider": "Provayder",
+  "@llmProvider": {},
+  "baseUrl": "Asosiy URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Harorat",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Buyruq qabul qilindi! AI qayta ishlamoqda...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Chuqur o'ylash jarayonda, iltimos kuting...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Tez orada taqdim etiladi...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Taniqlik parametrlari",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Aniqlikni oshirish uchun parametrlarga tuzatish kiriting",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Parametrlarni saqlash",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Rasmni aniqlashni boshlab boʻlmadi: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Rasmni aniqlash muvaffaqiyatsiz: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Qoʻllanilgan holat: oq {whiteCount} ta va qora {blackCount} ta tosh",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN buferga nusxa olindi)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tanish muvaffaqiyatsiz: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

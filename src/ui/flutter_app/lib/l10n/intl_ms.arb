@@ -1865,5 +1865,69 @@
   "noImageSelected": "Tiada imej dipilih",
   "@noImageSelected": {},
   "blackSMove": "Giliran Hitam",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "Model Bahasa Besar",
+  "@llm": {},
+  "llmProvider": "Penyedia",
+  "@llmProvider": {},
+  "baseUrl": "URL Asas",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Suhu",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Arahan diterima! AI sedang memproses...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Fikiran mendalam sedang dijalankan, sila tunggu...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Akan dipersembahkan tidak lama lagi...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parameter pengecaman",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Laraskan parameter untuk meningkatkan ketepatan pengecaman",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Simpan parameter",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Tidak dapat memulakan pengecaman imej: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Pengecaman imej gagal: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Kedudukan diterapkan dengan {whiteCount} buah putih dan {blackCount} buah hitam",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN disalin ke papan klip)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Pengecaman gagal: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

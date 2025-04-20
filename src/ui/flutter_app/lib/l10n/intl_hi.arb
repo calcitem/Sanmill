@@ -1865,5 +1865,69 @@
   "noImageSelected": "कोई छवि चयनित नहीं",
   "@noImageSelected": {},
   "blackSMove": "काले की चाल",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "बड़ा भाषा मॉडल",
+  "@llm": {},
+  "llmProvider": "प्रदाता",
+  "@llmProvider": {},
+  "baseUrl": "बेस URL",
+  "@baseUrl": {},
+  "model": "मॉडल",
+  "@model": {},
+  "temperature": "तापमान",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "आदेश प्राप्त! AI प्रोसेस कर रहा है...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "गहन सोच जारी है, कृपया प्रतीक्षा करें...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "शीघ्र प्रस्तुत किया जाएगा...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "पहचान पैरामीटर",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "पहचान की सटीकता बढ़ाने के लिए पैरामीटर समायोजित करें",
+  "@adjustParamsDesc": {},
+  "saveParameters": "पैरामीटर सहेजें",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "छवि पहचान प्रारंभ करने में असमर्थ: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "छवि पहचान विफल हुई: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "लागू स्थिति में {whiteCount} सफेद और {blackCount} काले मोहरे",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN क्लिपबोर्ड पर कॉपी किया गया)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "पहचान विफल हुई: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

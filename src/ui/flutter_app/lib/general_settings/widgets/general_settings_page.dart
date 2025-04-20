@@ -594,7 +594,7 @@ class GeneralSettingsPage extends StatelessWidget {
           SettingsCard(
             key: const Key('general_settings_page_settings_card_llm_prompts'),
             title: Text(
-              S.of(context).llmPrompt,
+              S.of(context).llm,
               key: const Key(
                   'general_settings_page_settings_card_llm_prompts_title'),
             ),

@@ -1962,5 +1962,69 @@
   "noImageSelected": "படம் தேர்வு செய்யப்படவில்லை",
   "@noImageSelected": {},
   "blackSMove": "கருப்பு வீரரின் அடி",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "பெரிய மொழி மாதிரி",
+  "@llm": {},
+  "llmProvider": "வழங்குநர்",
+  "@llmProvider": {},
+  "baseUrl": "அடிப்படை URL",
+  "@baseUrl": {},
+  "model": "மாதிரி",
+  "@model": {},
+  "temperature": "வெப்பநிலை",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "கட்டளை பெறப்பட்டது! AI செயலாக்குகிறது...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ஆழமான சிந்தனை நடைபெற்று வருகிறது, தயவு செய்து காத்திருக்கவும்...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "சமீபத்தில் வழங்கப்படுகிறது...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "அறிதல் அளவுருக்கள்",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "அறிதல் துல்லியத்தை மேம்படுத்த அளவுருக்களை சரிசெய்க",
+  "@adjustParamsDesc": {},
+  "saveParameters": "அளவுருக்களை சேமிக்கவும்",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "பட அடையாளமாக்கலைத் தொடங்க முடியவில்லை: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "பட அடையாளமாக்கல் தோல்வியுற்றது: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} வெள்ளை மற்றும் {blackCount} கருப்பு கற்கள் கொண்ட நிலை பயன்படுத்தப்பட்டது",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டது)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "அறிதல் தோல்வியுற்றது: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

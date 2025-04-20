@@ -1865,5 +1865,69 @@
   "noImageSelected": "Нема избрана слика",
   "@noImageSelected": {},
   "blackSMove": "Потег на црните",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Голем јазичен модел",
+  "@llm": {},
+  "llmProvider": "Доставувач",
+  "@llmProvider": {},
+  "baseUrl": "Основен URL",
+  "@baseUrl": {},
+  "model": "Модел",
+  "@model": {},
+  "temperature": "Температура",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Командата е примена! В.И. обработува...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Во тек е длабоко размислување, ве молиме почекајте...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Набрзо ќе следи презентација...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Параметри за препознавање",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Прилагодете ги параметрите за да ја подобрите точноста на препознавањето",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Зачувај параметри",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Не може да започне препознавање на слика: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Препознавањето на слика не успеа: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Применета позиција со {whiteCount} бели и {blackCount} црни фигури",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN копиран во таблата за исечоци)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Неуспешно препознавање: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

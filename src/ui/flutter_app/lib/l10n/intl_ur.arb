@@ -1963,5 +1963,69 @@
   "noImageSelected": "کوئی تصویر منتخب نہیں کی گئی",
   "@noImageSelected": {},
   "blackSMove": "کالے کا قدم",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "بڑا لسانی ماڈل",
+  "@llm": {},
+  "llmProvider": "فراہم کنندہ",
+  "@llmProvider": {},
+  "baseUrl": "بنیادی URL",
+  "@baseUrl": {},
+  "model": "ماڈل",
+  "@model": {},
+  "temperature": "درجہ حرارت",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "حکم موصول! اے آئی پروسیسنگ کر رہی ہے...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "گہری سوچ جاری ہے، براہ کرم انتظار کریں...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "جلد پیش کیا جائے گا...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "پہچان کے پیرامیٹرز",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "پہچان کی درستگی بہتر بنانے کے لیے پیرامیٹرز کو ایڈجسٹ کریں",
+  "@adjustParamsDesc": {},
+  "saveParameters": "پیرامیٹرز محفوظ کریں",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "امیج ریکگنیشن شروع نہیں ہو سکی: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "امیج ریکگنیشن ناکام ہوئی: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} سفید اور {blackCount} سیاہ مہروں کے ساتھ پوزیشن لاگو کی گئی",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN کلپ بورڈ میں کاپی ہو گیا ہے)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "پہچان ناکام ہوئی: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Ingen bild vald",
   "@noImageSelected": {},
   "blackSMove": "Svarts drag",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Stort språkmodell",
+  "@llm": {},
+  "llmProvider": "Leverantör",
+  "@llmProvider": {},
+  "baseUrl": "Bas-URL",
+  "@baseUrl": {},
+  "model": "Modell",
+  "@model": {},
+  "temperature": "Temperatur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Kommando mottagen! AI bearbetar...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Djupgående tänkande pågår, vänligen vänta...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Presenteras snart...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Identifieringsparametrar",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Justera parametrar för att förbättra identifieringsnoggrannheten",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Spara parametrar",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kunde inte starta bildigenkänning: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Bildigenkänningen misslyckades: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Applicerad position med {whiteCount} vita och {blackCount} svarta pjäser",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopierad till urklipp)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Identifieringen misslyckades: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1963,5 +1963,69 @@
   "noImageSelected": "Engin mynd valin",
   "@noImageSelected": {},
   "blackSMove": "Svartur á leik",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Stórt tungumálalíkan",
+  "@llm": {},
+  "llmProvider": "Þjónustuaðili",
+  "@llmProvider": {},
+  "baseUrl": "Grunnslóð",
+  "@baseUrl": {},
+  "model": "Líkan",
+  "@model": {},
+  "temperature": "Hitastig",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Skipun móttekin! Gervigreind vinnur...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Djúp hugsun í gangi, vinsamlegast bíðið...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Verður kynnt bráðlega...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Viðurkenningarbreytur",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Stilltu breytur til að bæta nákvæmni viðurkenningar",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Vista breytur",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Ekki tókst að ræsa myndgreiningu: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Myndgreining mistókst: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Staða sett með {whiteCount} hvítum og {blackCount} svörtum peðum",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN afritað á klippiborðið)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Viðurkenning mistókst: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Intet billede valgt",
   "@noImageSelected": {},
   "blackSMove": "Sorts træk",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Stort sprogmodel",
+  "@llm": {},
+  "llmProvider": "Udbyder",
+  "@llmProvider": {},
+  "baseUrl": "Basis-URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Kommando modtaget! AI behandler...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Dyb tænkning i gang, vent venligst...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Præsenteres snart...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Genkendelsesparametre",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Juster parametre for at forbedre genkendelsesnøjagtigheden",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Gem parametre",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kan ikke starte billedgenkendelse: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Billedgenkendelse mislykkedes: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Anvendt position med {whiteCount} hvide og {blackCount} sorte brikker",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopieret til udklipsholder)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Genkendelse mislykkedes: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

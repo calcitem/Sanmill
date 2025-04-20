@@ -1865,5 +1865,69 @@
   "noImageSelected": "ఏ చిత్రం ఎంచుకోబడలేదు",
   "@noImageSelected": {},
   "blackSMove": "నలుపువారి బారి",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "పెద్ద భాషా మోడల్",
+  "@llm": {},
+  "llmProvider": "సరఫరాదారు",
+  "@llmProvider": {},
+  "baseUrl": "బేస్ URL",
+  "@baseUrl": {},
+  "model": "మోడల్",
+  "@model": {},
+  "temperature": "ఉష్ణోగ్రత",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "ఆదేశం స్వీకరించబడింది! AI ప్రాసెస్ అవుతోంది...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "లోతైన ఆలోచన జరుగుతోంది, దయచేసి వేచి ఉండండి...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "త్వరిగా ప్రదర్శించబడుతుంది...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "గుర్తింపు పరామితులు",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "గుర్తింపు ఖచ్చితత్వాన్ని మెరుగుపర్చేందుకు పరామితులను సర్దుబాటు చేయండి",
+  "@adjustParamsDesc": {},
+  "saveParameters": "పరామితులను సేవ్ చేయండి",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "చిత్ర గుర్తింపును ప్రారంభించలేకపోయాం: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "చిత్ర గుర్తింపు విఫలమైంది: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} తెల్ల మరియు {blackCount} నలుపు ముక్కలతో దరఖాస్తు చేసిన స్థానం",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN క్లిప్‌బోర్డుకు కాపీ చేయబడింది)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "గుర్తింపు విఫలమైంది: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Ühtegi pilti valitud pole.",
   "@noImageSelected": {},
   "blackSMove": "Musta käik",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Suur keelemudel",
+  "@llm": {},
+  "llmProvider": "Pakkuja",
+  "@llmProvider": {},
+  "baseUrl": "Baas-URL",
+  "@baseUrl": {},
+  "model": "Mudel",
+  "@model": {},
+  "temperature": "Temperatuur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Käsk kätte saadud! AI töötleb...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Sügav mõtlemine käib, palun oota...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Peatselt esitletakse...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tuvastusparameetrid",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Kohanda parameetreid, et parandada tuvastuse täpsust",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Salvesta parameetrid",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Pildi tuvastust ei saa käivitada: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Pildituvastus ebaõnnestus: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Rakendatud seisuga {whiteCount} valget ja {blackCount} musta nuppu",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopeeriti lõikelauale)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tuvastus ebaõnnestus: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

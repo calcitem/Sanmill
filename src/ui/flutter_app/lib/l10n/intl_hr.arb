@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nijedna slika nije odabrana",
   "@noImageSelected": {},
   "blackSMove": "Crni na potezu",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Veliki jezični model",
+  "@llm": {},
+  "llmProvider": "Pružatelj",
+  "@llmProvider": {},
+  "baseUrl": "Osnovni URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatura",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Naredba primljena! AI obrađuje...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Duboko razmišljanje u tijeku, molimo pričekajte...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Uskoro će biti prikazano...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametri prepoznavanja",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Prilagodite parametre kako biste poboljšali točnost prepoznavanja",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Spremi parametre",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nije moguće pokrenuti prepoznavanje slike: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Prepoznavanje slike nije uspjelo: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Primijenjen položaj s {whiteCount} bijelih i {blackCount} crnih kamenčića",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopiran u međuspremnik)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Prepoznavanje nije uspjelo: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

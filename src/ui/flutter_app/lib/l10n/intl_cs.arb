@@ -1865,5 +1865,69 @@
   "noImageSelected": "Žádný obrázek nebyl vybrán",
   "@noImageSelected": {},
   "blackSMove": "Tah černého",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Velký jazykový model",
+  "@llm": {},
+  "llmProvider": "Poskytovatel",
+  "@llmProvider": {},
+  "baseUrl": "Základní URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Teplota",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Příkaz přijat! AI zpracovává...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Probíhá hluboké přemýšlení, prosím čekejte...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Brzy bude představeno...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametry rozpoznávání",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Upravte parametry pro zlepšení přesnosti rozpoznávání",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Uložit parametry",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nelze spustit rozpoznávání obrazu: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Rozpoznávání obrazu selhalo: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Použitá pozice s {whiteCount} bílými a {blackCount} černými kameny",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN zkopírováno do schránky)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Rozpoznávání selhalo: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

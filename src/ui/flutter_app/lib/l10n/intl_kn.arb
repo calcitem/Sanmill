@@ -1865,5 +1865,69 @@
   "noImageSelected": "ಯಾವುದೇ ಚಿತ್ರ ಆಯ್ಕೆಮಾಡಲಾಗಿಲ್ಲ",
   "@noImageSelected": {},
   "blackSMove": "ಕಪ್ಪುಬಣ್ಣದ ಚಲನೆ",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "ದೊಡ್ಡ ಭಾಷಾ ಮಾದರಿ",
+  "@llm": {},
+  "llmProvider": "ಪೂರೈಕೆದಾರ",
+  "@llmProvider": {},
+  "baseUrl": "ಮೂಲ URL",
+  "@baseUrl": {},
+  "model": "ಮಾಡೆಲ್",
+  "@model": {},
+  "temperature": "ತಾಪಮಾನ",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "ಆಜ್ಞೆ ಸ್ವೀಕರಿಸಲಾಗಿದೆ! AI ಪ್ರಕ್ರಿಯೆಗೊಳಗಾಗುತ್ತಿದೆ...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ಗಾಢವಾಗಿ ಚಿಂತಿಸಲಾಗುತ್ತಿದೆ, ದಯವಿಟ್ಟು ಕಾಯಿರಿ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "ಶೀಘ್ರದಲ್ಲೇ ಪ್ರಸ್ತುತಪಡಿಸಲಾಗುವುದು...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "ಗುರುತಿಸುವ ಪ್ಯಾರಾಮೀಟರ್‌ಗಳು",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "ಗುರುತಿಸುವ ನಿಖರತೆ ಹೆಚ್ಚಿಸಲು ಪ್ಯಾರಾಮೀಟರ್‌ಗಳನ್ನು ಹೊಂದಿಸು",
+  "@adjustParamsDesc": {},
+  "saveParameters": "ಪ್ಯಾರಾಮೀಟರ್‌ಗಳನ್ನು ಉಳಿಸು",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "ಚಿತ್ರ ಗುರುತಿಸುವಿಕೆಯನ್ನು ಪ್ರಾರಂಭಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "ಚಿತ್ರ ಗುರುತಿಸುವಿಕೆ ವಿಫಲವಾಯಿತು: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} ಬಿಳಿ ಹಾಗೂ {blackCount} ಕಪ್ಪು ಗುಂಡುಗಳೊಂದಿಗೆ ಸ್ಥಾನ ಅನ್ವಯಿಸಲಾಗಿದೆ",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ಕ್ಲಿಪ್‌ಬೋರ್ಡಿಗೆ ನಕಲಿಸಲಾಗಿದೆ)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "ಗುರುತಿಸುವಿಕೆ ವಿಫಲವಾಯಿತು: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

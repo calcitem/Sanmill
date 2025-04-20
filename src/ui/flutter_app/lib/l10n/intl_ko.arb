@@ -1865,5 +1865,69 @@
   "noImageSelected": "선택된 이미지가 없습니다",
   "@noImageSelected": {},
   "blackSMove": "흑의 차례",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "대규모 언어 모델",
+  "@llm": {},
+  "llmProvider": "제공자",
+  "@llmProvider": {},
+  "baseUrl": "기본 URL",
+  "@baseUrl": {},
+  "model": "모델",
+  "@model": {},
+  "temperature": "온도",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "명령을 받았습니다! AI가 처리 중...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "심층 사고 진행 중입니다. 잠시만 기다려주세요...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "곧 표시됩니다...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "인식 매개변수",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "인식 정확도를 높이려면 매개변수를 조정하세요",
+  "@adjustParamsDesc": {},
+  "saveParameters": "매개변수 저장",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "이미지 인식을 시작할 수 없습니다: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "이미지 인식이 실패했습니다: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount}개의 흰 돌과 {blackCount}개의 검은 돌이 있는 위치를 적용했습니다",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN이 클립보드에 복사됨)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "인식 실패: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

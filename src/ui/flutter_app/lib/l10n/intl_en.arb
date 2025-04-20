@@ -1963,5 +1963,69 @@
   "noImageSelected": "No image selected",
   "@noImageSelected": {},
   "blackSMove": "Black's move",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Large Language Model",
+  "@llm": {},
+  "llmProvider": "Provider",
+  "@llmProvider": {},
+  "baseUrl": "Base URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperature",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Command received! AI is processing...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Deep thinking in progress, please wait...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Presenting soon...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Recognition parameters",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Adjust parameters to improve recognition accuracy",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Save parameters",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Unable to start image recognition: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Image recognition failed: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Applied position with {whiteCount} white and {blackCount} black pieces",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN copied to clipboard)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Recognition failed: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

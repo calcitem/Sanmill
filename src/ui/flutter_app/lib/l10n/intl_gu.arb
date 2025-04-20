@@ -1865,5 +1865,69 @@
   "noImageSelected": "કોઈ છબી પસંદ નથી",
   "@noImageSelected": {},
   "blackSMove": "કાળાની ચાલ",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "મોટું ભાષા મોડેલ",
+  "@llm": {},
+  "llmProvider": "પ્રદાતા",
+  "@llmProvider": {},
+  "baseUrl": "બેઝ URL",
+  "@baseUrl": {},
+  "model": "મોડેલ",
+  "@model": {},
+  "temperature": "તાપમાન",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "આદેશ મળ્યો! AI પ્રક્રિયા માં છે...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ડીપ વિચારો ચાલી રહ્યું છે, કૃપા કરી રાહ જુઓ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "જલ્દી રજૂ થશે...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "ઓળખ પરિમાણો",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "ઓળಖની ચોકસાઈ સુધારવા માટે પરિમાણો સમાયોજિત કરો",
+  "@adjustParamsDesc": {},
+  "saveParameters": "પરિમાણો સંગ્રહો",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "ચિત્ર ઓળખ શરૂ કરી શકતા નથી: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "ચિત્ર ઓળખ નિષ્ફળ ગઈ: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "લાગુ કરાયેલ સ્થિતિમાં {whiteCount} સફેદ અને {blackCount} કાળી ગોટીઓ",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ક્લિપબોર્ડમાં નકલ થયેલ)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "ઓળખ નિષ્ફળ ગઈ: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

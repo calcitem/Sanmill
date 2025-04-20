@@ -1865,5 +1865,69 @@
   "noImageSelected": "Geen afbeelding geselecteerd",
   "@noImageSelected": {},
   "blackSMove": "Zwart aan zet",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "Groot taalmodel",
+  "@llm": {},
+  "llmProvider": "Provider",
+  "@llmProvider": {},
+  "baseUrl": "Basis-URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatuur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Commando ontvangen! AI is aan het verwerken...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Diep nadenken bezig, even geduld...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Wordt binnenkort gepresenteerd...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Herkenningsparameters",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Pas parameters aan om de herkenningsnauwkeurigheid te verbeteren",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Parameters opslaan",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kan beeldherkenning niet starten: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Beeldherkenning mislukt: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Positie toegepast met {whiteCount} witte en {blackCount} zwarte stenen",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN naar klembord gekopieerd)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Herkenning mislukt: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

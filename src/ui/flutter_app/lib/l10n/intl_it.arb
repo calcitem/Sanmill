@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nessuna immagine selezionata",
   "@noImageSelected": {},
   "blackSMove": "Mossa del Nero",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Grande Modello Linguistico",
+  "@llm": {},
+  "llmProvider": "Fornitore",
+  "@llmProvider": {},
+  "baseUrl": "URL di base",
+  "@baseUrl": {},
+  "model": "Modello",
+  "@model": {},
+  "temperature": "Temperatura",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Comando ricevuto! L'IA sta elaborando...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Elaborazione profonda in corso, attendere prego...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "In arrivo a breve...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametri di riconoscimento",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Regola i parametri per migliorare la precisione del riconoscimento",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Salva parametri",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Impossibile avviare il riconoscimento delle immagini: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Riconoscimento delle immagini non riuscito: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Posizione applicata con {whiteCount} pedine bianche e {blackCount} pedine nere",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN copiato negli appunti)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Riconoscimento non riuscito: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

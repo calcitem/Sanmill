@@ -1963,5 +1963,69 @@
   "noImageSelected": "לא נבחרה תמונה",
   "@noImageSelected": {},
   "blackSMove": "מהלך השחור",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "מודל שפה גדול",
+  "@llm": {},
+  "llmProvider": "ספק",
+  "@llmProvider": {},
+  "baseUrl": "כתובת בסיס",
+  "@baseUrl": {},
+  "model": "מודל",
+  "@model": {},
+  "temperature": "טמפרטורה",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "הפקודה התקבלה! הבינה המלאכותית מעבדת...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "חשיבה מעמיקה בעיצומה, אנא המתן...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "יידווח בקרוב...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "פרמטרי זיהוי",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "התאם את הפרמטרים כדי לשפר את דיוק הזיהוי",
+  "@adjustParamsDesc": {},
+  "saveParameters": "שמור פרמטרים",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "לא ניתן להתחיל זיהוי תמונה: ‎{error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "זיהוי התמונה נכשל: ‎{error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "הוחלה עמדה עם ‎{whiteCount} אבנים לבנות ו‑{blackCount} אבנים שחורות",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(‏FEN הועתק ללוח)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "הזיהוי נכשל: ‎{error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

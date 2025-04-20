@@ -1865,5 +1865,69 @@
   "noImageSelected": "未选择图片",
   "@noImageSelected": {},
   "blackSMove": "黑方走子",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "大语言模型",
+  "@llm": {},
+  "llmProvider": "提供商",
+  "@llmProvider": {},
+  "baseUrl": "基地址",
+  "@baseUrl": {},
+  "model": "模型",
+  "@model": {},
+  "temperature": "温度",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "收到指令，AI 正在处理...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "深度思考中，请稍候...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "即将呈现...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "识别参数",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "调整参数以提高识别准确率",
+  "@adjustParamsDesc": {},
+  "saveParameters": "保存参数",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "无法启动图像识别：{error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "图像识别失败：{error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "已应用棋局：白方 {whiteCount} 枚子，黑方 {blackCount} 枚子",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "（FEN 已复制到剪贴板）",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "识别失败：{error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1963,5 +1963,69 @@
   "noImageSelected": "No s'ha seleccionat cap imatge",
   "@noImageSelected": {},
   "blackSMove": "Torn de les negres",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Model de Llenguatge Massiu",
+  "@llm": {},
+  "llmProvider": "Proveïdor",
+  "@llmProvider": {},
+  "baseUrl": "URL base",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatura",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Comanda rebuda! La IA està processant...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Pensament profund en curs, si us plau, espereu...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Presentació en breu...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Paràmetres de reconeixement",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Ajusta els paràmetres per millorar la precisió del reconeixement",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Desa els paràmetres",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "No es pot iniciar el reconeixement d'imatge: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "El reconeixement d'imatge ha fallat: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "S'ha aplicat la posició amb {whiteCount} peces blanques i {blackCount} peces negres",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN copiat al porta-retalls)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "El reconeixement ha fallat: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

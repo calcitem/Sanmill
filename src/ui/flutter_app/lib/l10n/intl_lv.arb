@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nav izvēlēts attēls",
   "@noImageSelected": {},
   "blackSMove": "Melnā gājiens",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Liels valodas modelis",
+  "@llm": {},
+  "llmProvider": "Piegādātājs",
+  "@llmProvider": {},
+  "baseUrl": "Bāzes URL",
+  "@baseUrl": {},
+  "model": "Modelis",
+  "@model": {},
+  "temperature": "Temperatūra",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Komanda saņemta! AI apstrādā...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Notiek dziļa domāšana, lūdzu, uzgaidiet...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Drīzumā tiks prezentēts...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Atpazīšanas parametri",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Pielāgojiet parametrus, lai uzlabotu atpazīšanas precizitāti",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Saglabāt parametrus",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nevar sākt attēla atpazīšanu: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Attēla atpazīšana neizdevās: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Pielietota pozīcija ar {whiteCount} baltām un {blackCount} melnām figūrām",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN nokopēts uz starpliktuvi)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Atpazīšana neizdevās: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Asnjë imazh nuk u zgjodh",
   "@noImageSelected": {},
   "blackSMove": "Lëvizja e të zinjve",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "Model i Madh Gjuhësor",
+  "@llm": {},
+  "llmProvider": "Ofrues",
+  "@llmProvider": {},
+  "baseUrl": "URL Bazë",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperaturë",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Komanda u mor! AI po përpunon...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Po zhvillohet mendim i thellë, ju lutem prisni...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Së shpejti do të prezantohet...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametrat e njohjes",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Rregulloni parametrat për të përmirësuar saktësinë e njohjes",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Ruaj parametrat",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Pamundësi për të nisur njohjen e imazhit: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Njohja e imazhit dështoi: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Pozicioni u aplikua me {whiteCount} gurë të bardhë dhe {blackCount} gurë të zinj",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN u kopjua në kujtesën e përkohshme)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Njohja dështoi: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

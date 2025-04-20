@@ -1963,5 +1963,69 @@
   "noImageSelected": "ምንም ምስል አልተመረጠም።",
   "@noImageSelected": {},
   "blackSMove": "የጥቁር ድርሻ",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "ትልቅ የቋንቋ ሞዴል",
+  "@llm": {},
+  "llmProvider": "አቅራቢ",
+  "@llmProvider": {},
+  "baseUrl": "መሠረታዊ URL",
+  "@baseUrl": {},
+  "model": "ሞዴል",
+  "@model": {},
+  "temperature": "ሙቀት",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "ትዕዛዝ ተቀብሏል! የAI ሂደት በመፈጠር ላይ...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ጥልቅ ማሰብ በሂደት ላይ ነው፣ እባክዎ ይጠብቁ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "በቅርቡ ይቀርባል...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "የማስታወቂያ መለኪያዎች",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "የማስታወቂያ ትክክለኛነትን ለማሻሻል መለኪያዎችን ያስተካክሉ",
+  "@adjustParamsDesc": {},
+  "saveParameters": "መለኪያዎችን ያስቀምጡ",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "የምስል አቀናጅ መጀመር አልተቻለም፦ {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "የምስል አቀናጅ አልተሳካም፦ {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} ነጭ እና {blackCount} ጥቁር ቁሳቁሶች ያሉበት ቦታ ተተግብሯል",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ወደ ቅንጫፍ ተቋርጧል)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "ማስታወቂያው አልተሳካም፦ {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

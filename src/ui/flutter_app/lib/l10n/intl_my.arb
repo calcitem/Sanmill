@@ -1963,5 +1963,69 @@
   "noImageSelected": "ပုံ မရွေးထားပါ",
   "@noImageSelected": {},
   "blackSMove": "အမည်းရဲ့လှည့်",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "အကြီးစားဘာသာစကားမော်ဒယ်",
+  "@llm": {},
+  "llmProvider": "ပံ့ပိုးသူ",
+  "@llmProvider": {},
+  "baseUrl": "အခြေခံ URL",
+  "@baseUrl": {},
+  "model": "မော်ဒယ်",
+  "@model": {},
+  "temperature": "အပူချိန်",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "အမိန့်ရရှိပြီ! AI သည် ဆက်လက်လုပ်ဆောင်နေသည်...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "နက်ရှိုင်းစွာ စဉ်းစားဆဲဖြစ်သဖြင့် ခဏစောင့်ပါ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "မကြာမီ တင်ပြမည်...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "အသိမှတ်ပြုအချက်အလက်များ",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "အသိမှတ်ပြုမှုတိကျမှန်ကန်မှု တိုးမြှင့်ရန် ပါရာမီတာများကို ပြင်ဆင်ပါ",
+  "@adjustParamsDesc": {},
+  "saveParameters": "ပါရာမီတာများကို သိမ်းဆည်းပါ",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "ပုံအတိအကျသိမြင်ခြင်းကို စတင်နိုင်ခြင်းမရှိပါ: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "ပုံအတိအကျသိမြင်ခြင်း မအောင်မြင်ပါ: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} ဖြူ နှင့် {blackCount} မဲ အလုံးများ ပါဝင်သည့် တည်နေရာကို အသုံးပြုပြီးပါပြီ",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ကို ကလစ်ဘုတ်သို့ ကူးထည့်ပြီးပါပြီ)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "အသိမှတ်ပြုမှု မအောင်မြင်ပါ: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

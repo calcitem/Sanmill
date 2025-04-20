@@ -1865,5 +1865,69 @@
   "noImageSelected": "কোনও ছবি নির্বাচিত হয়নি",
   "@noImageSelected": {},
   "blackSMove": "কালো খেলোয়াড়ের চাল",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "বড় ভাষা মডেল",
+  "@llm": {},
+  "llmProvider": "প্রদানকারী",
+  "@llmProvider": {},
+  "baseUrl": "বেস URL",
+  "@baseUrl": {},
+  "model": "মডেল",
+  "@model": {},
+  "temperature": "তাপমাত্রা",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "কমান্ড গৃহীত! এআই প্রক্রিয়াকরণ করছে...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "গভীর চিন্তা চলছে, অনুগ্রহ করে অপেক্ষা করুন...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "শীঘ্রই উপস্থাপন করা হবে...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "সনাক্তকরণের পরামিতি",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "সনাক্তকরণের সঠিকতা বাড়াতে পরামিতি সমন্বয় করুন",
+  "@adjustParamsDesc": {},
+  "saveParameters": "পরামিতি সংরক্ষণ করুন",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "ছবি সনাক্তকরণ শুরু করা যাচ্ছে না: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "ছবি সনাক্তকরণ ব্যর্থ: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} টি সাদা ও {blackCount} টি কালো ঘুটি সহ অবস্থান প্রয়োগ করা হয়েছে",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ক্লিপবোর্ডে কপি করা হয়েছে)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "সনাক্তকরণ ব্যর্থ: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

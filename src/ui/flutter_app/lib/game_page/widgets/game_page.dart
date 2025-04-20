@@ -218,7 +218,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                                   FluentIcons.settings_24_regular,
                                   color: Colors.white,
                                 ),
-                                tooltip: "Recognition Parameters",
+                                tooltip: S.of(context).recognitionParameters,
                                 onPressed: () =>
                                     _showRecognitionParamsDialog(context),
                               ),
@@ -339,6 +339,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   key: Key('game_page_center_loading'),
+                  // Optionally add a CircularProgressIndicator here
                 );
               }
 
@@ -442,8 +443,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
       _pickAndRecognizeImage(context);
     } catch (e) {
       // Show error message if recognition fails
-      rootScaffoldMessengerKey.currentState
-          ?.showSnackBarClear("Unable to start image recognition: $e");
+      rootScaffoldMessengerKey.currentState?.showSnackBarClear(
+          S.of(context).unableToStartImageRecognition(e.toString()));
       logger.e("Error initiating board recognition: $e");
     }
   }
@@ -525,7 +526,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
             }
 
             return AlertDialog(
-              title: const Text('Recognition Parameters'),
+              title: Text(S.of(context).recognitionParameters),
               content: SingleChildScrollView(
                 child: Container(
                   width: 350,
@@ -534,15 +535,15 @@ class _GamePageInnerState extends State<_GamePageInner> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      const Text(
-                        'Adjust parameters to improve recognition accuracy',
-                        style: TextStyle(fontSize: 12),
+                      Text(
+                        S.of(context).adjustParamsDesc,
+                        style: const TextStyle(fontSize: 12),
                       ),
                       const SizedBox(height: 16),
 
                       // Contrast Enhancement Factor
                       buildParameterSlider(
-                        label: 'Contrast Enhancement',
+                        label: "Contrast Enhancement",
                         value: contrastEnhancementFactor,
                         min: 1.0,
                         max: 3.0,
@@ -554,7 +555,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Piece Detection Threshold
                       buildParameterSlider(
-                        label: 'Piece Detection Threshold',
+                        label: "Piece Detection Threshold",
                         value: pieceThreshold,
                         min: 0.1,
                         max: 0.5,
@@ -566,7 +567,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Board Color Distance Threshold
                       buildParameterSlider(
-                        label: 'Board Color Distance',
+                        label: "Board Color Distance",
                         value: boardColorDistanceThreshold,
                         min: 10.0,
                         max: 50.0,
@@ -578,7 +579,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Piece Color Match Threshold
                       buildParameterSlider(
-                        label: 'Piece Color Match Threshold',
+                        label: "Piece Color Match Threshold",
                         value: pieceColorMatchThreshold,
                         min: 10.0,
                         max: 50.0,
@@ -590,7 +591,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // White Brightness Threshold
                       buildParameterSlider(
-                        label: 'White Brightness Threshold',
+                        label: "White Brightness Threshold",
                         value: whiteBrightnessThreshold.toDouble(),
                         min: 120.0,
                         max: 220.0,
@@ -602,7 +603,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Black Brightness Threshold
                       buildParameterSlider(
-                        label: 'Black Brightness Threshold',
+                        label: "Black Brightness Threshold",
                         value: blackBrightnessThreshold.toDouble(),
                         min: 80.0,
                         max: 180.0,
@@ -614,7 +615,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Black Saturation Threshold
                       buildParameterSlider(
-                        label: 'Black Saturation Threshold',
+                        label: "Black Saturation Threshold",
                         value: blackSaturationThreshold,
                         min: 0.05,
                         max: 0.5,
@@ -626,7 +627,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
                       // Black Color Variance Threshold
                       buildParameterSlider(
-                        label: 'Black Color Variance',
+                        label: "Black Color Variance",
                         value: blackColorVarianceThreshold.toDouble(),
                         min: 10.0,
                         max: 80.0,
@@ -688,7 +689,7 @@ class _GamePageInnerState extends State<_GamePageInner> {
                       ),
                     );
                   },
-                  child: const Text('Save Parameters'),
+                  child: Text(S.of(context).saveParameters),
                 ),
               ],
             );
@@ -721,16 +722,17 @@ class _GamePageInnerState extends State<_GamePageInner> {
     final ScaffoldMessengerState currentMessenger =
         ScaffoldMessenger.of(context);
     final BuildContext currentContext = context; // Keep for initial dialog
+    final S strings = S.of(context);
 
     // At this point context is still valid for initial dialog
     final AlertDialog dialogContent = AlertDialog(
-      title: Text(S.of(context).waiting),
+      title: Text(strings.waiting),
       content: Row(
         children: <Widget>[
           const CircularProgressIndicator(),
           const SizedBox(width: 20),
           Expanded(
-            child: Text(S.of(context).analyzingGameBoardImage),
+            child: Text(strings.analyzingGameBoardImage),
           ),
         ],
       ),
@@ -825,9 +827,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
           // Show error if no pieces recognized
           currentMessenger.showSnackBar(
             SnackBar(
-                content: Text(S
-                    .of(context)
-                    .noPiecesWereRecognizedInTheImagePleaseTryAgain)),
+                content: Text(
+                    strings.noPiecesWereRecognizedInTheImagePleaseTryAgain)),
           );
         }
       }
@@ -846,23 +847,25 @@ class _GamePageInnerState extends State<_GamePageInner> {
       }
 
       // Use captured messenger for snackbar (captured before await)
-      currentMessenger.showSnackBar(
-          SnackBar(content: Text("Image recognition failed: $e")));
+      currentMessenger.showSnackBar(SnackBar(
+          content: Text(strings.imageRecognitionFailed(e.toString()))));
       logger.e("Error during board recognition: $e");
     }
   }
 
-  /// Apply the recognized board state to the game (without using BuildContext)
+  /// Apply the recognized board state to the game (uses captured context for S)
   void _applyRecognizedBoardState(Map<int, PieceColor> recognizedPieces,
       ScaffoldMessengerState? messenger, BuildContext context) {
+    final S strings = S.of(context);
+
     try {
       // Generate FEN string from recognized pieces
       final String? fen =
           BoardRecognitionDebugView.generateTempFenString(recognizedPieces);
 
       if (fen == null) {
-        messenger?.showSnackBarClear(
-            S.of(context).failedToGenerateFenFromRecognizedBoard);
+        messenger
+            ?.showSnackBarClear(strings.failedToGenerateFenFromRecognizedBoard);
         return;
       }
 
@@ -885,12 +888,16 @@ class _GamePageInnerState extends State<_GamePageInner> {
         final int blackCount =
             GameController().position.countPieceOnBoard(PieceColor.black);
 
-        final String message =
-            "Applied position with $whiteCount white and $blackCount black pieces";
+        // Construct localized message parts
+        final String message = strings.appliedPositionDetails(
+          whiteCount.toString(),
+          blackCount.toString(),
+        );
         final String next =
             GameController().position.sideToMove == PieceColor.white
-                ? S.of(context).whiteSMove
-                : S.of(context).blackSMove;
+                ? strings.whiteSMove
+                : strings.blackSMove;
+        final String fenCopiedMsg = strings.fenCopiedToClipboard;
 
         // Update the game recorder with the setup position
         GameController().gameRecorder =
@@ -899,18 +906,17 @@ class _GamePageInnerState extends State<_GamePageInner> {
         // Copy FEN to clipboard for user convenience
         Clipboard.setData(ClipboardData(text: fen));
 
-        // Show success message
-        messenger
-            ?.showSnackBarClear("$message, $next (FEN copied to clipboard)");
+        // Show success message (using captured S strings)
+        messenger?.showSnackBarClear('$message, $next $fenCopiedMsg');
       } else {
         // Failed to set FEN
-        messenger?.showSnackBarClear(
-            S.of(context).failedToApplyRecognizedBoardPosition);
+        messenger
+            ?.showSnackBarClear(strings.failedToApplyRecognizedBoardPosition);
         logger.e("Failed to set FEN: $fen");
       }
     } catch (e) {
       logger.e("Error applying recognized board state: $e");
-      messenger?.showSnackBarClear("Recognition failed: $e");
+      messenger?.showSnackBarClear(strings.recognitionFailed(e.toString()));
     }
   }
 }

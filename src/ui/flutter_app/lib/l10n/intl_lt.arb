@@ -1865,5 +1865,69 @@
   "noImageSelected": "Vaizdas nepasirinktas",
   "@noImageSelected": {},
   "blackSMove": "Juodųjų ėjimas",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Didelis kalbos modelis",
+  "@llm": {},
+  "llmProvider": "Tiekėjas",
+  "@llmProvider": {},
+  "baseUrl": "Bazinė URL",
+  "@baseUrl": {},
+  "model": "Modelis",
+  "@model": {},
+  "temperature": "Temperatūra",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Komanda gauta! AI apdoroja...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Vyksta gilus mąstymas, palaukite...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Greitai bus pristatyta...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Atpažinimo parametrai",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Reguliuokite parametrus, kad pagerintumėte atpažinimo tikslumą",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Išsaugoti parametrus",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Nepavyko paleisti vaizdo atpažinimo: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Vaizdo atpažinimas nepavyko: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Pritaikyta padėtis su {whiteCount} baltais ir {blackCount} juodaisiais kauliukais",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN nukopijuotas į iškarpinę)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Atpažinimas nepavyko: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

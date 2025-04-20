@@ -330,9 +330,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(
-          "Temperature",
-          style: TextStyle(fontWeight: FontWeight.bold),
+        Text(
+          S.of(context).temperature,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         Slider(
           value: _temperature,
@@ -431,9 +431,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Provider selection
-                    const Text(
-                      "Provider",
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    Text(
+                      S.of(context).llmProvider,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8.0),
                     DropdownButtonFormField<LlmProvider>(
@@ -464,9 +464,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                       // Base URL label with suggestions button
                       Row(
                         children: <Widget>[
-                          const Text(
-                            "Base URL",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                          Text(
+                            S.of(context).baseUrl,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           const Spacer(),
                           TextButton(
@@ -491,9 +491,9 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                     // Model name with suggestions button
                     Row(
                       children: <Widget>[
-                        const Text(
-                          "Model",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Text(
+                          S.of(context).model,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         const Spacer(),
                         // Add a suggestion button to help users

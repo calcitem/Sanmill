@@ -1963,5 +1963,69 @@
   "noImageSelected": "Akukho isithombe esikhethiwe",
   "@noImageSelected": {},
   "blackSMove": "Ukuhamba komnyama",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Imodeli Yolimi Enkulu",
+  "@llm": {},
+  "llmProvider": "Umhlinzeki",
+  "@llmProvider": {},
+  "baseUrl": "I-URL Eyisisekelo",
+  "@baseUrl": {},
+  "model": "Imodeli",
+  "@model": {},
+  "temperature": "Izinga lokushisa",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Umyalo utholiwe! AI iyacubungula...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Ukucabanga okujulile kuqhubeka, sicela ulinde...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Kuzokwethulwa maduze...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Amapharamitha okuqashelwa",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Lungisa amapharamitha ukuze uthuthukise ukunemba kokuqashelwa",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Gcina amapharamitha",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Ayikwazanga ukuqala ukuqashelwa kwesithombe: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Ukuqashelwa kwesithombe kwehlulekile: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Isimo esisetshenzisiwe sinezingcezu ezimhlophe ezingu-{whiteCount} nezimnyama ezingu-{blackCount}",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ikopishiwe ebhodi lokunamathisela)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Ukuqashelwa kwehlulekile: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

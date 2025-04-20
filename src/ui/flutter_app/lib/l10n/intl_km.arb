@@ -1963,5 +1963,69 @@
   "noImageSelected": "មិនមានរូបភាពជ្រើសរើស",
   "@noImageSelected": {},
   "blackSMove": "ជំហានអ្នកលេងពណ៌ខ្មៅ",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "ម៉ូឌែលភាសធំ",
+  "@llm": {},
+  "llmProvider": "អ្នកផ្តល់សេវា",
+  "@llmProvider": {},
+  "baseUrl": "URL គោល",
+  "@baseUrl": {},
+  "model": "ម៉ូឌែល",
+  "@model": {},
+  "temperature": "សីតុណ្ហភាព",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "បញ្ជាបានទទួល! បញ្ញាសិប្បនិម្មិតកំពុងដំណើរការ...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "កំពុងគិតជ្រៅ សូមរង់ចាំ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "នឹងបង្ហាញក្នុងពេលឆាប់ៗនេះ...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "ប៉ារ៉ាម៉ែត្រការទទួលស្គាល់",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "កែតំរូវប៉ារ៉ាម៉ែត្រដើម្បីបង្កើនភាពត្រឹមត្រូវនៃការទទួលស្គាល់",
+  "@adjustParamsDesc": {},
+  "saveParameters": "រក្សាទុកប៉ារ៉ាម៉ែត្រ",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "មិនអាចចាប់ផ្តើមការទទួលស្គាល់រូបភាពបានទេ៖ {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "ការទទួលស្គាល់រូបភាពបរាជ័យ៖ {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "បានអនុវត្តស្ថានភាពដែលមានដុំស {whiteCount} និងដុំខ្មៅ {blackCount}",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN ត្រូវបានចម្លងទៅក្តារតម្រៀប)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "ការទទួលស្គាល់បរាជ័យ៖ {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

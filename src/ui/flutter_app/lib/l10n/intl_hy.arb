@@ -1963,5 +1963,69 @@
   "noImageSelected": "Պատկեր չի ընտրվել",
   "@noImageSelected": {},
   "blackSMove": "Սևի հերթը",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Մեծ լեզվային մոդել",
+  "@llm": {},
+  "llmProvider": "Մատակարար",
+  "@llmProvider": {},
+  "baseUrl": "Հիմնական URL",
+  "@baseUrl": {},
+  "model": "Մոդել",
+  "@model": {},
+  "temperature": "Ջերմաստիճան",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Հրամանն ստացվեց․ ԱԲ մշակում է...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Խորը մտածման գործընթաց է, խնդրում ենք սպասել...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Շուտով կներկայացվի...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Ճանաչման պարամետրեր",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Կարգավորեք պարամետրերը՝ ճանաչման ճշգրտությունը բարելավելու համար",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Պահպանել պարամետրերը",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Չհաջողվեց մեկնարկել պատկերի ճանաչումը: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Պատկերի ճանաչումը ձախողվեց: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Կիրառված դիրք՝ {whiteCount} սպիտակ և {blackCount} սև քարերով",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN-ը պատճենվել է սեղմատախտակին)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Ճանաչումը ձախողվեց: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1963,5 +1963,69 @@
   "noImageSelected": "රූපයක් තෝරා නැත",
   "@noImageSelected": {},
   "blackSMove": "කළුගේ සෙල්ලම",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "විශාල භාෂා මෝඩලය",
+  "@llm": {},
+  "llmProvider": "සැපයුම්කරු",
+  "@llmProvider": {},
+  "baseUrl": "මූලික URL",
+  "@baseUrl": {},
+  "model": "මෝඩලය",
+  "@model": {},
+  "temperature": "උෂ්ණත්වය",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "කමාන්ඩ් හිමිවිය! AI සැකසමින්...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "ගැඹුරු සිතුවිල්ල සිදුවෙමින් පවතී, කරුණාකර රැදී සිටින්න...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "ඉක්මනින් ඉදිරිපත් කෙරේ...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "හඳුනාගැනීම් පරාමිතීන්",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "හඳුනාගැනීම් නිවැරදිතාව වැඩිදියුණු කිරීමට පරාමිතීන් සකසන්න",
+  "@adjustParamsDesc": {},
+  "saveParameters": "පරාමිතීන් සුරකින්න",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "රූප හඳුනාගැනීම ආරම්භ කළ නොහැක: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "රූප හඳුනාගැනීම අසාර්ථක විය: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} සුදු හා {blackCount} කළු මැටි සහිත තත්ත්වය යෙදින ලදී",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN පසුරුපුවරුවට පිටපත් කර ඇත)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "හඳුනාගැනීම අසාර්ථක විය: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

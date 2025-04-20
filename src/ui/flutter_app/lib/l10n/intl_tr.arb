@@ -1865,5 +1865,69 @@
   "noImageSelected": "Görüntü seçilmedi",
   "@noImageSelected": {},
   "blackSMove": "Siyahın hamlesi",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Büyük Dil Modeli",
+  "@llm": {},
+  "llmProvider": "Sağlayıcı",
+  "@llmProvider": {},
+  "baseUrl": "Temel URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Sıcaklık",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Komut alındı! Yapay zeka işliyor...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Derin düşünme sürüyor, lütfen bekleyin...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Yakında sunulacak...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tanıma parametreleri",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Tanıma doğruluğunu artırmak için parametreleri ayarlayın",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Parametreleri kaydet",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Görüntü tanıma başlatılamadı: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Görüntü tanıma başarısız: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "{whiteCount} beyaz ve {blackCount} siyah taşlı konum uygulandı",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN panoya kopyalandı)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tanıma başarısız: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1963,5 +1963,69 @@
   "noImageSelected": "Hakuna picha iliyochaguliwa",
   "@noImageSelected": {},
   "blackSMove": "Ni zamu ya mweusi",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Mfano Mkubwa wa Lugha",
+  "@llm": {},
+  "llmProvider": "Mtoa huduma",
+  "@llmProvider": {},
+  "baseUrl": "URL ya Msingi",
+  "@baseUrl": {},
+  "model": "Mfano",
+  "@model": {},
+  "temperature": "Joto",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Amri imepokelewa! AI inachakata...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Kufikiri kwa kina kunaendelea, tafadhali subiri...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Itawasilishwa hivi karibuni...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Vigezo vya utambuzi",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Rekebisha vigezo ili kuboresha usahihi wa utambuzi",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Hifadhi vigezo",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Imeshindikana kuanzisha utambuzi wa picha: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Utambuzi wa picha umeshindikana: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Nafasi imetumika ikiwa na vipande vyeupe {whiteCount} na vyeusi {blackCount}",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN imenakiliwa kwenye ubao wa kunakili)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Utambuzi umeshindikana: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

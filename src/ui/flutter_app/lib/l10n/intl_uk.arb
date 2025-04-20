@@ -1963,5 +1963,69 @@
   "noImageSelected": "Зображення не вибрано",
   "@noImageSelected": {},
   "blackSMove": "Хід чорного",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "Велика мовна модель",
+  "@llm": {},
+  "llmProvider": "Постачальник",
+  "@llmProvider": {},
+  "baseUrl": "Базова URL-адреса",
+  "@baseUrl": {},
+  "model": "Модель",
+  "@model": {},
+  "temperature": "Температура",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Команду отримано! ШІ обробляє...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Триває глибоке мислення, будь ласка, зачекайте...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Скоро буде представлено...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Параметри розпізнавання",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Налаштуйте параметри, щоб покращити точність розпізнавання",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Зберегти параметри",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Не вдалося запустити розпізнавання зображення: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Розпізнавання зображення не вдалося: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Застосовано позицію з {whiteCount} білими та {blackCount} чорними фішками",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN скопійовано до буфера обміну)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Розпізнавання не вдалося: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

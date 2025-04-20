@@ -1118,20 +1118,18 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
-              if (DB().ruleSettings.isLikelyNineMensMorris())
-                const PopupMenuDivider(),
-              if (DB().ruleSettings.isLikelyNineMensMorris())
-                PopupMenuItem<String>(
-                  value: 'copy_llm_prompt',
-                  child: Row(
-                    children: <Widget>[
-                      const Icon(FluentIcons.text_grammar_wand_24_regular,
-                          color: Colors.black54),
-                      const SizedBox(width: 8),
-                      Text(S.of(context).llmPrompt),
-                    ],
-                  ),
+              const PopupMenuDivider(),
+              PopupMenuItem<String>(
+                value: 'copy_llm_prompt',
+                child: Row(
+                  children: <Widget>[
+                    const Icon(FluentIcons.text_grammar_wand_24_regular,
+                        color: Colors.black54),
+                    const SizedBox(width: 8),
+                    Text(S.of(context).llm),
+                  ],
                 ),
+              ),
             ],
             icon: const Icon(FluentIcons.more_vertical_24_regular),
           ),

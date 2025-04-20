@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nenhuma imagem selecionada",
   "@noImageSelected": {},
   "blackSMove": "Vez das pretas",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Grande Modelo de Linguagem",
+  "@llm": {},
+  "llmProvider": "Fornecedor",
+  "@llmProvider": {},
+  "baseUrl": "URL base",
+  "@baseUrl": {},
+  "model": "Modelo",
+  "@model": {},
+  "temperature": "Temperatura",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Comando recebido! A IA está processando...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Pensamento profundo em andamento, aguarde...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Será apresentado em breve...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parâmetros de reconhecimento",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Ajuste os parâmetros para melhorar a precisão do reconhecimento",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Salvar parâmetros",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Não foi possível iniciar o reconhecimento de imagem: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Falha no reconhecimento de imagem: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Posição aplicada com {whiteCount} peças brancas e {blackCount} peças pretas",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN copiado para a área de transferência)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Falha no reconhecimento: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

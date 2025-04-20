@@ -1865,5 +1865,69 @@
   "noImageSelected": "Ei kuvaa valittu",
   "@noImageSelected": {},
   "blackSMove": "Mustan siirto",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Suuri kielimalli",
+  "@llm": {},
+  "llmProvider": "Palveluntarjoaja",
+  "@llmProvider": {},
+  "baseUrl": "Perus-URL",
+  "@baseUrl": {},
+  "model": "Malli",
+  "@model": {},
+  "temperature": "Lämpötila",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Komento vastaanotettu! AI käsittelee...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Syvällinen ajattelu käynnissä, odota hetki...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Esitys tulossa pian...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tunnistusparametrit",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Säädä parametreja parantaaksesi tunnistuksen tarkkuutta",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Tallenna parametrit",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kuvantunnistusta ei voi käynnistää: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Kuvantunnistus epäonnistui: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Asetettu asema, {whiteCount} valkoista ja {blackCount} mustaa nappia",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopioitu leikepöydälle)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Tunnistus epäonnistui: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

@@ -1865,5 +1865,69 @@
   "noImageSelected": "Ingen bilde valgt",
   "@noImageSelected": {},
   "blackSMove": "Svarts trekk",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "Stort språkmodell",
+  "@llm": {},
+  "llmProvider": "Leverandør",
+  "@llmProvider": {},
+  "baseUrl": "Basis-URL",
+  "@baseUrl": {},
+  "model": "Modell",
+  "@model": {},
+  "temperature": "Temperatur",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Kommando mottatt! KI behandler...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Dyp tenking pågår, vennligst vent...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Presenteres snart...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Gjenkjenningsparametere",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Juster parametere for å forbedre gjenkjenningsnøyaktighet",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Lagre parametere",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Kan ikke starte bildegjenkjenning: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Bildegjenkjenning mislyktes: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Posisjon med {whiteCount} hvite og {blackCount} svarte brikker brukt",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopiert til utklippstavlen)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Gjenkjenning mislyktes: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

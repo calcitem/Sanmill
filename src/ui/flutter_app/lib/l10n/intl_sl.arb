@@ -1865,5 +1865,69 @@
   "noImageSelected": "Nobena slika ni izbrana",
   "@noImageSelected": {},
   "blackSMove": "Poteza črnih",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Velik jezikovni model",
+  "@llm": {},
+  "llmProvider": "Ponudnik",
+  "@llmProvider": {},
+  "baseUrl": "Osnovni URL",
+  "@baseUrl": {},
+  "model": "Model",
+  "@model": {},
+  "temperature": "Temperatura",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Ukaz prejet! UI obdeluje...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Poteka globoko razmišljanje, prosimo počakajte...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Kmalu bo predstavljeno...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Parametri prepoznavanja",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Prilagodite parametre za izboljšanje natančnosti prepoznavanja",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Shrani parametre",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Ni mogoče zagnati prepoznavanja slike: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Prepoznavanje slike ni uspelo: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Uporabljen položaj z {whiteCount} belimi in {blackCount} črnimi figurami",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN kopiran v odložišče)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Prepoznavanje ni uspelo: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

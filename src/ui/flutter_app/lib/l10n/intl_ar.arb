@@ -1865,5 +1865,69 @@
   "noImageSelected": "لم يتم اختيار صورة",
   "@noImageSelected": {},
   "blackSMove": "دور الأسود",
-  "@blackSMove": {}
+  "@blackSMove": {},
+  "llm": "نموذج لغوي ضخم",
+  "@llm": {},
+  "llmProvider": "المزوّد",
+  "@llmProvider": {},
+  "baseUrl": "عنوان URL الأساسي",
+  "@baseUrl": {},
+  "model": "النموذج",
+  "@model": {},
+  "temperature": "درجة الحرارة",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "تم استلام الأمر! يجري معالجة الذكاء الاصطناعي...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "تفكير عميق جارٍ، يرجى الانتظار...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "سيتم العرض قريبًا...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "معلمات التعرّف",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "اضبط المعلمات لتحسين دقة التعرّف",
+  "@adjustParamsDesc": {},
+  "saveParameters": "حفظ المعلمات",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "تعذّر بدء التعرّف على الصورة: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "فشل التعرّف على الصورة: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "تم تطبيق الوضع مع {whiteCount} قطعة بيضاء و{blackCount} قطعة سوداء",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(تم نسخ FEN إلى الحافظة)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "فشل التعرّف: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

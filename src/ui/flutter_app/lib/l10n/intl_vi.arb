@@ -1963,5 +1963,69 @@
   "noImageSelected": "Chưa chọn hình ảnh nào",
   "@noImageSelected": {},
   "blackSMove": "Nước đi của đen",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "Mô hình Ngôn ngữ Lớn",
+  "@llm": {},
+  "llmProvider": "Nhà cung cấp",
+  "@llmProvider": {},
+  "baseUrl": "URL Cơ sở",
+  "@baseUrl": {},
+  "model": "Mô hình",
+  "@model": {},
+  "temperature": "Nhiệt độ",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "Lệnh đã nhận! AI đang xử lý...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "Đang suy nghĩ sâu, vui lòng chờ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "Sẽ trình bày sớm...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "Tham số nhận dạng",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "Điều chỉnh tham số để nâng cao độ chính xác nhận dạng",
+  "@adjustParamsDesc": {},
+  "saveParameters": "Lưu tham số",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "Không thể bắt đầu nhận dạng hình ảnh: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "Nhận dạng hình ảnh thất bại: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "Đã áp dụng thế cờ với {whiteCount} quân trắng và {blackCount} quân đen",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(FEN đã sao chép vào bảng tạm)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "Nhận dạng thất bại: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }

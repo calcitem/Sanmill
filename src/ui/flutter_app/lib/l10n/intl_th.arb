@@ -1865,5 +1865,69 @@
   "noImageSelected": "ยังไม่ได้เลือกรูปภาพ",
   "@noImageSelected": {},
   "blackSMove": "ตาของดำ",
-  "@blackSMove": {}  
+  "@blackSMove": {},
+  "llm": "โมเดลภาษาใหญ่",
+  "@llm": {},
+  "llmProvider": "ผู้ให้บริการ",
+  "@llmProvider": {},
+  "baseUrl": "URL ฐาน",
+  "@baseUrl": {},
+  "model": "โมเดล",
+  "@model": {},
+  "temperature": "อุณหภูมิ",
+  "@temperature": {},
+  "llmCommandReceivedProcessing": "ได้รับคำสั่งแล้ว! AI กำลังประมวลผล...",
+  "@llmCommandReceivedProcessing": {},
+  "llmDeepThinkingWait": "กำลังคิดอย่างลึกซึ้ง โปรดรอ...",
+  "@llmDeepThinkingWait": {},
+  "llmPresentingSoon": "กำลังจะแสดงในไม่ช้า...",
+  "@llmPresentingSoon": {},
+  "recognitionParameters": "พารามิเตอร์การจดจำ",
+  "@recognitionParameters": {},
+  "adjustParamsDesc": "ปรับพารามิเตอร์เพื่อเพิ่มความแม่นยำในการจดจำ",
+  "@adjustParamsDesc": {},
+  "saveParameters": "บันทึกพารามิเตอร์",
+  "@saveParameters": {},
+  "unableToStartImageRecognition": "ไม่สามารถเริ่มการจดจำภาพได้: {error}",
+  "@unableToStartImageRecognition": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "File system error"
+      }
+    }
+  },
+  "imageRecognitionFailed": "การจดจำภาพล้มเหลว: {error}",
+  "@imageRecognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Could not detect corners"
+      }
+    }
+  },
+  "appliedPositionDetails": "ใช้ตำแหน่งโดยมีตัวหมากขาว {whiteCount} ตัว และดำ {blackCount} ตัว",
+  "@appliedPositionDetails": {
+    "placeholders": {
+      "whiteCount": {
+        "type": "String",
+        "example": "9"
+      },
+      "blackCount": {
+        "type": "String",
+        "example": "8"
+      }
+    }
+  },
+  "fenCopiedToClipboard": "(คัดลอก FEN ไปยังคลิปบอร์ดแล้ว)",
+  "@fenCopiedToClipboard": {},
+  "recognitionFailed": "การจดจำล้มเหลว: {error}",
+  "@recognitionFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String",
+        "example": "Invalid FEN structure"
+      }
+    }
+  }
 }
