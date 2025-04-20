@@ -580,7 +580,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Text(
-                      'FEN String:',
+                      'FEN:',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
@@ -1018,7 +1018,7 @@ class _BoardRecognitionDebugViewState extends State<BoardRecognitionDebugView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     const Text(
-                      'FEN String:',
+                      'FEN:',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Container(
