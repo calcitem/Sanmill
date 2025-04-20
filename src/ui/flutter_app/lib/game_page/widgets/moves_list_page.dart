@@ -214,6 +214,9 @@ class MovesListPageState extends State<MovesListPage> {
         final bool isLlmConfigured =
             LlmService().isLlmConfigured(); // Check if LLM is configured
 
+        // Add a flag to track if the dialog is still active
+        bool isDialogActive = true;
+
         return StatefulBuilder(
           key: const Key(_kLlmPromptDialogKey),
           builder: (BuildContext context, StateSetter setState) {
@@ -242,7 +245,8 @@ class MovesListPageState extends State<MovesListPage> {
                 loadingTimer =
                     Timer.periodic(const Duration(seconds: 1), (Timer t) {
                   // Update elapsed time every second while loading
-                  if (!mounted) {
+                  if (!isDialogActive) {
+                    // Cancel timer if dialog is closed
                     t.cancel();
                     return;
                   }
@@ -262,9 +266,9 @@ class MovesListPageState extends State<MovesListPage> {
               try {
                 await for (final String chunk
                     in llmService.generateResponse(promptToUse, context)) {
-                  // Check if the widget is still mounted before setting state
-                  if (!mounted) {
-                    // Widget was disposed, exit the loop
+                  // Check if the dialog is still active
+                  if (!isDialogActive) {
+                    // Dialog closed, interrupt processing
                     break;
                   }
                   setState(() {
@@ -273,19 +277,22 @@ class MovesListPageState extends State<MovesListPage> {
                   });
                 }
               } catch (e) {
-                // Check if the widget is still mounted before setting state
-                if (mounted) {
+                // Check if the dialog is still active
+                if (isDialogActive) {
                   setState(() {
                     llmResponse = 'Error: $e';
                   });
                 }
               } finally {
-                // Check if the widget is still mounted before setting state
-                if (mounted) {
+                // Check if the dialog is still active
+                if (isDialogActive) {
                   setState(() {
                     isLoading = false;
                     loadingTimer?.cancel();
                   });
+                } else {
+                  // Ensure timer is cancelled
+                  loadingTimer?.cancel();
                 }
               }
             }
@@ -367,193 +374,212 @@ class MovesListPageState extends State<MovesListPage> {
               });
             }
 
-            return Dialog(
-              insetPadding: const EdgeInsets.all(16.0),
-              backgroundColor: bgColor,
-              child: SizedBox(
-                width: dialogWidth,
-                height: dialogHeight,
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      // Dialog title
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            S.of(context).llmPrompt,
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
+            return PopScope<dynamic>(
+              onPopInvokedWithResult: (bool didPop, dynamic result) {
+                // Set flag and cancel timer when dialog is closed
+                isDialogActive = false;
+                loadingTimer?.cancel();
+              },
+              child: Dialog(
+                insetPadding: const EdgeInsets.all(16.0),
+                backgroundColor: bgColor,
+                child: SizedBox(
+                  width: dialogWidth,
+                  height: dialogHeight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        // Dialog title
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              S.of(context).llmPrompt,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: textColor,
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              // LLM Prompt Template button
-                              IconButton(
-                                onPressed: showLlmPromptTemplateDialog,
-                                icon: const Icon(
-                                    FluentIcons.document_edit_24_regular),
-                                tooltip: S.of(context).llmPromptTemplate,
-                                color: DB().colorSettings.pieceHighlightColor,
-                              ),
-                              // LLM Config button
-                              IconButton(
-                                onPressed: showLlmConfigDialog,
-                                icon:
-                                    const Icon(FluentIcons.settings_24_regular),
-                                tooltip: S.of(context).llmConfig,
-                                color: DB().colorSettings.pieceHighlightColor,
-                              ),
-                              // Close button - with enhanced visibility
-                              Container(
-                                margin: const EdgeInsets.only(left: 8.0),
-                                child: IconButton(
-                                  iconSize: 26,
-                                  icon: Icon(
-                                    FluentIcons.dismiss_24_filled,
-                                    color:
-                                        DB().colorSettings.pieceHighlightColor,
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                // LLM Prompt Template button
+                                IconButton(
+                                  onPressed: showLlmPromptTemplateDialog,
+                                  icon: const Icon(
+                                      FluentIcons.document_edit_24_regular),
+                                  tooltip: S.of(context).llmPromptTemplate,
+                                  color: DB().colorSettings.pieceHighlightColor,
+                                ),
+                                // LLM Config button
+                                IconButton(
+                                  onPressed: showLlmConfigDialog,
+                                  icon: const Icon(
+                                      FluentIcons.settings_24_regular),
+                                  tooltip: S.of(context).llmConfig,
+                                  color: DB().colorSettings.pieceHighlightColor,
+                                ),
+                                // Close button - with enhanced visibility
+                                Container(
+                                  margin: const EdgeInsets.only(left: 8.0),
+                                  child: IconButton(
+                                    iconSize: 26,
+                                    icon: Icon(
+                                      FluentIcons.dismiss_24_filled,
+                                      color: DB()
+                                          .colorSettings
+                                          .pieceHighlightColor,
+                                    ),
+                                    tooltip: S.of(context).close,
+                                    onPressed: () {
+                                      // Set flag and cancel timer when user closes dialog
+                                      isDialogActive = false;
+                                      loadingTimer?.cancel();
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
-                                  tooltip: S.of(context).close,
-                                  onPressed: () => Navigator.of(context).pop(),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        // Content area - either prompt input or LLM response
+                        Expanded(
+                          child: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: showLlmResponse
+                                ? _buildLlmResponseWidget(
+                                    llmResponse,
+                                    isLoading,
+                                    elapsedSeconds,
+                                    textColor,
+                                    borderColor,
+                                  )
+                                : _buildPromptInputWidget(
+                                    controller,
+                                    textColor,
+                                    borderColor,
+                                  ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Only show language checkbox when prompt is visible
+                        if (!showLlmResponse)
+                          Row(
+                            children: <Widget>[
+                              Checkbox(
+                                value: localUseCurrentLanguage,
+                                activeColor:
+                                    DB().colorSettings.pieceHighlightColor,
+                                checkColor: Colors.white,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    localUseCurrentLanguage = value ?? true;
+                                  });
+                                },
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  // Using app language for output text
+                                  S.of(context).outputInCurrentLanguage,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.green,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
 
-                      // Content area - either prompt input or LLM response
-                      Expanded(
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: showLlmResponse
-                              ? _buildLlmResponseWidget(
-                                  llmResponse,
-                                  isLoading,
-                                  elapsedSeconds,
-                                  textColor,
-                                  borderColor,
-                                )
-                              : _buildPromptInputWidget(
-                                  controller,
-                                  textColor,
-                                  borderColor,
+                        const SizedBox(height: 16),
+
+                        // Bottom action buttons
+                        if (!showLlmResponse)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              // Ask LLM button - left side
+                              ElevatedButton(
+                                onPressed: isLlmConfigured
+                                    ? () => generateLlmResponse()
+                                    : null,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      DB().colorSettings.pieceHighlightColor,
+                                  foregroundColor: Colors.white,
+                                  disabledBackgroundColor: Colors.grey,
                                 ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 16),
-
-                      // Only show language checkbox when prompt is visible
-                      if (!showLlmResponse)
-                        Row(
-                          children: <Widget>[
-                            Checkbox(
-                              value: localUseCurrentLanguage,
-                              activeColor:
-                                  DB().colorSettings.pieceHighlightColor,
-                              checkColor: Colors.white,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  localUseCurrentLanguage = value ?? true;
-                                });
-                              },
-                            ),
-                            const SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                // Using app language for output text
-                                S.of(context).outputInCurrentLanguage,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.green,
+                                child: Text(S.of(context).askLlm),
+                              ),
+                              // Copy button - right side
+                              ElevatedButton(
+                                onPressed: () {
+                                  final String promptWithLanguage =
+                                      _getPromptWithLanguage(controller.text,
+                                          localUseCurrentLanguage);
+                                  _copyLLMPrompt(promptWithLanguage);
+                                  // Set flag and cancel timer
+                                  isDialogActive = false;
+                                  loadingTimer?.cancel();
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      DB().colorSettings.pieceHighlightColor,
+                                  foregroundColor: Colors.white,
                                 ),
+                                child: Text(S.of(context).copy),
                               ),
-                            ),
-                          ],
-                        ),
-
-                      const SizedBox(height: 16),
-
-                      // Bottom action buttons
-                      if (!showLlmResponse)
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // Ask LLM button - left side
-                            ElevatedButton(
-                              onPressed: isLlmConfigured
-                                  ? () => generateLlmResponse()
-                                  : null,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    DB().colorSettings.pieceHighlightColor,
-                                foregroundColor: Colors.white,
-                                disabledBackgroundColor: Colors.grey,
+                            ],
+                          )
+                        else
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              // Import button - left side (disabled during loading)
+                              ElevatedButton(
+                                onPressed: isLoading
+                                    ? null
+                                    : () => importMovesFromResponse(),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isLoading
+                                      ? Colors.grey
+                                      : DB().colorSettings.pieceHighlightColor,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Text(S.of(context).import),
                               ),
-                              child: Text(S.of(context).askLlm),
-                            ),
-                            // Copy button - right side
-                            ElevatedButton(
-                              onPressed: () {
-                                final String promptWithLanguage =
-                                    _getPromptWithLanguage(controller.text,
-                                        localUseCurrentLanguage);
-                                _copyLLMPrompt(promptWithLanguage);
-                                Navigator.of(context).pop();
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    DB().colorSettings.pieceHighlightColor,
-                                foregroundColor: Colors.white,
+                              // Copy button - right side
+                              ElevatedButton(
+                                onPressed: isLoading
+                                    ? null
+                                    : () {
+                                        _copyLLMPrompt(llmResponse);
+                                        // Set flag and cancel timer
+                                        isDialogActive = false;
+                                        loadingTimer?.cancel();
+                                        Navigator.of(context).pop();
+                                      },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: isLoading
+                                      ? Colors.grey
+                                      : DB().colorSettings.pieceHighlightColor,
+                                  foregroundColor: Colors.white,
+                                ),
+                                child: Text(S.of(context).copy),
                               ),
-                              child: Text(S.of(context).copy),
-                            ),
-                          ],
-                        )
-                      else
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            // Import button - left side (disabled during loading)
-                            ElevatedButton(
-                              onPressed: isLoading
-                                  ? null
-                                  : () => importMovesFromResponse(),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isLoading
-                                    ? Colors.grey
-                                    : DB().colorSettings.pieceHighlightColor,
-                                foregroundColor: Colors.white,
-                              ),
-                              child: Text(S.of(context).import),
-                            ),
-                            // Copy button - right side
-                            ElevatedButton(
-                              onPressed: isLoading
-                                  ? null
-                                  : () {
-                                      _copyLLMPrompt(llmResponse);
-                                      Navigator.of(context).pop();
-                                    },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: isLoading
-                                    ? Colors.grey
-                                    : DB().colorSettings.pieceHighlightColor,
-                                foregroundColor: Colors.white,
-                              ),
-                              child: Text(S.of(context).copy),
-                            ),
-                          ],
-                        ),
-                    ],
+                            ],
+                          ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -561,7 +587,10 @@ class MovesListPageState extends State<MovesListPage> {
           },
         );
       },
-    );
+    ).then((_) {
+      // Ensure timer is cancelled when dialog is closed
+      loadingTimer?.cancel();
+    });
 
     // Make sure to dispose of the controller
     controller.dispose();
@@ -723,14 +752,6 @@ class MovesListPageState extends State<MovesListPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: <Widget>[
-                          Text(
-                            '等待期间可以玩小游戏！',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: textColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
                           const SizedBox(height: 4),
                           Expanded(
                             child: CatFishingGame(
