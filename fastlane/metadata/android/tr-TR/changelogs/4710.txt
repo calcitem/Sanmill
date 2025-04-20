@@ -1,0 +1,3 @@
+v6.2.0
+
+Bu güncelleme, uygulamayı sizin için daha iyi hale getirmek için çeşitli iyileştirmeler ve hata düzeltmeleri içerir.

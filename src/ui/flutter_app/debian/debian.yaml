@@ -6,7 +6,7 @@ flutter_app:
 
 control:
   Package: mill
-  Version: 6.1.2
+  Version: 6.2.0
   Architecture: amd64
   Priority: optional
   Depends:
