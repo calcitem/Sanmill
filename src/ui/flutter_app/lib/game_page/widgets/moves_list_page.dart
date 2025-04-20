@@ -23,6 +23,7 @@ import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
+import 'cat_fishing_game.dart';
 import 'mini_board.dart';
 
 // Key for the LLM prompt dialog screen
@@ -656,54 +657,87 @@ class MovesListPageState extends State<MovesListPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  funLoadingDots(DB().colorSettings.pieceHighlightColor),
-                  const SizedBox(height: 16),
-                  Text(
-                    waitingMessage,
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 16,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 8),
-                  // Digital clock-style display with LED-like effect
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(
-                        color: Colors.black.withValues(alpha: 0.2),
+                  // Game title and waiting message
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      funLoadingDots(DB().colorSettings.pieceHighlightColor),
+                      const SizedBox(width: 8),
+                      Text(
+                        waitingMessage,
+                        style: TextStyle(
+                          color: textColor,
+                          fontSize: 14,
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      '${(elapsedSeconds ~/ 60).toString().padLeft(2, '0')}:${(elapsedSeconds % 60).toString().padLeft(2, '0')}',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                        fontFamily: 'monospace',
-                        foreground: Paint()
-                          ..shader = LinearGradient(
-                            colors: <Color>[
-                              DB()
+                    ],
+                  ),
+                  // Digital clock-style display with LED-like effect
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(
+                          color: Colors.black.withValues(alpha: 0.2),
+                        ),
+                      ),
+                      child: Text(
+                        '${(elapsedSeconds ~/ 60).toString().padLeft(2, '0')}:${(elapsedSeconds % 60).toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 2,
+                          fontFamily: 'monospace',
+                          foreground: Paint()
+                            ..shader = LinearGradient(
+                              colors: <Color>[
+                                DB()
+                                    .colorSettings
+                                    .pieceHighlightColor
+                                    .withValues(alpha: 0.7),
+                                DB().colorSettings.pieceHighlightColor,
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ).createShader(const Rect.fromLTWH(0, 0, 60, 24)),
+                          shadows: <Shadow>[
+                            Shadow(
+                              color: DB()
                                   .colorSettings
                                   .pieceHighlightColor
-                                  .withValues(alpha: 0.7),
-                              DB().colorSettings.pieceHighlightColor,
-                            ],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ).createShader(const Rect.fromLTWH(0, 0, 60, 24)),
-                        shadows: <Shadow>[
-                          Shadow(
-                            color: DB()
-                                .colorSettings
-                                .pieceHighlightColor
-                                .withValues(alpha: 0.8),
-                            blurRadius: 5,
+                                  .withValues(alpha: 0.8),
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  // Cat fishing mini-game
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: <Widget>[
+                          Text(
+                            '等待期间可以玩小游戏！',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: textColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Expanded(
+                            child: CatFishingGame(
+                              onScoreUpdate: (int score) {
+                                // Optional: do something with score
+                              },
+                            ),
                           ),
                         ],
                       ),
