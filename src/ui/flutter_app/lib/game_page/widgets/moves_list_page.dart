@@ -350,28 +350,42 @@ class MovesListPageState extends State<MovesListPage> {
 
             // Function to show LLM config dialog
             void showLlmConfigDialog() {
-              Navigator.of(context).pop(); // Close the current dialog first
+              // Store reference to the current outer context
+              final BuildContext outerContext = context;
+
               showDialog<void>(
                 context: context,
+                barrierDismissible:
+                    false, // Prevent dismissing by tapping outside
                 builder: (BuildContext context) => const LlmConfigDialog(),
               ).then((_) {
-                // Re-open the LLM prompt dialog after config is done
-                if (context.mounted) {
-                  _showLLMPromptDialog();
+                // No need to reopen the LLM prompt dialog since we never closed it
+                // Just refresh any data that might have been updated in config dialog if needed
+                if (outerContext.mounted) {
+                  setState(() {
+                    // Update any state that might have changed in the config dialog
+                  });
                 }
               });
             }
 
             // Function to show LLM prompt template dialog
             void showLlmPromptTemplateDialog() {
-              Navigator.of(context).pop(); // Close the current dialog first
+              // Store reference to the current outer context
+              final BuildContext outerContext = context;
+
               showDialog<void>(
                 context: context,
+                barrierDismissible:
+                    false, // Prevent dismissing by tapping outside
                 builder: (BuildContext context) => const LlmPromptDialog(),
               ).then((_) {
-                // Re-open the LLM prompt dialog after template editing is done
-                if (context.mounted) {
-                  _showLLMPromptDialog();
+                // No need to reopen the LLM prompt dialog since we never closed it
+                // Just refresh any data that might have been updated in template dialog if needed
+                if (outerContext.mounted) {
+                  setState(() {
+                    // Update any state that might have changed in the template dialog
+                  });
                 }
               });
             }
