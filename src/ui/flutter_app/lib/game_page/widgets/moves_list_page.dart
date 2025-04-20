@@ -16,6 +16,7 @@ import '../../general_settings/widgets/dialogs/llm_prompt_dialog.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/prompt_defaults.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/environment_config.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/llm_service.dart';
 import '../../shared/services/logger.dart';
@@ -197,6 +198,7 @@ class MovesListPageState extends State<MovesListPage> {
 
     await showDialog<void>(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         // Use app theme colors
         final Color bgColor = Theme.of(context).dialogBackgroundColor;
@@ -496,6 +498,84 @@ class MovesListPageState extends State<MovesListPage> {
                                   ),
                                 ),
                               ),
+                              // Fish button for debugging the cat fishing mini-game
+                              // Only shown in dev mode to help with testing
+                              if (EnvironmentConfig.devMode)
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.catching_pokemon, // Fish-like icon
+                                    color: Colors.lightBlue,
+                                  ),
+                                  tooltip: 'Fish Game (Dev)',
+                                  onPressed: () {
+                                    // Show dialog with cat fishing game for testing
+                                    showDialog(
+                                      context: context,
+                                      barrierDismissible: false,
+                                      builder: (BuildContext context) {
+                                        return Dialog(
+                                          backgroundColor: Colors.transparent,
+                                          child: Container(
+                                            width: 500,
+                                            height: 500,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context)
+                                                  .dialogBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Column(
+                                              children: <Widget>[
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        'Cat Fishing Game (Dev)',
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: DB()
+                                                              .colorSettings
+                                                              .messageColor,
+                                                        ),
+                                                      ),
+                                                      IconButton(
+                                                        icon: const Icon(
+                                                            Icons.close),
+                                                        onPressed: () =>
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop(),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: CatFishingGame(
+                                                      onScoreUpdate:
+                                                          (int score) {
+                                                        // Optional: do something with score
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                ),
                             ],
                           ),
 
