@@ -446,7 +446,10 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
                       items: LlmProvider.values.map((LlmProvider provider) {
                         return DropdownMenuItem<LlmProvider>(
                           value: provider,
-                          child: Text(provider.name),
+                          child: Text(
+                            provider.name,
+                            style: const TextStyle(fontSize: 14.0),
+                          ),
                         );
                       }).toList(),
                       onChanged: (LlmProvider? value) {
