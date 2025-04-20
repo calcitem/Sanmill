@@ -54,6 +54,11 @@ class MovesListPageState extends State<MovesListPage> {
   /// Current layout selection, loaded from DB settings
   MovesViewLayout _currentLayout = DB().displaySettings.movesViewLayout;
 
+  // Timer to track elapsed seconds while waiting for LLM response
+  Timer? loadingTimer;
+  DateTime? requestStartTime;
+  int elapsedSeconds = 0;
+
   @override
   void initState() {
     super.initState();
@@ -227,6 +232,24 @@ class MovesListPageState extends State<MovesListPage> {
                 isLoading = true;
                 showLlmResponse = true;
                 llmResponse = _kLlmLoading;
+
+                // Initialize timer for fun loading messages
+                requestStartTime = DateTime.now();
+                elapsedSeconds = 0;
+
+                loadingTimer?.cancel();
+                loadingTimer =
+                    Timer.periodic(const Duration(seconds: 1), (Timer t) {
+                  // Update elapsed time every second while loading
+                  if (!mounted) {
+                    t.cancel();
+                    return;
+                  }
+                  setState(() {
+                    elapsedSeconds =
+                        DateTime.now().difference(requestStartTime!).inSeconds;
+                  });
+                });
               });
 
               final String promptToUse = _getPromptWithLanguage(
@@ -260,6 +283,7 @@ class MovesListPageState extends State<MovesListPage> {
                 if (mounted) {
                   setState(() {
                     isLoading = false;
+                    loadingTimer?.cancel();
                   });
                 }
               }
@@ -412,6 +436,7 @@ class MovesListPageState extends State<MovesListPage> {
                               ? _buildLlmResponseWidget(
                                   llmResponse,
                                   isLoading,
+                                  elapsedSeconds,
                                   textColor,
                                   borderColor,
                                 )
@@ -581,9 +606,44 @@ class MovesListPageState extends State<MovesListPage> {
   Widget _buildLlmResponseWidget(
     String responseText,
     bool isLoading,
+    int elapsedSeconds,
     Color textColor,
     Color borderColor,
   ) {
+    // Determine message according to elapsed time
+    String waitingMessage;
+    if (elapsedSeconds < 20) {
+      waitingMessage = S.of(context).llmCommandReceivedProcessing;
+    } else if (elapsedSeconds < 60) {
+      waitingMessage = S.of(context).llmDeepThinkingWait;
+    } else {
+      waitingMessage = S.of(context).llmPresentingSoon;
+    }
+
+    // Build a simple but fun loading animation consisting of 4 dots that move
+    Widget funLoadingDots(Color highlightColor) {
+      // Active dot cycles every second
+      final int activeDot = elapsedSeconds % 4;
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: List<Widget>.generate(4, (int index) {
+          final bool isActive = index == activeDot;
+          return AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+            width: isActive ? 12 : 8,
+            height: isActive ? 12 : 8,
+            decoration: BoxDecoration(
+              color: isActive
+                  ? highlightColor
+                  : highlightColor.withValues(alpha: 0.3),
+              shape: BoxShape.circle,
+            ),
+          );
+        }),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: borderColor),
@@ -594,17 +654,59 @@ class MovesListPageState extends State<MovesListPage> {
           ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        DB().colorSettings.pieceHighlightColor),
-                  ),
+                  funLoadingDots(DB().colorSettings.pieceHighlightColor),
                   const SizedBox(height: 16),
                   Text(
-                    S.of(context).loadingResponse,
+                    waitingMessage,
                     style: TextStyle(
                       color: textColor,
                       fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 8),
+                  // Digital clock-style display with LED-like effect
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: Colors.black.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    child: Text(
+                      '${(elapsedSeconds ~/ 60).toString().padLeft(2, '0')}:${(elapsedSeconds % 60).toString().padLeft(2, '0')}',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                        fontFamily: 'monospace',
+                        foreground: Paint()
+                          ..shader = LinearGradient(
+                            colors: <Color>[
+                              DB()
+                                  .colorSettings
+                                  .pieceHighlightColor
+                                  .withValues(alpha: 0.7),
+                              DB().colorSettings.pieceHighlightColor,
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ).createShader(const Rect.fromLTWH(0, 0, 60, 24)),
+                        shadows: <Shadow>[
+                          Shadow(
+                            color: DB()
+                                .colorSettings
+                                .pieceHighlightColor
+                                .withValues(alpha: 0.8),
+                            blurRadius: 5,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
