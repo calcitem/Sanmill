@@ -293,7 +293,7 @@
   "@drawReasonRule50": {
     "description": "In the moving phase, no piece has been removed in the last specific number of moves."
   },
-  "drawReasonThreefoldRepetition": "மூன்று மடங்கு மறுபடியும் மறுபடியும் இது ஒரு சமநிலை.",
+  "drawReasonThreefoldRepetition": "மூன்று மடங்கு மறுபடியும் நிகழ்வதால் இது ஒரு சமநிலை.",
   "@drawReasonThreefoldRepetition": {
     "description": "It is a Draw because of threefold repetition."
   },
@@ -305,7 +305,7 @@
   "@youWin": {
     "description": "You win! Congratulations!"
   },
-  "challengeHarderLevel": "கடினமான நிலையை அறைகூவல் செய்யவா? புதிய நிலை நிலை {level} ஆக இருக்கும்!",
+  "challengeHarderLevel": "கடினமான நிலையை அறைகூவல் செய்யவா? புதிய நிலை {level} நிலையாக இருக்கும்!",
   "@challengeHarderLevel": {
     "description": "Challenge harder level?",
     "placeholders": {
@@ -1315,7 +1315,7 @@
   "@ceylonMill": {
     "description": "Ceylon Mill"
   },
-  "mayBreakAndRemakeMillRepeatedly": "ஆலை உடைக்கப்பட்டு மீண்டும் மீண்டும் செய்யப்படலாம்",
+  "mayBreakAndRemakeMillRepeatedly": "ஆலை உடைக்கப்பட்டு மீண்டும் செய்யப்படலாம்",
   "@mayBreakAndRemakeMillRepeatedly": {
     "description": "Mill may be broken and remade repeatedly"
   },
@@ -1463,7 +1463,7 @@
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsPvs": "பி.வி.எச் (முதன்மை மாறுபாடு தேடல்) என்பது கொடுக்கப்பட்ட நிலையில் சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். இது ஆல்பா-பீட்டா வழிமுறையின் விரிவாக்கமாகும், மேலும் ஒரு நடவடிக்கை மோசமானது அல்லது முதன்மை மாறுபாட்டிலிருந்து ஏற்கனவே பாதுகாப்பான மதிப்பெண்ணை விட மோசமானது அல்ல என்பதை உறுதிப்படுத்த சுழிய அல்லது சுழிய சாளர தேடல்களைப் பயன்படுத்துகிறது. பி.வி.எச் மிகவும் நம்பிக்கைக்குரிய நகர்வுகளில் கவனம் செலுத்துகிறது மற்றும் சப்டோப்டிமல் கிளைகளின் தேவையற்ற தேடல்களைத் தவிர்க்கிறது, இது தேடலின் செயல்திறனை மேம்படுத்த உதவுகிறது.",
   "@whatIsPvs": {},
-  "whatIsAlphaBeta": "ஆல்பா-பீட்டா வழிமுறை சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். தேடல் மரத்தை கத்தரிக்கவும் செயல்திறனை அதிகரிக்கவும் இது மினிமேக்ச் கொள்கை மற்றும் ஆல்பா மற்றும் பீட்டா இரண்டு மதிப்புகளைப் பயன்படுத்துகிறது. ஆல்பா என்பது கணினி பெற முடியும் என்பதில் உறுதியாக இருக்கும் குறைந்தபட்ச மதிப்பெண்ணைக் குறிக்கிறது, அதே நேரத்தில் பீட்டா அதன் எதிரி பெறக்கூடிய அதிகபட்ச மதிப்பெண்ணைக் குறிக்கிறது. ஒரு விளையாட்டில் அறிவுள்ள, திறமையான முடிவுகளை எடுக்க கணினி கணினி உதவுகிறது.",
+  "whatIsAlphaBeta": "ஆல்பா-பீட்டா வழிமுறை சிறந்த நகர்வைக் கண்டறிய ஒரு தேடல் வழிமுறையாகும். தேடல் மரத்தைக் கத்தரிக்கவும் செயல்திறனை அதிகரிக்கவும் இது மினிமேக்ச் கொள்கை மற்றும் ஆல்பா மற்றும் பீட்டா இரண்டு மதிப்புகளைப் பயன்படுத்துகிறது. ஆல்பா என்பது கணினி பெற முடியும் என்பதில் உறுதியாக இருக்கும் குறைந்தபட்ச மதிப்பெண்ணைக் குறிக்கிறது, அதே நேரத்தில் பீட்டா அதன் எதிரி பெறக்கூடிய அதிகபட்ச மதிப்பெண்ணைக் குறிக்கிறது. ஒரு விளையாட்டில் அறிவுள்ள, திறமையான முடிவுகளை எடுக்கக் கணினி உதவுகிறது.",
   "@whatIsAlphaBeta": {},
   "whenStalemate": "முட்டுக்கட்டை போது",
   "@whenStalemate": {},
@@ -1565,7 +1565,7 @@
   "@cannotTransform": {},
   "transparentCanvas": "வெளிப்படையான கேன்வாச்",
   "@transparentCanvas": {},
-  "restrictRepeatedMillsFormation": "மீண்டும் மீண்டும் ஆலைகள் உருவாவதைக் கட்டுப்படுத்துங்கள்",
+  "restrictRepeatedMillsFormation": "மீண்டும் நிகழும் ஆலைகள் உருவாவதைக் கட்டுப்படுத்துங்கள்",
   "@restrictRepeatedMillsFormation": {},
   "laskerMorris": "லாச்கர் மோரிச்",
   "@laskerMorris": {},
@@ -1685,7 +1685,7 @@
   "@networkStatusDisconnected": {},
   "takeBackRequestSentToTheOpponent": "மீள எடுத்துக்கொள்ளும் கோரிக்கை எதிரணிக்கு அனுப்பப்பட்டது.",
   "@takeBackRequestSentToTheOpponent": {},
-  "theOpponentMayHaveLeftTheGame": "எதிரணி விளையாட்டை விட்டு வெளியேறியிருக்கலாம்.",
+  "theOpponentMayHaveLeftTheGame": "எதிரணி விளையாட்டை விட்டு வெளியேறியிருக்கலாம்",
   "@theOpponentMayHaveLeftTheGame": {},
   "connectedToHostSuccessfully": "ஹோஸ்டுடன் வெற்றிகரமாக இணைக்கப்பட்டது.",
   "@connectedToHostSuccessfully": {},
