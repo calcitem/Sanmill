@@ -82,12 +82,17 @@ if ($useFullLocaleList) {
     Write-Host "Using SHORT locale list ($($localesToTest.Count) locales). Set `$useFullLocaleList = `$true for full run." -ForegroundColor Yellow
 }
 
-# Timeout for each individual locale test run (applied by PowerShell Wait-Job)
-# Should be slightly longer than any expected legitimate run time.
-$psTimeoutSeconds = 360 # 6 minutes (adjust as needed)
-# Timeout for flutter test itself (internal, might not always interrupt hangs)
-$flutterTestTimeout = "5m"
-# ---------------------
+# Timeout settings
+$psTimeoutSeconds = 360  # PowerShell job timeout
+$flutterTestTimeout = "5m"  # Flutter test internal timeout
+
+# ---------------------------------------------------------
+# Define relative paths to Flutter app directory and build.gradle
+# Adjust this if your directory structure differs
+$flutterAppDir = "..\..\src\ui\flutter_app"
+$buildGradlePath = Join-Path $flutterAppDir "android\app\build.gradle"
+$integrationTestPath = Join-Path $flutterAppDir "integration_test\localization_screenshot_test.dart"
+# ---------------------------------------------------------
 
 # Check for connected Android devices
 Write-Host "Checking for connected Android devices..." -ForegroundColor Cyan
@@ -97,7 +102,7 @@ if ($devices.Count -eq 0) {
     Write-Host "ERROR: No connected Android devices found. Please ensure your device is connected and USB debugging is enabled." -ForegroundColor Red
     exit 1
 } elseif ($devices.Count -gt 1) {
-    Write-Host "WARNING: Multiple devices found. Please connect only one device or use -s to specify." -ForegroundColor Yellow
+    Write-Host "WARNING: Multiple devices found. Please connect only one device or specify with -s." -ForegroundColor Yellow
     & adb devices
     $continue = Read-Host "Continue? (y/n)"
     if ($continue -ne "y") {
@@ -105,24 +110,32 @@ if ($devices.Count -eq 0) {
     }
 }
 
-# Attempt to read package name from app/build.gradle
-$packageNameLine = Get-Content -Path android\app\build.gradle | Where-Object { $_ -match "applicationId" }
-if ($packageNameLine) {
-    $packageName = $packageNameLine -replace '.*applicationId\s+"([^"]+)".*', '$1'
+# Attempt to read package name from android/app/build.gradle at the Flutter app directory
+if (Test-Path $buildGradlePath) {
+    $packageNameLine = Get-Content -Path $buildGradlePath | Where-Object { $_ -match "applicationId" }
+    if ($packageNameLine) {
+        $packageName = $packageNameLine -replace '.*applicationId\s+"([^"]+)".*', '$1'
+    } else {
+        Write-Host "No applicationId found in build.gradle. Using default package name." -ForegroundColor Yellow
+        $packageName = "com.calcitem.sanmill"
+    }
 } else {
+    Write-Host "Cannot find build.gradle at path: $buildGradlePath" -ForegroundColor Red
+    Write-Host "Using default package name: com.calcitem.sanmill" -ForegroundColor Yellow
     $packageName = "com.calcitem.sanmill"
-    Write-Host "Using default package name: $packageName" -ForegroundColor Yellow
 }
 
-# Define the target screenshot directory on device
+Write-Host "Using package name: $packageName" -ForegroundColor Cyan
+
+# Define screenshot directory on device
 $targetDir = "/storage/emulated/0/Pictures/Sanmill"
 Write-Host "Target screenshot directory on device: $targetDir" -ForegroundColor Cyan
 
-# Clean up old screenshots *on device* only once at the beginning
+# Clean up old screenshots on device
 Write-Host "Cleaning up old screenshots on device ($targetDir)..." -ForegroundColor Cyan
 & adb shell "rm -rf $targetDir/*"
 
-# Create the directory on device if it doesn't exist
+# Ensure directory on device
 Write-Host "Ensuring screenshot directory exists on device..." -ForegroundColor Cyan
 & adb shell "mkdir -p $targetDir"
 
@@ -135,56 +148,56 @@ if (-not (Test-Path -Path $localBaseDir)) {
     New-Item -Path $localBaseDir -ItemType Directory | Out-Null
 }
 
-# Clean Flutter build cache
-# Write-Host "Running flutter clean..." -ForegroundColor Cyan
-# & flutter clean
-
-# Install package once before running tests
-Write-Host "Installing app with proper permissions..." -ForegroundColor Cyan
+# ---------------------------------------------------------
+# Install the app with proper permissions
+# We do this once. Since 'flutter install' needs to run from
+# the Flutter project directory, we'll temporarily move there.
+# ---------------------------------------------------------
+Push-Location $flutterAppDir
+Write-Host "`nInstalling app from Flutter project directory: $flutterAppDir" -ForegroundColor Cyan
 & flutter install
+Pop-Location
 
-# List to keep track of failed locales in PowerShell
+# Lists to track success/failure
 $failedLocalesPS = [System.Collections.Generic.List[string]]::new()
 $successfulLocalesPS = [System.Collections.Generic.List[string]]::new()
-# Hashtable to store cumulative screenshot counts per locale (pulled files)
+
+# Track pulled screenshots
 $localeCountsPulled = @{}
 $totalPulled = 0
 
-
-# --- Loop through locales, run test, and pull screenshots ---
-Write-Host "Starting screenshot tests and pulling for specified locales..." -ForegroundColor Cyan
-
+Write-Host "`nStarting screenshot tests and pulling for specified locales..." -ForegroundColor Cyan
 foreach ($locale in $localesToTest) {
     Write-Host "--------------------------------------------------" -ForegroundColor Magenta
     Write-Host "Running test for locale: $locale (Timeout: $flutterTestTimeout)" -ForegroundColor Magenta
     Write-Host "--------------------------------------------------"
 
-    # Construct the command string (optional, mainly for logging now)
+    # We'll run 'flutter test' from the Flutter app directory
+    Push-Location $flutterAppDir
     $testCommandLog = "flutter test integration_test/localization_screenshot_test.dart --dart-define=TEST_LOCALE=$locale --timeout $flutterTestTimeout --no-pub --reporter=compact"
-    Write-Host "Executing: $testCommandLog" -ForegroundColor Yellow # Log the command being executed
+    Write-Host "Executing: $testCommandLog" -ForegroundColor Yellow
 
-    # Run integration test for the single locale using --dart-define
-    # Call flutter directly and pass arguments separately
-    flutter test integration_test/localization_screenshot_test.dart --dart-define=TEST_LOCALE=$locale --timeout $flutterTestTimeout --no-pub --reporter=compact
+    flutter test `
+        "integration_test/localization_screenshot_test.dart" `
+        --dart-define="TEST_LOCALE=$locale" `
+        --timeout $flutterTestTimeout `
+        --no-pub `
+        --reporter=compact
 
-    # Check the exit code of the flutter test command
-    $exitCode = $LASTEXITCODE # Store exit code immediately
-    $testSucceeded = ($exitCode -eq 0)
+    $exitCode = $LASTEXITCODE
+    Pop-Location  # Return to the original script directory
 
-    if ($testSucceeded) {
+    if ($exitCode -eq 0) {
         Write-Host "SUCCESS: Test for locale $locale completed successfully." -ForegroundColor Green
         $successfulLocalesPS.Add($locale)
     } else {
-        Write-Host "FAILURE: Test for locale $locale failed (Exit Code: $exitCode). Check logs above. May have timed out." -ForegroundColor Red
+        Write-Host "FAILURE: Test for locale $locale failed (Exit Code: $exitCode). Check logs above." -ForegroundColor Red
         $failedLocalesPS.Add($locale)
-        # Continue to attempt pulling screenshots even if the test failed/timed out
         Write-Host "Attempting to pull any generated screenshots for $locale despite test failure..." -ForegroundColor Yellow
     }
 
-    # --- Pull screenshots SPECIFICALLY for this locale ---
+    # Pull screenshots for this locale
     Write-Host "Searching for screenshots matching '$locale*.png' in $targetDir on device..." -ForegroundColor Cyan
-    $pattern = "$targetDir/${locale}_*.png"
-    # Use pattern matching with find. Escape '*' if necessary, though often not needed here.
     $paths = & adb shell "find $targetDir -name '${locale}_*.png' 2>/dev/null || echo ''"
     $localePaths = $paths | Where-Object { $_ -ne "" -and $_ -ne "Not found" }
 
@@ -192,69 +205,65 @@ foreach ($locale in $localesToTest) {
         Write-Host "No screenshots found matching '$locale*.png' for this locale run." -ForegroundColor Yellow
     } else {
         Write-Host "Found $($localePaths.Count) screenshots for $locale! Pulling files..." -ForegroundColor Green
+        $localLocaleDir = Join-Path $localBaseDir $locale
 
-        # Define the local target directory for this locale
-        $localLocaleDir = "$localBaseDir/$locale"
-
-        # Create the local locale directory if it doesn't exist
         if (-not (Test-Path -Path $localLocaleDir)) {
             Write-Host "Creating local directory: $localLocaleDir" -ForegroundColor Cyan
             New-Item -Path $localLocaleDir -ItemType Directory | Out-Null
         }
 
-        # Pull the found files
         $localePulledCount = 0
         foreach ($path in $localePaths) {
-            $path = $path.Trim()
-            if ($path) {
-                Write-Host "Pulling: $path to $localLocaleDir" -ForegroundColor Green
-                & adb pull "$path" $localLocaleDir
+            $cleanPath = $path.Trim()
+            if ($cleanPath) {
+                Write-Host "Pulling: $cleanPath to $localLocaleDir" -ForegroundColor Green
+                & adb pull "$cleanPath" $localLocaleDir
                 $localePulledCount++
-                $totalPulled++ # Increment total count
+                $totalPulled++
             }
         }
-         # Update the cumulative count for this locale
+
         if ($localeCountsPulled.ContainsKey($locale)) {
             $localeCountsPulled[$locale] += $localePulledCount
         } else {
             $localeCountsPulled[$locale] = $localePulledCount
         }
-        Write-Host "Pulled $localePulledCount screenshots for $locale." -ForegroundColor Green
 
+        Write-Host "Pulled $localePulledCount screenshots for $locale." -ForegroundColor Green
     }
-     # Optional short delay between locales
-     # Start-Sleep -Seconds 2
-} # End foreach locale loop
+}
 
 Write-Host "--------------------------------------------------" -ForegroundColor Magenta
 Write-Host "All locale test runs and pulls completed." -ForegroundColor Magenta
 Write-Host "--------------------------------------------------"
 
-# --- Generate the final log file content ---
+# Generate the final log file
 Write-Host "Generating final log file..." -ForegroundColor Cyan
 $logContent = @()
 $logContent += "Screenshot Generation Summary:"
 $logContent += "=============================="
 $logContent += "Tested Locales:"
 $logContent += "------------------------------"
-# Use the original list of locales intended for testing for the log
+
 foreach ($locale in $localesToTest) {
     $status = if ($failedLocalesPS.Contains($locale)) { "FAILED" } else { "SUCCESS" }
     $pulledCount = if ($localeCountsPulled.ContainsKey($locale)) { $localeCountsPulled[$locale] } else { 0 }
     $logContent += "Locale: $locale - Test Status: $status - Screenshots Pulled: $pulledCount"
 }
+
 $logContent += "=============================="
 $logContent += "Summary:"
 $logContent += "------------------------------"
 $logContent += "Successful Locales: $($successfulLocalesPS.Count) ($($successfulLocalesPS -join ', '))"
 $logContent += "Failed Locales    : $($failedLocalesPS.Count) ($($failedLocalesPS -join ', '))"
 $logContent += "Total Screenshots Pulled: $totalPulled"
-$logFilePath = "$localBaseDir/log.txt"
-$logContent | Out-File -FilePath $logFilePath -Encoding utf8
-Write-Host "Log file created at $logFilePath" -ForegroundColor Green
 
-Write-Host "DONE! Screenshots are saved in locale-specific subfolders within $localBaseDir." -ForegroundColor Green
-Write-Host "Summary logged to $logFilePath" -ForegroundColor Green
+$logFilePath = Join-Path $localBaseDir "log.txt"
+$logContent | Out-File -FilePath $logFilePath -Encoding utf8
+
+Write-Host "Log file created at $logFilePath" -ForegroundColor Green
+Write-Host "DONE! Screenshots are saved in locale-specific subfolders within '$localBaseDir'." -ForegroundColor Green
+Write-Host "Summary logged to '$logFilePath'." -ForegroundColor Green
 
 # Optional: Exit with non-zero code if any locale failed
 if ($failedLocalesPS.Count -gt 0) {
