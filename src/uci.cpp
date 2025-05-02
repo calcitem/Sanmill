@@ -175,6 +175,12 @@ void UCI::loop(int argc, char *argv[])
             sync_cout << "Unknown command: " << cmd << sync_endl;
     } while (token != "quit" && argc == 1); // Command line args are one-shot
 
+    // Before exiting this function (as searchEngine is about to be destructed),
+    // ensure that all tasks in the thread pool have completed. This prevents
+    // crashes that could occur if tasks are still running when searchEngine and
+    // its internal mutexes are destroyed.
+    Threads.stop_all();
+
     delete pos;
 }
 
