@@ -8,16 +8,26 @@ part of 'package:sanmill/main.dart';
 /// Initializes the given [SystemChrome] ui
 Future<void> initializeUI(bool isFullScreen) async {
   // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
+
+  // Starting from Android 15 (API 35) edge-to-edge is the default.
+  // Use SystemUiMode.edgeToEdge to avoid using deprecated APIs such as
+  // Window.setStatusBarColor / setNavigationBarColor.
   if (isFullScreen) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: <SystemUiOverlay>[]);
+    // Full-screen mode: use immersiveSticky to hide all system bars,
+    // but still allow users to reveal them with an edge swipe. This
+    // achieves a true full-screen experience without relying on
+    // deprecated color APIs.
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   } else {
+    // Edge-to-edge with visible system bars.
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+    // Only adjust icon/brightness related properties to keep good contrast.
+    // Do NOT touch bar colors to avoid deprecated API calls.
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.light,
         statusBarIconBrightness: Brightness.light,
-        systemNavigationBarColor: Colors.black,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
     );
