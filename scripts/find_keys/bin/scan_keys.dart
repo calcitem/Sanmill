@@ -87,7 +87,8 @@ void main(List<String> arguments) {
   for (var entry in groupedKeys.entries) {
     final key = _escapeForMarkdown(entry.key);
     for (var info in entry.value) {
-      final filePath = _escapeForMarkdown(p.relative(info.filePath, from: libDir.path));
+      final filePath =
+          _escapeForMarkdown(p.relative(info.filePath, from: libDir.path));
       buffer.writeln('| $key | $filePath | ${info.line} | ${info.column} |');
     }
   }

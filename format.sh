@@ -17,16 +17,7 @@ clang-format -i tests/*.cpp
 #clang-format -i tests/perfect/*.h
 #clang-format -i tests/perfect/*.cpp
 
-cd src/ui/flutter_app/lib
-find . -name "*.dart" |  xargs dart format
-
-cd ../test
-find . -name "*.dart" |  xargs dart format
-
-cd ../integration_test
-find . -name "*.dart" |  xargs dart format
-
-cd ../../../../
+dart format .
 
 if [ "$1" != "s" ]; then
     git add .
