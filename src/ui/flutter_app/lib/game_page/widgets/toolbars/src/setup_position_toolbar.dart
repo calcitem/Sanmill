@@ -861,7 +861,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       onPressed: () => <void>{setSetupPositionPlaced(context)},
       icon: const Icon(FluentIcons.text_word_count_24_regular),
       label: Text(
-        S.of(context).placedCount(newPlaced.toString()),
+        S.of(context).placedCount(newPlaced),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),

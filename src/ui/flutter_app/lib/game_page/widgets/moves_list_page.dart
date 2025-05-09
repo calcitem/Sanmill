@@ -201,7 +201,9 @@ class MovesListPageState extends State<MovesListPage> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         // Use app theme colors
-        final Color bgColor = Theme.of(context).dialogBackgroundColor;
+        final DialogThemeData dialogThemeObj = Theme.of(context).dialogTheme;
+        final Color bgColor = dialogThemeObj.backgroundColor ??
+            Theme.of(context).colorScheme.surface;
         final Color textColor = DB().colorSettings.messageColor;
         final Color borderColor =
             DB().colorSettings.messageColor.withValues(alpha: 0.3);
@@ -534,7 +536,11 @@ class MovesListPageState extends State<MovesListPage> {
                                             height: 500,
                                             decoration: BoxDecoration(
                                               color: Theme.of(context)
-                                                  .dialogBackgroundColor,
+                                                      .dialogTheme
+                                                      .backgroundColor ??
+                                                  Theme.of(context)
+                                                      .colorScheme
+                                                      .surface,
                                               borderRadius:
                                                   BorderRadius.circular(16),
                                             ),

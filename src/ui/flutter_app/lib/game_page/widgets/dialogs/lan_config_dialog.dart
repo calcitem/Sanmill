@@ -502,7 +502,9 @@ class LanConfigDialogState extends State<LanConfigDialog>
 
   @override
   Widget build(BuildContext context) {
-    final Color baseColor = Theme.of(context).dialogBackgroundColor;
+    final DialogThemeData dialogThemeObject = Theme.of(context).dialogTheme;
+    final Color baseColor = dialogThemeObject.backgroundColor ??
+        Theme.of(context).colorScheme.surface;
     final Size screenSize = MediaQuery.of(context).size;
 
     return AlertDialog(

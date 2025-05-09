@@ -54,7 +54,12 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
     }
 
     // Share the JSON string
-    Share.share(json, subject: 'Custom Theme Settings');
+    SharePlus.instance.share(
+      ShareParams(
+        text: json,
+        subject: 'Custom Theme Settings',
+      ),
+    );
   }
 
   @override

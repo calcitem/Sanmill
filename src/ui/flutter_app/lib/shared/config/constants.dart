@@ -110,7 +110,7 @@ GlobalKey<NavigatorState> get currentNavigatorKey {
     if (Catcher2.navigatorKey == null) {
       return navigatorStateKey;
     }
-    return Catcher2.navigatorKey!;
+    return Catcher2.navigatorKey;
   } else {
     return navigatorStateKey;
   }

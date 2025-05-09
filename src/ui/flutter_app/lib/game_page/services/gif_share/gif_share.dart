@@ -91,7 +91,11 @@ class GifShare {
     final Directory docDir = await getApplicationDocumentsDirectory();
     final File imgGif = File('${docDir.path}/$gifFileName');
     await imgGif.writeAsBytes(gif);
-    Share.shareXFiles(<XFile>[XFile('${docDir.path}/$gifFileName')]);
+    SharePlus.instance.share(
+      ShareParams(
+        files: <XFile>[XFile('${docDir.path}/$gifFileName')],
+      ),
+    );
     return true;
   }
 }

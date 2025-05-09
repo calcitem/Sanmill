@@ -18,13 +18,13 @@ clang-format -i tests/*.cpp
 #clang-format -i tests/perfect/*.cpp
 
 cd src/ui/flutter_app/lib
-find . -name "*.dart" |  xargs dart format --fix
+find . -name "*.dart" |  xargs dart format
 
 cd ../test
-find . -name "*.dart" |  xargs dart format --fix
+find . -name "*.dart" |  xargs dart format
 
 cd ../integration_test
-find . -name "*.dart" |  xargs dart format --fix
+find . -name "*.dart" |  xargs dart format
 
 cd ../../../../
 

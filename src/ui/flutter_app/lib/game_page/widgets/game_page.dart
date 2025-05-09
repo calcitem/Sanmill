@@ -890,8 +890,8 @@ class _GamePageInnerState extends State<_GamePageInner> {
 
         // Construct localized message parts
         final String message = strings.appliedPositionDetails(
-          whiteCount.toString(),
-          blackCount.toString(),
+          whiteCount,
+          blackCount,
         );
         final String next =
             GameController().position.sideToMove == PieceColor.white
