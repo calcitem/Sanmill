@@ -23,6 +23,8 @@ if (flutterVersionName == null) {
 }
 
 android {
+    ndkVersion "28.1.13356709"
+
     compileSdkVersion 35
     namespace "com.calcitem.sanmill"
 
