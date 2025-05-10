@@ -459,3 +459,4 @@ coverage/
 # diff-files
 diff-files*.md
 /src/ui/flutter_app/screenshots
+/src/ui/flutter_app/android/pgo_profile_data/*.profdata

@@ -45,4 +45,14 @@ int main(int argc, char *argv[])
     Threads.set(0);
     return 0;
 }
+
+#if defined(__clang__) && defined(PGO_GENERATE)
+// Ensures that the profile data is written to disk when the shared library is unloaded.
+// Only needed in PGO generation builds where instrumentation is present.
+extern "C" int __llvm_profile_write_file(void);
+__attribute__((destructor)) static void flush_profraw_at_exit() {
+    __llvm_profile_write_file();
+}
+#endif
+
 #endif // QT_GUI_LIB
