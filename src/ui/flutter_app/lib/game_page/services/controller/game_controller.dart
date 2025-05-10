@@ -882,7 +882,7 @@ class GameController {
         gameResultNotifier.showResult(force: true);
         break;
       case EngineResponseHumanOK():
-        gameResultNotifier.showResult(force: false);
+        gameResultNotifier.showResult();
         break;
       case EngineTimeOut():
         headerTipNotifier.showTip(strTimeout);

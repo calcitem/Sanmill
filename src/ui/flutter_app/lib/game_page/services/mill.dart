@@ -41,6 +41,7 @@ import '../../shared/utils/helpers/array_helpers/array_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
 import '../../shared/utils/helpers/string_helpers/string_helper.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../../statistics/services/stats_service.dart';
 import '../services/import_export/pgn.dart' as pgn;
 import 'analysis_mode.dart';
 import 'animation/animation_manager.dart';

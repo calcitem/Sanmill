@@ -40,6 +40,7 @@ import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
 import '../shared/widgets/double_back_to_close_app.dart';
 import '../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../statistics/widgets/stats_page.dart';
 import '../tutorial/widgets/tutorial_dialog.dart';
 
 // Define the possible states of the drawer
@@ -52,6 +53,7 @@ enum _DrawerIndex {
   generalSettings,
   ruleSettings,
   appearance,
+  statistics,
   howToPlay,
   feedback,
   about,
@@ -93,6 +95,8 @@ extension _DrawerScreen on _DrawerIndex {
         return const RuleSettingsPage();
       case _DrawerIndex.appearance:
         return const AppearanceSettingsPage();
+      case _DrawerIndex.statistics:
+        return const StatisticsPage();
       case _DrawerIndex.howToPlay:
         return const HowToPlayScreen();
       case _DrawerIndex.feedback:
@@ -163,6 +167,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         break;
       case _DrawerIndex.appearance:
         logger.i('Switching to Appearance');
+        break;
+      case _DrawerIndex.statistics:
+        logger.i('Switching to Statistics');
         break;
       case _DrawerIndex.howToPlay:
         logger.i('Switching to How To Play');
@@ -425,6 +432,14 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         itemValue: _DrawerIndex.appearance,
         itemTitle: S.of(context).appearance,
         itemIcon: const Icon(FluentIcons.design_ideas_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: _changeIndex,
+      ),
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_statistics'),
+        itemValue: _DrawerIndex.statistics,
+        itemTitle: 'Statistics',
+        itemIcon: const Icon(FluentIcons.data_bar_vertical_24_regular),
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),

@@ -407,9 +407,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                           .showResult(force: true);
                       break;
                     case EngineResponseHumanOK():
-                      GameController()
-                          .gameResultNotifier
-                          .showResult(force: false);
+                      GameController().gameResultNotifier.showResult();
                       break;
                     case EngineTimeOut():
                       GameController().headerTipNotifier.showTip(strTimeout);

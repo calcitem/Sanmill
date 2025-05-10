@@ -29,12 +29,16 @@ import 'shared/config/constants.dart';
 import 'shared/database/database.dart';
 import 'shared/services/environment_config.dart';
 import 'shared/services/logger.dart';
+import 'shared/services/screenshot_service.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
+import 'statistics/services/stats_service.dart';
 
 part 'package:sanmill/shared/services/catcher_service.dart';
 part 'package:sanmill/shared/services/system_ui_service.dart';
+
+// Log tag for main
 
 Future<void> main() async {
   logger.i('Environment [catcher]: ${EnvironmentConfig.catcher}');
@@ -47,6 +51,14 @@ Future<void> main() async {
   // }
 
   await DB.init();
+
+  // Initialize ELO service
+  EloRatingService();
+
+  // Initialize Screenshot service (if not in test mode)
+  if (!EnvironmentConfig.test) {
+    await ScreenshotService.instance.init();
+  }
 
   _initUI();
 

@@ -17,6 +17,7 @@ import '../../appearance_settings/models/display_settings.dart';
 import '../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../rule_settings/models/rule_settings.dart';
+import '../../statistics/model/stats_settings.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
@@ -84,6 +85,15 @@ class Database {
   static const String _customThemesBoxName = "customThemes";
   static const String customThemesKey = "customThemes";
 
+  /// [StatsSettings] Box reference
+  static late final Box<StatsSettings> _statsSettingsBox;
+
+  /// Key at which the [StatsSettings] will be saved in the [_statsSettingsBox]
+  static const String statsSettingsKey = "settings";
+
+  /// Key at which the [_statsSettingsBox] will be saved
+  static const String _statsSettingsBoxName = "statsSettings";
+
   /// Initializes the local database
   static Future<void> init() async {
     await Hive.initFlutter("Sanmill");
@@ -93,6 +103,7 @@ class Database {
     await _initDisplaySettings();
     await _initColorSettings();
     await _initCustomThemes();
+    await _initStatsSettings();
 
     if (await _DatabaseMigration.migrate() == true) {
       DB().generalSettings = DB().generalSettings.copyWith(firstRun: false);
@@ -106,6 +117,7 @@ class Database {
     await _colorSettingsBox.delete(colorSettingsKey);
     await _displaySettingsBox.delete(displaySettingsKey);
     await _customThemesBox.delete(customThemesKey);
+    await _statsSettingsBox.delete(statsSettingsKey);
   }
 
   /// GeneralSettings
@@ -283,4 +295,26 @@ class Database {
   set customThemes(List<ColorSettings> themes) {
     _customThemesBox.put(customThemesKey, themes);
   }
+
+  /// StatsSettings
+
+  /// Initializes the [StatsSettings] reference
+  static Future<void> _initStatsSettings() async {
+    Hive.registerAdapter<PlayerStats>(PlayerStatsAdapter());
+    Hive.registerAdapter<StatsSettings>(StatsSettingsAdapter());
+    _statsSettingsBox =
+        await Hive.openBox<StatsSettings>(_statsSettingsBoxName);
+  }
+
+  /// Listens to changes inside the StatsSettings Box
+  ValueListenable<Box<StatsSettings>> get listenStatsSettings =>
+      _statsSettingsBox.listenable(keys: <String>[statsSettingsKey]);
+
+  /// Saves the given [settings] to the StatsSettings Box
+  set statsSettings(StatsSettings settings) =>
+      _statsSettingsBox.put(statsSettingsKey, settings);
+
+  /// Gets the stored [StatsSettings] or returns a default value
+  StatsSettings get statsSettings =>
+      _statsSettingsBox.get(statsSettingsKey) ?? const StatsSettings();
 }

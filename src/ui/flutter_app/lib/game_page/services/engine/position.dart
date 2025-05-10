@@ -95,6 +95,12 @@ class Position {
 
   GameOverReason? gameOverReason;
 
+  /// Indicates whether the current position already has a game result.
+  bool get hasGameResult => phase == Phase.gameOver;
+
+  /// The reason for game over, if any.
+  GameOverReason? get reason => gameOverReason;
+
   Phase phase = Phase.placing;
   Act action = Act.place;
 

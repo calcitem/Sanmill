@@ -126,7 +126,7 @@ class Game {
 
     // 3) If the game is still running, check for results
     if (GameController().position.phase != Phase.gameOver) {
-      GameController().gameResultNotifier.showResult(force: false);
+      GameController().gameResultNotifier.showResult();
     } else if (gameMode == GameMode.humanVsLAN) {
       // Notify LAN opponent of game over
       if (GameController().networkService!.isConnected) {

@@ -23,6 +23,15 @@ import 'logger.dart';
 class ScreenshotService {
   ScreenshotService._();
 
+  /// Singleton instance
+  static final ScreenshotService instance = ScreenshotService._();
+
+  /// Optional initialization logic (currently a no-op but kept for future use)
+  Future<void> init() async {
+    // Placeholder for any platform-specific initialization in the future.
+    return;
+  }
+
   static const String _logTag = "[ScreenshotService]";
 
   static final NativeScreenshotController screenshotController =

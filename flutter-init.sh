@@ -30,3 +30,6 @@ sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "$FLUTTER_VE
 
 # Run code generation
 dart run build_runner build --delete-conflicting-outputs
+
+# Run gen-l10n
+flutter gen-l10n
