@@ -36,6 +36,7 @@ using fun3_t = bool (*)(HANDLE, CONST GROUP_AFFINITY *, PGROUP_AFFINITY);
 #if defined(__linux__) && !defined(__ANDROID__)
 #include <stdlib.h>
 #include <sys/mman.h>
+#include <unistd.h>
 #endif
 
 #if defined(__APPLE__) || defined(__ANDROID__) || defined(__OpenBSD__) || \
@@ -481,9 +482,15 @@ void *aligned_large_pages_alloc(size_t allocSize)
 void *aligned_large_pages_alloc(size_t allocSize)
 {
 #if defined(__linux__)
-    constexpr size_t alignment = 2 * 1024 * 1024; // assumed 2MB page size
+    size_t alignment = sysconf(_SC_PAGESIZE);
+    if (alignment == (size_t)-1) {
+        alignment = 4096;
+    }
 #else
-    constexpr size_t alignment = 4096; // assumed small page size
+    size_t alignment = sysconf(_SC_PAGESIZE);
+    if (alignment == (size_t)-1) {
+        alignment = 4096;
+    }
 #endif
 
     // round up to multiples of alignment
