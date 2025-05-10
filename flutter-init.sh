@@ -26,8 +26,7 @@ flutter pub get
 # Generate Flutter version file
 echo "const Map<String, String> flutterVersion =" > "$FLUTTER_VERSION_FILE"
 flutter --version --machine | tee -a "$FLUTTER_VERSION_FILE"
-ex -s -c '$s/$/;/' -c wq "$FLUTTER_VERSION_FILE"
+sed -i.bak -e ':a' -e 'N' -e '$!ba' -e 's/}\([[:space:]]*\)$/};\1/' "$FLUTTER_VERSION_FILE" && rm "${FLUTTER_VERSION_FILE}.bak"
 
 # Run code generation
 dart run build_runner build --delete-conflicting-outputs
-
