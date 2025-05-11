@@ -5,6 +5,13 @@
 
 part of '../../custom_drawer/custom_drawer.dart';
 
+/// Internal helper to track item and its nesting level for rendering purposes.
+class _DrawerEntry {
+  const _DrawerEntry(this.item, this.level);
+  final CustomDrawerItem<dynamic> item;
+  final int level; // 0 = parent, 1 = first level child
+}
+
 /// CustomDrawer Widget
 ///
 /// The widget laying out the custom drawer
@@ -59,6 +66,12 @@ class CustomDrawerState extends State<CustomDrawer>
   late double _drawerOpenRatio;
   static const double _overlayRadius = 28.0;
 
+  // Expansion state for parent drawer items (keyed by their itemValue)
+  final Map<dynamic, bool> _expansionState = <dynamic, bool>{};
+
+  // Flattened list of visible drawer entries after applying expansion state
+  late List<_DrawerEntry> _visibleEntries;
+
   @override
   void initState() {
     super.initState();
@@ -90,6 +103,10 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget buildListMenus() {
+    // Build visible entries each time the list is rebuilt so that expansion
+    // state is respected.
+    _visibleEntries = _getVisibleEntries();
+
     return SliverToBoxAdapter(
       key: const Key('custom_drawer_sliver_to_box_adapter'),
       child: ListView.builder(
@@ -98,10 +115,30 @@ class CustomDrawerState extends State<CustomDrawer>
         padding: const EdgeInsets.only(top: 4.0),
         physics: const BouncingScrollPhysics(),
         shrinkWrap: true,
-        itemCount: widget.drawerItems.length,
+        itemCount: _visibleEntries.length,
         itemBuilder: _buildItem,
       ),
     );
+  }
+
+  /// Builds a flattened list of drawer entries based on the current expansion
+  /// state.
+  List<_DrawerEntry> _getVisibleEntries() {
+    final List<_DrawerEntry> entries = <_DrawerEntry>[];
+
+    for (final CustomDrawerItem<dynamic> topItem in widget.drawerItems) {
+      entries.add(_DrawerEntry(topItem, 0));
+
+      // If the item is a parent and currently expanded, add its children
+      final bool isExpanded = _expansionState[topItem.itemValue] ?? false;
+      if (topItem.isParent && isExpanded) {
+        for (final CustomDrawerItem<dynamic> child in topItem.children!) {
+          entries.add(_DrawerEntry(child, 1));
+        }
+      }
+    }
+
+    return entries;
   }
 
   @override
@@ -218,13 +255,51 @@ class CustomDrawerState extends State<CustomDrawer>
   }
 
   Widget _buildItem(BuildContext context, int index) {
-    final CustomDrawerItem<dynamic> item = widget.drawerItems[index];
+    final _DrawerEntry entry = _visibleEntries[index];
+    final CustomDrawerItem<dynamic> item = entry.item;
 
-    final double itemPadding =
-        View.of(context).platformDispatcher.views.first.physicalSize.height >=
-                1080
-            ? AppTheme.drawerItemPadding
-            : AppTheme.drawerItemPaddingSmallScreen;
+    // Constant vertical padding per Material 8.0 guideline
+    const double itemPadding = 8.0;
+
+    // Indentation for child items
+    final double indent = entry.level * 24.0; // 24dp indent per level
+
+    // If the item is a parent, configure expand/collapse behavior and trailing icon
+    CustomDrawerItem<dynamic> configuredItem = item;
+    if (item.isParent && entry.level == 0) {
+      final bool isExpanded = _expansionState[item.itemValue] ?? false;
+
+      configuredItem = CustomDrawerItem<dynamic>(
+        key: ValueKey<dynamic>('parent_${item.itemValue}_$isExpanded'),
+        currentSelectedValue: item.currentSelectedValue,
+        onSelectionChanged: (dynamic _) {},
+        itemValue: item.itemValue,
+        itemTitle: item.itemTitle,
+        itemIcon: item.itemIcon,
+        onTapOverride: () {
+          setState(() {
+            _expansionState[item.itemValue] = !isExpanded;
+            _visibleEntries = _getVisibleEntries();
+          });
+        },
+        // Only show the trailing arrow if it's not Settings or Help
+        // This assumes that parent items with these titles are used for Settings and Help
+        trailingContent: (item.itemTitle == S.of(context).settings ||
+                item.itemTitle == S.of(context).help)
+            ? null
+            : AnimatedRotation(
+                turns: isExpanded ? 0.5 : 0.0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                child: Icon(
+                  Icons.expand_more,
+                  key: const Key('custom_drawer_parent_expand_icon'),
+                  color: DB().colorSettings.drawerTextColor,
+                ),
+              ),
+        children: item.children,
+      );
+    }
 
     final Widget drawerItemWidget;
 
@@ -251,16 +326,37 @@ class CustomDrawerState extends State<CustomDrawer>
         key: Key('custom_drawer_selected_item_stack_$index'),
         children: <Widget>[
           selectedItemOverlay,
-          item,
+          configuredItem,
         ],
       );
     } else {
-      drawerItemWidget = item;
+      drawerItemWidget = configuredItem;
     }
+
     return Padding(
       key: Key('custom_drawer_item_padding_$index'),
-      padding: EdgeInsets.symmetric(vertical: itemPadding),
-      child: drawerItemWidget,
+      padding:
+          EdgeInsets.only(left: indent, top: itemPadding, bottom: itemPadding),
+      child: entry.level == 1
+          // Animate child category appearance/disappearance for better UX
+          ? TweenAnimationBuilder<double>(
+              key: Key('custom_drawer_child_animation_$index'),
+              tween: Tween<double>(begin: 0, end: 1),
+              // Quick slide-in / fade-in
+              duration: const Duration(milliseconds: 250),
+              curve: Curves.easeOut,
+              child: drawerItemWidget,
+              builder: (BuildContext context, double value, Widget? child) {
+                return Opacity(
+                  opacity: value,
+                  child: Transform.translate(
+                    offset: Offset((1 - value) * 16, 0), // slide from left
+                    child: child,
+                  ),
+                );
+              },
+            )
+          : drawerItemWidget,
     );
   }
 

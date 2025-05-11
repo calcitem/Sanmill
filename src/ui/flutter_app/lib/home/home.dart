@@ -50,10 +50,12 @@ enum _DrawerIndex {
   aiVsAi,
   humanVsLAN,
   setupPosition,
+  statistics,
+  settingsGroup,
   generalSettings,
   ruleSettings,
   appearance,
-  statistics,
+  helpGroup,
   howToPlay,
   feedback,
   about,
@@ -91,14 +93,14 @@ extension _DrawerScreen on _DrawerIndex {
           GameMode.setupPosition,
           key: const Key("setup_position"),
         );
+      case _DrawerIndex.statistics:
+        return const StatisticsPage();
       case _DrawerIndex.generalSettings:
         return const GeneralSettingsPage();
       case _DrawerIndex.ruleSettings:
         return const RuleSettingsPage();
       case _DrawerIndex.appearance:
         return const AppearanceSettingsPage();
-      case _DrawerIndex.statistics:
-        return const StatisticsPage();
       case _DrawerIndex.howToPlay:
         return const HowToPlayScreen();
       case _DrawerIndex.feedback:
@@ -112,6 +114,10 @@ extension _DrawerScreen on _DrawerIndex {
         if (EnvironmentConfig.test == false) {
           SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
         }
+        return null;
+      // Parent groups do not have screens
+      case _DrawerIndex.settingsGroup:
+      case _DrawerIndex.helpGroup:
         return null;
     }
   }
@@ -161,6 +167,13 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.setupPosition:
         logger.i('Switching to Setup Position');
         break;
+      case _DrawerIndex.statistics:
+        logger.i('Switching to Statistics');
+        break;
+      // Logging for group items is not strictly necessary as they don't switch screens
+      case _DrawerIndex.settingsGroup:
+        logger.i('Toggling Settings group'); // Or simply remove logging
+        break;
       case _DrawerIndex.generalSettings:
         logger.i('Switching to General Settings');
         break;
@@ -170,8 +183,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.appearance:
         logger.i('Switching to Appearance');
         break;
-      case _DrawerIndex.statistics:
-        logger.i('Switching to Statistics');
+      case _DrawerIndex.helpGroup:
+        logger.i('Toggling Help group'); // Or simply remove logging
         break;
       case _DrawerIndex.howToPlay:
         logger.i('Switching to How To Play');
@@ -201,8 +214,12 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       GameController().reset(force: true);
     }
 
-    // If no real change in index (and it's not the special "feedback" case), just return.
-    if (_drawerIndex == index && _drawerIndex != _DrawerIndex.feedback) {
+    // If no real change in index (and it's not the special "feedback" case,
+    // or a group item that doesn't change screen), just return.
+    if (_drawerIndex == index &&
+        _drawerIndex != _DrawerIndex.feedback &&
+        index != _DrawerIndex.settingsGroup && // Add group checks
+        index != _DrawerIndex.helpGroup) {
       return;
     }
 
@@ -246,8 +263,19 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       }
     }
 
+    // Do not attempt to set screen for group items
+    if (index == _DrawerIndex.settingsGroup ||
+        index == _DrawerIndex.helpGroup) {
+      // Parent items are handled by CustomDrawer's expansion logic,
+      // no screen change or route push needed here for the parent itself.
+      // SelectionChanged for these is `(_) {}` anyway.
+      return;
+    }
+
     setState(() {
       assert(index != _DrawerIndex.feedback);
+      assert(index != _DrawerIndex.settingsGroup);
+      assert(index != _DrawerIndex.helpGroup);
       _pushRoute(index);
       _drawerIndex = index;
       if (index.screen != null) {
@@ -259,6 +287,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   // Function to check if the current drawer state corresponds to a game
   bool _isGame(_DrawerIndex index) {
     // TODO: Magic Number. The first 4 indices correspond to game modes
+    // Adjusted magic number due to addition of statistics and group items.
+    // humanVsAi, humanVsHuman, aiVsAi, humanVsLAN, setupPosition are games.
+    // Their indices are 0, 1, 2, 3, 4. So index < 5 is correct.
     return index.index < 5;
   }
 
@@ -413,30 +444,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
           currentSelectedValue: _drawerIndex,
           onSelectionChanged: _changeIndex,
         ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_general_settings'),
-        itemValue: _DrawerIndex.generalSettings,
-        itemTitle: S.of(context).generalSettings,
-        itemIcon: const Icon(FluentIcons.options_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_rule_settings'),
-        itemValue: _DrawerIndex.ruleSettings,
-        itemTitle: S.of(context).ruleSettings,
-        itemIcon: const Icon(FluentIcons.task_list_ltr_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_appearance'),
-        itemValue: _DrawerIndex.appearance,
-        itemTitle: S.of(context).appearance,
-        itemIcon: const Icon(FluentIcons.design_ideas_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
+      // Statistics item
       CustomDrawerItem<_DrawerIndex>(
         key: const Key('drawer_item_statistics'),
         itemValue: _DrawerIndex.statistics,
@@ -445,30 +453,84 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
+      // Settings group item
       CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_general_how_to_play'),
-        itemValue: _DrawerIndex.howToPlay,
-        itemTitle: S.of(context).howToPlay,
+        key: const Key('drawer_item_settings_group'), // Changed key
+        itemValue: _DrawerIndex.settingsGroup, // New itemValue for the group
+        itemTitle: S.of(context).settings,
+        itemIcon: const Icon(FluentIcons.settings_24_regular),
+        currentSelectedValue: _drawerIndex,
+        onSelectionChanged: (_) {}, // Parent item tap is handled for expansion
+        // Children are now part of the CustomDrawerItem's children list
+        children: <CustomDrawerItem<_DrawerIndex>>[
+          CustomDrawerItem<_DrawerIndex>(
+            key: const Key(
+                'drawer_item_general_settings_child'), // Key for child
+            itemValue: _DrawerIndex.generalSettings,
+            itemTitle: S.of(context).generalSettings,
+            itemIcon:
+                const Icon(FluentIcons.options_24_regular), // Original icon
+            currentSelectedValue: _drawerIndex,
+            onSelectionChanged: _changeIndex,
+            // No manual indentation needed
+          ),
+          CustomDrawerItem<_DrawerIndex>(
+            key: const Key('drawer_item_rule_settings_child'), // Key for child
+            itemValue: _DrawerIndex.ruleSettings,
+            itemTitle: S.of(context).ruleSettings,
+            itemIcon: const Icon(
+                FluentIcons.task_list_ltr_24_regular), // Original icon
+            currentSelectedValue: _drawerIndex,
+            onSelectionChanged: _changeIndex,
+            // No manual indentation needed
+          ),
+          CustomDrawerItem<_DrawerIndex>(
+            key: const Key('drawer_item_appearance_child'), // Key for child
+            itemValue: _DrawerIndex.appearance,
+            itemTitle: S.of(context).appearance,
+            itemIcon: const Icon(
+                FluentIcons.design_ideas_24_regular), // Original icon
+            currentSelectedValue: _drawerIndex,
+            onSelectionChanged: _changeIndex,
+            // No manual indentation needed
+          ),
+        ],
+      ),
+      // New "Help" group
+      CustomDrawerItem<_DrawerIndex>(
+        key: const Key('drawer_item_help_group'),
+        itemValue: _DrawerIndex.helpGroup, // Use specific group itemValue
+        itemTitle: S.of(context).help,
         itemIcon: const Icon(FluentIcons.question_circle_24_regular),
         currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
-      ),
-      if (!kIsWeb && Platform.isAndroid)
-        CustomDrawerItem<_DrawerIndex>(
-          key: const Key('drawer_item_feedback'),
-          itemValue: _DrawerIndex.feedback,
-          itemTitle: S.of(context).feedback,
-          itemIcon: const Icon(FluentIcons.chat_warning_24_regular),
-          currentSelectedValue: _drawerIndex,
-          onSelectionChanged: _changeIndex,
-        ),
-      CustomDrawerItem<_DrawerIndex>(
-        key: const Key('drawer_item_about'),
-        itemValue: _DrawerIndex.about,
-        itemTitle: S.of(context).about,
-        itemIcon: const Icon(FluentIcons.info_24_regular),
-        currentSelectedValue: _drawerIndex,
-        onSelectionChanged: _changeIndex,
+        onSelectionChanged: (_) {}, // Parent item tap is handled for expansion
+        children: <CustomDrawerItem<_DrawerIndex>>[
+          CustomDrawerItem<_DrawerIndex>(
+            key: const Key('drawer_item_how_to_play_child'),
+            itemValue: _DrawerIndex.howToPlay,
+            itemTitle: S.of(context).howToPlay,
+            itemIcon: const Icon(FluentIcons.question_circle_24_regular),
+            currentSelectedValue: _drawerIndex,
+            onSelectionChanged: _changeIndex,
+          ),
+          if (!kIsWeb && Platform.isAndroid)
+            CustomDrawerItem<_DrawerIndex>(
+              key: const Key('drawer_item_feedback_child'),
+              itemValue: _DrawerIndex.feedback,
+              itemTitle: S.of(context).feedback,
+              itemIcon: const Icon(FluentIcons.comment_24_regular),
+              currentSelectedValue: _drawerIndex,
+              onSelectionChanged: _changeIndex,
+            ),
+          CustomDrawerItem<_DrawerIndex>(
+            key: const Key('drawer_item_about_child'),
+            itemValue: _DrawerIndex.about,
+            itemTitle: S.of(context).about,
+            itemIcon: const Icon(FluentIcons.info_24_regular),
+            currentSelectedValue: _drawerIndex,
+            onSelectionChanged: _changeIndex,
+          ),
+        ],
       ),
       if (!kIsWeb && Platform.isAndroid)
         CustomDrawerItem<_DrawerIndex>(

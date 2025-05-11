@@ -13,6 +13,9 @@ class CustomDrawerItem<T> extends StatelessWidget {
     required this.itemValue,
     required this.itemTitle,
     required this.itemIcon,
+    this.children,
+    this.onTapOverride,
+    this.trailingContent,
   });
 
   final T currentSelectedValue;
@@ -20,8 +23,12 @@ class CustomDrawerItem<T> extends StatelessWidget {
   final T itemValue;
   final String itemTitle;
   final Icon itemIcon;
+  final List<CustomDrawerItem<dynamic>>? children;
+  final VoidCallback? onTapOverride;
+  final Widget? trailingContent;
 
   bool get isSelected => currentSelectedValue == itemValue;
+  bool get isParent => children != null && children!.isNotEmpty;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +88,11 @@ class CustomDrawerItem<T> extends StatelessWidget {
                     style: titleStyle,
                   ),
                 ),
-        )
+        ),
+        if (trailingContent != null) ...<Widget>[
+          const SizedBox(width: 4.0),
+          trailingContent!,
+        ],
       ],
     );
 
@@ -89,7 +100,7 @@ class CustomDrawerItem<T> extends StatelessWidget {
       key: const Key('custom_drawer_item_inkwell'),
       splashColor: AppTheme.drawerSplashColor,
       highlightColor: Colors.transparent,
-      onTap: () => onSelectionChanged(itemValue),
+      onTap: onTapOverride ?? () => onSelectionChanged(itemValue),
       child: drawerItem,
     );
   }
