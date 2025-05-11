@@ -4,6 +4,7 @@
 // stats_service.dart
 
 import '../../../game_page/services/mill.dart';
+import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/logger.dart';
 import '../../statistics/model/stats_settings.dart';
@@ -27,70 +28,169 @@ class EloRatingService {
 
   /// Fixed AI Elo ratings based on difficulty level
   static int getFixedAiEloRating(int level) {
+    int ret;
+
+    // Base ELO rating based on difficulty level
     switch (level) {
       case 1:
-        return 300; // Complete beginner level, often misses captures
+        ret = 300; // Complete beginner level, often misses captures
       case 2:
-        return 500; // Can see some simple tactics, but makes many mistakes
+        ret = 500; // Can see some simple tactics, but makes many mistakes
       case 3:
-        return 600; // Has some awareness, still at beginner stage
+        ret = 600; // Has some awareness, still at beginner stage
       case 4:
-        return 700; // Basic capture awareness, occasionally sees 1-2 move traps
+        ret = 700; // Basic capture awareness, occasionally sees 1-2 move traps
       case 5:
-        return 800; // Serious beginners can beat this level consistently
+        ret = 800; // Serious beginners can beat this level consistently
       case 6:
-        return 900; // Requires basic opening principles to beat
+        ret = 900; // Requires basic opening principles to beat
       case 7:
-        return 1000; // Has basic positional understanding and simple midgame tactics
+        ret =
+            1000; // Has basic positional understanding and simple midgame tactics
       case 8:
-        return 1100; // Can identify basic threats but lacks comprehensive planning
+        ret =
+            1100; // Can identify basic threats but lacks comprehensive planning
       case 9:
-        return 1200; // Amateur common level with some tactical patterns
+        ret = 1200; // Amateur common level with some tactical patterns
       case 10:
-        return 1300; // Average hobbyist level
+        ret = 1300; // Average hobbyist level
       case 11:
-        return 1400; // Some understanding of common openings, with attack/defense ideas
+        ret =
+            1400; // Some understanding of common openings, with attack/defense ideas
       case 12:
-        return 1500; // Club/school team level with some practical experience
+        ret = 1500; // Club/school team level with some practical experience
       case 13:
-        return 1600; // Improved middle and endgame ability with fewer mistakes
+        ret = 1600; // Improved middle and endgame ability with fewer mistakes
       case 14:
-        return 1700; // "Experienced" amateur level with planning awareness
+        ret = 1700; // "Experienced" amateur level with planning awareness
       case 15:
-        return 1800; // Amateur plateau level that's difficult to surpass
+        ret = 1800; // Amateur plateau level that's difficult to surpass
       case 16:
-        return 1900; // Requires systematic opening/endgame knowledge and stronger tactics
+        ret =
+            1900; // Requires systematic opening/endgame knowledge and stronger tactics
       case 17:
-        return 2000; // Semi-professional level with deeper study and lower error rate
+        ret =
+            2000; // Semi-professional level with deeper study and lower error rate
       case 18:
-        return 2100; // High-level amateur or low-level professional
+        ret = 2100; // High-level amateur or low-level professional
       case 19:
-        return 2200; // Top amateur or national master level
+        ret = 2200; // Top amateur or national master level
       case 20:
-        return 2300; // Entry international master level
+        ret = 2300; // Entry international master level
       case 21:
-        return 2350; // Lower international master level
+        ret = 2350; // Lower international master level
       case 22:
-        return 2400; // Average international master
+        ret = 2400; // Average international master
       case 23:
-        return 2450; // Upper IM or entry GM level
+        ret = 2450; // Upper IM or entry GM level
       case 24:
-        return 2500; // Stable GM threshold with comprehensive skills
+        ret = 2500; // Stable GM threshold with comprehensive skills
       case 25:
-        return 2550; // Mid-level GM with competitive international performance
+        ret = 2550; // Mid-level GM with competitive international performance
       case 26:
-        return 2600; // High-level GM competing for titles in international tournaments
+        ret =
+            2600; // High-level GM competing for titles in international tournaments
       case 27:
-        return 2650; // Top-ranked GM with championship potential
+        ret = 2650; // Top-ranked GM with championship potential
       case 28:
-        return 2700; // Elite GM, "2700 club" threshold
+        ret = 2700; // Elite GM, "2700 club" threshold
       case 29:
-        return 2750; // World-class GM capable of competing with world champions
+        ret = 2750; // World-class GM capable of competing with world champions
       case 30:
-        return 2800; // Near world champion level
+        ret = 2800; // Near world champion level
       default:
-        return 1400; // Default to level 11 for any unspecified levels
+        ret = 1400; // Default to level 11 for any unspecified levels
     }
+
+    // Adjust rating based on game rules and settings
+
+    // Nine Men's Morris with AI moving first
+    if (DB().ruleSettings.isLikelyNineMensMorris() &&
+        DB().generalSettings.aiMovesFirst) {
+      ret -= 100; // Decrease AI rating as it has advantage
+    }
+
+    // Twelve Men's Morris with AI moving first
+    if (DB().ruleSettings.isLikelyTwelveMensMorris() &&
+        DB().generalSettings.aiMovesFirst) {
+      ret += 200; // Increase AI rating as game is more complex
+    }
+
+    // Move time adjustments for higher skill levels
+    if (DB().generalSettings.moveTime != 1 &&
+        DB().generalSettings.skillLevel >= 15) {
+      final int moveTime = DB().generalSettings.moveTime;
+      if (moveTime == 0) {
+        ret += 100; // Instant moves
+      } else if (moveTime >= 2 && moveTime <= 5) {
+        ret += 25; // Short thinking time
+      } else if (moveTime >= 6 && moveTime <= 10) {
+        ret += 50; // Medium thinking time
+      } else if (moveTime >= 10 && moveTime <= 60) {
+        ret += 75; // Longer thinking time
+      }
+    }
+
+    // Shuffling disabled
+    if (!DB().generalSettings.shufflingEnabled) {
+      ret -= 100; // Decrease rating as AI becomes more predictable
+    }
+
+    // Mobility consideration disabled
+    if (!DB().generalSettings.considerMobility) {
+      ret -= 50; // Decrease rating as AI ignores mobility advantage
+    }
+
+    // Focus on blocking paths enabled
+    if (DB().generalSettings.focusOnBlockingPaths) {
+      ret -= 100; // Decrease rating as AI focuses on less optimal strategy
+    }
+
+    // Perfect database enabled
+    // TODO: If Perfect Database if fully implemented, we should increase the rating as AI has access to perfect endgame knowledge
+    if (DB().generalSettings.usePerfectDatabase) {
+      ret +=
+          100; // Increase rating as AI has access to perfect endgame knowledge
+    }
+
+    // Human move time adjustments
+    if (DB().generalSettings.humanMoveTime != 0) {
+      final int humanMoveTime = DB().generalSettings.humanMoveTime;
+      if (humanMoveTime >= 1 && humanMoveTime <= 5) {
+        ret += 100; // Human has very limited time
+      } else if (humanMoveTime >= 6 && humanMoveTime <= 10) {
+        ret += 50; // Human has limited time
+      } else if (humanMoveTime >= 11 && humanMoveTime <= 30) {
+        ret += 20; // Human has moderate time
+      } else if (humanMoveTime >= 31 && humanMoveTime <= 60) {
+        ret += 10; // Human has sufficient time
+      }
+    }
+
+    // AI is lazy mode
+    if (DB().generalSettings.aiIsLazy) {
+      ret = ret ~/ 2; // Halve the rating as AI deliberately plays suboptimally
+    }
+
+    // MCTS algorithm with no perfect database
+    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.mcts &&
+        !DB().generalSettings.usePerfectDatabase) {
+      ret = (ret * 0.2)
+          .round(); // Significant reduction for MCTS without perfect DB
+    }
+
+    // Random algorithm with no perfect database
+    if (DB().generalSettings.searchAlgorithm == SearchAlgorithm.random &&
+        !DB().generalSettings.usePerfectDatabase) {
+      ret = 100; // Lowest possible rating for random play
+    }
+
+    // Ensure rating is at least 100
+    if (ret < 100) {
+      ret = 100;
+    }
+
+    return ret;
   }
 
   // Returns a Stats object for the given AI level with appropriate statistics
