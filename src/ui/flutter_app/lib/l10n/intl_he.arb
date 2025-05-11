@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "הדירוג שלי",
+  "@myRating": {},
+  "gamesPlayed": "משחקים ששוחקו",
+  "@gamesPlayed": {},
+  "wins": "ניצחונות",
+  "@wins": {},
+  "losses": "הפסדים",
+  "@losses": {},
+  "draws": "תיקו",
+  "@draws": {},
+  "lastUpdated": "עודכן לאחרונה",
+  "@lastUpdated": {},
+  "format": "פורמט:",
+  "@format": {},
+  "resetStatistics": "איפוס סטטיסטיקות",
+  "@resetStatistics": {},
+  "drawRate": "שיעור תיקו",
+  "@drawRate": {},
+  "lossRate": "שיעור הפסדים",
+  "@lossRate": {},
+  "aiStatistics": "סטטיסטיקות AI",
+  "@aiStatistics": {},
+  "enableStatistics": "הפעל סטטיסטיקות",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "כאשר מופעל, תוצאות המשחק יתועדו בסטטיסטיקה. עם זאת, משחקים הכוללים החזרת מהלכים לא יתועדו. כאשר מושבת, איסוף הסטטיסטיקות מושהה.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "פעולה זו תאפס את כל סטטיסטיקות המשחק. לא ניתן לבטל פעולה זו.",
+  "@thisWillResetAllGameStatistics": {}
 }

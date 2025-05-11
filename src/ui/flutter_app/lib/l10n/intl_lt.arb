@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mano įvertinimas",
+  "@myRating": {},
+  "gamesPlayed": "Sužaista žaidimų",
+  "@gamesPlayed": {},
+  "wins": "Pergalės",
+  "@wins": {},
+  "losses": "Pralaimėjimai",
+  "@losses": {},
+  "draws": "Lygiosios",
+  "@draws": {},
+  "lastUpdated": "Paskutinį kartą atnaujinta",
+  "@lastUpdated": {},
+  "format": "Formatas:",
+  "@format": {},
+  "resetStatistics": "Nustatyti statistiką iš naujo",
+  "@resetStatistics": {},
+  "drawRate": "Lygiosiomis baigtų žaidimų rodiklis",
+  "@drawRate": {},
+  "lossRate": "Pralaimėjimų rodiklis",
+  "@lossRate": {},
+  "aiStatistics": "DI statistika",
+  "@aiStatistics": {},
+  "enableStatistics": "Įjungti statistiką",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kai įjungta, žaidimų rezultatai bus įrašomi į statistiką. Tačiau žaidimai, kuriuose buvo atšauktų ėjimų, nebus įrašomi. Kai išjungta, statistikos rinkimas pristabdomas.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Tai nustatys visą žaidimų statistiką iš naujo. Šio veiksmo negalima anuliuoti.",
+  "@thisWillResetAllGameStatistics": {}
 }

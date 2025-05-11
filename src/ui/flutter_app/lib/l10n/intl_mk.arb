@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Мој рејтинг",
+  "@myRating": {},
+  "gamesPlayed": "Одиграни игри",
+  "@gamesPlayed": {},
+  "wins": "Победи",
+  "@wins": {},
+  "losses": "Порази",
+  "@losses": {},
+  "draws": "Нерешени",
+  "@draws": {},
+  "lastUpdated": "Последно ажурирано",
+  "@lastUpdated": {},
+  "format": "Формат:",
+  "@format": {},
+  "resetStatistics": "Ресетирај статистика",
+  "@resetStatistics": {},
+  "drawRate": "Стапка на нерешени",
+  "@drawRate": {},
+  "lossRate": "Стапка на порази",
+  "@lossRate": {},
+  "aiStatistics": "Статистика за ВИ",
+  "@aiStatistics": {},
+  "enableStatistics": "Овозможи статистика",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Кога е овозможено, резултатите од играта ќе бидат евидентирани во статистиката. Сепак, игрите што вклучуваат враќање на потези нема да бидат евидентирани. Кога е оневозможено, собирањето статистика е паузирано.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ова ќе ја ресетира целата статистика на играта. Оваа акција не може да се врати.",
+  "@thisWillResetAllGameStatistics": {}
 }

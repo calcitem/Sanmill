@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Meine Bewertung",
+  "@myRating": {},
+  "gamesPlayed": "Gespielte Spiele",
+  "@gamesPlayed": {},
+  "wins": "Siege",
+  "@wins": {},
+  "losses": "Niederlagen",
+  "@losses": {},
+  "draws": "Unentschieden",
+  "@draws": {},
+  "lastUpdated": "Zuletzt aktualisiert",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Statistiken zurücksetzen",
+  "@resetStatistics": {},
+  "drawRate": "Unentschiedenquote",
+  "@drawRate": {},
+  "lossRate": "Niederlagenquote",
+  "@lossRate": {},
+  "aiStatistics": "KI-Statistiken",
+  "@aiStatistics": {},
+  "enableStatistics": "Statistiken aktivieren",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Wenn aktiviert, werden Spielergebnisse in den Statistiken erfasst. Spiele mit Zugrücknahmen werden jedoch nicht erfasst. Wenn deaktiviert, wird die Erfassung von Statistiken angehalten.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Dadurch werden alle Spielstatistiken zurückgesetzt. Diese Aktion kann nicht rückgängig gemacht werden.",
+  "@thisWillResetAllGameStatistics": {}
 }

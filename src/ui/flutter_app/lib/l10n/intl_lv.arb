@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mans vērtējums",
+  "@myRating": {},
+  "gamesPlayed": "Spēlētās spēles",
+  "@gamesPlayed": {},
+  "wins": "Uzvaras",
+  "@wins": {},
+  "losses": "Zaudējumi",
+  "@losses": {},
+  "draws": "Neizšķirti",
+  "@draws": {},
+  "lastUpdated": "Pēdējo reizi atjaunināts",
+  "@lastUpdated": {},
+  "format": "Formāts:",
+  "@format": {},
+  "resetStatistics": "Atiestatīt statistiku",
+  "@resetStatistics": {},
+  "drawRate": "Neizšķirtu īpatsvars",
+  "@drawRate": {},
+  "lossRate": "Zaudējumu īpatsvars",
+  "@lossRate": {},
+  "aiStatistics": "MI statistika",
+  "@aiStatistics": {},
+  "enableStatistics": "Iespējot statistiku",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kad iespējots, spēļu rezultāti tiks reģistrēti statistikā. Tomēr spēles, kas ietver gājienu atcelšanu, netiks reģistrētas. Kad atspējots, statistikas vākšana tiek apturēta.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Tiks atiestatīta visa spēļu statistika. Šo darbību nevar atsaukt.",
+  "@thisWillResetAllGameStatistics": {}
 }

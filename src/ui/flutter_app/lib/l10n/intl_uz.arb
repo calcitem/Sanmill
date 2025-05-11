@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mening reytingim",
+  "@myRating": {},
+  "gamesPlayed": "O'ynalgan o'yinlar",
+  "@gamesPlayed": {},
+  "wins": "G'alabalar",
+  "@wins": {},
+  "losses": "Mag'lubiyatlar",
+  "@losses": {},
+  "draws": "Duranglar",
+  "@draws": {},
+  "lastUpdated": "Oxirgi yangilanish",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Statistikani tiklash",
+  "@resetStatistics": {},
+  "drawRate": "Duranglar nisbati",
+  "@drawRate": {},
+  "lossRate": "Mag'lubiyatlar nisbati",
+  "@lossRate": {},
+  "aiStatistics": "Sun'iy intellekt statistikasi",
+  "@aiStatistics": {},
+  "enableStatistics": "Statistikani yoqish",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Yoqilganda, o'yin natijalari statistikada qayd etiladi. Biroq, orqaga qaytarishlar bilan bog'liq o'yinlar qayd etilmaydi. O'chirilganda, statistika yig'ish to'xtatiladi.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Bu barcha o'yin statistikasini tiklaydi. Bu amalni bekor qilib bo'lmaydi.",
+  "@thisWillResetAllGameStatistics": {}
 }

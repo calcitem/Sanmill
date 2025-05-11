@@ -624,7 +624,7 @@
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "統計",
+  "statistics": "統計資料",
   "@statistics": {
     "description": "Statistics"
   },
@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "我的積分",
+  "@myRating": {},
+  "gamesPlayed": "已玩遊戲數",
+  "@gamesPlayed": {},
+  "wins": "勝",
+  "@wins": {},
+  "losses": "負",
+  "@losses": {},
+  "draws": "和",
+  "@draws": {},
+  "lastUpdated": "上次更新",
+  "@lastUpdated": {},
+  "format": "格式：",
+  "@format": {},
+  "resetStatistics": "重設統計資料",
+  "@resetStatistics": {},
+  "drawRate": "和局率",
+  "@drawRate": {},
+  "lossRate": "敗局率",
+  "@lossRate": {},
+  "aiStatistics": "AI 統計資料",
+  "@aiStatistics": {},
+  "enableStatistics": "啟用統計",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "啟用後，遊戲結果將記錄至統計資料中。然而，涉及悔棋的遊戲將不會被記錄。停用後，統計資料收集將暫停。",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "這將重設所有遊戲統計資料。此動作無法復原。",
+  "@thisWillResetAllGameStatistics": {}
 }

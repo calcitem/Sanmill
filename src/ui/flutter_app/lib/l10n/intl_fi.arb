@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Oma luokitus",
+  "@myRating": {},
+  "gamesPlayed": "Pelatut pelit",
+  "@gamesPlayed": {},
+  "wins": "Voitot",
+  "@wins": {},
+  "losses": "Häviöt",
+  "@losses": {},
+  "draws": "Tasapelit",
+  "@draws": {},
+  "lastUpdated": "Viimeksi päivitetty",
+  "@lastUpdated": {},
+  "format": "Muoto:",
+  "@format": {},
+  "resetStatistics": "Nollaa tilastot",
+  "@resetStatistics": {},
+  "drawRate": "Tasapeliprosentti",
+  "@drawRate": {},
+  "lossRate": "Häviöprosentti",
+  "@lossRate": {},
+  "aiStatistics": "Tekoälyn tilastot",
+  "@aiStatistics": {},
+  "enableStatistics": "Ota tilastot käyttöön",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kun tämä on käytössä, pelitulokset tallennetaan tilastoihin. Siirtojen peruutuksia sisältäviä pelejä ei kuitenkaan tallenneta. Kun tämä ei ole käytössä, tilastojen kerääminen keskeytetään.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Tämä nollaa kaikki pelitilastot. Toimintoa ei voi kumota.",
+  "@thisWillResetAllGameStatistics": {}
 }

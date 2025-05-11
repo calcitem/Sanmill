@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Իմ վարկանիշը",
+  "@myRating": {},
+  "gamesPlayed": "Խաղացված խաղեր",
+  "@gamesPlayed": {},
+  "wins": "Հաղթանակներ",
+  "@wins": {},
+  "losses": "Պարտություններ",
+  "@losses": {},
+  "draws": "Ոչ-ոքիներ",
+  "@draws": {},
+  "lastUpdated": "Վերջին թարմացում",
+  "@lastUpdated": {},
+  "format": "Ձևաչափ՝",
+  "@format": {},
+  "resetStatistics": "Վերականգնել վիճակագրությունը",
+  "@resetStatistics": {},
+  "drawRate": "Ոչ-ոքիների տոկոս",
+  "@drawRate": {},
+  "lossRate": "Պարտությունների տոկոս",
+  "@lossRate": {},
+  "aiStatistics": "ԱԲ վիճակագրություն",
+  "@aiStatistics": {},
+  "enableStatistics": "Միացնել վիճակագրությունը",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Միացված լինելու դեպքում խաղի արդյունքները կարձանագրվեն վիճակագրության մեջ։ Սակայն հետքայլեր պարունակող խաղերը չեն արձանագրվի։ Անջատված լինելու դեպքում վիճակագրության հավաքագրումը կդադարեցվի։",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Սա կվերականգնի խաղի ամբողջ վիճակագրությունը։ Այս գործողությունը հնարավոր չէ հետարկել։",
+  "@thisWillResetAllGameStatistics": {}
 }

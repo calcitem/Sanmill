@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mín einkunn",
+  "@myRating": {},
+  "gamesPlayed": "Spilaðir leikir",
+  "@gamesPlayed": {},
+  "wins": "Sigrar",
+  "@wins": {},
+  "losses": "Töp",
+  "@losses": {},
+  "draws": "Jafntefli",
+  "@draws": {},
+  "lastUpdated": "Síðast uppfært",
+  "@lastUpdated": {},
+  "format": "Snið:",
+  "@format": {},
+  "resetStatistics": "Endurstilla tölfræði",
+  "@resetStatistics": {},
+  "drawRate": "Jafnteflishlutfall",
+  "@drawRate": {},
+  "lossRate": "Taphlutfall",
+  "@lossRate": {},
+  "aiStatistics": "Gervigreindartölfræði",
+  "@aiStatistics": {},
+  "enableStatistics": "Virkja tölfræði",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Þegar virkjað er verða niðurstöður leikja skráðar í tölfræði. Leikir sem fela í sér að taka til baka leiki verða þó ekki skráðir. Þegar óvirkjað er er söfnun tölfræðinnar í bið.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Þetta mun endurstilla alla leikjatölfræði. Ekki er hægt að afturkalla þessa aðgerð.",
+  "@thisWillResetAllGameStatistics": {}
 }

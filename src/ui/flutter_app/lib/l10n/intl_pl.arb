@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Moja ocena",
+  "@myRating": {},
+  "gamesPlayed": "Rozegrane gry",
+  "@gamesPlayed": {},
+  "wins": "Wygrane",
+  "@wins": {},
+  "losses": "Przegrane",
+  "@losses": {},
+  "draws": "Remisy",
+  "@draws": {},
+  "lastUpdated": "Ostatnia aktualizacja",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Resetuj statystyki",
+  "@resetStatistics": {},
+  "drawRate": "Współczynnik remisów",
+  "@drawRate": {},
+  "lossRate": "Współczynnik przegranych",
+  "@lossRate": {},
+  "aiStatistics": "Statystyki SI",
+  "@aiStatistics": {},
+  "enableStatistics": "Włącz statystyki",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Gdy włączone, wyniki gier będą zapisywane w statystykach. Jednak gry obejmujące cofanie ruchów nie będą zapisywane. Gdy wyłączone, zbieranie statystyk jest wstrzymane.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Spowoduje to zresetowanie wszystkich statystyk gry. Tej czynności nie można cofnąć.",
+  "@thisWillResetAllGameStatistics": {}
 }

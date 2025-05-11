@@ -749,7 +749,7 @@
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "統計",
+  "statistics": "統計資料",
   "@statistics": {
     "description": "Statistics"
   },
@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "自分のレーティング",
+  "@myRating": {},
+  "gamesPlayed": "プレイしたゲーム数",
+  "@gamesPlayed": {},
+  "wins": "勝利数",
+  "@wins": {},
+  "losses": "敗北数",
+  "@losses": {},
+  "draws": "引き分け数",
+  "@draws": {},
+  "lastUpdated": "最終更新",
+  "@lastUpdated": {},
+  "format": "形式:",
+  "@format": {},
+  "resetStatistics": "統計をリセット",
+  "@resetStatistics": {},
+  "drawRate": "引き分け率",
+  "@drawRate": {},
+  "lossRate": "敗北率",
+  "@lossRate": {},
+  "aiStatistics": "AI統計",
+  "@aiStatistics": {},
+  "enableStatistics": "統計を有効にする",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "有効にすると、ゲーム結果が統計に記録されます。ただし、待ったを含むゲームは記録されません。無効にすると、統計の収集は一時停止されます。",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "これにより、すべてのゲーム統計がリセットされます。この操作は元に戻せません。",
+  "@thisWillResetAllGameStatistics": {}
 }

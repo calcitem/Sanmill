@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Моят рейтинг",
+  "@myRating": {},
+  "gamesPlayed": "Изиграни игри",
+  "@gamesPlayed": {},
+  "wins": "Победи",
+  "@wins": {},
+  "losses": "Загуби",
+  "@losses": {},
+  "draws": "Равенства",
+  "@draws": {},
+  "lastUpdated": "Последно актуализирано",
+  "@lastUpdated": {},
+  "format": "Формат:",
+  "@format": {},
+  "resetStatistics": "Нулиране на статистиката",
+  "@resetStatistics": {},
+  "drawRate": "Процент на равенства",
+  "@drawRate": {},
+  "lossRate": "Процент на загуби",
+  "@lossRate": {},
+  "aiStatistics": "Статистика на ИИ",
+  "@aiStatistics": {},
+  "enableStatistics": "Активиране на статистиката",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Когато е активирано, резултатите от игрите ще се записват в статистиката. Игрите, включващи връщане на ходове, обаче няма да се записват. Когато е деактивирано, събирането на статистика е на пауза.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Това ще нулира цялата статистика на играта. Това действие не може да бъде отменено.",
+  "@thisWillResetAllGameStatistics": {}
 }

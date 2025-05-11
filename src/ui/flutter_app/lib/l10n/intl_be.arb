@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Мой рэйтынг",
+  "@myRating": {},
+  "gamesPlayed": "Згуляныя гульні",
+  "@gamesPlayed": {},
+  "wins": "Перамогі",
+  "@wins": {},
+  "losses": "Паразы",
+  "@losses": {},
+  "draws": "Нічыі",
+  "@draws": {},
+  "lastUpdated": "Апошняе абнаўленне",
+  "@lastUpdated": {},
+  "format": "Фармат:",
+  "@format": {},
+  "resetStatistics": "Скінуць статыстыку",
+  "@resetStatistics": {},
+  "drawRate": "Працэнт нічыіх",
+  "@drawRate": {},
+  "lossRate": "Працэнт паражэнняў",
+  "@lossRate": {},
+  "aiStatistics": "Статыстыка ШІ",
+  "@aiStatistics": {},
+  "enableStatistics": "Уключыць статыстыку",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Калі ўключана, вынікі гульняў будуць запісвацца ў статыстыку. Аднак гульні, якія ўключаюць вяртанне хадоў, не будуць запісвацца. Калі адключана, збор статыстыкі прыпыняецца.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Гэта скіне ўсю статыстыку гульні. Гэта дзеянне немагчыма адмяніць.",
+  "@thisWillResetAllGameStatistics": {}
 }

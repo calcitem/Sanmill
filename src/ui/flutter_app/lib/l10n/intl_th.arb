@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "อันดับของฉัน",
+  "@myRating": {},
+  "gamesPlayed": "เกมที่เล่น",
+  "@gamesPlayed": {},
+  "wins": "ชนะ",
+  "@wins": {},
+  "losses": "แพ้",
+  "@losses": {},
+  "draws": "เสมอ",
+  "@draws": {},
+  "lastUpdated": "อัปเดตล่าสุด",
+  "@lastUpdated": {},
+  "format": "รูปแบบ:",
+  "@format": {},
+  "resetStatistics": "รีเซ็ตสถิติ",
+  "@resetStatistics": {},
+  "drawRate": "อัตราเสมอ",
+  "@drawRate": {},
+  "lossRate": "อัตราแพ้",
+  "@lossRate": {},
+  "aiStatistics": "สถิติ AI",
+  "@aiStatistics": {},
+  "enableStatistics": "เปิดใช้งานสถิติ",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "เมื่อเปิดใช้งาน ผลการแข่งขันจะถูกบันทึกในสถิติ อย่างไรก็ตาม เกมที่เกี่ยวข้องกับการย้อนกลับจะไม่ถูกบันทึก เมื่อปิดใช้งาน การเก็บสถิติจะหยุดชั่วคราว",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "การดำเนินการนี้จะรีเซ็ตสถิติเกมทั้งหมด การดำเนินการนี้ไม่สามารถยกเลิกได้",
+  "@thisWillResetAllGameStatistics": {}
 }

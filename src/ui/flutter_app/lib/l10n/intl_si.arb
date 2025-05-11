@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "මගේ ශ්‍රේණිගත කිරීම",
+  "@myRating": {},
+  "gamesPlayed": "ක්‍රීඩා කළ තරග",
+  "@gamesPlayed": {},
+  "wins": "ජයග්‍රහණ",
+  "@wins": {},
+  "losses": "පැරදුම්",
+  "@losses": {},
+  "draws": "ජය පැරදුමෙන් තොර",
+  "@draws": {},
+  "lastUpdated": "අවසන් වරට යාවත්කාලීන කරන ලදී",
+  "@lastUpdated": {},
+  "format": "ආකෘතිය:",
+  "@format": {},
+  "resetStatistics": "සංඛ්‍යාලේඛන නැවත සකසන්න",
+  "@resetStatistics": {},
+  "drawRate": "ජය පැරදුමෙන් තොර වීමේ අනුපාතය",
+  "@drawRate": {},
+  "lossRate": "පැරදුම් අනුපාතය",
+  "@lossRate": {},
+  "aiStatistics": "AI සංඛ්‍යාලේඛන",
+  "@aiStatistics": {},
+  "enableStatistics": "සංඛ්‍යාලේඛන සබල කරන්න",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "සබල කළ විට, ක්‍රීඩා ප්‍රතිඵල සංඛ්‍යාලේඛනවල සටහන් වනු ඇත. කෙසේ වෙතත්, ආපසු ගැනීම් ඇතුළත් ක්‍රීඩා සටහන් නොවනු ඇත. අබල කළ විට, සංඛ්‍යාලේඛන එකතු කිරීම විරාම කරනු ලැබේ.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "මෙය සියලුම ක්‍රීඩා සංඛ්‍යාලේඛන නැවත සකසනු ඇත. මෙම ක්‍රියාව අහෝසි කළ නොහැක.",
+  "@thisWillResetAllGameStatistics": {}
 }

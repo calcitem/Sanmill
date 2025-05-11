@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "تقييمي",
+  "@myRating": {},
+  "gamesPlayed": "الألعاب التي تم لعبها",
+  "@gamesPlayed": {},
+  "wins": "انتصارات",
+  "@wins": {},
+  "losses": "خسائر",
+  "@losses": {},
+  "draws": "تعادلات",
+  "@draws": {},
+  "lastUpdated": "آخر تحديث",
+  "@lastUpdated": {},
+  "format": "التنسيق:",
+  "@format": {},
+  "resetStatistics": "إعادة تعيين الإحصائيات",
+  "@resetStatistics": {},
+  "drawRate": "معدل التعادل",
+  "@drawRate": {},
+  "lossRate": "معدل الخسارة",
+  "@lossRate": {},
+  "aiStatistics": "إحصائيات الذكاء الاصطناعي",
+  "@aiStatistics": {},
+  "enableStatistics": "تمكين الإحصائيات",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "عند التمكين، سيتم تسجيل نتائج اللعبة في الإحصائيات. ومع ذلك، لن يتم تسجيل الألعاب التي تتضمن عمليات تراجع. عند التعطيل، يتم إيقاف جمع الإحصائيات مؤقتًا.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "سيؤدي هذا إلى إعادة تعيين جميع إحصائيات اللعبة. لا يمكن التراجع عن هذا الإجراء.",
+  "@thisWillResetAllGameStatistics": {}
 }

@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "የእኔ ደረጃ",
+  "@myRating": {},
+  "gamesPlayed": "የተጫወቱት ጨዋታዎች",
+  "@gamesPlayed": {},
+  "wins": "ያሸነፈ",
+  "@wins": {},
+  "losses": "የተሸነፈ",
+  "@losses": {},
+  "draws": "አቻ",
+  "@draws": {},
+  "lastUpdated": "ለመጨረሻ ጊዜ የተሻሻለው",
+  "@lastUpdated": {},
+  "format": "ቅርጸት፡",
+  "@format": {},
+  "resetStatistics": "ስታቲስቲክስን ዳግም አስጀምር",
+  "@resetStatistics": {},
+  "drawRate": "አቻ የወጣበት መጠን",
+  "@drawRate": {},
+  "lossRate": "የተሸነፈበት መጠን",
+  "@lossRate": {},
+  "aiStatistics": "የ AI ስታቲስቲክስ",
+  "@aiStatistics": {},
+  "enableStatistics": "ስታቲስቲክስን አንቃ",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "ሲነቃ የጨዋታ ውጤቶች በስታቲስቲክስ ውስጥ ይመዘገባሉ። ሆኖም፣ ወደኋላ መመለስን የሚያካትቱ ጨዋታዎች አይመዘገቡም። ሲሰናከል የስታቲስቲክስ ስብስብ ይቆማል።",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "ይህ ሁሉንም የጨዋTA ስታቲስቲክስ ዳግም ያስጀምራል። ይህ እርምጃ ሊቀለበስ አይችልም።",
+  "@thisWillResetAllGameStatistics": {}
 }

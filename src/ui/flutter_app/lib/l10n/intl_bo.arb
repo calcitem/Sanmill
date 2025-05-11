@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "ངའི་ ደረጃརྟགས།",
+  "@myRating": {},
+  "gamesPlayed": "རྩེད་ཡོད་པའི་རྩེད་ཐེངས།",
+  "@gamesPlayed": {},
+  "wins": "རྒྱལ་ཁ།",
+  "@wins": {},
+  "losses": "ཕམ་པ།",
+  "@losses": {},
+  "draws": "འདྲ་འདྲ།",
+  "@draws": {},
+  "lastUpdated": "ཆེས་གསར་དུ་བསྐྱར་བཅོས་བྱས་པ།",
+  "@lastUpdated": {},
+  "format": "རྣམ་བཞག:",
+  "@format": {},
+  "resetStatistics": "བསྡོམས་རྩིས་སླར་སྒྲིག་བྱེད་པ།",
+  "@resetStatistics": {},
+  "drawRate": "འདྲ་འདྲའི་བརྒྱ་ཆ།",
+  "@drawRate": {},
+  "lossRate": "ཕམ་པའི་བརྒྱ་ཆ།",
+  "@lossRate": {},
+  "aiStatistics": "AI བསྡོམས་རྩིས།",
+  "@aiStatistics": {},
+  "enableStatistics": "བསྡོམས་རྩིས་འགོ་འཛུགས་པ།",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "འགོ་བཙུགས་ན་རྩེད་འབྲས་བསྡོམས་རྩིས་ནང་བཀོད་འཇུག་བྱེད་རྒྱུ་རེད། འོན་ཀྱང་ཕྱིར་འཐེན་བྱས་པའི་རྩེད་མོ་རྣམས་བཀོད་འཇུག་མི་བྱེད། གལ་ཏེ་སྤྱོད་མཚམས་བཞག་ན་བསྡོམས་རྩིས་བསྡུ་རུབ་བྱེད་མཚམས་འཇོག་རྒྱུ་རེད།",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "འདིས་རྩེད་མོའི་བསྡོམས་རྩིས་ཡོད་ཚད་སླར་སྒྲིག་བྱེད་རྒྱུ་རེད། བྱ་སྤྱོད་འདི་ཕྱིར་འཐེན་བྱེད་མི་ཐུབ།",
+  "@thisWillResetAllGameStatistics": {}
 }

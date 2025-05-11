@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Мій рейтинг",
+  "@myRating": {},
+  "gamesPlayed": "Зіграні ігри",
+  "@gamesPlayed": {},
+  "wins": "Перемоги",
+  "@wins": {},
+  "losses": "Поразки",
+  "@losses": {},
+  "draws": "Нічиї",
+  "@draws": {},
+  "lastUpdated": "Останнє оновлення",
+  "@lastUpdated": {},
+  "format": "Формат:",
+  "@format": {},
+  "resetStatistics": "Скинути статистику",
+  "@resetStatistics": {},
+  "drawRate": "Відсоток нічиїх",
+  "@drawRate": {},
+  "lossRate": "Відсоток поразок",
+  "@lossRate": {},
+  "aiStatistics": "Статистика ШІ",
+  "@aiStatistics": {},
+  "enableStatistics": "Увімкнути статистику",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Якщо ввімкнено, результати ігор записуватимуться в статистику. Однак ігри, що передбачають повернення ходів, не записуватимуться. Якщо вимкнено, збір статистики призупиняється.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Це скине всю статистику гри. Цю дію неможливо скасувати.",
+  "@thisWillResetAllGameStatistics": {}
 }

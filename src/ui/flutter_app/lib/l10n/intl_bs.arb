@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Moj rejting",
+  "@myRating": {},
+  "gamesPlayed": "Odigrane igre",
+  "@gamesPlayed": {},
+  "wins": "Pobjede",
+  "@wins": {},
+  "losses": "Porazi",
+  "@losses": {},
+  "draws": "Neriješeno",
+  "@draws": {},
+  "lastUpdated": "Posljednje ažuriranje",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Resetuj statistiku",
+  "@resetStatistics": {},
+  "drawRate": "Stopa neriješenih",
+  "@drawRate": {},
+  "lossRate": "Stopa poraza",
+  "@lossRate": {},
+  "aiStatistics": "AI statistika",
+  "@aiStatistics": {},
+  "enableStatistics": "Omogući statistiku",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kada je omogućeno, rezultati igre će biti zabilježeni u statistici. Međutim, igre koje uključuju vraćanje poteza neće biti zabilježene. Kada je onemogućeno, prikupljanje statistike je pauzirano.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ovo će resetovati svu statistiku igre. Ova radnja se ne može poništiti.",
+  "@thisWillResetAllGameStatistics": {}
 }

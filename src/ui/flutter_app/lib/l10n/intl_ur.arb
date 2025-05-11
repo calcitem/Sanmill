@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "میری درجہ بندی",
+  "@myRating": {},
+  "gamesPlayed": "کھیلے گئے گیمز",
+  "@gamesPlayed": {},
+  "wins": "جیت",
+  "@wins": {},
+  "losses": "ہار",
+  "@losses": {},
+  "draws": "برابر",
+  "@draws": {},
+  "lastUpdated": "آخری بار اپ ڈیٹ کیا گیا",
+  "@lastUpdated": {},
+  "format": "فارمیٹ:",
+  "@format": {},
+  "resetStatistics": "شماریات کو ری سیٹ کریں",
+  "@resetStatistics": {},
+  "drawRate": "برابری کی شرح",
+  "@drawRate": {},
+  "lossRate": "ہار کی شرح",
+  "@lossRate": {},
+  "aiStatistics": "AI شماریات",
+  "@aiStatistics": {},
+  "enableStatistics": "شماریات کو فعال کریں",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "فعال ہونے پر، گیم کے نتائج شماریات میں ریکارڈ کیے جائیں گے۔ تاہم، ٹیک بیکس پر مشتمل گیمز ریکارڈ نہیں کیے جائیں گے۔ غیر فعال ہونے پر، شماریات جمع کرنا روک دیا جاتا ہے۔",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "یہ گیم کے تمام شماریات کو ری سیٹ کر دے گا۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
+  "@thisWillResetAllGameStatistics": {}
 }

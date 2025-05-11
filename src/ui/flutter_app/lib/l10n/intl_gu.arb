@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "મારું રેટિંગ",
+  "@myRating": {},
+  "gamesPlayed": "રમાયેલી રમતો",
+  "@gamesPlayed": {},
+  "wins": "જીત",
+  "@wins": {},
+  "losses": "હાર",
+  "@losses": {},
+  "draws": "ડ્રો",
+  "@draws": {},
+  "lastUpdated": "છેલ્લે અપડેટ કર્યું",
+  "@lastUpdated": {},
+  "format": "ફોર્મેટ:",
+  "@format": {},
+  "resetStatistics": "આંકડા રીસેટ કરો",
+  "@resetStatistics": {},
+  "drawRate": "ડ્રો રેટ",
+  "@drawRate": {},
+  "lossRate": "હારનો દર",
+  "@lossRate": {},
+  "aiStatistics": "AI આંકડા",
+  "@aiStatistics": {},
+  "enableStatistics": "આંકડા સક્ષમ કરો",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "જ્યારે સક્ષમ હોય, ત્યારે રમતના પરિણામો આંકડામાં રેકોર્ડ કરવામાં આવશે. જોકે, ટેક-બેકનો સમાવેશ કરતી રમતો રેકોર્ડ કરવામાં આવશે નહીં. જ્યારે અક્ષમ હોય, ત્યારે આંકડા સંગ્રહ થોભાવવામાં આવે છે.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "આ તમામ રમતના આંકડા રીસેટ કરશે. આ ક્રિયાને પૂર્વવત્ કરી શકાતી નથી.",
+  "@thisWillResetAllGameStatistics": {}
 }

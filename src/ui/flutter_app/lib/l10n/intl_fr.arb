@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mon classement",
+  "@myRating": {},
+  "gamesPlayed": "Parties jouées",
+  "@gamesPlayed": {},
+  "wins": "Victoires",
+  "@wins": {},
+  "losses": "Défaites",
+  "@losses": {},
+  "draws": "Matchs nuls",
+  "@draws": {},
+  "lastUpdated": "Dernière mise à jour",
+  "@lastUpdated": {},
+  "format": "Format :",
+  "@format": {},
+  "resetStatistics": "Réinitialiser les statistiques",
+  "@resetStatistics": {},
+  "drawRate": "Taux de matchs nuls",
+  "@drawRate": {},
+  "lossRate": "Taux de défaites",
+  "@lossRate": {},
+  "aiStatistics": "Statistiques de l'IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Activer les statistiques",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Lorsque cette option est activée, les résultats des parties sont enregistrés dans les statistiques. Cependant, les parties impliquant des retours en arrière ne sont pas enregistrées. Lorsque cette option est désactivée, la collecte des statistiques est suspendue.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Cela réinitialisera toutes les statistiques du jeu. Cette action est irréversible.",
+  "@thisWillResetAllGameStatistics": {}
 }

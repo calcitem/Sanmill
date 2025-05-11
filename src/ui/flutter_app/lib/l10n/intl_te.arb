@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "నా రేటింగ్",
+  "@myRating": {},
+  "gamesPlayed": "ఆడిన ఆటలు",
+  "@gamesPlayed": {},
+  "wins": "గెలుపులు",
+  "@wins": {},
+  "losses": "ఓటములు",
+  "@losses": {},
+  "draws": "డ్రాలు",
+  "@draws": {},
+  "lastUpdated": "చివరిగా నవీకరించబడింది",
+  "@lastUpdated": {},
+  "format": "ఫార్మాట్:",
+  "@format": {},
+  "resetStatistics": "గణాంకాలను రీసెట్ చేయండి",
+  "@resetStatistics": {},
+  "drawRate": "డ్రా రేటు",
+  "@drawRate": {},
+  "lossRate": "ఓటమి రేటు",
+  "@lossRate": {},
+  "aiStatistics": "AI గణాంకాలు",
+  "@aiStatistics": {},
+  "enableStatistics": "గణాంకాలను ప్రారంభించండి",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "ప్రారంభించినప్పుడు, ఆట ఫలితాలు గణాంకాలలో రికార్డ్ చేయబడతాయి. అయితే, టేక్-బ్యాక్‌లను కలిగి ఉన్న ఆటలు రికార్డ్ చేయబడవు. నిలిపివేసినప్పుడు, గణాంకాల సేకరణ పాజ్ చేయబడుతుంది.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "ఇది అన్ని ఆట గణాంకాలను రీసెట్ చేస్తుంది. ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు.",
+  "@thisWillResetAllGameStatistics": {}
 }

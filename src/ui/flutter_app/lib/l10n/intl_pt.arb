@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Minha classificação",
+  "@myRating": {},
+  "gamesPlayed": "Jogos disputados",
+  "@gamesPlayed": {},
+  "wins": "Vitórias",
+  "@wins": {},
+  "losses": "Derrotas",
+  "@losses": {},
+  "draws": "Empates",
+  "@draws": {},
+  "lastUpdated": "Última atualização",
+  "@lastUpdated": {},
+  "format": "Formato:",
+  "@format": {},
+  "resetStatistics": "Redefinir estatísticas",
+  "@resetStatistics": {},
+  "drawRate": "Taxa de empate",
+  "@drawRate": {},
+  "lossRate": "Taxa de derrota",
+  "@lossRate": {},
+  "aiStatistics": "Estatísticas de IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Ativar estatísticas",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Quando ativado, os resultados dos jogos serão registrados nas estatísticas. No entanto, jogos envolvendo retrocessos não serão registrados. Quando desativado, a coleta de estatísticas é pausada.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Isso redefinirá todas as estatísticas do jogo. Esta ação não pode ser desfeita.",
+  "@thisWillResetAllGameStatistics": {}
 }

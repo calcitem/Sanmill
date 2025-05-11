@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Derecelendirmem",
+  "@myRating": {},
+  "gamesPlayed": "Oynanan oyunlar",
+  "@gamesPlayed": {},
+  "wins": "Galibiyet",
+  "@wins": {},
+  "losses": "Mağlubiyet",
+  "@losses": {},
+  "draws": "Beraberlik",
+  "@draws": {},
+  "lastUpdated": "Son güncelleme",
+  "@lastUpdated": {},
+  "format": "Biçim:",
+  "@format": {},
+  "resetStatistics": "İstatistikleri sıfırla",
+  "@resetStatistics": {},
+  "drawRate": "Beraberlik oranı",
+  "@drawRate": {},
+  "lossRate": "Mağlubiyet oranı",
+  "@lossRate": {},
+  "aiStatistics": "Yapay zeka istatistikleri",
+  "@aiStatistics": {},
+  "enableStatistics": "İstatistikleri etkinleştir",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Etkinleştirildiğinde, oyun sonuçları istatistiklere kaydedilecektir. Ancak, geri alma içeren oyunlar kaydedilmeyecektir. Devre dışı bırakıldığında, istatistik toplama duraklatılır.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Bu, tüm oyun istatistiklerini sıfırlayacaktır. Bu işlem geri alınamaz.",
+  "@thisWillResetAllGameStatistics": {}
 }

@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "La meva puntuació",
+  "@myRating": {},
+  "gamesPlayed": "Partides jugades",
+  "@gamesPlayed": {},
+  "wins": "Victòries",
+  "@wins": {},
+  "losses": "Derrotes",
+  "@losses": {},
+  "draws": "Empats",
+  "@draws": {},
+  "lastUpdated": "Darrera actualització",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Restableix les estadístiques",
+  "@resetStatistics": {},
+  "drawRate": "Taxa d'empats",
+  "@drawRate": {},
+  "lossRate": "Taxa de derrotes",
+  "@lossRate": {},
+  "aiStatistics": "Estadístiques de la IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Activa les estadístiques",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Quan estigui activat, els resultats de les partides es registraran a les estadístiques. No obstant això, les partides que impliquin retrocessos no es registraran. Quan estigui desactivat, la recollida d'estadístiques s'atura.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Això restablirà totes les estadístiques del joc. Aquesta acció no es pot desfer.",
+  "@thisWillResetAllGameStatistics": {}
 }

@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Moje hodnocení",
+  "@myRating": {},
+  "gamesPlayed": "Odehrané hry",
+  "@gamesPlayed": {},
+  "wins": "Výhry",
+  "@wins": {},
+  "losses": "Prohry",
+  "@losses": {},
+  "draws": "Remízy",
+  "@draws": {},
+  "lastUpdated": "Poslední aktualizace",
+  "@lastUpdated": {},
+  "format": "Formát:",
+  "@format": {},
+  "resetStatistics": "Resetovat statistiky",
+  "@resetStatistics": {},
+  "drawRate": "Míra remíz",
+  "@drawRate": {},
+  "lossRate": "Míra proher",
+  "@lossRate": {},
+  "aiStatistics": "Statistiky UI",
+  "@aiStatistics": {},
+  "enableStatistics": "Povolit statistiky",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Pokud je povoleno, výsledky her se budou zaznamenávat do statistik. Hry zahrnující vrácení tahu se však zaznamenávat nebudou. Pokud je zakázáno, sběr statistik je pozastaven.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Tímto resetujete všechny herní statistiky. Tuto akci nelze vrátit zpět.",
+  "@thisWillResetAllGameStatistics": {}
 }

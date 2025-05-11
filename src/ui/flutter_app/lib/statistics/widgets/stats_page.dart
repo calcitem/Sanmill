@@ -11,7 +11,6 @@ import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/settings/settings.dart';
-import '../../shared/widgets/snackbars/scaffold_messenger.dart';
 import '../../statistics/model/stats_settings.dart';
 import '../services/stats_service.dart';
 
@@ -66,24 +65,21 @@ class StatisticsPage extends StatelessWidget {
       ),
       children: <Widget>[
         SettingsListTile.switchTile(
-          key: const Key('statistics_page_enable_statistics_switch'),
-          value: settings.isStatsEnabled,
-          onChanged: (bool value) {
-            DB().statsSettings = settings.copyWith(
-              isStatsEnabled: value,
-            );
-          },
-          titleString: 'Enable statistics', // TODO: Add localization string
-          subtitleString:
-              'When enabled, game results will be recorded in statistics. However, games involving take-backs or those not played continuously from start to finish will not be recorded. When disabled, statistics collection is paused.',
-          // TODO: Add localization string
-        ),
+            key: const Key('statistics_page_enable_statistics_switch'),
+            value: settings.isStatsEnabled,
+            onChanged: (bool value) {
+              DB().statsSettings = settings.copyWith(
+                isStatsEnabled: value,
+              );
+            },
+            titleString: S.of(context).enableStatistics,
+            subtitleString: S.of(context).enableStatistics_Detail),
 
         // Reset statistics button
         ListTile(
           key: const Key('statistics_page_reset_statistics'),
           title: Text(
-            'Reset statistics', // TODO: Add localization string
+            S.of(context).resetStatistics,
             style: TextStyle(color: Theme.of(context).colorScheme.error),
           ),
           trailing: Icon(
@@ -104,12 +100,8 @@ class StatisticsPage extends StatelessWidget {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title:
-              const Text('Reset statistics'), // TODO: Add localization string
-          content: const Text(
-            'This will reset all game statistics (wins, losses, draws) but preserve ratings. This action cannot be undone.',
-            // TODO: Add localization string
-          ),
+          title: Text(S.of(context).resetStatistics),
+          content: Text(S.of(context).thisWillResetAllGameStatistics),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
@@ -123,7 +115,7 @@ class StatisticsPage extends StatelessWidget {
               style: TextButton.styleFrom(
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
-              child: const Text('Reset'), // TODO: Add localization string
+              child: Text(S.of(context).ok),
             ),
           ],
         );
@@ -150,11 +142,6 @@ class StatisticsPage extends StatelessWidget {
 
     // Update the database
     DB().statsSettings = newStatsSettings;
-
-    // Show success message
-    rootScaffoldMessengerKey.currentState?.showSnackBarClear(
-      'Statistics have been reset successfully',
-    );
   }
 
   Widget _buildHumanStatsCard(BuildContext context, PlayerStats humanStats) {
@@ -165,7 +152,7 @@ class StatisticsPage extends StatelessWidget {
     return SettingsCard(
       key: const Key('statistics_page_human_rating_card'),
       title: Text(
-        l10n.yourRating,
+        l10n.myRating,
         key: const Key('statistics_page_human_rating_card_title'),
       ),
       children: <Widget>[
@@ -324,7 +311,7 @@ class StatisticsPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          'Win rate', // Win rate
+                          S.of(context).winRate, // Win rate
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.6),
@@ -338,7 +325,7 @@ class StatisticsPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          'Draw rate', // Draw rate
+                          S.of(context).drawRate, // Draw rate
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.6),
@@ -352,7 +339,7 @@ class StatisticsPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          'Loss rate', // Loss rate
+                          S.of(context).lossRate, // Loss rate
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurface
                                 .withValues(alpha: 0.6),
@@ -437,7 +424,7 @@ class StatisticsPage extends StatelessWidget {
               trailing: Text(
                 humanStats.lastUpdated != null
                     ? dateFormat.format(humanStats.lastUpdated!)
-                    : l10n.never,
+                    : "-",
                 style: theme.textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
@@ -462,9 +449,9 @@ class StatisticsPage extends StatelessWidget {
 
     return SettingsCard(
       key: const Key('statistics_page_ai_statistics_card'),
-      title: const Text(
-        'AI Statistics', // TODO: Add localization string for AI Statistics
-        key: Key('statistics_page_ai_statistics_card_title'),
+      title: Text(
+        S.of(context).aiStatistics,
+        key: const Key('statistics_page_ai_statistics_card_title'),
       ),
       children: <Widget>[
         // DataTable for AI statistics
@@ -554,7 +541,7 @@ class StatisticsPage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            '* Format: W/D/L (${l10n.wins}/${l10n.draws}/${l10n.losses})',
+            '${S.of(context).format} W/D/L (${l10n.wins}/${l10n.draws}/${l10n.losses})',
             style: theme.textTheme.bodySmall,
           ),
         ),

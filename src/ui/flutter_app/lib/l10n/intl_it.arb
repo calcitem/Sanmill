@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "La mia valutazione",
+  "@myRating": {},
+  "gamesPlayed": "Partite giocate",
+  "@gamesPlayed": {},
+  "wins": "Vittorie",
+  "@wins": {},
+  "losses": "Sconfitte",
+  "@losses": {},
+  "draws": "Pareggi",
+  "@draws": {},
+  "lastUpdated": "Ultimo aggiornamento",
+  "@lastUpdated": {},
+  "format": "Formato:",
+  "@format": {},
+  "resetStatistics": "Reimposta statistiche",
+  "@resetStatistics": {},
+  "drawRate": "Tasso di pareggio",
+  "@drawRate": {},
+  "lossRate": "Tasso di sconfitta",
+  "@lossRate": {},
+  "aiStatistics": "Statistiche IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Abilita statistiche",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Se abilitato, i risultati delle partite verranno registrati nelle statistiche. Tuttavia, le partite che comportano l'annullamento di mosse non verranno registrate. Se disabilitato, la raccolta delle statistiche viene sospesa.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Questo reimposterà tutte le statistiche di gioco. Questa azione non può essere annullata.",
+  "@thisWillResetAllGameStatistics": {}
 }

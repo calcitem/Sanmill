@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Min vurdering",
+  "@myRating": {},
+  "gamesPlayed": "Spilte spill",
+  "@gamesPlayed": {},
+  "wins": "Seire",
+  "@wins": {},
+  "losses": "Tap",
+  "@losses": {},
+  "draws": "Uavgjort",
+  "@draws": {},
+  "lastUpdated": "Sist oppdatert",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Tilbakestill statistikk",
+  "@resetStatistics": {},
+  "drawRate": "Uavgjortrate",
+  "@drawRate": {},
+  "lossRate": "Tapsrate",
+  "@lossRate": {},
+  "aiStatistics": "AI-statistikk",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktiver statistikk",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Når aktivert, vil spillresultater bli registrert i statistikken. Spill som involverer tilbaketrekking av trekk vil imidlertid ikke bli registrert. Når deaktivert, pauses statistikkinnhentingen.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Dette vil tilbakestille all spillstatistikk. Denne handlingen kan ikke angres.",
+  "@thisWillResetAllGameStatistics": {}
 }

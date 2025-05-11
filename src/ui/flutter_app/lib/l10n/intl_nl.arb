@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mijn beoordeling",
+  "@myRating": {},
+  "gamesPlayed": "Gespeelde spellen",
+  "@gamesPlayed": {},
+  "wins": "Gewonnen",
+  "@wins": {},
+  "losses": "Verloren",
+  "@losses": {},
+  "draws": "Gelijkspel",
+  "@draws": {},
+  "lastUpdated": "Laatst bijgewerkt",
+  "@lastUpdated": {},
+  "format": "Formaat:",
+  "@format": {},
+  "resetStatistics": "Statistieken resetten",
+  "@resetStatistics": {},
+  "drawRate": "Gelijkspelpercentage",
+  "@drawRate": {},
+  "lossRate": "Verliespercentage",
+  "@lossRate": {},
+  "aiStatistics": "AI-statistieken",
+  "@aiStatistics": {},
+  "enableStatistics": "Statistieken inschakelen",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Indien ingeschakeld, worden spelresultaten vastgelegd in de statistieken. Spellen waarbij zetten worden teruggenomen, worden echter niet vastgelegd. Indien uitgeschakeld, wordt het verzamelen van statistieken gepauzeerd.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Hiermee worden alle spelstatistieken gereset. Deze actie kan niet ongedaan worden gemaakt.",
+  "@thisWillResetAllGameStatistics": {}
 }

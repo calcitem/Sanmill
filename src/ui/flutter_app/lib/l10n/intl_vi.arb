@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Xếp hạng của tôi",
+  "@myRating": {},
+  "gamesPlayed": "Số trận đã chơi",
+  "@gamesPlayed": {},
+  "wins": "Thắng",
+  "@wins": {},
+  "losses": "Thua",
+  "@losses": {},
+  "draws": "Hòa",
+  "@draws": {},
+  "lastUpdated": "Cập nhật lần cuối",
+  "@lastUpdated": {},
+  "format": "Định dạng:",
+  "@format": {},
+  "resetStatistics": "Đặt lại thống kê",
+  "@resetStatistics": {},
+  "drawRate": "Tỷ lệ hòa",
+  "@drawRate": {},
+  "lossRate": "Tỷ lệ thua",
+  "@lossRate": {},
+  "aiStatistics": "Thống kê AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Bật thống kê",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Khi được bật, kết quả trò chơi sẽ được ghi lại trong thống kê. Tuy nhiên, các trò chơi liên quan đến việc đi lại nước cờ sẽ không được ghi lại. Khi bị tắt, việc thu thập thống kê sẽ bị tạm dừng.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Thao tác này sẽ đặt lại tất cả thống kê trò chơi. Không thể hoàn tác thao tác này.",
+  "@thisWillResetAllGameStatistics": {}
 }

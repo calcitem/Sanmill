@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Min rankning",
+  "@myRating": {},
+  "gamesPlayed": "Spelade matcher",
+  "@gamesPlayed": {},
+  "wins": "Vinster",
+  "@wins": {},
+  "losses": "Förluster",
+  "@losses": {},
+  "draws": "Oavgjorda",
+  "@draws": {},
+  "lastUpdated": "Senast uppdaterad",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Återställ statistik",
+  "@resetStatistics": {},
+  "drawRate": "Oavgjortkvot",
+  "@drawRate": {},
+  "lossRate": "Förlustkvot",
+  "@lossRate": {},
+  "aiStatistics": "AI-statistik",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktivera statistik",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "När detta är aktiverat sparas spelresultat i statistiken. Spel som involverar återtåg sparas dock inte. När detta är inaktiverat pausas statistikinsamlingen.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Detta återställer all spelstatistik. Denna åtgärd kan inte ångras.",
+  "@thisWillResetAllGameStatistics": {}
 }

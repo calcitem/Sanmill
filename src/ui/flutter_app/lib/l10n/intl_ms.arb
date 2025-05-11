@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Penilaian saya",
+  "@myRating": {},
+  "gamesPlayed": "Permainan dimainkan",
+  "@gamesPlayed": {},
+  "wins": "Menang",
+  "@wins": {},
+  "losses": "Kalah",
+  "@losses": {},
+  "draws": "Seri",
+  "@draws": {},
+  "lastUpdated": "Terakhir dikemas kini",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Tetapkan semula statistik",
+  "@resetStatistics": {},
+  "drawRate": "Kadar seri",
+  "@drawRate": {},
+  "lossRate": "Kadar kalah",
+  "@lossRate": {},
+  "aiStatistics": "Statistik AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Dayakan statistik",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Apabila didayakan, keputusan permainan akan direkodkan dalam statistik. Walau bagaimanapun, permainan yang melibatkan pembatalan langkah tidak akan direkodkan. Apabila dilumpuhkan, pengumpulan statistik dijeda.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ini akan menetapkan semula semua statistik permainan. Tindakan ini tidak boleh dibuat asal.",
+  "@thisWillResetAllGameStatistics": {}
 }

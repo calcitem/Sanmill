@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "My gradering",
+  "@myRating": {},
+  "gamesPlayed": "Speletjies gespeel",
+  "@gamesPlayed": {},
+  "wins": "Oorwinnings",
+  "@wins": {},
+  "losses": "Verliese",
+  "@losses": {},
+  "draws": "Gelykopuitslae",
+  "@draws": {},
+  "lastUpdated": "Laas opgedateer",
+  "@lastUpdated": {},
+  "format": "Formaat:",
+  "@format": {},
+  "resetStatistics": "Stel statistieke terug",
+  "@resetStatistics": {},
+  "drawRate": "Gelykopkoers",
+  "@drawRate": {},
+  "lossRate": "Verlieskoers",
+  "@lossRate": {},
+  "aiStatistics": "KI-statistieke",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktiveer statistieke",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Wanneer geaktiveer, sal speletjie-uitslae in statistieke aangeteken word. Speletjies wat terugnames behels, sal egter nie aangeteken word nie. Wanneer gedeaktiveer, word die insameling van statistieke onderbreek.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Dit sal alle speletjiestatistieke terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.",
+  "@thisWillResetAllGameStatistics": {}
 }

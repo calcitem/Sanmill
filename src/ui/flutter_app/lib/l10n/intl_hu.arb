@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Értékelésem",
+  "@myRating": {},
+  "gamesPlayed": "Játszott játékok",
+  "@gamesPlayed": {},
+  "wins": "Győzelmek",
+  "@wins": {},
+  "losses": "Vesztések",
+  "@losses": {},
+  "draws": "Döntetlenek",
+  "@draws": {},
+  "lastUpdated": "Utoljára frissítve",
+  "@lastUpdated": {},
+  "format": "Formátum:",
+  "@format": {},
+  "resetStatistics": "Statisztika visszaállítása",
+  "@resetStatistics": {},
+  "drawRate": "Döntetlen arány",
+  "@drawRate": {},
+  "lossRate": "Vesztési arány",
+  "@lossRate": {},
+  "aiStatistics": "MI statisztika",
+  "@aiStatistics": {},
+  "enableStatistics": "Statisztika engedélyezése",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Engedélyezés esetén a játékeredmények rögzítésre kerülnek a statisztikában. A visszalépést tartalmazó játékok azonban nem kerülnek rögzítésre. Letiltás esetén a statisztikagyűjtés szünetel.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Ez visszaállítja az összes játékstatisztikát. Ez a művelet nem vonható vissza.",
+  "@thisWillResetAllGameStatistics": {}
 }

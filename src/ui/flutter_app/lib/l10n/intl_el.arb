@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Η βαθμολογία μου",
+  "@myRating": {},
+  "gamesPlayed": "Παιχνίδια που παίχτηκαν",
+  "@gamesPlayed": {},
+  "wins": "Νίκες",
+  "@wins": {},
+  "losses": "Ήττες",
+  "@losses": {},
+  "draws": "Ισοπαλίες",
+  "@draws": {},
+  "lastUpdated": "Τελευταία ενημέρωση",
+  "@lastUpdated": {},
+  "format": "Μορφή:",
+  "@format": {},
+  "resetStatistics": "Επαναφορά στατιστικών",
+  "@resetStatistics": {},
+  "drawRate": "Ποσοστό ισοπαλιών",
+  "@drawRate": {},
+  "lossRate": "Ποσοστό ηττών",
+  "@lossRate": {},
+  "aiStatistics": "Στατιστικά AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Ενεργοποίηση στατιστικών",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Όταν είναι ενεργοποιημένο, τα αποτελέσματα των παιχνιδιών θα καταγράφονται στα στατιστικά. Ωστόσο, τα παιχνίδια που περιλαμβάνουν επαναφορά κινήσεων δεν θα καταγράφονται. Όταν είναι απενεργοποιημένο, η συλλογή στατιστικών τίθεται σε παύση.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Αυτό θα επαναφέρει όλα τα στατιστικά του παιχνιδιού. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
+  "@thisWillResetAllGameStatistics": {}
 }

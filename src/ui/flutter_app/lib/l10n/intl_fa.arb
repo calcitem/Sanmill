@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "امتیاز من",
+  "@myRating": {},
+  "gamesPlayed": "بازی‌های انجام شده",
+  "@gamesPlayed": {},
+  "wins": "بردها",
+  "@wins": {},
+  "losses": "باخت‌ها",
+  "@losses": {},
+  "draws": "مساوی‌ها",
+  "@draws": {},
+  "lastUpdated": "آخرین به‌روزرسانی",
+  "@lastUpdated": {},
+  "format": "قالب:",
+  "@format": {},
+  "resetStatistics": "بازنشانی آمار",
+  "@resetStatistics": {},
+  "drawRate": "نرخ مساوی",
+  "@drawRate": {},
+  "lossRate": "نرخ باخت",
+  "@lossRate": {},
+  "aiStatistics": "آمار هوش مصنوعی",
+  "@aiStatistics": {},
+  "enableStatistics": "فعال کردن آمار",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "در صورت فعال بودن، نتایج بازی در آمار ثبت می‌شود. با این حال، بازی‌هایی که شامل بازپس‌گیری حرکت هستند، ثبت نخواهند شد. در صورت غیرفعال بودن، جمع‌آوری آمار متوقف می‌شود.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "این کار تمام آمار بازی را بازنشانی می‌کند. این عمل قابل لغو نیست.",
+  "@thisWillResetAllGameStatistics": {}
 }

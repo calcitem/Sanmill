@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Ukadiriaji wangu",
+  "@myRating": {},
+  "gamesPlayed": "Michezo iliyochezwa",
+  "@gamesPlayed": {},
+  "wins": "Ushindi",
+  "@wins": {},
+  "losses": "Hasara",
+  "@losses": {},
+  "draws": "Sare",
+  "@draws": {},
+  "lastUpdated": "Ilisasishwa mwisho",
+  "@lastUpdated": {},
+  "format": "Umbizo:",
+  "@format": {},
+  "resetStatistics": "Weka upya takwimu",
+  "@resetStatistics": {},
+  "drawRate": "Kiwango cha sare",
+  "@drawRate": {},
+  "lossRate": "Kiwango cha hasara",
+  "@lossRate": {},
+  "aiStatistics": "Takwimu za AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Washa takwimu",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Ikiwashwa, matokeo ya mchezo yatarekodiwa katika takwimu. Hata hivyo, michezo inayohusisha kurejesha nyuma haitarekodiwa. Ikiwa imezimwa, ukusanyaji wa takwimu umesitishwa.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Hii itaweka upya takwimu zote za mchezo. Kitendo hiki hakiwezi kutenduliwa.",
+  "@thisWillResetAllGameStatistics": {}
 }

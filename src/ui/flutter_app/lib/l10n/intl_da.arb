@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Min bedømmelse",
+  "@myRating": {},
+  "gamesPlayed": "Spillede spil",
+  "@gamesPlayed": {},
+  "wins": "Sejre",
+  "@wins": {},
+  "losses": "Tab",
+  "@losses": {},
+  "draws": "Uafgjorte",
+  "@draws": {},
+  "lastUpdated": "Sidst opdateret",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Nulstil statistik",
+  "@resetStatistics": {},
+  "drawRate": "Uafgjort rate",
+  "@drawRate": {},
+  "lossRate": "Tab rate",
+  "@lossRate": {},
+  "aiStatistics": "AI-statistik",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktiver statistik",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Når det er aktiveret, vil spilresultater blive registreret i statistikken. Spil, der involverer tilbagetrækninger, vil dog ikke blive registreret. Når det er deaktiveret, sættes statistikindsamlingen på pause.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Dette nulstiller al spilstatistik. Denne handling kan ikke fortrydes.",
+  "@thisWillResetAllGameStatistics": {}
 }

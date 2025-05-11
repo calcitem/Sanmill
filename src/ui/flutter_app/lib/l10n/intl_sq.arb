@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Vlerësimi im",
+  "@myRating": {},
+  "gamesPlayed": "Lojëra të luajtura",
+  "@gamesPlayed": {},
+  "wins": "Fitore",
+  "@wins": {},
+  "losses": "Humbje",
+  "@losses": {},
+  "draws": "Barazime",
+  "@draws": {},
+  "lastUpdated": "Përditësuar së fundmi",
+  "@lastUpdated": {},
+  "format": "Formati:",
+  "@format": {},
+  "resetStatistics": "Rivendos statistikat",
+  "@resetStatistics": {},
+  "drawRate": "Norma e barazimeve",
+  "@drawRate": {},
+  "lossRate": "Norma e humbjeve",
+  "@lossRate": {},
+  "aiStatistics": "Statistikat e IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Aktivizo statistikat",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kur aktivizohet, rezultatet e lojërave do të regjistrohen në statistika. Megjithatë, lojërat që përfshijnë kthime pas nuk do të regjistrohen. Kur çaktivizohet, mbledhja e statistikave ndërpritet.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Kjo do të rivendosë të gjitha statistikat e lojës. Ky veprim nuk mund të zhbëhet.",
+  "@thisWillResetAllGameStatistics": {}
 }

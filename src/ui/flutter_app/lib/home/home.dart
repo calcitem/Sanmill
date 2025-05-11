@@ -440,7 +440,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       CustomDrawerItem<_DrawerIndex>(
         key: const Key('drawer_item_statistics'),
         itemValue: _DrawerIndex.statistics,
-        itemTitle: 'Statistics',
+        itemTitle: S.of(context).statistics,
         itemIcon: const Icon(FluentIcons.data_bar_vertical_24_regular),
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,

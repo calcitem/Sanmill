@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Мой рейтинг",
+  "@myRating": {},
+  "gamesPlayed": "Сыграно игр",
+  "@gamesPlayed": {},
+  "wins": "Победы",
+  "@wins": {},
+  "losses": "Поражения",
+  "@losses": {},
+  "draws": "Ничьи",
+  "@draws": {},
+  "lastUpdated": "Последнее обновление",
+  "@lastUpdated": {},
+  "format": "Формат:",
+  "@format": {},
+  "resetStatistics": "Сбросить статистику",
+  "@resetStatistics": {},
+  "drawRate": "Процент ничьих",
+  "@drawRate": {},
+  "lossRate": "Процент поражений",
+  "@lossRate": {},
+  "aiStatistics": "Статистика ИИ",
+  "@aiStatistics": {},
+  "enableStatistics": "Включить статистику",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Если включено, результаты игр будут записываться в статистику. Однако игры, включающие возвраты ходов, записываться не будут. Если отключено, сбор статистики приостанавливается.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Это сбросит всю статистику игры. Это действие нельзя отменить.",
+  "@thisWillResetAllGameStatistics": {}
 }

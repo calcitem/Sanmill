@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Minu reiting",
+  "@myRating": {},
+  "gamesPlayed": "Mängitud mängud",
+  "@gamesPlayed": {},
+  "wins": "Võidud",
+  "@wins": {},
+  "losses": "Kaotused",
+  "@losses": {},
+  "draws": "Viigid",
+  "@draws": {},
+  "lastUpdated": "Viimati uuendatud",
+  "@lastUpdated": {},
+  "format": "Formaat:",
+  "@format": {},
+  "resetStatistics": "Lähtesta statistika",
+  "@resetStatistics": {},
+  "drawRate": "Viikide määr",
+  "@drawRate": {},
+  "lossRate": "Kaotuste määr",
+  "@lossRate": {},
+  "aiStatistics": "Tehisintellekti statistika",
+  "@aiStatistics": {},
+  "enableStatistics": "Luba statistika",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Kui see on lubatud, salvestatakse mängutulemused statistikasse. Tagasivõtmisi sisaldavaid mänge aga ei salvestata. Kui see on keelatud, peatatakse statistika kogumine.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "See lähtestab kogu mängustatistika. Seda toimingut ei saa tagasi võtta.",
+  "@thisWillResetAllGameStatistics": {}
 }

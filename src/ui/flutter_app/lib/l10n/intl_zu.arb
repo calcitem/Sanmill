@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Isilinganiso sami",
+  "@myRating": {},
+  "gamesPlayed": "Imidlalo edlaliwe",
+  "@gamesPlayed": {},
+  "wins": "Ukunqoba",
+  "@wins": {},
+  "losses": "Ukwehlulwa",
+  "@losses": {},
+  "draws": "Ukudonsa",
+  "@draws": {},
+  "lastUpdated": "Kubuyekezwe okokugcina",
+  "@lastUpdated": {},
+  "format": "Ifomethi:",
+  "@format": {},
+  "resetStatistics": "Setha kabusha izibalo",
+  "@resetStatistics": {},
+  "drawRate": "Izinga lokudonsa",
+  "@drawRate": {},
+  "lossRate": "Izinga lokulahlekelwa",
+  "@lossRate": {},
+  "aiStatistics": "Izibalo ze-AI",
+  "@aiStatistics": {},
+  "enableStatistics": "Nika amandla izibalo",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Uma kunikwe amandla, imiphumela yomdlalo izorekhodwa ezibalweni. Nokho, imidlalo ehilela ukubuyisela emuva ngeke irekhodwe. Uma kukhutshaziwe, ukuqoqwa kwezibalo kuyamiswa.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Lokhu kuzosetha kabusha zonke izibalo zomdlalo. Lesi senzo asinakuhlehliswa.",
+  "@thisWillResetAllGameStatistics": {}
 }

@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "ನನ್ನ ರೇಟಿಂಗ್",
+  "@myRating": {},
+  "gamesPlayed": "ಆಡಿದ ಆಟಗಳು",
+  "@gamesPlayed": {},
+  "wins": "ಗೆಲುವುಗಳು",
+  "@wins": {},
+  "losses": "ಸೋಲುಗಳು",
+  "@losses": {},
+  "draws": "ಡ್ರಾಗಳು",
+  "@draws": {},
+  "lastUpdated": "ಕೊನೆಯದಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ",
+  "@lastUpdated": {},
+  "format": "ಫಾರ್ಮ್ಯಾಟ್:",
+  "@format": {},
+  "resetStatistics": "ಅಂಕಿಅಂಶಗಳನ್ನು ಮರುಹೊಂದಿಸಿ",
+  "@resetStatistics": {},
+  "drawRate": "ಡ್ರಾ ದರ",
+  "@drawRate": {},
+  "lossRate": "ಸೋಲಿನ ದರ",
+  "@lossRate": {},
+  "aiStatistics": "AI ಅಂಕಿಅಂಶಗಳು",
+  "@aiStatistics": {},
+  "enableStatistics": "ಅಂಕಿಅಂಶಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "ಸಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಆಟದ ಫಲಿತಾಂಶಗಳನ್ನು ಅಂಕಿಅಂಶಗಳಲ್ಲಿ ದಾಖಲಿಸಲಾಗುತ್ತದೆ. ಆದಾಗ್ಯೂ, ಟೇಕ್-ಬ್ಯಾಕ್‌ಗಳನ್ನು ಒಳಗೊಂಡಿರುವ ಆಟಗಳನ್ನು ದಾಖಲಿಸಲಾಗುವುದಿಲ್ಲ. ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ಅಂಕಿಅಂಶಗಳ ಸಂಗ್ರಹಣೆಯನ್ನು ವಿರಾಮಗೊಳಿಸಲಾಗುತ್ತದೆ.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "ಇದು ಎಲ್ಲಾ ಆಟದ ಅಂಕಿಅಂಶಗಳನ್ನು ಮರುಹೊಂದಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.",
+  "@thisWillResetAllGameStatistics": {}
 }

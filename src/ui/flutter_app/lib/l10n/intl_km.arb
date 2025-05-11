@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "ការវាយតម្លៃរបស់ខ្ញុំ",
+  "@myRating": {},
+  "gamesPlayed": "ហ្គេមបានលេង",
+  "@gamesPlayed": {},
+  "wins": "ឈ្នះ",
+  "@wins": {},
+  "losses": "ចាញ់",
+  "@losses": {},
+  "draws": "ស្មើ",
+  "@draws": {},
+  "lastUpdated": "បានធ្វើបច្ចុប្បន្នភាពចុងក្រោយ",
+  "@lastUpdated": {},
+  "format": "ទ្រង់ទ្រាយ៖",
+  "@format": {},
+  "resetStatistics": "កំណត់ស្ថិតិឡើងវិញ",
+  "@resetStatistics": {},
+  "drawRate": "អត្រាស្មើ",
+  "@drawRate": {},
+  "lossRate": "អត្រាចាញ់",
+  "@lossRate": {},
+  "aiStatistics": "ស្ថិតិ AI",
+  "@aiStatistics": {},
+  "enableStatistics": "បើកស្ថិតិ",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "នៅពេលបើក លទ្ធផលហ្គេមនឹងត្រូវបានកត់ត្រាក្នុងស្ថិតិ។ ទោះយ៉ាងណាក៏ដោយ ហ្គេមដែលពាក់ព័ន្ធនឹងការដកថយនឹងមិនត្រូវបានកត់ត្រាទេ។ នៅពេលបិទ ការប្រមូលស្ថិតិត្រូវបានផ្អាក។",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "វានឹងកំណត់ស្ថិតិហ្គេមទាំងអស់ឡើងវិញ។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។",
+  "@thisWillResetAllGameStatistics": {}
 }

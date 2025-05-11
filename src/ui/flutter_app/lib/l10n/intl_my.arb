@@ -2036,5 +2036,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "ကျွန်ုပ်၏အဆင့်သတ်မှတ်ချက်",
+  "@myRating": {},
+  "gamesPlayed": "ကစားခဲ့သည့်ဂိမ်းများ",
+  "@gamesPlayed": {},
+  "wins": "နိုင်ပွဲ",
+  "@wins": {},
+  "losses": "ရှုံးပွဲ",
+  "@losses": {},
+  "draws": "သရေပွဲ",
+  "@draws": {},
+  "lastUpdated": "နောက်ဆုံးအပ်ဒိတ်လုပ်ထားသည်",
+  "@lastUpdated": {},
+  "format": "ပုံစံ:",
+  "@format": {},
+  "resetStatistics": "စာရင်းအင်းများ ပြန်လည်သတ်မှတ်ရန်",
+  "@resetStatistics": {},
+  "drawRate": "သရေပွဲနှုန်း",
+  "@drawRate": {},
+  "lossRate": "ရှုံးပွဲနှုန်း",
+  "@lossRate": {},
+  "aiStatistics": "AI စာရင်းအင်းများ",
+  "@aiStatistics": {},
+  "enableStatistics": "စာရင်းအင်းများ ဖွင့်ပါ",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "ဖွင့်ထားသည့်အခါ ဂိမ်းရလဒ်များကို စာရင်းအင်းများတွင် မှတ်တမ်းတင်မည်ဖြစ်သည်။ သို့သော် နောက်ပြန်ဆုတ်ခြင်းပါဝင်သည့် ဂိမ်းများကို မှတ်တမ်းတင်မည်မဟုတ်ပါ။ ပိတ်ထားသည့်အခါ စာရင်းအင်းများစုဆောင်းခြင်းကို ခေတ္တရပ်ထားသည်။",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "၎င်းသည် ဂိမ်းစာရင်းအင်းအားလုံးကို ပြန်လည်သတ်မှတ်မည်ဖြစ်သည်။ ဤလုပ်ဆောင်ချက်ကို ပြန်မပြင်နိုင်ပါ။",
+  "@thisWillResetAllGameStatistics": {}
 }

@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Mini Bewärtig",
+  "@myRating": {},
+  "gamesPlayed": "Gspielti Spiel",
+  "@gamesPlayed": {},
+  "wins": "Siig",
+  "@wins": {},
+  "losses": "Niederlage",
+  "@losses": {},
+  "draws": "Unentschiede",
+  "@draws": {},
+  "lastUpdated": "Zletzt aktualisiert",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Statistike zruggsetze",
+  "@resetStatistics": {},
+  "drawRate": "Unentschiedeqote",
+  "@drawRate": {},
+  "lossRate": "Niederlageqote",
+  "@lossRate": {},
+  "aiStatistics": "KI-Statistike",
+  "@aiStatistics": {},
+  "enableStatistics": "Statistike aktiviere",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Wenn aktiviert, wärde Spielresultat i de Statistike erfasst. Spiel mit Zuggrücknahme wärde aber nöd erfasst. Wenn deaktiviert, wird d Erfassig vo Statistike pausiert.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Das setzt alli Spielstatistike zrugg. Die Aktion cha nöd rückgängig gmacht wärde.",
+  "@thisWillResetAllGameStatistics": {}
 }

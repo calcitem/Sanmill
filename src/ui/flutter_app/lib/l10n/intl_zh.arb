@@ -220,7 +220,7 @@
   "@error": {
     "description": "Error"
   },
-  "winRate": "胜率",
+  "winRate": "赢棋率",
   "@winRate": {
     "description": "Win Rate"
   },
@@ -624,7 +624,7 @@
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "统计",
+  "statistics": "统计数据",
   "@statistics": {
     "description": "Statistics"
   },
@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "我的等级分",
+  "@myRating": {},
+  "gamesPlayed": "已下盘数",
+  "@gamesPlayed": {},
+  "wins": "胜",
+  "@wins": {},
+  "losses": "负",
+  "@losses": {},
+  "draws": "和",
+  "@draws": {},
+  "lastUpdated": "上次更新",
+  "@lastUpdated": {},
+  "format": "格式：",
+  "@format": {},
+  "resetStatistics": "重置统计数据",
+  "@resetStatistics": {},
+  "drawRate": "和棋率",
+  "@drawRate": {},
+  "lossRate": "输棋率",
+  "@lossRate": {},
+  "aiStatistics": "AI 统计数据",
+  "@aiStatistics": {},
+  "enableStatistics": "启用统计",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "启用后，对局结果将记录到统计数据中。但是，有悔棋的对局结果除外。如禁用，统计数据收集将暂停。",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "将重置游戏所有统计数据。此操作无法撤销。",
+  "@thisWillResetAllGameStatistics": {}
 }

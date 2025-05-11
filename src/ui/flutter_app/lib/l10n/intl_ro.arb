@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "Ratingul meu",
+  "@myRating": {},
+  "gamesPlayed": "Jocuri jucate",
+  "@gamesPlayed": {},
+  "wins": "Victorii",
+  "@wins": {},
+  "losses": "Înfrângeri",
+  "@losses": {},
+  "draws": "Remize",
+  "@draws": {},
+  "lastUpdated": "Ultima actualizare",
+  "@lastUpdated": {},
+  "format": "Format:",
+  "@format": {},
+  "resetStatistics": "Resetați statisticile",
+  "@resetStatistics": {},
+  "drawRate": "Rată remize",
+  "@drawRate": {},
+  "lossRate": "Rată înfrângeri",
+  "@lossRate": {},
+  "aiStatistics": "Statistici IA",
+  "@aiStatistics": {},
+  "enableStatistics": "Activați statisticile",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "Când este activat, rezultatele jocurilor vor fi înregistrate în statistici. Cu toate acestea, jocurile care implică retrageri de mutări nu vor fi înregistrate. Când este dezactivat, colectarea statisticilor este întreruptă.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "Aceasta va reseta toate statisticile jocului. Această acțiune nu poate fi anulată.",
+  "@thisWillResetAllGameStatistics": {}
 }

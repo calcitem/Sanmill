@@ -624,7 +624,7 @@
   "@needToPlayWithOwnPieces": {
     "description": "You need to play with your pieces."
   },
-  "statistics": "통계",
+  "statistics": "통계 자료",
   "@statistics": {
     "description": "Statistics"
   },
@@ -1935,5 +1935,33 @@
         "example": "Invalid FEN structure"
       }
     }
-  }
+  },
+  "myRating": "내 평점",
+  "@myRating": {},
+  "gamesPlayed": "플레이한 게임",
+  "@gamesPlayed": {},
+  "wins": "승리",
+  "@wins": {},
+  "losses": "패배",
+  "@losses": {},
+  "draws": "무승부",
+  "@draws": {},
+  "lastUpdated": "마지막 업데이트",
+  "@lastUpdated": {},
+  "format": "형식:",
+  "@format": {},
+  "resetStatistics": "통계 초기화",
+  "@resetStatistics": {},
+  "drawRate": "무승부율",
+  "@drawRate": {},
+  "lossRate": "패배율",
+  "@lossRate": {},
+  "aiStatistics": "AI 통계",
+  "@aiStatistics": {},
+  "enableStatistics": "통계 사용",
+  "@enableStatistics": {},
+  "enableStatistics_Detail": "활성화하면 게임 결과가 통계에 기록됩니다. 단, 무르기가 포함된 게임은 기록되지 않습니다. 비활성화하면 통계 수집이 일시 중지됩니다.",
+  "@enableStatistics_Detail": {},
+  "thisWillResetAllGameStatistics": "이렇게 하면 모든 게임 통계가 초기화됩니다. 이 작업은 취소할 수 없습니다.",
+  "@thisWillResetAllGameStatistics": {}
 }
