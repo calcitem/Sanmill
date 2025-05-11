@@ -449,7 +449,7 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         key: const Key('drawer_item_statistics'),
         itemValue: _DrawerIndex.statistics,
         itemTitle: S.of(context).statistics,
-        itemIcon: const Icon(FluentIcons.data_bar_vertical_24_regular),
+        itemIcon: const Icon(FluentIcons.calculator_24_regular),
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
