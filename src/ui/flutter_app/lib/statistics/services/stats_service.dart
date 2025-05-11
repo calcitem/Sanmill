@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
-// stat_service.dart
+// stats_service.dart
 
 import '../../../game_page/services/mill.dart';
 import '../../shared/database/database.dart';
@@ -181,10 +181,8 @@ class EloRatingService {
     HumanOutcome outcome;
     if (winnerColor == PieceColor.draw || winnerColor == PieceColor.none) {
       outcome = HumanOutcome.draw;
-    } else if ((winnerColor == PieceColor.white &&
-            !DB().generalSettings.aiMovesFirst) ||
-        (winnerColor == PieceColor.black &&
-            DB().generalSettings.aiMovesFirst)) {
+    } else if ((winnerColor == PieceColor.white && !isAiWhite) ||
+        (winnerColor == PieceColor.black && isAiWhite)) {
       // Human won
       outcome = HumanOutcome.playerWin;
     } else {
@@ -206,50 +204,33 @@ class EloRatingService {
         break;
     }
 
-    // Check if player is unrated or needs initial rating
-    final bool isNewPlayer = humanStats.gamesPlayed < 5;
-
-    // Prepare ratings list and results list for batch processing
+    // Prepare ratings list and results list for this single game
     final List<int> aiRatingsList = <int>[aiDifficultyStats.rating];
     final List<double> resultsList = <double>[score];
 
-    // Calculate new human rating based on player status
+    // Determine new rating using relaxed rules for <5 total games
+    final int gamesAfterThis = humanStats.gamesPlayed + 1;
     int newHumanRating;
 
-    if (!isNewPlayer) {
-      // Rated player: Update existing rating
+    // IMPORTANT NOTE (CUSTOMIZATION):
+    // Official FIDE rules require 5+ rated games total before publishing
+    // a formal rating, and to ignore a 0-score first event, etc.
+    // Here we allow an immediate rating for <5 games with bounding logic.
+    if (gamesAfterThis < 5) {
+      // Provisional rating with custom bounds
+      newHumanRating = _calculateInitialRating(aiRatingsList, resultsList);
+    } else {
+      // Standard update once the player has 5 or more games
       newHumanRating = _updateRating(
         humanStats.rating,
         aiRatingsList,
         resultsList,
-        humanStats.gamesPlayed + 1, // Including this game
+        gamesAfterThis,
       );
-    } else if (humanStats.gamesPlayed + 1 >= 5) {
-      // Transition to rated player: Calculate initial rating
-      // Collect all previous games
-      final List<int> previousAiRatings = <int>[];
-      final List<double> previousResults = <double>[];
-
-      // Here we'd ideally get previous game results from a history store
-      // For now, we'll have to start fresh when we reach 5 games
-
-      // Add current game
-      previousAiRatings.add(aiDifficultyStats.rating);
-      previousResults.add(score);
-
-      // Calculate initial rating
-      newHumanRating =
-          _calculateInitialRating(previousAiRatings, previousResults);
-
-      logger.i("$_logTag Calculated initial human rating: $newHumanRating");
-    } else {
-      // New player with < 5 games: Store game for future calculation
-      logger.i("$_logTag Storing game for future initial rating calculation");
-      newHumanRating = humanStats.rating;
     }
 
-    // For AI, we don't update the actual rating as it's fixed by level
-    // We only update statistics
+    // For AI, we don't update the actual rating (it's fixed by level),
+    // but do update their statistics
 
     // Update human color-specific stats
     int humanWhiteGamesPlayed = humanStats.whiteGamesPlayed;
@@ -261,7 +242,7 @@ class EloRatingService {
     int humanBlackLosses = humanStats.blackLosses;
     int humanBlackDraws = humanStats.blackDraws;
 
-    // Get current AI stats to update
+    // AI color-specific stats
     int aiWhiteGamesPlayed = aiDifficultyStats.whiteGamesPlayed;
     int aiWhiteWins = aiDifficultyStats.whiteWins;
     int aiWhiteLosses = aiDifficultyStats.whiteLosses;
@@ -334,7 +315,7 @@ class EloRatingService {
       blackDraws: humanBlackDraws,
     );
 
-    // Update AI statistics only (rating remains fixed)
+    // Update AI statistics (rating remains fixed)
     final PlayerStats newAiDifficultyStatsObject =
         settings.getAiDifficultyStats(aiDifficulty).copyWith(
               // Keep the original rating from the settings, as we don't update AI ratings
