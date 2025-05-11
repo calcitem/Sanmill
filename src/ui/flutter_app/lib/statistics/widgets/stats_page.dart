@@ -482,8 +482,10 @@ class StatisticsPage extends StatelessWidget {
                 numeric: true,
               ),
               DataColumn(label: Center(child: Text('🔢'))), // Total
-              DataColumn(label: Center(child: Text('⚪'))), // White
-              DataColumn(label: Center(child: Text('⚫'))), // Black
+              DataColumn(
+                  label: Center(child: Text('⚪'))), // White (Human perspective)
+              DataColumn(
+                  label: Center(child: Text('⚫'))), // Black (Human perspective)
             ],
             rows: List<DataRow>.generate(
               30, // Display levels 1-30
@@ -497,18 +499,18 @@ class StatisticsPage extends StatelessWidget {
                 final int fixedAiEloRating =
                     EloRatingService.getFixedAiEloRating(level);
 
-                // Format: W/D/L (Wins/Draws/Losses)
+                // Format: L/D/W (Losses/Draws/Wins) - Human perspective
                 final String totalStats =
-                    '${aiLvlStats.wins}/${aiLvlStats.draws}/${aiLvlStats.losses}';
+                    '${aiLvlStats.losses}/${aiLvlStats.draws}/${aiLvlStats.wins}';
 
-                // White stats: W/D/L format
-                final String whiteStats = aiLvlStats.whiteGamesPlayed > 0
-                    ? '${aiLvlStats.whiteWins}/${aiLvlStats.whiteDraws}/${aiLvlStats.whiteLosses}'
+                // Black stats from AI perspective becomes White stats from Human perspective (L/D/W format)
+                final String whiteStats = aiLvlStats.blackGamesPlayed > 0
+                    ? '${aiLvlStats.blackLosses}/${aiLvlStats.blackDraws}/${aiLvlStats.blackWins}'
                     : '0/0/0';
 
-                // Black stats: W/D/L format
-                final String blackStats = aiLvlStats.blackGamesPlayed > 0
-                    ? '${aiLvlStats.blackWins}/${aiLvlStats.blackDraws}/${aiLvlStats.blackLosses}'
+                // White stats from AI perspective becomes Black stats from Human perspective (L/D/W format)
+                final String blackStats = aiLvlStats.whiteGamesPlayed > 0
+                    ? '${aiLvlStats.whiteLosses}/${aiLvlStats.whiteDraws}/${aiLvlStats.whiteWins}'
                     : '0/0/0';
 
                 return DataRow(
@@ -527,17 +529,17 @@ class StatisticsPage extends StatelessWidget {
                             fixedAiEloRating), // Color based on fixed ELO
                       ),
                     )),
-                    // Total stats with monospace font - from persisted stats
+                    // Total stats with monospace font - from human perspective
                     DataCell(Text(
                       totalStats,
                       style: monoStyle,
                     )),
-                    // White stats with monospace font - from persisted stats
+                    // White stats with monospace font - from human perspective
                     DataCell(Text(
                       whiteStats,
                       style: monoStyle,
                     )),
-                    // Black stats with monospace font - from persisted stats
+                    // Black stats with monospace font - from human perspective
                     DataCell(Text(
                       blackStats,
                       style: monoStyle,
