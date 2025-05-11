@@ -70,11 +70,13 @@ extension _DrawerScreen on _DrawerIndex {
           key: const Key("human_ai"),
         );
       case _DrawerIndex.humanVsHuman:
+        GameController().disableStats = true;
         return GamePage(
           GameMode.humanVsHuman,
           key: const Key("human_human"),
         );
       case _DrawerIndex.aiVsAi:
+        GameController().disableStats = true;
         return GamePage(
           GameMode.aiVsAi,
           key: const Key("ai_ai"),

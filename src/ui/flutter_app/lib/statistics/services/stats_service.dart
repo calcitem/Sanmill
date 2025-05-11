@@ -6,6 +6,7 @@
 import '../../../game_page/services/mill.dart';
 import '../../general_settings/models/general_settings.dart';
 import '../../shared/database/database.dart';
+import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../statistics/model/stats_settings.dart';
 
@@ -226,6 +227,12 @@ class EloRatingService {
       // If stats are disabled, don't update
       if (!settings.isStatsEnabled) {
         logger.i("$_logTag Stats disabled, not updating");
+        return;
+      }
+
+      if (!EnvironmentConfig.devMode && GameController().disableStats == true) {
+        logger.i(
+            "$_logTag Stats disabled because of taking-back etc., not updating");
         return;
       }
 

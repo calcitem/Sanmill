@@ -37,6 +37,8 @@ class GameController {
 
   bool lastMoveFromAI = false;
 
+  bool disableStats = false;
+
   String? value;
   AiMoveType? aiMoveType;
 
@@ -321,6 +323,12 @@ class GameController {
     aiMoveType = AiMoveType.unknown;
     engine.stopSearching();
     AnalysisMode.disable();
+
+    if (gameModeBak == GameMode.humanVsAi) {
+      GameController().disableStats = false;
+    } else if (gameModeBak == GameMode.humanVsHuman) {
+      GameController().disableStats = true;
+    }
 
     // Reset player timer
     PlayerTimer().reset();
@@ -875,6 +883,8 @@ class GameController {
 
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
+
+    GameController().disableStats = true;
 
     switch (await engineToGo(context, isMoveNow: isEngineRunning)) {
       case EngineResponseOK():

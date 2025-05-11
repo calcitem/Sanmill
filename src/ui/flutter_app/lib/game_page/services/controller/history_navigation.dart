@@ -27,6 +27,9 @@ class HistoryNavigator {
     // Clear any existing analysis markers when player makes a move
     AnalysisMode.disable();
 
+    // Disable statistics
+    GameController().disableStats = true;
+
     // -----------------------------------------------------------
     //  LAN mode special rules:
     //   - Only single-step takeBack is allowed (requires remote approval).
