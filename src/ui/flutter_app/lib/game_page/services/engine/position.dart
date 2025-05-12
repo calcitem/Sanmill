@@ -1749,6 +1749,8 @@ extension SetupPosition on Position {
     st.rule50 = 0;
     st.key = 0;
     st.pliesFromNull = 0;
+
+    posKeyHistory.clear();
   }
 
   void copyWith(Position pos) {

@@ -393,6 +393,7 @@ class GameController {
 
   void _init(GameMode mode) {
     position = Position();
+    position.reset();
     gameInstance = Game(gameMode: mode);
     engine = Engine();
     gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
