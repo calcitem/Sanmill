@@ -2015,12 +2015,10 @@
   "@appliedPositionDetails": {
     "placeholders": {
       "whiteCount": {
-        "type": "String",
         "type": "num",
         "example": "9"
       },
       "blackCount": {
-        "type": "String",
         "type": "num",
         "example": "8"
       }
