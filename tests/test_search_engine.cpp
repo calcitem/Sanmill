@@ -25,7 +25,7 @@ protected:
 
         // Typically, you might want to start the position in a "moving" phase
         // to allow searching. But for certain tests, "placing" might also work.
-        pos.start(); // This sets phase=Phase::placing for Nine Men’s Morris by
+        pos.start(); // This sets phase=Phase::placing for Nine Men's Morris by
                      // default
         // If your code requires that "phase=moving", you may do so:
         // pos.phase = Phase::moving;
@@ -88,13 +88,13 @@ TEST_F(SearchEngineTest, ShortSearchInPlacingPhase)
     // Retrieve the best move
     std::string bestMove = engine->getBestMoveString();
 
-    // We expect a move string is returned, e.g. "(1,2)" or similar
+    // We expect a move string is returned, e.g. "d5", "a1" or similar
     EXPECT_FALSE(bestMove.empty()) << "Short search should yield a non-empty "
                                       "best move string in placing phase.";
 
     // If you know the standard format, you can do more checks. For example:
-    // Usually placing moves are "(*,*)."
-    // e.g. "SearchEngine::emitCommand()" prints something like "bestmove (1,2)"
+    // Usually placing moves are in standard notation like "d5", "a1", etc.
+    // e.g. "SearchEngine::emitCommand()" prints something like "bestmove d5"
     // But we won't rely on that exact formatting in this sample.
 }
 

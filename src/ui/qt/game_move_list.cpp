@@ -48,8 +48,7 @@ void Game::appendMoveRecord(const char *format, ...)
 
     // WAR: Prevents appending game results after the last item is
     // already a game result. Especially when browsing history.
-    if (!gameMoveList.empty() &&
-        (gameMoveList.back()[0] == '-' || gameMoveList.back()[0] == '(')) {
+    if (gameMoveList.empty() || gameMoveList.back() != record) {
         gameMoveList.emplace_back(record);
     }
 }

@@ -114,7 +114,8 @@ void Game::refreshMoveList()
     gameMoveList.emplace_back(position.record);
 
     // Update position key history
-    if (strlen(position.record) > strlen("-(1,2)")) {
+    // For standard notation: move moves have length 5
+    if (strlen(position.record) == 5) {
         posKeyHistory.push_back(position.key());
     } else {
         posKeyHistory.clear();

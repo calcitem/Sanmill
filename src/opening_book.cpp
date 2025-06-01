@@ -51,7 +51,7 @@ string get_best_move()
     return string(obc);
 }
 
-/// Convert a square to a string representation
+/// Convert a square to a string representation using standard notation
 void sq2str(char *str)
 {
     assert(str != nullptr);
@@ -64,22 +64,33 @@ void sq2str(char *str)
     openingBookDeque.pop_front();
     openingBookDequeBak.push_back(sq);
 
-    File file = FILE_A;
-    Rank rank = RANK_1;
-    int sig = 1;
-
+    bool isRemove = false;
     if (sq < 0) {
         sq = -sq;
-        sig = 0;
+        isRemove = true;
     }
 
-    file = file_of(sq);
-    rank = rank_of(sq);
+    // Convert square to standard notation
+    static const char *squareToStandard[40] = {
+        // 0-7: unused
+        "", "", "", "", "", "", "", "",
+        // 8-15: inner ring
+        "d5", "e5", "e4", "e3", "d3", "c3", "c4", "c5",
+        // 16-23: middle ring
+        "d6", "f6", "f4", "f2", "d2", "b2", "b4", "b6",
+        // 24-31: outer ring
+        "d7", "g7", "g4", "g1", "d1", "a1", "a4", "a7",
+        // 32-39: unused
+        "", "", "", "", "", "", "", ""};
 
-    if (sig == 1) {
-        snprintf(str, 16, "(%d,%d)", file, rank);
+    if (sq >= 0 && sq < 40 && squareToStandard[sq][0] != '\0') {
+        if (isRemove) {
+            snprintf(str, 16, "x%s", squareToStandard[sq]);
+        } else {
+            snprintf(str, 16, "%s", squareToStandard[sq]);
+        }
     } else {
-        snprintf(str, 16, "-(%d,%d)", file, rank);
+        snprintf(str, 16, "invalid_sq");
     }
 }
 

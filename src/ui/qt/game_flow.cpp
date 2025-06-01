@@ -166,7 +166,8 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 
     // TODO: It means that the 50 rule is only calculated at the beginning of
     // the moving phase, and it is not sure whether it complies with the rules.
-    if (strlen(moveStr) > strlen("-(1,2)")) {
+    // For standard notation: move moves have length 5
+    if (strlen(moveStr) == 5) {
         posKeyHistory.push_back(position.key());
     } else {
         posKeyHistory.clear();

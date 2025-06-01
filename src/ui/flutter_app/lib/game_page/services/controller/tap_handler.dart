@@ -552,8 +552,9 @@ class TapHandler {
       ++GameController().position.st.pliesFromNull;
 
       // Update position history
+      // Check move type instead of string length for position key history
       if (GameController().position._record != null &&
-          GameController().position._record!.move.length > "-(1,2)".length) {
+          GameController().position._record!.type == MoveType.move) {
         if (posKeyHistory.isEmpty ||
             posKeyHistory.last != GameController().position.st.key) {
           posKeyHistory.add(GameController().position.st.key);

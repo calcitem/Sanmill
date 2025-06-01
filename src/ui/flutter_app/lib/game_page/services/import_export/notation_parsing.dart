@@ -7,53 +7,30 @@ part of '../mill.dart';
 
 const String _logTag = "[NotationParsing]";
 
+// TODO: Remove this function
 String _wmdNotationToMoveString(String wmd) {
-  // Handle capture moves starting with 'x' e.g., 'xd1'
+  // Validate standard notation format
   if (wmd.startsWith('x') && wmd.length == 3) {
-    final String target = wmd.substring(1, 3);
-    final String? mapped = wmdNotationToMove[target];
-    if (mapped != null) {
-      return "-$mapped";
-    }
-    logger.w("$_logTag Unknown capture target: $wmd");
-    throw ImportFormatException(wmd);
+    // Remove move format: "xa1", "xd5", etc.
+    return wmd;
   }
 
-  // Handle from-to moves e.g., 'a1-a4'
   if (wmd.length == 5 && wmd[2] == '-') {
-    final String from = wmd.substring(0, 2);
-    final String to = wmd.substring(3, 5);
-    final String? mappedFrom = wmdNotationToMove[from];
-    final String? mappedTo = wmdNotationToMove[to];
-    if (mappedFrom != null && mappedTo != null) {
-      return "$mappedFrom->$mappedTo";
-    }
-    logger.w("$_logTag Unknown move from or to: $wmd");
-    throw ImportFormatException(wmd);
+    // Move format: "a1-a4", "d5-e5", etc.
+    return wmd;
   }
 
-  // Handle simple moves without captures e.g., 'a1'
-  if (wmd.length == 2) {
-    final String? mapped = wmdNotationToMove[wmd];
-    if (mapped != null) {
-      return mapped;
-    }
-    logger.w("$_logTag Unknown move: $wmd");
-    throw ImportFormatException(wmd);
+  if (wmd.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(wmd)) {
+    // Place move format: "a1", "d5", etc.
+    return wmd;
   }
 
-  // Handle unsupported formats
-  if ((wmd.length == 8 && wmd[2] == '-' && wmd[5] == 'x') ||
-      (wmd.length == 5 && wmd[2] == 'x')) {
-    logger.w("$_logTag Not support parsing format oo-ooxo notation: $wmd");
-    throw ImportFormatException(wmd);
-  }
-
-  // If none of the above conditions are met, throw an exception
-  logger.w("$_logTag Not support parsing format: $wmd");
+  // Unsupported format
+  logger.w("$_logTag Unsupported move format: $wmd");
   throw ImportFormatException(wmd);
 }
 
+// Convert PlayOK notation to standard notation
 String _playOkNotationToMoveString(String playOk) {
   if (playOk.isEmpty) {
     throw ImportFormatException(playOk);
@@ -63,40 +40,55 @@ String _playOkNotationToMoveString(String playOk) {
   final int iX = playOk.indexOf("x");
 
   if (iDash == -1 && iX == -1) {
-    // 12
+    // Simple place move: "12" -> "c4"
     final int val = int.parse(playOk);
     if (val >= 1 && val <= 24) {
-      return playOkNotationToMove[playOk]!;
+      final String? standardNotation = playOkNotationToStandardNotation[playOk];
+      if (standardNotation != null) {
+        return standardNotation;
+      } else {
+        throw ImportFormatException(playOk);
+      }
     } else {
       throw ImportFormatException(playOk);
     }
   }
 
   if (iX == 0) {
-    // x12
+    // Remove move: "x12" -> "xc4"
     final String sub = playOk.substring(1);
     final int val = int.parse(sub);
     if (val >= 1 && val <= 24) {
-      return "-${playOkNotationToMove[sub]!}";
+      final String? standardNotation = playOkNotationToStandardNotation[sub];
+      if (standardNotation != null) {
+        return "x$standardNotation";
+      } else {
+        throw ImportFormatException(playOk);
+      }
     } else {
       throw ImportFormatException(playOk);
     }
   }
+
   if (iDash != -1 && iX == -1) {
-    String? move;
-    // 12-13
+    // Move: "12-13" -> "c4-e4"
     final String sub1 = playOk.substring(0, iDash);
     final int val1 = int.parse(sub1);
-    if (val1 >= 1 && val1 <= 24) {
-      move = playOkNotationToMove[sub1];
-    } else {
+    if (val1 < 1 || val1 > 24) {
       throw ImportFormatException(playOk);
     }
 
     final String sub2 = playOk.substring(iDash + 1);
     final int val2 = int.parse(sub2);
-    if (val2 >= 1 && val2 <= 24) {
-      return "$move->${playOkNotationToMove[sub2]!}";
+    if (val2 < 1 || val2 > 24) {
+      throw ImportFormatException(playOk);
+    }
+
+    final String? fromSquare = playOkNotationToStandardNotation[sub1];
+    final String? toSquare = playOkNotationToStandardNotation[sub2];
+
+    if (fromSquare != null && toSquare != null) {
+      return "$fromSquare-$toSquare";
     } else {
       throw ImportFormatException(playOk);
     }

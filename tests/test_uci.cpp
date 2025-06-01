@@ -144,11 +144,11 @@ TEST_F(UCITest, SetOptionCommand)
  */
 TEST_F(UCITest, SquareStringConversion)
 {
-    // For a Square s, UCI::square(s) => "(f,r)"
+    // For a Square s, UCI::square(s) => standard notation like "d5", "a1"
     // We verify a few squares
-    EXPECT_EQ(UCI::square(SQ_8), "(1,1)") << "Square SQ_8 should be (1,1).";
-    EXPECT_EQ(UCI::square(SQ_9), "(1,2)") << "Square SQ_9 should be (1,2).";
-    EXPECT_EQ(UCI::square(SQ_31), "(3,8)") << "Square SQ_31 should be (3,8).";
+    EXPECT_EQ(UCI::square(SQ_8), "d5") << "Square SQ_8 should be d5.";
+    EXPECT_EQ(UCI::square(SQ_9), "e5") << "Square SQ_9 should be e5.";
+    EXPECT_EQ(UCI::square(SQ_31), "a7") << "Square SQ_31 should be a7.";
 }
 
 /**
@@ -159,25 +159,26 @@ TEST_F(UCITest, MoveStringConversion)
 {
     // Test a "move" in which from and to are different squares
     Move m1 = make_move(SQ_8, SQ_9);
-    // SQ_8 => (1,1), SQ_9 => (1,2)
-    // "->" indicates a move
-    EXPECT_EQ(UCI::move(m1), "(1,1)->(1,2)") << "Should produce "
-                                                "(fileA,rank1)->(fileA,rank2).";
+    // SQ_8 => "d5", SQ_9 => "e5"
+    // "-" indicates a move in standard notation
+    EXPECT_EQ(UCI::move(m1), "d5-e5") << "Should produce standard move "
+                                         "notation like d5-e5.";
 
     // Test a "remove" type move (negative move)
-    // Let's say removing SQ_10 => (1,3). Negative means MOVETYPE_REMOVE
+    // Let's say removing SQ_10 => "e4". Negative means MOVETYPE_REMOVE
     Move m2 = static_cast<Move>(-SQ_10);
-    EXPECT_EQ(UCI::move(m2), "-(1,3)") << "Remove moves have a '-' and the "
-                                          "square notation.";
+    EXPECT_EQ(UCI::move(m2), "xe4") << "Remove moves have 'x' prefix and "
+                                       "standard square notation.";
 
     // Test a "place" type move
     // This means from_sq(m) = to_sq(m) in code's logic, but let's confirm
     // Actually, place is just if m & 0x1f00 is 0, and m >= 0
-    // For instance, to place to SQ_25 => (3,2)
+    // For instance, to place to SQ_25 => "g7"
     Move m3 = make_move(SQ_0, SQ_25); // from == 0 => "place" style in code
     // But the code sees from_sq(m) is 0 => "move is place"
-    EXPECT_EQ(UCI::move(m3), "(3,2)") << "Place moves just produce the "
-                                         "destination (3,2).";
+    EXPECT_EQ(UCI::move(m3), "g7") << "Place moves just produce the "
+                                      "destination in standard notation like "
+                                      "g7.";
 }
 
 /**
@@ -199,7 +200,7 @@ TEST_F(UCITest, ToMoveParsing)
     // We'll do a hack: let's define a move ourselves:
     // For code to match, we need a Move in MoveList<LEGAL>(testPos) that
     // matches string. Let's just test that we get MOVE_NONE if not found:
-    std::string str = "(1,1)->(1,2)";
+    std::string str = "d5-e5";
     Move result = UCI::to_move(&testPos, str);
     EXPECT_EQ(result, MOVE_NONE) << "Without a fully built position or "
                                     "appended moves, it's likely none. This is "
@@ -211,7 +212,7 @@ TEST_F(UCITest, ToMoveParsing)
     // MOVE_NONE.
 
     // Another test: a remove type
-    str = "-(1,3)";
+    str = "xe4";
     result = UCI::to_move(&testPos, str);
     EXPECT_EQ(result, MOVE_NONE) << "Again, we have no real moves in the "
                                     "position, so it won't match. Expected "

@@ -434,6 +434,41 @@ Map<int, int> squareToIndex = <int, int>{
   31: 0
 };
 
+int notationToSquare(String notation) {
+  const Map<String, int> notationToSquare = {
+    // inner ring (8-15)
+    'd5': 8,
+    'e5': 9,
+    'e4': 10,
+    'e3': 11,
+    'd3': 12,
+    'c3': 13,
+    'c4': 14,
+    'c5': 15,
+    // middle ring (16-23)
+    'd6': 16,
+    'f6': 17,
+    'f4': 18,
+    'f2': 19,
+    'd2': 20,
+    'b2': 21,
+    'b4': 22,
+    'b6': 23,
+    // outer ring (24-31)
+    'd7': 24,
+    'g7': 25,
+    'g4': 26,
+    'g1': 27,
+    'd1': 28,
+    'a1': 29,
+    'a4': 30,
+    'a7': 31,
+  };
+
+  final String key = notation.trim().toLowerCase();
+  return notationToSquare[key] ?? -1;
+}
+
 Map<int, int> indexToSquare =
     squareToIndex.map((int k, int v) => MapEntry<int, int>(v, k));
 
@@ -451,58 +486,48 @@ Map<int, int> indexToSquare =
           |/    |    \|
         1 X --- X --- X 1
           a b c d e f g
+
+PlayOK numbering (left to right, top to bottom):
+
+   a7(1)  ---- d7(2)  ---- g7(3)
+   |            |             |
+   | b6(4)  - d6(5)  - f6(6)  |
+   | |          |           | |
+   | | c5(7) -d5(8) -e5(9)  | |
+a4(10)-b4(11)-c4(12) e4(13)-f4(14)-g4(15)
+   | | c3(16)-d3(17)-e3(18) | |
+   | |          |           | |
+   | b2(19) - d2(20) - f2(21) |
+   |            |             |
+   a1(22) ---- d1(23) ---- g1(24)
  */
 
-Map<String, String> wmdNotationToMove = <String, String>{
-  "d5": "(1,1)",
-  "e5": "(1,2)",
-  "e4": "(1,3)",
-  "e3": "(1,4)",
-  "d3": "(1,5)",
-  "c3": "(1,6)",
-  "c4": "(1,7)",
-  "c5": "(1,8)",
-  "d6": "(2,1)",
-  "f6": "(2,2)",
-  "f4": "(2,3)",
-  "f2": "(2,4)",
-  "d2": "(2,5)",
-  "b2": "(2,6)",
-  "b4": "(2,7)",
-  "b6": "(2,8)",
-  "d7": "(3,1)",
-  "g7": "(3,2)",
-  "g4": "(3,3)",
-  "g1": "(3,4)",
-  "d1": "(3,5)",
-  "a1": "(3,6)",
-  "a4": "(3,7)",
-  "a7": "(3,8)",
-};
-
-Map<String, String> playOkNotationToMove = <String, String>{
-  "8": "(1,1)",
-  "9": "(1,2)",
-  "13": "(1,3)",
-  "18": "(1,4)",
-  "17": "(1,5)",
-  "16": "(1,6)",
-  "12": "(1,7)",
-  "7": "(1,8)",
-  "5": "(2,1)",
-  "6": "(2,2)",
-  "14": "(2,3)",
-  "21": "(2,4)",
-  "20": "(2,5)",
-  "19": "(2,6)",
-  "11": "(2,7)",
-  "4": "(2,8)",
-  "2": "(3,1)",
-  "3": "(3,2)",
-  "15": "(3,3)",
-  "24": "(3,4)",
-  "23": "(3,5)",
-  "22": "(3,6)",
-  "10": "(3,7)",
-  "1": "(3,8)",
+// PlayOK notation to standard notation mapping
+// PlayOK uses numbers 1-24 to represent board positions
+// Numbering is from left to right, top to bottom
+const Map<String, String> playOkNotationToStandardNotation = <String, String>{
+  "1": "a7", // outer ring, top left
+  "2": "d7", // outer ring, top center
+  "3": "g7", // outer ring, top right
+  "4": "b6", // middle ring, top left
+  "5": "d6", // middle ring, top center
+  "6": "f6", // middle ring, top right
+  "7": "c5", // inner ring, top left
+  "8": "d5", // inner ring, top center
+  "9": "e5", // inner ring, top right
+  "10": "a4", // left side, middle
+  "11": "b4", // middle left
+  "12": "c4", // inner left
+  "13": "e4", // inner right
+  "14": "f4", // middle right
+  "15": "g4", // right side, middle
+  "16": "c3", // inner ring, bottom left
+  "17": "d3", // inner ring, bottom center
+  "18": "e3", // inner ring, bottom right
+  "19": "b2", // middle ring, bottom left
+  "20": "d2", // middle ring, bottom center
+  "21": "f2", // middle ring, bottom right
+  "22": "a1", // outer ring, bottom left
+  "23": "d1", // outer ring, bottom center
+  "24": "g1", // outer ring, bottom right
 };

@@ -774,8 +774,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
-                     rank_of(s));
+            snprintf(record, RECORD_LEN_MAX, "%s", UCI::square(s).c_str());
         }
 
         const int n = mills_count(s);
@@ -950,9 +949,9 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
-                 file_of(currentSquare[sideToMove]),
-                 rank_of(currentSquare[sideToMove]), file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "%s-%s",
+                 UCI::square(currentSquare[sideToMove]).c_str(),
+                 UCI::square(s).c_str());
         st.rule50++;
     }
 
@@ -1073,7 +1072,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "x%s", UCI::square(s).c_str());
         st.rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
@@ -1207,8 +1206,6 @@ bool Position::command(const char *cmd)
 {
     char moveStr[64] = {0};
     unsigned char t = 0;
-    File file1 = FILE_A, file2 = FILE_A;
-    Rank rank1 = RANK_1, rank2 = RANK_1;
 
     if (strlen(cmd) == 0) { /* "" */
         return reset();
@@ -1230,30 +1227,29 @@ bool Position::command(const char *cmd)
 #endif
     }
 
-    int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
-                      reinterpret_cast<unsigned *>(&file1),
-                      reinterpret_cast<unsigned *>(&rank1),
-                      reinterpret_cast<unsigned *>(&file2),
-                      reinterpret_cast<unsigned *>(&rank2));
-
-    if (args >= 4) {
-        return move_piece(file1, rank1, file2, rank2);
+    Move m = UCI::to_move(this, moveStr);
+    if (m != MOVE_NONE) {
+        switch (type_of(m)) {
+        case MOVETYPE_MOVE: {
+            const Square from = from_sq(m);
+            const Square to = to_sq(m);
+            return move_piece(file_of(from), rank_of(from), file_of(to),
+                              rank_of(to));
+        }
+        case MOVETYPE_REMOVE: {
+            const Square to = to_sq(m);
+            return remove_piece(file_of(to), rank_of(to));
+        }
+        case MOVETYPE_PLACE: {
+            const Square to = to_sq(m);
+            return put_piece(file_of(to), rank_of(to));
+        }
+        default:
+            break;
+        }
     }
 
-    args = sscanf(moveStr, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        return remove_piece(file1, rank1);
-    }
-
-    args = sscanf(moveStr, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        return put_piece(file1, rank1);
-    }
-
-    args = sscanf(moveStr, "Player %hhu resigns!", &t);
-
+    int args = sscanf(moveStr, "Player %hhu resigns!", &t);
     if (args == 1) {
         return resign(static_cast<Color>(t));
     }
@@ -1989,52 +1985,70 @@ void Position::flipBoardHorizontally(vector<string> &gameMoveList,
         lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
+    // Transform move records in standard notation for horizontal flip operation
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        // Helper function to transform rank (row) coordinates for horizontal
+        // flip
+        auto transformRank = [](char rank) -> char {
+            // Horizontal flip: rank coordinates are flipped vertically
+            switch (rank) {
+            case '1':
+                return '7';
+            case '2':
+                return '6';
+            case '3':
+                return '5';
+            case '4':
+                return '4';
+            case '5':
+                return '3';
+            case '6':
+                return '2';
+            case '7':
+                return '1';
+            default:
+                return rank;
+            }
+        };
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
-        if (args >= 4) {
-            s1 = (RANK_NB - s1 + 1) % RANK_NB;
-            s2 = (RANK_NB - s2 + 1) % RANK_NB;
-            record[3] = '1' + static_cast<char>(s1);
-            record[10] = '1' + static_cast<char>(s2);
-        } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
-            if (args >= 2) {
-                s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                record[4] = '1' + static_cast<char>(s1);
-            } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
-                if (args >= 2) {
-                    s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                    record[3] = '1' + static_cast<char>(s1);
+        // Transform move notation string
+        auto transformMoveString = [&](std::string &moveStr) {
+            if (moveStr.length() >= 2) {
+                if (moveStr[0] == 'x' && moveStr.length() >= 3) {
+                    // Remove move: "xa1" -> "xa7"
+                    moveStr[2] = transformRank(moveStr[2]);
+                } else if (moveStr.length() == 5 && moveStr[2] == '-') {
+                    // Move: "a1-a4" -> "a7-a4"
+                    moveStr[1] = transformRank(moveStr[1]);
+                    moveStr[4] = transformRank(moveStr[4]);
+                } else if (moveStr.length() == 2) {
+                    // Place move: "a1" -> "a7"
+                    moveStr[1] = transformRank(moveStr[1]);
                 }
             }
+        };
+
+        // Transform current record
+        if (strlen(record) > 0) {
+            std::string recordStr(record);
+            transformMoveString(recordStr);
+#ifdef _MSC_VER
+            strncpy_s(record, sizeof(record), recordStr.c_str(), _TRUNCATE);
+#else
+            strncpy(record, recordStr.c_str(), sizeof(record) - 1);
+            record[sizeof(record) - 1] = '\0';
+#endif
         }
 
+        // Transform all moves in game move list
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
-                          &s2);
-            if (args >= 4) {
-                s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                s2 = (RANK_NB - s2 + 1) % RANK_NB;
-                iter[3] = '1' + static_cast<char>(s1);
-                iter[10] = '1' + static_cast<char>(s2);
-            } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
-                if (args >= 2) {
-                    s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                    iter[4] = '1' + static_cast<char>(s1);
-                } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
-                    if (args >= 2) {
-                        s1 = (RANK_NB - s1 + 1) % RANK_NB;
-                        iter[3] = '1' + static_cast<char>(s1);
-                    }
-                }
-            }
+            transformMoveString(iter);
         }
     }
+
+    // as we now use standard notation exclusively
+    (void)cmdChange;
+    (void)gameMoveList;
 }
 
 void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
@@ -2107,93 +2121,72 @@ void Position::turn(vector<string> &gameMoveList, bool cmdChange /*= true*/)
     if (lastMillToSquare[sideToMove] != 0) {
         f = lastMillToSquare[sideToMove] / static_cast<Square>(RANK_NB);
         r = lastMillToSquare[sideToMove] % static_cast<Square>(RANK_NB);
-
-        if (f == 1)
-            f = FILE_NB;
-        else if (f == FILE_NB)
-            f = 1;
-
+        r = (RANK_NB - r) % RANK_NB;
         lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
+    // Transform move records in standard notation for turn operation
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        // Helper function to transform a single square in standard notation
+        auto transformSquare = [](char file) -> char {
+            switch (file) {
+            case 'a':
+                return 'g'; // file 1 <-> file 7
+            case 'b':
+                return 'f'; // file 2 <-> file 6
+            case 'c':
+                return 'e'; // file 3 <-> file 5
+            case 'd':
+                return 'd'; // file 4 stays same
+            case 'e':
+                return 'c'; // file 5 <-> file 3
+            case 'f':
+                return 'b'; // file 6 <-> file 2
+            case 'g':
+                return 'a'; // file 7 <-> file 1
+            default:
+                return file;
+            }
+        };
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
-
-        if (args >= 4) {
-            if (r1 == 1)
-                r1 = FILE_NB;
-            else if (r1 == FILE_NB)
-                r1 = 1;
-
-            if (r2 == 1)
-                r2 = FILE_NB;
-            else if (r2 == FILE_NB)
-                r2 = 1;
-
-            record[1] = '0' + static_cast<char>(r1);
-            record[8] = '0' + static_cast<char>(r2);
-        } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
-            if (args >= 2) {
-                if (r1 == 1)
-                    r1 = FILE_NB;
-                else if (r1 == FILE_NB)
-                    r1 = 1;
-                record[2] = '0' + static_cast<char>(r1);
-            } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
-                if (args >= 2) {
-                    if (r1 == 1)
-                        r1 = FILE_NB;
-                    else if (r1 == FILE_NB)
-                        r1 = 1;
-                    record[1] = '0' + static_cast<char>(r1);
+        // Transform move notation string
+        auto transformMoveString = [&](std::string &moveStr) {
+            if (moveStr.length() >= 2) {
+                if (moveStr[0] == 'x' && moveStr.length() >= 3) {
+                    // Remove move: "xa1" -> "xg1"
+                    moveStr[1] = transformSquare(moveStr[1]);
+                } else if (moveStr.length() == 5 && moveStr[2] == '-') {
+                    // Move: "a1-a4" -> "g1-g4"
+                    moveStr[0] = transformSquare(moveStr[0]);
+                    moveStr[3] = transformSquare(moveStr[3]);
+                } else if (moveStr.length() == 2) {
+                    // Place move: "a1" -> "g1"
+                    moveStr[0] = transformSquare(moveStr[0]);
                 }
             }
+        };
+
+        // Transform current record
+        if (strlen(record) > 0) {
+            std::string recordStr(record);
+            transformMoveString(recordStr);
+#ifdef _MSC_VER
+            strncpy_s(record, sizeof(record), recordStr.c_str(), _TRUNCATE);
+#else
+            strncpy(record, recordStr.c_str(), sizeof(record) - 1);
+            record[sizeof(record) - 1] = '\0';
+#endif
         }
 
+        // Transform all moves in game move list
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
-                          &s2);
-
-            if (args >= 4) {
-                if (r1 == 1)
-                    r1 = FILE_NB;
-                else if (r1 == FILE_NB)
-                    r1 = 1;
-
-                if (r2 == 1)
-                    r2 = FILE_NB;
-                else if (r2 == FILE_NB)
-                    r2 = 1;
-
-                iter[1] = '0' + static_cast<char>(r1);
-                iter[8] = '0' + static_cast<char>(r2);
-            } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
-                if (args >= 2) {
-                    if (r1 == 1)
-                        r1 = FILE_NB;
-                    else if (r1 == FILE_NB)
-                        r1 = 1;
-
-                    iter[2] = '0' + static_cast<char>(r1);
-                } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
-                    if (args >= 2) {
-                        if (r1 == 1)
-                            r1 = FILE_NB;
-                        else if (r1 == FILE_NB)
-                            r1 = 1;
-
-                        iter[1] = '0' + static_cast<char>(r1);
-                    }
-                }
-            }
+            transformMoveString(iter);
         }
     }
+
+    // as we now use standard notation exclusively
+    (void)cmdChange;
+    (void)gameMoveList;
 }
 
 void Position::rotate(vector<string> &gameMoveList, int degrees,
@@ -2292,55 +2285,63 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
         lastMillToSquare[sideToMove] = static_cast<Square>(f * RANK_NB + r);
     }
 
+    // Transform move records in standard notation for rotation operation
     if (cmdChange) {
-        unsigned r1, s1, r2, s2;
+        // Helper function to transform rank coordinates for rotation
+        auto transformRankForRotation = [&](char rank,
+                                            int rotationDegrees) -> char {
+            int r = rank - '1'; // Convert to 0-based index (0-7)
 
-        int args = sscanf(record, "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2, &s2);
+            if (rotationDegrees == 2) {
+                // Rotate up by 2 positions
+                r = (r + 2) % 8;
+            } else if (rotationDegrees == 6) {
+                // Rotate down by 2 positions
+                r = (r + 6) % 8;
+            } else if (rotationDegrees == 4) {
+                // Rotate by 4 positions (opposite)
+                r = (r + 4) % 8;
+            }
 
-        if (args >= 4) {
-            s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-            s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
-            record[3] = '1' + static_cast<char>(s1);
-            record[10] = '1' + static_cast<char>(s2);
-        } else {
-            args = sscanf(record, "-(%1u,%1u)", &r1, &s1);
+            return static_cast<char>('1' + r); // Convert back to character
+        };
 
-            if (args >= 2) {
-                s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                record[4] = '1' + static_cast<char>(s1);
-            } else {
-                args = sscanf(record, "(%1u,%1u)", &r1, &s1);
-
-                if (args >= 2) {
-                    s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                    record[3] = '1' + static_cast<char>(s1);
+        // Transform move notation string
+        auto transformMoveString = [&](std::string &moveStr) {
+            if (moveStr.length() >= 2) {
+                if (moveStr[0] == 'x' && moveStr.length() >= 3) {
+                    // Remove move: transform rank
+                    moveStr[2] = transformRankForRotation(moveStr[2], degrees);
+                } else if (moveStr.length() == 5 && moveStr[2] == '-') {
+                    // Move: transform both ranks
+                    moveStr[1] = transformRankForRotation(moveStr[1], degrees);
+                    moveStr[4] = transformRankForRotation(moveStr[4], degrees);
+                } else if (moveStr.length() == 2) {
+                    // Place move: transform rank
+                    moveStr[1] = transformRankForRotation(moveStr[1], degrees);
                 }
             }
+        };
+
+        // Transform current record
+        if (strlen(record) > 0) {
+            std::string recordStr(record);
+            transformMoveString(recordStr);
+#ifdef _MSC_VER
+            strncpy_s(record, sizeof(record), recordStr.c_str(), _TRUNCATE);
+#else
+            strncpy(record, recordStr.c_str(), sizeof(record) - 1);
+            record[sizeof(record) - 1] = '\0';
+#endif
         }
 
+        // Transform all moves in game move list
         for (auto &iter : gameMoveList) {
-            args = sscanf(iter.c_str(), "(%1u,%1u)->(%1u,%1u)", &r1, &s1, &r2,
-                          &s2);
-
-            if (args >= 4) {
-                s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                s2 = (s2 - 1 + RANK_NB - degrees) % RANK_NB;
-                iter[3] = '1' + static_cast<char>(s1);
-                iter[10] = '1' + static_cast<char>(s2);
-            } else {
-                args = sscanf(iter.c_str(), "-(%1u,%1u)", &r1, &s1);
-
-                if (args >= 2) {
-                    s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                    iter[4] = '1' + static_cast<char>(s1);
-                } else {
-                    args = sscanf(iter.c_str(), "(%1u,%1u)", &r1, &s1);
-                    if (args >= 2) {
-                        s1 = (s1 - 1 + RANK_NB - degrees) % RANK_NB;
-                        iter[3] = '1' + static_cast<char>(s1);
-                    }
-                }
-            }
+            transformMoveString(iter);
         }
     }
+
+    // as we now use standard notation exclusively
+    (void)cmdChange;
+    (void)gameMoveList;
 }

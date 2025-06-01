@@ -76,7 +76,8 @@ void SearchEngine::emitCommand()
         // 'thread' pointer might not exist anymore.
         // If you had 'thread->us = rootPos->side_to_move();'
         // you need a new approach or remove it.
-        if (bestMoveString.size() > strlen("-(1,2)")) {
+        // For standard notation: move moves have length 5
+        if (bestMoveString.size() == 5) {
             posKeyHistory.push_back(rootPos->key());
         } else {
             posKeyHistory.clear();

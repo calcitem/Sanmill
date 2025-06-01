@@ -80,13 +80,19 @@ class AnalysisRenderer {
 
       switch (resultType) {
         case AnalysisResultType.place:
-          // Get position on board for the move
-          final Offset position =
-              _getPositionFromCoordinates(result.move, size);
+          // Draw mark for place move in standard notation
+          if (result.move.length == 2 &&
+              RegExp(r'^[a-g][1-7]$').hasMatch(result.move)) {
+            // Get position on board using standard notation
+            final Offset position =
+                _getPositionFromStandardNotation(result.move, size);
 
-          // Draw mark based on the outcome (win/draw/loss)
-          _drawOutcomeMark(
-              canvas, position, result.outcome, squareSize * 0.4, isTopResult);
+            // Draw mark based on the outcome (win/draw/loss)
+            _drawOutcomeMark(canvas, position, result.outcome, squareSize * 0.4,
+                isTopResult);
+          } else {
+            logger.w("Failed to parse place move: ${result.move}");
+          }
           break;
 
         case AnalysisResultType.move:
@@ -269,25 +275,22 @@ class AnalysisRenderer {
     //logger.i(
     //    "Move: $moveStr, Outcome: ${outcome.runtimeType}, Value: ${outcome.valueStr}");
 
-    // Parse from and to coordinates from format "(3,8)->(3,7)"
-    final RegExp movePattern =
-        RegExp(r'\(([\d]+),([\d]+)\)->\(([\d]+),([\d]+)\)');
-    final Match? match = movePattern.firstMatch(moveStr);
-
-    if (match == null || match.groupCount < 4) {
+    // Parse standard notation move format like "a1-a4", "d5-e5"
+    if (!moveStr.contains('-') || moveStr.length != 5) {
       return;
     }
 
-    // Extract coordinates
-    final int fromX = int.parse(match.group(1)!);
-    final int fromY = int.parse(match.group(2)!);
-    final int toX = int.parse(match.group(3)!);
-    final int toY = int.parse(match.group(4)!);
+    final List<String> squares = moveStr.split('-');
+    if (squares.length != 2) {
+      return;
+    }
 
-    // Get positions on board
-    final Offset startPos =
-        _getPositionFromCoordinates("($fromX,$fromY)", size);
-    final Offset endPos = _getPositionFromCoordinates("($toX,$toY)", size);
+    final String fromSquare = squares[0];
+    final String toSquare = squares[1];
+
+    // Convert square notation to positions using standard notation
+    final Offset startPos = _getPositionFromStandardNotation(fromSquare, size);
+    final Offset endPos = _getPositionFromStandardNotation(toSquare, size);
 
     // Get color based on outcome
     final Color arrowColor = AnalysisMode.getColorForOutcome(outcome);
@@ -321,22 +324,18 @@ class AnalysisRenderer {
     double radius,
     bool isTopResult,
   ) {
-    // Parse coordinates from format "-(3,8)"
-    final RegExp removePattern = RegExp(r'-\((\d+),(\d+)\)');
-    final Match? match = removePattern.firstMatch(moveStr);
-
-    if (match == null || match.groupCount < 2) {
-      // Log for debugging
-      logger.w("Failed to match remove pattern in: $moveStr");
+    // Parse standard notation remove moves like "xa1", "xd5"
+    if (!moveStr.startsWith('x') || moveStr.length != 3) {
+      logger.w("Failed to parse remove move: $moveStr");
       return;
     }
 
-    // Extract coordinates
-    final int x = int.parse(match.group(1)!);
-    final int y = int.parse(match.group(2)!);
+    // Extract square notation (e.g., "a1", "d5" from "xa1", "xd5")
+    final String squareNotation = moveStr.substring(1);
 
-    // Get position on board
-    final Offset position = _getPositionFromCoordinates("($x,$y)", size);
+    // Get position on board using standard notation
+    final Offset position =
+        _getPositionFromStandardNotation(squareNotation, size);
 
     // Get color based on outcome
     final Color circleColor = AnalysisMode.getColorForOutcome(outcome);
@@ -560,11 +559,19 @@ class AnalysisRenderer {
 
   /// Determine the type of analysis result based on the move format
   static AnalysisResultType _determineResultType(String move) {
-    if (move.contains('->')) {
-      return AnalysisResultType.move;
-    } else if (move.startsWith('-')) {
+    if (move.startsWith('x')) {
+      // Standard notation: remove moves start with 'x' (e.g., "xa1", "xd5")
       return AnalysisResultType.remove;
+    } else if (move.contains('-') &&
+        move.length == 5 &&
+        RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
+      // Standard notation: move format like "a1-a4", "d5-e5"
+      return AnalysisResultType.move;
+    } else if (move.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+      // Standard notation: place format like "d5", "a1"
+      return AnalysisResultType.place;
     } else {
+      // Fallback to place for unknown formats
       return AnalysisResultType.place;
     }
   }
@@ -610,39 +617,20 @@ class AnalysisRenderer {
     }
   }
 
-  /// Convert move coordinates like "(2,1)" to board position
-  static Offset _getPositionFromCoordinates(String move, Size size) {
-    // Extract coordinates from move string format like "(2,1)"
-    final RegExp coordPattern = RegExp(r'\((\d+),(\d+)\)');
-    final Match? match = coordPattern.firstMatch(move);
-
-    if (match != null && match.groupCount == 2) {
-      final int x = int.parse(match.group(1)!);
-      final int y = int.parse(match.group(2)!);
-
-      // Map to point index in the board's coordinate system
-      final int pointIndex = _mapCoordinatesToPointIndex(x, y);
-
-      // Use the pointFromIndex function to get the actual position
-      return pointFromIndex(pointIndex, size);
+  /// Convert standard notation square (like "a1", "d5") to board position
+  static Offset _getPositionFromStandardNotation(
+      String squareNotation, Size size) {
+    // Validate standard notation format
+    if (squareNotation.length != 2 ||
+        !RegExp(r'^[a-g][1-7]$').hasMatch(squareNotation)) {
+      logger.w("Invalid standard notation: $squareNotation");
+      return size.center(Offset.zero);
     }
+    // Convert to square using existing functions
+    final int square = notationToSquare(squareNotation);
 
-    // Fallback to center if parsing fails
-    logger.w("Failed to parse coordinates from: $move");
-    return size.center(Offset.zero);
-  }
-
-  /// Map engine coordinates (x,y) to point index on the board
-  static int _mapCoordinatesToPointIndex(int x, int y) {
-    // Convert from (file, rank) to square using existing functions
-    // First convert from (file, rank) to square number
-    final int square = makeSquare(x, y);
-
-    // Then convert from square number to board index
-    final int? index = squareToIndex[square];
-
-    // Return the index if found, or -1
-    return index ?? -1;
+    // Use pointFromSquare to get the actual position
+    return pointFromSquare(square, size);
   }
 
   /// Check if we should filter to only show the best moves

@@ -185,24 +185,23 @@ class Engine {
         // Check if the first character of selectedMove is 'x'
         if (selectedMove.startsWith('x')) {
           await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Extract the part after 'x', query wmdNotationToMove, and prepend '-'
-          final String move = wmdNotationToMove[selectedMove.substring(1)]!;
+          // Use standard notation directly
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
             ExtMove(
-              '-$move',
+              selectedMove,
               side: GameController().position.sideToMove,
             ),
           );
         } else {
           await Future<void>.delayed(const Duration(milliseconds: 100));
-          // Default logic for selectedMove
+          // Use standard notation directly
           return EngineRet(
             "0", // Default score
             AiMoveType.openingBook,
             ExtMove(
-              wmdNotationToMove[selectedMove]!,
+              selectedMove,
               side: GameController().position.sideToMove,
             ),
           );
@@ -243,7 +242,7 @@ class Engine {
       if (match != null) {
         value = match.group(1)!;
         aiMoveTypeStr = match.group(2) ?? "";
-        best = match.group(3)!;
+        best = match.group(3)!.trim();
       }
 
       if (aiMoveTypeStr == "" || aiMoveTypeStr == "traditional") {
@@ -537,8 +536,7 @@ class Engine {
 
       // Parse the analysis result
       // Expected format: "info analysis move1=win move2=draw move3=loss ..."
-      // Or format: "info analysis (x,y)=outcome ..."
-      // Also handles formats like "(x,y)->(a,b)=outcome" and "-(x,y)=outcome"
+      // Standard notation formats: "d5=outcome", "a1-a4=outcome", "xa1=outcome"
       final List<MoveAnalysisResult> results = <MoveAnalysisResult>[];
 
       // Remove prefix "info analysis " and split by space
@@ -552,21 +550,23 @@ class Engine {
             final String moveStr = moveAndOutcome[0];
             final GameOutcome outcome = _parseOutcome(moveAndOutcome[1]);
 
-            // Handle different move formats
-            if (moveStr.contains("->")) {
-              // Move format: (x,y)->(a,b)
-              final RegExp movePattern =
-                  RegExp(r'\(([\d]+),([\d]+)\)->\(([\d]+),([\d]+)\)');
-              final Match? match = movePattern.firstMatch(moveStr);
+            // Handle standard notation formats
+            if (moveStr.startsWith('x') && moveStr.length == 3) {
+              // Remove format: "xa1", "xd5"
+              final String squareName =
+                  moveStr.substring(1); // Remove 'x' prefix
 
-              if (match != null && match.groupCount >= 4) {
-                final int fromX = int.parse(match.group(1)!);
-                final int fromY = int.parse(match.group(2)!);
-                final int toX = int.parse(match.group(3)!);
-                final int toY = int.parse(match.group(4)!);
-
-                final String fromSquare = "${_coordToFile(fromX)}$fromY";
-                final String toSquare = "${_coordToFile(toX)}$toY";
+              results.add(MoveAnalysisResult(
+                move: moveStr,
+                outcome: outcome,
+                toSquare: pgn.Square(squareName),
+              ));
+            } else if (moveStr.contains('-') && moveStr.length == 5) {
+              // Move format: "a1-a4", "d5-e5"
+              final List<String> squares = moveStr.split('-');
+              if (squares.length == 2) {
+                final String fromSquare = squares[0];
+                final String toSquare = squares[1];
 
                 results.add(MoveAnalysisResult(
                   move: moveStr,
@@ -575,34 +575,16 @@ class Engine {
                   toSquare: pgn.Square(toSquare),
                 ));
               }
-            } else if (moveStr.startsWith("-")) {
-              // Remove format: -(x,y)
-              final RegExp removePattern = RegExp(r'-\(([\d]+),([\d]+)\)');
-              final Match? match = removePattern.firstMatch(moveStr);
-
-              if (match != null && match.groupCount >= 2) {
-                final int x = int.parse(match.group(1)!);
-                final int y = int.parse(match.group(2)!);
-
-                final String squareName = "${_coordToFile(x)}$y";
-
-                results.add(MoveAnalysisResult(
-                  move: moveStr,
-                  outcome: outcome,
-                  toSquare: pgn.Square(squareName),
-                ));
-              }
+            } else if (moveStr.length == 2 &&
+                RegExp(r'^[a-g][1-8]$').hasMatch(moveStr)) {
+              // Place format: "d5", "a1"
+              results.add(MoveAnalysisResult(
+                move: moveStr,
+                outcome: outcome,
+                toSquare: pgn.Square(moveStr),
+              ));
             } else {
-              // Place format: (x,y)
-              final _MoveSquares? fromTo = _parseMoveString(moveStr);
-              if (fromTo != null) {
-                results.add(MoveAnalysisResult(
-                  move: moveStr,
-                  outcome: outcome,
-                  fromSquare: fromTo.from,
-                  toSquare: fromTo.to,
-                ));
-              }
+              logger.w("$_logTag Unrecognized move format: $moveStr");
             }
           }
         }
@@ -661,35 +643,6 @@ class Engine {
     }
 
     return baseOutcome;
-  }
-
-  /// Parse a move string in the format "(x,y)" and convert to Square objects
-  static _MoveSquares? _parseMoveString(String moveStr) {
-    // Support for format like "(2,1)"
-    final RegExp coordPattern = RegExp(r'\((\d+),(\d+)\)');
-    final Match? match = coordPattern.firstMatch(moveStr);
-
-    if (match != null && match.groupCount == 2) {
-      final int x = int.parse(match.group(1)!);
-      final int y = int.parse(match.group(2)!);
-
-      // Convert coordinates to PGN squares
-      // Use the coordinates as-is without conversion for Nine Men's Morris
-      final String squareName = "${_coordToFile(x)}$y";
-      final pgn.Square toSquare = pgn.Square(squareName);
-
-      return _MoveSquares(null, toSquare);
-    }
-
-    // Handle other move formats if needed
-    return null;
-  }
-
-  /// Helper to convert numeric coordinates to algebraic notation file
-  static String _coordToFile(int x) {
-    // Convert 1-based coordinates to algebraic notation
-    // Typically: x → file (a, b, c...), y → rank (1, 2, 3...)
-    return String.fromCharCode('a'.codeUnitAt(0) + (x - 1));
   }
 }
 
@@ -831,14 +784,6 @@ class PositionAnalysisResult {
   final List<MoveAnalysisResult> possibleMoves;
   final bool isValid;
   final String? errorMessage;
-}
-
-/// Helper class to store move squares
-class _MoveSquares {
-  _MoveSquares(this.from, this.to);
-
-  final pgn.Square? from;
-  final pgn.Square to;
 }
 
 /// Game outcome from analysis

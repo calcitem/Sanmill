@@ -9,16 +9,16 @@ enum MoveType { place, move, remove, draw, none }
 
 class MoveParser {
   MoveType parseMoveType(String move) {
-    if (move.startsWith("-") && move.length == "-(1,2)".length) {
+    if (move.startsWith("x") && move.length == 3) {
       return MoveType.remove;
-    } else if (move.length == "(1,2)->(3,4)".length) {
+    } else if (move.contains("-") && move.length == 5) {
       return MoveType.move;
-    } else if (move.length == "(1,2)".length) {
+    } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move) && move.length == 2) {
       return MoveType.place;
     } else if (move == "draw") {
       logger.i("[TODO] Computer request draw");
       return MoveType.draw;
-    } else if (move == "(none)") {
+    } else if (move == "(none)" || move == "none") {
       logger.i("MoveType is (none).");
       return MoveType.none;
     } else {
@@ -58,7 +58,7 @@ class ExtMove extends PgnNodeData {
     _checkLegal(move);
   }
 
-  /// The UCI-like move string, e.g. "(3,5)->(3,4)"
+  /// The standard notation move string, e.g. "a1", "a1-a4", "xa1"
   final String move;
 
   /// Indicates which side performed the move.
@@ -88,37 +88,59 @@ class ExtMove extends PgnNodeData {
   static const String _logTag = "[Move]";
 
   /// 'from' square if type==move; otherwise -1.
-  int get from => type == MoveType.move
-      ? makeSquare(int.parse(move[1]), int.parse(move[3]))
-      : -1;
+  int get from {
+    if (type != MoveType.move) return -1;
+
+    // Check if it's standard notation
+    if (move.contains("-") && move.length == 5 && !move.contains("(")) {
+      // Move notation like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts.length == 2) {
+        return _standardNotationToSquare(parts[0].trim());
+      }
+    }
+
+    return -1;
+  }
 
   static int _parseToSquare(String move) {
     late int file;
     late int rank;
     final MoveType t = MoveParser().parseMoveType(move);
-    switch (t) {
-      case MoveType.place:
-        file = int.parse(move[1]);
-        rank = int.parse(move[3]);
-        break;
-      case MoveType.move:
-        file = int.parse(move[8]);
-        rank = int.parse(move[10]);
-        break;
-      case MoveType.remove:
-        file = int.parse(move[2]);
-        rank = int.parse(move[4]);
-        break;
-      case MoveType.draw:
-        file = 0;
-        rank = 0;
-        break;
-      case MoveType.none:
-        file = -1;
-        rank = -1;
-        break;
+
+    // Check if it's standard notation
+    if (move.startsWith("x") && move.length == 3) {
+      // Remove notation like "xa1"
+      final String target = move.substring(1).trim();
+      return _standardNotationToSquare(target);
+    } else if (move.contains("-") && move.length == 5) {
+      // Move notation like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts.length == 2) {
+        return _standardNotationToSquare(parts[1].trim());
+      }
+    } else if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+      // Place notation like "a1"
+      return _standardNotationToSquare(move);
     }
-    return makeSquare(file, rank);
+
+    return -1;
+  }
+
+  static int _standardNotationToSquare(String notation) {
+    final Map<String, int> standardToSquare = {
+      // Inner ring
+      "d5": 8, "e5": 9, "e4": 10, "e3": 11,
+      "d3": 12, "c3": 13, "c4": 14, "c5": 15,
+      // Middle ring
+      "d6": 16, "f6": 17, "f4": 18, "f2": 19,
+      "d2": 20, "b2": 21, "b4": 22, "b6": 23,
+      // Outer ring
+      "d7": 24, "g7": 25, "g4": 26, "g1": 27,
+      "d1": 28, "a1": 29, "a4": 30, "a7": 31
+    };
+
+    return standardToSquare[notation.toLowerCase()] ?? -1;
   }
 
   static final Map<int, String> _squareToWmdNotation = <int, String>{
@@ -162,33 +184,28 @@ class ExtMove extends PgnNodeData {
       return; // no further checks
     }
 
-    if (move.length > "(3,1)->(2,1)".length) {
-      throw FormatException("$_logTag Invalid Move: too long", move);
+    // Check standard notation patterns
+    if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+      // Place move like "a1"
+      return;
     }
 
-    if (!(move.startsWith("(") || move.startsWith("-"))) {
-      throw FormatException(
-          "$_logTag Invalid Move: must start with '(' or '-'", move, 0);
+    if (move.startsWith("x") && RegExp(r'^x[a-g][1-7]$').hasMatch(move)) {
+      // Remove move like "xa1"
+      return;
     }
 
-    if (!move.endsWith(")")) {
-      throw FormatException(
-          "$_logTag Invalid Move: must end with ')'", move, move.length - 1);
-    }
-
-    const String allowedChars = "0123456789(,)->";
-    for (int i = 0; i < move.length; i++) {
-      if (!allowedChars.contains(move[i])) {
-        throw FormatException(
-            "$_logTag Invalid char at $i: ${move[i]}", move, i);
+    if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
+      // Move like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts[0] == parts[1]) {
+        throw Exception(
+            "$_logTag Invalid Move: cannot move to the same place.");
       }
+      return;
     }
 
-    // Avoid throwing raw strings. Throw an Exception instead:
-    if (move.length == "(3,1)->(2,1)".length &&
-        move.substring(0, 4) == move.substring(7, 11)) {
-      throw Exception("$_logTag Invalid Move: cannot move to the same place.");
-    }
+    throw FormatException("$_logTag Invalid Move: ", move);
   }
 
   /// The standard notation for the move,

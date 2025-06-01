@@ -630,7 +630,8 @@ class Position {
     ++_gamePly;
     ++st.pliesFromNull;
 
-    if (_record != null && _record!.move.length > "-(1,2)".length) {
+    // Check move type instead of string length for position key history
+    if (_record != null && _record!.type == MoveType.move) {
       if (st.key != posKeyHistory.lastF) {
         posKeyHistory.add(st.key);
         if (DB().ruleSettings.threefoldRepetitionRule && _hasGameCycle) {
@@ -738,7 +739,7 @@ class Position {
 
       // Record includes boardLayout
       _record = ExtMove(
-        "(${fileOf(s)},${rankOf(s)})",
+        ExtMove.sqToNotation(s),
         side: us,
         boardLayout: generateBoardLayoutAfterThisMove(),
         moveIndex: _gamePly,
@@ -957,8 +958,9 @@ class Position {
 
     // Include boardLayout
     _record = ExtMove(
-      "(${fileOf(_currentSquare[sideToMove]!)},"
-      "${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
+      ExtMove.sqToNotation(_currentSquare[sideToMove]!) +
+          "-" +
+          ExtMove.sqToNotation(s),
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,
@@ -1085,7 +1087,7 @@ class Position {
 
     // Record includes boardLayout
     _record = ExtMove(
-      "-(${fileOf(s)},${rankOf(s)})",
+      "x" + ExtMove.sqToNotation(s),
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,
@@ -1625,8 +1627,8 @@ class Position {
     // 1) Start from the *end* of mainlineMoves
     int idx = moves.length - 1;
 
-    // 2) Go backwards until we see a "-" (remove move) or run out
-    while (idx >= 0 && !moves[idx].move.startsWith('-')) {
+    // 2) Go backwards until we see a remove move (starts with 'x') or run out
+    while (idx >= 0 && !moves[idx].move.startsWith('x')) {
       idx--;
     }
 
@@ -1644,9 +1646,6 @@ class Position {
     if (result.isEmpty) {
       return null;
     }
-
-    // The old code had an assert that the final output does not contain '-('
-    assert(!result.contains('-('));
 
     return result;
   }
