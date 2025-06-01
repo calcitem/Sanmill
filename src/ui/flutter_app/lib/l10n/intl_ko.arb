@@ -304,7 +304,7 @@
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "설정",
+  "settings": "개인설정",
   "@settings": {
     "description": "Settings"
   },
@@ -480,7 +480,7 @@
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "help": "도움말",
+  "help": "이용안내",
   "@help": {
     "description": "Help"
   },
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "종료",
+  "exit": "완전종료",
   "@exit": {
     "description": "Exit"
   },

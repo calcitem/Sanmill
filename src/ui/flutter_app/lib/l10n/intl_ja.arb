@@ -439,7 +439,7 @@
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "設定",
+  "settings": "個人設定",
   "@settings": {
     "description": "Settings"
   },
@@ -607,7 +607,7 @@
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "help": "ヘルプ",
+  "help": "利用案内",
   "@help": {
     "description": "Help"
   },
@@ -615,7 +615,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "退出",
+  "exit": "遊戯終了",
   "@exit": {
     "description": "Exit"
   },

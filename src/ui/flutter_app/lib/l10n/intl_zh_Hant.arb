@@ -304,7 +304,7 @@
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "設定",
+  "settings": "個人設定",
   "@settings": {
     "description": "Settings"
   },
@@ -480,7 +480,7 @@
   "@moveHistoryCopied": {
     "description": "Move history copied to clipboard"
   },
-  "help": "幫助",
+  "help": "幫助中心",
   "@help": {
     "description": "Help"
   },
@@ -488,7 +488,7 @@
   "@feedback": {
     "description": "Feedback"
   },
-  "exit": "退出",
+  "exit": "退出遊戲",
   "@exit": {
     "description": "Exit"
   },
