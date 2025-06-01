@@ -6,6 +6,8 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
+#include <map>
 
 #include "thread.h"
 #include "thread_pool.h"
@@ -205,39 +207,51 @@ string UCI::value(Value v)
     return ss.str();
 }
 
-/// UCI::square() converts a Square to a string in algebraic notation ((1,2),
-/// etc.)
+/// UCI::square() converts a Square to a string in standard notation (e.g., "a1", "d5") 
 
 std::string UCI::square(Square s)
-{
-    return std::string {'(', static_cast<char>('0' + file_of(s)), ',',
-                        static_cast<char>('0' + rank_of(s)), ')'};
+{ 
+    static const char* squareToStandard[SQUARE_EXT_NB] = {
+        // 0-7: unused
+        "", "", "", "", "", "", "", "",
+        // 8-15: inner ring
+        "d5", "e5", "e4", "e3", "d3", "c3", "c4", "c5",
+        // 16-23: middle ring  
+        "d6", "f6", "f4", "f2", "d2", "b2", "b4", "b6",
+        // 24-31: outer ring
+        "d7", "g7", "g4", "g1", "d1", "a1", "a4", "a7",
+        // 32-39: unused
+        "", "", "", "", "", "", "", ""
+    };    
+
+    return squareToStandard[s];
 }
 
-/// UCI::move() converts a Move to a string in algebraic notation ((1,2), etc.).
+/// UCI::move() converts a Move to a string in standard notation (a1-a4, etc.).
 
 string UCI::move(Move m)
 {
-    string move;
-
-    const Square to = to_sq(m);
-
     if (m == MOVE_NONE)
-        return "(none)";
+        return "none";
 
     if (m == MOVE_NULL)
         return "0000";
 
-    if (m < 0) {
-        move = "-" + square(to);
-    } else if (m & 0x7f00) {
-        const Square from = from_sq(m);
-        move = square(from) + "->" + square(to);
-    } else {
-        move = square(to);
-    }
+    const Square to = to_sq(m);
+    const string toStr = square(to);
 
-    return move;
+    if (m < 0) {
+        // Remove move
+        return "x" + toStr;
+    } else if (m & 0x7f00) {
+        // Regular move
+        const Square from = from_sq(m);
+        const string fromStr = square(from);
+        return fromStr + "-" + toStr;
+    } else {
+        // Place move
+        return toStr;
+    }
 }
 
 /// UCI::to_move() converts a string representing a move in coordinate notation

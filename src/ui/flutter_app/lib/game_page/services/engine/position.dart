@@ -526,6 +526,8 @@ class Position {
 
   @visibleForTesting
   bool doMove(String move) {
+    logger.t('[position] doMove called with: "$move"');
+
     // TODO: Resign is not implemented
     if (move.length > "Player".length &&
         move.substring(0, "Player".length - 1) == "Player") {
@@ -544,6 +546,7 @@ class Position {
 
     // TODO: Duplicate with switch (m.type) and should throw exception.
     if (move == "none") {
+      logger.t('[position] Move is "none", returning false');
       return false;
     }
 
@@ -577,6 +580,7 @@ class Position {
     bool ret = false;
 
     final ExtMove m = ExtMove(move, side: _sideToMove);
+    logger.t('[position] Created ExtMove with type: ${m.type}, to: ${m.to}');
 
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
@@ -658,16 +662,23 @@ class Position {
 ///////////////////////////////////////////////////////////////////////////////
 
   bool _putPiece(int s) {
+    logger.t(
+        '[position] _putPiece called with square: $s (${ExtMove.sqToNotation(s)})');
+
     final PieceColor us = _sideToMove;
 
     if (phase == Phase.gameOver ||
         !(sqBegin <= s && s < sqEnd) ||
         _board[s] == us.opponent ||
         _board[s] == PieceColor.marked) {
+      logger.t(
+          '[position] _putPiece failed: phase=$phase, board[$s]=${_board[s]}');
       return false;
     }
 
     if (!canMoveDuringPlacingPhase() && _board[s] != PieceColor.none) {
+      logger.t(
+          '[position] _putPiece failed: square occupied, board[$s]=${_board[s]}');
       return false;
     }
 
@@ -738,8 +749,8 @@ class Position {
 
       // Record includes boardLayout
       _record = ExtMove(
-        "(${fileOf(s)},${rankOf(s)})",
-        side: us,
+        ExtMove.sqToNotation(s),
+        side: sideToMove,
         boardLayout: generateBoardLayoutAfterThisMove(),
         moveIndex: _gamePly,
         roundIndex: _roundNumber,
@@ -957,8 +968,9 @@ class Position {
 
     // Include boardLayout
     _record = ExtMove(
-      "(${fileOf(_currentSquare[sideToMove]!)},"
-      "${rankOf(_currentSquare[sideToMove]!)})->(${fileOf(s)},${rankOf(s)})",
+      ExtMove.sqToNotation(_currentSquare[sideToMove]!) +
+          "-" +
+          ExtMove.sqToNotation(s),
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,
@@ -1085,7 +1097,7 @@ class Position {
 
     // Record includes boardLayout
     _record = ExtMove(
-      "-(${fileOf(s)},${rankOf(s)})",
+      "x" + ExtMove.sqToNotation(s),
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,

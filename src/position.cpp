@@ -774,8 +774,7 @@ bool Position::put_piece(Square s, bool updateRecord)
         lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)", file_of(s),
-                     rank_of(s));
+            snprintf(record, RECORD_LEN_MAX, "%s", UCI::square(s).c_str());
         }
 
         const int n = mills_count(s);
@@ -950,9 +949,9 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "(%1d,%1d)->(%1d,%1d)",
-                 file_of(currentSquare[sideToMove]),
-                 rank_of(currentSquare[sideToMove]), file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "%s-%s", 
+                UCI::square(currentSquare[sideToMove]).c_str(), 
+                UCI::square(s).c_str());
         st.rule50++;
     }
 
@@ -1073,7 +1072,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
     }
 
     if (updateRecord) {
-        snprintf(record, RECORD_LEN_MAX, "-(%1d,%1d)", file_of(s), rank_of(s));
+        snprintf(record, RECORD_LEN_MAX, "x%s", UCI::square(s).c_str());
         st.rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
@@ -1207,8 +1206,6 @@ bool Position::command(const char *cmd)
 {
     char moveStr[64] = {0};
     unsigned char t = 0;
-    File file1 = FILE_A, file2 = FILE_A;
-    Rank rank1 = RANK_1, rank2 = RANK_1;
 
     if (strlen(cmd) == 0) { /* "" */
         return reset();
@@ -1230,33 +1227,31 @@ bool Position::command(const char *cmd)
 #endif
     }
 
-    int args = sscanf(moveStr, "(%1u,%1u)->(%1u,%1u)",
-                      reinterpret_cast<unsigned *>(&file1),
-                      reinterpret_cast<unsigned *>(&rank1),
-                      reinterpret_cast<unsigned *>(&file2),
-                      reinterpret_cast<unsigned *>(&rank2));
-
-    if (args >= 4) {
-        return move_piece(file1, rank1, file2, rank2);
+    Move m = UCI::to_move(this, moveStr);
+    if (m != MOVE_NONE) {
+        switch (type_of(m)) {
+        case MOVETYPE_MOVE: {
+            const Square from = from_sq(m);
+            const Square to = to_sq(m);
+            return move_piece(file_of(from), rank_of(from),
+                              file_of(to), rank_of(to));
+        }
+        case MOVETYPE_REMOVE: {
+            const Square to = to_sq(m);
+            return remove_piece(file_of(to), rank_of(to));
+        }
+        case MOVETYPE_PLACE: {
+            const Square to = to_sq(m);
+            return put_piece(file_of(to), rank_of(to));
+        }
+        default:
+            break;
+        }
     }
 
-    args = sscanf(moveStr, "-(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        return remove_piece(file1, rank1);
-    }
-
-    args = sscanf(moveStr, "(%1u,%1u)", reinterpret_cast<unsigned *>(&file1),
-                  reinterpret_cast<unsigned *>(&rank1));
-    if (args >= 2) {
-        return put_piece(file1, rank1);
-    }
-
-    args = sscanf(moveStr, "Player %hhu resigns!", &t);
-
-    if (args == 1) {
+    int args = sscanf(moveStr, "Player %hhu resigns!", &t);
+    if (args == 1)
         return resign(static_cast<Color>(t));
-    }
 
     if (rule.threefoldRepetitionRule) {
         if (!strcmp(moveStr, DRAW_REASON_THREEFOLD_REPETITION)) {

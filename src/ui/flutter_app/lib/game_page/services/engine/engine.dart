@@ -243,7 +243,20 @@ class Engine {
       if (match != null) {
         value = match.group(1)!;
         aiMoveTypeStr = match.group(2) ?? "";
-        best = match.group(3)!;
+        best = match.group(3)!.trim(); // Trim any extra whitespace
+        logger.i("$_logTag Parsed bestmove: '$best'");
+      } else {
+        // Fallback: try to extract bestmove directly
+        final int bestmoveIndex = response.indexOf("bestmove ");
+        if (bestmoveIndex != -1) {
+          best = response.substring(bestmoveIndex + 9).trim();
+          logger.i("$_logTag Fallback parsed bestmove: '$best'");
+        }
+      }
+
+      if (best.isEmpty) {
+        logger.e("$_logTag Empty bestmove!");
+        throw const EngineNoBestMove();
       }
 
       if (aiMoveTypeStr == "" || aiMoveTypeStr == "traditional") {

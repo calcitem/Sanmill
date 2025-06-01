@@ -9,21 +9,39 @@ enum MoveType { place, move, remove, draw, none }
 
 class MoveParser {
   MoveType parseMoveType(String move) {
+    logger.t('Parsing move type for: "$move"');
+
+    // Parse standard notation first
+    if (move.startsWith("x") && move.length >= 3) {
+      logger.t('Detected remove move: $move');
+      return MoveType.remove;
+    } else if (move.contains("-") && move.length >= 5) {
+      logger.t('Detected move: $move');
+      return MoveType.move;
+    } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move)) {
+      logger.t('Detected place move: $move');
+      return MoveType.place;
+    }
+
+    // Legacy coordinate notation support
     if (move.startsWith("-") && move.length == "-(1,2)".length) {
+      logger.t('Detected legacy remove move: $move');
       return MoveType.remove;
     } else if (move.length == "(1,2)->(3,4)".length) {
+      logger.t('Detected legacy move: $move');
       return MoveType.move;
     } else if (move.length == "(1,2)".length) {
+      logger.t('Detected legacy place move: $move');
       return MoveType.place;
     } else if (move == "draw") {
       logger.i("[TODO] Computer request draw");
       return MoveType.draw;
-    } else if (move == "(none)") {
-      logger.i("MoveType is (none).");
+    } else if (move == "(none)" || move == "none") {
+      logger.t('Detected none move: $move');
       return MoveType.none;
     } else {
-      // TODO: If Setup Position is illegal
-      throw const FormatException();
+      logger.w('Unknown move format: "$move", defaulting to none');
+      return MoveType.none;
     }
   }
 }
@@ -88,14 +106,44 @@ class ExtMove extends PgnNodeData {
   static const String _logTag = "[Move]";
 
   /// 'from' square if type==move; otherwise -1.
-  int get from => type == MoveType.move
-      ? makeSquare(int.parse(move[1]), int.parse(move[3]))
-      : -1;
+  int get from {
+    if (type != MoveType.move) return -1;
+
+    // Check if it's standard notation
+    if (move.contains("-") && move.length >= 5 && !move.contains("(")) {
+      // Move notation like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts.length == 2) {
+        return _standardNotationToSquare(parts[0].trim());
+      }
+    }
+
+    // Legacy coordinate notation
+    return makeSquare(int.parse(move[1]), int.parse(move[3]));
+  }
 
   static int _parseToSquare(String move) {
     late int file;
     late int rank;
     final MoveType t = MoveParser().parseMoveType(move);
+
+    // Check if it's standard notation
+    if (move.startsWith("x") && move.length >= 3) {
+      // Remove notation like "xa1"
+      final String target = move.substring(1).trim();
+      return _standardNotationToSquare(target);
+    } else if (move.contains("-") && move.length >= 5 && !move.contains("(")) {
+      // Move notation like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts.length == 2) {
+        return _standardNotationToSquare(parts[1].trim());
+      }
+    } else if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+      // Place notation like "a1"
+      return _standardNotationToSquare(move);
+    }
+
+    // Legacy coordinate notation
     switch (t) {
       case MoveType.place:
         file = int.parse(move[1]);
@@ -119,6 +167,22 @@ class ExtMove extends PgnNodeData {
         break;
     }
     return makeSquare(file, rank);
+  }
+
+  static int _standardNotationToSquare(String notation) {
+    final Map<String, int> standardToSquare = {
+      // Inner ring
+      "d5": 8, "e5": 9, "e4": 10, "e3": 11,
+      "d3": 12, "c3": 13, "c4": 14, "c5": 15,
+      // Middle ring
+      "d6": 16, "f6": 17, "f4": 18, "f2": 19,
+      "d2": 20, "b2": 21, "b4": 22, "b6": 23,
+      // Outer ring
+      "d7": 24, "g7": 25, "g4": 26, "g1": 27,
+      "d1": 28, "a1": 29, "a4": 30, "a7": 31
+    };
+
+    return standardToSquare[notation.toLowerCase()] ?? -1;
   }
 
   static final Map<int, String> _squareToWmdNotation = <int, String>{
@@ -162,6 +226,28 @@ class ExtMove extends PgnNodeData {
       return; // no further checks
     }
 
+    // Check standard notation patterns
+    if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
+      // Place move like "a1"
+      return;
+    }
+
+    if (move.startsWith("x") && RegExp(r'^x[a-g][1-7]$').hasMatch(move)) {
+      // Remove move like "xa1"
+      return;
+    }
+
+    if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
+      // Move like "a1-a4"
+      final List<String> parts = move.split("-");
+      if (parts[0] == parts[1]) {
+        throw Exception(
+            "$_logTag Invalid Move: cannot move to the same place.");
+      }
+      return;
+    }
+
+    // Legacy coordinate notation validation
     if (move.length > "(3,1)->(2,1)".length) {
       throw FormatException("$_logTag Invalid Move: too long", move);
     }
