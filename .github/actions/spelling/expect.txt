@@ -228,3 +228,9 @@ zhi
 zobrist
 LLMs
 winmain
+elo
+lvl
+midgame
+Serialises
+sysconf
+XFile
