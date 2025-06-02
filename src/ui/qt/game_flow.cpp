@@ -201,11 +201,12 @@ bool Game::command(const std::string &command, bool update /*= true*/)
         // Insert new lines for further moves
         currentRow = moveListModel.rowCount() - 1;
         auto i = getMoveList()->begin();
-        for (int r = 0; i != getMoveList()->end(); ++i) {
+        auto endIter = getMoveList()->end();
+        for (int r = 0; i != endIter; ++i) {
             if (r++ > currentRow)
                 break;
         }
-        while (i != getMoveList()->end()) {
+        while (i != endIter) {
             moveListModel.insertRow(++currentRow);
             moveListModel.setData(moveListModel.index(currentRow),
                                   (*i++).c_str());
