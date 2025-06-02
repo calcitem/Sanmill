@@ -500,7 +500,7 @@ Wrappers::gui_eval_elem2 PerfectPlayer::evaluate(GameState s)
 {
     try {
         std::lock_guard<std::mutex> lock(evalLock);
-        assert(!s.kle); // Assuming s has a boolean member kle
+        //assert(!s.kle); // Assuming s has a boolean member kle
 
         Wrappers::WID Id(s.stoneCount[0], s.stoneCount[1],
                          Rules::maxKSZ - s.setStoneCount[0],

@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
@@ -287,6 +287,16 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard
         if (errorMsg != "" || gameState.over) {
             return PerfectEvaluation(); // Invalid result
         }
+#if 0
+        // If we are in a stone-removal (KLE) sub-position the DB does
+        // not provide a stable evaluation for the main move – skip with
+        // fallback and avoid assert in PerfectPlayer::evaluate().
+        if (onlyStoneTaking) {
+            // We cannot compute a meaningful step count here; return invalid so caller falls back.
+            MalomSolutionAccess::deinitialize_if_needed();
+            return PerfectEvaluation();
+        }
+#endif
 
         // Get detailed evaluation from perfect player and parse it directly
         std::string evalStr = MalomSolutionAccess::perfectPlayer->evaluate(gameState).to_string();

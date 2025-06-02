@@ -8,6 +8,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart' as ui;
 
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
@@ -323,6 +324,67 @@ class AnalysisRenderer {
       useDashPattern: useDashPattern,
       strokeWidth: strokeWidth,
     );
+
+    // Draw step count next to the arrow if available
+    final int? stepCount = outcome.stepCount;
+    if (stepCount != null && stepCount > 0) {
+      final TextPainter stepTextPainter = TextPainter(
+        text: TextSpan(
+          text: stepCount.toString(),
+          style: TextStyle(
+            color: arrowColor, // Use arrowColor for consistency
+            fontSize: 12, // Adjust font size as needed
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+
+      stepTextPainter.layout();
+
+      // Calculate the midpoint of the arrow
+      final Offset midPoint = Offset(
+        (startPos.dx + endPos.dx) / 2,
+        (startPos.dy + endPos.dy) / 2,
+      );
+
+      // Calculate a perpendicular offset to move the text away from the arrow
+      // The direction of the offset depends on the arrow's angle to avoid overlap
+      // A simple approach is to offset it consistently, e.g., upwards or to the side
+      // For a more robust solution, one might consider the arrow's angle
+      final double offsetX = 10; // Horizontal offset from midpoint
+      final double offsetY = -stepTextPainter.height /
+          2; // Center vertically by default, adjust as needed
+
+      // Adjust offset based on arrow direction to prevent text from being drawn over the arrow line
+      // This is a simplified logic, might need refinement for all arrow angles
+      final double angle = (endPos - startPos).direction;
+      double textX = midPoint.dx;
+      double textY = midPoint.dy;
+
+      // If arrow is more horizontal, place text above/below
+      // If arrow is more vertical, place text to the left/right
+      if (cos(angle).abs() > sin(angle).abs()) {
+        // More horizontal
+        textY = midPoint.dy -
+            stepTextPainter.height -
+            5; // Place above, 5 is padding
+        textX = midPoint.dx - stepTextPainter.width / 2;
+      } else {
+        // More vertical
+        textX = midPoint.dx + 10; // Place to the right, 10 is padding
+        textY = midPoint.dy - stepTextPainter.height / 2;
+        // Potentially check if 'endPos' is above or below 'startPos' to decide left/right better
+        if (endPos.dx < startPos.dx) {
+          // If arrow points left, place text to its left
+          textX = midPoint.dx - stepTextPainter.width - 10;
+        }
+      }
+
+      final Offset stepTextOffset = Offset(textX, textY);
+
+      stepTextPainter.paint(canvas, stepTextOffset);
+    }
   }
 
   /// Draw a circle around a piece that is a removal candidate
@@ -376,36 +438,34 @@ class AnalysisRenderer {
       canvas.drawCircle(position, radius, circlePaint);
     }
 
-    // Draw a smaller circle with the outcome symbol inside
-    final Paint smallCirclePaint = Paint()
-      ..color = circleColor.withValues(alpha: 0.2)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawCircle(position, radius * 0.5, smallCirclePaint);
-
-    // Draw symbol for outcome (+ for win, = for draw, - for loss)
-    final TextPainter textPainter = TextPainter(
-      text: TextSpan(
-        text: _getDisplaySymbolForOutcome(outcome),
-        style: TextStyle(
-          color: circleColor,
-          fontSize: radius * 0.6,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'monospace',
+    // Draw step count above the circle if available
+    final int? stepCount = outcome.stepCount;
+    if (stepCount != null && stepCount > 0) {
+      final TextPainter stepTextPainter = TextPainter(
+        text: TextSpan(
+          text: stepCount.toString(),
+          style: TextStyle(
+            color: circleColor,
+            fontSize: radius * 0.7, // Adjust font size as needed
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
-      textDirection: TextDirection.ltr,
-    );
+        textDirection: TextDirection.ltr,
+      );
 
-    textPainter.layout();
+      stepTextPainter.layout();
 
-    // Center the text in the circle
-    final Offset textOffset = Offset(
-      position.dx - textPainter.width / 2,
-      position.dy - textPainter.height / 2,
-    );
+      // Position the text above the circle
+      final Offset stepTextOffset = Offset(
+        position.dx - stepTextPainter.width / 2,
+        position.dy -
+            radius -
+            stepTextPainter.height -
+            2, // 2 is a small padding
+      );
 
-    textPainter.paint(canvas, textOffset);
+      stepTextPainter.paint(canvas, stepTextOffset);
+    }
   }
 
   /// Draw a dashed circle around a position
