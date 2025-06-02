@@ -813,9 +813,9 @@ void SearchEngine::runAnalyze()
 
             // Determine outcome string based on evaluation
             if (val == VALUE_MATE)
-                outcome = "win";
-            else if (val == -VALUE_MATE)
                 outcome = "loss";
+            else if (val == -VALUE_MATE)
+                outcome = "win";
             else
                 outcome = "draw";
 
