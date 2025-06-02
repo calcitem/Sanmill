@@ -38,7 +38,7 @@ void Game::resetPerfectAiEngine()
 
 /**
  * @brief Waits for AI tasks to finish. Originally, we might have spun on
- * ThreadPool. Now it’s optional, as EngineController itself starts threads
+ * ThreadPool. Now it's optional, as EngineController itself starts threads
  * internally.
  */
 void Game::waitUntilAiSearchDone()
@@ -86,19 +86,11 @@ void Game::submitAiSearch()
     // EngineController::go() will internally manage threading in SearchEngine.
     engineController.handleCommand("go", &position);
 
-    // Decrement the counter in the future when the search completes.
-    // Usually you'd do this in a callback or slot that listens for completion.
-    // For demonstration, here's a simple approach that schedules a tiny
-    // follow-up check: (In a real app, you'd tie this to searchCompleted or
-    // similar.)
-    QTimer::singleShot(500, [this]() {
-        // In real usage, check if search actually ended, or rely on signals
-        // from EngineController. For now, just decrement to simulate finishing:
-        g_activeAiTasks.fetch_sub(1, std::memory_order_relaxed);
-
-        // Emit a signal that AI search completed:
-        emit aiSearchCompleted();
-    });
+    // Note: The g_activeAiTasks counter will be decremented in
+    // handleAiSearchCompleted() when the SearchEngine emits searchCompleted
+    // signal, which is already connected in game_init.cpp. The AI result will
+    // come through SearchEngine::command signal which is also connected and
+    // will call Game::command() to apply the move.
 }
 
 /**
@@ -109,11 +101,15 @@ void Game::handleAiSearchCompleted()
 {
     debugPrintf("handleAiSearchCompleted: An AI search has completed.\n");
 
+    // Decrement the global counter of active AI tasks
+    if (g_activeAiTasks.load(std::memory_order_relaxed) > 0) {
+        g_activeAiTasks.fetch_sub(1, std::memory_order_relaxed);
+    }
+
     emit statusBarChanged("AI finished.");
 
     // Update status/UI:
     refreshStatusBar();
-    // applyMoveListUntilRow(currentRow);
     refreshScene();
 
     if (g_activeAiTasks.load(std::memory_order_relaxed) == 0) {

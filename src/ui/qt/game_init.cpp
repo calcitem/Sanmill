@@ -185,14 +185,14 @@ void Game::initGameTest()
 
 void Game::initMetaTypes()
 {
-    qRegisterMetaType<std::string>("string");
+    qRegisterMetaType<std::string>("std::string");
 }
 
 void Game::initAiCommandConnections()
 {
 #ifdef QT_GUI_LIB
-    connect(this->gameTest, SIGNAL(command(const string &, bool)), this,
-            SLOT(command(const string &, bool)));
+    connect(this->gameTest, SIGNAL(command(const std::string &, bool)), this,
+            SLOT(command(const std::string &, bool)));
 #endif
 }
 
@@ -203,8 +203,8 @@ void Game::initNetworkComponents()
     server = new Server(nullptr, 30001);
     uint16_t clientPort = (server->getPort() == 30001) ? 30002 : 30001;
     client = new Client(nullptr, clientPort);
-    connect(getClient(), SIGNAL(command(const string &, bool)), this,
-            SLOT(command(const string &, bool)));
+    connect(getClient(), SIGNAL(command(const std::string &, bool)), this,
+            SLOT(command(const std::string &, bool)));
 #endif
 }
 

@@ -225,15 +225,13 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 
     // If no winner yet, and it's AI's turn, we use EngineController
     if (position.get_winner() == NOBODY) {
-        if (isAiPlayer[position.side_to_move()]) {
-            // Example usage:
-            // 1) Update the engine's "position" with the current FEN + moves
-            //    if you want the engine to see the full position.
-            // 2) Then call "go" to start searching.
+        // Remove the direct engine call here - this should be handled by
+        // updateGameState -> processGameOutcome -> submitAiSearch The old code:
+        // engineController.handleCommand("go", &position); This was causing the
+        // AI to not work properly because it bypassed the correct signal flow
 
-            // For demonstration, a simple approach is just:
-            engineController.handleCommand("go", &position);
-        }
+        // The correct flow is: command() calls updateGameState() which calls
+        // processGameOutcome() which calls submitAiSearch() if it's AI's turn
     } else {
         // If the game is finished, print stats, handle auto-restart, etc.
         printGameStatistics();
@@ -284,6 +282,9 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 #endif
 
     updateGameStatistics();
+
+    // Call updateGameState to trigger AI moves if needed
+    updateGameState(true);
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     position.nnueGenerateTrainingFen();
