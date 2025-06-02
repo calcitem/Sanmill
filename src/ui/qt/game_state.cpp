@@ -104,8 +104,9 @@ void Game::refreshMoveList()
         return;
     }
 
-    // Simple duplicate check: if the last recorded move is the same as current record, skip
-    // This is now the single point of truth for move list management
+    // Simple duplicate check: if the last recorded move is the same as current
+    // record, skip This is now the single point of truth for move list
+    // management
     if (!gameMoveList.empty() && gameMoveList.back() == position.record) {
         return;
     }

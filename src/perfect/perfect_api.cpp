@@ -240,20 +240,20 @@ void MalomSolutionAccess::set_variant_stripped()
     }
 }
 
-PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard, int blackBitboard,
-                                                              int whiteStonesToPlace, int blackStonesToPlace,
-                                                              int playerToMove, bool onlyStoneTaking)
+PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(
+    int whiteBitboard, int blackBitboard, int whiteStonesToPlace,
+    int blackStonesToPlace, int playerToMove, bool onlyStoneTaking)
 {
     try {
         MalomSolutionAccess::initialize_if_needed();
-        
+
         if (MalomSolutionAccess::perfectPlayer == nullptr) {
             return PerfectEvaluation(); // Invalid result
         }
 
         // Create GameState for perfect database query
         GameState gameState;
-        
+
         const int W = 0;
         const int B = 1;
 
@@ -274,7 +274,10 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard
             }
         }
 
-        gameState.phase = ((whiteStonesToPlace == 0 && blackStonesToPlace == 0) ? 2 : 1);
+        gameState.phase = ((whiteStonesToPlace == 0 &&
+                            blackStonesToPlace == 0) ?
+                               2 :
+                               1);
         gameState.setStoneCount[W] = Rules::maxKSZ - whiteStonesToPlace;
         gameState.setStoneCount[B] = Rules::maxKSZ - blackStonesToPlace;
         gameState.kle = onlyStoneTaking;
@@ -299,34 +302,39 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard
 #endif
 
         // Get detailed evaluation from perfect player and parse it directly
-        std::string evalStr = MalomSolutionAccess::perfectPlayer->evaluate(gameState).to_string();
-        
+        std::string evalStr =
+            MalomSolutionAccess::perfectPlayer->evaluate(gameState).to_string();
+
         // Debug: Log the evaluation string format
         debugPrintf("Perfect DB evaluation string: '%s'\n", evalStr.c_str());
-        
+
         Value gameValue = VALUE_NONE;
         int stepCount = -1;
-        
-        // Parse evaluation string format: "W, (228, 75)" where 75 is the step count
+
+        // Parse evaluation string format: "W, (228, 75)" where 75 is the step
+        // count
         if (!evalStr.empty()) {
             char firstChar = evalStr[0];
-            
+
             // Determine game outcome
             if (firstChar == 'W') {
                 gameValue = VALUE_MATE; // Win
             } else if (firstChar == 'L') {
                 gameValue = -VALUE_MATE; // Loss
-            } else if (firstChar == 'D' || evalStr.find("NTESC") != std::string::npos) {
+            } else if (firstChar == 'D' ||
+                       evalStr.find("NTESC") != std::string::npos) {
                 gameValue = VALUE_DRAW; // Draw
             }
-            
+
             // Extract step count from the complex format: "..., (key1, key2)"
             size_t lastParen = evalStr.rfind('(');
             if (lastParen != std::string::npos) {
                 size_t commaPos = evalStr.find(',', lastParen);
                 size_t closePos = evalStr.find(')', lastParen);
-                if (commaPos != std::string::npos && closePos != std::string::npos && commaPos < closePos) {
-                    std::string stepSub = evalStr.substr(commaPos + 1, closePos - commaPos - 1);
+                if (commaPos != std::string::npos &&
+                    closePos != std::string::npos && commaPos < closePos) {
+                    std::string stepSub = evalStr.substr(
+                        commaPos + 1, closePos - commaPos - 1);
                     // Trim whitespace
                     stepSub.erase(0, stepSub.find_first_not_of(" \t"));
                     stepSub.erase(stepSub.find_last_not_of(" \t") + 1);
@@ -335,7 +343,9 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard
                     if (std::regex_search(stepSub, m, std::regex("-?\\d+"))) {
                         try {
                             stepCount = std::stoi(m.str());
-                            debugPrintf("Parsed step count: %d from string: '%s'\n", stepCount, stepSub.c_str());
+                            debugPrintf("Parsed step count: %d from string: "
+                                        "'%s'\n",
+                                        stepCount, stepSub.c_str());
                         } catch (...) {
                             stepCount = -1;
                         }
@@ -343,12 +353,12 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(int whiteBitboard
                 }
             }
         }
-        
+
         MalomSolutionAccess::deinitialize_if_needed();
-        
+
         return PerfectEvaluation(gameValue, stepCount);
-        
-    } catch (const std::exception&) {
+
+    } catch (const std::exception &) {
         return PerfectEvaluation(); // Invalid result on any error
     }
 }
@@ -398,23 +408,25 @@ PerfectEvaluation getDetailedEvaluation(const Position &position)
         int whiteStonesToPlace = position.piece_in_hand_count(WHITE);
         int blackStonesToPlace = position.piece_in_hand_count(BLACK);
         int playerToMove = position.side_to_move() == WHITE ? 0 : 1;
-        bool onlyStoneTaking = (position.piece_to_remove_count(position.side_to_move()) > 0);
+        bool onlyStoneTaking = (position.piece_to_remove_count(
+                                    position.side_to_move()) > 0);
 
         // Use the new detailed evaluation method
         PerfectEvaluation result = MalomSolutionAccess::get_detailed_evaluation(
-            whiteBitboard, blackBitboard,
-            whiteStonesToPlace, blackStonesToPlace,
-            playerToMove, onlyStoneTaking);
+            whiteBitboard, blackBitboard, whiteStonesToPlace,
+            blackStonesToPlace, playerToMove, onlyStoneTaking);
 
         // Adjust evaluation based on current player's perspective if needed
-        if (result.isValid && position.side_to_move() == BLACK && result.value != VALUE_DRAW) {
+        if (result.isValid && position.side_to_move() == BLACK &&
+            result.value != VALUE_DRAW) {
             // The perfect database returns values from white's perspective
-            // If it's black to move, we need to negate for the current position analysis
+            // If it's black to move, we need to negate for the current position
+            // analysis
             result.value = -result.value;
         }
 
         return result;
-        
+
     } catch (const std::exception &) {
         // If any error occurs during database access, return invalid result
         return PerfectEvaluation();

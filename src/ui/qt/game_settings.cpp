@@ -133,8 +133,9 @@ void Game::loadGameSettings()
                       settings->value("Options/RuleNo").toInt());
 
     // Load AI time limits
-    //int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
-    //int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
+    // int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1",
+    // 1).toInt(); int time2 = empty ? 1 :
+    // settings->value("Options/AiTimeLimit2", 1).toInt();
 
     // Remove unsupported setoption commands that cause "Unknown command" errors
     // The time limits should be handled through the Game class methods instead
@@ -530,7 +531,7 @@ void Game::handlePlayerTimeout(Color player)
     stopPlayerTimer();
 
     // Only human players can lose due to timeout
-    //Color winner = (player == WHITE) ? BLACK : WHITE;
+    // Color winner = (player == WHITE) ? BLACK : WHITE;
     QString playerName = (player == WHITE) ? "White" : "Black";
     emit statusBarChanged(
         QString("Player %1 lost due to timeout").arg(playerName));
