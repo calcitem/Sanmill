@@ -9,6 +9,8 @@
 #include <QFile>
 #include <QTimer>
 #include <QtWidgets/QMainWindow>
+#include <QMenu>
+#include <QActionGroup>
 #include <vector>
 
 #include "config.h"
@@ -17,6 +19,7 @@
 
 #include "client.h"
 #include "server.h"
+#include "translations/languagemanager.h"
 
 using std::vector;
 
@@ -40,6 +43,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent *mouseEvent) override;
 #endif /* QT_MOBILE_APP_UI */
 
+    void changeEvent(QEvent *event) override;
+
 private slots:
     void initialize();
 
@@ -50,6 +55,8 @@ private slots:
     void actionRules_triggered();
 
     void onAutoRunTimeOut(QPrivateSignal signal) const;
+    void onLanguageChanged();
+    void changeLanguage();
 
     // The slot function for each action
     // Remove functions have been connected in UI manager or main window
@@ -96,6 +103,8 @@ private slots:
 
 protected:
     void saveBook(const QString &path);
+    void setupLanguageMenu();
+    void retranslateUi();
 
 private:
     Ui::MillGameWindowClass ui {};
@@ -105,6 +114,11 @@ private:
     int ruleNo {-1};
     QFile file;
     QTimer autoRunTimer;
+
+    // Language management
+    QMenu *languageMenu {nullptr};
+    QActionGroup *languageActionGroup {nullptr};
+    LanguageManager *languageManager {nullptr};
 
 #ifdef QT_MOBILE_APP_UI
     bool m_move {false};

@@ -10,17 +10,34 @@ if(DEFINED ENV{Qt_DIR})
 endif()
 
 # Try to find Qt6 first, if not found then try Qt5
-find_package(Qt6 COMPONENTS Core Gui Multimedia Widgets)
-if(NOT Qt6_FOUND)
-  find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets)
-  set(QT_VERSION 5)
-else()
+find_package(Qt6 COMPONENTS Core Gui Multimedia Widgets LinguistTools)
+if(Qt6_FOUND)
   set(QT_VERSION 6)
+  message(STATUS "Found Qt6: ${Qt6_VERSION}")
+else()
+  find_package(Qt5 REQUIRED COMPONENTS Core Gui Multimedia Widgets LinguistTools)
+  set(QT_VERSION 5)
+  message(STATUS "Found Qt5: ${Qt5_VERSION}")
 endif()
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR} ../../../include ../.. ../../test)
 include_directories(../../perfect)
+
+# Translation files
+set(TS_FILES
+    translations/mill-pro_en.ts
+    translations/mill-pro_de.ts
+    translations/mill-pro_hu.ts
+    translations/mill-pro_zh_CN.ts
+)
+
+# Generate .qm files from .ts files
+if(${QT_VERSION} EQUAL 6)
+    qt6_add_translation(QM_FILES ${TS_FILES})
+elseif(${QT_VERSION} EQUAL 5)
+    qt5_add_translation(QM_FILES ${TS_FILES})
+endif()
 
 # Add resource files
 if(${QT_VERSION} EQUAL 6)
@@ -35,6 +52,10 @@ source_group("Source Files\\Core" FILES ${SOURCES_CORE})
 
 file(GLOB SOURCES_QT *.cpp *.h)
 source_group("Source Files\\Qt" FILES ${SOURCES_QT})
+
+# Add translation directory sources
+file(GLOB SOURCES_TRANSLATIONS translations/*.cpp translations/*.h)
+source_group("Source Files\\Translations" FILES ${SOURCES_TRANSLATIONS})
 
 file(GLOB SOURCES_TEST ../../test/*.cpp ../../test/*.h)
 source_group("Source Files\\Test" FILES ${SOURCES_TEST})
@@ -59,13 +80,16 @@ endif()
 
 source_group("Forms" FILES ${FORMS})
 source_group("Resource Files" FILES ${RESOURCE_FILES})
+source_group("Translation Files" FILES ${TS_FILES} ${QM_FILES})
 
 set(all_sources
   ${SOURCES_CORE}
   ${SOURCES_QT}
+  ${SOURCES_TRANSLATIONS}
   ${SOURCES_TEST}
   ${FORMS}
   ${RESOURCE_FILES}
+  ${QM_FILES}
 )
 
 list(APPEND all_sources ${SOURCES_PERFECT})
@@ -84,3 +108,15 @@ elseif(${QT_VERSION} EQUAL 5)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON AUTOUIC ON AUTORCC ON)
+
+# Add a custom target to update translation files (optional)
+# This target can be used to extract translatable strings from source files
+add_custom_target(update_translations
+    COMMAND ${CMAKE_COMMAND} -E echo "To update translations, run lupdate manually:"
+    COMMAND ${CMAKE_COMMAND} -E echo "lupdate *.cpp *.h *.ui -ts translations/mill-pro_en.ts"
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+# Note: qt_add_lupdate is not commonly used in standard builds
+# Translation updates are typically done manually or through separate scripts
+# The build_translations.* scripts handle the .ts to .qm compilation

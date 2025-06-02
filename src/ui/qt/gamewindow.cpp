@@ -33,6 +33,7 @@
 #include "option.h"
 #include "server.h"
 #include "version.h"
+#include "translations/languagemanager.h"
 
 MillGameWindow::MillGameWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -474,6 +475,14 @@ void MillGameWindow::initialize()
     ui.actionOpeningBook_O->setChecked(gameOptions.getOpeningBook());
     ui.actionLearnEndgame_E->setChecked(gameOptions.getLearnEndgameEnabled());
     ui.actionDeveloperMode->setChecked(gameOptions.getDeveloperMode());
+
+    // Initialize language manager and setup language menu
+    languageManager = LanguageManager::getInstance();
+    setupLanguageMenu();
+
+    // Connect language changed signal
+    connect(languageManager, &LanguageManager::languageChanged, this,
+            &MillGameWindow::onLanguageChanged);
 }
 
 void MillGameWindow::handleAdvantageChanged(qreal value)
@@ -1157,3 +1166,75 @@ void MillGameWindow::mouseReleaseEvent(QMouseEvent *mouseEvent)
     }
 }
 #endif /* QT_MOBILE_APP_UI */
+
+void MillGameWindow::setupLanguageMenu()
+{
+    // Create language menu and add it to the Options menu
+    languageMenu = new QMenu(tr("Language"), this);
+    languageActionGroup = new QActionGroup(this);
+
+    // Add language menu to Options menu
+    ui.menu_O->addSeparator();
+    ui.menu_O->addMenu(languageMenu);
+
+    // Get available languages
+    QStringList languages = languageManager->getAvailableLanguages();
+    QStringList languageCodes = languageManager->getAvailableLanguageCodes();
+
+    for (int i = 0; i < languages.size(); ++i) {
+        QAction *languageAction = new QAction(languages[i], this);
+        languageAction->setCheckable(true);
+        languageAction->setData(languageCodes[i]);
+
+        languageActionGroup->addAction(languageAction);
+        languageMenu->addAction(languageAction);
+
+        // Check current language
+        if (languageCodes[i] == languageManager->getCurrentLanguageCode()) {
+            languageAction->setChecked(true);
+        }
+
+        connect(languageAction, &QAction::triggered, this,
+                &MillGameWindow::changeLanguage);
+    }
+}
+
+void MillGameWindow::changeLanguage()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (!action)
+        return;
+
+    QString languageCode = action->data().toString();
+    languageManager->loadLanguage(languageCode);
+}
+
+void MillGameWindow::onLanguageChanged()
+{
+    retranslateUi();
+}
+
+void MillGameWindow::retranslateUi()
+{
+    // Retranslate UI elements
+    ui.retranslateUi(this);
+
+    // Update window title
+    setWindowTitle(tr("The Mill Game"));
+
+    // Update language menu text
+    if (languageMenu) {
+        languageMenu->setTitle(tr("Language"));
+    }
+
+    // Update status bar and other dynamic elements if needed
+    // Note: Status bar will be updated automatically when game state changes
+}
+
+void MillGameWindow::changeEvent(QEvent *event)
+{
+    if (event->type() == QEvent::LanguageChange) {
+        retranslateUi();
+    }
+    QMainWindow::changeEvent(event);
+}

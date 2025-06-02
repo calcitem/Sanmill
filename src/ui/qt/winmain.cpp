@@ -6,6 +6,7 @@
 #include "bitboard.h"
 #include "gamewindow.h"
 #include "position.h"
+#include "translations/languagemanager.h"
 
 QString APP_FILENAME_DEFAULT = "mill-pro";
 
@@ -35,11 +36,15 @@ int main(int argc, char *argv[])
     QResource::registerResource("gamewindow.rcc");
 
     QApplication a(argc, argv);
-    QTranslator translator;
-    if (!translator.load("mill-pro-qt_zh_CN")) {
-        qWarning() << "Failed to load translation file.";
-    }
-    a.installTranslator(&translator);
+
+    // Set application properties for QSettings
+    a.setOrganizationName("Sanmill");
+    a.setApplicationName("Mill Pro");
+
+    // Initialize language manager and load saved language
+    LanguageManager *langManager = LanguageManager::getInstance();
+    langManager->loadLanguage(langManager->getCurrentLanguage());
+
     MillGameWindow w;
     w.show();
 

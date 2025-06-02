@@ -902,7 +902,7 @@
      <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
    </property>
    <property name="text">
-    <string>Take Back All</string>
+    <string>Take Back</string>
    </property>
    <property name="toolTip">
     <string>Back to Start</string>
@@ -917,7 +917,7 @@
      <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
    </property>
    <property name="text">
-    <string>Tabke Back</string>
+    <string>Take Back</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Left</string>

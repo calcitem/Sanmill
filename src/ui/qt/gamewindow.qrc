@@ -55,6 +55,12 @@
         <file>resources/icon/ic_undo_black_48dp.png</file>
         <file>resources/icon/ic_visibility_black_48dp.png</file>
     </qresource>
+    <qresource prefix="/translations">
+        <file>translations/mill-pro_en.qm</file>
+        <file>translations/mill-pro_de.qm</file>
+        <file>translations/mill-pro_hu.qm</file>
+        <file>translations/mill-pro_zh_CN.qm</file>
+    </qresource>
     <qresource prefix="/sound">
         <file>resources/sound/Select.wav</file>
         <file>resources/sound/drag.wav</file>

@@ -36,3 +36,6 @@ mill-pro
 *.secval
 *.statistics
 *.sec2
+
+# Ignore compiled translation files (generated from .ts files)
+*.qm
