@@ -31,6 +31,12 @@ public:
     QString getLanguageName(Language language) const;
     QStringList getAvailableLanguages() const;
     QStringList getAvailableLanguageCodes() const;
+    
+    // Initialize language with settings file path
+    void initializeWithSettingsFile(const QString& settingsPath);
+    
+    // Load language from settings and apply it
+    void loadAndApplyLanguageFromSettings();
 
 signals:
     void languageChanged();
@@ -42,6 +48,7 @@ private:
     static LanguageManager* m_instance;
     QTranslator* m_translator;
     Language m_currentLanguage;
+    QString m_settingsFilePath;  // Store settings file path
     
     void saveLanguageSettings();
     void loadLanguageSettings();

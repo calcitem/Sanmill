@@ -478,6 +478,13 @@ void MillGameWindow::initialize()
 
     // Initialize language manager and setup language menu
     languageManager = LanguageManager::getInstance();
+
+    // Get settings file path from game and initialize language manager with it
+    QString settingsFilePath = game->getSettingsFilePath();
+    if (!settingsFilePath.isEmpty()) {
+        languageManager->initializeWithSettingsFile(settingsFilePath);
+    }
+
     setupLanguageMenu();
 
     // Connect language changed signal

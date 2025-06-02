@@ -45,6 +45,11 @@ QString buildSettingsFilePath(const QString &settingsFile)
     return QDir::toNativeSeparators(settingsFilename);
 }
 
+QString Game::getSettingsFilePath() const
+{
+    return buildSettingsFilePath(SETTINGS_FILE);
+}
+
 void Game::loadGameSettings()
 {
     bool empty = false;

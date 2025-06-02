@@ -129,6 +129,12 @@ public:
     Client *getClient() { return client; }
 #endif
 
+    // Get settings file path
+    QString getSettingsFilePath() const;
+
+    void applyRule(int ruleIndex, int stepLimited = -1,
+                   int timeLimited = -1) const;
+
 private:
     void initComponents();
     void cleanupComponents();
