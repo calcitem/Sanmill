@@ -80,7 +80,6 @@ private slots:
     void on_actionRowChange() const;
     void on_actionAutoRun_A_toggled(bool arg1);
     // void on_actionResign_G_triggered();
-    void on_actionLimited_T_triggered();
     void on_actionLocal_L_triggered() const;
     void on_actionEngineFight_E_triggered() const;
     static void on_actionInternet_I_triggered();
@@ -99,6 +98,8 @@ private slots:
     static void on_actionViewHelp_V_triggered();
     static void on_actionWeb_W_triggered();
     static void on_actionAbout_A_triggered();
+
+    void openGameSettingsDialog();
 
     void handleAdvantageChanged(qreal value);
 

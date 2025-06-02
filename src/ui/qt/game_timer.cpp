@@ -51,13 +51,94 @@ void Game::initTimeLimit()
 
 void Game::emitTimeChangedSignals()
 {
-    const QTime qtimeWhite =
-        QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
-    const QTime qtimeBlack =
-        QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+    QString whiteTimeString, blackTimeString;
 
-    emit time1Changed(qtimeWhite.toString("hh:mm:ss"));
-    emit time2Changed(qtimeBlack.toString("hh:mm:ss"));
+    // Check if player time limits are enabled or if we need to show 60-min
+    // countdown for no limit
+    if (timerEnabled &&
+        (playerTimeLimit[WHITE] >= 0 || playerTimeLimit[BLACK] >= 0)) {
+        // Use player time limits (new system)
+
+        // Format white player time
+        if (playerTimeLimit[WHITE] == 0) {
+            // Special case: no time limit, show 60-minute countdown or "00"
+            int whiteTime = playerRemainingTime[WHITE];
+            if (whiteTime <= 0) {
+                whiteTimeString = "00"; // Show "00" when countdown reaches zero
+            } else if (whiteTime <= 60) {
+                // Show seconds only for times <= 60 seconds
+                whiteTimeString = QString("%1").arg(whiteTime, 2, 10,
+                                                    QChar('0'));
+            } else {
+                // Show MM:SS format for times > 60 seconds
+                int minutes = whiteTime / 60;
+                int seconds = whiteTime % 60;
+                whiteTimeString = QString("%1:%2").arg(minutes).arg(
+                    seconds, 2, 10, QChar('0'));
+            }
+        } else if (playerTimeLimit[WHITE] > 0) {
+            int whiteTime = playerRemainingTime[WHITE];
+            if (whiteTime <= 60) {
+                // Show seconds only for times <= 60 seconds
+                whiteTimeString = QString("%1").arg(whiteTime, 2, 10,
+                                                    QChar('0'));
+            } else {
+                // Show MM:SS format for times > 60 seconds
+                int minutes = whiteTime / 60;
+                int seconds = whiteTime % 60;
+                whiteTimeString = QString("%1:%2").arg(minutes).arg(
+                    seconds, 2, 10, QChar('0'));
+            }
+        } else {
+            whiteTimeString = "--"; // Disabled
+        }
+
+        // Format black player time
+        if (playerTimeLimit[BLACK] == 0) {
+            // Special case: no time limit, show 60-minute countdown or "00"
+            int blackTime = playerRemainingTime[BLACK];
+            if (blackTime <= 0) {
+                blackTimeString = "00"; // Show "00" when countdown reaches zero
+            } else if (blackTime <= 60) {
+                // Show seconds only for times <= 60 seconds
+                blackTimeString = QString("%1").arg(blackTime, 2, 10,
+                                                    QChar('0'));
+            } else {
+                // Show MM:SS format for times > 60 seconds
+                int minutes = blackTime / 60;
+                int seconds = blackTime % 60;
+                blackTimeString = QString("%1:%2").arg(minutes).arg(
+                    seconds, 2, 10, QChar('0'));
+            }
+        } else if (playerTimeLimit[BLACK] > 0) {
+            int blackTime = playerRemainingTime[BLACK];
+            if (blackTime <= 60) {
+                // Show seconds only for times <= 60 seconds
+                blackTimeString = QString("%1").arg(blackTime, 2, 10,
+                                                    QChar('0'));
+            } else {
+                // Show MM:SS format for times > 60 seconds
+                int minutes = blackTime / 60;
+                int seconds = blackTime % 60;
+                blackTimeString = QString("%1:%2").arg(minutes).arg(
+                    seconds, 2, 10, QChar('0'));
+            }
+        } else {
+            blackTimeString = "--"; // Disabled
+        }
+    } else {
+        // Use old system for backward compatibility
+        const QTime qtimeWhite =
+            QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[WHITE]));
+        const QTime qtimeBlack =
+            QTime(0, 0, 0, 0).addSecs(static_cast<int>(remainingTime[BLACK]));
+
+        whiteTimeString = qtimeWhite.toString("hh:mm:ss");
+        blackTimeString = qtimeBlack.toString("hh:mm:ss");
+    }
+
+    emit time1Changed(whiteTimeString);
+    emit time2Changed(blackTimeString);
 }
 
 void Game::stopTimer()

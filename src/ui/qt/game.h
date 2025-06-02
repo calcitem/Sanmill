@@ -21,6 +21,7 @@
 #include <QStringListModel>
 #include <QTextStream>
 #include <QTime>
+#include <QTimer>
 #include <QObject> // Ensure QObject is included
 
 #include "client.h"
@@ -102,6 +103,22 @@ public:
 
     void setAiTimeLimits(int time1, int time2);
     void getAiTimeLimits(int &time1, int &time2) const;
+
+    // New player time limit methods
+    void setPlayerTimeLimits(int whiteTime, int blackTime);
+    void getPlayerTimeLimits(int &whiteTime, int &blackTime) const;
+
+    // Move limit methods
+    void setMoveLimit(int moves);
+    int getMoveLimit() const;
+
+    // Timer control methods
+    void startPlayerTimer(Color player);
+    void stopPlayerTimer();
+    void handlePlayerTimeout(Color player);
+
+    // Check if move is first move of the game
+    bool isFirstMove() const;
 
     void resignHumanPlayer();
 
@@ -572,6 +589,20 @@ private:
     string tips;
 
     std::vector<std::string> gameMoveList;
+
+    // New time limit variables
+    int playerTimeLimit[COLOR_NB] {0, 0};     // White and Black time limits in
+                                              // seconds (0 = no limit)
+    int playerRemainingTime[COLOR_NB] {0, 0}; // Current remaining time for each
+                                              // player
+    QTimer *playerTimer {nullptr};            // Timer for player time limits
+    Color currentTimerPlayer {WHITE}; // Which player's timer is currently
+                                      // running
+    bool isFirstMoveOfGame {true};    // Flag to track if it's the first move
+    bool timerEnabled {false};        // Whether time limits are enabled
+
+    // Move limit variables
+    int moveLimit {100}; // Move limit for the game (default 100 moves)
 };
 
 #endif // GAME_H_INCLUDED

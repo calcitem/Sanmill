@@ -114,12 +114,27 @@ void Game::loadGameSettings()
     setDeveloperMode(empty ? false :
                              settings->value("Options/DeveloperMode").toBool());
 
+    // Load player time limits (new system)
+    int whiteTime = empty ?
+                        0 :
+                        settings->value("Options/WhiteTimeLimit", 0).toInt();
+    int blackTime = empty ?
+                        0 :
+                        settings->value("Options/BlackTimeLimit", 0).toInt();
+    setPlayerTimeLimits(whiteTime, blackTime);
+
+    // Load move limit
+    int moveLimitValue = empty ?
+                             100 :
+                             settings->value("Options/MoveLimit", 100).toInt();
+    setMoveLimit(moveLimitValue);
+
     applyRule(empty ? DEFAULT_RULE_NUMBER :
                       settings->value("Options/RuleNo").toInt());
 
     // Load AI time limits
-    int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
-    int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
+    //int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
+    //int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
 
     // Remove unsupported setoption commands that cause "Unknown command" errors
     // The time limits should be handled through the Game class methods instead
@@ -176,7 +191,7 @@ void Game::setAiTimeLimits(int time1, int time2)
     // std::to_string(time2), nullptr);
 
     // Update the UI with the new time limits
-    emit statusBarChanged(tr("AI time limits updated"));
+    emit statusBarChanged("AI time limits updated");
 }
 
 void Game::getAiTimeLimits(int &time1, int &time2) const
@@ -394,4 +409,161 @@ void Game::setDeveloperMode(bool enabled) const
 {
     gameOptions.setDeveloperMode(enabled);
     settings->setValue("Options/DeveloperMode", enabled);
+}
+
+void Game::setPlayerTimeLimits(int whiteTime, int blackTime)
+{
+    // Store player time limits
+    playerTimeLimit[WHITE] = whiteTime;
+    playerTimeLimit[BLACK] = blackTime;
+
+    // Save to settings
+    settings->setValue("Options/WhiteTimeLimit", whiteTime);
+    settings->setValue("Options/BlackTimeLimit", blackTime);
+
+    // Enable timer if either time limit is 0 (no limit with 60min countdown) or
+    // greater than 0
+    timerEnabled = (whiteTime >= 0 || blackTime >= 0);
+
+    // Initialize remaining time
+    // For 0 (no limit), start with 60 minutes (3600 seconds) countdown
+    playerRemainingTime[WHITE] = (whiteTime == 0) ? 3600 : whiteTime;
+    playerRemainingTime[BLACK] = (blackTime == 0) ? 3600 : blackTime;
+
+    // Update LCD displays
+    emitTimeChangedSignals();
+}
+
+void Game::getPlayerTimeLimits(int &whiteTime, int &blackTime) const
+{
+    whiteTime = playerTimeLimit[WHITE];
+    blackTime = playerTimeLimit[BLACK];
+}
+
+void Game::startPlayerTimer(Color player)
+{
+    // For time limit 0 (no limit), we still run timer for 60-minute countdown
+    // display For other values, check if time limit is greater than 0
+    if (!timerEnabled && playerTimeLimit[player] == 0) {
+        // Special case: no time limit, but we still want 60-minute countdown
+        // display
+        timerEnabled = true;
+    } else if (!timerEnabled || playerTimeLimit[player] < 0) {
+        return;
+    }
+
+    // Stop any existing timer
+    stopPlayerTimer();
+
+    // Don't start timer for human player's first move
+    // AI can start timer on first move
+    if (isFirstMoveOfGame && !isAiPlayer[player]) {
+        return;
+    }
+
+    // Create timer if it doesn't exist
+    if (!playerTimer) {
+        playerTimer = new QTimer(this);
+        connect(playerTimer, &QTimer::timeout, [this]() {
+            // Decrease remaining time
+            if (playerRemainingTime[currentTimerPlayer] > 0) {
+                playerRemainingTime[currentTimerPlayer]--;
+                emitTimeChangedSignals();
+            } else {
+                // Time is up, handle timeout
+                if (playerTimeLimit[currentTimerPlayer] == 0) {
+                    // For no time limit (0), keep displaying 0 and don't
+                    // trigger timeout
+                    playerRemainingTime[currentTimerPlayer] = 0;
+                    emitTimeChangedSignals();
+                } else {
+                    // For actual time limits, handle timeout
+                    handlePlayerTimeout(currentTimerPlayer);
+                }
+            }
+        });
+    }
+
+    // Set current timer player
+    currentTimerPlayer = player;
+
+    // Reset remaining time for this player if needed
+    if (playerRemainingTime[player] <= 0) {
+        if (playerTimeLimit[player] == 0) {
+            // For no time limit, reset to 60 minutes
+            playerRemainingTime[player] = 3600;
+        } else {
+            playerRemainingTime[player] = playerTimeLimit[player];
+        }
+    }
+
+    // Start timer (1 second interval)
+    playerTimer->start(1000);
+}
+
+void Game::stopPlayerTimer()
+{
+    if (playerTimer && playerTimer->isActive()) {
+        playerTimer->stop();
+    }
+}
+
+void Game::handlePlayerTimeout(Color player)
+{
+    // Don't handle timeout for no time limit (0)
+    if (playerTimeLimit[player] == 0) {
+        return;
+    }
+
+    // AI players never lose due to timeout, only human players do
+    if (isAiPlayer[player]) {
+        // For AI players, just reset the timer and continue
+        // AI should never be penalized for timeout
+        emit statusBarChanged("AI time limit reached - continuing without "
+                              "penalty");
+        playerRemainingTime[player] = playerTimeLimit[player];
+        emitTimeChangedSignals();
+        return;
+    }
+
+    // Stop the timer
+    stopPlayerTimer();
+
+    // Only human players can lose due to timeout
+    //Color winner = (player == WHITE) ? BLACK : WHITE;
+    QString playerName = (player == WHITE) ? "White" : "Black";
+    emit statusBarChanged(
+        QString("Player %1 lost due to timeout").arg(playerName));
+
+    // Set game over
+    // Note: This might need to be adapted to match the actual Position
+    // class interface position.setGameOver(winner,
+    // GameOverReason::timeout);
+
+    // Play loss sound
+    playGameSound(GameSound::loss);
+
+    // Update game statistics
+    processGameOutcome();
+}
+
+bool Game::isFirstMove() const
+{
+    return isFirstMoveOfGame;
+}
+
+void Game::setMoveLimit(int moves)
+{
+    moveLimit = moves;
+    settings->setValue("Options/MoveLimit", moves);
+
+    // Apply the move limit to the current rule
+    if (settings) {
+        applyRule(getRuleIndex(), moves, getTimeLimit());
+    }
+}
+
+int Game::getMoveLimit() const
+{
+    return moveLimit;
 }

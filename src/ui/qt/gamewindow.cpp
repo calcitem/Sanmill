@@ -34,6 +34,7 @@
 #include "server.h"
 #include "version.h"
 #include "translations/languagemanager.h"
+#include "time_settings_dialog.h"
 
 MillGameWindow::MillGameWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -484,6 +485,9 @@ void MillGameWindow::initialize()
     if (ui.dockWidget) {
         ui.dockWidget->setMinimumWidth(128);
     }
+
+    connect(ui.actionGameSettings, &QAction::triggered, this,
+            &MillGameWindow::openGameSettingsDialog);
 }
 
 void MillGameWindow::handleAdvantageChanged(qreal value)
@@ -525,84 +529,6 @@ void MillGameWindow::saveBook(const QString &path)
     }
 
     file.flush();
-}
-
-void MillGameWindow::on_actionLimited_T_triggered()
-{
-    const int gStep = game->getStepsLimit();
-    const int gTime = game->getTimeLimit();
-
-    auto *dialog = new QDialog(this);
-    dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
-    dialog->setObjectName(QStringLiteral("Dialog"));
-    dialog->setWindowTitle(tr("Levels"));
-    dialog->resize(256, 108);
-    dialog->setModal(true);
-
-    auto *formLayout = new QFormLayout(dialog);
-    auto *label_step = new QLabel(dialog);
-    auto *label_time = new QLabel(dialog);
-    auto *comboBox_step = new QComboBox(dialog);
-    auto *comboBox_time = new QComboBox(dialog);
-    auto *buttonBox = new QDialogButtonBox(dialog);
-
-#if 0
-    formLayout->setObjectName(QStringLiteral("formLayout"));
-    label_step->setObjectName(QStringLiteral("label_step"));
-    label_time->setObjectName(QStringLiteral("label_time"));
-    comboBox_step->setObjectName(QStringLiteral("comboBox_step"));
-    comboBox_time->setObjectName(QStringLiteral("comboBox_time"));
-    buttonBox->setObjectName(QStringLiteral("buttonBox"));
-#endif
-
-    label_step->setText(tr("N-Move Rule:"));
-
-    // TODO(calcitem): Save settings
-    // comboBox_step->addItem(tr("Infinite"), 0);
-    comboBox_step->addItem(tr("10 Moves"), 10);
-    comboBox_step->addItem(tr("30 Moves"), 30);
-    comboBox_step->addItem(tr("50 Moves"), 50);
-    comboBox_step->addItem(tr("60 Moves"), 60);
-    comboBox_step->addItem(tr("100 Moves"), 100);
-    comboBox_step->addItem(tr("200 Moves"), 200);
-    comboBox_step->setCurrentIndex(comboBox_step->findData(gStep));
-
-    label_time->setText(tr("Max. time:"));
-    comboBox_time->addItem(tr("Infinite"), 0);
-    comboBox_time->addItem(tr("1s"), 1);
-    comboBox_time->addItem(tr("5s"), 5);
-    comboBox_time->addItem(tr("60s"), 60);
-    comboBox_time->setCurrentIndex(comboBox_time->findData(gTime));
-
-    buttonBox->setStandardButtons(QDialogButtonBox::Cancel |
-                                  QDialogButtonBox::Ok);
-    buttonBox->setCenterButtons(true);
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
-    buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
-
-    formLayout->setSpacing(6);
-    formLayout->setContentsMargins(11, 11, 11, 11);
-    formLayout->setWidget(0, QFormLayout::LabelRole, label_step);
-    formLayout->setWidget(0, QFormLayout::FieldRole, comboBox_step);
-    formLayout->setWidget(1, QFormLayout::LabelRole, label_time);
-    formLayout->setWidget(1, QFormLayout::FieldRole, comboBox_time);
-    formLayout->setWidget(2, QFormLayout::SpanningRole, buttonBox);
-
-    connect(buttonBox, SIGNAL(accepted()), dialog, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), dialog, SLOT(reject()));
-
-    if (dialog->exec() == QDialog::Accepted) {
-        const int dStep = comboBox_step->currentData().toInt();
-        const int dTime = comboBox_time->currentData().toInt();
-        if (gStep != dStep || gTime != dTime) {
-            game->applyRule(ruleNo, dStep,
-                            dTime); // TODO(calcitem): Remove dTime
-            game->setMoveTime(dTime);
-        }
-    }
-
-    dialog->disconnect();
-    delete dialog;
 }
 
 void MillGameWindow::actionRules_triggered()
@@ -1287,4 +1213,40 @@ void MillGameWindow::showEvent(QShowEvent *event)
         }
         m_isFirstShow = false;
     }
+}
+
+void MillGameWindow::openGameSettingsDialog()
+{
+    auto *gameSettingsDialog = new TimeSettingsDialog(this);
+
+    // Load current settings
+    if (game && game->settings) {
+        gameSettingsDialog->loadSettings(game->settings);
+    }
+
+    // Show dialog and handle user input
+    if (gameSettingsDialog->exec() == QDialog::Accepted) {
+        // Save settings if user clicked OK
+        if (game && game->settings) {
+            gameSettingsDialog->saveSettings(game->settings);
+
+            // Apply the new time limits to the game
+            int whiteTime = gameSettingsDialog->getWhiteTimeLimit();
+            int blackTime = gameSettingsDialog->getBlackTimeLimit();
+            int moveLimit = gameSettingsDialog->getMoveLimit();
+
+            game->setPlayerTimeLimits(whiteTime, blackTime);
+            game->setMoveLimit(moveLimit);
+
+            // Show confirmation message
+            QString message = tr("Game settings updated: White %1s, Black %2s, "
+                                 "Move limit %3")
+                                  .arg(whiteTime)
+                                  .arg(blackTime)
+                                  .arg(moveLimit);
+            game->statusBarChanged(message);
+        }
+    }
+
+    delete gameSettingsDialog;
 }

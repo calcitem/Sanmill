@@ -71,6 +71,28 @@ void Game::updateGameState(bool result)
     syncMoveListToModel();
 
     refreshScene();
+
+    // Handle timer logic for player moves
+    if (timerEnabled) {
+        Color currentPlayer = position.side_to_move();
+
+        // Stop any existing timer
+        stopPlayerTimer();
+
+        // Start timer for the current player if game is not over
+        if (position.get_winner() == NOBODY) {
+            startPlayerTimer(currentPlayer);
+        }
+
+        // After attempting to start timer, if this was the very first move
+        // (i.e., a move has been recorded) then mark first-move flag false.
+        // We use the move list size to detect that at least one real move
+        // exists. This avoids clearing the flag during the initial update
+        // that happens right after gameStart()/gameReset().
+        if (isFirstMoveOfGame && !gameMoveList.empty()) {
+            isFirstMoveOfGame = false;
+        }
+    }
 }
 
 // Update move and position list

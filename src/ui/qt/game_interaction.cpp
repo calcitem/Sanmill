@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
 // game_interaction.cpp
@@ -52,11 +52,19 @@ bool Game::isValidBoardClick(QPointF p, File &f, Rank &r)
 
     // In the old code, you blocked clicks when the computer was "playing" or
     // "searching" via aiThread[WHITE]->searching || aiThread[BLACK]->searching.
-    // Now, check if it's AI's turn OR if we have active AI tasks. If so, reject
-    // the click.
-    if (isAiSideToMove() || hasActiveAiTasks()) {
+    // Now, block clicks only when it's AI's turn OR the search task is still
+    // running *and* that search belongs to the current (AI) side-to-move.
+    // If the side-to-move is human, we allow the click even if
+    // g_activeAiTasks > 0 (this covers the short time gap before
+    // handleAiSearchCompleted() resets the counter).
+    if (isAiSideToMove()) {
+        // It's AI's turn – human shouldn't click.
         return false;
     }
+
+    // If it's human's turn but AI task counter hasn't been cleared yet,
+    // ignore the residual counter.
+    // Therefore, we no longer check hasActiveAiTasks() here.
 
     return true;
 }

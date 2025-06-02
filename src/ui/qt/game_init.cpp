@@ -128,6 +128,23 @@ void Game::gameStart()
     gameStartTime = now();
     gameStartCycle = stopwatch::rdtscp_clock::now();
 
+    // Initialize player timer system
+    isFirstMoveOfGame = true;
+    stopPlayerTimer();
+
+    // Reset remaining time for both players
+    // For time limit 0 (no limit), start with 60 minutes (3600 seconds)
+    // countdown
+    playerRemainingTime[WHITE] = (playerTimeLimit[WHITE] == 0) ?
+                                     3600 :
+                                     playerTimeLimit[WHITE];
+    playerRemainingTime[BLACK] = (playerTimeLimit[BLACK] == 0) ?
+                                     3600 :
+                                     playerTimeLimit[BLACK];
+
+    // Update timer displays
+    emitTimeChangedSignals();
+
 #ifdef OPENING_BOOK
     // Example of reloading an opening book if desired
     if (openingBookDeque.empty() && !openingBookDequeBak.empty()) {
@@ -146,6 +163,19 @@ void Game::gameReset()
     clearElapsedTimes();
     resetMoveListModel();
     refreshStatusBar(true);
+
+    // Reset player timer system
+    isFirstMoveOfGame = true;
+    stopPlayerTimer();
+    // For time limit 0 (no limit), start with 60 minutes (3600 seconds)
+    // countdown
+    playerRemainingTime[WHITE] = (playerTimeLimit[WHITE] == 0) ?
+                                     3600 :
+                                     playerTimeLimit[WHITE];
+    playerRemainingTime[BLACK] = (playerTimeLimit[BLACK] == 0) ?
+                                     3600 :
+                                     playerTimeLimit[BLACK];
+
     updateGameState(true);
 
     searchEngine.searchAborted.store(false, std::memory_order_relaxed);
