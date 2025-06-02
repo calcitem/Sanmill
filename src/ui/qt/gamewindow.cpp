@@ -24,6 +24,8 @@
 #include <QTimer>
 #include <QToolTip>
 #include <QVBoxLayout>
+#include <QFile>
+#include <QModelIndex>
 
 #include "client.h"
 #include "game.h"
@@ -775,20 +777,17 @@ void MillGameWindow::on_actionInvert_I_toggled(bool arg1) const
 {
     // If white and black are reversed
     if (arg1) {
-        ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
-        ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/White.png"));
-        ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
-        ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
+        ui.actionEngine1_T->setText(u8"⚫"); // Player 1 is Black
+        ui.actionEngine2_R->setText(u8"⚪"); // Player 2 is White
+        ui.picLabel1->setText(u8"⚫");
+        ui.picLabel2->setText(u8"⚪");
     } else {
-        ui.actionEngine1_T->setIcon(QIcon(":/icon/Resources/icon/White.png"));
-        ui.actionEngine2_R->setIcon(QIcon(":/icon/Resources/icon/Black.png"));
-        ui.picLabel1->setPixmap(QPixmap(":/icon/Resources/icon/White.png"));
-        ui.picLabel2->setPixmap(QPixmap(":/icon/Resources/icon/Black.png"));
+        ui.actionEngine1_T->setText(u8"⚪"); // Player 1 is White
+        ui.actionEngine2_R->setText(u8"⚫"); // Player 2 is Black
+        ui.picLabel1->setText(u8"⚪");
+        ui.picLabel2->setText(u8"⚫");
     }
-
-    // Let the controller change the color of the pieces
-    // game->invertPieceColor(arg1);
-    game->togglePieceColors(); // TODO: Right?
+    game->togglePieceColors(); // Use togglePieceColors instead of setPlayerSide
 }
 
 void MillGameWindow::on_actionRowChange() const
@@ -1084,7 +1083,7 @@ void MillGameWindow::on_actionWeb_W_triggered()
 
 void MillGameWindow::on_actionAbout_A_triggered()
 {
-    auto *dialog = new QDialog;
+    auto *dialog = new QDialog(nullptr);
 
     dialog->setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
     dialog->setObjectName(QStringLiteral("aboutDialog"));
@@ -1093,53 +1092,40 @@ void MillGameWindow::on_actionAbout_A_triggered()
 
     auto *vLayout = new QVBoxLayout(dialog);
     auto *hLayout = new QHBoxLayout;
-    // QLabel *label_icon1 = new QLabel(dialog);
-    // QLabel *label_icon2 = new QLabel(dialog);
-    auto *date_text = new QLabel(dialog);
-    auto *version_text = new QLabel(dialog);
-    auto *donate_text = new QLabel(dialog);
-    auto *label_text = new QLabel(dialog);
-    auto *label_image = new QLabel(dialog);
 
-#if 0
-    label_icon1->setPixmap(
-        QPixmap(QString::fromUtf8(":/image/resources/image/white_piece.png")));
-    label_icon2->setPixmap(
-        QPixmap(QString::fromUtf8(":/image/resources/image/black_piece.png")));
+    QLabel *label_icon1 = new QLabel(dialog);
+    QLabel *label_icon2 = new QLabel(dialog);
+    auto *version_text = new QLabel(dialog);
+    auto *date_text = new QLabel(dialog);
+
+    label_icon1->setText(u8"⚪"); // White piece emoji
+    label_icon2->setText(u8"⚫"); // Black piece emoji
     label_icon1->setAlignment(Qt::AlignCenter);
     label_icon2->setAlignment(Qt::AlignCenter);
-    label_icon1->setFixedSize(32, 32);
-    label_icon2->setFixedSize(32, 32);
-    label_icon1->setScaledContents(true);
-    label_icon2->setScaledContents(true);
-#endif
 
-    // date_text->setText(__DATE__);
-    QString versionText;
+    QString versionString = tr("Version: %1").arg(versionNumber);
+    QString buildDateString = tr("Build Date: %1 %2").arg(__DATE__).arg(__TIME__);
+    version_text->setText(versionString);
+    date_text->setText(buildDateString);
+    version_text->setAlignment(Qt::AlignCenter);
+    date_text->setAlignment(Qt::AlignCenter);
 
-    if (strcmp(versionNumber, "Unknown") > 0) {
-        versionText = tr("Version: ") + versionNumber +
-                      "\nBuild: " + __DATE__ " " __TIME__;
-    } else {
-        versionText = tr("Build: ") + __DATE__ " " __TIME__;
-    }
-
-    version_text->setText(versionText);
-    version_text->setAlignment(Qt::AlignLeft);
-
-    vLayout->addLayout(hLayout);
-    // hLayout->addWidget(label_icon1);
-    // hLayout->addWidget(label_icon2);
+    hLayout->addWidget(label_icon1);
     hLayout->addWidget(version_text);
-    hLayout->addWidget(label_text);
+    hLayout->addWidget(label_icon2);
+    
+    vLayout->addLayout(hLayout);
     vLayout->addWidget(date_text);
-    vLayout->addWidget(donate_text);
-    vLayout->addWidget(label_image);
+
+    QDialogButtonBox *buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok, dialog);
+    connect(buttonBox, &QDialogButtonBox::accepted, dialog, &QDialog::accept);
+    vLayout->addWidget(buttonBox);
+
+    dialog->setLayout(vLayout);
 
     dialog->exec();
 
-    dialog->disconnect();
-    delete dialog;
+    delete dialog; 
 }
 
 #ifdef QT_MOBILE_APP_UI

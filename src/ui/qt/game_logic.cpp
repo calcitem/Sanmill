@@ -166,7 +166,6 @@ bool Game::undoMovesIfReviewing()
 #ifndef QT_MOBILE_APP_UI
         // Initialize a new dialog box for user confirmation
         QMessageBox msgBox;
-        msgBox.setIcon(QMessageBox::Question);
         msgBox.setMinimumSize(600, 400);
         msgBox.setText(tr("You're reviewing a previous board state."));
         msgBox.setInformativeText(tr("Would you like to undo your recent "

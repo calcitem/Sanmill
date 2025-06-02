@@ -29,11 +29,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_back">
         <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</iconset>
+         <string>⬅️</string>
         </property>
        </widget>
       </item>
@@ -53,11 +49,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_option">
         <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_menu_black_48dp.png</normaloff>:/icon/resources/icon/ic_menu_black_48dp.png</iconset>
+         <string>⚙️</string>
         </property>
        </widget>
       </item>
@@ -120,11 +112,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>New Game</string>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_radio_button_on_black_48dp.png</normaloff>:/icon/resources/icon/ic_radio_button_on_black_48dp.png</iconset>
+         <string>🆕 New Game</string>
         </property>
         <property name="iconSize">
          <size>
@@ -149,11 +137,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>Resign</string>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_flag_black_48dp.png</normaloff>:/icon/resources/icon/ic_flag_black_48dp.png</iconset>
+         <string>🏳️ Resign</string>
         </property>
         <property name="iconSize">
          <size>
@@ -175,11 +159,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>Undo Move</string>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</normaloff>:/icon/resources/icon/ic_reply_black_48dp.png</iconset>
+         <string>⏪ Undo Move</string>
         </property>
         <property name="iconSize">
          <size>
@@ -203,11 +183,7 @@
          <string notr="true">color: rgb(0, 0, 127);</string>
         </property>
         <property name="text">
-         <string>Hint</string>
-        </property>
-        <property name="icon">
-         <iconset resource="gamewindow.qrc">
-          <normaloff>:/icon/resources/icon/ic_visibility_black_48dp.png</normaloff>:/icon/resources/icon/ic_visibility_black_48dp.png</iconset>
+         <string>💡 Hint</string>
         </property>
         <property name="iconSize">
          <size>
@@ -444,9 +420,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="pixmap">
-              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/White.png</pixmap>
-             </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
@@ -524,9 +497,6 @@
              </property>
              <property name="text">
               <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="gamewindow.qrc">:/icon/resources/icon/Black.png</pixmap>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -772,11 +742,14 @@
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew_N">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/DocumentHS.png</normaloff>:/icon/resources/icon/DocumentHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/NewDocumentHS.png</normaloff>:/icon/resources/icon/NewDocumentHS.png</iconset>
+   </property> -->
    <property name="text">
+    <string>🆕 &amp;New</string>
+   </property>
+   <property name="toolTip">
     <string>New</string>
    </property>
    <property name="statusTip">
@@ -787,23 +760,25 @@
    </property>
   </action>
   <action name="actionOpen_O">
-   <property name="icon">
-    <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/OpenHS.png</normaloff>:/icon/resources/icon/OpenHS.png</iconset>
-   </property>
    <property name="text">
-    <string>Open...</string>
+    <string>&amp;Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave_S">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
+    <string>💾 &amp;Save</string>
+   </property>
+   <property name="toolTip">
     <string>Save</string>
    </property>
    <property name="shortcut">
@@ -811,125 +786,138 @@
    </property>
   </action>
   <action name="actionSaveAs_A">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/SaveHS.png</normaloff>:/icon/resources/icon/SaveHS.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>Save As...</string>
+    <string>💾 &amp;Save As...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save As</string>
    </property>
   </action>
   <action name="actionExit_X">
+   <!-- <property name="icon">
+    <iconset resource="gamewindow.qrc">
+     <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset> 
+   </property>-->
    <property name="text">
+    <string>🚪 E&amp;xit</string>
+   </property>
+   <property name="toolTip">
     <string>Exit</string>
    </property>
   </action>
   <action name="actionEdit_E">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/EditTableHS.png</normaloff>:/icon/resources/icon/EditTableHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/EditInformationHS.png</normaloff>:/icon/resources/icon/EditInformationHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Set-up a Position</string>
+    <string>✏️ &amp;Edit Mode</string>
    </property>
-   <property name="visible">
-    <bool>false</bool>
+   <property name="toolTip">
+    <string>Edit Mode</string>
    </property>
   </action>
   <action name="actionFlip_F">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/FlipVerticalHS.png</normaloff>:/icon/resources/icon/FlipVerticalHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Flip Vertically</string>
+    <string>↕️ &amp;Flip</string>
+   </property>
+   <property name="toolTip">
+    <string>Flip</string>
    </property>
   </action>
   <action name="actionMirror_M">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/FlipHorizontalHS.png</normaloff>:/icon/resources/icon/FlipHorizontalHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Flip Horizontally</string>
+    <string>↔️ &amp;Mirror</string>
+   </property>
+   <property name="toolTip">
+    <string>Mirror</string>
    </property>
   </action>
   <action name="actionTurnRight_R">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/RightHS.png</normaloff>:/icon/resources/icon/RightHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Rotate Clockwise</string>
+    <string>↪️ Turn &amp;Right</string>
    </property>
    <property name="toolTip">
-    <string>Turn Left</string>
+    <string>Turn Right</string>
    </property>
   </action>
   <action name="actionTurnLeft_L">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/LeftHS.png</normaloff>:/icon/resources/icon/LeftHS.png</iconset>
-   </property>
+   </property>-->
    <property name="text">
-    <string>Rotate Counterclockwise</string>
+    <string>↩️ Turn &amp;Left</string>
    </property>
    <property name="toolTip">
     <string>Turn Left</string>
    </property>
   </action>
   <action name="actionInvert_I">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/Invert.png</normaloff>:/icon/resources/icon/Invert.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>Invert Colors</string>
+    <string>🔄 &amp;Invert Color</string>
+   </property>
+   <property name="toolTip">
+    <string>Invert Color</string>
    </property>
   </action>
   <action name="actionBegin_S">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/First.png</normaloff>:/icon/resources/icon/First.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Take Back</string>
+    <string>⏮️ &amp;Beginning</string>
    </property>
    <property name="toolTip">
-    <string>Back to Start</string>
+    <string>Beginning</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Up</string>
    </property>
   </action>
   <action name="actionPrevious_B">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/Previous.png</normaloff>:/icon/resources/icon/Previous.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Take Back</string>
+    <string>⏪ &amp;Backward</string>
+   </property>
+   <property name="toolTip">
+    <string>Backward</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Left</string>
    </property>
   </action>
   <action name="actionNext_F">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/Next.png</normaloff>:/icon/resources/icon/Next.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>Step Forward</string>
+    <string>⏩ &amp;Forward</string>
    </property>
    <property name="toolTip">
     <string>Forward</string>
@@ -939,30 +927,30 @@
    </property>
   </action>
   <action name="actionEnd_E">
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/Last.png</normaloff>:/icon/resources/icon/Last.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>Step Forward All</string>
+    <string>⏭️ &amp;End</string>
+   </property>
+   <property name="toolTip">
+    <string>End</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Down</string>
    </property>
   </action>
   <action name="actionAutoRun_A">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/Play.png</normaloff>:/icon/resources/icon/Play.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>Replay</string>
+    <string>▶️ Auto &amp;Run</string>
    </property>
    <property name="toolTip">
-    <string>Replay</string>
+    <string>Auto Run</string>
    </property>
   </action>
   <action name="actionResign_G">
@@ -971,6 +959,9 @@
      <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset>
    </property>
    <property name="text">
+    <string>🏳️ &amp;Resign</string>
+   </property>
+   <property name="toolTip">
     <string>Resign</string>
    </property>
   </action>
@@ -1040,36 +1031,21 @@
    </property>
   </action>
   <action name="actionEngine1_T">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>false</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/White.png</normaloff>:/icon/resources/icon/White.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>AI Moves First</string>
-   </property>
-   <property name="toolTip">
-    <string>AI Moves First</string>
+    <string>Engine1</string>
    </property>
   </action>
   <action name="actionEngine2_R">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
      <normaloff>:/icon/resources/icon/Black.png</normaloff>:/icon/resources/icon/Black.png</iconset>
-   </property>
+   </property> -->
    <property name="text">
-    <string>AI Moves Second</string>
-   </property>
-   <property name="toolTip">
-    <string>AI Moves Second</string>
+    <string>Engine2</string>
    </property>
   </action>
   <action name="actionSetting_O">
@@ -1084,10 +1060,10 @@
      <normaloff>:/icon/resources/icon/PrimaryKeyHS.png</normaloff>:/icon/resources/icon/PrimaryKeyHS.png</iconset>
    </property>
    <property name="text">
-    <string>Options...</string>
+    <string>⚙️ Setti&amp;ng</string>
    </property>
-   <property name="visible">
-    <bool>false</bool>
+   <property name="toolTip">
+    <string>Setting</string>
    </property>
   </action>
   <action name="actionFixWindowSize">
@@ -1105,10 +1081,14 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
+   <!-- <property name="icon">
+    <iconset resource="gamewindow.qrc">
+     <normaloff>:/icon/resources/icon/ActualSizeHS.png</normaloff>:/icon/resources/icon/ActualSizeHS.png</iconset>
+   </property> -->
    <property name="text">
+    <string>🛠️ &amp;Toolbar</string>
+   </property>
+   <property name="toolTip">
     <string>Toolbar</string>
    </property>
   </action>
@@ -1116,11 +1096,15 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
+   <!-- <property name="icon">
+    <iconset resource="gamewindow.qrc">
+     <normaloff>:/icon/resources/icon/BreakpointHS.png</normaloff>:/icon/resources/icon/BreakpointHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Match Details</string>
+    <string>🧩 &amp;Dock Bar</string>
+   </property>
+   <property name="toolTip">
+    <string>Dock Bar</string>
    </property>
   </action>
   <action name="actionMusic_M">
@@ -1141,63 +1125,56 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
+   <!-- <property name="icon">
+    <iconset resource="gamewindow.qrc">
+     <normaloff>:/icon/resources/icon/LegendHS.png</normaloff>:/icon/resources/icon/LegendHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Sound</string>
+    <string>🔊 &amp;Sound</string>
    </property>
   </action>
   <action name="actionAnimation_A">
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
    <property name="text">
-    <string>Animation</string>
+    <string>🎬 &amp;Animation</string>
    </property>
    <property name="toolTip">
     <string>Animation</string>
    </property>
   </action>
   <action name="actionViewHelp_V">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/Help.png</normaloff>:/icon/resources/icon/Help.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Help</string>
+    <string>❓ View &amp;Help</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
    </property>
   </action>
   <action name="actionWeb_W">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
+   <!-- <property name="icon">
     <iconset resource="gamewindow.qrc">
-     <normaloff>:/icon/resources/icon/HomeHS.png</normaloff>:/icon/resources/icon/HomeHS.png</iconset>
-   </property>
+     <normaloff>:/icon/resources/icon/Web.png</normaloff>:/icon/resources/icon/Web.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>Homepage</string>
+    <string>🌐 &amp;Web</string>
    </property>
    <property name="toolTip">
     <string>Homepage</string>
    </property>
   </action>
   <action name="actionAbout_A">
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
+   <!-- <property name="icon">
+    <iconset resource="gamewindow.qrc">
+     <normaloff>:/icon/resources/icon/EditTableHS.png</normaloff>:/icon/resources/icon/EditTableHS.png</iconset> 
+   </property>-->
    <property name="text">
-    <string>About...</string>
+    <string>ℹ️ &amp;About</string>
    </property>
    <property name="toolTip">
     <string>About</string>

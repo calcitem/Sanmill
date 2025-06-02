@@ -99,6 +99,7 @@ add_executable(${PROJECT_NAME} ${all_sources})
 
 if(MSVC)
   target_link_libraries(${PROJECT_NAME} shlwapi)
+  target_compile_options(${PROJECT_NAME} PRIVATE /utf-8)
 endif()
 
 if(${QT_VERSION} EQUAL 6)
