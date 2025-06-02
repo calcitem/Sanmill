@@ -33,7 +33,8 @@ bool Game::applyMoveListUntilRow(int row)
 {
     currentRow = row;
     const QStringList strList = moveListModel.stringList();
-    debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
+    // Remove debug output that causes "rows: 1 current: 0" message at startup
+    // debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
 
     // posKeyHistory.clear();
 
