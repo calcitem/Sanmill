@@ -89,7 +89,9 @@ class ExtMove extends PgnNodeData {
 
   /// 'from' square if type==move; otherwise -1.
   int get from {
-    if (type != MoveType.move) return -1;
+    if (type != MoveType.move) {
+      return -1;
+    }
 
     // Check if it's standard notation
     if (move.contains("-") && move.length == 5 && !move.contains("(")) {
@@ -104,9 +106,7 @@ class ExtMove extends PgnNodeData {
   }
 
   static int _parseToSquare(String move) {
-    late int file;
-    late int rank;
-    final MoveType t = MoveParser().parseMoveType(move);
+    MoveParser().parseMoveType(move);
 
     // Check if it's standard notation
     if (move.startsWith("x") && move.length == 3) {
@@ -128,7 +128,7 @@ class ExtMove extends PgnNodeData {
   }
 
   static int _standardNotationToSquare(String notation) {
-    final Map<String, int> standardToSquare = {
+    final Map<String, int> standardToSquare = <String, int>{
       // Inner ring
       "d5": 8, "e5": 9, "e4": 10, "e3": 11,
       "d3": 12, "c3": 13, "c4": 14, "c5": 15,

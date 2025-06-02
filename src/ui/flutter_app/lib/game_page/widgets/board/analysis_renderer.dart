@@ -8,7 +8,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart' as ui;
 
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
@@ -38,7 +37,7 @@ class AnalysisRenderer {
     if (EnvironmentConfig.devMode) {
       logger
           .i("Analysis results count: ${AnalysisMode.analysisResults.length}");
-      for (final result in AnalysisMode.analysisResults) {
+      for (final MoveAnalysisResult result in AnalysisMode.analysisResults) {
         logger.i("Move: ${result.move}, Outcome: ${result.outcome.name}, "
             "Value: ${result.outcome.valueStr}, Steps: ${result.outcome.stepCount}");
       }
@@ -352,9 +351,8 @@ class AnalysisRenderer {
       // The direction of the offset depends on the arrow's angle to avoid overlap
       // A simple approach is to offset it consistently, e.g., upwards or to the side
       // For a more robust solution, one might consider the arrow's angle
-      final double offsetX = 10; // Horizontal offset from midpoint
-      final double offsetY = -stepTextPainter.height /
-          2; // Center vertically by default, adjust as needed
+// Horizontal offset from midpoint
+// Center vertically by default, adjust as needed
 
       // Adjust offset based on arrow direction to prevent text from being drawn over the arrow line
       // This is a simplified logic, might need refinement for all arrow angles
@@ -729,7 +727,7 @@ class AnalysisRenderer {
     }
 
     // Fall back to regular symbol logic
-    String fallbackSymbol = _getSymbolForOutcome(outcome);
+    final String fallbackSymbol = _getSymbolForOutcome(outcome);
 
     // If fallback is empty, provide a meaningful default
     if (fallbackSymbol.isEmpty) {
@@ -788,10 +786,7 @@ class AnalysisRenderer {
       return "${result.move}: ${result.outcome.displayString}";
     } else {
       // Fallback to traditional display
-      return "${result.move}: ${result.outcome.name}" +
-          (result.outcome.valueStr != null
-              ? " (${result.outcome.valueStr})"
-              : "");
+      return "${result.move}: ${result.outcome.name}${result.outcome.valueStr != null ? " (${result.outcome.valueStr})" : ""}";
     }
   }
 

@@ -958,9 +958,7 @@ class Position {
 
     // Include boardLayout
     _record = ExtMove(
-      ExtMove.sqToNotation(_currentSquare[sideToMove]!) +
-          "-" +
-          ExtMove.sqToNotation(s),
+      "${ExtMove.sqToNotation(_currentSquare[sideToMove]!)}-${ExtMove.sqToNotation(s)}",
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,
@@ -1087,7 +1085,7 @@ class Position {
 
     // Record includes boardLayout
     _record = ExtMove(
-      "x" + ExtMove.sqToNotation(s),
+      "x${ExtMove.sqToNotation(s)}",
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,

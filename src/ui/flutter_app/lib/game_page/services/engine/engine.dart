@@ -554,7 +554,7 @@ class Engine {
         if (buffer.isEmpty) {
           buffer = token;
         } else {
-          buffer += " " + token;
+          buffer += " $token";
         }
 
         // Check if we have a complete segment ending with ')'

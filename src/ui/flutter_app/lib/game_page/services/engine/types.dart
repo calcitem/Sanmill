@@ -435,7 +435,7 @@ Map<int, int> squareToIndex = <int, int>{
 };
 
 int notationToSquare(String notation) {
-  const Map<String, int> notationToSquare = {
+  const Map<String, int> notationToSquare = <String, int>{
     // inner ring (8-15)
     'd5': 8,
     'e5': 9,
