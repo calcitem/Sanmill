@@ -81,22 +81,10 @@ MillGameWindow::MillGameWindow(QWidget *parent)
     // Associated auto run timer
     connect(&autoRunTimer, SIGNAL(timeout()), this, SLOT(onAutoRunTimeOut()));
 
-    // Center primary window
-    const QRect deskTopRect = QGuiApplication::primaryScreen()->geometry();
-    const int w = (deskTopRect.width() - width()) / 2;
-    const int h = (deskTopRect.height() - height()) / 2;
-    this->move(w, h);
-
-#ifdef QT_MOBILE_APP_UI
-    // Hide menu bar, toolbar, status bar, etc
-    ui.menuBar->setVisible(false);
-    ui.mainToolBar->setVisible(false);
-    ui.dockWidget->setVisible(false);
-    ui.statusBar->setVisible(false);
-#endif
-
     // Game initialization
     initialize();
+
+    // Centering will be done in showEvent
 }
 
 MillGameWindow::~MillGameWindow()
@@ -1223,6 +1211,17 @@ void MillGameWindow::onLanguageChanged()
 
 void MillGameWindow::retranslateUi()
 {
+    // Save current game view state to restore after retranslation
+    QTransform savedTransform;
+    QRect savedGeometry;
+    bool hasValidView = false;
+
+    if (ui.gameView) {
+        savedTransform = ui.gameView->transform();
+        savedGeometry = ui.gameView->geometry();
+        hasValidView = true;
+    }
+
     // Retranslate UI elements
     ui.retranslateUi(this);
 
@@ -1232,6 +1231,23 @@ void MillGameWindow::retranslateUi()
     // Update language menu text
     if (languageMenu) {
         languageMenu->setTitle(tr("Language"));
+    }
+
+    // Restore game view state to prevent visual size changes
+    if (hasValidView && ui.gameView) {
+        ui.gameView->setTransform(savedTransform);
+        ui.gameView->setGeometry(savedGeometry);
+
+        // Ensure the scene rect remains unchanged
+        if (scene) {
+            scene->setSceneRect(-BOARD_SIDE_LENGTH * 0.54,
+                                -BOARD_SIDE_LENGTH * 0.54,
+                                BOARD_SIDE_LENGTH * 1.08,
+                                BOARD_SIDE_LENGTH * 1.08);
+        }
+
+        // Force view to fit the scene properly without changing zoom
+        ui.gameView->viewport()->update();
     }
 
     // Update status bar and other dynamic elements if needed
@@ -1244,4 +1260,25 @@ void MillGameWindow::changeEvent(QEvent *event)
         retranslateUi();
     }
     QMainWindow::changeEvent(event);
+}
+
+void MillGameWindow::showEvent(QShowEvent *event)
+{
+    QMainWindow::showEvent(event);
+    // Center the window only on the first show event
+    if (m_isFirstShow) {
+        QScreen *primaryScreen = QGuiApplication::primaryScreen();
+        if (primaryScreen) {
+            const QRect screenGeometry = primaryScreen->geometry();
+            const int windowWidth = width();
+            const int windowHeight = height();
+
+            const int x = screenGeometry.x() +
+                          (screenGeometry.width() - windowWidth) / 2;
+            const int y = screenGeometry.y() +
+                          (screenGeometry.height() - windowHeight) / 2;
+            this->move(x, y);
+        }
+        m_isFirstShow = false;
+    }
 }

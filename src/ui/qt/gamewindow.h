@@ -44,6 +44,7 @@ protected:
 #endif /* QT_MOBILE_APP_UI */
 
     void changeEvent(QEvent *event) override;
+    void showEvent(QShowEvent *event) override;
 
 private slots:
     void initialize();
@@ -125,6 +126,7 @@ private:
     QPoint m_startPoint;
     QPoint m_windowPoint;
 #endif
+    bool m_isFirstShow {true};
 };
 
 #endif // GAMEWINDOW_H_INCLUDED
