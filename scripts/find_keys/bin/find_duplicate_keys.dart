@@ -12,7 +12,8 @@ import 'package:path/path.dart' as p;
 void main(List<String> arguments) {
   if (arguments.isEmpty) {
     print(
-        'Usage: dart run bin/find_duplicate_keys.dart <path_to_flutter_project_lib>');
+      'Usage: dart run bin/find_duplicate_keys.dart <path_to_flutter_project_lib>',
+    );
     exit(1);
   }
 

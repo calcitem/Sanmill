@@ -24,28 +24,56 @@ jobs:
       - name: Setup VS
         uses: seanmiddleditch/gha-setup-vsdevenv@master
 
+      - name: Setup Python for aqt
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install aqt
+        run: |
+          python -m pip install aqtinstall==3.3.*
+
+      - name: List available Qt modules
+        run: |
+          python -m aqt list-qt windows desktop --modules 6.9.0 win64_msvc2022_64
+
+      - name: List available Qt tools
+        run: |
+          python -m aqt list-tool windows desktop
+
       - name: Install Qt
+        id: install_qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.7.1'
+          version: '6.9.0'
           host: 'windows'
           target: 'desktop'
-          arch: 'win64_msvc2019_64'
+          arch: 'win64_msvc2022_64'
           modules: 'qtmultimedia'
           install-deps: 'true'
           setup-python: 'true'
+          set-env: 'true'
           tools: 'tools_cmake'
-          set-env: 'false'
           tools-only: 'false'
-          aqtversion: '==3.1.7'
-          py7zrversion: '==0.16.1'
+          aqtversion: '==3.3.*'
+          py7zrversion: '==1.0.*'
           extra: '--external 7z'
+
+      - name: Build translations
+        run: |
+          cd src/ui/qt
+          # Use QT_ROOT_DIR which points directly to Qt installation directory
+          $env:Path = "$env:QT_ROOT_DIR\bin;" + $env:Path
+          lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
+          lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
+          lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
+          lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
 
       - name: Build Qt with CMake
         run: |
           cd src/ui/qt
-          set "Qt6_DIR=D:\a\Sanmill\Qt\6.7.1\msvc2019_64\lib\cmake\Qt6"
-          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\6.7.1\\msvc2019_64"
+          $env:Qt6_DIR = "${{ steps.install_qt.outputs.qt_dir }}/lib/cmake/Qt6"
+          cmake . -DCMAKE_PREFIX_PATH="${{ steps.install_qt.outputs.qt_dir }}"
           cmake --build . --target mill-pro --config Release
 
       - name: Archive Qt
