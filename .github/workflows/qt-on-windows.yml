@@ -41,6 +41,14 @@ jobs:
           py7zrversion: '==0.16.1'
           extra: '--external 7z'
 
+      - name: Build translations
+        run: |
+          cd src/ui/qt
+          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
+          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
+          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
+          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
+
       - name: Build Qt with CMake
         run: |
           cd src/ui/qt
