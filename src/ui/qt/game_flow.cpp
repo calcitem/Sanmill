@@ -157,8 +157,8 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 
     debugPrintf("Computer: %s\n\n", cmd.c_str());
 
-    // Keep track of the move string
-    gameMoveList.emplace_back(moveStr);
+    // Move list management is now handled centrally by refreshMoveList()
+    // Remove direct gameMoveList manipulation from here to avoid duplicates
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
     nnueTrainingDataBestMove = cmd;
