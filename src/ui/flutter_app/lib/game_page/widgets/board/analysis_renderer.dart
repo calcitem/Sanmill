@@ -33,6 +33,16 @@ class AnalysisRenderer {
       return;
     }
 
+    // Debug: Log analysis results in dev mode
+    if (EnvironmentConfig.devMode) {
+      logger
+          .i("Analysis results count: ${AnalysisMode.analysisResults.length}");
+      for (final result in AnalysisMode.analysisResults) {
+        logger.i("Move: ${result.move}, Outcome: ${result.outcome.name}, "
+            "Value: ${result.outcome.valueStr}, Steps: ${result.outcome.stepCount}");
+      }
+    }
+
     // Sort analysis results based on value for advantage/disadvantage outcomes
     final List<MoveAnalysisResult> sortedResults =
         _getSortedResults(AnalysisMode.analysisResults);
@@ -242,7 +252,7 @@ class AnalysisRenderer {
     // Draw symbol inside the circle based on outcome
     final TextPainter textPainter = TextPainter(
       text: TextSpan(
-        text: _getSymbolForOutcome(outcome),
+        text: _getDisplaySymbolForOutcome(outcome),
         style: TextStyle(
           color: AnalysisMode.getColorForOutcome(outcome),
           fontSize: radius * 0.8,
@@ -376,7 +386,7 @@ class AnalysisRenderer {
     // Draw symbol for outcome (+ for win, = for draw, - for loss)
     final TextPainter textPainter = TextPainter(
       text: TextSpan(
-        text: _getSymbolForOutcome(outcome),
+        text: _getDisplaySymbolForOutcome(outcome),
         style: TextStyle(
           color: circleColor,
           fontSize: radius * 0.6,
@@ -617,6 +627,72 @@ class AnalysisRenderer {
     }
   }
 
+  /// Get a display symbol that includes step count information
+  static String _getDisplaySymbolForOutcome(GameOutcome outcome) {
+    // Debug logging in dev mode
+    if (EnvironmentConfig.devMode) {
+      logger.i("Getting display symbol for outcome: ${outcome.name}, "
+          "valueStr: ${outcome.valueStr}, stepCount: ${outcome.stepCount}");
+    }
+
+    // Check if we have step count information from perfect database
+    if (outcome.stepCount != null && outcome.stepCount! > 0) {
+      // Debug log in dev mode
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+            "Displaying step count ${outcome.stepCount} for outcome ${outcome.name}");
+      }
+      // Return step count for perfect database results
+      return outcome.stepCount!.toString();
+    }
+
+    // Check if we have a valid value string to display
+    if (outcome.valueStr != null && outcome.valueStr!.isNotEmpty) {
+      // Debug log in dev mode
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+            "Displaying value string '${outcome.valueStr}' for outcome ${outcome.name}");
+      }
+
+      // For advantage/disadvantage with numerical values, show the value in dev mode
+      if (EnvironmentConfig.devMode &&
+          (outcome == GameOutcome.advantage ||
+              outcome == GameOutcome.disadvantage)) {
+        return outcome.valueStr!;
+      }
+    }
+
+    // Debug log in dev mode when using fallback
+    if (EnvironmentConfig.devMode) {
+      logger.i(
+          "Using fallback symbol for outcome ${outcome.name}, stepCount: ${outcome.stepCount}");
+    }
+
+    // Fall back to regular symbol logic
+    String fallbackSymbol = _getSymbolForOutcome(outcome);
+
+    // If fallback is empty, provide a meaningful default
+    if (fallbackSymbol.isEmpty) {
+      switch (outcome) {
+        case GameOutcome.win:
+          return '✓';
+        case GameOutcome.draw:
+          return '=';
+        case GameOutcome.loss:
+          return '✗';
+        case GameOutcome.advantage:
+          return '+';
+        case GameOutcome.disadvantage:
+          return '-';
+        case GameOutcome.unknown:
+        default:
+          return '?';
+      }
+    }
+
+    return fallbackSymbol;
+  }
+
   /// Convert standard notation square (like "a1", "d5") to board position
   static Offset _getPositionFromStandardNotation(
       String squareNotation, Size size) {
@@ -643,5 +719,24 @@ class AnalysisRenderer {
                 .position
                 .pieceOnBoardCount[GameController().position.sideToMove]! <=
             DB().ruleSettings.flyPieceCount;
+  }
+
+  /// Get display text for analysis result including step count information
+  static String getAnalysisDisplayText(MoveAnalysisResult result) {
+    if (result.outcome.stepCount != null) {
+      // Use the new displayString that includes step information
+      return "${result.move}: ${result.outcome.displayString}";
+    } else {
+      // Fallback to traditional display
+      return "${result.move}: ${result.outcome.name}" +
+          (result.outcome.valueStr != null
+              ? " (${result.outcome.valueStr})"
+              : "");
+    }
+  }
+
+  /// Check if analysis result has perfect database step information
+  static bool hasPerfectDatabaseInfo(MoveAnalysisResult result) {
+    return result.outcome.stepCount != null && result.outcome.stepCount! > 0;
   }
 }

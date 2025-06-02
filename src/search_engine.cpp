@@ -796,15 +796,22 @@ void SearchEngine::runAnalyze()
         std::string moveStr = UCI::move(m.move);
         Value val = VALUE_NONE;
 
-        // Try to get value from perfect database first
-        val = PerfectAPI::getValue(newPos);
+        // Try to get detailed evaluation from perfect database first
+        PerfectEvaluation perfectEval = PerfectAPI::getDetailedEvaluation(newPos);
 
-        if (newPos.side_to_move() != rootSide) {
-            val = -val;
-        }
+        if (perfectEval.isValid) {
+            val = perfectEval.value;
+            
+            // Debug: Log perfect database evaluation in debug mode
+            debugPrintf("Perfect DB evaluation for move %s: value=%d, steps=%d\n", 
+                       moveStr.c_str(), static_cast<int>(val), perfectEval.stepCount);
+            
+            // Adjust for current player's perspective
+            if (newPos.side_to_move() != rootSide) {
+                val = -val;
+            }
 
-        if (val != VALUE_NONE) {
-            // If perfect database provided a valid value, use it
+            // Determine outcome string based on evaluation
             if (val == VALUE_MATE)
                 outcome = "win";
             else if (val == -VALUE_MATE)
@@ -812,9 +819,23 @@ void SearchEngine::runAnalyze()
             else
                 outcome = "draw";
 
-            // Add numerical value to the outcome
-            ss << " " << moveStr << "=" << outcome << "("
-               << static_cast<int>(val) << ")";
+            // Format result with step count information if available
+            if (perfectEval.stepCount >= 0) {
+                ss << " " << moveStr << "=" << outcome << "("
+                   << static_cast<int>(val) << " in " << perfectEval.stepCount << " steps)";
+                   
+                // Debug: Log formatted result with steps
+                debugPrintf("Formatted with steps: %s=%s(%d in %d steps)\n", 
+                           moveStr.c_str(), outcome.c_str(), static_cast<int>(val), perfectEval.stepCount);
+            } else {
+                // No step count available, use traditional format
+                ss << " " << moveStr << "=" << outcome << "("
+                   << static_cast<int>(val) << ")";
+                   
+                // Debug: Log formatted result without steps
+                debugPrintf("Formatted without steps: %s=%s(%d)\n", 
+                           moveStr.c_str(), outcome.c_str(), static_cast<int>(val));
+            }
             continue;
         }
 

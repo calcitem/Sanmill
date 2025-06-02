@@ -539,9 +539,35 @@ class Engine {
       // Standard notation formats: "d5=outcome", "a1-a4=outcome", "xa1=outcome"
       final List<MoveAnalysisResult> results = <MoveAnalysisResult>[];
 
-      // Remove prefix "info analysis " and split by space
-      final List<String> parts =
+      // Debug: Log the raw response in dev mode
+      if (EnvironmentConfig.devMode) {
+        logger.i("$_logTag Raw analysis response: $response");
+      }
+
+      final List<String> rawParts =
           response.replaceFirst("info analysis ", "").split(" ");
+
+      // Reconstruct move=outcome(...) segments that may contain spaces
+      final List<String> parts = <String>[];
+      String buffer = "";
+      for (final String token in rawParts) {
+        if (buffer.isEmpty) {
+          buffer = token;
+        } else {
+          buffer += " " + token;
+        }
+
+        // Check if we have a complete segment ending with ')'
+        if (buffer.contains('=') && buffer.trim().endsWith(')')) {
+          parts.add(buffer.trim());
+          buffer = "";
+        }
+      }
+
+      // Handle any remaining buffer without trailing ')'
+      if (buffer.isNotEmpty && buffer.contains('=')) {
+        parts.add(buffer.trim());
+      }
 
       for (final String part in parts) {
         if (part.contains("=")) {
@@ -549,6 +575,13 @@ class Engine {
           if (moveAndOutcome.length == 2) {
             final String moveStr = moveAndOutcome[0];
             final GameOutcome outcome = _parseOutcome(moveAndOutcome[1]);
+
+            // Debug: Log parsed outcome in dev mode
+            if (EnvironmentConfig.devMode) {
+              logger.i(
+                  "$_logTag Parsed move: $moveStr, outcome: ${outcome.name}, "
+                  "value: ${outcome.valueStr}, steps: ${outcome.stepCount}");
+            }
 
             // Handle standard notation formats
             if (moveStr.startsWith('x') && moveStr.length == 3) {
@@ -603,14 +636,59 @@ class Engine {
 
   /// Parse the outcome string from the engine
   static GameOutcome _parseOutcome(String outcomeStr) {
-    // Extract numerical value if present (format: "outcome(value)")
+    // Debug: Log the raw outcome string in dev mode
+    if (EnvironmentConfig.devMode) {
+      logger.i("Parsing outcome string: '$outcomeStr'");
+    }
+
+    // Extract numerical value and step count if present
+    // Format can be: "outcome(value)" or "outcome(value in N steps)"
     String value = "";
-    final RegExp valuePattern = RegExp(r'([a-z]+)\((-?\d+)\)');
+    int? stepCount;
+
+    final RegExp valuePattern = RegExp(r'([a-z]+)\(([^)]+)\)');
     final Match? valueMatch = valuePattern.firstMatch(outcomeStr);
 
     if (valueMatch != null && valueMatch.groupCount >= 2) {
       outcomeStr = valueMatch.group(1)!; // Extract just the outcome part
-      value = valueMatch.group(2)!; // Extract the numerical value
+      final String valueStr = valueMatch.group(2)!; // Extract the value part
+
+      // Debug: Log extracted parts in dev mode
+      if (EnvironmentConfig.devMode) {
+        logger.i("Extracted outcome: '$outcomeStr', value part: '$valueStr'");
+      }
+
+      // Check if step count is included - Updated regex to be more flexible
+      final RegExp stepPattern = RegExp(r'(-?\d+)\s+in\s+(\d+)\s+steps?');
+      final Match? stepMatch = stepPattern.firstMatch(valueStr);
+
+      if (stepMatch != null && stepMatch.groupCount >= 2) {
+        value = stepMatch.group(1)!; // Extract numerical value
+        stepCount = int.tryParse(stepMatch.group(2)!); // Extract step count
+
+        // Debug: Log extracted step count in dev mode
+        if (EnvironmentConfig.devMode) {
+          logger.i("Extracted step count: $stepCount from value: $value");
+        }
+      } else {
+        // No step information, just extract the numerical value
+        final RegExp numPattern = RegExp(r'(-?\d+)');
+        final Match? numMatch = numPattern.firstMatch(valueStr);
+        if (numMatch != null) {
+          value = numMatch.group(1)!;
+        }
+
+        // Debug: Log no step count found in dev mode
+        if (EnvironmentConfig.devMode) {
+          logger.i("No step count found, extracted value: '$value'");
+        }
+      }
+    } else {
+      // Debug: Log parsing failure in dev mode
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+            "Failed to match value pattern in outcome string: '$outcomeStr'");
+      }
     }
 
     // Determine the outcome type
@@ -637,12 +715,28 @@ class Engine {
         break;
     }
 
-    // If we have a numerical value, create outcome with the value
-    if (value.isNotEmpty) {
-      return GameOutcome.withValue(baseOutcome, value);
+    // Create outcome with value and step count if available
+    GameOutcome result;
+    if (value.isNotEmpty && stepCount != null) {
+      result = GameOutcome.withValueAndSteps(baseOutcome, value, stepCount);
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+            "Created outcome with steps: ${result.name}, value: ${result.valueStr}, steps: ${result.stepCount}");
+      }
+    } else if (value.isNotEmpty) {
+      result = GameOutcome.withValue(baseOutcome, value);
+      if (EnvironmentConfig.devMode) {
+        logger.i(
+            "Created outcome without steps: ${result.name}, value: ${result.valueStr}");
+      }
+    } else {
+      result = baseOutcome;
+      if (EnvironmentConfig.devMode) {
+        logger.i("Created basic outcome: ${result.name}");
+      }
     }
 
-    return baseOutcome;
+    return result;
   }
 }
 
@@ -789,12 +883,15 @@ class PositionAnalysisResult {
 /// Game outcome from analysis
 @immutable
 class GameOutcome {
-  const GameOutcome(this.name, {this.valueStr});
+  const GameOutcome(this.name, {this.valueStr, this.stepCount});
 
   final String name;
 
   // Store the value string from engine evaluation
   final String? valueStr;
+
+  // Store step count information from perfect database
+  final int? stepCount;
 
   // Predefined outcome constants
   static const GameOutcome win = GameOutcome('win');
@@ -809,6 +906,12 @@ class GameOutcome {
     return GameOutcome(baseOutcome.name, valueStr: value);
   }
 
+  // Factory method to create outcome with value and step count
+  static GameOutcome withValueAndSteps(
+      GameOutcome baseOutcome, String value, int? steps) {
+    return GameOutcome(baseOutcome.name, valueStr: value, stepCount: steps);
+  }
+
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) {
@@ -819,4 +922,21 @@ class GameOutcome {
 
   @override
   int get hashCode => name.hashCode;
+
+  // Get display string with step information
+  String get displayString {
+    final StringBuffer buffer = StringBuffer(name);
+
+    if (valueStr != null && valueStr!.isNotEmpty) {
+      buffer.write(' ($valueStr');
+      if (stepCount != null && stepCount! > 0) {
+        buffer.write(' in $stepCount steps');
+      }
+      buffer.write(')');
+    } else if (stepCount != null && stepCount! > 0) {
+      buffer.write(' (in $stepCount steps)');
+    }
+
+    return buffer.toString();
+  }
 }
