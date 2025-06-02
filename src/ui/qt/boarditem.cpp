@@ -190,10 +190,15 @@ void BoardItem::drawBoardLines(QPainter *painter)
 
 void BoardItem::drawCoordinateLabels(QPainter *painter)
 {
-    const int FONT_SIZE = 12;
+    // Calculate font size based on board size for consistent appearance across
+    // different DPI settings Use approximately 2.2% of board side length as
+    // base font size
+    const int FONT_SIZE_PIXELS = boardSideLength / 45; // Approximately 12
+                                                       // pixels for default
+                                                       // 550px board
 
-    int offset_x = LINE_WEIGHT + FONT_SIZE / 4;
-    int offset_y = LINE_WEIGHT + FONT_SIZE / 4;
+    int offset_x = LINE_WEIGHT + FONT_SIZE_PIXELS / 4;
+    int offset_y = LINE_WEIGHT + FONT_SIZE_PIXELS / 4;
 
     const int extra_offset_x = 4;
     const int extra_offset_y = 1;
@@ -203,7 +208,9 @@ void BoardItem::drawCoordinateLabels(QPainter *painter)
     painter->setPen(fontPen);
 
     QFont font;
-    font.setPointSize(FONT_SIZE);
+    // Use pixel size instead of point size for consistent scaling across
+    // different DPI
+    font.setPixelSize(FONT_SIZE_PIXELS);
     painter->setFont(font);
 
     QFontMetrics fm(font);
@@ -243,7 +250,14 @@ void BoardItem::drawPolarLabels(QPainter *painter)
                  Qt::BevelJoin);
     painter->setPen(fontPen);
     QFont font;
-    font.setPointSize(4);
+    // Calculate polar label font size based on board size for consistent
+    // appearance Use a smaller size relative to coordinate labels
+    // (approximately 1/3 of coordinate font size)
+    const int POLAR_FONT_SIZE_PIXELS = boardSideLength / 135; // Approximately 4
+                                                              // pixels for
+                                                              // default 550px
+                                                              // board
+    font.setPixelSize(POLAR_FONT_SIZE_PIXELS);
     font.setFamily("Arial");
     font.setLetterSpacing(QFont::AbsoluteSpacing, 0);
     painter->setFont(font);
