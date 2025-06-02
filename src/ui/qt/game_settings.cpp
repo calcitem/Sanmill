@@ -116,13 +116,14 @@ void Game::loadGameSettings()
     int time1 = empty ? 1 : settings->value("Options/AiTimeLimit1", 1).toInt();
     int time2 = empty ? 1 : settings->value("Options/AiTimeLimit2", 1).toInt();
 
-    // Configure engine with the loaded time limits
-    engineController.handleCommand("setoption name WhiteTimeLimit value " +
-                                       std::to_string(time1),
-                                   nullptr);
-    engineController.handleCommand("setoption name BlackTimeLimit value " +
-                                       std::to_string(time2),
-                                   nullptr);
+    // Remove unsupported setoption commands that cause "Unknown command" errors
+    // The time limits should be handled through the Game class methods instead of UCI commands
+    // engineController.handleCommand("setoption name WhiteTimeLimit value " +
+    //                                    std::to_string(time1),
+    //                                nullptr);
+    // engineController.handleCommand("setoption name BlackTimeLimit value " +
+    //                                    std::to_string(time2),
+    //                                nullptr);
 }
 
 void Game::cleanupSettings()
