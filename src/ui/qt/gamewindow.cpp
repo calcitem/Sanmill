@@ -478,6 +478,12 @@ void MillGameWindow::initialize()
     // Connect language changed signal
     connect(languageManager, &LanguageManager::languageChanged, this,
             &MillGameWindow::onLanguageChanged);
+
+    // Set a minimum width for the details dock widget to prevent it from
+    // becoming too narrow
+    if (ui.dockWidget) {
+        ui.dockWidget->setMinimumWidth(128);
+    }
 }
 
 void MillGameWindow::handleAdvantageChanged(qreal value)

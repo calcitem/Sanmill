@@ -33,6 +33,10 @@ int main(int argc, char *argv[])
     Bitboards::init();
     Position::init();
 
+    // Enable High DPI scaling
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+
     QResource::registerResource("gamewindow.rcc");
 
     QApplication a(argc, argv);
