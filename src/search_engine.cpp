@@ -387,6 +387,10 @@ int SearchEngine::executeSearch()
     Value bestValSoFar = VALUE_ZERO;
 
     Value value = VALUE_ZERO;
+
+    // Initialize bestMove to ensure it's never left as MOVE_NONE
+    // unintentionally
+    bestMove = MOVE_NONE;
     const Depth d = get_depth();
 
     if (gameOptions.getAiIsLazy()) {
@@ -628,6 +632,32 @@ next:
     }
 #endif // GABOR_MALOM_PERFECT_AI
 
+    // Ensure we always have a valid move
+    if (bestMoveSoFar == MOVE_NONE) {
+        debugPrintf("Warning: No best move found, using quick search (depth=4) "
+                    "as fallback.\n");
+#ifdef _WIN32
+#ifdef _DEBUG
+        // assert(false);
+#endif
+#endif
+        // Use quick search with depth 4 instead of random search
+        Sanmill::Stack<Position> quickSs;
+        Move quickBestMove = MOVE_NONE;
+        bestValSoFar = Search::search(*this, rootPos, quickSs, 4, 4,
+                                      -VALUE_INFINITE, VALUE_INFINITE,
+                                      quickBestMove);
+        if (quickBestMove != MOVE_NONE) {
+            bestMoveSoFar = quickBestMove;
+        } else {
+            // If even quick search fails, fall back to random
+            debugPrintf("Quick search failed, falling back to random "
+                        "search.\n");
+            Search::random_search(rootPos, bestMoveSoFar);
+            bestValSoFar = VALUE_ZERO;
+        }
+    }
+
 #ifdef TIME_STAT
     timeEnd = std::chrono::steady_clock::now();
     auto duration = timeEnd - timeStart;
@@ -692,15 +722,29 @@ void SearchEngine::runSearch()
             emitCommand();
         } else {
             setBestMoveString(next_move());
-            if (getBestMoveString().empty() || getBestMoveString() == "error"
-                                                                      "!") {
-                debugPrintf("No valid best move found, set random move.\n");
+            if (getBestMoveString().empty() ||
+                getBestMoveString() == "error!" ||
+                getBestMoveString() == "none") {
+                debugPrintf("No valid best move found, trying quick search "
+                            "(depth=4).\n");
 #ifdef _WIN32
 #ifdef _DEBUG
-                assert(false);
+                // assert(false);
 #endif
 #endif
-                Search::random_search(rootPos, bestMove);
+                // Use quick search with depth 4 instead of random search
+                Sanmill::Stack<Position> quickSs;
+                Move quickBestMove = MOVE_NONE;
+                Search::search(*this, rootPos, quickSs, 4, 4, -VALUE_INFINITE,
+                               VALUE_INFINITE, quickBestMove);
+                if (quickBestMove != MOVE_NONE) {
+                    bestMove = quickBestMove;
+                } else {
+                    // If even quick search fails, fall back to random
+                    debugPrintf("Quick search failed, falling back to random "
+                                "search.\n");
+                    Search::random_search(rootPos, bestMove);
+                }
                 setBestMoveString(UCI::move(bestMove));
             }
             emitCommand();
