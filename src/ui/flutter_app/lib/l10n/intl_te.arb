@@ -1128,7 +1128,7 @@
     "placeholders": {
       "count": {
         "description": "Number of Moves",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1163,7 +1163,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1198,7 +1198,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1209,7 +1209,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1914,11 +1914,11 @@
   "@appliedPositionDetails": {
     "placeholders": {
       "whiteCount": {
-        "type": "num",
+        "type": "int",
         "example": "9"
       },
       "blackCount": {
-        "type": "num",
+        "type": "int",
         "example": "8"
       }
     }

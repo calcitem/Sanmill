@@ -1128,7 +1128,7 @@
     "placeholders": {
       "count": {
         "description": "Number of Moves",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1195,7 +1195,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1206,18 +1206,18 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
   },
-  "hasPlacedPieceCount": "Aktuální hráč umístil {count} figurek.",
+  "hasPlacedPieceCount": "{count, plural, =0{Aktuální hráč neumístil žádné figurky.} =1{Aktuální hráč umístil jednu figurku.} few{Aktuální hráč umístil {count} figurky.} many{Aktuální hráč umístil {count} figurek.} other{Aktuální hráč umístil {count} figurek.}}",
   "@hasPlacedPieceCount": {
-    "description": "The current player has placed {count} pieces.",
+    "description": "Message describing how many pieces the current player has placed, with support for Czech pluralization.",
     "placeholders": {
       "count": {
-        "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
+        "description": "Number of pieces placed by the player.",
         "example": "3"
       }
     }
@@ -1914,11 +1914,11 @@
   "@appliedPositionDetails": {
     "placeholders": {
       "whiteCount": {
-        "type": "num",
+        "type": "int",
         "example": "9"
       },
       "blackCount": {
-        "type": "num",
+        "type": "int",
         "example": "8"
       }
     }
