@@ -856,7 +856,7 @@
       },
       "count": {
         "description": "The count of pieces in hand",
-        "type": "num",
+        "type": "int",
         "example": "5"
       }
     }
@@ -871,7 +871,7 @@
       },
       "count": {
         "description": "The count of pieces on board",
-        "type": "num",
+        "type": "int",
         "example": "5"
       }
     }
@@ -1214,7 +1214,7 @@
     "placeholders": {
       "count": {
         "description": "Number of Moves",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1273,7 +1273,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1284,7 +1284,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1457,7 +1457,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1472,7 +1472,7 @@
     "placeholders": {
       "level": {
         "description": "The new level",
-        "type": "num",
+        "type": "int",
         "example": "5"
       }
     }
@@ -2015,11 +2015,11 @@
   "@appliedPositionDetails": {
     "placeholders": {
       "whiteCount": {
-        "type": "num",
+        "type": "int",
         "example": "9"
       },
       "blackCount": {
-        "type": "num",
+        "type": "int",
         "example": "8"
       }
     }

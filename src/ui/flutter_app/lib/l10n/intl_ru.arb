@@ -1128,7 +1128,7 @@
     "placeholders": {
       "count": {
         "description": "Number of Moves",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1153,13 +1153,13 @@
   "@gameFiles": {
     "description": "Game files"
   },
-  "hasPlacedPieceCount": "Текущий игрок разместил {count} фишек.",
+  "hasPlacedPieceCount": "{count, plural, =0{Текущий игрок не разместил ни одной фишки.} =1{Текущий игрок разместил одну фишку.} few{Текущий игрок разместил {count} фишки.} many{Текущий игрок разместил {count} фишек.} other{Текущий игрок разместил {count} фишки.}}",
   "@hasPlacedPieceCount": {
-    "description": "The current player has placed {count} pieces.",
+    "description": "Message describing how many pieces the current player has placed, with support for Russian pluralization.",
     "placeholders": {
       "count": {
-        "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
+        "description": "Number of pieces placed by the player.",
         "example": "3"
       }
     }
@@ -1202,7 +1202,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces placed.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1225,7 +1225,7 @@
     "placeholders": {
       "count": {
         "description": "Number of pieces.",
-        "type": "num",
+        "type": "int",
         "example": "3"
       }
     }
@@ -1914,11 +1914,11 @@
   "@appliedPositionDetails": {
     "placeholders": {
       "whiteCount": {
-        "type": "num",
+        "type": "int",
         "example": "9"
       },
       "blackCount": {
-        "type": "num",
+        "type": "int",
         "example": "8"
       }
     }
