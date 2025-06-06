@@ -268,6 +268,20 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     const Move nextMove = mp.next_move<LEGAL>();
     const int moveCount = mp.move_count();
 
+    // Handle case when no moves are available
+    if (moveCount == 0) {
+#ifdef _WIN32
+#ifdef _DEBUG
+        assert(false);
+#endif
+#endif
+        if (depth == originDepth) {
+            bestMove = MOVE_NONE;
+            debugPrintf("Warning: Search found no legal moves at root depth\n");
+        }
+        return bestValue;
+    }
+
 #ifndef NNUE_GENERATE_TRAINING_DATA
     // If only one legal move and at root depth, select it as best move
     if (moveCount == 1 && depth == originDepth) {
@@ -450,6 +464,13 @@ Value Search::random_search(Position *pos, Move &bestMove)
     MoveList<LEGAL> ml(*pos);
 
     if (ml.size() == 0) {
+#ifdef _WIN32
+#ifdef _DEBUG
+        assert(false);
+#endif
+#endif
+        bestMove = MOVE_NONE;
+        debugPrintf("Warning: random_search found no legal moves\n");
         return VALUE_DRAW;
     }
 
@@ -458,5 +479,19 @@ Value Search::random_search(Position *pos, Move &bestMove)
     const int index = rand() % ml.size();
     bestMove = ml.getMove(index);
 
+    // Ensure we got a valid move
+    if (bestMove == MOVE_NONE) {
+#ifdef _WIN32
+#ifdef _DEBUG
+        assert(false);
+#endif
+#endif
+        debugPrintf("Warning: random_search selected MOVE_NONE, trying first "
+                    "move\n");
+        bestMove = ml.getMove(0);
+    }
+
+    debugPrintf("random_search selected move: %s\n",
+                UCI::move(bestMove).c_str());
     return VALUE_ZERO;
 }
