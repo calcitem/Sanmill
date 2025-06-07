@@ -1,7 +1,11 @@
 allprojects {
     repositories {
+        // Using Aliyun's public mirror which includes several repositories, including JCenter.
+        // This is more robust than using the JCenter-specific mirror.
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
