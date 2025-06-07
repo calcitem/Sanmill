@@ -1,34 +1,284 @@
-# Auto detect text files and perform LF normalization
-*        text=auto
+# Git attributes configuration for Sanmill project
+# This file ensures consistent line endings, proper binary handling, and language detection
 
-# Always perform LF normalization on these files
-*.cpp    text
-*.dart   text
-*.gradle text
-*.h      text
-*.html   text
-*.java   text
-*.md     text
-*.py     text
-*.sh     text
-*.xml    text
-*.yaml   text
+#######################################
+# Default behavior for text files
+#######################################
+# Automatically normalize line endings for all text files
+* text=auto
 
-# Make sure that these Windows files always have CRLF line endings in checkout
-*.bat             text eol=crlf
-*.ps1             text eol=crlf
-*.rc              text eol=crlf
-*.sln             text eol=crlf
-*.props           text eol=crlf
-*.vcxproj         text eol=crlf
-*.vcxproj.filters text eol=crlf
-# Including templatized versions.
-*.sln.tmpl        text eol=crlf
-*.props.tmpl      text eol=crlf
-*.vcxproj.tmpl    text eol=crlf
+#######################################
+# Shell and scripting files
+#######################################
+# Shell scripts must use LF line endings (Unix-style)
+*.sh        text eol=lf
+*.bash      text eol=lf
 
-# Never perform LF normalization on these files
-*.ico    binary
-*.jar    binary
-*.png    binary
-*.zip    binary
+# Batch/PowerShell scripts use CRLF line endings (Windows-style)
+*.bat       text eol=crlf
+*.cmd       text eol=crlf
+*.ps1       text eol=crlf
+
+# Python scripts use LF line endings
+*.py        text eol=lf
+
+#######################################
+# Flutter/Dart specific files
+#######################################
+# Dart source files
+*.dart      text eol=lf
+
+# Flutter configuration files
+pubspec.yaml            text eol=lf
+pubspec.lock            text eol=lf
+analysis_options.yaml   text eol=lf
+l10n.yaml              text eol=lf
+flutter_native_splash.yaml text eol=lf
+
+# Generated files (usually should not be committed, but if they are)
+*.g.dart    text eol=lf linguist-generated=true
+*.freezed.dart text eol=lf linguist-generated=true
+
+# Flutter internationalization files
+*.arb       text eol=lf linguist-language=JSON
+
+#######################################
+# Configuration and markup files
+#######################################
+# YAML files
+*.yaml      text eol=lf
+*.yml       text eol=lf
+
+# JSON files
+*.json      text eol=lf
+
+# XML files
+*.xml       text eol=lf
+
+# Markdown and documentation
+*.md        text eol=lf
+*.txt       text eol=lf
+README*     text eol=lf
+LICENSE*    text eol=lf
+CHANGELOG*  text eol=lf
+
+# Git configuration files
+.gitignore  text eol=lf
+.gitattributes text eol=lf
+
+# Environment and configuration files
+*.env       text eol=lf
+*.properties text eol=lf
+*.conf      text eol=lf
+*.ini       text eol=lf
+
+#######################################
+# Build and platform-specific files
+#######################################
+# CMake files (for Linux/C++ builds)
+CMakeLists.txt  text eol=lf
+*.cmake         text eol=lf
+
+# Gradle files (for Android builds)
+*.gradle        text eol=lf
+gradle.properties text eol=lf
+gradlew         text eol=lf
+gradlew.bat     text eol=crlf
+
+# iOS/macOS project files
+*.pbxproj       text eol=lf
+*.plist         text eol=lf
+*.storyboard    text eol=lf
+*.xcconfig      text eol=lf
+
+# Windows project files
+*.vcxproj       text eol=crlf
+*.sln           text eol=crlf
+*.props         text eol=crlf
+*.targets       text eol=crlf
+
+# Windows project template files
+*.sln.tmpl      text eol=crlf
+*.props.tmpl    text eol=crlf
+*.vcxproj.tmpl  text eol=crlf
+*.vcxproj.filters.tmpl text eol=crlf
+*.rc            text eol=crlf
+
+#######################################
+# Binary files (explicitly marked)
+#######################################
+# Images
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.svg       binary
+*.webp      binary
+*.bmp       binary
+*.tiff      binary
+
+# Audio files
+*.mp3       binary
+*.wav       binary
+*.ogg       binary
+*.m4a       binary
+*.aac       binary
+*.flac      binary
+
+# Video files
+*.mp4       binary
+*.avi       binary
+*.mov       binary
+*.mkv       binary
+
+# Database and data files (Sanmill-specific)
+*.db        binary
+*.sqlite    binary
+*.sec2      binary
+*.secval    binary
+
+# Archives and compressed files
+*.zip       binary
+*.tar       binary
+*.gz        binary
+*.7z        binary
+*.rar       binary
+*.bz2       binary
+*.xz        binary
+
+# Native libraries
+*.so        binary
+*.dylib     binary
+*.dll       binary
+*.exe       binary
+*.a         binary
+*.lib       binary
+
+# Flutter build artifacts (should be in .gitignore, but marking as binary)
+*.dill      binary
+*.kernel    binary
+*.snapshot  binary
+
+# Fonts
+*.ttf       binary
+*.otf       binary
+*.woff      binary
+*.woff2     binary
+*.eot       binary
+
+# Office documents
+*.xlsx      binary
+*.xls       binary
+*.docx      binary
+*.doc       binary
+*.pptx      binary
+*.ppt       binary
+*.pdf       binary
+
+# Java/Android specific binaries
+*.jar       binary
+*.aar       binary
+*.apk       binary
+*.class     binary
+
+# iOS specific binaries
+*.ipa       binary
+*.framework binary
+
+#######################################
+# Special handling for specific files
+#######################################
+# Flutter lock file should not have merge conflicts
+pubspec.lock    merge=ours
+
+# Generated assets should be treated as generated
+lib/generated/**    linguist-generated=true
+lib/**/*.g.dart     linguist-generated=true
+lib/**/*.freezed.dart linguist-generated=true
+
+# Test files should be excluded from language statistics
+test/**             linguist-vendored=true
+integration_test/** linguist-vendored=true
+test_driver/**      linguist-vendored=true
+
+# Build directories should be excluded
+build/**            linguist-vendored=true
+.dart_tool/**       linguist-vendored=true
+
+# IDE configuration files
+.vscode/**          linguist-vendored=true
+.idea/**            linguist-vendored=true
+*.iml               linguist-vendored=true
+
+# Platform-specific build files should be excluded from language stats
+android/**          linguist-vendored=true
+ios/**              linguist-vendored=true
+linux/**            linguist-vendored=true
+macos/**            linguist-vendored=true
+windows/**          linguist-vendored=true
+web/**              linguist-vendored=true
+
+# Translation/localization files should not affect language statistics
+lib/l10n/*.arb      linguist-vendored=true
+
+#######################################
+# Language detection overrides
+#######################################
+# Ensure Dart is properly detected as the main language
+*.dart              linguist-language=Dart
+
+# Prevent certain files from affecting language statistics
+*.g.dart            linguist-generated=true
+*.freezed.dart      linguist-generated=true
+*.config.dart       linguist-generated=true
+*.arb               linguist-language=JSON
+
+# Force detection for specific file types
+*.gradle            linguist-language=Gradle
+CMakeLists.txt      linguist-language=CMake
+
+#######################################
+# Diff and merge settings
+#######################################
+# Use custom diff for Dart files to better handle formatting
+*.dart              diff=dart
+
+# JSON files should use JSON diff highlighting
+*.json              diff=json
+*.arb               diff=json
+
+# Binary files should not be diffed
+*.png               -diff
+*.jpg               -diff
+*.jpeg              -diff
+*.gif               -diff
+*.ico               -diff
+*.mp3               -diff
+*.wav               -diff
+*.ogg               -diff
+*.db                -diff
+*.sqlite            -diff
+*.sec2              -diff
+*.secval            -diff
+*.zip               -diff
+*.tar               -diff
+*.gz                -diff
+*.xlsx              -diff
+*.pdf               -diff
+*.jar               -diff
+*.apk               -diff
+*.ipa               -diff
+
+#######################################
+# Merge strategies for specific files
+#######################################
+# Changelog files should use union merge to avoid conflicts
+CHANGELOG*          merge=union
+
+# Version files might need special handling
+VERSION             merge=ours
+version.txt         merge=ours
+
+# Localization files should use union merge when possible
+*.arb               merge=union
