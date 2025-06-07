@@ -39,6 +39,7 @@
 		69175BCD2D25ACB200ACAE7F /* thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69175BC82D25ACB200ACAE7F /* thread_pool.cpp */; };
 		69175BCE2D25ACB200ACAE7F /* opening_book.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69175BC92D25ACB200ACAE7F /* opening_book.cpp */; };
 		69175BCF2D25ACB200ACAE7F /* engine_controller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69175BCA2D25ACB200ACAE7F /* engine_controller.cpp */; };
+		69324F622DF4C63000B95CDC /* perfect_errors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69324F612DF4C63000B95CDC /* perfect_errors.cpp */; };
 		69D563A52B3986D80044F1F9 /* perfect_symmetries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563932B3986D80044F1F9 /* perfect_symmetries.cpp */; };
 		69D563A62B3986D80044F1F9 /* perfect_player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563942B3986D80044F1F9 /* perfect_player.cpp */; };
 		69D563A72B3986D80044F1F9 /* perfect_move.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D563952B3986D80044F1F9 /* perfect_move.cpp */; };
@@ -191,6 +192,8 @@
 		69175BD32D25B30A00ACAE7F /* search_engine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = search_engine.h; path = ../../../../search_engine.h; sourceTree = "<group>"; };
 		69175BD42D25B30A00ACAE7F /* task_queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = task_queue.h; path = ../../../../task_queue.h; sourceTree = "<group>"; };
 		69175BD52D25B30A00ACAE7F /* thread_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thread_pool.h; path = ../../../../thread_pool.h; sourceTree = "<group>"; };
+		69324F602DF4C63000B95CDC /* perfect_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = perfect_errors.h; path = ../../../../perfect/perfect_errors.h; sourceTree = "<group>"; };
+		69324F612DF4C63000B95CDC /* perfect_errors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_errors.cpp; path = ../../../../perfect/perfect_errors.cpp; sourceTree = "<group>"; };
 		69D563932B3986D80044F1F9 /* perfect_symmetries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_symmetries.cpp; path = ../../../../perfect/perfect_symmetries.cpp; sourceTree = "<group>"; };
 		69D563942B3986D80044F1F9 /* perfect_player.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_player.cpp; path = ../../../../perfect/perfect_player.cpp; sourceTree = "<group>"; };
 		69D563952B3986D80044F1F9 /* perfect_move.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_move.cpp; path = ../../../../perfect/perfect_move.cpp; sourceTree = "<group>"; };
@@ -294,6 +297,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
+				69324F602DF4C63000B95CDC /* perfect_errors.h */,
+				69324F612DF4C63000B95CDC /* perfect_errors.cpp */,
 				001743972960A3E200F72763 /* main.m */,
 				001743942960957600F72763 /* AppDelegate.h */,
 				001743952960957600F72763 /* AppDelegate.m */,
@@ -433,6 +438,7 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				DF0E751FACB4070B481F3229 /* [CP] Embed Pods Frameworks */,
+				94BF2519086CA52F9066E4CC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -551,6 +557,23 @@
 			shellPath = /bin/sh;
 			shellScript = "/bin/sh \"$FLUTTER_ROOT/packages/flutter_tools/bin/xcode_backend.sh\" embed_and_thin\n";
 		};
+		94BF2519086CA52F9066E4CC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9740EEB61CF901F6004384FC /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -636,6 +659,7 @@
 				001743832960813200F72763 /* movegen.cpp in Sources */,
 				69D563AA2B3986D80044F1F9 /* perfect_symmetries_slow.cpp in Sources */,
 				0011EECF2A02A3CC00E4431D /* mcts.cpp in Sources */,
+				69324F622DF4C63000B95CDC /* perfect_errors.cpp in Sources */,
 				00174357296080FA00F72763 /* command_channel.cpp in Sources */,
 				69D563AB2B3986D80044F1F9 /* perfect_wrappers.cpp in Sources */,
 				69D563A82B3986D80044F1F9 /* perfect_sector.cpp in Sources */,
@@ -774,6 +798,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -866,6 +891,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -925,6 +951,7 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

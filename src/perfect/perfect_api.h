@@ -37,32 +37,26 @@ class MalomSolutionAccess
 {
 private:
     static PerfectPlayer *perfectPlayer;
-    static std::exception *lastError;
 
 public:
+    // Error-code based implementation (no exceptions for performance)
     static int get_best_move(int whiteBitboard, int blackBitboard,
                              int whiteStonesToPlace, int blackStonesToPlace,
                              int playerToMove, bool onlyStoneTaking,
                              Value &value, const Move &refMove);
 
-    static int get_best_move_no_exception(int whiteBitboard, int blackBitboard,
-                                          int whiteStonesToPlace,
-                                          int blackStonesToPlace,
-                                          int playerToMove,
-                                          bool onlyStoneTaking, Value &value,
-                                          const Move &refMove);
-
-    static std::string get_last_error();
-
-    static void initialize_if_needed();
     static void deinitialize_if_needed();
 
-    static void must_be_between(std::string paramName, int value, int min,
-                                int max);
+    // Error-code based helper functions
+    static bool initialize_if_needed();
+    static int get_move_from_database(const GameState &s, Value &value,
+                                      const Move &refMove);
+    static PerfectEvaluation
+    get_detailed_evaluation(const GameState &gameState);
 
     static void set_variant_stripped();
 
-    // New method to get detailed evaluation information
+    // Method to get detailed evaluation information
     static PerfectEvaluation
     get_detailed_evaluation(int whiteBitboard, int blackBitboard,
                             int whiteStonesToPlace, int blackStonesToPlace,

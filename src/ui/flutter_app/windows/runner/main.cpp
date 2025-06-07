@@ -10,6 +10,8 @@
 #include "flutter_window.h"
 #include "run_loop.h"
 #include "utils.h"
+#include "perfect/perfect_api.h"
+#include "perfect/perfect_errors.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command)
@@ -19,6 +21,10 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     if (!::AttachConsole(ATTACH_PARENT_PROCESS) && ::IsDebuggerPresent()) {
         CreateAndAttachConsole();
     }
+
+    // Initialize Perfect error handling for the main UI thread
+    // Note: Engine thread initialization is handled separately in engine core
+    PerfectErrors::initialize_thread_local_storage();
 
     // Initialize COM, so that it is available for use in the library and/or
     // plugins.
@@ -43,5 +49,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
     run_loop.Run();
 
     ::CoUninitialize();
+
+    // Cleanup Perfect error handling for the main UI thread
+    PerfectErrors::cleanup_thread_local_storage();
+    
     return EXIT_SUCCESS;
 }

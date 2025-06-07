@@ -73,6 +73,7 @@
 		69C824BA2D2523EF00E2D507 /* opening_book.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B52D2523EF00E2D507 /* opening_book.cpp */; };
 		69C824BB2D2523EF00E2D507 /* thread_pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B62D2523EF00E2D507 /* thread_pool.cpp */; };
 		69C824BC2D2523EF00E2D507 /* engine_commands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69C824B72D2523EF00E2D507 /* engine_commands.cpp */; };
+		69D2415A2DF4863B00A85815 /* perfect_errors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D241592DF4863B00A85815 /* perfect_errors.cpp */; };
 		69E6536B2B93905B00839000 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 69E6534D2B93883600839000 /* InfoPlist.strings */; };
 		BC5221DF3A978AEB33F0F020 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6EBBDD702AC2B038A5CBA54C /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
@@ -221,6 +222,8 @@
 		69C824B52D2523EF00E2D507 /* opening_book.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = opening_book.cpp; path = ../../../opening_book.cpp; sourceTree = "<group>"; };
 		69C824B62D2523EF00E2D507 /* thread_pool.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = thread_pool.cpp; path = ../../../thread_pool.cpp; sourceTree = "<group>"; };
 		69C824B72D2523EF00E2D507 /* engine_commands.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = engine_commands.cpp; path = ../../../engine_commands.cpp; sourceTree = "<group>"; };
+		69D241582DF4863B00A85815 /* perfect_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = perfect_errors.h; path = ../../../../../../perfect/perfect_errors.h; sourceTree = "<group>"; };
+		69D241592DF4863B00A85815 /* perfect_errors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_errors.cpp; path = ../../../../../../perfect/perfect_errors.cpp; sourceTree = "<group>"; };
 		69E6531D2B93620000839000 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/MainMenu.strings"; sourceTree = "<group>"; };
 		69E6531E2B9363A800839000 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/MainMenu.strings; sourceTree = "<group>"; };
 		69E6531F2B93659C00839000 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/MainMenu.strings; sourceTree = "<group>"; };
@@ -438,6 +441,8 @@
 				69B1D0832B5D1613008BE811 /* perfect_common.h */,
 				69B1D0882B5D1613008BE811 /* perfect_debug.cpp */,
 				69B1D0812B5D1613008BE811 /* perfect_debug.h */,
+				69D241592DF4863B00A85815 /* perfect_errors.cpp */,
+				69D241582DF4863B00A85815 /* perfect_errors.h */,
 				69B1D0942B5D1613008BE811 /* perfect_eval_elem.cpp */,
 				69B1D0892B5D1613008BE811 /* perfect_eval_elem.h */,
 				69B1D08C2B5D1613008BE811 /* perfect_game_state.cpp */,
@@ -732,9 +737,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -770,6 +779,7 @@
 				69B1D05F2B5D15D0008BE811 /* uci.cpp in Sources */,
 				69B1D0B22B5D1614008BE811 /* perfect_symmetries.cpp in Sources */,
 				69B1D0B52B5D1614008BE811 /* perfect_common.cpp in Sources */,
+				69D2415A2DF4863B00A85815 /* perfect_errors.cpp in Sources */,
 				69B1D0682B5D15D0008BE811 /* position.cpp in Sources */,
 				69B1D0B12B5D1614008BE811 /* perfect_move.cpp in Sources */,
 				33CC10F12044A3C60003C045 /* AppDelegate.swift in Sources */,
@@ -954,6 +964,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -1042,6 +1053,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1098,6 +1110,7 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

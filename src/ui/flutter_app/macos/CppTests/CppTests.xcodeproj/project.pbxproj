@@ -130,6 +130,7 @@
 		69175ECC2D2A95C200ACAE7F /* libgmock.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69175EC82D2A95C200ACAE7F /* libgmock.a */; };
 		69175ECD2D2A95C200ACAE7F /* libgtest_main.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69175EC92D2A95C200ACAE7F /* libgtest_main.a */; };
 		69175ECE2D2A95C200ACAE7F /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69175ECA2D2A95C200ACAE7F /* libgtest.a */; };
+		69D241522DF481EE00A85815 /* perfect_errors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 69D241512DF481EE00A85815 /* perfect_errors.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -270,6 +271,8 @@
 		69175EC82D2A95C200ACAE7F /* libgmock.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgmock.a; path = ../../../../../../../../opt/homebrew/Cellar/googletest/1.15.2/lib/libgmock.a; sourceTree = "<group>"; };
 		69175EC92D2A95C200ACAE7F /* libgtest_main.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest_main.a; path = ../../../../../../../../opt/homebrew/Cellar/googletest/1.15.2/lib/libgtest_main.a; sourceTree = "<group>"; };
 		69175ECA2D2A95C200ACAE7F /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = ../../../../../../../../opt/homebrew/Cellar/googletest/1.15.2/lib/libgtest.a; sourceTree = "<group>"; };
+		69D241502DF481EE00A85815 /* perfect_errors.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = perfect_errors.h; path = ../../../../perfect/perfect_errors.h; sourceTree = "<group>"; };
+		69D241512DF481EE00A85815 /* perfect_errors.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = perfect_errors.cpp; path = ../../../../perfect/perfect_errors.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -298,6 +301,8 @@
 		69175D772D2A939200ACAE7F = {
 			isa = PBXGroup;
 			children = (
+				69D241502DF481EE00A85815 /* perfect_errors.h */,
+				69D241512DF481EE00A85815 /* perfect_errors.cpp */,
 				69175EA72D2A957900ACAE7F /* test_bitboard.cpp */,
 				69175EAB2D2A957A00ACAE7F /* test_engine_commands.cpp */,
 				69175EAA2D2A957900ACAE7F /* test_engine_controller.cpp */,
@@ -541,6 +546,7 @@
 				69175EC42D2A957A00ACAE7F /* test_thread.cpp in Sources */,
 				69175EC52D2A957A00ACAE7F /* test_search.cpp in Sources */,
 				69175E922D2A954500ACAE7F /* command_channel.h in Sources */,
+				69D241522DF481EE00A85815 /* perfect_errors.cpp in Sources */,
 				69175E932D2A954500ACAE7F /* command_channel.cpp in Sources */,
 				69175E942D2A954500ACAE7F /* command_queue.cpp in Sources */,
 				69175E952D2A954500ACAE7F /* base.h in Sources */,
