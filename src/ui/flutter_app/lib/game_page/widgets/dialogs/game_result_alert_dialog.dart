@@ -44,6 +44,12 @@ class GameResultAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Position position = GameController().position;
+
+    // Special handling for AI vs AI mode
+    if (gameMode == GameMode.aiVsAi) {
+      return _buildAiVsAiDialog(context, position);
+    }
+
     // TODO: Why sometimes _gameResult is null?
     position.result = _gameResult;
 
@@ -228,6 +234,83 @@ class GameResultAlertDialog extends StatelessWidget {
         ],
       ),
       actions: actions,
+    );
+  }
+
+  Widget _buildAiVsAiDialog(BuildContext context, Position position) {
+    // Get game duration in seconds
+    final int gameDurationSeconds =
+        GameController().calculateGameDurationSeconds();
+
+    // Format duration as minutes and seconds
+    final int minutes = gameDurationSeconds ~/ 60;
+    final int seconds = gameDurationSeconds % 60;
+    final String durationText = "${minutes}m ${seconds}s";
+
+    // Determine winner text
+    final String winnerText;
+    if (position.winner == PieceColor.white) {
+      winnerText = "White AI wins";
+    } else if (position.winner == PieceColor.black) {
+      winnerText = "Black AI wins";
+    } else {
+      winnerText = "Draw";
+    }
+
+    // Get game over reason
+    final String reason =
+        position.gameOverReason?.getName(context, position.winner) ??
+            S.of(context).gameOverUnknownReason;
+
+    // Build content with game duration
+    final StringBuffer content = StringBuffer();
+    content.writeln(reason);
+    content.writeln();
+    content.writeln("Game Duration: $durationText");
+
+    return AlertDialog(
+      key: const Key('ai_vs_ai_game_result_dialog'),
+      title: Text(
+        winnerText,
+        key: const Key('ai_vs_ai_game_result_dialog_title'),
+        style: AppTheme.dialogTitleTextStyle,
+      ),
+      content: Text(
+        content.toString(),
+        key: const Key('ai_vs_ai_game_result_dialog_content'),
+        style: TextStyle(
+          fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          key: const Key('ai_vs_ai_game_result_dialog_restart_button'),
+          child: Text(
+            S.of(context).restart,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
+          ),
+          onPressed: () {
+            GameController().reset(force: true);
+            GameController()
+                .headerTipNotifier
+                .showTip(S.of(context).gameStarted);
+            GameController().headerIconsNotifier.showIcons();
+            Navigator.pop(context);
+          },
+        ),
+        TextButton(
+          key: const Key('ai_vs_ai_game_result_dialog_close_button'),
+          child: Text(
+            S.of(context).cancel,
+            style: TextStyle(
+              fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+            ),
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ],
     );
   }
 }

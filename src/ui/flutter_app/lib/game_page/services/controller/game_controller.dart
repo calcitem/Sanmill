@@ -53,6 +53,10 @@ class GameController {
   // Use this Completer to wait for the final "accepted" or "rejected" from remote.
   Completer<bool>? pendingTakeBackCompleter;
 
+  // Game timing tracking
+  DateTime? _gameStartTime;
+  bool _gameStartTimeRecorded = false;
+
   final HeaderTipNotifier headerTipNotifier = HeaderTipNotifier();
   final HeaderIconsNotifier headerIconsNotifier = HeaderIconsNotifier();
   final SetupPositionNotifier setupPositionNotifier = SetupPositionNotifier();
@@ -332,6 +336,9 @@ class GameController {
 
     // Reset player timer
     PlayerTimer().reset();
+
+    // Reset game timing tracking
+    _resetGameTiming();
 
     if (gameModeBak == GameMode.humanVsLAN) {
       // In LAN mode, if this is a normal reset (or connection lost), dispose networkService.
@@ -801,6 +808,9 @@ class GameController {
         loopIsFirst = false;
         searched = true;
 
+        // Record game start time for AI vs AI mode on first move
+        _recordGameStartTime();
+
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
           rootScaffoldMessengerKey.currentState!.showSnackBar(
@@ -832,6 +842,8 @@ class GameController {
             headerTipNotifier.showTip(position.scoreString, snackBar: false);
             headerIconsNotifier.showIcons();
             boardSemanticsNotifier.updateSemantics();
+            // Show game result dialog for AI vs AI mode when auto restart is disabled
+            gameResultNotifier.showResult(force: true);
           }
           return const EngineResponseOK();
         }
@@ -986,5 +998,30 @@ class GameController {
       final String errorMsg = result.errorMessage ?? "Analysis failed";
       headerTipNotifier.showTip(errorMsg);
     }
+  }
+
+  /// Record the game start time when the first move is made in AI vs AI mode
+  void _recordGameStartTime() {
+    if (gameInstance.gameMode == GameMode.aiVsAi && !_gameStartTimeRecorded) {
+      _gameStartTime = DateTime.now();
+      _gameStartTimeRecorded = true;
+      logger.i("$_logTag AI vs AI game start time recorded: $_gameStartTime");
+    }
+  }
+
+  /// Calculate the game duration in seconds from first move to game end
+  int calculateGameDurationSeconds() {
+    if (_gameStartTime == null) {
+      return 0;
+    }
+    final DateTime endTime = DateTime.now();
+    final Duration gameDuration = endTime.difference(_gameStartTime!);
+    return gameDuration.inSeconds;
+  }
+
+  /// Reset game timing tracking
+  void _resetGameTiming() {
+    _gameStartTime = null;
+    _gameStartTimeRecorded = false;
   }
 }

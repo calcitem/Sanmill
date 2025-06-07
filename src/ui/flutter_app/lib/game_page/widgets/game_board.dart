@@ -464,10 +464,17 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
     GameController().headerIconsNotifier.showIcons();
 
-    if (GameController().isAutoRestart() == false &&
+    // Check conditions for showing game result dialog
+    final bool shouldShowDialog = GameController().isAutoRestart() == false &&
         winner != PieceColor.nobody &&
-        gameMode != GameMode.aiVsAi &&
-        gameMode != GameMode.setupPosition) {
+        gameMode != GameMode.setupPosition;
+
+    // For AI vs AI mode, additional conditions must be met
+    final bool aiVsAiConditions = gameMode != GameMode.aiVsAi ||
+        (DB().displaySettings.animationDuration == 0.0 &&
+            DB().generalSettings.shufflingEnabled == false);
+
+    if (shouldShowDialog && aiVsAiConditions) {
       showDialog(
         context: context,
         builder: (_) => GameResultAlertDialog(
