@@ -87,8 +87,9 @@ void main(List<String> arguments) {
   for (var entry in groupedKeys.entries) {
     final key = _escapeForMarkdown(entry.key);
     for (var info in entry.value) {
-      final filePath =
-          _escapeForMarkdown(p.relative(info.filePath, from: libDir.path));
+      final filePath = _escapeForMarkdown(
+        p.relative(info.filePath, from: libDir.path),
+      );
       buffer.writeln('| $key | $filePath | ${info.line} | ${info.column} |');
     }
   }
@@ -135,12 +136,14 @@ class KeyScannerVisitor extends RecursiveAstVisitor<void> {
             final keyValue = arg.stringValue;
             if (keyValue != null) {
               final location = lineInfo.getLocation(node.offset);
-              allKeyInfos.add(KeyInfo(
-                keyValue: keyValue,
-                filePath: filePath,
-                line: location.lineNumber,
-                column: location.columnNumber,
-              ));
+              allKeyInfos.add(
+                KeyInfo(
+                  keyValue: keyValue,
+                  filePath: filePath,
+                  line: location.lineNumber,
+                  column: location.columnNumber,
+                ),
+              );
             }
           }
         }
