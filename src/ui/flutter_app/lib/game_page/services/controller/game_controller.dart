@@ -842,9 +842,9 @@ class GameController {
             headerTipNotifier.showTip(position.scoreString, snackBar: false);
             headerIconsNotifier.showIcons();
             boardSemanticsNotifier.updateSemantics();
-            // Show game result dialog for AI vs AI mode when auto restart is disabled
-            gameResultNotifier.showResult(force: true);
           }
+          // Always call showResult to trigger UI update, dialog display is handled in GameBoard
+          gameResultNotifier.showResult(force: true);
           return const EngineResponseOK();
         }
       }
