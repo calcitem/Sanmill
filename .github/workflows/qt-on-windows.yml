@@ -25,6 +25,7 @@ jobs:
         uses: seanmiddleditch/gha-setup-vsdevenv@master
 
       - name: Install Qt
+        id: install_qt
         uses: jurplel/install-qt-action@v4
         with:
           version: '6.9.0'
@@ -44,16 +45,17 @@ jobs:
       - name: Build translations
         run: |
           cd src/ui/qt
-          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
-          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
-          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
-          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
+          $env:Path = "${{ steps.install_qt.outputs.qt_dir }}/bin;" + $env:Path
+          lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
+          lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
+          lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
+          lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
 
       - name: Build Qt with CMake
         run: |
           cd src/ui/qt
-          set "Qt6_DIR=D:\a\Sanmill\Qt\6.8.3\msvc2022_64\lib\cmake\Qt6"
-          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\6.8.3\\msvc2022_64"
+          $env:Qt6_DIR = "${{ steps.install_qt.outputs.qt_dir }}/lib/cmake/Qt6"
+          cmake . -DCMAKE_PREFIX_PATH="${{ steps.install_qt.outputs.qt_dir }}"
           cmake --build . --target mill-pro --config Release
 
       - name: Archive Qt
