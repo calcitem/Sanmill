@@ -42,6 +42,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   late Future<GameImages> gameImagesFuture;
   late AnimationManager animationManager;
 
+  // Flag to prevent duplicate dialog display in AI vs AI mode
+  bool _isDialogShowing = false;
+
   // Define a mapping of animation names to their corresponding constructors.
   final Map<String, PieceEffectAnimation Function()> animationMap =
       <String, PieceEffectAnimation Function()>{
@@ -94,6 +97,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     if (visitedRuleSettingsPage == true) {
       GameController().reset();
       visitedRuleSettingsPage = false;
+      // Reset dialog flag when game is reset
+      _isDialogShowing = false;
     }
 
     GameController().engine.startup();
@@ -474,13 +479,18 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         (DB().displaySettings.animationDuration == 0.0 &&
             DB().generalSettings.shufflingEnabled == false);
 
-    if (shouldShowDialog && aiVsAiConditions) {
+    // Prevent duplicate dialog display
+    if (shouldShowDialog && aiVsAiConditions && !_isDialogShowing) {
+      _isDialogShowing = true;
       showDialog(
         context: context,
         builder: (_) => GameResultAlertDialog(
           winner: winner,
         ),
-      );
+      ).then((_) {
+        // Reset flag when dialog is dismissed
+        _isDialogShowing = false;
+      });
     }
   }
 
