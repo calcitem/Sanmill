@@ -5,8 +5,8 @@
 // perfect_common.cpp
 
 #include "perfect_common.h"
+#include "perfect_errors.h"
 
-#include <stdexcept>
 #include <string>
 
 std::string secValPath = ".";
@@ -22,5 +22,6 @@ std::string ruleVariantName;
 
 void fail_with(std::string s)
 {
-    throw std::runtime_error(ruleVariantName + ": " + s);
+    SET_ERROR_MESSAGE(PerfectErrors::PE_RUNTIME_ERROR,
+                      ruleVariantName + ": " + s);
 }

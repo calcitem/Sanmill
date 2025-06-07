@@ -66,6 +66,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../perfect/perfect_symmetries.cpp"
   "../../../../perfect/perfect_symmetries_slow.cpp"
   "../../../../perfect/perfect_wrappers.cpp"
+  "../../../../perfect/perfect_errors.cpp"
 
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
   "Runner.rc"
@@ -82,6 +83,10 @@ target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_MAJOR=${FLUTT
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_MINOR=${FLUTTER_VERSION_MINOR}")
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_PATCH=${FLUTTER_VERSION_PATCH}")
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION_BUILD=${FLUTTER_VERSION_BUILD}")
+
+# Enable Link-Time Optimization (LTO) for Release and Profile builds.
+target_compile_options(${BINARY_NAME} PRIVATE "$<$<OR:$<CONFIG:Release>,$<CONFIG:Profile>>:/GL>")
+target_link_options(${BINARY_NAME} PRIVATE "$<$<OR:$<CONFIG:Release>,$<CONFIG:Profile>>:/LTCG>")
 
 # Disable Windows macros that collide with C++ standard library functions.
 target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")

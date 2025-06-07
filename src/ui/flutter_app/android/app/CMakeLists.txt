@@ -1,3 +1,7 @@
+# For more information about using CMake with Android Studio, read the
+# documentation: https://d.android.com/studio/projects/add-native-code.html
+
+# Sets the minimum version of CMake required to build the native library.
 cmake_minimum_required(VERSION 3.22.1)
 cmake_policy(SET CMP0069 NEW)
 
@@ -18,7 +22,7 @@ endif ()
 
 #add_definitions(-DDISABLE_PERFECT_AI)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wcast-qual -pedantic -Wextra -Wshadow -fexceptions -DUSE_POPCNT")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror -Wall -Wcast-qual -pedantic -Wextra -Wshadow -fno-exceptions -DUSE_POPCNT")
 #set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
@@ -83,7 +87,8 @@ add_library( # Sets the name of the library.
         ../../../../perfect/perfect_sector_graph.cpp
         ../../../../perfect/perfect_symmetries.cpp
         ../../../../perfect/perfect_symmetries_slow.cpp
-        ../../../../perfect/perfect_wrappers.cpp)
+        ../../../../perfect/perfect_wrappers.cpp
+        ../../../../perfect/perfect_errors.cpp)
 
 # Configure Address Sanitizer for dev mode
 if (DEFINED USE_ASAN AND USE_ASAN)

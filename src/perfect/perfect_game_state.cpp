@@ -6,6 +6,11 @@
 
 #include "perfect_api.h"
 #include "perfect_game_state.h"
+#include "perfect_errors.h"
+#include <sstream>
+#include <algorithm>
+#include <vector>
+#include <charconv>
 
 class Player;
 class GameState;
@@ -46,7 +51,8 @@ void GameState::init_setup()
 void GameState::make_move(CMove *M)
 {
     if (M == nullptr) {
-        throw std::invalid_argument("M is null");
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "M is null");
+        return;
     }
 
     check_invariants();
@@ -163,12 +169,20 @@ std::string GameState::set_over_and_check_valid_setup()
 
     int toBePlaced0 = Rules::maxKSZ - setStoneCount[0];
     if (stoneCount[0] + toBePlaced0 > Rules::maxKSZ) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT,
+                       "Too many white stones (on the board + to be placed). "
+                       "Please remove some white stones from the board and/or "
+                       "decrease the number of white stones to be placed.");
         return "Too many white stones (on the board + to be placed). Please "
                "remove some white stones from the board and/or decrease the "
                "number of white stones to be placed.";
     }
     int toBePlaced1 = Rules::maxKSZ - setStoneCount[1];
     if (stoneCount[1] + toBePlaced1 > Rules::maxKSZ) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT,
+                       "Too many black stones (on the board + to be placed). "
+                       "Please remove some black stones from the board and/or "
+                       "decrease the number of black stones to be placed.");
         return "Too many black stones (on the board + to be placed). Please "
                "remove some black stones from the board and/or decrease the "
                "number of black stones to be placed.";
@@ -182,6 +196,19 @@ std::string GameState::set_over_and_check_valid_setup()
         if (phase == 1) {
             if (toBePlaced0 !=
                 toBePlaced1 - (((sideToMove == 0) ^ kle) ? 0 : 1)) {
+                SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT,
+                               "If Black is to move in the placement phase, "
+                               "then the number of black stones to be placed "
+                               "should be one more than the number of white "
+                               "stones to placed. If White is to move in the "
+                               "placement phase, then the number of white and "
+                               "black stones to be placed should be equal. "
+                               "(Except in a stone taking position, where "
+                               "these conditions are reversed.)\n\nNote: The "
+                               "Lasker variant (and the extended solutions) "
+                               "doesn't have these constraints.\n\nNote: You "
+                               "can switch the side to move by the \"Switch "
+                               "STM\" button in position setup mode.");
                 return "If Black is to move in the placement phase, then the "
                        "number of black stones to be placed should be one more "
                        "than the number of white stones to placed. If White is "
@@ -195,15 +222,27 @@ std::string GameState::set_over_and_check_valid_setup()
             }
         } else {
             if (phase != 2) {
-                throw std::runtime_error("Phase is not 2");
+                SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "Phase is "
+                                                                   "not 2");
+                return "Phase is not 2";
             }
             if (toBePlaced0 != 0 || toBePlaced1 != 0) {
-                throw std::runtime_error("toBePlaced0 or toBePlaced1 is not 0");
+                SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "toBePlaced0"
+                                                                   " or "
+                                                                   "toBePlaced1"
+                                                                   " is not 0");
+                return "toBePlaced0 or toBePlaced1 is not 0";
             }
         }
     }
 
     if (kle && stoneCount[1 - sideToMove] == 0) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "A position where "
+                                                           "the opponent "
+                                                           "doesn't have any "
+                                                           "stones cannot be a "
+                                                           "stone taking "
+                                                           "position.");
         return "A position where the opponent doesn't have any stones cannot "
                "be a stone taking position.";
     }
@@ -255,55 +294,14 @@ std::string GameState::set_over_and_check_valid_setup()
 #pragma warning(pop)
 #endif
 
-// to paste from clipboard
-GameState::GameState(const std::string &s)
+// Helper function to safely parse an integer from a string
+bool safe_stoi(const std::string &s, int &out)
 {
-    std::vector<std::string> ss;
-    std::string temp;
-    std::stringstream strStream(s);
-
-    // split by commas
-    while (std::getline(strStream, temp, ',')) {
-        ss.push_back(temp);
-    }
-
-    try {
-        if (ss[33] == "malom" || ss[34] == "malom" || ss[35] == "malom" ||
-            ss[37] == "malom2") { // you need to be able to interpret older
-                                  // formats as well
-            for (int i = 0; i < 24; i++) {
-                board[i] = std::stoi(ss[i]);
-            }
-            sideToMove = std::stoi(ss[24]);
-            phase = std::stoi(ss[27]);
-            setStoneCount[0] = std::stoi(ss[28]);
-            setStoneCount[1] = std::stoi(ss[29]);
-            stoneCount[0] = std::stoi(ss[30]);
-            stoneCount[1] = std::stoi(ss[31]);
-            kle = (ss[32] == "True" || ss[32] == "true");
-            moveCount = (ss[33] != "malom") ? std::stoi(ss[33]) : 10;
-            lastIrrev = ((ss[33] != "malom") && (ss[34] != "malom")) ?
-                            std::stoi(ss[34]) :
-                            0;
-
-            // ensure correct count of stones
-            ptrdiff_t count0 = std::count(board.begin(), board.end(), 0);
-            ptrdiff_t count1 = std::count(board.begin(), board.end(), 1);
-            if (stoneCount[0] != count0 || stoneCount[1] != count1) {
-                throw InvalidGameStateException("Number of stones is "
-                                                "incorrect.");
-            }
-        } else {
-            throw std::invalid_argument("Invalid Format");
-        }
-    } catch (InvalidGameStateException &ex) {
-        throw ex;
-    } catch (std::exception &) {
-        throw std::invalid_argument("Invalid Format");
-    }
+    auto result = std::from_chars(s.data(), s.data() + s.size(), out);
+    return result.ec == std::errc();
 }
 
-// for clipboard
+// to paste from clipboard
 std::string GameState::to_string()
 {
     std::stringstream s;
@@ -317,7 +315,122 @@ std::string GameState::to_string()
     return s.str();
 }
 
-const char *InvalidGameStateException::what() const noexcept
+void GameState::fromString(const std::string &s)
 {
-    return mymsg.c_str();
+    // Reset state before parsing
+    board.assign(24, -1);
+    stoneCount.assign(2, 0);
+    setStoneCount.assign(2, 0);
+    phase = 1;
+    kle = false;
+    sideToMove = 0;
+    moveCount = 0;
+    over = false;
+    winner = 0;
+    block = false;
+    lastIrrev = 0;
+
+    std::vector<std::string> ss;
+    std::string temp;
+    std::stringstream strStream(s);
+
+    // split by commas (to match to_string() format)
+    while (std::getline(strStream, temp, ',')) {
+        ss.push_back(temp);
+    }
+
+    if (ss.size() < 35) { // Need at least 35 elements for the basic format
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "Invalid number of "
+                                                           "tokens in input "
+                                                           "string");
+        return;
+    }
+
+    // Parse the format produced by to_string():
+    // board[0-23], sideToMove, 0, 0, phase, setStoneCount[0], setStoneCount[1],
+    // stoneCount[0], stoneCount[1], kle_str, moveCount, lastIrrev
+
+    // Parse board positions (elements 0-23)
+    for (int i = 0; i < 24; i++) {
+        int value;
+        if (!safe_stoi(ss[i], value)) {
+            SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT,
+                           "Failed to parse "
+                           "board position " +
+                               std::to_string(i));
+            return;
+        }
+        if (value == 0) {
+            board[i] = 0;
+            stoneCount[0]++;
+        } else if (value == 1) {
+            board[i] = 1;
+            stoneCount[1]++;
+        } else if (value == -1) {
+            board[i] = -1;
+        } else {
+            SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT,
+                           "Invalid board "
+                           "value at position " +
+                               std::to_string(i));
+            return;
+        }
+    }
+
+    // Parse other fields
+    if (!safe_stoi(ss[24], sideToMove) || // sideToMove
+        !safe_stoi(ss[27], phase) || // phase (skip ss[25], ss[26] which are 0)
+        !safe_stoi(ss[28], setStoneCount[0]) || // setStoneCount[0]
+        !safe_stoi(ss[29], setStoneCount[1]) || // setStoneCount[1]
+        !safe_stoi(ss[32], moveCount)) {        // moveCount
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "Failed to parse "
+                                                           "one or more "
+                                                           "integer fields "
+                                                           "from string");
+        return;
+    }
+
+    // Note: stoneCount[0] and stoneCount[1] are already calculated from board
+    // positions But verify they match ss[30] and ss[31]
+    int expectedStoneCount0, expectedStoneCount1;
+    if (!safe_stoi(ss[30], expectedStoneCount0) ||
+        !safe_stoi(ss[31], expectedStoneCount1)) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "Failed to parse "
+                                                           "stone count "
+                                                           "fields");
+        return;
+    }
+
+    if (stoneCount[0] != expectedStoneCount0 ||
+        stoneCount[1] != expectedStoneCount1) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_ARGUMENT, "Stone count "
+                                                           "mismatch: "
+                                                           "calculated vs "
+                                                           "provided");
+        return;
+    }
+
+    // Parse kle field (ss[32] is "True" or "False")
+    kle = (ss[32] == "True" || ss[32] == "true");
+
+    // Parse lastIrrev if available (ss[34])
+    if (ss.size() > 34) {
+        if (!safe_stoi(ss[34], lastIrrev)) {
+            lastIrrev = 0; // Default value if parse fails
+        }
+    }
+
+    std::string validation_error = set_over_and_check_valid_setup();
+    if (!validation_error.empty()) {
+        SET_ERROR_CODE(PerfectErrors::PE_INVALID_GAME_STATE, validation_error);
+        return;
+    }
+
+    check_invariants();
+}
+
+// Constructor now calls the fromString method
+GameState::GameState(const std::string &s)
+{
+    fromString(s);
 }

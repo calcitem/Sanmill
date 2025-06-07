@@ -15,6 +15,7 @@
 #include "option.h"
 #include "perfect_adaptor.h"
 #include "perfect_api.h"
+#include "perfect_errors.h"
 #include "perfect_wrappers.h"
 #include "position.h"
 
@@ -222,6 +223,10 @@ std::vector<Move> convert_bitboard_move(int whiteBitboard, int blackBitboard,
 
 Value perfect_search(const Position *pos, Move &move)
 {
+    using namespace PerfectErrors;
+
+    clearError(); // Clear any previous errors
+
     Value value = VALUE_UNKNOWN;
 
     // TODO: Now always return only the first move
@@ -289,26 +294,26 @@ Value perfect_search(const Position *pos, Move &move)
     //   and that stone is being slided or jumped to a different place.)
     // If this increases the number of stones the player to move has,
     // then that player will have one less stone to place after the move.
-    // TODO: Do not use -fexceptions
+    // Using error codes instead of exceptions for better performance
+    int moveBitboard = MalomSolutionAccess::get_best_move(
+        whiteBitboard, blackBitboard, whiteStonesToPlace, blackStonesToPlace,
+        playerToMove, onlyStoneTaking, value, move);
 
-    try {
-        int moveBitboard = get_best_move(whiteBitboard, blackBitboard,
-                                         whiteStonesToPlace, blackStonesToPlace,
-                                         playerToMove, onlyStoneTaking, value,
-                                         move);
-        moves = convert_bitboard_move(whiteBitboard, blackBitboard,
-                                      playerToMove, moveBitboard);
-
-        if (moves.size() == 2) {
-            malomRemoveMove = moves.at(1);
-            malomRemoveValue = value;
-        }
-    } catch (const std::exception &) {
+    // Check for error condition (0 indicates error)
+    if (moveBitboard == 0) {
         move = MOVE_NONE;
         return VALUE_UNKNOWN;
     }
 
-    move = Move(moves.at(0));
+    moves = convert_bitboard_move(whiteBitboard, blackBitboard, playerToMove,
+                                  moveBitboard);
+
+    if (moves.size() == 2) {
+        malomRemoveMove = (moves.size() > 1) ? moves[1] : Move();
+        malomRemoveValue = value;
+    }
+
+    move = moves.empty() ? MOVE_NONE : Move(moves[0]);
 
     return value;
 }

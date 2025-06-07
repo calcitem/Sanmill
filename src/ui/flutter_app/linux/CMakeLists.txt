@@ -149,6 +149,10 @@ add_executable(${BINARY_NAME}
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
 
+# Enable Link-Time Optimization (LTO) for Release builds.
+set_target_properties(${BINARY_NAME} PROPERTIES
+  INTERPROCEDURAL_OPTIMIZATION $<$<CONFIG:Release>:TRUE>)
+
 # Add dependency libraries. Add any application-specific dependencies here.
 target_link_libraries(${BINARY_NAME} PRIVATE flutter)
 target_link_libraries(${BINARY_NAME} PRIVATE PkgConfig::GTK)
