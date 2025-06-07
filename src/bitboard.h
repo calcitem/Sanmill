@@ -162,4 +162,40 @@ inline int popcount(Bitboard b) noexcept
 #endif
 }
 
+/// lsb() and msb() return the least/most significant bit in a non-zero bitboard
+
+inline Square lsb(Bitboard b) noexcept
+{
+    assert(b);
+#if defined(_MSC_VER)
+    unsigned long idx;
+    _BitScanForward(&idx, b);
+    return static_cast<Square>(idx);
+#else
+    return static_cast<Square>(__builtin_ctz(b));
+#endif
+}
+
+inline Square msb(Bitboard b) noexcept
+{
+    assert(b);
+#if defined(_MSC_VER)
+    unsigned long idx;
+    _BitScanReverse(&idx, b);
+    return static_cast<Square>(idx);
+#else
+    return static_cast<Square>(31 ^ __builtin_clz(b));
+#endif
+}
+
+/// pop_lsb() finds and clears the least significant bit in a non-zero bitboard
+
+inline Square pop_lsb(Bitboard &b) noexcept
+{
+    assert(b);
+    const Square s = lsb(b);
+    b &= b - 1;
+    return s;
+}
+
 #endif // #ifndef BITBOARD_H_INCLUDED

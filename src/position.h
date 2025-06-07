@@ -81,6 +81,7 @@ public:
     Piece piece_on(Square s) const;
     Color color_on(Square s) const;
     bool empty(Square s) const;
+    Bitboard pieces(Color c) const;
     template <PieceType Pt>
     int count(Color c) const;
 
@@ -406,6 +407,11 @@ inline int Position::piece_to_remove_count(Color c) const
 inline int Position::get_mobility_diff() const
 {
     return mobilityDiff;
+}
+
+inline Bitboard Position::pieces(Color c) const
+{
+    return byColorBB[c];
 }
 
 inline int Position::mills_pieces_count_difference() const
