@@ -1,4 +1,32 @@
+# Minimum-supported version of CMake.
 cmake_minimum_required(VERSION 3.15)
+
+# Project properties.
+project(flutter_wrapper)
+
+# This is not a normal project, and there will be nothing to build. It exists
+# only to pull in the flutter library and plugin dependencies.
+#
+# It is also used to pass configuration information to the plugins, via
+# the FLUTTER_PLUGIN_LIST variable.
+#
+# It is not necessary to add any build rules to this file.
+
+# The directory containing this file.
+set(FLUTTER_WRAPPER_DIR "${CMAKE_CURRENT_LIST_DIR}")
+set(PROJECT_DIR "${FLUTTER_WRAPPER_DIR}/../..")
+
+# Path to the Flutter-provided CMake script that finds and defines the
+# flutter library.
+include(${FLUTTER_WRAPPER_DIR}/ephemeral/generated_config.cmake)
+
+# The list of plugins to build. This is passed to the top-level build
+# so that it can learn about the plugins.
+set(FLUTTER_PLUGIN_LIST ${FLUTTER_PLUGIN_LIST} PARENT_SCOPE)
+
+# The directory containing the C++ wrapper to the Flutter library.
+# This can be used as an include path by plugins.
+set(FLUTTER_LIBRARY_DIR ${flutter_ephemeral_dir} PARENT_SCOPE)
 
 set(EPHEMERAL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ephemeral")
 

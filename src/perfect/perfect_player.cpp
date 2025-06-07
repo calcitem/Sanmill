@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: GPL-3.0-or-later
+﻿// SPDX-License-Identifier: GPL-3.0-or-later
 // Copyright (C) 2007-2016 Gabor E. Gevay, Gabor Danner
 // Copyright (C) 2019-2025 The Sanmill developers (see AUTHORS file)
 
@@ -7,6 +7,7 @@
 #include "perfect_adaptor.h"
 #include "perfect_api.h"
 #include "perfect_player.h"
+#include "perfect_errors.h"
 #include "perfect_game_state.h"
 #include "perfect_move.h"
 #include "perfect_rules.h"
@@ -14,18 +15,15 @@
 #include "perfect_wrappers.h"
 
 #include <bitset>
-#include <cassert>   // for assert
-#include <cstdint>   // for int64_t
-#include <cstdlib>   // for std::exit
-#include <exception> // for std::exception
+#include <cassert> // for assert
+#include <cstdint> // for int64_t
+#include <cstdlib> // for std::exit
 #include <fstream>
 #include <iostream>
 #include <iostream> // for std::cerr
 #include <map>
 #include <mutex>
 #include <random>
-#include <stdexcept>
-#include <stdexcept> // for std::out_of_range
 #include <string>
 #include <vector>
 
@@ -38,51 +36,42 @@ bool Sectors::created = false;
 
 std::map<Wrappers::WID, Wrappers::WSector> Sectors::get_sectors()
 {
-    try {
-        if (!created) {
-            Wrappers::Init::init_symmetry_lookup_tables();
-            Wrappers::Init::init_sec_vals();
-            // sectors.clear();
+    if (!created) {
+        Wrappers::Init::init_symmetry_lookup_tables();
+        Wrappers::Init::init_sec_vals();
+        // sectors.clear();
 
-            for (int w = 0; w <= Rules::maxKSZ; ++w) {
-                for (int b = 0; b <= Rules::maxKSZ; ++b) {
-                    for (int whiteFree = 0; whiteFree <= Rules::maxKSZ;
-                         ++whiteFree) {
-                        for (int blackFree = 0; blackFree <= Rules::maxKSZ;
-                             ++blackFree) {
-                            std::string fileName =
-                                Rules::variantName + "_" + std::to_string(w) +
-                                "_" + std::to_string(b) + "_" +
-                                std::to_string(whiteFree) + "_" +
-                                std::to_string(blackFree) + ".sec" +
-                                Wrappers::Constants::fname_suffix;
-                            // std::cout << "Looking for database file " <<
-                            // fileName << std::endl;
-                            Wrappers::WID _id(w, b, whiteFree, blackFree);
+        for (int w = 0; w <= Rules::maxKSZ; ++w) {
+            for (int b = 0; b <= Rules::maxKSZ; ++b) {
+                for (int whiteFree = 0; whiteFree <= Rules::maxKSZ;
+                     ++whiteFree) {
+                    for (int blackFree = 0; blackFree <= Rules::maxKSZ;
+                         ++blackFree) {
+                        std::string fileName = Rules::variantName + "_" +
+                                               std::to_string(w) + "_" +
+                                               std::to_string(b) + "_" +
+                                               std::to_string(whiteFree) + "_" +
+                                               std::to_string(blackFree) +
+                                               ".sec" +
+                                               Wrappers::Constants::fname_suffix;
+                        // std::cout << "Looking for database file " <<
+                        // fileName << std::endl;
+                        Wrappers::WID _id(w, b, whiteFree, blackFree);
 #ifdef _WIN32
-                            std::ifstream file(secValPath + "\\" + fileName);
+                        std::ifstream file(secValPath + "\\" + fileName);
 #else
-                            std::ifstream file(secValPath + "/" + fileName);
+                        std::ifstream file(secValPath + "/" + fileName);
 #endif
-                            if (file.good()) {
-                                sectors.emplace(_id, Wrappers::WSector(_id));
-                            }
+                        if (file.good()) {
+                            sectors.emplace(_id, Wrappers::WSector(_id));
                         }
                     }
                 }
             }
-            created = true;
         }
-        return sectors;
-    } catch (std::exception &ex) {
-        if (dynamic_cast<std::out_of_range *>(&ex)) {
-            throw;
-        }
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
+        created = true;
     }
+    return sectors;
 }
 
 bool Sectors::has_database()
@@ -117,45 +106,29 @@ void PerfectPlayer::enter_game(Game *_g)
 
 Wrappers::WSector *PerfectPlayer::get_sector(GameState s)
 {
-    try {
-        if (s.kle)
-            return nullptr;
+    if (s.kle)
+        return nullptr;
 
-        Wrappers::WID id_val(s.stoneCount[0], s.stoneCount[1],
-                             Rules::maxKSZ - s.setStoneCount[0],
-                             Rules::maxKSZ - s.setStoneCount[1]);
+    Wrappers::WID id_val(s.stoneCount[0], s.stoneCount[1],
+                         Rules::maxKSZ - s.setStoneCount[0],
+                         Rules::maxKSZ - s.setStoneCount[1]);
 
-        if (s.sideToMove == 1) {
-            id_val.negate_id();
-        }
-
-        auto iter = secs.find(id_val);
-        if (iter == secs.end()) {
-            throw std::runtime_error("Key not found in secs");
-        }
-        return &(iter->second);
-
-    } catch (std::exception &ex) {
-        if (typeid(ex) == typeid(std::out_of_range))
-            throw;
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
+    if (s.sideToMove == 1) {
+        id_val.negate_id();
     }
-    return nullptr;
+
+    auto iter = secs.find(id_val);
+    if (iter == secs.end()) {
+        SET_ERROR_CODE(PerfectErrors::PE_DATABASE_NOT_FOUND, "Key not found in "
+                                                             "secs");
+        return nullptr;
+    }
+    return &(iter->second);
 }
 
 std::string PerfectPlayer::to_human_readable_eval(Wrappers::gui_eval_elem2 e)
 {
-    try {
-        return e.to_string();
-    } catch (std::exception &ex) {
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
-    }
+    return e.to_string();
 }
 
 int PerfectPlayer::get_future_piece_count(const GameState &s)
@@ -307,13 +280,26 @@ GameState PerfectPlayer::make_move_in_state(const GameState &s, AdvancedMove &m)
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
             s2.make_move(new SetPiece(m.to));
+            if (PerfectErrors::hasError()) {
+                return s2;
+            }
         } else {
             s2.make_move(new MovePiece(m.from, m.to));
+            if (PerfectErrors::hasError()) {
+                return s2;
+            }
         }
-        if (m.withTaking)
+        if (m.withTaking) {
             s2.make_move(new RemovePiece(m.takeHon));
+            if (PerfectErrors::hasError()) {
+                return s2;
+            }
+        }
     } else {
         s2.make_move(new RemovePiece(m.takeHon));
+        if (PerfectErrors::hasError()) {
+            return s2;
+        }
     }
     return s2;
 }
@@ -322,14 +308,15 @@ GameState PerfectPlayer::make_move_in_state(const GameState &s, AdvancedMove &m)
 Wrappers::gui_eval_elem2 PerfectPlayer::move_value(const GameState &s,
                                                    AdvancedMove &m)
 {
-    try {
-        return evaluate(make_move_in_state(s, m)).undo_negate(get_sector(s));
-    } catch (const std::exception &ex) {
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
+    GameState s2 = make_move_in_state(s, m);
+    if (PerfectErrors::hasError()) {
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
     }
+    auto val = evaluate(s2);
+    if (PerfectErrors::hasError()) {
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
+    }
+    return val.undo_negate(get_sector(s));
 }
 
 template <typename T, typename K>
@@ -380,7 +367,7 @@ std::vector<T> PerfectPlayer::get_all_max_by(std::function<K(T)> f,
         }
     }
 
-    char e = f(r.at(0)).to_string().at(0);
+    char e = (r.empty() ? 'L' : f(r[0]).to_string()[0]);
 
     if (e == 'L') {
         value = -VALUE_MATE;
@@ -455,11 +442,26 @@ void PerfectPlayer::send_move_to_gui(AdvancedMove m)
     if (!m.onlyTaking) {
         if (m.moveType == CMoveType::SetMove) {
             g->make_move(new SetPiece(m.to));
+            if (PerfectErrors::hasError()) {
+                std::cerr << "Error in send_move_to_gui (SetPiece): "
+                          << PerfectErrors::getLastErrorMessage() << std::endl;
+                return;
+            }
         } else {
             g->make_move(new MovePiece(m.from, m.to));
+            if (PerfectErrors::hasError()) {
+                std::cerr << "Error in send_move_to_gui (MovePiece): "
+                          << PerfectErrors::getLastErrorMessage() << std::endl;
+                return;
+            }
         }
     } else {
         g->make_move(new RemovePiece(m.takeHon));
+        if (PerfectErrors::hasError()) {
+            std::cerr << "Error in send_move_to_gui (RemovePiece): "
+                      << PerfectErrors::getLastErrorMessage() << std::endl;
+            return;
+        }
     }
 }
 
@@ -498,47 +500,52 @@ std::mutex evalLock;
 
 Wrappers::gui_eval_elem2 PerfectPlayer::evaluate(GameState s)
 {
-    try {
-        std::lock_guard<std::mutex> lock(evalLock);
-        // assert(!s.kle); // Assuming s has a boolean member kle
+    std::lock_guard<std::mutex> lock(evalLock);
 
-        Wrappers::WID Id(s.stoneCount[0], s.stoneCount[1],
-                         Rules::maxKSZ - s.setStoneCount[0],
-                         Rules::maxKSZ - s.setStoneCount[1]);
-
-        if (get_future_piece_count(s) < 3)
-            return Wrappers::gui_eval_elem2::virt_loss_val();
-
-        int64_t a = 0;
-        for (int i = 0; i < 24; ++i) {
-            if (s.board[i] == 0) {
-                a |= (1ll << i);
-            } else if (s.board[i] == 1) {
-                a |= (1ll << (i + 24));
-            }
-        }
-
-        if (s.sideToMove == 1) {
-            a = negate_board(a);
-            Id.negate_id();
-        }
-
-        auto it = secs.find(Id);
-        if (it == secs.end()) {
-            throw std::out_of_range("Database file for the key not found");
-        }
-
-        Wrappers::WSector &sec = it->second;
-
-        return sec.hash(a).second;
-    } catch (const std::exception &ex) {
-        if (typeid(ex) == typeid(std::out_of_range))
-            throw;
-        std::cerr << "An error happened in " << __func__ << "\n"
-                  << ex.what() << std::endl;
-        throw std::runtime_error(std::string("An error happened in ") +
-                                 __func__ + ": " + ex.what());
+    if (s.kle) {
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
     }
+
+    if (get_future_piece_count(s) < 3) {
+        return Wrappers::gui_eval_elem2::virt_loss_val();
+    }
+
+    Wrappers::WSector *sec = get_sector(s);
+    if (PerfectErrors::hasError()) {
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
+    }
+    if (sec == nullptr) {
+        SET_ERROR_CODE(PerfectErrors::PE_RUNTIME_ERROR, "get_sector returned "
+                                                        "null without setting "
+                                                        "an error");
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
+    }
+
+    // Manually calculate the board hash value (re-instating logic from a
+    // previous version)
+    int64_t board_hash = 0;
+    for (int i = 0; i < 24; ++i) {
+        if (s.board[i] == 0) { // White stone
+            board_hash |= (1LL << i);
+        } else if (s.board[i] == 1) { // Black stone
+            board_hash |= (1LL << (i + 24));
+        }
+    }
+
+    // Negate board if it's black's turn
+    if (s.sideToMove == 1) {
+        board_hash = negate_board(board_hash);
+    }
+
+    // Use the WSector's hash method to get the correct index
+    int hash_index = sec->hash(board_hash).first;
+    if (PerfectErrors::hasError()) {
+        return Wrappers::gui_eval_elem2::min_value(nullptr);
+    }
+
+    // Get the raw evaluation and then convert it to the required wrapper type
+    eval_elem2 raw_eval = sec->s->get_eval(hash_index);
+    return Wrappers::gui_eval_elem2(raw_eval, sec->s);
 }
 
 int64_t PerfectPlayer::negate_board(int64_t a)

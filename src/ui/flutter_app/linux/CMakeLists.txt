@@ -128,6 +128,7 @@ add_executable(${BINARY_NAME}
   "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_common.cpp"
   "../../../perfect/perfect_debug.cpp"
+  "../../../perfect/perfect_errors.cpp"
   "../../../perfect/perfect_eval_elem.cpp"
   "../../../perfect/perfect_game.cpp"
   "../../../perfect/perfect_game_state.cpp"
@@ -148,6 +149,10 @@ add_executable(${BINARY_NAME}
 # Apply the standard set of build settings. This can be removed for applications
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
+
+# Enable Link-Time Optimization (LTO) for Release builds.
+set_target_properties(${BINARY_NAME} PROPERTIES
+  INTERPROCEDURAL_OPTIMIZATION $<$<CONFIG:Release>:TRUE>)
 
 # Add dependency libraries. Add any application-specific dependencies here.
 target_link_libraries(${BINARY_NAME} PRIVATE flutter)

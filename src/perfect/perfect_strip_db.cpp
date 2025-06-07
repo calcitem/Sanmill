@@ -22,6 +22,7 @@
 #include "perfect_wrappers.h" // Wrappers::WID => sectorMap
 #include "perfect_adaptor.h"  // perfect_init, ...
 #include "perfect_api.h"      // MalomSolutionAccess
+#include "perfect_errors.h"   // PerfectErrors error handling
 
 #ifdef WRAPPER
 // WRAPPER mode => sector->f pointer
@@ -206,13 +207,16 @@ static void stripSectorDD(Sector *sector)
 /// Main function to strip the perfect database
 void stripPerfectDatabase()
 {
+    using namespace PerfectErrors;
+
+    clearError(); // Clear any previous errors
+
     // 1) Ensure perfect_init(), field2Offset, etc., are set via
     // MalomSolutionAccess::initialize_if_needed()
     //    This prepares ruleVariant, pieceCount, field2Offset, etc.
-    try {
-        MalomSolutionAccess::initialize_if_needed();
-    } catch (const std::exception &ex) {
-        std::cerr << "[stripDB] init failed: " << ex.what() << std::endl;
+    if (!MalomSolutionAccess::initialize_if_needed()) {
+        std::cerr << "[stripDB] init failed: "
+                  << PerfectErrors::getLastErrorMessage() << std::endl;
         return;
     }
 

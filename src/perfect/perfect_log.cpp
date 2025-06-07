@@ -8,6 +8,7 @@
 
 #include "perfect_log.h"
 #include "perfect_common.h"
+#include "perfect_errors.h"
 
 #include <iostream>
 
@@ -32,11 +33,15 @@ void Log::setup_logfile(std::string filename, std::string extension)
 #if defined(_WIN32) || defined(_WIN64)
         system("pause");
 #endif
-        throw std::runtime_error(errMsg);
+        SET_ERROR_MESSAGE(PerfectErrors::PE_FILE_IO_ERROR, errMsg);
+        return;
     }
     if (logfile == nullptr) {
-        throw std::runtime_error("Failed to set buffer for the log file "
-                                 "because it is null.");
+        SET_ERROR_MESSAGE(PerfectErrors::PE_FILE_IO_ERROR, "Failed to set "
+                                                           "buffer for the log "
+                                                           "file because it is "
+                                                           "null.");
+        return;
     }
     setvbuf(logfile, 0, _IONBF, 0);
 }

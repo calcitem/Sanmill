@@ -7,6 +7,8 @@
 #include "perfect_player.h"
 #include "perfect_game.h"
 #include "perfect_game_state.h"
+#include "perfect_errors.h"
+#include <iostream>
 
 class Player;
 class GameState;
@@ -57,16 +59,25 @@ void Game::set_player(int i, Player *p)
 
 void Game::make_move(CMove *M)
 { // called by player objects when they want to move
-    try {
-        get_player(1 - get_current_game_state().sideToMove)->followMove(M);
+    get_player(1 - get_current_game_state().sideToMove)->followMove(M);
 
-        history.insert(std::next(current), GameState(get_current_game_state()));
-        current++;
+    if (PerfectErrors::hasError()) {
+        std::cerr << "Exception in make_move (followMove): "
+                  << PerfectErrors::getLastErrorMessage() << std::endl;
+        return;
+    }
 
-        get_current_game_state().make_move(M);
-    } catch (std::exception &ex) {
-        // If TypeOf ex Is KeyNotFoundException Then Throw
-        std::cerr << "Exception in make_move\n" << ex.what() << std::endl;
+    history.insert(std::next(current), GameState(get_current_game_state()));
+    current++;
+
+    get_current_game_state().make_move(M);
+
+    if (PerfectErrors::hasError()) {
+        std::cerr << "Exception in make_move (make_move): "
+                  << PerfectErrors::getLastErrorMessage() << std::endl;
+        // Revert the state change on error
+        current--;
+        history.erase(std::next(current));
     }
 }
 
@@ -91,5 +102,5 @@ bool Game::is_player_type_change_allowed()
 
 void Game::copy_move_list()
 {
-    throw std::runtime_error("NotImplementedException");
+    SET_ERROR_CODE(PerfectErrors::PE_RUNTIME_ERROR, "NotImplementedException");
 }

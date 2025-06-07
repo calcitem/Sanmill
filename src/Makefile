@@ -330,7 +330,7 @@ endif
 ifeq ($(COMP),gcc)
 	comp=gcc
 	CXX=g++
-	CXXFLAGS += -pedantic -Wextra -Wshadow -fexceptions
+	CXXFLAGS += -pedantic -Wextra -Wshadow
 	# CXXFLAGS += -Wno-class-memaccess
 
 	ifeq ($(arch),$(filter $(arch),armv7 armv8))
@@ -373,7 +373,7 @@ ifeq ($(COMP),mingw)
 		CXX=g++
 	endif
 
-	CXXFLAGS += -Wextra -Wshadow -fexceptions
+	CXXFLAGS += -Wextra -Wshadow
 	LDFLAGS += -static
 endif
 
