@@ -63,33 +63,32 @@ class _DatabaseMigration {
 
     bool migrated = false;
 
-    if (!Platform.isMacOS) {
-      assert(_migrations.length == _newVersion);
+    // Remove the macOS exclusion to allow proper database migration on macOS
+    assert(_migrations.length == _newVersion);
 
-      _databaseBox = await Hive.openBox(_databaseBoxName);
+    _databaseBox = await Hive.openBox(_databaseBoxName);
 
-      _currentVersion = _databaseBox.get(_versionKey) as int?;
+    _currentVersion = _databaseBox.get(_versionKey) as int?;
 
-      if (_currentVersion == null) {
-        if (await _DatabaseV1.usesV1) {
-          _currentVersion = 0;
-        } else if (DB().generalSettings.usesHiveDB) {
-          _currentVersion = 1;
-        }
-        logger.t("$_logTag: Current version is $_currentVersion");
-
-        if (_currentVersion != null) {
-          for (int i = _currentVersion!; i < _newVersion; i++) {
-            await _migrations[i].call();
-          }
-
-          migrated = true;
-        }
+    if (_currentVersion == null) {
+      if (await _DatabaseV1.usesV1) {
+        _currentVersion = 0;
+      } else if (DB().generalSettings.usesHiveDB) {
+        _currentVersion = 1;
       }
+      logger.t("$_logTag: Current version is $_currentVersion");
 
-      await _databaseBox.put(_versionKey, _newVersion);
-      _databaseBox.close();
+      if (_currentVersion != null) {
+        for (int i = _currentVersion!; i < _newVersion; i++) {
+          await _migrations[i].call();
+        }
+
+        migrated = true;
+      }
     }
+
+    await _databaseBox.put(_versionKey, _newVersion);
+    _databaseBox.close();
 
     await _migrateFromDeprecation();
 
