@@ -52,6 +52,8 @@ public:
     // to paste from clipboard
     GameState(const std::string &s);
 
+    void fromString(const std::string &s);
+
     // for clipboard
     std::string to_string();
 };

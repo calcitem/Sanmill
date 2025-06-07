@@ -8,6 +8,7 @@
 #include "perfect_common.h"
 #include "perfect_hash.h"
 #include "perfect_symmetries.h"
+#include "perfect_errors.h"
 
 #include <chrono>
 #include <cstdio>
@@ -55,23 +56,25 @@ Sector::Sector(::Id the_id)
 }
 
 template <class T>
-size_t fread1(T &x, FILE *file)
+bool fread1(T &x, FILE *file)
 {
     size_t ret = fread(&x, sizeof(x), 1, file);
     if (ret != 1) {
-        throw std::runtime_error("fread1 failed");
+        SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "fread1 failed");
+        return false;
     }
-    return ret;
+    return true;
 }
 
 template <class T>
-size_t fwrite1(T &x, FILE *file)
+bool fwrite1(T &x, FILE *file)
 {
     size_t ret = fwrite(&x, sizeof(x), 1, file);
     if (ret != 1) {
-        throw std::runtime_error("fwrite1 failed");
+        SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "fwrite1 failed");
+        return false;
     }
-    return ret;
+    return true;
 }
 
 void Sector::read_header(FILE *file)
@@ -79,10 +82,14 @@ void Sector::read_header(FILE *file)
 #ifdef DD
     int _version, _eval_struct_size, _field2_offset;
     char _stone_diff_flag;
-    fread1(_version, file);
-    fread1(_eval_struct_size, file);
-    fread1(_field2_offset, file);
-    fread1(_stone_diff_flag, file);
+    if (!fread1(_version, file))
+        return;
+    if (!fread1(_eval_struct_size, file))
+        return;
+    if (!fread1(_field2_offset, file))
+        return;
+    if (!fread1(_stone_diff_flag, file))
+        return;
     assert(_version == version);
     assert(_eval_struct_size == eval_struct_size);
     assert(_field2_offset == field2Offset);
@@ -93,10 +100,14 @@ void Sector::read_header(FILE *file)
 void Sector::write_header(FILE *file)
 {
 #ifdef DD
-    fwrite1(version, file);
-    fwrite1(eval_struct_size, file);
-    fwrite1(field2Offset, file);
-    fwrite1(stone_diff_flag, file);
+    if (!fwrite1(version, file))
+        return;
+    if (!fwrite1(eval_struct_size, file))
+        return;
+    if (!fwrite1(field2Offset, file))
+        return;
+    if (!fwrite1(stone_diff_flag, file))
+        return;
     long ffu_size = header_size - ftell(file);
     char *dummy = new char[ffu_size];
     memset(dummy, 0, ffu_size);
@@ -113,14 +124,18 @@ void Sector::read_em_set(FILE *file)
     int em_set_size = 0;
     size_t ret = fread(&em_set_size, 4, 1, file);
     if (ret != 1) {
-        throw std::runtime_error("Failed to read em_set_size");
+        SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "Failed to read "
+                                                        "em_set_size");
+        return;
     }
 
     for (int i = 0; i < em_set_size; i++) {
         int e[2];
         ret = fread(e, 4, 2, file);
         if (ret != 2) {
-            throw std::runtime_error("Failed to read array 'e'");
+            SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "Failed to read "
+                                                            "array 'e'");
+            return;
         }
         em_set[e[0]] = e[1];
 
@@ -221,7 +236,9 @@ eval_elem_sym2 Sector::get_eval_inner(int i)
     unsigned char read;
     ret = fread(&read, 1, 1, f);
     if (ret != 1) {
-        throw std::runtime_error("Failed to read 'read' variable");
+        SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "Failed to read 'read' "
+                                                        "variable");
+        return {};
     }
     int resi = read;
 #endif
@@ -271,7 +288,10 @@ std::pair<sec_val, field2_t> Sector::extract_value(int i)
     unsigned char read[eval_struct_size];
     size_t ret = fread(&read, 1, eval_struct_size, f);
     if (ret != eval_struct_size) {
-        throw std::runtime_error("Failed to read the expected number of bytes");
+        SET_ERROR_CODE(PerfectErrors::PE_FILE_IO_ERROR, "Failed to read the "
+                                                        "expected number of "
+                                                        "bytes");
+        return {};
     }
     for (int j = 0; j < eval_struct_size; j++)
         a |= (int)read[j] << 8 * j;
