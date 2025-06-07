@@ -19,12 +19,12 @@ detect_qt_installation() {
     
     # Common Qt installation paths to check
     local qt_paths=(
-        "/opt/Qt/6.7.1/gcc_64"
+        "/opt/Qt/6.9.0/gcc_64"
         "/opt/Qt/6.6.0/gcc_64" 
         "/opt/Qt/6.5.0/gcc_64"
         "/usr/lib/qt6"
         "/usr/local/qt6"
-        "$HOME/Qt/6.7.1/gcc_64"
+        "$HOME/Qt/6.9.0/gcc_64"
         "$HOME/Qt/6.6.0/gcc_64"
         "/opt/homebrew/opt/qt6"  # macOS Homebrew
         "/usr/local/opt/qt6"     # macOS Homebrew (Intel)

@@ -2,7 +2,7 @@
 setlocal enabledelayedexpansion
 
 :: Define which version of Qt to use, possible values are "Qt5" or "Qt6"
-set "QtVersion=Qt5"
+set "QtVersion=Qt6"
 
 :: Clean repository
 ::git clean -fdx
@@ -10,10 +10,10 @@ set "QtVersion=Qt5"
 :: Set Qt directories and system architecture depending on the chosen Qt version
 if "%QtVersion%"=="Qt6" (
     if exist "%ProgramFiles% (Arm)" (
-        set "Qt_BASE_DIR=C:\Qt\6.7.1\msvc2019_arm64"
+        set "Qt_BASE_DIR=C:\Qt\6.9.0\msvc2022_arm64"
         set "arch=ARM64"
     ) else (
-        set "Qt_BASE_DIR=C:\Qt\6.7.1\msvc2019_64"
+        set "Qt_BASE_DIR=C:\Qt\6.9.0\msvc2022_64"
         set "arch=X64"
     )
 ) else if "%QtVersion%"=="Qt5" (

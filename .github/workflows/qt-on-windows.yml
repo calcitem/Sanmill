@@ -27,33 +27,33 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: '6.7.1'
+          version: '6.9.0'
           host: 'windows'
           target: 'desktop'
-          arch: 'win64_msvc2019_64'
+          arch: 'win64_msvc2022_64'
           modules: 'qtmultimedia'
           install-deps: 'true'
           setup-python: 'true'
           tools: 'tools_cmake'
           set-env: 'false'
           tools-only: 'false'
-          aqtversion: '==3.1.7'
-          py7zrversion: '==0.16.1'
+          aqtversion: '==3.3.*'
+          py7zrversion: '==1.0.*'
           extra: '--external 7z'
 
       - name: Build translations
         run: |
           cd src/ui/qt
-          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
-          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
-          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
-          D:\a\Sanmill\Qt\6.7.1\msvc2019_64\bin\lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
+          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_en.ts -qm translations\mill-pro_en.qm
+          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_de.ts -qm translations\mill-pro_de.qm
+          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_hu.ts -qm translations\mill-pro_hu.qm
+          D:\a\Sanmill\Qt\6.8.3\msvc2022_64\bin\lrelease.exe translations\mill-pro_zh_CN.ts -qm translations\mill-pro_zh_CN.qm
 
       - name: Build Qt with CMake
         run: |
           cd src/ui/qt
-          set "Qt6_DIR=D:\a\Sanmill\Qt\6.7.1\msvc2019_64\lib\cmake\Qt6"
-          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\6.7.1\\msvc2019_64"
+          set "Qt6_DIR=D:\a\Sanmill\Qt\6.8.3\msvc2022_64\lib\cmake\Qt6"
+          cmake . -DCMAKE_PREFIX_PATH="D:\\a\\Sanmill\\Qt\\6.8.3\\msvc2022_64"
           cmake --build . --target mill-pro --config Release
 
       - name: Archive Qt
