@@ -40,7 +40,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     ndkVersion "28.1.13356709"
 
-    compileSdkVersion 35
+    compileSdkVersion 36
     namespace "com.calcitem.sanmill"
 
     lintOptions {
@@ -50,7 +50,7 @@ android {
     defaultConfig {
         applicationId "com.calcitem.sanmill"
         minSdkVersion 19
-        targetSdkVersion 35
+        targetSdkVersion 36
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk{
