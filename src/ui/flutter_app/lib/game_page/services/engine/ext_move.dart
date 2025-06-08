@@ -85,6 +85,89 @@ class ExtMove extends PgnNodeData {
   /// forms one complete round.
   int? roundIndex;
 
+  /// Move quality evaluation
+  MoveQuality? quality;
+
+  /// Convert MoveQuality to numeric NAG (Numeric Annotation Glyph)
+  /// Good moves: ! (1), !! (3)
+  /// Bad moves: ? (2), ?? (4)
+  static int? moveQualityToNag(MoveQuality? quality) {
+    if (quality == null) {
+      return null;
+    }
+
+    switch (quality) {
+      case MoveQuality.minorGoodMove:
+        return 1; // !
+      case MoveQuality.majorGoodMove:
+        return 3; // !!
+      case MoveQuality.minorBadMove:
+        return 2; // ?
+      case MoveQuality.majorBadMove:
+        return 4; // ??
+      case MoveQuality.normal:
+        return null; // No NAG for normal moves
+    }
+  }
+
+  /// Convert numeric NAG to MoveQuality
+  /// NAG 1 = !, 2 = ?, 3 = !!, 4 = ??
+  static MoveQuality? nagToMoveQuality(int nag) {
+    switch (nag) {
+      case 1:
+        return MoveQuality.minorGoodMove; // !
+      case 2:
+        return MoveQuality.minorBadMove; // ?
+      case 3:
+        return MoveQuality.majorGoodMove; // !!
+      case 4:
+        return MoveQuality.majorBadMove; // ??
+      default:
+        return null; // Unknown NAG, no quality assigned
+    }
+  }
+
+  /// Get all NAGs for this move, including quality-derived NAG
+  List<int> getAllNags() {
+    final List<int> allNags = <int>[];
+
+    // Add existing NAGs
+    if (nags != null) {
+      allNags.addAll(nags!);
+    }
+
+    // Add quality-derived NAG if not already present and no conflicting quality NAGs exist
+    final int? qualityNag = moveQualityToNag(quality);
+    if (qualityNag != null && !allNags.contains(qualityNag)) {
+      // Check if there are any existing quality-related NAGs (1, 2, 3, 4)
+      final bool hasQualityNags =
+          allNags.any((int nag) => nag >= 1 && nag <= 4);
+      if (!hasQualityNags) {
+        allNags.add(qualityNag);
+      }
+    }
+
+    return allNags;
+  }
+
+  /// Set quality from NAGs, prioritizing explicit quality NAGs over existing quality
+  void updateQualityFromNags() {
+    if (nags == null || nags!.isEmpty) {
+      return;
+    }
+
+    // Look for quality-related NAGs (1, 2, 3, 4) and use the first one found
+    for (final int nag in nags!) {
+      if (nag >= 1 && nag <= 4) {
+        final MoveQuality? nagQuality = nagToMoveQuality(nag);
+        if (nagQuality != null) {
+          quality = nagQuality;
+          break; // Use first quality NAG found
+        }
+      }
+    }
+  }
+
   static const String _logTag = "[Move]";
 
   /// 'from' square if type==move; otherwise -1.
