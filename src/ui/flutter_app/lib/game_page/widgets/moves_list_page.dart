@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:io' show Platform;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,6 +23,7 @@ import '../../shared/services/llm_service.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/widgets/snackbars/scaffold_messenger.dart';
+import '../services/game_analyzer.dart';
 import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'cat_fishing_game.dart';
@@ -149,6 +151,21 @@ class MovesListPageState extends State<MovesListPage> {
 
   void _exportGame() {
     GameController.export(context, shouldPop: false);
+  }
+
+  /// Analyze all moves in the game using perfect database
+  Future<void> _analyzeGame() async {
+    await GameAnalyzer.analyzeGame(
+      context: context,
+      allNodes: _allNodes,
+      onAnalysisComplete: () {
+        // Check if widget is still mounted before calling setState
+        if (mounted) {
+          // Refresh the UI to show analysis results
+          setState(() {});
+        }
+      },
+    );
   }
 
   /// Copies the moveListPrompt (a special format for LLM) into the clipboard.
@@ -1045,6 +1062,54 @@ class MovesListPageState extends State<MovesListPage> {
     );
   }
 
+  /// Build notation with quality symbols for three-column layout display
+  String _buildNotationWithQualityForThreeColumn(
+      ExtMove? moveData, String baseNotation) {
+    if (moveData == null) return baseNotation;
+
+    final StringBuffer sb = StringBuffer();
+    sb.write(baseNotation);
+
+    // Add quality symbols from NAGs and MoveQuality
+    final List<int> allNags = moveData.getAllNags();
+    if (allNags.isNotEmpty) {
+      final List<String> qualitySymbols = <String>[];
+
+      for (final int nag in allNags) {
+        switch (nag) {
+          case 1:
+            qualitySymbols.add('!');
+            break;
+          case 2:
+            qualitySymbols.add('?');
+            break;
+          case 3:
+            qualitySymbols.add('!!');
+            break;
+          case 4:
+            qualitySymbols.add('??');
+            break;
+          case 5:
+            qualitySymbols.add('!?');
+            break;
+          case 6:
+            qualitySymbols.add('?!');
+            break;
+          default:
+            // For other NAGs, use standard notation
+            qualitySymbols.add('\$$nag');
+            break;
+        }
+      }
+
+      if (qualitySymbols.isNotEmpty) {
+        sb.write(qualitySymbols.join(''));
+      }
+    }
+
+    return sb.toString();
+  }
+
   /// Builds the "3-column list layout": Round, White, Black.
   Widget _buildThreeColumnListLayout() {
     // 1. Group all moves by round.
@@ -1077,16 +1142,21 @@ class MovesListPageState extends State<MovesListPage> {
 
           for (final PgnNode<ExtMove> n in nodesOfRound) {
             final PieceColor? side = n.data?.side;
-            final String notation = n.data?.notation ?? '';
+            final String baseNotation = n.data?.notation ?? '';
+
+            // Build notation with quality symbols
+            final String notationWithQuality =
+                _buildNotationWithQualityForThreeColumn(n.data, baseNotation);
+
             if (side == PieceColor.white) {
               // Remove the "X." prefix, e.g. "5. e4" -> "e4"
               final String cleaned =
-                  notation.replaceAll(RegExp(r'^\d+\.\s*'), '');
+                  notationWithQuality.replaceAll(RegExp(r'^\d+\.\s*'), '');
               whites.add(cleaned);
             } else if (side == PieceColor.black) {
               // Remove the "X..." prefix, e.g. "5... c5" -> "c5"
               final String cleaned =
-                  notation.replaceAll(RegExp(r'^\d+\.\.\.\s*'), '');
+                  notationWithQuality.replaceAll(RegExp(r'^\d+\.\.\.\s*'), '');
               blacks.add(cleaned);
             }
           }
@@ -1311,6 +1381,9 @@ class MovesListPageState extends State<MovesListPage> {
                 case 'export_game':
                   _exportGame();
                   break;
+                case 'analyze_game':
+                  await _analyzeGame();
+                  break;
                 case 'copy_llm_prompt':
                   await _showLLMPromptDialog();
                   break;
@@ -1385,6 +1458,21 @@ class MovesListPageState extends State<MovesListPage> {
                   ],
                 ),
               ),
+              // Add Analyze menu item here if perfect database is enabled
+              if (kDebugMode == true &&
+                  DB().generalSettings.usePerfectDatabase &&
+                  isRuleSupportingPerfectDatabase())
+                PopupMenuItem<String>(
+                  value: 'analyze_game',
+                  child: Row(
+                    children: <Widget>[
+                      const Icon(FluentIcons.data_trending_24_regular,
+                          color: Colors.black54),
+                      const SizedBox(width: 8),
+                      Text(S.of(context).analyze),
+                    ],
+                  ),
+                ),
               const PopupMenuDivider(),
               PopupMenuItem<String>(
                 value: 'copy_llm_prompt',
@@ -1529,12 +1617,63 @@ class MoveListItemState extends State<MoveListItem> {
     }
   }
 
+  /// Build notation with quality symbols for display
+  String _buildNotationWithQuality(ExtMove? moveData, String baseNotation) {
+    if (moveData == null) return baseNotation;
+
+    final StringBuffer sb = StringBuffer();
+    sb.write(baseNotation);
+
+    // Add quality symbols from NAGs and MoveQuality
+    final List<int> allNags = moveData.getAllNags();
+    if (allNags.isNotEmpty) {
+      final List<String> qualitySymbols = <String>[];
+
+      for (final int nag in allNags) {
+        switch (nag) {
+          case 1:
+            qualitySymbols.add('!');
+            break;
+          case 2:
+            qualitySymbols.add('?');
+            break;
+          case 3:
+            qualitySymbols.add('!!');
+            break;
+          case 4:
+            qualitySymbols.add('??');
+            break;
+          case 5:
+            qualitySymbols.add('!?');
+            break;
+          case 6:
+            qualitySymbols.add('?!');
+            break;
+          default:
+            // For other NAGs, use standard notation
+            qualitySymbols.add('\$$nag');
+            break;
+        }
+      }
+
+      if (qualitySymbols.isNotEmpty) {
+        sb.write(qualitySymbols.join(''));
+      }
+    }
+
+    return sb.toString();
+  }
+
   /// Builds the appropriate widget based on [widget.layout].
   @override
   Widget build(BuildContext context) {
     final ExtMove? moveData = widget.node.data;
-    final String notation = moveData?.notation ?? "";
+    final String baseNotation = moveData?.notation ?? "";
     final String boardLayout = moveData?.boardLayout ?? "";
+
+    // Generate full notation with quality symbols
+    final String notation = _buildNotationWithQuality(moveData, baseNotation);
+
     // Determine side: used to decide how to show "roundIndex..."
     final bool isWhite = (moveData?.side == PieceColor.white);
     final int? roundIndex = moveData?.roundIndex;

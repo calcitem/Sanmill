@@ -300,8 +300,11 @@ class ImportService {
 
       // If the move starts with "x", it means it is a capture move (e.g. "xd3"), and is directly processed as a single move
       if (token.startsWith("x")) {
-        final String move = _playOkNotationToMoveString(token);
-        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
+        final String cleanToken = _extractMoveFromToken(token);
+        final String move = _playOkNotationToMoveString(cleanToken);
+        final ExtMove extMove = ExtMove(move, side: localPos.sideToMove);
+        _parseQualitySymbolsFromToken(token, extMove);
+        newHistory.appendMove(extMove);
         final bool ok = localPos.doMove(move);
         if (!ok) {
           throw ImportFormatException(" $token → $move");
@@ -309,8 +312,11 @@ class ImportService {
       }
       // If there is no "x" in the move, proceed normally
       else if (!token.contains("x")) {
-        final String move = _playOkNotationToMoveString(token);
-        newHistory.appendMove(ExtMove(move, side: localPos.sideToMove));
+        final String cleanToken = _extractMoveFromToken(token);
+        final String move = _playOkNotationToMoveString(cleanToken);
+        final ExtMove extMove = ExtMove(move, side: localPos.sideToMove);
+        _parseQualitySymbolsFromToken(token, extMove);
+        newHistory.appendMove(extMove);
         final bool ok = localPos.doMove(move);
         if (!ok) {
           throw ImportFormatException("$token → $move");
@@ -321,15 +327,23 @@ class ImportService {
         final int idx = token.indexOf("x");
         final String preMove = token.substring(0, idx);
         final String captureMove = token.substring(idx); // contains 'x'
-        final String m1 = _playOkNotationToMoveString(preMove);
+
+        // For compound moves, only apply quality symbols to the last part
+        final String cleanPreMove = _extractMoveFromToken(preMove);
+        final String cleanCaptureMove = _extractMoveFromToken(captureMove);
+
+        final String m1 = _playOkNotationToMoveString(cleanPreMove);
         newHistory.appendMove(ExtMove(m1, side: localPos.sideToMove));
         final bool ok1 = localPos.doMove(m1);
         if (!ok1) {
           throw ImportFormatException(" $preMove → $m1");
         }
 
-        final String m2 = _playOkNotationToMoveString(captureMove);
-        newHistory.appendMove(ExtMove(m2, side: localPos.sideToMove));
+        final String m2 = _playOkNotationToMoveString(cleanCaptureMove);
+        final ExtMove extMove2 = ExtMove(m2, side: localPos.sideToMove);
+        _parseQualitySymbolsFromToken(
+            token, extMove2); // Apply quality to the whole compound move
+        newHistory.appendMove(extMove2);
         final bool ok2 = localPos.doMove(m2);
         if (!ok2) {
           throw ImportFormatException(" $captureMove → $m2");
@@ -392,6 +406,61 @@ class ImportService {
 
     // Start a depth-first traversal from the root.
     dfs(root, pos);
+  }
+
+  /// Extract the basic move notation from a token that may contain quality symbols
+  static String _extractMoveFromToken(String token) {
+    // Remove quality symbols (!?, ?!, !!, ??, !, ?) from the end of the token
+    String cleanToken = token;
+
+    // Remove trailing quality symbols
+    cleanToken = cleanToken.replaceAll(RegExp(r'[!?]{1,2}$'), '');
+
+    return cleanToken;
+  }
+
+  /// Parse quality symbols from token and apply to ExtMove
+  static void _parseQualitySymbolsFromToken(String token, ExtMove extMove) {
+    // Extract quality symbols from the end of the token
+    final RegExp qualityRegex = RegExp(r'([!?]{1,2})');
+    final Iterable<RegExpMatch> matches = qualityRegex.allMatches(token);
+
+    for (final RegExpMatch match in matches) {
+      final String symbol = match.group(0)!;
+
+      // Convert quality symbols to NAGs
+      int? nag;
+      switch (symbol) {
+        case '!':
+          nag = 1;
+          break;
+        case '?':
+          nag = 2;
+          break;
+        case '!!':
+          nag = 3;
+          break;
+        case '??':
+          nag = 4;
+          break;
+        case '!?':
+          nag = 5;
+          break;
+        case '?!':
+          nag = 6;
+          break;
+      }
+
+      if (nag != null) {
+        extMove.nags ??= <int>[];
+        if (!extMove.nags!.contains(nag)) {
+          extMove.nags!.add(nag);
+        }
+      }
+    }
+
+    // Update quality from NAGs
+    extMove.updateQualityFromNags();
   }
 
   /// For standard PGN strings containing headers and moves, parse them
@@ -506,13 +575,18 @@ class ImportService {
           final List<String>? comments =
               (i == segments.length - 1) ? node.comments : null;
 
-          newHistory.appendMove(ExtMove(
+          final ExtMove move = ExtMove(
             uciMove,
             side: localPos.sideToMove,
             nags: nags,
             startingComments: startingComments,
             comments: comments,
-          ));
+          );
+
+          // Update move quality from NAGs if present
+          move.updateQualityFromNags();
+
+          newHistory.appendMove(move);
 
           final bool ok = localPos.doMove(uciMove);
           if (!ok) {

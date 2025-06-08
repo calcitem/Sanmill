@@ -469,6 +469,42 @@ int notationToSquare(String notation) {
   return notationToSquare[key] ?? -1;
 }
 
+/// Convert square index to standard notation
+/// This is the reverse mapping of notationToSquare
+String squareToNotation(int square) {
+  const Map<int, String> squareToNotation = <int, String>{
+    // inner ring (8-15)
+    8: 'd5',
+    9: 'e5',
+    10: 'e4',
+    11: 'e3',
+    12: 'd3',
+    13: 'c3',
+    14: 'c4',
+    15: 'c5',
+    // middle ring (16-23)
+    16: 'd6',
+    17: 'f6',
+    18: 'f4',
+    19: 'f2',
+    20: 'd2',
+    21: 'b2',
+    22: 'b4',
+    23: 'b6',
+    // outer ring (24-31)
+    24: 'd7',
+    25: 'g7',
+    26: 'g4',
+    27: 'g1',
+    28: 'd1',
+    29: 'a1',
+    30: 'a4',
+    31: 'a7',
+  };
+
+  return squareToNotation[square] ?? '';
+}
+
 Map<int, int> indexToSquare =
     squareToIndex.map((int k, int v) => MapEntry<int, int>(v, k));
 

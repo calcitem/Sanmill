@@ -79,7 +79,14 @@ part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
 part 'sounds/vibration_manager.dart';
 
-// TODO: [Leptopoda] Separate the ui from the logic
+/// Move quality evaluation from analysis
+enum MoveQuality {
+  normal, // Regular move
+  minorGoodMove, // Good move (!)
+  majorGoodMove, // Excellent move (!!)
+  minorBadMove, // Dubious move (?)
+  majorBadMove, // Blunder (??)
+}
 
 bool isRuleSupportingPerfectDatabase() {
   final RuleSettings ruleSettings = DB().ruleSettings;

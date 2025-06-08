@@ -367,10 +367,13 @@ class GameRecorder {
     // 1) Write the base move notation (e.g. "d6", "d5-c5", etc.).
     sb.write(move.notation);
 
-    // 2) Append NAG symbols if present.
-    if (move.nags != null && move.nags!.isNotEmpty) {
-      sb.write(' ');
-      sb.write(_nagsToString(move.nags!));
+    // 2) Append NAG symbols from both explicit NAGs and move quality
+    final List<int> allNags = move.getAllNags();
+    if (allNags.isNotEmpty) {
+      final String nagString = _nagsToString(allNags);
+      if (nagString.isNotEmpty) {
+        sb.write(nagString);
+      }
     }
 
     // 3) Merge the node's own after-move comments with next node's startingComments.

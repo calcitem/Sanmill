@@ -471,6 +471,65 @@ class MiniBoardPainter extends CustomPainter {
       outerPoints,
       pieceRadius,
     );
+
+    // Draw analysis emoji if available
+    _drawAnalysisEmoji(canvas, size);
+  }
+
+  /// Draw analysis emoji in the center of the board
+  void _drawAnalysisEmoji(Canvas canvas, Size size) {
+    if (extMove == null || extMove!.quality == null) {
+      return;
+    }
+
+    // Determine emoji based on move quality
+    String emoji;
+    switch (extMove!.quality!) {
+      case MoveQuality.majorBadMove:
+        emoji = '??'; // Major bad move
+        break;
+      case MoveQuality.minorBadMove:
+        emoji = '?'; // Minor bad move
+        break;
+      case MoveQuality.minorGoodMove:
+        emoji = '!'; // Minor good move
+        break;
+      case MoveQuality.majorGoodMove:
+        emoji = '!!'; // Major good move
+        break;
+      case MoveQuality.normal:
+        return; // Don't show anything for normal moves
+    }
+
+    // Draw emoji in the center of the board
+    final TextPainter textPainter = TextPainter(
+      text: TextSpan(
+        text: emoji,
+        style: TextStyle(
+          fontSize: size.width * 0.15, // Adjust size relative to board
+          fontWeight: FontWeight.bold,
+          color: DB().colorSettings.pieceHighlightColor,
+          shadows: <Shadow>[
+            Shadow(
+              offset: const Offset(1, 1),
+              blurRadius: 2,
+              color: Colors.black.withValues(alpha: 0.5),
+            ),
+          ],
+        ),
+      ),
+      textDirection: TextDirection.ltr,
+    );
+
+    textPainter.layout();
+
+    // Center the emoji
+    final Offset emojiOffset = Offset(
+      (size.width - textPainter.width) / 2,
+      (size.height - textPainter.height) / 2,
+    );
+
+    textPainter.paint(canvas, emojiOffset);
   }
 
   /// Draws highlights according to the last move (if any).
