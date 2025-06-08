@@ -14,7 +14,6 @@ appbar
 Appium
 apps
 APSTUDIO
-ARGS
 Asan
 audioplayers
 backpropagate
@@ -51,7 +50,6 @@ csdn
 CSTYLE
 CTSL
 cupertino
-Cygwin
 dalam
 dartpad
 DCommand
@@ -132,7 +130,6 @@ jni
 JNICALL
 JNIEXPORT
 jobject
-Json
 jstring
 ksize
 languagemanager
@@ -218,7 +215,6 @@ openrouter
 oss
 osx
 OVERLAPPEDWINDOW
-PATCHLEVEL
 Perancangan
 Permainan
 pext
