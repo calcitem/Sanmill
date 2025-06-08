@@ -4,12 +4,32 @@
 // feedback_localization.dart
 
 import 'package:feedback/feedback.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../services/logger.dart';
 
-// TODO: [Leptopoda] This implementation is shitty and I don't like it. Just a reminder that I wanted to rewrite it.
+/// A data-driven implementation of feedback localizations.
+/// This implementation uses a centralized translation map instead of individual classes.
+class CustomFeedbackLocalizations extends FeedbackLocalizations {
+  /// Creates a [CustomFeedbackLocalizations] with the given translations.
+  const CustomFeedbackLocalizations(this._localizedValues);
+
+  /// The localized strings for this instance
+  final Map<String, String> _localizedValues;
+
+  @override
+  String get submitButtonText => _localizedValues['submitButtonText']!;
+
+  @override
+  String get feedbackDescriptionText =>
+      _localizedValues['feedbackDescriptionText']!;
+
+  @override
+  String get draw => _localizedValues['draw']!;
+
+  @override
+  String get navigate => _localizedValues['navigate']!;
+}
 
 /// This is a localization delegate, which includes all of the localizations
 /// already present in this library.
@@ -22,75 +42,453 @@ class CustomFeedbackLocalizationsDelegate
   static const LocalizationsDelegate<FeedbackLocalizations> delegate =
       CustomFeedbackLocalizationsDelegate();
 
-  static final Map<Locale, FeedbackLocalizations> _supportedLocales =
-      <Locale, FeedbackLocalizations>{
-    const Locale("af"): const AfFeedbackLocalizations(), // Afrikaans
-    const Locale("am"): const AmFeedbackLocalizations(), // Amharic
-    const Locale("ar"): const ArFeedbackLocalizations(), // Arabic
-    const Locale("az"): const AzFeedbackLocalizations(), // Azerbaijani
-    const Locale("be"): const BeFeedbackLocalizations(), // Belarusian
-    const Locale("bg"): const BgFeedbackLocalizations(), // Bulgarian
-    const Locale("bn"): const BnFeedbackLocalizations(), // Bengali
-    const Locale("bo"): const BoFeedbackLocalizations(), // Tibetan
-    const Locale("bs"): const BsFeedbackLocalizations(), // Bosnian
-    const Locale("ca"): const CaFeedbackLocalizations(), // Catalan
-    const Locale("cs"): const CsFeedbackLocalizations(), // Czech
-    const Locale("da"): const DaFeedbackLocalizations(), // Danish
-    const Locale("de"): const DeFeedbackLocalizations(), // German
-    const Locale("el"): const ElFeedbackLocalizations(), // Greek
-    const Locale("en"): const EnFeedbackLocalizations(), // English
-    const Locale("es"): const EsFeedbackLocalizations(), // Spanish
-    const Locale("et"): const EtFeedbackLocalizations(), // Estonian
-    const Locale("fa"): const FaFeedbackLocalizations(), // Persian (Farsi)
-    const Locale("fi"): const FiFeedbackLocalizations(), // Finnish
-    const Locale("fr"): const FrFeedbackLocalizations(), // French
-    const Locale("gu"): const GuFeedbackLocalizations(), // Gujarati
-    const Locale("he"): const HeFeedbackLocalizations(), // Hebrew
-    const Locale("hi"): const HiFeedbackLocalizations(), // Hindi
-    const Locale("hr"): const HrFeedbackLocalizations(), // Croatian
-    const Locale("hu"): const HuFeedbackLocalizations(), // Hungarian
-    const Locale("hy"): const HyFeedbackLocalizations(), // Armenian
-    const Locale("id"): const IdFeedbackLocalizations(), // Indonesian
-    const Locale("is"): const IsFeedbackLocalizations(), // Icelandic
-    const Locale("it"): const ItFeedbackLocalizations(), // Italian
-    const Locale("ja"): const JaFeedbackLocalizations(), // Japanese
-    const Locale("km"): const KmFeedbackLocalizations(), // Khmer
-    const Locale("kn"): const KnFeedbackLocalizations(), // Kannada
-    const Locale("ko"): const KoFeedbackLocalizations(), // Korean
-    const Locale("lt"): const LtFeedbackLocalizations(), // Lithuanian
-    const Locale("lv"): const LvFeedbackLocalizations(), // Latvian
-    const Locale("mk"): const MkFeedbackLocalizations(), // Macedonian
-    const Locale("ms"): const MsFeedbackLocalizations(), // Malay
-    const Locale("my"): const MyFeedbackLocalizations(), // Burmese
-    const Locale("nb"): const NbFeedbackLocalizations(), // Norwegian
-    const Locale("nl"): const NlFeedbackLocalizations(), // Dutch
-    const Locale("pl"): const PlFeedbackLocalizations(), // Polish
-    const Locale("pt"): const PtFeedbackLocalizations(), // Portuguese
-    const Locale("ro"): const RoFeedbackLocalizations(), // Romanian
-    const Locale("ru"): const RuFeedbackLocalizations(), // Russian
-    const Locale("si"): const SiFeedbackLocalizations(), // Sinhala
-    const Locale("sk"): const SkFeedbackLocalizations(), // Slovak
-    const Locale("sl"): const SlFeedbackLocalizations(), // Slovenian
-    const Locale("sq"): const SqFeedbackLocalizations(), // Albanian
-    const Locale("sr"): const SrFeedbackLocalizations(), // Serbian
-    const Locale("sv"): const SvFeedbackLocalizations(), // Swedish
-    const Locale("sw"): const SwFeedbackLocalizations(), // Swahili
-    const Locale("ta"): const TaFeedbackLocalizations(), // Tamil
-    const Locale("te"): const TeFeedbackLocalizations(), // Telugu
-    const Locale("th"): const ThFeedbackLocalizations(), // Thai
-    const Locale("tr"): const TrFeedbackLocalizations(), // Turkish
-    const Locale("uk"): const UkFeedbackLocalizations(), // Ukrainian
-    const Locale("ur"): const UrFeedbackLocalizations(), // Urdu
-    const Locale("uz"): const UzFeedbackLocalizations(), // Uzbek
-    const Locale("vi"): const ViFeedbackLocalizations(), // Vietnamese
-    const Locale("zh"): const ZhFeedbackLocalizations(), // Chinese
-    const Locale("zu"): const ZuFeedbackLocalizations(), // Zulu
+  /// Translation data for all supported languages
+  static const Map<String, Map<String, String>> _translations =
+      <String, Map<String, String>>{
+    'af': <String, String>{
+      // Afrikaans
+      'submitButtonText': 'Indien',
+      'feedbackDescriptionText': 'Wat is verkeerd?',
+      'draw': 'Teken',
+      'navigate': 'Navigeer',
+    },
+    'am': <String, String>{
+      // Amharic
+      'submitButtonText': 'አስገባ',
+      'feedbackDescriptionText': 'ምን ተሳስቷል?',
+      'draw': 'ማሟያ',
+      'navigate': 'መራ',
+    },
+    'ar': <String, String>{
+      // Arabic
+      'submitButtonText': 'إرسال',
+      'feedbackDescriptionText': 'ما الذي يمكننا فعله بشكل أفضل؟',
+      'draw': 'رسم',
+      'navigate': 'التنقل',
+    },
+    'az': <String, String>{
+      // Azerbaijani
+      'submitButtonText': 'Göndər',
+      'feedbackDescriptionText': 'Nə yalnışdır?',
+      'draw': 'Çək',
+      'navigate': 'Naviqasiya et',
+    },
+    'be': <String, String>{
+      // Belarusian
+      'submitButtonText': 'Адправіць',
+      'feedbackDescriptionText': 'Што не так?',
+      'draw': 'Цягніць',
+      'navigate': 'Навігаваць',
+    },
+    'bg': <String, String>{
+      // Bulgarian
+      'submitButtonText': 'Подаване на',
+      'feedbackDescriptionText': 'Какво можем да направим по-добре?',
+      'draw': 'Боядисване',
+      'navigate': 'Навигирайте в',
+    },
+    'bn': <String, String>{
+      // Bengali
+      'submitButtonText': 'প্রেরণ',
+      'feedbackDescriptionText': 'আমরা আরও ভাল কি করতে পারি?',
+      'draw': 'রং করা',
+      'navigate': 'নেভিগেট করুন',
+    },
+    'bo': <String, String>{
+      // Tibetan
+      'submitButtonText': 'སྤྲོད་པ',
+      'feedbackDescriptionText': 'རིན་ཐང་ཅན་གྱི་བསམ་ཚུལ་དང་བསམ་ཚུལ་འགོད་རོགས།',
+      'draw': 'རི་མོ་བྲིས་པ།',
+      'navigate': 'འགྲིམ་འགྲུལ།',
+    },
+    'bs': <String, String>{
+      // Bosnian
+      'submitButtonText': 'Poslati',
+      'feedbackDescriptionText': 'Što možemo učiniti bolje?',
+      'draw': 'Obojati',
+      'navigate': 'Navigacija',
+    },
+    'ca': <String, String>{
+      // Catalan
+      'submitButtonText': 'Enviar',
+      'feedbackDescriptionText': 'Què podem fer millor?',
+      'draw': 'Pintar',
+      'navigate': 'Navegar',
+    },
+    'cs': <String, String>{
+      // Czech
+      'submitButtonText': 'Předložit',
+      'feedbackDescriptionText':
+          'Zanechte prosím své cenné komentáře a návrhy:',
+      'draw': 'Kreslit',
+      'navigate': 'Navigovat',
+    },
+    'da': <String, String>{
+      // Danish
+      'submitButtonText': 'Indsend',
+      'feedbackDescriptionText': 'Hvad kan vi gøre bedre?',
+      'draw': 'Maling',
+      'navigate': 'Navigere',
+    },
+    'de': <String, String>{
+      // German
+      'submitButtonText': 'Senden',
+      'feedbackDescriptionText': 'Was können wir besser machen?',
+      'draw': 'Zeichnen',
+      'navigate': 'Navigate',
+    },
+    'el': <String, String>{
+      // Greek
+      'submitButtonText': 'Υποβολή',
+      'feedbackDescriptionText': 'Τι μπορούμε να κάνουμε καλύτερα;',
+      'draw': 'Βαφή',
+      'navigate': 'Κυβερνώ',
+    },
+    'en': <String, String>{
+      // English
+      'submitButtonText': 'Submit',
+      'feedbackDescriptionText': "What's wrong?",
+      'draw': 'Draw',
+      'navigate': 'Navigate',
+    },
+    'es': <String, String>{
+      // Spanish
+      'submitButtonText': 'Enviar',
+      'feedbackDescriptionText': '¿Qué podemos hacer mejor?',
+      'draw': 'Dibujar',
+      'navigate': 'Navegar',
+    },
+    'et': <String, String>{
+      // Estonian
+      'submitButtonText': 'Esita',
+      'feedbackDescriptionText': 'Mida me saame paremini teha?',
+      'draw': 'Värvi',
+      'navigate': 'Navigeeri',
+    },
+    'fa': <String, String>{
+      // Persian (Farsi)
+      'submitButtonText': 'ارسال',
+      'feedbackDescriptionText': 'چه کار بهتری میتوانیم انجام دهیم؟',
+      'draw': 'نقاشی',
+      'navigate': 'پیمایش کنید',
+    },
+    'fi': <String, String>{
+      // Finnish
+      'submitButtonText': 'Lähettää',
+      'feedbackDescriptionText': 'Mitä voimme tehdä paremmin?',
+      'draw': 'Maalata',
+      'navigate': 'Navigoida',
+    },
+    'fr': <String, String>{
+      // French
+      'submitButtonText': 'Envoyer',
+      'feedbackDescriptionText': 'Que pouvons-nous faire de mieux?',
+      'draw': 'Dessiner',
+      'navigate': 'Naviguer',
+    },
+    'gu': <String, String>{
+      // Gujarati
+      'submitButtonText': 'મોકલો',
+      'feedbackDescriptionText': 'આપણે વધુ સારું શું કરી શકીએ?',
+      'draw': 'કલર કરવો',
+      'navigate': 'નેવિગેટ કરો',
+    },
+    'he': <String, String>{
+      // Hebrew
+      'submitButtonText': 'שלח',
+      'feedbackDescriptionText': 'מה לא בסדר?',
+      'draw': 'צייר',
+      'navigate': 'נווט',
+    },
+    'hi': <String, String>{
+      // Hindi
+      'submitButtonText': 'प्रस्तुत',
+      'feedbackDescriptionText': 'हम बेहतर क्या कर सकते हैं?',
+      'draw': 'पेंट करने के लिए',
+      'navigate': 'नेविगेट',
+    },
+    'hr': <String, String>{
+      // Croatian
+      'submitButtonText': 'Poslati',
+      'feedbackDescriptionText': 'Što možemo učiniti bolje?',
+      'draw': 'Obojati',
+      'navigate': 'Navigacija',
+    },
+    'hu': <String, String>{
+      // Hungarian
+      'submitButtonText': 'Küld',
+      'feedbackDescriptionText': 'Mit tehetnénk jobban?',
+      'draw': 'Húz',
+      'navigate': 'Hajózik',
+    },
+    'hy': <String, String>{
+      // Armenian
+      'submitButtonText': 'Ներկայացնել',
+      'feedbackDescriptionText': 'Ի՞նչ է սխալ։',
+      'draw': 'Նկարել',
+      'navigate': 'Ցույցադրել',
+    },
+    'id': <String, String>{
+      // Indonesian
+      'submitButtonText': 'Kirim',
+      'feedbackDescriptionText': 'Apa yang bisa kita lakukan lebih baik?',
+      'draw': 'Melukis',
+      'navigate': 'Navigasi',
+    },
+    'is': <String, String>{
+      // Icelandic
+      'submitButtonText': 'Leggja fram',
+      'feedbackDescriptionText': 'Hvað er rangt?',
+      'draw': 'Teikna',
+      'navigate': 'Stjórna',
+    },
+    'it': <String, String>{
+      // Italian
+      'submitButtonText': 'Spedire',
+      'feedbackDescriptionText': 'Cosa possiamo fare di meglio?',
+      'draw': 'Dipingere',
+      'navigate': 'Navigare',
+    },
+    'ja': <String, String>{
+      // Japanese
+      'submitButtonText': '提交',
+      'feedbackDescriptionText': '貴重なご意見やご感想をお寄せください：',
+      'draw': '落書き',
+      'navigate': 'ナビゲーター',
+    },
+    'km': <String, String>{
+      // Khmer
+      'submitButtonText': 'បញ្ជូន',
+      'feedbackDescriptionText': 'តើ​មាន​បញ្ហា​អ្វី?',
+      'draw': 'គូរ',
+      'navigate': 'នាំផ្លូវ',
+    },
+    'kn': <String, String>{
+      // Kannada
+      'submitButtonText': 'ಸಲ್ಲಿಸಿ',
+      'feedbackDescriptionText': 'ಏನು ತಪ್ಪು?',
+      'draw': 'ಗೀಚು',
+      'navigate': 'ಸಂಚಾರ',
+    },
+    'ko': <String, String>{
+      // Korean
+      'submitButtonText': '제출',
+      'feedbackDescriptionText': '소중한 의견과 제안을 남겨주세요:',
+      'draw': '낙서',
+      'navigate': '항해',
+    },
+    'lt': <String, String>{
+      // Lithuanian
+      'submitButtonText': 'Pateikti',
+      'feedbackDescriptionText': 'Ką galime padaryti geriau?',
+      'draw': 'Dažai',
+      'navigate': 'Naršykite',
+    },
+    'lv': <String, String>{
+      // Latvian
+      'submitButtonText': 'Iesniegt',
+      'feedbackDescriptionText': 'Ko mēs varam darīt labāk?',
+      'draw': 'Krāsa',
+      'navigate': 'Pārvietoties',
+    },
+    'mk': <String, String>{
+      // Macedonian
+      'submitButtonText': 'Испрати',
+      'feedbackDescriptionText': 'Што можеме да направиме подобро?',
+      'draw': 'Да слика',
+      'navigate': 'Навигација',
+    },
+    'ms': <String, String>{
+      // Malay
+      'submitButtonText': 'Hantar',
+      'feedbackDescriptionText':
+          'Apa yang boleh kita lakukan dengan lebih baik?',
+      'draw': 'Mengecat',
+      'navigate': 'Navigasi',
+    },
+    'my': <String, String>{
+      // Burmese
+      'submitButtonText': 'တင်သွင်းပါ',
+      'feedbackDescriptionText': 'ဘာဖြစ်နေသလဲ?',
+      'draw': 'ဆွဲပါ',
+      'navigate': 'လမ်းညွှန်ပါ',
+    },
+    'nb': <String, String>{
+      // Norwegian
+      'submitButtonText': 'Send inn',
+      'feedbackDescriptionText': 'Hva er galt?',
+      'draw': 'Tegne',
+      'navigate': 'Navigere',
+    },
+    'nl': <String, String>{
+      // Dutch
+      'submitButtonText': 'Indienen',
+      'feedbackDescriptionText': 'Wat kunnen we beter doen?',
+      'draw': 'Verf',
+      'navigate': 'Navigeren',
+    },
+    'pl': <String, String>{
+      // Polish
+      'submitButtonText': 'Wysłać',
+      'feedbackDescriptionText': 'Co możemy zrobić lepiej?',
+      'draw': 'Malować',
+      'navigate': 'Nawigować',
+    },
+    'pt': <String, String>{
+      // Portuguese
+      'submitButtonText': 'Enviar',
+      'feedbackDescriptionText': 'Deixe seus valiosos comentários e sugestões:',
+      'draw': 'Desenhar',
+      'navigate': 'Navegar',
+    },
+    'ro': <String, String>{
+      // Romanian
+      'submitButtonText': 'Trimite',
+      'feedbackDescriptionText':
+          'Vă rugăm să lăsați comentariile și sugestiile voastre valoroase:',
+      'draw': 'Desena',
+      'navigate': 'Navigare',
+    },
+    'ru': <String, String>{
+      // Russian
+      'submitButtonText': 'Отправить',
+      'feedbackDescriptionText': 'Опишите проблему',
+      'draw': 'Рисование',
+      'navigate': 'Навигация',
+    },
+    'si': <String, String>{
+      // Sinhala
+      'submitButtonText': 'යොමු කරන්න',
+      'feedbackDescriptionText': 'ඔබේ ගැටළුව විස්තර කරන්න',
+      'draw': 'අඳින්න',
+      'navigate': 'ගමන් කරන්න',
+    },
+    'sk': <String, String>{
+      // Slovak
+      'submitButtonText': 'Odoslať',
+      'feedbackDescriptionText': 'Čo môžeme urobiť lepšie?',
+      'draw': 'Farba',
+      'navigate': 'Navigovať',
+    },
+    'sl': <String, String>{
+      // Slovenian
+      'submitButtonText': 'Pošlji',
+      'feedbackDescriptionText': 'Kaj lahko naredimo bolje?',
+      'draw': 'Barva',
+      'navigate': 'Krmarite',
+    },
+    'sq': <String, String>{
+      // Albanian
+      'submitButtonText': 'Dërgoni',
+      'feedbackDescriptionText': 'Çfarë mund të bëjmë më mirë?',
+      'draw': 'Vizato',
+      'navigate': 'Lundro',
+    },
+    'sr': <String, String>{
+      // Serbian
+      'submitButtonText': 'Пошаљите',
+      'feedbackDescriptionText': 'Шта можемо учинити боље?',
+      'draw': 'Обојити',
+      'navigate': 'Навигација',
+    },
+    'sv': <String, String>{
+      // Swedish
+      'submitButtonText': 'Skicka',
+      'feedbackDescriptionText': 'Vad kan vi göra bättre?',
+      'draw': 'Färg',
+      'navigate': 'Navigera',
+    },
+    'sw': <String, String>{
+      // Swahili
+      'submitButtonText': 'Tuma',
+      'feedbackDescriptionText': 'Nini kibaya?',
+      'draw': 'Chora',
+      'navigate': 'Elekeza',
+    },
+    'ta': <String, String>{
+      // Tamil
+      'submitButtonText': 'அனுப்பு',
+      'feedbackDescriptionText': 'என்ன தவறு?',
+      'draw': 'வரையுங்கள்',
+      'navigate': 'நாவிருந்து',
+    },
+    'te': <String, String>{
+      // Telugu
+      'submitButtonText': 'పంపండి',
+      'feedbackDescriptionText': 'మనం బాగా ఏమి చేయగలం?',
+      'draw': 'అద్దుటకై',
+      'navigate': 'నావిగేషన్',
+    },
+    'th': <String, String>{
+      // Thai
+      'submitButtonText': 'ส่ง',
+      'feedbackDescriptionText': 'เราจะทำอะไรได้ดีกว่านี้?',
+      'draw': 'ทาสี',
+      'navigate': 'นำทาง',
+    },
+    'tr': <String, String>{
+      // Turkish
+      'submitButtonText': 'gönder',
+      'feedbackDescriptionText': 'Neyi daha iyi yapabiliriz?',
+      'draw': 'boyamak',
+      'navigate': 'Gezin',
+    },
+    'uk': <String, String>{
+      // Ukrainian
+      'submitButtonText': 'Відправити',
+      'feedbackDescriptionText': 'Опишіть проблему',
+      'draw': 'Малювання',
+      'navigate': 'Навігація',
+    },
+    'ur': <String, String>{
+      // Urdu
+      'submitButtonText': 'جمع کرائیں',
+      'feedbackDescriptionText': 'کیا خراب ہے؟',
+      'draw': 'ڈرا',
+      'navigate': 'رہنمائی کریں',
+    },
+    'uz': <String, String>{
+      // Uzbek
+      'submitButtonText': 'Yuborish',
+      'feedbackDescriptionText': "Nima noto'g'ri?",
+      'draw': 'Chizmoq',
+      'navigate': "Yo'l hidi",
+    },
+    'vi': <String, String>{
+      // Vietnamese
+      'submitButtonText': 'Gửi đi',
+      'feedbackDescriptionText': 'Có gì không ổn?',
+      'draw': 'Vẽ',
+      'navigate': 'Điều hướng',
+    },
+    'zh': <String, String>{
+      // Chinese
+      'submitButtonText': '提交',
+      'feedbackDescriptionText': '敬请留下您宝贵的意见和建议：',
+      'draw': '涂鸦',
+      'navigate': '导航',
+    },
+    'zu': <String, String>{
+      // Zulu
+      'submitButtonText': 'Thumela',
+      'feedbackDescriptionText': 'Kuyini okungalungile?',
+      'draw': 'Thinta',
+      'navigate': 'Hamba',
+    },
+  };
+
+  /// Default English translations fallback
+  static const Map<String, String> _defaultTranslations = <String, String>{
+    'submitButtonText': 'Submit',
+    'feedbackDescriptionText': "What's wrong?",
+    'draw': 'Draw',
+    'navigate': 'Navigate',
   };
 
   @override
   bool isSupported(Locale locale) {
     // We only support language codes for now
-    if (_supportedLocales.containsKey(Locale(locale.languageCode))) {
+    if (_translations.containsKey(locale.languageCode)) {
       return true;
     }
     logger.w(
@@ -102,13 +500,13 @@ class CustomFeedbackLocalizationsDelegate
 
   @override
   Future<FeedbackLocalizations> load(Locale locale) async {
-    final Locale languageLocale = Locale(locale.languageCode);
-    // We only support language codes for now
-    if (_supportedLocales.containsKey(languageLocale)) {
-      return _supportedLocales[languageLocale]!;
-    }
-    // The default is english
-    return const EnFeedbackLocalizations();
+    final String languageCode = locale.languageCode;
+
+    // Get translations for the requested language, or fallback to English
+    final Map<String, String> translations =
+        _translations[languageCode] ?? _defaultTranslations;
+
+    return CustomFeedbackLocalizations(translations);
   }
 
   @override
@@ -116,1288 +514,4 @@ class CustomFeedbackLocalizationsDelegate
 
   @override
   String toString() => 'DefaultFeedbackLocalizations.delegate(en_EN)';
-}
-
-class AfFeedbackLocalizations extends FeedbackLocalizations {
-  const AfFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Indien';
-
-  @override
-  String get feedbackDescriptionText => 'Wat is verkeerd?';
-
-  @override
-  String get draw => 'Teken';
-
-  @override
-  String get navigate => 'Navigeer';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const AfFeedbackLocalizations(),
-    );
-  }
-}
-
-class AmFeedbackLocalizations extends FeedbackLocalizations {
-  const AmFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'አስገባ';
-
-  @override
-  String get feedbackDescriptionText => 'ምን ተሳስቷል?';
-
-  @override
-  String get draw => 'ማሟያ';
-
-  @override
-  String get navigate => 'መራ';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const AmFeedbackLocalizations(),
-    );
-  }
-}
-
-class ArFeedbackLocalizations extends FeedbackLocalizations {
-  const ArFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'إرسال';
-
-  @override
-  String get feedbackDescriptionText => 'ما الذي يمكننا فعله بشكل أفضل؟';
-
-  @override
-  String get draw => 'رسم';
-
-  @override
-  String get navigate => 'التنقل';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ArFeedbackLocalizations(),
-    );
-  }
-}
-
-class AzFeedbackLocalizations extends FeedbackLocalizations {
-  const AzFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Göndər';
-
-  @override
-  String get feedbackDescriptionText => 'Nə yalnışdır?';
-
-  @override
-  String get draw => 'Çək';
-
-  @override
-  String get navigate => 'Naviqasiya et';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const AzFeedbackLocalizations(),
-    );
-  }
-}
-
-class BeFeedbackLocalizations extends FeedbackLocalizations {
-  const BeFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Адправіць';
-
-  @override
-  String get feedbackDescriptionText => 'Што не так?';
-
-  @override
-  String get draw => 'Цягніць';
-
-  @override
-  String get navigate => 'Навігаваць';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const BeFeedbackLocalizations(),
-    );
-  }
-}
-
-class BgFeedbackLocalizations extends FeedbackLocalizations {
-  const BgFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Подаване на';
-
-  @override
-  String get feedbackDescriptionText => 'Какво можем да направим по-добре?';
-
-  @override
-  String get draw => 'Боядисване';
-
-  @override
-  String get navigate => 'Навигирайте в';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const BgFeedbackLocalizations(),
-    );
-  }
-}
-
-class BnFeedbackLocalizations extends FeedbackLocalizations {
-  const BnFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'প্রেরণ';
-
-  @override
-  String get feedbackDescriptionText => 'আমরা আরও ভাল কি করতে পারি?';
-
-  @override
-  String get draw => 'রং করা';
-
-  @override
-  String get navigate => 'নেভিগেট করুন';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const BnFeedbackLocalizations(),
-    );
-  }
-}
-
-class BoFeedbackLocalizations extends FeedbackLocalizations {
-  const BoFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const BoFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'སྤྲོད་པ';
-
-  @override
-  String get feedbackDescriptionText =>
-      'རིན་ཐང་ཅན་གྱི་བསམ་ཚུལ་དང་བསམ་ཚུལ་འགོད་རོགས།';
-
-  @override
-  String get draw => 'རི་མོ་བྲིས་པ།';
-
-  @override
-  String get navigate => 'འགྲིམ་འགྲུལ།';
-}
-
-class BsFeedbackLocalizations extends FeedbackLocalizations {
-  const BsFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Poslati';
-
-  @override
-  String get feedbackDescriptionText => 'Što možemo učiniti bolje?';
-
-  @override
-  String get draw => 'Obojati';
-
-  @override
-  String get navigate => 'Navigacija';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const BsFeedbackLocalizations(),
-    );
-  }
-}
-
-class CaFeedbackLocalizations extends FeedbackLocalizations {
-  const CaFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Enviar';
-
-  @override
-  String get feedbackDescriptionText => 'Què podem fer millor?';
-
-  @override
-  String get draw => 'Pintar';
-
-  @override
-  String get navigate => 'Navegar';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const CaFeedbackLocalizations(),
-    );
-  }
-}
-
-class CsFeedbackLocalizations extends FeedbackLocalizations {
-  const CsFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Předložit';
-
-  @override
-  String get feedbackDescriptionText =>
-      'Zanechte prosím své cenné komentáře a návrhy:';
-
-  @override
-  String get draw => 'Kreslit';
-
-  @override
-  String get navigate => 'Navigovat';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const CsFeedbackLocalizations(),
-    );
-  }
-}
-
-class DaFeedbackLocalizations extends FeedbackLocalizations {
-  const DaFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Indsend';
-
-  @override
-  String get feedbackDescriptionText => 'Hvad kan vi gøre bedre?';
-
-  @override
-  String get draw => 'Maling';
-
-  @override
-  String get navigate => 'Navigere';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const DaFeedbackLocalizations(),
-    );
-  }
-}
-
-class ElFeedbackLocalizations extends FeedbackLocalizations {
-  const ElFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Υποβολή';
-
-  @override
-  String get feedbackDescriptionText => 'Τι μπορούμε να κάνουμε καλύτερα;';
-
-  @override
-  String get draw => 'Βαφή';
-
-  @override
-  String get navigate => 'Κυβερνώ';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ElFeedbackLocalizations(),
-    );
-  }
-}
-
-class EsFeedbackLocalizations extends FeedbackLocalizations {
-  const EsFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Enviar';
-
-  @override
-  String get feedbackDescriptionText => '¿Qué podemos hacer mejor?';
-
-  @override
-  String get draw => 'Dibujar';
-
-  @override
-  String get navigate => 'Navegar';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const EsFeedbackLocalizations(),
-    );
-  }
-}
-
-class EtFeedbackLocalizations extends FeedbackLocalizations {
-  const EtFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Esita';
-
-  @override
-  String get feedbackDescriptionText => 'Mida me saame paremini teha?';
-
-  @override
-  String get draw => 'Värvi';
-
-  @override
-  String get navigate => 'Navigeeri';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const EtFeedbackLocalizations(),
-    );
-  }
-}
-
-class FaFeedbackLocalizations extends FeedbackLocalizations {
-  const FaFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'ارسال';
-
-  @override
-  String get feedbackDescriptionText => 'چه کار بهتری میتوانیم انجام دهیم؟';
-
-  @override
-  String get draw => 'نقاشی';
-
-  @override
-  String get navigate => 'پیمایش کنید';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const FaFeedbackLocalizations(),
-    );
-  }
-}
-
-class FiFeedbackLocalizations extends FeedbackLocalizations {
-  const FiFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Lähettää';
-
-  @override
-  String get feedbackDescriptionText => 'Mitä voimme tehdä paremmin?';
-
-  @override
-  String get draw => 'Maalata';
-
-  @override
-  String get navigate => 'Navigoida';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const FiFeedbackLocalizations(),
-    );
-  }
-}
-
-class GuFeedbackLocalizations extends FeedbackLocalizations {
-  const GuFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'મોકલો';
-
-  @override
-  String get feedbackDescriptionText => 'આપણે વધુ સારું શું કરી શકીએ?';
-
-  @override
-  String get draw => 'કલર કરવો';
-
-  @override
-  String get navigate => 'નેવિગેટ કરો';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const GuFeedbackLocalizations(),
-    );
-  }
-}
-
-class HeFeedbackLocalizations extends FeedbackLocalizations {
-  const HeFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'שלח';
-
-  @override
-  String get feedbackDescriptionText => 'מה לא בסדר?';
-
-  @override
-  String get draw => 'צייר';
-
-  @override
-  String get navigate => 'נווט';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const HeFeedbackLocalizations(),
-    );
-  }
-}
-
-class HiFeedbackLocalizations extends FeedbackLocalizations {
-  const HiFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'प्रस्तुत';
-
-  @override
-  String get feedbackDescriptionText => 'हम बेहतर क्या कर सकते हैं?';
-
-  @override
-  String get draw => 'पेंट करने के लिए';
-
-  @override
-  String get navigate => 'नेविगेट';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const HiFeedbackLocalizations(),
-    );
-  }
-}
-
-class HrFeedbackLocalizations extends FeedbackLocalizations {
-  const HrFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Poslati';
-
-  @override
-  String get feedbackDescriptionText => 'Što možemo učiniti bolje?';
-
-  @override
-  String get draw => 'Obojati';
-
-  @override
-  String get navigate => 'Navigacija';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const HrFeedbackLocalizations(),
-    );
-  }
-}
-
-class HuFeedbackLocalizations extends FeedbackLocalizations {
-  const HuFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Küld';
-
-  @override
-  String get feedbackDescriptionText => 'Mit tehetnénk jobban?';
-
-  @override
-  String get draw => 'Húz';
-
-  @override
-  String get navigate => 'Hajózik';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const HuFeedbackLocalizations(),
-    );
-  }
-}
-
-class HyFeedbackLocalizations extends FeedbackLocalizations {
-  const HyFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Ներկայացնել';
-
-  @override
-  String get feedbackDescriptionText => 'Ի՞նչ է սխալ։';
-
-  @override
-  String get draw => 'Նկարել';
-
-  @override
-  String get navigate => 'Ցույցադրել';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const HyFeedbackLocalizations(),
-    );
-  }
-}
-
-class IdFeedbackLocalizations extends FeedbackLocalizations {
-  const IdFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Kirim';
-
-  @override
-  String get feedbackDescriptionText =>
-      'Apa yang bisa kita lakukan lebih baik?';
-
-  @override
-  String get draw => 'Melukis';
-
-  @override
-  String get navigate => 'Navigasi';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const IdFeedbackLocalizations(),
-    );
-  }
-}
-
-class IsFeedbackLocalizations extends FeedbackLocalizations {
-  const IsFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Leggja fram';
-
-  @override
-  String get feedbackDescriptionText => 'Hvað er rangt?';
-
-  @override
-  String get draw => 'Teikna';
-
-  @override
-  String get navigate => 'Stjórna';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const IsFeedbackLocalizations(),
-    );
-  }
-}
-
-class ItFeedbackLocalizations extends FeedbackLocalizations {
-  const ItFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Spedire';
-
-  @override
-  String get feedbackDescriptionText => 'Cosa possiamo fare di meglio?';
-
-  @override
-  String get draw => 'Dipingere';
-
-  @override
-  String get navigate => 'Navigare';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ItFeedbackLocalizations(),
-    );
-  }
-}
-
-class JaFeedbackLocalizations extends FeedbackLocalizations {
-  const JaFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const JaFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => '提交';
-
-  @override
-  String get feedbackDescriptionText => '貴重なご意見やご感想をお寄せください：';
-
-  @override
-  String get draw => '落書き';
-
-  @override
-  String get navigate => 'ナビゲーター';
-}
-
-class KmFeedbackLocalizations implements FeedbackLocalizations {
-  const KmFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'បញ្ជូន';
-
-  @override
-  String get feedbackDescriptionText => 'តើ​មាន​បញ្ហា​អ្វី?';
-
-  @override
-  String get draw => 'គូរ';
-
-  @override
-  String get navigate => 'នាំផ្លូវ';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const KmFeedbackLocalizations(),
-    );
-  }
-}
-
-class KnFeedbackLocalizations extends FeedbackLocalizations {
-  const KnFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'ಸಲ್ಲಿಸಿ';
-
-  @override
-  String get feedbackDescriptionText => 'ಏನು ತಪ್ಪು?';
-
-  @override
-  String get draw => 'ಗೀಚು';
-
-  @override
-  String get navigate => 'ಸಂಚಾರ';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const KnFeedbackLocalizations(),
-    );
-  }
-}
-
-class KoFeedbackLocalizations extends FeedbackLocalizations {
-  const KoFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const KoFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => '제출';
-
-  @override
-  String get feedbackDescriptionText => '소중한 의견과 제안을 남겨주세요:';
-
-  @override
-  String get draw => '낙서';
-
-  @override
-  String get navigate => '항해';
-}
-
-class LtFeedbackLocalizations extends FeedbackLocalizations {
-  const LtFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Pateikti';
-
-  @override
-  String get feedbackDescriptionText => 'Ką galime padaryti geriau?';
-
-  @override
-  String get draw => 'Dažai';
-
-  @override
-  String get navigate => 'Naršykite';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const LtFeedbackLocalizations(),
-    );
-  }
-}
-
-class LvFeedbackLocalizations extends FeedbackLocalizations {
-  const LvFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Iesniegt';
-
-  @override
-  String get feedbackDescriptionText => 'Ko mēs varam darīt labāk?';
-
-  @override
-  String get draw => 'Krāsa';
-
-  @override
-  String get navigate => 'Pārvietoties';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const LvFeedbackLocalizations(),
-    );
-  }
-}
-
-class MkFeedbackLocalizations extends FeedbackLocalizations {
-  const MkFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Испрати';
-
-  @override
-  String get feedbackDescriptionText => 'Што можеме да направиме подобро?';
-
-  @override
-  String get draw => 'Да слика';
-
-  @override
-  String get navigate => 'Навигација';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const MkFeedbackLocalizations(),
-    );
-  }
-}
-
-class MsFeedbackLocalizations extends FeedbackLocalizations {
-  const MsFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Hantar';
-
-  @override
-  String get feedbackDescriptionText =>
-      'Apa yang boleh kita lakukan dengan lebih baik?';
-
-  @override
-  String get draw => 'Mengecat';
-
-  @override
-  String get navigate => 'Navigasi';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const MsFeedbackLocalizations(),
-    );
-  }
-}
-
-class MyFeedbackLocalizations extends FeedbackLocalizations {
-  const MyFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'တင်သွင်းပါ';
-
-  @override
-  String get feedbackDescriptionText => 'ဘာဖြစ်နေသလဲ?';
-
-  @override
-  String get draw => 'ဆွဲပါ';
-
-  @override
-  String get navigate => 'လမ်းညွှန်ပါ';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const MyFeedbackLocalizations(),
-    );
-  }
-}
-
-class NlFeedbackLocalizations extends FeedbackLocalizations {
-  const NlFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Indienen';
-
-  @override
-  String get feedbackDescriptionText => 'Wat kunnen we beter doen?';
-
-  @override
-  String get draw => 'Verf';
-
-  @override
-  String get navigate => 'Navigeren';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const NlFeedbackLocalizations(),
-    );
-  }
-}
-
-class NbFeedbackLocalizations extends FeedbackLocalizations {
-  const NbFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Send inn';
-
-  @override
-  String get feedbackDescriptionText => 'Hva er galt?';
-
-  @override
-  String get draw => 'Tegne';
-
-  @override
-  String get navigate => 'Navigere';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const NbFeedbackLocalizations(),
-    );
-  }
-}
-
-class PlFeedbackLocalizations extends FeedbackLocalizations {
-  const PlFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Wysłać';
-
-  @override
-  String get feedbackDescriptionText => 'Co możemy zrobić lepiej?';
-
-  @override
-  String get draw => 'Malować';
-
-  @override
-  String get navigate => 'Nawigować';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const PlFeedbackLocalizations(),
-    );
-  }
-}
-
-class PtFeedbackLocalizations extends FeedbackLocalizations {
-  const PtFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const PtFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'Enviar';
-
-  @override
-  String get feedbackDescriptionText =>
-      'Deixe seus valiosos comentários e sugestões:';
-
-  @override
-  String get draw => 'Desenhar';
-
-  @override
-  String get navigate => 'Navegar';
-}
-
-class RoFeedbackLocalizations extends FeedbackLocalizations {
-  const RoFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const RoFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'Trimite';
-
-  @override
-  String get feedbackDescriptionText =>
-      'Vă rugăm să lăsați comentariile și sugestiile voastre valoroase:';
-
-  @override
-  String get draw => 'Desena';
-
-  @override
-  String get navigate => 'Navigare';
-}
-
-class RuFeedbackLocalizations extends FeedbackLocalizations {
-  const RuFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const RuFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'Отправить';
-
-  @override
-  String get feedbackDescriptionText => 'Опишите проблему';
-
-  @override
-  String get draw => 'Рисование';
-
-  @override
-  String get navigate => 'Навигация';
-}
-
-class SiFeedbackLocalizations extends FeedbackLocalizations {
-  const SiFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SiFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'යොමු කරන්න';
-
-  @override
-  String get feedbackDescriptionText => 'ඔබේ ගැටළුව විස්තර කරන්න';
-
-  @override
-  String get draw => 'අඳින්න';
-
-  @override
-  String get navigate => 'ගමන් කරන්න';
-}
-
-class SkFeedbackLocalizations extends FeedbackLocalizations {
-  const SkFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Odoslať';
-
-  @override
-  String get feedbackDescriptionText => 'Čo môžeme urobiť lepšie?';
-
-  @override
-  String get draw => 'Farba';
-
-  @override
-  String get navigate => 'Navigovať';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SkFeedbackLocalizations(),
-    );
-  }
-}
-
-class SlFeedbackLocalizations extends FeedbackLocalizations {
-  const SlFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Pošlji';
-
-  @override
-  String get feedbackDescriptionText => 'Kaj lahko naredimo bolje?';
-
-  @override
-  String get draw => 'Barva';
-
-  @override
-  String get navigate => 'Krmarite';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SlFeedbackLocalizations(),
-    );
-  }
-}
-
-class SqFeedbackLocalizations extends FeedbackLocalizations {
-  const SqFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Dërgoni';
-
-  @override
-  String get feedbackDescriptionText => 'Çfarë mund të bëjmë më mirë?';
-
-  @override
-  String get draw => 'Vizato';
-
-  @override
-  String get navigate => 'Lundro';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SqFeedbackLocalizations(),
-    );
-  }
-}
-
-class SrFeedbackLocalizations extends FeedbackLocalizations {
-  const SrFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Пошаљите';
-
-  @override
-  String get feedbackDescriptionText => 'Шта можемо учинити боље?';
-
-  @override
-  String get draw => 'Обојити';
-
-  @override
-  String get navigate => 'Навигација';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SrFeedbackLocalizations(),
-    );
-  }
-}
-
-class SvFeedbackLocalizations extends FeedbackLocalizations {
-  const SvFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Skicka';
-
-  @override
-  String get feedbackDescriptionText => 'Vad kan vi göra bättre?';
-
-  @override
-  String get draw => 'Färg';
-
-  @override
-  String get navigate => 'Navigera';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SvFeedbackLocalizations(),
-    );
-  }
-}
-
-class SwFeedbackLocalizations extends FeedbackLocalizations {
-  const SwFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Tuma';
-
-  @override
-  String get feedbackDescriptionText => 'Nini kibaya?';
-
-  @override
-  String get draw => 'Chora';
-
-  @override
-  String get navigate => 'Elekeza';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const SwFeedbackLocalizations(),
-    );
-  }
-}
-
-// Tamil
-class TaFeedbackLocalizations extends FeedbackLocalizations {
-  const TaFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'அனுப்பு';
-
-  @override
-  String get feedbackDescriptionText => 'என்ன தவறு?';
-
-  @override
-  String get draw => 'வரையுங்கள்';
-
-  @override
-  String get navigate => 'நாவிருந்து';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const TaFeedbackLocalizations(),
-    );
-  }
-}
-
-class TeFeedbackLocalizations extends FeedbackLocalizations {
-  const TeFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'పంపండి';
-
-  @override
-  String get feedbackDescriptionText => 'మనం బాగా ఏమి చేయగలం?';
-
-  @override
-  String get draw => 'అద్దుటకై';
-
-  @override
-  String get navigate => 'నావిగేషన్';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const TeFeedbackLocalizations(),
-    );
-  }
-}
-
-class ThFeedbackLocalizations extends FeedbackLocalizations {
-  const ThFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'ส่ง';
-
-  @override
-  String get feedbackDescriptionText => 'เราจะทำอะไรได้ดีกว่านี้?';
-
-  @override
-  String get draw => 'ทาสี';
-
-  @override
-  String get navigate => 'นำทาง';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ThFeedbackLocalizations(),
-    );
-  }
-}
-
-class TrFeedbackLocalizations extends FeedbackLocalizations {
-  const TrFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'gönder';
-
-  @override
-  String get feedbackDescriptionText => 'Neyi daha iyi yapabiliriz?';
-
-  @override
-  String get draw => 'boyamak';
-
-  @override
-  String get navigate => 'Gezin';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const TrFeedbackLocalizations(),
-    );
-  }
-}
-
-class UkFeedbackLocalizations extends FeedbackLocalizations {
-  const UkFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const UkFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => 'Відправити';
-
-  @override
-  String get feedbackDescriptionText => 'Опишіть проблему';
-
-  @override
-  String get draw => 'Малювання';
-
-  @override
-  String get navigate => 'Навігація';
-}
-
-class UrFeedbackLocalizations extends FeedbackLocalizations {
-  const UrFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'جمع کرائیں';
-
-  @override
-  String get feedbackDescriptionText => 'کیا خراب ہے؟';
-
-  @override
-  String get draw => 'ڈرا';
-
-  @override
-  String get navigate => 'رہنمائی کریں';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const UrFeedbackLocalizations(),
-    );
-  }
-}
-
-class UzFeedbackLocalizations extends FeedbackLocalizations {
-  const UzFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Yuborish';
-
-  @override
-  String get feedbackDescriptionText => "Nima noto'g'ri?";
-
-  @override
-  String get draw => 'Chizmoq';
-
-  @override
-  String get navigate => "Yo'l hidi";
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const UzFeedbackLocalizations(),
-    );
-  }
-}
-
-class ViFeedbackLocalizations extends FeedbackLocalizations {
-  const ViFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Gửi đi';
-
-  @override
-  String get feedbackDescriptionText => 'Có gì không ổn?';
-
-  @override
-  String get draw => 'Vẽ';
-
-  @override
-  String get navigate => 'Điều hướng';
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ViFeedbackLocalizations(),
-    );
-  }
-}
-
-class ZhFeedbackLocalizations extends FeedbackLocalizations {
-  const ZhFeedbackLocalizations();
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ZhFeedbackLocalizations(),
-    );
-  }
-
-  @override
-  String get submitButtonText => '提交';
-
-  @override
-  String get feedbackDescriptionText => '敬请留下您宝贵的意见和建议：';
-
-  @override
-  String get draw => '涂鸦';
-
-  @override
-  String get navigate => '导航';
-}
-
-class ZuFeedbackLocalizations extends FeedbackLocalizations {
-  const ZuFeedbackLocalizations();
-
-  @override
-  String get submitButtonText => 'Thumela'; // 'Submit' in Zulu
-
-  @override
-  String get feedbackDescriptionText =>
-      'Kuyini okungalungile?'; // 'What's wrong?' in Zulu
-
-  @override
-  String get draw => 'Thinta'; // 'Draw' in Zulu
-
-  @override
-  String get navigate => 'Hamba'; // 'Navigate' in Zulu
-
-  static Future<FeedbackLocalizations> load(Locale locale) {
-    return SynchronousFuture<FeedbackLocalizations>(
-      const ZuFeedbackLocalizations(),
-    );
-  }
 }
