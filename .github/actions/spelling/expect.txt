@@ -342,12 +342,9 @@ uct
 und
 unimi
 unistd
-Unregister
 Unregisters
 upperbound
 USERDATA
-USHORT
-UShort
 usleep
 vigna
 VNNI
