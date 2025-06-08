@@ -924,14 +924,14 @@ class _CatFishingGameState extends State<CatFishingGame>
                   );
                 }),
 
-                // 计时器 - 左上角
+                // Timer - top left corner
                 Positioned(
                   top: 10,
                   left: 10,
                   child: _buildInfoChip('⏱️ $_timeLeft'),
                 ),
 
-                // 鱼的数量 - 右上角
+                // Fish count - top right corner
                 Positioned(
                   top: 10,
                   right: 10,

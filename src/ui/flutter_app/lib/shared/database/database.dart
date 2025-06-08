@@ -4,7 +4,7 @@
 // database.dart
 
 import 'dart:convert' show jsonDecode;
-import 'dart:io' show Directory, File, Platform;
+import 'dart:io' show Directory, File;
 
 import 'package:flutter/foundation.dart'
     show ValueListenable, kIsWeb, visibleForTesting;
