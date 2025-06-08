@@ -89,9 +89,9 @@ class _BackgroundImagePickerState extends State<_BackgroundImagePicker> {
                   onSelect: () {
                     // Set backgroundImagePath to the custom image path
                     DB().displaySettings = displaySettings.copyWith(
-                      backgroundImagePath:
-                          displaySettings.customBackgroundImagePath ??
-                              '', // TODO: '' is right?
+                      backgroundImagePath: displaySettings
+                              .customBackgroundImagePath ??
+                          '', // Fallback to empty string for solid color background
                     );
                   },
                   onPickImage: () => _pickImage(
