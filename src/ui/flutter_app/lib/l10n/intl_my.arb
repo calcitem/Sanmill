@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "၎င်းသည် ဂိမ်းစာရင်းအင်းအားလုံးကို ပြန်လည်သတ်မှတ်မည်ဖြစ်သည်။ ဤလုပ်ဆောင်ချက်ကို ပြန်မပြင်နိုင်ပါ။",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "ဘုတ်အတွင်းကွင်းအရွယ်အစား",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ဘုတ်အရိပ်",
+  "@boardShadowEnabled": {}
 }

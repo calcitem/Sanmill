@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "이렇게 하면 모든 게임 통계가 초기화됩니다. 이 작업은 취소할 수 없습니다.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "보드 내부 링 크기",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "보드 그림자",
+  "@boardShadowEnabled": {}
 }

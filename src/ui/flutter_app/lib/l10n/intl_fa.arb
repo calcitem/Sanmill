@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "این کار تمام آمار بازی را بازنشانی می‌کند. این عمل قابل لغو نیست.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "اندازه حلقه داخلی صفحه",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "سایه صفحه",
+  "@boardShadowEnabled": {}
 }

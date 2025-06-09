@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Thao tác này sẽ đặt lại tất cả thống kê trò chơi. Không thể hoàn tác thao tác này.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Kích thước vòng trong của bàn cờ",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bóng của bàn cờ",
+  "@boardShadowEnabled": {}
 }

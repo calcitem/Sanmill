@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ова ќе ја ресетира целата статистика на играта. Оваа акција не може да се врати.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Големина на внатрешниот прстен на таблата",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Сенка на таблата",
+  "@boardShadowEnabled": {}
 }

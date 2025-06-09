@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Això restablirà totes les estadístiques del joc. Aquesta acció no es pot desfer.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Mida de l'anell interior del tauler",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Ombra del tauler",
+  "@boardShadowEnabled": {}
 }

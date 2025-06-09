@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "การดำเนินการนี้จะรีเซ็ตสถิติเกมทั้งหมด การดำเนินการนี้ไม่สามารถยกเลิกได้",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "ขนาดวงแหวนด้านในของกระดาน",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "เงาของกระดาน",
+  "@boardShadowEnabled": {}
 }

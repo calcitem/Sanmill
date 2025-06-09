@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Tiks atiestatīta visa spēļu statistika. Šo darbību nevar atsaukt.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Dēļa iekšējā gredzena izmērs",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Dēļa ēna",
+  "@boardShadowEnabled": {}
 }

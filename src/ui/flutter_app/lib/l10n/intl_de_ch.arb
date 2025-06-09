@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Das setzt alli Spielstatistike zrugg. Die Aktion cha nöd rückgängig gmacht wärde.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Grösse des inneren Rings des Brettes",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Brettschatten",
+  "@boardShadowEnabled": {}
 }

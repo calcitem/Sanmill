@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Questo reimposterà tutte le statistiche di gioco. Questa azione non può essere annullata.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Dimensione dell'anello interno della tavola",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Ombra del tavoliere",
+  "@boardShadowEnabled": {}
 }

@@ -91,6 +91,7 @@ class DisplaySettings {
     this.swipeToRevealTheDrawer = true,
     this.isScreenshotGameInfoShown = true,
     this.boardInnerRingSize = 1.0,
+    this.boardShadowEnabled = false,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -233,6 +234,9 @@ class DisplaySettings {
 
   @HiveField(41, defaultValue: 1.0)
   final double boardInnerRingSize;
+
+  @HiveField(42, defaultValue: false)
+  final bool boardShadowEnabled;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

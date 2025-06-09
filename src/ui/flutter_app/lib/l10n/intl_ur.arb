@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "یہ گیم کے تمام شماریات کو ری سیٹ کر دے گا۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "بورڈ کی اندرونی انگوٹھی کا سائز",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "بورڈ کا سایہ",
+  "@boardShadowEnabled": {}
 }

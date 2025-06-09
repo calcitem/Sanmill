@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Это сбросит всю статистику игры. Это действие нельзя отменить.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Размер внутреннего кольца доски",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Тень доски",
+  "@boardShadowEnabled": {}
 }

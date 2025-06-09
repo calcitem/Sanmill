@@ -752,6 +752,13 @@ class AppearanceSettingsPage extends StatelessWidget {
           titleString: S.of(context).boardInnerRingSize,
           onTap: () => setBoardInnerRingSize(context),
         ),
+        SettingsListTile.switchTile(
+          key: const Key('display_settings_card_board_shadow_switch_tile'),
+          value: displaySettings.boardShadowEnabled,
+          onChanged: (bool val) => DB().displaySettings =
+              displaySettings.copyWith(boardShadowEnabled: val),
+          titleString: S.of(context).boardShadowEnabled,
+        ),
         SettingsListTile(
           key:
               const Key('display_settings_card_point_style_settings_list_tile'),

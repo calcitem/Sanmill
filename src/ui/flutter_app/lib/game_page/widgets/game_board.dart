@@ -278,80 +278,94 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
       context: context,
     );
 
-    // Retrieve the selected animation names from user settings.
-    final String placeEffectName = DB().displaySettings.placeEffectAnimation;
-    final String removeEffectName = DB().displaySettings.removeEffectAnimation;
-
-    // Use the map to get the corresponding animation instances.
-    final PieceEffectAnimation placeEffectAnimation =
-        animationMap[placeEffectName]?.call() ?? RadialPieceEffectAnimation();
-
-    final PieceEffectAnimation removeEffectAnimation =
-        animationMap[removeEffectName]?.call() ?? ExplodePieceEffectAnimation();
-
-    final AnimatedBuilder customPaint = AnimatedBuilder(
-      key: const Key('animated_builder_custom_paint'),
-      animation: Listenable.merge(<Animation<double>>[
-        animationManager.placeAnimationController,
-        animationManager.moveAnimationController,
-        animationManager.removeAnimationController,
-      ]),
-      builder: (_, Widget? child) {
-        return FutureBuilder<GameImages>(
-          key: const Key('future_builder_game_images'),
-          future: gameImagesFuture,
-          builder: (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                key: Key('center_loading'),
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              // Handle errors appropriately
-              return const Center(
-                key: Key('center_error'),
-                child: Text('Error loading images'),
-              );
-            } else {
-              final GameImages? gameImages = snapshot.data;
-              return SizedBox.expand(
-                key: const Key('sized_box_expand_custom_paint'),
-                child: CustomPaint(
-                  key: const Key('custom_paint_board_painter'),
-                  // Pass the resolved ui.Image? to BoardPainter
-                  painter: BoardPainter(context, gameImages?.boardImage),
-                  foregroundPainter: PiecePainter(
-                    placeAnimationValue: animationManager.placeAnimation.value,
-                    moveAnimationValue: animationManager.moveAnimation.value,
-                    removeAnimationValue:
-                        animationManager.removeAnimation.value,
-                    pieceImages: <PieceColor, ui.Image?>{
-                      PieceColor.white: gameImages?.whitePieceImage,
-                      PieceColor.black: gameImages?.blackPieceImage,
-                      PieceColor.marked: gameImages?.markedPieceImage,
-                    },
-                    placeEffectAnimation: placeEffectAnimation,
-                    removeEffectAnimation: removeEffectAnimation,
-                  ),
-                  child: DB().generalSettings.screenReaderSupport
-                      ? const _BoardSemantics()
-                      : Semantics(
-                          key: const Key('semantics_screen_reader'),
-                          label: S.of(context).youCanEnableScreenReaderSupport,
-                          container: true,
-                        ),
-                ),
-              );
-            }
-          },
-        );
-      },
-    );
-
+    // This ValueListenableBuilder ensures the GameBoard and its painters
+    // are rebuilt whenever display settings change.
     return ValueListenableBuilder<Box<DisplaySettings>>(
       key: const Key('value_listenable_builder_display_settings'),
       valueListenable: DB().listenDisplaySettings,
       builder: (BuildContext context, Box<DisplaySettings> box, _) {
+        // --- Widget creation dependent on settings ---
+        // These are now inside the builder to be reconstructed on change.
+
+        // Retrieve the selected animation names from user settings.
+        final String placeEffectName =
+            DB().displaySettings.placeEffectAnimation;
+        final String removeEffectName =
+            DB().displaySettings.removeEffectAnimation;
+
+        // Use the map to get the corresponding animation instances.
+        final PieceEffectAnimation placeEffectAnimation =
+            animationMap[placeEffectName]?.call() ??
+                RadialPieceEffectAnimation();
+
+        final PieceEffectAnimation removeEffectAnimation =
+            animationMap[removeEffectName]?.call() ??
+                ExplodePieceEffectAnimation();
+
+        final AnimatedBuilder customPaint = AnimatedBuilder(
+          key: const Key('animated_builder_custom_paint'),
+          animation: Listenable.merge(<Animation<double>>[
+            animationManager.placeAnimationController,
+            animationManager.moveAnimationController,
+            animationManager.removeAnimationController,
+          ]),
+          builder: (_, Widget? child) {
+            return FutureBuilder<GameImages>(
+              key: const Key('future_builder_game_images'),
+              future: gameImagesFuture,
+              builder:
+                  (BuildContext context, AsyncSnapshot<GameImages> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    key: Key('center_loading'),
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  // Handle errors appropriately
+                  return const Center(
+                    key: Key('center_error'),
+                    child: Text('Error loading images'),
+                  );
+                } else {
+                  final GameImages? gameImages = snapshot.data;
+                  return SizedBox.expand(
+                    key: const Key('sized_box_expand_custom_paint'),
+                    child: CustomPaint(
+                      key: const Key('custom_paint_board_painter'),
+                      // Pass the resolved ui.Image? to BoardPainter
+                      painter: BoardPainter(context, gameImages?.boardImage),
+                      foregroundPainter: PiecePainter(
+                        placeAnimationValue:
+                            animationManager.placeAnimation.value,
+                        moveAnimationValue:
+                            animationManager.moveAnimation.value,
+                        removeAnimationValue:
+                            animationManager.removeAnimation.value,
+                        pieceImages: <PieceColor, ui.Image?>{
+                          PieceColor.white: gameImages?.whitePieceImage,
+                          PieceColor.black: gameImages?.blackPieceImage,
+                          PieceColor.marked: gameImages?.markedPieceImage,
+                        },
+                        placeEffectAnimation: placeEffectAnimation,
+                        removeEffectAnimation: removeEffectAnimation,
+                      ),
+                      child: DB().generalSettings.screenReaderSupport
+                          ? const _BoardSemantics()
+                          : Semantics(
+                              key: const Key('semantics_screen_reader'),
+                              label:
+                                  S.of(context).youCanEnableScreenReaderSupport,
+                              container: true,
+                            ),
+                    ),
+                  );
+                }
+              },
+            );
+          },
+        );
+        // --- End of widget creation ---
+
         AppTheme.boardPadding =
             ((deviceWidth(context) - AppTheme.boardMargin * 2) *
                         DB().displaySettings.pieceWidth /

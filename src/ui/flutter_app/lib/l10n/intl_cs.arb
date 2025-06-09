@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Tímto resetujete všechny herní statistiky. Tuto akci nelze vrátit zpět.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Velikost vnitřního kroužku hrací desky",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Stín desky",
+  "@boardShadowEnabled": {}
 }

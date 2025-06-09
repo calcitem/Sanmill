@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Bu, bütün oyun statistikasını sıfırlayacaq. Bu əməliyyat geri qaytarıla bilməz.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Taxtanın daxili halqanın ölçüsü",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Taxta kölgəsi",
+  "@boardShadowEnabled": {}
 }

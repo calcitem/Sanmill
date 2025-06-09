@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Aceasta va reseta toate statisticile jocului. Această acțiune nu poate fi anulată.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Dimensiunea inelului interior al tablei",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Umbra tablei",
+  "@boardShadowEnabled": {}
 }

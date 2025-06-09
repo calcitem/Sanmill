@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Týmto sa resetujú všetky herné štatistiky. Túto akciu nie je možné vrátiť späť.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Veľkosť vnútorného prstenca dosky",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Tieň dosky",
+  "@boardShadowEnabled": {}
 }

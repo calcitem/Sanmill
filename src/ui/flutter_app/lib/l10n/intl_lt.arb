@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Tai nustatys visą žaidimų statistiką iš naujo. Šio veiksmo negalima anuliuoti.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Vidinio lentos žiedo dydis",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Lentos šešėlis",
+  "@boardShadowEnabled": {}
 }

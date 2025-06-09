@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ovo će poništiti svu statistiku igre. Ovu radnju nije moguće poništiti.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Veličina unutarnjeg prstena ploče",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Sjena ploče",
+  "@boardShadowEnabled": {}
 }

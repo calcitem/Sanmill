@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Þetta mun endurstilla alla leikjatölfræði. Ekki er hægt að afturkalla þessa aðgerð.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Stærð innri hrings borðsins",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Borðskuggi",
+  "@boardShadowEnabled": {}
 }

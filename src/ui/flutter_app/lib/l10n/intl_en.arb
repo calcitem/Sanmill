@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "This will reset all game statistics. This action cannot be undone.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Board inner ring size",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Board shadow",
+  "@boardShadowEnabled": {}
 }

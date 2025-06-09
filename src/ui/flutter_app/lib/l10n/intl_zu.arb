@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Lokhu kuzosetha kabusha zonke izibalo zomdlalo. Lesi senzo asinakuhlehliswa.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Usayizi wendandatho yangaphakathi yebhodi",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Umthunzi webhodi",
+  "@boardShadowEnabled": {}
 }

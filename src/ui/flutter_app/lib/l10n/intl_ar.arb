@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "سيؤدي هذا إلى إعادة تعيين جميع إحصائيات اللعبة. لا يمكن التراجع عن هذا الإجراء.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "حجم الحلقة الداخلية للوحة",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ظل اللوحة",
+  "@boardShadowEnabled": {}
 }

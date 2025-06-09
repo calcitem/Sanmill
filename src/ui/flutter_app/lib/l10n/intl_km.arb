@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "វានឹងកំណត់ស្ថិតិហ្គេមទាំងអស់ឡើងវិញ។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "ទំហំរង្វង់ខាងក្នុងបន្ទះ",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ស្រមោលផ្ទាំង",
+  "@boardShadowEnabled": {}
 }

@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Dadurch werden alle Spielstatistiken zurückgesetzt. Diese Aktion kann nicht rückgängig gemacht werden.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Größe des inneren Rings des Brettes",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Brettschatten",
+  "@boardShadowEnabled": {}
 }

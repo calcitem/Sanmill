@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Це скине всю статистику гри. Цю дію неможливо скасувати.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Розмір внутрішнього кільця дошки",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Тінь дошки",
+  "@boardShadowEnabled": {}
 }

@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ez visszaállítja az összes játékstatisztikát. Ez a művelet nem vonható vissza.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "A tábla belső gyűrűjének mérete",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Tábla árnyéka",
+  "@boardShadowEnabled": {}
 }

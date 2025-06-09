@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Αυτό θα επαναφέρει όλα τα στατιστικά του παιχνιδιού. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Μέγεθος του εσωτερικού δακτυλίου του ταμπλό",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Σκιά ταμπλό",
+  "@boardShadowEnabled": {}
 }

@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Esto restablecerá todas las estadísticas del juego. Esta acción no se puede deshacer.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Tamaño del anillo interior del tablero",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Sombra del tablero",
+  "@boardShadowEnabled": {}
 }

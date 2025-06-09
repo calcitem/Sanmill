@@ -74,12 +74,20 @@ class BoardPainter extends CustomPainter {
 
   void _drawBackground(Canvas canvas, Size size, ColorSettings colorSettings) {
     final Paint paint = Paint();
+    final double cornerRadius = DB().displaySettings.boardCornerRadius;
+    final bool shadowEnabled = DB().displaySettings.boardShadowEnabled;
 
+    // If enabled, draw a drop shadow beneath the board to give it a 3D effect.
+    if (shadowEnabled) {
+      _drawBoardShadow(canvas, size, cornerRadius);
+    }
+
+    // Draw the main board surface (color or image) on top of the shadow.
     if (backgroundImage != null) {
       canvas.clipRRect(
         RRect.fromRectAndRadius(
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          Radius.circular(DB().displaySettings.boardCornerRadius),
+          Radius.circular(cornerRadius),
         ),
       );
       canvas.drawImageRect(
@@ -94,11 +102,26 @@ class BoardPainter extends CustomPainter {
       canvas.drawRRect(
         RRect.fromRectAndRadius(
           Rect.fromPoints(Offset.zero, Offset(size.width, size.height)),
-          Radius.circular(DB().displaySettings.boardCornerRadius),
+          Radius.circular(cornerRadius),
         ),
         paint,
       );
     }
+  }
+
+  /// Draw a single, softer, blurred drop shadow to create depth below the board.
+  /// The shadow is offset to the right and bottom to simulate a light source
+  /// from the top-left.
+  void _drawBoardShadow(Canvas canvas, Size size, double cornerRadius) {
+    final Paint shadowPaint = Paint()
+      ..color = Colors.black.withValues(alpha: 0.25)
+      ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 10.0);
+
+    final RRect shadowRect = RRect.fromRectAndRadius(
+      Rect.fromLTWH(5, 5, size.width, size.height),
+      Radius.circular(cornerRadius),
+    );
+    canvas.drawRRect(shadowRect, shadowPaint);
   }
 
   void _drawLines(List<Offset> offset, Canvas canvas, Paint paint, Size size) {
@@ -460,5 +483,9 @@ class BoardPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant BoardPainter oldDelegate) {
+    // Always repaint to reflect dynamic appearance settings such as shadow toggle,
+    // inner-ring scaling, line widths, etc. Board is lightweight enough for this.
+    return true;
+  }
 }

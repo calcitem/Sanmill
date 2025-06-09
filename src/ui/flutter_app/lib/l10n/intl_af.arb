@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Dit sal alle speletjiestatistieke terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Binne-ringgrootte van die bord",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bordskadu",
+  "@boardShadowEnabled": {}
 }

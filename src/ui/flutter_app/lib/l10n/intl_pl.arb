@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Spowoduje to zresetowanie wszystkich statystyk gry. Tej czynności nie można cofnąć.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Rozmiar wewnętrznego pierścienia planszy",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Cień planszy",
+  "@boardShadowEnabled": {}
 }

@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ini akan menyetel ulang semua statistik game. Tindakan ini tidak dapat diurungkan.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Ukuran cincin dalam papan",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bayangan papan",
+  "@boardShadowEnabled": {}
 }

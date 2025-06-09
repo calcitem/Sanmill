@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ini akan menetapkan semula semua statistik permainan. Tindakan ini tidak boleh dibuat asal.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Saiz gelang dalam papan",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bayang papan",
+  "@boardShadowEnabled": {}
 }

@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "මෙය සියලුම ක්‍රීඩා සංඛ්‍යාලේඛන නැවත සකසනු ඇත. මෙම ක්‍රියාව අහෝසි කළ නොහැක.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "පුවරුවේ අභ්‍යන්තර වළල්ලේ ප්‍රමාණය",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "පුවරුවේ හෙවනැල්ල",
+  "@boardShadowEnabled": {}
 }

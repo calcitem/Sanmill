@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "See lähtestab kogu mängustatistika. Seda toimingut ei saa tagasi võtta.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Laua sisemise rõnga suurus",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Laua vari",
+  "@boardShadowEnabled": {}
 }

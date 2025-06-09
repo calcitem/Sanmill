@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "ይህ ሁሉንም የጨዋTA ስታቲስቲክስ ዳግም ያስጀምራል። ይህ እርምጃ ሊቀለበስ አይችልም።",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "የቦርዱ ውስጣዊ ቀለበት መጠን",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ሰሌዳ ጥላ",
+  "@boardShadowEnabled": {}
 }

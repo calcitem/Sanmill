@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Kjo do të rivendosë të gjitha statistikat e lojës. Ky veprim nuk mund të zhbëhet.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Madhësia e unazës së brendshme të tabelës",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Hija e tabelës",
+  "@boardShadowEnabled": {}
 }

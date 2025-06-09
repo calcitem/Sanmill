@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "S tem boste ponastavili vso statistiko igre. Tega dejanja ni mogoče razveljaviti.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Velikost notranjega obroča deske",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Senca plošče",
+  "@boardShadowEnabled": {}
 }

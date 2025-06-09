@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Dette vil tilbakestille all spillstatistikk. Denne handlingen kan ikke angres.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Størrelse på den indre ringen på brettet",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Brettskygge",
+  "@boardShadowEnabled": {}
 }

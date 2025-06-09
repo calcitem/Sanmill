@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "ఇది అన్ని ఆట గణాంకాలను రీసెట్ చేస్తుంది. ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "బోర్డు లోపలి రింగ్ పరిమాణం",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "బోర్డు నీడ",
+  "@boardShadowEnabled": {}
 }

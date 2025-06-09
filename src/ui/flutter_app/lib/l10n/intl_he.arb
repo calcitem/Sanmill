@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "פעולה זו תאפס את כל סטטיסטיקות המשחק. לא ניתן לבטל פעולה זו.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "גודל הטבעת הפנימית של הלוח",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "צל הלוח",
+  "@boardShadowEnabled": {}
 }

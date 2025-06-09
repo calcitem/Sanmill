@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Cela réinitialisera toutes les statistiques du jeu. Cette action est irréversible.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Taille de l'anneau intérieur du plateau",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Ombre du plateau",
+  "@boardShadowEnabled": {}
 }

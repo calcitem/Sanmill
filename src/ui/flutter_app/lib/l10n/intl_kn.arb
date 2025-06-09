@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "ಇದು ಎಲ್ಲಾ ಆಟದ ಅಂಕಿಅಂಶಗಳನ್ನು ಮರುಹೊಂದಿಸುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "ಬೋರ್ಡ್‌ನ ಆಂತರಿಕ ವೃತ್ತದ ಗಾತ್ರ",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ಬೋರ್ಡ್ ನೆರಳು",
+  "@boardShadowEnabled": {}
 }

@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Гэта скіне ўсю статыстыку гульні. Гэта дзеянне немагчыма адмяніць.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Памер унутранага кольца дошкі",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Цень дошкі",
+  "@boardShadowEnabled": {}
 }

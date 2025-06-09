@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Hiermee worden alle spelstatistieken gereset. Deze actie kan niet ongedaan worden gemaakt.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Grootte van de binnenring van het bord",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Bordschaduw",
+  "@boardShadowEnabled": {}
 }

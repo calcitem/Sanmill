@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "這將重設所有遊戲統計資料。此動作無法復原。",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "棋盤內圈大小",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "棋盤陰影",
+  "@boardShadowEnabled": {}
 }

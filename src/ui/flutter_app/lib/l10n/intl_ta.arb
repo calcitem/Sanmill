@@ -2063,5 +2063,7 @@
   "thisWillResetAllGameStatistics": "இது அனைத்து விளையாட்டு புள்ளிவிவரங்களையும் மீட்டமைக்கும். இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "பலகையின் உள் வளையத்தின் அளவு",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "பலகை நிழல்",
+  "@boardShadowEnabled": {}
 }

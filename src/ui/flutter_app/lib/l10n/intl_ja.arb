@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "これにより、すべてのゲーム統計がリセットされます。この操作は元に戻せません。",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "盤の内側リングのサイズ",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "ボードの影",
+  "@boardShadowEnabled": {}
 }

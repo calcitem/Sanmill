@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Hii itaweka upya takwimu zote za mchezo. Kitendo hiki hakiwezi kutenduliwa.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Ukubwa wa pete ya ndani ya ubao",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Kivuli cha ubao",
+  "@boardShadowEnabled": {}
 }

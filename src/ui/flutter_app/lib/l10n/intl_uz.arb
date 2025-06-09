@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Bu barcha o'yin statistikasini tiklaydi. Bu amalni bekor qilib bo'lmaydi.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Taxtaning ichki halqa o'lchami",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Taxta soyasi",
+  "@boardShadowEnabled": {}
 }

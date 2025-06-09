@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Tämä nollaa kaikki pelitilastot. Toimintoa ei voi kumota.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Laudan sisemmän renkaan koko",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Laudan varjo",
+  "@boardShadowEnabled": {}
 }

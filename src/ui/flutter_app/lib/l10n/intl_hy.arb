@@ -2064,5 +2064,7 @@
   "thisWillResetAllGameStatistics": "Սա կվերականգնի խաղի ամբողջ վիճակագրությունը։ Այս գործողությունը հնարավոր չէ հետարկել։",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Տախտակի ներքին օղակի չափը",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Տախտակի ստվեր",
+  "@boardShadowEnabled": {}
 }

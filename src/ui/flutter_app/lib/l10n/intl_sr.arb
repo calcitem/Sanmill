@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Ово ће ресетовати сву статистику игре. Ова радња се не може опозвати.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Величина унутрашњег прстена табле",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Сенка табле",
+  "@boardShadowEnabled": {}
 }

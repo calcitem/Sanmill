@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "এটি সমস্ত খেলার পরিসংখ্যান রিসেট করবে। এই ক্রিয়াটি আর ফেরানো যাবে না।",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "বোর্ডের অভ্যন্তরীণ বৃত্তের আকার",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "বোর্ডের ছায়া",
+  "@boardShadowEnabled": {}
 }

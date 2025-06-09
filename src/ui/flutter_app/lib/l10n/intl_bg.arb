@@ -1963,5 +1963,7 @@
   "thisWillResetAllGameStatistics": "Това ще нулира цялата статистика на играта. Това действие не може да бъде отменено.",
   "@thisWillResetAllGameStatistics": {},
   "boardInnerRingSize": "Размер на вътрешния пръстен на дъската",
-  "@boardInnerRingSize": {}
+  "@boardInnerRingSize": {},
+  "boardShadowEnabled": "Сянка на дъската",
+  "@boardShadowEnabled": {}
 }
