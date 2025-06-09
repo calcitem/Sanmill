@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "활성화하면 게임 결과가 통계에 기록됩니다. 단, 무르기가 포함된 게임은 기록되지 않습니다. 비활성화하면 통계 수집이 일시 중지됩니다.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "이렇게 하면 모든 게임 통계가 초기화됩니다. 이 작업은 취소할 수 없습니다.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "보드 내부 링 크기",
+  "@boardInnerRingSize": {}
 }

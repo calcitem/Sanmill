@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kad iespējots, spēļu rezultāti tiks reģistrēti statistikā. Tomēr spēles, kas ietver gājienu atcelšanu, netiks reģistrētas. Kad atspējots, statistikas vākšana tiek apturēta.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Tiks atiestatīta visa spēļu statistika. Šo darbību nevar atsaukt.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Dēļa iekšējā gredzena izmērs",
+  "@boardInnerRingSize": {}
 }

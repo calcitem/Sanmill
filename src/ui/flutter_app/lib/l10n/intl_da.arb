@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Når det er aktiveret, vil spilresultater blive registreret i statistikken. Spil, der involverer tilbagetrækninger, vil dog ikke blive registreret. Når det er deaktiveret, sættes statistikindsamlingen på pause.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Dette nulstiller al spilstatistik. Denne handling kan ikke fortrydes.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Størrelse på den indre ring på brættet",
+  "@boardInnerRingSize": {}
 }

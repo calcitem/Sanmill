@@ -922,7 +922,8 @@ class _AnnotationOverlayState extends State<AnnotationOverlay> {
     Offset bestBoardLocal = boardLocalTap;
     double minDistance = double.infinity;
     for (final Offset boardLogicalPoint in points) {
-      final Offset candidate = offsetFromPoint(boardLogicalPoint, boardSize);
+      final Offset candidate =
+          offsetFromPointWithInnerSize(boardLogicalPoint, boardSize);
       final double dist = (candidate - boardLocalTap).distance;
       if (dist < minDistance) {
         minDistance = dist;

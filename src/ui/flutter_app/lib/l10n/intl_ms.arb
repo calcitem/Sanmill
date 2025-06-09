@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Apabila didayakan, keputusan permainan akan direkodkan dalam statistik. Walau bagaimanapun, permainan yang melibatkan pembatalan langkah tidak akan direkodkan. Apabila dilumpuhkan, pengumpulan statistik dijeda.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ini akan menetapkan semula semua statistik permainan. Tindakan ini tidak boleh dibuat asal.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Saiz gelang dalam papan",
+  "@boardInnerRingSize": {}
 }

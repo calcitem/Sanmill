@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kui see on lubatud, salvestatakse mängutulemused statistikasse. Tagasivõtmisi sisaldavaid mänge aga ei salvestata. Kui see on keelatud, peatatakse statistika kogumine.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "See lähtestab kogu mängustatistika. Seda toimingut ei saa tagasi võtta.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Laua sisemise rõnga suurus",
+  "@boardInnerRingSize": {}
 }

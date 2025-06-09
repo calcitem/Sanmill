@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "འགོ་བཙུགས་ན་རྩེད་འབྲས་བསྡོམས་རྩིས་ནང་བཀོད་འཇུག་བྱེད་རྒྱུ་རེད། འོན་ཀྱང་ཕྱིར་འཐེན་བྱས་པའི་རྩེད་མོ་རྣམས་བཀོད་འཇུག་མི་བྱེད། གལ་ཏེ་སྤྱོད་མཚམས་བཞག་ན་བསྡོམས་རྩིས་བསྡུ་རུབ་བྱེད་མཚམས་འཇོག་རྒྱུ་རེད།",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "འདིས་རྩེད་མོའི་བསྡོམས་རྩིས་ཡོད་ཚད་སླར་སྒྲིག་བྱེད་རྒྱུ་རེད། བྱ་སྤྱོད་འདི་ཕྱིར་འཐེན་བྱེད་མི་ཐུབ།",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "སྒོ་སྦེལ་ནང་འཁོར་ཚད",
+  "@boardInnerRingSize": {}
 }

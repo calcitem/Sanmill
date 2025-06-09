@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "เมื่อเปิดใช้งาน ผลการแข่งขันจะถูกบันทึกในสถิติ อย่างไรก็ตาม เกมที่เกี่ยวข้องกับการย้อนกลับจะไม่ถูกบันทึก เมื่อปิดใช้งาน การเก็บสถิติจะหยุดชั่วคราว",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "การดำเนินการนี้จะรีเซ็ตสถิติเกมทั้งหมด การดำเนินการนี้ไม่สามารถยกเลิกได้",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "ขนาดวงแหวนด้านในของกระดาน",
+  "@boardInnerRingSize": {}
 }

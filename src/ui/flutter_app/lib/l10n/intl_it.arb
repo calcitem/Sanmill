@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Se abilitato, i risultati delle partite verranno registrati nelle statistiche. Tuttavia, le partite che comportano l'annullamento di mosse non verranno registrate. Se disabilitato, la raccolta delle statistiche viene sospesa.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Questo reimposterà tutte le statistiche di gioco. Questa azione non può essere annullata.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Dimensione dell'anello interno della tavola",
+  "@boardInnerRingSize": {}
 }

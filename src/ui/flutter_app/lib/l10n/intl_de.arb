@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Wenn aktiviert, werden Spielergebnisse in den Statistiken erfasst. Spiele mit Zugrücknahmen werden jedoch nicht erfasst. Wenn deaktiviert, wird die Erfassung von Statistiken angehalten.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Dadurch werden alle Spielstatistiken zurückgesetzt. Diese Aktion kann nicht rückgängig gemacht werden.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Größe des inneren Rings des Brettes",
+  "@boardInnerRingSize": {}
 }

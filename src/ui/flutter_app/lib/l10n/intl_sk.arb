@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Ak je povolené, výsledky hier sa budú zaznamenávať do štatistík. Hry zahŕňajúce vrátenie ťahu sa však nebudú zaznamenávať. Ak je zakázané, zhromažďovanie štatistík je pozastavené.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Týmto sa resetujú všetky herné štatistiky. Túto akciu nie je možné vrátiť späť.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Veľkosť vnútorného prstenca dosky",
+  "@boardInnerRingSize": {}
 }

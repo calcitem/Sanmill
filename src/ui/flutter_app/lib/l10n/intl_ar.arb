@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "عند التمكين، سيتم تسجيل نتائج اللعبة في الإحصائيات. ومع ذلك، لن يتم تسجيل الألعاب التي تتضمن عمليات تراجع. عند التعطيل، يتم إيقاف جمع الإحصائيات مؤقتًا.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "سيؤدي هذا إلى إعادة تعيين جميع إحصائيات اللعبة. لا يمكن التراجع عن هذا الإجراء.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "حجم الحلقة الداخلية للوحة",
+  "@boardInnerRingSize": {}
 }

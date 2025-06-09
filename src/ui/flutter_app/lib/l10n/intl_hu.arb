@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Engedélyezés esetén a játékeredmények rögzítésre kerülnek a statisztikában. A visszalépést tartalmazó játékok azonban nem kerülnek rögzítésre. Letiltás esetén a statisztikagyűjtés szünetel.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ez visszaállítja az összes játékstatisztikát. Ez a művelet nem vonható vissza.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "A tábla belső gyűrűjének mérete",
+  "@boardInnerRingSize": {}
 }

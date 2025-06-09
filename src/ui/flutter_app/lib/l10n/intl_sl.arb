@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Ko je omogočeno, se bodo rezultati iger beležili v statistiki. Vendar pa se igre, ki vključujejo vračanje potez, ne bodo beležile. Ko je onemogočeno, je zbiranje statistike začasno ustavljeno.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "S tem boste ponastavili vso statistiko igre. Tega dejanja ni mogoče razveljaviti.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Velikost notranjega obroča deske",
+  "@boardInnerRingSize": {}
 }

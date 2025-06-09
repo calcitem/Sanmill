@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Khi được bật, kết quả trò chơi sẽ được ghi lại trong thống kê. Tuy nhiên, các trò chơi liên quan đến việc đi lại nước cờ sẽ không được ghi lại. Khi bị tắt, việc thu thập thống kê sẽ bị tạm dừng.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Thao tác này sẽ đặt lại tất cả thống kê trò chơi. Không thể hoàn tác thao tác này.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Kích thước vòng trong của bàn cờ",
+  "@boardInnerRingSize": {}
 }

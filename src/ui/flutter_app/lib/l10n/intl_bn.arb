@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "সক্রিয় করা হলে, খেলার ফলাফল পরিসংখ্যানে রেকর্ড করা হবে। তবে, টেক-ব্যাক জড়িত গেমগুলি রেকর্ড করা হবে না। নিষ্ক্রিয় করা হলে, পরিসংখ্যান সংগ্রহ সাময়িকভাবে বন্ধ হয়ে যায়।",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "এটি সমস্ত খেলার পরিসংখ্যান রিসেট করবে। এই ক্রিয়াটি আর ফেরানো যাবে না।",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "বোর্ডের অভ্যন্তরীণ বৃত্তের আকার",
+  "@boardInnerRingSize": {}
 }

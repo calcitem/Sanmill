@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Indien ingeschakeld, worden spelresultaten vastgelegd in de statistieken. Spellen waarbij zetten worden teruggenomen, worden echter niet vastgelegd. Indien uitgeschakeld, wordt het verzamelen van statistieken gepauzeerd.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Hiermee worden alle spelstatistieken gereset. Deze actie kan niet ongedaan worden gemaakt.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Grootte van de binnenring van het bord",
+  "@boardInnerRingSize": {}
 }

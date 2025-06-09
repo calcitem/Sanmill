@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Þegar virkjað er verða niðurstöður leikja skráðar í tölfræði. Leikir sem fela í sér að taka til baka leiki verða þó ekki skráðir. Þegar óvirkjað er er söfnun tölfræðinnar í bið.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Þetta mun endurstilla alla leikjatölfræði. Ekki er hægt að afturkalla þessa aðgerð.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Stærð innri hrings borðsins",
+  "@boardInnerRingSize": {}
 }

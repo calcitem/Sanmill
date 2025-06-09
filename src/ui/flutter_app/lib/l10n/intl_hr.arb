@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kada je omogućeno, rezultati igre bilježit će se u statistici. Međutim, igre koje uključuju vraćanje poteza neće se bilježiti. Kada je onemogućeno, prikupljanje statistike je pauzirano.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ovo će poništiti svu statistiku igre. Ovu radnju nije moguće poništiti.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Veličina unutarnjeg prstena ploče",
+  "@boardInnerRingSize": {}
 }

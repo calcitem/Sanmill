@@ -28,8 +28,9 @@ class BoardPainter extends CustomPainter {
     _drawBackground(canvas, size, colorSettings);
     _drawOptionalElements(canvas, size, position);
 
-    final List<Offset> offset =
-        points.map((Offset e) => offsetFromPoint(e, size)).toList();
+    final List<Offset> offset = points
+        .map((Offset e) => offsetFromPointWithInnerSize(e, size))
+        .toList();
     _drawLines(offset, canvas, paint, size);
     _drawPoints(offset, canvas, paint);
     _drawMillLines(offset, canvas, paint, size);
@@ -395,8 +396,9 @@ class BoardPainter extends CustomPainter {
     const double dashLength = 10.0;
     const double spaceLength = 5.0;
 
-    final List<Offset> offset =
-        points.map((Offset e) => offsetFromPoint2(e, size)).toList();
+    final List<Offset> offset = points
+        .map((Offset e) => offsetFromPointWithInnerSize(e, size))
+        .toList();
 
     _drawDashedRect(canvas, Rect.fromPoints(offset[0], offset[23]), colors,
         strokeWidth, dashLength, spaceLength);

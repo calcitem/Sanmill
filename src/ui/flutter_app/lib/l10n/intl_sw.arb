@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Ikiwashwa, matokeo ya mchezo yatarekodiwa katika takwimu. Hata hivyo, michezo inayohusisha kurejesha nyuma haitarekodiwa. Ikiwa imezimwa, ukusanyaji wa takwimu umesitishwa.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Hii itaweka upya takwimu zote za mchezo. Kitendo hiki hakiwezi kutenduliwa.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Ukubwa wa pete ya ndani ya ubao",
+  "@boardInnerRingSize": {}
 }

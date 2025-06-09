@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kun tämä on käytössä, pelitulokset tallennetaan tilastoihin. Siirtojen peruutuksia sisältäviä pelejä ei kuitenkaan tallenneta. Kun tämä ei ole käytössä, tilastojen kerääminen keskeytetään.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Tämä nollaa kaikki pelitilastot. Toimintoa ei voi kumota.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Laudan sisemmän renkaan koko",
+  "@boardInnerRingSize": {}
 }

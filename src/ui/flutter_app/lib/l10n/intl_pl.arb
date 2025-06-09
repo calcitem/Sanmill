@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Gdy włączone, wyniki gier będą zapisywane w statystykach. Jednak gry obejmujące cofanie ruchów nie będą zapisywane. Gdy wyłączone, zbieranie statystyk jest wstrzymane.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Spowoduje to zresetowanie wszystkich statystyk gry. Tej czynności nie można cofnąć.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Rozmiar wewnętrznego pierścienia planszy",
+  "@boardInnerRingSize": {}
 }

@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Когато е активирано, резултатите от игрите ще се записват в статистиката. Игрите, включващи връщане на ходове, обаче няма да се записват. Когато е деактивирано, събирането на статистика е на пауза.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Това ще нулира цялата статистика на играта. Това действие не може да бъде отменено.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Размер на вътрешния пръстен на дъската",
+  "@boardInnerRingSize": {}
 }

@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Wanneer geaktiveer, sal speletjie-uitslae in statistieke aangeteken word. Speletjies wat terugnames behels, sal egter nie aangeteken word nie. Wanneer gedeaktiveer, word die insameling van statistieke onderbreek.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Dit sal alle speletjiestatistieke terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Binne-ringgrootte van die bord",
+  "@boardInnerRingSize": {}
 }

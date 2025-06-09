@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Quan estigui activat, els resultats de les partides es registraran a les estadístiques. No obstant això, les partides que impliquin retrocessos no es registraran. Quan estigui desactivat, la recollida d'estadístiques s'atura.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Això restablirà totes les estadístiques del joc. Aquesta acció no es pot desfer.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Mida de l'anell interior del tauler",
+  "@boardInnerRingSize": {}
 }

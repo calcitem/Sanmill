@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "در صورت فعال بودن، نتایج بازی در آمار ثبت می‌شود. با این حال، بازی‌هایی که شامل بازپس‌گیری حرکت هستند، ثبت نخواهند شد. در صورت غیرفعال بودن، جمع‌آوری آمار متوقف می‌شود.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "این کار تمام آمار بازی را بازنشانی می‌کند. این عمل قابل لغو نیست.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "اندازه حلقه داخلی صفحه",
+  "@boardInnerRingSize": {}
 }

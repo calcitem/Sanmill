@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Кога е овозможено, резултатите од играта ќе бидат евидентирани во статистиката. Сепак, игрите што вклучуваат враќање на потези нема да бидат евидентирани. Кога е оневозможено, собирањето статистика е паузирано.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ова ќе ја ресетира целата статистика на играта. Оваа акција не може да се врати.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Големина на внатрешниот прстен на таблата",
+  "@boardInnerRingSize": {}
 }

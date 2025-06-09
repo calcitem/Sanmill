@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Când este activat, rezultatele jocurilor vor fi înregistrate în statistici. Cu toate acestea, jocurile care implică retrageri de mutări nu vor fi înregistrate. Când este dezactivat, colectarea statisticilor este întreruptă.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Aceasta va reseta toate statisticile jocului. Această acțiune nu poate fi anulată.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Dimensiunea inelului interior al tablei",
+  "@boardInnerRingSize": {}
 }

@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "有効にすると、ゲーム結果が統計に記録されます。ただし、待ったを含むゲームは記録されません。無効にすると、統計の収集は一時停止されます。",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "これにより、すべてのゲーム統計がリセットされます。この操作は元に戻せません。",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "盤の内側リングのサイズ",
+  "@boardInnerRingSize": {}
 }

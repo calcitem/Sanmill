@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "啟用後，遊戲結果將記錄至統計資料中。然而，涉及悔棋的遊戲將不會被記錄。停用後，統計資料收集將暫停。",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "這將重設所有遊戲統計資料。此動作無法復原。",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "棋盤內圈大小",
+  "@boardInnerRingSize": {}
 }

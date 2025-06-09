@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Saat diaktifkan, hasil game akan dicatat dalam statistik. Namun, game yang melibatkan pengambilan kembali langkah tidak akan dicatat. Saat dinonaktifkan, pengumpulan statistik dijeda.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ini akan menyetel ulang semua statistik game. Tindakan ini tidak dapat diurungkan.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Ukuran cincin dalam papan",
+  "@boardInnerRingSize": {}
 }

@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Када је омогућено, резултати игре ће бити забележени у статистици. Међутим, игре које укључују враћање потеза неће бити забележене. Када је онемогућено, прикупљање статистике је паузирано.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Ово ће ресетовати сву статистику игре. Ова радња се не може опозвати.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Величина унутрашњег прстена табле",
+  "@boardInnerRingSize": {}
 }

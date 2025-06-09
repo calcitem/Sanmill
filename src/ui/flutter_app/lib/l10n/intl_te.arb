@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "ప్రారంభించినప్పుడు, ఆట ఫలితాలు గణాంకాలలో రికార్డ్ చేయబడతాయి. అయితే, టేక్-బ్యాక్‌లను కలిగి ఉన్న ఆటలు రికార్డ్ చేయబడవు. నిలిపివేసినప్పుడు, గణాంకాల సేకరణ పాజ్ చేయబడుతుంది.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "ఇది అన్ని ఆట గణాంకాలను రీసెట్ చేస్తుంది. ఈ చర్యను రద్దు చేయడం సాధ్యం కాదు.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "బోర్డు లోపలి రింగ్ పరిమాణం",
+  "@boardInnerRingSize": {}
 }

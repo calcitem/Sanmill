@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Wenn aktiviert, wärde Spielresultat i de Statistike erfasst. Spiel mit Zuggrücknahme wärde aber nöd erfasst. Wenn deaktiviert, wird d Erfassig vo Statistike pausiert.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Das setzt alli Spielstatistike zrugg. Die Aktion cha nöd rückgängig gmacht wärde.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Grösse des inneren Rings des Brettes",
+  "@boardInnerRingSize": {}
 }

@@ -34,7 +34,7 @@ double get boardMargin => AppTheme.boardPadding;
 Offset pointFromIndex(int index, Size size) {
   final double row = (index ~/ 7).toDouble();
   final double column = index % 7;
-  return offsetFromPoint(Offset(column, row), size);
+  return offsetFromPointWithInnerSize(Offset(column, row), size);
 }
 
 /// Calculates the index of the given point
@@ -52,17 +52,101 @@ Offset pointFromSquare(int square, Size size) {
 }
 
 /// Calculates the pressed point
+///
+/// Finds the nearest logical board point to the tap position taking the
+/// current inner-ring scaling into account. This guarantees correct hit
+/// detection even when the inner ring has been resized.
 Offset pointFromOffset(Offset offset, double dimension) {
-  final Offset point = (offset - Offset(boardMargin, boardMargin)) /
-      ((dimension - boardMargin * 2) / 6);
+  // Build a square Size as used for painting.
+  final Size size = Size(dimension, dimension);
 
-  return point.round();
+  // One grid unit in canvas coordinates (outer ring reference).
+  final double unitDistance = (dimension - boardMargin * 2) / 6;
+  // Accept taps roughly within half a unit distance from a point.
+  final double threshold = unitDistance * 0.5;
+
+  Offset? nearestPoint;
+  double nearestDistance = double.infinity;
+
+  // Iterate over all 24 logical points, compute their canvas position with the
+  // same scaling used for painting, then find the closest one.
+  for (final Offset gridPt in points) {
+    final Offset canvasPt = offsetFromPointWithInnerSize(gridPt, size);
+    final double dist = (offset - canvasPt).distance;
+    if (dist < nearestDistance) {
+      nearestDistance = dist;
+      nearestPoint = gridPt;
+    }
+  }
+
+  // If the tap is too far from any point, return an invalid value (e.g. Offset(-1,-1)).
+  if (nearestPoint == null || nearestDistance > threshold) {
+    return const Offset(-1, -1);
+  }
+
+  // Round to ensure integer grid coordinates.
+  return nearestPoint.round();
 }
 
 /// Calculates the offset for the given position
 Offset offsetFromPoint(Offset point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) +
     Offset(boardMargin, boardMargin);
+
+/// Calculates the offset for the given position with adjustable inner ring size
+/// This function ensures equal distance between outer-middle and middle-inner rings
+Offset offsetFromPointWithInnerSize(Offset point, Size size) {
+  // Inner ring size factor (distance from center relative to original inner distance which is 1 grid unit).
+  // Range: 1.0-1.5 with 0.05 step increments.
+  final double innerRingSize = DB().displaySettings.boardInnerRingSize;
+
+  // Center of the board in canvas coordinates.
+  final Offset center = Offset(size.width / 2, size.height / 2);
+  // One grid distance in canvas units.
+  final double unitDistance = (size.width - boardMargin * 2) / 6;
+
+  // Convert board point to canvas position using the default mapping (no scaling).
+  final Offset originalPos =
+      (point * unitDistance) + Offset(boardMargin, boardMargin);
+  final Offset vectorFromCenter = originalPos - center;
+
+  // Determine the ring index in the original 7×7 grid.
+  final int ringOriginal = (point.dx - 3).abs().toInt().clamp(0, 3) >
+          (point.dy - 3).abs().toInt().clamp(0, 3)
+      ? (point.dx - 3).abs().toInt()
+      : (point.dy - 3).abs().toInt();
+  // ringOriginal will be 0 (center), 1 (inner), 2 (middle) or 3 (outer).
+  if (ringOriginal == 0) {
+    // Center point (should not occur for valid board points) – return as-is.
+    return originalPos;
+  }
+
+  // Target radial lengths (in grid units) after scaling.
+  const double targetOuter = 3.0; // keep outer ring unchanged
+  final double targetInner = innerRingSize; // user-defined (1.0-1.5)
+  final double targetMiddle =
+      (targetOuter + targetInner) / 2.0; // ensure equal spacing
+
+  double targetLen;
+  switch (ringOriginal) {
+    case 1:
+      targetLen = targetInner;
+      break;
+    case 2:
+      targetLen = targetMiddle;
+      break;
+    case 3:
+    default:
+      targetLen = targetOuter;
+      break;
+  }
+
+  // Compute scale factor to convert original vector length (ringOriginal) to targetLen.
+  final double scaleFactor = targetLen / ringOriginal;
+  final Offset scaledVector = vectorFromCenter * scaleFactor;
+
+  return center + scaledVector;
+}
 
 Offset offsetFromPoint2(Offset point, Size size) =>
     (point * (size.width - boardMargin * 2) / 6) +

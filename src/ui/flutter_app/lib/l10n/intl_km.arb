@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "នៅពេលបើក លទ្ធផលហ្គេមនឹងត្រូវបានកត់ត្រាក្នុងស្ថិតិ។ ទោះយ៉ាងណាក៏ដោយ ហ្គេមដែលពាក់ព័ន្ធនឹងការដកថយនឹងមិនត្រូវបានកត់ត្រាទេ។ នៅពេលបិទ ការប្រមូលស្ថិតិត្រូវបានផ្អាក។",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "វានឹងកំណត់ស្ថិតិហ្គេមទាំងអស់ឡើងវិញ។ សកម្មភាពនេះមិនអាចមិនធ្វើវិញបានទេ។",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "ទំហំរង្វង់ខាងក្នុងបន្ទះ",
+  "@boardInnerRingSize": {}
 }

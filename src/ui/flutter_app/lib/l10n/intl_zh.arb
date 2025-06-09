@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "启用后，对局结果将记录到统计数据中。但是，有悔棋的对局结果除外。如禁用，统计数据收集将暂停。",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "将重置游戏所有统计数据。此操作无法撤销。",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "棋盘内圈大小",
+  "@boardInnerRingSize": {}
 }

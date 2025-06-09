@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Lorsque cette option est activée, les résultats des parties sont enregistrés dans les statistiques. Cependant, les parties impliquant des retours en arrière ne sont pas enregistrées. Lorsque cette option est désactivée, la collecte des statistiques est suspendue.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Cela réinitialisera toutes les statistiques du jeu. Cette action est irréversible.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Taille de l'anneau intérieur du plateau",
+  "@boardInnerRingSize": {}
 }

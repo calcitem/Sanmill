@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "જ્યારે સક્ષમ હોય, ત્યારે રમતના પરિણામો આંકડામાં રેકોર્ડ કરવામાં આવશે. જોકે, ટેક-બેકનો સમાવેશ કરતી રમતો રેકોર્ડ કરવામાં આવશે નહીં. જ્યારે અક્ષમ હોય, ત્યારે આંકડા સંગ્રહ થોભાવવામાં આવે છે.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "આ તમામ રમતના આંકડા રીસેટ કરશે. આ ક્રિયાને પૂર્વવત્ કરી શકાતી નથી.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "બોર્ડની અંદરની રિંગનું કદ",
+  "@boardInnerRingSize": {}
 }

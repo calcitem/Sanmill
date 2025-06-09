@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "ሲነቃ የጨዋታ ውጤቶች በስታቲስቲክስ ውስጥ ይመዘገባሉ። ሆኖም፣ ወደኋላ መመለስን የሚያካትቱ ጨዋታዎች አይመዘገቡም። ሲሰናከል የስታቲስቲክስ ስብስብ ይቆማል።",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "ይህ ሁሉንም የጨዋTA ስታቲስቲክስ ዳግም ያስጀምራል። ይህ እርምጃ ሊቀለበስ አይችልም።",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "የቦርዱ ውስጣዊ ቀለበት መጠን",
+  "@boardInnerRingSize": {}
 }

@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Yoqilganda, o'yin natijalari statistikada qayd etiladi. Biroq, orqaga qaytarishlar bilan bog'liq o'yinlar qayd etilmaydi. O'chirilganda, statistika yig'ish to'xtatiladi.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Bu barcha o'yin statistikasini tiklaydi. Bu amalni bekor qilib bo'lmaydi.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Taxtaning ichki halqa o'lchami",
+  "@boardInnerRingSize": {}
 }

@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Uma kunikwe amandla, imiphumela yomdlalo izorekhodwa ezibalweni. Nokho, imidlalo ehilela ukubuyisela emuva ngeke irekhodwe. Uma kukhutshaziwe, ukuqoqwa kwezibalo kuyamiswa.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Lokhu kuzosetha kabusha zonke izibalo zomdlalo. Lesi senzo asinakuhlehliswa.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Usayizi wendandatho yangaphakathi yebhodi",
+  "@boardInnerRingSize": {}
 }

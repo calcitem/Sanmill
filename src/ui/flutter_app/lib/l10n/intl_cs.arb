@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Pokud je povoleno, výsledky her se budou zaznamenávat do statistik. Hry zahrnující vrácení tahu se však zaznamenávat nebudou. Pokud je zakázáno, sběr statistik je pozastaven.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Tímto resetujete všechny herní statistiky. Tuto akci nelze vrátit zpět.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Velikost vnitřního kroužku hrací desky",
+  "@boardInnerRingSize": {}
 }

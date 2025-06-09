@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kai įjungta, žaidimų rezultatai bus įrašomi į statistiką. Tačiau žaidimai, kuriuose buvo atšauktų ėjimų, nebus įrašomi. Kai išjungta, statistikos rinkimas pristabdomas.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Tai nustatys visą žaidimų statistiką iš naujo. Šio veiksmo negalima anuliuoti.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Vidinio lentos žiedo dydis",
+  "@boardInnerRingSize": {}
 }

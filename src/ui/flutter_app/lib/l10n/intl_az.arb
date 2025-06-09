@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Aktivləşdirildikdə oyun nəticələri statistikada qeyd olunacaq. Lakin geri almaların olduğu oyunlar qeydə alınmayacaq. Deaktivləşdirildikdə statistika toplanması dayandırılır.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Bu, bütün oyun statistikasını sıfırlayacaq. Bu əməliyyat geri qaytarıla bilməz.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Taxtanın daxili halqanın ölçüsü",
+  "@boardInnerRingSize": {}
 }

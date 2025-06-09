@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "सक्षम होने पर, गेम के नतीजे आँकड़ों में दर्ज किए जाएँगे। हालाँकि, टेक-बैक वाले गेम दर्ज नहीं किए जाएँगे। अक्षम होने पर, आँकड़ों का संग्रह रोक दिया जाता है।",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "यह सभी गेम आँकड़ों को रीसेट कर देगा। यह कार्रवाई पूर्ववत नहीं की जा सकती।",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "बोर्ड की भीतरी रिंग का आकार",
+  "@boardInnerRingSize": {}
 }

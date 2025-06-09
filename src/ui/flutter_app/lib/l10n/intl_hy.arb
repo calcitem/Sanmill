@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Միացված լինելու դեպքում խաղի արդյունքները կարձանագրվեն վիճակագրության մեջ։ Սակայն հետքայլեր պարունակող խաղերը չեն արձանագրվի։ Անջատված լինելու դեպքում վիճակագրության հավաքագրումը կդադարեցվի։",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Սա կվերականգնի խաղի ամբողջ վիճակագրությունը։ Այս գործողությունը հնարավոր չէ հետարկել։",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Տախտակի ներքին օղակի չափը",
+  "@boardInnerRingSize": {}
 }

@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "When enabled, game results will be recorded in statistics. However, games involving take-backs will not be recorded. When disabled, statistics collection is paused.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "This will reset all game statistics. This action cannot be undone.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Board inner ring size",
+  "@boardInnerRingSize": {}
 }

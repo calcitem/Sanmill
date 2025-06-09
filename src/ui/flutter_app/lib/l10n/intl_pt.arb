@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Quando ativado, os resultados dos jogos serão registrados nas estatísticas. No entanto, jogos envolvendo retrocessos não serão registrados. Quando desativado, a coleta de estatísticas é pausada.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Isso redefinirá todas as estatísticas do jogo. Esta ação não pode ser desfeita.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Tamanho do anel interno do tabuleiro",
+  "@boardInnerRingSize": {}
 }

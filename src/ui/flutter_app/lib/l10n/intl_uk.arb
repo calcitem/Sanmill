@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Якщо ввімкнено, результати ігор записуватимуться в статистику. Однак ігри, що передбачають повернення ходів, не записуватимуться. Якщо вимкнено, збір статистики призупиняється.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Це скине всю статистику гри. Цю дію неможливо скасувати.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Розмір внутрішнього кільця дошки",
+  "@boardInnerRingSize": {}
 }

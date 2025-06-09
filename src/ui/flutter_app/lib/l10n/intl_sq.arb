@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Kur aktivizohet, rezultatet e lojërave do të regjistrohen në statistika. Megjithatë, lojërat që përfshijnë kthime pas nuk do të regjistrohen. Kur çaktivizohet, mbledhja e statistikave ndërpritet.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Kjo do të rivendosë të gjitha statistikat e lojës. Ky veprim nuk mund të zhbëhet.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Madhësia e unazës së brendshme të tabelës",
+  "@boardInnerRingSize": {}
 }

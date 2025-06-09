@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "සබල කළ විට, ක්‍රීඩා ප්‍රතිඵල සංඛ්‍යාලේඛනවල සටහන් වනු ඇත. කෙසේ වෙතත්, ආපසු ගැනීම් ඇතුළත් ක්‍රීඩා සටහන් නොවනු ඇත. අබල කළ විට, සංඛ්‍යාලේඛන එකතු කිරීම විරාම කරනු ලැබේ.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "මෙය සියලුම ක්‍රීඩා සංඛ්‍යාලේඛන නැවත සකසනු ඇත. මෙම ක්‍රියාව අහෝසි කළ නොහැක.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "පුවරුවේ අභ්‍යන්තර වළල්ලේ ප්‍රමාණය",
+  "@boardInnerRingSize": {}
 }

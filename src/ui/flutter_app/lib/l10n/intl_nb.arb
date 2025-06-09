@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Når aktivert, vil spillresultater bli registrert i statistikken. Spill som involverer tilbaketrekking av trekk vil imidlertid ikke bli registrert. Når deaktivert, pauses statistikkinnhentingen.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Dette vil tilbakestille all spillstatistikk. Denne handlingen kan ikke angres.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Størrelse på den indre ringen på brettet",
+  "@boardInnerRingSize": {}
 }

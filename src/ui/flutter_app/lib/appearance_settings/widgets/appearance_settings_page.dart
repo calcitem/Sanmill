@@ -44,6 +44,7 @@ part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dar
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_corner_radius_slider.dart';
+part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_ring_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart';
@@ -66,6 +67,11 @@ class AppearanceSettingsPage extends StatelessWidget {
   void setBoardInnerLineWidth(BuildContext context) => showModalBottomSheet(
         context: context,
         builder: (_) => const _BoardInnerLineWidthSlider(),
+      );
+
+  void setBoardInnerRingSize(BuildContext context) => showModalBottomSheet(
+        context: context,
+        builder: (_) => const _BoardInnerRingSizeSlider(),
       );
 
   void setPointPaintingStyle(
@@ -739,6 +745,12 @@ class AppearanceSettingsPage extends StatelessWidget {
               'display_settings_card_board_inner_line_width_settings_list_tile'),
           titleString: S.of(context).boardInnerLineWidth,
           onTap: () => setBoardInnerLineWidth(context),
+        ),
+        SettingsListTile(
+          key: const Key(
+              'display_settings_card_board_inner_ring_size_settings_list_tile'),
+          titleString: S.of(context).boardInnerRingSize,
+          onTap: () => setBoardInnerRingSize(context),
         ),
         SettingsListTile(
           key:

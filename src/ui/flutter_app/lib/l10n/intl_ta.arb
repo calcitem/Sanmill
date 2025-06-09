@@ -2061,5 +2061,7 @@
   "enableStatistics_Detail": "இயக்கப்பட்டால், விளையாட்டு முடிவுகள் புள்ளிவிவரங்களில் பதிவு செய்யப்படும். இருப்பினும், பின்வாங்கல்களை உள்ளடக்கிய விளையாட்டுகள் பதிவு செய்யப்படாது. முடக்கப்பட்டால், புள்ளிவிவர சேகரிப்பு இடைநிறுத்தப்படும்.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "இது அனைத்து விளையாட்டு புள்ளிவிவரங்களையும் மீட்டமைக்கும். இந்தச் செயலைச் செயல்தவிர்க்க முடியாது.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "பலகையின் உள் வளையத்தின் அளவு",
+  "@boardInnerRingSize": {}
 }

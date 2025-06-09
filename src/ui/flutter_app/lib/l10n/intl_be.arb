@@ -2062,5 +2062,7 @@
   "enableStatistics_Detail": "Калі ўключана, вынікі гульняў будуць запісвацца ў статыстыку. Аднак гульні, якія ўключаюць вяртанне хадоў, не будуць запісвацца. Калі адключана, збор статыстыкі прыпыняецца.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Гэта скіне ўсю статыстыку гульні. Гэта дзеянне немагчыма адмяніць.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Памер унутранага кольца дошкі",
+  "@boardInnerRingSize": {}
 }

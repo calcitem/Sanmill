@@ -1961,5 +1961,7 @@
   "enableStatistics_Detail": "Etkinleştirildiğinde, oyun sonuçları istatistiklere kaydedilecektir. Ancak, geri alma içeren oyunlar kaydedilmeyecektir. Devre dışı bırakıldığında, istatistik toplama duraklatılır.",
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Bu, tüm oyun istatistiklerini sıfırlayacaktır. Bu işlem geri alınamaz.",
-  "@thisWillResetAllGameStatistics": {}
+  "@thisWillResetAllGameStatistics": {},
+  "boardInnerRingSize": "Tahtanın iç halka boyutu",
+  "@boardInnerRingSize": {}
 }
