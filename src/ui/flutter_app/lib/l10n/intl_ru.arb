@@ -56,7 +56,7 @@
   "@moveList": {
     "description": "Move list"
   },
-  "noGameRecord": "Нет записи",
+  "noGameRecord": "Нет записей",
   "@noGameRecord": {
     "description": "No record"
   },
