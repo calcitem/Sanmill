@@ -1207,7 +1207,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "{العدد، جمع، =0{لم يضع اللاعب الحالي أي قطع}. =1={اللاعب الحالي وضع قطعة واحدة.} أخرى{اللاعب الحالي وضع {count} قطعة.}}",
+  "hasPlacedPieceCount": "{count, plural, =0{لم يضع اللاعب الحالي أي قطعة} =1{وضع اللاعب الحالي قطعة واحدة} other{وضع اللاعب الحالي {count} قطعة}}",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
