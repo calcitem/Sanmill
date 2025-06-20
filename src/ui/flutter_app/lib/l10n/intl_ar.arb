@@ -40,7 +40,7 @@
   "@humanVsLAN": {
     "description": "Human Vs LAN"
   },
-  "testViaLAN": "اختبار عبر LAN",
+  "testViaLAN": "اختبار عبر الشبكة المحلية",
   "@testViaLAN": {
     "description": "Test Via LAN"
   },
@@ -136,11 +136,11 @@
   "@tipCannotMoveOpponentsPieces": {
     "description": "You can't move your opponent's pieces."
   },
-  "tipSelectPieceToMove": "حدد قطعتك لنقلها.",
+  "tipSelectPieceToMove": "حدد قطعتك لتحريكها.",
   "@tipSelectPieceToMove": {
     "description": "Select your piece to move."
   },
-  "tipHaveThreePiecesLeft": "لديك 3 قطع متبقية.",
+  "tipHaveThreePiecesLeft": "لديك ٣ قطع متبقية.",
   "@tipHaveThreePiecesLeft": {
     "description": "You have 3 pieces left."
   },
@@ -148,15 +148,15 @@
   "@tipCanMoveToAnyPoint": {
     "description": "You can move to any point you like."
   },
-  "tipToMove": "دور {player}",
+  "tipToMove": "دور {player}.",
   "@tipToMove": {
     "description": " to move."
   },
-  "whiteWin": "اللاعب 1 يفوز!",
+  "whiteWin": "اللاعب ١ يفوز!",
   "@whiteWin": {
     "description": "Player 1 wins!"
   },
-  "blackWin": "اللاعب 2 يفوز!",
+  "blackWin": "اللاعب ٢ يفوز!",
   "@blackWin": {
     "description": "Player 2 wins!"
   },
@@ -168,7 +168,7 @@
   "@lost": {
     "description": "Lost"
   },
-  "thinking": "يفكر…",
+  "thinking": "يفكر الرجاء الانتظار …",
   "@thinking": {
     "description": "Thinking..."
   },
@@ -212,7 +212,7 @@
   "@gameStarted": {
     "description": "Game started, please place"
   },
-  "analyzing": "جاري التحليل…",
+  "analyzing": "جارٍ التحليل…",
   "@analyzing": {
     "description": "Analyzing ..."
   },
@@ -224,15 +224,15 @@
   "@winRate": {
     "description": "Win Rate"
   },
-  "score": "نتيجة:",
+  "score": "النتيجة:",
   "@score": {
     "description": "Score"
   },
-  "white": "اللاعب 1",
+  "white": "اللاعب ١",
   "@white": {
     "description": "Player 1"
   },
-  "black": "اللاعب 2",
+  "black": "اللاعب ٢",
   "@black": {
     "description": "Player 2"
   },
@@ -240,7 +240,7 @@
   "@loseReasonlessThanThree": {
     "description": " piece count is less than three."
   },
-  "loseReasonResign": "استقال {player}.",
+  "loseReasonResign": "استسلم {player}.",
   "@loseReasonResign": {
     "description": " resign."
   },
@@ -304,11 +304,11 @@
   "@thanks": {
     "description": "Thanks"
   },
-  "settings": "إعدادات",
+  "settings": "الإعدادات",
   "@settings": {
     "description": "Settings"
   },
-  "options": "خيارات",
+  "options": "الخيارات",
   "@options": {
     "description": "Options"
   },
@@ -452,7 +452,7 @@
   "@mayFly": {
     "description": "Flying"
   },
-  "mayFly_Detail": "إذا كان لدى اللاعب ثلاث أو أربع قطع (قابلة للتكوين) فقط ، فيمكنه تحريك القطعة إلى أي نقطة حرة.",
+  "mayFly_Detail": "إذا كان لدى اللاعب ثلاث أو أربع قطع (قابلة لتخصيص) فقط ، فيمكنه تحريك القطعة إلى أي نقطة حرة.",
   "@mayFly_Detail": {
     "description": "If a player has only three or four (configurable) pieces left, she can move the piece to any free point."
   },
@@ -464,7 +464,7 @@
   "@nMoveRule_Detail": {
     "description": "The game is drawn if there has been no removal in a specific number of moves by each player."
   },
-  "rollback": "تراجع",
+  "rollback": "عودة",
   "@rollback": {
     "description": "Rollback"
   },
@@ -516,11 +516,11 @@
   "@lineColor": {
     "description": "Board line color"
   },
-  "whitePieceColor": "لون قطعة اللاعب 1",
+  "whitePieceColor": "لون قطعة اللاعب ١",
   "@whitePieceColor": {
     "description": "Player 1 piece color"
   },
-  "blackPieceColor": "لون قطعة اللاعب 2",
+  "blackPieceColor": "لون قطعة اللاعب ٢",
   "@blackPieceColor": {
     "description": "Player 2 piece color"
   },
@@ -588,11 +588,11 @@
   "@player": {
     "description": "player"
   },
-  "player1": "اللاعب 1",
+  "player1": "اللاعب ١",
   "@player1": {
     "description": "Player 1"
   },
-  "player2": "اللاعب 2",
+  "player2": "اللاعب ٢",
   "@player2": {
     "description": "Player 2"
   },
@@ -644,7 +644,7 @@
   "@privacyPolicy": {
     "description": "Privacy Policy"
   },
-  "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه ",
+  "privacyPolicy_Detail_1": "يرجى القراءة بعناية والتأكد من فهمك التام لهذا الأمر والموافقة عليه. ",
   "@privacyPolicy_Detail_1": {
     "description": "Privacy Policy Detail 1"
   },
@@ -718,7 +718,7 @@
   "@versionInfo": {
     "description": "Version info"
   },
-  "eula": "EULA",
+  "eula": "اتفاقية المستخدم النهائي",
   "@eula": {
     "description": "EULA"
   },
@@ -746,7 +746,7 @@
   "@placing": {
     "description": "Placing"
   },
-  "moving": "الحركة",
+  "moving": "تحريك",
   "@moving": {
     "description": "Moving"
   },
@@ -830,7 +830,7 @@
   "@ossLicenses": {
     "description": "Open source licenses"
   },
-  "language": "لغة",
+  "language": "اللغة",
   "@language": {
     "description": "Languages"
   },
@@ -958,7 +958,7 @@
   "@showArrows": {
     "description": "Show arrows"
   },
-  "pieces": "قطع",
+  "pieces": "القطع",
   "@pieces": {
     "description": "Pieces"
   },
@@ -1207,7 +1207,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "وضع اللاعب الحالي {count,plural, =1{قطعة واحدة}two{قطعتين}few{{count} قطع}many{{count} قطعة}other{{count} قطع}}.",
+  "hasPlacedPieceCount": "{العدد، جمع، =0{لم يضع اللاعب الحالي أي قطع}. =1={اللاعب الحالي وضع قطعة واحدة.} أخرى{اللاعب الحالي وضع {count} قطعة.}}",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
@@ -1250,17 +1250,17 @@
   "@forest": {},
   "desktopImage": "صورة سطح المكتب",
   "@desktopImage": {},
-  "invalidPosition": "وضع غير صالح",
+  "invalidPosition": "وضع غير صالح.",
   "@invalidPosition": {},
-  "shareGIF": "مشاركة GIF",
+  "shareGIF": "مشاركة صورة متحركة",
   "@shareGIF": {},
   "pixelRatio": "نسبة البكسل",
   "@pixelRatio": {},
-  "duration": "مدة",
+  "duration": "المدة",
   "@duration": {},
   "gameScreenRecorder": "مسجل شاشة اللعبة",
   "@gameScreenRecorder": {},
-  "previous": "سابق",
+  "previous": "السابق",
   "@previous": {},
   "next": "التالي",
   "@next": {},
@@ -1272,7 +1272,7 @@
   "@youCanModifyRules": {},
   "youCanUseMouseWheelInPicker": "يمكنك استخدام عجلة الماوس لتغيير القيمة في المنتقي.",
   "@youCanUseMouseWheelInPicker": {},
-  "noTimeLimitForThinking": "ضبط وقت التفكير بالذكاء الاصطناعي على 0 يعني أنه لا يوجد حد زمني للتفكير.",
+  "noTimeLimitForThinking": "ضبط وقت التفكير بالذكاء الاصطناعي على ٠ يعني أنه لا يوجد حد زمني للتفكير.",
   "@noTimeLimitForThinking": {},
   "whatIsMtdf": "MTD (f) هو شكل معدل من خوارزمية بحث alpha-beta التي تهدف إلى تحسين الكفاءة عن طريق إعادة استخدام نتائج البحث الوسيطة واستخدام تخمين أولي جيد لتضييق مساحة البحث.",
   "@whatIsMtdf": {},
@@ -1282,7 +1282,7 @@
   "@noteActualDifficultyLevelMayBeLimited": {},
   "whatIsPvs": "PVS (بحث التباين الرئيسي) عبارة عن خوارزمية بحث للعثور على أفضل حركة في موضع معين. إنه تحسين لخوارزمية ألفا بيتا ويستخدم عمليات بحث نافذة خالية أو صفرية لتأكيد أن الخطوة أسوأ أو ليست أسوأ من النتيجة الآمنة بالفعل من الاختلاف الرئيسي. يركز PVS على الحركات الواعدة ويتجنب عمليات البحث غير الضرورية للفروع دون المستوى الأمثل ، مما يساعد على تحسين كفاءة البحث.",
   "@whatIsPvs": {},
-  "whatIsAlphaBeta": "خوارزمية ألفا-بيتا هي خوارزمية بحث تُستخدم لإيجاد الحركة المثلى في الألعاب. تعتمد على مبدأ minimax وتستخدم قيمتين، ألفا و بيتا، لتقليم شجرة البحث، مما يقلل بشكل كبير من عدد العُقد التي تحتاج إلى تقييم ويزيد من كفاءة البحث.\n\nألفا: تمثل الحد الأدنى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتعظيم النتيجة تحقيقها حتى الآن خلال البحث.\nبيتا: تمثل الحد الأعلى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتقليل النتيجة تحقيقها حتى الآن خلال البحث.\n\nتساعد هذه الخوارزمية الكمبيوتر أو أي لاعب يستخدمها على اتخاذ قرارات لعب أكثر ذكاءً وفعالية من خلال استكشاف عدد أقل من الاحتمالات الممكنة.",
+  "whatIsAlphaBeta": "خوارزمية ألفا-بيتا هي خوارزمية بحث تُستخدم لإيجاد الحركة المثلى في الألعاب. تعتمد على مبدأ minimax وتستخدم قيمتين، ألفا و بيتا، لتقليم شجرة البحث، مما يقلل بشكل كبير من عدد العُقد التي تحتاج إلى تقييم ويزيد من كفاءة البحث.\nألفا: تمثل الحد الأدنى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتعظيم النتيجة تحقيقها حتى الآن خلال البحث.\nبيتا: تمثل الحد الأعلى للنتيجة المؤكدة التي يمكن للطرف الذي يسعى لتقليل النتيجة تحقيقها حتى الآن خلال البحث.\nتساعد هذه الخوارزمية الكمبيوتر أو أي لاعب يستخدمها على اتخاذ قرارات لعب أكثر ذكاءً وفعالية من خلال استكشاف عدد أقل من الاحتمالات الممكنة.",
   "@whatIsAlphaBeta": {},
   "drawOnTheHumanExperienceDetail": "وفقًا للتجربة البشرية ، إذا حاولت الفوز ، فسوف تخسر. بدلاً من ذلك ، استهدف أن يكون التعادل هدفك وتجنب خسارة اللعبة. راقب خصمك وجذبه برفق إلى وضع قد يخطئ فيه. عندما يظهرون ضعفًا ، اغتنم الفرصة وادفع برفق لتحقيق الفوز. بهذه الطريقة ، يمكنك الفوز باللعبة.",
   "@drawOnTheHumanExperienceDetail": {},
@@ -1322,7 +1322,7 @@
   "@changeSideToMove": {},
   "removeOpponentsPieceAndMakeNextMove": "قم بإزالة إحدى قطع الخصم وقم بالحركة التالية.",
   "@removeOpponentsPieceAndMakeNextMove": {},
-  "endWithStalemateDraw": "الانتهاء بتعادل بسبب الجمود",
+  "endWithStalemateDraw": "الانتهاء بتعادل بسبب الجمود.",
   "@endWithStalemateDraw": {},
   "removeOpponentsPieceAndChangeSideToMove": "قم بإزالة إحدى قطع الخصم وقم بتغيير الجانب المراد تحريكه.",
   "@removeOpponentsPieceAndChangeSideToMove": {},
@@ -1402,7 +1402,7 @@
   "@whenFormingMillsDuringPlacingPhase_Detail": {},
   "marked": "مُعلَم",
   "@marked": {},
-  "menu": "قائمة",
+  "menu": "القائمة",
   "@menu": {},
   "monochrome": "أحادي اللون",
   "@monochrome": {},
@@ -1420,7 +1420,7 @@
   "@analysisToolbarIconColor": {},
   "transformed": "تم التحويل.",
   "@transformed": {},
-  "cannotTransform": "لا يمكن التحويل",
+  "cannotTransform": "لا يمكن التحويل.",
   "@cannotTransform": {},
   "rotate": "دوران",
   "@rotate": {},
@@ -1488,7 +1488,7 @@
   "@removeEffectAnimation": {},
   "isToolbarAtBottom": "عرض شريط الأدوات في الأسفل",
   "@isToolbarAtBottom": {},
-  "boardCornerRadius": "نصف قطر زاوية اللوح",
+  "boardCornerRadius": "نصف قطر زاويا اللوح",
   "@boardCornerRadius": {},
   "useOpeningBook": "استخدم كتاب الافتتاح",
   "@useOpeningBook": {},
@@ -1522,7 +1522,7 @@
   "@daSanQi": {},
   "useOpeningBook_Detail": "دع الذكاء الاصطناعي يستخدم الافتتاحيات التي يستخدمها اللاعبون المحترفون في بداية اللعبة. ملاحظة: هذه الخاصية متاحة حاليًا لمجموعات قواعد محددة فقط.",
   "@useOpeningBook_Detail": {},
-  "showAdvantageGraph": "إظهار مخطط الميزة",
+  "showAdvantageGraph": "عرض الرسم البياني للمتميز",
   "@showAdvantageGraph": {},
   "advantageGraphHint": "سيتم رسم مخطط الأفضلية فقط بعد أن يقوم الذكاء الاصطناعي باللعب. لن يتم رسمه عندما يقوم اللاعب البشري باللعب.",
   "@advantageGraphHint": {},
@@ -1552,7 +1552,7 @@
   "@connectionRefusedTheServerMayBeDown": {},
   "discoverySuccessfulAwaitingConnection": "تم الاكتشاف بنجاح، في انتظار الاتصال...",
   "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "لا يوجد اتصال بشبكة LAN",
+  "noLanConnection": "لا يوجد اتصال بالشبكة المحلية",
   "@noLanConnection": {},
   "takeScreenshot": "التقاط لقطة شاشة",
   "@takeScreenshot": {},
@@ -1572,9 +1572,9 @@
   "@startHosting": {},
   "restartRequestRejected": "تم رفض طلب إعادة التشغيل.",
   "@restartRequestRejected": {},
-  "notConnectedToLanOpponent": "غير متصل بالخصم على شبكة LAN.",
+  "notConnectedToLanOpponent": "غير متصل بالخصم على الشبكة المحلية.",
   "@notConnectedToLanOpponent": {},
-  "llmPrompt": "مطالبة LLM",
+  "llmPrompt": "تعليمات LLM",
   "@llmPrompt": {},
   "gameRestarted": "تم إعادة تشغيل اللعبة.",
   "@gameRestarted": {},
@@ -1606,7 +1606,7 @@
   "@startedHostingGameWaitingForPlayersToJoin": {},
   "connectionTimedOutNetworkConnectionUnstable": "انتهت مهلة الاتصال، الشبكة غير مستقرة.",
   "@connectionTimedOutNetworkConnectionUnstable": {},
-  "noLlmPromptAvailable": "لا توجد مطالبة LLM متاحة.",
+  "noLlmPromptAvailable": "لا توجد تعليمات LLM متاحة.",
   "@noLlmPromptAvailable": {},
   "youResignedGameOver": "لقد استسلمت. انتهت اللعبة.",
   "@youResignedGameOver": {},
@@ -1616,7 +1616,7 @@
   "@confirmClear": {},
   "opponentSTurn": "دور الخصم.",
   "@opponentSTurn": {},
-  "waitingAClientConnection": "في انتظار اتصال عميل...",
+  "waitingAClientConnection": "في انتظار اتصال العميل...",
   "@waitingAClientConnection": {},
   "takeBackRequestWasRejectedOrFailed": "تم رفض طلب التراجع أو فشل.",
   "@takeBackRequestWasRejectedOrFailed": {},
@@ -1692,7 +1692,7 @@
   "@discover": {},
   "connect": "اتصل",
   "@connect": {},
-  "clientConnected": "تم اتصال العميل: {clientIp}:{clientPort}",
+  "clientConnected": "تم الإتصال بالعميل: {clientIp}:{clientPort}",
   "@clientConnected": {
     "placeholders": {
       "clientIp": {},
@@ -1722,7 +1722,7 @@
   "@gothicIce": {},
   "riceField": "حقول النيل",
   "@riceField": {},
-  "chinesePorcelain": "البورسلين الصيني",
+  "chinesePorcelain": "البورسلان الصيني",
   "@chinesePorcelain": {},
   "desertDusk": "غسق الصحراء",
   "@desertDusk": {},
@@ -1760,25 +1760,25 @@
   "@noTimeLimitForHumanMoves": {},
   "timeoutLoseWillBeApplied": "سيتم تطبيق خسارة المهلة للاعب البشري",
   "@timeoutLoseWillBeApplied": {},
-  "identifyingBoard": "جاري التعرف على لوحة اللعب...",
+  "identifyingBoard": "جارٍ التعرف على لوحة اللعب...",
   "@identifyingBoard": {},
-  "youCanEnterAnyModelName": "يمكنك إدخال أي اسم نموذج",
+  "youCanEnterAnyModelName": "يمكنك إدخال أي اسم نموذج.",
   "@youCanEnterAnyModelName": {},
   "boardPositionAppliedFenCopiedToClipboard": "تم تطبيق وضعية لوحة اللعب. تم نسخ FEN إلى الحافظة.",
   "@boardPositionAppliedFenCopiedToClipboard": {},
-  "suggestionTryTakingAClearerPictureOfTheBoard": "اقتراح: حاول التقاط صورة أوضح للوحة اللعب",
+  "suggestionTryTakingAClearerPictureOfTheBoard": "اقتراح: حاول التقاط صورة أوضح للوحة اللعب.",
   "@suggestionTryTakingAClearerPictureOfTheBoard": {},
-  "llmPromptTemplate": "قالب موجه LLM",
+  "llmPromptTemplate": "قالب تعليمات LLM",
   "@llmPromptTemplate": {},
-  "noValidBoardDetected": "لم يتم الكشف عن لوحة لعب صالحة",
+  "noValidBoardDetected": "لم يتم الكشف عن لوحة لعب صالحة.",
   "@noValidBoardDetected": {},
-  "selectingImageFromAlbum": "جاري اختيار صورة من الألبوم...",
+  "selectingImageFromAlbum": "جارٍ اختيار صورة من الألبوم...",
   "@selectingImageFromAlbum": {},
   "configurePromptTemplate": "تكوين قالب الموجه",
   "@configurePromptTemplate": {},
   "editPromptTemplateForLlmAnalysis": "تحرير قالب الموجه لتحليل LLM",
   "@editPromptTemplateForLlmAnalysis": {},
-  "failedToGenerateFenFromRecognizedBoard": "فشل في إنشاء FEN من لوحة اللعب المعترف بها",
+  "failedToGenerateFenFromRecognizedBoard": "فشل في إنشاء FEN من لوحة اللعب المعترف بها.",
   "@failedToGenerateFenFromRecognizedBoard": {},
   "outputInCurrentLanguage": "الإخراج باللغة الحالية",
   "@outputInCurrentLanguage": {},
@@ -1786,7 +1786,7 @@
   "@commonBaseUrls": {},
   "viewCommonModels": "عرض النماذج الشائعة",
   "@viewCommonModels": {},
-  "recognitionParametersUpdated": "تم تحديث معلمات التعرف",
+  "recognitionParametersUpdated": "تم تحديث معلمات التعرف.",
   "@recognitionParametersUpdated": {},
   "whiteSMove": "دور الأبيض",
   "@whiteSMove": {},
@@ -1794,7 +1794,7 @@
   "@resetToDefaults": {},
   "photoShoot": "التقاط صورة",
   "@photoShoot": {},
-  "failedToApplyRecognizedBoardPosition": "فشل في تطبيق وضعية لوحة اللعب المعترف بها",
+  "failedToApplyRecognizedBoardPosition": "فشل في تطبيق وضعية لوحة اللعب المعترف بها.",
   "@failedToApplyRecognizedBoardPosition": {},
   "llmPromptContent": "محتوى موجه LLM",
   "@llmPromptContent": {},
@@ -1832,15 +1832,15 @@
   "@ifLeftEmptyDefaultTemplateWillBeUsed": {},
   "llmConfig": "إعدادات LLM",
   "@llmConfig": {},
-  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "هل أنت متأكد من رغبتك في إعادة قوالب الموجه إلى القيم الافتراضية؟",
+  "areYouSureYouWantToResetThePromptTemplatesToDefaultValues": "هل أنت متأكد من رغبتك في إعادة قوالب التعليمات إلى القيم الافتراضية؟",
   "@areYouSureYouWantToResetThePromptTemplatesToDefaultValues": {},
   "llmPromptTemplateFooter": "تذييل قالب موجه LLM",
   "@llmPromptTemplateFooter": {},
-  "loadingResponse": "جاري تحميل الاستجابة...",
+  "loadingResponse": "جارٍ تحميل الاستجابة...",
   "@loadingResponse": {},
   "applyThisResultToBoard": "تطبيق هذه النتيجة على لوحة اللعب",
   "@applyThisResultToBoard": {},
-  "takingPicture": "جاري التقاط الصورة...",
+  "takingPicture": "جارٍ التقاط صورة...",
   "@takingPicture": {},
   "pleaseSelectAGameBoardImageToIdentify": "يرجى اختيار صورة لوحة اللعب للتعرف عليها",
   "@pleaseSelectAGameBoardImageToIdentify": {},
@@ -1850,7 +1850,7 @@
   "@analyzeTheMovesAndProvideInsights": {},
   "getApiKey": "الحصول على API Key",
   "@getApiKey": {},
-  "entireRecognitionProcessFailedToComplete": "لم تكتمل عملية التعرف بالكامل",
+  "entireRecognitionProcessFailedToComplete": "لم تكتمل عملية التعرف بالكامل.",
   "@entireRecognitionProcessFailedToComplete": {},
   "boardRecognitionResult": "نتيجة التعرف على لوحة اللعب",
   "@boardRecognitionResult": {},
