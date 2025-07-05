@@ -1124,7 +1124,7 @@
   "@help": {
     "description": "Help"
   },
-  "flyPieceCount_Detail": "பறப்பது இயக்கப்பட்டிருந்தால், ஒரு வீரரின் துண்டு எண்ணிக்கை ஒரு குறிப்பிட்ட வாசலுக்குக் கீழே விழும்போது, அவற்றின் துண்டுகள் எந்த விளையாட்டைப் போலவே அருகிலுள்ள புள்ளிகளுக்கும் கட்டுப்படுத்தப்படுவதற்குப் பதிலாக எந்தவொரு காலாவதியான இடத்திற்கும் செல்ல இலவசம்.",
+  "flyPieceCount_Detail": "பறப்பது இயக்கப்பட்டிருந்தால், ஒரு வீரரின் துண்டு எண்ணிக்கை ஒரு குறிப்பிட்ட வாசலுக்குக் கீழே விழும்போது, அவற்றின் துண்டுகள் எந்த விளையாட்டைப் போலவே அருகில் உள்ள புள்ளிகளுக்கும் கட்டுப்படுத்தப்படுவதற்குப் பதிலாக எந்தவொரு காலாவதியான இடத்திற்கும் செல்ல இலவசம்.",
   "@flyPieceCount_Detail": {
     "description": "If Flying is enabled, when a player’s piece count falls below a certain threshold, their pieces are free to move to any unoccupied point, instead of being restricted to adjacent points as in the rest of the game."
   },
@@ -1642,7 +1642,7 @@
   "@tipSelectOwnPiece": {},
   "isAnnotationToolbarShown": "சிறுகுறிப்பு கருவிப்பட்டியைக் காட்டு",
   "@isAnnotationToolbarShown": {},
-  "enterAnnotationMode": "குறிப்புரை பயன்முறைக்கு செல்லவும்",
+  "enterAnnotationMode": "குறிப்புரை பயன்முறைக்கு செல்",
   "@enterAnnotationMode": {},
   "areYouSureYouWantToClearAllAnnotations": "அனைத்துக் குறிப்புரைகளையும் நீக்க விரும்புகிறீர்களா?",
   "@areYouSureYouWantToClearAllAnnotations": {},
@@ -1650,9 +1650,9 @@
   "@llmPromptCopiedToClipboard": {},
   "connectionRefusedTheServerMayBeDown": "இணைப்பு மறுக்கப்பட்டது. சர்வர் செயலிழந்திருக்கலாம்.",
   "@connectionRefusedTheServerMayBeDown": {},
-  "discoverySuccessfulAwaitingConnection": "தேடுதல் வெற்றிகரமாக முடிந்தது, இணைப்புக்காக காத்திருக்கிறது...",
+  "discoverySuccessfulAwaitingConnection": "தேடுதல் வெற்றிகரமாக முடிந்தது, இணைப்புக்காகக் காத்திருக்கிறது...",
   "@discoverySuccessfulAwaitingConnection": {},
-  "noLanConnection": "இயற்று வலை (LAN) இணைப்பு இல்லை",
+  "noLanConnection": "இயற்று வலை இணைப்பு இல்லை",
   "@noLanConnection": {},
   "takeScreenshot": "படக்காட்சி எடு",
   "@takeScreenshot": {},
