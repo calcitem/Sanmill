@@ -1,17 +1,51 @@
-A Nine Men's Morris (and its variants) program
+A Classic Nine Men's Morris Experience
 
-Rules:
+Rediscover the strategy of Nine Men's Morris, also known as the Mill game, with this digital version. Whether you are an experienced player or new to the game, this app offers a way to learn and enjoy this timeless board game.
 
-* A player who aligns three of his pieces on a board line has a mill and may remove his opponent's piece(s).
-* Any player reduces to two pieces and has no option to form new mills and thus loses the game.
-* If a player cannot move one of his pieces (is locked up), he has lost the game.
+Explore the game's features, which are designed for learning, practice, and customization. You can play the game your way, track your progress, and sharpen your skills with the help of an analysis engine.
 
-Features:
+KEY FEATURES
 
-* Support many rule variants, such as Nine Men's Morris and Twelve Men's Morris, "Flying" rule or no "Flying" rule
-* Play against the AI, or play both sides
-* Adjustable playing strength
-* Highly configurable
-* Color themes
-* Accessibility
+CLASSIC & VARIANT GAMEPLAY
+Enjoy the experience of this traditional board game.
+* Multiple Game Modes: Play Classic Nine Men’s Morris, along with variants like Twelve Men’s Morris, Lasker Morris, and the South African variant, Morabaraba.
+* Capable AI Opponent: Challenge a computer opponent with 30 different difficulty levels, designed to provide a suitable match for players of various skill levels.
+* Play with a Friend: Challenge a friend locally on a single device, or connect two devices over the same WLAN.
 
+CUSTOMIZATION OPTIONS
+Adjust the game to your preferences with a range of settings.
+* Flexible Rules: You can enable or disable the "flying" endgame rule or toggle other common house rules to match the version you are familiar with.
+* Visual Themes: Personalize your playing area with a selection of board backgrounds and piece designs.
+* Custom Color Picker: Adjust the colors of the pieces and the board for better contrast and visibility.
+* Sound Packs: Choose from different audio themes, for audio feedback during your game.
+* Dark Mode & Haptics: A dark mode is available for comfortable play in low light. You can also adjust the haptic feedback for moves.
+
+TRAINING & ANALYSIS SUITE
+Improve your gameplay with some helpful tools.
+* AI-Powered Positional Analysis: Use the AI to get feedback on your game. The engine provides positional evaluations to help you identify opportunities and understand mistakes.
+* Unlimited Undo/Redo & Move List: You can take back moves to explore different scenarios. A clear, scrollable move list allows you to review the entire game sequence.
+* Import, Export & Share Games: Share your matches using flexible import and export options. Copy games to and from your clipboard, or use the standard PGN file format. The app can directly open PGN files from your device. You can also share a quick visual by taking a screenshot and adding tactical annotations to the board.
+
+TRACK YOUR PROGRESS
+Monitor your improvement with the statistics module.
+* Detailed Game Statistics: Keep a record of your games, including your win/loss/draw record against each AI difficulty level, to see your skills develop over time.
+
+MULTILINGUAL SUPPORT
+Experience the app in your preferred language.
+* Supports 60+ Languages: The app is localized in 60+ languages, including English, Persian, German, Hungarian, Chinese, Portuguese, Arabic, French, Spanish, Turkish, and many more, ensuring accessibility for a global audience.
+
+ACCESSIBILITY & QUALITY OF LIFE
+* Built for Everyone: The app is designed with accessibility in mind, featuring clear screen-reader labels, large-print board options, and multilingual support.
+* In-App Feedback: You can use the built-in feedback system to send suggestions or report issues to the development team.
+
+STRATEGY TIPS FOR NEW PLAYERS
+* Playing on the cross points because they offer more way mobility to the pieces.
+* Corners are weak as the player can only move in fewer directions.
+* Giving the piece space to move.
+* Do not make mills straight away. Usually, the first player to make a mill in the placement phase will easily get blocked.
+* Black has an advantage because it gets to place the last piece strategically.
+* Double attacks - be aware that players can attack two points at the same time.
+
+Whether you are revisiting a familiar game, looking for a strategic challenge, or discovering Morris games for the first time, this app offers an enjoyable experience with flexible rules, a capable AI, and a customizable interface.
+
+Download now to start your journey with the game of Mill.
