@@ -1316,7 +1316,7 @@
   "@placedPieceCount": {
     "description": "Placed piece count in the placing phase. Used in Semantics."
   },
-  "hasPlacedPieceCount": "Поточний гравець розмістив {count} фігур.",
+  "hasPlacedPieceCount": "{count, plural, =0{Поточний гравець не розмістив жодної фігури.} =1{Поточний гравець розмістив одну фішку.} other{Поточний гравець розмістив {count} фішок.}}",
   "@hasPlacedPieceCount": {
     "description": "The current player has placed {count} pieces.",
     "placeholders": {
@@ -1947,7 +1947,7 @@
   "@pleaseSelectAGameBoardImageToIdentify": {},
   "identificationResults": "Результати розпізнавання",
   "@identificationResults": {},
-  "analyzeTheMovesAndProvideInsights": "Проаналізуйте ходи та надайте інформацію",
+  "analyzeTheMovesAndProvideInsights": "Проаналізуйте ходи та надайте інформацію.",
   "@analyzeTheMovesAndProvideInsights": {},
   "getApiKey": "Отримати API Key",
   "@getApiKey": {},
@@ -2063,7 +2063,7 @@
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Це скине всю статистику гри. Цю дію неможливо скасувати.",
   "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Розмір внутрішнього кільця дошки",
+  "boardInnerRingSize": "Розмір внутрішнього кільця плати",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Тінь дошки",
   "@boardShadowEnabled": {}
