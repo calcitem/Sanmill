@@ -2063,7 +2063,7 @@
   "@enableStatistics_Detail": {},
   "thisWillResetAllGameStatistics": "Це скине всю статистику гри. Цю дію неможливо скасувати.",
   "@thisWillResetAllGameStatistics": {},
-  "boardInnerRingSize": "Розмір внутрішнього кільця плати",
+  "boardInnerRingSize": "Розмір внутрішнього кільця дошки",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Тінь дошки",
   "@boardShadowEnabled": {}
