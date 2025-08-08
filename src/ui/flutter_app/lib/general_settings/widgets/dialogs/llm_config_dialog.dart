@@ -28,8 +28,13 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
   // Common model suggestions for each provider
   final Map<LlmProvider, List<String>> _modelSuggestions =
       <LlmProvider, List<String>>{
-    LlmProvider.openai: <String>['o4-mini', 'gpt-4.1', 'gpt-3.5-turbo'],
-    LlmProvider.google: <String>['gemini-pro', 'gemini-1.5-pro'],
+    LlmProvider.openai: <String>[
+      'gpt-5',
+      'o4-mini',
+      'gpt-4.1',
+      'gpt-3.5-turbo'
+    ],
+    LlmProvider.google: <String>['gemini-pro', 'gemini-2.5-pro'],
     LlmProvider.ollama: <String>['gemma3', 'qwq', 'llama3.3', 'phi4'],
   };
 
@@ -97,11 +102,11 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
   String _getModelHint() {
     switch (_selectedProvider) {
       case LlmProvider.openai:
-        return 'Enter any model name, e.g. gpt-4, gpt-4o';
+        return 'Enter any model name, e.g. gpt-5, gpt-5-mini';
       case LlmProvider.google:
-        return 'Enter any model name, e.g. gemini-pro, gemini-1.5-pro';
+        return 'Enter any model name, e.g. gemini-pro, gemini-2.5-pro';
       case LlmProvider.ollama:
-        return 'Enter any model name, e.g. llama3, mistral, phi3';
+        return 'Enter any model name, e.g. llama4, mistral, phi4';
     }
   }
 
@@ -147,7 +152,11 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
     // Suggestions for OpenAI
     if (base.startsWith('https://api.openai.com')) {
       return <String>[
+        'gpt-5',
+        'gpt-5-mini',
+        'gpt-5-nano',
         'o4-mini',
+        'o3-pro',
         'o3',
         'o3-mini',
         'o1',
@@ -170,13 +179,19 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
     // Suggestions for OpenRouter
     if (base.startsWith('https://openrouter.ai')) {
       return <String>[
+        'openai/gpt-5',
+        'openai/gpt-5-mini',
+        'openai/gpt-5-nano',
+        'openai/o4-mini',
+        'openai/o3-pro',
+        'openai/o3',
         'openai/gpt-4o',
         'openai/gpt-4o-mini',
-        'anthropic/claude-3.5-sonnet',
+        'anthropic/claude-4.0-sonnet',
         'google/gemma-3-27b-it',
-        'google/gemini-2.0-flash-001',
-        'google/gemini-flash-1.5',
-        'google/gemini-flash-1.5-8b',
+        'google/gemini-2.5-flash-001',
+        'google/gemini-flash-2.5',
+        'google/gemini-flash-2.5-8b',
         'google/gemini-2.0-flash-lite-001',
         'meta-llama/llama-3.3-70b-instruct',
         'mistralai/mistral-7b-instruct',
@@ -184,7 +199,10 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
         'deepseek/deepseek-r1:free',
         'deepseek/deepseek-chat-v3-0324:free',
         'deepseek/deepseek-chat-v3-0324',
+        'qwen/qwen3-235b-a22b-2507',
         'qwen/qwq-32b',
+        'moonshotai/kimi-k2',
+        'z-ai/glm-4.5',
       ];
     }
 
@@ -228,7 +246,7 @@ class _LlmConfigDialogState extends State<LlmConfigDialog> {
       return <String>[
         'accounts/fireworks/models/deepseek-r1',
         'accounts/fireworks/models/deepseek-v3',
-        'accounts/fireworks/models/deepseek-v3-0324',
+        'accounts/fireworks/models/deepseek-v3-0518',
       ];
     }
 
