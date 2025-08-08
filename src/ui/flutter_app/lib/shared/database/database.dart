@@ -20,6 +20,7 @@ import '../../rule_settings/models/rule_settings.dart';
 import '../../statistics/model/stats_settings.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
+// import '../themes/kids_theme.dart'; // Temporarily disabled until adapters are generated
 import 'adapters/adapters.dart';
 
 part 'database_migration.dart';
@@ -192,6 +193,8 @@ class Database {
     Hive.registerAdapter<Locale?>(LocaleAdapter());
     Hive.registerAdapter<PointPaintingStyle>(PointPaintingStyleAdapter());
     Hive.registerAdapter<MovesViewLayout>(MovesViewLayoutAdapter());
+    // TODO: Register KidsColorTheme adapter after build_runner generates it
+    // Hive.registerAdapter<KidsColorTheme>(KidsColorThemeAdapter());
     Hive.registerAdapter<DisplaySettings>(DisplaySettingsAdapter());
     _displaySettingsBox =
         await Hive.openBox<DisplaySettings>(_displaySettingsBoxName);

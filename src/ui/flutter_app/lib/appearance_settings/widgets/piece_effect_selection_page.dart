@@ -8,11 +8,13 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../game_page/services/mill.dart';
 import '../../game_page/services/painters/animations/piece_effect_animation.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
 import '../../shared/themes/app_theme.dart';
+
+// Minimal MoveType used by settings UI without coupling to engine part files
+enum MoveType { place, move }
 
 /// Effect item model to hold the name and animation instance.
 class EffectItem {

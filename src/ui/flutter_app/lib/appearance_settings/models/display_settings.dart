@@ -9,6 +9,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../shared/database/adapters/adapters.dart';
+import '../../shared/themes/kids_theme.dart';
 
 part 'display_settings.g.dart';
 
@@ -92,6 +93,7 @@ class DisplaySettings {
     this.isScreenshotGameInfoShown = true,
     this.boardInnerRingSize = 1.0,
     this.boardShadowEnabled = false,
+    this.kidsTheme,
   });
 
   /// Encodes a Json style map into a [DisplaySettings] object
@@ -237,6 +239,10 @@ class DisplaySettings {
 
   @HiveField(42, defaultValue: false)
   final bool boardShadowEnabled;
+
+  // Kids theme
+  @HiveField(43, defaultValue: null)
+  final KidsColorTheme? kidsTheme;
 
   /// Decodes a Json from a [DisplaySettings] object
   Map<String, dynamic> toJson() => _$DisplaySettingsToJson(this);

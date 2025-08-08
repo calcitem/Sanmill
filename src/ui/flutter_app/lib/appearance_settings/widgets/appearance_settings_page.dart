@@ -19,12 +19,16 @@ import 'package:path_provider/path_provider.dart';
 
 import '../../../../shared/widgets/settings/settings.dart';
 import '../../custom_drawer/custom_drawer.dart';
-import '../../game_page/services/mill.dart';
+import '../../game_page/services/mill.dart' show GameMode;
+import '../../game_page/widgets/kids_game_page.dart';
+import '../../general_settings/models/general_settings.dart';
+// mill.dart already imported above; remove duplicate to avoid warnings
 import '../../generated/assets/assets.gen.dart';
 import '../../generated/intl/l10n.dart';
 import '../../shared/config/constants.dart';
 import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
+import '../../shared/services/kids_mode_initializer.dart';
 import '../../shared/services/language_locale_mapping.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/themes/app_theme.dart';
@@ -44,8 +48,8 @@ part 'package:sanmill/appearance_settings/widgets/pickers/piece_image_picker.dar
 part 'package:sanmill/appearance_settings/widgets/sliders/animation_duration_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_boarder_line_width_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_corner_radius_slider.dart';
-part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_ring_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_line_width_slider.dart';
+part 'package:sanmill/appearance_settings/widgets/sliders/board_inner_ring_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/board_top_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/font_size_slider.dart';
 part 'package:sanmill/appearance_settings/widgets/sliders/piece_width_slider.dart';
@@ -416,6 +420,34 @@ class AppearanceSettingsPage extends StatelessWidget {
         key: const Key('color_settings_card_title'),
       ),
       children: <Widget>[
+        // Kids Mode toggle placed in Appearance settings per UX requirement
+        SettingsListTile.switchTile(
+          key: const Key('display_settings_card_kids_mode_switch_tile'),
+          value: DB().generalSettings.kidsMode ?? false,
+          onChanged: (bool val) async {
+            // Persist kids mode and initialize/teardown services
+            DB().generalSettings =
+                DB().generalSettings.copyWithKidsMode(kidsMode: val);
+            if (val) {
+              await KidsModeInitializer.instance.setupKidsMode();
+              // Navigate to Kids Game page directly for a seamless experience
+              // Ensure game mode is set to Human vs AI for kids by default
+              // Comments are in English as required
+              // ignore: use_build_context_synchronously
+              Navigator.of(context).push(
+                MaterialPageRoute<dynamic>(
+                  builder: (BuildContext context) =>
+                      const KidsGamePage(gameMode: GameMode.humanVsAi),
+                ),
+              );
+            } else {
+              await KidsModeInitializer.instance.teardownKidsMode();
+              rootScaffoldMessengerKey.currentState
+                  ?.showSnackBarClear('Kids mode disabled');
+            }
+          },
+          titleString: 'Kids Mode',
+        ),
         SettingsListTile(
           key: const Key('color_settings_card_theme_settings_list_tile'),
           titleString: S.of(context).theme,

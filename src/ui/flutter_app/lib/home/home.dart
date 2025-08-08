@@ -29,12 +29,14 @@ import '../generated/intl/l10n.dart';
 import '../main.dart';
 import '../misc/about_page.dart';
 import '../misc/how_to_play_screen.dart';
+// Kids mode page is now accessible via Appearance settings toggle, not via drawer
 import '../rule_settings/models/rule_settings.dart';
 import '../rule_settings/widgets/rule_settings_page.dart';
 import '../shared/config/constants.dart';
 import '../shared/database/database.dart';
 import '../shared/dialogs/privacy_policy_dialog.dart';
 import '../shared/services/environment_config.dart';
+import '../shared/services/kids_mode_initializer.dart';
 import '../shared/services/logger.dart';
 import '../shared/themes/app_theme.dart';
 import '../shared/utils/helpers/list_helpers/stack_list.dart';
@@ -374,8 +376,21 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showPrivacyDialog());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _initializeApp());
     _routes.push(_drawerIndex);
+  }
+
+  Future<void> _initializeApp() async {
+    // Initialize kids mode services
+    await KidsModeInitializer.instance.initialize();
+
+    // Show privacy dialog
+    _showPrivacyDialog();
+
+    // Setup kids mode if enabled
+    if (KidsModeInitializer.instance.shouldEnableKidsMode()) {
+      await KidsModeInitializer.instance.setupKidsMode();
+    }
   }
 
   @override
@@ -453,6 +468,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
+
+      // Kids Mode items (for Teacher Approved program)
+      // Removed Learn to Play and Parental Controls from drawer
       // Settings group item
       CustomDrawerItem<_DrawerIndex>(
         key: const Key('drawer_item_settings_group'), // Changed key
@@ -598,7 +616,9 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   Future<void> _showTutorialDialog() async {
     // Skip tutorial dialog in debug mode
-    if (!kDebugMode && DB().generalSettings.showTutorial) {
+    if (!kDebugMode &&
+        DB().generalSettings.showTutorial &&
+        (DB().generalSettings.kidsMode != true)) {
       await Navigator.of(context).push(
         MaterialPageRoute<dynamic>(
           builder: (BuildContext context) => const TutorialDialog(),

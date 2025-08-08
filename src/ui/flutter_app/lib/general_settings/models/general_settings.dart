@@ -157,6 +157,7 @@ class GeneralSettings {
     this.llmApiKey = '',
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
+    this.kidsMode = false,
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -295,6 +296,10 @@ class GeneralSettings {
   @HiveField(39, defaultValue: 0.7)
   final double llmTemperature;
 
+  // Kids mode for Teacher Approved and Family programs
+  @HiveField(40, defaultValue: false)
+  final bool? kidsMode;
+
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
 
@@ -302,4 +307,53 @@ class GeneralSettings {
   static String get defaultLlmPromptHeader => PromptDefaults.llmPromptHeader;
 
   static String get defaultLlmPromptFooter => PromptDefaults.llmPromptFooter;
+}
+
+extension GeneralSettingsCopyExt on GeneralSettings {
+  /// Lightweight copy method to update kidsMode without relying on generated code.
+  GeneralSettings copyWithKidsMode({bool? kidsMode}) {
+    return GeneralSettings(
+      isPrivacyPolicyAccepted: isPrivacyPolicyAccepted,
+      usesHiveDB: usesHiveDB,
+      toneEnabled: toneEnabled,
+      keepMuteWhenTakingBack: keepMuteWhenTakingBack,
+      screenReaderSupport: screenReaderSupport,
+      aiMovesFirst: aiMovesFirst,
+      aiIsLazy: aiIsLazy,
+      skillLevel: skillLevel,
+      moveTime: moveTime,
+      humanMoveTime: humanMoveTime,
+      isAutoRestart: isAutoRestart,
+      isAutoChangeFirstMove: isAutoChangeFirstMove,
+      resignIfMostLose: resignIfMostLose,
+      shufflingEnabled: shufflingEnabled,
+      learnEndgame: learnEndgame,
+      openingBook: openingBook,
+      algorithm: algorithm,
+      searchAlgorithm: searchAlgorithm ?? SearchAlgorithm.mtdf,
+      usePerfectDatabase: usePerfectDatabase,
+      drawOnHumanExperience: drawOnHumanExperience,
+      considerMobility: considerMobility,
+      focusOnBlockingPaths: focusOnBlockingPaths,
+      developerMode: developerMode,
+      experimentsEnabled: experimentsEnabled,
+      firstRun: firstRun,
+      gameScreenRecorderSupport: gameScreenRecorderSupport,
+      gameScreenRecorderDuration: gameScreenRecorderDuration,
+      gameScreenRecorderPixelRatio: gameScreenRecorderPixelRatio,
+      showTutorial: showTutorial,
+      remindedOpponentMayFly: remindedOpponentMayFly,
+      vibrationEnabled: vibrationEnabled,
+      soundTheme: soundTheme ?? SoundTheme.ball,
+      useOpeningBook: useOpeningBook,
+      llmPromptHeader: llmPromptHeader,
+      llmPromptFooter: llmPromptFooter,
+      llmProvider: llmProvider,
+      llmModel: llmModel,
+      llmApiKey: llmApiKey,
+      llmBaseUrl: llmBaseUrl,
+      llmTemperature: llmTemperature,
+      kidsMode: kidsMode ?? this.kidsMode,
+    );
+  }
 }
