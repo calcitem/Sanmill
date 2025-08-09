@@ -36,6 +36,10 @@ args = dotdict({
     'batch_size': 1024,
     'cuda': torch.cuda.is_available(),
     'num_channels': 256,
+    
+    # Debugging and validation options
+    'verbose_games': 1,  # Number of games per iteration to log detailed move history
+    'log_detailed_moves': True,  # Whether to log move sequences for verification
 })
 
 

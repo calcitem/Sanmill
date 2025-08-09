@@ -230,4 +230,24 @@ class Board:
             is_line3 = is_line3 or (pieces_line.sum() == 3)
         return is_line3
 
+    def display_board(self):
+        """Display the current board state in a readable format."""
+        board_lines = []
+        board_lines.append("Board state:")
+        for y in range(self.n):
+            line = ""
+            for x in range(self.n):
+                if self.allowed_places[x][y]:
+                    piece = self.pieces[x][y]
+                    if piece == 1:
+                        line += "W "
+                    elif piece == -1:
+                        line += "B "
+                    else:
+                        line += ". "
+                else:
+                    line += "  "
+            board_lines.append(line)
+        return "\n".join(board_lines)
+
 

@@ -25,10 +25,11 @@ from torch.multiprocessing import Process, Queue
 
 from Arena import Arena, playGames
 from MCTS import MCTS
+from game.engine_adapter import move_to_engine_token
 
 log = logging.getLogger(__name__)
 
-def executeEpisode(game, mcts, args):
+def executeEpisode(game, mcts, args, verbose=False, game_id=None):
     """
     This function executes one episode of self-play, starting with player 1.
     As the game is played, each turn is added as a training example to
@@ -48,6 +49,11 @@ def executeEpisode(game, mcts, args):
     board = game.getInitBoard()
     curPlayer = 1
     episodeStep = 0
+    move_history = []  # Track moves for logging
+
+    if verbose:
+        log.info(f"=== Starting Self-Play Game {game_id} ===")
+        log.info(f"Initial board state - Period: {board.period}, Pieces placed: {board.put_pieces}")
 
     while True:
         episodeStep += 1
@@ -64,15 +70,74 @@ def executeEpisode(game, mcts, args):
             trainExamples.append([b, curPlayer, p, real_period])
 
         action = np.random.choice(len(pi), p=pi)
+        
+        # Log move details if verbose
+        if verbose:
+            # Log ASCII board before applying the move (engine-style visualization).
+            # Using Board.display_board() ensures a consistent, log-friendly string.
+            # Note: We capture the string to also compare after the move and avoid duplicate prints.
+            ascii_before = board.display_board()
+            log.info("Board before move:\n%s", ascii_before)
+            move = board.get_move_from_action(action)
+            
+            # Convert to engine notation for consistency with C++ engine
+            try:
+                engine_notation = move_to_engine_token(move)
+                if board.period == 3:  # capture - add 'x' prefix
+                    engine_notation = f"x{engine_notation}"
+            except ValueError:
+                engine_notation = f"INVALID_MOVE_{move}"
+            
+            # Create readable move description
+            move_str = f"Player {curPlayer:2d}, Step {episodeStep:2d}: "
+            if board.period == 0:  # placing
+                move_str += f"Place {engine_notation}"
+            elif board.period == 1:  # moving
+                move_str += f"Move {engine_notation}"
+            elif board.period == 2:  # flying
+                move_str += f"Fly {engine_notation}"
+            elif board.period == 3:  # capture
+                move_str += f"Capture {engine_notation}"
+            
+            move_str += f" | Period: {board.period} | Pieces: W={board.count(1)}, B={board.count(-1)}"
+            log.info(move_str)
+            move_history.append((engine_notation, move_str))
+
         board, curPlayer = game.getNextState(board, curPlayer, action)
+
+        if verbose:
+            # Log ASCII board after applying the move.
+            # If the board did not change (which should be rare), avoid printing the same board twice.
+            ascii_after = board.display_board()
+            if ascii_after != ascii_before:
+                log.info("Board after move:\n%s", ascii_after)
+            else:
+                log.info("Board after move: (unchanged)")
 
         r = game.getGameEnded(board, curPlayer)
 
         if r != 0:
+            if verbose:
+                log.info(f"=== Game {game_id} Ended ===")
+                log.info(f"Result: {r} (Player {curPlayer} perspective)")
+                log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
+                log.info(f"Final pieces count - White: {board.count(1)}, Black: {board.count(-1)}")
+                log.info("Move history (Engine notation):")
+                
+                # Show engine notation move list for easy copying/verification
+                engine_moves = [move[0] for move in move_history]
+                log.info(f"Engine move list: {' '.join(engine_moves)}")
+                
+                # Show detailed move log
+                log.info("Detailed moves:")
+                for i, (notation, description) in enumerate(move_history, 1):
+                    log.info(f"  {i:2d}. {description}")
+                log.info("=" * 50)
+            
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
 def executeEpisodeParallel(game, nnet, args, queue, num):
-    for _ in range(num):
+    for i in range(num):
         mcts = MCTS(game, nnet, args)  # reset search tree
         queue.put(executeEpisode(game, mcts, args))
 
@@ -135,9 +200,14 @@ class Coach():
                 else:
                     # Single-process self-play: avoid spawning to keep CUDA context in the main process.
                     with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
-                        for _ in range(self.args.numEps):
+                        for game_idx in range(self.args.numEps):
                             mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
-                            iterationTrainExamples += executeEpisode(self.game, mcts, self.args)
+                            # Log detailed moves for first few games if enabled
+                            verbose = (self.args.log_detailed_moves and 
+                                     game_idx < self.args.verbose_games)
+                            game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
+                            iterationTrainExamples += executeEpisode(self.game, mcts, self.args, 
+                                                                   verbose=verbose, game_id=game_id)
                             pbar.update()
 
                 # save the iteration examples to the history 
