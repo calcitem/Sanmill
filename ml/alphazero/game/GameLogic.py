@@ -97,32 +97,27 @@ class Board:
             empty_places = self.allowed_places - np.abs(np.array(self.pieces))
             return np.transpose(np.where(empty_places == 1)).tolist()
         elif self.period == 3:
-            # Capture phase: choose any opponent piece to remove.
-            moves = np.array(self.pieces)
-            return np.transpose(np.where(moves == -color)).tolist()
+            # Capture phase: choose opponent pieces to remove with proper mill logic
+            return self._get_removal_moves(color)
         elif self.period == 2 and self.count(color) <= 3:
             # Flying phase: choose any own piece and any empty destination.
-            pieces = np.array(self.pieces)
-            moves0 = np.transpose(np.where(pieces == color)).tolist()
-            empty_places = self.allowed_places - np.abs(np.array(self.pieces))
-            moves1 = np.transpose(np.where(empty_places == 1)).tolist()
-            moves = []
-            for move0 in moves0:
-                for move1 in moves1:
-                    moves.append(move0 + move1)
-            return moves
+            # Only allow flying if we have ≤3 pieces on board and no pieces in hand
+            if self._can_fly(color):
+                pieces = np.array(self.pieces)
+                moves0 = np.transpose(np.where(pieces == color)).tolist()
+                empty_places = self.allowed_places - np.abs(np.array(self.pieces))
+                moves1 = np.transpose(np.where(empty_places == 1)).tolist()
+                moves = []
+                for move0 in moves0:
+                    for move1 in moves1:
+                        moves.append(move0 + move1)
+                return moves
+            else:
+                # Fall back to normal moving if flying conditions not met
+                return self._get_normal_moves(color)
         else:
-            # Moving phase: enumerate adjacent moves using the 3x3x3 representation.
-            shrink_pieces = self.get_shrink_pieces(self.pieces)
-            moves = []
-            for i in range(3):
-                for j in range(3):
-                    for k in range(3):
-                        if j == k == 1:
-                            continue
-                        if shrink_pieces[i, j, k] == color:
-                            moves.extend(self.get_adjacent_places(i, j, k, shrink_pieces))
-            return moves
+            # Normal moving phase: enumerate adjacent moves
+            return self._get_normal_moves(color)
 
     def get_valids_in_period1(self):
         shrink_pieces = self.get_shrink_pieces(self.pieces)
@@ -204,6 +199,91 @@ class Board:
 
         return adjacency_moves
 
+    def _can_fly(self, color):
+        """Check if flying is allowed based on C++ engine rules."""
+        # Flying is allowed when:
+        # 1. We have 3 or fewer pieces on board
+        # 2. We have no pieces in hand (all pieces have been placed)
+        pieces_on_board = self.count(color)
+        # Assume pieces in hand = 0 when put_pieces >= 18 (all placed)
+        pieces_in_hand = max(0, 9 - (self.put_pieces // 2 if color == 1 else (self.put_pieces + 1) // 2))
+        
+        return pieces_on_board <= 3 and pieces_in_hand == 0
+
+    def _get_normal_moves(self, color):
+        """Get normal adjacent moves for the moving phase."""
+        shrink_pieces = self.get_shrink_pieces(self.pieces)
+        moves = []
+        for i in range(3):
+            for j in range(3):
+                for k in range(3):
+                    if j == k == 1:
+                        continue
+                    if shrink_pieces[i, j, k] == color:
+                        moves.extend(self.get_adjacent_places(i, j, k, shrink_pieces))
+        return moves
+
+    def _get_removal_moves(self, color):
+        """Get removal moves following C++ engine logic."""
+        opponent_color = -color
+        moves = []
+        
+        # Get all opponent pieces
+        opponent_pieces = []
+        for x in range(self.n):
+            for y in range(self.n):
+                if self.pieces[x][y] == opponent_color:
+                    opponent_pieces.append([x, y])
+        
+        # Check if all opponent pieces are in mills
+        all_in_mills = True
+        non_mill_pieces = []
+        mill_pieces = []
+        
+        for piece_pos in opponent_pieces:
+            if self._is_piece_in_mill(piece_pos, opponent_color):
+                mill_pieces.append(piece_pos)
+            else:
+                non_mill_pieces.append(piece_pos)
+                all_in_mills = False
+        
+        # If not all pieces are in mills, only allow removing non-mill pieces
+        if not all_in_mills:
+            return non_mill_pieces
+        else:
+            # If all pieces are in mills, allow removing any piece
+            return opponent_pieces
+
+    def _is_piece_in_mill(self, piece_pos, color):
+        """Check if a piece at the given position is part of a mill."""
+        x, y = piece_pos
+        
+        # Convert to coordinate system used in standard_rules.py
+        from .standard_rules import xy_to_coord, mills
+        
+        coord = xy_to_coord.get((x, y))
+        if not coord:
+            return False
+            
+        # Check all mill triplets to see if this position is part of one
+        for mill_triplet in mills:
+            if coord in mill_triplet:
+                # Check if all three positions in this mill have the same color pieces
+                all_same = True
+                for mill_coord in mill_triplet:
+                    mill_x, mill_y = self._coord_to_xy(mill_coord)
+                    if mill_x is None or mill_y is None:
+                        all_same = False
+                        break
+                    if self.pieces[mill_x][mill_y] != color:
+                        all_same = False
+                        break
+                
+                if all_same:
+                    return True
+        
+        return False
+
     def execute_move(self, move, player):
         """Perform the given move on the board; flips pieces as necessary.
         color gives the color of the piece to play (1=white, -1=black).
@@ -232,22 +312,39 @@ class Board:
 
     def line3(self, move, player):
         """Check if the move forms a mill (a line of 3 pieces)."""
-        shrink_pieces = self.get_shrink_pieces(self.pieces)
-        shrink_pieces[shrink_pieces != player] = 0
-        shrink_pieces = np.abs(shrink_pieces)
-        move_player = move if len(move) == 2 else move[2:]
-        action = move_player[0] * self.n + move_player[1]
-        index = np.where(self.shrink_places == action)
-        is_line3 = False
-        for i in range(3):
-            if i == 0:
-                pieces_line = shrink_pieces[:, index[1], index[2]]
-            elif i == 1:
-                pieces_line = shrink_pieces[index[0], :, index[2]]
-            else:
-                pieces_line = shrink_pieces[index[0], index[1], :]
-            is_line3 = is_line3 or (pieces_line.sum() == 3)
-        return is_line3
+        move_pos = move if len(move) == 2 else move[2:]
+        x, y = move_pos
+        
+        # Convert to coordinate system used in standard_rules.py
+        from .standard_rules import xy_to_coord, mills
+        
+        coord = xy_to_coord.get((x, y))
+        if not coord:
+            return False
+            
+        # Check all mill triplets to see if this position forms one
+        for mill_triplet in mills:
+            if coord in mill_triplet:
+                # Check if all three positions in this mill have the same player's pieces
+                all_same = True
+                for mill_coord in mill_triplet:
+                    mill_x, mill_y = self._coord_to_xy(mill_coord)
+                    if mill_x is None or mill_y is None:
+                        all_same = False
+                        break
+                    if self.pieces[mill_x][mill_y] != player:
+                        all_same = False
+                        break
+                
+                if all_same:
+                    return True
+        
+        return False
+    
+    def _coord_to_xy(self, coord):
+        """Convert coordinate string to (x, y) tuple."""
+        from .standard_rules import coord_to_xy
+        return coord_to_xy.get(coord, (None, None))
 
     def display_board(self):
         """Return an ASCII representation with lines and O/@ pieces.
