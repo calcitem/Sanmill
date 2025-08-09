@@ -304,6 +304,35 @@ class Coach():
             pwins, nwins, draws = playGames(arena_args, self.args.arenaCompare, num_processes=effective_processes)
 
             log.info('NEW/PREV WINS : %f / %f ; DRAWS : %f' % (nwins, pwins, draws))
+            
+            # Optional: Pit new network against Perfect DB player to assess absolute strength
+            perfect_draws_ratio = None
+            if getattr(self.args, 'pitAgainstPerfect', False):
+                teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
+                if teacher_db_path:
+                    try:
+                        from perfect_bot import PerfectTeacherPlayer
+                        log.info('PITTING AGAINST PERFECT DATABASE')
+                        perfect_player = PerfectTeacherPlayer(teacher_db_path)
+                        # Use single process to avoid engine startup conflicts
+                        perfect_arena_args = [nmcts, perfect_player, self.game, None]
+                        p_wins, n_wins, p_draws = playGames(perfect_arena_args, self.args.arenaCompare, num_processes=0)
+                        perfect_total = p_wins + n_wins + p_draws
+                        perfect_draws_ratio = p_draws / perfect_total if perfect_total > 0 else 0.0
+                        log.info('NEW vs PERFECT: WINS %f / LOSSES %f / DRAWS %f (Draw rate: %.3f)', 
+                                n_wins, p_wins, p_draws, perfect_draws_ratio)
+                        # Clean up the perfect player to avoid resource leaks
+                        try:
+                            perfect_player.engine.stop()
+                        except Exception:
+                            pass
+                    except Exception as ex:
+                        log.exception("Failed to pit against Perfect DB: %s", ex)
+                        perfect_draws_ratio = None
+                else:
+                    log.warning("pitAgainstPerfect is enabled, but no teacherDBPath/SANMILL_PERFECT_DB provided.")
+            
+            # Accept/reject decision based on new vs prev performance
             if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
                 log.info('REJECTING NEW MODEL')
                 self.nnet.nnet.load_state_dict(self.pnet.nnet.state_dict())
@@ -312,6 +341,9 @@ class Coach():
                 log.info('ACCEPTING NEW MODEL')
                 self.nnet.save_checkpoint(folder=self.args.checkpoint, filename='best.pth.tar')
                 self.has_won = True
+                # Log additional perfect DB performance for accepted models
+                if perfect_draws_ratio is not None:
+                    log.info('ACCEPTED MODEL PERFECT DB DRAW RATE: %.3f', perfect_draws_ratio)
             # self.nnet.save_checkpoint(folder=self.args.checkpoint, filename=self.getCheckpointFile(i))
 
     def getCheckpointFile(self, iteration):

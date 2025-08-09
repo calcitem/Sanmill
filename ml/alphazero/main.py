@@ -44,6 +44,7 @@ args = dotdict({
     'teacherDBPath': os.environ.get('SANMILL_PERFECT_DB', None),  # or pass via env
     'teacherAnalyzeTimeout': int(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')),  # seconds per analyze
     'teacherThreads': int(os.environ.get('SANMILL_ENGINE_THREADS', '1')),
+    'pitAgainstPerfect': False,     # set True to pit new model against Perfect DB every iteration
     
     # Debugging and validation options
     'verbose_games': 1,  # Number of games per iteration to log detailed move history
@@ -84,6 +85,9 @@ def main():
             args.teacherExamplesPerIter = max(0, int(env_teacher_n))
         except Exception:
             pass
+    env_pit_perfect = os.environ.get('SANMILL_PIT_PERFECT')
+    if env_pit_perfect is not None:
+        args.pitAgainstPerfect = env_pit_perfect.strip().lower() in ("1", "true", "yes", "on")
 
     # If running on CPU, ensure CUDA context is not requested anywhere.
     if not args.cuda:
@@ -127,6 +131,8 @@ def main():
     log.info('Starting the learning process 🎉')
     if args.usePerfectTeacher:
         log.info('Teacher mixing is enabled: %d examples/iter from %s', args.teacherExamplesPerIter, args.teacherDBPath)
+    if args.pitAgainstPerfect:
+        log.info('Perfect DB evaluation is enabled: will pit new models against Perfect DB each iteration')
     c.learn()
 
 
