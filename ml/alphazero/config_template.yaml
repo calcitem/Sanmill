@@ -81,6 +81,12 @@ pitAgainstPerfect: true                   # Evaluate against perfect DB each ite
                                           # - false: faster training, no perfect evaluation
 
 # =============================================================================
+# ONLINE TEACHER DURING SELF-PLAY
+# =============================================================================
+useOnlineTeacher: true                    # Use perfect DB online during self-play (default: true)
+teacherOnlineRatio: 0.3                  # Probability per move to query perfect DB (0.0-1.0)
+
+# =============================================================================
 # DEBUGGING & LOGGING
 # =============================================================================
 verbose_games: 1          # Number of games to log in detail per iteration

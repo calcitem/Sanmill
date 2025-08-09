@@ -47,7 +47,11 @@ args = dotdict({
     'teacherAnalyzeTimeout': int(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')),  # seconds per analyze
     'teacherThreads': int(os.environ.get('SANMILL_ENGINE_THREADS', '1')),
     'pitAgainstPerfect': False,     # set True to pit new model against Perfect DB every iteration
-    
+
+    # Online teacher guidance during self-play
+    'useOnlineTeacher': True,      # Default enable online teacher
+    'teacherOnlineRatio': 0.3,     # Probability of using teacher per move (0.0-1.0)
+
     # Debugging and validation options
     'verbose_games': 1,  # Number of games per iteration to log detailed move history
     'log_detailed_moves': True,  # Whether to log move sequences for verification

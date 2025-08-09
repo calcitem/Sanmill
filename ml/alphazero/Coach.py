@@ -45,7 +45,7 @@ _REASON_ENGLISH = {
     "drawStalemateCondition": "Draw due to stalemate condition.",
 }
 
-def executeEpisode(game, mcts, args, verbose=False, game_id=None):
+def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player=None):
     """
     This function executes one episode of self-play, starting with player 1.
     As the game is played, each turn is added as a training example to
@@ -66,6 +66,8 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
     curPlayer = 1
     episodeStep = 0
     move_history = []  # Track moves for logging
+    teacher_used_count = 0  # Count how many moves used online teacher
+    engine_tokens = []  # Engine tokens history for online teacher queries
 
     if verbose:
         log.info(f"=== Starting Self-Play Game {game_id} ===")
@@ -76,7 +78,37 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
         canonicalBoard = game.getCanonicalForm(board, curPlayer)
         temp = int(episodeStep < args.tempThreshold)
 
-        pi = mcts.getActionProb(canonicalBoard, temp=temp)
+        # Online teacher guidance (perfect DB) selection
+        used_teacher = False
+        pi = None
+        action = None
+
+        use_online_teacher = getattr(args, 'useOnlineTeacher', True)
+        teacher_ratio = float(getattr(args, 'teacherOnlineRatio', 0.3))
+
+        if perfect_player is not None and use_online_teacher and teacher_ratio > 0:
+            try:
+                use_teacher_now = np.random.rand() < teacher_ratio
+            except Exception:
+                use_teacher_now = False
+            if use_teacher_now:
+                try:
+                    # Ask perfect DB for best move based on history
+                    action = perfect_player.play_with_history(game, board, curPlayer, engine_tokens)
+                    # Create one-hot policy
+                    action_size = game.getActionSize()
+                    pi = np.zeros(action_size, dtype=np.float32)
+                    pi[action] = 1.0
+                    used_teacher = True
+                except Exception:
+                    # Fallback to MCTS
+                    pi = mcts.getActionProb(canonicalBoard, temp=temp)
+                    used_teacher = False
+        
+        if pi is None:
+            # Default MCTS policy
+            pi = mcts.getActionProb(canonicalBoard, temp=temp)
+
         sym = game.getSymmetries(canonicalBoard, pi)
         if canonicalBoard.period == 2 and canonicalBoard.count(1) > 3:
             real_period = 4
@@ -85,7 +117,11 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
         for b, p in sym:
             trainExamples.append([b, curPlayer, p, real_period])
 
-        action = np.random.choice(len(pi), p=pi)
+        if action is None:
+            action = np.random.choice(len(pi), p=pi)
+        # Count teacher usage for this move
+        if used_teacher:
+            teacher_used_count += 1
         
         # Log move details if verbose
         if verbose:
@@ -118,6 +154,19 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
             move_str += f" | Period: {board.period} | Pieces: W={board.count(1)}, B={board.count(-1)}"
             log.info(move_str)
             move_history.append((engine_notation, move_str))
+        else:
+            # Compute engine token silently for teacher history
+            try:
+                move = board.get_move_from_action(action)
+                engine_notation = move_to_engine_token(move)
+                if board.period == 3:  # capture
+                    engine_notation = f"x{engine_notation}"
+            except Exception:
+                engine_notation = None
+
+        # Maintain engine token sequence for perfect DB queries
+        if engine_notation:
+            engine_tokens.append(engine_notation)
 
         board, curPlayer = game.getNextState(board, curPlayer, action)
 
@@ -146,6 +195,12 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
                 log.info(f"Game over reason: {reason_text} ({reason_id})")
                 log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
                 log.info(f"Final pieces count - White: {board.count(1)}, Black: {board.count(-1)}")
+                # Per-game teacher usage stats
+                try:
+                    ratio = teacher_used_count / float(episodeStep)
+                except Exception:
+                    ratio = 0.0
+                log.info(f"Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
                 log.info("Move history (Engine notation):")
                 
                 # Show engine notation move list for easy copying/verification
@@ -158,7 +213,12 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
                     log.info(f"  {i:2d}. {description}")
                 log.info("=" * 50)
             else:
-                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r}")
+                # Include teacher usage stats in concise summary
+                try:
+                    ratio = teacher_used_count / float(episodeStep)
+                except Exception:
+                    ratio = 0.0
+                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r} | Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
             
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
@@ -236,6 +296,20 @@ class Coach():
                 else:
                     # Single-process self-play: avoid spawning to keep CUDA context in the main process.
                     with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
+                        # Prepare online perfect teacher if configured
+                        perfect_player = None
+                        online_teacher_enabled = getattr(self.args, 'useOnlineTeacher', True)
+                        teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
+                        if online_teacher_enabled and teacher_db_path:
+                            try:
+                                from perfect_bot import PerfectTeacherPlayer
+                                perfect_player = PerfectTeacherPlayer(teacher_db_path)
+                                log.info('Online teacher enabled for self-play (ratio=%.2f)', float(getattr(self.args, 'teacherOnlineRatio', 0.3)))
+                            except Exception as ex:
+                                log.error('Failed to initialize online teacher engine: %s', ex)
+                                # Fail fast as requested
+                                sys.exit(1)
+
                         for game_idx in range(self.args.numEps):
                             mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
                             # Log detailed moves for first few games if enabled
@@ -243,8 +317,14 @@ class Coach():
                                      game_idx < self.args.verbose_games)
                             game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
                             iterationTrainExamples += executeEpisode(self.game, mcts, self.args, 
-                                                                   verbose=verbose, game_id=game_id)
+                                                                   verbose=verbose, game_id=game_id, perfect_player=perfect_player)
                             pbar.update()
+                        # Clean up perfect player to release engine resources
+                        try:
+                            if perfect_player is not None and getattr(perfect_player, 'engine', None):
+                                perfect_player.engine.stop()
+                        except Exception:
+                            pass
 
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(list(iterationTrainExamples))
@@ -294,9 +374,12 @@ class Coach():
                         else:
                             os.environ['SANMILL_ENGINE_THREADS'] = prev_threads
                     else:
-                        log.warning("usePerfectTeacher is enabled, but no teacherDBPath/SANMILL_PERFECT_DB provided.")
+                        log.error("usePerfectTeacher is enabled, but no teacherDBPath/SANMILL_PERFECT_DB provided.")
+                        sys.exit(1)
                 except Exception as ex:
-                    log.exception("Failed to mix teacher examples: %s", ex)
+                    log.error("Failed to mix teacher examples (perfect DB): %s", ex)
+                    # Fail fast since teacher examples were requested
+                    sys.exit(1)
 
             shuffle(trainExamples)
 
