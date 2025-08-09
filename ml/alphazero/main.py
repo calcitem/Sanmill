@@ -1,4 +1,6 @@
 import logging
+import os
+import sys
 import torch
 import torch.multiprocessing as mp
 import coloredlogs
@@ -38,6 +40,35 @@ args = dotdict({
 
 
 def main():
+    # Allow environment overrides so we can disable CUDA or reduce processes when needed.
+    # SANMILL_TRAIN_CUDA: set to "0"/"false"/"no" to force CPU even if CUDA is available.
+    # SANMILL_TRAIN_PROCESSES: set process count (>=1) to control multiprocessing.
+    # SANMILL_TRAIN_ARENA_COMPARE: override arenaCompare if desired.
+    env_cuda = os.environ.get("SANMILL_TRAIN_CUDA")
+    if env_cuda is not None:
+        args.cuda = env_cuda.strip().lower() not in ("0", "false", "no")
+
+    env_procs = os.environ.get("SANMILL_TRAIN_PROCESSES")
+    if env_procs:
+        try:
+            args.num_processes = max(1, int(env_procs))
+        except Exception:
+            pass
+
+    env_arena = os.environ.get("SANMILL_TRAIN_ARENA_COMPARE")
+    if env_arena:
+        try:
+            args.arenaCompare = max(2, int(env_arena))
+        except Exception:
+            pass
+
+    # If running on CPU, ensure CUDA context is not requested anywhere.
+    if not args.cuda:
+        # Hint PyTorch to avoid selecting any GPU even if present
+        os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
+
+    log.info("Runtime config: cuda=%s, num_processes=%d, arenaCompare=%d", args.cuda, args.num_processes, args.arenaCompare)
+
     log.info('Loading %s...', Game.__name__)
     g = Game()
 
@@ -51,7 +82,17 @@ def main():
         log.warning('Not loading a checkpoint!')
 
     if args.num_processes > 1:
-        mp.set_start_method('spawn')
+        # Use a start method compatible with our device setup.
+        # - For CUDA workflows, 'spawn' is recommended by PyTorch.
+        # - For pure CPU on Linux, 'fork' avoids pickling overhead and tends to be faster.
+        method = 'spawn'
+        if not args.cuda and sys.platform.startswith('linux'):
+            method = 'fork'
+        try:
+            mp.set_start_method(method, force=True)
+        except RuntimeError:
+            # Start method may already be set if main() is re-entered; ignore.
+            pass
 
     log.info('Loading the Coach...')
     c = Coach(g, nnet, args)

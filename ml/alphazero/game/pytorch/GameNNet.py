@@ -3,8 +3,6 @@ import torch.nn as nn
 
 from game.GameLogic import Board
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 
 class Branch03(nn.Module):
     def __init__(self, args):
@@ -36,7 +34,8 @@ class Branch03(nn.Module):
 
     def forward(self, s):
         s = self.main(s)
-        pi = torch.ones((s.size()[0], 24 * 24)).to(device) * -10
+        # Create logits tensor on the same device as input to avoid implicit CUDA init
+        pi = torch.full((s.size(0), 24 * 24), -10.0, device=s.device)
         pi[:, :24] = self.pi(s)
         v = self.v(s)
         return pi, v
@@ -82,7 +81,8 @@ class Branch14(nn.Module):
 
     def forward(self, s):
         s = self.main(s)
-        pi = torch.ones((s.size()[0], 24 * 24), dtype=torch.float).to(device) * -10
+        # Create logits tensor on the same device as input to avoid implicit CUDA init
+        pi = torch.full((s.size(0), 24 * 24), -10.0, dtype=torch.float, device=s.device)
         pi[:, self.valids] = self.pi(s)
         v = self.v(s)
         return pi, v

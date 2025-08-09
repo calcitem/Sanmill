@@ -108,28 +108,37 @@ class Coach():
             if not self.skipFirstSelfPlay or i > 1:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
-                example_queue = Queue()
-                process_list = []
-                assert self.args.numEps % self.args.num_processes == 0
-                process_numEps = self.args.numEps // self.args.num_processes
-                for _ in range(self.args.num_processes):
-                    p = Process(target=executeEpisodeParallel,
-                                args=(self.game, self.nnet, self.args, example_queue, process_numEps))
-                    p.start()
-                    process_list.append(p)
+                if self.args.num_processes > 1:
+                    # Multi-process self-play: spawn workers collecting episodes into a queue.
+                    example_queue = Queue()
+                    process_list = []
+                    assert self.args.numEps % self.args.num_processes == 0
+                    process_numEps = self.args.numEps // self.args.num_processes
+                    for _ in range(self.args.num_processes):
+                        p = Process(target=executeEpisodeParallel,
+                                    args=(self.game, self.nnet, self.args, example_queue, process_numEps))
+                        p.start()
+                        process_list.append(p)
 
-                with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
-                    self_play_sum = 0
-                    while self_play_sum < self.args.numEps:
-                        if not example_queue.empty():
-                            iterationTrainExamples += example_queue.get()
+                    with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
+                        self_play_sum = 0
+                        while self_play_sum < self.args.numEps:
+                            if not example_queue.empty():
+                                iterationTrainExamples += example_queue.get()
+                                pbar.update()
+                                self_play_sum += 1
+
+                    # close
+                    for p in process_list:
+                        p.terminate()
+                    example_queue.close()
+                else:
+                    # Single-process self-play: avoid spawning to keep CUDA context in the main process.
+                    with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
+                        for _ in range(self.args.numEps):
+                            mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
+                            iterationTrainExamples += executeEpisode(self.game, mcts, self.args)
                             pbar.update()
-                            self_play_sum += 1
-
-                # close
-                for p in process_list:
-                    p.terminate()
-                example_queue.close()
 
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(list(iterationTrainExamples))
@@ -159,7 +168,9 @@ class Coach():
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
             arena_args = [pmcts, nmcts, self.game, None]
-            pwins, nwins, draws = playGames(arena_args, self.args.arenaCompare, num_processes=self.args.num_processes)
+            # Avoid CUDA modules crossing process boundaries. If using CUDA, keep pitting in current process.
+            effective_processes = 0 if self.args.cuda else self.args.num_processes
+            pwins, nwins, draws = playGames(arena_args, self.args.arenaCompare, num_processes=effective_processes)
 
             log.info('NEW/PREV WINS : %f / %f ; DRAWS : %f' % (nwins, pwins, draws))
             if pwins + nwins == 0 or float(nwins) / (pwins + nwins) < self.args.updateThreshold:
