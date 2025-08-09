@@ -97,9 +97,12 @@ Examples:
     # Load configuration
     if cmd_args.config:
         log.info(f"📋 Loading configuration from: {cmd_args.config}")
-        args = merge_config_with_args(args, cmd_args.config)
+        # Use the global args as base configuration
+        args = merge_config_with_args(globals()['args'], cmd_args.config)
     else:
         log.info("⚙️  Using default configuration")
+        # Use the global args directly
+        args = globals()['args']
     
     # Apply command-line overrides
     if cmd_args.engine:
