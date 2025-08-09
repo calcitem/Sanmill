@@ -114,11 +114,114 @@ class MillEngine:
         # Removal constraint (default: cannot remove from mills if others exist)
         self._send("setoption name MayRemoveFromMillsAlways value false")
         # Draw rules
-        self._send("setoption name NMoveRule value 50")
-        self._send("setoption name EndgameNMoveRule value 10")
+        # Keep training rules consistent with Python Game logic (default: 100)
+        self._send("setoption name NMoveRule value 100")
+        self._send("setoption name EndgameNMoveRule value 100")
         # Apply
         self._send("isready")
         self._wait_for(lambda s: "readyok" in s, timeout_s=2.0)
+
+    def set_threads(self, n: int) -> None:
+        """Set engine Threads option and wait for readiness."""
+        assert self.proc is not None and self.proc.stdin is not None
+        self._send(f"setoption name Threads value {int(n)}")
+        self._send("isready")
+        self._wait_for(lambda s: "readyok" in s, timeout_s=5.0)
+
+    # ------------------- Perfect database utilities -------------------
+
+    @staticmethod
+    def _to_wsl_path(path: str) -> str:
+        """Convert a Windows path like 'E:\\dir\\sub' to WSL '/mnt/e/dir/sub'.
+
+        If the input already looks like a POSIX path, return it unchanged.
+        """
+        import re
+        if not path:
+            return path
+        if path.startswith("/"):
+            return path
+        m = re.match(r"^([A-Za-z]):\\\\(.*)$", path.replace("/", "\\"))
+        if m:
+            drive = m.group(1).lower()
+            rest = m.group(2).replace("\\", "/")
+            return f"/mnt/{drive}/{rest}"
+        # Fallback: replace backslashes
+        return path.replace("\\", "/")
+
+    def enable_perfect_database(self, path: str) -> None:
+        """Enable Perfect Database and set its path.
+
+        - Accepts either Windows or POSIX path. Converts Windows path to WSL.
+        - Sends UsePerfectDatabase=true and PerfectDatabasePath.
+        - Performs a quick readiness check.
+        """
+        assert self.proc is not None, "Engine process is not started. Call start() first."
+        wsl_path = self._to_wsl_path(path)
+        self._send("setoption name UsePerfectDatabase value true")
+        self._send(f"setoption name PerfectDatabasePath value {wsl_path}")
+        self._send("isready")
+        self._wait_for(lambda s: "readyok" in s, timeout_s=3.0)
+        # Optional: probe one analysis line to verify labels are present
+        try:
+            result = self.analyze([], timeout_s=30.0)
+            # Print a short confirmation if we detect any labeled outcomes
+            if any(v.get('wdl') in ('win', 'draw', 'loss') for v in result.values()):
+                print(f"[MillEngine] Perfect DB labeling detected at '{wsl_path}'.")
+            else:
+                print("[MillEngine] Perfect DB labeling not detected (engine may fallback to traditional search).")
+        except Exception as e:
+            print(f"[MillEngine] Perfect DB quick check failed: {e}")
+
+    def analyze(self, move_list: List[str], timeout_s: float = None):
+        """Run 'analyze startpos moves ...' and parse labeled outcomes.
+
+        Returns a dict mapping engine tokens to a dict payload:
+          {
+            'a1-a4': {'wdl': 'win'|'draw'|'loss'|'advantage'|'disadvantage'|'unknown',
+                      'value': int or None,
+                      'steps': int or None}
+            ...
+          }
+
+        If the engine outputs only plain tokens (no labels), returns empty dict.
+        """
+        assert self.proc is not None, "Engine process is not started. Call start() first."
+        # Allow configurable timeout via environment variable
+        if timeout_s is None:
+            try:
+                timeout_s = float(os.environ.get("SANMILL_ANALYZE_TIMEOUT", "60"))
+            except Exception:
+                timeout_s = 60.0
+        cmd = "analyze startpos"
+        if move_list:
+            cmd += " moves " + " ".join(move_list)
+        self._send(cmd)
+
+        def match(line: str) -> bool:
+            return line.startswith("info analysis")
+
+        lines = self._wait_for(match, timeout_s=timeout_s)
+        if not lines:
+            return {}
+        last = lines[-1]
+
+        # Example fragments:
+        #   info analysis a1-a4=win(228 in 75 steps) a1=draw(0) xg7=loss(-228 in 75 steps)
+        #   info analysis a1-a4=advantage(32) a1=disadvantage(-15)
+        import re
+        out = {}
+        token = r"(?:[a-g][1-7](?:-[a-g][1-7])?|x[a-g][1-7])"
+        # Capture: token=label(value [in steps steps])
+        pattern = re.compile(
+            rf"\b({token})=([A-Za-z]+)\(([-\d]+)(?: in (\d+) steps)?\)")
+        for m in pattern.finditer(last):
+            mv = m.group(1)
+            label = m.group(2).lower()
+            val = int(m.group(3)) if m.group(3) is not None else None
+            steps = int(m.group(4)) if m.group(4) is not None else None
+            out[mv] = {"wdl": label, "value": val, "steps": steps}
+        return out
 
     def get_legal_moves(self, move_list: List[str], timeout_s: float = 5.0) -> List[str]:
         """Return legal moves in engine notation for the given move sequence.
