@@ -14,79 +14,26 @@ class Game:
     Use 1 for player1 and -1 for player2.
     """
 
-    @staticmethod
-    def _detect_dark_background():
-        """
-        Detect if the terminal has a dark background.
-        Returns True for dark background, False for light background.
-        """
-        import os
-        import subprocess
-        import sys
-        
-        # Method 1: Check common environment variables
-        # Most dark themes set these variables
-        if os.getenv('COLORFGBG'):
-            # Format is usually "foreground;background"
-            # Light numbers (0-7) = dark colors, high numbers (8-15) = light colors
-            colorfgbg = os.getenv('COLORFGBG')
-            try:
-                parts = colorfgbg.split(';')
-                if len(parts) >= 2:
-                    bg_color = int(parts[-1])
-                    # Background colors 0-7 are typically dark
-                    return bg_color <= 7
-            except (ValueError, IndexError):
-                pass
-        
-        # Method 2: Check if we're in a known dark terminal
-        term = os.getenv('TERM', '').lower()
-        if 'dark' in term:
-            return True
-        
-        # Method 3: Check terminal emulator
-        term_program = os.getenv('TERM_PROGRAM', '').lower()
-        if term_program in ['vscode', 'code']:
-            # VS Code integrated terminal is usually dark
-            return True
-        
-        # Method 4: Try to query terminal background (advanced terminals only)
-        if sys.stdout.isatty():
-            try:
-                # This is a more advanced method that some terminals support
-                # Send escape sequence to query background color
-                sys.stdout.write('\033]11;?\007')
-                sys.stdout.flush()
-                # Note: This would require reading the response, which is complex
-                # For now, we'll skip this method
-            except:
-                pass
-        
-        # Default assumption: dark background (most common for development)
-        return True
+
 
     @staticmethod
     def _get_piece_symbols():
         """
-        Get piece symbols based on terminal background.
-        Uses single-width characters to maintain board alignment.
-        For dark backgrounds: white=●, black=○ (high contrast)
-        For light backgrounds: white=○, black=● (reversed)
+        Get piece symbols using colored circles for better distinction.
+        Uses ANSI color codes with the same ● symbol to maintain alignment.
+        White player: Yellow ● (bright and visible on both backgrounds)
+        Black player: Blue ● (good contrast on both backgrounds)
         """
-        if Game._detect_dark_background():
-            # Dark background: use filled circle for white pieces (better visibility)
-            return {
-                -1: "○",  # Black player uses white circle (U+25CB)
-                +0: "·",  # Empty squares
-                +1: "●"   # White player uses black circle (U+25CF)
-            }
-        else:
-            # Light background: traditional colors
-            return {
-                -1: "●",  # Black player uses black circle (U+25CF)
-                +0: "·",  # Empty squares  
-                +1: "○"   # White player uses white circle (U+25CB)
-            }
+        # ANSI color codes
+        YELLOW = "\033[93m"  # Bright yellow
+        BLUE = "\033[94m"    # Bright blue
+        RESET = "\033[0m"    # Reset to default color
+        
+        return {
+            -1: f"{BLUE}●{RESET}",    # Black player uses blue circle
+            +0: "·",                   # Empty squares (no color)
+            +1: f"{YELLOW}●{RESET}"    # White player uses yellow circle
+        }
 
 
 
@@ -255,9 +202,10 @@ class Game:
         Layout:
         - Rows are labeled 7..1 from top to bottom (rank-like)
         - Columns are labeled a..g from left to right (file-like)
-        - Pieces: Auto-adapts symbols based on terminal background
-          * Dark background: ● (white), ○ (black), · (empty)
-          * Light background: ○ (white), ● (black), · (empty)
+        - Pieces: Colored circles for clear distinction
+          * White player: Yellow ● (bright, visible on any background)  
+          * Black player: Blue ● (good contrast on any background)
+          * Empty squares: · (neutral)
         - Shows connecting lines between adjacent points
         """
         from .standard_rules import coord_to_xy, xy_to_coord
