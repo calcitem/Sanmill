@@ -66,7 +66,9 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
     curPlayer = 1
     episodeStep = 0
     move_history = []  # Track moves for logging
-    teacher_used_count = 0  # Count how many moves used online teacher
+    teacher_used_count = 0   # Count how many moves used online teacher
+    teacher_try_count = 0    # How many times we attempted to use teacher this game
+    teacher_fail_count = 0   # How many times teacher call failed
     engine_tokens = []  # Engine tokens history for online teacher queries
 
     if verbose:
@@ -86,12 +88,14 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
         use_online_teacher = getattr(args, 'useOnlineTeacher', True)
         teacher_ratio = float(getattr(args, 'teacherOnlineRatio', 0.3))
 
+        # Attempt online teacher in all phases
         if perfect_player is not None and use_online_teacher and teacher_ratio > 0:
             try:
                 use_teacher_now = np.random.rand() < teacher_ratio
             except Exception:
                 use_teacher_now = False
             if use_teacher_now:
+                teacher_try_count += 1
                 try:
                     # Ask perfect DB for best move based on history
                     action = perfect_player.play_with_history(game, board, curPlayer, engine_tokens)
@@ -100,10 +104,15 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                     pi = np.zeros(action_size, dtype=np.float32)
                     pi[action] = 1.0
                     used_teacher = True
-                except Exception:
-                    # Fallback to MCTS
+                    if verbose:
+                        log.info("[Teacher] used at step %d", episodeStep)
+                except Exception as ex:
+                    # Fallback to MCTS, but log the failure detail once in verbose mode
+                    if verbose:
+                        log.info("[Teacher] mapping failed at step %d: %s", episodeStep, str(ex))
                     pi = mcts.getActionProb(canonicalBoard, temp=temp)
                     used_teacher = False
+                    teacher_fail_count += 1
         
         if pi is None:
             # Default MCTS policy
@@ -218,7 +227,7 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                     ratio = teacher_used_count / float(episodeStep)
                 except Exception:
                     ratio = 0.0
-                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r} | Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
+                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r} | Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%}), tries: {teacher_try_count}, fails: {teacher_fail_count}")
             
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
@@ -252,6 +261,32 @@ class Coach():
             except Exception as ex:
                 log.warning(f"初始化训练日志器失败: {ex}")
                 self.training_logger = None
+
+        # 持久化在线教师引擎（整个训练周期保持活动）
+        self.perfect_player = None
+        online_teacher_enabled = getattr(self.args, 'useOnlineTeacher', True)
+        teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
+        if online_teacher_enabled and teacher_db_path and self.args.num_processes == 1:
+            try:
+                from perfect_bot import PerfectTeacherPlayer
+                self.perfect_player = PerfectTeacherPlayer(teacher_db_path)
+                # quick sanity check
+                try:
+                    _ = self.perfect_player.play_with_history(self.game, self.game.getInitBoard(), 1, [])
+                except Exception:
+                    # 忽略空历史无法选择走子时的异常，不影响后续正常使用
+                    pass
+                log.info('Online teacher initialized (persistent). Ratio=%.2f', float(getattr(self.args, 'teacherOnlineRatio', 0.3)))
+            except Exception as ex:
+                log.error('Failed to initialize persistent online teacher engine: %s', ex)
+                sys.exit(1)
+        else:
+            if not online_teacher_enabled:
+                log.info('Online teacher disabled by config (useOnlineTeacher=false)')
+            elif not teacher_db_path:
+                log.info('Online teacher disabled: missing teacherDBPath/SANMILL_PERFECT_DB')
+            elif self.args.num_processes != 1:
+                log.info('Online teacher disabled in multi-process mode (set num_processes: 1)')
 
     def learn(self):
         """
@@ -296,20 +331,6 @@ class Coach():
                 else:
                     # Single-process self-play: avoid spawning to keep CUDA context in the main process.
                     with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
-                        # Prepare online perfect teacher if configured
-                        perfect_player = None
-                        online_teacher_enabled = getattr(self.args, 'useOnlineTeacher', True)
-                        teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
-                        if online_teacher_enabled and teacher_db_path:
-                            try:
-                                from perfect_bot import PerfectTeacherPlayer
-                                perfect_player = PerfectTeacherPlayer(teacher_db_path)
-                                log.info('Online teacher enabled for self-play (ratio=%.2f)', float(getattr(self.args, 'teacherOnlineRatio', 0.3)))
-                            except Exception as ex:
-                                log.error('Failed to initialize online teacher engine: %s', ex)
-                                # Fail fast as requested
-                                sys.exit(1)
-
                         for game_idx in range(self.args.numEps):
                             mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
                             # Log detailed moves for first few games if enabled
@@ -317,14 +338,8 @@ class Coach():
                                      game_idx < self.args.verbose_games)
                             game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
                             iterationTrainExamples += executeEpisode(self.game, mcts, self.args, 
-                                                                   verbose=verbose, game_id=game_id, perfect_player=perfect_player)
+                                                                   verbose=verbose, game_id=game_id, perfect_player=self.perfect_player)
                             pbar.update()
-                        # Clean up perfect player to release engine resources
-                        try:
-                            if perfect_player is not None and getattr(perfect_player, 'engine', None):
-                                perfect_player.engine.stop()
-                        except Exception:
-                            pass
 
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(list(iterationTrainExamples))
@@ -408,6 +423,12 @@ class Coach():
                         from perfect_bot import PerfectTeacherPlayer
                         log.info('PITTING AGAINST PERFECT DATABASE')
                         perfect_player = PerfectTeacherPlayer(teacher_db_path)
+                        # sanity check: first analyze from empty history
+                        try:
+                            _ = perfect_player.play_with_history(self.game, self.game.getInitBoard(), 1, [])
+                        except Exception as ex:
+                            log.error('Online teacher quick sanity check failed: %s', ex)
+                            sys.exit(1)
                         # Use single process to avoid engine startup conflicts
                         perfect_arena_args = [nmcts, perfect_player, self.game, None]
                         p_wins, n_wins, p_draws = playGames(perfect_arena_args, self.args.arenaCompare, num_processes=0)
@@ -474,6 +495,13 @@ class Coach():
                 self.training_logger.print_summary()
             except Exception as ex:
                 log.warning(f"打印训练摘要失败: {ex}")
+
+        # 训练结束时关闭在线教师引擎
+        try:
+            if self.perfect_player is not None and getattr(self.perfect_player, 'engine', None):
+                self.perfect_player.engine.stop()
+        except Exception:
+            pass
 
     def getCheckpointFile(self, iteration):
         return 'checkpoint_' + str(iteration) + '.pth.tar'
