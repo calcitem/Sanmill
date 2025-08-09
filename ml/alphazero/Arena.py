@@ -72,6 +72,26 @@ class Arena():
             else:
                 action = players[curPlayer + 1].play(self.game.getCanonicalForm(board, curPlayer))
 
+            # Store AI move for prompt display (verbose mode)
+            ai_move_notation = None
+            if verbose and type(players[curPlayer + 1]) == MCTS:
+                try:
+                    from game.engine_adapter import move_to_engine_token
+                    move = board.get_move_from_action(action)
+                    engine_notation = move_to_engine_token(move)
+                    
+                    # Check if this is a removal move by checking the current period
+                    # Period 3 = capture phase, so this move is a removal
+                    if board.period == 3:
+                        engine_notation = f"x{engine_notation}"
+                    
+                    ai_move_notation = engine_notation
+                    # Store AI move globally for prompt display
+                    import sys
+                    setattr(sys.modules.get('__main__'), '_last_ai_move', engine_notation)
+                except Exception:
+                    ai_move_notation = f"action_{action}"
+
             valids = self.game.getValidMoves(self.game.getCanonicalForm(board, curPlayer), 1)
 
             if valids[action] == 0:

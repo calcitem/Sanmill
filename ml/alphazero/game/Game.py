@@ -14,15 +14,85 @@ class Game:
     Use 1 for player1 and -1 for player2.
     """
 
-    square_content = {
-        -1: "X",
-        +0: "-",
-        +1: "O"
-    }
+    @staticmethod
+    def _detect_dark_background():
+        """
+        Detect if the terminal has a dark background.
+        Returns True for dark background, False for light background.
+        """
+        import os
+        import subprocess
+        import sys
+        
+        # Method 1: Check common environment variables
+        # Most dark themes set these variables
+        if os.getenv('COLORFGBG'):
+            # Format is usually "foreground;background"
+            # Light numbers (0-7) = dark colors, high numbers (8-15) = light colors
+            colorfgbg = os.getenv('COLORFGBG')
+            try:
+                parts = colorfgbg.split(';')
+                if len(parts) >= 2:
+                    bg_color = int(parts[-1])
+                    # Background colors 0-7 are typically dark
+                    return bg_color <= 7
+            except (ValueError, IndexError):
+                pass
+        
+        # Method 2: Check if we're in a known dark terminal
+        term = os.getenv('TERM', '').lower()
+        if 'dark' in term:
+            return True
+        
+        # Method 3: Check terminal emulator
+        term_program = os.getenv('TERM_PROGRAM', '').lower()
+        if term_program in ['vscode', 'code']:
+            # VS Code integrated terminal is usually dark
+            return True
+        
+        # Method 4: Try to query terminal background (advanced terminals only)
+        if sys.stdout.isatty():
+            try:
+                # This is a more advanced method that some terminals support
+                # Send escape sequence to query background color
+                sys.stdout.write('\033]11;?\007')
+                sys.stdout.flush()
+                # Note: This would require reading the response, which is complex
+                # For now, we'll skip this method
+            except:
+                pass
+        
+        # Default assumption: dark background (most common for development)
+        return True
+
+    @staticmethod
+    def _get_piece_symbols():
+        """
+        Get piece symbols based on terminal background.
+        Uses single-width characters to maintain board alignment.
+        For dark backgrounds: white=●, black=○ (high contrast)
+        For light backgrounds: white=○, black=● (reversed)
+        """
+        if Game._detect_dark_background():
+            # Dark background: use filled circle for white pieces (better visibility)
+            return {
+                -1: "○",  # Black player uses white circle (U+25CB)
+                +0: "·",  # Empty squares
+                +1: "●"   # White player uses black circle (U+25CF)
+            }
+        else:
+            # Light background: traditional colors
+            return {
+                -1: "●",  # Black player uses black circle (U+25CF)
+                +0: "·",  # Empty squares  
+                +1: "○"   # White player uses white circle (U+25CB)
+            }
+
+
 
     @staticmethod
     def getSquarePiece(piece):
-        return Game.square_content[piece]
+        return Game._get_piece_symbols()[piece]
 
     def __init__(self):
         self.n = 7
@@ -179,23 +249,75 @@ class Game:
 
     @staticmethod
     def display(board):
-        n = 7
-        print("   ", end="")
-        for y in range(n):
-            print(y, end=" ")
-        print("")
-        print("-----------------------")
-        for y in range(n):
-            print(y, "|", end="")  # print the row #
-            for x in range(n):
-                piece = board.pieces[y][x]  # get the piece to print
-                if board.allowed_places[x][y] == 1:
-                    print(Game.square_content[piece], end=" ")
-                else:
-                    print(end="  ")
-            print("|")
+        """
+        Pretty-print the board with visible connections between points.
 
-        print("-----------------------")
+        Layout:
+        - Rows are labeled 7..1 from top to bottom (rank-like)
+        - Columns are labeled a..g from left to right (file-like)
+        - Pieces: Auto-adapts symbols based on terminal background
+          * Dark background: ● (white), ○ (black), · (empty)
+          * Light background: ○ (white), ● (black), · (empty)
+        - Shows connecting lines between adjacent points
+        """
+        from .standard_rules import coord_to_xy, xy_to_coord
+        
+        def get_piece_at(x, y):
+            """Get piece symbol at position, or space if not a valid position."""
+            if 0 <= x < 7 and 0 <= y < 7 and board.allowed_places[x][y] == 1:
+                piece = board.pieces[x][y]
+                return Game._get_piece_symbols()[piece]
+            return " "
+        
+        def has_connection(x1, y1, x2, y2):
+            """Check if two positions are connected by a line."""
+            coord1 = xy_to_coord.get((x1, y1))
+            coord2 = xy_to_coord.get((x2, y2))
+            if not coord1 or not coord2:
+                return False
+            
+            from .standard_rules import adjacent
+            return coord2 in adjacent.get(coord1, [])
+        
+        print()
+        
+        # Outer ring (rank 7)
+        y = 0  # Internal y=0 corresponds to rank 7
+        print(f"7  {get_piece_at(0,y)}───────────{get_piece_at(3,y)}───────────{get_piece_at(6,y)}")
+        print(f"   │           │           │")
+        
+        # Middle ring (rank 6)
+        y = 1
+        print(f"6  │   {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}   │")
+        print(f"   │   │       │       │   │")
+        
+        # Inner ring (rank 5)
+        y = 2
+        print(f"5  │   │   {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}   │   │")
+        print(f"   │   │   │       │   │   │")
+        
+        # Middle horizontal line (rank 4)
+        y = 3
+        print(f"4  {get_piece_at(0,y)}───{get_piece_at(1,y)}───{get_piece_at(2,y)}       {get_piece_at(4,y)}───{get_piece_at(5,y)}───{get_piece_at(6,y)}")
+        print(f"   │   │   │       │   │   │")
+        
+        # Inner ring (rank 3)
+        y = 4
+        print(f"3  │   │   {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}   │   │")
+        print(f"   │   │       │       │   │")
+        
+        # Middle ring (rank 2)
+        y = 5
+        print(f"2  │   {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}   │")
+        print(f"   │           │           │")
+        
+        # Outer ring (rank 1)
+        y = 6
+        print(f"1  {get_piece_at(0,y)}───────────{get_piece_at(3,y)}───────────{get_piece_at(6,y)}")
+        
+        # Column labels
+        print("   a   b   c   d   e   f   g")
+        print()
 
     # -------------------- Standard-rule helpers (optional) --------------------
     def is_mill(self, board, move_dst_xy):
