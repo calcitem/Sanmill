@@ -29,6 +29,20 @@ from game.engine_adapter import move_to_engine_token
 
 log = logging.getLogger(__name__)
 
+# English reason text for game over causes (for logging)
+_REASON_ENGLISH = {
+    "loseFewerThanThree": "Loss: player has fewer than the minimum required pieces.",
+    "loseNoLegalMoves": "Loss: no legal moves available (stalemate).",
+    "loseFullBoard": "Loss: board is full.",
+    "loseResign": "Loss: player resigned.",
+    "loseTimeout": "Loss: time over.",
+    "drawThreefoldRepetition": "Draw due to threefold repetition.",
+    "drawFiftyMove": "Draw under the 50-move rule.",
+    "drawEndgameFiftyMove": "Draw under the endgame 50-move rule.",
+    "drawFullBoard": "Draw: board is full.",
+    "drawStalemateCondition": "Draw due to stalemate condition.",
+}
+
 def executeEpisode(game, mcts, args, verbose=False, game_id=None):
     """
     This function executes one episode of self-play, starting with player 1.
@@ -117,9 +131,17 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
         r = game.getGameEnded(board, curPlayer)
 
         if r != 0:
+            # Determine and print the concrete English reason for game end
+            try:
+                is_over2, _, reason_id = board.check_game_over_conditions(curPlayer)
+            except Exception:
+                is_over2, reason_id = True, None
+            reason_text = _REASON_ENGLISH.get(reason_id, "Unknown game over reason.")
+
             if verbose:
                 log.info(f"=== Game {game_id} Ended ===")
                 log.info(f"Result: {r} (Player {curPlayer} perspective)")
+                log.info(f"Game over reason: {reason_text} ({reason_id})")
                 log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
                 log.info(f"Final pieces count - White: {board.count(1)}, Black: {board.count(-1)}")
                 log.info("Move history (Engine notation):")
@@ -133,6 +155,8 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None):
                 for i, (notation, description) in enumerate(move_history, 1):
                     log.info(f"  {i:2d}. {description}")
                 log.info("=" * 50)
+            else:
+                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r}")
             
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 

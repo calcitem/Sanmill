@@ -58,6 +58,9 @@ class Board:
         # Threefold repetition detection flags (matches C++ behavior)
         self._threefold_detected = False
         self._threefold_reason = None
+        # Track the player who made the last executed move (1 or -1). Used to
+        # derive side-to-move for position hashing to match C++ keys.
+        self._last_move_player = None
         
         # Create the empty board array.
         self.pieces = [None] * self.n
@@ -306,6 +309,11 @@ class Board:
         """
         Generate a hash representing the current board position.
         Used for detecting threefold repetition.
+
+        IMPORTANT: Include side-to-move information to match C++ Zobrist key.
+        We only record history after MOVE-type moves, for which the side-to-move
+        is the opponent of the last mover (unless in capture, which is excluded
+        from history). Thus, side_to_move is derived from _last_move_player.
         """
         # Create a string representation of the board state
         board_str = ""
@@ -313,9 +321,12 @@ class Board:
             for y in range(self.n):
                 if self.allowed_places[x][y]:
                     board_str += str(self.pieces[x][y])
-        
-        # Include period in hash to distinguish different game phases
-        position_key = f"{board_str}_{self.period}"
+
+        # Derive side to move: after a MOVE, opponent moves next. If unknown, default to 1.
+        side_to_move = 1 if self._last_move_player is None else -self._last_move_player
+
+        # Include both period and side_to_move in the key
+        position_key = f"{board_str}_{self.period}_stm{side_to_move}"
         return hash(position_key)
 
     def has_repeated_position(self):
@@ -538,6 +549,8 @@ class Board:
         self.update_period(move, player)
         
         # Update draw rule counters after the move with correct type
+        # Record last mover for position hashing (side-to-move derivation)
+        self._last_move_player = player
         self.update_draw_counters(move, move_type)
         
         # Check for threefold repetition after MOVE-type moves (matches C++ behavior)

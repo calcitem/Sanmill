@@ -49,6 +49,16 @@ class MCTS():
 
         counts = [x ** (1. / temp) for x in counts]
         counts_sum = float(sum(counts))
+        if counts_sum == 0.0:
+            # Fallback: if no visits, choose uniformly among currently valid moves
+            valids = self.game.getValidMoves(canonicalBoard, 1)
+            valid_sum = int(np.sum(valids))
+            if valid_sum == 0:
+                # No valid moves: treat as terminal from search perspective
+                # Return uniform zero except keep numerical stability
+                return [1.0 / len(counts)] * len(counts)
+            probs = (valids / valid_sum).tolist()
+            return probs
         probs = [x / counts_sum for x in counts]
         return probs
 
