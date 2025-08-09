@@ -3,7 +3,20 @@ import os
 import sys
 from collections import deque
 # from pickle import Pickler, Unpickler
-import orjson
+try:
+    import orjson as _jsonlib
+    def _dumps(obj):
+        return _jsonlib.dumps(obj)
+    def _loads(b):
+        return _jsonlib.loads(b)
+except Exception:  # Fallback to standard json if orjson is unavailable
+    import json as _jsonlib
+    def _dumps(obj):
+        return _jsonlib.dumps(obj).encode('utf-8')
+    def _loads(b):
+        if isinstance(b, (bytes, bytearray)):
+            b = b.decode('utf-8')
+        return _jsonlib.loads(b)
 from random import shuffle
 
 import numpy as np
@@ -168,7 +181,7 @@ class Coach():
             os.makedirs(folder)
         filename = os.path.join(folder, self.getCheckpointFile(iteration) + ".examples")
         with open(filename, "wb+") as f:
-            f.write(orjson.dumps(self.trainExamplesHistory))
+            f.write(_dumps(self.trainExamplesHistory))
         f.closed
 
     def loadTrainExamples(self):
@@ -181,7 +194,7 @@ class Coach():
         else:
             log.info("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:
-                self.trainExamplesHistory = orjson.loads(f.read())
+                self.trainExamplesHistory = _loads(f.read())
             log.info('Loading done!')
 
             # examples based on the model were already collected (loaded)

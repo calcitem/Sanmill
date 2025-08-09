@@ -60,8 +60,9 @@ class NNetWrapper(NeuralNet):
 
                 # compute output
                 target_pis += 1e-8
-                out_pi = torch.zeros(target_pis.size()).cuda()
-                out_v = torch.zeros(target_vs.size()).cuda()
+                device = boards.device
+                out_pi = torch.zeros(target_pis.size(), device=device)
+                out_v = torch.zeros(target_vs.size(), device=device)
                 for i in range(5):
                     if (periods == i).any():
                         pi, v = self.nnet(boards[periods == i], i)
@@ -105,8 +106,9 @@ class NNetWrapper(NeuralNet):
                 target_pis = target_pis.contiguous().cuda()
                 target_vs = target_vs.contiguous().cuda()
                 periods = periods.contiguous().cuda()
-            out_pi = torch.zeros(target_pis.size()).to('cuda')
-            out_v = torch.zeros(target_vs.size()).to('cuda')
+            device = boards.device
+            out_pi = torch.zeros(target_pis.size(), device=device)
+            out_v = torch.zeros(target_vs.size(), device=device)
             for i in range(5):
                 if (periods == i).any():
                     pi, v = self.nnet(boards[periods == i], i)
