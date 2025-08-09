@@ -252,6 +252,13 @@ class ImportService {
       };
 
       ml = processOutsideBrackets(ml, replacements);
+
+      // If it's a plain space-delimited WMD list without headers and numbers, import directly
+      if (isPlainWmdMoveList(ml)) {
+        _importPlainWmd(ml);
+        return;
+      }
+
       _importPgn(ml);
     } catch (e) {
       // Log the specific error for debugging
@@ -263,6 +270,119 @@ class ImportService {
 
       // Rethrow to allow handling by the calling method
       rethrow;
+    }
+  }
+
+  /// Import plain space-delimited WMD moves without move numbers or headers.
+  /// Accepts tokens like: c3 g7 a4 e4 ... as well as hyphen/x chained tokens like d7-d6, xg7, c5-d5, etc.
+  static void _importPlainWmd(String moveList) {
+    final Position localPos = Position();
+    localPos.reset();
+
+    final GameRecorder newHistory =
+        GameRecorder(lastPositionWithRemove: GameController().position.fen);
+
+    final List<String> tokens = moveList
+        .split(RegExp(r'\s+'))
+        .map((String s) => s.trim().toLowerCase())
+        .where((String s) => s.isNotEmpty)
+        .toList();
+
+    bool hasValidMoves = false;
+
+    // Helper: split a WMD token into segments similar to _importPgn.splitSan.
+    // Examples:
+    //  - 'b6xd3'     -> ['b6', 'xd3']
+    //  - 'xg7'       -> ['xg7']
+    //  - 'c4-c5'     -> ['c4-c5']
+    //  - 'g4-g1xa4'  -> ['g4-g1', 'xa4']
+    //  - 'e5xg7'     -> ['e5', 'xg7']
+    //  - 'd6-d5xd7xg4' -> ['d6-d5', 'xd7', 'xg4']
+    List<String> splitWmdToken(String token) {
+      if (token.isEmpty) {
+        return <String>[];
+      }
+      // Ignore result indicators and move numbers
+      if (token == '*' ||
+          token == '1-0' ||
+          token == '0-1' ||
+          token == '1/2-1/2') {
+        return <String>[];
+      }
+      if (RegExp(r'^\d+\.*$').hasMatch(token)) {
+        return <String>[];
+      }
+
+      if (token.contains('x')) {
+        if (token.startsWith('x')) {
+          final RegExp regex = RegExp(r'(x[a-g][1-7])');
+          return regex
+              .allMatches(token)
+              .map((RegExpMatch m) => m.group(0)!)
+              .toList();
+        } else {
+          final int firstX = token.indexOf('x');
+          if (firstX > 0) {
+            final List<String> segments = <String>[];
+            segments.add(token.substring(0, firstX));
+            final String remaining = token.substring(firstX);
+            final RegExp regex = RegExp(r'(x[a-g][1-7])');
+            segments.addAll(regex
+                .allMatches(remaining)
+                .map((RegExpMatch m) => m.group(0)!)
+                .toList());
+            return segments;
+          } else {
+            final RegExp regex = RegExp(r'(x[a-g][1-7])');
+            return regex
+                .allMatches(token)
+                .map((RegExpMatch m) => m.group(0)!)
+                .toList();
+          }
+        }
+      } else {
+        return <String>[token];
+      }
+    }
+
+    for (final String raw in tokens) {
+      // Skip headers/artifacts if any
+      if (raw.startsWith('[') || raw.endsWith(']')) {
+        continue;
+      }
+
+      final List<String> segments = splitWmdToken(raw);
+      for (final String seg in segments) {
+        if (seg.isEmpty) {
+          continue;
+        }
+        // Skip pass or dangling capture markers
+        if (seg == 'p' || seg == 'x' || seg == 'xx' || seg == 'xxx') {
+          continue;
+        }
+        try {
+          final String moveStr = _wmdNotationToMoveString(seg);
+          newHistory.appendMove(ExtMove(moveStr, side: localPos.sideToMove));
+          final bool ok = localPos.doMove(moveStr);
+          if (!ok) {
+            throw ImportFormatException(' $seg → $moveStr');
+          }
+          hasValidMoves = true;
+        } catch (e) {
+          logger.e('$_logTag Failed to parse plain token "$seg": $e');
+          throw ImportFormatException(' $seg');
+        }
+      }
+    }
+
+    if (!hasValidMoves) {
+      throw const ImportFormatException(
+          'Cannot import: No valid moves found in the list');
+    }
+
+    if (newHistory.mainlineMoves.isNotEmpty) {
+      fillAllNodesBoardLayout(newHistory.pgnRoot);
+      GameController().newGameRecorder = newHistory;
     }
   }
 

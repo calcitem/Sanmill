@@ -72,6 +72,57 @@ bool isGoldTokenMoveList(String text) {
       text.contains(" -> ");
 }
 
+/// Detect a plain space-delimited Nine Men's Morris move list without headers or move numbers.
+///
+/// Supported tokens include (case-insensitive):
+/// - place: "a1"
+/// - move:  "a1-a4"
+/// - capture/remove: "xa4"
+/// - chained within one token: e.g. "d6-d5xd7"
+///
+/// Allowed noise tokens that are ignored: result markers ("*", "1-0", "0-1", "1/2-1/2"),
+/// and move numbers like "1.", "2...".
+bool isPlainWmdMoveList(String text) {
+  // Quick negative checks for other known formats
+  if (hasTagPairs(text) || isFenMoveList(text) || isPlayOkMoveList(text) ||
+      isGoldTokenMoveList(text)) {
+    return false;
+  }
+
+  final String cleaned = removeBracketedContent(text).trim().toLowerCase();
+  if (cleaned.isEmpty) {
+    return false;
+  }
+
+  final List<String> tokens =
+      cleaned.split(RegExp(r'\s+')).where((String s) => s.isNotEmpty).toList();
+  if (tokens.isEmpty) {
+    return false;
+  }
+
+  final RegExp moveToken = RegExp(
+      r'^(?:p|(?:[a-g][1-7]|x[a-g][1-7])(?:[-x][a-g][1-7])*)$');
+  final RegExp moveNumber = RegExp(r'^\d+\.*$'); // e.g. 1. or 23...
+
+  int validMoveCount = 0;
+  for (final String t in tokens) {
+    if (t == '*' || t == '1-0' || t == '0-1' || t == '1/2-1/2') {
+      continue;
+    }
+    if (moveNumber.hasMatch(t)) {
+      continue;
+    }
+    if (moveToken.hasMatch(t)) {
+      validMoveCount++;
+      continue;
+    }
+    // Unknown token → not a plain list
+    return false;
+  }
+
+  return validMoveCount > 0;
+}
+
 String getTagPairs(String pgn) {
   // Find the index of the first '['
   final int firstBracket = pgn.indexOf('[');
