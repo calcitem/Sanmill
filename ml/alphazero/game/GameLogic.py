@@ -41,6 +41,18 @@ class Board:
         # 3: capture (after forming a mill)
         self.period = 0
         self.put_pieces = 0
+        
+        # Draw rule tracking
+        self.rule50_counter = 0  # Counter for consecutive MOVE-type moves only
+        self.position_history = []  # History of positions for repetition detection
+        self.move_history = []  # History of moves for debugging
+        self.move_counter = 0  # Total move counter (like posKeyHistory.size() in C++)
+        
+        # Rule configuration (can be customized)
+        self.n_move_rule = 100  # Standard N-move rule (uses move_counter, not rule50_counter)
+        self.endgame_n_move_rule = 100  # Endgame rule when either player has ≤3 pieces
+        self.threefold_repetition_rule = True  # Enable threefold repetition
+        
         # Create the empty board array.
         self.pieces = [None] * self.n
         for i in range(self.n):
@@ -284,18 +296,124 @@ class Board:
         
         return False
 
+    def get_position_hash(self):
+        """
+        Generate a hash representing the current board position.
+        Used for detecting threefold repetition.
+        """
+        # Create a string representation of the board state
+        board_str = ""
+        for x in range(self.n):
+            for y in range(self.n):
+                if self.allowed_places[x][y]:
+                    board_str += str(self.pieces[x][y])
+        
+        # Include period in hash to distinguish different game phases
+        position_key = f"{board_str}_{self.period}"
+        return hash(position_key)
+
+    def has_repeated_position(self):
+        """
+        Check if the current position has occurred before (for threefold repetition).
+        Returns True if position has been seen at least twice before (making this the third time).
+        """
+        if not self.threefold_repetition_rule:
+            return False
+            
+        current_hash = self.get_position_hash()
+        
+        # Count occurrences of current position in history
+        count = self.position_history.count(current_hash)
+        
+        # Return True if this would be the third occurrence
+        return count >= 2
+
+    def is_draw_by_rules(self):
+        """
+        Check if the current position is a draw according to various draw rules.
+        Returns tuple (is_draw, reason).
+        
+        Matches C++ logic from src/position.cpp:check_if_game_is_over()
+        """
+        # Check N-move rule based on total move count (like posKeyHistory.size() in C++)
+        # This is the main draw condition, not the rule50 counter
+        if self.n_move_rule > 0 and self.move_counter >= self.n_move_rule:
+            return True, "drawFiftyMove"
+        
+        # Check endgame N-move rule for positions with ≤3 pieces
+        if (self.endgame_n_move_rule < self.n_move_rule and 
+            self.is_endgame() and
+            self.move_counter >= self.endgame_n_move_rule):
+            return True, "drawEndgameFiftyMove"
+        
+        # Check threefold repetition 
+        if self.has_repeated_position():
+            return True, "drawThreefoldRepetition"
+        
+        return False, None
+
+    def is_endgame(self):
+        """
+        Check if we're in endgame phase (either player has only 3 pieces).
+        """
+        return self.count(1) <= 3 or self.count(-1) <= 3
+
+    def update_draw_counters(self, move, move_type="PLACE"):
+        """
+        Update counters and history for draw rule tracking.
+        
+        Args:
+            move: The move that was played
+            move_type: Type of move - "PLACE", "MOVE", or "REMOVE"
+                      Matches MOVETYPE_* from C++ src/position.cpp
+        """
+        # Update rule50 counter based on move type (matches C++ logic)
+        if move_type == "MOVE":
+            # Only MOVE-type moves increment rule50 counter
+            self.rule50_counter += 1
+        else:
+            # PLACE and REMOVE moves reset rule50 counter
+            self.rule50_counter = 0
+        
+        # Always increment total move counter (like posKeyHistory in C++)
+        self.move_counter += 1
+        
+        # Add current position to history (after the move)
+        current_hash = self.get_position_hash()
+        self.position_history.append(current_hash)
+        
+        # Keep history manageable (only keep last 200 positions)
+        if len(self.position_history) > 200:
+            self.position_history.pop(0)
+        
+        # Record move in history for debugging
+        self.move_history.append((move, move_type))
+        if len(self.move_history) > 200:
+            self.move_history.pop(0)
+
     def execute_move(self, move, player):
         """Perform the given move on the board; flips pieces as necessary.
         color gives the color of the piece to play (1=white, -1=black).
         """
+        # Determine move type based on current period and move structure
         if self.period == 0:
+            # Placing phase
+            move_type = "PLACE"
             self.pieces[move[0]][move[1]] = player
         elif self.period == 3:
+            # Removal phase
+            move_type = "REMOVE"
             self.pieces[move[0]][move[1]] = 0
         else:
+            # Moving phase (period 1 or 2)
+            move_type = "MOVE"
             self.pieces[move[0]][move[1]] = 0
             self.pieces[move[2]][move[3]] = player
+        
         self.update_period(move, player)
+        
+        # Update draw rule counters after the move with correct type
+        self.update_draw_counters(move, move_type)
 
     def update_period(self, move, player):
         if self.period == 3:

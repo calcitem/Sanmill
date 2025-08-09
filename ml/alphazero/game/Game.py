@@ -118,6 +118,14 @@ class Game:
         small positive value for draw.
         """
         reward = 0
+        
+        # Check for draw conditions first
+        is_draw, draw_reason = board.is_draw_by_rules()
+        if is_draw:
+            # Small positive value for draws, with slight bias based on material
+            material_bias = 0.03 * (board.count(player) - board.count(-player))
+            return min(max(1e-4 + material_bias, -1), 1)
+        
         if board.period in [0, 3]:
             reward = 0
         elif board.put_pieces >= self.num_draw:
