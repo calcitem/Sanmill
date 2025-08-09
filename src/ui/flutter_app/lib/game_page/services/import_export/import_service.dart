@@ -387,6 +387,19 @@ class ImportService {
         }
         try {
           final String moveStr = _wmdNotationToMoveString(seg);
+          
+          // Extra validation for capture moves to prevent illegal sequences
+          if (moveStr.startsWith('x')) {
+            if (localPos.action != Act.remove) {
+              logger.w('$_logTag Invalid capture move "$seg" - not in remove phase (current action: ${localPos.action})');
+              throw ImportFormatException(' $seg → $moveStr (not in capture phase)');
+            }
+            if (localPos.pieceToRemoveCount[localPos.sideToMove]! <= 0) {
+              logger.w('$_logTag Invalid capture move "$seg" - no pieces to remove');
+              throw ImportFormatException(' $seg → $moveStr (no pieces to remove)');
+            }
+          }
+          
           newHistory.appendMove(ExtMove(moveStr, side: localPos.sideToMove));
           final bool ok = localPos.doMove(moveStr);
           if (!ok) {
