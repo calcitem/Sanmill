@@ -1,3 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Checkpoints & data
+temp/
+*.pth.tar
+*.examples
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
 *.pyc
 .DS_Store
 **/__pycache__

@@ -1,8 +1,8 @@
 from Arena import playGames
 from MCTS import MCTS
-from sanmill.SanmillGame import SanmillGame
-from sanmill.SanmillPlayers import *
-from sanmill.pytorch.NNet import NNetWrapper as NNet
+from game.Game import Game
+from game.Players import *
+from game.pytorch.NNet import NNetWrapper as NNet
 
 
 import torch
@@ -16,7 +16,7 @@ any agent.
 if __name__ == '__main__':
     human_vs_cpu = True
 
-    g = SanmillGame()
+    g = Game()
 
     args = dotdict({
         'lr': 0.002,
@@ -31,8 +31,8 @@ if __name__ == '__main__':
 
     # all players
     # rp = RandomPlayer(g).play
-    # gp = GreedySanmillPlayer(g).play
-    hp = HumanSanmillPlayer(g, args.difficulty)
+    # gp = GreedyPlayer(g).play
+    hp = HumanPlayer(g, args.difficulty)
 
     if args.num_processes > 1:
         mp.set_start_method('spawn')

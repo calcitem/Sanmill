@@ -1,25 +1,24 @@
 import numpy as np
 
 
-class RandomPlayer():
+class RandomPlayer:
     def __init__(self, game):
         self.game = game
 
     def play(self, board):
         a = np.random.randint(self.game.getActionSize())
         valids = self.game.getValidMoves(board, 1)
-        while valids[a]!=1:
+        while valids[a] != 1:
             a = np.random.randint(self.game.getActionSize())
         return a
 
 
-class HumanSanmillPlayer():
+class HumanPlayer:
     def __init__(self, game, difficulty=0):
         self.game = game
         self.difficulty = difficulty
 
     def play(self, board):
-        # display(board)
         valid = self.game.getValidMoves(board, 1)
         for i in range(len(valid)):
             if valid[i]:
@@ -34,13 +33,12 @@ class HumanSanmillPlayer():
                     if valid[a]:
                         break
                 except ValueError:
-                    # Input needs to be an integer
-                    'Invalid integer'
+                    pass
             print('Invalid move')
         return a
 
 
-class GreedySanmillPlayer():
+class GreedyPlayer:
     def __init__(self, game):
         self.game = game
 
@@ -48,10 +46,12 @@ class GreedySanmillPlayer():
         valids = self.game.getValidMoves(board, 1)
         candidates = []
         for a in range(self.game.getActionSize()):
-            if valids[a]==0:
+            if valids[a] == 0:
                 continue
             nextBoard, _ = self.game.getNextState(board, 1, a)
             score = self.game.getScore(nextBoard, 1)
             candidates += [(-score, a)]
         candidates.sort()
         return candidates[0][1]
+
+

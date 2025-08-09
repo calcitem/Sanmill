@@ -4,8 +4,8 @@ import torch.multiprocessing as mp
 import coloredlogs
 
 from Coach import Coach
-from sanmill.SanmillGame import SanmillGame as Game
-from sanmill.pytorch.NNet import NNetWrapper as nn
+from game.Game import Game as Game
+from game.pytorch.NNet import NNetWrapper as nn
 from utils import *
 
 log = logging.getLogger(__name__)

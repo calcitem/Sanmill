@@ -36,7 +36,7 @@ class dotdict(dict):
             return super().__getattr__(name)
         return self[name]
 
-class SanmillDataset(Dataset):
+class GameDataset(Dataset):
     def __init__(self, examples):
         self.boards, self.pis, self.vs, self.periods = list(zip(*examples))
     def __len__(self):
