@@ -345,13 +345,38 @@ class ImportService {
       }
     }
 
-    for (final String raw in tokens) {
+    for (int i = 0; i < tokens.length; i++) {
+      final String raw = tokens[i];
       // Skip headers/artifacts if any
       if (raw.startsWith('[') || raw.endsWith(']')) {
         continue;
       }
 
       final List<String> segments = splitWmdToken(raw);
+      // Don't try to merge if we're currently in a remove phase
+      // In Nine Men's Morris, when a mill is formed, you must remove before making another move
+      if (segments.length == 1 && segments[0].startsWith('x') && 
+          localPos.action != Act.remove && i > 0) {
+        final String prev = tokens[i - 1];
+        if (!prev.contains('x')) {
+          final String merged = '$prev${segments[0]}';
+          final List<String> mergedSegs = splitWmdToken(merged);
+          if (mergedSegs.length == 2) {
+            // Re-interpret previous + current as two segments (move + capture)
+            for (final String seg in mergedSegs) {
+              final String moveStr = _wmdNotationToMoveString(seg);
+              newHistory.appendMove(ExtMove(moveStr, side: localPos.sideToMove));
+              final bool ok = localPos.doMove(moveStr);
+              if (!ok) {
+                throw ImportFormatException(' $seg → $moveStr');
+              }
+              hasValidMoves = true;
+            }
+            continue; // done handling this token; do not double-apply below
+          }
+        }
+      }
+
       for (final String seg in segments) {
         if (seg.isEmpty) {
           continue;

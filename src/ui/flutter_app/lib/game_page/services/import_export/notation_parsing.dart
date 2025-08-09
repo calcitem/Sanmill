@@ -9,19 +9,24 @@ const String _logTag = "[NotationParsing]";
 
 // TODO: Remove this function
 String _wmdNotationToMoveString(String wmd) {
-  // Validate standard notation format
-  if (wmd.startsWith('x') && wmd.length == 3) {
-    // Remove move format: "xa1", "xd5", etc.
+  // Normalize
+  wmd = wmd.trim().toLowerCase();
+
+  // Support chained token like "e5xg7" by splitting into two segments upstream.
+  // Here we only validate a single segment.
+
+  // Remove move format: "xa1", "xd5", etc.
+  if (RegExp(r'^x[a-g][1-7]$').hasMatch(wmd)) {
     return wmd;
   }
 
-  if (wmd.length == 5 && wmd[2] == '-') {
-    // Move format: "a1-a4", "d5-e5", etc.
+  // Move format: "a1-a4", "d5-e5", etc.
+  if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(wmd)) {
     return wmd;
   }
 
-  if (wmd.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(wmd)) {
-    // Place move format: "a1", "d5", etc.
+  // Place move format: "a1", "d5", etc.
+  if (RegExp(r'^[a-g][1-7]$').hasMatch(wmd)) {
     return wmd;
   }
 
