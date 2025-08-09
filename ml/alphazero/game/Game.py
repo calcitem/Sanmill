@@ -116,29 +116,21 @@ class Game:
         """
         Returns a scalar in [-1, 1]: 0 if game not ended, 1 if player won, -1 if player lost,
         small positive value for draw.
+        
+        Now matches C++ position.cpp check_if_game_is_over() logic.
         """
-        reward = 0
+        # Use the comprehensive game over check that matches C++ logic
+        is_game_over, result, reason = board.check_game_over_conditions(player)
         
-        # Check for draw conditions first
-        is_draw, draw_reason = board.is_draw_by_rules()
-        if is_draw:
-            # Small positive value for draws, with slight bias based on material
-            material_bias = 0.03 * (board.count(player) - board.count(-player))
-            return min(max(1e-4 + material_bias, -1), 1)
+        if is_game_over:
+            return result
         
-        if board.period in [0, 3]:
-            reward = 0
-        elif board.put_pieces >= self.num_draw:
-            reward = 1e-4
-        elif not board.has_legal_moves(player):
-            reward = -1 * self.reward_w_func(board.put_pieces) + 0.03 * (board.count(player) - board.count(-player))
-        elif board.period == 2 and board.count(player) < 3:
-            reward = -1 * self.reward_w_func(board.put_pieces) + 0.03 * (board.count(player) - board.count(-player))
-        elif not board.has_legal_moves(-player):
-            reward = 1 * self.reward_w_func(board.put_pieces) + 0.03 * (board.count(player) - board.count(-player))
-        elif board.period == 2 and board.count(-player) < 3:
-            reward = 1 * self.reward_w_func(board.put_pieces) + 0.03 * (board.count(player) - board.count(-player))
-        return min(max(reward, -1), 1)
+        # Legacy fallback for very long games
+        if board.put_pieces >= self.num_draw:
+            return 1e-4
+        
+        # Game continues
+        return 0
 
     def getCanonicalForm(self, board, player):
         """

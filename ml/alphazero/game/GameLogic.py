@@ -52,6 +52,12 @@ class Board:
         self.n_move_rule = 100  # Standard N-move rule (uses move_counter, not rule50_counter)
         self.endgame_n_move_rule = 100  # Endgame rule when either player has ≤3 pieces
         self.threefold_repetition_rule = True  # Enable threefold repetition
+        self.pieces_at_least_count = 3  # Minimum pieces to continue playing (default=3)
+        self.pieces_count = 9  # Total pieces per player (default=9)
+        
+        # Threefold repetition detection flags (matches C++ behavior)
+        self._threefold_detected = False
+        self._threefold_reason = None
         
         # Create the empty board array.
         self.pieces = [None] * self.n
@@ -315,7 +321,7 @@ class Board:
     def has_repeated_position(self):
         """
         Check if the current position has occurred before (for threefold repetition).
-        Returns True if position has been seen at least twice before (making this the third time).
+        Following C++ logic: position.cpp:has_game_cycle() returns count >= 3.
         """
         if not self.threefold_repetition_rule:
             return False
@@ -323,17 +329,17 @@ class Board:
         current_hash = self.get_position_hash()
         
         # Count occurrences of current position in history
-        count = self.position_history.count(current_hash)
+        # In C++, count includes current position, so >= 3 means third repetition
+        count = self.position_history.count(current_hash) + 1  # +1 for current position
         
-        # Return True if this would be the third occurrence
-        return count >= 2
+        # Return True if this is the third occurrence (count >= 3)
+        return count >= 3
 
-    def is_draw_by_rules(self):
+    def is_draw_by_nmove_rules(self):
         """
-        Check if the current position is a draw according to various draw rules.
-        Returns tuple (is_draw, reason).
-        
-        Matches C++ logic from src/position.cpp:check_if_game_is_over()
+        Check if the current position is a draw according to N-move rules only.
+        This matches C++ position.cpp:check_if_game_is_over() which only checks N-move rules.
+        Threefold repetition is checked separately after move execution.
         """
         # Check N-move rule based on total move count (like posKeyHistory.size() in C++)
         # This is the main draw condition, not the rule50 counter
@@ -341,12 +347,25 @@ class Board:
             return True, "drawFiftyMove"
         
         # Check endgame N-move rule for positions with ≤3 pieces
-        if (self.endgame_n_move_rule < self.n_move_rule and 
+        if (self.endgame_n_move_rule < self.n_move_rule and
             self.is_endgame() and
             self.move_counter >= self.endgame_n_move_rule):
             return True, "drawEndgameFiftyMove"
         
-        # Check threefold repetition 
+        return False, None
+
+    def is_draw_by_rules(self):
+        """
+        Check if the current position is a draw according to ALL draw rules.
+        This includes both N-move rules and threefold repetition.
+        Used for comprehensive draw checking when needed.
+        """
+        # Check N-move rules first
+        is_draw, reason = self.is_draw_by_nmove_rules()
+        if is_draw:
+            return True, reason
+        
+        # Check threefold repetition
         if self.has_repeated_position():
             return True, "drawThreefoldRepetition"
         
@@ -357,6 +376,104 @@ class Board:
         Check if we're in endgame phase (either player has only 3 pieces).
         """
         return self.count(1) <= 3 or self.count(-1) <= 3
+
+    def pieces_in_hand_count(self, color):
+        """
+        Calculate pieces in hand for a player.
+        Based on total pieces minus pieces on board.
+        """
+        pieces_on_board = self.count(color)
+        total_pieces_placed = self.put_pieces // 2 if color == 1 else (self.put_pieces + 1) // 2
+        return max(0, self.pieces_count - total_pieces_placed)
+
+    def total_pieces_count(self, color):
+        """
+        Get total pieces count (on board + in hand) for a player.
+        Matches C++ logic: pieceOnBoardCount[color] + pieceInHandCount[color]
+        """
+        return self.count(color) + self.pieces_in_hand_count(color)
+
+    def check_fewer_than_minimum_pieces(self, color):
+        """
+        Check if player has fewer than minimum required pieces.
+        Matches C++ logic from position.cpp:1081-1084
+        """
+        total_pieces = self.total_pieces_count(color)
+        return total_pieces < self.pieces_at_least_count
+
+    def has_legal_moves(self, color):
+        """
+        Check if a player has any legal moves.
+        Returns False if no legal moves available (stalemate).
+        """
+        if self.period in [0, 3]:
+            # In placing/removal phase, always has moves if the phase allows it
+            return True
+        
+        legal_moves = self.get_legal_moves(color)
+        return len(legal_moves) > 0
+
+    def is_all_surrounded(self, color):
+        """
+        Check if all pieces of a color are surrounded (no legal moves).
+        Matches C++ is_all_surrounded logic for stalemate detection.
+        """
+        if self.period not in [1, 2]:  # Only in moving/flying phase
+            return False
+        
+        return not self.has_legal_moves(color)
+
+    def check_game_over_conditions(self, current_player):
+        """
+        Check all game over conditions following C++ position.cpp:check_if_game_is_over() logic.
+        Threefold repetition is checked after move execution and stored in flags.
+        Returns tuple (is_game_over, result, reason).
+        
+        result: 1 if current_player wins, -1 if loses, small positive for draw
+        """
+        # 0. Check threefold repetition flag first (detected after move execution)
+        if self._threefold_detected:
+            # Small positive value for draws with material bias
+            material_bias = 0.03 * (self.count(current_player) - self.count(-current_player))
+            return True, min(max(1e-4 + material_bias, -1), 1), self._threefold_reason
+        
+        # 1. Check if opponent has too few pieces (current player wins)
+        opponent = -current_player
+        if self.check_fewer_than_minimum_pieces(opponent):
+            return True, 1.0, "loseFewerThanThree"
+        
+        # 2. Check if current player has too few pieces (current player loses)
+        if self.check_fewer_than_minimum_pieces(current_player):
+            return True, -1.0, "loseFewerThanThree"
+        
+        # 3. Check N-move rules (excluding threefold repetition)
+        is_draw, draw_reason = self.is_draw_by_nmove_rules()
+        if is_draw:
+            # Small positive value for draws with material bias
+            material_bias = 0.03 * (self.count(current_player) - self.count(opponent))
+            return True, min(max(1e-4 + material_bias, -1), 1), draw_reason
+        
+        # 4. Check stalemate conditions (no legal moves in moving phase)
+        if self.period in [1, 2] and self.is_all_surrounded(current_player):
+            # Default stalemate action: opponent wins
+            return True, -1.0, "loseNoLegalMoves"
+        
+        # 5. Check if opponent is stalemated (current player wins)
+        if self.period in [1, 2] and self.is_all_surrounded(opponent):
+            return True, 1.0, "loseNoLegalMoves"
+        
+        # Game continues
+        return False, 0.0, None
+
+    def check_threefold_repetition_after_move(self):
+        """
+        Check threefold repetition immediately after a move execution.
+        This matches C++ behavior where threefold is checked after move, not in check_if_game_is_over().
+        Returns tuple (is_draw, reason) or (False, None).
+        """
+        if self.has_repeated_position():
+            return True, "drawThreefoldRepetition"
+        return False, None
 
     def update_draw_counters(self, move, move_type="PLACE"):
         """
@@ -378,9 +495,17 @@ class Board:
         # Always increment total move counter (like posKeyHistory in C++)
         self.move_counter += 1
         
-        # Add current position to history (after the move)
-        current_hash = self.get_position_hash()
-        self.position_history.append(current_hash)
+        # Position history management - CRITICAL: matches C++ posKeyHistory behavior
+        # Only update position history for MOVE-type moves (length 5 in C++)
+        # Clear history for PLACE and REMOVE moves (length != 5 in C++)
+        if move_type == "MOVE":
+            current_hash = self.get_position_hash()
+            # Only add if different from last hash (avoids duplicate entries)
+            if not self.position_history or self.position_history[-1] != current_hash:
+                self.position_history.append(current_hash)
+        else:
+            # Clear position history for non-MOVE moves (matches C++ behavior)
+            self.position_history.clear()
         
         # Keep history manageable (only keep last 200 positions)
         if len(self.position_history) > 200:
@@ -414,6 +539,16 @@ class Board:
         
         # Update draw rule counters after the move with correct type
         self.update_draw_counters(move, move_type)
+        
+        # Check for threefold repetition after MOVE-type moves (matches C++ behavior)
+        # In C++, threefold repetition is checked immediately after move execution
+        if move_type == "MOVE" and self.threefold_repetition_rule:
+            is_repetition, reason = self.check_threefold_repetition_after_move()
+            if is_repetition:
+                # Set a flag to indicate threefold repetition was detected
+                # This will be picked up by the game ending logic
+                self._threefold_detected = True
+                self._threefold_reason = reason
 
     def update_period(self, move, player):
         if self.period == 3:
