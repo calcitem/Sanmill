@@ -12,9 +12,9 @@ enum PieceColor { none, white, black, marked, nobody, draw }
 Color getAverageColor(Color a, Color b) {
   return Color.fromARGB(
     (a.a + b.a) ~/ 2,
-    (a.a + b.r) ~/ 2,
-    (a.a + b.g) ~/ 2,
-    (a.a + b.b) ~/ 2,
+    (a.r + b.r) ~/ 2,
+    (a.g + b.g) ~/ 2,
+    (a.b + b.b) ~/ 2,
   );
 }
 
@@ -201,7 +201,26 @@ extension PieceColorExtension on PieceColor {
     }
   }
 
-  Color get blurPositionColor => mainColor.withValues(alpha: 0.1);
+  Color get blurPositionColor {
+    switch (this) {
+      case PieceColor.white:
+      case PieceColor.black:
+        return mainColor.withValues(alpha: 0.1);
+      case PieceColor.marked:
+        // For marked pieces, use a semi-transparent average of white and black
+        // instead of the fully transparent mainColor
+        final ColorSettings colorSettings = DB().colorSettings;
+        final Color averageColor = getAverageColor(
+          colorSettings.whitePieceColor, 
+          colorSettings.blackPieceColor
+        );
+        return averageColor.withValues(alpha: 0.3);
+      case PieceColor.draw:
+      case PieceColor.none:
+      case PieceColor.nobody:
+        throw Error();
+    }
+  }
 }
 
 enum AiMoveType { unknown, traditional, perfect, consensus, openingBook }
