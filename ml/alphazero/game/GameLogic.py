@@ -1,5 +1,5 @@
 """
-Board class and move generation logic for the Mill (Sanmill variant) game.
+Board class and move generation logic for Nine Men's Morris (standard rules).
 
 Board data:
   1 = white, -1 = black, 0 = empty
@@ -35,7 +35,7 @@ class Board:
         self.n = 7
         # The phase (period) of the game.
         # 0: placing pieces
-        # 1: moving pieces
+        # 1: moving pieces (adjacent only)
         # 2: flying (when one player has only 3 pieces left)
         # 3: capture (after forming a mill)
         self.period = 0
@@ -99,7 +99,7 @@ class Board:
             # Capture phase: choose any opponent piece to remove.
             moves = np.array(self.pieces)
             return np.transpose(np.where(moves == -color)).tolist()
-        elif self.period == 2 and self.count(color) == 3:
+        elif self.period == 2 and self.count(color) <= 3:
             # Flying phase: choose any own piece and any empty destination.
             pieces = np.array(self.pieces)
             moves0 = np.transpose(np.where(pieces == color)).tolist()

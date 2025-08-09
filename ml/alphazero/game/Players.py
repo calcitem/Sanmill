@@ -55,3 +55,30 @@ class GreedyPlayer:
         return candidates[0][1]
 
 
+class EnginePlayer:
+    """Baseline player powered by the native Sanmill engine via the bridge.
+
+    Note: This player expects to receive the actual board (not canonical) and
+    maintains a running move token history from startpos.
+    """
+
+    requires_actual_board = True
+
+    def __init__(self, game, engine, history_tokens=None):
+        from .engine_adapter import engine_token_to_move
+        self.game = game
+        self.engine = engine
+        self.engine_token_to_move = engine_token_to_move
+        self.history_tokens = history_tokens if history_tokens is not None else []
+
+    def play(self, board):
+        # Ask engine for bestmove given current history
+        token = self.engine.get_bestmove(self.history_tokens)
+        if token is None:
+            # Fallback to random if engine returns no bestmove
+            return RandomPlayer(self.game).play(board)
+        move = self.engine_token_to_move(token)
+        action = board.get_action_from_move(move)
+        return action
+
+

@@ -66,6 +66,9 @@ The first run will:
   - `pytorch/GameNNet.py`: network (ViT-like backbone + period heads)
   - `pytorch/NNet.py`: training/validation/inference wrapper
 - `utils.py`: helpers (`AverageMeter`, `EMA`, `dotdict`, `GameDataset`)
+ - `engine_bridge.py`: bridge to native Sanmill engine (UCI-like)
+ - `game/standard_rules.py`: standard Nine Men's Morris coordinates/adjacency/mills
+ - `game/engine_adapter.py`: convert between Python move arrays and engine tokens
 
 ## Training details
 ### Train
@@ -127,6 +130,12 @@ Difficulty (dynamic): set `args.difficulty ∈ [-1, 1]` in `pit.py`; EMA-adjuste
 
 ### AI vs AI
 Set `human_vs_cpu = False` in `pit.py` and configure both sides' MCTS params.
+
+### Optional: Use native engine as a baseline/opponent
+We provide a thin UCI-like `engine_bridge.py` to interact with the C++ engine.
+- Environment variable `SANMILL_ENGINE` can point to the engine executable.
+- The bridge sends `uci`, `setoption` (standard rules), `position`, `go`, and
+  uses `analyze` to enumerate legal moves.
 
 ## Periods and network heads
 - period 0: placing

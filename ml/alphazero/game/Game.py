@@ -3,6 +3,7 @@ from copy import deepcopy
 import numpy as np
 
 from .GameLogic import Board
+from .standard_rules import coord_to_xy, xy_to_coord, mills
 
 
 class Game:
@@ -75,6 +76,9 @@ class Game:
         """
         Returns: number of all possible actions
         """
+        # For standard rules without diagonal lines we still keep 24*24 action
+        # space for compatibility with existing training code. Invalid actions
+        # will be masked out by getValidMoves.
         return 24 * 24
 
     def getNextState(self, board, player, action):
@@ -192,5 +196,23 @@ class Game:
             print("|")
 
         print("-----------------------")
+
+    # -------------------- Standard-rule helpers (optional) --------------------
+    def is_mill(self, board, move_dst_xy):
+        """Return True if the destination square forms a mill after move.
+
+        move_dst_xy: (x, y) where the piece ended up (placing or moving)
+        """
+        coord = xy_to_coord.get(tuple(move_dst_xy))
+        if not coord:
+            return False
+        for a, b, c in mills:
+            if coord in (a, b, c):
+                ax, ay = coord_to_xy[a]
+                bx, by = coord_to_xy[b]
+                cx, cy = coord_to_xy[c]
+                if board.pieces[ay][ax] == board.pieces[by][bx] == board.pieces[cy][cx] != 0:
+                    return True
+        return False
 
 
