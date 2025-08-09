@@ -9,6 +9,7 @@ Squares are stored and manipulated as (x, y) tuples where x is the column and y 
 """
 
 import numpy as np
+from .standard_rules import xy_to_coord, coord_to_xy, adjacent
 
 
 class Board:
@@ -175,13 +176,31 @@ class Board:
         for x in range(max(0, i - 1), min(3, i + 2)):
             for y in range(max(0, j - 1), min(3, j + 2)):
                 for z in range(max(0, k - 1), min(3, k + 2)):
-                    if abs(x - i) + abs(y - j) + abs(z - k) == 1 \
-                            and abs(y - 1) + abs(z - 1) != 0 \
-                            and shrink_pieces[x, y, z] == 0:
-                        place_index0 = self.shrink_places[i, j, k]
-                        place_index1 = self.shrink_places[x, y, z]
-                        adjacency_moves.append([place_index0 // 7, place_index0 % 7,
-                                                place_index1 // 7, place_index1 % 7])
+                    # Must be a direct neighbor in the 3D shrink space
+                    if abs(x - i) + abs(y - j) + abs(z - k) != 1:
+                        continue
+
+                    # Skip the (ring center) that does not correspond to any board point
+                    if y == 1 and z == 1:
+                        continue
+
+                    # Disallow diagonal cross-ring transitions at corner positions.
+                    # Standard Nine Men's Morris allows cross-ring edges only at mid-edge positions
+                    # (i.e., when either local index equals 1). Corners (0 or 2) cannot cross rings.
+                    if x != i:
+                        if not (y == 1 or z == 1):
+                            continue
+
+                    # Destination square must be empty on the board
+                    if shrink_pieces[x, y, z] != 0:
+                        continue
+
+                    place_index0 = self.shrink_places[i, j, k]
+                    place_index1 = self.shrink_places[x, y, z]
+                    adjacency_moves.append([
+                        place_index0 // 7, place_index0 % 7,
+                        place_index1 // 7, place_index1 % 7,
+                    ])
 
         return adjacency_moves
 
@@ -231,23 +250,50 @@ class Board:
         return is_line3
 
     def display_board(self):
-        """Display the current board state in a readable format."""
-        board_lines = []
-        board_lines.append("Board state:")
+        """Return an ASCII representation with lines and O/@ pieces.
+
+        - O: White (1)
+        - @: Black (-1)
+        - .: Empty node
+        Lines are drawn along legal edges defined by standard rules (no diagonals).
+        """
+        size = self.n * 2 - 1  # expand to place edges between nodes
+        canvas = [[" " for _ in range(size)] for _ in range(size)]
+
+        # Place nodes
         for y in range(self.n):
-            line = ""
             for x in range(self.n):
-                if self.allowed_places[x][y]:
-                    piece = self.pieces[x][y]
-                    if piece == 1:
-                        line += "W "
-                    elif piece == -1:
-                        line += "B "
-                    else:
-                        line += ". "
-                else:
-                    line += "  "
-            board_lines.append(line)
-        return "\n".join(board_lines)
+                if not self.allowed_places[x][y]:
+                    continue
+                ch = "."
+                if self.pieces[x][y] == 1:
+                    ch = "O"
+                elif self.pieces[x][y] == -1:
+                    ch = "@"
+                canvas[2 * y][2 * x] = ch
+
+        # Draw edges according to standard adjacency (engine rules)
+        drawn = set()
+        for c, neighs in adjacent.items():
+            x, y = coord_to_xy[c]
+            for n in neighs:
+                nx, ny = coord_to_xy[n]
+                key = tuple(sorted(((x, y), (nx, ny))))
+                if key in drawn:
+                    continue
+                drawn.add(key)
+                x0, y0 = 2 * x, 2 * y
+                x1, y1 = 2 * nx, 2 * ny
+                if x0 == x1:
+                    # vertical line
+                    for yy in range(min(y0, y1) + 1, max(y0, y1)):
+                        canvas[yy][x0] = "|"
+                elif y0 == y1:
+                    # horizontal line
+                    for xx in range(min(x0, x1) + 1, max(x0, x1)):
+                        canvas[y0][xx] = "-"
+                # no diagonals
+
+        return "\n".join("".join(row) for row in canvas)
 
 
