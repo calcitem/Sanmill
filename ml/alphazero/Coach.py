@@ -18,6 +18,7 @@ except Exception:  # Fallback to standard json if orjson is unavailable
             b = b.decode('utf-8')
         return _jsonlib.loads(b)
 from random import shuffle
+from training_logger import create_logger_from_args
 
 import numpy as np
 from tqdm import tqdm
@@ -181,6 +182,16 @@ class Coach():
         self.trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
         self.skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
         self.has_won = True
+        
+        # 初始化训练日志器（如果启用）
+        self.training_logger = None
+        if getattr(args, 'enable_training_log', True):
+            try:
+                self.training_logger = create_logger_from_args(args)
+                log.info(f"训练日志器已启用，保存至: {self.training_logger.csv_file}")
+            except Exception as ex:
+                log.warning(f"初始化训练日志器失败: {ex}")
+                self.training_logger = None
 
     def learn(self):
         """
@@ -345,6 +356,41 @@ class Coach():
                 if perfect_draws_ratio is not None:
                     log.info('ACCEPTED MODEL PERFECT DB DRAW RATE: %.3f', perfect_draws_ratio)
             # self.nnet.save_checkpoint(folder=self.args.checkpoint, filename=self.getCheckpointFile(i))
+            
+            # 记录本轮训练结果到表格
+            if self.training_logger is not None:
+                try:
+                    # 计算教师样本数
+                    teacher_examples_count = 0
+                    if getattr(self.args, 'usePerfectTeacher', False):
+                        teacher_examples_count = getattr(self.args, 'teacherExamplesPerIter', 0)
+                    
+                    # 记录到日志表格
+                    self.training_logger.log_iteration(
+                        iteration=i,
+                        self_play_games=self.args.numEps,
+                        teacher_examples=teacher_examples_count,
+                        training_examples=len(trainExamples),
+                        training_epochs=self.args.epochs,
+                        training_loss=None,  # 训练损失需要从 nnet.train() 获取
+                        prev_wins=pwins,
+                        new_wins=nwins,
+                        draws=draws,
+                        model_accepted=self.has_won,
+                        perfect_wins=n_wins if perfect_draws_ratio is not None else 0,
+                        perfect_losses=p_wins if perfect_draws_ratio is not None else 0,
+                        perfect_draws=p_draws if perfect_draws_ratio is not None else 0,
+                        notes=f"教师模式" if getattr(self.args, 'usePerfectTeacher', False) else "纯AlphaZero"
+                    )
+                except Exception as ex:
+                    log.warning(f"记录训练日志失败: {ex}")
+        
+        # 训练结束后打印摘要
+        if self.training_logger is not None:
+            try:
+                self.training_logger.print_summary()
+            except Exception as ex:
+                log.warning(f"打印训练摘要失败: {ex}")
 
     def getCheckpointFile(self, iteration):
         return 'checkpoint_' + str(iteration) + '.pth.tar'

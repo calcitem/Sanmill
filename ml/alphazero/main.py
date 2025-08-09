@@ -4,11 +4,13 @@ import sys
 import torch
 import torch.multiprocessing as mp
 import coloredlogs
+import argparse
 
 from Coach import Coach
 from game.Game import Game as Game
 from game.pytorch.NNet import NNetWrapper as nn
 from utils import *
+from config import merge_config_with_args
 
 log = logging.getLogger(__name__)
 
@@ -49,10 +51,74 @@ args = dotdict({
     # Debugging and validation options
     'verbose_games': 1,  # Number of games per iteration to log detailed move history
     'log_detailed_moves': True,  # Whether to log move sequences for verification
+    'enable_training_log': True,  # Whether to save training results to CSV/JSON files
 })
 
 
 def main():
+    # Parse command line arguments
+    parser = argparse.ArgumentParser(
+        description='AlphaZero Training for Nine Men\'s Morris',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  # Generate config templates
+  python3 main.py --create-template
+  
+  # Train with config file (recommended)
+  python3 main.py --config my_config.yaml
+  
+  # Train with default settings
+  python3 main.py
+  
+  # Quick setup with paths
+  python3 main.py --config config_examples/teacher_training.yaml \\
+                  --engine /path/to/sanmill \\
+                  --db /path/to/perfect/database
+        """
+    )
+    parser.add_argument('--config', '-c', type=str, default=None,
+                        help='Path to configuration file (YAML or JSON)')
+    parser.add_argument('--create-template', action='store_true',
+                        help='Create template configuration files and exit')
+    parser.add_argument('--engine', type=str, default=None,
+                        help='Path to Sanmill engine executable')
+    parser.add_argument('--db', type=str, default=None,
+                        help='Path to perfect database (auto-enables teacher)')
+    
+    cmd_args = parser.parse_args()
+    
+    # Create template and exit if requested
+    if cmd_args.create_template:
+        print("📋 Creating configuration templates...")
+        os.system('python3 create_configs.py')
+        return
+    
+    # Load configuration
+    if cmd_args.config:
+        log.info(f"📋 Loading configuration from: {cmd_args.config}")
+        args = merge_config_with_args(args, cmd_args.config)
+    else:
+        log.info("⚙️  Using default configuration")
+    
+    # Apply command-line overrides
+    if cmd_args.engine:
+        os.environ['SANMILL_ENGINE'] = cmd_args.engine
+        log.info(f"🔧 Engine: {cmd_args.engine}")
+        
+    if cmd_args.db:
+        args.teacherDBPath = cmd_args.db
+        args.usePerfectTeacher = True  # Auto-enable teacher
+        log.info(f"🎓 Perfect DB: {cmd_args.db}")
+        log.info("📚 Auto-enabled teacher mixing")
+    
+    # Show key configuration
+    log.info(f"🎯 Training config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} procs, CUDA: {args.cuda}")
+    if args.usePerfectTeacher:
+        log.info(f"📚 Teacher: {args.teacherExamplesPerIter} samples/iter from {args.teacherDBPath}")
+    
+    # Original args variable is now updated
+    
     # Allow environment overrides so we can disable CUDA or reduce processes when needed.
     # SANMILL_TRAIN_CUDA: set to "0"/"false"/"no" to force CPU even if CUDA is available.
     # SANMILL_TRAIN_PROCESSES: set process count (>=1) to control multiprocessing.
