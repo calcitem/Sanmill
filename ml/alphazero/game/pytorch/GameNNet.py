@@ -42,12 +42,17 @@ class Branch03(nn.Module):
 
 
 class Branch14(nn.Module):
-    def __init__(self, args):
+    def __init__(self, args, fixed_valids=None):
         super(Branch14, self).__init__()
         # 4 means the period where the opponent has 3 pieces and you have at least 4 pieces.
         self.args = args
         self.b = Board()
-        self.cache_valids()
+        # Allow providing a fixed mapping for valid actions to ensure
+        # compatibility between training and inference checkpoints.
+        if fixed_valids is not None:
+            self.valids = list(map(int, fixed_valids))
+        else:
+            self.cache_valids()
         # Use dynamic output size equal to number of valid period-1 actions
         self.num_valids = len(self.valids)
         self.main = nn.Sequential(
@@ -127,7 +132,7 @@ class Branch2(nn.Module):
 
 
 class GameNNet(nn.Module):
-    def __init__(self, game, args):
+    def __init__(self, game, args, period1_valids=None):
         super(GameNNet, self).__init__()
         # game params
         self.board_x, self.board_y = game.getBoardSize()
@@ -149,7 +154,13 @@ class GameNNet(nn.Module):
             nn.BatchNorm2d(args.num_channels * 2),
             nn.ReLU(),
         )
-        self.branch = nn.ModuleList([Branch03(args), Branch14(args), Branch2(args), Branch03(args), Branch14(args)])
+        self.branch = nn.ModuleList([
+            Branch03(args),
+            Branch14(args, fixed_valids=period1_valids),
+            Branch2(args),
+            Branch03(args),
+            Branch14(args, fixed_valids=period1_valids),
+        ])
 
     def forward(self, s, period):
         """

@@ -20,7 +20,10 @@ class NNetWrapper(NeuralNet):
     def __init__(self, game, args):
         self.args = args
         self.board_x, self.board_y = game.getBoardSize()
-        self.nnet = snnet(game, args)
+        # Allow delayed init with optional period1 valids loaded from checkpoint
+        self._period1_valids = None
+        self.game = game
+        self.nnet = snnet(game, args, period1_valids=self._period1_valids)
         if args.cuda:
             self.nnet.cuda()
 
@@ -157,9 +160,44 @@ class NNetWrapper(NeuralNet):
             os.mkdir(folder)
         else:
             print("Checkpoint Directory exists! ")
-        torch.save({
+        # Extract period-1 valid action mapping from model if available
+        period1_valids = None
+        try:
+            # Branch index 1 and 4 correspond to period-1/4 heads
+            if hasattr(self.nnet, 'branch') and len(self.nnet.branch) > 1:
+                if hasattr(self.nnet.branch[1], 'valids'):
+                    period1_valids = list(map(int, self.nnet.branch[1].valids))
+        except Exception:
+            pass
+
+        # Serialize args as a plain dict for portability
+        try:
+            args_dict = dict(self.args)
+        except Exception:
+            # Fallback: manually pick commonly used keys
+            args_dict = {
+                'lr': getattr(self.args, 'lr', None),
+                'dropout': getattr(self.args, 'dropout', None),
+                'epochs': getattr(self.args, 'epochs', None),
+                'batch_size': getattr(self.args, 'batch_size', None),
+                'cuda': getattr(self.args, 'cuda', None),
+                'num_channels': getattr(self.args, 'num_channels', None),
+            }
+
+        payload = {
             'state_dict': self.nnet.state_dict(),
-        }, filepath)
+            'args': args_dict,
+            'period1_valids': period1_valids,
+        }
+        torch.save(payload, filepath)
+
+        # Also write a sidecar JSON for easy inspection/migration
+        try:
+            import json
+            with open(filepath + '.config.json', 'w', encoding='utf-8') as f:
+                json.dump({'args': args_dict, 'period1_valids': period1_valids}, f)
+        except Exception:
+            pass
 
     def load_checkpoint(self, folder='checkpoint', filename='checkpoint.pth.tar'):
         filepath = os.path.join(folder, filename)
@@ -168,6 +206,48 @@ class NNetWrapper(NeuralNet):
             exit(1)
         map_location = None if self.args.cuda else 'cpu'
         checkpoint = torch.load(filepath, map_location=map_location)
-        self.nnet.load_state_dict(checkpoint['state_dict'])
+
+        # If checkpoint contains model/training config, apply it before building the net
+        ckpt_args = checkpoint.get('args') if isinstance(checkpoint, dict) else None
+        period1_valids = checkpoint.get('period1_valids') if isinstance(checkpoint, dict) else None
+
+        # If not embedded, try sidecar JSON
+        if ckpt_args is None or period1_valids is None:
+            try:
+                import json
+                with open(filepath + '.config.json', 'r', encoding='utf-8') as f:
+                    cfg = json.load(f)
+                    ckpt_args = ckpt_args or cfg.get('args')
+                    period1_valids = period1_valids or cfg.get('period1_valids')
+            except Exception:
+                pass
+
+        reinit = False
+        if ckpt_args:
+            # Overwrite critical structural args if present
+            for key in ['num_channels', 'dropout']:
+                if key in ckpt_args and getattr(self.args, key, None) != ckpt_args[key]:
+                    setattr(self.args, key, ckpt_args[key])
+                    reinit = True
+        if period1_valids is not None:
+            self._period1_valids = period1_valids
+            reinit = True
+
+        if reinit:
+            # Recreate network with aligned structure/mappings
+            self.nnet = snnet(self.game, self.args, period1_valids=self._period1_valids)
+            if self.args.cuda:
+                self.nnet.cuda()
+
+        # Allow non-strict load to survive architectural diffs
+        incompatible = self.nnet.load_state_dict(checkpoint['state_dict'], strict=False)
+        missing = list(incompatible.missing_keys) if hasattr(incompatible, 'missing_keys') else []
+        unexpected = list(incompatible.unexpected_keys) if hasattr(incompatible, 'unexpected_keys') else []
+        if missing or unexpected:
+            print("[Warning] Loaded checkpoint with non-strict matching.")
+            if missing:
+                print(" - Missing keys:", missing)
+            if unexpected:
+                print(" - Unexpected keys:", unexpected)
 
 

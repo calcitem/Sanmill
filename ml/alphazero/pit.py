@@ -39,7 +39,11 @@ if __name__ == '__main__':
 
     # nnet players
     n1 = NNet(g, args)
-    n1.load_checkpoint('./temp','best.pth.tar')
+    # Auto-pick checkpoint: prefer accepted champion, fallback to best-epoch
+    import os
+    ckpt_dir = './temp'
+    ckpt_file = 'best.pth.tar' if os.path.exists(os.path.join(ckpt_dir, 'best.pth.tar')) else 'best_epoch.pth.tar'
+    n1.load_checkpoint(ckpt_dir, ckpt_file)
     args1 = dotdict({'numMCTSSims': 500, 'cpuct':0.5, 'eat_factor': 2})
     mcts1 = MCTS(g, n1, args1)
     n1p = mcts1
@@ -48,7 +52,7 @@ if __name__ == '__main__':
         player2 = hp
     else:
         n2 = NNet(g, args)
-        n2.load_checkpoint('./temp','best.pth.tar')
+        n2.load_checkpoint(ckpt_dir, ckpt_file)
         args2 = dotdict({'numMCTSSims': 100, 'cpuct': 1.5})
         mcts2 = MCTS(g, n2, args2)
         n2p = mcts2
