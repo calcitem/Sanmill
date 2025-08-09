@@ -26,6 +26,7 @@ from torch.multiprocessing import Process, Queue
 from Arena import Arena, playGames
 from MCTS import MCTS
 from game.engine_adapter import move_to_engine_token
+from typing import List
 
 log = logging.getLogger(__name__)
 
@@ -247,9 +248,45 @@ class Coach():
             self.saveTrainExamples('x')
 
             # shuffle examples before training
-            trainExamples = []
+            trainExamples: List = []
             for e in self.trainExamplesHistory:
                 trainExamples.extend(e)
+
+            # Optionally mix in teacher (Perfect DB) labeled examples
+            # This augments training with oracle targets to stabilize learning.
+            if getattr(self.args, 'usePerfectTeacher', False) and getattr(self.args, 'teacherExamplesPerIter', 0) > 0:
+                try:
+                    from perfect_supervised import build_dataset_with_perfect_labels
+                    teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
+                    if teacher_db_path:
+                        prev_timeout = os.environ.get('SANMILL_ANALYZE_TIMEOUT')
+                        prev_threads = os.environ.get('SANMILL_ENGINE_THREADS')
+                        if getattr(self.args, 'teacherAnalyzeTimeout', None) is not None:
+                            os.environ['SANMILL_ANALYZE_TIMEOUT'] = str(self.args.teacherAnalyzeTimeout)
+                        if getattr(self.args, 'teacherThreads', None) is not None:
+                            os.environ['SANMILL_ENGINE_THREADS'] = str(self.args.teacherThreads)
+                        teacher_batch = getattr(self.args, 'teacherBatch', 256)
+                        # verbose=False to avoid flooding logs during training
+                        teacher_examples = build_dataset_with_perfect_labels(
+                            teacher_db_path, int(self.args.teacherExamplesPerIter), batch=int(teacher_batch), verbose=False
+                        )
+                        if teacher_examples:
+                            log.info("Mixed in %d teacher examples from Perfect DB", len(teacher_examples))
+                            trainExamples.extend(teacher_examples)
+                        # restore envs
+                        if prev_timeout is None:
+                            os.environ.pop('SANMILL_ANALYZE_TIMEOUT', None)
+                        else:
+                            os.environ['SANMILL_ANALYZE_TIMEOUT'] = prev_timeout
+                        if prev_threads is None:
+                            os.environ.pop('SANMILL_ENGINE_THREADS', None)
+                        else:
+                            os.environ['SANMILL_ENGINE_THREADS'] = prev_threads
+                    else:
+                        log.warning("usePerfectTeacher is enabled, but no teacherDBPath/SANMILL_PERFECT_DB provided.")
+                except Exception as ex:
+                    log.exception("Failed to mix teacher examples: %s", ex)
+
             shuffle(trainExamples)
 
             # training new network, keeping a copy of the old one

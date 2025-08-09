@@ -37,6 +37,14 @@ args = dotdict({
     'cuda': torch.cuda.is_available(),
     'num_channels': 256,
     
+    # Teacher (Perfect DB) mixing options
+    'usePerfectTeacher': False,     # set True to mix oracle labels every iteration
+    'teacherExamplesPerIter': 0,    # how many teacher examples per iteration
+    'teacherBatch': 256,            # sampling batch for teacher dataset builder
+    'teacherDBPath': os.environ.get('SANMILL_PERFECT_DB', None),  # or pass via env
+    'teacherAnalyzeTimeout': int(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')),  # seconds per analyze
+    'teacherThreads': int(os.environ.get('SANMILL_ENGINE_THREADS', '1')),
+    
     # Debugging and validation options
     'verbose_games': 1,  # Number of games per iteration to log detailed move history
     'log_detailed_moves': True,  # Whether to log move sequences for verification
@@ -63,6 +71,17 @@ def main():
     if env_arena:
         try:
             args.arenaCompare = max(2, int(env_arena))
+        except Exception:
+            pass
+
+    # Allow env overrides for teacher mixing
+    env_use_teacher = os.environ.get('SANMILL_USE_TEACHER')
+    if env_use_teacher is not None:
+        args.usePerfectTeacher = env_use_teacher.strip().lower() in ("1", "true", "yes", "on")
+    env_teacher_n = os.environ.get('SANMILL_TEACHER_PER_ITER')
+    if env_teacher_n:
+        try:
+            args.teacherExamplesPerIter = max(0, int(env_teacher_n))
         except Exception:
             pass
 
@@ -106,6 +125,8 @@ def main():
         c.loadTrainExamples()
 
     log.info('Starting the learning process 🎉')
+    if args.usePerfectTeacher:
+        log.info('Teacher mixing is enabled: %d examples/iter from %s', args.teacherExamplesPerIter, args.teacherDBPath)
     c.learn()
 
 

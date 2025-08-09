@@ -223,6 +223,31 @@ class MillEngine:
             out[mv] = {"wdl": label, "value": val, "steps": steps}
         return out
 
+    def choose_with_perfect(self, move_list: List[str]):
+        """Pick a move using Perfect DB labels with win/draw/slow-loss priority.
+
+        Returns the engine-token move string.
+        Raises ValueError if no labeled legal moves available.
+        """
+        labels = self.analyze(move_list)
+        if not labels:
+            raise ValueError("No labels returned by analyze; Perfect DB may be unavailable.")
+        win_moves = [m for m, d in labels.items() if d.get('wdl') == 'win']
+        if win_moves:
+            return win_moves[0]
+        draw_moves = [m for m, d in labels.items() if d.get('wdl') == 'draw']
+        if draw_moves:
+            return draw_moves[0]
+        # For losses, prefer the one with maximum steps (slowest loss)
+        loss_moves = sorted([(m, d.get('steps') or 0) for m, d in labels.items()], key=lambda x: -x[1])
+        if loss_moves:
+            return loss_moves[0][0]
+        # Fallback: any legal move token
+        tokens = list(labels.keys())
+        if not tokens:
+            raise ValueError("No legal moves found in analysis.")
+        return tokens[0]
+
     def get_legal_moves(self, move_list: List[str], timeout_s: float = 5.0) -> List[str]:
         """Return legal moves in engine notation for the given move sequence.
 
