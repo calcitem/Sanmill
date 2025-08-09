@@ -220,6 +220,26 @@ For every move, briefly cover:
 
 **Notation tips:** Use `x` for captures (e.g., `f2xd6`). Refer to lines/mills by coordinates when clarifying ideas. Keep tone instructive and concise.
 
+  **Legality and factual checks (strict):**
+  - Before you assert a mill is completed (e.g., “completes (d3,d2,d1)”), verify the three squares are all occupied by the same side in the resulting position.
+  - When proposing or describing synergies (e.g., “works with e4/f4 to pressure g4”), confirm those squares are actually available/occupied as required (empty when placing; reachable when moving; not blocked by opponent).
+  - Only recommend legal alternatives: they must be on an empty square (for placing), or a legal destination (for moving/flying) given the current rules. Do NOT invent moves to occupied squares.
+  - If a prior placement/move formed a mill, the next legal step is removal (same side) rather than placement/movement; reflect this in your commentary.
+  - When a side completes a mill, the capture is performed by the same side immediately. Do not attribute the capture to the opponent. Use merged notation in the move list when appropriate (e.g., `f6xa7`, `e4-e5xa7`).
+
+  **Inline context semantics (per move):**
+  - For each move, a compact `ctx="..."` is provided. Interpret keys as follows:
+    - `phaseAfter`: phase of the game after this move (Placing/Moving).
+    - `sideToMoveAfter`: which side moves next after this move.
+    - `whitePieces` / `blackPieces`: the exact coordinates occupied by White/Black after this move.
+    - `empty`: empty coordinates after this move.
+    - `mills(W/B)`: total number of completed mills per side after this move.
+    - `legalForSideToMoveAfter(placements|moves|removals)=[...]`: the legal options for the next player, in this resulting position.
+    - `oneMoveMillsForSideToMove=[...]`: next player’s one-move mill threats.
+    - `mover`, `moverAlternatives`, `chosen`: the player who just moved, their available alternatives in the previous position, and the move they chose.
+  - Never reference unavailable moves. Use only the legal lists provided.
+  - Prefer to reason directly from `whitePieces`, `blackPieces`, and `empty` to avoid misreading of board layout.
+
 ---
 
 ## Action
@@ -233,7 +253,7 @@ You will receive a Nine Men's Morris Move List. **Remove any existing `{}` conte
 - **Directly output only the modified Move List** with annotations.
 - Keep each annotation **2–4 sentences**, focused on intent, threats, alternatives, and evaluation.
 - Use "!", "?", and evaluation symbols (±, ∓, =, ∞) when appropriate.
-- **English only.** Do not include tags such as side/type/boardLayout inside `{}`.
+- **Note:** Do not include tags such as side/type/boardLayout inside `{}`.
 
 **Format:**
 ```
