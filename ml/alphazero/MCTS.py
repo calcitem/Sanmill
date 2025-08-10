@@ -39,6 +39,31 @@ class MCTS():
         # CRITICAL DEBUG: Check if root state is already terminal before starting
         root_game_ended = self.game.getGameEnded(canonicalBoard, 1)
         log.debug(f"[MCTS DEBUG] Pre-search check: Game ended = {root_game_ended}")
+        
+        s = self.game.stringRepresentation(canonicalBoard)
+        cached_result = self.Es.get(s, None)
+        
+        # Check for inconsistent caching
+        if cached_result is not None and cached_result != root_game_ended:
+            log.error(f"[MCTS ERROR] Cached result {cached_result} != current result {root_game_ended} for root state!")
+            log.error(f"[MCTS ERROR] Clearing inconsistent cache entries for root state")
+            # Clear inconsistent cache entries
+            if s in self.Es:
+                del self.Es[s]
+            if s in self.Ps:
+                del self.Ps[s]
+            if s in self.Vs:
+                del self.Vs[s]
+            if s in self.Ns:
+                del self.Ns[s]
+            # Clear action-specific caches
+            for a in range(self.game.getActionSize()):
+                if (s, a) in self.Qsa:
+                    del self.Qsa[(s, a)]
+                if (s, a) in self.Nsa:
+                    del self.Nsa[(s, a)]
+            log.error(f"[MCTS ERROR] Cache cleared, continuing with fresh state")
+        
         if root_game_ended != 0:
             log.error(f"[MCTS ERROR] Root state is terminal with result {root_game_ended}! This explains zero visits.")
         
@@ -56,7 +81,7 @@ class MCTS():
                 raise
         log.debug(f"[MCTS DEBUG] Completed {simulation_count}/{self.args.numMCTSSims} simulations")
 
-        s = self.game.stringRepresentation(canonicalBoard)
+        # s already defined above, reuse the same string representation
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
         
         # DEBUG: Check if root state has any visits
