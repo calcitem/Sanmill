@@ -493,10 +493,55 @@ class Coach():
             elif sampling_only:
                 log.info(f'🔍 SAMPLING phase: Collecting examples for iter #{i} (training will be done separately)')
             
+            # Initialize iteration training examples collection
+            iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
+            
+            # === 第一步：生成离线教师数据 ===
+            # Optionally generate teacher (Perfect DB) labeled examples FIRST
+            # This allows debugging teacher data generation before MCTS
+            if (not self.skipFirstSelfPlay or i > 1) and not training_only:
+                if getattr(self.args, 'usePerfectTeacher', False) and getattr(self.args, 'teacherExamplesPerIter', 0) > 0:
+                    try:
+                        log.info(f"📚 Generating {self.args.teacherExamplesPerIter} offline teacher examples for iter #{i}...")
+                        from perfect_supervised import build_dataset_with_perfect_labels
+                        teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
+                        if teacher_db_path:
+                            prev_timeout = os.environ.get('SANMILL_ANALYZE_TIMEOUT')
+                            prev_threads = os.environ.get('SANMILL_ENGINE_THREADS')
+                            if getattr(self.args, 'teacherAnalyzeTimeout', None) is not None:
+                                os.environ['SANMILL_ANALYZE_TIMEOUT'] = str(self.args.teacherAnalyzeTimeout)
+                            if getattr(self.args, 'teacherThreads', None) is not None:
+                                os.environ['SANMILL_ENGINE_THREADS'] = str(self.args.teacherThreads)
+                            teacher_batch = getattr(self.args, 'teacherBatch', 256)
+                            # verbose=False to avoid flooding logs during training
+                            teacher_examples = build_dataset_with_perfect_labels(
+                                teacher_db_path, int(self.args.teacherExamplesPerIter), batch=int(teacher_batch), verbose=False
+                            )
+                            if teacher_examples:
+                                log.info("✅ Generated %d teacher examples from Perfect DB", len(teacher_examples))
+                                iterationTrainExamples.extend(teacher_examples)
+                            else:
+                                log.warning("⚠️ No teacher examples generated from Perfect DB")
+                            # restore envs
+                            if prev_timeout is None:
+                                os.environ.pop('SANMILL_ANALYZE_TIMEOUT', None)
+                            else:
+                                os.environ['SANMILL_ANALYZE_TIMEOUT'] = prev_timeout
+                            if prev_threads is None:
+                                os.environ.pop('SANMILL_ENGINE_THREADS', None)
+                            else:
+                                os.environ['SANMILL_ENGINE_THREADS'] = prev_threads
+                        else:
+                            log.warning("⚠️ Teacher DB path not configured, skipping offline teacher data generation")
+                    except Exception as ex:
+                        log.error("❌ Failed to generate offline teacher examples: %s", ex)
+                        raise
+            
+            # === 第二步：生成 MCTS 自我对弈数据 ===
             # examples of the iteration
             if (not self.skipFirstSelfPlay or i > 1) and not training_only:
-                iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
-
+                log.info(f"🎮 Starting MCTS self-play data generation for iter #{i}...")
+                
                 if self.args.num_processes > 1:
                     # Multi-process self-play: spawn workers collecting episodes into a queue.
                     example_queue = Queue()
@@ -554,7 +599,7 @@ class Coach():
                     example_queue.close()
                 else:
                     # Single-process self-play: avoid spawning to keep CUDA context in the main process.
-                    with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
+                    with tqdm(total=self.args.numEps, desc='CPU MCTS Self Play') as pbar:
                         for game_idx in range(self.args.numEps):
                             # Stage-specific MCTS sims scaling for self-play
                             episode_args = dotdict(dict(self.args))
@@ -570,9 +615,18 @@ class Coach():
                             # Console verbose only if explicitly enabled
                             console_verbose = getattr(self.args, 'console_verbose', False)
                             game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
-                            iterationTrainExamples += executeEpisode(self.game, mcts, episode_args, 
-                                                                   verbose=console_verbose, game_id=game_id, perfect_player=self.perfect_player)
+                            mcts_examples = executeEpisode(self.game, mcts, episode_args, 
+                                                         verbose=console_verbose, game_id=game_id, perfect_player=self.perfect_player)
+                            iterationTrainExamples += mcts_examples
                             pbar.update()
+
+                # Log iteration summary
+                teacher_count = 0
+                mcts_count = len(iterationTrainExamples)
+                if getattr(self.args, 'usePerfectTeacher', False) and getattr(self.args, 'teacherExamplesPerIter', 0) > 0:
+                    teacher_count = getattr(self.args, 'teacherExamplesPerIter', 0)
+                    mcts_count = len(iterationTrainExamples) - teacher_count
+                log.info(f"📊 Iter #{i} summary: {teacher_count} teacher examples + {mcts_count} MCTS examples = {len(iterationTrainExamples)} total")
 
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(list(iterationTrainExamples))
@@ -616,43 +670,8 @@ class Coach():
                 except Exception as _e:
                     log.warning('Curriculum mixing failed: %s', _e)
 
-            # Optionally mix in teacher (Perfect DB) labeled examples
-            # This augments training with oracle targets to stabilize learning.
-            if getattr(self.args, 'usePerfectTeacher', False) and getattr(self.args, 'teacherExamplesPerIter', 0) > 0:
-                try:
-                    from perfect_supervised import build_dataset_with_perfect_labels
-                    teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
-                    if teacher_db_path:
-                        prev_timeout = os.environ.get('SANMILL_ANALYZE_TIMEOUT')
-                        prev_threads = os.environ.get('SANMILL_ENGINE_THREADS')
-                        if getattr(self.args, 'teacherAnalyzeTimeout', None) is not None:
-                            os.environ['SANMILL_ANALYZE_TIMEOUT'] = str(self.args.teacherAnalyzeTimeout)
-                        if getattr(self.args, 'teacherThreads', None) is not None:
-                            os.environ['SANMILL_ENGINE_THREADS'] = str(self.args.teacherThreads)
-                        teacher_batch = getattr(self.args, 'teacherBatch', 256)
-                        # verbose=False to avoid flooding logs during training
-                        teacher_examples = build_dataset_with_perfect_labels(
-                            teacher_db_path, int(self.args.teacherExamplesPerIter), batch=int(teacher_batch), verbose=False
-                        )
-                        if teacher_examples:
-                            log.info("Mixed in %d teacher examples from Perfect DB", len(teacher_examples))
-                            trainExamples.extend(teacher_examples)
-                        # restore envs
-                        if prev_timeout is None:
-                            os.environ.pop('SANMILL_ANALYZE_TIMEOUT', None)
-                        else:
-                            os.environ['SANMILL_ANALYZE_TIMEOUT'] = prev_timeout
-                        if prev_threads is None:
-                            os.environ.pop('SANMILL_ENGINE_THREADS', None)
-                        else:
-                            os.environ['SANMILL_ENGINE_THREADS'] = prev_threads
-                    else:
-                        log.error("usePerfectTeacher is enabled, but no teacherDBPath/SANMILL_PERFECT_DB provided.")
-                        sys.exit(1)
-                except Exception as ex:
-                    log.error("Failed to mix teacher examples (perfect DB): %s", ex)
-                    # Fail fast since teacher examples were requested
-                    sys.exit(1)
+            # Teacher examples were already generated earlier in the iteration
+            # No need to mix them again here - they're already in iterationTrainExamples
 
             shuffle(trainExamples)
 
