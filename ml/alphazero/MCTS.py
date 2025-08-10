@@ -34,11 +34,68 @@ class MCTS():
             probs: a policy vector where the probability of the ith action is
                    proportional to Nsa[(s,a)]**(1./temp)
         """
+        log.info(f"[MCTS DEBUG] Starting {self.args.numMCTSSims} simulations for period {canonicalBoard.period}")
+        
+        # CRITICAL DEBUG: Check if root state is already terminal before starting
+        root_game_ended = self.game.getGameEnded(canonicalBoard, 1)
+        log.info(f"[MCTS DEBUG] Pre-search check: Game ended = {root_game_ended}")
+        if root_game_ended != 0:
+            log.error(f"[MCTS ERROR] Root state is terminal with result {root_game_ended}! This explains zero visits.")
+        
+        simulation_count = 0
         for i in range(self.args.numMCTSSims):
-            self.search(canonicalBoard)
+            try:
+                result = self.search(canonicalBoard)
+                simulation_count += 1
+                if i < 3:  # Log first 3 simulations
+                    log.debug(f"[MCTS SIM] Simulation {i+1} completed, result={result}")
+            except Exception as e:
+                log.error(f"[MCTS ERROR] Simulation {i+1}/{self.args.numMCTSSims} failed: {e}")
+                import traceback
+                log.error(f"[MCTS TRACEBACK] {traceback.format_exc()}")
+                raise
+        log.info(f"[MCTS DEBUG] Completed {simulation_count}/{self.args.numMCTSSims} simulations")
 
         s = self.game.stringRepresentation(canonicalBoard)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
+        
+        # DEBUG: Check if root state has any visits
+        root_visits = self.Ns.get(s, 0)
+        log.info(f"[MCTS DEBUG] Root state visits: {root_visits}, Ns entries: {len(self.Ns)}, Nsa entries: {len(self.Nsa)}")
+        if root_visits == 0:
+            log.error(f"[MCTS ERROR] Root state was never visited during search!")
+            # Check if we have any game ended states
+            ended_states = [(state, result) for state, result in self.Es.items() if result != 0]
+            log.error(f"[MCTS ERROR] Found {len(ended_states)} terminal states during search")
+            if len(ended_states) > 0:
+                log.error(f"[MCTS ERROR] Sample terminal state result: {ended_states[0][1]}")
+            
+            # CRITICAL DEBUG: Check if root state appears in ANY of our dictionaries
+            root_in_es = s in self.Es
+            root_in_ps = s in self.Ps
+            root_in_vs = s in self.Vs
+            log.error(f"[MCTS ERROR] Root state found in: Es={root_in_es}, Ps={root_in_ps}, Vs={root_in_vs}")
+            
+            # Show some visited states for comparison
+            visited_states = [(state, visits) for state, visits in self.Ns.items() if visits > 0][:5]
+            log.error(f"[MCTS ERROR] Sample visited states: {[(visits,) for state, visits in visited_states]}")
+            
+            # Check string representation consistency
+            s_recomputed = self.game.stringRepresentation(canonicalBoard)
+            log.error(f"[MCTS ERROR] String repr match: {s == s_recomputed}, len(s)={len(s)}, len(recomputed)={len(s_recomputed)}")
+        
+        # Reset search depth counter for next call
+        self._search_depth = 0
+        
+        # Debug: Log MCTS statistics
+        total_visits = sum(counts)
+        log.info(f"[MCTS DEBUG] After {self.args.numMCTSSims} sims: total_visits={total_visits}, max_count={max(counts) if counts else 0}")
+        if total_visits == 0:
+            # Check if initial state is terminal
+            game_ended = self.game.getGameEnded(canonicalBoard, 1)
+            log.error(f"[MCTS ERROR] Zero visits detected. Game ended? {game_ended != 0} (result={game_ended})")
+            log.error(f"[MCTS ERROR] Board period: {canonicalBoard.period}, put_pieces: {canonicalBoard.put_pieces}")
+            log.error(f"[MCTS ERROR] White pieces: {canonicalBoard.count(1)}, Black pieces: {canonicalBoard.count(-1)}")
 
         if temp == 0:
             max_count = np.max(counts)
@@ -100,13 +157,20 @@ class MCTS():
         Returns:
             v: the negative of the value of the current canonicalBoard
         """
+        # VERY TEMPORARY: track search depth for debugging
+        if not hasattr(self, '_search_depth'):
+            self._search_depth = 0
+        self._search_depth += 1
+        search_id = self._search_depth
 
         s = self.game.stringRepresentation(canonicalBoard)
 
         if s not in self.Es:
             self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
         if self.Es[s] != 0:
-            # terminal node
+            # terminal node - return immediately, parent will handle visit count updates
+            log.debug(f"[MCTS {search_id}] TERMINAL: result={self.Es[s]}, period={canonicalBoard.period}")
+            self._search_depth -= 1
             return -self.Es[s]
 
         if s not in self.Ps:
@@ -143,6 +207,8 @@ class MCTS():
 
             self.Vs[s] = valids
             self.Ns[s] = 0
+            log.debug(f"[MCTS {search_id}] LEAF: period={canonicalBoard.period}, valid_sum={int(np.sum(valids))}, v={v}")
+            self._search_depth -= 1
             return -v if canonicalBoard.period != 3 else v
 
         valids = self.Vs[s]
@@ -162,20 +228,28 @@ class MCTS():
                     cur_best = u
                     best_act = a
 
-        assert best_act != -1, "MCTS failed to select any valid action (best_act == -1)"
+        assert best_act != -1, f"MCTS failed to select any valid action (best_act == -1) at search {search_id}"
         a = best_act
-        next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
-        next_s = self.game.getCanonicalForm(next_s, next_player)
+        log.debug(f"[MCTS {search_id}] EXPAND: selected action {a}, period={canonicalBoard.period}")
+        
+        try:
+            next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
+            next_s = self.game.getCanonicalForm(next_s, next_player)
+        except Exception as e:
+            log.error(f"[MCTS {search_id}] ERROR in getNextState/getCanonicalForm: {e}")
+            self._search_depth -= 1
+            raise
 
         v = self.search(next_s)
 
         if (s, a) in self.Qsa:
             self.Qsa[(s, a)] = (self.Nsa[(s, a)] * self.Qsa[(s, a)] + v) / (self.Nsa[(s, a)] + 1)
             self.Nsa[(s, a)] += 1
-
         else:
             self.Qsa[(s, a)] = v
             self.Nsa[(s, a)] = 1
 
         self.Ns[s] += 1
+        log.debug(f"[MCTS {search_id}] UPDATE: action {a}, Nsa={(s,a) in self.Nsa and self.Nsa[(s,a)] or 0}, Ns={self.Ns[s]}")
+        self._search_depth -= 1
         return -v if canonicalBoard.period != 3 else v

@@ -135,11 +135,30 @@ Examples:
             else:
                 ts = datetime.now().strftime('%Y%m%d_%H%M%S')
                 log_path = os.path.join(args.checkpoint, f"train_{ts}.log")
+            
+            # Setup comprehensive file logging
             file_handler = logging.FileHandler(log_path, mode='a', encoding='utf-8')
-            file_handler.setLevel(logging.INFO)
+            file_handler.setLevel(logging.DEBUG)  # Capture ALL levels including DEBUG
             file_handler.setFormatter(logging.Formatter('%(asctime)s %(name)s[%(process)d] %(levelname)s %(message)s'))
-            logging.getLogger().addHandler(file_handler)
-            log.info("File logging enabled: %s", log_path)
+            
+            # Add to root logger to catch ALL loggers
+            root_logger = logging.getLogger()
+            root_logger.addHandler(file_handler)
+            root_logger.setLevel(logging.DEBUG)  # Set root logger to DEBUG level
+            
+            # Also add to specific loggers that might not inherit from root
+            for logger_name in ['MCTS', 'Coach', '__main__', 'Arena', 'Game']:
+                specific_logger = logging.getLogger(logger_name)
+                specific_logger.addHandler(file_handler)
+                specific_logger.setLevel(logging.DEBUG)
+            
+            # Force immediate flush for all handlers
+            for handler in root_logger.handlers:
+                if hasattr(handler, 'flush'):
+                    handler.flush()
+            
+            log.info("Comprehensive file logging enabled: %s", log_path)
+            log.debug("DEBUG level logging test - this should appear in file")
     except Exception as e:
         log.warning("Failed to setup file logging: %s", e)
 
