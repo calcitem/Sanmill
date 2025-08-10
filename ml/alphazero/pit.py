@@ -103,6 +103,8 @@ Examples:
                         help='Force CPU mode (disable CUDA)')
     parser.add_argument('--gui', action='store_true',
                         help='Enable simple GUI for human input (mouse clicks)')
+    parser.add_argument('--first', choices=['human', 'ai'], default='human',
+                        help='Who plays first in human-vs-ai mode (default: human)')
     
     args = parser.parse_args()
     
@@ -127,19 +129,28 @@ Examples:
     
     # Initialize players based on mode
     if args.mode == 'human-vs-ai':
-        log.info("👤 Player 1: Human")
-        log.info("🤖 Player 2: AI")
+        # Create human and AI players first
         if args.gui:
             try:
                 from gui_human import GuiHumanPlayer
-                player1 = GuiHumanPlayer(game, difficulty=args.difficulty)
+                human_player = GuiHumanPlayer(game, difficulty=args.difficulty)
                 log.info("🖱️  GUI enabled for human input")
             except Exception as e:
                 log.warning(f"⚠️  GUI unavailable ({e}), falling back to console input")
-                player1 = HumanPlayer(game, args.difficulty)
+                human_player = HumanPlayer(game, args.difficulty)
         else:
-            player1 = HumanPlayer(game, args.difficulty)
-        player2 = load_ai_player(game, base_args, args.checkpoint, args.mcts_sims)
+            human_player = HumanPlayer(game, args.difficulty)
+        ai_player = load_ai_player(game, base_args, args.checkpoint, args.mcts_sims)
+
+        # Assign order based on --first
+        if args.first == 'human':
+            log.info("👤 Player 1: Human")
+            log.info("🤖 Player 2: AI")
+            player1, player2 = human_player, ai_player
+        else:
+            log.info("🤖 Player 1: AI")
+            log.info("👤 Player 2: Human")
+            player1, player2 = ai_player, human_player
         
     elif args.mode == 'ai-vs-ai':
         log.info("🤖 Player 1: AI (Strong)")
@@ -191,8 +202,13 @@ Examples:
         log.info("="*50)
         
         if args.mode == 'human-vs-ai':
-            log.info(f"👤 Human wins: {wins1}")
-            log.info(f"🤖 AI wins: {wins2}")
+            # Map results to human/AI depending on who was Player 1
+            if args.first == 'human':
+                human_wins, ai_wins = wins1, wins2
+            else:
+                human_wins, ai_wins = wins2, wins1
+            log.info(f"👤 Human wins: {human_wins}")
+            log.info(f"🤖 AI wins: {ai_wins}")
             log.info(f"🤝 Draws: {draws}")
             
         elif args.mode == 'ai-vs-ai':
