@@ -115,3 +115,26 @@ enable_training_log: true # Save training results to CSV/JSON files (效果表�
 
 # SCENARIO 6: Production Training (high quality)
 # numIters: 50+, numEps: 100+, teacherExamplesPerIter: 1000, num_channels: 512
+
+# =============================================================================
+# CURRICULUM LEARNING (PHASE-WISE)
+# =============================================================================
+# modes: 'off' | 'auto' | 'stage1' | 'stage2' | 'stage3'
+curriculum_mode: off
+# When mode=='auto', number of iterations to spend in stage-1 and stage-2
+curriculum_s1_iters: 0
+curriculum_s2_iters: 0
+# Mix ratio of earlier-stage samples during later stages (0.0-0.9)
+curriculum_mix_prev_ratio: 0.3
+# Stage-1 early-stop heuristic weight (value shaping magnitude)
+curriculum_stage1_weight: 0.03
+# Stage-specific MCTS sims scaling during sampling
+curriculum_mcts_scale_s1: 1.25
+curriculum_mcts_scale_s2: 1.10
+curriculum_mcts_scale_s3: 1.00
+# Root Dirichlet noise for MCTS (alpha, fraction)
+root_dirichlet_alpha: 0.30
+root_dirichlet_fraction: 0.25
+# Stage-2 fine-tuning knobs
+curriculum_freeze_backbone: true
+curriculum_head_lr_mult: 2.0

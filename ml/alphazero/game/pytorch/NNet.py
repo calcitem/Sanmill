@@ -39,7 +39,51 @@ class NNetWrapper(NeuralNet):
         examples: list of examples, each example is of form (board, pi, v, period)
         """
         best_loss, best_epoch = torch.inf, -1
-        optimizer = optim.Adam(self.nnet.parameters(), lr=self.args.lr)
+
+        # Curriculum-aware optimizer configuration
+        current_stage = int(getattr(self.args, 'curriculum_current_stage', 3))
+        freeze_backbone = bool(getattr(self.args, 'curriculum_freeze_backbone', False)) and current_stage == 2
+        head_lr_mult = float(getattr(self.args, 'curriculum_head_lr_mult', 1.0)) if current_stage == 2 else 1.0
+
+        # Build parameter groups: backbone vs heads
+        backbone_modules = [self.nnet.main, self.nnet.attension, self.nnet.mlp, self.nnet.conv]
+        head_modules = list(self.nnet.branch) if hasattr(self.nnet, 'branch') else []
+        backbone_params = []
+        head_params = []
+        for m in backbone_modules:
+            backbone_params += list(m.parameters())
+        # Include attention bias parameter
+        if hasattr(self.nnet, 'attension_b'):
+            backbone_params.append(self.nnet.attension_b)
+        for m in head_modules:
+            head_params += list(m.parameters())
+
+        # Optionally freeze backbone during Stage 2 fine-tuning
+        if freeze_backbone:
+            for p in backbone_params:
+                p.requires_grad = False
+        else:
+            for p in backbone_params:
+                p.requires_grad = True
+        for p in head_params:
+            p.requires_grad = True
+
+        param_groups = []
+        if not freeze_backbone and backbone_params:
+            param_groups.append({
+                'params': [p for p in backbone_params if p.requires_grad],
+                'lr': self.args.lr,
+            })
+        if head_params:
+            param_groups.append({
+                'params': [p for p in head_params if p.requires_grad],
+                'lr': float(self.args.lr) * float(head_lr_mult),
+            })
+        if not param_groups:
+            # Fallback: no split (should not happen)
+            param_groups = [{'params': self.nnet.parameters(), 'lr': self.args.lr}]
+
+        optimizer = optim.Adam(param_groups)
         final_train_loss = None
 
         for epoch in range(self.args.epochs):
@@ -97,12 +141,16 @@ class NNetWrapper(NeuralNet):
                     # Scale, unscale for clipping, then step
                     self.scaler.scale(total_loss).backward()
                     self.scaler.unscale_(optimizer)
-                    torch.nn.utils.clip_grad_norm_(self.nnet.parameters(), 5)
+                    torch.nn.utils.clip_grad_norm_(
+                        [p for p in self.nnet.parameters() if p.requires_grad], 5
+                    )
                     self.scaler.step(optimizer)
                     self.scaler.update()
                 else:
                     total_loss.backward()
-                    torch.nn.utils.clip_grad_norm_(self.nnet.parameters(), 5)
+                    torch.nn.utils.clip_grad_norm_(
+                        [p for p in self.nnet.parameters() if p.requires_grad], 5
+                    )
                     optimizer.step()
 
             # validation

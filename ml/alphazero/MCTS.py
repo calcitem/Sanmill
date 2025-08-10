@@ -41,6 +41,9 @@ class MCTS():
         log.debug(f"[MCTS DEBUG] Pre-search check: Game ended = {root_game_ended}")
         
         s = self.game.stringRepresentation(canonicalBoard)
+        # Track root for optional Dirichlet noise injection
+        self._root_state = s
+        self._dirichlet_applied = False
         cached_result = self.Es.get(s, None)
         
         # Check for inconsistent caching
@@ -223,6 +226,20 @@ class MCTS():
                 f"Valid moves length {len(valids)} != action_size {self.game.getActionSize()}"
             )
             assert int(np.sum(valids)) >= 0, "Valid moves sum negative (impossible)"
+
+            # Optional root Dirichlet noise (AlphaZero exploration)
+            try:
+                if s == getattr(self, '_root_state', None) and not getattr(self, '_dirichlet_applied', False):
+                    alpha = float(getattr(self.args, 'root_dirichlet_alpha', 0.0))
+                    frac = float(getattr(self.args, 'root_dirichlet_fraction', 0.0))
+                    if alpha > 0.0 and frac > 0.0:
+                        valid_idx = np.nonzero(valids)[0]
+                        if len(valid_idx) > 0:
+                            noise = np.random.dirichlet([alpha] * len(valid_idx))
+                            self.Ps[s][valid_idx] = (1.0 - frac) * self.Ps[s][valid_idx] + frac * noise
+                            self._dirichlet_applied = True
+            except Exception as _e:
+                log.warning(f"[MCTS] Failed to apply Dirichlet noise at root: {_e}")
 
             self.Ps[s] = self.Ps[s] * valids  # masking invalid moves
             sum_Ps_s = np.sum(self.Ps[s])

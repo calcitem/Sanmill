@@ -1,5 +1,6 @@
 from __future__ import print_function
 from copy import deepcopy
+from typing import Optional
 import numpy as np
 
 from .GameLogic import Board
@@ -44,6 +45,13 @@ class Game:
     def __init__(self):
         self.n = 7
         self.num_draw = 100
+        # Curriculum configuration (stage-based training)
+        # stage: 1=placing-only (early stop after placements),
+        #        2=moving without flying, 3=full rules
+        self._curriculum_enabled: bool = False
+        self._curriculum_stage: int = 3
+        # Heuristic weight for stage-1 termination value shaping
+        self._stage1_heuristic_weight: float = 0.03
         self.cache_symmetries()
 
     def reward_w_func(self, put_pieces):
@@ -81,7 +89,16 @@ class Game:
         Returns: a representation of the board (ideally this is the form that
         will be the input to your neural network)
         """
-        return Board()
+        b = Board()
+        # Propagate curriculum flags into the Board for move generation
+        try:
+            b.curriculum_stage = int(self._curriculum_stage)
+            # In stage 2, disable flying to isolate moving semantics
+            b.allow_flying = not (self._curriculum_enabled and int(self._curriculum_stage) == 2)
+        except Exception:
+            # Keep defaults if flags not available on Board
+            pass
+        return b
 
     def getBoardSize(self):
         """
@@ -166,6 +183,13 @@ class Game:
         
         Now matches C++ position.cpp check_if_game_is_over() logic.
         """
+        # Stage-1 curriculum: end the game immediately after all placements are done
+        # (outside the capture sub-phase), returning a shaped value as proxy target.
+        if self._curriculum_enabled and int(self._curriculum_stage) == 1:
+            # When placements are complete (put_pieces>=18) and not in capture
+            if getattr(board, 'put_pieces', 0) >= 18 and int(getattr(board, 'period', 0)) != 3:
+                return self._stage1_heuristic_value(board, player)
+
         # Use the comprehensive game over check that matches C++ logic
         is_game_over, result, reason = board.check_game_over_conditions(player)
         
@@ -180,6 +204,49 @@ class Game:
         
         # Game continues
         return 0
+
+    # -------------------- Curriculum helpers --------------------
+    def set_curriculum(self, enabled: bool, stage: int, stage1_heuristic_weight: Optional[float] = None):
+        """Configure curriculum training behavior.
+
+        Args:
+            enabled: Whether curriculum is active
+            stage: 1=placing-only, 2=moving-no-flying, 3=full rules
+            stage1_heuristic_weight: Optional weight used in early-stop value shaping
+        """
+        assert stage in (1, 2, 3), f"Invalid curriculum stage: {stage}"
+        self._curriculum_enabled = bool(enabled)
+        self._curriculum_stage = int(stage)
+        if stage1_heuristic_weight is not None:
+            self._stage1_heuristic_weight = float(stage1_heuristic_weight)
+
+    def set_curriculum_stage(self, stage: int):
+        """Shortcut to change only the stage (keeps other knobs)."""
+        self.set_curriculum(self._curriculum_enabled, stage)
+
+    def _stage1_heuristic_value(self, board, player) -> float:
+        """Compute a shaped terminal value after placing-only phase.
+
+        The goal is to provide a consistent non-zero signal before the
+        moving phases begin. We use a small, bounded function of material
+        difference on board (ignoring pieces in hand), plus a tiny bonus
+        for having made the last placement (ply parity advantage).
+        """
+        try:
+            material_diff = float(board.count(player) - board.count(-player))
+        except Exception:
+            material_diff = 0.0
+        # Small advantage for the side to move after placements, approximating initiative
+        side_to_move_bias = 0.1 if player == 1 else -0.1
+        w = float(self._stage1_heuristic_weight)
+        # Squash into (-1,1) with tanh, and keep magnitude small
+        shaped = float(np.tanh(w * material_diff)) + side_to_move_bias * w
+        # Ensure within [-0.5, 0.5] to avoid overpowering true terminals later
+        if shaped > 0.5:
+            shaped = 0.5
+        if shaped < -0.5:
+            shaped = -0.5
+        return shaped
 
     def getCanonicalForm(self, board, player):
         """

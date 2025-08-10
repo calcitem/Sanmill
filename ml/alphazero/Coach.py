@@ -419,6 +419,39 @@ class Coach():
             elif self.args.num_processes != 1:
                 log.info('Online teacher disabled in multi-process mode (set num_processes: 1)')
 
+        # Curriculum defaults (do not enforce if not provided)
+        self._curriculum_mode = str(getattr(self.args, 'curriculum_mode', 'off')).lower()
+        self._curriculum_s1_iters = int(getattr(self.args, 'curriculum_s1_iters', 0))
+        self._curriculum_s2_iters = int(getattr(self.args, 'curriculum_s2_iters', 0))
+        self._curriculum_mix_prev_ratio = float(getattr(self.args, 'curriculum_mix_prev_ratio', 0.0))
+        self._curriculum_stage1_weight = float(getattr(self.args, 'curriculum_stage1_weight', 0.03))
+        # Stage-specific MCTS scaling (applied during self-play only)
+        self._c_scale_s1 = float(getattr(self.args, 'curriculum_mcts_scale_s1', 1.25))
+        self._c_scale_s2 = float(getattr(self.args, 'curriculum_mcts_scale_s2', 1.10))
+        self._c_scale_s3 = float(getattr(self.args, 'curriculum_mcts_scale_s3', 1.00))
+
+    def _determine_curriculum_stage(self, iteration_index: int):
+        """Return (enabled, stage) for the given iteration index (1-based)."""
+        mode = self._curriculum_mode
+        if mode in ('off', 'none', 'false', '0'):
+            return False, 3
+        if mode in ('stage1', 's1'):
+            return True, 1
+        if mode in ('stage2', 's2'):
+            return True, 2
+        if mode in ('stage3', 's3'):
+            return True, 3
+        if mode in ('auto', 'auto3'):
+            s1 = max(0, self._curriculum_s1_iters)
+            s2 = max(0, self._curriculum_s2_iters)
+            if iteration_index <= s1:
+                return True, 1
+            if iteration_index <= s1 + s2:
+                return True, 2
+            return True, 3
+        # Fallback
+        return False, 3
+
     def learn(self, sampling_only=False, training_only=False):
         """
         Performs numIters iterations with numEps episodes of self-play in each
@@ -431,6 +464,20 @@ class Coach():
         for i in range(1, self.args.numIters + 1):
             # bookkeeping
             log.info(f'Starting Iter #{i} ...')
+
+            # Configure curriculum for this iteration (stage + rule switches)
+            try:
+                # Prefer global progress index if provided by the outer orchestrator
+                effective_i = int(getattr(self.args, 'curriculum_global_iter', i))
+                c_enabled, c_stage = self._determine_curriculum_stage(effective_i)
+                self.game.set_curriculum(c_enabled, c_stage, self._curriculum_stage1_weight)
+                if c_enabled:
+                    log.info('📚 Curriculum stage set to %d for iter #%d (mix_prev_ratio=%.2f)', c_stage, effective_i, self._curriculum_mix_prev_ratio)
+                else:
+                    log.info('📚 Curriculum disabled for iter #%d', effective_i)
+            except Exception as _e:
+                log.warning('Failed to configure curriculum for iter #%d: %s', i, _e)
+                c_enabled, c_stage = False, 3
             
             # Phase control: skip sampling if training_only, skip training if sampling_only
             if training_only:
@@ -453,6 +500,14 @@ class Coach():
                     cpu_args = dotdict(dict(self.args))
                     cpu_args.cuda = False
                     cpu_args.use_amp = False
+                    # Stage-specific MCTS sims scaling for self-play
+                    base_sims = int(self.args.numMCTSSims)
+                    if c_stage == 1:
+                        cpu_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s1)))
+                    elif c_stage == 2:
+                        cpu_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s2)))
+                    else:
+                        cpu_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s3)))
                     
                     # Create a CPU-only neural network for multiprocessing
                     cpu_nnet = self.nnet.__class__(self.game, cpu_args)
@@ -493,11 +548,21 @@ class Coach():
                     # Single-process self-play: avoid spawning to keep CUDA context in the main process.
                     with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
                         for game_idx in range(self.args.numEps):
-                            mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
+                            # Stage-specific MCTS sims scaling for self-play
+                            episode_args = dotdict(dict(self.args))
+                            base_sims = int(self.args.numMCTSSims)
+                            if c_stage == 1:
+                                episode_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s1)))
+                            elif c_stage == 2:
+                                episode_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s2)))
+                            else:
+                                episode_args.numMCTSSims = max(1, int(round(base_sims * self._c_scale_s3)))
+
+                            mcts = MCTS(self.game, self.nnet, episode_args)  # reset search tree per episode
                             # Console verbose only if explicitly enabled
                             console_verbose = getattr(self.args, 'console_verbose', False)
                             game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
-                            iterationTrainExamples += executeEpisode(self.game, mcts, self.args, 
+                            iterationTrainExamples += executeEpisode(self.game, mcts, episode_args, 
                                                                    verbose=console_verbose, game_id=game_id, perfect_player=self.perfect_player)
                             pbar.update()
 
@@ -527,6 +592,21 @@ class Coach():
             trainExamples: List = []
             for e in self.trainExamplesHistory:
                 trainExamples.extend(e)
+
+            # Curriculum: mix in earlier-stage samples to prevent forgetting
+            if c_enabled and self._curriculum_mix_prev_ratio > 0.0:
+                try:
+                    import random as _random
+                    prev_periods = {0, 3} if c_stage == 2 else {0, 1, 3, 4} if c_stage == 3 else set()
+                    if prev_periods:
+                        prev_candidates = [ex for ex in trainExamples if isinstance(ex, (list, tuple)) and len(ex) >= 4 and int(ex[3]) in prev_periods]
+                        mix_n = int(round(self._curriculum_mix_prev_ratio * len(trainExamples)))
+                        if prev_candidates and mix_n > 0:
+                            add_samples = [_random.choice(prev_candidates) for _ in range(min(mix_n, len(prev_candidates)))]
+                            trainExamples.extend(add_samples)
+                            log.info('📚 Curriculum mixing: added %d earlier-stage examples (periods=%s)', len(add_samples), sorted(prev_periods))
+                except Exception as _e:
+                    log.warning('Curriculum mixing failed: %s', _e)
 
             # Optionally mix in teacher (Perfect DB) labeled examples
             # This augments training with oracle targets to stabilize learning.
@@ -573,6 +653,14 @@ class Coach():
                 self.pnet.nnet.load_state_dict(self.nnet.nnet.state_dict())
             pmcts = MCTS(self.game, self.pnet, self.args)
 
+            # Pass curriculum hints into NNet wrapper for optimizer configuration
+            try:
+                self.nnet.args.curriculum_current_stage = int(c_stage)
+                # In Stage 2 we optionally freeze backbone and boost heads
+                self.nnet.args.curriculum_freeze_backbone = bool(getattr(self.args, 'curriculum_freeze_backbone', True))
+                self.nnet.args.curriculum_head_lr_mult = float(getattr(self.args, 'curriculum_head_lr_mult', 2.0))
+            except Exception:
+                pass
             metrics = self.nnet.train(trainExamples)
             nmcts = MCTS(self.game, self.nnet, self.args)
 

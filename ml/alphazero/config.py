@@ -147,6 +147,20 @@ def save_config_template(output_path: str, format: str = 'yaml') -> None:
         # Debugging options
         'verbose_games': 1,
         'log_detailed_moves': True,
+        # Curriculum learning (phase-wise)
+        # modes: 'off' | 'auto' | 'stage1' | 'stage2' | 'stage3'
+        'curriculum_mode': 'off',
+        # When mode=='auto', number of iterations for stage-1 and stage-2 before unlocking stage-3
+        'curriculum_s1_iters': 0,
+        'curriculum_s2_iters': 0,
+        # Mix ratio of earlier-stage samples during later stages (0.0-0.9)
+        'curriculum_mix_prev_ratio': 0.3,
+        # Stage-1 early-stop heuristic weight (value shaping magnitude)
+        'curriculum_stage1_weight': 0.03,
+        # Stage-specific MCTS sims scaling during sampling
+        'curriculum_mcts_scale_s1': 1.25,
+        'curriculum_mcts_scale_s2': 1.10,
+        'curriculum_mcts_scale_s3': 1.00,
     }
     
     if format.lower() == 'yaml' and HAS_YAML:
@@ -179,6 +193,12 @@ def save_config_template(output_path: str, format: str = 'yaml') -> None:
             f.write("\n# === Debugging ===\n")
             yaml.dump({k: v for k, v in template.items() if k in [
                 'verbose_games', 'log_detailed_moves'
+            ]}, f, default_flow_style=False)
+            f.write("\n# === Curriculum Learning (Phase-wise) ===\n")
+            yaml.dump({k: v for k, v in template.items() if k in [
+                'curriculum_mode', 'curriculum_s1_iters', 'curriculum_s2_iters',
+                'curriculum_mix_prev_ratio', 'curriculum_stage1_weight',
+                'curriculum_mcts_scale_s1', 'curriculum_mcts_scale_s2', 'curriculum_mcts_scale_s3'
             ]}, f, default_flow_style=False)
     else:
         with open(output_path, 'w', encoding='utf-8') as f:

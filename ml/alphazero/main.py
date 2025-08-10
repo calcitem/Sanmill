@@ -100,6 +100,29 @@ args = dotdict({
     # File logging
     'log_to_file': True,          # Write detailed logs to a file with timestamps
     'log_file': None,             # If None, auto-generate under checkpoint dir
+
+    # Curriculum learning (phase-wise)
+    # modes: 'off' | 'auto' | 'stage1' | 'stage2' | 'stage3'
+    'curriculum_mode': 'off',
+    # When mode=='auto', number of iterations for stage-1 and stage-2 before unlocking stage-3
+    'curriculum_s1_iters': 0,
+    'curriculum_s2_iters': 0,
+    # Mix ratio of earlier-stage samples during later stages (0.0-0.9)
+    'curriculum_mix_prev_ratio': 0.3,
+    # Stage-1 early-stop heuristic weight (value shaping magnitude)
+    'curriculum_stage1_weight': 0.03,
+    # Stage-specific MCTS sims scaling during sampling
+    'curriculum_mcts_scale_s1': 1.25,
+    'curriculum_mcts_scale_s2': 1.10,
+    'curriculum_mcts_scale_s3': 1.00,
+
+    # MCTS root Dirichlet noise (used mainly in stage 3)
+    'root_dirichlet_alpha': 0.30,
+    'root_dirichlet_fraction': 0.25,
+
+    # Stage-2 fine-tuning knobs
+    'curriculum_freeze_backbone': True,
+    'curriculum_head_lr_mult': 2.0,
 })
 
 
@@ -385,6 +408,9 @@ Examples:
             args_sampling.use_amp = False
             args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
             args_sampling.numIters = 1       # Run exactly one iteration of sampling
+            # Preserve curriculum knobs for sampling
+            # (Coach will interpret and set Game stage accordingly per-iter)
+            args_sampling.curriculum_global_iter = int(iter_idx)
             c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
             # Load latest best model if available so self-play uses the current policy
             try:
@@ -409,6 +435,8 @@ Examples:
             args_training.num_processes = 1
             args_training.numIters = 1  # Train exactly one iteration based on latest samples
             # args_training.cuda / use_amp as configured
+            # Preserve curriculum knobs for training (mixing earlier-stage samples)
+            args_training.curriculum_global_iter = int(iter_idx)
             c_training = Coach(g, nn(g, args_training), args_training)
             # Load latest best model if available as the starting point for training
             try:

@@ -54,6 +54,13 @@ class Board:
         self.threefold_repetition_rule = True  # Enable threefold repetition
         self.pieces_at_least_count = 3  # Minimum pieces to continue playing (default=3)
         self.pieces_count = 9  # Total pieces per player (default=9)
+
+        # Curriculum-learning toggles injected by Game:
+        # - allow_flying: whether flying is allowed (Stage 2 disables, Stage 3 enables)
+        # - curriculum_stage: current curriculum stage (1=placing only, 2=moving no-flying, 3=full rules)
+        # Note: Stage-1 early termination is handled by Game.getGameEnded; here we only gate flying in move gen.
+        self.allow_flying: bool = True
+        self.curriculum_stage: int = 3
         
         # Threefold repetition detection flags (matches C++ behavior)
         self._threefold_detected = False
@@ -134,9 +141,11 @@ class Board:
             # Capture phase: choose opponent pieces to remove with proper mill logic
             return self._get_removal_moves(color)
         elif self.period == 2 and self.count(color) <= 3:
-            # Flying phase: choose any own piece and any empty destination.
-            # Only allow flying if we have ≤3 pieces on board and no pieces in hand
-            if self._can_fly(color):
+            # Flying phase: allowed under standard rules; in curriculum Stage 2 we disable flying
+            # and fall back to adjacent moves. Only when allow_flying=True and flying conditions
+            # are met, generate flying moves; otherwise, use normal moves.
+            assert hasattr(self, 'allow_flying'), "Board missing 'allow_flying' flag"
+            if self.allow_flying and self._can_fly(color):
                 pieces = np.array(self.pieces)
                 moves0 = np.transpose(np.where(pieces == color)).tolist()
                 empty_places = self.allowed_places - np.abs(np.array(self.pieces))
