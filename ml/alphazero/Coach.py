@@ -509,7 +509,10 @@ class Coach():
             if sampling_only:
                 # backup history to a file for later training phase
                 self.saveTrainExamples('x')
-                log.info(f'🔍 SAMPLING phase: Saved {len(trainExamples) if "trainExamples" in locals() else "N/A"} examples for iter #{i}')
+                # Calculate total examples saved
+                total_examples = sum(len(examples) for examples in self.trainExamplesHistory)
+                current_iter_examples = len(self.trainExamplesHistory[-1]) if self.trainExamplesHistory else 0
+                log.info(f'🔍 SAMPLING phase: Saved {current_iter_examples} examples for iter #{i} (total: {total_examples})')
                 continue
 
             if len(self.trainExamplesHistory) > self.args.numItersForTrainExamplesHistory:
@@ -715,12 +718,14 @@ class Coach():
                 except Exception as ex:
                     log.warning(f"记录训练日志失败: {ex}")
         
-        # 训练结束后打印摘要
-        if self.training_logger is not None:
+        # 训练结束后打印摘要（仅在非sampling_only模式下）
+        if self.training_logger is not None and not sampling_only:
             try:
                 self.training_logger.print_summary()
             except Exception as ex:
                 log.warning(f"打印训练摘要失败: {ex}")
+        elif sampling_only:
+            log.info("🔍 SAMPLING阶段完成，训练摘要将在后续训练阶段生成")
 
         # 训练结束时关闭在线教师引擎
         try:
