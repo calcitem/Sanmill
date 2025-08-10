@@ -15,7 +15,8 @@ from config import merge_config_with_args
 
 log = logging.getLogger(__name__)
 
-coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
+# Defer final console logging level until after config load
+coloredlogs.install(level='INFO')
 
 args = dotdict({
     'numIters': 100,
@@ -93,6 +94,7 @@ Examples:
                         help='Path to Sanmill engine executable')
     parser.add_argument('--db', type=str, default=None,
                         help='Path to perfect database (auto-enables teacher)')
+    parser.add_argument('--verbose', '-v', action='store_true', help='Enable detailed console output (DEBUG)')
     
     cmd_args = parser.parse_args()
     
@@ -112,6 +114,22 @@ Examples:
         # Use the global args directly
         args = globals()['args']
     
+    # Determine verbose mode (console) from CLI or config key 'console_verbose' (safe access)
+    cli_verbose = bool(getattr(cmd_args, 'verbose', False))
+    try:
+        cfg_verbose = bool(getattr(args, 'console_verbose'))
+    except Exception:
+        cfg_verbose = False
+    verbose_mode = cli_verbose or cfg_verbose
+    
+    # Adjust console logging level based on verbose mode
+    if verbose_mode:
+        coloredlogs.install(level='DEBUG')
+        log.info("🔍 Verbose console: DEBUG level")
+    else:
+        coloredlogs.install(level='INFO')
+        log.info("📋 Console: INFO level (concise)")
+    
     # Apply command-line overrides
     if cmd_args.engine:
         os.environ['SANMILL_ENGINE'] = cmd_args.engine
@@ -126,39 +144,32 @@ Examples:
     # Setup file logging (timestamps) if enabled
     try:
         if getattr(args, 'log_to_file', True):
-            # Ensure checkpoint dir exists
-            os.makedirs(args.checkpoint, exist_ok=True)
+            # Ensure directories exist
+            logs_dir = os.path.join(args.checkpoint, 'logs')
+            stats_dir = os.path.join(args.checkpoint, 'stats')
+            os.makedirs(logs_dir, exist_ok=True)
+            os.makedirs(stats_dir, exist_ok=True)
             if getattr(args, 'log_file', None):
                 log_path = args.log_file
                 if not os.path.isabs(log_path):
-                    log_path = os.path.join(args.checkpoint, os.path.basename(log_path))
+                    log_path = os.path.join(logs_dir, os.path.basename(log_path))
             else:
                 ts = datetime.now().strftime('%Y%m%d_%H%M%S')
-                log_path = os.path.join(args.checkpoint, f"train_{ts}.log")
+                log_path = os.path.join(logs_dir, f"train_{ts}.log")
             
             # Setup comprehensive file logging
             file_handler = logging.FileHandler(log_path, mode='a', encoding='utf-8')
             file_handler.setLevel(logging.DEBUG)  # Capture ALL levels including DEBUG
             file_handler.setFormatter(logging.Formatter('%(asctime)s %(name)s[%(process)d] %(levelname)s %(message)s'))
             
-            # Add to root logger to catch ALL loggers
+            # Attach file handler to root and key loggers
             root_logger = logging.getLogger()
             root_logger.addHandler(file_handler)
-            root_logger.setLevel(logging.DEBUG)  # Set root logger to DEBUG level
-            
-            # Also add to specific loggers that might not inherit from root
             for logger_name in ['MCTS', 'Coach', '__main__', 'Arena', 'Game']:
                 specific_logger = logging.getLogger(logger_name)
                 specific_logger.addHandler(file_handler)
-                specific_logger.setLevel(logging.DEBUG)
-            
-            # Force immediate flush for all handlers
-            for handler in root_logger.handlers:
-                if hasattr(handler, 'flush'):
-                    handler.flush()
             
             log.info("Comprehensive file logging enabled: %s", log_path)
-            log.debug("DEBUG level logging test - this should appear in file")
     except Exception as e:
         log.warning("Failed to setup file logging: %s", e)
 

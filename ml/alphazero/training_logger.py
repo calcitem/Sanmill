@@ -14,7 +14,7 @@ from typing import Dict, List, Optional, Any
 class TrainingLogger:
     """记录训练过程中每轮迭代的效果数据"""
     
-    def __init__(self, log_dir: str = './temp/', session_name: str = None):
+    def __init__(self, log_dir: str = './temp/stats', session_name: str = None):
         """
         初始化训练日志器
         
@@ -243,7 +243,9 @@ class TrainingLogger:
 
 def create_logger_from_args(args) -> TrainingLogger:
     """从训练参数创建日志器"""
-    log_dir = getattr(args, 'checkpoint', './temp/')
+    # Ensure stats directory under checkpoint
+    base_dir = getattr(args, 'checkpoint', './temp/')
+    log_dir = os.path.join(base_dir, 'stats')
     
     # 生成会话名称（基于配置特征）
     features = []

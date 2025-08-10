@@ -22,6 +22,8 @@ from training_logger import create_logger_from_args
 
 import numpy as np
 from tqdm import tqdm
+
+
 from torch.multiprocessing import Process, Queue
 
 from Arena import Arena, playGames
@@ -71,6 +73,15 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
     teacher_fail_count = 0   # How many times teacher call failed
     engine_tokens = []  # Engine tokens history for online teacher queries
 
+    # Check if detailed file logging is enabled
+    log_detailed = getattr(args, 'log_detailed_moves', False)
+    
+    # Log game start details to file if enabled  
+    if log_detailed:
+        log.debug(f"=== Starting Self-Play Game {game_id} ===")
+        log.debug(f"Initial board state - Period: {board.period}, Pieces placed: {board.put_pieces}")
+    
+    # Only log to console if verbose
     if verbose:
         log.info(f"=== Starting Self-Play Game {game_id} ===")
         log.info(f"Initial board state - Period: {board.period}, Pieces placed: {board.put_pieces}")
@@ -104,10 +115,14 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                     pi = np.zeros(action_size, dtype=np.float32)
                     pi[action] = 1.0
                     used_teacher = True
+                    if log_detailed:
+                        log.debug("[Teacher] used at step %d", episodeStep)
                     if verbose:
                         log.info("[Teacher] used at step %d", episodeStep)
                 except Exception as ex:
-                    # Fallback to MCTS, but log the failure detail once in verbose mode
+                    # Fallback to MCTS, but log the failure detail
+                    if log_detailed:
+                        log.debug("[Teacher] mapping failed at step %d: %s", episodeStep, str(ex))
                     if verbose:
                         log.info("[Teacher] mapping failed at step %d: %s", episodeStep, str(ex))
                     pi = mcts.getActionProb(canonicalBoard, temp=temp)
@@ -144,10 +159,10 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
             assert 0 <= action < game.getActionSize(), f"Invalid action {action}, must be in [0, {game.getActionSize()})"
         
         # DEBUG: Log detailed action generation info
-        if verbose or True:  # Always log for debugging
-            log.info(f"[DEBUG] Step {episodeStep}: Player {curPlayer}, Period {board.period}, Action {action}")
-            log.info(f"[DEBUG] Board state - Put pieces: {board.put_pieces}, W pieces: {board.count(1)}, B pieces: {board.count(-1)}")
-            log.info(f"[DEBUG] Action source: {'Teacher' if used_teacher else 'MCTS'}, Action size: {game.getActionSize()}, Pi shape: {pi.shape}")
+        if log_detailed:
+            log.debug(f"[DEBUG] Step {episodeStep}: Player {curPlayer}, Period {board.period}, Action {action}")
+            log.debug(f"[DEBUG] Board state - Put pieces: {board.put_pieces}, W pieces: {board.count(1)}, B pieces: {board.count(-1)}")
+            log.debug(f"[DEBUG] Action source: {'Teacher' if used_teacher else 'MCTS'}, Action size: {game.getActionSize()}, Pi shape: {pi.shape}")
             # Validate action range
             if action >= game.getActionSize():
                 log.error(f"[ERROR] Action {action} >= action_size {game.getActionSize()}")
@@ -159,54 +174,52 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                 assert int(np.sum(valid_moves)) > 0, f"No valid moves for player {curPlayer} in period {board.period}"
                 if action < len(valid_moves) and valid_moves[action] == 0:
                     log.warning(f"[WARNING] Action {action} is not valid according to getValidMoves")
-                    log.info(f"[DEBUG] Valid moves shape: {np.array(valid_moves).shape}, nonzero: {np.nonzero(valid_moves)[0][:10]}")
+                    log.debug(f"[DEBUG] Valid moves shape: {np.array(valid_moves).shape}, nonzero: {np.nonzero(valid_moves)[0][:10]}")
             except Exception as e:
                 log.error(f"[ERROR] Failed to check valid moves: {e}")
+        
+        if verbose:
+            log.info(f"[DEBUG] Step {episodeStep}: Player {curPlayer}, Period {board.period}, Action {action}")
+            log.info(f"[DEBUG] Action source: {'Teacher' if used_teacher else 'MCTS'}")
         
         # Count teacher usage for this move
         if used_teacher:
             teacher_used_count += 1
         
-        # Log move details if verbose
+        # Compute move info for logging (both console and file)
+        try:
+            move = board.get_move_from_action(action)
+            engine_notation = move_to_engine_token(move)
+            if board.period == 3:  # capture - add 'x' prefix
+                engine_notation = f"x{engine_notation}"
+        except Exception:
+            engine_notation = f"INVALID_MOVE_ACTION_{action}"
+        
+        # Create readable move description
+        move_str = f"Player {curPlayer:2d}, Step {episodeStep:2d}: "
+        if board.period == 0:  # placing
+            move_str += f"Place {engine_notation}"
+        elif board.period == 1:  # moving
+            move_str += f"Move {engine_notation}"
+        elif board.period == 2:  # flying
+            move_str += f"Fly {engine_notation}"
+        elif board.period == 3:  # capture
+            move_str += f"Capture {engine_notation}"
+        
+        move_str += f" | Period: {board.period} | Pieces: W={board.count(1)}, B={board.count(-1)}"
+        move_history.append((engine_notation, move_str))
+        
+        # Log detailed board state to file if enabled
+        if log_detailed:
+            ascii_before = board.display_board()
+            log.debug("Board before move:\n%s", ascii_before)
+            log.debug(move_str)
+        
+        # Log move to console if verbose
         if verbose:
-            # Log ASCII board before applying the move (engine-style visualization).
-            # Using Board.display_board() ensures a consistent, log-friendly string.
-            # Note: We capture the string to also compare after the move and avoid duplicate prints.
             ascii_before = board.display_board()
             log.info("Board before move:\n%s", ascii_before)
-            move = board.get_move_from_action(action)
-            
-            # Convert to engine notation for consistency with C++ engine
-            try:
-                engine_notation = move_to_engine_token(move)
-                if board.period == 3:  # capture - add 'x' prefix
-                    engine_notation = f"x{engine_notation}"
-            except ValueError:
-                engine_notation = f"INVALID_MOVE_{move}"
-            
-            # Create readable move description
-            move_str = f"Player {curPlayer:2d}, Step {episodeStep:2d}: "
-            if board.period == 0:  # placing
-                move_str += f"Place {engine_notation}"
-            elif board.period == 1:  # moving
-                move_str += f"Move {engine_notation}"
-            elif board.period == 2:  # flying
-                move_str += f"Fly {engine_notation}"
-            elif board.period == 3:  # capture
-                move_str += f"Capture {engine_notation}"
-            
-            move_str += f" | Period: {board.period} | Pieces: W={board.count(1)}, B={board.count(-1)}"
             log.info(move_str)
-            move_history.append((engine_notation, move_str))
-        else:
-            # Compute engine token silently for teacher history
-            try:
-                move = board.get_move_from_action(action)
-                engine_notation = move_to_engine_token(move)
-                if board.period == 3:  # capture
-                    engine_notation = f"x{engine_notation}"
-            except Exception:
-                engine_notation = None
 
         # Validate move format matches board period
         try:
@@ -225,14 +238,19 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
 
         board, curPlayer = game.getNextState(board, curPlayer, action)
 
-        if verbose:
-            # Log ASCII board after applying the move.
-            # If the board did not change (which should be rare), avoid printing the same board twice.
+        # Log board after move
+        if log_detailed or verbose:
             ascii_after = board.display_board()
             if ascii_after != ascii_before:
-                log.info("Board after move:\n%s", ascii_after)
+                if log_detailed:
+                    log.debug("Board after move:\n%s", ascii_after)
+                if verbose:
+                    log.info("Board after move:\n%s", ascii_after)
             else:
-                log.info("Board after move: (unchanged)")
+                if log_detailed:
+                    log.debug("Board after move: (unchanged)")
+                if verbose:
+                    log.info("Board after move: (unchanged)")
 
         r = game.getGameEnded(board, curPlayer)
 
@@ -244,36 +262,42 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                 is_over2, reason_id = True, None
             reason_text = _REASON_ENGLISH.get(reason_id, "Unknown game over reason.")
 
-            if verbose:
-                log.info(f"=== Game {game_id} Ended ===")
-                log.info(f"Result: {r} (Player {curPlayer} perspective)")
-                log.info(f"Game over reason: {reason_text} ({reason_id})")
-                log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
-                log.info(f"Final pieces count - White: {board.count(1)}, Black: {board.count(-1)}")
-                # Per-game teacher usage stats
-                try:
-                    ratio = teacher_used_count / float(episodeStep)
-                except Exception:
-                    ratio = 0.0
-                log.info(f"Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
-                log.info("Move history (Engine notation):")
+            # Log to file if detailed logging enabled
+            if log_detailed:
+                log.debug(f"=== Game {game_id} Ended ===")
+                log.debug(f"Result: {r} (Player {curPlayer} perspective)")
+                log.debug(f"Game over reason: {reason_text} ({reason_id})")
+            
+            # Calculate teacher usage stats
+            try:
+                ratio = teacher_used_count / float(episodeStep)
+            except Exception:
+                ratio = 0.0
+            
+            # Log detailed game end to file if enabled
+            if log_detailed:
+                log.debug(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
+                log.debug(f"Final pieces count - White: {board.count(1)}, Black: {board.count(-1)}")
+                log.debug(f"Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%}), tries: {teacher_try_count}, fails: {teacher_fail_count}")
+                log.debug("Move history (Engine notation):")
                 
                 # Show engine notation move list for easy copying/verification
                 engine_moves = [move[0] for move in move_history]
-                log.info(f"Engine move list: {' '.join(engine_moves)}")
+                log.debug(f"Engine move list: {' '.join(engine_moves)}")
                 
                 # Show detailed move log
-                log.info("Detailed moves:")
+                log.debug("Detailed moves:")
                 for i, (notation, description) in enumerate(move_history, 1):
-                    log.info(f"  {i:2d}. {description}")
-                log.info("=" * 50)
+                    log.debug(f"  {i:2d}. {description}")
+                log.debug("=" * 50)
+            
+            # Log to console if verbose
+            if verbose:
+                log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
+                log.info(f"Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
             else:
-                # Include teacher usage stats in concise summary
-                try:
-                    ratio = teacher_used_count / float(episodeStep)
-                except Exception:
-                    ratio = 0.0
-                log.info(f"Game ended. Reason: {reason_text} ({reason_id}) Result: {r} | Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%}), tries: {teacher_try_count}, fails: {teacher_fail_count}")
+                # Brief summary for non-verbose mode
+                log.info(f"Game ended. Result: {r} | Teacher: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
             
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
@@ -379,12 +403,11 @@ class Coach():
                     with tqdm(total=self.args.numEps, desc='Self Play') as pbar:
                         for game_idx in range(self.args.numEps):
                             mcts = MCTS(self.game, self.nnet, self.args)  # reset search tree per episode
-                            # Log detailed moves for first few games if enabled
-                            verbose = (self.args.log_detailed_moves and 
-                                     game_idx < self.args.verbose_games)
+                            # Console verbose only if explicitly enabled
+                            console_verbose = getattr(self.args, 'console_verbose', False)
                             game_id = f"I{i}G{game_idx+1}"  # Iteration i, Game idx+1
                             iterationTrainExamples += executeEpisode(self.game, mcts, self.args, 
-                                                                   verbose=verbose, game_id=game_id, perfect_player=self.perfect_player)
+                                                                   verbose=console_verbose, game_id=game_id, perfect_player=self.perfect_player)
                             pbar.update()
 
                 # save the iteration examples to the history 

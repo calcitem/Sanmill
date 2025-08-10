@@ -89,6 +89,7 @@ teacherOnlineRatio: 0.3                  # Probability per move to query perfect
 # =============================================================================
 # DEBUGGING & LOGGING
 # =============================================================================
+console_verbose: false
 verbose_games: 1          # Number of games to log in detail per iteration
 log_detailed_moves: true  # Log move sequences for debugging
 enable_training_log: true # Save training results to CSV/JSON files (效果表格记录)

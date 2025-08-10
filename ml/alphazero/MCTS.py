@@ -34,11 +34,11 @@ class MCTS():
             probs: a policy vector where the probability of the ith action is
                    proportional to Nsa[(s,a)]**(1./temp)
         """
-        log.info(f"[MCTS DEBUG] Starting {self.args.numMCTSSims} simulations for period {canonicalBoard.period}")
+        log.debug(f"[MCTS DEBUG] Starting {self.args.numMCTSSims} simulations for period {canonicalBoard.period}")
         
         # CRITICAL DEBUG: Check if root state is already terminal before starting
         root_game_ended = self.game.getGameEnded(canonicalBoard, 1)
-        log.info(f"[MCTS DEBUG] Pre-search check: Game ended = {root_game_ended}")
+        log.debug(f"[MCTS DEBUG] Pre-search check: Game ended = {root_game_ended}")
         if root_game_ended != 0:
             log.error(f"[MCTS ERROR] Root state is terminal with result {root_game_ended}! This explains zero visits.")
         
@@ -54,14 +54,14 @@ class MCTS():
                 import traceback
                 log.error(f"[MCTS TRACEBACK] {traceback.format_exc()}")
                 raise
-        log.info(f"[MCTS DEBUG] Completed {simulation_count}/{self.args.numMCTSSims} simulations")
+        log.debug(f"[MCTS DEBUG] Completed {simulation_count}/{self.args.numMCTSSims} simulations")
 
         s = self.game.stringRepresentation(canonicalBoard)
         counts = [self.Nsa[(s, a)] if (s, a) in self.Nsa else 0 for a in range(self.game.getActionSize())]
         
         # DEBUG: Check if root state has any visits
         root_visits = self.Ns.get(s, 0)
-        log.info(f"[MCTS DEBUG] Root state visits: {root_visits}, Ns entries: {len(self.Ns)}, Nsa entries: {len(self.Nsa)}")
+        log.debug(f"[MCTS DEBUG] Root state visits: {root_visits}, Ns entries: {len(self.Ns)}, Nsa entries: {len(self.Nsa)}")
         if root_visits == 0:
             log.error(f"[MCTS ERROR] Root state was never visited during search!")
             # Check if we have any game ended states
@@ -83,13 +83,18 @@ class MCTS():
             # Check string representation consistency
             s_recomputed = self.game.stringRepresentation(canonicalBoard)
             log.error(f"[MCTS ERROR] String repr match: {s == s_recomputed}, len(s)={len(s)}, len(recomputed)={len(s_recomputed)}")
+            
+            # Force immediate log flush to file
+            for handler in log.handlers:
+                if hasattr(handler, 'flush'):
+                    handler.flush()
         
         # Reset search depth counter for next call
         self._search_depth = 0
         
         # Debug: Log MCTS statistics
         total_visits = sum(counts)
-        log.info(f"[MCTS DEBUG] After {self.args.numMCTSSims} sims: total_visits={total_visits}, max_count={max(counts) if counts else 0}")
+        log.debug(f"[MCTS DEBUG] After {self.args.numMCTSSims} sims: total_visits={total_visits}, max_count={max(counts) if counts else 0}")
         if total_visits == 0:
             # Check if initial state is terminal
             game_ended = self.game.getGameEnded(canonicalBoard, 1)
@@ -111,8 +116,8 @@ class MCTS():
             probs[bestA] = 1
             
             # DEBUG: Log action selection details
-            log.info(f"[MCTS DEBUG] temp=0 mode: bestA={bestA}, bestAs={bestAs}, max_count={max_count}")
-            log.info(f"[MCTS DEBUG] counts shape={len(counts)}, probs shape={len(probs)}, action_size={self.game.getActionSize()}")
+            log.debug(f"[MCTS DEBUG] temp=0 mode: bestA={bestA}, bestAs={bestAs}, max_count={max_count}")
+            log.debug(f"[MCTS DEBUG] counts shape={len(counts)}, probs shape={len(probs)}, action_size={self.game.getActionSize()}")
             assert len(probs) == self.game.getActionSize(), f"Probs length {len(probs)} != action_size {self.game.getActionSize()}"
             return probs
 
@@ -128,7 +133,7 @@ class MCTS():
             log.error(f"[MCTS ERROR] Board period: {canonicalBoard.period}, Valid moves: {valid_sum}")
             assert False, "MCTS has zero visit counts - this should not happen after numMCTSSims simulations"
         probs = [x / counts_sum for x in counts]
-        log.info(f"[MCTS DEBUG] Normal mode: counts_sum={counts_sum}, probs shape={len(probs)}")
+        log.debug(f"[MCTS DEBUG] Normal mode: counts_sum={counts_sum}, probs shape={len(probs)}")
         
         # Validate final probabilities
         assert len(probs) == self.game.getActionSize(), f"Probs length {len(probs)} != action_size {self.game.getActionSize()}"
@@ -165,13 +170,15 @@ class MCTS():
 
         s = self.game.stringRepresentation(canonicalBoard)
 
-        if s not in self.Es:
-            self.Es[s] = self.game.getGameEnded(canonicalBoard, 1)
-        if self.Es[s] != 0:
+        # Always check current game state (don't rely on cached Es)
+        current_game_ended = self.game.getGameEnded(canonicalBoard, 1)
+        self.Es[s] = current_game_ended  # Update cache with current result
+        
+        if current_game_ended != 0:
             # terminal node - return immediately, parent will handle visit count updates
-            log.debug(f"[MCTS {search_id}] TERMINAL: result={self.Es[s]}, period={canonicalBoard.period}")
+            log.debug(f"[MCTS {search_id}] TERMINAL: result={current_game_ended}, period={canonicalBoard.period}")
             self._search_depth -= 1
-            return -self.Es[s]
+            return -current_game_ended
 
         if s not in self.Ps:
             # leaf node
