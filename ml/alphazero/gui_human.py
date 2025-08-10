@@ -42,6 +42,11 @@ class GuiHumanPlayer:
         self.canvas_h = self.margin_top + self.board_size_px + self.margin_bottom
         # 棋盘底色改为灰色
         self.canvas = tk.Canvas(self.root, width=self.canvas_w, height=self.canvas_h, bg="#cfcfcf")
+        # 使用手型光标以提高可见性（具体大小受系统设置影响）
+        try:
+            self.canvas.configure(cursor="hand2")
+        except Exception:
+            pass
         self.canvas.pack()
 
         # 状态栏（显示双方角色与最近一步）
@@ -316,6 +321,18 @@ class GuiHumanPlayer:
         # 返回 pending_action（必须由点击逻辑设置）
         assert self.pending_action is not None, "GUI interaction failed to produce an action"
         return int(self.pending_action)
+
+    def render_board(self, board):
+        # 立即刷新当前棋盘显示（用于对手落子后立刻更新）
+        try:
+            self.current_board = board
+            self._render_pieces(board)
+            try:
+                self.root.update_idletasks()
+            except Exception:
+                pass
+        except Exception:
+            pass
 
     def set_to_move(self, player: int):
         # 由 Arena 在调用 play() 前设置当前行动方（1=先手白，-1=后手黑）

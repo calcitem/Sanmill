@@ -131,6 +131,14 @@ class Arena():
                 log.debug(f'valids = {valids}')
                 assert valids[action] > 0
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
+            # 若有 GUI 玩家，落子后立即刷新显示当前棋盘，避免等对手落子才统一更新
+            try:
+                if hasattr(self.player1, 'render_board'):
+                    self.player1.render_board(board)
+                if hasattr(self.player2, 'render_board'):
+                    self.player2.render_board(board)
+            except Exception:
+                pass
         if verbose:
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
