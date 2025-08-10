@@ -30,9 +30,9 @@ class Game:
         RESET = "\033[0m"    # Reset to default color
         
         return {
-            -1: f"{BLUE}○{RESET}",    # 黑方：空心点
+            -1: f"{BLUE}●{RESET}",    # 后手方（-1）：实心点
             +0: "·",                   # Empty squares (no color)
-            +1: f"{YELLOW}●{RESET}"    # 白方：实心点
+            +1: f"{YELLOW}○{RESET}"    # 先手方（+1）：空心点
         }
 
 

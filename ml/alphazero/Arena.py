@@ -77,7 +77,17 @@ class Arena():
                 # Player that requires move history (e.g., Perfect DB teacher via engine analyze)
                 action = player_obj.play_with_history(self.game, board, curPlayer, engine_move_history)
             else:
-                action = player_obj.play(self.game.getCanonicalForm(board, curPlayer))
+                # 如果玩家需要实际棋盘或是 GUI 玩家，传递实际棋盘
+                if getattr(player_obj, 'requires_actual_board', False):
+                    # 通知当前行动方，确保 GUI 以先手=白、后手=黑的视角工作
+                    if hasattr(player_obj, 'set_to_move'):
+                        try:
+                            player_obj.set_to_move(curPlayer)
+                        except Exception:
+                            pass
+                    action = player_obj.play(board)
+                else:
+                    action = player_obj.play(self.game.getCanonicalForm(board, curPlayer))
 
             # Store AI move for prompt display (verbose mode) and append to engine history
             ai_move_notation = None

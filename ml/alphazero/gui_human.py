@@ -13,12 +13,17 @@ class GuiHumanPlayer:
     - 所有合法性由 game.getValidMoves + board.get_action_from_move 双重保证。
     """
 
+    # GUI 需要实际棋盘，以固定颜色（先手白、后手黑）渲染
+    requires_actual_board = True
+
     def __init__(self, game, board_size_px: int = 560, difficulty: float = 0.5):
         self.game = game
         self.board_size_px = int(board_size_px)
         self.cell_px = self.board_size_px // 7
         # 供 Arena 在 verbose 模式下读取，用于 AI 选择策略时的微调参数
         self.difficulty = float(difficulty)
+        # 当前行动方（由 Arena 在每步调用前设置）
+        self.current_player = 1
         # 画布边距用于坐标标注
         self.margin_left = int(self.cell_px * 1.0)
         self.margin_top = int(self.cell_px * 0.3)
@@ -34,7 +39,8 @@ class GuiHumanPlayer:
 
         canvas_w = self.margin_left + self.board_size_px + self.margin_right
         canvas_h = self.margin_top + self.board_size_px + self.margin_bottom
-        self.canvas = tk.Canvas(self.root, width=canvas_w, height=canvas_h, bg="white")
+        # 棋盘底色改为灰色
+        self.canvas = tk.Canvas(self.root, width=canvas_w, height=canvas_h, bg="#cfcfcf")
         self.canvas.pack()
 
         # 状态栏（显示双方角色与最近一步）
@@ -173,7 +179,8 @@ class GuiHumanPlayer:
                 except Exception:
                     continue
                 cx, cy = self._xy_to_canvas_center(x, y)
-                oval = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#444", fill="#eee")
+                # 空位节点默认使用浅灰色以区别棋子
+                oval = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#444", fill="#cccccc")
                 self.node_ovals[(x, y)] = oval
 
         # 坐标标注：行号（7..1）与列字母（a..g）
@@ -189,18 +196,18 @@ class GuiHumanPlayer:
             self.canvas.create_text(text_x, base_y, text=letters[x], fill="#333")
 
     def _render_pieces(self, board):
-        # 重绘所有节点颜色：
-        #   空：#eee；白子：#f7d774；黑子：#5aa1f7
+        # 重绘所有节点颜色（GUI 颜色约定）：
+        #   空：浅灰 #cccccc；白子：白色 #ffffff；黑子：黑色 #000000
         for (x, y), oid in self.node_ovals.items():
-            fill = "#eee"
+            fill = "#cccccc"
             try:
                 piece = board.pieces[x][y]
             except Exception:
                 piece = 0
             if piece == 1:
-                fill = "#f7d774"
+                fill = "#ffffff"  # 白棋
             elif piece == -1:
-                fill = "#5aa1f7"
+                fill = "#000000"  # 黑棋
             self.canvas.itemconfig(oid, fill=fill, width=2)
 
         # 高亮选中的起点
@@ -210,7 +217,8 @@ class GuiHumanPlayer:
     # ---------------------------- Click logic ---------------------------
     def _collect_legal_moves(self, board) -> List[List[int]]:
         # 将合法动作映射为 move（长度 2 或 4）
-        valids = self.game.getValidMoves(board, 1)
+        # 使用实际棋盘与当前行动方，保证 GUI 与固定颜色一致
+        valids = self.game.getValidMoves(board, self.current_player)
         legal_moves: List[List[int]] = []
         for a, flag in enumerate(valids):
             if flag:
@@ -299,5 +307,10 @@ class GuiHumanPlayer:
         # 返回 pending_action（必须由点击逻辑设置）
         assert self.pending_action is not None, "GUI interaction failed to produce an action"
         return int(self.pending_action)
+
+    def set_to_move(self, player: int):
+        # 由 Arena 在调用 play() 前设置当前行动方（1=先手白，-1=后手黑）
+        assert player in (1, -1)
+        self.current_player = int(player)
 
 
