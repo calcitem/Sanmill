@@ -59,7 +59,7 @@ num_channels: 256        # Network width (128=smaller/faster, 512=larger/stronge
 # =============================================================================
 # PERFECT DATABASE TEACHER (Comment out entire section to disable)
 # =============================================================================
-usePerfectTeacher: false                    # Enable teacher mixing (default: False)
+usePerfectTeacher: true                    # Enable teacher mixing (default: False)
                                           # - true: hybrid training (recommended)
                                           # - false: pure AlphaZero
 

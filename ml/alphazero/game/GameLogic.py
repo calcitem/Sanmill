@@ -625,7 +625,7 @@ class Board:
             self.pieces[move[0]][move[1]] = 0
             self.pieces[move[2]][move[3]] = player
         
-        self.update_period(move, player)
+        self.update_period(move, player, move_type)
         
         # Update draw rule counters after the move with correct type
         # Record last mover for position hashing (side-to-move derivation)
