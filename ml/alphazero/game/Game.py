@@ -217,9 +217,28 @@ class Game:
         return symmForms
 
     def stringRepresentation(self, board):
-        """Fast bytes representation used as a hash key in MCTS."""
-        tail = str(board.period) + str(board.put_pieces >= self.num_draw)
-        return np.array(board.pieces).tobytes() + tail.encode('utf-8')
+        """Stable bytes key for MCTS caches.
+
+        为避免不同历史计数（影响终局判定）但同布局/同阶段的状态产生命中，
+        将下列会影响 `getGameEnded` 的历史量纳入键：
+        - put_pieces（精确值）
+        - rule50_counter
+        - move_counter
+        - _threefold_detected（布尔）
+        这样同样棋形但历史不同不会共用 `Es/Ps/Vs/Ns/Qsa` 条目，消除缓存不一致。
+        """
+        # 基本断言，确保必要字段存在
+        assert hasattr(board, 'pieces'), "Board missing 'pieces'"
+        assert hasattr(board, 'period'), "Board missing 'period'"
+        assert hasattr(board, 'put_pieces'), "Board missing 'put_pieces'"
+        # 历史相关字段：若不存在则按安全默认值处理
+        rule50_counter = getattr(board, 'rule50_counter', 0)
+        move_counter = getattr(board, 'move_counter', 0)
+        threefold_detected = int(getattr(board, '_threefold_detected', False))
+
+        pieces_bytes = np.array(board.pieces).tobytes()
+        tail = f"|p{board.period}|pp{board.put_pieces}|r50{rule50_counter}|mc{move_counter}|t3{threefold_detected}"
+        return pieces_bytes + tail.encode('utf-8')
 
     def getScore(self, board, player):
         """Heuristic score used by GreedyPlayer. Not used by training/MCTS.
