@@ -129,9 +129,21 @@ class PerfectDB:
         # Debug output for troubleshooting
         import logging
         log = logging.getLogger(__name__)
+        # Temporarily enable debug logging for diagnosis
+        log.setLevel(logging.DEBUG)
+        handler = logging.StreamHandler()
+        handler.setLevel(logging.DEBUG)
+        if not log.handlers:
+            log.addHandler(handler)
         log.debug(f"PerfectDB.evaluate: period={board.period}, put_pieces={board.put_pieces}, "
                  f"w_count={board.count(1)}, b_count={board.count(-1)}, "
                  f"w_place={w_place}, b_place={b_place}, side_to_move={side_to_move}, only_take={only_take}")
+        
+        # Calculate expected sector ID for debugging
+        w_on_board = board.count(1)
+        b_on_board = board.count(-1)
+        log.debug(f"Expected sector ID: W={w_on_board}, B={b_on_board}, WF={w_place}, BF={b_place}")
+        log.debug(f"Bitboards: w_bits={w_bits:024b}, b_bits={b_bits:024b}")
         
         out_wdl = ctypes.c_int(0)
         out_steps = ctypes.c_int(-1)
@@ -147,6 +159,7 @@ class PerfectDB:
             log.error(f"pd_evaluate failed with return code {ok}. Parameters: "
                      f"w_bits={w_bits}, b_bits={b_bits}, w_place={w_place}, b_place={b_place}, "
                      f"stm={0 if side_to_move == 1 else 1}, only_take={1 if only_take else 0}")
+            log.error(f"Expected sector: std_{w_on_board}_{b_on_board}_{w_place}_{b_place}.sec2")
         assert ok == 1, f"pd_evaluate failed with return code {ok}"
         res = (int(out_wdl.value), int(out_steps.value))
         self._eval_cache[key] = res
