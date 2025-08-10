@@ -232,7 +232,7 @@ class Arena():
         
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
-def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_from_pi: bool = False):
+def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_from_pi: bool = False, scoreboard: dict | None = None):
     np.random.seed()
     arena = Arena(*arena_args, human_sample_from_pi=human_sample_from_pi)
     print(f'Start fighting {i}...')
@@ -242,7 +242,22 @@ def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_fr
         shown = float(display_sign) * float(reselts)
     except Exception:
         shown = reselts
-    print(f'End fighting {i}, result {shown}')
+    if scoreboard is not None:
+        try:
+            if shown > 1e-4:
+                scoreboard['wins'] = scoreboard.get('wins', 0) + 1
+            elif shown < -1e-4:
+                scoreboard['losses'] = scoreboard.get('losses', 0) + 1
+            else:
+                scoreboard['draws'] = scoreboard.get('draws', 0) + 1
+        except Exception:
+            pass
+        w = scoreboard.get('wins', 0)
+        d = scoreboard.get('draws', 0)
+        l = scoreboard.get('losses', 0)
+        print(f'End fighting {i}, result {shown} (new W:D:L = {w}:{d}:{l})')
+    else:
+        print(f'End fighting {i}, result {shown}')
     return reselts
 
 def arena_wrapper_parallel(arena_args, verbose, num, results_queue, normalize_new_perspective: bool = False, human_sample_from_pi: bool = False):
@@ -280,9 +295,11 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
     second_half = {"oneWon": 0, "twoWon": 0, "draws": 0}
     if verbose or num_processes == 0:
         num = num // 2
+        # 新模型视角的累积记分板（用于行尾打印）
+        scoreboard = {"wins": 0, "draws": 0, "losses": 0}
         for i in range(num):
             display_sign = -1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
             if gameResult > 1e-4:
                 first_half["oneWon"] += 1
                 oneWon += 1
@@ -295,7 +312,7 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
         for i in range(num):
             display_sign = 1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
             if gameResult < -1e-4:
                 second_half["oneWon"] += 1
                 oneWon += 1
