@@ -274,6 +274,10 @@ __pycache__/
 *.dll
 *.dylib
 
+# MSVC
+*.exp
+*.lib
+
 # Qt-es
 object_script.*.Release
 object_script.*.Debug
