@@ -170,6 +170,92 @@ class TrainingLogger:
         print(f"   模型: {'✅ 接受' if model_accepted else '❌ 拒绝'}")
         print(f"   耗时: {iteration_time:.1f}s")
         print(f"   日志: {self.csv_file}")
+
+        # 绘制曲线图
+        try:
+            self.plot_metrics()
+        except Exception as e:
+            # 按用户偏好，让错误直接暴露
+            assert False, f"Plot metrics failed: {e}"
+
+    def plot_metrics(self) -> None:
+        """每轮更新一次图像，保存至 log_dir 下，展示 loss / win_rate / perfect_draw_rate / acceptance."""
+        try:
+            import matplotlib
+            matplotlib.use('Agg')  # 后端无界面
+            import matplotlib.pyplot as plt
+        except Exception as e:
+            raise AssertionError("matplotlib is required to plot metrics. Install via: pip install matplotlib") from e
+
+        # 读取 JSON 数据
+        with open(self.json_file, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        iters = data.get('iterations', [])
+        if not iters:
+            return
+
+        def _to_float(v, default=None):
+            try:
+                if v == '' or v is None:
+                    return default
+                return float(v)
+            except Exception:
+                return default
+
+        xs = [int(r.get('iteration', idx + 1)) for idx, r in enumerate(iters)]
+        losses = [_to_float(r.get('training_loss'), None) for r in iters]
+        win_rates = [_to_float(r.get('win_rate'), 0.0) for r in iters]
+        perfect_draw_rates = [_to_float(r.get('perfect_draw_rate'), None) for r in iters]
+        accepted = [1.0 if str(r.get('model_accepted')) in ("是", "True", "true", "1") else 0.0 for r in iters]
+
+        # 构建子图
+        fig, axes = plt.subplots(2, 2, figsize=(10, 6))
+        ax1, ax2 = axes[0]
+        ax3, ax4 = axes[1]
+
+        # Loss
+        if any(v is not None for v in losses):
+            xs_loss = [x for x, v in zip(xs, losses) if v is not None]
+            ys_loss = [v for v in losses if v is not None]
+            ax1.plot(xs_loss, ys_loss, marker='o', label='val_loss')
+        ax1.set_title('Validation Loss')
+        ax1.set_xlabel('Iteration')
+        ax1.set_ylabel('Loss')
+        ax1.grid(True, alpha=0.3)
+
+        # Win rate
+        ax2.plot(xs, win_rates, marker='o', color='tab:green', label='win_rate')
+        ax2.set_title('Win Rate (new vs prev)')
+        ax2.set_xlabel('Iteration')
+        ax2.set_ylabel('Rate')
+        ax2.set_ylim(0.0, 1.0)
+        ax2.grid(True, alpha=0.3)
+
+        # Perfect draw rate
+        if any(v is not None for v in perfect_draw_rates):
+            xs_pd = [x for x, v in zip(xs, perfect_draw_rates) if v is not None]
+            ys_pd = [v for v in perfect_draw_rates if v is not None]
+            ax3.plot(xs_pd, ys_pd, marker='o', color='tab:orange', label='perfect_draw_rate')
+        ax3.set_title('Perfect DB Draw Rate')
+        ax3.set_xlabel('Iteration')
+        ax3.set_ylabel('Rate')
+        ax3.set_ylim(0.0, 1.0)
+        ax3.grid(True, alpha=0.3)
+
+        # Acceptance
+        ax4.step(xs, accepted, where='mid', color='tab:red', label='accepted')
+        ax4.set_title('Model Accepted (1=yes)')
+        ax4.set_xlabel('Iteration')
+        ax4.set_ylabel('Accepted')
+        ax4.set_yticks([0, 1])
+        ax4.grid(True, alpha=0.3)
+
+        fig.suptitle(f'Metrics - {self.session_name}')
+        fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+
+        out_path = os.path.join(self.log_dir, f"{self.session_name}_metrics.png")
+        fig.savefig(out_path, dpi=150)
+        plt.close(fig)
     
     def _update_json(self, record: Dict):
         """更新 JSON 日志文件"""

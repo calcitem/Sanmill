@@ -40,6 +40,7 @@ class NNetWrapper(NeuralNet):
         """
         best_loss, best_epoch = torch.inf, -1
         optimizer = optim.Adam(self.nnet.parameters(), lr=self.args.lr)
+        final_train_loss = None
 
         for epoch in range(self.args.epochs):
             print('EPOCH ::: ' + str(epoch + 1))
@@ -111,7 +112,18 @@ class NNetWrapper(NeuralNet):
                 best_loss = val_loss
                 best_epoch = epoch
                 self.save_checkpoint(folder=self.args.checkpoint, filename='best_epoch.pth.tar')
+            # record last epoch training loss (sum of pi+v)
+            try:
+                final_train_loss = float(pi_losses.avg + v_losses.avg)
+            except Exception:
+                final_train_loss = None
         self.load_checkpoint(folder=self.args.checkpoint, filename='best_epoch.pth.tar')
+        # return metrics for logging
+        return {
+            'train_loss': final_train_loss,
+            'val_loss': float(best_loss) if best_loss is not None else None,
+            'best_epoch': int(best_epoch),
+        }
 
     def valid(self, val_examples):
         self.nnet.eval()

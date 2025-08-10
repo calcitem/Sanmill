@@ -570,7 +570,7 @@ class Coach():
                 self.pnet.nnet.load_state_dict(self.nnet.nnet.state_dict())
             pmcts = MCTS(self.game, self.pnet, self.args)
 
-            self.nnet.train(trainExamples)
+            metrics = self.nnet.train(trainExamples)
             nmcts = MCTS(self.game, self.nnet, self.args)
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
@@ -702,7 +702,7 @@ class Coach():
                         teacher_examples=teacher_examples_count,
                         training_examples=len(trainExamples),
                         training_epochs=self.args.epochs,
-                        training_loss=None,  # 训练损失需要从 nnet.train() 获取
+                        training_loss=(metrics or {}).get('val_loss', None),
                         prev_wins=pwins,
                         new_wins=nwins,
                         draws=draws,
