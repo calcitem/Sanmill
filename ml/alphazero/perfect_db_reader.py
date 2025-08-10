@@ -123,8 +123,16 @@ class PerfectDB:
         w_bits, b_bits = _tokens_to_perfect_bitboards(white_tok, black_tok)
         # pieces in hand from Board helpers
         from game.GameLogic import Board as _B
-        w_place = board.pieces_in_hand_count(1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - (board.put_pieces // 2))
-        b_place = board.pieces_in_hand_count(-1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - ((board.put_pieces + 1) // 2))
+        w_place = board.pieces_in_hand_count(1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - ((board.put_pieces + 1) // 2))
+        b_place = board.pieces_in_hand_count(-1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - (board.put_pieces // 2))
+        
+        # Debug output for troubleshooting
+        import logging
+        log = logging.getLogger(__name__)
+        log.debug(f"PerfectDB.evaluate: period={board.period}, put_pieces={board.put_pieces}, "
+                 f"w_count={board.count(1)}, b_count={board.count(-1)}, "
+                 f"w_place={w_place}, b_place={b_place}, side_to_move={side_to_move}, only_take={only_take}")
+        
         out_wdl = ctypes.c_int(0)
         out_steps = ctypes.c_int(-1)
         key = (int(w_bits), int(b_bits), int(w_place), int(b_place), int(0 if side_to_move == 1 else 1), int(1 if only_take else 0))
@@ -135,7 +143,11 @@ class PerfectDB:
             int(0 if side_to_move == 1 else 1), int(1 if only_take else 0),
             ctypes.byref(out_wdl), ctypes.byref(out_steps),
         )
-        assert ok == 1, "pd_evaluate failed"
+        if ok != 1:
+            log.error(f"pd_evaluate failed with return code {ok}. Parameters: "
+                     f"w_bits={w_bits}, b_bits={b_bits}, w_place={w_place}, b_place={b_place}, "
+                     f"stm={0 if side_to_move == 1 else 1}, only_take={1 if only_take else 0}")
+        assert ok == 1, f"pd_evaluate failed with return code {ok}"
         res = (int(out_wdl.value), int(out_steps.value))
         self._eval_cache[key] = res
         return res
@@ -143,8 +155,16 @@ class PerfectDB:
     def good_moves_tokens(self, board, side_to_move: int, only_take: bool, buf_len: int = 4096) -> List[str]:
         white_tok, black_tok = _board_to_tokens(board)
         w_bits, b_bits = _tokens_to_perfect_bitboards(white_tok, black_tok)
-        w_place = board.pieces_in_hand_count(1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - (board.put_pieces // 2))
-        b_place = board.pieces_in_hand_count(-1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - ((board.put_pieces + 1) // 2))
+        w_place = board.pieces_in_hand_count(1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - ((board.put_pieces + 1) // 2))
+        b_place = board.pieces_in_hand_count(-1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - (board.put_pieces // 2))
+        
+        # Debug output for troubleshooting
+        import logging
+        log = logging.getLogger(__name__)
+        log.debug(f"PerfectDB.good_moves_tokens: period={board.period}, put_pieces={board.put_pieces}, "
+                 f"w_count={board.count(1)}, b_count={board.count(-1)}, "
+                 f"w_place={w_place}, b_place={b_place}, side_to_move={side_to_move}, only_take={only_take}")
+        
         # 先用单着接口，后续如需多着可在 DLL 侧补充
         if not self._has_best:
             raise RuntimeError("pd_best_move not available in DLL")
@@ -158,7 +178,11 @@ class PerfectDB:
             int(0 if side_to_move == 1 else 1), int(1 if only_take else 0),
             buf, int(buf_len),
         )
-        assert ok == 1, "pd_best_move failed"
+        if ok != 1:
+            log.error(f"pd_best_move failed with return code {ok}. Parameters: "
+                     f"w_bits={w_bits}, b_bits={b_bits}, w_place={w_place}, b_place={b_place}, "
+                     f"stm={0 if side_to_move == 1 else 1}, only_take={1 if only_take else 0}")
+        assert ok == 1, f"pd_best_move failed with return code {ok}"
         tok = buf.value.decode("utf-8", errors="ignore").strip()
         self._best_cache[key] = tok
         return [tok] if tok else []

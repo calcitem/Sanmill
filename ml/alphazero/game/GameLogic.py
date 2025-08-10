@@ -459,9 +459,17 @@ class Board:
         """
         Calculate pieces in hand for a player.
         Based on total pieces minus pieces on board.
+        
+        White plays on moves 1,3,5,... (put_pieces = 1,3,5,...)
+        Black plays on moves 2,4,6,... (put_pieces = 2,4,6,...)
         """
         pieces_on_board = self.count(color)
-        total_pieces_placed = self.put_pieces // 2 if color == 1 else (self.put_pieces + 1) // 2
+        # White gets pieces placed on odd put_pieces counts (1,3,5,...)
+        # Black gets pieces placed on even put_pieces counts (2,4,6,...)
+        if color == 1:  # White
+            total_pieces_placed = (self.put_pieces + 1) // 2
+        else:  # Black
+            total_pieces_placed = self.put_pieces // 2
         return max(0, self.pieces_count - total_pieces_placed)
 
     def total_pieces_count(self, color):
@@ -642,18 +650,38 @@ class Board:
                 self._threefold_detected = True
                 self._threefold_reason = reason
 
-    def update_period(self, move, player):
+    def update_period(self, move, player, move_type):
+        """Update game period based on move type and game state.
+        
+        Args:
+            move: The move that was played
+            player: The player who made the move (1 or -1)
+            move_type: Type of move - "PLACE", "MOVE", or "REMOVE"
+        """
         if self.period == 3:
-            self.period = 0
+            # After capture phase, return to appropriate phase
+            # Don't increment put_pieces for REMOVE moves
+            if self.put_pieces >= 18:
+                self.period = 1
+                if self.count(-1) <= 3 or self.count(1) <= 3:
+                    self.period = 2
+            else:
+                self.period = 0  # Return to placing phase if not all pieces placed
         else:
-            self.put_pieces += 1
-            if self.line3(move, player):
+            # Only increment put_pieces for PLACE moves
+            if move_type == "PLACE":
+                self.put_pieces += 1
+            
+            # Check for mill formation (only relevant for PLACE and MOVE)
+            if move_type in ("PLACE", "MOVE") and self.line3(move, player):
                 self.period = 3
                 return
-        if self.put_pieces >= 18:
-            self.period = 1
-            if self.count(-1) <= 3 or self.count(1) <= 3:
-                self.period = 2
+            
+            # Transition to moving phase when all pieces are placed
+            if self.put_pieces >= 18:
+                self.period = 1
+                if self.count(-1) <= 3 or self.count(1) <= 3:
+                    self.period = 2
 
     def line3(self, move, player):
         """Check if the move forms a mill (a line of 3 pieces)."""
