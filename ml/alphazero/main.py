@@ -32,7 +32,7 @@ args = dotdict({
     'load_model': False,
     'load_folder_file': ('temp/','best.pth.tar'),
     'numItersForTrainExamplesHistory': 5,
-    'num_processes': 5,
+    'num_processes': 2,
 
     'lr': 0.002,
     'dropout': 0.3,
@@ -202,7 +202,7 @@ Examples:
         args.use_amp = False
         # Ensure multi-process for sampling efficiency
         if args.num_processes == 1:
-            args.num_processes = min(16, max(4, args.num_processes * 4))  # reasonable default
+            args.num_processes = 2  # Default to 2 processes for better efficiency
         log.info("🔍 SAMPLING PHASE: CPU multi-process mode")
     elif training_only:
         # Force single process + GPU for training phase
@@ -236,6 +236,7 @@ Examples:
             args.num_processes = max(1, int(env_procs))
         except Exception:
             pass
+    # Note: Default process count is now 2 in args definition
 
     env_arena = os.environ.get("SANMILL_TRAIN_ARENA_COMPARE")
     if env_arena:
@@ -262,6 +263,12 @@ Examples:
     if not args.cuda:
         # Hint PyTorch to avoid selecting any GPU even if present
         os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
+    
+    # Set default thread counts for optimal CPU performance
+    # These can be overridden by environment variables
+    os.environ.setdefault("OMP_NUM_THREADS", "12")
+    os.environ.setdefault("MKL_NUM_THREADS", "12")
+    os.environ.setdefault("SANMILL_TRAIN_PROCESSES", "2")
 
     # Reconcile AMP setting with final CUDA flag.
     # If config doesn't specify 'use_amp', default to following CUDA.
@@ -323,7 +330,7 @@ Examples:
         args_sampling = dotdict(dict(args))
         args_sampling.cuda = False
         args_sampling.use_amp = False
-        args_sampling.num_processes = min(16, max(4, args.num_processes * 4))
+        args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
         c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
         if args.load_model:
             c_sampling.loadTrainExamples()

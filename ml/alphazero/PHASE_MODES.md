@@ -39,17 +39,24 @@ python main.py --config win_config.yaml --auto-phases
 
 ## 进程数调整
 
-| 配置文件设置 | 采样时进程数 | 训练时进程数 |
-|-------------|-------------|-------------|
-| `num_processes: 1` | 4 | 1 |
-| `num_processes: 2` | 8 | 1 |
-| `num_processes: 4` | 16 | 1 |
+| 配置文件设置 | 采样时进程数 | 训练时进程数 | 每进程线程数 |
+|-------------|-------------|-------------|-------------|
+| `num_processes: 1` | 2 | 1 | 12 |
+| `num_processes: 2` | 2 | 1 | 12 |
+| `num_processes: 4` | 4 | 1 | 12 |
+
+**新默认设置**：2进程 × 12线程 = 24线程（为7950X优化）
 
 ## 环境变量覆盖
 
 ```bash
 # 强制指定采样进程数
-$env:SANMILL_TRAIN_PROCESSES="12"
+$env:SANMILL_TRAIN_PROCESSES="4"
+python main.py --config win_config.yaml
+
+# 强制指定线程数（每进程）
+$env:OMP_NUM_THREADS="16"
+$env:MKL_NUM_THREADS="16"
 python main.py --config win_config.yaml
 
 # 强制禁用 CUDA（采样用）
@@ -70,5 +77,6 @@ use_amp: true           # 可选，默认启用
 ```
 
 ### 效果对比
-- **默认自动阶段**：采样快（多核CPU），训练快（GPU+AMP），无OOM
+- **默认自动阶段**：采样高效（2进程×12线程），训练快（GPU+AMP），无OOM，75%CPU占用
 - **原始单阶段**：采样慢（GPU空转），可能OOM，兼容性好
+- **旧多进程**：采样快但CPU100%（4进程×8线程），可能过热
