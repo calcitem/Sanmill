@@ -136,14 +136,9 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                     if verbose:
                         log.info("[Teacher] used at step %d", episodeStep)
                 except Exception as ex:
-                    # Fallback to MCTS, but log the failure detail
-                    if log_detailed:
-                        log.debug("[Teacher] mapping failed at step %d: %s", episodeStep, str(ex))
-                    if verbose:
-                        log.info("[Teacher] mapping failed at step %d: %s", episodeStep, str(ex))
-                    pi = mcts.getActionProb(canonicalBoard, temp=temp)
-                    used_teacher = False
-                    teacher_fail_count += 1
+                    # 不保留兜底：教师调用失败时立即退出
+                    log.error("[Teacher] failed at step %d: %s", episodeStep, str(ex))
+                    raise
         
         if pi is None:
             # Default MCTS policy

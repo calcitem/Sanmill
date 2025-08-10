@@ -66,7 +66,8 @@ The first run will:
   - `pytorch/GameNNet.py`: network (ViT-like backbone + period heads)
   - `pytorch/NNet.py`: training/validation/inference wrapper
 - `utils.py`: helpers (`AverageMeter`, `EMA`, `dotdict`, `GameDataset`)
- - `engine_bridge.py`: bridge to native Sanmill engine (UCI-like)
+  - `engine_bridge.py`: bridge to native Sanmill engine (UCI-like) [训练中教师已不再使用]
+  - `perfect_db_reader.py`: 直连 Perfect DB DLL 的轻量封装
  - `game/standard_rules.py`: standard Nine Men's Morris coordinates/adjacency/mills
  - `game/engine_adapter.py`: convert between Python move arrays and engine tokens
 

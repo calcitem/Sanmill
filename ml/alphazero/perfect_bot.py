@@ -5,7 +5,7 @@ from typing import List
 from game.Game import Game
 from game.GameLogic import Board
 from game.engine_adapter import engine_token_to_move
-from engine_bridge import MillEngine
+from perfect_db_reader import PerfectDB
 
 log = logging.getLogger(__name__)
 
@@ -16,40 +16,33 @@ class PerfectTeacherPlayer:
     This can be used in Arena to pit the learned network against a tablebase-perfect player.
     """
     def __init__(self, db_path: str):
-        self.db_path = db_path
-        self.engine = MillEngine()
-        self._start_and_configure_engine()
-        # Online analyze timeout (seconds), shorter than offline mixing
-        try:
-            self.online_timeout = float(os.environ.get('SANMILL_ONLINE_ANALYZE_TIMEOUT', '10'))
-        except Exception:
-            self.online_timeout = 10.0
+        self.db_path = db_path or r"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
+        self.db = PerfectDB()
+        self.db.init(self.db_path)
 
     def __del__(self):
         try:
-            self.engine.stop()
+            self.db.deinit()
         except Exception:
             pass
 
-    def _start_and_configure_engine(self):
-        """Start engine and apply rules + perfect DB path."""
-        self.engine.start()
-        self.engine.set_standard_rules()
-        # Be conservative on threads for I/O predictability
-        try:
-            self.engine.set_threads(int(os.environ.get('SANMILL_ENGINE_THREADS', '1')))
-        except Exception:
-            pass
-        self.engine.enable_perfect_database(self.db_path)
+    def _labels_from_db(self, board: Board, cur_player: int):
+        only_take = (board.period == 3)
+        wdl, steps = self.db.evaluate(board, cur_player, only_take)
+        tokens = self.db.good_moves_tokens(board, cur_player, only_take)
+        if wdl > 0:
+            lab = 'win'
+        elif wdl < 0:
+            lab = 'loss'
+        else:
+            lab = 'draw'
+        labels = {}
+        for t in tokens:
+            labels[t] = {"wdl": lab, "value": 0, "steps": (None if steps < 0 else steps)}
+        return labels
 
     def _restart_engine(self):
-        """Restart engine after a fatal I/O error and re-apply DB path."""
-        try:
-            self.engine.stop()
-        except Exception:
-            pass
-        self.engine = MillEngine()
-        self._start_and_configure_engine()
+        raise RuntimeError("No engine fallback in DB mode")
 
     def play_with_history(self, game: Game, board: Board, curPlayer: int, engine_move_history: List[str]) -> int:
         """Return an action index chosen using Perfect DB labels.
@@ -63,54 +56,18 @@ class PerfectTeacherPlayer:
         log.info(f"[TEACHER DEBUG] Move history length: {len(engine_move_history)}, last 3: {engine_move_history[-3:]}")
         log.info(f"[TEACHER DEBUG] Board state - Put pieces: {board.put_pieces}, W: {board.count(1)}, B: {board.count(-1)}")
         
-        # Temporarily shorten analyze timeout for online teacher calls
-        prev_timeout_env = os.environ.get('SANMILL_ANALYZE_TIMEOUT')
-        os.environ['SANMILL_ANALYZE_TIMEOUT'] = str(self.online_timeout)
-        try:
-            # Try perfect-labeled best first
-            token = None
-            try:
-                token = self.engine.choose_with_perfect(engine_move_history)
-                log.info(f"[TEACHER DEBUG] Perfect DB returned token: {token}")
-                move = engine_token_to_move(token)
-                log.info(f"[TEACHER DEBUG] Converted to move: {move}")
-                action = board.get_action_from_move(move)
-                log.info(f"[TEACHER DEBUG] Final action index: {action}")
-                return action
-            except Exception as e:
-                # If engine I/O is broken or timed out, try a clean restart once
-                if isinstance(e, (BrokenPipeError, TimeoutError)) or ('Broken pipe' in str(e)):
-                    self._restart_engine()
-                    # Retry once after restart
-                    token = self.engine.choose_with_perfect(engine_move_history)
-                    move = engine_token_to_move(token)
-                    return board.get_action_from_move(move)
-                # Fallback: ask engine bestmove for current position
-                best = self.engine.get_bestmove(engine_move_history, timeout_s=5.0)
-                if best:
-                    try:
-                        move = engine_token_to_move(best)
-                        return board.get_action_from_move(move)
-                    except Exception:
-                        pass
-                # Fallback: derive legal tokens via analyze and pick the first
-                try:
-                    legal_tokens = self.engine.get_legal_moves(engine_move_history, timeout_s=5.0)
-                    for tok in legal_tokens:
-                        try:
-                            mv = engine_token_to_move(tok)
-                            return board.get_action_from_move(mv)
-                        except Exception:
-                            continue
-                except Exception:
-                    pass
-                # Last resort: raise
-                raise ValueError("Unable to map engine token(s) to a legal action in current board state")
-        finally:
-            # Restore timeout env
-            if prev_timeout_env is None:
-                os.environ.pop('SANMILL_ANALYZE_TIMEOUT', None)
-            else:
-                os.environ['SANMILL_ANALYZE_TIMEOUT'] = prev_timeout_env
+        # 直接用 DB，不保留任何引擎兜底，异常时抛出
+        labels = self._labels_from_db(board, curPlayer)
+        if not labels:
+            raise RuntimeError("Perfect DB returned no labels")
+        # 选优先级：win > draw > loss（与监督构造一致）
+        wins = [t for t, p in labels.items() if p.get('wdl') == 'win']
+        draws = [t for t, p in labels.items() if p.get('wdl') == 'draw']
+        losses = [t for t, p in labels.items() if p.get('wdl') == 'loss']
+        pick = wins[0] if wins else (draws[0] if draws else (losses[0] if losses else None))
+        if not pick:
+            raise RuntimeError("No legal move in DB labels")
+        move = engine_token_to_move(pick)
+        return board.get_action_from_move(move)
 
 

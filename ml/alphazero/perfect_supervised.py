@@ -11,7 +11,7 @@ from tqdm import tqdm
 from game.Game import Game
 from game.GameLogic import Board
 from game.engine_adapter import move_to_engine_token, engine_token_to_move
-from engine_bridge import MillEngine
+from perfect_db_reader import PerfectDB
 from utils import dotdict
 
 
@@ -159,71 +159,34 @@ def sample_positions(game: Game, num_samples: int, max_plies: int = 60, non_opti
 
 def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: int = 256,
                                       verbose: bool = False) -> List[Tuple[list, int, list, int]]:
-    """Construct a dataset online by labeling with Perfect DB via engine analyze.
+    """直接使用 Perfect DB DLL 进行标注（不再调用引擎）。
 
     Returns examples of (board_array, curPlayer, pi, period)
     """
     game = Game()
-    engine = MillEngine()
-    engine.start()
-    if verbose:
-        print(f"[Verbose] Engine started. SANMILL_ENGINE={os.environ.get('SANMILL_ENGINE', 'sanmill')}")
-    engine.set_standard_rules()
-    if verbose:
-        print("[Verbose] Standard rules applied (PiecesCount=9, MayFly=true, NMoveRule=100, EndgameNMoveRule=100)")
-    # Optional: pin to single thread to avoid overloading I/O during analyze
-    try:
-        threads = int(os.environ.get('SANMILL_ENGINE_THREADS', '1'))
-        engine.set_threads(threads)
-        if verbose:
-            print(f"[Verbose] Engine threads set to {threads}")
-    except Exception:
-        pass
-    if verbose:
-        print(f"[Verbose] Enabling Perfect DB at path: {db_path}")
-    engine.enable_perfect_database(db_path)
+    pdb = PerfectDB()
+    # 固定 std 9 子变体，路径固定
+    if not db_path:
+        db_path = r"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
+    pdb.init(db_path)
 
-    def _reinit_engine(old_engine: MillEngine) -> MillEngine:
-        try:
-            old_engine.stop()
-        except Exception:
-            pass
-        e = MillEngine()
-        e.start()
-        if verbose:
-            print(f"[Verbose] Engine restarted. SANMILL_ENGINE={os.environ.get('SANMILL_ENGINE', 'sanmill')}")
-        e.set_standard_rules()
-        try:
-            threads = int(os.environ.get('SANMILL_ENGINE_THREADS', '1'))
-            e.set_threads(threads)
-            if verbose:
-                print(f"[Verbose] Engine threads set to {threads}")
-        except Exception:
-            pass
-        if verbose:
-            print(f"[Verbose] Re-enabling Perfect DB at path: {db_path}")
-        e.enable_perfect_database(db_path)
-        return e
-
-    def _safe_analyze(cur_engine: MillEngine, move_tokens: List[str]) -> Tuple[Dict[str, Dict], MillEngine]:
-        timeout = float(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120'))
-        try:
-            labels = cur_engine.analyze(move_tokens, timeout_s=timeout)
-            return labels, cur_engine
-        except Exception as e:
-            if verbose:
-                print(f"[Verbose] analyze failed with exception: {e}")
-            # If engine I/O broken or timed out, restart once and retry
-            if isinstance(e, TimeoutError) or 'Broken pipe' in str(e):
-                cur_engine = _reinit_engine(cur_engine)
-                try:
-                    labels = cur_engine.analyze(move_tokens, timeout_s=timeout)
-                    return labels, cur_engine
-                except Exception as e2:
-                    if verbose:
-                        print(f"[Verbose] analyze failed again after restart: {e2}")
-                    return {}, cur_engine
-            return {}, cur_engine
+    def _labels_from_db(board: Board, cur_player: int) -> Dict[str, Dict]:
+        # onlyTake: 置于吃子子阶段
+        only_take = (board.period == 3)
+        wdl, steps = pdb.evaluate(board, cur_player, only_take)
+        # 获取 good moves tokens
+        tokens = pdb.good_moves_tokens(board, cur_player, only_take)
+        labels: Dict[str, Dict] = {}
+        if wdl > 0:
+            lab = 'win'
+        elif wdl < 0:
+            lab = 'loss'
+        else:
+            lab = 'draw'
+        # 均匀为相同标签；steps 同用整体返回（若不可得，为 -1）
+        for t in tokens:
+            labels[t] = {"wdl": lab, "value": 0, "steps": (None if steps < 0 else steps)}
+        return labels
 
     examples = []
     with tqdm(total=total_examples, desc="Labeling via Perfect DB") as pbar:
@@ -235,20 +198,10 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
             if verbose:
                 print(f"[Verbose] Sampled {len(positions)} positions")
             for board, curPlayer, move_tokens in positions:
-                # Query labels at this node
+                # 直接调用 Perfect DB
+                labels = _labels_from_db(board, curPlayer)
                 if verbose and debug_printed < 8:
-                    print(f"[Verbose] Calling analyze with moves='{' '.join(move_tokens)}' (timeout={os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')}s)")
-                labels, engine = _safe_analyze(engine, move_tokens)
-                if labels and verbose and debug_printed < 8:
-                    print(f"[Verbose] analyze completed successfully")
-                if verbose and debug_printed < 8:
-                    print(f"[Verbose] moves='{' '.join(move_tokens)}'")
-                    if labels:
-                        items = list(labels.items())[:5]
-                        pretty = ' '.join([f"{k}={v.get('wdl')}({v.get('value')}{' in ' + str(v.get('steps')) + ' steps' if v.get('steps') is not None else ''})" for k, v in items])
-                        print(f"[Verbose] analysis: {pretty}")
-                    else:
-                        print("[Verbose] analysis: <no labels>")
+                    print(f"[Verbose] DB labels: {len(labels)} entries")
                     debug_printed += 1
                 if not labels:
                     # Skip this position and continue
@@ -275,7 +228,7 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
                         break
                 if len(examples) >= total_examples:
                     break
-    engine.stop()
+    pdb.deinit()
     if verbose:
         print(f"[Verbose] Collected examples: {len(examples)}")
     return examples
