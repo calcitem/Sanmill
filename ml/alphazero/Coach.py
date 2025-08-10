@@ -127,7 +127,42 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
             trainExamples.append([b, curPlayer, p, real_period])
 
         if action is None:
+            # Strict validation - fail fast on any anomaly
+            pi = np.array(pi, dtype=np.float64)
+            
+            # Assert pi is valid
+            assert not np.any(np.isnan(pi)), f"Pi contains NaN values: {pi}"
+            assert not np.any(np.isinf(pi)), f"Pi contains infinite values: {pi}"
+            assert np.sum(pi) > 0, f"Pi sum is non-positive: {np.sum(pi)}"
+            assert len(pi) == game.getActionSize(), f"Pi length {len(pi)} != action_size {game.getActionSize()}"
+            
+            # Normalize to ensure sum = 1.0
+            pi = pi / np.sum(pi)
+            
+            # Select action and validate result
             action = np.random.choice(len(pi), p=pi)
+            assert 0 <= action < game.getActionSize(), f"Invalid action {action}, must be in [0, {game.getActionSize()})"
+        
+        # DEBUG: Log detailed action generation info
+        if verbose or True:  # Always log for debugging
+            log.info(f"[DEBUG] Step {episodeStep}: Player {curPlayer}, Period {board.period}, Action {action}")
+            log.info(f"[DEBUG] Board state - Put pieces: {board.put_pieces}, W pieces: {board.count(1)}, B pieces: {board.count(-1)}")
+            log.info(f"[DEBUG] Action source: {'Teacher' if used_teacher else 'MCTS'}, Action size: {game.getActionSize()}, Pi shape: {pi.shape}")
+            # Validate action range
+            if action >= game.getActionSize():
+                log.error(f"[ERROR] Action {action} >= action_size {game.getActionSize()}")
+            if action >= len(pi):
+                log.error(f"[ERROR] Action {action} >= pi_length {len(pi)}")
+            # Check if action is valid according to game rules
+            try:
+                valid_moves = game.getValidMoves(board, curPlayer)
+                assert int(np.sum(valid_moves)) > 0, f"No valid moves for player {curPlayer} in period {board.period}"
+                if action < len(valid_moves) and valid_moves[action] == 0:
+                    log.warning(f"[WARNING] Action {action} is not valid according to getValidMoves")
+                    log.info(f"[DEBUG] Valid moves shape: {np.array(valid_moves).shape}, nonzero: {np.nonzero(valid_moves)[0][:10]}")
+            except Exception as e:
+                log.error(f"[ERROR] Failed to check valid moves: {e}")
+        
         # Count teacher usage for this move
         if used_teacher:
             teacher_used_count += 1
@@ -172,6 +207,17 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                     engine_notation = f"x{engine_notation}"
             except Exception:
                 engine_notation = None
+
+        # Validate move format matches board period
+        try:
+            move = board.get_move_from_action(action)
+            if board.period in [0, 3]:  # placing/capture
+                assert len(move) == 2, f"Move length {len(move)} != 2 for period {board.period} (placing/capture)"
+            else:  # moving/flying
+                assert len(move) == 4, f"Move length {len(move)} != 4 for period {board.period} (moving/flying)"
+        except Exception as e:
+            log.error(f"[ERROR] Move validation failed: {e}")
+            raise
 
         # Maintain engine token sequence for perfect DB queries
         if engine_notation:

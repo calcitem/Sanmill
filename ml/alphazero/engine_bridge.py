@@ -27,6 +27,7 @@ class MillEngine:
         self._lines: "queue.Queue[str]" = queue.Queue()
         self._stop_reader = threading.Event()
         self.init_timeout_s = init_timeout_s
+        self._printed_db_detect = False  # Avoid repeated DB detection prints
 
     # ------------------------- Process Management -------------------------
 
@@ -48,6 +49,13 @@ class MillEngine:
         self._wait_for(lambda s: "uciok" in s, timeout_s=self.init_timeout_s)
         self._send("isready")
         self._wait_for(lambda s: "readyok" in s, timeout_s=self.init_timeout_s)
+        # Start a new game context
+        try:
+            self._send("ucinewgame")
+            self._send("isready")
+            self._wait_for(lambda s: "readyok" in s, timeout_s=self.init_timeout_s)
+        except Exception:
+            pass
 
     def stop(self) -> None:
         try:
@@ -166,12 +174,16 @@ class MillEngine:
         try:
             result = self.analyze([], timeout_s=30.0)
             # Print a short confirmation if we detect any labeled outcomes
-            if any(v.get('wdl') in ('win', 'draw', 'loss') for v in result.values()):
-                print(f"[MillEngine] Perfect DB labeling detected at '{wsl_path}'.")
-            else:
-                print("[MillEngine] Perfect DB labeling not detected (engine may fallback to traditional search).")
+            if not self._printed_db_detect:
+                if any(v.get('wdl') in ('win', 'draw', 'loss') for v in result.values()):
+                    print(f"[MillEngine] Perfect DB labeling detected at '{wsl_path}'.")
+                else:
+                    print("[MillEngine] Perfect DB labeling not detected (engine may fallback to traditional search).")
+                self._printed_db_detect = True
         except Exception as e:
-            print(f"[MillEngine] Perfect DB quick check failed: {e}")
+            if not self._printed_db_detect:
+                print(f"[MillEngine] Perfect DB quick check failed: {e}")
+                self._printed_db_detect = True
 
     def analyze(self, move_list: List[str], timeout_s: float = None):
         """Run 'analyze startpos moves ...' and parse labeled outcomes.

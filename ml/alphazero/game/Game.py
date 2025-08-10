@@ -110,6 +110,19 @@ class Game:
             nextPlayer: player who plays next (usually -player; same player when in capture phase)
         """
         b = deepcopy(board)
+        # Validate action against current legal moves before applying
+        valids = self.getValidMoves(b, player)
+        assert hasattr(valids, '__len__'), "Valid moves must be array-like"
+        assert len(valids) == self.getActionSize(), (
+            f"Valid moves length {len(valids)} != action_size {self.getActionSize()}"
+        )
+        assert 0 <= action < self.getActionSize(), (
+            f"Action {action} out of range [0, {self.getActionSize()}) for period {b.period}"
+        )
+        assert valids[action] == 1, (
+            f"Action {action} is not legal for player {player} in period {b.period}"
+        )
+
         move = b.get_move_from_action(action)
         b.execute_move(move, player)
         if b.period == 3:
@@ -121,13 +134,30 @@ class Game:
         """
         Returns a binary vector (size getActionSize) where 1 marks a valid move.
         """
-        valids = [0] * self.getActionSize()
+        action_size = self.getActionSize()
+        valids = [0] * action_size
         b = deepcopy(board)
+        # Sanity checks on board state
+        assert b.period in (0, 1, 2, 3), f"Invalid board period: {b.period}"
         legalMoves = b.get_legal_moves(player)
+        # Map legal moves to actions and assert consistency
+        seen_actions = set()
         for move in legalMoves:
             action = b.get_action_from_move(move)
+            assert 0 <= action < action_size, (
+                f"Mapped action {action} out of range [0, {action_size}) from move {move} at period {b.period}"
+            )
             valids[action] = 1
-        return np.array(valids)
+            seen_actions.add(int(action))
+        valids_arr = np.array(valids)
+        # Final consistency checks
+        assert len(valids_arr) == action_size, (
+            f"Valids array length {len(valids_arr)} != action_size {action_size}"
+        )
+        assert int(np.sum(valids_arr)) == len(seen_actions), (
+            f"Valids sum {int(np.sum(valids_arr))} != unique legal actions {len(seen_actions)}"
+        )
+        return valids_arr
 
     def getGameEnded(self, board, player):
         """
@@ -140,6 +170,8 @@ class Game:
         is_game_over, result, reason = board.check_game_over_conditions(player)
         
         if is_game_over:
+            assert reason is not None, f"Game ended but reason is None: result={result}, player={player}"
+            assert -1 <= result <= 1, f"Game result {result} out of range [-1, 1]"
             return result
         
         # Legacy fallback for very long games
@@ -162,6 +194,10 @@ class Game:
         """
         Returns a list of (board, pi) tuples under rotation/flip symmetries.
         """
+        # Validate input pi
+        assert hasattr(pi, '__len__'), "Pi must be array-like"
+        assert len(pi) == self.getActionSize(), f"Pi length {len(pi)} != action_size {self.getActionSize()}"
+        
         symmForms = []
         if board.period in [0, 3]:
             cache = self.cache_symmetries0
@@ -174,6 +210,9 @@ class Game:
                     newB = np.fliplr(newB)
                 newPi = np.zeros(self.getActionSize())
                 newPi[cache[i * 2 + j]] = pi
+                
+                # Validate newPi length
+                assert len(newPi) == self.getActionSize(), f"newPi length {len(newPi)} != action_size {self.getActionSize()}"
                 symmForms.append((newB.tolist(), newPi.tolist()))
         return symmForms
 

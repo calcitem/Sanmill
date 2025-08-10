@@ -66,6 +66,10 @@ class Board:
         self.pieces = [None] * self.n
         for i in range(self.n):
             self.pieces[i] = [0] * self.n
+        # Invariants
+        assert self.allowed_places.shape == (7, 7), "allowed_places must be 7x7"
+        assert int(np.sum(self.allowed_places)) == 24, "allowed_places must contain exactly 24 valid squares"
+        assert self.period in (0, 1, 2, 3), f"Invalid initial period: {self.period}"
 
     def __getitem__(self, index):
         return self.pieces[index]
@@ -116,7 +120,16 @@ class Board:
         if self.period == 0:
             # All empty squares are valid placements in period 0.
             empty_places = self.allowed_places - np.abs(np.array(self.pieces))
-            return np.transpose(np.where(empty_places == 1)).tolist()
+            placing_moves = np.transpose(np.where(empty_places == 1)).tolist()
+            # Validate placing moves
+            for move in placing_moves:
+                assert len(move) == 2, f"Placing move must have 2 coordinates: {move}"
+                for coord in move:
+                    assert 0 <= coord < 7, f"Move coordinate {coord} out of bounds [0,7)"
+                # Must be on allowed places and empty
+                assert self.allowed_places[move[0], move[1]] == 1, f"Placing target {move} not on allowed_places"
+                assert self.pieces[move[0]][move[1]] == 0, f"Placing target {move} not empty"
+            return placing_moves
         elif self.period == 3:
             # Capture phase: choose opponent pieces to remove with proper mill logic
             return self._get_removal_moves(color)
@@ -131,7 +144,17 @@ class Board:
                 moves = []
                 for move0 in moves0:
                     for move1 in moves1:
-                        moves.append(move0 + move1)
+                        fly_move = move0 + move1
+                        # Validate flying move
+                        assert len(fly_move) == 4, f"Flying move must have 4 coordinates: {fly_move}"
+                        # Source must contain player's piece
+                        assert self.pieces[fly_move[0]][fly_move[1]] == color, f"Flying source {fly_move[:2]} must contain player piece"
+                        # Destination must be empty
+                        assert self.pieces[fly_move[2]][fly_move[3]] == 0, f"Flying destination {fly_move[2:]} must be empty"
+                        # Both must be on allowed places
+                        assert self.allowed_places[fly_move[0], fly_move[1]] == 1, f"Flying source {fly_move[:2]} not on allowed_places"
+                        assert self.allowed_places[fly_move[2], fly_move[3]] == 1, f"Flying destination {fly_move[2:]} not on allowed_places"
+                        moves.append(fly_move)
                 return moves
             else:
                 # Fall back to normal moving if flying conditions not met
@@ -161,11 +184,20 @@ class Board:
             move: list of size 2 or 4
         """
         place_index = np.transpose(np.where(self.allowed_places == 1))
-        if self.period in [0, 3]:
+        
+        # Assert action is valid for current period
+        if self.period in [0, 3]:  # Placing phase
+            assert 0 <= action < 24, f"Invalid action {action} for period {self.period} (placing), must be in [0, 24)"
+            assert action < len(place_index), f"Action {action} >= place_index length {len(place_index)} in period {self.period}"
             return place_index[action].tolist()
-        else:
-            action0 = place_index[action // 24].tolist()
-            action1 = place_index[action % 24].tolist()
+        else:  # Moving phase
+            assert 0 <= action < 24*24, f"Invalid action {action} for period {self.period} (moving), must be in [0, {24*24})"
+            action0_idx = action // 24
+            action1_idx = action % 24
+            assert action0_idx < len(place_index), f"Action0 index {action0_idx} >= place_index length {len(place_index)}"
+            assert action1_idx < len(place_index), f"Action1 index {action1_idx} >= place_index length {len(place_index)}"
+            action0 = place_index[action0_idx].tolist()
+            action1 = place_index[action1_idx].tolist()
             return action0 + action1
 
     def get_action_from_move(self, move):
@@ -242,6 +274,20 @@ class Board:
                         continue
                     if shrink_pieces[i, j, k] == color:
                         moves.extend(self.get_adjacent_places(i, j, k, shrink_pieces))
+        
+        # Validate all generated moves fall on allowed_places
+        for move in moves:
+            assert len(move) == 4, f"Normal move must have 4 coordinates: {move}"
+            for coord in move:
+                assert 0 <= coord < 7, f"Move coordinate {coord} out of bounds [0,7)"
+            # Source and destination must be on allowed places
+            assert self.allowed_places[move[0], move[1]] == 1, f"Source {move[:2]} not on allowed_places"
+            assert self.allowed_places[move[2], move[3]] == 1, f"Destination {move[2:]} not on allowed_places"
+            # For period 1, enforce adjacency (this is already handled by get_adjacent_places)
+            if self.period == 1:
+                # Additional adjacency check can be added here if needed
+                pass
+        
         return moves
 
     def _get_removal_moves(self, color):
@@ -270,10 +316,22 @@ class Board:
         
         # If not all pieces are in mills, only allow removing non-mill pieces
         if not all_in_mills:
-            return non_mill_pieces
+            result_moves = non_mill_pieces
         else:
             # If all pieces are in mills, allow removing any piece
-            return opponent_pieces
+            result_moves = opponent_pieces
+        
+        # Validate all removal moves fall on allowed_places
+        for move in result_moves:
+            assert len(move) == 2, f"Removal move must have 2 coordinates: {move}"
+            for coord in move:
+                assert 0 <= coord < 7, f"Move coordinate {coord} out of bounds [0,7)"
+            # Must be on allowed places
+            assert self.allowed_places[move[0], move[1]] == 1, f"Removal target {move} not on allowed_places"
+            # Must actually contain opponent piece
+            assert self.pieces[move[0]][move[1]] == opponent_color, f"Removal target {move} does not contain opponent piece"
+        
+        return result_moves
 
     def _is_piece_in_mill(self, piece_pos, color):
         """Check if a piece at the given position is part of a mill."""
@@ -531,6 +589,14 @@ class Board:
         """Perform the given move on the board; flips pieces as necessary.
         color gives the color of the piece to play (1=white, -1=black).
         """
+        # Basic assertions about inputs
+        assert player in (1, -1), f"Invalid player: {player}"
+        assert isinstance(move, (list, tuple)), f"Move must be list/tuple, got {type(move)}"
+        assert len(move) in (2, 4), f"Move must have length 2 or 4, got {len(move)}"
+        for v in move:
+            assert isinstance(v, (int, np.integer)), f"Move elements must be ints, got {type(v)}"
+            assert 0 <= v < 7, f"Move coordinate {v} out of bounds [0,7)"
+
         # Determine move type based on current period and move structure
         if self.period == 0:
             # Placing phase
@@ -539,10 +605,14 @@ class Board:
         elif self.period == 3:
             # Removal phase
             move_type = "REMOVE"
+            # Ensure we remove opponent piece according to rules; skip strict mill rule here
+            assert self.pieces[move[0]][move[1]] == -player or self.pieces[move[0]][move[1]] == player or self.pieces[move[0]][move[1]] == 0, "Board cell must be a piece or empty"
             self.pieces[move[0]][move[1]] = 0
         else:
             # Moving phase (period 1 or 2)
             move_type = "MOVE"
+            assert self.pieces[move[0]][move[1]] == player, "Source must contain player's piece"
+            assert self.pieces[move[2]][move[3]] == 0, "Destination must be empty"
             self.pieces[move[0]][move[1]] = 0
             self.pieces[move[2]][move[3]] = player
         

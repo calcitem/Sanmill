@@ -1,3 +1,4 @@
+from logging import logging
 import os
 from typing import List
 
@@ -57,6 +58,10 @@ class PerfectTeacherPlayer:
         2) If mapping fails (illegal in current board), fallback to engine bestmove
         3) If still fails, fallback to first legal token
         """
+        log.info(f"[TEACHER DEBUG] Called with board period {board.period}, player {curPlayer}")
+        log.info(f"[TEACHER DEBUG] Move history length: {len(engine_move_history)}, last 3: {engine_move_history[-3:]}")
+        log.info(f"[TEACHER DEBUG] Board state - Put pieces: {board.put_pieces}, W: {board.count(1)}, B: {board.count(-1)}")
+        
         # Temporarily shorten analyze timeout for online teacher calls
         prev_timeout_env = os.environ.get('SANMILL_ANALYZE_TIMEOUT')
         os.environ['SANMILL_ANALYZE_TIMEOUT'] = str(self.online_timeout)
@@ -65,8 +70,11 @@ class PerfectTeacherPlayer:
             token = None
             try:
                 token = self.engine.choose_with_perfect(engine_move_history)
+                log.info(f"[TEACHER DEBUG] Perfect DB returned token: {token}")
                 move = engine_token_to_move(token)
+                log.info(f"[TEACHER DEBUG] Converted to move: {move}")
                 action = board.get_action_from_move(move)
+                log.info(f"[TEACHER DEBUG] Final action index: {action}")
                 return action
             except Exception as e:
                 # If engine I/O is broken or timed out, try a clean restart once

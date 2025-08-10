@@ -183,6 +183,48 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
         print(f"[Verbose] Enabling Perfect DB at path: {db_path}")
     engine.enable_perfect_database(db_path)
 
+    def _reinit_engine(old_engine: MillEngine) -> MillEngine:
+        try:
+            old_engine.stop()
+        except Exception:
+            pass
+        e = MillEngine()
+        e.start()
+        if verbose:
+            print(f"[Verbose] Engine restarted. SANMILL_ENGINE={os.environ.get('SANMILL_ENGINE', 'sanmill')}")
+        e.set_standard_rules()
+        try:
+            threads = int(os.environ.get('SANMILL_ENGINE_THREADS', '1'))
+            e.set_threads(threads)
+            if verbose:
+                print(f"[Verbose] Engine threads set to {threads}")
+        except Exception:
+            pass
+        if verbose:
+            print(f"[Verbose] Re-enabling Perfect DB at path: {db_path}")
+        e.enable_perfect_database(db_path)
+        return e
+
+    def _safe_analyze(cur_engine: MillEngine, move_tokens: List[str]) -> Tuple[Dict[str, Dict], MillEngine]:
+        timeout = float(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120'))
+        try:
+            labels = cur_engine.analyze(move_tokens, timeout_s=timeout)
+            return labels, cur_engine
+        except Exception as e:
+            if verbose:
+                print(f"[Verbose] analyze failed with exception: {e}")
+            # If engine I/O broken or timed out, restart once and retry
+            if isinstance(e, TimeoutError) or 'Broken pipe' in str(e):
+                cur_engine = _reinit_engine(cur_engine)
+                try:
+                    labels = cur_engine.analyze(move_tokens, timeout_s=timeout)
+                    return labels, cur_engine
+                except Exception as e2:
+                    if verbose:
+                        print(f"[Verbose] analyze failed again after restart: {e2}")
+                    return {}, cur_engine
+            return {}, cur_engine
+
     examples = []
     with tqdm(total=total_examples, desc="Labeling via Perfect DB") as pbar:
         debug_printed = 0
@@ -196,17 +238,9 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
                 # Query labels at this node
                 if verbose and debug_printed < 8:
                     print(f"[Verbose] Calling analyze with moves='{' '.join(move_tokens)}' (timeout={os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')}s)")
-                # Use a longer timeout per analysis to accommodate DB I/O
-                try:
-                    labels = engine.analyze(move_tokens, timeout_s=float(os.environ.get('SANMILL_ANALYZE_TIMEOUT', '120')))
-                    if verbose and debug_printed < 8:
-                        print(f"[Verbose] analyze completed successfully")
-                except Exception as e:
-                    if verbose:
-                        print(f"[Verbose] analyze failed with exception: {e}")
-                    labels = {}
-                    # Skip this position and continue
-                    continue
+                labels, engine = _safe_analyze(engine, move_tokens)
+                if labels and verbose and debug_printed < 8:
+                    print(f"[Verbose] analyze completed successfully")
                 if verbose and debug_printed < 8:
                     print(f"[Verbose] moves='{' '.join(move_tokens)}'")
                     if labels:
@@ -216,6 +250,9 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
                     else:
                         print("[Verbose] analysis: <no labels>")
                     debug_printed += 1
+                if not labels:
+                    # Skip this position and continue
+                    continue
                 pi, v = build_targets_from_analysis(board, curPlayer, labels, game.getActionSize())
                 # Skip if no labels (likely fallback search output only tokens)
                 if np.sum(pi) == 0.0 and not labels:

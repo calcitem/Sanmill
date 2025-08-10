@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 import os
 import sys
 import torch
@@ -56,6 +57,9 @@ args = dotdict({
     'verbose_games': 1,  # Number of games per iteration to log detailed move history
     'log_detailed_moves': True,  # Whether to log move sequences for verification
     'enable_training_log': True,  # Whether to save training results to CSV/JSON files
+    # File logging
+    'log_to_file': True,          # Write detailed logs to a file with timestamps
+    'log_file': None,             # If None, auto-generate under checkpoint dir
 })
 
 
@@ -119,6 +123,26 @@ Examples:
         log.info(f"🎓 Perfect DB: {cmd_args.db}")
         log.info("📚 Auto-enabled teacher mixing")
     
+    # Setup file logging (timestamps) if enabled
+    try:
+        if getattr(args, 'log_to_file', True):
+            # Ensure checkpoint dir exists
+            os.makedirs(args.checkpoint, exist_ok=True)
+            if getattr(args, 'log_file', None):
+                log_path = args.log_file
+                if not os.path.isabs(log_path):
+                    log_path = os.path.join(args.checkpoint, os.path.basename(log_path))
+            else:
+                ts = datetime.now().strftime('%Y%m%d_%H%M%S')
+                log_path = os.path.join(args.checkpoint, f"train_{ts}.log")
+            file_handler = logging.FileHandler(log_path, mode='a', encoding='utf-8')
+            file_handler.setLevel(logging.INFO)
+            file_handler.setFormatter(logging.Formatter('%(asctime)s %(name)s[%(process)d] %(levelname)s %(message)s'))
+            logging.getLogger().addHandler(file_handler)
+            log.info("File logging enabled: %s", log_path)
+    except Exception as e:
+        log.warning("Failed to setup file logging: %s", e)
+
     # Show key configuration
     log.info(f"🎯 Training config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} procs, CUDA: {args.cuda}")
     if args.usePerfectTeacher:
