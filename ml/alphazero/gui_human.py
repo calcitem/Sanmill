@@ -182,7 +182,7 @@ class GuiHumanPlayer:
                 drawn.add(key)
                 x0, y0 = self._xy_to_canvas_center(x, y)
                 x1, y1 = self._xy_to_canvas_center(nx, ny)
-                self.canvas.create_line(x0, y0, x1, y1, fill="#888", width=2)
+                self.canvas.create_line(x0, y0, x1, y1, fill="#888", width=3)
 
         # 仅画连线，不再画空心圆节点；棋子将按需绘制
         # 保存棋子半径用于后续绘制（约 1/3 格距）
@@ -192,10 +192,12 @@ class GuiHumanPlayer:
         # 行号放在每行左侧靠中
         for y in range(7):
             text_y = self.margin_top + y * self.cell_px + self.cell_px // 2
-            self.canvas.create_text(self.margin_left * 0.4, text_y, text=str(7 - y), fill="#333")
+            # 将行号靠近棋盘左侧一些
+            self.canvas.create_text(self.margin_left * 0.75, text_y, text=str(7 - y), fill="#333")
         # 列字母放在底部
         letters = ["a", "b", "c", "d", "e", "f", "g"]
-        base_y = self.margin_top + self.board_size_px + self.margin_bottom * 0.5
+        # 将列字母靠近棋盘下侧一些
+        base_y = self.margin_top + self.board_size_px + self.margin_bottom * 0.3
         for x in range(7):
             text_x = self.margin_left + x * self.cell_px + self.cell_px // 2
             self.canvas.create_text(text_x, base_y, text=letters[x], fill="#333")
