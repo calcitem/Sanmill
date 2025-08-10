@@ -1,0 +1,117 @@
+# AlphaZero Training Configuration
+# Universal config file for all training scenarios
+# Copy this file as 'my_config.yaml' and modify as needed
+
+# =============================================================================
+# TRAINING PARAMETERS
+# =============================================================================
+numIters: 100               # Total training iterations (default: 100)
+                          # - Quick test: 3
+                          # - Normal training: 10-50  
+                          # - Long training: 100+
+
+numEps: 100                # Self-play games per iteration (default: 100)
+                          # - Quick test: 6
+                          # - Balanced: 20-50
+                          # - High quality: 100+
+
+tempThreshold: 80         # Switch from sampling to greedy after N plies
+updateThreshold: 0.55     # Accept new model if win-rate above this threshold
+maxlenOfQueue: 200000     # Max training examples kept (reduce for memory constraints)
+numMCTSSims: 40          # MCTS simulations per move (default: 40, higher = stronger but slower)
+arenaCompare: 40         # Games for new vs old model evaluation (default: 20)
+cpuct: 1.5               # UCB exploration parameter
+
+# =============================================================================
+# FILE MANAGEMENT  
+# =============================================================================
+checkpoint: './temp/'                    # Directory for models and samples
+load_model: true                         # Resume from checkpoint (default: False, false = start fresh)
+load_folder_file: ['temp/', 'best.pth.tar']  # Which checkpoint to load
+numItersForTrainExamplesHistory: 5       # Keep N iterations of training history
+
+# =============================================================================
+# SYSTEM SETTINGS
+# =============================================================================
+num_processes: 1          # Parallel processes for self-play (default: 5)
+                          # - With teacher: 1 (recommended for stability)
+                          # - Pure AlphaZero: 2-4 (faster self-play)
+
+cuda: true              # Use GPU if available (default: True)
+                          # - true: faster training with GPU
+                          # - false: CPU-only (more stable, slower)
+
+# =============================================================================
+# NEURAL NETWORK HYPERPARAMETERS
+# =============================================================================
+lr: 0.002                # Learning rate
+                          # - Fast convergence: 0.005
+                          # - Stable training: 0.002
+                          # - Fine-tuning: 0.001
+
+dropout: 0.3             # Dropout rate for regularization
+epochs: 10               # Training epochs per iteration
+batch_size: 768         # Training batch size (reduce if out of memory)
+num_channels: 256        # Network width (128=smaller/faster, 512=larger/stronger)
+
+# =============================================================================
+# PERFECT DATABASE TEACHER (Comment out entire section to disable)
+# =============================================================================
+usePerfectTeacher: false                    # Enable teacher mixing (default: False)
+                                          # - true: hybrid training (recommended)
+                                          # - false: pure AlphaZero
+
+teacherExamplesPerIter: 2000              # Teacher examples per iteration (default: 0)
+                                          # - Quick training: 100
+                                          # - Balanced: 1000  
+                                          # - Heavy supervision: 2000+
+
+teacherBatch: 256                         # Sampling batch size for teacher
+teacherDBPath: 'e:\Malom\Malom_Standard_Ultra-strong_1.1.0\Std_DD_89adjusted'
+                                          # UPDATE THIS PATH to your perfect database
+
+teacherAnalyzeTimeout: 120                # Timeout per analyze call (seconds)
+                                          # - Fast disk/SSD: 60
+                                          # - Network storage: 300+
+
+teacherThreads: 1                         # Engine threads (keep at 1 for stability)
+
+pitAgainstPerfect: false                   # Evaluate against perfect DB each iteration (default: False)
+                                          # - true: track absolute progress (recommended)
+                                          # - false: faster training, no perfect evaluation
+
+# =============================================================================
+# ONLINE TEACHER DURING SELF-PLAY
+# =============================================================================
+useOnlineTeacher: false                    # Use perfect DB online during self-play (default: true)
+teacherOnlineRatio: 1.0                  # Probability per move to query perfect DB (0.0-1.0
+
+# =============================================================================
+# DEBUGGING & LOGGING
+# =============================================================================
+console_verbose: false
+verbose_games: 10000000         # Number of games to log in detail per iteration
+log_detailed_moves: true  # Log move sequences for debugging
+enable_training_log: true # Save training results to CSV/JSON files (效果表格记录)
+
+# =============================================================================
+# SCENARIO-SPECIFIC CONFIGURATIONS
+# =============================================================================
+
+# SCENARIO 1: Quick Test (verify everything works)
+# numIters: 3, numEps: 6, teacherExamplesPerIter: 100, num_channels: 128
+
+# SCENARIO 2: Pure Supervised Learning (use perfect_supervised.py instead)
+# Not applicable for this config - use: python3 perfect_supervised.py
+
+# SCENARIO 3: Pure AlphaZero (no teacher)
+# usePerfectTeacher: false, num_processes: 2-4, numEps: 50+
+
+# SCENARIO 4: Hybrid Training (recommended)
+# Default settings above are optimized for this scenario
+
+# SCENARIO 5: Heavy Supervision (teacher-dominated)
+# teacherExamplesPerIter: 2000+, numEps: 10, usePerfectTeacher: true
+
+# SCENARIO 6: Production Training (high quality)
+# numIters: 50+, numEps: 100+, teacherExamplesPerIter: 1000, num_channels: 512

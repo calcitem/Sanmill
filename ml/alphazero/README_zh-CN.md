@@ -1,6 +1,9 @@
 # Nine Men's Morris AlphaZero 训练系统
 
 ```
+$env:PYTORCH_CUDA_ALLOC_CONF="max_split_size_mb:256,expandable_segments:True"
+$env:TORCH_ALLOW_TF32="1"
+
 python3 main.py --config my_config.yaml
 python pit.py --gui --first human
 ```

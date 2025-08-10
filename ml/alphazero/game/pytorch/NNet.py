@@ -12,6 +12,7 @@ from NeuralNet import NeuralNet
 import torch
 import torch.optim as optim
 import torch.nn as nn
+from torch.amp import autocast, GradScaler
 
 from .GameNNet import GameNNet as snnet
 
@@ -26,6 +27,12 @@ class NNetWrapper(NeuralNet):
         self.nnet = snnet(game, args, period1_valids=self._period1_valids)
         if args.cuda:
             self.nnet.cuda()
+        # Mixed precision configuration: enable only when CUDA is available
+        # Default behavior: use AMP if 'use_amp' is True in args; otherwise, disable
+        self.use_amp = bool(getattr(self.args, 'use_amp', False)) and bool(self.args.cuda)
+        # Fail fast if user forces AMP without CUDA
+        assert (not bool(getattr(self.args, 'use_amp', False))) or self.args.cuda, "AMP requires CUDA to be available"
+        self.scaler: GradScaler = GradScaler('cuda', enabled=self.use_amp)
 
     def train(self, examples):
         """
@@ -61,19 +68,20 @@ class NNetWrapper(NeuralNet):
                     target_vs = target_vs.contiguous().cuda()
                     periods = periods.contiguous().cuda()
 
-                # compute output
-                target_pis += 1e-8
-                device = boards.device
-                out_pi = torch.zeros(target_pis.size(), device=device)
-                out_v = torch.zeros(target_vs.size(), device=device)
-                for i in range(5):
-                    if (periods == i).any():
-                        pi, v = self.nnet(boards[periods == i], i)
-                        out_pi[periods == i] = pi.view(-1, target_pis.size(1))
-                        out_v[periods == i] = v.view(-1)
-                l_pi = self.loss_pi(target_pis, out_pi)
-                l_v = self.loss_v(target_vs, out_v)
-                total_loss = l_pi + l_v
+                # compute output under autocast (if enabled)
+                with autocast(device_type='cuda', enabled=self.use_amp):
+                    target_pis = target_pis + 1e-8
+                    device = boards.device
+                    out_pi = torch.zeros(target_pis.size(), device=device)
+                    out_v = torch.zeros(target_vs.size(), device=device)
+                    for i in range(5):
+                        if (periods == i).any():
+                            pi, v = self.nnet(boards[periods == i], i)
+                            out_pi[periods == i] = pi.view(-1, target_pis.size(1))
+                            out_v[periods == i] = v.view(-1)
+                    l_pi = self.loss_pi(target_pis, out_pi)
+                    l_v = self.loss_v(target_vs, out_v)
+                    total_loss = l_pi + l_v
 
                 # record loss
                 pi_losses.update(l_pi.item(), boards.size(0))
@@ -81,10 +89,18 @@ class NNetWrapper(NeuralNet):
                 t.set_postfix(Loss_pi=pi_losses, Loss_v=v_losses)
 
                 # compute gradient and do SGD step
-                optimizer.zero_grad()
-                total_loss.backward()
-                torch.nn.utils.clip_grad_norm_(self.nnet.parameters(), 5)
-                optimizer.step()
+                optimizer.zero_grad(set_to_none=True)
+                if self.use_amp:
+                    # Scale, unscale for clipping, then step
+                    self.scaler.scale(total_loss).backward()
+                    self.scaler.unscale_(optimizer)
+                    torch.nn.utils.clip_grad_norm_(self.nnet.parameters(), 5)
+                    self.scaler.step(optimizer)
+                    self.scaler.update()
+                else:
+                    total_loss.backward()
+                    torch.nn.utils.clip_grad_norm_(self.nnet.parameters(), 5)
+                    optimizer.step()
 
             # validation
             val_loss = self.valid(valid_examples)
@@ -102,24 +118,26 @@ class NNetWrapper(NeuralNet):
         total_loss = AverageMeter()
 
         for boards, target_pis, target_vs, periods in tqdm(val_dataloader, desc='Validation Net'):
-            # compute output
-            target_pis += 1e-8
             if self.args.cuda:
                 boards = boards.contiguous().cuda()
                 target_pis = target_pis.contiguous().cuda()
                 target_vs = target_vs.contiguous().cuda()
                 periods = periods.contiguous().cuda()
-            device = boards.device
-            out_pi = torch.zeros(target_pis.size(), device=device)
-            out_v = torch.zeros(target_vs.size(), device=device)
-            for i in range(5):
-                if (periods == i).any():
-                    pi, v = self.nnet(boards[periods == i], i)
-                    out_pi[periods == i] = pi.view(-1, target_pis.size(1))
-                    out_v[periods == i] = v.view(-1)
-            l_pi = self.loss_pi(target_pis, out_pi)
-            l_v = self.loss_v(target_vs, out_v)
-            total_loss.update(l_pi.item() + l_v.item(), boards.size(0))
+            with torch.no_grad():
+                with autocast(device_type='cuda', enabled=self.use_amp):
+                    target_pis = target_pis + 1e-8
+                    device = boards.device
+                    out_pi = torch.zeros(target_pis.size(), device=device)
+                    out_v = torch.zeros(target_vs.size(), device=device)
+                    for i in range(5):
+                        if (periods == i).any():
+                            pi, v = self.nnet(boards[periods == i], i)
+                            out_pi[periods == i] = pi.view(-1, target_pis.size(1))
+                            out_v[periods == i] = v.view(-1)
+                    l_pi = self.loss_pi(target_pis, out_pi)
+                    l_v = self.loss_v(target_vs, out_v)
+                    loss = (l_pi + l_v).item()
+            total_loss.update(loss, boards.size(0))
         return total_loss.avg
 
     def predict(self, canonicalBoard):
@@ -140,7 +158,8 @@ class NNetWrapper(NeuralNet):
         board = board.view(1, self.board_x, self.board_y)
         self.nnet.eval()
         with torch.no_grad():
-            pi, v = self.nnet(board, real_period)
+            with autocast(device_type='cuda', enabled=self.use_amp):
+                pi, v = self.nnet(board, real_period)
             if 'eat_factor' in self.args.keys() and real_period == 3:
                 v = max(min(1, self.args.eat_factor * v), -1)
                 v = torch.tensor([v], dtype=torch.float32)

@@ -40,6 +40,8 @@ args = dotdict({
     'batch_size': 1024,
     'cuda': torch.cuda.is_available(),
     'num_channels': 256,
+    # AMP default: enable when CUDA is available; will be reconciled after config/env overrides
+    'use_amp': torch.cuda.is_available(),
     
     # Teacher (Perfect DB) mixing options
     'usePerfectTeacher': False,     # set True to mix oracle labels every iteration
@@ -220,6 +222,19 @@ Examples:
     if not args.cuda:
         # Hint PyTorch to avoid selecting any GPU even if present
         os.environ.setdefault("CUDA_VISIBLE_DEVICES", "")
+
+    # Reconcile AMP setting with final CUDA flag.
+    # If config doesn't specify 'use_amp', default to following CUDA.
+    # If CUDA is disabled, force AMP off.
+    try:
+        has_use_amp = hasattr(args, 'use_amp')
+    except Exception:
+        has_use_amp = 'use_amp' in dict(args)
+    if not has_use_amp or getattr(args, 'use_amp', None) is None:
+        args.use_amp = bool(args.cuda)
+    elif getattr(args, 'use_amp') and not args.cuda:
+        log.info('Forcing use_amp=False because cuda=False')
+        args.use_amp = False
 
     log.info("Runtime config: cuda=%s, num_processes=%d, arenaCompare=%d", args.cuda, args.num_processes, args.arenaCompare)
 
