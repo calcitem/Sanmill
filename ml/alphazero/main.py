@@ -123,6 +123,14 @@ args = dotdict({
     # Stage-2 fine-tuning knobs
     'curriculum_freeze_backbone': True,
     'curriculum_head_lr_mult': 2.0,
+    # Head-specific training schedule
+    'head_training_mode': 'auto',           # auto | stage_heads | all_heads
+    'head_stage_filter_examples': True,
+    # Stage-3 gradual unfreezing schedule
+    'stage3_gradual_unfreeze': True,
+    'stage3_unfreeze_order': ['mlp', 'attension', 'conv', 'main'],
+    'stage3_unfreeze_epochs': [2, 3, 4, 5],
+    'stage3_backbone_lr_mult': 1.0,
 })
 
 

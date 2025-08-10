@@ -672,6 +672,12 @@ class Coach():
                 # In Stage 2 we optionally freeze backbone and boost heads
                 self.nnet.args.curriculum_freeze_backbone = bool(getattr(self.args, 'curriculum_freeze_backbone', True))
                 self.nnet.args.curriculum_head_lr_mult = float(getattr(self.args, 'curriculum_head_lr_mult', 2.0))
+                # Head-only training modes
+                # auto: Stage 1/2 只训对应头，Stage 3 全量微调
+                # stage_heads: 仅训对应头
+                # all_heads: 总是全量训
+                self.nnet.args.head_training_mode = str(getattr(self.args, 'head_training_mode', 'auto'))
+                self.nnet.args.head_stage_filter_examples = bool(getattr(self.args, 'head_stage_filter_examples', True))
             except Exception:
                 pass
             metrics = self.nnet.train(trainExamples)

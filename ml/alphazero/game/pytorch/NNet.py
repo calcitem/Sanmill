@@ -40,58 +40,108 @@ class NNetWrapper(NeuralNet):
         """
         best_loss, best_epoch = torch.inf, -1
 
-        # Curriculum-aware optimizer configuration
+        # Curriculum / head-specific training configuration
         current_stage = int(getattr(self.args, 'curriculum_current_stage', 3))
-        freeze_backbone = bool(getattr(self.args, 'curriculum_freeze_backbone', False)) and current_stage == 2
-        head_lr_mult = float(getattr(self.args, 'curriculum_head_lr_mult', 1.0)) if current_stage == 2 else 1.0
-
-        # Build parameter groups: backbone vs heads
-        backbone_modules = [self.nnet.main, self.nnet.attension, self.nnet.mlp, self.nnet.conv]
-        head_modules = list(self.nnet.branch) if hasattr(self.nnet, 'branch') else []
-        backbone_params = []
-        head_params = []
-        for m in backbone_modules:
-            backbone_params += list(m.parameters())
-        # Include attention bias parameter
-        if hasattr(self.nnet, 'attension_b'):
-            backbone_params.append(self.nnet.attension_b)
-        for m in head_modules:
-            head_params += list(m.parameters())
-
-        # Optionally freeze backbone during Stage 2 fine-tuning
-        if freeze_backbone:
-            for p in backbone_params:
-                p.requires_grad = False
+        head_training_mode = str(getattr(self.args, 'head_training_mode', 'auto')).lower()
+        # Map stage -> allowed period head indices
+        # period: 0->branch[0], 1->branch[1], 2->branch[2], 3->branch[3], 4->branch[4]
+        stage_to_allowed = {
+            1: {0, 3},  # placing/capture heads
+            2: {1, 4},  # moving heads
+            3: {2},     # flying head
+        }
+        if head_training_mode == 'stage_heads' or (head_training_mode == 'auto' and current_stage in (1, 2)):
+            allowed_head_indices = stage_to_allowed.get(current_stage, {0, 3})
         else:
-            for p in backbone_params:
-                p.requires_grad = True
-        for p in head_params:
-            p.requires_grad = True
+            # all_heads or auto at stage 3 for joint fine-tuning
+            allowed_head_indices = {0, 1, 2, 3, 4}
 
-        param_groups = []
-        if not freeze_backbone and backbone_params:
-            param_groups.append({
-                'params': [p for p in backbone_params if p.requires_grad],
-                'lr': self.args.lr,
-            })
-        if head_params:
-            param_groups.append({
-                'params': [p for p in head_params if p.requires_grad],
-                'lr': float(self.args.lr) * float(head_lr_mult),
-            })
-        if not param_groups:
-            # Fallback: no split (should not happen)
-            param_groups = [{'params': self.nnet.parameters(), 'lr': self.args.lr}]
+        freeze_backbone = bool(getattr(self.args, 'curriculum_freeze_backbone', False))
+        head_lr_mult = float(getattr(self.args, 'curriculum_head_lr_mult', 1.0))
+        filter_examples = bool(getattr(self.args, 'head_stage_filter_examples', False)) and allowed_head_indices != {0,1,2,3,4}
 
-        optimizer = optim.Adam(param_groups)
+        # Stage-3 gradual unfreezing schedule (optional)
+        stage3_gradual_unfreeze = bool(getattr(self.args, 'stage3_gradual_unfreeze', False)) and current_stage == 3
+        unfreeze_order_cfg = getattr(self.args, 'stage3_unfreeze_order', ['mlp', 'attension', 'conv', 'main'])
+        if isinstance(unfreeze_order_cfg, str):
+            unfreeze_order = [x.strip() for x in unfreeze_order_cfg.split(',') if x.strip()]
+        else:
+            unfreeze_order = list(unfreeze_order_cfg)
+        valid_names = {'mlp', 'attension', 'conv', 'main'}
+        unfreeze_order = [x for x in unfreeze_order if x in valid_names]
+        if not unfreeze_order:
+            unfreeze_order = ['mlp', 'attension', 'conv', 'main']
+        milestones_cfg = getattr(self.args, 'stage3_unfreeze_epochs', [2, 3, 4, 5])
+        if isinstance(milestones_cfg, (list, tuple)):
+            unfreeze_milestones = [int(x) for x in milestones_cfg]
+        else:
+            unfreeze_milestones = [2, 3, 4, 5]
+        backbone_lr_mult = float(getattr(self.args, 'stage3_backbone_lr_mult', 1.0))
+
+        # Module registry for selective unfreeze
+        backbone_modules = {
+            'main': self.nnet.main,
+            'attension': self.nnet.attension,
+            'mlp': self.nnet.mlp,
+            'conv': self.nnet.conv,
+        }
+        head_modules = list(self.nnet.branch) if hasattr(self.nnet, 'branch') else []
+
+        def _set_requires(module, flag: bool):
+            for p in module.parameters():
+                p.requires_grad = flag
+
+        def _collect_params(modules):
+            params = []
+            for m in modules:
+                params += list(m.parameters())
+            return params
         final_train_loss = None
 
         for epoch in range(self.args.epochs):
             print('EPOCH ::: ' + str(epoch + 1))
             self.nnet.train()
+            # Determine trainable modules for this epoch
+            trainable_backbone_names = set()
+            if stage3_gradual_unfreeze:
+                # Heads always trainable; backbone released by milestones
+                unfrozen_steps = sum(1 for m in unfreeze_milestones if (epoch + 1) >= m)
+                trainable_backbone_names = set(unfreeze_order[:unfrozen_steps])
+            else:
+                if not freeze_backbone:
+                    trainable_backbone_names = {'main', 'attension', 'mlp', 'conv'}
+                else:
+                    trainable_backbone_names = set()
+
+            # Apply requires_grad
+            for name, module in backbone_modules.items():
+                _set_requires(module, name in trainable_backbone_names)
+            for idx, m in enumerate(head_modules):
+                _set_requires(m, idx in allowed_head_indices)
+
+            # Rebuild optimizer with current trainable groups
+            head_params = _collect_params([head_modules[i] for i in range(len(head_modules)) if i in allowed_head_indices])
+            backbone_selected = [backbone_modules[n] for n in ['main','attension','mlp','conv'] if n in trainable_backbone_names]
+            backbone_params = _collect_params(backbone_selected)
+            if hasattr(self.nnet, 'attension_b') and 'attension' in trainable_backbone_names:
+                backbone_params.append(self.nnet.attension_b)
+
+            param_groups = []
+            if backbone_params:
+                param_groups.append({'params': [p for p in backbone_params if p.requires_grad], 'lr': float(self.args.lr) * float(backbone_lr_mult)})
+            if head_params:
+                param_groups.append({'params': [p for p in head_params if p.requires_grad], 'lr': float(self.args.lr) * float(head_lr_mult)})
+            if not param_groups:
+                param_groups = [{'params': self.nnet.parameters(), 'lr': self.args.lr}]
+            optimizer = optim.Adam(param_groups)
+
             pi_losses = AverageMeter()
             v_losses = AverageMeter()
 
+            # Optionally filter examples to only those matching allowed head periods
+            if filter_examples:
+                # Period->head index mapping is identity (0..4)
+                examples = [ex for ex in examples if len(ex) >= 4 and int(ex[3]) in allowed_head_indices]
             random.shuffle(examples)
             split_idx = int(len(examples) * 0.8)
             train_examples = examples[:split_idx]
@@ -120,12 +170,13 @@ class NNetWrapper(NeuralNet):
                     # Use the same dtype as targets to avoid AMP dtype mismatch
                     out_pi = torch.zeros(target_pis.size(), device=device, dtype=target_pis.dtype)
                     out_v = torch.zeros(target_vs.size(), device=device, dtype=target_vs.dtype)
-                    for i in range(5):
-                        if (periods == i).any():
-                            pi, v = self.nnet(boards[periods == i], i)
-                            # Ensure dtype compatibility
-                            out_pi[periods == i] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
-                            out_v[periods == i] = v.view(-1).to(target_vs.dtype)
+                    period_set = sorted(list(allowed_head_indices)) if filter_examples else list(range(5))
+                    for i in period_set:
+                        mask = (periods == i)
+                        if mask.any():
+                            pi, v = self.nnet(boards[mask], i)
+                            out_pi[mask] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
+                            out_v[mask] = v.view(-1).to(target_vs.dtype)
                     l_pi = self.loss_pi(target_pis, out_pi)
                     l_v = self.loss_v(target_vs, out_v)
                     total_loss = l_pi + l_v
@@ -175,6 +226,17 @@ class NNetWrapper(NeuralNet):
 
     def valid(self, val_examples):
         self.nnet.eval()
+        # Respect head-stage filtering during validation as well (if enabled)
+        current_stage = int(getattr(self.args, 'curriculum_current_stage', 3))
+        head_training_mode = str(getattr(self.args, 'head_training_mode', 'auto')).lower()
+        stage_to_allowed = {1: {0, 3}, 2: {1, 4}, 3: {2}}
+        if head_training_mode == 'stage_heads' or (head_training_mode == 'auto' and current_stage in (1, 2)):
+            allowed_head_indices = stage_to_allowed.get(current_stage, {0, 3})
+        else:
+            allowed_head_indices = {0, 1, 2, 3, 4}
+        filter_examples = bool(getattr(self.args, 'head_stage_filter_examples', False)) and allowed_head_indices != {0,1,2,3,4}
+        if filter_examples:
+            val_examples = [ex for ex in val_examples if len(ex) >= 4 and int(ex[3]) in allowed_head_indices]
         val_dataset = GameDataset(val_examples)
         val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=self.args.batch_size)
         total_loss = AverageMeter()
@@ -192,12 +254,13 @@ class NNetWrapper(NeuralNet):
                     # Use the same dtype as targets to avoid AMP dtype mismatch
                     out_pi = torch.zeros(target_pis.size(), device=device, dtype=target_pis.dtype)
                     out_v = torch.zeros(target_vs.size(), device=device, dtype=target_vs.dtype)
-                    for i in range(5):
-                        if (periods == i).any():
-                            pi, v = self.nnet(boards[periods == i], i)
-                            # Ensure dtype compatibility
-                            out_pi[periods == i] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
-                            out_v[periods == i] = v.view(-1).to(target_vs.dtype)
+                    period_set = sorted(list(allowed_head_indices)) if filter_examples else list(range(5))
+                    for i in period_set:
+                        mask = (periods == i)
+                        if mask.any():
+                            pi, v = self.nnet(boards[mask], i)
+                            out_pi[mask] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
+                            out_v[mask] = v.view(-1).to(target_vs.dtype)
                     l_pi = self.loss_pi(target_pis, out_pi)
                     l_v = self.loss_v(target_vs, out_v)
                     loss = (l_pi + l_v).item()
