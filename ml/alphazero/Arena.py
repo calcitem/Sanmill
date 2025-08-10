@@ -213,13 +213,8 @@ class Arena():
                 notation_moves.append(current_white_move)
             
             if notation_moves:
-                # 显示前几步和省略号
-                max_show = 5  # 显示前5步
-                if len(notation_moves) <= max_show:
-                    move_text = " ".join(notation_moves)
-                else:
-                    shown_moves = " ".join(notation_moves[:max_show])
-                    move_text = f"{shown_moves} ... 后面省略"
+                # 显示完整的棋谱序列
+                move_text = " ".join(notation_moves)
                 print(move_text)
         except Exception:
             pass
