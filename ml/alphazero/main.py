@@ -375,6 +375,18 @@ Examples:
             args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
             args_sampling.numIters = 1       # Run exactly one iteration of sampling
             c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
+            # Load latest best model if available so self-play uses the current policy
+            try:
+                _load_folder = args.load_folder_file[0] if isinstance(args.load_folder_file, (list, tuple)) else args.load_folder_file
+                _load_name = args.load_folder_file[1] if isinstance(args.load_folder_file, (list, tuple)) else 'best.pth.tar'
+                _model_path = os.path.join(_load_folder, _load_name)
+                if os.path.exists(_model_path):
+                    c_sampling.nnet.load_checkpoint(_load_folder, _load_name)
+                    log.info("📁 Loaded best model for sampling: %s", _model_path)
+                else:
+                    log.info("📁 No best model found for sampling. Using current init model")
+            except Exception as _e:
+                log.warning("Failed to load model for sampling: %s", _e)
             # Load previously accumulated examples if any, to keep history growing
             c_sampling.loadTrainExamples()
             c_sampling.learn(sampling_only=True)
@@ -387,6 +399,18 @@ Examples:
             args_training.numIters = 1  # Train exactly one iteration based on latest samples
             # args_training.cuda / use_amp as configured
             c_training = Coach(g, nn(g, args_training), args_training)
+            # Load latest best model if available as the starting point for training
+            try:
+                _load_folder = args.load_folder_file[0] if isinstance(args.load_folder_file, (list, tuple)) else args.load_folder_file
+                _load_name = args.load_folder_file[1] if isinstance(args.load_folder_file, (list, tuple)) else 'best.pth.tar'
+                _model_path = os.path.join(_load_folder, _load_name)
+                if os.path.exists(_model_path):
+                    c_training.nnet.load_checkpoint(_load_folder, _load_name)
+                    log.info("📁 Loaded best model for training: %s", _model_path)
+                else:
+                    log.info("📁 No best model found for training. Training will start from current init model")
+            except Exception as _e:
+                log.warning("Failed to load model for training: %s", _e)
             # Load the just-saved sampling examples
             c_training.loadTrainExamples()
             c_training.learn(training_only=True)
