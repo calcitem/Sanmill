@@ -22,27 +22,38 @@ coloredlogs.install(level='INFO')
 def should_load_model(args):
     """
     Smart model loading logic:
-    - If best.pth.tar doesn't exist: return False (start fresh)
-    - If best.pth.tar exists: return args.load_model (respect config)
+    - If checkpoint directory doesn't exist or has no .tar files: return False (start fresh)
+    - If any .tar files exist: respect args.load_model, but still require target specific file to exist before attempting load
     """
     load_folder = args.load_folder_file[0] if isinstance(args.load_folder_file, (list, tuple)) else args.load_folder_file
     load_filename = args.load_folder_file[1] if isinstance(args.load_folder_file, (list, tuple)) else 'best.pth.tar'
     
-    # Construct the full path to the model file
+    # Check if checkpoint directory exists
+    if not os.path.exists(load_folder):
+        log.info(f"📁 Checkpoint directory '{load_folder}' not found, starting fresh training")
+        return False
+    
+    # Check if any .tar files exist in the directory
+    import glob
+    tar_files = glob.glob(os.path.join(load_folder, "*.tar"))
+    
+    if not tar_files:
+        log.info(f"📁 No .tar files found in '{load_folder}', ignoring load_model setting and starting fresh")
+        return False
+    
+    # .tar files exist, respect load_model setting
+    if not args.load_model:
+        log.info(f"📁 Found .tar files in '{load_folder}' but load_model=false, starting fresh")
+        return False
+    
+    # load_model=true and .tar files exist, check if target specific file exists
     model_path = os.path.join(load_folder, load_filename)
-    
-    # Check if the specific model file exists
     if not os.path.exists(model_path):
-        log.info(f"📁 Model file '{model_path}' not found, starting fresh training")
+        log.info(f"📁 .tar files exist but target file '{model_path}' not found, starting fresh training")
         return False
     
-    # Model file exists, respect the config setting
-    if args.load_model:
-        log.info(f"📁 Found existing checkpoint '{model_path}', will load as configured (load_model=true)")
-        return True
-    else:
-        log.info(f"📁 Found existing checkpoint '{model_path}', but load_model=false, starting fresh")
-        return False
+    log.info(f"📁 Found existing checkpoint '{model_path}', will load as configured (load_model=true)")
+    return True
 
 args = dotdict({
     'numIters': 100,
