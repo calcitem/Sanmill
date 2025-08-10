@@ -185,7 +185,8 @@ class GuiHumanPlayer:
                 self.canvas.create_line(x0, y0, x1, y1, fill="#888", width=2)
 
         # 再画节点（只绘制合法点）
-        r = max(6, self.cell_px // 6)
+        # 调整节点半径以匹配真实九子棋中棋子与棋盘的视觉比例（约 1/3 格距）
+        r = max(10, int(self.cell_px * 0.33))
         for y in range(7):
             for x in range(7):
                 try:
@@ -194,8 +195,8 @@ class GuiHumanPlayer:
                 except Exception:
                     continue
                 cx, cy = self._xy_to_canvas_center(x, y)
-                # 空位节点默认使用浅灰色以区别棋子
-                oval = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#444", fill="#cccccc")
+                # 空位节点默认使用浅灰色以区别棋子；描边颜色与棋盘线一致
+                oval = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#888", fill="#cccccc")
                 self.node_ovals[(x, y)] = oval
 
         # 坐标标注：行号（7..1）与列字母（a..g）
@@ -223,8 +224,8 @@ class GuiHumanPlayer:
                 fill = "#ffffff"  # 白棋
             elif piece == -1:
                 fill = "#000000"  # 黑棋
-            # 先统一重置所有节点的外观（含描边），避免高亮残留
-            self.canvas.itemconfig(oid, fill=fill, outline="#444", width=2)
+            # 先统一重置所有节点的外观（含描边），避免高亮残留；描边与棋盘线一致
+            self.canvas.itemconfig(oid, fill=fill, outline="#888", width=2)
 
         # 高亮选中的起点
         if self.selected_src is not None and self.selected_src in self.node_ovals:
