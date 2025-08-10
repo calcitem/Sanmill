@@ -47,6 +47,20 @@ _REASON_ENGLISH = {
     "drawStalemateCondition": "Draw due to stalemate condition.",
 }
 
+# 终局原因的简短缩写（尽量等长度；输出时再做定宽格式化）
+_REASON_SHORT = {
+    "loseFewerThanThree": "L-FEW3",
+    "loseNoLegalMoves": "L-NOMOVE",
+    "loseFullBoard": "L-FULLBD",
+    "loseResign": "L-RESIGN",
+    "loseTimeout": "L-TIME",
+    "drawThreefoldRepetition": "D-3FOLD",
+    "drawFiftyMove": "D-50MOVE",
+    "drawEndgameFiftyMove": "D-E50MV",
+    "drawFullBoard": "D-FULLBD",
+    "drawStalemateCondition": "D-STALM",
+}
+
 def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player=None):
     """
     This function executes one episode of self-play, starting with player 1.
@@ -261,12 +275,30 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
             except Exception:
                 is_over2, reason_id = True, None
             reason_text = _REASON_ENGLISH.get(reason_id, "Unknown game over reason.")
+            # 计算简短原因缩写，并格式化为等宽标签 [XXXXXXXX]
+            reason_code = _REASON_SHORT.get(reason_id, "UNKNOWN")
+            reason_tag = f"[{reason_code:<8s}]"
+
+            # 结果显示基于先手方视角（Player 1）。注意吃子期不交换 side-to-move，因此直接取 player=1 视角更稳妥。
+            r_first = game.getGameEnded(board, 1)
+            try:
+                if reason_id and str(reason_id).startswith("draw"):
+                    result_label = "Draw"
+                elif r_first > 0:
+                    result_label = "Win"
+                elif r_first < 0:
+                    result_label = "Loss"
+                else:
+                    result_label = "Unknown"
+            except Exception:
+                result_label = "Unknown"
+            result_str = f"{r_first:.4f}"
 
             # Log to file if detailed logging enabled
             if log_detailed:
                 log.debug(f"=== Game {game_id} Ended ===")
-                log.debug(f"Result: {r} (Player {curPlayer} perspective)")
-                log.debug(f"Game over reason: {reason_text} ({reason_id})")
+                log.debug(f"Result: {result_str} ({result_label}) (Player {curPlayer} perspective)")
+                log.debug(f"Game over reason: {reason_text} ({reason_id}) | Tag: {reason_tag}")
             
             # Calculate teacher usage stats
             try:
@@ -292,12 +324,31 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
                 log.debug("=" * 50)
             
             # Log to console if verbose
+            # 统计信息（先手视角，不影响训练）
+            p1_board = board.count(1)
+            p2_board = board.count(-1)
+            p1_hand = board.pieces_in_hand_count(1)
+            p2_hand = board.pieces_in_hand_count(-1)
+            p1_total = board.total_pieces_count(1)
+            p2_total = board.total_pieces_count(-1)
+            diff_total = p1_total - p2_total
+            stats_line = (
+                f"Stats: P1 on={p1_board:2d} in={p1_hand:2d} tot={p1_total:2d} | "
+                f"P2 on={p2_board:2d} in={p2_hand:2d} tot={p2_total:2d} | "
+                f"Diff={diff_total:+3d}"
+            )
+
             if verbose:
+                # 仅打印简短原因标签，如 [D-50MOVE]
+                log.info(f"Game result: {result_str} ({result_label}) {reason_tag}")
                 log.info(f"Final state - Period: {board.period}, Total moves: {episodeStep}")
+                log.info(stats_line)
                 log.info(f"Teacher usage: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
             else:
                 # Brief summary for non-verbose mode
-                log.info(f"Game ended. Result: {r} | Teacher: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
+                # 仅打印简短原因标签，如 [D-50MOVE]
+                log.info(f"Game ended. {result_label} | Result: {result_str} | {reason_tag} | Teacher: {teacher_used_count}/{episodeStep} ({ratio:.1%})")
+                log.info(stats_line)
             
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
