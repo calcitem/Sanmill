@@ -25,12 +25,13 @@ class GuiHumanPlayer:
         self.difficulty = float(difficulty)
         # 当前行动方（由 Arena 在每步调用前设置）
         self.current_player = 1
-        # 画布边距用于坐标标注
+        # 画布边距用于坐标标注（对称设置以使棋盘居中于窗口）
         self.margin_left = int(self.cell_px * 1.0)
-        # 增加上边距，让顶部文字与棋盘之间更舒适
-        self.margin_top = int(self.cell_px * 0.6)
-        self.margin_right = int(self.cell_px * 0.2)
+        self.margin_right = int(self.cell_px * 1.0)
+        self.margin_top = int(self.cell_px * 0.9)
         self.margin_bottom = int(self.cell_px * 0.9)
+        # 坐标标注字体大小（缩小为之前约 1/3）
+        self.coord_font_size = max(10, int(self.cell_px * 0.23))
 
         # Tk 初始化
         try:
@@ -39,6 +40,7 @@ class GuiHumanPlayer:
             raise RuntimeError(f"Failed to initialize Tkinter GUI: {ex}")
         self.root.title("Sanmill - Human Player GUI")
 
+        # 画布尺寸按左右/上下边距对称确定，使棋盘整体居中
         self.canvas_w = self.margin_left + self.board_size_px + self.margin_right
         self.canvas_h = self.margin_top + self.board_size_px + self.margin_bottom
         # 棋盘底色改为灰色
@@ -52,7 +54,7 @@ class GuiHumanPlayer:
 
         # 状态栏（显示双方角色与最近一步）
         self.status_var = tk.StringVar(value="")
-        self.status_label = tk.Label(self.root, textvariable=self.status_var, anchor="w", justify="left")
+        self.status_label = tk.Label(self.root, textvariable=self.status_var, anchor="w", justify="left", font=("Arial", 11))
         self.status_label.place(x=10, y=5)
         # 棋盘右上角最近一步覆盖文本
         self._last_move_canvas_id = None
@@ -81,6 +83,9 @@ class GuiHumanPlayer:
 
         # 画静态棋盘连线
         self._draw_static_board()
+
+        # 窗口启动后居中到主显示器
+        self._center_window_on_primary()
 
         # 启动事件循环（非阻塞地）
         self._loop_thread = threading.Thread(target=self._tk_mainloop, daemon=True)
@@ -113,10 +118,10 @@ class GuiHumanPlayer:
                 y = 8
             if self._last_move_canvas_id is None:
                 self._last_move_canvas_id = self.canvas.create_text(
-                    x, y, text=label, fill="#222", anchor="ne", font=("TkDefaultFont", 10, "bold")
+                    x, y, text=label, fill="#222", anchor="ne", font=("Arial", 10, "bold")
                 )
             else:
-                self.canvas.itemconfig(self._last_move_canvas_id, text=label)
+                self.canvas.itemconfig(self._last_move_canvas_id, text=label, font=("Arial", 10, "bold"))
                 self.canvas.coords(self._last_move_canvas_id, x, y)
         except Exception:
             pass
@@ -155,6 +160,24 @@ class GuiHumanPlayer:
             pass
         try:
             self.root.destroy()
+        except Exception:
+            pass
+
+    def _center_window_on_primary(self):
+        try:
+            # 先计算实际内容尺寸
+            self.root.update_idletasks()
+            width = self.root.winfo_width()
+            height = self.root.winfo_height()
+            if width <= 1 or height <= 1:
+                # 回退到预估尺寸
+                width = int(self.canvas_w)
+                height = int(self.canvas_h + 30)
+            screen_w = self.root.winfo_screenwidth()
+            screen_h = self.root.winfo_screenheight()
+            x = max(0, (screen_w - width) // 2)
+            y = max(0, (screen_h - height) // 2)
+            self.root.geometry(f"{width}x{height}+{x}+{y}")
         except Exception:
             pass
 
@@ -204,15 +227,17 @@ class GuiHumanPlayer:
         # 行号放在每行左侧靠中
         for y in range(7):
             text_y = self.margin_top + y * self.cell_px + self.cell_px // 2
-            # 将行号靠近棋盘左侧一些
-            self.canvas.create_text(self.margin_left * 0.75, text_y, text=str(7 - y), fill="#333")
+            # 将行号靠近棋盘左侧一些，并增大字号
+            self.canvas.create_text(self.margin_left * 0.9, text_y, text=str(7 - y), fill="#444",
+                                     font=("Arial", self.coord_font_size))
         # 列字母放在底部
         letters = ["a", "b", "c", "d", "e", "f", "g"]
-        # 将列字母靠近棋盘下侧一些
-        base_y = self.margin_top + self.board_size_px + self.margin_bottom * 0.3
+        # 将列字母靠近棋盘下侧一些，并增大字号
+        base_y = self.margin_top + self.board_size_px + self.margin_bottom * 0.15
         for x in range(7):
             text_x = self.margin_left + x * self.cell_px + self.cell_px // 2
-            self.canvas.create_text(text_x, base_y, text=letters[x], fill="#333")
+            self.canvas.create_text(text_x, base_y, text=letters[x], fill="#444",
+                                     font=("Arial", self.coord_font_size))
 
     def _render_pieces(self, board):
         # 仅在有棋子的格点绘制圆形；空格点不绘制任何圆
@@ -321,18 +346,19 @@ class GuiHumanPlayer:
 
         # 在棋盘中心绘制/更新文本
         cx, cy = self._xy_to_canvas_center(3, 3)
-        font_size = max(16, int(self.cell_px * 0.6))
+        # 中央数字稍微小一些且不加粗
+        font_size = max(14, int(self.cell_px * 0.5))
         if self._inhand_text_id is None:
             try:
                 self._inhand_text_id = self.canvas.create_text(
                     cx, cy, text=count_text, fill="#444", anchor="c",
-                    font=("Arial", font_size, "bold")
+                    font=("Arial", font_size)
                 )
             except Exception:
                 self._inhand_text_id = None
         else:
             try:
-                self.canvas.itemconfig(self._inhand_text_id, text=count_text, fill="#444", font=("Arial", font_size, "bold"))
+                self.canvas.itemconfig(self._inhand_text_id, text=count_text, fill="#444", font=("Arial", font_size))
                 self.canvas.coords(self._inhand_text_id, cx, cy)
             except Exception:
                 pass
