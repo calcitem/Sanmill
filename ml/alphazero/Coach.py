@@ -530,9 +530,68 @@ class Coach():
             arena_args = [pmcts, nmcts, self.game, None]
             # Avoid CUDA modules crossing process boundaries. If using CUDA, keep pitting in current process.
             effective_processes = 0 if self.args.cuda else self.args.num_processes
-            pwins, nwins, draws = playGames(arena_args, self.args.arenaCompare, num_processes=effective_processes)
+            # 返回先后手拆分，并在逐局打印时将结果翻转为“新网络视角”（新赢为正）
+            result = playGames(
+                arena_args,
+                self.args.arenaCompare,
+                num_processes=effective_processes,
+                return_halves=True,
+                normalize_new_perspective=True,
+            )
+            pwins, nwins, draws, halves = result
 
-            log.info('NEW/PREV WINS : %f / %f ; DRAWS : %f' % (nwins, pwins, draws))
+            # 旧/新总计（保持原始摘要行，兼容现有日志解析）
+            log.info('NEW/PREV WINS : %f / %f ; DRAWS : %f', nwins, pwins, draws)
+
+            # 基于新网络视角的先后手表格统计
+            n_each = max(1, int(self.args.arenaCompare // 2))
+            first = halves.get('first', {"oneWon": 0, "twoWon": 0, "draws": 0})    # 旧先手 / 新后手
+            second = halves.get('second', {"oneWon": 0, "twoWon": 0, "draws": 0})  # 新先手 / 旧后手
+
+            # 新为先手（second half）：twoWon=新胜，oneWon=新负（注意 second_half 的计数语义沿用原始 one/twoWon 规则）
+            new_first_w = int(second.get('twoWon', 0))
+            new_first_l = int(second.get('oneWon', 0))
+            new_first_d = int(second.get('draws', 0))
+
+            # 新为后手（first half）：twoWon=新胜，oneWon=新负
+            new_second_w = int(first.get('twoWon', 0))
+            new_second_l = int(first.get('oneWon', 0))
+            new_second_d = int(first.get('draws', 0))
+
+            total_w = new_first_w + new_second_w
+            total_l = new_first_l + new_second_l
+            total_d = new_first_d + new_second_d
+            total_g = int(self.args.arenaCompare)
+
+            def pct(x, base):
+                try:
+                    return f"{(x / base) * 100:.1f}%" if base > 0 else "0.0%"
+                except Exception:
+                    return "0.0%"
+
+            # 表格输出（中文 + 英文缩写，注意中英文空格）
+            header = (
+                "\n" +
+                "Arena 对战结果（每边 N = %d，合计 = %d）\n" % (n_each, total_g) +
+                "+------------------+-------+-------+-------+--------+--------+--------+\n"
+                "| 案例 Case         | Games | 胜 W  | 和 D  | 负 L   | 胜率 W% | 和率 D% | 负率 L% |\n"
+                "+------------------+-------+-------+-------+--------+--------+--------+\n"
+            )
+            row1 = "| 新先手 New-First | %5d | %5d | %5d | %6d | %6s | %6s | %6s |\n" % (
+                n_each, new_first_w, new_first_d, new_first_l,
+                pct(new_first_w, n_each), pct(new_first_d, n_each), pct(new_first_l, n_each)
+            )
+            row2 = "| 新后手 New-Second| %5d | %5d | %5d | %6d | %6s | %6s | %6s |\n" % (
+                n_each, new_second_w, new_second_d, new_second_l,
+                pct(new_second_w, n_each), pct(new_second_d, n_each), pct(new_second_l, n_each)
+            )
+            sep =  "+------------------+-------+-------+-------+--------+--------+--------+\n"
+            rowt = "| 合计 Total       | %5d | %5d | %5d | %6d | %6s | %6s | %6s |\n" % (
+                total_g, total_w, total_d, total_l,
+                pct(total_w, total_g), pct(total_d, total_g), pct(total_l, total_g)
+            )
+            table = header + row1 + row2 + sep + rowt + sep
+            log.info(table)
             
             # Optional: Pit new network against Perfect DB player to assess absolute strength
             perfect_draws_ratio = None

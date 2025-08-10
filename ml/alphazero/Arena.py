@@ -109,24 +109,34 @@ class Arena():
             self.display(board)
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
-def arena_wrapper(arena_args, verbose, i):
+def arena_wrapper(arena_args, verbose, i, display_sign: int = 1):
     np.random.seed()
     arena = Arena(*arena_args)
     print(f'Start fighting {i}...')
     reselts = arena.playGame(verbose=verbose)
-    print(f'End fighting {i}, result {reselts}')
+    # 显示时可按需要切换为“新网络视角”：新赢为正，旧赢为负
+    try:
+        shown = float(display_sign) * float(reselts)
+    except Exception:
+        shown = reselts
+    print(f'End fighting {i}, result {shown}')
     return reselts
 
-def arena_wrapper_parallel(arena_args, verbose, num, results_queue):
+def arena_wrapper_parallel(arena_args, verbose, num, results_queue, normalize_new_perspective: bool = False):
+    # 上半场：player1 先手（此时按照 Coach 约定，player1=旧，player2=新）
     for i in range(num//2):
-        res = arena_wrapper(arena_args, verbose, i)
+        display_sign = -1 if normalize_new_perspective else 1
+        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
         results_queue.put((0, res))
+    # 交换先后手
     arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
+    # 下半场：player1 先手（此时 player1=新，player2=旧）
     for i in range(num//2):
-        res = arena_wrapper(arena_args, verbose, i)
+        display_sign = 1 if normalize_new_perspective else 1
+        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
         results_queue.put((1, res))
 
-def playGames(arena_args, num, verbose=False, num_processes=0):
+def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bool = False, normalize_new_perspective: bool = False):
     """
     Plays num games in which player1 starts num/2 games and player2 starts
     num/2 games.
@@ -135,36 +145,48 @@ def playGames(arena_args, num, verbose=False, num_processes=0):
         oneWon: games won by player1
         twoWon: games won by player2
         draws:  games won by nobody
+        (optional) halves: dict with first/second half split statistics
     """
     assert num_processes == 0 or num % (num_processes*2) == 0 and num >= num_processes*2
 
     oneWon = 0
     twoWon = 0
     draws = 0
+    # 先后手拆分统计
+    first_half = {"oneWon": 0, "twoWon": 0, "draws": 0}
+    second_half = {"oneWon": 0, "twoWon": 0, "draws": 0}
     if verbose or num_processes == 0:
         num = num // 2
         for i in range(num):
-            gameResult = arena_wrapper(arena_args, verbose, i)
+            display_sign = -1 if normalize_new_perspective else 1
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
             if gameResult > 1e-4:
+                first_half["oneWon"] += 1
                 oneWon += 1
             elif gameResult < -1e-4:
+                first_half["twoWon"] += 1
                 twoWon += 1
             else:
+                first_half["draws"] += 1
                 draws += 1
         arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
         for i in range(num):
-            gameResult = arena_wrapper(arena_args, verbose, i)
+            display_sign = 1 if normalize_new_perspective else 1
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
             if gameResult < -1e-4:
+                second_half["oneWon"] += 1
                 oneWon += 1
             elif gameResult > 1e-4:
+                second_half["twoWon"] += 1
                 twoWon += 1
             else:
+                second_half["draws"] += 1
                 draws += 1
     else:
         process_list = []
         results_queue = Queue()
         for _ in range(num_processes):
-            p = Process(target=arena_wrapper_parallel, args=(arena_args, verbose, num//num_processes, results_queue))
+            p = Process(target=arena_wrapper_parallel, args=(arena_args, verbose, num//num_processes, results_queue, normalize_new_perspective))
             p.start()
             process_list.append(p)
 
@@ -175,17 +197,23 @@ def playGames(arena_args, num, verbose=False, num_processes=0):
             is_oneplayer_first, gameResult = results_queue.get()
             if is_oneplayer_first == 0:
                 if gameResult > 1e-4:
+                    first_half["oneWon"] += 1
                     oneWon += 1
                 elif gameResult < -1e-4:
+                    first_half["twoWon"] += 1
                     twoWon += 1
                 else:
+                    first_half["draws"] += 1
                     draws += 1
             else:
                 if gameResult < -1e-4:
+                    second_half["oneWon"] += 1
                     oneWon += 1
                 elif gameResult > 1e-4:
+                    second_half["twoWon"] += 1
                     twoWon += 1
                 else:
+                    second_half["draws"] += 1
                     draws += 1
 
         # terminate multiprocessing
@@ -194,4 +222,10 @@ def playGames(arena_args, num, verbose=False, num_processes=0):
         for p in process_list:
             p.terminate()
 
+    if return_halves:
+        halves = {
+            "first": first_half,
+            "second": second_half,
+        }
+        return oneWon, twoWon, draws, halves
     return oneWon, twoWon, draws
