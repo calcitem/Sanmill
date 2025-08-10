@@ -101,6 +101,8 @@ Examples:
                         help='Perfect database path (overrides SANMILL_PERFECT_DB env)')
     parser.add_argument('--cpu', action='store_true',
                         help='Force CPU mode (disable CUDA)')
+    parser.add_argument('--gui', action='store_true',
+                        help='Enable simple GUI for human input (mouse clicks)')
     
     args = parser.parse_args()
     
@@ -127,7 +129,16 @@ Examples:
     if args.mode == 'human-vs-ai':
         log.info("👤 Player 1: Human")
         log.info("🤖 Player 2: AI")
-        player1 = HumanPlayer(game, args.difficulty)
+        if args.gui:
+            try:
+                from gui_human import GuiHumanPlayer
+                player1 = GuiHumanPlayer(game, difficulty=args.difficulty)
+                log.info("🖱️  GUI enabled for human input")
+            except Exception as e:
+                log.warning(f"⚠️  GUI unavailable ({e}), falling back to console input")
+                player1 = HumanPlayer(game, args.difficulty)
+        else:
+            player1 = HumanPlayer(game, args.difficulty)
         player2 = load_ai_player(game, base_args, args.checkpoint, args.mcts_sims)
         
     elif args.mode == 'ai-vs-ai':
@@ -153,7 +164,16 @@ Examples:
         if not perfect_db:
             log.error("❌ Perfect database path required. Use --perfect-db or set SANMILL_PERFECT_DB env var")
             sys.exit(1)
-        player1 = HumanPlayer(game, args.difficulty)
+        if args.gui:
+            try:
+                from gui_human import GuiHumanPlayer
+                player1 = GuiHumanPlayer(game, difficulty=args.difficulty)
+                log.info("🖱️  GUI enabled for human input")
+            except Exception as e:
+                log.warning(f"⚠️  GUI unavailable ({e}), falling back to console input")
+                player1 = HumanPlayer(game, args.difficulty)
+        else:
+            player1 = HumanPlayer(game, args.difficulty)
         player2 = load_perfect_player(perfect_db)
     
     # Play games
