@@ -37,6 +37,13 @@ class GuiHumanPlayer:
         self.canvas = tk.Canvas(self.root, width=canvas_w, height=canvas_h, bg="white")
         self.canvas.pack()
 
+        # 状态栏（显示双方角色与最近一步）
+        self.status_var = tk.StringVar(value="")
+        self.status_label = tk.Label(self.root, textvariable=self.status_var, anchor="w", justify="left")
+        self.status_label.place(x=10, y=5)
+        # 棋盘右上角最近一步覆盖文本
+        self._last_move_canvas_id = None
+
         # 交互状态
         self.current_board = None
         self.legal_moves: List[List[int]] = []
@@ -47,6 +54,8 @@ class GuiHumanPlayer:
 
         # 图元缓存：节点坐标 -> 画布对象 id
         self.node_ovals = {}  # (x, y) -> oval_id
+        self.roles_text = ""    # "White: AI/Human | Black: AI/Human"
+        self.last_move_text = "" # "Last: White(Human) a1-a4"
 
         # 绑定点击事件
         self.canvas.bind("<Button-1>", self._on_click)
@@ -58,6 +67,40 @@ class GuiHumanPlayer:
         # 启动事件循环（非阻塞地）
         self._loop_thread = threading.Thread(target=self._tk_mainloop, daemon=True)
         self._loop_thread.start()
+
+    def set_roles(self, white_role: str, black_role: str):
+        self.roles_text = f"White: {white_role} | Black: {black_role}"
+        self._refresh_status()
+
+    def set_last_move(self, side: str, role: str, notation: str):
+        self.last_move_text = f"Last: {side}({role}) {notation}"
+        self._refresh_status()
+        # 在棋盘右上角覆盖显示最近一步（只标注颜色与走法）
+        try:
+            label = f"{side}: {notation}"
+            x = self.margin_left + self.board_size_px - 8
+            y = self.margin_top + 12
+            if self._last_move_canvas_id is None:
+                self._last_move_canvas_id = self.canvas.create_text(
+                    x, y, text=label, fill="#222", anchor="ne", font=("TkDefaultFont", 10, "bold")
+                )
+            else:
+                self.canvas.itemconfig(self._last_move_canvas_id, text=label)
+                self.canvas.coords(self._last_move_canvas_id, x, y)
+        except Exception:
+            pass
+
+    def set_status_text(self, text: str):
+        # 兼容旧接口：直接覆盖整段状态文本
+        self.roles_text = text
+        self.last_move_text = ""
+        self._refresh_status()
+
+    def _refresh_status(self):
+        content = self.roles_text
+        if self.last_move_text:
+            content = content + "\n" + self.last_move_text if content else self.last_move_text
+        self.status_var.set(content)
 
     # ---------------------------- Tk helpers ----------------------------
     def _tk_mainloop(self):

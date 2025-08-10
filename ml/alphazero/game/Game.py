@@ -19,10 +19,10 @@ class Game:
     @staticmethod
     def _get_piece_symbols():
         """
-        Get piece symbols using colored circles for better distinction.
-        Uses ANSI color codes with the same ● symbol to maintain alignment.
-        White player: Yellow ● (bright and visible on both backgrounds)
-        Black player: Blue ● (good contrast on both backgrounds)
+        控制台棋盘使用不同形状区分双方：
+        - 白方：实心点 ●
+        - 黑方：空心点 ○
+        保持 ANSI 颜色以便可读（若终端不支持颜色，仍能通过形状区分）。
         """
         # ANSI color codes
         YELLOW = "\033[93m"  # Bright yellow
@@ -30,9 +30,9 @@ class Game:
         RESET = "\033[0m"    # Reset to default color
         
         return {
-            -1: f"{BLUE}●{RESET}",    # Black player uses blue circle
+            -1: f"{BLUE}○{RESET}",    # 黑方：空心点
             +0: "·",                   # Empty squares (no color)
-            +1: f"{YELLOW}●{RESET}"    # White player uses yellow circle
+            +1: f"{YELLOW}●{RESET}"    # 白方：实心点
         }
 
 

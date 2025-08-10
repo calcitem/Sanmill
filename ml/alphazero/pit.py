@@ -151,6 +151,17 @@ Examples:
             log.info("🤖 Player 1: AI")
             log.info("👤 Player 2: Human")
             player1, player2 = ai_player, human_player
+
+        # 如果启用 GUI，给 GUI 传递双方角色（便于状态栏显示）
+        try:
+            white_role = 'Human' if args.first == 'human' else 'AI'
+            black_role = 'AI' if args.first == 'human' else 'Human'
+            if hasattr(player1, 'set_roles'):
+                player1.set_roles(white_role, black_role)
+            if hasattr(player2, 'set_roles'):
+                player2.set_roles(white_role, black_role)
+        except Exception:
+            pass
         
     elif args.mode == 'ai-vs-ai':
         log.info("🤖 Player 1: AI (Strong)")

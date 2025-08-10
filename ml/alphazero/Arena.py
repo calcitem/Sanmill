@@ -93,6 +93,25 @@ class Arena():
                     ai_move_notation = engine_notation
                     import sys
                     setattr(sys.modules.get('__main__'), '_last_ai_move', engine_notation)
+                # 控制台与 GUI 同步打印最近一步（标注颜色与角色）
+                try:
+                    side = 'White' if curPlayer == 1 else 'Black'
+                    role = 'AI' if isinstance(player_obj, MCTS) else ('Perfect' if hasattr(player_obj, 'play_with_history') else 'Human')
+                    print(f"Last move: {side}({role}) {engine_notation}")
+                    # 若是 GUI 人类玩家，更新其状态栏
+                    if hasattr(self.player1, 'set_last_move') and hasattr(self.player2, 'set_last_move'):
+                        # 这里无法直接判断哪一方是白/黑角色（因 Arena 局面中白=1 黑=-1 固定），
+                        # 我们调用双方的 set_last_move，让实现自行决定显示。
+                        try:
+                            self.player1.set_last_move(side, role, engine_notation)
+                        except Exception:
+                            pass
+                        try:
+                            self.player2.set_last_move(side, role, engine_notation)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
             except Exception:
                 ai_move_notation = f"action_{action}"
 
