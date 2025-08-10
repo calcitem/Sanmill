@@ -5,7 +5,7 @@ $env:PYTORCH_CUDA_ALLOC_CONF="max_split_size_mb:256,expandable_segments:True"
 $env:TORCH_ALLOW_TF32="1"
 
 python3 main.py --config my_config.yaml
-python pit.py --gui --first human
+python pit.py --config my_config.yaml --gui --first human
 ```
 
 本目录实现了九子棋的 AlphaZero 训练与评估系统，支持：

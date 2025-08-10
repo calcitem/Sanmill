@@ -14,7 +14,7 @@ class Arena():
     An Arena class where any 2 agents can be pit against each other.
     """
 
-    def __init__(self, player1, player2, game, display=None):
+    def __init__(self, player1, player2, game, display=None, human_sample_from_pi: bool = False):
         """
         Input:
             player 1,2: two mcts objects that takes board as input, return action
@@ -31,6 +31,8 @@ class Arena():
         self.game = game
         self.display = display
         self.v_ema = EMA()
+        # 在人机模式下，是否根据 pi 概率抽样选择走法（引入随机性）
+        self.human_sample_from_pi = bool(human_sample_from_pi)
 
     def playGame(self, verbose=False):
         """
@@ -64,16 +66,21 @@ class Arena():
             if type(player_obj) == MCTS:
                 if verbose:
                     pi = player_obj.getActionProb(self.game.getCanonicalForm(board, curPlayer), 1)
-                    _, v = player_obj.nnet.predict(self.game.getCanonicalForm(board, curPlayer))
-                    self.v_ema.update(v)
-                    print(f'For AI, the board v = {v}, v_ema = {self.v_ema.value}')
-                    pi_sorted = np.sort(pi)
-                    pi_index_sorted = np.argsort(pi)
-                    num_positive = (pi_sorted>0).sum()
-                    num_negative = pi_sorted.shape[0] - num_positive
-                    action_sorted_index = num_negative+int(num_positive*((1-self.v_ema.value)/2+players[1-curPlayer].difficulty))
-                    action_sorted_index = min(max(action_sorted_index, num_negative), len(pi)-1)
-                    action = pi_index_sorted[action_sorted_index]
+                    if self.human_sample_from_pi:
+                        # 按 pi 概率抽样选择，以引入随机性
+                        action = int(np.random.choice(len(pi), p=pi))
+                    else:
+                        # 原有确定性逻辑（结合 v_ema 与难度）
+                        _, v = player_obj.nnet.predict(self.game.getCanonicalForm(board, curPlayer))
+                        self.v_ema.update(v)
+                        print(f'For AI, the board v = {v}, v_ema = {self.v_ema.value}')
+                        pi_sorted = np.sort(pi)
+                        pi_index_sorted = np.argsort(pi)
+                        num_positive = (pi_sorted>0).sum()
+                        num_negative = pi_sorted.shape[0] - num_positive
+                        action_sorted_index = num_negative+int(num_positive*((1-self.v_ema.value)/2+players[1-curPlayer].difficulty))
+                        action_sorted_index = min(max(action_sorted_index, num_negative), len(pi)-1)
+                        action = pi_index_sorted[action_sorted_index]
                 else:
                     pi = player_obj.getActionProb(self.game.getCanonicalForm(board, curPlayer), 0)
                     action = np.argmax(pi)
@@ -225,9 +232,9 @@ class Arena():
         
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
-def arena_wrapper(arena_args, verbose, i, display_sign: int = 1):
+def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_from_pi: bool = False):
     np.random.seed()
-    arena = Arena(*arena_args)
+    arena = Arena(*arena_args, human_sample_from_pi=human_sample_from_pi)
     print(f'Start fighting {i}...')
     reselts = arena.playGame(verbose=verbose)
     # 显示时可按需要切换为“新网络视角”：新赢为正，旧赢为负
@@ -238,21 +245,21 @@ def arena_wrapper(arena_args, verbose, i, display_sign: int = 1):
     print(f'End fighting {i}, result {shown}')
     return reselts
 
-def arena_wrapper_parallel(arena_args, verbose, num, results_queue, normalize_new_perspective: bool = False):
+def arena_wrapper_parallel(arena_args, verbose, num, results_queue, normalize_new_perspective: bool = False, human_sample_from_pi: bool = False):
     # 上半场：player1 先手（此时按照 Coach 约定，player1=旧，player2=新）
     for i in range(num//2):
         display_sign = -1 if normalize_new_perspective else 1
-        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
+        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
         results_queue.put((0, res))
     # 交换先后手
     arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
     # 下半场：player1 先手（此时 player1=新，player2=旧）
     for i in range(num//2):
         display_sign = 1 if normalize_new_perspective else 1
-        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
+        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
         results_queue.put((1, res))
 
-def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bool = False, normalize_new_perspective: bool = False):
+def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bool = False, normalize_new_perspective: bool = False, human_sample_from_pi: bool = False):
     """
     Plays num games in which player1 starts num/2 games and player2 starts
     num/2 games.
@@ -275,7 +282,7 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         num = num // 2
         for i in range(num):
             display_sign = -1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
             if gameResult > 1e-4:
                 first_half["oneWon"] += 1
                 oneWon += 1
@@ -288,7 +295,7 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
         for i in range(num):
             display_sign = 1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign)
+            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
             if gameResult < -1e-4:
                 second_half["oneWon"] += 1
                 oneWon += 1
@@ -302,7 +309,7 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         process_list = []
         results_queue = Queue()
         for _ in range(num_processes):
-            p = Process(target=arena_wrapper_parallel, args=(arena_args, verbose, num//num_processes, results_queue, normalize_new_perspective))
+            p = Process(target=arena_wrapper_parallel, args=(arena_args, verbose, num//num_processes, results_queue, normalize_new_perspective, human_sample_from_pi))
             p.start()
             process_list.append(p)
 

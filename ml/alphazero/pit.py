@@ -28,6 +28,7 @@ from game.Game import Game
 from game.Players import *
 from game.pytorch.NNet import NNetWrapper as NNet
 from utils import *
+from config import merge_config_with_args
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(message)s')
@@ -91,6 +92,8 @@ Examples:
                         default='human-vs-ai', help='Game mode (default: human-vs-ai)')
     parser.add_argument('--games', type=int, default=2,
                         help='Number of games to play (default: 2)')
+    parser.add_argument('--config', type=str, default=None,
+                        help='Path to YAML/JSON config file to override defaults')
     parser.add_argument('--mcts-sims', type=int, default=500,
                         help='MCTS simulations per move for AI (default: 500)')
     parser.add_argument('--difficulty', type=float, default=0.5,
@@ -120,6 +123,10 @@ Examples:
         'num_processes': 1,  # Single process for pitting
         'use_amp': torch.cuda.is_available() and not args.cpu,  # Enable AMP only when CUDA is available
     })
+
+    # 从配置文件合并（如提供），用于控制是否在 人机 模式中从 pi 抽样
+    # 期望配置项： human_sample_from_pi: true/false
+    base_args = merge_config_with_args(base_args, args.config)
     
     log.info(f"🎮 Game Mode: {args.mode}")
     log.info(f"🎯 Games: {args.games}, MCTS Sims: {args.mcts_sims}")
@@ -201,12 +208,18 @@ Examples:
     
     # Play games
     log.info("🚀 Starting games...")
+    # 在人机模式中，通过配置 human_sample_from_pi 控制是否对 pi 抽样
+    human_sample_from_pi = bool(base_args.get('human_sample_from_pi', False)) if args.mode == 'human-vs-ai' else False
     arena_args = [player1, player2, game, game.display if 'human' in args.mode else None]
     
     try:
-        wins1, wins2, draws = playGames(arena_args, args.games, 
-                                       verbose='human' in args.mode, 
-                                       num_processes=0)  # Single process for stability
+        wins1, wins2, draws = playGames(
+            arena_args,
+            args.games,
+            verbose='human' in args.mode,
+            num_processes=0,
+            human_sample_from_pi=human_sample_from_pi,
+        )  # Single process for stability
         
         # Display results
         log.info("\n" + "="*50)
