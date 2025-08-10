@@ -18,6 +18,32 @@ log = logging.getLogger(__name__)
 # Defer final console logging level until after config load
 coloredlogs.install(level='INFO')
 
+
+def should_load_model(args):
+    """
+    Smart model loading logic:
+    - If best.pth.tar doesn't exist: return False (start fresh)
+    - If best.pth.tar exists: return args.load_model (respect config)
+    """
+    load_folder = args.load_folder_file[0] if isinstance(args.load_folder_file, (list, tuple)) else args.load_folder_file
+    load_filename = args.load_folder_file[1] if isinstance(args.load_folder_file, (list, tuple)) else 'best.pth.tar'
+    
+    # Construct the full path to the model file
+    model_path = os.path.join(load_folder, load_filename)
+    
+    # Check if the specific model file exists
+    if not os.path.exists(model_path):
+        log.info(f"📁 Model file '{model_path}' not found, starting fresh training")
+        return False
+    
+    # Model file exists, respect the config setting
+    if args.load_model:
+        log.info(f"📁 Found existing checkpoint '{model_path}', will load as configured (load_model=true)")
+        return True
+    else:
+        log.info(f"📁 Found existing checkpoint '{model_path}', but load_model=false, starting fresh")
+        return False
+
 args = dotdict({
     'numIters': 100,
     'numEps': 100,              # Number of complete self-play games to simulate during a new iteration.
@@ -291,11 +317,16 @@ Examples:
     log.info('Loading %s...', nn.__name__)
     nnet = nn(g, args)
 
-    if args.load_model:
+    # Smart model loading: auto-detect if checkpoint directory is empty
+    effective_load_model = should_load_model(args)
+    if effective_load_model:
         log.info('Loading checkpoint "%s/%s"...', args.load_folder_file[0], args.load_folder_file[1])
         nnet.load_checkpoint(args.load_folder_file[0], args.load_folder_file[1])
     else:
-        log.warning('Not loading a checkpoint!')
+        if args.load_model and not effective_load_model:
+            log.info('🔄 Model file not found, starting fresh training despite load_model=true')
+        else:
+            log.warning('Not loading a checkpoint!')
 
     if args.num_processes > 1:
         # Use a start method compatible with our device setup.
@@ -313,7 +344,7 @@ Examples:
     log.info('Loading the Coach...')
     c = Coach(g, nnet, args)
 
-    if args.load_model:
+    if effective_load_model:
         log.info("Loading 'trainExamples' from file...")
         c.loadTrainExamples()
 
@@ -332,7 +363,7 @@ Examples:
         args_sampling.use_amp = False
         args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
         c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
-        if args.load_model:
+        if effective_load_model:
             c_sampling.loadTrainExamples()
         c_sampling.learn(sampling_only=True)
         

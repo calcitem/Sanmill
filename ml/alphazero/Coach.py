@@ -745,9 +745,8 @@ class Coach():
         examplesFile = os.path.join(self.args.load_folder_file[0], 'checkpoint_x.pth.tar.examples')
         if not os.path.isfile(examplesFile):
             log.warning(f'File "{examplesFile}" with trainExamples not found!')
-            r = input("Continue? [y|n]")
-            if r != "y":
-                sys.exit()
+            log.info('Will continue with fresh training examples')
+            return  # Continue without user interaction
         else:
             log.info("File with trainExamples found. Loading it...")
             with open(examplesFile, "rb") as f:
