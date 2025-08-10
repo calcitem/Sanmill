@@ -1,5 +1,6 @@
 import threading
 import tkinter as tk
+from tkinter import messagebox
 from typing import List, Optional, Tuple
 
 
@@ -222,7 +223,8 @@ class GuiHumanPlayer:
                 fill = "#ffffff"  # 白棋
             elif piece == -1:
                 fill = "#000000"  # 黑棋
-            self.canvas.itemconfig(oid, fill=fill, width=2)
+            # 先统一重置所有节点的外观（含描边），避免高亮残留
+            self.canvas.itemconfig(oid, fill=fill, outline="#444", width=2)
 
         # 高亮选中的起点
         if self.selected_src is not None and self.selected_src in self.node_ovals:
@@ -272,10 +274,10 @@ class GuiHumanPlayer:
             # 未匹配上，忽略
             return
 
-        # 期 1/2：走子/飞子，需要两次点击
+        # 期 1/2：走子/飞子，需要两次点击（使用实际棋盘的当前行动方）
         if self.selected_src is None:
-            # 第一次点击：选择自己的子，同时必须是某个合法 move 的起点
-            if self.current_board.pieces[x][y] != 1:
+            # 第一次点击：选择“当前行动方”的棋子，同时必须是某个合法 move 的起点
+            if self.current_board.pieces[x][y] != self.current_player:
                 return
             has_src = any(len(mv) == 4 and mv[0] == x and mv[1] == y for mv in self.legal_moves)
             if has_src:
@@ -294,7 +296,7 @@ class GuiHumanPlayer:
                     self._render_pieces(self.current_board)
                     return
             # 若点击了另一个可作为起点的己方子，则切换起点
-            if self.current_board.pieces[x][y] == 1 and any(len(mv) == 4 and mv[0] == x and mv[1] == y for mv in self.legal_moves):
+            if self.current_board.pieces[x][y] == self.current_player and any(len(mv) == 4 and mv[0] == x and mv[1] == y for mv in self.legal_moves):
                 self.selected_src = (x, y)
                 self._render_pieces(self.current_board)
 
@@ -333,6 +335,14 @@ class GuiHumanPlayer:
                 pass
         except Exception:
             pass
+
+    def ask_restart(self, result_text: str) -> bool:
+        """弹框显示对局结果，返回是否重新开始。"""
+        try:
+            return bool(messagebox.askyesno("Game Over", f"{result_text}\n\nRestart?", parent=self.root))
+        except Exception:
+            # 如果弹框失败，默认不重开
+            return False
 
     def set_to_move(self, player: int):
         # 由 Arena 在调用 play() 前设置当前行动方（1=先手白，-1=后手黑）

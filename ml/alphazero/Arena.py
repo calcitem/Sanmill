@@ -141,8 +141,37 @@ class Arena():
                 pass
         if verbose:
             assert self.display
-            print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
+            result_scalar = self.game.getGameEnded(board, 1)
+            print("Game over: Turn ", str(it), "Result ", str(result_scalar))
             self.display(board)
+            # 如果是 GUI 场景（有渲染能力），弹窗询问是否重开；否则按原逻辑返回
+            try:
+                # 推断人机对战：任一玩家为 GUI 或 Human
+                def _is_human_like(p):
+                    return hasattr(p, 'requires_actual_board') or (hasattr(p, 'play') and not isinstance(p, MCTS))
+                if _is_human_like(self.player1) or _is_human_like(self.player2):
+                    # 文案基于先手视角
+                    if abs(result_scalar) < 1e-4:
+                        res_text = "Draw"
+                    elif result_scalar > 0:
+                        res_text = "White wins"
+                    else:
+                        res_text = "Black wins"
+                    # 优先使用 GUI 的询问框
+                    want_restart = False
+                    if hasattr(self.player1, 'ask_restart'):
+                        want_restart = bool(self.player1.ask_restart(res_text))
+                    elif hasattr(self.player2, 'ask_restart'):
+                        want_restart = bool(self.player2.ask_restart(res_text))
+                    if want_restart:
+                        # 重置棋盘并继续当前对局，保持先后手不变
+                        board = self.game.getInitBoard()
+                        curPlayer = 1
+                        it = 0
+                        # 清空历史，重新进入循环
+                        return self.playGame(verbose=verbose)
+            except Exception:
+                pass
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
 def arena_wrapper(arena_args, verbose, i, display_sign: int = 1):
