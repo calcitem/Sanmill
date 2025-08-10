@@ -161,6 +161,22 @@ def save_config_template(output_path: str, format: str = 'yaml') -> None:
         'curriculum_mcts_scale_s1': 1.25,
         'curriculum_mcts_scale_s2': 1.10,
         'curriculum_mcts_scale_s3': 1.00,
+        # Arena-driven curriculum advancement
+        'curriculum_advance_by_arena': False,
+        'curriculum_promote_s1': 0.70,
+        'curriculum_promote_s2': 0.65,
+        'curriculum_promote_patience': 2,
+        'curriculum_min_iters_per_stage': 1,
+        'curriculum_draw_weight': 0.0,
+        # Curriculum timebox (avoid long stagnation)
+        'curriculum_timebox_iters': 4,
+        'curriculum_timebox_action': 'increase_mcts',  # increase_mcts | lower_threshold | both | none
+        'curriculum_timebox_mcts_scale': 1.20,
+        'curriculum_timebox_threshold_relax': 0.03,
+        'curriculum_timebox_max_relax': 0.10,
+        # Dataset logging/splitting
+        'curriculum_split_examples': False,
+        'curriculum_log_stats': True,
     }
     
     if format.lower() == 'yaml' and HAS_YAML:
@@ -198,7 +214,12 @@ def save_config_template(output_path: str, format: str = 'yaml') -> None:
             yaml.dump({k: v for k, v in template.items() if k in [
                 'curriculum_mode', 'curriculum_s1_iters', 'curriculum_s2_iters',
                 'curriculum_mix_prev_ratio', 'curriculum_stage1_weight',
-                'curriculum_mcts_scale_s1', 'curriculum_mcts_scale_s2', 'curriculum_mcts_scale_s3'
+                'curriculum_mcts_scale_s1', 'curriculum_mcts_scale_s2', 'curriculum_mcts_scale_s3',
+                'curriculum_advance_by_arena', 'curriculum_promote_s1', 'curriculum_promote_s2',
+                'curriculum_promote_patience', 'curriculum_min_iters_per_stage', 'curriculum_draw_weight',
+                'curriculum_timebox_iters', 'curriculum_timebox_action', 'curriculum_timebox_mcts_scale',
+                'curriculum_timebox_threshold_relax', 'curriculum_timebox_max_relax',
+                'curriculum_split_examples', 'curriculum_log_stats'
             ]}, f, default_flow_style=False)
     else:
         with open(output_path, 'w', encoding='utf-8') as f:

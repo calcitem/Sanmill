@@ -31,6 +31,7 @@ from MCTS import MCTS
 from utils import dotdict
 from game.engine_adapter import move_to_engine_token
 from typing import List
+import json
 
 log = logging.getLogger(__name__)
 
@@ -382,6 +383,18 @@ class Coach():
         self.trainExamplesHistory = []  # history of examples from args.numItersForTrainExamplesHistory latest iterations
         self.skipFirstSelfPlay = False  # can be overriden in loadTrainExamples()
         self.has_won = True
+        # Curriculum arena-driven state
+        self._cur_stage = 3
+        self._cur_stage_pass_count = 0
+        self._cur_stage_iters = 0
+        self._cur_stage_stagnant = 0
+        self._cur_relaxed_total = 0.0
+        # Try load persisted curriculum state
+        try:
+            if getattr(self.args, 'curriculum_advance_by_arena', False):
+                self._load_curriculum_state()
+        except Exception:
+            pass
         
         # 初始化训练日志器（如果启用）
         self.training_logger = None
@@ -730,6 +743,83 @@ class Coach():
             )
             table = header + row1 + row2 + sep + rowt + sep
             log.info(table)
+
+            # === Arena-driven curriculum advancement ===
+            try:
+                if getattr(self.args, 'curriculum_advance_by_arena', False):
+                    # Guard: minimum iterations within current stage
+                    self._cur_stage_iters += 1
+                    promote_allowed = self._cur_stage_iters >= int(getattr(self.args, 'curriculum_min_iters_per_stage', 1))
+                    # Win-rate with optional draw weight
+                    total_play = max(1, pwins + nwins + draws)
+                    draw_w = float(getattr(self.args, 'curriculum_draw_weight', 0.0))
+                    win_rate = (nwins + draw_w * draws) / total_play
+                    # Stage thresholds
+                    thr_s1 = float(getattr(self.args, 'curriculum_promote_s1', 0.70))
+                    thr_s2 = float(getattr(self.args, 'curriculum_promote_s2', 0.65))
+                    patience = int(getattr(self.args, 'curriculum_promote_patience', 2))
+                    # Determine current stage from Game
+                    cur_enabled = bool(self.game._curriculum_enabled)
+                    cur_stage = int(self.game._curriculum_stage)
+                    self._cur_stage = cur_stage
+                    passed = False
+                    if promote_allowed:
+                        if cur_stage == 1:
+                            passed = win_rate >= thr_s1
+                        elif cur_stage == 2:
+                            passed = win_rate >= thr_s2
+                        else:
+                            passed = False
+                    if passed:
+                        self._cur_stage_pass_count += 1
+                    else:
+                        self._cur_stage_pass_count = 0
+                    log.info('📈 Curriculum Arena: stage=%d win_rate=%.3f pass_cnt=%d/%d (allowed=%s)',
+                             cur_stage, win_rate, self._cur_stage_pass_count, patience, str(promote_allowed))
+                    if self._cur_stage_pass_count >= patience and cur_stage in (1, 2):
+                        next_stage = cur_stage + 1
+                        self.game.set_curriculum(cur_enabled, next_stage, getattr(self.args, 'curriculum_stage1_weight', 0.03))
+                        self._cur_stage = next_stage
+                        self._cur_stage_pass_count = 0
+                        self._cur_stage_iters = 0
+                        self._cur_stage_stagnant = 0
+                        log.info('🚀 Curriculum promoted to stage %d based on Arena win-rate', next_stage)
+                    else:
+                        # Timebox adaptation when stagnating
+                        if promote_allowed and not passed:
+                            self._cur_stage_stagnant += 1
+                            tb_needed = self._cur_stage_stagnant >= int(getattr(self.args, 'curriculum_timebox_iters', 4))
+                            if tb_needed:
+                                action = str(getattr(self.args, 'curriculum_timebox_action', 'increase_mcts')).lower()
+                                did = []
+                                if action in ('increase_mcts', 'both'):
+                                    scale = float(getattr(self.args, 'curriculum_timebox_mcts_scale', 1.2))
+                                    try:
+                                        self.args.numMCTSSims = max(1, int(round(self.args.numMCTSSims * scale)))
+                                        did.append(f"MCTS→{self.args.numMCTSSims}")
+                                    except Exception:
+                                        pass
+                                if action in ('lower_threshold', 'both'):
+                                    relax = float(getattr(self.args, 'curriculum_timebox_threshold_relax', 0.03))
+                                    max_relax = float(getattr(self.args, 'curriculum_timebox_max_relax', 0.10))
+                                    # Apply to active stage threshold
+                                    if cur_stage == 1:
+                                        self._cur_relaxed_total = min(max_relax, self._cur_relaxed_total + relax)
+                                        thr_s1 = max(0.5, float(getattr(self.args, 'curriculum_promote_s1', 0.70)) - self._cur_relaxed_total)
+                                        self.args.curriculum_promote_s1 = thr_s1
+                                        did.append(f"thr_s1→{thr_s1:.2f}")
+                                    elif cur_stage == 2:
+                                        self._cur_relaxed_total = min(max_relax, self._cur_relaxed_total + relax)
+                                        thr_s2 = max(0.5, float(getattr(self.args, 'curriculum_promote_s2', 0.65)) - self._cur_relaxed_total)
+                                        self.args.curriculum_promote_s2 = thr_s2
+                                        did.append(f"thr_s2→{thr_s2:.2f}")
+                                if did:
+                                    log.info('⏳ Curriculum timebox applied (stage %d): %s', cur_stage, ', '.join(did))
+                                self._cur_stage_stagnant = 0
+                    # Persist state
+                    self._save_curriculum_state()
+            except Exception as _e:
+                log.warning('Arena-driven curriculum advancement failed: %s', _e)
             
             # Optional: Pit new network against Perfect DB player to assess absolute strength
             perfect_draws_ratio = None
@@ -822,6 +912,44 @@ class Coach():
         except Exception:
             pass
 
+    # ---------------- Curriculum persistence helpers ----------------
+    def _state_file(self):
+        try:
+            folder = getattr(self.args, 'checkpoint', './temp')
+        except Exception:
+            folder = './temp'
+        return os.path.join(folder, 'curriculum_state.json')
+
+    def _load_curriculum_state(self):
+        path = self._state_file()
+        if not os.path.exists(path):
+            return
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                st = json.load(f)
+            self._cur_stage = int(st.get('stage', self._cur_stage))
+            self._cur_stage_pass_count = int(st.get('pass_count', 0))
+            self._cur_stage_iters = int(st.get('iters', 0))
+            # Apply to Game if curriculum enabled
+            if bool(getattr(self.args, 'curriculum_advance_by_arena', False)):
+                self.game.set_curriculum(True, self._cur_stage, getattr(self.args, 'curriculum_stage1_weight', 0.03))
+                log.info('📦 Loaded curriculum state: stage=%d pass=%d iters=%d', self._cur_stage, self._cur_stage_pass_count, self._cur_stage_iters)
+        except Exception:
+            pass
+
+    def _save_curriculum_state(self):
+        path = self._state_file()
+        try:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, 'w', encoding='utf-8') as f:
+                json.dump({
+                    'stage': int(self._cur_stage),
+                    'pass_count': int(self._cur_stage_pass_count),
+                    'iters': int(self._cur_stage_iters),
+                }, f)
+        except Exception:
+            pass
+
     def getCheckpointFile(self, iteration):
         return 'checkpoint_' + str(iteration) + '.pth.tar'
 
@@ -833,6 +961,47 @@ class Coach():
         with open(filename, "wb+") as f:
             f.write(_dumps(self.trainExamplesHistory))
         f.closed
+
+        # Optionally split by curriculum stage and log stats
+        try:
+            if bool(getattr(self.args, 'curriculum_split_examples', False)):
+                # Stage mapping by real_period in examples: (board, pi, v, period)
+                def stage_id_from_period(p: int):
+                    if p in (0, 3):
+                        return 's1'
+                    if p in (1, 4):
+                        return 's2'
+                    if p == 2:
+                        return 's3'
+                    return None
+
+                hist_s1, hist_s2, hist_s3 = [], [], []
+                for it in self.trainExamplesHistory:
+                    it_s1 = [ex for ex in it if len(ex) >= 4 and stage_id_from_period(int(ex[3])) == 's1']
+                    it_s2 = [ex for ex in it if len(ex) >= 4 and stage_id_from_period(int(ex[3])) == 's2']
+                    it_s3 = [ex for ex in it if len(ex) >= 4 and stage_id_from_period(int(ex[3])) == 's3']
+                    hist_s1.append(it_s1)
+                    hist_s2.append(it_s2)
+                    hist_s3.append(it_s3)
+
+                with open(filename + '.s1', 'wb+') as f1:
+                    f1.write(_dumps(hist_s1))
+                with open(filename + '.s2', 'wb+') as f2:
+                    f2.write(_dumps(hist_s2))
+                with open(filename + '.s3', 'wb+') as f3:
+                    f3.write(_dumps(hist_s3))
+
+                if bool(getattr(self.args, 'curriculum_log_stats', True)):
+                    cnt_total = sum(len(it) for it in self.trainExamplesHistory)
+                    cnt_s1 = sum(len(it) for it in hist_s1)
+                    cnt_s2 = sum(len(it) for it in hist_s2)
+                    cnt_s3 = sum(len(it) for it in hist_s3)
+                    def pct(c):
+                        return (100.0 * c / cnt_total) if cnt_total > 0 else 0.0
+                    log.info('📊 Examples by stage (total=%d): S1=%d (%.1f%%), S2=%d (%.1f%%), S3=%d (%.1f%%)'
+                             , cnt_total, cnt_s1, pct(cnt_s1), cnt_s2, pct(cnt_s2), cnt_s3, pct(cnt_s3))
+        except Exception as _e:
+            log.warning('Failed to split examples by stage: %s', _e)
 
     def loadTrainExamples(self):
         examplesFile = os.path.join(self.args.load_folder_file[0], 'checkpoint_x.pth.tar.examples')

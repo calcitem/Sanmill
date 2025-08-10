@@ -138,3 +138,22 @@ root_dirichlet_fraction: 0.25
 # Stage-2 fine-tuning knobs
 curriculum_freeze_backbone: true
 curriculum_head_lr_mult: 2.0
+
+# Arena-driven curriculum advancement (link phases to pitting win-rate)
+curriculum_advance_by_arena: false
+curriculum_promote_s1: 0.70        # S1->S2 阈值（new vs prev）
+curriculum_promote_s2: 0.65        # S2->S3 阈值
+curriculum_promote_patience: 2      # 连续通过次数
+curriculum_min_iters_per_stage: 1   # 每阶段最小迭代数
+curriculum_draw_weight: 0.0         # 和棋计入权重（0=忽略；0.5=半分）
+
+# Timebox: avoid long stagnation by adapting parameters
+curriculum_timebox_iters: 4
+curriculum_timebox_action: increase_mcts   # increase_mcts | lower_threshold | both | none
+curriculum_timebox_mcts_scale: 1.20
+curriculum_timebox_threshold_relax: 0.03
+curriculum_timebox_max_relax: 0.10
+
+# Dataset splitting & stats per stage (optional)
+curriculum_split_examples: false
+curriculum_log_stats: true
