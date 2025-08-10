@@ -67,6 +67,10 @@ class GuiHumanPlayer:
 
         # 图元缓存：节点坐标 -> 画布对象 id
         self.node_ovals = {}  # (x, y) -> oval_id
+        # 人类方颜色：1=白，-1=黑（通过 set_roles 或首次 set_to_move 推断）
+        self.human_color: Optional[int] = None
+        # 中央预留的手中棋子数量文本 ID（placing 阶段显示）
+        self._inhand_text_id: Optional[int] = None
         self.roles_text = ""    # "White: AI/Human | Black: AI/Human"
         self.last_move_text = "" # "Last: White(Human) a1-a4"
         # 不再显示思考中文本，仅保留最近一步
@@ -84,6 +88,14 @@ class GuiHumanPlayer:
 
     def set_roles(self, white_role: str, black_role: str):
         self.roles_text = f"White: {white_role} | Black: {black_role}"
+        try:
+            # 记录人类方颜色，便于显示 placing 阶段的“手中棋子数”
+            if isinstance(white_role, str) and white_role.lower() == 'human':
+                self.human_color = 1
+            elif isinstance(black_role, str) and black_role.lower() == 'human':
+                self.human_color = -1
+        except Exception:
+            pass
         self._refresh_status()
 
     def set_last_move(self, side: str, role: str, notation: str):
@@ -264,6 +276,67 @@ class GuiHumanPlayer:
         if self.selected_src is not None and self.selected_src in self.node_ovals:
             self.canvas.itemconfig(self.node_ovals[self.selected_src], width=4, outline="#e67e22")
 
+        # 更新中央“手中棋子数”显示（仅 placing 阶段）
+        self._update_inhand_text(board)
+
+    def _update_inhand_text(self, board, override_count: Optional[int] = None):
+        # placing 阶段：尚未全部落子（put_pieces < 18）
+        try:
+            placing_phase = int(getattr(board, 'put_pieces', 18)) < 18
+        except Exception:
+            placing_phase = False
+
+        # 若不在 placing 阶段，移除文本
+        if not placing_phase:
+            if self._inhand_text_id is not None:
+                try:
+                    self.canvas.delete(self._inhand_text_id)
+                except Exception:
+                    pass
+                self._inhand_text_id = None
+            return
+
+        # 计算人类方手中棋子数量
+        count_text = None
+        try:
+            if self.human_color is None:
+                # 若尚未由 set_roles 判定，则在首次 set_to_move 时补充
+                pass
+            else:
+                base_count = int(board.pieces_in_hand_count(int(self.human_color)))
+                count_val = base_count if override_count is None else int(max(0, override_count))
+                count_text = str(count_val)
+        except Exception:
+            count_text = None
+
+        # 未能确认则不显示
+        if not count_text:
+            if self._inhand_text_id is not None:
+                try:
+                    self.canvas.delete(self._inhand_text_id)
+                except Exception:
+                    pass
+                self._inhand_text_id = None
+            return
+
+        # 在棋盘中心绘制/更新文本
+        cx, cy = self._xy_to_canvas_center(3, 3)
+        font_size = max(16, int(self.cell_px * 0.6))
+        if self._inhand_text_id is None:
+            try:
+                self._inhand_text_id = self.canvas.create_text(
+                    cx, cy, text=count_text, fill="#444", anchor="c",
+                    font=("Arial", font_size, "bold")
+                )
+            except Exception:
+                self._inhand_text_id = None
+        else:
+            try:
+                self.canvas.itemconfig(self._inhand_text_id, text=count_text, fill="#444", font=("Arial", font_size, "bold"))
+                self.canvas.coords(self._inhand_text_id, cx, cy)
+            except Exception:
+                pass
+
     # ---------------------------- Click logic ---------------------------
     def _collect_legal_moves(self, board) -> List[List[int]]:
         # 将合法动作映射为 move（长度 2 或 4）
@@ -356,6 +429,15 @@ class GuiHumanPlayer:
 
         # 返回 pending_action（必须由点击逻辑设置）
         assert self.pending_action is not None, "GUI interaction failed to produce an action"
+        # 额外：若处于 placing 阶段且当前落子方为 human，立即更新中间数字
+        try:
+            if getattr(board, 'put_pieces', 18) < 18 and self.human_color is not None and self.current_player == self.human_color:
+                # human 刚刚落子，手中棋子应当减 1；注意 put_pieces 还未在上层更新前生效
+                base_count = int(board.pieces_in_hand_count(int(self.human_color)))
+                self._update_inhand_text(board, override_count=base_count - 1)
+        except Exception:
+            pass
+
         return int(self.pending_action)
 
     def render_board(self, board):
@@ -382,5 +464,12 @@ class GuiHumanPlayer:
         # 由 Arena 在调用 play() 前设置当前行动方（1=先手白，-1=后手黑）
         assert player in (1, -1)
         self.current_player = int(player)
+        # 若尚未识别人类方颜色，首次调用时记录
+        if self.human_color is None:
+            try:
+                # GUI 玩家即人类玩家；其首次获得行动权时的颜色即人类方颜色
+                self.human_color = int(player)
+            except Exception:
+                pass
 
 

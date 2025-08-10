@@ -166,10 +166,14 @@ class Arena():
             board, curPlayer = self.game.getNextState(board, curPlayer, action)
             # 若有 GUI 玩家，落子后立即刷新显示当前棋盘，避免等对手落子才统一更新
             try:
-                if hasattr(self.player1, 'render_board'):
-                    self.player1.render_board(board)
-                if hasattr(self.player2, 'render_board'):
-                    self.player2.render_board(board)
+                # 先刷新刚刚移动方的 GUI，再刷新另一方
+                # 此时 curPlayer 已切换为下一手，因此刚刚移动方为 -curPlayer
+                mover = players[-curPlayer + 1]
+                other = players[curPlayer + 1]
+                if hasattr(mover, 'render_board'):
+                    mover.render_board(board)
+                if hasattr(other, 'render_board'):
+                    other.render_board(board)
             except Exception:
                 pass
         if verbose:
