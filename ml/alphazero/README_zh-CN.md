@@ -1,6 +1,12 @@
 # Nine Men's Morris AlphaZero 训练系统
 
+```
+python3 main.py --config my_config.yaml
+python pit.py --gui --first human
+```
+
 本目录实现了九子棋的 AlphaZero 训练与评估系统，支持：
+
 - 🎯 **监督学习**：从完美数据库快速学习最优策略
 - 🔄 **强化学习**：通过自对弈不断改进
 - 🏆 **混合训练**：结合监督学习和强化学习的优势
@@ -78,6 +84,7 @@ python3 pit.py --mode human-vs-ai
 传统 AlphaZero 训练：自对弈生成数据 → 训练网络 → 新旧对战评估。
 
 **配置示例**：
+
 ```yaml
 # config.yaml
 numIters: 10
