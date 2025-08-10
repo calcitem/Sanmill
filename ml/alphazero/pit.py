@@ -118,6 +118,7 @@ Examples:
         'cuda': torch.cuda.is_available() and not args.cpu,
         'num_channels': 256,
         'num_processes': 1,  # Single process for pitting
+        'use_amp': torch.cuda.is_available() and not args.cpu,  # Enable AMP only when CUDA is available
     })
     
     log.info(f"🎮 Game Mode: {args.mode}")
