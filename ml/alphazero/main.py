@@ -241,8 +241,17 @@ Examples:
     elif auto_phases:
         log.info("🔄 AUTO PHASES: Will run sampling (CPU) then training (GPU)")
     
-    # Show key configuration
-    log.info(f"🎯 Training config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} procs, CUDA: {args.cuda}")
+    # Show key configuration with clarification
+    if auto_phases:
+        log.info(f"🎯 Training config: {args.numIters} iters, {args.numEps} eps/iter")
+        log.info(f"📊 Auto-phases: Sampling→{args.num_processes}×CPU procs, Training→1×GPU proc, CUDA: {args.cuda}")
+    elif sampling_only:
+        log.info(f"🎯 Sampling config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} CPU procs")
+    elif training_only:
+        log.info(f"🎯 Training config: {args.numIters} iters, 1 GPU proc, CUDA: {args.cuda}")
+    else:
+        log.info(f"🎯 Single-phase config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} procs, CUDA: {args.cuda}")
+    
     if args.usePerfectTeacher:
         log.info(f"📚 Teacher: {args.teacherExamplesPerIter} samples/iter from {args.teacherDBPath}")
     
@@ -367,7 +376,8 @@ Examples:
             c_sampling.loadTrainExamples()
         c_sampling.learn(sampling_only=True)
         
-        # Run training phase (GPU)
+        # Phase transition
+        log.info('✅ SAMPLING phase completed! Transitioning to training phase...')
         log.info('🎯 AUTO PHASES: Starting training phase (GPU single-process)...')
         args_training = dotdict(dict(args))
         args_training.num_processes = 1

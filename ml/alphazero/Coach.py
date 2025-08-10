@@ -436,7 +436,7 @@ class Coach():
             if training_only:
                 log.info(f'🎯 TRAINING-ONLY mode: Skipping self-play for iter #{i}')
             elif sampling_only:
-                log.info(f'🔍 SAMPLING-ONLY mode: Will skip training/pitting for iter #{i}')
+                log.info(f'🔍 SAMPLING phase: Collecting examples for iter #{i} (training will be done separately)')
             
             # examples of the iteration
             if (not self.skipFirstSelfPlay or i > 1) and not training_only:
@@ -509,7 +509,7 @@ class Coach():
             if sampling_only:
                 # backup history to a file for later training phase
                 self.saveTrainExamples('x')
-                log.info(f'🔍 SAMPLING-ONLY: Saved examples for iter #{i}, skipping training')
+                log.info(f'🔍 SAMPLING phase: Saved {len(trainExamples) if "trainExamples" in locals() else "N/A"} examples for iter #{i}')
                 continue
 
             if len(self.trainExamplesHistory) > self.args.numItersForTrainExamplesHistory:
