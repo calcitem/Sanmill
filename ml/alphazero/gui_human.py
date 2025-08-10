@@ -184,20 +184,9 @@ class GuiHumanPlayer:
                 x1, y1 = self._xy_to_canvas_center(nx, ny)
                 self.canvas.create_line(x0, y0, x1, y1, fill="#888", width=2)
 
-        # 再画节点（只绘制合法点）
-        # 调整节点半径以匹配真实九子棋中棋子与棋盘的视觉比例（约 1/3 格距）
-        r = max(10, int(self.cell_px * 0.33))
-        for y in range(7):
-            for x in range(7):
-                try:
-                    if int(Board.allowed_places[x][y]) != 1:
-                        continue
-                except Exception:
-                    continue
-                cx, cy = self._xy_to_canvas_center(x, y)
-                # 空位节点默认使用浅灰色以区别棋子；描边颜色与棋盘线一致
-                oval = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#888", fill="#cccccc")
-                self.node_ovals[(x, y)] = oval
+        # 仅画连线，不再画空心圆节点；棋子将按需绘制
+        # 保存棋子半径用于后续绘制（约 1/3 格距）
+        self.node_radius = max(10, int(self.cell_px * 0.33))
 
         # 坐标标注：行号（7..1）与列字母（a..g）
         # 行号放在每行左侧靠中
@@ -212,22 +201,64 @@ class GuiHumanPlayer:
             self.canvas.create_text(text_x, base_y, text=letters[x], fill="#333")
 
     def _render_pieces(self, board):
-        # 重绘所有节点颜色（GUI 颜色约定）：
-        #   空：浅灰 #cccccc；白子：白色 #ffffff；黑子：黑色 #000000
-        for (x, y), oid in self.node_ovals.items():
-            fill = "#cccccc"
+        # 仅在有棋子的格点绘制圆形；空格点不绘制任何圆
+        try:
+            allowed = board.allowed_places
+            pieces = board.pieces
+        except Exception:
+            allowed = None
+            pieces = None
+
+        current_piece_positions = set()
+        for y in range(7):
+            for x in range(7):
+                try:
+                    if allowed is not None and int(allowed[x][y]) != 1:
+                        continue
+                    p = 0 if pieces is None else int(pieces[x][y])
+                except Exception:
+                    p = 0
+                if p != 0:
+                    current_piece_positions.add((x, y))
+
+        existing_positions = set(self.node_ovals.keys())
+
+        # 删除已不存在棋子的圆
+        for pos in existing_positions - current_piece_positions:
+            oid = self.node_ovals.get(pos)
+            if oid is not None:
+                try:
+                    self.canvas.delete(oid)
+                except Exception:
+                    pass
+                self.node_ovals.pop(pos, None)
+
+        # 更新现有棋子外观
+        for pos in existing_positions & current_piece_positions:
+            x, y = pos
             try:
-                piece = board.pieces[x][y]
+                piece = int(pieces[x][y])
             except Exception:
                 piece = 0
-            if piece == 1:
-                fill = "#ffffff"  # 白棋
-            elif piece == -1:
-                fill = "#000000"  # 黑棋
-            # 先统一重置所有节点的外观（含描边），避免高亮残留；描边与棋盘线一致
-            self.canvas.itemconfig(oid, fill=fill, outline="#888", width=2)
+            fill = "#ffffff" if piece == 1 else "#000000"
+            oid = self.node_ovals.get(pos)
+            if oid is not None:
+                self.canvas.itemconfig(oid, fill=fill, outline="#888", width=2)
 
-        # 高亮选中的起点
+        # 新增需要绘制的棋子
+        for pos in current_piece_positions - existing_positions:
+            x, y = pos
+            try:
+                piece = int(pieces[x][y])
+            except Exception:
+                piece = 0
+            fill = "#ffffff" if piece == 1 else "#000000"
+            cx, cy = self._xy_to_canvas_center(x, y)
+            r = getattr(self, "node_radius", max(10, int(self.cell_px * 0.33)))
+            oid = self.canvas.create_oval(cx - r, cy - r, cx + r, cy + r, outline="#888", fill=fill)
+            self.node_ovals[(x, y)] = oid
+
+        # 高亮选中的起点（若存在对应棋子）
         if self.selected_src is not None and self.selected_src in self.node_ovals:
             self.canvas.itemconfig(self.node_ovals[self.selected_src], width=4, outline="#e67e22")
 
