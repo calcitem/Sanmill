@@ -28,6 +28,7 @@ from torch.multiprocessing import Process, Queue
 
 from Arena import Arena, playGames
 from MCTS import MCTS
+from utils import dotdict
 from game.engine_adapter import move_to_engine_token
 from typing import List
 
@@ -353,9 +354,18 @@ def executeEpisode(game, mcts, args, verbose=False, game_id=None, perfect_player
             return [(x[0], x[2], r * ((-1) ** (x[1] != curPlayer)), x[3]) for x in trainExamples]
 
 def executeEpisodeParallel(game, nnet, args, queue, num):
+    # Ensure CPU-only execution in multiprocessing
+    import os
+    os.environ["CUDA_VISIBLE_DEVICES"] = ""
+    
+    # Force CPU-only args for this process
+    cpu_args = dotdict(dict(args))
+    cpu_args.cuda = False
+    cpu_args.use_amp = False
+    
     for i in range(num):
-        mcts = MCTS(game, nnet, args)  # reset search tree
-        queue.put(executeEpisode(game, mcts, args))
+        mcts = MCTS(game, nnet, cpu_args)  # reset search tree with CPU args
+        queue.put(executeEpisode(game, mcts, cpu_args))
 
 class Coach():
     """
@@ -438,9 +448,32 @@ class Coach():
                     process_list = []
                     assert self.args.numEps % self.args.num_processes == 0
                     process_numEps = self.args.numEps // self.args.num_processes
+                    
+                    # Create CPU-only args and nnet for multiprocessing
+                    cpu_args = dotdict(dict(self.args))
+                    cpu_args.cuda = False
+                    cpu_args.use_amp = False
+                    
+                    # Create a CPU-only neural network for multiprocessing
+                    cpu_nnet = self.nnet.__class__(self.game, cpu_args)
+                    # Copy weights from GPU model to CPU model
+                    try:
+                        if self.args.cuda:
+                            # Temporarily move model to CPU to copy weights
+                            original_device = next(self.nnet.nnet.parameters()).device
+                            cpu_state_dict = {k: v.cpu() for k, v in self.nnet.nnet.state_dict().items()}
+                            cpu_nnet.nnet.load_state_dict(cpu_state_dict)
+                            # No need to move original model back as we're not modifying it
+                        else:
+                            cpu_nnet.nnet.load_state_dict(self.nnet.nnet.state_dict())
+                        log.info("Successfully created CPU model for multiprocessing")
+                    except Exception as e:
+                        log.error(f"Failed to create CPU model: {e}")
+                        raise
+                    
                     for _ in range(self.args.num_processes):
                         p = Process(target=executeEpisodeParallel,
-                                    args=(self.game, self.nnet, self.args, example_queue, process_numEps))
+                                    args=(self.game, cpu_nnet, cpu_args, example_queue, process_numEps))
                         p.start()
                         process_list.append(p)
 

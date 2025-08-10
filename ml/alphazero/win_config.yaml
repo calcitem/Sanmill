@@ -33,7 +33,7 @@ numItersForTrainExamplesHistory: 5       # Keep N iterations of training history
 # =============================================================================
 # SYSTEM SETTINGS
 # =============================================================================
-num_processes: 1          # Parallel processes for self-play (default: 5)
+num_processes: 2          # Parallel processes for self-play (default: 5)
                           # - With teacher: 1 (recommended for stability)
                           # - Pure AlphaZero: 2-4 (faster self-play)
 
