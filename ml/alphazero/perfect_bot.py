@@ -1,4 +1,4 @@
-from logging import logging
+import logging
 import os
 from typing import List
 
@@ -6,7 +6,8 @@ from game.Game import Game
 from game.GameLogic import Board
 from game.engine_adapter import engine_token_to_move
 from engine_bridge import MillEngine
-from game.engine_adapter import engine_token_to_move
+
+log = logging.getLogger(__name__)
 
 
 class PerfectTeacherPlayer:
