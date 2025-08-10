@@ -26,7 +26,8 @@ class GuiHumanPlayer:
         self.current_player = 1
         # 画布边距用于坐标标注
         self.margin_left = int(self.cell_px * 1.0)
-        self.margin_top = int(self.cell_px * 0.3)
+        # 增加上边距，让顶部文字与棋盘之间更舒适
+        self.margin_top = int(self.cell_px * 0.6)
         self.margin_right = int(self.cell_px * 0.2)
         self.margin_bottom = int(self.cell_px * 0.9)
 
@@ -37,10 +38,10 @@ class GuiHumanPlayer:
             raise RuntimeError(f"Failed to initialize Tkinter GUI: {ex}")
         self.root.title("Sanmill - Human Player GUI")
 
-        canvas_w = self.margin_left + self.board_size_px + self.margin_right
-        canvas_h = self.margin_top + self.board_size_px + self.margin_bottom
+        self.canvas_w = self.margin_left + self.board_size_px + self.margin_right
+        self.canvas_h = self.margin_top + self.board_size_px + self.margin_bottom
         # 棋盘底色改为灰色
-        self.canvas = tk.Canvas(self.root, width=canvas_w, height=canvas_h, bg="#cfcfcf")
+        self.canvas = tk.Canvas(self.root, width=self.canvas_w, height=self.canvas_h, bg="#cfcfcf")
         self.canvas.pack()
 
         # 状态栏（显示双方角色与最近一步）
@@ -62,6 +63,7 @@ class GuiHumanPlayer:
         self.node_ovals = {}  # (x, y) -> oval_id
         self.roles_text = ""    # "White: AI/Human | Black: AI/Human"
         self.last_move_text = "" # "Last: White(Human) a1-a4"
+        # 不再显示思考中文本，仅保留最近一步
 
         # 绑定点击事件
         self.canvas.bind("<Button-1>", self._on_click)
@@ -84,8 +86,13 @@ class GuiHumanPlayer:
         # 在棋盘右上角覆盖显示最近一步（只标注颜色与走法）
         try:
             label = f"{side}: {notation}"
-            x = self.margin_left + self.board_size_px - 8
-            y = self.margin_top + 12
+            # 放在画布右上角，紧贴右边缘留白 ~10px，与左上角状态文本同一高度
+            x = self.canvas_w - 10
+            try:
+                self.root.update_idletasks()
+                y = int(self.status_label.winfo_y())
+            except Exception:
+                y = 8
             if self._last_move_canvas_id is None:
                 self._last_move_canvas_id = self.canvas.create_text(
                     x, y, text=label, fill="#222", anchor="ne", font=("TkDefaultFont", 10, "bold")
@@ -96,6 +103,10 @@ class GuiHumanPlayer:
         except Exception:
             pass
 
+    # 占位（兼容旧调用），不做任何显示
+    def set_thinking(self, side: str, role: str):
+        return
+
     def set_status_text(self, text: str):
         # 兼容旧接口：直接覆盖整段状态文本
         self.roles_text = text
@@ -103,10 +114,8 @@ class GuiHumanPlayer:
         self._refresh_status()
 
     def _refresh_status(self):
-        content = self.roles_text
-        if self.last_move_text:
-            content = content + "\n" + self.last_move_text if content else self.last_move_text
-        self.status_var.set(content)
+        # 仅显示第一行（双方角色），不再显示第二行
+        self.status_var.set(self.roles_text or "")
 
     # ---------------------------- Tk helpers ----------------------------
     def _tk_mainloop(self):

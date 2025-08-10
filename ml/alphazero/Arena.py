@@ -109,17 +109,16 @@ class Arena():
                     role = 'AI' if isinstance(player_obj, MCTS) else ('Perfect' if hasattr(player_obj, 'play_with_history') else 'Human')
                     print(f"Last move: {side}({role}) {engine_notation}")
                     # 若是 GUI 人类玩家，更新其状态栏
-                    if hasattr(self.player1, 'set_last_move') and hasattr(self.player2, 'set_last_move'):
-                        # 这里无法直接判断哪一方是白/黑角色（因 Arena 局面中白=1 黑=-1 固定），
-                        # 我们调用双方的 set_last_move，让实现自行决定显示。
-                        try:
+                    try:
+                        if hasattr(self.player1, 'set_last_move'):
                             self.player1.set_last_move(side, role, engine_notation)
-                        except Exception:
-                            pass
-                        try:
+                    except Exception:
+                        pass
+                    try:
+                        if hasattr(self.player2, 'set_last_move'):
                             self.player2.set_last_move(side, role, engine_notation)
-                        except Exception:
-                            pass
+                    except Exception:
+                        pass
                 except Exception:
                     pass
             except Exception:
