@@ -502,7 +502,8 @@ class Coach():
             if (not self.skipFirstSelfPlay or i > 1) and not training_only:
                 if getattr(self.args, 'usePerfectTeacher', False) and getattr(self.args, 'teacherExamplesPerIter', 0) > 0:
                     try:
-                        log.info(f"📚 Generating {self.args.teacherExamplesPerIter} offline teacher examples for iter #{i}...")
+                        stage_name = {1: "Stage 1 (placing+taking)", 2: "Stage 2 (moving+taking)", 3: "Stage 3 (full rules)"}.get(c_stage if c_enabled else 3, f"Stage {c_stage if c_enabled else 3}")
+                        log.info(f"📚 Generating {self.args.teacherExamplesPerIter} offline teacher examples for iter #{i} ({stage_name})...")
                         from perfect_supervised import build_dataset_with_perfect_labels
                         teacher_db_path = getattr(self.args, 'teacherDBPath', None) or os.environ.get('SANMILL_PERFECT_DB')
                         if teacher_db_path:
@@ -514,8 +515,10 @@ class Coach():
                                 os.environ['SANMILL_ENGINE_THREADS'] = str(self.args.teacherThreads)
                             teacher_batch = getattr(self.args, 'teacherBatch', 256)
                             # verbose=False to avoid flooding logs during training
+                            # Pass curriculum stage to teacher data generation
                             teacher_examples = build_dataset_with_perfect_labels(
-                                teacher_db_path, int(self.args.teacherExamplesPerIter), batch=int(teacher_batch), verbose=False
+                                teacher_db_path, int(self.args.teacherExamplesPerIter), batch=int(teacher_batch), 
+                                verbose=False, curriculum_stage=c_stage if c_enabled else 3
                             )
                             if teacher_examples:
                                 log.info("✅ Generated %d teacher examples from Perfect DB", len(teacher_examples))

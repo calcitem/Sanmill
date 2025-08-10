@@ -126,44 +126,82 @@ class PerfectDB:
         w_place = board.pieces_in_hand_count(1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - ((board.put_pieces + 1) // 2))
         b_place = board.pieces_in_hand_count(-1) if hasattr(board, "pieces_in_hand_count") else max(0, 9 - (board.put_pieces // 2))
         
-        # Debug output for troubleshooting
+        # Optional debug output (only if debug logging is enabled)
         import logging
         log = logging.getLogger(__name__)
-        # Temporarily enable debug logging for diagnosis
-        log.setLevel(logging.DEBUG)
-        handler = logging.StreamHandler()
-        handler.setLevel(logging.DEBUG)
-        if not log.handlers:
-            log.addHandler(handler)
-        log.debug(f"PerfectDB.evaluate: period={board.period}, put_pieces={board.put_pieces}, "
-                 f"w_count={board.count(1)}, b_count={board.count(-1)}, "
-                 f"w_place={w_place}, b_place={b_place}, side_to_move={side_to_move}, only_take={only_take}")
-        
-        # Calculate expected sector ID for debugging
-        w_on_board = board.count(1)
-        b_on_board = board.count(-1)
-        log.debug(f"Expected sector ID: W={w_on_board}, B={b_on_board}, WF={w_place}, BF={b_place}")
-        log.debug(f"Bitboards: w_bits={w_bits:024b}, b_bits={b_bits:024b}")
+        if log.isEnabledFor(logging.DEBUG):
+            log.debug(f"PerfectDB.evaluate: period={board.period}, put_pieces={board.put_pieces}, "
+                     f"w_count={board.count(1)}, b_count={board.count(-1)}, "
+                     f"w_place={w_place}, b_place={b_place}, side_to_move={side_to_move}, only_take={only_take}")
+            log.debug(f"Expected sector ID: W={board.count(1)}, B={board.count(-1)}, WF={w_place}, BF={b_place}")
+            log.debug(f"Bitboards: w_bits={w_bits:024b}, b_bits={b_bits:024b}")
         
         out_wdl = ctypes.c_int(0)
         out_steps = ctypes.c_int(-1)
         key = (int(w_bits), int(b_bits), int(w_place), int(b_place), int(0 if side_to_move == 1 else 1), int(1 if only_take else 0))
         if key in self._eval_cache:
             return self._eval_cache[key]
-        ok = self._dll.pd_evaluate(
-            int(w_bits), int(b_bits), int(w_place), int(b_place),
-            int(0 if side_to_move == 1 else 1), int(1 if only_take else 0),
-            ctypes.byref(out_wdl), ctypes.byref(out_steps),
-        )
-        if ok != 1:
-            log.error(f"pd_evaluate failed with return code {ok}. Parameters: "
-                     f"w_bits={w_bits}, b_bits={b_bits}, w_place={w_place}, b_place={b_place}, "
-                     f"stm={0 if side_to_move == 1 else 1}, only_take={1 if only_take else 0}")
-            log.error(f"Expected sector: std_{w_on_board}_{b_on_board}_{w_place}_{b_place}.sec2")
-        assert ok == 1, f"pd_evaluate failed with return code {ok}"
-        res = (int(out_wdl.value), int(out_steps.value))
-        self._eval_cache[key] = res
-        return res
+        
+        # Input validation to avoid C++ assertion failures
+        try:
+            # Basic sanity checks before calling DLL
+            w_count = board.count(1)
+            b_count = board.count(-1)
+            
+            # Check for invalid states that might cause C++ assertions
+            if w_count < 0 or b_count < 0 or w_count > 9 or b_count > 9:
+                raise ValueError(f"Invalid piece counts: W={w_count}, B={b_count}")
+            
+            if w_place < 0 or b_place < 0 or w_place > 9 or b_place > 9:
+                raise ValueError(f"Invalid pieces in hand: WF={w_place}, BF={b_place}")
+            
+            # Check total pieces consistency
+            total_on_board = w_count + b_count
+            total_in_hand = w_place + b_place
+            if total_on_board + total_in_hand > 18:  # 9 pieces per player max
+                raise ValueError(f"Too many total pieces: on_board={total_on_board}, in_hand={total_in_hand}")
+            
+            # Note: Removed specific configuration filtering - let DLL handle validation
+            
+            # Prepare parameters for DLL call
+            stm_value = int(0 if side_to_move == 1 else 1)
+            only_take_value = int(1 if only_take else 0)
+            
+            # Log the problematic call for debugging
+            sector_name = f"std_{w_count}_{b_count}_{w_place}_{b_place}.sec2"
+            if log.isEnabledFor(logging.DEBUG):
+                log.debug(f"DLL Call: w_bits={w_bits:06x}, b_bits={b_bits:06x}, "
+                         f"w_place={w_place}, b_place={b_place}, stm={stm_value}, only_take={only_take_value}, "
+                         f"sector={sector_name}")
+            
+            # Print critical info for the specific failing case
+            if w_count == 3 and b_count == 9:
+                print(f"⚠️  CRITICAL: Attempting problematic call for sector {sector_name}")
+                print(f"   Parameters: w_bits={w_bits:06x}, b_bits={b_bits:06x}, stm={stm_value}, only_take={only_take_value}")
+            
+            try:
+                ok = self._dll.pd_evaluate(
+                    int(w_bits), int(b_bits), int(w_place), int(b_place),
+                    stm_value, only_take_value,
+                    ctypes.byref(out_wdl), ctypes.byref(out_steps),
+                )
+            except Exception as e:
+                # This won't catch C++ assertions, but might catch other errors
+                raise RuntimeError(f"DLL call failed for sector {sector_name}: {e}")
+            
+            if ok != 1:
+                raise RuntimeError(f"pd_evaluate failed with return code {ok}")
+            
+            res = (int(out_wdl.value), int(out_steps.value))
+            self._eval_cache[key] = res
+            return res
+            
+        except Exception as e:
+            # Log the problematic position and re-raise
+            log.warning(f"PerfectDB.evaluate failed for position: period={board.period}, "
+                       f"W={board.count(1)}, B={board.count(-1)}, WF={w_place}, BF={b_place}, "
+                       f"side_to_move={side_to_move}, only_take={only_take}, error: {e}")
+            raise
 
     def good_moves_tokens(self, board, side_to_move: int, only_take: bool, buf_len: int = 4096) -> List[str]:
         white_tok, black_tok = _board_to_tokens(board)
@@ -181,23 +219,56 @@ class PerfectDB:
         # 先用单着接口，后续如需多着可在 DLL 侧补充
         if not self._has_best:
             raise RuntimeError("pd_best_move not available in DLL")
-        buf = ctypes.create_string_buffer(buf_len)
-        key = (int(w_bits), int(b_bits), int(w_place), int(b_place), int(0 if side_to_move == 1 else 1), int(1 if only_take else 0))
-        if key in self._best_cache:
-            tok = self._best_cache[key]
+        
+        try:
+            # Same input validation as in evaluate()
+            w_count = board.count(1)
+            b_count = board.count(-1)
+            
+            if w_count < 0 or b_count < 0 or w_count > 9 or b_count > 9:
+                raise ValueError(f"Invalid piece counts: W={w_count}, B={b_count}")
+            
+            if w_place < 0 or b_place < 0 or w_place > 9 or b_place > 9:
+                raise ValueError(f"Invalid pieces in hand: WF={w_place}, BF={b_place}")
+            
+            total_on_board = w_count + b_count
+            total_in_hand = w_place + b_place
+            if total_on_board + total_in_hand > 18:
+                raise ValueError(f"Too many total pieces: on_board={total_on_board}, in_hand={total_in_hand}")
+            
+            # Note: Removed specific configuration filtering - let DLL handle validation
+            
+            buf = ctypes.create_string_buffer(buf_len)
+            stm_value = int(0 if side_to_move == 1 else 1)
+            only_take_value = int(1 if only_take else 0)
+            key = (int(w_bits), int(b_bits), int(w_place), int(b_place), stm_value, only_take_value)
+            if key in self._best_cache:
+                tok = self._best_cache[key]
+                return [tok] if tok else []
+            
+            # Optional detailed debug output for best_move calls
+            if log.isEnabledFor(logging.DEBUG):
+                log.debug(f"DLL best_move Call: w_bits={w_bits:06x}, b_bits={b_bits:06x}, "
+                         f"w_place={w_place}, b_place={b_place}, stm={stm_value}, only_take={only_take_value}, "
+                         f"sector=std_{w_count}_{b_count}_{w_place}_{b_place}.sec2")
+            
+            ok = self._dll.pd_best_move(
+                int(w_bits), int(b_bits), int(w_place), int(b_place),
+                stm_value, only_take_value,
+                buf, int(buf_len),
+            )
+            
+            if ok != 1:
+                raise RuntimeError(f"pd_best_move failed with return code {ok}")
+            
+            tok = buf.value.decode("utf-8", errors="ignore").strip()
+            self._best_cache[key] = tok
             return [tok] if tok else []
-        ok = self._dll.pd_best_move(
-            int(w_bits), int(b_bits), int(w_place), int(b_place),
-            int(0 if side_to_move == 1 else 1), int(1 if only_take else 0),
-            buf, int(buf_len),
-        )
-        if ok != 1:
-            log.error(f"pd_best_move failed with return code {ok}. Parameters: "
-                     f"w_bits={w_bits}, b_bits={b_bits}, w_place={w_place}, b_place={b_place}, "
-                     f"stm={0 if side_to_move == 1 else 1}, only_take={1 if only_take else 0}")
-        assert ok == 1, f"pd_best_move failed with return code {ok}"
-        tok = buf.value.decode("utf-8", errors="ignore").strip()
-        self._best_cache[key] = tok
-        return [tok] if tok else []
+            
+        except Exception as e:
+            log.warning(f"PerfectDB.good_moves_tokens failed for position: period={board.period}, "
+                       f"W={board.count(1)}, B={board.count(-1)}, WF={w_place}, BF={b_place}, "
+                       f"side_to_move={side_to_move}, only_take={only_take}, error: {e}")
+            raise
 
 

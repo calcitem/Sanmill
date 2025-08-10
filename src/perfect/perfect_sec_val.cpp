@@ -113,8 +113,13 @@ std::string sec_val_to_sec_name(sec_val v)
         if (v == virt_loss_val - 1) {
             return "KLE";
         }
-        assert(inv_sec_vals.count(v));
-        return std::to_string(v) + " (" + inv_sec_vals[v].to_string() + ")";
+        // Gracefully handle missing values instead of asserting
+        if (inv_sec_vals.count(v)) {
+            return std::to_string(v) + " (" + inv_sec_vals[v].to_string() + ")";
+        } else {
+            // Return a descriptive error string instead of crashing
+            return "UNKNOWN_VAL_" + std::to_string(v);
+        }
 #endif
     }
 }

@@ -111,7 +111,8 @@ def build_targets_from_analysis(board: Board, player: int, labels: Dict[str, Dic
 
 
 def sample_positions(game: Game, num_samples: int, max_plies: int = 60, non_optimal_prob: float = 0.2,
-                     min_phase: int = 1, max_branch: int = 28, max_attempts: int = 1000):
+                     min_phase: int = 1, max_branch: int = 28, max_attempts: int = 1000, 
+                     curriculum_stage: int = 3, verbose: bool = False):
     """Yield random positions by playing from start for up to max_plies.
 
     To avoid all-draw triviality, allow occasional non-optimal moves.
@@ -151,16 +152,46 @@ def sample_positions(game: Game, num_samples: int, max_plies: int = 60, non_opti
             branch = len(b.get_legal_moves(player))
         except Exception:
             branch = 0
-        if b.period >= min_phase and branch <= max_branch:
+        
+        # Additional filtering to avoid problematic states that cause Perfect DB assertions
+        # Skip states that are known to cause issues based on piece counts
+        w_count = b.count(1)
+        b_count = b.count(-1)
+        skip_position = False
+        
+        # Note: Removed heuristic filtering for specific piece configurations.
+        # Perfect DB assertion errors should be handled gracefully in _labels_from_db 
+        # rather than avoided through position filtering.
+        
+        # Curriculum stage filtering
+        if curriculum_stage == 1:
+            # Stage 1: Only placing (period=0) and taking (period=3) phases
+            if b.period not in [0, 3]:
+                skip_position = True
+        elif curriculum_stage == 2:
+            # Stage 2: Only moving phase (period=1), no flying
+            if b.period not in [1, 3]:  # Allow taking phase too for moves after forming mills
+                skip_position = True
+            # Additional check: ensure no flying moves in period=2 positions
+            elif b.period == 2:
+                skip_position = True  # Skip flying positions entirely in stage 2
+        # Stage 3: Allow all periods (no additional filtering)
+        
+        # Note: Removed overly strict filtering - the states themselves may be valid,
+        # but Perfect DB might have internal data inconsistencies for specific positions
+        
+        if b.period >= min_phase and branch <= max_branch and not skip_position:
             out.append((b, player, move_list))
         attempts += 1
     return out
 
 
 def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: int = 256,
-                                      verbose: bool = False) -> List[Tuple[list, int, list, int]]:
+                                      verbose: bool = False, curriculum_stage: int = 3) -> List[Tuple[list, int, list, int]]:
     """直接使用 Perfect DB DLL 进行标注（不再调用引擎）。
 
+    Args:
+        curriculum_stage: 1=placing only, 2=moving only, 3=full rules
     Returns examples of (board_array, curPlayer, pi, period)
     """
     game = Game()
@@ -173,28 +204,40 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
     def _labels_from_db(board: Board, cur_player: int) -> Dict[str, Dict]:
         # onlyTake: 置于吃子子阶段
         only_take = (board.period == 3)
-        wdl, steps = pdb.evaluate(board, cur_player, only_take)
-        # 获取 good moves tokens
-        tokens = pdb.good_moves_tokens(board, cur_player, only_take)
-        labels: Dict[str, Dict] = {}
-        if wdl > 0:
-            lab = 'win'
-        elif wdl < 0:
-            lab = 'loss'
-        else:
-            lab = 'draw'
-        # 均匀为相同标签；steps 同用整体返回（若不可得，为 -1）
-        for t in tokens:
-            labels[t] = {"wdl": lab, "value": 0, "steps": (None if steps < 0 else steps)}
-        return labels
+        try:
+            wdl, steps = pdb.evaluate(board, cur_player, only_take)
+            # 获取 good moves tokens
+            tokens = pdb.good_moves_tokens(board, cur_player, only_take)
+            labels: Dict[str, Dict] = {}
+            if wdl > 0:
+                lab = 'win'
+            elif wdl < 0:
+                lab = 'loss'
+            else:
+                lab = 'draw'
+            # 均匀为相同标签；steps 同用整体返回（若不可得，为 -1）
+            for t in tokens:
+                labels[t] = {"wdl": lab, "value": 0, "steps": (None if steps < 0 else steps)}
+            return labels
+        except Exception as ex:
+            # Handle Perfect DB assertion failures and other errors
+            print(f"[WARNING] Perfect DB error for position (period={board.period}, "
+                  f"W={board.count(1)}, B={board.count(-1)}, player={cur_player}): {ex}")
+            # Return empty labels to skip this position
+            return {}
 
+    # Log curriculum stage info
+    stage_names = {1: "Stage 1 (placing+taking)", 2: "Stage 2 (moving+taking)", 3: "Stage 3 (full rules)"}
+    stage_desc = stage_names.get(curriculum_stage, f"Stage {curriculum_stage}")
+    print(f"📚 Generating offline teacher data for {stage_desc}")
+    
     examples = []
-    with tqdm(total=total_examples, desc="Labeling via Perfect DB") as pbar:
+    with tqdm(total=total_examples, desc=f"Labeling via Perfect DB ({stage_desc})") as pbar:
         debug_printed = 0
         while len(examples) < total_examples:
             if verbose:
                 print(f"[Verbose] Sampling positions (batch={max(1, batch // 8)})...")
-            positions = sample_positions(game, num_samples=max(1, batch // 8))
+            positions = sample_positions(game, num_samples=max(1, batch // 8), curriculum_stage=curriculum_stage, verbose=verbose)
             if verbose:
                 print(f"[Verbose] Sampled {len(positions)} positions")
             for board, curPlayer, move_tokens in positions:
