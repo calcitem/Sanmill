@@ -365,26 +365,31 @@ Examples:
     
     # Phase control execution
     if auto_phases:
-        # Run sampling phase first (CPU)
-        log.info('🔍 AUTO PHASES: Starting sampling phase (CPU multi-process)...')
-        args_sampling = dotdict(dict(args))
-        args_sampling.cuda = False
-        args_sampling.use_amp = False
-        args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
-        c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
-        if effective_load_model:
+        total_iters = int(args.numIters)
+        for iter_idx in range(1, total_iters + 1):
+            # --- Sampling (CPU, multi-process) for ONE iteration ---
+            log.info('🔍 AUTO PHASES: Starting sampling phase for iter #%d (CPU multi-process)...', iter_idx)
+            args_sampling = dotdict(dict(args))
+            args_sampling.cuda = False
+            args_sampling.use_amp = False
+            args_sampling.num_processes = 2  # Default to 2 processes for better efficiency
+            args_sampling.numIters = 1       # Run exactly one iteration of sampling
+            c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
+            # Load previously accumulated examples if any, to keep history growing
             c_sampling.loadTrainExamples()
-        c_sampling.learn(sampling_only=True)
-        
-        # Phase transition
-        log.info('✅ SAMPLING phase completed! Transitioning to training phase...')
-        log.info('🎯 AUTO PHASES: Starting training phase (GPU single-process)...')
-        args_training = dotdict(dict(args))
-        args_training.num_processes = 1
-        # args.cuda and args.use_amp keep original values from config
-        c_training = Coach(g, nn(g, args_training), args_training)
-        c_training.loadTrainExamples()  # Load samples from sampling phase
-        c_training.learn(training_only=True)
+            c_sampling.learn(sampling_only=True)
+
+            # --- Transition to training ---
+            log.info('✅ SAMPLING for iter #%d completed. Transitioning to training...', iter_idx)
+            log.info('🎯 AUTO PHASES: Starting training phase for iter #%d (GPU single-process)...', iter_idx)
+            args_training = dotdict(dict(args))
+            args_training.num_processes = 1
+            args_training.numIters = 1  # Train exactly one iteration based on latest samples
+            # args_training.cuda / use_amp as configured
+            c_training = Coach(g, nn(g, args_training), args_training)
+            # Load the just-saved sampling examples
+            c_training.loadTrainExamples()
+            c_training.learn(training_only=True)
     else:
         # Single phase execution (original behavior)
         if single_phase:
