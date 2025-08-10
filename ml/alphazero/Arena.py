@@ -49,6 +49,10 @@ class Arena():
         it = 0
         # Track engine move tokens from the start position for players that need history
         engine_move_history = []
+        # Track moves for chess notation style output
+        notation_moves = []
+        move_count = 0
+        current_white_move = ''
 
         while self.game.getGameEnded(board, curPlayer) == 0:
             it += 1
@@ -103,11 +107,40 @@ class Arena():
                     ai_move_notation = engine_notation
                     import sys
                     setattr(sys.modules.get('__main__'), '_last_ai_move', engine_notation)
-                # 控制台与 GUI 同步打印最近一步（标注颜色与角色）
+                # 收集移动记录用于简化输出格式
                 try:
                     side = 'White' if curPlayer == 1 else 'Black'
                     role = 'AI' if isinstance(player_obj, MCTS) else ('Perfect' if hasattr(player_obj, 'play_with_history') else 'Human')
-                    print(f"Last move: {side}({role}) {engine_notation}")
+                    
+                    # 添加到简化记录中
+                    if curPlayer == 1:  # White move
+                        if not current_white_move:  # 开始新的一回合
+                            move_count += 1
+                            current_white_move = f"{move_count}. {engine_notation}"
+                        else:
+                            # 如果已经有白棋走子，这可能是吃子
+                            if engine_notation.startswith('x'):
+                                current_white_move += engine_notation
+                            else:
+                                # 应该不会发生，但处理异常情况
+                                notation_moves.append(current_white_move)
+                                move_count += 1
+                                current_white_move = f"{move_count}. {engine_notation}"
+                    else:  # Black move
+                        if current_white_move:
+                            if engine_notation.startswith('x'):
+                                current_white_move += f" {engine_notation}"
+                            else:
+                                current_white_move += f" {engine_notation}"
+                            notation_moves.append(current_white_move)
+                            current_white_move = ''
+                        else:
+                            # 黑棋先手的情况（不太常见）
+                            if engine_notation.startswith('x'):
+                                notation_moves.append(f"{engine_notation}")
+                            else:
+                                notation_moves.append(f"{engine_notation}")
+                    
                     # 若是 GUI 人类玩家，更新其状态栏
                     try:
                         if hasattr(self.player1, 'set_last_move'):
@@ -172,6 +205,25 @@ class Arena():
                         return self.playGame(verbose=verbose)
             except Exception:
                 pass
+        
+        # 输出简化的移动记录
+        try:
+            # 处理剩余的白棋走法
+            if current_white_move:
+                notation_moves.append(current_white_move)
+            
+            if notation_moves:
+                # 显示前几步和省略号
+                max_show = 5  # 显示前5步
+                if len(notation_moves) <= max_show:
+                    move_text = " ".join(notation_moves)
+                else:
+                    shown_moves = " ".join(notation_moves[:max_show])
+                    move_text = f"{shown_moves} ... 后面省略"
+                print(move_text)
+        except Exception:
+            pass
+        
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
 def arena_wrapper(arena_args, verbose, i, display_sign: int = 1):
