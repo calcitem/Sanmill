@@ -97,6 +97,10 @@ Examples:
     parser.add_argument('--db', type=str, default=None,
                         help='Path to perfect database (auto-enables teacher)')
     parser.add_argument('--verbose', '-v', action='store_true', help='Enable detailed console output (DEBUG)')
+    parser.add_argument('--sampling-only', action='store_true', help='Run only self-play sampling phase (CPU multi-process)')
+    parser.add_argument('--training-only', action='store_true', help='Run only training phase (GPU single-process)')
+    parser.add_argument('--single-phase', action='store_true', help='Use original single-phase mode (sampling + training in same process)')
+    parser.add_argument('--auto-phases', action='store_true', help='Explicitly run auto phases (default behavior)')
     
     cmd_args = parser.parse_args()
     
@@ -175,6 +179,42 @@ Examples:
     except Exception as e:
         log.warning("Failed to setup file logging: %s", e)
 
+    # Handle phase separation flags
+    sampling_only = getattr(cmd_args, 'sampling_only', False)
+    training_only = getattr(cmd_args, 'training_only', False)
+    single_phase = getattr(cmd_args, 'single_phase', False)
+    auto_phases = getattr(cmd_args, 'auto_phases', False)
+    
+    # Validate phase arguments
+    phase_flags = [sampling_only, training_only, single_phase, auto_phases]
+    assert sum(phase_flags) <= 1, "Only one of --sampling-only, --training-only, --single-phase, --auto-phases can be specified"
+    
+    # Default behavior: auto-phases if no phase flag is specified
+    if sum(phase_flags) == 0:
+        auto_phases = True
+        log.info("🔄 DEFAULT: Using auto-phases mode (sampling then training)")
+    
+    # Configure phases
+    if sampling_only:
+        # Force CPU for sampling phase
+        original_cuda = args.cuda
+        args.cuda = False
+        args.use_amp = False
+        # Ensure multi-process for sampling efficiency
+        if args.num_processes == 1:
+            args.num_processes = min(16, max(4, args.num_processes * 4))  # reasonable default
+        log.info("🔍 SAMPLING PHASE: CPU multi-process mode")
+    elif training_only:
+        # Force single process + GPU for training phase
+        args.num_processes = 1
+        if not args.cuda:
+            log.warning("Training phase typically benefits from CUDA. Consider setting cuda: true in config.")
+        log.info("🎯 TRAINING PHASE: GPU single-process mode")
+    elif single_phase:
+        log.info("📋 SINGLE PHASE: Original mode (sampling + training in same process)")
+    elif auto_phases:
+        log.info("🔄 AUTO PHASES: Will run sampling (CPU) then training (GPU)")
+    
     # Show key configuration
     log.info(f"🎯 Training config: {args.numIters} iters, {args.numEps} eps/iter, {args.num_processes} procs, CUDA: {args.cuda}")
     if args.usePerfectTeacher:
@@ -275,7 +315,35 @@ Examples:
         log.info('Teacher mixing is enabled: %d examples/iter from %s', args.teacherExamplesPerIter, args.teacherDBPath)
     if args.pitAgainstPerfect:
         log.info('Perfect DB evaluation is enabled: will pit new models against Perfect DB each iteration')
-    c.learn()
+    
+    # Phase control execution
+    if auto_phases:
+        # Run sampling phase first (CPU)
+        log.info('🔍 AUTO PHASES: Starting sampling phase (CPU multi-process)...')
+        args_sampling = dotdict(dict(args))
+        args_sampling.cuda = False
+        args_sampling.use_amp = False
+        args_sampling.num_processes = min(16, max(4, args.num_processes * 4))
+        c_sampling = Coach(g, nn(g, args_sampling), args_sampling)
+        if args.load_model:
+            c_sampling.loadTrainExamples()
+        c_sampling.learn(sampling_only=True)
+        
+        # Run training phase (GPU)
+        log.info('🎯 AUTO PHASES: Starting training phase (GPU single-process)...')
+        args_training = dotdict(dict(args))
+        args_training.num_processes = 1
+        # args.cuda and args.use_amp keep original values from config
+        c_training = Coach(g, nn(g, args_training), args_training)
+        c_training.loadTrainExamples()  # Load samples from sampling phase
+        c_training.learn(training_only=True)
+    else:
+        # Single phase execution (original behavior)
+        if single_phase:
+            c.learn()  # Original method signature without phase control
+        else:
+            # Individual phase execution
+            c.learn(sampling_only=sampling_only, training_only=training_only)
 
 
 if __name__ == "__main__":

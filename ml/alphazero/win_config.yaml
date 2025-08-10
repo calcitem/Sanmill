@@ -41,6 +41,8 @@ cuda: true              # Use GPU if available (default: True)
                           # - true: faster training with GPU
                           # - false: CPU-only (more stable, slower)
 
+use_amp: true  # Optional, will be automatically enabled if CUDA is available
+
 # =============================================================================
 # NEURAL NETWORK HYPERPARAMETERS
 # =============================================================================

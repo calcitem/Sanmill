@@ -409,7 +409,7 @@ class Coach():
             elif self.args.num_processes != 1:
                 log.info('Online teacher disabled in multi-process mode (set num_processes: 1)')
 
-    def learn(self):
+    def learn(self, sampling_only=False, training_only=False):
         """
         Performs numIters iterations with numEps episodes of self-play in each
         iteration. After every iteration, it retrains neural network with
@@ -421,8 +421,15 @@ class Coach():
         for i in range(1, self.args.numIters + 1):
             # bookkeeping
             log.info(f'Starting Iter #{i} ...')
+            
+            # Phase control: skip sampling if training_only, skip training if sampling_only
+            if training_only:
+                log.info(f'🎯 TRAINING-ONLY mode: Skipping self-play for iter #{i}')
+            elif sampling_only:
+                log.info(f'🔍 SAMPLING-ONLY mode: Will skip training/pitting for iter #{i}')
+            
             # examples of the iteration
-            if not self.skipFirstSelfPlay or i > 1:
+            if (not self.skipFirstSelfPlay or i > 1) and not training_only:
                 iterationTrainExamples = deque([], maxlen=self.args.maxlenOfQueue)
 
                 if self.args.num_processes > 1:
@@ -464,6 +471,13 @@ class Coach():
                 # save the iteration examples to the history 
                 self.trainExamplesHistory.append(list(iterationTrainExamples))
                 del iterationTrainExamples
+
+            # If sampling_only mode, save examples and skip training
+            if sampling_only:
+                # backup history to a file for later training phase
+                self.saveTrainExamples('x')
+                log.info(f'🔍 SAMPLING-ONLY: Saved examples for iter #{i}, skipping training')
+                continue
 
             if len(self.trainExamplesHistory) > self.args.numItersForTrainExamplesHistory:
                 log.warning(

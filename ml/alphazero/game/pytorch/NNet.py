@@ -72,13 +72,15 @@ class NNetWrapper(NeuralNet):
                 with autocast(device_type='cuda', enabled=self.use_amp):
                     target_pis = target_pis + 1e-8
                     device = boards.device
-                    out_pi = torch.zeros(target_pis.size(), device=device)
-                    out_v = torch.zeros(target_vs.size(), device=device)
+                    # Use the same dtype as targets to avoid AMP dtype mismatch
+                    out_pi = torch.zeros(target_pis.size(), device=device, dtype=target_pis.dtype)
+                    out_v = torch.zeros(target_vs.size(), device=device, dtype=target_vs.dtype)
                     for i in range(5):
                         if (periods == i).any():
                             pi, v = self.nnet(boards[periods == i], i)
-                            out_pi[periods == i] = pi.view(-1, target_pis.size(1))
-                            out_v[periods == i] = v.view(-1)
+                            # Ensure dtype compatibility
+                            out_pi[periods == i] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
+                            out_v[periods == i] = v.view(-1).to(target_vs.dtype)
                     l_pi = self.loss_pi(target_pis, out_pi)
                     l_v = self.loss_v(target_vs, out_v)
                     total_loss = l_pi + l_v
@@ -127,13 +129,15 @@ class NNetWrapper(NeuralNet):
                 with autocast(device_type='cuda', enabled=self.use_amp):
                     target_pis = target_pis + 1e-8
                     device = boards.device
-                    out_pi = torch.zeros(target_pis.size(), device=device)
-                    out_v = torch.zeros(target_vs.size(), device=device)
+                    # Use the same dtype as targets to avoid AMP dtype mismatch
+                    out_pi = torch.zeros(target_pis.size(), device=device, dtype=target_pis.dtype)
+                    out_v = torch.zeros(target_vs.size(), device=device, dtype=target_vs.dtype)
                     for i in range(5):
                         if (periods == i).any():
                             pi, v = self.nnet(boards[periods == i], i)
-                            out_pi[periods == i] = pi.view(-1, target_pis.size(1))
-                            out_v[periods == i] = v.view(-1)
+                            # Ensure dtype compatibility
+                            out_pi[periods == i] = pi.view(-1, target_pis.size(1)).to(target_pis.dtype)
+                            out_v[periods == i] = v.view(-1).to(target_vs.dtype)
                     l_pi = self.loss_pi(target_pis, out_pi)
                     l_v = self.loss_v(target_vs, out_v)
                     loss = (l_pi + l_v).item()
