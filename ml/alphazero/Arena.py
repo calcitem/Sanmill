@@ -33,6 +33,11 @@ class Arena():
         self.v_ema = EMA()
         # 在人机模式下，是否根据 pi 概率抽样选择走法（引入随机性）
         self.human_sample_from_pi = bool(human_sample_from_pi)
+        # Discrete game-end info for post-game aggregation (W/D/L from Player-1 perspective)
+        # 1 = win for Player-1, 0 = draw, -1 = loss
+        self._last_wdl_discrete: int | None = None
+        # Raw reason id from Board.check_game_over_conditions()
+        self._last_end_reason_id: str | None = None
 
     def playGame(self, verbose=False):
         """
@@ -230,6 +235,23 @@ class Arena():
         except Exception:
             pass
         
+        # Compute discrete W/D/L from Player-1 perspective using explicit reason
+        try:
+            is_over, result_first, reason_id = board.check_game_over_conditions(1)
+        except Exception:
+            # Fallback to scalar-only if detailed reason unavailable
+            is_over, result_first, reason_id = True, self.game.getGameEnded(board, 1), None
+
+        # Store for outer wrapper (used to avoid misclassifying draws by tiny bias)
+        try:
+            self._last_end_reason_id = str(reason_id) if reason_id is not None else None
+            if self._last_end_reason_id and self._last_end_reason_id.startswith('draw'):
+                self._last_wdl_discrete = 0
+            else:
+                self._last_wdl_discrete = 1 if float(result_first) > 0 else -1
+        except Exception:
+            self._last_wdl_discrete = None
+
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
 def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_from_pi: bool = False, scoreboard: dict | None = None):
@@ -243,13 +265,26 @@ def arena_wrapper(arena_args, verbose, i, display_sign: int = 1, human_sample_fr
     except Exception:
         shown = reselts
     if scoreboard is not None:
+        # Prefer discrete W/D/L from final reason to avoid draw-bias misclassification
         try:
-            if shown > 1e-4:
-                scoreboard['wins'] = scoreboard.get('wins', 0) + 1
-            elif shown < -1e-4:
-                scoreboard['losses'] = scoreboard.get('losses', 0) + 1
+            wdl_disc = getattr(arena, '_last_wdl_discrete', None)
+            if wdl_disc is not None:
+                # Apply display perspective (normalize to "new model" if requested)
+                wdl_shown = int(display_sign) * int(wdl_disc)
+                if wdl_shown > 0:
+                    scoreboard['wins'] = scoreboard.get('wins', 0) + 1
+                elif wdl_shown < 0:
+                    scoreboard['losses'] = scoreboard.get('losses', 0) + 1
+                else:
+                    scoreboard['draws'] = scoreboard.get('draws', 0) + 1
             else:
-                scoreboard['draws'] = scoreboard.get('draws', 0) + 1
+                # Robust numeric fallback: treat small-magnitude results as draws
+                if abs(float(shown)) < 0.5:
+                    scoreboard['draws'] = scoreboard.get('draws', 0) + 1
+                elif float(shown) > 0:
+                    scoreboard['wins'] = scoreboard.get('wins', 0) + 1
+                else:
+                    scoreboard['losses'] = scoreboard.get('losses', 0) + 1
         except Exception:
             pass
         w = scoreboard.get('wins', 0)
@@ -300,28 +335,29 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         for i in range(num):
             display_sign = -1 if normalize_new_perspective else 1
             gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
-            if gameResult > 1e-4:
-                first_half["oneWon"] += 1
-                oneWon += 1
-            elif gameResult < -1e-4:
-                first_half["twoWon"] += 1
-                twoWon += 1
-            else:
+            # Use robust draw detection: draws have small magnitude due to bias; wins are exactly ±1
+            if abs(float(gameResult)) < 0.5:
                 first_half["draws"] += 1
                 draws += 1
+            elif float(gameResult) > 0:
+                first_half["oneWon"] += 1
+                oneWon += 1
+            else:
+                first_half["twoWon"] += 1
+                twoWon += 1
         arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
         for i in range(num):
             display_sign = 1 if normalize_new_perspective else 1
             gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
-            if gameResult < -1e-4:
-                second_half["oneWon"] += 1
-                oneWon += 1
-            elif gameResult > 1e-4:
-                second_half["twoWon"] += 1
-                twoWon += 1
-            else:
+            if abs(float(gameResult)) < 0.5:
                 second_half["draws"] += 1
                 draws += 1
+            elif float(gameResult) < 0:
+                second_half["oneWon"] += 1
+                oneWon += 1
+            else:
+                second_half["twoWon"] += 1
+                twoWon += 1
     else:
         process_list = []
         results_queue = Queue()
@@ -336,25 +372,25 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
         for _ in range(num):
             is_oneplayer_first, gameResult = results_queue.get()
             if is_oneplayer_first == 0:
-                if gameResult > 1e-4:
-                    first_half["oneWon"] += 1
-                    oneWon += 1
-                elif gameResult < -1e-4:
-                    first_half["twoWon"] += 1
-                    twoWon += 1
-                else:
+                if abs(float(gameResult)) < 0.5:
                     first_half["draws"] += 1
                     draws += 1
-            else:
-                if gameResult < -1e-4:
-                    second_half["oneWon"] += 1
+                elif float(gameResult) > 0:
+                    first_half["oneWon"] += 1
                     oneWon += 1
-                elif gameResult > 1e-4:
-                    second_half["twoWon"] += 1
-                    twoWon += 1
                 else:
+                    first_half["twoWon"] += 1
+                    twoWon += 1
+            else:
+                if abs(float(gameResult)) < 0.5:
                     second_half["draws"] += 1
                     draws += 1
+                elif float(gameResult) < 0:
+                    second_half["oneWon"] += 1
+                    oneWon += 1
+                else:
+                    second_half["twoWon"] += 1
+                    twoWon += 1
 
         # terminate multiprocessing
         del is_oneplayer_first, gameResult
