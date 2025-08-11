@@ -235,20 +235,51 @@ class Arena():
         except Exception:
             pass
         
-        # Compute discrete W/D/L from Player-1 perspective using explicit reason
+        # Compute discrete W/D/L from Player-1 perspective.
+        # 优先使用显式终局原因；若无，则识别“阶段 1 早停”的启发式终局。
+        try:
+            numeric_result_first = float(self.game.getGameEnded(board, 1))
+        except Exception:
+            numeric_result_first = 0.0
+
         try:
             is_over, result_first, reason_id = board.check_game_over_conditions(1)
         except Exception:
-            # Fallback to scalar-only if detailed reason unavailable
-            is_over, result_first, reason_id = True, self.game.getGameEnded(board, 1), None
+            is_over, result_first, reason_id = False, 0.0, None
 
-        # Store for outer wrapper (used to avoid misclassifying draws by tiny bias)
         try:
-            self._last_end_reason_id = str(reason_id) if reason_id is not None else None
-            if self._last_end_reason_id and self._last_end_reason_id.startswith('draw'):
-                self._last_wdl_discrete = 0
+            if is_over:
+                # 真实终局：依据原因判和，其余按符号定胜负
+                self._last_end_reason_id = str(reason_id) if reason_id is not None else None
+                if self._last_end_reason_id and self._last_end_reason_id.startswith('draw'):
+                    self._last_wdl_discrete = 0
+                else:
+                    self._last_wdl_discrete = 1 if float(result_first) > 0 else -1
             else:
-                self._last_wdl_discrete = 1 if float(result_first) > 0 else -1
+                # 非真实终局：可能是课程学习阶段 1 的早停（放置阶段结束后的启发式评分）
+                stage1_early_stop = False
+                try:
+                    stage1_early_stop = bool(getattr(self.game, '_curriculum_enabled', False)) \
+                        and int(getattr(self.game, '_curriculum_stage', 3)) == 1 \
+                        and int(getattr(board, 'put_pieces', 0)) >= 18 \
+                        and int(getattr(board, 'period', 0)) != 3
+                except Exception:
+                    stage1_early_stop = False
+
+                if stage1_early_stop:
+                    # 用启发式分数的符号来给出离散胜负；理由标记为 stage1Heuristic
+                    self._last_end_reason_id = 'stage1Heuristic'
+                    if abs(numeric_result_first) < 1e-8:
+                        self._last_wdl_discrete = 0
+                    else:
+                        self._last_wdl_discrete = 1 if numeric_result_first > 0 else -1
+                else:
+                    # 保守兜底：依据 numeric_result_first 的符号
+                    self._last_end_reason_id = None
+                    if abs(numeric_result_first) < 1e-8:
+                        self._last_wdl_discrete = 0
+                    else:
+                        self._last_wdl_discrete = 1 if numeric_result_first > 0 else -1
         except Exception:
             self._last_wdl_discrete = None
 
@@ -299,14 +330,39 @@ def arena_wrapper_parallel(arena_args, verbose, num, results_queue, normalize_ne
     # 上半场：player1 先手（此时按照 Coach 约定，player1=旧，player2=新）
     for i in range(num//2):
         display_sign = -1 if normalize_new_perspective else 1
-        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
+        scoreboard_once = {"wins": 0, "draws": 0, "losses": 0}
+        _ = arena_wrapper(
+            arena_args, verbose, i,
+            display_sign=display_sign,
+            human_sample_from_pi=human_sample_from_pi,
+            scoreboard=scoreboard_once,
+        )
+        # 将离散 WDL（新视角）作为结果发送，避免 0 附近偏移被判为和局
+        if scoreboard_once.get("wins", 0) == 1:
+            res = 1.0
+        elif scoreboard_once.get("losses", 0) == 1:
+            res = -1.0
+        else:
+            res = 0.0
         results_queue.put((0, res))
     # 交换先后手
     arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
     # 下半场：player1 先手（此时 player1=新，player2=旧）
     for i in range(num//2):
         display_sign = 1 if normalize_new_perspective else 1
-        res = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi)
+        scoreboard_once = {"wins": 0, "draws": 0, "losses": 0}
+        _ = arena_wrapper(
+            arena_args, verbose, i,
+            display_sign=display_sign,
+            human_sample_from_pi=human_sample_from_pi,
+            scoreboard=scoreboard_once,
+        )
+        if scoreboard_once.get("wins", 0) == 1:
+            res = 1.0
+        elif scoreboard_once.get("losses", 0) == 1:
+            res = -1.0
+        else:
+            res = 0.0
         results_queue.put((1, res))
 
 def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bool = False, normalize_new_perspective: bool = False, human_sample_from_pi: bool = False):
@@ -330,34 +386,43 @@ def playGames(arena_args, num, verbose=False, num_processes=0, return_halves: bo
     second_half = {"oneWon": 0, "twoWon": 0, "draws": 0}
     if verbose or num_processes == 0:
         num = num // 2
-        # 新模型视角的累积记分板（用于行尾打印）
-        scoreboard = {"wins": 0, "draws": 0, "losses": 0}
+        # 分开统计上下半场（均为“新网络视角”：wins=新胜，losses=新负，draws=和）
+        scoreboard_first = {"wins": 0, "draws": 0, "losses": 0}
         for i in range(num):
             display_sign = -1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
-            # Use robust draw detection: draws have small magnitude due to bias; wins are exactly ±1
-            if abs(float(gameResult)) < 0.5:
-                first_half["draws"] += 1
-                draws += 1
-            elif float(gameResult) > 0:
-                first_half["oneWon"] += 1
-                oneWon += 1
-            else:
-                first_half["twoWon"] += 1
-                twoWon += 1
+            _ = arena_wrapper(
+                arena_args, verbose, i,
+                display_sign=display_sign,
+                human_sample_from_pi=human_sample_from_pi,
+                scoreboard=scoreboard_first,
+            )
+        # 将新视角的上下半场记分板映射回 one/twoWon 语义
+        # 上半场：player1=旧，player2=新 → twoWon=新胜，oneWon=新负
+        first_half["twoWon"] = int(scoreboard_first.get("wins", 0))
+        first_half["oneWon"] = int(scoreboard_first.get("losses", 0))
+        first_half["draws"] = int(scoreboard_first.get("draws", 0))
+        oneWon += first_half["oneWon"]
+        twoWon += first_half["twoWon"]
+        draws += first_half["draws"]
+
+        # 下半场：交换先后手（此时 player1=新，player2=旧）
         arena_args[0], arena_args[1] = arena_args[1], arena_args[0]
+        scoreboard_second = {"wins": 0, "draws": 0, "losses": 0}
         for i in range(num):
             display_sign = 1 if normalize_new_perspective else 1
-            gameResult = arena_wrapper(arena_args, verbose, i, display_sign=display_sign, human_sample_from_pi=human_sample_from_pi, scoreboard=scoreboard)
-            if abs(float(gameResult)) < 0.5:
-                second_half["draws"] += 1
-                draws += 1
-            elif float(gameResult) < 0:
-                second_half["oneWon"] += 1
-                oneWon += 1
-            else:
-                second_half["twoWon"] += 1
-                twoWon += 1
+            _ = arena_wrapper(
+                arena_args, verbose, i,
+                display_sign=display_sign,
+                human_sample_from_pi=human_sample_from_pi,
+                scoreboard=scoreboard_second,
+            )
+        # 下半场：player1=新 → oneWon=新胜，twoWon=新负
+        second_half["oneWon"] = int(scoreboard_second.get("wins", 0))
+        second_half["twoWon"] = int(scoreboard_second.get("losses", 0))
+        second_half["draws"] = int(scoreboard_second.get("draws", 0))
+        oneWon += second_half["oneWon"]
+        twoWon += second_half["twoWon"]
+        draws += second_half["draws"]
     else:
         process_list = []
         results_queue = Queue()
