@@ -95,6 +95,9 @@ class Game:
             b.curriculum_stage = int(self._curriculum_stage)
             # In stage 2, disable flying to isolate moving semantics
             b.allow_flying = not (self._curriculum_enabled and int(self._curriculum_stage) == 2)
+            # Absolute starter is White. This flag is used to disambiguate
+            # canonicalized boards where pieces' signs are flipped.
+            b._to_move_is_white = True
         except Exception:
             # Keep defaults if flags not available on Board
             pass
@@ -254,6 +257,15 @@ class Game:
         return as-is; when player == -1, invert pieces.
         """
         b = deepcopy(board)
+        # Record absolute side-to-move for this canonicalized board so that
+        # in-hand computations (which depend on placement parity) remain
+        # correct even when piece signs are flipped.
+        try:
+            b._to_move_is_white = bool(player == 1)
+        except Exception:
+            # Best-effort fallback
+            b._to_move_is_white = True
+
         b.pieces = (player * np.array(b.pieces)).tolist()
         return b
 

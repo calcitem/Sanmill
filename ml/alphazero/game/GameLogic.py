@@ -464,11 +464,25 @@ class Board:
         Black plays on moves 2,4,6,... (put_pieces = 2,4,6,...)
         """
         pieces_on_board = self.count(color)
+        # Placement parity must be computed in absolute colors (White/Black)
+        # regardless of canonicalization which may flip piece signs. We use
+        # a flag `_to_move_is_white` that is set by Game when creating or
+        # canonicalizing boards. If absent, assume absolute perspective.
+        is_abs_white_turn = getattr(self, '_to_move_is_white', True)
+        # Map requested color (possibly canonical) to absolute color:
+        # When it's White's turn in absolute view, color sign is unchanged;
+        # when it's Black's turn, color is flipped relative to absolute.
+        # This keeps placement counts consistent with `put_pieces` parity.
+        if is_abs_white_turn:
+            abs_color = color
+        else:
+            abs_color = -color
+
         # White gets pieces placed on odd put_pieces counts (1,3,5,...)
         # Black gets pieces placed on even put_pieces counts (2,4,6,...)
-        if color == 1:  # White
+        if abs_color == 1:  # Absolute White
             total_pieces_placed = (self.put_pieces + 1) // 2
-        else:  # Black
+        else:  # Absolute Black
             total_pieces_placed = self.put_pieces // 2
         return max(0, self.pieces_count - total_pieces_placed)
 
