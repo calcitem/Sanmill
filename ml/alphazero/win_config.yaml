@@ -5,12 +5,12 @@
 # =============================================================================
 # TRAINING PARAMETERS
 # =============================================================================
-numIters: 100               # Total training iterations (default: 100)
+numIters: 200               # Total training iterations (default: 100)
                           # - Quick test: 3
                           # - Normal training: 10-50  
                           # - Long training: 100+
 
-numEps: 100                # Self-play games per iteration (default: 100)
+numEps: 200                # Self-play games per iteration (default: 100)
                           # - Quick test: 6
                           # - Balanced: 20-50
                           # - High quality: 100+
@@ -18,7 +18,7 @@ numEps: 100                # Self-play games per iteration (default: 100)
 tempThreshold: 80         # Switch from sampling to greedy after N plies
 updateThreshold: 0.55     # Accept new model if win-rate above this threshold
 maxlenOfQueue: 200000     # Max training examples kept (reduce for memory constraints)
-numMCTSSims: 40          # MCTS simulations per move (default: 40, higher = stronger but slower)
+numMCTSSims: 100          # MCTS simulations per move (default: 40, higher = stronger but slower)
 arenaCompare: 40         # Games for new vs old model evaluation (default: 20)
 cpuct: 1.5               # UCB exploration parameter
 
@@ -33,7 +33,7 @@ numItersForTrainExamplesHistory: 5       # Keep N iterations of training history
 # =============================================================================
 # SYSTEM SETTINGS
 # =============================================================================
-num_processes: 2          # Parallel processes for self-play (default: 5)
+num_processes: 1          # Parallel processes for self-play (default: 5)
                           # - With teacher: 1 (recommended for stability)
                           # - Pure AlphaZero: 2-4 (faster self-play)
 
@@ -52,8 +52,8 @@ lr: 0.002                # Learning rate
                           # - Fine-tuning: 0.001
 
 dropout: 0.3             # Dropout rate for regularization
-epochs: 10               # Training epochs per iteration
-batch_size: 768         # Training batch size (reduce if out of memory)
+epochs: 20               # Training epochs per iteration
+batch_size: 512         # Training batch size (reduce if out of memory)
 num_channels: 256        # Network width (128=smaller/faster, 512=larger/stronger)
 
 # =============================================================================
