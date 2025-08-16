@@ -22,6 +22,8 @@ from typing import Optional, Tuple, List, Dict, Any
 import struct
 import threading
 import time
+import random
+from copy import deepcopy
 
 # Add current directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -39,12 +41,16 @@ logger = logging.getLogger(__name__)
 class NNUEModelLoader:
     """NNUE model loader that can handle both .bin and .pth formats"""
     
-    def __init__(self, model_path: str, feature_size: int = 115, hidden_size: int = 256):
+    def __init__(self, model_path: str, feature_size: int = 115, hidden_size: int = 256, force_cpu: bool = True):
         self.model_path = model_path
         self.feature_size = feature_size
         self.hidden_size = hidden_size
         self.model = None
-        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        # NNUE is designed for CPU inference - force CPU by default for optimal performance
+        if force_cpu:
+            self.device = torch.device('cpu')
+        else:
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
         
     def load_model(self) -> MillNNUE:
         """Load NNUE model from file"""
@@ -324,10 +330,14 @@ class NNUEGameAdapter:
 class NNUEPlayer:
     """AI player using NNUE model for evaluation - uses ml/game logic"""
     
-    def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 3):
+    def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 8, use_randomness: bool = False):
         self.model = model_loader.load_model()
         self.device = model_loader.device
         self.search_depth = search_depth
+        self.use_randomness = use_randomness
+        # Statistics for performance monitoring
+        self.nodes_searched = 0
+        self.cutoffs = 0
         
     def evaluate_position(self, game_state: NNUEGameAdapter) -> float:
         """Evaluate position using NNUE model"""
@@ -339,36 +349,85 @@ class NNUEPlayer:
             evaluation = self.model(features_tensor, side_to_move_tensor)
             return float(evaluation.squeeze().cpu())
             
+    def order_moves(self, game_state: NNUEGameAdapter, moves: List[Tuple[int, int, int, int]]) -> List[Tuple[int, int, int, int]]:
+        """Order moves based on NNUE evaluation for better Alpha-Beta pruning"""
+        if len(moves) <= 1:
+            return moves
+            
+        move_scores = []
+        for move in moves:
+            temp_state = game_state.copy()
+            if temp_state.make_move(move):
+                # Use NNUE evaluation to score the resulting position
+                score = self.evaluate_position(temp_state)
+                move_scores.append((move, score))
+            else:
+                # Invalid move gets lowest priority
+                move_scores.append((move, float('-inf')))
+        
+        # Sort moves: best moves first for the current player
+        if game_state.side_to_move == 0:  # White (maximizing)
+            move_scores.sort(key=lambda x: x[1], reverse=True)
+        else:  # Black (minimizing) 
+            move_scores.sort(key=lambda x: x[1], reverse=False)
+            
+        return [move for move, score in move_scores]
+
     def get_best_move(self, game_state: NNUEGameAdapter) -> Optional[Tuple[int, int, int, int]]:
-        """Get best move using minimax with NNUE evaluation"""
+        """Get best move using Alpha-Beta pruning with NNUE evaluation"""
+        
+        # Reset statistics
+        self.nodes_searched = 0
+        self.cutoffs = 0
+        
         valid_moves = game_state.get_valid_moves()
         if not valid_moves:
             return None
             
-        best_move = None
-        best_score = float('-inf') if game_state.side_to_move == 0 else float('inf')
+        # Order moves using NNUE evaluation for better pruning
+        ordered_moves = self.order_moves(game_state, valid_moves)
         
-        for move in valid_moves:
-            # Make move on copy
+        # Collect all moves with their scores
+        move_scores = []
+        alpha = float('-inf')
+        beta = float('inf')
+        
+        for move in ordered_moves:
             temp_state = game_state.copy()
             if temp_state.make_move(move):
-                score = self._minimax(temp_state, self.search_depth - 1, 
-                                    False if game_state.side_to_move == 0 else True)
-                
                 if game_state.side_to_move == 0:  # White (maximizing)
-                    if score > best_score:
-                        best_score = score
-                        best_move = move
+                    score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, False)
                 else:  # Black (minimizing)
-                    if score < best_score:
-                        best_score = score
-                        best_move = move
-                        
-        return best_move
+                    score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, True)
+                move_scores.append((move, score))
         
-    def _minimax(self, game_state: NNUEGameAdapter, depth: int, maximizing: bool) -> float:
-        """Minimax search with NNUE evaluation"""
-        # Check if game is over
+        if not move_scores:
+            return None
+            
+        # Find the best score
+        if game_state.side_to_move == 0:  # White (maximizing)
+            best_score = max(score for _, score in move_scores)
+        else:  # Black (minimizing)
+            best_score = min(score for _, score in move_scores)
+        
+        # Find all moves with the best score (exactly equal)
+        epsilon = 1e-9  # Very small tolerance for floating point comparison
+        best_moves = [move for move, score in move_scores if abs(score - best_score) < epsilon]
+        
+        # Return based on randomness setting
+        if self.use_randomness and len(best_moves) > 1:
+            # Random selection among equally good moves
+            return random.choice(best_moves)
+        else:
+            # Deterministic: return first best move
+            return best_moves[0]
+        
+    def _alpha_beta(self, game_state: NNUEGameAdapter, depth: int, 
+                    alpha: float, beta: float, maximizing: bool) -> float:
+        """Alpha-Beta pruning search with NNUE evaluation"""
+        self.nodes_searched += 1
+        
+        # Check if game is over or reached depth limit
         is_over, reason = game_state.is_game_over()
         if is_over or depth == 0:
             return self.evaluate_position(game_state)
@@ -377,22 +436,50 @@ class NNUEPlayer:
         if not valid_moves:
             return self.evaluate_position(game_state)
             
+        # Order moves using NNUE evaluation for better pruning
+        ordered_moves = self.order_moves(game_state, valid_moves)
+            
         if maximizing:
-            max_score = float('-inf')
-            for move in valid_moves:
+            max_eval = float('-inf')
+            for move in ordered_moves:
                 temp_state = game_state.copy()
                 if temp_state.make_move(move):
-                    score = self._minimax(temp_state, depth - 1, False)
-                    max_score = max(max_score, score)
-            return max_score
+                    eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, False)
+                    max_eval = max(max_eval, eval_score)
+                    alpha = max(alpha, eval_score)
+                    if beta <= alpha:
+                        self.cutoffs += 1
+                        break  # Beta cutoff - pruning
+            return max_eval
         else:
-            min_score = float('inf')
-            for move in valid_moves:
+            min_eval = float('inf')
+            for move in ordered_moves:
                 temp_state = game_state.copy()
                 if temp_state.make_move(move):
-                    score = self._minimax(temp_state, depth - 1, True)
-                    min_score = min(min_score, score)
-            return min_score
+                    eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, True)
+                    min_eval = min(min_eval, eval_score)
+                    beta = min(beta, eval_score)
+                    if beta <= alpha:
+                        self.cutoffs += 1
+                        break  # Alpha cutoff - pruning
+            return min_eval
+
+    def set_search_depth(self, depth: int):
+        """Set search depth dynamically"""
+        self.search_depth = max(1, depth)
+        
+    def set_randomness(self, use_randomness: bool):
+        """Set randomness behavior dynamically"""
+        self.use_randomness = use_randomness
+
+    def get_search_stats(self) -> str:
+        """Get search statistics for performance monitoring"""
+        if self.nodes_searched == 0:
+            return "No search performed yet"
+        
+        cutoff_rate = (self.cutoffs / max(1, self.nodes_searched)) * 100
+        randomness_str = "Random" if self.use_randomness else "Deterministic"
+        return f"Depth: {self.search_depth}, Nodes: {self.nodes_searched}, Cutoffs: {self.cutoffs} ({cutoff_rate:.1f}%), Mode: {randomness_str}"
 
 
 class NNUEGameGUI:
@@ -453,6 +540,50 @@ class NNUEGameGUI:
         self.canvas.pack(pady=10)
         self.canvas.bind("<Button-1>", self.on_click)
         
+        # Settings frame (above control buttons)
+        settings_frame = self.tk.Frame(self.root)
+        settings_frame.pack(pady=10)
+        
+        # Search depth setting
+        depth_label = self.tk.Label(settings_frame, text="Search Depth:")
+        depth_label.pack(side=self.tk.LEFT, padx=5)
+        
+        # Import ttk for better combobox
+        try:
+            from tkinter import ttk
+            self.depth_var = self.tk.StringVar(value=str(self.nnue_player.search_depth))
+            depth_combobox = ttk.Combobox(settings_frame, textvariable=self.depth_var, 
+                                        values=["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"], 
+                                        width=5, state="readonly")
+            depth_combobox.pack(side=self.tk.LEFT, padx=5)
+            depth_combobox.bind("<<ComboboxSelected>>", self.on_depth_changed)
+        except ImportError:
+            # Fallback to regular entry if ttk not available
+            self.depth_var = self.tk.StringVar(value=str(self.nnue_player.search_depth))
+            depth_entry = self.tk.Entry(settings_frame, textvariable=self.depth_var, width=5)
+            depth_entry.pack(side=self.tk.LEFT, padx=5)
+            depth_entry.bind("<Return>", self.on_depth_changed)
+        
+        # Randomness setting
+        randomness_label = self.tk.Label(settings_frame, text="Mode:")
+        randomness_label.pack(side=self.tk.LEFT, padx=(20, 5))
+        
+        try:
+            from tkinter import ttk
+            self.randomness_var = self.tk.StringVar(value="Deterministic" if not self.nnue_player.use_randomness else "Random")
+            randomness_combobox = ttk.Combobox(settings_frame, textvariable=self.randomness_var,
+                                             values=["Deterministic", "Random"],
+                                             width=12, state="readonly")
+            randomness_combobox.pack(side=self.tk.LEFT, padx=5)
+            randomness_combobox.bind("<<ComboboxSelected>>", self.on_randomness_changed)
+        except ImportError:
+            # Fallback to checkbutton if ttk not available
+            self.randomness_var = self.tk.BooleanVar(value=self.nnue_player.use_randomness)
+            randomness_check = self.tk.Checkbutton(settings_frame, text="Random", 
+                                                  variable=self.randomness_var,
+                                                  command=self.on_randomness_changed)
+            randomness_check.pack(side=self.tk.LEFT, padx=5)
+
         # Control buttons
         button_frame = self.tk.Frame(self.root)
         button_frame.pack(pady=10)
@@ -728,7 +859,9 @@ class NNUEGameGUI:
             player_name = "AI"
             self.last_move_text = self.move_to_notation(move, player_name)
             x1, y1, x2, y2 = move
-            logger.info(f"AI move: ({x1},{y1}) -> ({x2},{y2})")
+            # Log AI move and search statistics
+            search_stats = self.nnue_player.get_search_stats()
+            logger.info(f"AI move: ({x1},{y1}) -> ({x2},{y2}) | {search_stats}")
         else:
             logger.info("AI has no valid moves")
             
@@ -791,6 +924,39 @@ class NNUEGameGUI:
             winner = "AI" if current_player == "Human" else "Human"
             self.messagebox.showinfo("Game Over", f"{winner} wins! (No valid moves)")
             
+    def on_depth_changed(self, event=None):
+        """Handle search depth change"""
+        try:
+            new_depth = int(self.depth_var.get())
+            if 1 <= new_depth <= 10:
+                self.nnue_player.set_search_depth(new_depth)
+                logger.info(f"Search depth changed to: {new_depth}")
+                self.update_status()
+            else:
+                # Reset to current value if invalid
+                self.depth_var.set(str(self.nnue_player.search_depth))
+        except ValueError:
+            # Reset to current value if not a number
+            self.depth_var.set(str(self.nnue_player.search_depth))
+    
+    def on_randomness_changed(self, event=None):
+        """Handle randomness setting change"""
+        try:
+            if hasattr(self.randomness_var, 'get'):
+                if isinstance(self.randomness_var.get(), bool):
+                    # BooleanVar (checkbutton)
+                    use_random = self.randomness_var.get()
+                else:
+                    # StringVar (combobox)
+                    use_random = (self.randomness_var.get() == "Random")
+                
+                self.nnue_player.set_randomness(use_random)
+                mode_str = "Random" if use_random else "Deterministic"
+                logger.info(f"AI mode changed to: {mode_str}")
+                self.update_status()
+        except Exception as e:
+            logger.error(f"Error changing randomness setting: {e}")
+
     def restart_game(self):
         """Restart the game"""
         self.game_state = NNUEGameAdapter()
@@ -812,7 +978,8 @@ def create_config_file(filename: str):
         "model_path": "nnue_model.bin",
         "feature_size": 115,
         "hidden_size": 256,
-        "search_depth": 3,
+        "search_depth": 8,
+        "use_randomness": False,
         "human_first": True,
         "gui": True,
         "log_level": "INFO"
@@ -843,9 +1010,11 @@ Examples:
     parser.add_argument('--first', choices=['human', 'ai'], default='human',
                        help='Who plays first (default: human)')
     parser.add_argument('--games', type=int, default=1, help='Number of games to play')
-    parser.add_argument('--depth', type=int, default=3, help='AI search depth')
+    parser.add_argument('--depth', type=int, default=8, help='AI search depth')
+    parser.add_argument('--random', action='store_true', help='Enable random move selection among equal best moves')
     parser.add_argument('--feature-size', type=int, default=115, help='NNUE feature size')
     parser.add_argument('--hidden-size', type=int, default=512, help='NNUE hidden size')
+    parser.add_argument('--use-gpu', action='store_true', help='Force GPU usage (not recommended for NNUE)')
     parser.add_argument('--create-config', type=str, help='Create sample config file')
     
     args = parser.parse_args()
@@ -874,15 +1043,18 @@ Examples:
         
     feature_size = args.feature_size or config.get('feature_size', 115)
     hidden_size = args.hidden_size or config.get('hidden_size', 256)
-    search_depth = args.depth or config.get('search_depth', 3)
+    search_depth = args.depth or config.get('search_depth', 8)
+    use_randomness = args.random or config.get('use_randomness', False)
+    force_cpu = not (args.use_gpu or config.get('use_gpu', False))
     human_first = (args.first == 'human') if args.first else config.get('human_first', True)
     use_gui = args.gui or config.get('gui', False)
     
     try:
         # Load NNUE model
-        logger.info(f"Loading NNUE model from {model_path}")
-        model_loader = NNUEModelLoader(model_path, feature_size, hidden_size)
-        nnue_player = NNUEPlayer(model_loader, search_depth)
+        device_str = "CPU (forced)" if force_cpu else ("GPU" if torch.cuda.is_available() else "CPU")
+        logger.info(f"Loading NNUE model from {model_path} on {device_str}")
+        model_loader = NNUEModelLoader(model_path, feature_size, hidden_size, force_cpu)
+        nnue_player = NNUEPlayer(model_loader, search_depth, use_randomness)
         
         if use_gui:
             # Start GUI game
