@@ -74,6 +74,8 @@ python train_pipeline_parallel.py \
     --epochs 300 \
     --batch-size 8192 \
     --learning-rate 0.002 \
+    --lr-scheduler adaptive \
+    --lr-auto-scale \
     --threads 24
 ```
 
@@ -94,6 +96,8 @@ python train_nnue.py \
     --epochs 300 \
     --batch-size 8192 \
     --lr 0.002 \
+    --lr-scheduler adaptive \
+    --lr-auto-scale \
     --hidden-size 512
 ```
 
@@ -107,6 +111,47 @@ Parameters:
 - `--max-samples`: Maximum training samples to use
 - `--val-split`: Validation split ratio (default: 0.1)
 - `--device`: Device to use (cpu/cuda/auto)
+- `--lr-scheduler`: Learning rate scheduler type (adaptive/cosine/plateau/fixed)
+- `--lr-auto-scale`: Automatically scale learning rate based on batch size and dataset size
+
+### Learning Rate Scheduling
+
+The training system supports multiple adaptive learning rate strategies:
+
+#### Adaptive Scheduler (Recommended)
+Automatically adjusts learning rate based on:
+- Training and validation loss trends
+- Gradient norm patterns
+- Learning progress indicators
+- Warmup and cooldown phases
+
+```bash
+--lr-scheduler adaptive
+```
+
+Features:
+- **Warmup Phase**: Gradually increases LR during first 5 epochs
+- **Auto Reduction**: Reduces LR when validation loss plateaus
+- **Smart Boosting**: Increases LR during consistent improvement periods
+- **Gradient Analysis**: Monitors gradient norms for optimization health
+- **Trend Detection**: Uses statistical analysis to detect training patterns
+
+#### Auto-scaling
+Automatically calculates optimal initial learning rate based on:
+- Batch size (linear scaling rule)
+- Dataset size (sqrt scaling for generalization)
+- Conservative safety factors
+
+```bash
+--lr-auto-scale
+```
+
+Formula: `lr = base_lr * (batch_size/1024) * sqrt(dataset_size/100k) * 0.8`
+
+#### Other Schedulers
+- **Cosine Annealing**: Smooth cyclic learning rate changes
+- **Plateau**: Reduces LR when validation loss stops improving
+- **Fixed**: Uses constant learning rate throughout training
 
 ## Model Architecture
 

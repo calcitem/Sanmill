@@ -102,6 +102,8 @@ def train_nnue_model(data_file: str,
                     epochs: int = 300,
                     batch_size: int = 8192,
                     learning_rate: float = 0.002,
+                    lr_scheduler: str = "adaptive",
+                    lr_auto_scale: bool = False,
                     device: str = "auto") -> bool:
     """
     Train NNUE model with strict error checking
@@ -123,8 +125,12 @@ def train_nnue_model(data_file: str,
         "--epochs", str(epochs),
         "--batch-size", str(batch_size),
         "--lr", str(learning_rate),
+        "--lr-scheduler", lr_scheduler,
         "--device", device
     ]
+    
+    if lr_auto_scale:
+        train_args.append("--lr-auto-scale")
     
     # Mock sys.argv for the training script
     original_argv = sys.argv
@@ -212,7 +218,10 @@ def main():
     parser.add_argument('--positions', type=int, default=500000, help='Number of training positions')
     parser.add_argument('--epochs', type=int, default=300, help='Training epochs')
     parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
-    parser.add_argument('--learning-rate', type=float, default=0.002, help='Learning rate')
+    parser.add_argument('--learning-rate', type=float, default=0.002, help='Initial learning rate')
+    parser.add_argument('--lr-scheduler', default='adaptive', choices=['adaptive', 'cosine', 'plateau', 'fixed'],
+                       help='Learning rate scheduler type')
+    parser.add_argument('--lr-auto-scale', action='store_true', help='Auto-scale LR based on batch size')
     parser.add_argument('--threads', type=int, default=0, help='Number of threads (0=auto)')
     parser.add_argument('--device', default='auto', help='Training device (cpu/cuda/auto)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate environment')
@@ -269,6 +278,8 @@ def main():
         args.epochs,
         args.batch_size,
         args.learning_rate,
+        args.lr_scheduler,
+        args.lr_auto_scale,
         args.device
     )
     

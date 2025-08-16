@@ -16,6 +16,7 @@ import time
 from typing import Tuple, List, Optional
 import logging
 from pathlib import Path
+import math
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -97,6 +98,165 @@ class MillNNUE(nn.Module):
         combined_hidden[black_mask] = torch.cat((hidden_black[black_mask], hidden_white[black_mask]), dim=1)
         
         return self.hidden_to_output(combined_hidden)
+
+
+class AdaptiveLRScheduler:
+    """
+    Adaptive learning rate scheduler that automatically adjusts LR based on:
+    - Training loss trends
+    - Validation loss trends  
+    - Gradient norms
+    - Learning progress
+    """
+    
+    def __init__(self, optimizer, initial_lr=0.002, patience=10, factor=0.7, 
+                 min_lr=1e-7, warmup_epochs=5, cooldown_epochs=3):
+        self.optimizer = optimizer
+        self.initial_lr = initial_lr
+        self.current_lr = initial_lr
+        self.patience = patience
+        self.factor = factor
+        self.min_lr = min_lr
+        self.warmup_epochs = warmup_epochs
+        self.cooldown_epochs = cooldown_epochs
+        
+        # State tracking
+        self.best_loss = float('inf')
+        self.epochs_without_improvement = 0
+        self.last_reduction_epoch = -1
+        self.epoch = 0
+        
+        # Loss history for trend analysis
+        self.train_loss_history = []
+        self.val_loss_history = []
+        self.gradient_norm_history = []
+        
+        # Dynamic adjustment factors
+        self.loss_smoothing = 0.9
+        self.gradient_smoothing = 0.95
+        
+    def step(self, train_loss, val_loss, gradient_norm=None):
+        """Update learning rate based on current metrics"""
+        self.epoch += 1
+        self.train_loss_history.append(train_loss)
+        self.val_loss_history.append(val_loss)
+        
+        if gradient_norm is not None:
+            self.gradient_norm_history.append(gradient_norm)
+        
+        # Warmup phase - gradually increase LR
+        if self.epoch <= self.warmup_epochs:
+            warmup_lr = self.initial_lr * (self.epoch / self.warmup_epochs)
+            self._set_lr(warmup_lr)
+            logger.info(f"Warmup LR: {warmup_lr:.6f}")
+            return
+        
+        # Main adaptive logic
+        should_reduce = self._should_reduce_lr(val_loss)
+        
+        if should_reduce and (self.epoch - self.last_reduction_epoch) > self.cooldown_epochs:
+            old_lr = self.current_lr
+            self.current_lr = max(self.current_lr * self.factor, self.min_lr)
+            self._set_lr(self.current_lr)
+            self.last_reduction_epoch = self.epoch
+            self.epochs_without_improvement = 0
+            logger.info(f"Reduced LR: {old_lr:.6f} -> {self.current_lr:.6f}")
+        
+        # Progressive LR boost for consistent improvement
+        elif self._should_boost_lr():
+            old_lr = self.current_lr
+            boost_factor = min(1.05, math.sqrt(self.initial_lr / self.current_lr))
+            self.current_lr = min(self.current_lr * boost_factor, self.initial_lr * 0.5)
+            self._set_lr(self.current_lr)
+            logger.info(f"Boosted LR: {old_lr:.6f} -> {self.current_lr:.6f}")
+    
+    def _should_reduce_lr(self, val_loss):
+        """Determine if learning rate should be reduced"""
+        # Track best validation loss
+        if val_loss < self.best_loss:
+            self.best_loss = val_loss
+            self.epochs_without_improvement = 0
+            return False
+        else:
+            self.epochs_without_improvement += 1
+        
+        # Reduce if no improvement for patience epochs
+        if self.epochs_without_improvement >= self.patience:
+            return True
+        
+        # Advanced criteria: check for loss plateau
+        if len(self.val_loss_history) >= 5:
+            recent_losses = self.val_loss_history[-5:]
+            loss_variance = np.var(recent_losses)
+            mean_loss = np.mean(recent_losses)
+            
+            # If variance is very low relative to mean, we might be plateaued
+            if loss_variance < (mean_loss * 0.001) and self.epochs_without_improvement >= 3:
+                return True
+        
+        # Check gradient norm trends
+        if len(self.gradient_norm_history) >= 5:
+            recent_grads = self.gradient_norm_history[-5:]
+            if np.mean(recent_grads) < 1e-5:  # Very small gradients
+                return True
+        
+        return False
+    
+    def _should_boost_lr(self):
+        """Determine if learning rate should be increased"""
+        if len(self.val_loss_history) < 10:
+            return False
+        
+        # Check for consistent improvement trend
+        recent_losses = self.val_loss_history[-10:]
+        if len(recent_losses) >= 5:
+            # Linear regression to check improvement trend
+            x = np.arange(len(recent_losses))
+            slope = np.polyfit(x, recent_losses, 1)[0]
+            
+            # If loss is decreasing consistently and we haven't reduced recently
+            if (slope < -0.001 and 
+                self.epochs_without_improvement == 0 and 
+                (self.epoch - self.last_reduction_epoch) > 15 and
+                self.current_lr < self.initial_lr * 0.3):
+                return True
+        
+        return False
+    
+    def _set_lr(self, lr):
+        """Set learning rate for all parameter groups"""
+        for param_group in self.optimizer.param_groups:
+            param_group['lr'] = lr
+        self.current_lr = lr
+    
+    def get_last_lr(self):
+        """Get current learning rate"""
+        return [self.current_lr]
+    
+    def state_dict(self):
+        """Return scheduler state"""
+        return {
+            'current_lr': self.current_lr,
+            'best_loss': self.best_loss,
+            'epochs_without_improvement': self.epochs_without_improvement,
+            'last_reduction_epoch': self.last_reduction_epoch,
+            'epoch': self.epoch,
+            'train_loss_history': self.train_loss_history,
+            'val_loss_history': self.val_loss_history,
+            'gradient_norm_history': self.gradient_norm_history
+        }
+    
+    def load_state_dict(self, state_dict):
+        """Load scheduler state"""
+        self.current_lr = state_dict['current_lr']
+        self.best_loss = state_dict['best_loss']
+        self.epochs_without_improvement = state_dict['epochs_without_improvement']
+        self.last_reduction_epoch = state_dict['last_reduction_epoch']
+        self.epoch = state_dict['epoch']
+        self.train_loss_history = state_dict['train_loss_history']
+        self.val_loss_history = state_dict['val_loss_history']
+        self.gradient_norm_history = state_dict['gradient_norm_history']
+
 
 class MillDataset(Dataset):
     """Dataset for Mill NNUE training"""
@@ -199,10 +359,11 @@ def train_epoch(model: nn.Module,
                 criterion: nn.Module,
                 device: torch.device,
                 max_grad_norm: float = 1.0,
-                scaler: torch.cuda.amp.GradScaler = None) -> float:
-    """Train for one epoch with gradient clipping for stability"""
+                scaler: torch.cuda.amp.GradScaler = None) -> Tuple[float, float]:
+    """Train for one epoch with gradient clipping for stability and gradient norm tracking"""
     model.train()
     total_loss = 0.0
+    total_grad_norm = 0.0
     num_batches = 0
     
     for batch in dataloader:
@@ -223,19 +384,22 @@ def train_epoch(model: nn.Module,
             
             # Gradient clipping for training stability with large batch sizes
             scaler.unscale_(optimizer)
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
             
             scaler.step(optimizer)
             scaler.update()
         else:
             loss.backward()
-            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
             optimizer.step()
         
         total_loss += loss.item()
+        total_grad_norm += grad_norm.item() if isinstance(grad_norm, torch.Tensor) else grad_norm
         num_batches += 1
     
-    return total_loss / num_batches
+    avg_loss = total_loss / num_batches
+    avg_grad_norm = total_grad_norm / num_batches
+    return avg_loss, avg_grad_norm
 
 def validate_epoch(model: nn.Module, 
                   dataloader: DataLoader, 
@@ -323,7 +487,10 @@ def main():
     parser.add_argument('--output', default='nnue_model.bin', help='Output model file')
     parser.add_argument('--epochs', type=int, default=300, help='Number of training epochs')
     parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
-    parser.add_argument('--lr', type=float, default=0.002, help='Learning rate')
+    parser.add_argument('--lr', type=float, default=0.002, help='Initial learning rate')
+    parser.add_argument('--lr-scheduler', default='adaptive', choices=['adaptive', 'cosine', 'plateau', 'fixed'], 
+                       help='Learning rate scheduler type')
+    parser.add_argument('--lr-auto-scale', action='store_true', help='Automatically scale LR based on batch size')
     parser.add_argument('--feature-size', type=int, default=115, help='Input feature size')
     parser.add_argument('--hidden-size', type=int, default=512, help='Hidden layer size')
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
@@ -331,6 +498,31 @@ def main():
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
     
     args = parser.parse_args()
+    
+    # Automatic learning rate scaling based on batch size and dataset size
+    if args.lr_auto_scale:
+        # Load dataset first to get size information
+        temp_dataset = MillDataset(args.data, args.max_samples)
+        dataset_size = len(temp_dataset)
+        
+        # Base learning rate is calibrated for batch_size=1024 and dataset_size=100k
+        base_batch_size = 1024
+        base_dataset_size = 100000
+        base_lr = 0.001
+        
+        # Scale learning rate based on batch size (linear scaling rule)
+        batch_scale = args.batch_size / base_batch_size
+        
+        # Scale learning rate based on dataset size (sqrt scaling for better generalization)
+        dataset_scale = (dataset_size / base_dataset_size) ** 0.5
+        
+        # Combined scaling with conservative factors
+        args.lr = base_lr * batch_scale * dataset_scale * 0.8  # 0.8 safety factor
+        
+        logger.info(f"Auto-scaled learning rate: {args.lr:.6f}")
+        logger.info(f"  Batch scale factor: {batch_scale:.2f}")
+        logger.info(f"  Dataset scale factor: {dataset_scale:.2f}")
+        logger.info(f"  Final LR: {base_lr} * {batch_scale:.2f} * {dataset_scale:.2f} * 0.8 = {args.lr:.6f}")
     
     # Setup device with hardware-specific optimizations
     if args.device == 'auto':
@@ -409,14 +601,39 @@ def main():
     
     criterion = nn.MSELoss()
     
-    # Advanced learning rate scheduling for longer training
-    # Cosine annealing with warm restarts for better convergence
-    scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
-        optimizer, 
-        T_0=30,  # Initial restart period
-        T_mult=2,  # Multiplicative factor for period growth
-        eta_min=1e-7  # Minimum learning rate
-    )
+    # Setup learning rate scheduler based on user preference
+    if args.lr_scheduler == 'adaptive':
+        scheduler = AdaptiveLRScheduler(
+            optimizer,
+            initial_lr=args.lr,
+            patience=10,
+            factor=0.7,
+            min_lr=1e-7,
+            warmup_epochs=5,
+            cooldown_epochs=3
+        )
+        logger.info("Using adaptive learning rate scheduler")
+    elif args.lr_scheduler == 'cosine':
+        scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
+            optimizer, 
+            T_0=30,  # Initial restart period
+            T_mult=2,  # Multiplicative factor for period growth
+            eta_min=1e-7  # Minimum learning rate
+        )
+        logger.info("Using cosine annealing scheduler")
+    elif args.lr_scheduler == 'plateau':
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(
+            optimizer, 
+            patience=10, 
+            factor=0.5,
+            min_lr=1e-7
+        )
+        logger.info("Using plateau scheduler")
+    else:  # fixed
+        scheduler = None
+        logger.info("Using fixed learning rate")
+    
+    logger.info(f"Initial learning rate: {args.lr:.6f}")
     
     # Use gradient clipping for stability with larger batch sizes
     max_grad_norm = 1.0
@@ -434,13 +651,23 @@ def main():
         start_time = time.time()
         
         # Train
-        train_loss = train_epoch(model, train_loader, optimizer, criterion, device, max_grad_norm, scaler)
+        train_loss, avg_grad_norm = train_epoch(model, train_loader, optimizer, criterion, device, max_grad_norm, scaler)
         
         # Validate
         val_loss, val_accuracy = validate_epoch(model, val_loader, criterion, device)
         
-        # Update learning rate
-        scheduler.step(val_loss)
+        # Update learning rate based on scheduler type
+        if args.lr_scheduler == 'adaptive':
+            scheduler.step(train_loss, val_loss, avg_grad_norm)
+            current_lr = scheduler.get_last_lr()[0]
+        elif args.lr_scheduler == 'cosine':
+            scheduler.step()
+            current_lr = scheduler.get_last_lr()[0]
+        elif args.lr_scheduler == 'plateau':
+            scheduler.step(val_loss)
+            current_lr = optimizer.param_groups[0]['lr']
+        else:  # fixed
+            current_lr = args.lr
         
         epoch_time = time.time() - start_time
         
@@ -448,6 +675,8 @@ def main():
                    f"Train Loss: {train_loss:.6f}, "
                    f"Val Loss: {val_loss:.6f}, "
                    f"Val Acc: {val_accuracy:.4f}, "
+                   f"LR: {current_lr:.6f}, "
+                   f"Grad Norm: {avg_grad_norm:.4f}, "
                    f"Time: {epoch_time:.2f}s")
         
         # Early stopping
