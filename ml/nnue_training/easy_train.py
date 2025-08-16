@@ -394,7 +394,7 @@ if __name__ == '__main__':
                     "epochs": 300,
                     "batch_size": 4096,
                     "lr": 0.002,
-                    "hidden_size": 512,
+                    "hidden_size": 256,  # Changed from 512 to 256 for compatibility with nnue_pit.py
                     "val_split": 0.1
                 }
             }

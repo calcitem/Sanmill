@@ -152,6 +152,11 @@ class SimpleGameState:
             (6,0), (6,3), (6,6)
         ])
         
+        # Initialize valid positions as empty (-1)
+        self.board.fill(0)  # Invalid positions remain 0
+        for x, y in self.valid_positions:
+            self.board[x, y] = -1  # Valid positions are empty (-1)
+        
     def to_nnue_features(self) -> np.ndarray:
         """Convert game state to NNUE feature vector"""
         features = np.zeros(115, dtype=np.float32)
@@ -601,7 +606,7 @@ Examples:
     parser.add_argument('--games', type=int, default=1, help='Number of games to play')
     parser.add_argument('--depth', type=int, default=3, help='AI search depth')
     parser.add_argument('--feature-size', type=int, default=115, help='NNUE feature size')
-    parser.add_argument('--hidden-size', type=int, default=256, help='NNUE hidden size')
+    parser.add_argument('--hidden-size', type=int, default=512, help='NNUE hidden size')
     parser.add_argument('--create-config', type=str, help='Create sample config file')
     
     args = parser.parse_args()
