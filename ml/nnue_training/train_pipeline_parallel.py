@@ -104,7 +104,11 @@ def train_nnue_model(data_file: str,
                     learning_rate: float = 0.002,
                     lr_scheduler: str = "adaptive",
                     lr_auto_scale: bool = False,
-                    device: str = "auto") -> bool:
+                    device: str = "auto",
+                    plot: bool = False,
+                    plot_dir: str = "plots",
+                    plot_interval: int = 5,
+                    save_csv: bool = False) -> bool:
     """
     Train NNUE model with strict error checking
     """
@@ -131,6 +135,12 @@ def train_nnue_model(data_file: str,
     
     if lr_auto_scale:
         train_args.append("--lr-auto-scale")
+    
+    if plot:
+        train_args.extend(["--plot", "--plot-dir", plot_dir, "--plot-interval", str(plot_interval)])
+    
+    if save_csv:
+        train_args.append("--save-csv")
     
     # Mock sys.argv for the training script
     original_argv = sys.argv
@@ -226,6 +236,12 @@ def main():
     parser.add_argument('--device', default='auto', help='Training device (cpu/cuda/auto)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate environment')
     
+    # Visualization options
+    parser.add_argument('--plot', action='store_true', help='Enable training visualization')
+    parser.add_argument('--plot-dir', default='plots', help='Directory for plots')
+    parser.add_argument('--plot-interval', type=int, default=5, help='Plot update interval')
+    parser.add_argument('--save-csv', action='store_true', help='Save metrics to CSV')
+    
     args = parser.parse_args()
     
     # Auto-detect thread count
@@ -280,7 +296,11 @@ def main():
         args.learning_rate,
         args.lr_scheduler,
         args.lr_auto_scale,
-        args.device
+        args.device,
+        args.plot,
+        args.plot_dir,
+        args.plot_interval,
+        args.save_csv
     )
     
     if not success:

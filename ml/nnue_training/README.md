@@ -76,6 +76,8 @@ python train_pipeline_parallel.py \
     --learning-rate 0.002 \
     --lr-scheduler adaptive \
     --lr-auto-scale \
+    --plot \
+    --save-csv \
     --threads 24
 ```
 
@@ -98,6 +100,9 @@ python train_nnue.py \
     --lr 0.002 \
     --lr-scheduler adaptive \
     --lr-auto-scale \
+    --plot \
+    --plot-interval 10 \
+    --save-csv \
     --hidden-size 512
 ```
 
@@ -113,6 +118,67 @@ Parameters:
 - `--device`: Device to use (cpu/cuda/auto)
 - `--lr-scheduler`: Learning rate scheduler type (adaptive/cosine/plateau/fixed)
 - `--lr-auto-scale`: Automatically scale learning rate based on batch size and dataset size
+
+### Training Visualization
+
+The training system includes comprehensive real-time visualization capabilities:
+
+#### Visualization Options
+- `--plot`: Enable training visualization plots
+- `--plot-dir`: Directory to save plots (default: 'plots')
+- `--plot-interval`: Update plots every N epochs (default: 5)
+- `--show-plots`: Display plots in real-time (requires GUI environment)
+- `--save-csv`: Save training metrics to CSV file for analysis
+
+#### Generated Plots
+
+**Real-time Training Dashboard** (updated every `--plot-interval` epochs):
+1. **Loss Curves**: Training and validation loss with trend lines
+2. **Validation Accuracy**: Accuracy progression with best performance markers
+3. **Learning Rate Schedule**: LR changes over time with adjustment annotations
+4. **Gradient Norms**: Gradient health monitoring with warning zones
+5. **Training Speed**: Epoch timing with average indicators
+6. **Overfitting Indicator**: Validation/Training loss ratio analysis
+
+**Final Training Summary** (generated at completion):
+- Comprehensive loss analysis with moving averages
+- Learning progress metrics and improvement rates
+- Performance timeline with dual metrics
+- Complete training statistics and summary
+
+#### Example Visualizations
+
+```bash
+# Enable visualization with default settings
+python train_nnue.py --data training_data.txt --plot
+
+# Custom visualization settings
+python train_nnue.py \
+    --data training_data.txt \
+    --plot \
+    --plot-dir ./my_plots \
+    --plot-interval 10 \
+    --save-csv
+
+# Pipeline with visualization
+python train_pipeline_parallel.py \
+    --engine ../../sanmill \
+    --perfect-db /path/to/db \
+    --plot \
+    --plot-dir ./training_plots
+```
+
+#### Output Files
+- `training_progress_latest.png`: Most recent training dashboard
+- `training_progress_epoch_XXXX.png`: Periodic snapshots
+- `training_summary.png`: Final comprehensive summary
+- `training_metrics.csv`: Raw data for custom analysis
+
+#### Dependencies
+Install visualization dependencies:
+```bash
+pip install matplotlib seaborn
+```
 
 ### Learning Rate Scheduling
 

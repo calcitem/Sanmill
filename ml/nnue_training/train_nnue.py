@@ -18,6 +18,19 @@ import logging
 from pathlib import Path
 import math
 
+# Plotting libraries
+try:
+    import matplotlib
+    matplotlib.use('Agg')  # Use non-interactive backend for server environments
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    sns.set_style("whitegrid")
+    PLOTTING_AVAILABLE = True
+except ImportError:
+    PLOTTING_AVAILABLE = False
+    plt = None
+    sns = None
+
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -256,6 +269,344 @@ class AdaptiveLRScheduler:
         self.train_loss_history = state_dict['train_loss_history']
         self.val_loss_history = state_dict['val_loss_history']
         self.gradient_norm_history = state_dict['gradient_norm_history']
+
+
+class TrainingVisualizer:
+    """
+    Real-time training visualization for NNUE training
+    Creates dynamic plots showing loss curves, learning rate, and gradient norms
+    """
+    
+    def __init__(self, output_dir: str = "plots", update_interval: int = 5, 
+                 save_plots: bool = True, show_plots: bool = False):
+        self.output_dir = Path(output_dir)
+        self.output_dir.mkdir(exist_ok=True)
+        self.update_interval = update_interval
+        self.save_plots = save_plots
+        self.show_plots = show_plots
+        
+        # Training metrics storage
+        self.epochs = []
+        self.train_losses = []
+        self.val_losses = []
+        self.val_accuracies = []
+        self.learning_rates = []
+        self.gradient_norms = []
+        self.epoch_times = []
+        
+        # Plot state
+        self.last_update_epoch = 0
+        
+        if not PLOTTING_AVAILABLE and (save_plots or show_plots):
+            logger.warning("Matplotlib not available. Install with: pip install matplotlib seaborn")
+            self.save_plots = False
+            self.show_plots = False
+    
+    def add_epoch_data(self, epoch: int, train_loss: float, val_loss: float, 
+                      val_accuracy: float, learning_rate: float, 
+                      gradient_norm: float, epoch_time: float):
+        """Add data for a completed epoch"""
+        self.epochs.append(epoch + 1)  # 1-based epoch numbering
+        self.train_losses.append(train_loss)
+        self.val_losses.append(val_loss)
+        self.val_accuracies.append(val_accuracy)
+        self.learning_rates.append(learning_rate)
+        self.gradient_norms.append(gradient_norm)
+        self.epoch_times.append(epoch_time)
+        
+        # Update plots if interval reached or last epoch
+        if ((epoch + 1) % self.update_interval == 0 or 
+            (epoch + 1) - self.last_update_epoch >= self.update_interval):
+            self.update_plots()
+            self.last_update_epoch = epoch + 1
+    
+    def update_plots(self):
+        """Update all training plots"""
+        if not PLOTTING_AVAILABLE or not (self.save_plots or self.show_plots):
+            return
+        
+        if len(self.epochs) < 2:
+            return  # Need at least 2 points to plot
+        
+        # Create comprehensive training dashboard
+        fig = plt.figure(figsize=(16, 12))
+        
+        # 1. Loss curves (main plot)
+        ax1 = plt.subplot(2, 3, 1)
+        plt.plot(self.epochs, self.train_losses, 'b-', label='Training Loss', linewidth=2)
+        plt.plot(self.epochs, self.val_losses, 'r-', label='Validation Loss', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Training and Validation Loss')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        # Add trend lines for recent epochs
+        if len(self.epochs) >= 10:
+            recent_epochs = self.epochs[-10:]
+            recent_train = self.train_losses[-10:]
+            recent_val = self.val_losses[-10:]
+            
+            # Fit trend lines
+            train_trend = np.polyfit(recent_epochs, recent_train, 1)
+            val_trend = np.polyfit(recent_epochs, recent_val, 1)
+            
+            train_trend_line = np.poly1d(train_trend)(recent_epochs)
+            val_trend_line = np.poly1d(val_trend)(recent_epochs)
+            
+            plt.plot(recent_epochs, train_trend_line, 'b--', alpha=0.7, label='Train Trend')
+            plt.plot(recent_epochs, val_trend_line, 'r--', alpha=0.7, label='Val Trend')
+            plt.legend()
+        
+        # 2. Validation accuracy
+        ax2 = plt.subplot(2, 3, 2)
+        plt.plot(self.epochs, self.val_accuracies, 'g-', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.title('Validation Accuracy')
+        plt.grid(True, alpha=0.3)
+        
+        # Add best accuracy line
+        best_acc = max(self.val_accuracies)
+        best_epoch = self.epochs[self.val_accuracies.index(best_acc)]
+        plt.axhline(y=best_acc, color='g', linestyle='--', alpha=0.7)
+        plt.text(0.02, 0.98, f'Best: {best_acc:.4f} @ Epoch {best_epoch}', 
+                transform=ax2.transAxes, verticalalignment='top', fontsize=10,
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        
+        # 3. Learning rate schedule
+        ax3 = plt.subplot(2, 3, 3)
+        plt.plot(self.epochs, self.learning_rates, 'orange', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Learning Rate')
+        plt.title('Learning Rate Schedule')
+        plt.yscale('log')  # Log scale for better visualization
+        plt.grid(True, alpha=0.3)
+        
+        # Highlight learning rate changes
+        lr_changes = []
+        for i in range(1, len(self.learning_rates)):
+            if abs(self.learning_rates[i] - self.learning_rates[i-1]) > 1e-7:
+                lr_changes.append((self.epochs[i], self.learning_rates[i]))
+        
+        for epoch, lr in lr_changes:
+            plt.axvline(x=epoch, color='red', linestyle=':', alpha=0.7)
+            plt.text(epoch, lr, f'{lr:.2e}', rotation=90, fontsize=8)
+        
+        # 4. Gradient norms
+        ax4 = plt.subplot(2, 3, 4)
+        plt.plot(self.epochs, self.gradient_norms, 'purple', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Gradient Norm')
+        plt.title('Gradient Norms')
+        plt.grid(True, alpha=0.3)
+        
+        # Add warning zones for gradient issues
+        plt.axhline(y=1e-5, color='red', linestyle='--', alpha=0.5, label='Vanishing Threshold')
+        plt.axhline(y=10.0, color='orange', linestyle='--', alpha=0.5, label='Exploding Threshold')
+        plt.legend(fontsize=8)
+        
+        # 5. Training speed
+        ax5 = plt.subplot(2, 3, 5)
+        plt.plot(self.epochs, self.epoch_times, 'brown', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Time (seconds)')
+        plt.title('Epoch Training Time')
+        plt.grid(True, alpha=0.3)
+        
+        # Add average time
+        avg_time = np.mean(self.epoch_times)
+        plt.axhline(y=avg_time, color='brown', linestyle='--', alpha=0.7)
+        plt.text(0.02, 0.98, f'Avg: {avg_time:.1f}s', 
+                transform=ax5.transAxes, verticalalignment='top', fontsize=10,
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
+        
+        # 6. Loss ratio and convergence metrics
+        ax6 = plt.subplot(2, 3, 6)
+        if len(self.val_losses) > 0:
+            loss_ratios = [v/t for v, t in zip(self.val_losses, self.train_losses)]
+            plt.plot(self.epochs, loss_ratios, 'teal', linewidth=2)
+            plt.xlabel('Epoch')
+            plt.ylabel('Val Loss / Train Loss')
+            plt.title('Overfitting Indicator')
+            plt.grid(True, alpha=0.3)
+            
+            # Add ideal ratio line
+            plt.axhline(y=1.0, color='green', linestyle='--', alpha=0.7, label='Ideal Ratio')
+            plt.axhline(y=1.2, color='orange', linestyle='--', alpha=0.5, label='Warning')
+            plt.axhline(y=1.5, color='red', linestyle='--', alpha=0.5, label='Overfitting')
+            plt.legend(fontsize=8)
+        
+        plt.tight_layout()
+        
+        # Save plot
+        if self.save_plots:
+            plot_path = self.output_dir / f"training_progress_epoch_{self.epochs[-1]:04d}.png"
+            plt.savefig(plot_path, dpi=150, bbox_inches='tight')
+            
+            # Also save as latest
+            latest_path = self.output_dir / "training_progress_latest.png"
+            plt.savefig(latest_path, dpi=150, bbox_inches='tight')
+            
+            logger.info(f"Training plots saved to {plot_path}")
+        
+        if self.show_plots:
+            plt.show()
+        else:
+            plt.close()
+    
+    def create_summary_plot(self):
+        """Create a final summary plot at the end of training"""
+        if not PLOTTING_AVAILABLE or not self.save_plots:
+            return
+        
+        fig = plt.figure(figsize=(20, 16))
+        
+        # Enhanced loss plot with statistics
+        ax1 = plt.subplot(3, 3, (1, 2))
+        plt.plot(self.epochs, self.train_losses, 'b-', label='Training Loss', linewidth=2)
+        plt.plot(self.epochs, self.val_losses, 'r-', label='Validation Loss', linewidth=2)
+        
+        # Add moving averages
+        if len(self.epochs) >= 10:
+            window = min(10, len(self.epochs) // 4)
+            train_ma = np.convolve(self.train_losses, np.ones(window)/window, mode='valid')
+            val_ma = np.convolve(self.val_losses, np.ones(window)/window, mode='valid')
+            ma_epochs = self.epochs[window-1:]
+            
+            plt.plot(ma_epochs, train_ma, 'b:', label=f'Train MA({window})', alpha=0.8)
+            plt.plot(ma_epochs, val_ma, 'r:', label=f'Val MA({window})', alpha=0.8)
+        
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.title('Training Summary - Loss Curves')
+        plt.legend()
+        plt.grid(True, alpha=0.3)
+        
+        # Add statistics box
+        final_train_loss = self.train_losses[-1]
+        final_val_loss = self.val_losses[-1]
+        best_val_loss = min(self.val_losses)
+        best_val_epoch = self.epochs[self.val_losses.index(best_val_loss)]
+        
+        stats_text = (f'Final Train Loss: {final_train_loss:.6f}\n'
+                     f'Final Val Loss: {final_val_loss:.6f}\n'
+                     f'Best Val Loss: {best_val_loss:.6f} @ Epoch {best_val_epoch}\n'
+                     f'Total Epochs: {len(self.epochs)}')
+        
+        plt.text(0.02, 0.98, stats_text, transform=ax1.transAxes, 
+                verticalalignment='top', fontsize=11,
+                bbox=dict(boxstyle='round', facecolor='lightblue', alpha=0.8))
+        
+        # Detailed learning rate plot
+        ax2 = plt.subplot(3, 3, 3)
+        plt.plot(self.epochs, self.learning_rates, 'orange', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Learning Rate')
+        plt.title('Learning Rate Schedule')
+        plt.yscale('log')
+        plt.grid(True, alpha=0.3)
+        
+        # Training efficiency metrics
+        ax3 = plt.subplot(3, 3, (4, 5))
+        # Loss improvement rate
+        if len(self.val_losses) >= 5:
+            improvement_rates = []
+            for i in range(4, len(self.val_losses)):
+                recent_losses = self.val_losses[i-4:i+1]
+                slope = np.polyfit(range(5), recent_losses, 1)[0]
+                improvement_rates.append(-slope)  # Negative slope = improvement
+            
+            improvement_epochs = self.epochs[4:]
+            plt.plot(improvement_epochs, improvement_rates, 'green', linewidth=2)
+            plt.xlabel('Epoch')
+            plt.ylabel('Loss Improvement Rate')
+            plt.title('Learning Progress (5-epoch sliding window)')
+            plt.grid(True, alpha=0.3)
+            plt.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+        
+        # Gradient health over time
+        ax4 = plt.subplot(3, 3, 6)
+        plt.plot(self.epochs, self.gradient_norms, 'purple', linewidth=2)
+        plt.xlabel('Epoch')
+        plt.ylabel('Gradient Norm')
+        plt.title('Gradient Health')
+        plt.yscale('log')
+        plt.grid(True, alpha=0.3)
+        
+        # Performance timeline
+        ax5 = plt.subplot(3, 3, (7, 8))
+        # Dual y-axis for accuracy and time
+        ax5_twin = ax5.twinx()
+        
+        line1 = ax5.plot(self.epochs, self.val_accuracies, 'g-', linewidth=2, label='Validation Accuracy')
+        line2 = ax5_twin.plot(self.epochs, self.epoch_times, 'brown', linewidth=2, label='Epoch Time')
+        
+        ax5.set_xlabel('Epoch')
+        ax5.set_ylabel('Validation Accuracy', color='g')
+        ax5_twin.set_ylabel('Epoch Time (s)', color='brown')
+        ax5.set_title('Performance Timeline')
+        ax5.grid(True, alpha=0.3)
+        
+        # Combined legend
+        lines = line1 + line2
+        labels = [l.get_label() for l in lines]
+        ax5.legend(lines, labels, loc='upper left')
+        
+        # Final statistics summary
+        ax6 = plt.subplot(3, 3, 9)
+        ax6.axis('off')
+        
+        total_time = sum(self.epoch_times)
+        avg_time_per_epoch = total_time / len(self.epoch_times)
+        best_acc = max(self.val_accuracies)
+        final_acc = self.val_accuracies[-1]
+        
+        summary_stats = (
+            f'TRAINING SUMMARY\n'
+            f'{"="*30}\n'
+            f'Total Training Time: {total_time:.1f}s ({total_time/3600:.2f}h)\n'
+            f'Average Time/Epoch: {avg_time_per_epoch:.1f}s\n'
+            f'Final Validation Accuracy: {final_acc:.4f}\n'
+            f'Best Validation Accuracy: {best_acc:.4f}\n'
+            f'Final Learning Rate: {self.learning_rates[-1]:.2e}\n'
+            f'Final Gradient Norm: {self.gradient_norms[-1]:.4f}\n'
+            f'Loss Reduction: {(self.val_losses[0] - self.val_losses[-1]):.6f}\n'
+            f'Improvement: {((self.val_losses[0] - self.val_losses[-1])/self.val_losses[0]*100):.1f}%'
+        )
+        
+        ax6.text(0.1, 0.9, summary_stats, transform=ax6.transAxes, 
+                fontsize=12, verticalalignment='top', fontfamily='monospace',
+                bbox=dict(boxstyle='round', facecolor='lightyellow', alpha=0.8))
+        
+        plt.tight_layout()
+        
+        # Save final summary
+        summary_path = self.output_dir / "training_summary.png"
+        plt.savefig(summary_path, dpi=300, bbox_inches='tight')
+        plt.close()
+        
+        logger.info(f"Training summary plot saved to {summary_path}")
+    
+    def save_metrics_csv(self):
+        """Save all metrics to CSV for further analysis"""
+        import csv
+        
+        csv_path = self.output_dir / "training_metrics.csv"
+        
+        with open(csv_path, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(['Epoch', 'Train_Loss', 'Val_Loss', 'Val_Accuracy', 
+                           'Learning_Rate', 'Gradient_Norm', 'Epoch_Time'])
+            
+            for i in range(len(self.epochs)):
+                writer.writerow([
+                    self.epochs[i], self.train_losses[i], self.val_losses[i],
+                    self.val_accuracies[i], self.learning_rates[i], 
+                    self.gradient_norms[i], self.epoch_times[i]
+                ])
+        
+        logger.info(f"Training metrics saved to {csv_path}")
 
 
 class MillDataset(Dataset):
@@ -497,6 +848,13 @@ def main():
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
     
+    # Visualization options
+    parser.add_argument('--plot', action='store_true', help='Enable training visualization plots')
+    parser.add_argument('--plot-dir', default='plots', help='Directory to save plots')
+    parser.add_argument('--plot-interval', type=int, default=5, help='Update plots every N epochs')
+    parser.add_argument('--show-plots', action='store_true', help='Display plots in real-time (requires GUI)')
+    parser.add_argument('--save-csv', action='store_true', help='Save training metrics to CSV file')
+    
     args = parser.parse_args()
     
     # Automatic learning rate scaling based on batch size and dataset size
@@ -635,6 +993,17 @@ def main():
     
     logger.info(f"Initial learning rate: {args.lr:.6f}")
     
+    # Initialize training visualizer if requested
+    visualizer = None
+    if args.plot or args.save_csv:
+        visualizer = TrainingVisualizer(
+            output_dir=args.plot_dir,
+            update_interval=args.plot_interval,
+            save_plots=args.plot,
+            show_plots=args.show_plots
+        )
+        logger.info(f"Training visualization enabled - plots will be saved to {args.plot_dir}")
+    
     # Use gradient clipping for stability with larger batch sizes
     max_grad_norm = 1.0
     
@@ -679,6 +1048,13 @@ def main():
                    f"Grad Norm: {avg_grad_norm:.4f}, "
                    f"Time: {epoch_time:.2f}s")
         
+        # Update visualization
+        if visualizer:
+            visualizer.add_epoch_data(
+                epoch, train_loss, val_loss, val_accuracy, 
+                current_lr, avg_grad_norm, epoch_time
+            )
+        
         # Early stopping
         if val_loss < best_val_loss:
             best_val_loss = val_loss
@@ -694,6 +1070,16 @@ def main():
     
     logger.info(f"Training completed. Best validation loss: {best_val_loss:.6f}")
     logger.info(f"Model saved to {args.output}")
+    
+    # Generate final visualizations
+    if visualizer:
+        logger.info("Generating final training summary...")
+        visualizer.create_summary_plot()
+        
+        if args.save_csv:
+            visualizer.save_metrics_csv()
+        
+        logger.info(f"Training visualizations saved to {args.plot_dir}")
 
 if __name__ == '__main__':
     main()
