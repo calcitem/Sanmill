@@ -197,26 +197,40 @@ def train_epoch(model: nn.Module,
                 dataloader: DataLoader, 
                 optimizer: torch.optim.Optimizer, 
                 criterion: nn.Module,
-                device: torch.device) -> float:
-    """Train for one epoch"""
+                device: torch.device,
+                max_grad_norm: float = 1.0,
+                scaler: torch.cuda.amp.GradScaler = None) -> float:
+    """Train for one epoch with gradient clipping for stability"""
     model.train()
     total_loss = 0.0
     num_batches = 0
     
     for batch in dataloader:
-        features = batch['features'].to(device)
-        targets = batch['target'].to(device)
-        side_to_move = batch['side_to_move'].to(device)
+        features = batch['features'].to(device, non_blocking=True)
+        targets = batch['target'].to(device, non_blocking=True)
+        side_to_move = batch['side_to_move'].to(device, non_blocking=True)
+        
+        # Enable mixed precision for faster training on modern GPUs
+        with torch.cuda.amp.autocast(enabled=device.type == 'cuda'):
+            outputs = model(features, side_to_move)
+            loss = criterion(outputs, targets)
         
         optimizer.zero_grad()
         
-        # Forward pass
-        outputs = model(features, side_to_move)
-        loss = criterion(outputs, targets)
-        
-        # Backward pass
-        loss.backward()
-        optimizer.step()
+        # Use gradient scaling for mixed precision training
+        if device.type == 'cuda' and scaler is not None:
+            scaler.scale(loss).backward()
+            
+            # Gradient clipping for training stability with large batch sizes
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            
+            scaler.step(optimizer)
+            scaler.update()
+        else:
+            loss.backward()
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            optimizer.step()
         
         total_loss += loss.item()
         num_batches += 1
@@ -307,24 +321,44 @@ def main():
     parser = argparse.ArgumentParser(description='Train NNUE for Mill game')
     parser.add_argument('--data', required=True, help='Training data file')
     parser.add_argument('--output', default='nnue_model.bin', help='Output model file')
-    parser.add_argument('--epochs', type=int, default=100, help='Number of training epochs')
-    parser.add_argument('--batch-size', type=int, default=1024, help='Batch size')
-    parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
+    parser.add_argument('--epochs', type=int, default=300, help='Number of training epochs')
+    parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
+    parser.add_argument('--lr', type=float, default=0.002, help='Learning rate')
     parser.add_argument('--feature-size', type=int, default=115, help='Input feature size')
-    parser.add_argument('--hidden-size', type=int, default=256, help='Hidden layer size')
+    parser.add_argument('--hidden-size', type=int, default=512, help='Hidden layer size')
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
     
     args = parser.parse_args()
     
-    # Setup device
+    # Setup device with hardware-specific optimizations
     if args.device == 'auto':
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     else:
         device = torch.device(args.device)
     
     logger.info(f"Using device: {device}")
+    
+    # Enable GPU optimizations for high-end hardware
+    if device.type == 'cuda':
+        # Enable TensorFloat-32 for faster training on modern GPUs
+        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.cudnn.allow_tf32 = True
+        
+        # Enable optimized attention for transformer-like architectures
+        torch.backends.cuda.enable_flash_sdp(True)
+        
+        # Set memory management for large GPU memory
+        torch.cuda.empty_cache()
+        
+        # Log GPU information
+        logger.info(f"GPU: {torch.cuda.get_device_name()}")
+        logger.info(f"GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
+        logger.info(f"CUDA Version: {torch.version.cuda}")
+        
+        # Set GPU memory growth to avoid OOM issues
+        os.environ['PYTORCH_CUDA_ALLOC_CONF'] = 'max_split_size_mb:512'
     
     # Load dataset
     logger.info("Loading training data...")
@@ -339,22 +373,60 @@ def main():
         generator=torch.Generator().manual_seed(42)
     )
     
-    # Create data loaders
-    train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=4)
-    val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
+    # Create data loaders with optimized settings for high-end hardware
+    # Increased num_workers to utilize more CPU cores for data loading
+    # Added pin_memory for faster GPU transfer on systems with adequate RAM
+    train_loader = DataLoader(
+        train_dataset, 
+        batch_size=args.batch_size, 
+        shuffle=True, 
+        num_workers=16,
+        pin_memory=True,
+        persistent_workers=True
+    )
+    val_loader = DataLoader(
+        val_dataset, 
+        batch_size=args.batch_size, 
+        shuffle=False, 
+        num_workers=8,
+        pin_memory=True,
+        persistent_workers=True
+    )
     
     # Create model
     model = MillNNUE(feature_size=args.feature_size, hidden_size=args.hidden_size).to(device)
     logger.info(f"Model created with {sum(p.numel() for p in model.parameters())} parameters")
     
-    # Setup training
-    optimizer = optim.Adam(model.parameters(), lr=args.lr)
+    # Setup training with optimized components for high-performance hardware
+    # Use AdamW optimizer with weight decay for better generalization
+    optimizer = optim.AdamW(
+        model.parameters(), 
+        lr=args.lr,
+        weight_decay=1e-5,
+        betas=(0.9, 0.999),
+        eps=1e-8
+    )
+    
     criterion = nn.MSELoss()
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=10, factor=0.5)
+    
+    # Advanced learning rate scheduling for longer training
+    # Cosine annealing with warm restarts for better convergence
+    scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
+        optimizer, 
+        T_0=30,  # Initial restart period
+        T_mult=2,  # Multiplicative factor for period growth
+        eta_min=1e-7  # Minimum learning rate
+    )
+    
+    # Use gradient clipping for stability with larger batch sizes
+    max_grad_norm = 1.0
+    
+    # Initialize gradient scaler for mixed precision training
+    scaler = torch.cuda.amp.GradScaler() if device.type == 'cuda' else None
     
     best_val_loss = float('inf')
     patience_counter = 0
-    max_patience = 20
+    max_patience = 50  # Increased patience for longer training
     
     logger.info("Starting training...")
     
@@ -362,7 +434,7 @@ def main():
         start_time = time.time()
         
         # Train
-        train_loss = train_epoch(model, train_loader, optimizer, criterion, device)
+        train_loss = train_epoch(model, train_loader, optimizer, criterion, device, max_grad_norm, scaler)
         
         # Validate
         val_loss, val_accuracy = validate_epoch(model, val_loader, criterion, device)

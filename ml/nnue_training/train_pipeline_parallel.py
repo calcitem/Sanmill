@@ -99,9 +99,9 @@ def generate_training_data_parallel(engine_path: str,
 
 def train_nnue_model(data_file: str,
                     model_output: str,
-                    epochs: int = 200,
-                    batch_size: int = 1024,
-                    learning_rate: float = 0.001,
+                    epochs: int = 300,
+                    batch_size: int = 8192,
+                    learning_rate: float = 0.002,
                     device: str = "auto") -> bool:
     """
     Train NNUE model with strict error checking
@@ -209,10 +209,10 @@ def main():
     parser.add_argument('--engine', required=True, help='Path to Sanmill engine executable')
     parser.add_argument('--perfect-db', required=True, help='Path to Perfect Database directory')
     parser.add_argument('--output-dir', default='./nnue_output', help='Output directory for training artifacts')
-    parser.add_argument('--positions', type=int, default=100000, help='Number of training positions')
-    parser.add_argument('--epochs', type=int, default=200, help='Training epochs')
-    parser.add_argument('--batch-size', type=int, default=1024, help='Batch size')
-    parser.add_argument('--learning-rate', type=float, default=0.001, help='Learning rate')
+    parser.add_argument('--positions', type=int, default=500000, help='Number of training positions')
+    parser.add_argument('--epochs', type=int, default=300, help='Training epochs')
+    parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
+    parser.add_argument('--learning-rate', type=float, default=0.002, help='Learning rate')
     parser.add_argument('--threads', type=int, default=0, help='Number of threads (0=auto)')
     parser.add_argument('--device', default='auto', help='Training device (cpu/cuda/auto)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate environment')

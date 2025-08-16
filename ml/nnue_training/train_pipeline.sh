@@ -8,7 +8,7 @@ set -e  # Exit on any error
 # Configuration
 ENGINE_PATH="../../../sanmill"  # Adjust path to your engine
 PERFECT_DB_PATH="."  # Adjust path to Perfect Database
-TRAINING_POSITIONS=100000
+TRAINING_POSITIONS=500000
 MODEL_OUTPUT="nnue_model.bin"
 TRAINING_DATA="training_data.txt"
 
@@ -68,10 +68,10 @@ echo "=== Step 2: Training NNUE Model ==="
 python3 train_nnue.py \
     --data "$TRAINING_DATA" \
     --output "$MODEL_OUTPUT" \
-    --epochs 200 \
-    --batch-size 1024 \
-    --lr 0.001 \
-    --hidden-size 256 \
+    --epochs 300 \
+    --batch-size 8192 \
+    --lr 0.002 \
+    --hidden-size 512 \
     --device auto
 
 if [ $? -ne 0 ]; then

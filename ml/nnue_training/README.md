@@ -70,9 +70,11 @@ python train_pipeline_parallel.py \
     --engine ../../sanmill \
     --perfect-db /path/to/perfect/database \
     --output-dir ./nnue_models \
-    --positions 200000 \
+    --positions 500000 \
     --epochs 300 \
-    --threads 12
+    --batch-size 8192 \
+    --learning-rate 0.002 \
+    --threads 24
 ```
 
 Enhanced Parameters:
@@ -89,19 +91,19 @@ Train the neural network using the generated data:
 python train_nnue.py \
     --data training_data.txt \
     --output nnue_model.bin \
-    --epochs 200 \
-    --batch-size 1024 \
-    --lr 0.001 \
-    --hidden-size 256
+    --epochs 300 \
+    --batch-size 8192 \
+    --lr 0.002 \
+    --hidden-size 512
 ```
 
 Parameters:
 - `--data`: Training data file
 - `--output`: Output model file (C++ compatible format)
-- `--epochs`: Number of training epochs (default: 100)
-- `--batch-size`: Training batch size (default: 1024)
-- `--lr`: Learning rate (default: 0.001)
-- `--hidden-size`: Hidden layer size (default: 256)
+- `--epochs`: Number of training epochs (default: 300)
+- `--batch-size`: Training batch size (default: 8192)
+- `--lr`: Learning rate (default: 0.002)
+- `--hidden-size`: Hidden layer size (default: 512)
 - `--max-samples`: Maximum training samples to use
 - `--val-split`: Validation split ratio (default: 0.1)
 - `--device`: Device to use (cpu/cuda/auto)
@@ -116,7 +118,7 @@ The NNUE model uses the following architecture:
    - Piece count features (12): pieces in hand and on board
    - Tactical features (32): mills, blocking, mobility
 
-2. **Hidden Layer** (256 neurons):
+2. **Hidden Layer** (512 neurons):
    - ReLU activation
    - Separate processing for white and black perspectives
 
@@ -185,11 +187,13 @@ To modify the feature set, update:
 
 ### Hyperparameter Tuning
 
-Recommended hyperparameter ranges:
-- Learning rate: 0.0001 - 0.01
-- Batch size: 512 - 4096
-- Hidden size: 128 - 512
+Recommended hyperparameter ranges for high-end hardware:
+- Learning rate: 0.001 - 0.005
+- Batch size: 4096 - 16384
+- Hidden size: 256 - 1024
 - NNUE weight: 80 - 100
+- Training positions: 500K - 2M
+- Epochs: 300 - 800
 
 ### Multi-GPU Training
 
