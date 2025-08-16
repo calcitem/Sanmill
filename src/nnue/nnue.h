@@ -110,7 +110,7 @@ extern NNUEEvaluator g_nnue_evaluator;
 // Utility functions
 bool is_nnue_available();
 Value nnue_evaluate(const Position& pos);
-void init_nnue(const std::string& model_path = "");
+bool init_nnue(const std::string& model_path = "");
 
 } // namespace NNUE
 

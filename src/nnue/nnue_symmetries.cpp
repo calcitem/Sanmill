@@ -30,11 +30,16 @@ static Square apply_perfect_transform(Square sq, int (*transform_func)(int)) {
     // Find which bit is set in the output
     for (int i = 0; i < SQUARE_NB; ++i) {
         if (output_bitboard & (1 << i)) {
-            return from_perfect_square(i);
+            const Square result = from_perfect_square(i);
+            // Validate the result is in valid range
+            if (result >= SQ_BEGIN && result < SQ_END) {
+                return result;
+            }
         }
     }
     
-    // Should never reach here for valid transformations
+    // Should never reach here for valid transformations - assert for debugging
+    assert(false && "Perfect database transformation produced invalid result");
     return sq;
 }
 
@@ -265,8 +270,9 @@ SymmetryOp SymmetryTransforms::combine(SymmetryOp op1, SymmetryOp op2) {
     
     // For other combinations, we would need a full group multiplication table
     // This is complex for the dihedral group D8 extended with color swap
-    // For now, return identity as a safe fallback
-    return SYM_IDENTITY;
+    // Assert that we don't try to use unimplemented combinations
+    assert(false && "SymmetryOp combination not implemented - need full group multiplication table");
+    return SYM_IDENTITY;  // Never reached, but satisfies compiler
 }
 
 // Symmetry-aware evaluation functions
@@ -317,6 +323,9 @@ void SymmetryAwareNNUE::generate_symmetric_training_data(const Position& pos,
                                                        std::vector<std::pair<bool*, int32_t>>& training_examples) {
     Position pos_copy = pos;
     
+    // Reserve space to avoid reallocations
+    training_examples.reserve(training_examples.size() + SYM_OP_COUNT);
+    
     // Generate training examples for all valid symmetries
     for (int op = 0; op < SYM_OP_COUNT; ++op) {
         bool* features = new bool[FeatureIndices::TOTAL_FEATURES];
@@ -332,6 +341,9 @@ void SymmetryAwareNNUE::generate_symmetric_training_data(const Position& pos,
         
         training_examples.emplace_back(features, target_value);
     }
+    
+    // NOTE: Caller is responsible for freeing the allocated bool* arrays
+    // Use generate_symmetric_training_data_safe() for automatic memory management
 }
 
 bool SymmetryAwareNNUE::is_position_symmetric(const Position& pos, SymmetryOp op) {

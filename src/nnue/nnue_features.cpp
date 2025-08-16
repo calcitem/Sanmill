@@ -16,7 +16,11 @@ namespace NNUE {
 // Helper function to extract LSB (Least Significant Bit) and clear it
 // This replaces the missing pop_lsb function with a portable implementation
 inline Square extract_lsb(Bitboard& b) {
-    assert(b != 0);
+    // Error handling: return invalid square if bitboard is empty
+    if (b == 0) {
+        return SQ_NONE;
+    }
+    
 #if defined(_MSC_VER) && defined(_WIN64)
     unsigned long idx;
     _BitScanForward(&idx, b);
@@ -44,6 +48,7 @@ inline Square extract_lsb(Bitboard& b) {
 
 // Optimized helper function to count mobility using bitboard operations
 int count_mobility(Position& pos, Color color) {
+    // Check if pieces can fly (endgame rule)
     if (pos.piece_on_board_count(color) <= 3) {
         // In the endgame, pieces may fly; mobility approximates the number of empty squares.
         return 24 - (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK));
@@ -59,8 +64,12 @@ int count_mobility(Position& pos, Color color) {
     // Process each piece using bitboard operations (much faster than loop)
     while (pieces) {
         const Square sq = extract_lsb(pieces);  // Extract and remove one piece position
-        const Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
-        mobility += popcount(adjacent & empty_squares);
+        
+        // Validate square is in valid range before accessing adjacent squares
+        if (sq >= SQ_BEGIN && sq < SQ_END) {
+            const Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
+            mobility += popcount(adjacent & empty_squares);
+        }
     }
     
     return mobility;
@@ -79,6 +88,12 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     Bitboard white_pieces = pos.byColorBB[WHITE];
     while (white_pieces) {
         const Square sq = extract_lsb(white_pieces);
+        
+        // Validate square extraction was successful
+        if (sq == SQ_NONE) {
+            break;  // No more pieces to process
+        }
+        
         const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
         if (feature_idx >= 0 && feature_idx < SQUARE_NB) {
             features[FeatureIndices::WHITE_PIECES_START + feature_idx] = true;
@@ -89,6 +104,12 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     Bitboard black_pieces = pos.byColorBB[BLACK];
     while (black_pieces) {
         const Square sq = extract_lsb(black_pieces);
+        
+        // Validate square extraction was successful
+        if (sq == SQ_NONE) {
+            break;  // No more pieces to process
+        }
+        
         const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
         if (feature_idx >= 0 && feature_idx < SQUARE_NB) {
             features[FeatureIndices::BLACK_PIECES_START + feature_idx] = true;

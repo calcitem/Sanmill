@@ -154,8 +154,8 @@ Value Eval::evaluate(Position &pos)
 {
     // Strict mode: Use NNUE evaluation if enabled, traditional otherwise
     if (Options["UseNNUE"]) {
-        // Assert that NNUE is available when UseNNUE is true
-        assert(NNUE::is_nnue_available() && "UseNNUE is true but NNUE is not available");
+        // Assert that NNUE is available when UseNNUE is true - no fallback!
+        assert(NNUE::is_nnue_available() && "UseNNUE is true but NNUE is not available - this is a configuration error that must be fixed!");
         return evaluate_nnue(pos);
     }
     

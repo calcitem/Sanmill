@@ -138,9 +138,9 @@ bool TrainingDataGenerator::generate_random_position(Position& pos) {
     int white_pieces = pieces_dist(rng_);
     int black_pieces = pieces_dist(rng_);
     
-    // Place pieces randomly
+    // Place pieces randomly on valid board squares
     std::vector<Square> empty_squares;
-    for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {  // Use correct square range
         empty_squares.push_back(sq);
     }
     
@@ -196,7 +196,7 @@ bool TrainingDataGenerator::generate_phase_position(Position& pos, Phase target_
         int black_pieces = pieces_dist(rng_);
         
         std::vector<Square> squares;
-        for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {  // Use correct square range
             squares.push_back(sq);
         }
         std::shuffle(squares.begin(), squares.end(), rng_);
@@ -273,7 +273,10 @@ void TrainingDataGenerator::extract_position_features(const Position& pos, Train
     sample.features.resize(FeatureIndices::TOTAL_FEATURES);
     
     bool feature_array[FeatureIndices::TOTAL_FEATURES];
-    FeatureExtractor::extract_features(pos, feature_array);
+    // FeatureExtractor::extract_features requires non-const Position for potential_mills_count
+    // We cast away const here as this is a read-only operation in practice
+    Position& pos_ref = const_cast<Position&>(pos);
+    FeatureExtractor::extract_features(pos_ref, feature_array);
     
     for (int i = 0; i < FeatureIndices::TOTAL_FEATURES; i++) {
         sample.features[i] = feature_array[i];

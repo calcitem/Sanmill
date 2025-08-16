@@ -47,8 +47,14 @@ int main(int argc, char *argv[])
     Threads.set(static_cast<size_t>(Options["Threads"]));
     Search::clear(); // After threads are up
     
-    // Initialize NNUE system
-    NNUE::init_nnue(gameOptions.getNNUEModelPath());
+    // Initialize NNUE system if enabled - strict mode, no fallbacks!
+    if (gameOptions.getUseNNUE()) {
+        const std::string model_path = gameOptions.getNNUEModelPath();
+        assert(!model_path.empty() && "UseNNUE is enabled but no model path specified - this is a configuration error!");
+        
+        bool nnue_success = NNUE::init_nnue(model_path);
+        assert(nnue_success && "NNUE initialization failed - check model file and configuration!");
+    }
 
 #ifndef UNIT_TEST_MODE
     UCI::loop(argc, argv);

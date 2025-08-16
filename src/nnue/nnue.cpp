@@ -26,8 +26,8 @@ static_assert(FEATURE_SIZE == FeatureIndices::TOTAL_FEATURES,
 NNUEEvaluator g_nnue_evaluator;
 
 // Initialize NNUE system
-void init_nnue(const std::string& model_path) {
-    g_nnue_evaluator.initialize(model_path);
+bool init_nnue(const std::string& model_path) {
+    return g_nnue_evaluator.initialize(model_path);
 }
 
 // Check if NNUE is available
@@ -46,28 +46,42 @@ NNUEEvaluator::NNUEEvaluator()
     // Initialize symmetry transformations
     SymmetryTransforms::initialize();
     
-    // Initialize weights to small random values
+    // Initialize weights to small random values using Xavier initialization
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::normal_distribution<float> dist(0.0f, 0.1f);
+    
+    // Xavier initialization for input weights: scale by sqrt(1/fan_in)
+    const float input_scale = std::sqrt(1.0f / FEATURE_SIZE);
+    std::normal_distribution<float> input_dist(0.0f, input_scale);
     
     // Initialize input layer weights
     for (int i = 0; i < FEATURE_SIZE * HIDDEN_SIZE; i++) {
-        weights_.input_weights[i] = static_cast<int16_t>(dist(gen) * 1000);
+        const float val = input_dist(gen);
+        weights_.input_weights[i] = static_cast<int16_t>(std::max(-32767.0f, 
+                                                                 std::min(32767.0f, val * 16384.0f)));
     }
     
     // Initialize input biases to zero
     std::memset(weights_.input_biases, 0, sizeof(weights_.input_biases));
     
+    // Xavier initialization for output weights: scale by sqrt(1/fan_in)  
+    const float output_scale = std::sqrt(1.0f / HIDDEN_SIZE);
+    std::normal_distribution<float> output_dist(0.0f, output_scale);
+    
     // Initialize output weights
     for (int i = 0; i < HIDDEN_SIZE * 2; i++) {
-        weights_.output_weights[i] = static_cast<int8_t>(dist(gen) * 127);
+        const float val = output_dist(gen);
+        weights_.output_weights[i] = static_cast<int8_t>(std::max(-127.0f, 
+                                                                 std::min(127.0f, val * 127.0f)));
     }
     
     weights_.output_bias = 0;
 }
 
 bool NNUEEvaluator::initialize(const std::string& model_path) {
+    // Initialize symmetry transformations first
+    initialize_symmetries();
+    
     // Strict mode: NNUE requires a valid model file to be loaded
     if (model_path.empty()) {
         std::cerr << "NNUE Error: No model path provided. NNUE requires a valid model file." << std::endl;
@@ -151,17 +165,19 @@ void NNUEEvaluator::extract_features(Position& pos, bool* features) {
 void NNUEEvaluator::activate_hidden(const bool* features, int16_t* hidden) {
     // Compute hidden layer activation using SIMD-like operations
     for (int h = 0; h < HIDDEN_SIZE; h++) {
-        int32_t sum = weights_.input_biases[h];
+        int64_t sum = static_cast<int64_t>(weights_.input_biases[h]);  // Use 64-bit to prevent overflow
         
         // Accumulate weights for active features
         for (int f = 0; f < FEATURE_SIZE; f++) {
             if (features[f]) {
-                sum += weights_.input_weights[f * HIDDEN_SIZE + h];
+                sum += static_cast<int64_t>(weights_.input_weights[f * HIDDEN_SIZE + h]);
             }
         }
         
-        // Apply ReLU activation
-        hidden[h] = relu(sum);
+        // Apply ReLU activation with proper clamping
+        hidden[h] = relu(static_cast<int32_t>(std::max<int64_t>(
+            std::min<int64_t>(sum, std::numeric_limits<int32_t>::max()),
+            std::numeric_limits<int32_t>::min())));
     }
 }
 
