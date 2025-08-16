@@ -32,39 +32,54 @@ public:
 private:
     // Convert square index to feature index
     static int square_to_feature_index(Square sq, Color c);
-    
-    // Check if square has piece of given color
-    static bool has_piece(Position& pos, Square sq, Color c);
 };
 
 // Feature indices for different aspects of the position
+// Features are organized to be contiguous and densely packed.
 namespace FeatureIndices {
-    // Basic piece placement features (0-47)
-    constexpr int PIECE_FEATURES_START = 0;
-    constexpr int WHITE_PIECES_START = 0;
-    constexpr int BLACK_PIECES_START = 24;
-    
-    // Phase information features (48-50)
-    constexpr int PHASE_FEATURES_START = 48;
-    constexpr int PHASE_PLACING = 48;
-    constexpr int PHASE_MOVING = 49;
-    constexpr int PHASE_GAMEOVER = 50;
-    
-    // Piece count features (51-62)
-    constexpr int COUNT_FEATURES_START = 51;
-    constexpr int WHITE_IN_HAND_START = 51;    // 0-9 pieces in hand
-    constexpr int BLACK_IN_HAND_START = 56;    // 0-9 pieces in hand  
-    constexpr int WHITE_ON_BOARD_START = 61;   // encoded piece count
-    constexpr int BLACK_ON_BOARD_START = 66;   // encoded piece count
-    
-    // Mill and tactical features (71-94)
-    constexpr int TACTICAL_FEATURES_START = 71;
-    constexpr int MILL_FORMATION_START = 71;   // Potential mills
-    constexpr int BLOCKING_START = 79;         // Blocking opportunities
-    constexpr int MOBILITY_START = 87;         // Mobility features
-    
-    // Total feature count
-    constexpr int TOTAL_FEATURES = 95;
+    // 1. Piece Placement Features (48 features)
+    // For each of the 24 squares, one feature indicates if a white piece is
+    // present, and another for a black piece.
+    constexpr int PIECE_PLACEMENT_START = 0;
+    constexpr int WHITE_PIECES_START = PIECE_PLACEMENT_START;
+    constexpr int BLACK_PIECES_START = WHITE_PIECES_START + 24;
+    constexpr int PIECE_PLACEMENT_END = BLACK_PIECES_START + 24;
+
+    // 2. Game Phase Features (3 features)
+    // One-hot encoding for the current game phase.
+    constexpr int PHASE_START = PIECE_PLACEMENT_END;
+    constexpr int PHASE_PLACING = PHASE_START;
+    constexpr int PHASE_MOVING = PHASE_START + 1;
+    constexpr int PHASE_GAMEOVER = PHASE_START + 2;
+    constexpr int PHASE_END = PHASE_START + 3;
+
+    // 3. Piece Count Features (40 features)
+    // One-hot encoding for the number of pieces in hand and on the board for
+    // each color.
+    // - 10 features for white pieces in hand (0-9)
+    // - 10 features for black pieces in hand (0-9)
+    // - 10 features for white pieces on board (0-9)
+    // - 10 features for black pieces on board (0-9)
+    constexpr int PIECE_COUNT_START = PHASE_END;
+    constexpr int WHITE_IN_HAND_START = PIECE_COUNT_START;
+    constexpr int BLACK_IN_HAND_START = WHITE_IN_HAND_START + 10;
+    constexpr int WHITE_ON_BOARD_START = BLACK_IN_HAND_START + 10;
+    constexpr int BLACK_ON_BOARD_START = WHITE_ON_BOARD_START + 10;
+    constexpr int PIECE_COUNT_END = BLACK_ON_BOARD_START + 10;
+
+    // 4. Tactical Features (24 features)
+    // Features related to mills, blocking, and mobility.
+    // - 8 features for white's potential mills
+    // - 8 features for black's potential mills
+    // - 8 features for mobility difference
+    constexpr int TACTICAL_START = PIECE_COUNT_END;
+    constexpr int WHITE_MILL_POTENTIAL = TACTICAL_START;
+    constexpr int BLACK_MILL_POTENTIAL = WHITE_MILL_POTENTIAL + 8;
+    constexpr int MOBILITY_DIFF_START = BLACK_MILL_POTENTIAL + 8;
+    constexpr int TACTICAL_END = MOBILITY_DIFF_START + 8;
+
+    // Total number of features
+    constexpr int TOTAL_FEATURES = TACTICAL_END;
 };
 
 } // namespace NNUE

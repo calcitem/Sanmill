@@ -8,155 +8,104 @@
 #include "bitboard.h"
 #include "movegen.h"
 #include <cstring>
+#include <algorithm>
 
 namespace NNUE {
 
+// Helper function to count mobility
+int count_mobility(Position& pos, Color c) {
+    if (pos.piece_on_board_count(c) <= 3) {
+        // In the endgame, pieces can fly, so mobility is the number of empty squares.
+        return 24 - (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK));
+    }
+
+    int mobility = 0;
+    Bitboard pieces = pos.byColorBB[c];
+    Bitboard empty_squares = ~(pos.byTypeBB[ALL_PIECES]);
+
+    while (pieces) {
+        Square sq = pop_lsb(&pieces);
+        mobility += popcount(MoveList<LEGAL>::adjacentSquaresBB[sq] & empty_squares);
+    }
+    return mobility;
+}
+
+
 void FeatureExtractor::extract_features(Position& pos, bool* features) {
-    // Clear all features first
+    // 1. Clear all features
     std::memset(features, 0, FeatureIndices::TOTAL_FEATURES * sizeof(bool));
-    
-    // Extract basic piece placement features
+
+    // 2. Piece Placement Features
     for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
         if (!pos.empty(sq)) {
-            Color c = pos.color_on(sq);
-            int feature_idx = square_to_feature_index(sq, c);
-            if (feature_idx >= 0 && feature_idx < 48) {
-                features[feature_idx] = true;
+            const int feature_idx = square_to_feature_index(sq, pos.color_on(sq));
+            features[feature_idx] = true;
+        }
+    }
+
+    // 3. Game Phase Features
+    const Phase phase = pos.get_phase();
+    if (phase == Phase::placing)
+        features[FeatureIndices::PHASE_PLACING] = true;
+    else if (phase == Phase::moving)
+        features[FeatureIndices::PHASE_MOVING] = true;
+    else if (phase == Phase::gameOver)
+        features[FeatureIndices::PHASE_GAMEOVER] = true;
+
+    // 4. Piece Count Features (one-hot encoded)
+    const int white_in_hand = pos.piece_in_hand_count(WHITE);
+    const int black_in_hand = pos.piece_in_hand_count(BLACK);
+    const int white_on_board = pos.piece_on_board_count(WHITE);
+    const int black_on_board = pos.piece_on_board_count(BLACK);
+
+    if (white_in_hand >= 0 && white_in_hand < 10)
+        features[FeatureIndices::WHITE_IN_HAND_START + white_in_hand] = true;
+    if (black_in_hand >= 0 && black_in_hand < 10)
+        features[FeatureIndices::BLACK_IN_HAND_START + black_in_hand] = true;
+    if (white_on_board >= 0 && white_on_board < 10)
+        features[FeatureIndices::WHITE_ON_BOARD_START + white_on_board] = true;
+    if (black_on_board >= 0 && black_on_board < 10)
+        features[FeatureIndices::BLACK_ON_BOARD_START + black_on_board] = true;
+
+    // 5. Tactical Features
+    // Mill potential features
+    for (Color c : {WHITE, BLACK}) {
+        int mill_potential = 0;
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (pos.empty(sq)) {
+                mill_potential += pos.potential_mills_count(sq, c);
             }
         }
+        mill_potential = std::min(mill_potential, 7); // Clamp to 0-7 range
+        if (c == WHITE) {
+            features[FeatureIndices::WHITE_MILL_POTENTIAL + mill_potential] = true;
+        } else {
+            features[FeatureIndices::BLACK_MILL_POTENTIAL + mill_potential] = true;
+        }
     }
-    
-    // Extract phase features
-    extract_phase_features(pos, features);
-    
-    // Extract piece count features
-    extract_piece_count_features(pos, features);
-    
-    // Extract mobility features if in moving phase
-    if (pos.get_phase() == Phase::moving) {
-        extract_mobility_features(pos, features);
-    }
-    
-    // Extract mill formation features
-    extract_mill_features(pos, features);
-}
 
-void FeatureExtractor::extract_phase_features(Position& pos, bool* features) {
-    Phase current_phase = pos.get_phase();
-    
-    switch (current_phase) {
-        case Phase::placing:
-            features[FeatureIndices::PHASE_PLACING] = true;
-            break;
-        case Phase::moving:
-            features[FeatureIndices::PHASE_MOVING] = true;
-            break;
-        case Phase::gameOver:
-            features[FeatureIndices::PHASE_GAMEOVER] = true;
-            break;
-        default:
-            break;
-    }
-}
-
-void FeatureExtractor::extract_piece_count_features(Position& pos, bool* features) {
-    // Pieces in hand (0-9 pieces encoded as binary)
-    int white_in_hand = pos.piece_in_hand_count(WHITE);
-    int black_in_hand = pos.piece_in_hand_count(BLACK);
-    
-    // Encode piece counts in binary (up to 15 pieces each)
-    for (int i = 0; i < 4; i++) {  // 4 bits for each color
-        if (white_in_hand & (1 << i)) {
-            features[FeatureIndices::WHITE_IN_HAND_START + i] = true;
-        }
-        if (black_in_hand & (1 << i)) {
-            features[FeatureIndices::BLACK_IN_HAND_START + i] = true;
-        }
-    }
-    
-    // Pieces on board (similar encoding)
-    int white_on_board = pos.piece_on_board_count(WHITE);
-    int black_on_board = pos.piece_on_board_count(BLACK);
-    
-    for (int i = 0; i < 4; i++) {  // 4 bits for each color
-        if (white_on_board & (1 << i)) {
-            features[FeatureIndices::WHITE_ON_BOARD_START + i] = true;
-        }
-        if (black_on_board & (1 << i)) {
-            features[FeatureIndices::BLACK_ON_BOARD_START + i] = true;
-        }
-    }
-}
-
-void FeatureExtractor::extract_mobility_features(Position& pos, bool* features) {
-    if (pos.get_phase() != Phase::moving) {
-        return;
-    }
-    
-    // Count mobility for each color
-    int white_mobility = 0;
-    int black_mobility = 0;
-    
-    // Count possible moves for each piece
-    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
-        if (!pos.empty(sq)) {
-            Color c = pos.color_on(sq);
-            
-            // Count adjacent empty squares using MoveList adjacency
-            Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
-            Bitboard all_pieces = pos.byTypeBB[ALL_PIECES];
-            int adjacent_count = popcount(adjacent & ~all_pieces);
-            
-            if (c == WHITE) {
-                white_mobility += adjacent_count;
-            } else {
-                black_mobility += adjacent_count;
-            }
-        }
-    }
-    
-    // Encode mobility difference
+    // Mobility features
+    const int white_mobility = (phase == Phase::placing) ? (24 - pos.piece_count()) : count_mobility(pos, WHITE);
+    const int black_mobility = (phase == Phase::placing) ? (24 - pos.piece_count()) : count_mobility(pos, BLACK);
     int mobility_diff = white_mobility - black_mobility;
-    
-    // Map mobility difference to feature indices
-    int mobility_feature_idx = FeatureIndices::MOBILITY_START;
-    if (mobility_diff > 0) {
-        features[mobility_feature_idx] = true;      // White has more mobility
-    } else if (mobility_diff < 0) {
-        features[mobility_feature_idx + 1] = true;  // Black has more mobility
-    }
-    // If mobility_diff == 0, neither feature is set (equal mobility)
-}
 
-void FeatureExtractor::extract_mill_features(Position& pos, bool* features) {
-    // Check for potential mills and blocking opportunities
-    int mill_feature_idx = FeatureIndices::MILL_FORMATION_START;
-    
-    // Analyze each mill pattern
-    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
-        if (pos.empty(sq)) {
-            // Check if placing a piece here would form a mill
-            for (Color c : {WHITE, BLACK}) {
-                if (pos.potential_mills_count(sq, c) > 0) {
-                    int feature_offset = (c == WHITE) ? 0 : 4;
-                    features[mill_feature_idx + feature_offset] = true;
-                }
-            }
-        }
-    }
-    
-    // Check for blocking opportunities
-    int blocking_feature_idx = FeatureIndices::BLOCKING_START;
-    
-    // Check if current side can block opponent mills
-    Color opponent = (pos.side_to_move() == WHITE) ? BLACK : WHITE;
-    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
-        if (pos.empty(sq) && pos.potential_mills_count(sq, opponent) > 0) {
-            // Opponent could form mill here - this is a blocking opportunity
-            features[blocking_feature_idx] = true;
-            break;
-        }
-    }
+    // Map difference to a feature index from -4 to +3
+    // [-inf, -8] -> 0
+    // [-7, -5] -> 1
+    // [-4, -2] -> 2
+    // [-1, 1] -> 3 (neutral)
+    // [2, 4] -> 4
+    // [5, 7] -> 5
+    // [8, inf] -> 6
+    // (This mapping is an example and can be tuned)
+    int mobility_idx = 3; // Default to neutral
+    if (mobility_diff <= -8) mobility_idx = 0;
+    else if (mobility_diff <= -5) mobility_idx = 1;
+    else if (mobility_diff <= -2) mobility_idx = 2;
+    else if (mobility_diff >= 8) mobility_idx = 6;
+    else if (mobility_diff >= 5) mobility_idx = 5;
+    else if (mobility_diff >= 2) mobility_idx = 4;
+    features[FeatureIndices::MOBILITY_DIFF_START + mobility_idx] = true;
 }
 
 int FeatureExtractor::square_to_feature_index(Square sq, Color c) {
@@ -169,10 +118,6 @@ int FeatureExtractor::square_to_feature_index(Square sq, Color c) {
     } else {
         return FeatureIndices::BLACK_PIECES_START + sq;
     }
-}
-
-bool FeatureExtractor::has_piece(Position& pos, Square sq, Color c) {
-    return !pos.empty(sq) && pos.color_on(sq) == c;
 }
 
 } // namespace NNUE

@@ -21,73 +21,82 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+
 class MillNNUE(nn.Module):
     """
-    NNUE model for Mill game evaluation
-    Architecture: Input features -> Hidden layer (ReLU) -> Output
+    NNUE model for Mill game evaluation, matching the C++ implementation.
+    Architecture:
+    - Input: 115 features representing the game state.
+    - Hidden Layer: 256 neurons with ReLU activation.
+    - Output: A single value representing the position evaluation.
     """
-    
-    def __init__(self, feature_size: int = 95, hidden_size: int = 256):
+
+    def __init__(self, feature_size: int = 115, hidden_size: int = 256):
         super(MillNNUE, self).__init__()
         self.feature_size = feature_size
         self.hidden_size = hidden_size
-        
-        # Input layer to hidden layer
-        self.input_layer = nn.Linear(feature_size, hidden_size)
-        
-        # Hidden layer for both perspectives (white and black)
-        self.hidden_white = nn.Linear(hidden_size, hidden_size)
-        self.hidden_black = nn.Linear(hidden_size, hidden_size)
-        
-        # Output layer (combine both perspectives)
-        self.output_layer = nn.Linear(hidden_size * 2, 1)
-        
-        # Initialize weights
+
+        # A single linear layer for the input to hidden transformation.
+        # The C++ side uses int16_t weights, so we will quantize this later.
+        self.input_to_hidden = nn.Linear(feature_size, hidden_size)
+
+        # The output layer combines activations from two perspectives (current player
+        # and opponent). This is modeled as a linear layer with a weight matrix
+        # of size (1, hidden_size * 2).
+        self.hidden_to_output = nn.Linear(hidden_size * 2, 1, bias=True)
+
         self._init_weights()
-    
+
     def _init_weights(self):
-        """Initialize network weights"""
+        """Initialize network weights using Kaiming He initialization."""
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='relu')
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
-    
+
     def forward(self, x: torch.Tensor, side_to_move: torch.Tensor) -> torch.Tensor:
         """
-        Forward pass
+        Performs the forward pass, mirroring the logic in the C++ engine.
         Args:
-            x: Feature tensor [batch_size, feature_size]
-            side_to_move: Side to move tensor [batch_size], 0=white, 1=black
+            x: The input feature tensor [batch_size, feature_size].
+            side_to_move: A tensor indicating whose turn it is [batch_size].
+                          0 for white, 1 for black.
         Returns:
-            Evaluation tensor [batch_size, 1]
+            The evaluation score for each position in the batch [batch_size, 1].
         """
+        # --- Perspective Handling ---
+        # The C++ engine computes two perspectives: one for the current player
+        # and one for the opponent. This is achieved by swapping the piece
+        # placement features.
+
+        # Perspective A (White's view)
+        hidden_white = F.relu(self.input_to_hidden(x))
+
+        # Perspective B (Black's view)
+        # Create a swapped version of the input tensor for black's perspective.
+        x_swapped = x.clone()
+        # Swap white and black piece placement features (first 24 features for
+        # white, next 24 for black).
+        x_swapped[:, 0:24], x_swapped[:, 24:48] = x[:, 24:48], x[:, 0:24]
+        hidden_black = F.relu(self.input_to_hidden(x_swapped))
+
+        # --- Output Computation ---
+        # The final output depends on the side to move. The C++ engine concatenates
+        # the hidden activations of the current player and the opponent.
         batch_size = x.size(0)
+        combined_hidden = torch.zeros(batch_size, self.hidden_size * 2, device=x.device)
+
+        white_mask = (side_to_move == 0)
+        black_mask = (side_to_move == 1)
+
+        # If it's white's turn, the order is [hidden_white, hidden_black]
+        combined_hidden[white_mask] = torch.cat((hidden_white[white_mask], hidden_black[white_mask]), dim=1)
+
+        # If it's black's turn, the order is [hidden_black, hidden_white]
+        combined_hidden[black_mask] = torch.cat((hidden_black[black_mask], hidden_white[black_mask]), dim=1)
         
-        # Input to hidden transformation
-        hidden = F.relu(self.input_layer(x))
-        
-        # Perspective-specific transformations
-        hidden_w = F.relu(self.hidden_white(hidden))
-        hidden_b = F.relu(self.hidden_black(hidden))
-        
-        # Combine perspectives based on side to move
-        # For each sample, choose the appropriate perspective
-        combined = torch.zeros(batch_size, self.hidden_size * 2, device=x.device)
-        
-        # White to move: use white perspective first
-        white_mask = (side_to_move == 0).unsqueeze(1)
-        combined[white_mask.squeeze(), :self.hidden_size] = hidden_w[white_mask.squeeze()]
-        combined[white_mask.squeeze(), self.hidden_size:] = hidden_b[white_mask.squeeze()]
-        
-        # Black to move: use black perspective first
-        black_mask = (side_to_move == 1).unsqueeze(1)
-        combined[black_mask.squeeze(), :self.hidden_size] = hidden_b[black_mask.squeeze()]
-        combined[black_mask.squeeze(), self.hidden_size:] = hidden_w[black_mask.squeeze()]
-        
-        # Final output
-        output = self.output_layer(combined)
-        return output
+        return self.hidden_to_output(combined_hidden)
 
 class MillDataset(Dataset):
     """Dataset for Mill NNUE training"""
@@ -244,53 +253,51 @@ def validate_epoch(model: nn.Module,
     
     return total_loss / num_batches, total_accuracy / num_batches
 
+
 def save_model_c_format(model: nn.Module, filepath: str):
-    """Save model in C++ compatible format"""
+    """
+    Saves the model in a binary format that is compatible with the C++ engine.
+    This involves quantizing the weights and arranging them in the exact order
+    and format expected by the NNUEWeights struct in `nnue.h`.
+    """
     model.eval()
-    
-    # Extract weights and biases
-    input_weights = model.input_layer.weight.detach().cpu().numpy()
-    input_biases = model.input_layer.bias.detach().cpu().numpy()
-    
-    hidden_white_weights = model.hidden_white.weight.detach().cpu().numpy()
-    hidden_white_biases = model.hidden_white.bias.detach().cpu().numpy()
-    
-    hidden_black_weights = model.hidden_black.weight.detach().cpu().numpy()
-    hidden_black_biases = model.hidden_black.bias.detach().cpu().numpy()
-    
-    output_weights = model.output_layer.weight.detach().cpu().numpy()
-    output_bias = model.output_layer.bias.detach().cpu().numpy()
-    
-    # Convert to int16/int8 format for C++ and quantize consistently with C++ side
-    # Scale and quantize weights
-    input_scale = 1024.0
-    relu_div = 64.0
+
+    # --- 1. Extract Weights and Biases from PyTorch Model ---
+    input_weights_float = model.input_to_hidden.weight.transpose(0, 1).detach().cpu().numpy()
+    input_biases_float = model.input_to_hidden.bias.detach().cpu().numpy()
+    output_weights_float = model.hidden_to_output.weight.flatten().detach().cpu().numpy()
+    output_bias_float = model.hidden_to_output.bias.detach().cpu().numpy()
+
+    # --- 2. Quantization ---
+    # The quantization scales must match the C++ implementation.
+    # The hidden layer activation is clipped and scaled by 1/64. To compensate,
+    # we scale the input weights and biases.
+    # The output is also scaled.
+    input_scale = 64.0
     output_scale = 127.0
-
-    input_weights_int16 = np.clip(input_weights * input_scale, -32767, 32767).astype(np.int16)
-    input_biases_int32 = np.clip(input_biases * input_scale, -2147483647, 2147483647).astype(np.int32)
-
-    # Output weights expect two HIDDEN_SIZE blocks (current + opponent)
-    # Duplicate learned output to both blocks for first export
-    output_weights_block = np.tile(output_weights, (1, 2))
-    output_weights_int8 = np.clip(output_weights_block.flatten() * output_scale, -127, 127).astype(np.int8)
-    output_bias_int32 = np.clip(output_bias * output_scale, -2147483647, 2147483647).astype(np.int32)
     
-    # Save in binary format
+    # Quantize weights to the C++ types
+    input_weights_int16 = np.clip(input_weights_float * input_scale, -32767, 32767).astype(np.int16)
+    input_biases_int32 = np.clip(input_biases_float * input_scale, -2147483647, 2147483647).astype(np.int32)
+    output_weights_int8 = np.clip(output_weights_float * output_scale, -127, 127).astype(np.int8)
+    output_bias_int32 = np.clip(output_bias_float.item() * output_scale, -2147483647, 2147483647).astype(np.int32)
+
+    # --- 3. Write to Binary File ---
     with open(filepath, 'wb') as f:
-        # Write header
+        # Write header "SANMILL1"
         f.write(b'SANMILL1')
-        
-        # Write dimensions
+
+        # Write dimensions (feature_size, hidden_size)
         f.write(np.array([model.feature_size, model.hidden_size], dtype=np.int32).tobytes())
-        
-        # Write weights
+
+        # Write the quantized weights in the order defined by the C++ struct
         f.write(input_weights_int16.tobytes())
         f.write(input_biases_int32.tobytes())
         f.write(output_weights_int8.tobytes())
         f.write(output_bias_int32.tobytes())
-    
+
     logger.info(f"Model saved in C++ format to {filepath}")
+
 
 def main():
     parser = argparse.ArgumentParser(description='Train NNUE for Mill game')
@@ -299,6 +306,7 @@ def main():
     parser.add_argument('--epochs', type=int, default=100, help='Number of training epochs')
     parser.add_argument('--batch-size', type=int, default=1024, help='Batch size')
     parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
+    parser.add_argument('--feature-size', type=int, default=115, help='Input feature size')
     parser.add_argument('--hidden-size', type=int, default=256, help='Hidden layer size')
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
@@ -332,7 +340,7 @@ def main():
     val_loader = DataLoader(val_dataset, batch_size=args.batch_size, shuffle=False, num_workers=4)
     
     # Create model
-    model = MillNNUE(feature_size=95, hidden_size=args.hidden_size).to(device)
+    model = MillNNUE(feature_size=args.feature_size, hidden_size=args.hidden_size).to(device)
     logger.info(f"Model created with {sum(p.numel() for p in model.parameters())} parameters")
     
     # Setup training

@@ -82,7 +82,7 @@ def generate_training_data(engine_path: str,
         logger.error("Training data file was not created")
         return False
 
-def validate_training_data(data_file: str) -> bool:
+def validate_training_data(data_file: str, feature_size: int) -> bool:
     """
     Validate the generated training data file
     """
@@ -125,8 +125,8 @@ def validate_training_data(data_file: str) -> bool:
                 
                 # Check features
                 features = parts[0].split()
-                if len(features) != 95:  # Expected feature count
-                    logger.error(f"Incorrect feature count on line {i+1}: {len(features)}")
+                if len(features) != feature_size:  # Expected feature count
+                    logger.error(f"Incorrect feature count on line {i+1}: got {len(features)}, expected {feature_size}")
                     return False
             
             logger.info("Training data validation passed")
@@ -148,6 +148,7 @@ def main():
     parser.add_argument('--perfect-db', default='.', help='Path to Perfect Database')
     parser.add_argument('--threads', type=int, default=0, help='Number of threads (0=auto-detect)')
     parser.add_argument('--validate', action='store_true', help='Validate generated data')
+    parser.add_argument('--feature-size', type=int, default=115, help='Expected feature size for validation')
     
     args = parser.parse_args()
     
@@ -176,7 +177,7 @@ def main():
     
     # Validate if requested
     if args.validate:
-        if not validate_training_data(args.output):
+        if not validate_training_data(args.output, args.feature_size):
             logger.error("Training data validation failed")
             return 1
     

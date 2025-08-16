@@ -15,7 +15,7 @@ class Position;
 namespace NNUE {
 
 // NNUE network dimensions for Mill game
-constexpr int FEATURE_SIZE = 95;             // Total features from nnue_features.h
+constexpr int FEATURE_SIZE = 115;            // Total features from nnue_features.h
 constexpr int HIDDEN_SIZE = 256;             // Hidden layer size
 constexpr int OUTPUT_SIZE = 1;               // Single evaluation output
 
