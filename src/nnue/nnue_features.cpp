@@ -71,18 +71,24 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     std::memset(features, 0, FeatureIndices::TOTAL_FEATURES * sizeof(bool));
 
     // 2. Piece Placement Features - optimized using bitboards
-    // Process white pieces
+    // Process white pieces - use consistent coordinate mapping with symmetries
     Bitboard white_pieces = pos.byColorBB[WHITE];
     while (white_pieces) {
         const Square sq = extract_lsb(white_pieces);
-        features[FeatureIndices::WHITE_PIECES_START + sq] = true;
+        const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
+        if (feature_idx >= 0 && feature_idx < 24) {
+            features[FeatureIndices::WHITE_PIECES_START + feature_idx] = true;
+        }
     }
     
-    // Process black pieces
+    // Process black pieces - use consistent coordinate mapping with symmetries
     Bitboard black_pieces = pos.byColorBB[BLACK];
     while (black_pieces) {
         const Square sq = extract_lsb(black_pieces);
-        features[FeatureIndices::BLACK_PIECES_START + sq] = true;
+        const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
+        if (feature_idx >= 0 && feature_idx < 24) {
+            features[FeatureIndices::BLACK_PIECES_START + feature_idx] = true;
+        }
     }
 
     // 3. Game Phase Features
@@ -156,10 +162,13 @@ int FeatureExtractor::square_to_feature_index(Square sq, Color c) {
         return -1;  // Invalid square
     }
     
+    // Convert engine square to feature index (0-23 range)
+    const int feature_idx = sq - SQ_BEGIN;
+    
     if (c == WHITE) {
-        return FeatureIndices::WHITE_PIECES_START + sq;
+        return FeatureIndices::WHITE_PIECES_START + feature_idx;
     } else {
-        return FeatureIndices::BLACK_PIECES_START + sq;
+        return FeatureIndices::BLACK_PIECES_START + feature_idx;
     }
 }
 

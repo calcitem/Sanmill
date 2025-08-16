@@ -28,12 +28,20 @@ bool test_symmetry_transformations() {
     
     // Test rotation 90 degrees
     transformed = SymmetryTransforms::transform_square(test_sq, SYM_ROTATE_90);
-    std::cout << "Square " << test_sq << " rotated 90 degrees becomes " << transformed << std::endl;
+    std::cout << "Square " << test_sq << " (engine coord) rotated 90 degrees becomes " << transformed << std::endl;
+    
+    // Print perfect database coordinate conversion for verification
+    int perfect_coord = to_perfect_square(test_sq);
+    std::cout << "  Engine square " << test_sq << " maps to perfect DB coordinate " << perfect_coord << std::endl;
+    std::cout << "  Back conversion: perfect DB " << perfect_coord << " maps to engine square " 
+              << from_perfect_square(perfect_coord) << std::endl;
     
     // Test that four 90-degree rotations return to original
     Square original = test_sq;
     for (int i = 0; i < 4; ++i) {
+        Square prev = original;
         original = SymmetryTransforms::transform_square(original, SYM_ROTATE_90);
+        std::cout << "  Rotation " << (i+1) << ": " << prev << " -> " << original << std::endl;
     }
     assert(original == test_sq && "Four 90-degree rotations should return to original");
     

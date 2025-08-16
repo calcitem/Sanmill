@@ -65,8 +65,20 @@ The original NNUE implementation only used basic color swapping for different pe
 
 ## Technical Details
 
+### Coordinate System Compatibility
+**CRITICAL**: The main engine and perfect database use different coordinate systems:
+
+- **Main Engine**: Uses squares SQ_8 to SQ_31 (24 positions)
+- **Perfect Database**: Uses indices 0 to 23 (24 positions)
+
+The NNUE symmetry system correctly handles this by using the conversion functions from `perfect_adaptor.cpp`:
+- `to_perfect_square(Square sq)`: Converts engine square to perfect DB index
+- `from_perfect_square(uint32_t sq)`: Converts perfect DB index to engine square
+
 ### Mill Board Representation
-The mill game uses a 24-square board with specific connectivity patterns:
+The mill game uses a 24-square board with the following layouts:
+
+**Main Engine Layout (SQ_8 to SQ_31):**
 ```
 8----9----10
 |    |    |
@@ -78,6 +90,9 @@ The mill game uses a 24-square board with specific connectivity patterns:
 |    |    |
 14---15---23
 ```
+
+**Perfect Database Layout (0 to 23):**
+The perfect database uses a different internal numbering scheme. All transformations are performed using the perfect database's native coordinate system to ensure consistency with the existing perfect database symmetry operations.
 
 ### Transformation Mapping
 Each symmetry operation is implemented as a lookup table mapping source squares to destination squares, ensuring O(1) transformation time.

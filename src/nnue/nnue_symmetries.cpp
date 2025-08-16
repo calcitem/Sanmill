@@ -6,11 +6,37 @@
 #include "nnue_symmetries.h"
 #include "nnue_features.h"
 #include "position.h"
+#include "perfect/perfect_adaptor.h"  // For coordinate conversion functions
+#include "perfect/perfect_symmetries_slow.h"  // For perfect database transformations
 #include <algorithm>
 #include <cassert>
 #include <cstring>
 
 namespace NNUE {
+
+// Helper function to apply perfect database transformation to a single square
+static Square apply_perfect_transform(Square sq, int (*transform_func)(int)) {
+    const int perfect_idx = to_perfect_square(sq);
+    if (perfect_idx == -1) {
+        return sq; // Invalid square, return unchanged
+    }
+    
+    // Create a bitboard with only this square set
+    const int input_bitboard = 1 << perfect_idx;
+    
+    // Apply the perfect database transformation
+    const int output_bitboard = transform_func(input_bitboard);
+    
+    // Find which bit is set in the output
+    for (int i = 0; i < 24; ++i) {
+        if (output_bitboard & (1 << i)) {
+            return from_perfect_square(i);
+        }
+    }
+    
+    // Should never reach here for valid transformations
+    return sq;
+}
 
 // Static member definitions
 Square SymmetryTransforms::square_transform_table_[SYM_OP_COUNT][SQUARE_NB];
@@ -57,93 +83,46 @@ Square SymmetryTransforms::transform_square(Square sq, SymmetryOp op) {
     return square_transform_table_[op][sq_index];
 }
 
-// Mill board square transformations based on the 3x3 grid layout
-// Mill board layout (square indices 8-31, representing 24 positions):
-//  8----9----10
-//  |    |    |
-//  | 16-17-18 |
-//  | |  |  | |
-//  |11-12-13|19
-//  | |  |  | |
-//  | 20-21-22 |
-//  |    |    |
-//  14---15---23
+// Mill board square transformations using engine coordinates (SQ_8 to SQ_31)
+// NOTE: This uses the main engine coordinate system, NOT the perfect database system
+// 
+// Main engine coordinate layout:
+//   8----9----10      (inner ring, top)
+//   |    |    |
+//   | 16-17-18 |      (middle ring)
+//   | |  |  | |
+//   |11-12-13|19      (inner ring, middle)
+//   | |  |  | |
+//   | 20-21-22 |      (middle ring, bottom)
+//   |    |    |
+//   14---15---23      (inner ring, bottom)
 
 Square SymmetryTransforms::rotate_90_transform(Square sq) {
-    // Map to 0-23 range for easier calculation
-    const int idx = sq - SQ_BEGIN;
-    
-    // Rotation mapping for 90 degrees clockwise
-    // This maps the mill board positions correctly
-    constexpr int rotation_90[24] = {
-        2,  10, 18, 5,  13, 21, 0,  3,  // Ring 1: 8-15 -> rotated positions
-        6,  7,  1,  4,  12, 20, 14, 15, // Ring 2: 16-23 -> rotated positions
-        9,  17, 8,  11, 19, 23, 16, 22  // Ring 3: remaining positions
-    };
-    
-    return static_cast<Square>(rotation_90[idx] + SQ_BEGIN);
+    return apply_perfect_transform(sq, rotate90);
 }
 
 Square SymmetryTransforms::rotate_180_transform(Square sq) {
-    // 180 degree rotation is equivalent to two 90 degree rotations
-    return rotate_90_transform(rotate_90_transform(sq));
+    return apply_perfect_transform(sq, rotate180);
 }
 
 Square SymmetryTransforms::rotate_270_transform(Square sq) {
-    // 270 degree rotation is equivalent to three 90 degree rotations
-    return rotate_90_transform(rotate_180_transform(sq));
+    return apply_perfect_transform(sq, rotate270);
 }
 
 Square SymmetryTransforms::mirror_vertical_transform(Square sq) {
-    const int idx = sq - SQ_BEGIN;
-    
-    // Vertical mirror mapping
-    constexpr int mirror_vertical[24] = {
-        10, 9,  8,  19, 12, 11, 22, 21, // Top row mirrored
-        20, 15, 14, 13, 17, 16, 23, 18, // Middle sections
-        0,  1,  2,  3,  4,  5,  6,  7   // Bottom sections
-    };
-    
-    return static_cast<Square>(mirror_vertical[idx] + SQ_BEGIN);
+    return apply_perfect_transform(sq, mirror_vertical);
 }
 
 Square SymmetryTransforms::mirror_horizontal_transform(Square sq) {
-    const int idx = sq - SQ_BEGIN;
-    
-    // Horizontal mirror mapping
-    constexpr int mirror_horizontal[24] = {
-        14, 15, 23, 11, 12, 13, 8,  9,  // Left-right flip
-        10, 19, 22, 21, 20, 18, 17, 16, // Middle sections
-        0,  1,  2,  3,  4,  5,  6,  7   // Adjusted positions
-    };
-    
-    return static_cast<Square>(mirror_horizontal[idx] + SQ_BEGIN);
+    return apply_perfect_transform(sq, mirror_horizontal);
 }
 
 Square SymmetryTransforms::mirror_backslash_transform(Square sq) {
-    const int idx = sq - SQ_BEGIN;
-    
-    // Backslash diagonal mirror mapping (top-left to bottom-right)
-    constexpr int mirror_backslash[24] = {
-        8,  16, 20, 9,  17, 21, 10, 18, // Diagonal transformation
-        22, 11, 19, 23, 12, 13, 14, 15, // Continue mapping
-        1,  4,  7,  2,  5,  6,  0,  3   // Complete the transformation
-    };
-    
-    return static_cast<Square>(mirror_backslash[idx] + SQ_BEGIN);
+    return apply_perfect_transform(sq, mirror_backslash);
 }
 
 Square SymmetryTransforms::mirror_slash_transform(Square sq) {
-    const int idx = sq - SQ_BEGIN;
-    
-    // Slash diagonal mirror mapping (top-right to bottom-left)
-    constexpr int mirror_slash[24] = {
-        22, 21, 20, 18, 17, 16, 23, 19, // Slash transformation
-        11, 10, 9,  8,  13, 12, 15, 14, // Continue mapping
-        7,  6,  5,  4,  3,  2,  1,  0   // Complete the transformation
-    };
-    
-    return static_cast<Square>(mirror_slash[idx] + SQ_BEGIN);
+    return apply_perfect_transform(sq, mirror_slash);
 }
 
 void SymmetryTransforms::transform_features(const bool* input_features, bool* output_features, SymmetryOp op) {
@@ -156,23 +135,34 @@ void SymmetryTransforms::transform_features(const bool* input_features, bool* ou
     const bool swap_colors = swaps_colors(op);
     
     // Transform piece placement features
-    for (int sq_idx = 0; sq_idx < SQUARE_NB; ++sq_idx) {
-        const Square original_sq = static_cast<Square>(sq_idx + SQ_BEGIN);
+    // NOTE: Feature indices 0-23 correspond to engine squares SQ_8 to SQ_31
+    for (int feature_idx = 0; feature_idx < SQUARE_NB; ++feature_idx) {
+        // Convert feature index to engine square
+        const Square original_sq = static_cast<Square>(feature_idx + SQ_BEGIN);
+        
+        // Apply transformation using perfect database coordinate system
         const Square transformed_sq = transform_square(original_sq, op);
-        const int transformed_idx = transformed_sq - SQ_BEGIN;
+        
+        // Convert back to feature index
+        const int transformed_feature_idx = transformed_sq - SQ_BEGIN;
+        
+        // Validate indices
+        if (transformed_feature_idx < 0 || transformed_feature_idx >= SQUARE_NB) {
+            continue; // Skip invalid transformations
+        }
         
         // Get original white and black piece features
-        const bool white_piece = input_features[FeatureIndices::WHITE_PIECES_START + sq_idx];
-        const bool black_piece = input_features[FeatureIndices::BLACK_PIECES_START + sq_idx];
+        const bool white_piece = input_features[FeatureIndices::WHITE_PIECES_START + feature_idx];
+        const bool black_piece = input_features[FeatureIndices::BLACK_PIECES_START + feature_idx];
         
         if (swap_colors) {
             // Swap colors during transformation
-            output_features[FeatureIndices::WHITE_PIECES_START + transformed_idx] = black_piece;
-            output_features[FeatureIndices::BLACK_PIECES_START + transformed_idx] = white_piece;
+            output_features[FeatureIndices::WHITE_PIECES_START + transformed_feature_idx] = black_piece;
+            output_features[FeatureIndices::BLACK_PIECES_START + transformed_feature_idx] = white_piece;
         } else {
             // Keep colors the same
-            output_features[FeatureIndices::WHITE_PIECES_START + transformed_idx] = white_piece;
-            output_features[FeatureIndices::BLACK_PIECES_START + transformed_idx] = black_piece;
+            output_features[FeatureIndices::WHITE_PIECES_START + transformed_feature_idx] = white_piece;
+            output_features[FeatureIndices::BLACK_PIECES_START + transformed_feature_idx] = black_piece;
         }
     }
     
@@ -309,9 +299,11 @@ SymmetryOp SymmetryAwareNNUE::find_canonical_symmetry(const Position& pos) {
         bool current_features[FeatureIndices::TOTAL_FEATURES];
         SymmetryTransforms::extract_symmetry_features(pos_copy, current_features, static_cast<SymmetryOp>(op));
         
-        // Compare feature vectors lexicographically
-        if (std::lexicographical_compare(current_features, current_features + FeatureIndices::TOTAL_FEATURES,
-                                       best_features, best_features + FeatureIndices::TOTAL_FEATURES)) {
+        // Compare feature vectors lexicographically - using only piece placement features
+        // for canonical form detection (other features may not be meaningful for comparison)
+        const int piece_features_end = FeatureIndices::PIECE_PLACEMENT_END;
+        if (std::lexicographical_compare(current_features, current_features + piece_features_end,
+                                       best_features, best_features + piece_features_end)) {
             best_op = static_cast<SymmetryOp>(op);
             std::memcpy(best_features, current_features, sizeof(best_features));
         }
