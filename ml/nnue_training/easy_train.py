@@ -150,6 +150,201 @@ class EasyNNUETrainer:
             
         return preset, device
         
+    def check_existing_models(self, force=False, auto_backup=False):
+        """检查现有模型，防止意外覆盖"""
+        print("\n🔍 检查现有训练成果...")
+        
+        # 查找现有模型
+        existing_models = []
+        patterns = ["nnue_model*.bin", "nnue_model*.pth", "models/nnue_model*.bin", "models/nnue_model*.pth"]
+        
+        for pattern in patterns:
+            for model_file in self.project_root.glob(pattern):
+                if model_file.is_file():
+                    existing_models.append(model_file)
+        
+        if existing_models:
+            print(f"  发现 {len(existing_models)} 个现有模型:")
+            for model in existing_models:
+                size = model.stat().st_size / 1024
+                mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(model.stat().st_mtime))
+                print(f"    📁 {model} ({size:.1f} KB, {mtime})")
+            
+            if force:
+                print("  ⚠️  强制模式：跳过备份，直接继续训练")
+                return True
+            elif auto_backup:
+                print("  💾 自动备份模式：自动备份现有模型")
+                self.backup_existing_models(existing_models)
+                return True
+            else:
+                print("\n⚠️  继续训练将可能覆盖现有模型！")
+                print("   建议选择:")
+                print("   1. 备份现有模型 (推荐)")
+                print("   2. 继续训练 (可能覆盖)")
+                print("   3. 取消训练")
+                
+                while True:
+                    choice = input("   请选择 (1-3): ").strip()
+                    if choice == "1":
+                        self.backup_existing_models(existing_models)
+                        break
+                    elif choice == "2":
+                        print("   ⚠️  选择继续，现有模型可能被覆盖")
+                        break
+                    elif choice == "3":
+                        print("   ✅ 训练已取消，现有模型安全")
+                        return False
+                    else:
+                        print("   ❌ 无效选择，请输入 1、2 或 3")
+        else:
+            print("  ✅ 没有发现现有模型")
+        
+        return True
+    
+    def backup_existing_models(self, existing_models):
+        """备份现有模型"""
+        print("\n💾 备份现有模型...")
+        
+        # 创建备份目录
+        backup_dir = self.project_root / "model_backups" / time.strftime("%Y%m%d_%H%M%S")
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        
+        backed_up = 0
+        for model_file in existing_models:
+            try:
+                backup_path = backup_dir / model_file.name
+                import shutil
+                shutil.copy2(model_file, backup_path)
+                backed_up += 1
+                print(f"    ✅ {model_file.name} -> {backup_path}")
+            except Exception as e:
+                print(f"    ❌ 备份失败 {model_file.name}: {e}")
+        
+        if backed_up > 0:
+            print(f"  ✅ 成功备份 {backed_up} 个模型到: {backup_dir}")
+            
+            # 创建恢复脚本
+            self.create_restore_script(backup_dir, existing_models)
+        else:
+            print("  ❌ 没有模型被成功备份")
+    
+    def create_restore_script(self, backup_dir, original_models):
+        """创建模型恢复脚本"""
+        restore_script = backup_dir / "restore_models.py"
+        
+        script_content = f'''#!/usr/bin/env python3
+"""
+模型恢复脚本
+自动生成于: {time.strftime("%Y-%m-%d %H:%M:%S")}
+"""
+
+import shutil
+import os
+from pathlib import Path
+
+def restore_models():
+    """恢复备份的模型"""
+    backup_dir = Path(__file__).parent
+    project_root = backup_dir.parent.parent
+    
+    print("🔄 恢复备份的模型...")
+    
+    restore_mapping = {{'''
+        
+        for model in original_models:
+            script_content += f'''
+        "{model.name}": "{model.relative_to(self.project_root)}",'''
+        
+        script_content += f'''
+    }}
+    
+    restored = 0
+    for backup_name, original_path in restore_mapping.items():
+        backup_file = backup_dir / backup_name
+        original_file = project_root / original_path
+        
+        if backup_file.exists():
+            try:
+                # 确保目标目录存在
+                original_file.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(backup_file, original_file)
+                print(f"  ✅ 恢复: {{backup_name}} -> {{original_path}}")
+                restored += 1
+            except Exception as e:
+                print(f"  ❌ 恢复失败 {{backup_name}}: {{e}}")
+        else:
+            print(f"  ⚠️  备份文件不存在: {{backup_name}}")
+    
+    print(f"\\n✅ 恢复完成，共恢复 {{restored}} 个模型")
+
+if __name__ == '__main__':
+    restore_models()
+'''
+        
+        with open(restore_script, 'w', encoding='utf-8') as f:
+            f.write(script_content)
+        
+        print(f"    📜 创建恢复脚本: {restore_script}")
+        print(f"    💡 如需恢复模型，运行: python {restore_script}")
+    
+    def check_resume_training(self):
+        """检查是否可以恢复训练"""
+        print("\n🔄 检查训练恢复选项...")
+        
+        # 查找检查点文件
+        checkpoint_patterns = ["checkpoint*.pth", "*.checkpoint", "models/checkpoint*.pth"]
+        checkpoints = []
+        
+        for pattern in checkpoint_patterns:
+            for ckpt_file in self.project_root.glob(pattern):
+                if ckpt_file.is_file():
+                    checkpoints.append(ckpt_file)
+        
+        if checkpoints:
+            print(f"  发现 {len(checkpoints)} 个检查点文件:")
+            for ckpt in checkpoints:
+                size = ckpt.stat().st_size / 1024
+                mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(ckpt.stat().st_mtime))
+                print(f"    🔄 {ckpt} ({size:.1f} KB, {mtime})")
+            
+            print("\n  是否从检查点恢复训练？")
+            print("    y - 恢复训练 (继续之前的进度)")
+            print("    n - 重新开始 (将创建新的训练)")
+            
+            choice = input("  恢复训练? (y/n): ").strip().lower()
+            if choice in ['y', 'yes', '是']:
+                # 选择最新的检查点
+                latest_checkpoint = max(checkpoints, key=lambda f: f.stat().st_mtime)
+                print(f"  ✅ 将从检查点恢复: {latest_checkpoint}")
+                return str(latest_checkpoint)
+            else:
+                print("  ✅ 将重新开始训练")
+                # 备份检查点文件
+                self.backup_checkpoints(checkpoints)
+        else:
+            print("  ✅ 没有发现检查点文件，将进行全新训练")
+        
+        return None
+    
+    def backup_checkpoints(self, checkpoints):
+        """备份检查点文件"""
+        if not checkpoints:
+            return
+            
+        print(f"  💾 备份 {len(checkpoints)} 个检查点文件...")
+        backup_dir = self.project_root / "checkpoint_backups" / time.strftime("%Y%m%d_%H%M%S")
+        backup_dir.mkdir(parents=True, exist_ok=True)
+        
+        for ckpt in checkpoints:
+            try:
+                backup_path = backup_dir / ckpt.name
+                import shutil
+                shutil.copy2(ckpt, backup_path)
+                print(f"    ✅ {ckpt.name} -> {backup_path}")
+            except Exception as e:
+                print(f"    ❌ 备份失败 {ckpt.name}: {e}")
+
     def create_training_config(self, preset, device):
         """创建训练配置"""
         print(f"\n📝 创建 {preset} 训练配置...")
@@ -218,9 +413,16 @@ class EasyNNUETrainer:
             print("  🚀 已针对 GPU 优化配置")
             
         config["device"] = device
-        config["output"] = f"models/nnue_model_{preset}_{int(time.time())}.bin"
+        
+        # 生成带时间戳的唯一输出文件名，避免覆盖
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        config["output"] = f"models/nnue_model_{preset}_{timestamp}.bin"
+        config["checkpoint_path"] = f"models/checkpoint_{preset}_{timestamp}.pth"
+        
         config["plot"] = True
         config["save_checkpoint"] = True
+        config["checkpoint_interval"] = 10  # 每10个epoch保存一次检查点
+        config["backup_models"] = True      # 自动备份现有模型
         
         # 保存配置文件
         config_path = self.project_root / f"easy_train_{preset}_config.json"
@@ -436,16 +638,31 @@ class EasyNNUETrainer:
             if not self.check_environment():
                 return False
                 
-            # 3. 获取用户偏好
+            # 3. 检查现有模型和备份
+            if not self.check_existing_models(force=args.force, auto_backup=args.backup_existing):
+                return False  # 用户选择取消训练
+                
+            # 4. 检查训练恢复选项
+            resume_checkpoint = self.check_resume_training()
+            
+            # 5. 获取用户偏好
             preset, device = self.get_user_preferences(args)
             
-            # 4. 创建配置
+            # 6. 创建配置
             config_path, config = self.create_training_config(preset, device)
             
-            # 5. 估算时间
+            # 7. 如果有恢复检查点，添加到配置中
+            if resume_checkpoint:
+                config["resume_from_checkpoint"] = resume_checkpoint
+                # 重新保存配置
+                with open(config_path, 'w', encoding='utf-8') as f:
+                    json.dump(config, f, indent=2, ensure_ascii=False)
+                print(f"  ✅ 配置已更新，将从检查点恢复训练")
+            
+            # 8. 估算时间
             self.estimate_training_time(config)
             
-            # 6. 确认开始
+            # 9. 确认开始
             if not args.auto:
                 print("\n🚀 准备开始训练!")
                 choice = input("  继续? (y/n): ").strip().lower()
@@ -453,25 +670,25 @@ class EasyNNUETrainer:
                     print("  训练已取消")
                     return False
                     
-            # 7. 运行训练
+            # 10. 运行训练
             success = self.run_training(config_path)
             if not success:
                 return False
                 
-            # 8. 查找和验证模型
+            # 11. 查找和验证模型
             model_path = self.find_trained_model()
             if model_path:
                 self.validate_model(model_path)
                 
-            # 9. 启动 GUI 测试
+            # 12. 启动 GUI 测试
             if model_path and not args.no_gui:
                 self.launch_gui_test(model_path)
                 
-            # 10. 清理临时文件
+            # 13. 清理临时文件
             if not args.keep_temp:
                 self.cleanup_temp_files()
                 
-            # 11. 显示总结
+            # 14. 显示总结
             training_time = time.time() - start_time
             self.show_summary(model_path, training_time)
             
@@ -501,6 +718,13 @@ def main():
   quick        - 5-10分钟，适合测试和学习
   standard     - 30-60分钟，日常使用推荐
   high_quality - 2-4小时，追求最佳效果
+
+保护功能:
+  --backup-existing - 自动备份现有模型
+  --force          - 强制训练，跳过保护检查（谨慎使用）
+  
+断点恢复:
+  程序会自动检测检查点文件，询问是否恢复训练
         """
     )
     
@@ -516,6 +740,10 @@ def main():
                        help='训练完成后不启动 GUI')
     parser.add_argument('--keep-temp', action='store_true',
                        help='保留临时文件')
+    parser.add_argument('--force', action='store_true',
+                       help='强制训练，跳过备份检查（谨慎使用）')
+    parser.add_argument('--backup-existing', action='store_true',
+                       help='自动备份现有模型，不询问')
     
     args = parser.parse_args()
     
