@@ -17,6 +17,7 @@ from typing import Tuple, List, Optional
 import logging
 from pathlib import Path
 import math
+import json
 
 # Plotting libraries
 try:
@@ -609,6 +610,91 @@ class TrainingVisualizer:
         logger.info(f"Training metrics saved to {csv_path}")
 
 
+def load_config(config_path: str) -> dict:
+    """Load configuration from JSON file"""
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        logger.info(f"Loaded configuration from {config_path}")
+        return config
+    except FileNotFoundError:
+        logger.error(f"Configuration file not found: {config_path}")
+        return {}
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in configuration file {config_path}: {e}")
+        return {}
+    except Exception as e:
+        logger.error(f"Error loading configuration file {config_path}: {e}")
+        return {}
+
+def merge_config_with_args(config: dict, args: argparse.Namespace) -> argparse.Namespace:
+    """Merge configuration file with command line arguments (CLI takes precedence)"""
+    # Create a new namespace with config defaults
+    merged_args = argparse.Namespace()
+    
+    # First, set all config values
+    for key, value in config.items():
+        # Convert dashes to underscores for argument names
+        key = key.replace('-', '_')
+        setattr(merged_args, key, value)
+    
+    # Then override with any explicitly provided command line arguments
+    for key, value in vars(args).items():
+        if value is not None:
+            # Only override if the argument was explicitly provided
+            # For boolean flags, we need special handling
+            if isinstance(value, bool):
+                if hasattr(args, key) and getattr(args, key):
+                    setattr(merged_args, key, value)
+                elif not hasattr(merged_args, key):
+                    setattr(merged_args, key, value)
+            else:
+                setattr(merged_args, key, value)
+        elif not hasattr(merged_args, key):
+            # Set default values for arguments not in config
+            setattr(merged_args, key, value)
+    
+    return merged_args
+
+def save_config_template(output_path: str):
+    """Save a template configuration file with all available options"""
+    template_config = {
+        "# NNUE Training Configuration": "Template with all available options",
+        "data": "training_data.txt",
+        "output": "nnue_model.bin",
+        "epochs": 300,
+        "batch-size": 8192,
+        "lr": 0.002,
+        "lr-scheduler": "adaptive",
+        "lr-auto-scale": True,
+        "feature-size": 115,
+        "hidden-size": 512,
+        "max-samples": None,
+        "val-split": 0.1,
+        "device": "auto",
+        "plot": True,
+        "plot-dir": "plots",
+        "plot-interval": 5,
+        "show-plots": False,
+        "save-csv": True,
+        
+        "# Scheduler Options": "adaptive, cosine, plateau, fixed",
+        "# Device Options": "auto, cpu, cuda",
+        "# Notes": {
+            "lr-auto-scale": "Automatically scale LR based on batch size and dataset size",
+            "adaptive-scheduler": "Recommended for most users - automatically adjusts LR",
+            "plot-interval": "Update plots every N epochs (lower = more frequent updates)",
+            "hidden-size": "Larger networks may perform better but train slower",
+            "batch-size": "Powers of 2 work best (1024, 2048, 4096, 8192, 16384)"
+        }
+    }
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(template_config, f, indent=2, ensure_ascii=False)
+    
+    logger.info(f"Configuration template saved to {output_path}")
+
+
 class MillDataset(Dataset):
     """Dataset for Mill NNUE training"""
     
@@ -834,7 +920,13 @@ def save_model_c_format(model: nn.Module, filepath: str):
 
 def main():
     parser = argparse.ArgumentParser(description='Train NNUE for Mill game')
-    parser.add_argument('--data', required=True, help='Training data file')
+    
+    # Configuration file support
+    parser.add_argument('--config', type=str, help='Configuration file path (JSON format)')
+    parser.add_argument('--save-config', type=str, help='Save configuration template to file and exit')
+    
+    # Core training parameters
+    parser.add_argument('--data', help='Training data file')
     parser.add_argument('--output', default='nnue_model.bin', help='Output model file')
     parser.add_argument('--epochs', type=int, default=300, help='Number of training epochs')
     parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
@@ -856,6 +948,29 @@ def main():
     parser.add_argument('--save-csv', action='store_true', help='Save training metrics to CSV file')
     
     args = parser.parse_args()
+    
+    # Handle config template generation
+    if args.save_config:
+        save_config_template(args.save_config)
+        logger.info(f"Configuration template saved to {args.save_config}")
+        logger.info("Edit the template and use with --config <file>")
+        return 0
+    
+    # Load configuration file if provided
+    config = {}
+    if args.config:
+        config = load_config(args.config)
+        if not config:
+            logger.error("Failed to load configuration file")
+            return 1
+        
+        # Merge config with command line arguments
+        args = merge_config_with_args(config, args)
+    
+    # Validate required arguments
+    if not args.data:
+        parser.error("--data is required (or specify in config file)")
+        return 1
     
     # Automatic learning rate scaling based on batch size and dataset size
     if args.lr_auto_scale:

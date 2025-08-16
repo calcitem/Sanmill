@@ -459,3 +459,43 @@ coverage/
 # diff-files
 diff-files*.md
 /src/ui/flutter_app/screenshots
+
+# NNUE Training Artifacts
+ml/nnue_training/training_data.txt
+ml/nnue_training/training_data_*.txt
+ml/nnue_training/*.bin
+ml/nnue_training/nnue_model*.bin
+ml/nnue_training/plots/
+ml/nnue_training/plots_*/
+ml/nnue_training/nnue_output/
+ml/nnue_training/nnue_output_*/
+
+# Python cache and temporary files
+ml/nnue_training/__pycache__/
+ml/nnue_training/*.pyc
+ml/nnue_training/*.pyo
+ml/nnue_training/.pytest_cache/
+
+# Training logs and metrics
+ml/nnue_training/*.csv
+ml/nnue_training/*.log
+ml/nnue_training/logs/
+
+# User configuration files (keep templates)
+ml/nnue_training/my_*.json
+ml/nnue_training/user_*.json
+ml/nnue_training/custom_*.json
+!ml/nnue_training/configs/
+
+# Temporary training files
+ml/nnue_training/temp/
+ml/nnue_training/tmp/
+ml/nnue_training/sample_*
+ml/nnue_training/demo_*
+ml/nnue_training/test_*
+
+# IDE and editor files for ML directory
+ml/nnue_training/.vscode/
+ml/nnue_training/.idea/
+ml/nnue_training/*.swp
+ml/nnue_training/*~

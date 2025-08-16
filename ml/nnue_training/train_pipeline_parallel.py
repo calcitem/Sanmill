@@ -11,6 +11,7 @@ import multiprocessing as mp
 import logging
 import time
 from pathlib import Path
+import json
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -220,10 +221,97 @@ def validate_final_model(model_path: str, engine_path: str) -> bool:
         logger.error(f"Model validation failed: {e}")
         return False
 
+def load_pipeline_config(config_path: str) -> dict:
+    """Load pipeline configuration from JSON file"""
+    try:
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+        logger.info(f"Loaded pipeline configuration from {config_path}")
+        return config
+    except FileNotFoundError:
+        logger.error(f"Configuration file not found: {config_path}")
+        return {}
+    except json.JSONDecodeError as e:
+        logger.error(f"Invalid JSON in configuration file {config_path}: {e}")
+        return {}
+    except Exception as e:
+        logger.error(f"Error loading configuration file {config_path}: {e}")
+        return {}
+
+def merge_pipeline_config_with_args(config: dict, args: argparse.Namespace) -> argparse.Namespace:
+    """Merge pipeline configuration file with command line arguments"""
+    merged_args = argparse.Namespace()
+    
+    # First, set all config values
+    for key, value in config.items():
+        if not key.startswith('_'):  # Skip comment fields
+            key = key.replace('-', '_')
+            setattr(merged_args, key, value)
+    
+    # Then override with any explicitly provided command line arguments
+    for key, value in vars(args).items():
+        if value is not None:
+            if isinstance(value, bool):
+                if hasattr(args, key) and getattr(args, key):
+                    setattr(merged_args, key, value)
+                elif not hasattr(merged_args, key):
+                    setattr(merged_args, key, value)
+            else:
+                setattr(merged_args, key, value)
+        elif not hasattr(merged_args, key):
+            setattr(merged_args, key, value)
+    
+    return merged_args
+
+def save_pipeline_config_template(output_path: str):
+    """Save a template pipeline configuration file"""
+    template_config = {
+        "_description": "NNUE Training Pipeline Configuration Template",
+        "_use_case": "Complete training pipeline from data generation to model output",
+        
+        "engine": "../../sanmill",
+        "perfect-db": "/path/to/perfect/database",
+        "output-dir": "./nnue_output",
+        
+        "positions": 500000,
+        "epochs": 300,
+        "batch-size": 8192,
+        "learning-rate": 0.002,
+        "lr-scheduler": "adaptive",
+        "lr-auto-scale": True,
+        
+        "threads": 0,
+        "device": "auto",
+        
+        "plot": True,
+        "plot-dir": "plots",
+        "plot-interval": 5,
+        "save-csv": True,
+        
+        "_notes": {
+            "engine": "Path to compiled Sanmill engine executable",
+            "perfect-db": "Path to Perfect Database directory for training data generation",
+            "threads": "0 = auto-detect CPU cores",
+            "positions": "Number of training positions to generate",
+            "device": "auto/cpu/cuda - training device selection"
+        }
+    }
+    
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(template_config, f, indent=2, ensure_ascii=False)
+    
+    logger.info(f"Pipeline configuration template saved to {output_path}")
+
 def main():
     parser = argparse.ArgumentParser(description='Enhanced NNUE training pipeline with strict mode')
-    parser.add_argument('--engine', required=True, help='Path to Sanmill engine executable')
-    parser.add_argument('--perfect-db', required=True, help='Path to Perfect Database directory')
+    
+    # Configuration file support
+    parser.add_argument('--config', type=str, help='Pipeline configuration file path (JSON format)')
+    parser.add_argument('--save-config', type=str, help='Save pipeline configuration template to file and exit')
+    
+    # Core pipeline parameters
+    parser.add_argument('--engine', help='Path to Sanmill engine executable')
+    parser.add_argument('--perfect-db', help='Path to Perfect Database directory')
     parser.add_argument('--output-dir', default='./nnue_output', help='Output directory for training artifacts')
     parser.add_argument('--positions', type=int, default=500000, help='Number of training positions')
     parser.add_argument('--epochs', type=int, default=300, help='Training epochs')
@@ -243,6 +331,32 @@ def main():
     parser.add_argument('--save-csv', action='store_true', help='Save metrics to CSV')
     
     args = parser.parse_args()
+    
+    # Handle config template generation
+    if args.save_config:
+        save_pipeline_config_template(args.save_config)
+        logger.info(f"Pipeline configuration template saved to {args.save_config}")
+        logger.info("Edit the template and use with --config <file>")
+        return 0
+    
+    # Load configuration file if provided
+    config = {}
+    if args.config:
+        config = load_pipeline_config(args.config)
+        if not config:
+            logger.error("Failed to load pipeline configuration file")
+            return 1
+        
+        # Merge config with command line arguments
+        args = merge_pipeline_config_with_args(config, args)
+    
+    # Validate required arguments
+    if not args.engine:
+        parser.error("--engine is required (or specify in config file)")
+        return 1
+    if not args.perfect_db:
+        parser.error("--perfect-db is required (or specify in config file)")
+        return 1
     
     # Auto-detect thread count
     if args.threads <= 0:

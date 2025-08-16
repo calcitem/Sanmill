@@ -1,0 +1,23 @@
+{
+  "_description": "Fast pipeline configuration - quick testing and experimentation",
+  "_use_case": "Rapid prototyping, CI/CD testing, development",
+  
+  "engine": "../../sanmill",
+  "perfect-db": "/path/to/perfect/database",
+  "output-dir": "./nnue_output_fast",
+  
+  "positions": 50000,
+  "epochs": 100,
+  "batch-size": 4096,
+  "learning-rate": 0.003,
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": true,
+  
+  "threads": 0,
+  "device": "auto",
+  
+  "plot": true,
+  "plot-dir": "plots_fast",
+  "plot-interval": 10,
+  "save-csv": false
+}

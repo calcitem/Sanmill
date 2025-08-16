@@ -1,0 +1,26 @@
+{
+  "_description": "Large dataset training configuration - for datasets > 1M samples",
+  "_use_case": "Training with extensive datasets, research with massive data",
+  "_hardware": "High-end hardware essential (64+ GB RAM, multiple GPUs)",
+  
+  "data": "training_data.txt",
+  "output": "nnue_model_large.bin",
+  
+  "epochs": 400,
+  "batch-size": 32768,
+  "lr": 0.001,
+  "lr-scheduler": "cosine",
+  "lr-auto-scale": true,
+  
+  "feature-size": 115,
+  "hidden-size": 1024,
+  "val-split": 0.05,
+  
+  "device": "auto",
+  
+  "plot": true,
+  "plot-dir": "plots_large",
+  "plot-interval": 20,
+  "save-csv": true,
+  "show-plots": false
+}

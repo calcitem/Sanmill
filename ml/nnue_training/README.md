@@ -63,7 +63,28 @@ Parameters:
 
 ### Enhanced Pipeline (Recommended)
 
-Use the enhanced pipeline with strict mode and comprehensive validation:
+#### Using Configuration Files (Easiest)
+
+```bash
+# Use pre-configured settings for most users
+python train_pipeline_parallel.py \
+    --config configs/pipeline_default.json \
+    --perfect-db /path/to/your/perfect/database
+
+# Quick experimentation
+python train_pipeline_parallel.py \
+    --config configs/pipeline_fast.json \
+    --perfect-db /path/to/your/perfect/database
+
+# Override specific parameters
+python train_pipeline_parallel.py \
+    --config configs/pipeline_default.json \
+    --perfect-db /path/to/your/perfect/database \
+    --epochs 500 \
+    --batch-size 16384
+```
+
+#### Manual Parameters (Advanced)
 
 ```bash
 python train_pipeline_parallel.py \
@@ -89,7 +110,26 @@ Enhanced Parameters:
 
 ### Step 2: Train the NNUE Model
 
-Train the neural network using the generated data:
+#### Using Configuration Files (Recommended)
+
+```bash
+# Default configuration for most users
+python train_nnue.py --config configs/default.json --data training_data.txt
+
+# Quick experimentation
+python train_nnue.py --config configs/fast.json --data training_data.txt
+
+# High-quality training for production
+python train_nnue.py --config configs/high_quality.json --data training_data.txt
+
+# CPU-only training
+python train_nnue.py --config configs/cpu_only.json --data training_data.txt
+
+# Override specific parameters
+python train_nnue.py --config configs/default.json --data training_data.txt --epochs 500
+```
+
+#### Manual Parameters (Advanced)
 
 ```bash
 python train_nnue.py \
@@ -178,6 +218,89 @@ python train_pipeline_parallel.py \
 Install visualization dependencies:
 ```bash
 pip install matplotlib seaborn
+```
+
+## Configuration Files
+
+The training system supports JSON configuration files to eliminate the need for specifying many command-line parameters. This makes training more convenient and reproducible.
+
+### Quick Start with Configs
+
+```bash
+# Generate a configuration template
+python train_nnue.py --save-config my_config.json
+
+# Use a pre-made configuration
+python train_nnue.py --config configs/default.json --data training_data.txt
+
+# Use pipeline configuration
+python train_pipeline_parallel.py --config configs/pipeline_default.json --perfect-db /path/to/db
+```
+
+### Available Configurations
+
+| Config File | Use Case | Training Time | Hardware |
+|-------------|----------|---------------|----------|
+| `default.json` | General purpose | 2-4 hours | 16+ GB RAM, GPU |
+| `fast.json` | Quick experiments | 30-60 min | 8+ GB RAM, GPU |
+| `high_quality.json` | Production models | 6-12 hours | 32+ GB RAM, High-end GPU |
+| `cpu_only.json` | No GPU systems | 4-8 hours | 8+ core CPU |
+| `large_dataset.json` | Massive datasets | 12-24 hours | 64+ GB RAM, Multiple GPUs |
+| `debug.json` | Development/testing | 5-10 min | Any system |
+
+### Configuration Priority
+
+1. **Command line arguments** (highest priority)
+2. **Configuration file values**
+3. **Default values** (lowest priority)
+
+This means you can use a config file as a base and override specific parameters:
+
+```bash
+# Use default config but change epochs and learning rate
+python train_nnue.py --config configs/default.json --epochs 500 --lr 0.001
+```
+
+### Creating Custom Configurations
+
+#### Method 1: Generate Template
+```bash
+python train_nnue.py --save-config my_custom.json
+# Edit my_custom.json with your preferred settings
+python train_nnue.py --config my_custom.json --data training_data.txt
+```
+
+#### Method 2: Copy and Modify
+```bash
+cp configs/default.json my_settings.json
+# Edit my_settings.json
+python train_nnue.py --config my_settings.json --data training_data.txt
+```
+
+### Example Custom Configuration
+
+```json
+{
+  "_description": "My custom configuration for experimentation",
+  "_hardware": "RTX 4090, 32GB RAM",
+  
+  "data": "my_training_data.txt",
+  "output": "my_model.bin",
+  
+  "epochs": 250,
+  "batch-size": 12288,
+  "lr": 0.0018,
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": true,
+  
+  "hidden-size": 640,
+  "val-split": 0.08,
+  
+  "plot": true,
+  "plot-dir": "my_plots",
+  "plot-interval": 8,
+  "save-csv": true
+}
 ```
 
 ### Learning Rate Scheduling
