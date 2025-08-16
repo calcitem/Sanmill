@@ -1,0 +1,179 @@
+# AlphaZero Training Configuration
+# Universal config file for all training scenarios
+# Copy this file as 'my_config.yaml' and modify as needed
+
+# =============================================================================
+# TRAINING PARAMETERS
+# =============================================================================
+numIters: 100               # Total training iterations (default: 100)
+                          # - Quick test: 3
+                          # - Normal training: 10-50  
+                          # - Long training: 100+
+
+numEps: 100                # Self-play games per iteration (default: 100)
+                          # - Quick test: 6
+                          # - Balanced: 20-50
+                          # - High quality: 100+
+
+tempThreshold: 80         # Switch from sampling to greedy after N plies
+updateThreshold: 0.55     # Accept new model if win-rate above this threshold
+maxlenOfQueue: 200000     # Max training examples kept (reduce for memory constraints)
+numMCTSSims: 40          # MCTS simulations per move (default: 40, higher = stronger but slower)
+arenaCompare: 40         # Games for new vs old model evaluation (default: 20)
+cpuct: 1.5               # UCB exploration parameter
+
+# =============================================================================
+# FILE MANAGEMENT  
+# =============================================================================
+checkpoint: './temp/'                    # Directory for models and samples
+load_model: true                         # Resume from checkpoint (default: False, false = start fresh)
+load_folder_file: ['temp/', 'best.pth.tar']  # Which checkpoint to load
+numItersForTrainExamplesHistory: 5       # Keep N iterations of training history
+
+# =============================================================================
+# SYSTEM SETTINGS
+# =============================================================================
+num_processes: 2          # Parallel processes for self-play (default: 5)
+                          # - With teacher: 1 (recommended for stability)
+                          # - Pure AlphaZero: 2-4 (faster self-play)
+
+cuda: true              # Use GPU if available (default: True)
+                          # - true: faster training with GPU
+                          # - false: CPU-only (more stable, slower)
+
+use_amp: true  # Optional, will be automatically enabled if CUDA is available
+
+# =============================================================================
+# NEURAL NETWORK HYPERPARAMETERS
+# =============================================================================
+lr: 0.002                # Learning rate
+                          # - Fast convergence: 0.005
+                          # - Stable training: 0.002
+                          # - Fine-tuning: 0.001
+
+dropout: 0.3             # Dropout rate for regularization
+epochs: 10               # Training epochs per iteration
+batch_size: 768         # Training batch size (reduce if out of memory)
+num_channels: 256        # Network width (128=smaller/faster, 512=larger/stronger)
+
+# =============================================================================
+# PERFECT DATABASE TEACHER (Comment out entire section to disable)
+# =============================================================================
+usePerfectTeacher: true                    # Enable teacher mixing (default: False)
+                                          # - true: hybrid training (recommended)
+                                          # - false: pure AlphaZero
+
+teacherExamplesPerIter: 2000              # Teacher examples per iteration (default: 0)
+                                          # - Quick training: 100
+                                          # - Balanced: 1000  
+                                          # - Heavy supervision: 2000+
+
+teacherBatch: 256                         # Sampling batch size for teacher
+teacherDBPath: 'e:\Malom\Malom_Standard_Ultra-strong_1.1.0\Std_DD_89adjusted'
+                                          # UPDATE THIS PATH to your perfect database
+
+teacherAnalyzeTimeout: 120                # Timeout per analyze call (seconds)
+                                          # - Fast disk/SSD: 60
+                                          # - Network storage: 300+
+
+teacherThreads: 1                         # Engine threads (keep at 1 for stability)
+
+pitAgainstPerfect: false                   # Evaluate against perfect DB each iteration (default: False)
+                                          # - true: track absolute progress (recommended)
+                                          # - false: faster training, no perfect evaluation
+
+# =============================================================================
+# ONLINE TEACHER DURING SELF-PLAY
+# =============================================================================
+useOnlineTeacher: false                    # Use perfect DB online during self-play (default: true)
+teacherOnlineRatio: 1.0                  # Probability per move to query perfect DB (0.0-1.0
+
+# Playing
+human_sample_from_pi: true
+
+# =============================================================================
+# DEBUGGING & LOGGING
+# =============================================================================
+console_verbose: false
+verbose_games: 10000000         # Number of games to log in detail per iteration
+log_detailed_moves: true  # Log move sequences for debugging
+enable_training_log: true # Save training results to CSV/JSON files (效果表格记录)
+
+# =============================================================================
+# SCENARIO-SPECIFIC CONFIGURATIONS
+# =============================================================================
+
+# SCENARIO 1: Quick Test (verify everything works)
+# numIters: 3, numEps: 6, teacherExamplesPerIter: 100, num_channels: 128
+
+# SCENARIO 2: Pure Supervised Learning (use perfect_supervised.py instead)
+# Not applicable for this config - use: python3 perfect_supervised.py
+
+# SCENARIO 3: Pure AlphaZero (no teacher)
+# usePerfectTeacher: false, num_processes: 2-4, numEps: 50+
+
+# SCENARIO 4: Hybrid Training (recommended)
+# Default settings above are optimized for this scenario
+
+# SCENARIO 5: Heavy Supervision (teacher-dominated)
+# teacherExamplesPerIter: 2000+, numEps: 10, usePerfectTeacher: true
+
+# SCENARIO 6: Production Training (high quality)
+# numIters: 50+, numEps: 100+, teacherExamplesPerIter: 1000, num_channels: 512
+
+# =============================================================================
+# CURRICULUM LEARNING (PHASE-WISE)
+# =============================================================================
+# modes: 'off' | 'auto' | 'stage1' | 'stage2' | 'stage3'
+curriculum_mode: auto
+
+# When mode=='auto', number of iterations to spend in stage-1 and stage-2
+curriculum_s1_iters: 3
+curriculum_s2_iters: 3
+
+# Mix ratio of earlier-stage samples during later stages (0.0-0.9)
+curriculum_mix_prev_ratio: 0.3
+
+# Stage-1 early-stop heuristic weight (value shaping magnitude)
+curriculum_stage1_weight: 0.03
+
+# Stage-specific MCTS sims scaling during sampling
+curriculum_mcts_scale_s1: 1.25
+curriculum_mcts_scale_s2: 1.10
+curriculum_mcts_scale_s3: 1.00
+
+# Root Dirichlet noise for MCTS (alpha, fraction)
+root_dirichlet_alpha: 0.30
+root_dirichlet_fraction: 0.25
+
+# Stage-2 fine-tuning knobs
+curriculum_freeze_backbone: true
+curriculum_head_lr_mult: 2.0
+
+# Head-specific training schedule
+head_training_mode: auto           # auto | stage_heads | all_heads
+head_stage_filter_examples: true   # 在阶段化头部训练时仅用相应 period 样本
+# Stage-3 gradual unfreezing schedule
+stage3_gradual_unfreeze: true
+stage3_unfreeze_order: [mlp, attension, conv, main]
+stage3_unfreeze_epochs: [2, 3, 4, 5]
+stage3_backbone_lr_mult: 1.0
+
+# Arena-driven curriculum advancement (link phases to pitting win-rate)
+curriculum_advance_by_arena: true
+curriculum_promote_s1: 0.70        # S1->S2 threshold (new vs prev)
+curriculum_promote_s2: 0.65        # S2->S3 threshold
+curriculum_promote_patience: 2      # consecutive passes required
+curriculum_min_iters_per_stage: 1   # minimum iters per stage before checking
+curriculum_draw_weight: 0.0         # draw weight in win-rate (0=ignore, 0.5=half)
+
+# Timebox: avoid long stagnation by adapting parameters
+curriculum_timebox_iters: 4
+curriculum_timebox_action: increase_mcts   # increase_mcts | lower_threshold | both | none
+curriculum_timebox_mcts_scale: 1.20
+curriculum_timebox_threshold_relax: 0.03
+curriculum_timebox_max_relax: 0.10
+
+# Dataset splitting & stats per stage (optional)
+curriculum_split_examples: true
+curriculum_log_stats: true

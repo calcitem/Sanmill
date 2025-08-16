@@ -1,0 +1,61 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+
+# Checkpoints & data
+temp/
+*.pth.tar
+*.examples
+
+# Logs
+*.log
+
+# Training logs and results
+*_log.csv
+*_log.json
+training_*.csv
+training_*.json
+session_*.csv
+session_*.json
+
+# Configuration files (user-specific)
+my_config.yaml
+my_config.json
+config_*.yaml
+config_*.json
+!config_template.*
+
+# Backup files
+*.backup
+*.bak
+*~
+
+# Test and temporary files
+test_logs/
+tmp/
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+*.pyc
+.DS_Store
+**/__pycache__
+
+/temp/
+/.project
+/.pydevproject
+test*.py
+# checkpoint
+checkpoints/
+
+# For PyCharm users
+.idea/
+
