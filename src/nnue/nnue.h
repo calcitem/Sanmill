@@ -69,8 +69,8 @@ private:
     // Forward propagation
     int32_t forward(const Position& pos);
     
-    // Feature extraction
-    void extract_features(const Position& pos, bool* features);
+    // Feature extraction (requires non-const Position for some queries)
+    void extract_features(Position& pos, bool* features);
     
     // Activate hidden layer
     void activate_hidden(const bool* features, int16_t* hidden);

@@ -101,7 +101,10 @@ int32_t NNUEEvaluator::get_raw_output(const Position& pos) {
 
 int32_t NNUEEvaluator::forward(const Position& pos) {
     // Extract features into the working buffer
-    extract_features(pos, features_);
+    // FeatureExtractor::extract_features requires a non-const Position
+    // because it may consult internal cached state. We cast away const here
+    // as we only perform read-only queries in practice.
+    extract_features(const_cast<Position&>(pos), features_);
 
     // Perspective A (as-is, from white's perspective)
     activate_hidden(features_, hidden_white_);
@@ -128,8 +131,8 @@ int32_t NNUEEvaluator::forward(const Position& pos) {
     return compute_output(hidden_white_, hidden_black_, pos.side_to_move());
 }
 
-void NNUEEvaluator::extract_features(const Position& pos, bool* features) {
-    // Use the advanced feature extractor
+void NNUEEvaluator::extract_features(Position& pos, bool* features) {
+    // Use the advanced feature extractor (requires non-const Position)
     FeatureExtractor::extract_features(pos, features);
 }
 
@@ -228,8 +231,11 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
         return false;
     }
     
-    // Read weights
-    file.read(reinterpret_cast<char*>(&weights_), sizeof(NNUEWeights));
+    // Read weights field-by-field to avoid issues with structure padding/alignment
+    file.read(reinterpret_cast<char*>(weights_.input_weights), sizeof(weights_.input_weights));
+    file.read(reinterpret_cast<char*>(weights_.input_biases), sizeof(weights_.input_biases));
+    file.read(reinterpret_cast<char*>(weights_.output_weights), sizeof(weights_.output_weights));
+    file.read(reinterpret_cast<char*>(&weights_.output_bias), sizeof(weights_.output_bias));
     
     if (file.fail()) {
         std::cerr << "Failed to read NNUE model weights" << std::endl;
@@ -258,8 +264,11 @@ bool NNUEEvaluator::save_model(const std::string& filepath) const {
     file.write(reinterpret_cast<const char*>(&feature_size), sizeof(int32_t));
     file.write(reinterpret_cast<const char*>(&hidden_size), sizeof(int32_t));
     
-    // Write weights
-    file.write(reinterpret_cast<const char*>(&weights_), sizeof(NNUEWeights));
+    // Write weights field-by-field to ensure a stable on-disk format independent of padding
+    file.write(reinterpret_cast<const char*>(weights_.input_weights), sizeof(weights_.input_weights));
+    file.write(reinterpret_cast<const char*>(weights_.input_biases), sizeof(weights_.input_biases));
+    file.write(reinterpret_cast<const char*>(weights_.output_weights), sizeof(weights_.output_weights));
+    file.write(reinterpret_cast<const char*>(&weights_.output_bias), sizeof(weights_.output_bias));
     
     if (file.fail()) {
         std::cerr << "Failed to write NNUE model" << std::endl;

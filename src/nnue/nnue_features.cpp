@@ -13,19 +13,21 @@
 namespace NNUE {
 
 // Helper function to count mobility
-int count_mobility(Position& pos, Color c) {
-    if (pos.piece_on_board_count(c) <= 3) {
-        // In the endgame, pieces can fly, so mobility is the number of empty squares.
+int count_mobility(Position& pos, Color color) {
+    if (pos.piece_on_board_count(color) <= 3) {
+        // In the endgame, pieces may fly; mobility approximates the number of empty squares.
         return 24 - (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK));
     }
 
     int mobility = 0;
-    Bitboard pieces = pos.byColorBB[c];
-    Bitboard empty_squares = ~(pos.byTypeBB[ALL_PIECES]);
+    const Bitboard all_pieces = pos.byTypeBB[ALL_PIECES];
 
-    while (pieces) {
-        Square sq = pop_lsb(&pieces);
-        mobility += popcount(MoveList<LEGAL>::adjacentSquaresBB[sq] & empty_squares);
+    // Iterate all board squares and accumulate adjacent empty targets for the given color
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+        if (!pos.empty(sq) && pos.color_on(sq) == color) {
+            const Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
+            mobility += popcount(adjacent & ~all_pieces);
+        }
     }
     return mobility;
 }
@@ -85,8 +87,9 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     }
 
     // Mobility features
-    const int white_mobility = (phase == Phase::placing) ? (24 - pos.piece_count()) : count_mobility(pos, WHITE);
-    const int black_mobility = (phase == Phase::placing) ? (24 - pos.piece_count()) : count_mobility(pos, BLACK);
+    const int total_on_board = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+    const int white_mobility = (phase == Phase::placing) ? (24 - total_on_board) : count_mobility(pos, WHITE);
+    const int black_mobility = (phase == Phase::placing) ? (24 - total_on_board) : count_mobility(pos, BLACK);
     int mobility_diff = white_mobility - black_mobility;
 
     // Map difference to a feature index from -4 to +3

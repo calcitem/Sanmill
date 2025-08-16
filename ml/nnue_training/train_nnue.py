@@ -290,10 +290,14 @@ def save_model_c_format(model: nn.Module, filepath: str):
         # Write dimensions (feature_size, hidden_size)
         f.write(np.array([model.feature_size, model.hidden_size], dtype=np.int32).tobytes())
 
-        # Write the quantized weights in the order defined by the C++ struct
+        # Write the quantized weights in the exact order expected by the C++ side
+        # 1) input_weights: shape (feature_size, hidden_size) in C++ layout f-major
         f.write(input_weights_int16.tobytes())
+        # 2) input_biases: shape (hidden_size,)
         f.write(input_biases_int32.tobytes())
+        # 3) output_weights: shape (hidden_size * 2,)
         f.write(output_weights_int8.tobytes())
+        # 4) output_bias: single int32
         f.write(output_bias_int32.tobytes())
 
     logger.info(f"Model saved in C++ format to {filepath}")
