@@ -25,9 +25,11 @@ import time
 
 # Add current directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
 
 from train_nnue import MillNNUE
 from config_loader import load_config, merge_config_with_args
+from game.Game import Game
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -128,51 +130,75 @@ class NNUEModelLoader:
             raise RuntimeError(f"Failed to load PyTorch model: {e}")
 
 
-class SimpleGameState:
-    """Simplified game state representation for NNUE evaluation"""
+class NNUEGameAdapter:
+    """Adapter to use existing ml/game Board with NNUE - reuses ml/game logic"""
     
     def __init__(self):
-        self.board = np.zeros((7, 7), dtype=np.int8)  # -1: empty, 0: white, 1: black
-        self.side_to_move = 0  # 0: white, 1: black
-        self.phase = 0  # 0: placing, 1: moving, 2: flying
-        self.white_pieces_in_hand = 9
-        self.black_pieces_in_hand = 9
-        self.white_pieces_on_board = 0
-        self.black_pieces_on_board = 0
-        self.move_count = 0
+        self.game = Game()
+        self.board = self.game.getInitBoard()
+        self.current_player = 1  # 1 for white, -1 for black (ml/game format)
         
-        # Valid board positions (standard Nine Men's Morris board)
-        self.valid_positions = set([
-            (0,0), (0,3), (0,6),
-            (1,1), (1,3), (1,5),
-            (2,2), (2,3), (2,4),
-            (3,0), (3,1), (3,2), (3,4), (3,5), (3,6),
-            (4,2), (4,3), (4,4),
-            (5,1), (5,3), (5,5),
-            (6,0), (6,3), (6,6)
-        ])
-        
-        # Initialize valid positions as empty (-1)
-        self.board.fill(0)  # Invalid positions remain 0
-        for x, y in self.valid_positions:
-            self.board[x, y] = -1  # Valid positions are empty (-1)
+        # Valid board positions (reuse from ml/game)
+        self.valid_positions = []
+        for x in range(7):
+            for y in range(7):
+                if self.board.allowed_places[x][y]:
+                    self.valid_positions.append((x, y))
+    
+    @property
+    def side_to_move(self):
+        """Get current player (0: white, 1: black) - converting from ml/game format"""
+        return 0 if self.current_player == 1 else 1
+    
+    @property
+    def phase(self):
+        """Get current phase (0: placing, 1: moving, 2: flying, 3: capture)"""
+        return self.board.period
+    
+    @property
+    def white_pieces_in_hand(self):
+        """Number of white pieces not yet placed"""
+        return self.board.pieces_in_hand_count(1)
+    
+    @property
+    def black_pieces_in_hand(self):
+        """Number of black pieces not yet placed"""
+        return self.board.pieces_in_hand_count(-1)
+    
+    @property
+    def white_pieces_on_board(self):
+        """Number of white pieces on board"""
+        return self.board.count(1)
+    
+    @property
+    def black_pieces_on_board(self):
+        """Number of black pieces on board"""
+        return self.board.count(-1)
+    
+    @property
+    def move_count(self):
+        """Total number of moves"""
+        return self.board.move_counter
         
     def to_nnue_features(self) -> np.ndarray:
-        """Convert game state to NNUE feature vector"""
+        """Convert game state to NNUE feature vector using ml/game data structures"""
         features = np.zeros(115, dtype=np.float32)
         
         # Piece placement features (24 + 24 = 48 features)
         white_idx = 0
         black_idx = 24
         for i, (x, y) in enumerate(sorted(self.valid_positions)):
-            if (x, y) in self.valid_positions:
-                if self.board[x, y] == 0:  # White piece
-                    features[white_idx + i] = 1.0
-                elif self.board[x, y] == 1:  # Black piece
-                    features[black_idx + i] = 1.0
+            piece = self.board.pieces[x][y]  # Access using ml/game format
+            if piece == 1:  # White piece (ml/game uses 1 for white)
+                features[white_idx + i] = 1.0
+            elif piece == -1:  # Black piece (ml/game uses -1 for black)
+                features[black_idx + i] = 1.0
                     
-        # Phase features (3 features)
-        features[48 + self.phase] = 1.0
+        # Phase features (3 features) - handle capture phase differently
+        if self.phase == 3:  # Capture phase maps to placing phase feature for NNUE
+            features[48] = 1.0
+        else:
+            features[48 + min(self.phase, 2)] = 1.0
         
         # Piece count features (4 features)
         features[51] = self.white_pieces_in_hand / 9.0
@@ -186,88 +212,124 @@ class SimpleGameState:
         # Move count normalized (1 feature)
         features[56] = min(self.move_count / 100.0, 1.0)
         
-        # Mill detection features (remaining features)
-        # TODO: Add mill detection logic
+        # Mill detection features (remaining features) - reuse ml/game mill logic
+        self._add_mill_features(features)
         
         return features
+    
+    def _add_mill_features(self, features: np.ndarray):
+        """Add mill-related features using ml/game mill detection"""
+        from game.standard_rules import mills
+        
+        mill_feature_start = 57
+        feature_idx = mill_feature_start
+        
+        # For each valid position, check if it's part of a mill
+        for i, (x, y) in enumerate(sorted(self.valid_positions)):
+            if feature_idx >= 115:
+                break
+                
+            piece = self.board.pieces[x][y]
+            if piece != 0:  # Has a piece
+                # Use Game's mill detection logic
+                if self.game.is_mill(self.board, [x, y]):
+                    features[feature_idx] = 1.0
+            
+            feature_idx += 1
         
     def is_valid_position(self, x: int, y: int) -> bool:
-        """Check if position is valid on the board"""
-        return (x, y) in self.valid_positions
+        """Check if position is valid on the board - reuse ml/game logic"""
+        return 0 <= x < 7 and 0 <= y < 7 and self.board.allowed_places[x][y] == 1
         
     def get_valid_moves(self) -> List[Tuple[int, int, int, int]]:
-        """Get list of valid moves in current position"""
+        """Get list of valid moves in current position - reuse ml/game logic"""
+        # Use ml/game's move generation directly
+        valid_moves_array = self.game.getValidMoves(self.board, self.current_player)
         moves = []
         
-        if self.phase == 0:  # Placing phase
-            pieces_in_hand = self.white_pieces_in_hand if self.side_to_move == 0 else self.black_pieces_in_hand
-            if pieces_in_hand > 0:
-                for x, y in self.valid_positions:
-                    if self.board[x, y] == -1:  # Empty position
-                        moves.append((x, y, x, y))  # Place move
-        else:  # Moving/Flying phase
-            for x, y in self.valid_positions:
-                if self.board[x, y] == self.side_to_move:  # Own piece
-                    # Find adjacent empty positions
-                    for nx, ny in self._get_adjacent_positions(x, y):
-                        if self.board[nx, ny] == -1:  # Empty
-                            moves.append((x, y, nx, ny))  # Move
-                            
+        # Convert from ml/game action format to coordinate format
+        for action_idx, is_valid in enumerate(valid_moves_array):
+            if is_valid:
+                move_coords = self.board.get_move_from_action(action_idx)
+                # Convert to 4-tuple format (x1, y1, x2, y2)
+                if len(move_coords) == 2:
+                    # Placing or removing move
+                    moves.append((move_coords[0], move_coords[1], move_coords[0], move_coords[1]))
+                else:
+                    # Moving
+                    moves.append(tuple(move_coords))
+                
         return moves
         
-    def _get_adjacent_positions(self, x: int, y: int) -> List[Tuple[int, int]]:
-        """Get adjacent positions for moving"""
-        # TODO: Implement proper adjacency rules for Nine Men's Morris
-        adjacent = []
-        for dx, dy in [(-1,0), (1,0), (0,-1), (0,1)]:
-            nx, ny = x + dx, y + dy
-            if 0 <= nx < 7 and 0 <= ny < 7 and (nx, ny) in self.valid_positions:
-                adjacent.append((nx, ny))
-        return adjacent
-        
-    def make_move(self, move: Tuple[int, int, int, int]) -> bool:
-        """Make a move on the board"""
-        x1, y1, x2, y2 = move
-        
-        if not self.is_valid_position(x2, y2) or self.board[x2, y2] != -1:
+    def make_move(self, move) -> bool:
+        """Make a move on the board - reuse ml/game logic"""
+        try:
+            # Convert coordinate move to action index
+            if len(move) == 4:
+                if move[0] == move[2] and move[1] == move[3]:
+                    # Placing or removing move
+                    action = self.board.get_action_from_move([move[0], move[1]])
+                else:
+                    # Moving
+                    action = self.board.get_action_from_move(list(move))
+            else:
+                action = self.board.get_action_from_move(list(move))
+            
+            # Use ml/game's state transition which calls execute_move internally
+            # This ensures proper update of draw counters and threefold repetition detection
+            next_board, next_player = self.game.getNextState(self.board, self.current_player, action)
+            self.board = next_board
+            self.current_player = next_player
+            return True
+        except Exception as e:
             return False
             
-        if self.phase == 0:  # Placing
-            if self.side_to_move == 0 and self.white_pieces_in_hand > 0:
-                self.board[x2, y2] = 0
-                self.white_pieces_in_hand -= 1
-                self.white_pieces_on_board += 1
-            elif self.side_to_move == 1 and self.black_pieces_in_hand > 0:
-                self.board[x2, y2] = 1
-                self.black_pieces_in_hand -= 1
-                self.black_pieces_on_board += 1
+    def is_game_over(self) -> Tuple[bool, Optional[str]]:
+        """Check if game is over - reuse ml/game logic"""
+        game_result = self.game.getGameEnded(self.board, self.current_player)
+        if abs(game_result) > 1e-6:
+            # Game is over
+            if game_result > 0:
+                reason = "current_player_wins"
+            elif game_result < 0:
+                reason = "current_player_loses"
             else:
-                return False
-        else:  # Moving
-            if self.board[x1, y1] != self.side_to_move:
-                return False
-            self.board[x1, y1] = -1
-            self.board[x2, y2] = self.side_to_move
-            
-        self.move_count += 1
-        self.side_to_move = 1 - self.side_to_move
+                reason = "draw"
+            return True, reason
+        return False, None
         
-        # Update phase
-        if self.white_pieces_in_hand == 0 and self.black_pieces_in_hand == 0:
-            self.phase = 1  # Moving phase
-            
-        return True
+    def get_removable_pieces(self, player_side_to_move: int) -> List[Tuple[int, int]]:
+        """Get removable pieces for GUI - maps to ml/game removal logic"""
+        # In capture phase, we can remove any valid pieces according to game rules
+        # This is handled by the ml/game logic in get_valid_moves
+        if self.phase == 3:
+            valid_moves = self.get_valid_moves()
+            removable = []
+            for move in valid_moves:
+                # In removal phase, moves are (x, y, x, y) for piece at (x, y)
+                if len(move) == 4 and move[0] == move[2] and move[1] == move[3]:
+                    removable.append((move[0], move[1]))
+            return removable
+        return []
+    
+    def copy(self):
+        """Create a copy of the current game state"""
+        from copy import deepcopy
+        new_adapter = NNUEGameAdapter()
+        new_adapter.board = deepcopy(self.board)
+        new_adapter.current_player = self.current_player
+        return new_adapter
 
 
 class NNUEPlayer:
-    """AI player using NNUE model for evaluation"""
+    """AI player using NNUE model for evaluation - uses ml/game logic"""
     
     def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 3):
         self.model = model_loader.load_model()
         self.device = model_loader.device
         self.search_depth = search_depth
         
-    def evaluate_position(self, game_state: SimpleGameState) -> float:
+    def evaluate_position(self, game_state: NNUEGameAdapter) -> float:
         """Evaluate position using NNUE model"""
         features = game_state.to_nnue_features()
         features_tensor = torch.from_numpy(features).unsqueeze(0).to(self.device)
@@ -277,7 +339,7 @@ class NNUEPlayer:
             evaluation = self.model(features_tensor, side_to_move_tensor)
             return float(evaluation.squeeze().cpu())
             
-    def get_best_move(self, game_state: SimpleGameState) -> Optional[Tuple[int, int, int, int]]:
+    def get_best_move(self, game_state: NNUEGameAdapter) -> Optional[Tuple[int, int, int, int]]:
         """Get best move using minimax with NNUE evaluation"""
         valid_moves = game_state.get_valid_moves()
         if not valid_moves:
@@ -287,10 +349,11 @@ class NNUEPlayer:
         best_score = float('-inf') if game_state.side_to_move == 0 else float('inf')
         
         for move in valid_moves:
-            # Make move
-            temp_state = self._copy_state(game_state)
+            # Make move on copy
+            temp_state = game_state.copy()
             if temp_state.make_move(move):
-                score = self._minimax(temp_state, self.search_depth - 1, False if game_state.side_to_move == 0 else True)
+                score = self._minimax(temp_state, self.search_depth - 1, 
+                                    False if game_state.side_to_move == 0 else True)
                 
                 if game_state.side_to_move == 0:  # White (maximizing)
                     if score > best_score:
@@ -303,9 +366,11 @@ class NNUEPlayer:
                         
         return best_move
         
-    def _minimax(self, game_state: SimpleGameState, depth: int, maximizing: bool) -> float:
+    def _minimax(self, game_state: NNUEGameAdapter, depth: int, maximizing: bool) -> float:
         """Minimax search with NNUE evaluation"""
-        if depth == 0:
+        # Check if game is over
+        is_over, reason = game_state.is_game_over()
+        if is_over or depth == 0:
             return self.evaluate_position(game_state)
             
         valid_moves = game_state.get_valid_moves()
@@ -315,7 +380,7 @@ class NNUEPlayer:
         if maximizing:
             max_score = float('-inf')
             for move in valid_moves:
-                temp_state = self._copy_state(game_state)
+                temp_state = game_state.copy()
                 if temp_state.make_move(move):
                     score = self._minimax(temp_state, depth - 1, False)
                     max_score = max(max_score, score)
@@ -323,33 +388,33 @@ class NNUEPlayer:
         else:
             min_score = float('inf')
             for move in valid_moves:
-                temp_state = self._copy_state(game_state)
+                temp_state = game_state.copy()
                 if temp_state.make_move(move):
                     score = self._minimax(temp_state, depth - 1, True)
                     min_score = min(min_score, score)
             return min_score
-            
-    def _copy_state(self, game_state: SimpleGameState) -> SimpleGameState:
-        """Create a copy of the game state"""
-        new_state = SimpleGameState()
-        new_state.board = game_state.board.copy()
-        new_state.side_to_move = game_state.side_to_move
-        new_state.phase = game_state.phase
-        new_state.white_pieces_in_hand = game_state.white_pieces_in_hand
-        new_state.black_pieces_in_hand = game_state.black_pieces_in_hand
-        new_state.white_pieces_on_board = game_state.white_pieces_on_board
-        new_state.black_pieces_on_board = game_state.black_pieces_on_board
-        new_state.move_count = game_state.move_count
-        return new_state
 
 
 class NNUEGameGUI:
-    """Simple GUI for NNUE human vs AI games"""
+    """Simple GUI for NNUE human vs AI games - uses ml/game logic"""
     
     def __init__(self, nnue_player: NNUEPlayer, human_first: bool = True):
         self.nnue_player = nnue_player
         self.human_first = human_first
-        self.game_state = SimpleGameState()
+        self.game_state = NNUEGameAdapter()
+        
+        # Following AlphaZero's player mapping logic
+        # players[curPlayer + 1] gives the correct player object
+        if human_first:
+            # Human is player1 (curPlayer=1), AI is player2 (curPlayer=-1)  
+            self.players = [self.nnue_player, None, self]  # [player2, None, player1]
+            self.human_player_value = 1   # curPlayer value when human plays
+            self.ai_player_value = -1     # curPlayer value when AI plays
+        else:
+            # AI is player1 (curPlayer=1), Human is player2 (curPlayer=-1)
+            self.players = [self, None, self.nnue_player]  # [player2, None, player1]  
+            self.human_player_value = -1  # curPlayer value when human plays
+            self.ai_player_value = 1      # curPlayer value when AI plays
         
         # Try to import tkinter
         try:
@@ -366,18 +431,25 @@ class NNUEGameGUI:
         self.selected_pos = None
         self.game_over = False
         
+        # Last move display (like alphazero)
+        self._last_move_canvas_id = None
+        self.last_move_text = ""
+        
     def start_gui(self):
         """Start the GUI game"""
         self.root = self.tk.Tk()
         self.root.title("Sanmill NNUE - Human vs AI")
-        self.root.geometry("600x700")
+        self.root.geometry("700x800")
         
         # Status label
         self.status_label = self.tk.Label(self.root, text="Game started", font=("Arial", 12))
         self.status_label.pack(pady=10)
         
         # Canvas for board
-        self.canvas = self.tk.Canvas(self.root, width=500, height=500, bg="white")
+        # Updated canvas for professional board layout
+        canvas_width = 600
+        canvas_height = 600  
+        self.canvas = self.tk.Canvas(self.root, width=canvas_width, height=canvas_height, bg="#cfcfcf")
         self.canvas.pack(pady=10)
         self.canvas.bind("<Button-1>", self.on_click)
         
@@ -395,106 +467,232 @@ class NNUEGameGUI:
         self.draw_board()
         self.update_status()
         
-        # If AI goes first, make AI move
-        if not self.human_first:
+        # If AI goes first, make AI move - use AlphaZero logic
+        initial_player_obj = self.players[self.game_state.current_player + 1]  # current_player starts as 1
+        if initial_player_obj == self.nnue_player:
             self.root.after(1000, self.make_ai_move)
             
         self.root.mainloop()
         
     def draw_board(self):
-        """Draw the game board"""
+        """Draw the game board using alphazero-style professional rendering"""
         self.canvas.delete("all")
         
-        # Board dimensions
-        size = 400
-        margin = 50
-        step = size // 6
+        # Board configuration (matching alphazero layout)
+        board_size_px = 480
+        cell_px = board_size_px // 7  # alphazero uses 7, not 6
+        margin_left = margin_right = int(cell_px * 1.0)
+        margin_top = margin_bottom = int(cell_px * 0.9)
+        piece_radius = max(10, int(cell_px * 0.33))
+        coord_font_size = max(10, int(cell_px * 0.23))
         
-        # Draw board lines
-        positions = [
-            # Outer square
-            [(margin, margin), (margin + size, margin), (margin + size, margin + size), (margin, margin + size), (margin, margin)],
-            # Middle square
-            [(margin + step, margin + step), (margin + size - step, margin + step), 
-             (margin + size - step, margin + size - step), (margin + step, margin + size - step), (margin + step, margin + step)],
-            # Inner square
-            [(margin + 2*step, margin + 2*step), (margin + size - 2*step, margin + 2*step),
-             (margin + size - 2*step, margin + size - 2*step), (margin + 2*step, margin + size - 2*step), (margin + 2*step, margin + 2*step)],
-            # Connecting lines
-            [(margin + 3*step, margin), (margin + 3*step, margin + 2*step)],
-            [(margin + 3*step, margin + 4*step), (margin + 3*step, margin + size)],
-            [(margin, margin + 3*step), (margin + 2*step, margin + 3*step)],
-            [(margin + 4*step, margin + 3*step), (margin + size, margin + 3*step)]
+        def xy_to_canvas_center(x, y):
+            """Convert board coordinates to canvas center position"""
+            cx = margin_left + x * cell_px + cell_px // 2
+            cy = margin_top + y * cell_px + cell_px // 2
+            return cx, cy
+        
+        # Standard Nine Men's Morris adjacency connections
+        connections = [
+            # Outer ring
+            [(0,0), (3,0)], [(3,0), (6,0)], [(6,0), (6,3)], [(6,3), (6,6)],
+            [(6,6), (3,6)], [(3,6), (0,6)], [(0,6), (0,3)], [(0,3), (0,0)],
+            # Middle ring  
+            [(1,1), (3,1)], [(3,1), (5,1)], [(5,1), (5,3)], [(5,3), (5,5)],
+            [(5,5), (3,5)], [(3,5), (1,5)], [(1,5), (1,3)], [(1,3), (1,1)],
+            # Inner ring
+            [(2,2), (3,2)], [(3,2), (4,2)], [(4,2), (4,3)], [(4,3), (4,4)],
+            [(4,4), (3,4)], [(3,4), (2,4)], [(2,4), (2,3)], [(2,3), (2,2)],
+            # Cross connections
+            [(3,0), (3,1)], [(3,1), (3,2)], [(3,4), (3,5)], [(3,5), (3,6)],
+            [(0,3), (1,3)], [(1,3), (2,3)], [(4,3), (5,3)], [(5,3), (6,3)]
         ]
         
-        for line in positions:
-            for i in range(len(line) - 1):
-                self.canvas.create_line(line[i][0], line[i][1], line[i+1][0], line[i+1][1], width=2)
+        # Draw board lines first (underneath pieces)
+        for (x1, y1), (x2, y2) in connections:
+            cx1, cy1 = xy_to_canvas_center(x1, y1)
+            cx2, cy2 = xy_to_canvas_center(x2, y2)
+            self.canvas.create_line(cx1, cy1, cx2, cy2, fill="#666", width=3)
         
-        # Draw pieces
+        # Draw coordinate labels (matching alphazero positioning)
+        # Row numbers (7..1) on the left - positioned outside board area
+        for y in range(7):
+            text_y = margin_top + y * cell_px + cell_px // 2
+            self.canvas.create_text(margin_left * 0.5, text_y, text=str(7 - y), 
+                                  fill="#444", font=("Arial", coord_font_size))
+        
+        # Column letters (a..g) at the bottom - positioned outside board area
+        letters = ["a", "b", "c", "d", "e", "f", "g"]
+        base_y = margin_top + board_size_px + margin_bottom * 0.15
+        for x in range(7):
+            text_x = margin_left + x * cell_px + cell_px // 2
+            self.canvas.create_text(text_x, base_y, text=letters[x], 
+                                  fill="#444", font=("Arial", coord_font_size))
+        
+        # Draw pieces only where they exist (clean professional look)
         for x, y in self.game_state.valid_positions:
-            canvas_x = margin + y * step
-            canvas_y = margin + x * step
-            
-            # Draw position marker
-            self.canvas.create_oval(canvas_x - 5, canvas_y - 5, canvas_x + 5, canvas_y + 5, outline="gray")
-            
-            # Draw piece if present
-            if self.game_state.board[x, y] == 0:  # White piece
-                self.canvas.create_oval(canvas_x - 15, canvas_y - 15, canvas_x + 15, canvas_y + 15, 
-                                      fill="white", outline="black", width=2)
-            elif self.game_state.board[x, y] == 1:  # Black piece
-                self.canvas.create_oval(canvas_x - 15, canvas_y - 15, canvas_x + 15, canvas_y + 15,
-                                      fill="black", outline="black", width=2)
-                                      
-        # Highlight selected position
+            piece = self.game_state.board.pieces[x][y]
+            if piece != 0:  # Has a piece (ml/game uses 0 for empty)
+                cx, cy = xy_to_canvas_center(x, y)
+                
+                if piece == 1:  # White piece (ml/game uses 1 for white)
+                    fill_color = "#ffffff"
+                    outline_color = "#888"
+                else:  # Black piece (ml/game uses -1 for black)
+                    fill_color = "#000000"
+                    outline_color = "#888"
+                
+                # Draw piece with professional styling
+                self.canvas.create_oval(cx - piece_radius, cy - piece_radius, 
+                                      cx + piece_radius, cy + piece_radius,
+                                      fill=fill_color, outline=outline_color, width=2)
+        
+        # Highlight selected position (orange border like alphazero)
         if self.selected_pos:
             x, y = self.selected_pos
-            canvas_x = margin + y * step
-            canvas_y = margin + x * step
-            self.canvas.create_oval(canvas_x - 20, canvas_y - 20, canvas_x + 20, canvas_y + 20,
-                                  outline="red", width=3, fill="")
+            cx, cy = xy_to_canvas_center(x, y)
+            self.canvas.create_oval(cx - piece_radius - 4, cy - piece_radius - 4,
+                                  cx + piece_radius + 4, cy + piece_radius + 4,
+                                  outline="#e67e22", width=4, fill="")
+        
+        # Highlight removable pieces in removal phase (red border)
+        if self.game_state.phase == 3:
+            removable = self.game_state.get_removable_pieces(self.game_state.side_to_move)
+            for x, y in removable:
+                cx, cy = xy_to_canvas_center(x, y)
+                self.canvas.create_oval(cx - piece_radius - 2, cy - piece_radius - 2,
+                                      cx + piece_radius + 2, cy + piece_radius + 2,
+                                      outline="#ff0000", width=3, fill="")
+        
+        # Store configuration for click handling
+        self._margin_left = margin_left
+        self._margin_top = margin_top  
+        self._cell_px = cell_px
+        self._xy_to_canvas_center = xy_to_canvas_center
+        
+        # Display last move notation (simplified version)
+        self.display_last_move()
+    
+    def display_last_move(self):
+        """Display last move notation on canvas"""
+        if hasattr(self, '_last_move_canvas_id') and self._last_move_canvas_id:
+            try:
+                self.canvas.delete(self._last_move_canvas_id)
+            except:
+                pass
+        
+        if hasattr(self, 'last_move_text') and self.last_move_text:
+            margin_left = getattr(self, '_margin_left', 68)
+            margin_top = getattr(self, '_margin_top', 61)
+            # Position text at the top center of the canvas, well above the board
+            text_x = self.canvas.winfo_reqwidth() // 2  # Canvas center
+            text_y = margin_top // 3  # Above the board with good spacing
+            
+            self._last_move_canvas_id = self.canvas.create_text(
+                text_x, text_y, text=self.last_move_text, 
+                fill="black", font=("Arial", 12, "bold"), anchor="center"
+            )
+    
+    def move_to_notation(self, move, player_name):
+        """Convert move to standard notation"""
+        if not move or len(move) < 2:
+            return ""
+            
+        letters = "abcdefg"
+        
+        def pos_to_coord(x, y):
+            return letters[x] + str(7 - y)
+        
+        if len(move) == 2 or (len(move) == 4 and move[0] == move[2] and move[1] == move[3]):
+            coord = pos_to_coord(move[0], move[1])
+            if self.game_state.phase == 3:
+                return f"Last: {player_name} removes {coord}"
+            else:
+                return f"Last: {player_name} places {coord}"
+        else:
+            from_coord = pos_to_coord(move[0], move[1])
+            to_coord = pos_to_coord(move[2], move[3])
+            return f"Last: {player_name} {from_coord}-{to_coord}"
                                   
     def on_click(self, event):
         """Handle mouse click on board"""
-        if self.game_over or (not self.human_first and self.game_state.side_to_move == 0) or \
-           (self.human_first and self.game_state.side_to_move == 1):
+        # Check if it's human's turn using AlphaZero logic
+        current_player_obj = self.players[self.game_state.current_player + 1]
+        if self.game_over or current_player_obj != self:
             return  # Not human's turn
             
-        # Convert click to board position
-        margin = 50
-        step = 400 // 6
+        # Convert click to board position using alphazero-style coordinate system
+        margin_left = getattr(self, '_margin_left', 68)
+        margin_top = getattr(self, '_margin_top', 61)
+        cell_px = getattr(self, '_cell_px', 68)
         
-        clicked_x = round((event.y - margin) / step)
-        clicked_y = round((event.x - margin) / step)
+        # Calculate board position from canvas click (like alphazero)
+        lx = event.x - margin_left
+        ly = event.y - margin_top
+        if lx < 0 or ly < 0 or lx >= 480 or ly >= 480:
+            return  # Click outside board area
+            
+        clicked_x = max(0, min(6, int(lx // cell_px)))
+        clicked_y = max(0, min(6, int(ly // cell_px)))
         
         if not self.game_state.is_valid_position(clicked_x, clicked_y):
             return
             
-        if self.game_state.phase == 0:  # Placing phase
-            if self.game_state.board[clicked_x, clicked_y] == -1:  # Empty position
+        if self.game_state.phase == 3:  # Removing phase
+            # Click to remove opponent piece - opponent is the opposite of current player
+            opponent = -self.game_state.current_player  # ml/game uses 1/-1 format
+            if self.game_state.board.pieces[clicked_x][clicked_y] == opponent:
+                # Check if this piece can be removed
+                removable = self.game_state.get_removable_pieces(self.game_state.side_to_move)
+                if (clicked_x, clicked_y) in removable:
+                    move = (clicked_x, clicked_y, clicked_x, clicked_y)
+                    if self.game_state.make_move(move):
+                        # Record last move
+                        player_name = "Human"
+                        self.last_move_text = self.move_to_notation(move, player_name)
+                        self.draw_board()
+                        self.update_status()
+                        if not self.game_over:
+                            # Check if it's AI's turn using AlphaZero logic
+                            current_player_obj = self.players[self.game_state.current_player + 1]
+                            if current_player_obj == self.nnue_player:
+                                self.root.after(500, self.make_ai_move)
+        elif self.game_state.phase == 0:  # Placing phase
+            if self.game_state.board.pieces[clicked_x][clicked_y] == 0:  # Empty position (ml/game uses 0 for empty)
                 move = (clicked_x, clicked_y, clicked_x, clicked_y)
                 if self.game_state.make_move(move):
+                    # Record last move
+                    player_name = "Human"
+                    self.last_move_text = self.move_to_notation(move, player_name)
                     self.draw_board()
                     self.update_status()
                     if not self.game_over:
-                        self.root.after(500, self.make_ai_move)
-        else:  # Moving phase
+                        # Check if it's AI's turn using AlphaZero logic
+                        current_player_obj = self.players[self.game_state.current_player + 1]
+                        if current_player_obj == self.nnue_player:
+                            self.root.after(500, self.make_ai_move)
+        else:  # Moving/Flying phase
             if self.selected_pos is None:
-                # Select piece to move
-                if self.game_state.board[clicked_x, clicked_y] == (0 if self.human_first else 1):
+                # Select piece to move - use the human player value from our mapping
+                if self.game_state.board.pieces[clicked_x][clicked_y] == self.human_player_value:
                     self.selected_pos = (clicked_x, clicked_y)
                     self.draw_board()
             else:
                 # Move piece
-                if self.game_state.board[clicked_x, clicked_y] == -1:  # Empty position
+                if self.game_state.board.pieces[clicked_x][clicked_y] == 0:  # Empty position (ml/game uses 0 for empty)
                     move = (self.selected_pos[0], self.selected_pos[1], clicked_x, clicked_y)
                     if self.game_state.make_move(move):
+                        # Record last move
+                        player_name = "Human"
+                        self.last_move_text = self.move_to_notation(move, player_name)
                         self.selected_pos = None
                         self.draw_board()
                         self.update_status()
                         if not self.game_over:
-                            self.root.after(500, self.make_ai_move)
+                            # Check if it's AI's turn using AlphaZero logic
+                            current_player_obj = self.players[self.game_state.current_player + 1]
+                            if current_player_obj == self.nnue_player:
+                                self.root.after(500, self.make_ai_move)
                 else:
                     self.selected_pos = None
                     self.draw_board()
@@ -503,6 +701,11 @@ class NNUEGameGUI:
         """Make AI move"""
         if self.game_over:
             return
+            
+        # Check if it's actually AI's turn using AlphaZero logic
+        current_player_obj = self.players[self.game_state.current_player + 1]
+        if current_player_obj != self.nnue_player:
+            return  # Not AI's turn
             
         self.update_status("AI is thinking...")
         
@@ -520,14 +723,24 @@ class NNUEGameGUI:
         
     def after_ai_move(self, move):
         """Update GUI after AI move"""
-        self.draw_board()
-        self.update_status()
-        
+        # Record last move for AI
         if move:
+            player_name = "AI"
+            self.last_move_text = self.move_to_notation(move, player_name)
             x1, y1, x2, y2 = move
             logger.info(f"AI move: ({x1},{y1}) -> ({x2},{y2})")
         else:
             logger.info("AI has no valid moves")
+            
+        self.draw_board()
+        self.update_status()
+        
+        # Check if it's now human's turn and trigger AI if needed
+        if not self.game_over:
+            current_player_obj = self.players[self.game_state.current_player + 1]
+            if current_player_obj == self.nnue_player:
+                # Still AI's turn (e.g., in capture phase)
+                self.root.after(500, self.make_ai_move)
             
     def update_status(self, message: Optional[str] = None):
         """Update status label"""
@@ -537,11 +750,16 @@ class NNUEGameGUI:
             
         if self.game_state.phase == 0:
             phase_text = "Placing phase"
-        else:
+        elif self.game_state.phase == 1:
             phase_text = "Moving phase"
+        elif self.game_state.phase == 2:
+            phase_text = "Flying phase"
+        else:  # phase == 3
+            phase_text = "Remove opponent piece"
             
-        current_player = "Human" if ((self.human_first and self.game_state.side_to_move == 0) or
-                                   (not self.human_first and self.game_state.side_to_move == 1)) else "AI"
+        # Use AlphaZero logic to determine current player
+        current_player_obj = self.players[self.game_state.current_player + 1]
+        current_player = "Human" if current_player_obj == self else "AI"
         
         pieces_info = f"White: {self.game_state.white_pieces_on_board}+{self.game_state.white_pieces_in_hand}, " \
                      f"Black: {self.game_state.black_pieces_on_board}+{self.game_state.black_pieces_in_hand}"
@@ -549,21 +767,42 @@ class NNUEGameGUI:
         status_text = f"{phase_text} | {current_player}'s turn | {pieces_info}"
         self.status_label.config(text=status_text)
         
-        # Check for game over
-        if not self.game_state.get_valid_moves():
+        # Check for game over using comprehensive ml/game logic
+        is_over, reason = self.game_state.is_game_over()
+        if is_over:
+            self.game_over = True
+            
+            # Determine winner based on game result
+            game_result = self.game_state.game.getGameEnded(self.game_state.board, self.game_state.current_player)
+            if abs(game_result) < 1e-4:
+                # Draw
+                self.messagebox.showinfo("Game Over", f"Game ended in a draw! Reason: {reason}")
+            elif game_result > 0:
+                # Current player wins
+                winner = current_player
+                self.messagebox.showinfo("Game Over", f"{winner} wins! Reason: {reason}")
+            else:
+                # Current player loses
+                winner = "AI" if current_player == "Human" else "Human"
+                self.messagebox.showinfo("Game Over", f"{winner} wins! Reason: {reason}")
+        elif not self.game_state.get_valid_moves():
+            # Fallback: no valid moves (should be caught by ml/game logic above)
             self.game_over = True
             winner = "AI" if current_player == "Human" else "Human"
-            self.messagebox.showinfo("Game Over", f"{winner} wins!")
+            self.messagebox.showinfo("Game Over", f"{winner} wins! (No valid moves)")
             
     def restart_game(self):
         """Restart the game"""
-        self.game_state = SimpleGameState()
+        self.game_state = NNUEGameAdapter()
         self.selected_pos = None
         self.game_over = False
+        self.last_move_text = ""  # Clear last move
         self.draw_board()
         self.update_status()
         
-        if not self.human_first:
+        # Check if AI should go first using AlphaZero logic
+        initial_player_obj = self.players[self.game_state.current_player + 1]  # current_player starts as 1
+        if initial_player_obj == self.nnue_player:
             self.root.after(1000, self.make_ai_move)
 
 
@@ -653,7 +892,7 @@ Examples:
         else:
             # Console mode (simplified)
             logger.info("Console mode not fully implemented. Use --gui for interactive play.")
-            game_state = SimpleGameState()
+            game_state = NNUEGameAdapter()
             
             for game_num in range(args.games):
                 logger.info(f"Game {game_num + 1}/{args.games}")
