@@ -10,6 +10,7 @@
 #include "position.h"
 #include "perfect_api.h"
 #include "nnue/nnue.h"
+#include "uci.h"
 
 namespace {
 
@@ -151,23 +152,24 @@ Value Evaluation::value() const
 
 Value Eval::evaluate(Position &pos)
 {
-    // Use NNUE evaluation if available and enabled
-    if (NNUE::is_nnue_available() && Options["UseNNUE"]) {
+    // Strict mode: Use NNUE evaluation if enabled, traditional otherwise
+    if (Options["UseNNUE"]) {
+        // Assert that NNUE is available when UseNNUE is true
+        assert(NNUE::is_nnue_available() && "UseNNUE is true but NNUE is not available");
         return evaluate_nnue(pos);
     }
     
-    // Fall back to traditional evaluation
+    // Use traditional evaluation when NNUE is disabled
     return Evaluation(pos).value();
 }
 
 Value Eval::evaluate_nnue(Position &pos)
 {
+    // Strict mode: NNUE should never fail when properly initialized
     Value nnue_value = NNUE::nnue_evaluate(pos);
     
-    // If NNUE evaluation fails, fall back to traditional
-    if (nnue_value == VALUE_NONE) {
-        return Evaluation(pos).value();
-    }
+    // Assert that NNUE evaluation succeeds
+    assert(nnue_value != VALUE_NONE && "NNUE evaluation failed unexpectedly");
     
     return nnue_value;
 }

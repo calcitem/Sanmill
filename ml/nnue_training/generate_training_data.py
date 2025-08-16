@@ -51,19 +51,20 @@ def run_engine_command(engine_path: str, commands: list, timeout: int = 300) -> 
 def generate_training_data(engine_path: str, 
                          output_file: str,
                          num_positions: int = 50000,
-                         perfect_db_path: str = ".") -> bool:
+                         perfect_db_path: str = ".",
+                         num_threads: int = 0) -> bool:
     """
     Generate training data using the C++ engine
     """
     logger.info(f"Generating {num_positions} training positions...")
     
-    # Configure engine for training data generation
+    # Configure engine for training data generation with parallelization
     commands = [
         "uci",
         f"setoption name UsePerfectDatabase value true",
         f"setoption name PerfectDatabasePath value {perfect_db_path}",
         f"setoption name GenerateTrainingData value true",
-        f"generate_nnue_data {output_file} {num_positions}",
+        f"generate_nnue_data {output_file} {num_positions} {num_threads}",
     ]
     
     start_time = time.time()
@@ -145,6 +146,7 @@ def main():
     parser.add_argument('--output', default='training_data.txt', help='Output training data file')
     parser.add_argument('--positions', type=int, default=50000, help='Number of positions to generate')
     parser.add_argument('--perfect-db', default='.', help='Path to Perfect Database')
+    parser.add_argument('--threads', type=int, default=0, help='Number of threads (0=auto-detect)')
     parser.add_argument('--validate', action='store_true', help='Validate generated data')
     
     args = parser.parse_args()
@@ -164,7 +166,8 @@ def main():
         args.engine, 
         args.output, 
         args.positions, 
-        args.perfect_db
+        args.perfect_db,
+        args.threads
     )
     
     if not success:

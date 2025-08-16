@@ -25,129 +25,81 @@ TrainingDataGenerator::TrainingDataGenerator()
 
 bool TrainingDataGenerator::generate_training_set(const std::string& output_file,
                                                  int target_samples,
-                                                 bool include_all_phases) {
+                                                 const std::vector<PhaseQuota>& phase_quotas,
+                                                 int num_threads) {
+    // Auto-detect thread count if not specified
+    if (num_threads <= 0) {
+        num_threads = std::max(1u, std::thread::hardware_concurrency());
+    }
+    
+    std::cout << "Generating " << target_samples << " training samples using Perfect Database with " 
+              << num_threads << " threads..." << std::endl;
+    
+    // Calculate phase distribution
+    std::vector<PhaseQuota> final_quotas = calculate_phase_distribution(target_samples, phase_quotas);
+    validate_phase_quotas(final_quotas, target_samples);
+    
+    // Print quota distribution
+    std::cout << "Phase quota distribution:" << std::endl;
+    for (const auto& quota : final_quotas) {
+        std::cout << "  Phase " << static_cast<int>(quota.phase) 
+                  << ": " << quota.target_count << " samples (min: " << quota.min_count 
+                  << ", priority: " << quota.priority << ")" << std::endl;
+    }
+    
     std::vector<TrainingSample> samples;
     samples.reserve(target_samples);
     
-    std::cout << "Generating " << target_samples << " training samples using Perfect Database..." << std::endl;
-    
-    // Generate samples from different sources
-    int samples_per_method = target_samples / 3;
-    
-    // 1. Generate from random positions
-    std::cout << "Generating random positions..." << std::endl;
-    generate_random_positions(samples, samples_per_method);
-    
-    // 2. Generate from self-play games
-    std::cout << "Generating from self-play..." << std::endl;
-    generate_from_self_play(samples, samples_per_method / 10);  // Fewer games, more positions per game
-    
-    // 3. Generate phase-specific positions
-    if (include_all_phases) {
-        std::cout << "Generating phase-specific positions..." << std::endl;
-        std::vector<TrainingSample> phase_samples;
-        generate_phase_data(Phase::placing, phase_samples, samples_per_method / 2);
-        samples.insert(samples.end(), phase_samples.begin(), phase_samples.end());
+    // Generate samples for each phase in parallel
+    for (const auto& quota : final_quotas) {
+        if (quota.target_count <= 0) continue;
         
-        phase_samples.clear();
-        generate_phase_data(Phase::moving, phase_samples, samples_per_method / 2);
+        std::cout << "Generating " << quota.target_count << " samples for phase " 
+                  << static_cast<int>(quota.phase) << "..." << std::endl;
+        
+        std::vector<TrainingSample> phase_samples;
+        
+        // Use parallel generation for larger batches
+        if (quota.target_count >= num_threads * 100) {
+            generate_random_positions_parallel(phase_samples, quota.target_count, num_threads);
+        } else {
+            generate_phase_data(quota.phase, phase_samples, quota.target_count);
+        }
+        
+        // Assert minimum quota is met
+        assert(static_cast<int>(phase_samples.size()) >= quota.min_count && 
+               "Failed to meet minimum phase quota requirements");
+        
         samples.insert(samples.end(), phase_samples.begin(), phase_samples.end());
     }
     
+    // Assert total sample count meets requirements
+    assert(static_cast<int>(samples.size()) >= target_samples * 0.8f && 
+           "Failed to generate sufficient training samples");
+    
     // Shuffle samples
     TrainingUtils::shuffle_samples(samples);
+    
+    // Validate generated data
+    assert(TrainingUtils::validate_training_data(samples) && 
+           "Generated training data failed validation");
     
     // Print statistics
     TrainingUtils::print_data_statistics(samples);
     
     // Save to file
     bool success = save_training_data_text(samples, output_file);
+    assert(success && "Failed to save training data to file");
     
-    if (success) {
-        std::cout << "Training data saved to " << output_file << std::endl;
-        std::cout << "Generated: " << generated_count_ << " positions" << std::endl;
-        std::cout << "Valid: " << valid_count_ << " positions" << std::endl;
-        std::cout << "Perfect DB hits: " << perfect_db_hits_ << " positions" << std::endl;
-    }
-    
-    return success;
-}
-
-bool TrainingDataGenerator::generate_random_positions(std::vector<TrainingSample>& samples, int count) {
-    int generated = 0;
-    int attempts = 0;
-    const int max_attempts = count * 10;  // Prevent infinite loops
-    
-    while (generated < count && attempts < max_attempts) {
-        attempts++;
-        generated_count_++;
-        
-        Position pos;
-        if (generate_random_position(pos)) {
-            if (is_valid_training_position(pos)) {
-                TrainingSample sample;
-                if (evaluate_with_perfect_db(pos, sample)) {
-                    samples.push_back(sample);
-                    generated++;
-                    valid_count_++;
-                    perfect_db_hits_++;
-                }
-            }
-        }
-        
-        if (attempts % 1000 == 0) {
-            log_progress(generated, count, "Random positions");
-        }
-    }
-    
-    return generated > 0;
-}
-
-bool TrainingDataGenerator::generate_from_self_play(std::vector<TrainingSample>& samples, int num_games) {
-    for (int game = 0; game < num_games; game++) {
-        // Initialize position for new game
-        Position pos;
-        EngineCommands::init_start_fen();
-        pos.set(EngineCommands::StartFEN);
-        
-        std::vector<Position> game_positions;
-        
-        // Play one game and collect positions
-        while (pos.get_phase() != Phase::gameOver) {
-            game_positions.push_back(pos);
-            
-            // Generate legal moves
-            MoveList<LEGAL> moves(pos);
-            if (moves.size() == 0) break;
-            
-            // Choose random move
-            std::uniform_int_distribution<int> move_dist(0, static_cast<int>(moves.size()) - 1);
-            Move move = moves.getMove(move_dist(rng_)).move;
-            
-            pos.do_move(move);
-            
-            // Limit game length
-            if (game_positions.size() > 200) break;
-        }
-        
-        // Evaluate all positions with Perfect Database
-        for (const auto& game_pos : game_positions) {
-            if (is_valid_training_position(game_pos)) {
-                TrainingSample sample;
-                if (evaluate_with_perfect_db(game_pos, sample)) {
-                    samples.push_back(sample);
-                    perfect_db_hits_++;
-                }
-            }
-        }
-        
-        if (game % 100 == 0) {
-            log_progress(game, num_games, "Self-play games");
-        }
-    }
+    std::cout << "Training data saved to " << output_file << std::endl;
+    std::cout << "Generated: " << generated_count_.load() << " positions" << std::endl;
+    std::cout << "Valid: " << valid_count_.load() << " positions" << std::endl;
+    std::cout << "Perfect DB hits: " << perfect_db_hits_.load() << " positions" << std::endl;
     
     return true;
 }
+
+// Legacy methods removed - replaced with parallel versions
 
 bool TrainingDataGenerator::generate_phase_data(Phase phase, std::vector<TrainingSample>& samples, int target_count) {
     int generated = 0;
@@ -371,6 +323,225 @@ bool TrainingDataGenerator::save_training_data_text(const std::vector<TrainingSa
     }
     
     return !file.fail();
+}
+
+bool TrainingDataGenerator::generate_random_positions_parallel(std::vector<TrainingSample>& samples,
+                                                             int count,
+                                                             int num_threads) {
+    assert(num_threads > 0 && "Invalid thread count for parallel generation");
+    
+    std::vector<std::future<std::vector<TrainingSample>>> futures;
+    std::atomic<int> progress_counter(0);
+    
+    int samples_per_thread = count / num_threads;
+    int remainder = count % num_threads;
+    
+    // Launch worker threads
+    for (int i = 0; i < num_threads; ++i) {
+        int thread_samples = samples_per_thread + (i < remainder ? 1 : 0);
+        
+        futures.emplace_back(std::async(std::launch::async, [this, thread_samples, &progress_counter]() {
+            std::vector<TrainingSample> local_samples;
+            std::mt19937 thread_rng(rng_() + std::hash<std::thread::id>{}(std::this_thread::get_id()));
+            
+            generate_samples_worker(Phase::moving, thread_samples, local_samples, progress_counter, thread_rng);
+            
+            return local_samples;
+        }));
+    }
+    
+    // Collect results from all threads
+    for (auto& future : futures) {
+        std::vector<TrainingSample> thread_samples = future.get();
+        
+        std::lock_guard<std::mutex> lock(samples_mutex_);
+        samples.insert(samples.end(), thread_samples.begin(), thread_samples.end());
+    }
+    
+    assert(static_cast<int>(samples.size()) >= count * 0.8f && 
+           "Parallel generation failed to produce sufficient samples");
+    
+    return true;
+}
+
+bool TrainingDataGenerator::generate_from_self_play_parallel(std::vector<TrainingSample>& samples,
+                                                           int num_games,
+                                                           int num_threads) {
+    assert(num_threads > 0 && "Invalid thread count for parallel self-play");
+    
+    std::vector<std::future<std::vector<TrainingSample>>> futures;
+    std::atomic<int> progress_counter(0);
+    
+    int games_per_thread = num_games / num_threads;
+    int remainder = num_games % num_threads;
+    
+    // Launch worker threads for self-play
+    for (int i = 0; i < num_threads; ++i) {
+        int thread_games = games_per_thread + (i < remainder ? 1 : 0);
+        
+        futures.emplace_back(std::async(std::launch::async, [this, thread_games, &progress_counter]() {
+            std::vector<TrainingSample> thread_samples;
+            std::mt19937 thread_rng(rng_() + std::hash<std::thread::id>{}(std::this_thread::get_id()));
+            
+            // Generate samples from self-play games
+            for (int game = 0; game < thread_games; game++) {
+                Position pos;
+                EngineCommands::init_start_fen();
+                pos.set(EngineCommands::StartFEN);
+                
+                std::vector<Position> game_positions;
+                
+                // Play one game and collect positions
+                while (pos.get_phase() != Phase::gameOver && game_positions.size() < 200) {
+                    game_positions.push_back(pos);
+                    
+                    MoveList<LEGAL> moves(pos);
+                    if (moves.size() == 0) break;
+                    
+                    std::uniform_int_distribution<int> move_dist(0, static_cast<int>(moves.size()) - 1);
+                    Move move = moves.getMove(move_dist(thread_rng)).move;
+                    
+                    pos.do_move(move);
+                }
+                
+                // Evaluate all positions with Perfect Database
+                for (const auto& game_pos : game_positions) {
+                    if (is_valid_training_position(game_pos)) {
+                        TrainingSample sample;
+                        if (evaluate_with_perfect_db(game_pos, sample)) {
+                            thread_samples.push_back(sample);
+                            perfect_db_hits_++;
+                        }
+                    }
+                }
+                
+                progress_counter++;
+            }
+            
+            return thread_samples;
+        }));
+    }
+    
+    // Collect results from all threads
+    for (auto& future : futures) {
+        std::vector<TrainingSample> thread_samples = future.get();
+        
+        std::lock_guard<std::mutex> lock(samples_mutex_);
+        samples.insert(samples.end(), thread_samples.begin(), thread_samples.end());
+    }
+    
+    return true;
+}
+
+void TrainingDataGenerator::generate_samples_worker(Phase target_phase,
+                                                   int samples_per_thread,
+                                                   std::vector<TrainingSample>& thread_samples,
+                                                   std::atomic<int>& progress_counter,
+                                                   std::mt19937& thread_rng) {
+    int generated = 0;
+    int attempts = 0;
+    const int max_attempts = samples_per_thread * 20;  // Prevent infinite loops
+    
+    while (generated < samples_per_thread && attempts < max_attempts) {
+        attempts++;
+        generated_count_++;
+        
+        Position pos;
+        
+        // Generate position based on target phase
+        bool position_generated = false;
+        if (target_phase == Phase::placing) {
+            position_generated = generate_phase_position(pos, Phase::placing);
+        } else {
+            position_generated = generate_random_position(pos);
+        }
+        
+        if (position_generated && is_valid_training_position(pos)) {
+            TrainingSample sample;
+            if (evaluate_with_perfect_db(pos, sample)) {
+                thread_samples.push_back(sample);
+                generated++;
+                valid_count_++;
+                perfect_db_hits_++;
+            }
+        }
+        
+        if (attempts % 1000 == 0) {
+            progress_counter++;
+        }
+    }
+    
+    // Assert that worker generated sufficient samples
+    assert(generated >= samples_per_thread * 0.5f && 
+           "Worker thread failed to generate sufficient training samples");
+}
+
+std::vector<PhaseQuota> TrainingDataGenerator::calculate_phase_distribution(int total_samples,
+                                                                          const std::vector<PhaseQuota>& user_quotas) {
+    std::vector<PhaseQuota> result;
+    
+    if (user_quotas.empty()) {
+        // Default distribution: 70% moving phase, 30% placing phase
+        result.emplace_back(Phase::moving, static_cast<int>(total_samples * 0.7f), 
+                           static_cast<int>(total_samples * 0.5f), 2.0f);
+        result.emplace_back(Phase::placing, static_cast<int>(total_samples * 0.3f), 
+                           static_cast<int>(total_samples * 0.2f), 1.0f);
+        return result;
+    }
+    
+    // Calculate total priority weight
+    float total_priority = 0.0f;
+    for (const auto& quota : user_quotas) {
+        total_priority += quota.priority;
+    }
+    
+    assert(total_priority > 0.0f && "Total priority weight must be positive");
+    
+    // Distribute samples based on priority weights
+    int allocated_samples = 0;
+    for (size_t i = 0; i < user_quotas.size(); ++i) {
+        const auto& quota = user_quotas[i];
+        
+        int target_count;
+        if (i == user_quotas.size() - 1) {
+            // Last quota gets remaining samples
+            target_count = total_samples - allocated_samples;
+        } else {
+            target_count = static_cast<int>((quota.priority / total_priority) * total_samples);
+        }
+        
+        // Ensure minimum requirements are met
+        target_count = std::max(target_count, quota.min_count);
+        
+        result.emplace_back(quota.phase, target_count, quota.min_count, quota.priority);
+        allocated_samples += target_count;
+    }
+    
+    return result;
+}
+
+void TrainingDataGenerator::validate_phase_quotas(const std::vector<PhaseQuota>& quotas, int total_samples) {
+    int total_min_required = 0;
+    int total_target = 0;
+    
+    for (const auto& quota : quotas) {
+        assert(quota.target_count >= 0 && "Phase quota target count must be non-negative");
+        assert(quota.min_count >= 0 && "Phase quota minimum count must be non-negative");
+        assert(quota.min_count <= quota.target_count && "Minimum count cannot exceed target count");
+        assert(quota.priority > 0.0f && "Phase priority must be positive");
+        
+        total_min_required += quota.min_count;
+        total_target += quota.target_count;
+    }
+    
+    assert(total_min_required <= total_samples && 
+           "Total minimum requirements exceed total sample count");
+    
+    // Warn if total target significantly exceeds requested samples
+    if (total_target > total_samples * 1.2f) {
+        std::cerr << "Warning: Total phase targets (" << total_target 
+                  << ") significantly exceed requested samples (" << total_samples << ")" << std::endl;
+    }
 }
 
 void TrainingDataGenerator::log_progress(int current, int total, const std::string& phase) {

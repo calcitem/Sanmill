@@ -93,6 +93,9 @@ Value NNUEEvaluator::evaluate(const Position& pos) {
 }
 
 int32_t NNUEEvaluator::get_raw_output(const Position& pos) {
+    // Strict mode: Assert that NNUE is properly initialized
+    assert(is_enabled() && "NNUE get_raw_output called but NNUE is not properly initialized");
+    
     return forward(pos);
 }
 
@@ -181,7 +184,14 @@ Value NNUEEvaluator::nnue_to_value(int32_t nnue_output) {
 
 bool NNUEEvaluator::generate_training_data(const std::string& output_file, int num_positions) {
     TrainingDataGenerator generator;
-    return generator.generate_training_set(output_file, num_positions, true);
+    // Create default phase quotas
+    std::vector<PhaseQuota> phase_quotas;
+    phase_quotas.emplace_back(Phase::moving, static_cast<int>(num_positions * 0.7f), 
+                             static_cast<int>(num_positions * 0.5f), 2.0f);
+    phase_quotas.emplace_back(Phase::placing, static_cast<int>(num_positions * 0.3f), 
+                             static_cast<int>(num_positions * 0.2f), 1.0f);
+    
+    return generator.generate_training_set(output_file, num_positions, phase_quotas, 0);
 }
 
 bool NNUEEvaluator::load_model(const std::string& filepath) {

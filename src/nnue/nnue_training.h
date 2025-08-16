@@ -12,6 +12,10 @@
 #include <vector>
 #include <fstream>
 #include <random>
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <future>
 
 class Position;
 
@@ -41,28 +45,42 @@ struct TrainingSample {
                       phase(Phase::none), side_to_move(WHITE) {}
 };
 
+// Phase quota configuration for training data generation
+struct PhaseQuota {
+    Phase phase;
+    int target_count;
+    int min_count;      // Minimum samples required for this phase
+    float priority;     // Priority weight for allocation
+    
+    PhaseQuota(Phase p, int target, int min_val = 0, float prio = 1.0f)
+        : phase(p), target_count(target), min_count(min_val), priority(prio) {}
+};
+
 // Training data generator using Perfect Database
 class TrainingDataGenerator {
 public:
     TrainingDataGenerator();
     ~TrainingDataGenerator() = default;
     
-    // Generate training data using Perfect Database
+    // Generate training data using Perfect Database with phase quotas
     bool generate_training_set(const std::string& output_file, 
                               int target_samples = 50000,
-                              bool include_all_phases = true);
+                              const std::vector<PhaseQuota>& phase_quotas = {},
+                              int num_threads = 0);  // 0 = auto-detect
     
     // Generate specific phase training data
     bool generate_phase_data(Phase phase, std::vector<TrainingSample>& samples, 
                            int target_count = 10000);
     
-    // Generate random positions and evaluate with Perfect DB
-    bool generate_random_positions(std::vector<TrainingSample>& samples,
-                                 int count = 10000);
+    // Generate random positions and evaluate with Perfect DB (parallelized)
+    bool generate_random_positions_parallel(std::vector<TrainingSample>& samples,
+                                           int count = 10000,
+                                           int num_threads = 4);
     
-    // Generate positions from self-play games
-    bool generate_from_self_play(std::vector<TrainingSample>& samples,
-                               int num_games = 1000);
+    // Generate positions from self-play games (parallelized)
+    bool generate_from_self_play_parallel(std::vector<TrainingSample>& samples,
+                                         int num_games = 1000,
+                                         int num_threads = 4);
     
     // Save training data to file (binary format)
     bool save_training_data(const std::vector<TrainingSample>& samples,
@@ -99,10 +117,26 @@ private:
     void log_progress(int current, int total, const std::string& phase);
 
 private:
-    std::mt19937 rng_;  // Random number generator
-    int generated_count_;
-    int valid_count_;
-    int perfect_db_hits_;
+    // Thread-safe sample generation
+    void generate_samples_worker(Phase target_phase, 
+                                int samples_per_thread, 
+                                std::vector<TrainingSample>& thread_samples,
+                                std::atomic<int>& progress_counter,
+                                std::mt19937& thread_rng);
+    
+    // Calculate optimal phase distribution based on quotas
+    std::vector<PhaseQuota> calculate_phase_distribution(int total_samples,
+                                                        const std::vector<PhaseQuota>& user_quotas);
+    
+    // Validate phase quota constraints
+    void validate_phase_quotas(const std::vector<PhaseQuota>& quotas, int total_samples);
+
+private:
+    std::mt19937 rng_;                    // Random number generator
+    std::atomic<int> generated_count_;    // Thread-safe counters
+    std::atomic<int> valid_count_;
+    std::atomic<int> perfect_db_hits_;
+    std::mutex samples_mutex_;            // Mutex for sample collection
 };
 
 // Utility functions for training data management

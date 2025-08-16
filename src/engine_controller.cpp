@@ -55,13 +55,17 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         // Call the analyze function instead of analyze_position
         EngineCommands::analyze(searchEngine_, &analyzePos);
     } else if (token == "generate_nnue_data") {
-        // Handle NNUE training data generation
+        // Handle NNUE training data generation with strict mode and phase quotas
         std::string output_file;
         int num_positions = 50000; // default
+        int num_threads = 0;       // auto-detect
         
         is >> output_file;
         if (!(is >> num_positions)) {
             num_positions = 50000;
+        }
+        if (!(is >> num_threads)) {
+            num_threads = 0; // auto-detect
         }
         
         if (output_file.empty()) {
@@ -69,15 +73,35 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         }
         
         sync_cout << "Generating " << num_positions << " NNUE training positions to " 
-                  << output_file << "..." << sync_endl;
+                  << output_file << " with " << (num_threads > 0 ? std::to_string(num_threads) : "auto") 
+                  << " threads..." << sync_endl;
+        
+        // Create default phase quotas: 70% moving, 30% placing
+        std::vector<NNUE::PhaseQuota> phase_quotas;
+        phase_quotas.emplace_back(Phase::moving, 
+                                 static_cast<int>(num_positions * 0.7f),
+                                 static_cast<int>(num_positions * 0.5f), 
+                                 2.0f);
+        phase_quotas.emplace_back(Phase::placing, 
+                                 static_cast<int>(num_positions * 0.3f),
+                                 static_cast<int>(num_positions * 0.2f), 
+                                 1.0f);
         
         NNUE::TrainingDataGenerator generator;
-        bool success = generator.generate_training_set(output_file, num_positions, true);
         
-        if (success) {
+        try {
+            bool success = generator.generate_training_set(output_file, num_positions, 
+                                                         phase_quotas, num_threads);
+            
+            // Assert success in strict mode
+            assert(success && "NNUE training data generation failed in strict mode");
+            
             sync_cout << "NNUE training data generation completed successfully." << sync_endl;
-        } else {
-            sync_cout << "NNUE training data generation failed." << sync_endl;
+            
+        } catch (const std::exception& e) {
+            sync_cout << "NNUE training data generation failed with exception: " 
+                      << e.what() << sync_endl;
+            assert(false && "NNUE training data generation failed with exception");
         }
     } else {
         // Handle additional custom commands if necessary

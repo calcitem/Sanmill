@@ -6,10 +6,19 @@ This directory contains the NNUE (Efficiently Updatable Neural Network) training
 
 The NNUE training system uses the Perfect Database to generate optimal training data, ensuring the neural network learns from perfect play rather than approximations from traditional search algorithms.
 
+### Key Features
+
+- **Strict Mode**: No fallback behavior - failures result in assertions rather than silent degradation
+- **Parallel Training Data Generation**: Multi-threaded position generation for faster data collection
+- **Phase Quota Control**: Precise control over training data distribution across game phases
+- **Perfect Database Integration**: All training labels come from theoretically optimal evaluations
+- **Robust Validation**: Comprehensive error checking at every stage
+
 ## Files
 
 - `train_nnue.py` - Main training script for the neural network
 - `generate_training_data.py` - Script to generate training data using the Perfect Database
+- `train_pipeline_parallel.py` - Enhanced pipeline with strict mode and parallelization
 - `requirements.txt` - Python dependencies
 - `README.md` - This file
 
@@ -30,9 +39,9 @@ make # or your preferred build method
 
 ## Usage
 
-### Step 1: Generate Training Data
+### Step 1: Generate Training Data (Parallel)
 
-Generate training data using the Perfect Database:
+Generate training data using the Perfect Database with parallelization:
 
 ```bash
 python generate_training_data.py \
@@ -40,6 +49,7 @@ python generate_training_data.py \
     --output training_data.txt \
     --positions 100000 \
     --perfect-db /path/to/perfect/database \
+    --threads 8 \
     --validate
 ```
 
@@ -48,7 +58,28 @@ Parameters:
 - `--output`: Output file for training data
 - `--positions`: Number of positions to generate (default: 50000)
 - `--perfect-db`: Path to Perfect Database directory
+- `--threads`: Number of threads for parallel generation (0=auto-detect)
 - `--validate`: Validate the generated data
+
+### Enhanced Pipeline (Recommended)
+
+Use the enhanced pipeline with strict mode and comprehensive validation:
+
+```bash
+python train_pipeline_parallel.py \
+    --engine ../../sanmill \
+    --perfect-db /path/to/perfect/database \
+    --output-dir ./nnue_models \
+    --positions 200000 \
+    --epochs 300 \
+    --threads 12
+```
+
+Enhanced Parameters:
+- `--output-dir`: Directory for all training artifacts
+- `--threads`: Number of parallel threads (auto-detected if 0)
+- `--validate-only`: Only validate environment without training
+- `--device`: Training device (cpu/cuda/auto)
 
 ### Step 2: Train the NNUE Model
 
@@ -102,12 +133,18 @@ Once trained, the model can be used in the Sanmill engine:
 cp nnue_model.bin ../../
 ```
 
-2. Configure the engine to use NNUE:
+2. Configure the engine to use NNUE (Strict Mode):
 ```
 setoption name UseNNUE value true
 setoption name NNUEModelPath value nnue_model.bin
 setoption name NNUEWeight value 90
 ```
+
+**Important Notes for Strict Mode**:
+- Model file must exist and be valid - no fallback to traditional evaluation
+- Model dimensions must match compiled constants exactly
+- Failed model loading will prevent engine startup
+- NNUE evaluation failures trigger assertions instead of silent fallbacks
 
 ## Training Data Format
 
