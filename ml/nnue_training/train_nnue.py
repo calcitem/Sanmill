@@ -261,20 +261,20 @@ def save_model_c_format(model: nn.Module, filepath: str):
     output_weights = model.output_layer.weight.detach().cpu().numpy()
     output_bias = model.output_layer.bias.detach().cpu().numpy()
     
-    # Convert to int16/int8 format for C++
+    # Convert to int16/int8 format for C++ and quantize consistently with C++ side
     # Scale and quantize weights
-    scale_factor = 1000
-    
-    input_weights_int16 = np.clip(input_weights * scale_factor, -32767, 32767).astype(np.int16)
-    input_biases_int32 = np.clip(input_biases * scale_factor * scale_factor, -2147483647, 2147483647).astype(np.int32)
-    
-    # For simplicity, combine white/black hidden layers into output weights
-    # In practice, you might want to maintain separate layers
-    combined_hidden_weights = np.concatenate([hidden_white_weights, hidden_black_weights], axis=0)
-    output_weights_combined = np.concatenate([output_weights, output_weights], axis=1)
-    
-    output_weights_int8 = np.clip(output_weights_combined.flatten() * 127, -127, 127).astype(np.int8)
-    output_bias_int32 = np.clip(output_bias * scale_factor * scale_factor, -2147483647, 2147483647).astype(np.int32)
+    input_scale = 1024.0
+    relu_div = 64.0
+    output_scale = 127.0
+
+    input_weights_int16 = np.clip(input_weights * input_scale, -32767, 32767).astype(np.int16)
+    input_biases_int32 = np.clip(input_biases * input_scale, -2147483647, 2147483647).astype(np.int32)
+
+    # Output weights expect two HIDDEN_SIZE blocks (current + opponent)
+    # Duplicate learned output to both blocks for first export
+    output_weights_block = np.tile(output_weights, (1, 2))
+    output_weights_int8 = np.clip(output_weights_block.flatten() * output_scale, -127, 127).astype(np.int8)
+    output_bias_int32 = np.clip(output_bias * output_scale, -2147483647, 2147483647).astype(np.int32)
     
     # Save in binary format
     with open(filepath, 'wb') as f:

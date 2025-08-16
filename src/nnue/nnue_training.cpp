@@ -13,6 +13,8 @@
 #include <algorithm>
 #include <random>
 #include <chrono>
+#include <iomanip>
+#include "engine_commands.h"
 
 namespace NNUE {
 
@@ -105,7 +107,8 @@ bool TrainingDataGenerator::generate_from_self_play(std::vector<TrainingSample>&
     for (int game = 0; game < num_games; game++) {
         // Initialize position for new game
         Position pos;
-        pos.set("*********************w*w 0 0");  // Standard starting position
+        EngineCommands::init_start_fen();
+        pos.set(EngineCommands::StartFEN);
         
         std::vector<Position> game_positions;
         
@@ -119,7 +122,7 @@ bool TrainingDataGenerator::generate_from_self_play(std::vector<TrainingSample>&
             
             // Choose random move
             std::uniform_int_distribution<int> move_dist(0, static_cast<int>(moves.size()) - 1);
-            Move move = moves[move_dist(rng_)].move;
+            Move move = moves.getMove(move_dist(rng_)).move;
             
             pos.do_move(move);
             
@@ -194,13 +197,16 @@ bool TrainingDataGenerator::generate_random_position(Position& pos) {
     // Place white pieces
     for (int i = 0; i < white_pieces && i < static_cast<int>(empty_squares.size()); i++) {
         Square sq = empty_squares[i];
-        pos.put_piece(WHITE_PIECE, sq);
+        pos.put_piece(W_PIECE, sq);
+        // Maintain counts for correctness of derived features and DB queries
+        pos.pieceOnBoardCount[WHITE]++;
     }
     
     // Place black pieces
     for (int i = white_pieces; i < white_pieces + black_pieces && i < static_cast<int>(empty_squares.size()); i++) {
         Square sq = empty_squares[i];
-        pos.put_piece(BLACK_PIECE, sq);
+        pos.put_piece(B_PIECE, sq);
+        pos.pieceOnBoardCount[BLACK]++;
     }
     
     // Set random side to move
@@ -208,12 +214,21 @@ bool TrainingDataGenerator::generate_random_position(Position& pos) {
     Color side = (side_dist(rng_) == 0) ? WHITE : BLACK;
     pos.set_side_to_move(side);
     
-    // Set appropriate phase
-    if (white_pieces < 9 || black_pieces < 9) {
-        pos.set_phase(Phase::placing);
+    // Set remaining pieces in hand based on rule
+    pos.pieceInHandCount[WHITE] = std::max(0, rule.pieceCount - pos.pieceOnBoardCount[WHITE]);
+    pos.pieceInHandCount[BLACK] = std::max(0, rule.pieceCount - pos.pieceOnBoardCount[BLACK]);
+
+    // Set appropriate phase (derive from piece-in-hand)
+    if (pos.pieceInHandCount[WHITE] > 0 || pos.pieceInHandCount[BLACK] > 0) {
+        // Placing phase if any pieces remain to be placed
+        // We approximate by updating internal phase directly
+        pos.phase = Phase::placing;
     } else {
-        pos.set_phase(Phase::moving);
+        pos.phase = Phase::moving;
     }
+
+    // Rebuild Zobrist key if needed
+    pos.construct_key();
     
     return true;
 }
@@ -235,13 +250,19 @@ bool TrainingDataGenerator::generate_phase_position(Position& pos, Phase target_
         std::shuffle(squares.begin(), squares.end(), rng_);
         
         for (int i = 0; i < white_pieces; i++) {
-            pos.put_piece(WHITE_PIECE, squares[i]);
+            pos.put_piece(W_PIECE, squares[i]);
+            pos.pieceOnBoardCount[WHITE]++;
         }
         for (int i = 0; i < black_pieces; i++) {
-            pos.put_piece(BLACK_PIECE, squares[white_pieces + i]);
+            pos.put_piece(B_PIECE, squares[white_pieces + i]);
+            pos.pieceOnBoardCount[BLACK]++;
         }
         
-        pos.set_phase(Phase::placing);
+        pos.phase = Phase::placing;
+
+        pos.pieceInHandCount[WHITE] = std::max(0, rule.pieceCount - pos.pieceOnBoardCount[WHITE]);
+        pos.pieceInHandCount[BLACK] = std::max(0, rule.pieceCount - pos.pieceOnBoardCount[BLACK]);
+        pos.construct_key();
     } else if (target_phase == Phase::moving) {
         // Generate moving phase position
         return generate_random_position(pos);  // Most random positions are moving phase
@@ -309,15 +330,15 @@ void TrainingDataGenerator::extract_position_features(const Position& pos, Train
 
 float TrainingDataGenerator::value_to_training_target(Value value, int step_count) {
     // Convert game-theoretic values to training targets
-    if (value == VALUE_MATE || value > VALUE_KNOWN_WIN) {
+    if (value == VALUE_MATE || value > VALUE_EACH_PIECE) {
         return 1.0f;  // Win
-    } else if (value == -VALUE_MATE || value < -VALUE_KNOWN_WIN) {
+    } else if (value == -VALUE_MATE || value < -VALUE_EACH_PIECE) {
         return -1.0f; // Loss
     } else if (value == VALUE_DRAW) {
         return 0.0f;  // Draw
     } else {
         // Scale evaluation to [-1, 1] range
-        float scaled = static_cast<float>(value) / static_cast<float>(VALUE_KNOWN_WIN);
+        float scaled = static_cast<float>(value) / static_cast<float>(VALUE_EACH_PIECE);
         return std::max(-1.0f, std::min(1.0f, scaled));
     }
 }
@@ -400,8 +421,8 @@ void print_data_statistics(const std::vector<TrainingSample>& samples) {
     
     for (const auto& sample : samples) {
         // Count evaluations
-        if (sample.perfect_value > VALUE_KNOWN_WIN) wins++;
-        else if (sample.perfect_value < -VALUE_KNOWN_WIN) losses++;
+        if (sample.perfect_value > VALUE_EACH_PIECE) wins++;
+        else if (sample.perfect_value < -VALUE_EACH_PIECE) losses++;
         else draws++;
         
         // Count phases

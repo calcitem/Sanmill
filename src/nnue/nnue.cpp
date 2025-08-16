@@ -60,20 +60,33 @@ NNUEEvaluator::NNUEEvaluator()
 }
 
 bool NNUEEvaluator::initialize(const std::string& model_path) {
-    if (!model_path.empty()) {
-        return load_model(model_path);
+    // Strict mode: NNUE requires a valid model file to be loaded
+    if (model_path.empty()) {
+        std::cerr << "NNUE Error: No model path provided. NNUE requires a valid model file." << std::endl;
+        model_loaded_ = false;
+        enabled_ = false;
+        return false;
     }
     
-    // Initialize with default weights
+    bool success = load_model(model_path);
+    if (!success) {
+        std::cerr << "NNUE Error: Failed to load model from " << model_path << std::endl;
+        model_loaded_ = false;
+        enabled_ = false;
+        return false;
+    }
+    
+    // Only enable NNUE if model is successfully loaded
     model_loaded_ = true;
     enabled_ = static_cast<bool>(Options["UseNNUE"]);
+    
+    std::cout << "NNUE: Successfully initialized with model " << model_path << std::endl;
     return true;
 }
 
 Value NNUEEvaluator::evaluate(const Position& pos) {
-    if (!is_enabled()) {
-        return VALUE_NONE;
-    }
+    // Strict mode: Assert that NNUE is properly initialized
+    assert(is_enabled() && "NNUE evaluation called but NNUE is not properly initialized");
     
     int32_t nnue_output = forward(pos);
     return nnue_to_value(nnue_output);
@@ -84,21 +97,30 @@ int32_t NNUEEvaluator::get_raw_output(const Position& pos) {
 }
 
 int32_t NNUEEvaluator::forward(const Position& pos) {
-    // Extract features
+    // Extract features into the working buffer
     extract_features(pos, features_);
-    
-    // Activate hidden layers for both perspectives
+
+    // Perspective A (as-is, from white's perspective)
     activate_hidden(features_, hidden_white_);
-    
-    // For mill game, we also need black's perspective
-    // Flip the features for black's perspective
-    bool flipped_features[FEATURE_SIZE];
+
+    // Perspective B (swap piece-placement features for black's perspective).
+    // Keep all non-placement features identical so that phase/count/mobility
+    // features remain consistent between perspectives.
+    bool swapped_features[FEATURE_SIZE];
+    std::memcpy(swapped_features, features_, sizeof(swapped_features));
+
+    // Swap the 24-square piece placement features between white and black
+    // indices defined in nnue_features.h
     for (int i = 0; i < 24; i++) {
-        flipped_features[i] = features_[i + 24];        // Black pieces -> White positions
-        flipped_features[i + 24] = features_[i];        // White pieces -> Black positions
+        const int w_idx = 0 + i;
+        const int b_idx = 24 + i;
+        const bool tmp = swapped_features[w_idx];
+        swapped_features[w_idx] = swapped_features[b_idx];
+        swapped_features[b_idx] = tmp;
     }
-    activate_hidden(flipped_features, hidden_black_);
-    
+
+    activate_hidden(swapped_features, hidden_black_);
+
     // Compute final output
     return compute_output(hidden_white_, hidden_black_, pos.side_to_move());
 }
@@ -176,6 +198,25 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
         std::cerr << "Invalid NNUE model format" << std::endl;
         return false;
     }
+
+    // Read and validate dimensions (feature_size, hidden_size)
+    int32_t file_feature_size = 0;
+    int32_t file_hidden_size = 0;
+    file.read(reinterpret_cast<char*>(&file_feature_size), sizeof(int32_t));
+    file.read(reinterpret_cast<char*>(&file_hidden_size), sizeof(int32_t));
+
+    if (file.fail()) {
+        std::cerr << "Failed to read NNUE model dimensions" << std::endl;
+        return false;
+    }
+
+    if (file_feature_size != FEATURE_SIZE || file_hidden_size != HIDDEN_SIZE) {
+        std::cerr << "NNUE model dimensions mismatch (model="
+                  << file_feature_size << "," << file_hidden_size
+                  << ", expected=" << FEATURE_SIZE << "," << HIDDEN_SIZE
+                  << ")" << std::endl;
+        return false;
+    }
     
     // Read weights
     file.read(reinterpret_cast<char*>(&weights_), sizeof(NNUEWeights));
@@ -200,6 +241,12 @@ bool NNUEEvaluator::save_model(const std::string& filepath) const {
     // Write model header
     const char header[9] = "SANMILL1";
     file.write(header, 8);
+
+    // Write dimensions to ensure compatibility
+    const int32_t feature_size = FEATURE_SIZE;
+    const int32_t hidden_size = HIDDEN_SIZE;
+    file.write(reinterpret_cast<const char*>(&feature_size), sizeof(int32_t));
+    file.write(reinterpret_cast<const char*>(&hidden_size), sizeof(int32_t));
     
     // Write weights
     file.write(reinterpret_cast<const char*>(&weights_), sizeof(NNUEWeights));
