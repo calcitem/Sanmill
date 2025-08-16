@@ -89,20 +89,13 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         
         NNUE::TrainingDataGenerator generator;
         
-        try {
-            bool success = generator.generate_training_set(output_file, num_positions, 
-                                                         phase_quotas, num_threads);
-            
-            // Assert success in strict mode
-            assert(success && "NNUE training data generation failed in strict mode");
-            
-            sync_cout << "NNUE training data generation completed successfully." << sync_endl;
-            
-        } catch (const std::exception& e) {
-            sync_cout << "NNUE training data generation failed with exception: " 
-                      << e.what() << sync_endl;
-            assert(false && "NNUE training data generation failed with exception");
-        }
+        bool success = generator.generate_training_set(output_file, num_positions, 
+                                                     phase_quotas, num_threads);
+        
+        // Assert success - errors are surfaced rather than masked
+        assert(success && "NNUE training data generation failed");
+        
+        sync_cout << "NNUE training data generation completed successfully." << sync_endl;
     } else {
         // Handle additional custom commands if necessary
         sync_cout << "Unknown command in EngineController: " << cmd
