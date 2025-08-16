@@ -11,6 +11,21 @@
 #include "perfect/perfect_api.h"
 #include "nnue_symmetries.h"
 
+// NNUE Debug configuration
+#ifndef NNUE_DEBUG
+#define NNUE_DEBUG 1  // Enable debug prints in debug builds
+#endif
+
+#if NNUE_DEBUG
+// Forward declare debug control function
+namespace NNUE { bool get_nnue_debug(); }
+#define NNUE_DEBUG_PRINT(msg) do { if (NNUE::get_nnue_debug()) { std::cout << "[NNUE DEBUG] " << msg << std::endl; } } while(0)
+#define NNUE_DEBUG_PRINTF(fmt, ...) do { if (NNUE::get_nnue_debug()) { printf("[NNUE DEBUG] " fmt "\n", __VA_ARGS__); } } while(0)
+#else
+#define NNUE_DEBUG_PRINT(msg) ((void)0)
+#define NNUE_DEBUG_PRINTF(fmt, ...) ((void)0)
+#endif
+
 class Position;
 
 namespace NNUE {
@@ -111,6 +126,10 @@ extern NNUEEvaluator g_nnue_evaluator;
 bool is_nnue_available();
 Value nnue_evaluate(const Position& pos);
 bool init_nnue(const std::string& model_path = "");
+
+// Debug control functions
+void set_nnue_debug(bool enabled);
+bool get_nnue_debug();
 
 } // namespace NNUE
 

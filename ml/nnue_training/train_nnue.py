@@ -732,14 +732,18 @@ def validate_environment(engine_path: str, perfect_db_path: str) -> bool:
     """
     logger.info("Validating training environment...")
     
-    # Check engine executable
-    if not os.path.exists(engine_path):
-        logger.error(f"Engine not found: {engine_path}")
-        return False
-    
-    if not os.access(engine_path, os.X_OK):
-        logger.error(f"Engine is not executable: {engine_path}")
-        return False
+    # Check engine executable (now optional, can be None for direct Perfect DB usage)
+    if engine_path is not None:
+        if not os.path.exists(engine_path):
+            logger.error(f"Engine not found: {engine_path}")
+            return False
+        
+        if not os.access(engine_path, os.X_OK):
+            logger.error(f"Engine is not executable: {engine_path}")
+            return False
+        logger.info(f"Engine validation passed: {engine_path}")
+    else:
+        logger.info("Engine not specified - using direct Perfect DB mode")
     
     # Check Perfect Database
     if not os.path.exists(perfect_db_path):

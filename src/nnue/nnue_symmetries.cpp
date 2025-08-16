@@ -11,6 +11,21 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <iostream>  // For std::cout
+#include <cstdio>    // For printf
+
+// NNUE Debug configuration for this module
+// Temporarily disable debug prints to fix compilation issues
+#ifdef NNUE_DEBUG_PRINT
+#undef NNUE_DEBUG_PRINT
+#endif
+#ifdef NNUE_DEBUG_PRINTF  
+#undef NNUE_DEBUG_PRINTF
+#endif
+
+// Define as no-op macros for now
+#define NNUE_DEBUG_PRINT(msg) ((void)0)
+#define NNUE_DEBUG_PRINTF(fmt, ...) ((void)0)
 
 namespace NNUE {
 
@@ -49,8 +64,11 @@ bool SymmetryTransforms::initialized_ = false;
 
 void SymmetryTransforms::initialize() {
     if (initialized_) {
+        NNUE_DEBUG_PRINT("Symmetry transforms already initialized");
         return;
     }
+    
+    NNUE_DEBUG_PRINT("Initializing symmetry transformation tables...");
     
     // Pre-compute all square transformations for fast lookup
     for (int sq = 0; sq < SQUARE_NB; ++sq) {
@@ -77,6 +95,7 @@ void SymmetryTransforms::initialize() {
     }
     
     initialized_ = true;
+    NNUE_DEBUG_PRINTF("Symmetry transformation tables initialized for %d symmetry operations", SYM_OP_COUNT);
 }
 
 Square SymmetryTransforms::transform_square(Square sq, SymmetryOp op) {
@@ -292,6 +311,8 @@ int32_t SymmetryAwareNNUE::evaluate_with_symmetries(const Position& pos) {
 }
 
 SymmetryOp SymmetryAwareNNUE::find_canonical_symmetry(const Position& pos) {
+    NNUE_DEBUG_PRINT("Finding canonical symmetry operation...");
+    
     // Find the symmetry operation that produces the lexicographically smallest
     // position representation
     SymmetryOp best_op = SYM_IDENTITY;
@@ -300,6 +321,8 @@ SymmetryOp SymmetryAwareNNUE::find_canonical_symmetry(const Position& pos) {
     bool best_features[FeatureIndices::TOTAL_FEATURES];
     Position pos_copy = pos;
     FeatureExtractor::extract_features(pos_copy, best_features);
+    
+    NNUE_DEBUG_PRINT("Testing all symmetry operations for canonical form...");
     
     // Test all other symmetry operations
     for (int op = 1; op < SYM_OP_COUNT; ++op) {
@@ -311,11 +334,13 @@ SymmetryOp SymmetryAwareNNUE::find_canonical_symmetry(const Position& pos) {
         const int piece_features_end = FeatureIndices::PIECE_PLACEMENT_END;
         if (std::lexicographical_compare(current_features, current_features + piece_features_end,
                                        best_features, best_features + piece_features_end)) {
+            NNUE_DEBUG_PRINTF("Found better canonical form with operation %d", op);
             best_op = static_cast<SymmetryOp>(op);
             std::memcpy(best_features, current_features, sizeof(best_features));
         }
     }
     
+    NNUE_DEBUG_PRINTF("Selected canonical symmetry operation: %d", static_cast<int>(best_op));
     return best_op;
 }
 

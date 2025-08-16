@@ -419,8 +419,8 @@ if __name__ == '__main__':
         config["output"] = f"models/nnue_model_{preset}_{timestamp}.bin"
         config["checkpoint_path"] = f"models/checkpoint_{preset}_{timestamp}.pth"
         
-        # Perfect 数据库配置
-        config["engine"] = "../../sanmill"
+        # Perfect 数据库配置 (现在直接使用 Perfect DB DLL，不需要引擎)
+        config["engine"] = None  # 不再需要引擎
         config["perfect_db"] = "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
         
         config["plot"] = True
