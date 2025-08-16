@@ -1,6 +1,9 @@
 {
   "_description": "Debug training configuration - minimal setup for testing",
   "_use_case": "Development, debugging, unit tests, quick validation",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
   
   "data": "training_data.txt",
   "output": "nnue_model_debug.bin",

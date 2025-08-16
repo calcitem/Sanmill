@@ -1,12 +1,15 @@
 {
-  "_description": "Default NNUE training configuration - balanced for most use cases",
+  "_description": "Complete pipeline configuration - data generation + training",
   "_hardware": "Optimized for modern hardware (16+ GB RAM, dedicated GPU)",
-  "_mode": "Training-only mode (requires existing training data)",
+  "_mode": "Pipeline mode (complete end-to-end training)",
   
-  "pipeline": false,
+  "pipeline": true,
   
-  "data": "training_data.txt",
-  "output": "nnue_model.bin",
+  "engine": "../../sanmill",
+  "perfect-db": "/path/to/perfect/database",
+  "output-dir": "./nnue_output",
+  "positions": 500000,
+  "threads": 0,
   
   "epochs": 300,
   "batch-size": 8192,
@@ -21,7 +24,6 @@
   "device": "auto",
   
   "plot": true,
-  "plot-dir": "plots",
   "plot-interval": 5,
   "save-csv": true,
   "show-plots": false

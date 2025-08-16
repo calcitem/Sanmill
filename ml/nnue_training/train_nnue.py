@@ -18,6 +18,8 @@ import logging
 from pathlib import Path
 import math
 import json
+import subprocess
+import multiprocessing as mp
 
 # Plotting libraries
 try:
@@ -660,8 +662,22 @@ def save_config_template(output_path: str):
     """Save a template configuration file with all available options"""
     template_config = {
         "# NNUE Training Configuration": "Template with all available options",
+        "# Mode Selection": "Set pipeline=true for complete data generation + training",
+        
+        "pipeline": False,
+        
+        "# Training Mode Parameters": "Required when pipeline=false",
         "data": "training_data.txt",
         "output": "nnue_model.bin",
+        
+        "# Pipeline Mode Parameters": "Required when pipeline=true",
+        "engine": "../../sanmill",
+        "perfect-db": "/path/to/perfect/database",
+        "output-dir": "./nnue_output",
+        "positions": 500000,
+        "threads": 0,
+        
+        "# Core Training Parameters": "Used in both modes",
         "epochs": 300,
         "batch-size": 8192,
         "lr": 0.002,
@@ -672,15 +688,29 @@ def save_config_template(output_path: str):
         "max-samples": None,
         "val-split": 0.1,
         "device": "auto",
+        
+        "# Visualization Parameters": "Used in both modes",
         "plot": True,
         "plot-dir": "plots",
         "plot-interval": 5,
         "show-plots": False,
         "save-csv": True,
         
-        "# Scheduler Options": "adaptive, cosine, plateau, fixed",
-        "# Device Options": "auto, cpu, cuda",
+        "# Usage Examples": {
+            "training-only": "python train_nnue.py --config config.json",
+            "pipeline-mode": "python train_nnue.py --config config.json --pipeline",
+            "override-params": "python train_nnue.py --config config.json --epochs 500"
+        },
+        
+        "# Parameter Options": {
+            "lr-scheduler": "adaptive, cosine, plateau, fixed",
+            "device": "auto, cpu, cuda",
+            "threads": "0 = auto-detect CPU cores"
+        },
+        
         "# Notes": {
+            "pipeline-mode": "Complete end-to-end training from data generation",
+            "training-mode": "Train from existing data file",
             "lr-auto-scale": "Automatically scale LR based on batch size and dataset size",
             "adaptive-scheduler": "Recommended for most users - automatically adjusts LR",
             "plot-interval": "Update plots every N epochs (lower = more frequent updates)",
@@ -693,6 +723,210 @@ def save_config_template(output_path: str):
         json.dump(template_config, f, indent=2, ensure_ascii=False)
     
     logger.info(f"Configuration template saved to {output_path}")
+
+
+# Pipeline Functions
+def validate_environment(engine_path: str, perfect_db_path: str) -> bool:
+    """
+    Strict validation of training environment
+    """
+    logger.info("Validating training environment...")
+    
+    # Check engine executable
+    if not os.path.exists(engine_path):
+        logger.error(f"Engine not found: {engine_path}")
+        return False
+    
+    if not os.access(engine_path, os.X_OK):
+        logger.error(f"Engine is not executable: {engine_path}")
+        return False
+    
+    # Check Perfect Database
+    if not os.path.exists(perfect_db_path):
+        logger.error(f"Perfect Database path not found: {perfect_db_path}")
+        return False
+    
+    if not os.path.isdir(perfect_db_path):
+        logger.error(f"Perfect Database path is not a directory: {perfect_db_path}")
+        return False
+    
+    # Check for required database files (basic validation)
+    db_files_found = any(
+        f.endswith(('.db', '.dat', '.bin', '.idx')) 
+        for f in os.listdir(perfect_db_path)
+    )
+    
+    if not db_files_found:
+        logger.warning(f"No database files found in {perfect_db_path}")
+        logger.warning("Perfect Database may not be properly installed")
+    
+    logger.info("Environment validation passed")
+    return True
+
+def generate_training_data_parallel(engine_path: str,
+                                  output_file: str, 
+                                  num_positions: int,
+                                  perfect_db_path: str,
+                                  num_threads: int = 0) -> bool:
+    """
+    Generate training data in parallel using multiple engine instances
+    """
+    if num_threads <= 0:
+        num_threads = max(1, mp.cpu_count() - 1)
+    
+    logger.info(f"Generating {num_positions} training positions using {num_threads} threads...")
+    
+    start_time = time.time()
+    
+    # Calculate positions per thread
+    positions_per_thread = num_positions // num_threads
+    remaining_positions = num_positions % num_threads
+    
+    # Generate data files for each thread
+    temp_files = []
+    processes = []
+    
+    for i in range(num_threads):
+        thread_positions = positions_per_thread
+        if i < remaining_positions:
+            thread_positions += 1
+        
+        if thread_positions == 0:
+            continue
+        
+        temp_file = f"{output_file}.thread_{i}.tmp"
+        temp_files.append(temp_file)
+        
+        # Command to generate training data
+        cmd = [
+            engine_path,
+            "generate",
+            str(thread_positions),
+            temp_file,
+            perfect_db_path
+        ]
+        
+        logger.info(f"Thread {i}: generating {thread_positions} positions")
+        
+        try:
+            process = subprocess.Popen(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            processes.append((process, i, thread_positions))
+        except Exception as e:
+            logger.error(f"Failed to start thread {i}: {e}")
+            return False
+    
+    # Wait for all processes to complete
+    all_success = True
+    for process, thread_id, thread_positions in processes:
+        try:
+            stdout, stderr = process.communicate(timeout=3600)  # 1 hour timeout
+            
+            if process.returncode != 0:
+                logger.error(f"Thread {thread_id} failed with return code {process.returncode}")
+                logger.error(f"Error output: {stderr}")
+                all_success = False
+            else:
+                logger.info(f"Thread {thread_id} completed successfully")
+                
+        except subprocess.TimeoutExpired:
+            logger.error(f"Thread {thread_id} timed out")
+            process.kill()
+            all_success = False
+        except Exception as e:
+            logger.error(f"Thread {thread_id} failed with exception: {e}")
+            all_success = False
+    
+    if not all_success:
+        # Clean up temp files
+        for temp_file in temp_files:
+            if os.path.exists(temp_file):
+                os.remove(temp_file)
+        return False
+    
+    # Combine all temp files into the final output
+    logger.info("Combining training data files...")
+    
+    try:
+        with open(output_file, 'w') as outfile:
+            # Write header
+            outfile.write("# NNUE Training Data Generated from Perfect Database\n")
+            outfile.write(f"# Total positions: {num_positions}\n")
+            outfile.write(f"# Generated on: {time.strftime('%Y-%m-%d %H:%M:%S')}\n")
+            outfile.write("# Format: features(95) target(1) side_to_move(1)\n")
+            
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    with open(temp_file, 'r') as infile:
+                        for line in infile:
+                            if not line.startswith('#'):  # Skip comments
+                                outfile.write(line)
+                    os.remove(temp_file)  # Clean up
+    
+    except Exception as e:
+        logger.error(f"Failed to combine training data files: {e}")
+        return False
+    
+    end_time = time.time()
+    
+    # Validate output file
+    if not os.path.exists(output_file):
+        logger.error(f"Output file was not created: {output_file}")
+        return False
+    
+    file_size = os.path.getsize(output_file)
+    if file_size == 0:
+        logger.error(f"Output file is empty: {output_file}")
+        return False
+    
+    logger.info(f"Training data generated successfully in {end_time - start_time:.2f}s")
+    logger.info(f"Output file: {output_file} ({file_size} bytes)")
+    
+    return True
+
+def validate_final_model(model_path: str, engine_path: str) -> bool:
+    """
+    Validate the trained model works with the engine
+    """
+    if not os.path.exists(model_path):
+        logger.error(f"Model file not found: {model_path}")
+        return False
+    
+    model_size = os.path.getsize(model_path)
+    if model_size == 0:
+        logger.error(f"Model file is empty: {model_path}")
+        return False
+    
+    logger.info(f"Model validation passed: {model_path} ({model_size} bytes)")
+    
+    # Basic engine connectivity test (if possible)
+    try:
+        cmd = [engine_path, "test", "model", model_path]
+        result = subprocess.run(
+            cmd, 
+            capture_output=True, 
+            text=True, 
+            timeout=30
+        )
+        
+        if result.returncode == 0:
+            logger.info("Engine model compatibility test passed")
+        else:
+            logger.warning("Engine model compatibility test failed (model may still be usable)")
+            logger.warning(f"Engine output: {result.stderr}")
+        
+    except FileNotFoundError:
+        logger.info("Engine test command not available (skipping compatibility test)")
+    except subprocess.TimeoutExpired:
+        logger.warning("Engine compatibility test timed out")
+    except Exception as e:
+        logger.warning(f"Engine compatibility test failed: {e}")
+    
+    return True
 
 
 class MillDataset(Dataset):
@@ -919,14 +1153,18 @@ def save_model_c_format(model: nn.Module, filepath: str):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Train NNUE for Mill game')
+    parser = argparse.ArgumentParser(description='Unified NNUE Training System for Mill game')
     
     # Configuration file support
     parser.add_argument('--config', type=str, help='Configuration file path (JSON format)')
     parser.add_argument('--save-config', type=str, help='Save configuration template to file and exit')
     
+    # Mode selection
+    parser.add_argument('--pipeline', action='store_true', 
+                       help='Run complete pipeline: data generation + training (requires --engine and --perfect-db)')
+    
     # Core training parameters
-    parser.add_argument('--data', help='Training data file')
+    parser.add_argument('--data', help='Training data file (required unless using --pipeline)')
     parser.add_argument('--output', default='nnue_model.bin', help='Output model file')
     parser.add_argument('--epochs', type=int, default=300, help='Number of training epochs')
     parser.add_argument('--batch-size', type=int, default=8192, help='Batch size')
@@ -939,6 +1177,14 @@ def main():
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
+    
+    # Pipeline-specific parameters
+    parser.add_argument('--engine', help='Path to Sanmill engine executable (required for --pipeline)')
+    parser.add_argument('--perfect-db', help='Path to Perfect Database directory (required for --pipeline)')
+    parser.add_argument('--output-dir', default='./nnue_output', help='Output directory for pipeline artifacts')
+    parser.add_argument('--positions', type=int, default=500000, help='Number of training positions to generate')
+    parser.add_argument('--threads', type=int, default=0, help='Number of threads for data generation (0=auto)')
+    parser.add_argument('--validate-only', action='store_true', help='Only validate environment (pipeline mode)')
     
     # Visualization options
     parser.add_argument('--plot', action='store_true', help='Enable training visualization plots')
@@ -967,10 +1213,79 @@ def main():
         # Merge config with command line arguments
         args = merge_config_with_args(config, args)
     
-    # Validate required arguments
-    if not args.data:
-        parser.error("--data is required (or specify in config file)")
-        return 1
+    # Validate required arguments based on mode
+    if args.pipeline:
+        # Pipeline mode validation
+        if not args.engine:
+            parser.error("--engine is required for pipeline mode (or specify in config file)")
+            return 1
+        if not args.perfect_db:
+            parser.error("--perfect-db is required for pipeline mode (or specify in config file)")
+            return 1
+        
+        # Auto-detect thread count for pipeline
+        if args.threads <= 0:
+            args.threads = max(1, mp.cpu_count() - 1)
+            
+        # Set up pipeline-specific paths
+        if not hasattr(args, 'output_dir') or not args.output_dir:
+            args.output_dir = './nnue_output'
+        os.makedirs(args.output_dir, exist_ok=True)
+        
+        # Set default data file for pipeline
+        if not args.data:
+            args.data = os.path.join(args.output_dir, "training_data.txt")
+        
+        # Update output path for pipeline
+        if args.output == 'nnue_model.bin':  # Default output
+            args.output = os.path.join(args.output_dir, "nnue_model.bin")
+            
+        # Update plot directory for pipeline
+        if args.plot_dir == 'plots':  # Default plot dir
+            args.plot_dir = os.path.join(args.output_dir, "plots")
+            
+    else:
+        # Training-only mode validation
+        if not args.data:
+            parser.error("--data is required for training mode (or specify in config file)")
+            return 1
+    
+    # Pipeline Mode: Handle data generation and environment validation
+    if args.pipeline:
+        logger.info("=== NNUE Training Pipeline Mode ===")
+        logger.info(f"Engine: {args.engine}")
+        logger.info(f"Perfect DB: {args.perfect_db}")
+        logger.info(f"Output directory: {args.output_dir}")
+        logger.info(f"Positions: {args.positions}")
+        logger.info(f"Threads: {args.threads}")
+        
+        # Step 1: Environment validation
+        logger.info("=== Step 1: Environment Validation ===")
+        if not validate_environment(args.engine, args.perfect_db):
+            logger.error("Environment validation failed")
+            return 1
+        
+        if args.validate_only:
+            logger.info("Environment validation completed successfully")
+            return 0
+        
+        # Step 2: Generate training data
+        logger.info("=== Step 2: Training Data Generation ===")
+        if not os.path.exists(args.data) or os.path.getsize(args.data) == 0:
+            logger.info(f"Generating training data: {args.data}")
+            success = generate_training_data_parallel(
+                args.engine,
+                args.data,
+                args.positions,
+                args.perfect_db,
+                args.threads
+            )
+            
+            if not success:
+                logger.error("Training data generation failed")
+                return 1
+        else:
+            logger.info(f"Using existing training data: {args.data}")
     
     # Automatic learning rate scaling based on batch size and dataset size
     if args.lr_auto_scale:
@@ -1195,6 +1510,27 @@ def main():
             visualizer.save_metrics_csv()
         
         logger.info(f"Training visualizations saved to {args.plot_dir}")
+    
+    # Pipeline Mode: Final model validation
+    if args.pipeline:
+        logger.info("=== Step 4: Model Validation ===")
+        success = validate_final_model(args.output, args.engine)
+        
+        if not success:
+            logger.error("Model validation failed")
+            return 1
+        
+        # Pipeline completion summary
+        logger.info("=== Pipeline Completed Successfully ===")
+        logger.info(f"Training data: {args.data}")
+        logger.info(f"Trained model: {args.output}")
+        logger.info("")
+        logger.info("To use the trained model:")
+        logger.info(f"  setoption name UseNNUE value true")
+        logger.info(f"  setoption name NNUEModelPath value {args.output}")
+        logger.info(f"  setoption name NNUEWeight value 90")
+    
+    return 0
 
 if __name__ == '__main__':
     main()

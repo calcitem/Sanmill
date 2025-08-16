@@ -2,6 +2,9 @@
   "_description": "High quality training configuration - for best performance",
   "_use_case": "Production models, research, final training runs",
   "_hardware": "High-end hardware recommended (32+ GB RAM, RTX 4090 or similar)",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
   
   "data": "training_data.txt",
   "output": "nnue_model_hq.bin",

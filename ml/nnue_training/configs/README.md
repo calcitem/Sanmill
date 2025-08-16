@@ -1,21 +1,39 @@
 # NNUE Training Configuration Files
 
-This directory contains pre-configured training setups for different use cases. Using configuration files eliminates the need to specify many command-line parameters.
+This directory contains pre-configured training setups for different use cases. Simply choose the configuration that matches your needs and use it with `train_nnue.py`.
 
 ## Usage
 
+### Training-Only Mode (Existing Data)
 ```bash
 # Use a configuration file
 python train_nnue.py --config configs/default.json
 
 # Override specific parameters
 python train_nnue.py --config configs/fast.json --epochs 100 --batch-size 2048
+```
 
+### Pipeline Mode (Data Generation + Training)
+```bash
+# Complete pipeline with configuration
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/db
+
+# Fast pipeline for testing
+python train_nnue.py --config configs/pipeline_fast.json --perfect-db /path/to/db
+
+# Pipeline with parameter overrides
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/db --epochs 500
+```
+
+### Generate Custom Configuration
+```bash
 # Generate a custom configuration template
 python train_nnue.py --save-config my_config.json
 ```
 
 ## Available Configurations
+
+### Training-Only Configurations (Require Existing Data)
 
 ### 🎯 `default.json` - Recommended for Most Users
 - **Use case**: General purpose training
@@ -77,16 +95,39 @@ python train_nnue.py --config configs/large_dataset.json --data training_data.tx
 python train_nnue.py --config configs/debug.json --data training_data.txt
 ```
 
+### Pipeline Configurations (Complete End-to-End)
+
+### 🚀 `pipeline.json` - Complete Pipeline
+- **Use case**: Full data generation + training workflow
+- **Hardware**: Modern system (16+ GB RAM, dedicated GPU)
+- **Training time**: ~3-5 hours (including data generation)
+- **Features**: Environment validation, parallel data generation, model validation
+
+```bash
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/database
+```
+
+### ⚡ `pipeline_fast.json` - Quick Pipeline Testing
+- **Use case**: Fast end-to-end validation, CI/CD testing
+- **Hardware**: Any system with GPU
+- **Training time**: ~1-2 hours (including data generation)
+- **Features**: Reduced dataset, faster training, complete workflow
+
+```bash
+python train_nnue.py --config configs/pipeline_fast.json --perfect-db /path/to/database
+```
+
 ## Configuration File Format
 
 Configuration files use JSON format with the following structure:
 
+### Training-Only Mode
 ```json
 {
-  "_description": "Human-readable description",
-  "_use_case": "When to use this configuration",
-  "_hardware": "Hardware recommendations",
+  "_description": "Training configuration with existing data",
+  "_mode": "Training-only mode",
   
+  "pipeline": false,
   "data": "training_data.txt",
   "output": "nnue_model.bin",
   
@@ -96,17 +137,35 @@ Configuration files use JSON format with the following structure:
   "lr-scheduler": "adaptive",
   "lr-auto-scale": true,
   
-  "feature-size": 115,
-  "hidden-size": 512,
-  "val-split": 0.1,
-  
-  "device": "auto",
-  
   "plot": true,
   "plot-dir": "plots",
   "plot-interval": 5,
-  "save-csv": true,
-  "show-plots": false
+  "save-csv": true
+}
+```
+
+### Pipeline Mode
+```json
+{
+  "_description": "Complete pipeline configuration",
+  "_mode": "Pipeline mode (data generation + training)",
+  
+  "pipeline": true,
+  "engine": "../../sanmill",
+  "perfect-db": "/path/to/perfect/database",
+  "output-dir": "./nnue_output",
+  "positions": 500000,
+  "threads": 0,
+  
+  "epochs": 300,
+  "batch-size": 8192,
+  "lr": 0.002,
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": true,
+  
+  "plot": true,
+  "plot-interval": 5,
+  "save-csv": true
 }
 ```
 

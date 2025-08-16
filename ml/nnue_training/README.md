@@ -1,26 +1,46 @@
 # NNUE Training for Sanmill
 
-This directory contains the NNUE (Efficiently Updatable Neural Network) training pipeline for the Sanmill Mill game engine.
+This directory contains the NNUE (Efficiently Updatable Neural Network) training system for the Sanmill Mill game engine.
 
 ## Overview
 
-The NNUE training system uses the Perfect Database to generate optimal training data, ensuring the neural network learns from perfect play rather than approximations from traditional search algorithms.
+The NNUE training system provides a simple, unified interface that supports both training modes:
+- **Training Mode**: Train with existing data files
+- **Pipeline Mode**: Complete end-to-end workflow from data generation to trained model
+
+The system uses the Perfect Database to generate optimal training data, ensuring the neural network learns from perfect play.
 
 ### Key Features
 
-- **Strict Mode**: No fallback behavior - failures result in assertions rather than silent degradation
-- **Parallel Training Data Generation**: Multi-threaded position generation for faster data collection
-- **Phase Quota Control**: Precise control over training data distribution across game phases
+- **Simple Interface**: One script handles everything - no confusion about which tool to use
+- **Smart Mode Detection**: Automatically detects whether you want training or pipeline mode
+- **Configuration-Driven**: JSON configs eliminate complex command lines
+- **Parallel Data Generation**: Multi-threaded position generation for faster data collection  
+- **Environment Validation**: Comprehensive checking of engine and database availability
 - **Perfect Database Integration**: All training labels come from theoretically optimal evaluations
-- **Robust Validation**: Comprehensive error checking at every stage
+- **Real-time Visualization**: Training progress plots and metrics
+- **Adaptive Learning Rate**: Intelligent learning rate scheduling
+- **Hardware Optimization**: Automatically optimized for your CPU/GPU configuration
 
-## Files
+## Quick Start
 
-- `train_nnue.py` - Main training script for the neural network
-- `generate_training_data.py` - Script to generate training data using the Perfect Database
-- `train_pipeline_parallel.py` - Enhanced pipeline with strict mode and parallelization
-- `requirements.txt` - Python dependencies
-- `README.md` - This file
+### Training with Existing Data
+```bash
+# Use default configuration
+python train_nnue.py --config configs/default.json --data training_data.txt
+
+# Quick experimentation
+python train_nnue.py --config configs/fast.json --data training_data.txt
+```
+
+### Complete Pipeline (Data Generation + Training)
+```bash
+# Full pipeline
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/database
+
+# Fast pipeline for testing
+python train_nnue.py --config configs/pipeline_fast.json --perfect-db /path/to/database
+```
 
 ## Setup
 
@@ -61,40 +81,66 @@ Parameters:
 - `--threads`: Number of threads for parallel generation (0=auto-detect)
 - `--validate`: Validate the generated data
 
-### Enhanced Pipeline (Recommended)
+## Training Modes
 
-#### Using Configuration Files (Easiest)
+### 🎯 Training-Only Mode
+Use this when you already have training data files.
 
+#### Using Configuration Files (Recommended)
 ```bash
-# Use pre-configured settings for most users
-python train_pipeline_parallel.py \
-    --config configs/pipeline_default.json \
-    --perfect-db /path/to/your/perfect/database
+# Default configuration for most users
+python train_nnue.py --config configs/default.json --data training_data.txt
 
 # Quick experimentation
-python train_pipeline_parallel.py \
-    --config configs/pipeline_fast.json \
-    --perfect-db /path/to/your/perfect/database
+python train_nnue.py --config configs/fast.json --data training_data.txt
+
+# High-quality training for production
+python train_nnue.py --config configs/high_quality.json --data training_data.txt
 
 # Override specific parameters
-python train_pipeline_parallel.py \
-    --config configs/pipeline_default.json \
-    --perfect-db /path/to/your/perfect/database \
-    --epochs 500 \
-    --batch-size 16384
+python train_nnue.py --config configs/default.json --data training_data.txt --epochs 500
 ```
 
 #### Manual Parameters (Advanced)
-
 ```bash
-python train_pipeline_parallel.py \
+python train_nnue.py \
+    --data training_data.txt \
+    --output nnue_model.bin \
+    --epochs 300 \
+    --batch-size 8192 \
+    --lr 0.002 \
+    --lr-scheduler adaptive \
+    --lr-auto-scale \
+    --plot \
+    --save-csv
+```
+
+### 🚀 Pipeline Mode
+Complete end-to-end training from data generation to trained model.
+
+#### Using Configuration Files (Recommended)
+```bash
+# Complete pipeline with default settings
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/database
+
+# Fast pipeline for testing
+python train_nnue.py --config configs/pipeline_fast.json --perfect-db /path/to/database
+
+# Override specific parameters
+python train_nnue.py --config configs/pipeline.json --perfect-db /path/to/database --epochs 500
+```
+
+#### Manual Parameters (Advanced)
+```bash
+python train_nnue.py \
+    --pipeline \
     --engine ../../sanmill \
     --perfect-db /path/to/perfect/database \
-    --output-dir ./nnue_models \
+    --output-dir ./nnue_output \
     --positions 500000 \
     --epochs 300 \
     --batch-size 8192 \
-    --learning-rate 0.002 \
+    --lr 0.002 \
     --lr-scheduler adaptive \
     --lr-auto-scale \
     --plot \

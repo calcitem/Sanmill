@@ -2,6 +2,9 @@
   "_description": "Large dataset training configuration - for datasets > 1M samples",
   "_use_case": "Training with extensive datasets, research with massive data",
   "_hardware": "High-end hardware essential (64+ GB RAM, multiple GPUs)",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
   
   "data": "training_data.txt",
   "output": "nnue_model_large.bin",

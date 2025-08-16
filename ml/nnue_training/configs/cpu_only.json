@@ -2,6 +2,9 @@
   "_description": "CPU-only training configuration - for systems without GPU",
   "_use_case": "Training on CPU-only systems, low-memory environments",
   "_hardware": "CPU with 8+ cores recommended",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
   
   "data": "training_data.txt",
   "output": "nnue_model_cpu.bin",

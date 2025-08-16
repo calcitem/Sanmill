@@ -1,6 +1,9 @@
 {
   "_description": "Fast training configuration - for quick experiments and testing",
   "_use_case": "Rapid prototyping, hyperparameter testing, CI/CD pipelines",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
   
   "data": "training_data.txt",
   "output": "nnue_model_fast.bin",

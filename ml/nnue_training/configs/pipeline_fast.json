@@ -1,23 +1,30 @@
 {
-  "_description": "Fast pipeline configuration - quick testing and experimentation",
-  "_use_case": "Rapid prototyping, CI/CD testing, development",
+  "_description": "Fast pipeline configuration - quick data generation + training",
+  "_hardware": "Any system with GPU",
+  "_mode": "Pipeline mode (complete end-to-end training, fast version)",
+  
+  "pipeline": true,
   
   "engine": "../../sanmill",
   "perfect-db": "/path/to/perfect/database",
   "output-dir": "./nnue_output_fast",
-  
   "positions": 50000,
+  "threads": 0,
+  
   "epochs": 100,
   "batch-size": 4096,
-  "learning-rate": 0.003,
+  "lr": 0.003,
   "lr-scheduler": "adaptive",
   "lr-auto-scale": true,
   
-  "threads": 0,
+  "feature-size": 115,
+  "hidden-size": 256,
+  "val-split": 0.15,
+  
   "device": "auto",
   
   "plot": true,
-  "plot-dir": "plots_fast",
   "plot-interval": 10,
-  "save-csv": false
+  "save-csv": false,
+  "show-plots": false
 }
