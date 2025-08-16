@@ -15,26 +15,26 @@ namespace NNUE {
 class FeatureExtractor {
 public:
     // Extract features from position
-    static void extract_features(const Position& pos, bool* features);
+    static void extract_features(Position& pos, bool* features);
     
     // Extract phase-specific features
-    static void extract_phase_features(const Position& pos, bool* features);
+    static void extract_phase_features(Position& pos, bool* features);
     
     // Extract piece count features
-    static void extract_piece_count_features(const Position& pos, bool* features);
+    static void extract_piece_count_features(Position& pos, bool* features);
     
     // Extract mobility features
-    static void extract_mobility_features(const Position& pos, bool* features);
+    static void extract_mobility_features(Position& pos, bool* features);
     
     // Extract mill formation features
-    static void extract_mill_features(const Position& pos, bool* features);
+    static void extract_mill_features(Position& pos, bool* features);
 
 private:
     // Convert square index to feature index
     static int square_to_feature_index(Square sq, Color c);
     
     // Check if square has piece of given color
-    static bool has_piece(const Position& pos, Square sq, Color c);
+    static bool has_piece(Position& pos, Square sq, Color c);
 };
 
 // Feature indices for different aspects of the position

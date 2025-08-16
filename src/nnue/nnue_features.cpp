@@ -11,12 +11,12 @@
 
 namespace NNUE {
 
-void FeatureExtractor::extract_features(const Position& pos, bool* features) {
+void FeatureExtractor::extract_features(Position& pos, bool* features) {
     // Clear all features first
     std::memset(features, 0, FeatureIndices::TOTAL_FEATURES * sizeof(bool));
     
     // Extract basic piece placement features
-    for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
         if (!pos.empty(sq)) {
             Color c = pos.color_on(sq);
             int feature_idx = square_to_feature_index(sq, c);
@@ -41,7 +41,7 @@ void FeatureExtractor::extract_features(const Position& pos, bool* features) {
     extract_mill_features(pos, features);
 }
 
-void FeatureExtractor::extract_phase_features(const Position& pos, bool* features) {
+void FeatureExtractor::extract_phase_features(Position& pos, bool* features) {
     Phase current_phase = pos.get_phase();
     
     switch (current_phase) {
@@ -59,7 +59,7 @@ void FeatureExtractor::extract_phase_features(const Position& pos, bool* feature
     }
 }
 
-void FeatureExtractor::extract_piece_count_features(const Position& pos, bool* features) {
+void FeatureExtractor::extract_piece_count_features(Position& pos, bool* features) {
     // Pieces in hand (0-9 pieces encoded as binary)
     int white_in_hand = pos.piece_in_hand_count(WHITE);
     int black_in_hand = pos.piece_in_hand_count(BLACK);
@@ -88,7 +88,7 @@ void FeatureExtractor::extract_piece_count_features(const Position& pos, bool* f
     }
 }
 
-void FeatureExtractor::extract_mobility_features(const Position& pos, bool* features) {
+void FeatureExtractor::extract_mobility_features(Position& pos, bool* features) {
     if (pos.get_phase() != Phase::moving) {
         return;
     }
@@ -98,7 +98,7 @@ void FeatureExtractor::extract_mobility_features(const Position& pos, bool* feat
     int black_mobility = 0;
     
     // Count possible moves for each piece
-    for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
         if (!pos.empty(sq)) {
             Color c = pos.color_on(sq);
             
@@ -128,12 +128,12 @@ void FeatureExtractor::extract_mobility_features(const Position& pos, bool* feat
     // If mobility_diff == 0, neither feature is set (equal mobility)
 }
 
-void FeatureExtractor::extract_mill_features(const Position& pos, bool* features) {
+void FeatureExtractor::extract_mill_features(Position& pos, bool* features) {
     // Check for potential mills and blocking opportunities
     int mill_feature_idx = FeatureIndices::MILL_FORMATION_START;
     
     // Analyze each mill pattern
-    for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
         if (pos.empty(sq)) {
             // Check if placing a piece here would form a mill
             for (Color c : {WHITE, BLACK}) {
@@ -149,8 +149,8 @@ void FeatureExtractor::extract_mill_features(const Position& pos, bool* features
     int blocking_feature_idx = FeatureIndices::BLOCKING_START;
     
     // Check if current side can block opponent mills
-    Color opponent = ~pos.side_to_move();
-    for (Square sq = SQ_A1; sq < SQUARE_NB; ++sq) {
+    Color opponent = (pos.side_to_move() == WHITE) ? BLACK : WHITE;
+    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
         if (pos.empty(sq) && pos.potential_mills_count(sq, opponent) > 0) {
             // Opponent could form mill here - this is a blocking opportunity
             features[blocking_feature_idx] = true;
@@ -160,7 +160,7 @@ void FeatureExtractor::extract_mill_features(const Position& pos, bool* features
 }
 
 int FeatureExtractor::square_to_feature_index(Square sq, Color c) {
-    if (sq < SQ_A1 || sq >= SQUARE_NB) {
+    if (sq < SQ_BEGIN || sq >= SQ_END) {
         return -1;  // Invalid square
     }
     
@@ -171,7 +171,7 @@ int FeatureExtractor::square_to_feature_index(Square sq, Color c) {
     }
 }
 
-bool FeatureExtractor::has_piece(const Position& pos, Square sq, Color c) {
+bool FeatureExtractor::has_piece(Position& pos, Square sq, Color c) {
     return !pos.empty(sq) && pos.color_on(sq) == c;
 }
 
