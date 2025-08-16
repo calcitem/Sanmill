@@ -22,6 +22,11 @@ import argparse
 from pathlib import Path
 import logging
 
+try:
+    import torch
+except ImportError:
+    torch = None
+
 # 设置日志
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -345,6 +350,138 @@ if __name__ == '__main__':
             except Exception as e:
                 print(f"    ❌ 备份失败 {ckpt.name}: {e}")
 
+    def load_config_file(self, config_path):
+        """加载外部配置文件，支持两种格式"""
+        try:
+            config_file = Path(config_path)
+            if not config_file.exists():
+                print(f"❌ 配置文件不存在: {config_path}")
+                return None
+                
+            print(f"\n📝 加载配置文件: {config_path}")
+            
+            with open(config_file, 'r', encoding='utf-8') as f:
+                raw_config = json.load(f)
+            
+            # 检测配置文件格式
+            if 'training' in raw_config:
+                # Easy train 格式
+                config = self._validate_easy_train_config(raw_config)
+            else:
+                # Train_nnue.py 格式，需要转换
+                config = self._convert_train_nnue_config(raw_config)
+            
+            if config is None:
+                return None
+            
+            # 生成唯一的输出文件名（如果未指定）
+            if 'output' not in config:
+                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                config['output'] = f"models/nnue_model_custom_{timestamp}.bin"
+                
+            if 'checkpoint_path' not in config:
+                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                config['checkpoint_path'] = f"models/checkpoint_custom_{timestamp}.pth"
+            
+            print(f"  ✅ 配置文件加载成功")
+            print(f"  📊 训练轮数: {config['training']['epochs']}")
+            print(f"  📦 批次大小: {config['training']['batch_size']}")
+            print(f"  🎯 学习率: {config['training']['lr']}")
+            print(f"  🧠 隐藏层大小: {config['training']['hidden_size']}")
+            print(f"  🔄 管道模式: {'是' if config.get('pipeline', False) else '否'}")
+            
+            return config
+            
+        except json.JSONDecodeError as e:
+            print(f"❌ 配置文件 JSON 格式错误: {e}")
+            return None
+        except Exception as e:
+            print(f"❌ 加载配置文件时出错: {e}")
+            return None
+
+    def _validate_easy_train_config(self, config):
+        """验证 easy_train 格式的配置文件"""
+        # 验证训练配置必需字段
+        training_required = ['epochs', 'batch_size', 'lr']
+        for field in training_required:
+            if field not in config['training']:
+                print(f"❌ 训练配置缺少必需字段: training.{field}")
+                return None
+        
+        # 设置默认值
+        config.setdefault('pipeline', False)
+        config.setdefault('device', 'auto')
+        config.setdefault('plot', True)
+        config.setdefault('save_checkpoint', True)
+        
+        # 设置训练配置默认值
+        training = config['training']
+        training.setdefault('hidden_size', 256)
+        training.setdefault('val_split', 0.15)
+        
+        return config
+
+    def _convert_train_nnue_config(self, raw_config):
+        """处理 train_nnue.py 格式的配置文件（管道模式直接传递）"""
+        try:
+            # 检查必需字段
+            required_fields = ['epochs', 'batch-size', 'lr']
+            for field in required_fields:
+                if field not in raw_config:
+                    print(f"❌ 配置文件缺少必需字段: {field}")
+                    return None
+            
+            # 对于管道模式，直接使用原始配置，只做最小转换以兼容显示
+            if raw_config.get('pipeline', False):
+                # 管道模式：保持原始格式，train_nnue.py 会直接处理
+                config = raw_config.copy()
+                
+                # 设置引擎为 null 以使用直接的 Perfect DB 生成方法
+                if 'engine' in config:
+                    config['engine'] = None
+                    print(f"  🔄 设置引擎为 null，使用直接 Perfect DB 数据生成")
+                
+                # 添加用于显示的 training 信息
+                config['training'] = {
+                    'epochs': raw_config['epochs'],
+                    'batch_size': raw_config['batch-size'],
+                    'lr': raw_config['lr'],
+                    'hidden_size': raw_config.get('hidden-size', 256),
+                    'val_split': raw_config.get('val-split', 0.15)
+                }
+                
+                print(f"  🔄 保持 train_nnue.py 管道模式配置格式")
+                return config
+            else:
+                # 非管道模式：转换为 easy_train 格式
+                config = {
+                    'pipeline': False,
+                    'device': raw_config.get('device', 'auto'),
+                    'plot': raw_config.get('plot', True),
+                    'save_checkpoint': True,
+                    'checkpoint_interval': 10,
+                    'training': {
+                        'epochs': raw_config['epochs'],
+                        'batch_size': raw_config['batch-size'],
+                        'lr': raw_config['lr'],
+                        'hidden_size': raw_config.get('hidden-size', 256),
+                        'val_split': raw_config.get('val-split', 0.15)
+                    }
+                }
+                
+                # 设置数据文件
+                if 'data' in raw_config:
+                    config['data'] = raw_config['data']
+                if 'output' in raw_config:
+                    config['output'] = raw_config['output']
+                
+                print(f"  🔄 已转换为 easy_train 格式配置")
+                return config
+            
+        except Exception as e:
+            print(f"❌ 转换配置文件格式时出错: {e}")
+            return None
+
     def create_training_config(self, preset, device):
         """创建训练配置"""
         print(f"\n📝 创建 {preset} 训练配置...")
@@ -456,8 +593,27 @@ if __name__ == '__main__':
         return 30, 60
         
     def run_training(self, config_path):
-        """运行训练"""
-        print(f"\n🚀 开始训练...")
+        """运行训练（包括数据生成和模型训练）"""
+        
+        # 读取配置文件检查是否需要数据生成
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+        except Exception as e:
+            print(f"❌ 无法读取配置文件: {e}")
+            return False
+        
+        # 检查是否是管道模式（需要数据生成）
+        is_pipeline = config.get('pipeline', False)
+        updated_config_path = config_path
+        
+        if is_pipeline:
+            print(f"\n🔄 检测到管道模式，将使用 train_nnue.py 的完整管道功能...")
+            print("  📊 数据生成和模型训练将由 train_nnue.py 统一处理")
+            print(f"\n🚀 开始完整管道训练...")
+        else:
+            print(f"\n🚀 开始训练...")
+            
         print("  训练过程中请不要关闭窗口")
         print("  您可以通过查看日志来监控进度")
         print()
@@ -466,7 +622,7 @@ if __name__ == '__main__':
         cmd = [
             sys.executable, 
             "train_nnue.py", 
-            "--config", str(config_path)
+            "--config", str(updated_config_path)
         ]
         
         print(f"  执行命令: {' '.join(cmd)}")
@@ -504,7 +660,8 @@ if __name__ == '__main__':
         except Exception as e:
             print(f"  ❌ 训练过程出错: {e}")
             return False
-            
+
+
     def find_trained_model(self):
         """查找训练好的模型"""
         model_files = list(self.models_dir.glob("*.bin")) + list(self.models_dir.glob("*.pth"))
@@ -579,7 +736,7 @@ if __name__ == '__main__':
             
     def cleanup_temp_files(self):
         """清理临时文件"""
-        temp_patterns = ["easy_train_*_config.json", "training_data_*.txt", "*.tmp"]
+        temp_patterns = ["easy_train_*_config.json", "temp_config_*.json", "temp_updated_config_*.json", "training_data_*.txt", "*.tmp"]
         
         print("\n🧹 清理临时文件...")
         cleaned = 0
@@ -649,11 +806,29 @@ if __name__ == '__main__':
             # 4. 检查训练恢复选项
             resume_checkpoint = self.check_resume_training()
             
-            # 5. 获取用户偏好
-            preset, device = self.get_user_preferences(args)
-            
-            # 6. 创建配置
-            config_path, config = self.create_training_config(preset, device)
+            # 5. 处理配置文件
+            if args.config:
+                # 使用指定的配置文件
+                config = self.load_config_file(args.config)
+                if config is None:
+                    return False
+                    
+                # 处理设备设置
+                if args.gpu and config.get('device', 'auto') == 'auto':
+                    config['device'] = 'cuda' if (torch and torch.cuda.is_available()) else 'cpu'
+                elif config.get('device') == 'auto':
+                    config['device'] = 'cuda' if (torch and torch.cuda.is_available()) else 'cpu'
+                    
+                # 保存配置到临时文件
+                config_path = self.project_root / f"temp_config_{time.strftime('%Y%m%d_%H%M%S')}.json"
+                with open(config_path, 'w', encoding='utf-8') as f:
+                    json.dump(config, f, indent=2, ensure_ascii=False)
+                print(f"  ✅ 临时配置文件: {config_path}")
+                
+            else:
+                # 使用交互式预设配置
+                preset, device = self.get_user_preferences(args)
+                config_path, config = self.create_training_config(preset, device)
             
             # 7. 如果有恢复检查点，添加到配置中
             if resume_checkpoint:
@@ -717,11 +892,26 @@ def main():
   python easy_train.py --quick            # 快速训练
   python easy_train.py --high-quality     # 高质量训练
   python easy_train.py --gpu --auto       # 自动 GPU 训练
+  python easy_train.py --config config.json  # 使用配置文件训练
   
 训练模式:
   quick        - 5-10分钟，适合测试和学习
   standard     - 30-60分钟，日常使用推荐
   high_quality - 2-4小时，追求最佳效果
+  config       - 使用自定义配置文件
+
+配置文件格式 (JSON):
+  {
+    "training": {
+      "epochs": 100,
+      "batch_size": 2048,
+      "lr": 0.002,
+      "hidden_size": 256,
+      "val_split": 0.15
+    },
+    "device": "auto",
+    "plot": true
+  }
 
 保护功能:
   --backup-existing - 自动备份现有模型
@@ -748,12 +938,19 @@ def main():
                        help='强制训练，跳过备份检查（谨慎使用）')
     parser.add_argument('--backup-existing', action='store_true',
                        help='自动备份现有模型，不询问')
+    parser.add_argument('--config', type=str, metavar='FILE',
+                       help='使用指定的配置文件 (JSON格式)')
     
     args = parser.parse_args()
     
     # 验证参数
     if args.quick and args.high_quality:
         print("❌ 不能同时指定 --quick 和 --high-quality")
+        return 1
+        
+    # 验证配置文件参数
+    if args.config and (args.quick or args.high_quality):
+        print("❌ 使用配置文件时不能同时指定预设选项 (--quick/--high-quality)")
         return 1
         
     # 运行训练器
