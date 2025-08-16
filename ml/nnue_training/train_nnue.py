@@ -299,6 +299,7 @@ class TrainingVisualizer:
         self.learning_rates = []
         self.gradient_norms = []
         self.epoch_times = []
+        self.cumulative_times = []  # For tracking total elapsed time
         
         # Plot state
         self.last_update_epoch = 0
@@ -310,7 +311,7 @@ class TrainingVisualizer:
     
     def add_epoch_data(self, epoch: int, train_loss: float, val_loss: float, 
                       val_accuracy: float, learning_rate: float, 
-                      gradient_norm: float, epoch_time: float):
+                      gradient_norm: float, epoch_time: float, cumulative_time: float = None):
         """Add data for a completed epoch"""
         self.epochs.append(epoch + 1)  # 1-based epoch numbering
         self.train_losses.append(train_loss)
@@ -319,6 +320,13 @@ class TrainingVisualizer:
         self.learning_rates.append(learning_rate)
         self.gradient_norms.append(gradient_norm)
         self.epoch_times.append(epoch_time)
+        
+        if cumulative_time is not None:
+            self.cumulative_times.append(cumulative_time)
+        elif len(self.epoch_times) == 1:
+            self.cumulative_times.append(epoch_time)
+        else:
+            self.cumulative_times.append(self.cumulative_times[-1] + epoch_time)
         
         # Update plots if interval reached or last epoch
         if ((epoch + 1) % self.update_interval == 0 or 
@@ -1465,6 +1473,10 @@ def main():
     patience_counter = 0
     max_patience = 50  # Increased patience for longer training
     
+    # Training time tracking for ETA calculation
+    training_start_time = time.time()
+    epoch_times = []
+    
     logger.info("Starting training...")
     
     for epoch in range(args.epochs):
@@ -1490,6 +1502,33 @@ def main():
             current_lr = args.lr
         
         epoch_time = time.time() - start_time
+        epoch_times.append(epoch_time)
+        
+        # Calculate ETA (Estimated Time to Arrival)
+        eta_str = ""
+        if len(epoch_times) >= 2:  # Need at least 2 epochs for meaningful estimate
+            avg_epoch_time = sum(epoch_times) / len(epoch_times)
+            remaining_epochs = args.epochs - (epoch + 1)
+            eta_seconds = avg_epoch_time * remaining_epochs
+            
+            # Format ETA
+            if eta_seconds < 60:
+                eta_str = f", ETA: {eta_seconds:.0f}s"
+            elif eta_seconds < 3600:
+                eta_minutes = eta_seconds / 60
+                eta_str = f", ETA: {eta_minutes:.1f}m"
+            else:
+                eta_hours = eta_seconds / 3600
+                eta_str = f", ETA: {eta_hours:.1f}h"
+        
+        # Calculate total elapsed time
+        total_elapsed = time.time() - training_start_time
+        if total_elapsed < 60:
+            elapsed_str = f"{total_elapsed:.0f}s"
+        elif total_elapsed < 3600:
+            elapsed_str = f"{total_elapsed/60:.1f}m"
+        else:
+            elapsed_str = f"{total_elapsed/3600:.1f}h"
         
         logger.info(f"Epoch {epoch+1}/{args.epochs}: "
                    f"Train Loss: {train_loss:.6f}, "
@@ -1497,13 +1536,15 @@ def main():
                    f"Val Acc: {val_accuracy:.4f}, "
                    f"LR: {current_lr:.6f}, "
                    f"Grad Norm: {avg_grad_norm:.4f}, "
-                   f"Time: {epoch_time:.2f}s")
+                   f"Time: {epoch_time:.2f}s, "
+                   f"Elapsed: {elapsed_str}{eta_str}")
         
         # Update visualization
         if visualizer:
             visualizer.add_epoch_data(
                 epoch, train_loss, val_loss, val_accuracy, 
-                current_lr, avg_grad_norm, epoch_time
+                current_lr, avg_grad_norm, epoch_time, 
+                cumulative_time=time.time() - training_start_time
             )
         
         # Early stopping
@@ -1519,7 +1560,20 @@ def main():
                 logger.info(f"Early stopping after {epoch+1} epochs")
                 break
     
+    # Calculate and display total training time
+    total_training_time = time.time() - training_start_time
+    if total_training_time < 60:
+        time_str = f"{total_training_time:.1f} seconds"
+    elif total_training_time < 3600:
+        time_str = f"{total_training_time/60:.1f} minutes"
+    else:
+        time_str = f"{total_training_time/3600:.2f} hours"
+    
+    avg_epoch_time = sum(epoch_times) / len(epoch_times) if epoch_times else 0
+    
     logger.info(f"Training completed. Best validation loss: {best_val_loss:.6f}")
+    logger.info(f"Total training time: {time_str}")
+    logger.info(f"Average time per epoch: {avg_epoch_time:.2f}s")
     logger.info(f"Model saved to {args.output}")
     
     # Generate final visualizations
