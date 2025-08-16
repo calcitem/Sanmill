@@ -8,6 +8,7 @@
 
 #include "types.h"
 #include "perfect/perfect_api.h"
+#include "nnue_symmetries.h"
 #include <string>
 #include <vector>
 #include <fstream>

@@ -457,12 +457,44 @@ void TrainingDataGenerator::generate_samples_worker(Phase target_phase,
         }
         
         if (position_generated && is_valid_training_position(pos)) {
-            TrainingSample sample;
-            if (evaluate_with_perfect_db(pos, sample)) {
-                thread_samples.push_back(sample);
-                generated++;
-                valid_count_++;
+            // Generate training samples for all symmetries to improve data diversity
+            std::vector<std::pair<bool*, int32_t>> symmetric_samples;
+            SymmetryAwareNNUE::generate_symmetric_training_data(pos, symmetric_samples);
+            
+            // Evaluate the canonical position with perfect database
+            TrainingSample canonical_sample;
+            if (evaluate_with_perfect_db(pos, canonical_sample)) {
+                // Add all symmetric variations with the same evaluation
+                for (size_t sym = 0; sym < symmetric_samples.size(); ++sym) {
+                    TrainingSample sym_sample = canonical_sample;
+                    
+                    // Copy symmetric features
+                    sym_sample.features.clear();
+                    sym_sample.features.reserve(FeatureIndices::TOTAL_FEATURES);
+                    for (int i = 0; i < FeatureIndices::TOTAL_FEATURES; ++i) {
+                        sym_sample.features.push_back(symmetric_samples[sym].first[i]);
+                    }
+                    
+                    // Adjust evaluation for color-swapping symmetries
+                    if (SymmetryTransforms::swaps_colors(static_cast<SymmetryOp>(sym))) {
+                        sym_sample.perfect_value = -sym_sample.perfect_value;
+                        sym_sample.side_to_move = ~sym_sample.side_to_move;
+                    }
+                    
+                    thread_samples.push_back(sym_sample);
+                    
+                    // Clean up allocated feature memory
+                    delete[] symmetric_samples[sym].first;
+                }
+                
+                generated += static_cast<int>(symmetric_samples.size());
+                valid_count_ += static_cast<int>(symmetric_samples.size());
                 perfect_db_hits_++;
+            } else {
+                // Clean up allocated memory if evaluation failed
+                for (auto& sym_sample : symmetric_samples) {
+                    delete[] sym_sample.first;
+                }
             }
         }
         

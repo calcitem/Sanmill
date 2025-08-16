@@ -38,6 +38,9 @@ Value nnue_evaluate(const Position& pos) {
 // NNUEEvaluator implementation
 NNUEEvaluator::NNUEEvaluator() 
     : model_loaded_(false), enabled_(true) {
+    // Initialize symmetry transformations
+    SymmetryTransforms::initialize();
+    
     // Initialize weights to small random values
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -88,8 +91,8 @@ Value NNUEEvaluator::evaluate(const Position& pos) {
     // Strict mode: Assert that NNUE is properly initialized
     assert(is_enabled() && "NNUE evaluation called but NNUE is not properly initialized");
     
-    int32_t nnue_output = forward(pos);
-    return nnue_to_value(nnue_output);
+    // Use symmetry-aware evaluation for better accuracy and efficiency
+    return evaluate_with_symmetries(pos);
 }
 
 int32_t NNUEEvaluator::get_raw_output(const Position& pos) {
@@ -100,6 +103,10 @@ int32_t NNUEEvaluator::get_raw_output(const Position& pos) {
 }
 
 int32_t NNUEEvaluator::forward(const Position& pos) {
+    // Legacy forward method kept for compatibility
+    // NOTE: This method uses basic color swapping only and does not leverage
+    // full symmetry transformations. For improved evaluation, use evaluate_with_symmetries().
+    
     // Extract features into the working buffer
     // FeatureExtractor::extract_features requires a non-const Position
     // because it may consult internal cached state. We cast away const here
@@ -118,8 +125,8 @@ int32_t NNUEEvaluator::forward(const Position& pos) {
     // Swap the 24-square piece placement features between white and black
     // indices defined in nnue_features.h
     for (int i = 0; i < 24; i++) {
-        const int w_idx = 0 + i;
-        const int b_idx = 24 + i;
+        const int w_idx = FeatureIndices::WHITE_PIECES_START + i;
+        const int b_idx = FeatureIndices::BLACK_PIECES_START + i;
         const bool tmp = swapped_features[w_idx];
         swapped_features[w_idx] = swapped_features[b_idx];
         swapped_features[b_idx] = tmp;
@@ -183,6 +190,51 @@ Value NNUEEvaluator::nnue_to_value(int32_t nnue_output) {
     value = std::max(-VALUE_MATE + 1, std::min(VALUE_MATE - 1, static_cast<Value>(value)));
     
     return static_cast<Value>(value);
+}
+
+Value NNUEEvaluator::evaluate_with_symmetries(const Position& pos) {
+    // Use symmetry-aware evaluation that finds the canonical form
+    // and evaluates using the most representative transformation
+    
+    // Find the canonical symmetry operation for this position
+    SymmetryOp canonical_op = SymmetryAwareNNUE::find_canonical_symmetry(pos);
+    
+    // Extract features using the canonical transformation
+    bool canonical_features[FEATURE_SIZE];
+    Position pos_copy = pos;
+    SymmetryTransforms::extract_symmetry_features(pos_copy, canonical_features, canonical_op);
+    
+    // Evaluate using canonical features
+    int16_t hidden_white[HIDDEN_SIZE];
+    int16_t hidden_black[HIDDEN_SIZE];
+    
+    // For canonical evaluation, we still need both perspectives
+    activate_hidden(canonical_features, hidden_white);
+    
+    // Create color-swapped version for black perspective
+    bool swapped_features[FEATURE_SIZE];
+    std::memcpy(swapped_features, canonical_features, sizeof(swapped_features));
+    
+    // Swap the piece placement features between white and black
+    for (int i = 0; i < 24; i++) {
+        const int w_idx = FeatureIndices::WHITE_PIECES_START + i;
+        const int b_idx = FeatureIndices::BLACK_PIECES_START + i;
+        const bool tmp = swapped_features[w_idx];
+        swapped_features[w_idx] = swapped_features[b_idx];
+        swapped_features[b_idx] = tmp;
+    }
+    
+    activate_hidden(swapped_features, hidden_black);
+    
+    // Compute final output
+    int32_t raw_output = compute_output(hidden_white, hidden_black, pos.side_to_move());
+    
+    // If we used a color-swapping transformation, negate the result
+    if (SymmetryTransforms::swaps_colors(canonical_op)) {
+        raw_output = -raw_output;
+    }
+    
+    return nnue_to_value(raw_output);
 }
 
 bool NNUEEvaluator::generate_training_data(const std::string& output_file, int num_positions) {

@@ -9,6 +9,7 @@
 
 #include "types.h"
 #include "perfect/perfect_api.h"
+#include "nnue_symmetries.h"
 
 class Position;
 
@@ -64,9 +65,15 @@ public:
     // Enable/disable NNUE evaluation
     void set_enabled(bool enabled) { enabled_ = enabled; }
     bool is_enabled() const { return enabled_ && model_loaded_; }
+    
+    // Symmetry-aware evaluation
+    Value evaluate_with_symmetries(const Position& pos);
+    
+    // Initialize symmetry transformations
+    void initialize_symmetries() { SymmetryTransforms::initialize(); }
 
 private:
-    // Forward propagation
+    // Forward propagation (legacy method - use evaluate_with_symmetries for better results)
     int32_t forward(const Position& pos);
     
     // Feature extraction (requires non-const Position for some queries)
