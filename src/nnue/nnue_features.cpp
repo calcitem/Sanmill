@@ -9,6 +9,7 @@
 #include "movegen.h"
 #include <cstring>
 #include <algorithm>
+#include <cassert>
 
 namespace NNUE {
 
@@ -67,6 +68,9 @@ int count_mobility(Position& pos, Color color) {
 
 
 void FeatureExtractor::extract_features(Position& pos, bool* features) {
+    // Validate input
+    assert(features != nullptr && "Feature array must not be null");
+    
     // 1. Clear all features
     std::memset(features, 0, FeatureIndices::TOTAL_FEATURES * sizeof(bool));
 
@@ -76,7 +80,7 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     while (white_pieces) {
         const Square sq = extract_lsb(white_pieces);
         const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
-        if (feature_idx >= 0 && feature_idx < 24) {
+        if (feature_idx >= 0 && feature_idx < SQUARE_NB) {
             features[FeatureIndices::WHITE_PIECES_START + feature_idx] = true;
         }
     }
@@ -86,7 +90,7 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     while (black_pieces) {
         const Square sq = extract_lsb(black_pieces);
         const int feature_idx = sq - SQ_BEGIN;  // Engine coordinate (0-23 range)
-        if (feature_idx >= 0 && feature_idx < 24) {
+        if (feature_idx >= 0 && feature_idx < SQUARE_NB) {
             features[FeatureIndices::BLACK_PIECES_START + feature_idx] = true;
         }
     }

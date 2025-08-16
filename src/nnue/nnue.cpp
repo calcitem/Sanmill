@@ -270,8 +270,9 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
     // Read model header
     char header[8];
     file.read(header, 8);
-    if (std::string(header, 8) != "SANMILL1") {
+    if (!file || std::string(header, 8) != "SANMILL1") {
         std::cerr << "Invalid NNUE model format" << std::endl;
+        file.close();
         return false;
     }
 
@@ -281,8 +282,9 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
     file.read(reinterpret_cast<char*>(&file_feature_size), sizeof(int32_t));
     file.read(reinterpret_cast<char*>(&file_hidden_size), sizeof(int32_t));
 
-    if (file.fail()) {
+    if (!file) {
         std::cerr << "Failed to read NNUE model dimensions" << std::endl;
+        file.close();
         return false;
     }
 
@@ -291,6 +293,7 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
                   << file_feature_size << "," << file_hidden_size
                   << ", expected=" << FEATURE_SIZE << "," << HIDDEN_SIZE
                   << ")" << std::endl;
+        file.close();
         return false;
     }
     
@@ -300,11 +303,13 @@ bool NNUEEvaluator::load_model(const std::string& filepath) {
     file.read(reinterpret_cast<char*>(weights_.output_weights), sizeof(weights_.output_weights));
     file.read(reinterpret_cast<char*>(&weights_.output_bias), sizeof(weights_.output_bias));
     
-    if (file.fail()) {
+    if (!file) {
         std::cerr << "Failed to read NNUE model weights" << std::endl;
+        file.close();
         return false;
     }
     
+    file.close();
     model_loaded_ = true;
     std::cout << "Successfully loaded NNUE model from " << filepath << std::endl;
     return true;
@@ -333,11 +338,13 @@ bool NNUEEvaluator::save_model(const std::string& filepath) const {
     file.write(reinterpret_cast<const char*>(weights_.output_weights), sizeof(weights_.output_weights));
     file.write(reinterpret_cast<const char*>(&weights_.output_bias), sizeof(weights_.output_bias));
     
-    if (file.fail()) {
+    if (!file) {
         std::cerr << "Failed to write NNUE model" << std::endl;
+        file.close();
         return false;
     }
     
+    file.close();
     std::cout << "Successfully saved NNUE model to " << filepath << std::endl;
     return true;
 }

@@ -355,4 +355,28 @@ void SymmetryAwareNNUE::extract_all_symmetric_features(Position& pos, bool featu
     }
 }
 
+void SymmetryAwareNNUE::generate_symmetric_training_data_safe(const Position& pos,
+                                                             std::vector<SymmetricTrainingSample>& training_examples) {
+    Position pos_copy = pos;
+    
+    // Reserve space to avoid reallocations
+    training_examples.reserve(training_examples.size() + SYM_OP_COUNT);
+    
+    // Generate training examples for all valid symmetries
+    for (int op = 0; op < SYM_OP_COUNT; ++op) {
+        auto features = std::make_unique<bool[]>(FeatureIndices::TOTAL_FEATURES);
+        SymmetryTransforms::extract_symmetry_features(pos_copy, features.get(), static_cast<SymmetryOp>(op));
+        
+        // The target value should be the same for all symmetries
+        // (or negated for color-swapping symmetries)
+        int32_t target_value = 0; // This would come from the perfect database or other evaluation
+        
+        if (SymmetryTransforms::swaps_colors(static_cast<SymmetryOp>(op))) {
+            target_value = -target_value; // Negate evaluation for color-swapped positions
+        }
+        
+        training_examples.emplace_back(std::move(features), target_value);
+    }
+}
+
 } // namespace NNUE

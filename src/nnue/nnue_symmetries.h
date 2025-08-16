@@ -10,6 +10,8 @@
 #include "types.h"
 #include "position.h"
 #include "nnue_features.h"
+#include <memory>
+#include <vector>
 
 namespace NNUE {
 
@@ -86,8 +88,22 @@ public:
     static SymmetryOp find_canonical_symmetry(const Position& pos);
     
     // Generate training data with symmetry augmentation
+    // NOTE: Caller is responsible for freeing the allocated bool* arrays in training_examples
     static void generate_symmetric_training_data(const Position& pos, 
                                                std::vector<std::pair<bool*, int32_t>>& training_examples);
+    
+    // Safe version using unique_ptr for automatic memory management
+    struct SymmetricTrainingSample {
+        std::unique_ptr<bool[]> features;
+        int32_t target_value;
+        
+        SymmetricTrainingSample(std::unique_ptr<bool[]>&& f, int32_t v) 
+            : features(std::move(f)), target_value(v) {}
+    };
+    
+    // Generate training data with automatic memory management
+    static void generate_symmetric_training_data_safe(const Position& pos,
+                                                    std::vector<SymmetricTrainingSample>& training_examples);
     
     // Check if position is symmetric under given operation
     static bool is_position_symmetric(const Position& pos, SymmetryOp op);
