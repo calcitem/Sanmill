@@ -12,7 +12,36 @@
 
 namespace NNUE {
 
-// Helper function to count mobility
+// Helper function to extract LSB (Least Significant Bit) and clear it
+// This replaces the missing pop_lsb function with a portable implementation
+inline Square extract_lsb(Bitboard& b) {
+    assert(b != 0);
+#if defined(_MSC_VER) && defined(_WIN64)
+    unsigned long idx;
+    _BitScanForward(&idx, b);
+    b &= b - 1;  // Clear the LSB
+    return static_cast<Square>(idx);
+#elif defined(__GNUC__)
+    const int idx = __builtin_ctz(b);
+    b &= b - 1;  // Clear the LSB
+    return static_cast<Square>(idx);
+#else
+    // Generic fallback implementation
+    const Bitboard lsb = b & -b;  // Isolate LSB
+    b &= b - 1;  // Clear the LSB
+    
+    // Count trailing zeros manually for the isolated LSB
+    int idx = 0;
+    Bitboard temp = lsb;
+    while (temp > 1) {
+        temp >>= 1;
+        ++idx;
+    }
+    return static_cast<Square>(idx);
+#endif
+}
+
+// Optimized helper function to count mobility using bitboard operations
 int count_mobility(Position& pos, Color color) {
     if (pos.piece_on_board_count(color) <= 3) {
         // In the endgame, pieces may fly; mobility approximates the number of empty squares.
@@ -21,14 +50,18 @@ int count_mobility(Position& pos, Color color) {
 
     int mobility = 0;
     const Bitboard all_pieces = pos.byTypeBB[ALL_PIECES];
-
-    // Iterate all board squares and accumulate adjacent empty targets for the given color
-    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
-        if (!pos.empty(sq) && pos.color_on(sq) == color) {
-            const Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
-            mobility += popcount(adjacent & ~all_pieces);
-        }
+    const Bitboard empty_squares = ~all_pieces;
+    
+    // Get bitboard of all pieces of the specified color
+    Bitboard pieces = pos.byColorBB[color];
+    
+    // Process each piece using bitboard operations (much faster than loop)
+    while (pieces) {
+        const Square sq = extract_lsb(pieces);  // Extract and remove one piece position
+        const Bitboard adjacent = MoveList<LEGAL>::adjacentSquaresBB[sq];
+        mobility += popcount(adjacent & empty_squares);
     }
+    
     return mobility;
 }
 
@@ -37,12 +70,19 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     // 1. Clear all features
     std::memset(features, 0, FeatureIndices::TOTAL_FEATURES * sizeof(bool));
 
-    // 2. Piece Placement Features
-    for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
-        if (!pos.empty(sq)) {
-            const int feature_idx = square_to_feature_index(sq, pos.color_on(sq));
-            features[feature_idx] = true;
-        }
+    // 2. Piece Placement Features - optimized using bitboards
+    // Process white pieces
+    Bitboard white_pieces = pos.byColorBB[WHITE];
+    while (white_pieces) {
+        const Square sq = extract_lsb(white_pieces);
+        features[FeatureIndices::WHITE_PIECES_START + sq] = true;
+    }
+    
+    // Process black pieces
+    Bitboard black_pieces = pos.byColorBB[BLACK];
+    while (black_pieces) {
+        const Square sq = extract_lsb(black_pieces);
+        features[FeatureIndices::BLACK_PIECES_START + sq] = true;
     }
 
     // 3. Game Phase Features
