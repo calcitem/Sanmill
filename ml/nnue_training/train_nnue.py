@@ -102,16 +102,19 @@ class MillNNUE(nn.Module):
         # The final output depends on the side to move. The C++ engine concatenates
         # the hidden activations of the current player and the opponent.
         batch_size = x.size(0)
-        combined_hidden = torch.zeros(batch_size, self.hidden_size * 2, device=x.device)
+        # Ensure consistent dtype for mixed precision training
+        combined_hidden = torch.zeros(batch_size, self.hidden_size * 2, device=x.device, dtype=hidden_white.dtype)
 
         white_mask = (side_to_move == 0)
         black_mask = (side_to_move == 1)
 
         # If it's white's turn, the order is [hidden_white, hidden_black]
-        combined_hidden[white_mask] = torch.cat((hidden_white[white_mask], hidden_black[white_mask]), dim=1)
+        if white_mask.any():
+            combined_hidden[white_mask] = torch.cat((hidden_white[white_mask], hidden_black[white_mask]), dim=1)
 
         # If it's black's turn, the order is [hidden_black, hidden_white]
-        combined_hidden[black_mask] = torch.cat((hidden_black[black_mask], hidden_white[black_mask]), dim=1)
+        if black_mask.any():
+            combined_hidden[black_mask] = torch.cat((hidden_black[black_mask], hidden_white[black_mask]), dim=1)
         
         return self.hidden_to_output(combined_hidden)
 
@@ -638,22 +641,24 @@ def merge_config_with_args(config: dict, args: argparse.Namespace) -> argparse.N
     for key, value in config.items():
         # Convert dashes to underscores for argument names
         key = key.replace('-', '_')
-        setattr(merged_args, key, value)
+        
+        # Handle nested configurations like data_generation
+        if key == "data_generation" and isinstance(value, dict):
+            for sub_key, sub_value in value.items():
+                full_key = sub_key.replace('-', '_')
+                setattr(merged_args, full_key, sub_value)
+        else:
+            setattr(merged_args, key, value)
     
     # Then override with any explicitly provided command line arguments
+    # We need to distinguish between default values and user-provided values
     for key, value in vars(args).items():
-        if value is not None:
-            # Only override if the argument was explicitly provided
-            # For boolean flags, we need special handling
-            if isinstance(value, bool):
-                if hasattr(args, key) and getattr(args, key):
-                    setattr(merged_args, key, value)
-                elif not hasattr(merged_args, key):
-                    setattr(merged_args, key, value)
-            else:
-                setattr(merged_args, key, value)
-        elif not hasattr(merged_args, key):
-            # Set default values for arguments not in config
+        if hasattr(merged_args, key):
+            # If key exists in config, don't override with command line defaults
+            # unless it was explicitly provided by user
+            continue
+        else:
+            # Set values for arguments not in config
             setattr(merged_args, key, value)
     
     return merged_args
@@ -1220,9 +1225,7 @@ def main():
     # Validate required arguments based on mode
     if args.pipeline:
         # Pipeline mode validation
-        if not args.engine:
-            parser.error("--engine is required for pipeline mode (or specify in config file)")
-            return 1
+        # Engine is now optional - can use Perfect DB directly
         if not args.perfect_db:
             parser.error("--perfect-db is required for pipeline mode (or specify in config file)")
             return 1
@@ -1277,13 +1280,24 @@ def main():
         logger.info("=== Step 2: Training Data Generation ===")
         if not os.path.exists(args.data) or os.path.getsize(args.data) == 0:
             logger.info(f"Generating training data: {args.data}")
-            success = generate_training_data_parallel(
-                args.engine,
-                args.data,
-                args.positions,
-                args.perfect_db,
-                args.threads
-            )
+            if args.engine is None:
+                # Use direct Perfect DB generation (new approach)
+                from generate_training_data import generate_training_data_with_perfect_db
+                success = generate_training_data_with_perfect_db(
+                    args.perfect_db,
+                    args.data,
+                    args.positions,
+                    args.threads
+                )
+            else:
+                # Use legacy engine-based generation
+                success = generate_training_data_parallel(
+                    args.engine,
+                    args.data,
+                    args.positions,
+                    args.perfect_db,
+                    args.threads
+                )
             
             if not success:
                 logger.error("Training data generation failed")

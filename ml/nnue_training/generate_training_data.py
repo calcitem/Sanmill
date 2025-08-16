@@ -229,9 +229,12 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                 except:
                     pass  # Best move not critical for NNUE training
                 
-                # Format: features | evaluation | best_move | phase
-                feature_str = " ".join(f"{f:.6f}" for f in features)
-                line = f"{feature_str} | {evaluation:.6f} | {best_move_token} | {board.period}\n"
+                # Format: features | evaluation | phase | fen  (to match train_nnue.py expectation)
+                # Features should be integers (0 or 1), not floats
+                feature_str = " ".join(str(int(f)) for f in features)
+                # Generate a simple FEN-like representation for the position
+                fen_str = f"board_period_{board.period}_player_{player}"
+                line = f"{feature_str} | {evaluation:.6f} | {board.period} | {fen_str}\n"
                 training_data.append(line)
                 valid_positions += 1
                 
