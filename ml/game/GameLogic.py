@@ -729,4 +729,95 @@ class Board:
 
         return "\n".join("".join(row) for row in canvas)
 
+    def to_fen(self, player: int = 1) -> str:
+        """
+        Generate FEN string for current board position.
+        Format follows src/position.cpp implementation:
+        
+        1. Piece placement: O=white, @=black, *=empty, /=rank separator
+        2. Active color: w=white, b=black  
+        3. Phase: r=ready, p=placing, m=moving, o=gameOver
+        4. Action: p=place, s=select, r=remove
+        5. Piece counts: white_on_board white_in_hand black_on_board black_in_hand white_to_remove black_to_remove
+        6. Mill info: last_mill_from_white last_mill_to_white last_mill_from_black last_mill_to_black
+        7. Mills bitmask: formed_mills
+        8. Rule50 counter and fullmove number
+        """
+        fen_parts = []
+        
+        # 1. Piece placement - simplified approach for 24 valid positions
+        # Get all valid positions in consistent order
+        valid_positions = []
+        for x in range(7):
+            for y in range(7):
+                if self.allowed_places[x][y]:
+                    valid_positions.append((x, y))
+        
+        # Create board string for 3 files (ranks), 8 positions each
+        board_parts = []
+        for file_idx in range(3):
+            file_str = ""
+            for rank_idx in range(8):
+                pos_idx = file_idx * 8 + rank_idx
+                if pos_idx < len(valid_positions):
+                    x, y = valid_positions[pos_idx]
+                    piece = self.pieces[x][y]
+                    if piece == 1:
+                        file_str += "O"
+                    elif piece == -1:
+                        file_str += "@"
+                    else:
+                        file_str += "*"
+                else:
+                    file_str += "*"
+            board_parts.append(file_str)
+        
+        fen_parts.append("/".join(board_parts))
+        
+        # 2. Active color
+        fen_parts.append("w" if player == 1 else "b")
+        
+        # 3. Phase
+        phase_map = {0: "p", 1: "m", 2: "m", 3: "r"}  # p=placing, m=moving, r=removing
+        fen_parts.append(phase_map.get(self.period, "p"))
+        
+        # 4. Action (simplified)
+        if self.period == 3:
+            fen_parts.append("r")  # remove
+        elif self.period == 0:
+            fen_parts.append("p")  # place
+        else:
+            fen_parts.append("s")  # select/move
+        
+        # 5. Piece counts
+        white_on_board = self.count(1)
+        black_on_board = self.count(-1)
+        # Estimate pieces in hand based on period and pieces placed
+        if self.period == 0:  # placing phase
+            white_in_hand = max(0, 9 - white_on_board)
+            black_in_hand = max(0, 9 - black_on_board)
+        else:
+            white_in_hand = 0
+            black_in_hand = 0
+        
+        white_to_remove = 0  # Simplified
+        black_to_remove = 0
+        
+        fen_parts.extend([str(white_on_board), str(white_in_hand), 
+                         str(black_on_board), str(black_in_hand),
+                         str(white_to_remove), str(black_to_remove)])
+        
+        # 6. Mill info (simplified - using zeros)
+        fen_parts.extend(["0", "0", "0", "0"])  # last_mill positions
+        
+        # 7. Mills bitmask (simplified)
+        fen_parts.append("0")
+        
+        # 8. Counters
+        fen_parts.append(str(self.rule50_counter))
+        fullmove = (self.move_counter // 2) + 1
+        fen_parts.append(str(fullmove))
+        
+        return " ".join(fen_parts)
+
 

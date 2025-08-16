@@ -232,8 +232,8 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                 # Format: features | evaluation | phase | fen  (to match train_nnue.py expectation)
                 # Features should be integers (0 or 1), not floats
                 feature_str = " ".join(str(int(f)) for f in features)
-                # Generate a simple FEN-like representation for the position
-                fen_str = f"board_period_{board.period}_player_{player}"
+                # Generate proper FEN using the board's to_fen method
+                fen_str = board.to_fen(player)
                 line = f"{feature_str} | {evaluation:.6f} | {board.period} | {fen_str}\n"
                 training_data.append(line)
                 valid_positions += 1

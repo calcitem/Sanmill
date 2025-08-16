@@ -1010,8 +1010,11 @@ class MillDataset(Dataset):
                 fen = parts[3]
                 fen_parts = fen.split()
                 if len(fen_parts) >= 2:
+                    # Standard FEN format: fen_parts[1] is active color
                     side = 0 if fen_parts[1] == 'w' else 1
                 else:
+                    # Invalid FEN format
+                    logger.warning(f"Invalid FEN format on line {i}: {fen}")
                     side = 0  # Default to white
                 
                 self.features.append(features)
