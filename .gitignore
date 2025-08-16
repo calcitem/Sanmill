@@ -460,6 +460,10 @@ coverage/
 diff-files*.md
 /src/ui/flutter_app/screenshots
 
+# VC
+*.exp
+*.lib
+
 # NNUE Training Artifacts
 ml/nnue_training/training_data.txt
 ml/nnue_training/training_data_*.txt
