@@ -138,22 +138,25 @@ void FeatureExtractor::extract_features(Position& pos, bool* features) {
     const int black_mobility = (phase == Phase::placing) ? (24 - total_on_board) : count_mobility(pos, BLACK);
     int mobility_diff = white_mobility - black_mobility;
 
-    // Map difference to a feature index from -4 to +3
+    // Map difference to a feature index in [0..7]. The mapping is symmetric
+    // around zero and covers the full range to match 8 mobility buckets:
     // [-inf, -8] -> 0
-    // [-7, -5] -> 1
-    // [-4, -2] -> 2
-    // [-1, 1] -> 3 (neutral)
-    // [2, 4] -> 4
-    // [5, 7] -> 5
-    // [8, inf] -> 6
-    // (This mapping is an example and can be tuned)
-    int mobility_idx = 3; // Default to neutral
+    // [-7, -5]   -> 1
+    // [-4, -2]   -> 2
+    // [-1, 0]    -> 3 (slightly black / neutral)
+    // [1, 2]     -> 4 (slightly white)
+    // [3, 5]     -> 5
+    // [6, 8]     -> 6
+    // [9,  inf]  -> 7
+    // This ensures consistency with symmetry color-swap mapping.
+    int mobility_idx = 3; // Default near-neutral bucket
     if (mobility_diff <= -8) mobility_idx = 0;
     else if (mobility_diff <= -5) mobility_idx = 1;
     else if (mobility_diff <= -2) mobility_idx = 2;
-    else if (mobility_diff >= 8) mobility_idx = 6;
-    else if (mobility_diff >= 5) mobility_idx = 5;
-    else if (mobility_diff >= 2) mobility_idx = 4;
+    else if (mobility_diff >= 9) mobility_idx = 7;
+    else if (mobility_diff >= 6) mobility_idx = 6;
+    else if (mobility_diff >= 3) mobility_idx = 5;
+    else if (mobility_diff >= 1) mobility_idx = 4;
     features[FeatureIndices::MOBILITY_DIFF_START + mobility_idx] = true;
 }
 

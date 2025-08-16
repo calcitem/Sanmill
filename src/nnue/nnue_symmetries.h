@@ -9,6 +9,7 @@
 
 #include "types.h"
 #include "position.h"
+#include "nnue_features.h"
 
 namespace NNUE {
 
@@ -93,7 +94,7 @@ public:
     
 private:
     // Extract features for all symmetries
-    static void extract_all_symmetric_features(Position& pos, bool features[][115]);
+    static void extract_all_symmetric_features(Position& pos, bool features[][FeatureIndices::TOTAL_FEATURES]);
 };
 
 } // namespace NNUE

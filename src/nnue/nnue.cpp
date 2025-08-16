@@ -14,8 +14,13 @@
 #include <cstring>
 #include <algorithm>
 #include <random>
+#include <limits>
 
 namespace NNUE {
+
+// Build-time sanity checks to ensure feature dimensions remain consistent
+static_assert(FEATURE_SIZE == FeatureIndices::TOTAL_FEATURES,
+              "FEATURE_SIZE must match FeatureIndices::TOTAL_FEATURES");
 
 // Global NNUE evaluator instance
 NNUEEvaluator g_nnue_evaluator;
@@ -124,7 +129,7 @@ int32_t NNUEEvaluator::forward(const Position& pos) {
 
     // Swap the 24-square piece placement features between white and black
     // indices defined in nnue_features.h
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         const int w_idx = FeatureIndices::WHITE_PIECES_START + i;
         const int b_idx = FeatureIndices::BLACK_PIECES_START + i;
         const bool tmp = swapped_features[w_idx];
@@ -163,7 +168,8 @@ void NNUEEvaluator::activate_hidden(const bool* features, int16_t* hidden) {
 int32_t NNUEEvaluator::compute_output(const int16_t* hidden_white, 
                                      const int16_t* hidden_black, 
                                      Color side_to_move) {
-    int32_t sum = weights_.output_bias;
+    // Accumulate in 64-bit to avoid overflow at extreme values, then clamp.
+    int64_t sum = static_cast<int64_t>(weights_.output_bias);
     
     // Choose perspective based on side to move
     const int16_t* current_hidden = (side_to_move == WHITE) ? hidden_white : hidden_black;
@@ -171,11 +177,14 @@ int32_t NNUEEvaluator::compute_output(const int16_t* hidden_white,
     
     // Combine both perspectives
     for (int i = 0; i < HIDDEN_SIZE; i++) {
-        sum += current_hidden[i] * weights_.output_weights[i];
-        sum += opponent_hidden[i] * weights_.output_weights[i + HIDDEN_SIZE];
+        sum += static_cast<int64_t>(current_hidden[i]) * static_cast<int64_t>(weights_.output_weights[i]);
+        sum += static_cast<int64_t>(opponent_hidden[i]) * static_cast<int64_t>(weights_.output_weights[i + HIDDEN_SIZE]);
     }
-    
-    return sum;
+
+    // Clamp to 32-bit range before returning
+    if (sum > std::numeric_limits<int32_t>::max()) sum = std::numeric_limits<int32_t>::max();
+    if (sum < std::numeric_limits<int32_t>::min()) sum = std::numeric_limits<int32_t>::min();
+    return static_cast<int32_t>(sum);
 }
 
 Value NNUEEvaluator::nnue_to_value(int32_t nnue_output) {
@@ -184,12 +193,14 @@ Value NNUEEvaluator::nnue_to_value(int32_t nnue_output) {
     // We want to map this to reasonable evaluation range
     
     constexpr int32_t NNUE_SCALE = 16;
-    int32_t value = nnue_output / NNUE_SCALE;
-    
-    // Clamp to reasonable evaluation bounds
-    value = std::max(-VALUE_MATE + 1, std::min(VALUE_MATE - 1, static_cast<Value>(value)));
-    
-    return static_cast<Value>(value);
+    int32_t value_scaled = nnue_output / NNUE_SCALE;
+
+    // Clamp to reasonable evaluation bounds using engine Value range
+    // Cast carefully to avoid truncation before clamping
+    int32_t clamped = std::max<int32_t>(-VALUE_MATE + 1,
+                                        std::min<int32_t>(VALUE_MATE - 1,
+                                                          value_scaled));
+    return static_cast<Value>(clamped);
 }
 
 Value NNUEEvaluator::evaluate_with_symmetries(const Position& pos) {
@@ -216,7 +227,7 @@ Value NNUEEvaluator::evaluate_with_symmetries(const Position& pos) {
     std::memcpy(swapped_features, canonical_features, sizeof(swapped_features));
     
     // Swap the piece placement features between white and black
-    for (int i = 0; i < 24; i++) {
+    for (int i = 0; i < SQUARE_NB; i++) {
         const int w_idx = FeatureIndices::WHITE_PIECES_START + i;
         const int b_idx = FeatureIndices::BLACK_PIECES_START + i;
         const bool tmp = swapped_features[w_idx];

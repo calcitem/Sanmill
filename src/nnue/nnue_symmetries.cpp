@@ -28,7 +28,7 @@ static Square apply_perfect_transform(Square sq, int (*transform_func)(int)) {
     const int output_bitboard = transform_func(input_bitboard);
     
     // Find which bit is set in the output
-    for (int i = 0; i < 24; ++i) {
+    for (int i = 0; i < SQUARE_NB; ++i) {
         if (output_bitboard & (1 << i)) {
             return from_perfect_square(i);
         }
@@ -205,10 +205,11 @@ void SymmetryTransforms::transform_features(const bool* input_features, bool* ou
         }
         
         // Mobility difference features need sign flip when colors are swapped
-        for (int i = 0; i < 7; ++i) {
-            // Map mobility difference with opposite sign
-            const int opposite_idx = 6 - i;  // Reverse the index for sign flip
-            output_features[FeatureIndices::MOBILITY_DIFF_START + i] = 
+        // Map mobility difference with opposite sign across 8 buckets.
+        // Bucket indices [0..7] must reverse: 0<->7, 1<->6, 2<->5, 3<->4.
+        for (int i = 0; i < 8; ++i) {
+            const int opposite_idx = 7 - i;
+            output_features[FeatureIndices::MOBILITY_DIFF_START + i] =
                 input_features[FeatureIndices::MOBILITY_DIFF_START + opposite_idx];
         }
     } else {
@@ -348,7 +349,7 @@ bool SymmetryAwareNNUE::is_position_symmetric(const Position& pos, SymmetryOp op
     return std::memcmp(original_features, transformed_features, sizeof(original_features)) == 0;
 }
 
-void SymmetryAwareNNUE::extract_all_symmetric_features(Position& pos, bool features[][115]) {
+void SymmetryAwareNNUE::extract_all_symmetric_features(Position& pos, bool features[][FeatureIndices::TOTAL_FEATURES]) {
     for (int op = 0; op < SYM_OP_COUNT; ++op) {
         SymmetryTransforms::extract_symmetry_features(pos, features[op], static_cast<SymmetryOp>(op));
     }
