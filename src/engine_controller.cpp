@@ -15,6 +15,7 @@
 #include "misc.h"
 #include "engine_commands.h"
 #include "search_engine.h"
+#include "nnue/nnue_training.h"
 
 EngineController::EngineController(SearchEngine &searchEngine)
     : searchEngine_(searchEngine)
@@ -53,6 +54,31 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         EngineCommands::position(&analyzePos, is);
         // Call the analyze function instead of analyze_position
         EngineCommands::analyze(searchEngine_, &analyzePos);
+    } else if (token == "generate_nnue_data") {
+        // Handle NNUE training data generation
+        std::string output_file;
+        int num_positions = 50000; // default
+        
+        is >> output_file;
+        if (!(is >> num_positions)) {
+            num_positions = 50000;
+        }
+        
+        if (output_file.empty()) {
+            output_file = "training_data.txt";
+        }
+        
+        sync_cout << "Generating " << num_positions << " NNUE training positions to " 
+                  << output_file << "..." << sync_endl;
+        
+        NNUE::TrainingDataGenerator generator;
+        bool success = generator.generate_training_set(output_file, num_positions, true);
+        
+        if (success) {
+            sync_cout << "NNUE training data generation completed successfully." << sync_endl;
+        } else {
+            sync_cout << "NNUE training data generation failed." << sync_endl;
+        }
     } else {
         // Handle additional custom commands if necessary
         sync_cout << "Unknown command in EngineController: " << cmd

@@ -9,6 +9,7 @@
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
+#include "nnue/nnue.h"
 #include <iostream>
 
 #ifdef FLUTTER_UI
@@ -45,6 +46,9 @@ int main(int argc, char *argv[])
     Position::init();
     Threads.set(static_cast<size_t>(Options["Threads"]));
     Search::clear(); // After threads are up
+    
+    // Initialize NNUE system
+    NNUE::init_nnue(gameOptions.getNNUEModelPath());
 
 #ifndef UNIT_TEST_MODE
     UCI::loop(argc, argv);

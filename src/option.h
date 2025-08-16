@@ -262,6 +262,20 @@ public:
 
     bool getDeveloperMode() const noexcept { return developerMode; }
 
+    // NNUE options
+
+    void setUseNNUE(bool enabled) noexcept { useNNUE = enabled; }
+    bool getUseNNUE() const noexcept { return useNNUE; }
+
+    void setNNUEModelPath(std::string val) noexcept { nnueModelPath = val; }
+    std::string getNNUEModelPath() const noexcept { return nnueModelPath; }
+
+    void setNNUEWeight(int val) noexcept { nnueWeight = val; }
+    int getNNUEWeight() const noexcept { return nnueWeight; }
+
+    void setGenerateTrainingData(bool enabled) noexcept { generateTrainingData = enabled; }
+    bool getGenerateTrainingData() const noexcept { return generateTrainingData; }
+
 private:
     int skillLevel {1};
     int moveTime {1};
@@ -292,6 +306,12 @@ private:
 #else
     std::string perfectDatabasePath {"."};
 #endif
+
+    // NNUE settings
+    bool useNNUE {false};
+    std::string nnueModelPath {"nnue_model.bin"};
+    int nnueWeight {90};  // 0-100, weight for NNUE vs traditional evaluation
+    bool generateTrainingData {false};
 };
 
 extern GameOptions gameOptions;

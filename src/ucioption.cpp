@@ -191,6 +191,31 @@ static void on_threefoldRepetitionRule(const Option &o)
     rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
 
+// NNUE options
+
+static void on_use_nnue(const Option &o)
+{
+    gameOptions.setUseNNUE(static_cast<bool>(o));
+}
+
+static void on_nnue_model_path(const Option &o)
+{
+    gameOptions.setNNUEModelPath(static_cast<std::string>(o));
+}
+
+static void on_nnue_weight(const Option &o)
+{
+    gameOptions.setNNUEWeight(static_cast<int>(o));
+}
+
+static void on_generate_training_data(const Option &o)
+{
+    if (static_cast<bool>(o)) {
+        // Trigger training data generation
+        gameOptions.setGenerateTrainingData(true);
+    }
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string &s1, const string &s2) const
 {
@@ -267,6 +292,12 @@ void init(OptionsMap &o)
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
+    
+    // NNUE options
+    o["UseNNUE"] << Option(false, on_use_nnue);
+    o["NNUEModelPath"] << Option("nnue_model.bin", on_nnue_model_path);
+    o["NNUEWeight"] << Option(90, 0, 100, on_nnue_weight);
+    o["GenerateTrainingData"] << Option(false, on_generate_training_data);
 }
 
 /// operator<<() is used to print all the options default values in

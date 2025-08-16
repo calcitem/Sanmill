@@ -16,6 +16,12 @@ namespace Eval {
 
 Value evaluate(Position &pos);
 
+// NNUE evaluation
+Value evaluate_nnue(Position &pos);
+
+// Hybrid evaluation (traditional + NNUE)
+Value evaluate_hybrid(Position &pos);
+
 }
 
 #endif // #ifndef EVALUATE_H_INCLUDED

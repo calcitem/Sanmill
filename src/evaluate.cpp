@@ -9,6 +9,7 @@
 #include "thread.h"
 #include "position.h"
 #include "perfect_api.h"
+#include "nnue/nnue.h"
 
 namespace {
 
@@ -150,5 +151,43 @@ Value Evaluation::value() const
 
 Value Eval::evaluate(Position &pos)
 {
+    // Use NNUE evaluation if available and enabled
+    if (NNUE::is_nnue_available() && Options["UseNNUE"]) {
+        return evaluate_nnue(pos);
+    }
+    
+    // Fall back to traditional evaluation
     return Evaluation(pos).value();
+}
+
+Value Eval::evaluate_nnue(Position &pos)
+{
+    Value nnue_value = NNUE::nnue_evaluate(pos);
+    
+    // If NNUE evaluation fails, fall back to traditional
+    if (nnue_value == VALUE_NONE) {
+        return Evaluation(pos).value();
+    }
+    
+    return nnue_value;
+}
+
+Value Eval::evaluate_hybrid(Position &pos)
+{
+    Value traditional_value = Evaluation(pos).value();
+    Value nnue_value = NNUE::nnue_evaluate(pos);
+    
+    // If NNUE is not available, use traditional only
+    if (nnue_value == VALUE_NONE) {
+        return traditional_value;
+    }
+    
+    // Blend traditional and NNUE evaluations
+    // Weight can be adjusted based on position type or game phase
+    int nnue_weight = static_cast<int>(Options["NNUEWeight"]);  // 0-100
+    int traditional_weight = 100 - nnue_weight;
+    
+    Value blended = (nnue_value * nnue_weight + traditional_value * traditional_weight) / 100;
+    
+    return blended;
 }

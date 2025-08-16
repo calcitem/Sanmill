@@ -14,6 +14,7 @@
 #include "engine_controller.h"
 #include "search_engine.h"
 #include "self_play.h"
+#include "nnue/nnue_training.h"
 
 #ifdef FLUTTER_UI
 #include "base.h"
@@ -131,7 +132,7 @@ void UCI::loop(int argc, char *argv[])
 
         else if (token == "go" || token == "position" ||
                  token == "ucinewgame" || token == "d" || token == "compiler" ||
-                 token == "analyze") {
+                 token == "analyze" || token == "generate_nnue_data") {
             // Pass the entire command to EngineController
             engineController.handleCommand(cmd, pos);
         }
