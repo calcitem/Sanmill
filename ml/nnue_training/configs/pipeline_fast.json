@@ -6,7 +6,7 @@
   "pipeline": true,
   
   "engine": "../../sanmill",
-  "perfect-db": "/path/to/perfect/database",
+  "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
   "output-dir": "./nnue_output_fast",
   "positions": 50000,
   "threads": 0,

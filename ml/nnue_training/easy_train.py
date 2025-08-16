@@ -419,6 +419,10 @@ if __name__ == '__main__':
         config["output"] = f"models/nnue_model_{preset}_{timestamp}.bin"
         config["checkpoint_path"] = f"models/checkpoint_{preset}_{timestamp}.pth"
         
+        # Perfect 数据库配置
+        config["engine"] = "../../sanmill"
+        config["perfect_db"] = "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
+        
         config["plot"] = True
         config["save_checkpoint"] = True
         config["checkpoint_interval"] = 10  # 每10个epoch保存一次检查点
