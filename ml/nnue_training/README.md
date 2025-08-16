@@ -59,27 +59,31 @@ make # or your preferred build method
 
 ## Usage
 
-### Step 1: Generate Training Data (Parallel)
+### Step 1: Generate Training Data (Perfect DB Direct)
 
-Generate training data using the Perfect Database with parallelization:
+Generate training data using the Perfect Database DLL directly (no engine executable required):
 
 ```bash
 python generate_training_data.py \
-    --engine ../../sanmill \
+    --perfect-db /path/to/perfect/database \
     --output training_data.txt \
     --positions 100000 \
-    --perfect-db /path/to/perfect/database \
-    --threads 8 \
     --validate
 ```
 
 Parameters:
-- `--engine`: Path to the Sanmill executable
-- `--output`: Output file for training data
+- `--perfect-db`: Path to Perfect Database directory (required)
+- `--output`: Output file for training data (default: training_data.txt)
 - `--positions`: Number of positions to generate (default: 50000)
-- `--perfect-db`: Path to Perfect Database directory
-- `--threads`: Number of threads for parallel generation (0=auto-detect)
+- `--threads`: Number of threads (kept for compatibility, currently unused)
 - `--validate`: Validate the generated data
+- `--engine`: Legacy parameter (deprecated, ignored)
+
+**Key Improvements:**
+- ✅ **No Engine Dependency**: Directly calls `perfect_db.dll` via Python ctypes
+- ✅ **Better Performance**: Eliminates subprocess overhead
+- ✅ **Simpler Setup**: No need to build or configure engine executable
+- ✅ **More Reliable**: Direct API calls instead of parsing engine output
 
 ## Training Modes
 

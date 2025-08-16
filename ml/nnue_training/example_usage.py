@@ -18,8 +18,9 @@ def main():
         print("Error: Please run this script from the ml/nnue_training/ directory")
         return 1
     
-    print("1. Generate Training Data")
-    print("   Command: python generate_training_data.py --engine ../../sanmill --output training_data.txt --positions 10000")
+    print("1. Generate Training Data (NEW: Using Perfect DB DLL directly)")
+    print("   Command: python generate_training_data.py --perfect-db /path/to/perfect/db --output training_data.txt --positions 10000")
+    print("   Note: No longer requires sanmill executable - uses Perfect DB DLL directly")
     print()
     
     print("2. Train NNUE Model")

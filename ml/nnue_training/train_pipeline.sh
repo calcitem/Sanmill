@@ -6,26 +6,19 @@
 set -e  # Exit on any error
 
 # Configuration
-ENGINE_PATH="../../../sanmill"  # Adjust path to your engine
 PERFECT_DB_PATH="."  # Adjust path to Perfect Database
 TRAINING_POSITIONS=500000
 MODEL_OUTPUT="nnue_model.bin"
 TRAINING_DATA="training_data.txt"
 
-echo "=== Sanmill NNUE Training Pipeline ==="
-echo "Engine: $ENGINE_PATH"
+echo "=== Sanmill NNUE Training Pipeline (Perfect DB Direct) ==="
 echo "Perfect DB: $PERFECT_DB_PATH"
 echo "Training positions: $TRAINING_POSITIONS"
+echo "Note: Now using Perfect DB DLL directly, no engine executable required"
 echo
 
 # Check dependencies
 echo "Checking dependencies..."
-
-if [ ! -f "$ENGINE_PATH" ]; then
-    echo "Error: Engine not found at $ENGINE_PATH"
-    echo "Please build the engine first or adjust the path"
-    exit 1
-fi
 
 if [ ! -d "$PERFECT_DB_PATH" ]; then
     echo "Error: Perfect Database not found at $PERFECT_DB_PATH"
@@ -46,12 +39,12 @@ echo
 # Step 1: Generate training data
 echo "=== Step 1: Generating Training Data ==="
 echo "This may take a while depending on the number of positions..."
+echo "Using Perfect DB DLL directly for optimal performance..."
 
 python3 generate_training_data.py \
-    --engine "$ENGINE_PATH" \
+    --perfect-db "$PERFECT_DB_PATH" \
     --output "$TRAINING_DATA" \
     --positions $TRAINING_POSITIONS \
-    --perfect-db "$PERFECT_DB_PATH" \
     --validate
 
 if [ $? -ne 0 ]; then
