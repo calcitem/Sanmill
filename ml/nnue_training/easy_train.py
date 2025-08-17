@@ -290,22 +290,28 @@ class EasyMultiRoundTrainer:
                 "--transfer-lr-scale", str(round_config["transfer-lr-scale"])
             ])
         
-        self.logger.info(f"⚡ 执行训练命令...")
+        self.logger.info(f"⚡ 开始执行第 {round_num} 轮训练...")
+        self.logger.info(f"⏰ 预计训练时间: {round_config['epochs']} 轮次，约 {round_config['epochs'] * round_config['positions'] / 50000:.0f} 分钟")
         
         # 执行训练
         round_start_time = time.time()
         
         try:
+            # 使用实时输出而不是捕获输出
+            self.logger.info(f"📋 执行命令: {' '.join(cmd)}")
+            self.logger.info("=" * 50)
+            
             result = subprocess.run(
                 cmd, 
                 cwd=self.project_root,
-                capture_output=True,
+                # 不捕获输出，让训练过程实时显示
                 text=True,
                 encoding='utf-8'
             )
             
             round_time = time.time() - round_start_time
             
+            self.logger.info("=" * 50)
             if result.returncode == 0:
                 self.logger.info(f"✅ 第 {round_num} 轮训练完成，耗时: {round_time/60:.1f} 分钟")
                 
@@ -325,8 +331,7 @@ class EasyMultiRoundTrainer:
                 return True
                 
             else:
-                self.logger.error(f"❌ 第 {round_num} 轮训练失败")
-                self.logger.error(f"错误输出: {result.stderr}")
+                self.logger.error(f"❌ 第 {round_num} 轮训练失败，返回码: {result.returncode}")
                 return False
                 
         except Exception as e:
@@ -462,15 +467,26 @@ class EasyMultiRoundTrainer:
         self.logger.info(f"📅 开始时间: {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}")
         self.logger.info(f"🔢 计划轮次: {max_rounds}")
         self.logger.info(f"📁 输出目录: {self.output_dir}")
+        self.logger.info(f"🎯 Perfect DB: {self.config.get('perfect-db', 'N/A')}")
+        self.logger.info(f"💾 初始批量大小: {self.config.get('batch-size', 4096)}")
+        self.logger.info(f"📊 初始位置数量: {self.config.get('positions', 30000):,}")
+        self.logger.info("")
         
         # 执行多轮训练
         for round_num in range(1, max_rounds + 1):
             self.current_round = round_num
             
+            self.logger.info(f"🔄 准备开始第 {round_num}/{max_rounds} 轮训练...")
+            
             success = self._run_single_round(round_num)
             if not success:
                 self.logger.error(f"❌ 第 {round_num} 轮训练失败，停止多轮训练")
                 break
+            
+            # 轮次间的分隔
+            if round_num < max_rounds:
+                self.logger.info(f"\n⏸️  第 {round_num} 轮完成，准备下一轮...")
+                time.sleep(2)  # 短暂暂停，让用户看到进度
         
         # 保存训练总结
         self._save_training_summary()
