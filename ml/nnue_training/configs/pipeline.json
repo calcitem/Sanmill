@@ -8,7 +8,7 @@
   "engine": null,
   "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
   "output-dir": "./nnue_output",
-  "positions": 500000,
+  "positions": 500,
   "threads": 0,
   
   "epochs": 300,

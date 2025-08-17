@@ -114,9 +114,14 @@ def print_statistics_tables(stats: dict, valid_positions: int, discarded_positio
         print("\n┌─────────────────────────────────────────────────────────────────────────────┐")
         print("│                            ERROR BREAKDOWN                                  │")
         print("├─────────────────────────────────────────────────────────────────────────────┤")
+        print("│ Error Type               │      Count │ % of Total │ % of Errors        │")
+        print("├─────────────────────────────────────────────────────────────────────────────┤")
         for error_type, count in sorted(stats['error_types'].items(), key=lambda x: x[1], reverse=True):
-            percentage = count / discarded_positions * 100 if discarded_positions > 0 else 0
-            print(f"│ {error_type:<24} │ {count:>10,} │ {percentage:>6.1f}%          │")
+            # Show percentage relative to total positions processed
+            percentage_of_total = count / max(1, total_positions) * 100
+            # Show percentage within error types (for reference)
+            percentage_of_errors = count / max(1, discarded_positions) * 100
+            print(f"│ {error_type:<24} │ {count:>10,} │ {percentage_of_total:>9.1f}% │ {percentage_of_errors:>16.1f}% │")
         print("└─────────────────────────────────────────────────────────────────────────────┘")
     
     print("\n" + "="*80)
@@ -219,47 +224,115 @@ def extract_features_from_board(board: Board, player: int) -> List[float]:
 
 def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -> List[Tuple[Board, int]]:
     """
-    Generate random game positions by playing random games from the initial position.
+    Generate random game positions following Nine Men's Morris actual game distribution.
+    Uses stratified sampling to ensure diverse position types with realistic proportions.
     Returns list of (board, current_player) tuples.
     """
     positions = []
     attempts = 0
-    max_attempts = num_samples * 3  # Allow some failed attempts
+    max_attempts = num_samples * 3
     
-    logger.info(f"Sampling {num_samples} random positions...")
+    # Define game phase distributions based on actual Nine Men's Morris games
+    phase_distribution = {
+        'early_placement': 0.20,    # Pieces 0-12: opening placement phase
+        'late_placement': 0.25,     # Pieces 13-18: late placement + early moves  
+        'midgame': 0.35,           # Main tactical phase with moves and captures
+        'endgame': 0.20            # Few pieces remaining, endgame tactics
+    }
     
-    while len(positions) < num_samples and attempts < max_attempts:
+    # Track samples per phase
+    phase_targets = {phase: int(num_samples * ratio) for phase, ratio in phase_distribution.items()}
+    phase_counts = {phase: 0 for phase in phase_targets.keys()}
+    
+    logger.info(f"Sampling {num_samples} positions with realistic game distribution:")
+    for phase, target in phase_targets.items():
+        logger.info(f"  {phase}: {target} positions ({phase_distribution[phase]*100:.0f}%)")
+    
+    while sum(phase_counts.values()) < num_samples and attempts < max_attempts:
         attempts += 1
+        
+        # Choose target phase based on remaining needs
+        available_phases = [p for p, count in phase_counts.items() 
+                          if count < phase_targets[p]]
+        if not available_phases:
+            break
+            
+        target_phase = random.choice(available_phases)
+        
+        # Generate position for target phase
         board = game.getInitBoard()
         player = 1
         
-        # Play random moves for a random number of plies
-        num_plies = random.randint(10, max_plies)
+        # Define ply ranges for each phase
+        if target_phase == 'early_placement':
+            num_plies = random.randint(2, 12)
+        elif target_phase == 'late_placement':
+            num_plies = random.randint(13, 25)
+        elif target_phase == 'midgame':
+            num_plies = random.randint(20, 60)
+        else:  # endgame
+            num_plies = random.randint(40, max_plies)
         
-        for _ in range(num_plies):
-            # Check if game ended
+        # Play random game
+        game_ended = False
+        for ply in range(num_plies):
             if game.getGameEnded(board, player) != 0:
+                game_ended = True
                 break
                 
-            # Get valid moves
             valid_moves = game.getValidMoves(board, player)
             legal_actions = np.where(valid_moves == 1)[0]
             
             if len(legal_actions) == 0:
+                game_ended = True
                 break
                 
-            # Choose random action
             action = random.choice(legal_actions)
             board, player = game.getNextState(board, player, action)
         
-        # Filter out positions that are too early or problematic
-        if board.put_pieces >= 8:  # At least some pieces placed
-            positions.append((board, player))
+        # Validate position matches target phase
+        w_count = board.count(1)
+        b_count = board.count(-1)
+        total_pieces = w_count + b_count
         
-        if len(positions) % 1000 == 0 and len(positions) > 0:
-            logger.info(f"Sampled {len(positions)} positions...")
+        phase_valid = False
+        if target_phase == 'early_placement' and board.put_pieces <= 12 and total_pieces >= 4:
+            phase_valid = True
+        elif target_phase == 'late_placement' and 10 <= board.put_pieces <= 18 and total_pieces >= 6:
+            phase_valid = True
+        elif target_phase == 'midgame' and total_pieces >= 8 and w_count >= 3 and b_count >= 3:
+            phase_valid = True
+        elif target_phase == 'endgame' and 4 <= total_pieces <= 10 and w_count >= 2 and b_count >= 2:
+            phase_valid = True
+        
+        # Accept position with some tolerance for phase boundaries
+        if phase_valid or (not game_ended and total_pieces >= 4):
+            # Apply balanced acceptance rate - stricter for overrepresented phases
+            current_ratio = phase_counts[target_phase] / max(1, sum(phase_counts.values()))
+            target_ratio = phase_distribution[target_phase]
+            
+            # Higher acceptance rate if we're behind target, lower if ahead
+            acceptance_rate = min(0.8, target_ratio / max(0.1, current_ratio))
+            
+            if random.random() < acceptance_rate:
+                positions.append((board, player))
+                phase_counts[target_phase] += 1
+        
+        # Progress logging
+        total_generated = sum(phase_counts.values())
+        if total_generated % 1000 == 0 and total_generated > 0:
+            logger.info(f"Generated {total_generated}/{num_samples} positions")
+            for phase, count in phase_counts.items():
+                percentage = count / max(1, total_generated) * 100
+                logger.info(f"  {phase}: {count} ({percentage:.1f}%)")
     
-    logger.info(f"Generated {len(positions)} random positions from {attempts} attempts")
+    total_generated = sum(phase_counts.values())
+    logger.info(f"Final distribution from {attempts} attempts:")
+    for phase, count in phase_counts.items():
+        percentage = count / max(1, total_generated) * 100
+        target_pct = phase_distribution[phase] * 100
+        logger.info(f"  {phase}: {count}/{phase_targets[phase]} ({percentage:.1f}%, target {target_pct:.1f}%)")
+    
     return positions
 
 def generate_training_data_with_perfect_db(perfect_db_path: str, 

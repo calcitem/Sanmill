@@ -436,10 +436,18 @@ if __name__ == '__main__':
                 # 管道模式：保持原始格式，train_nnue.py 会直接处理
                 config = raw_config.copy()
                 
-                # 设置引擎为 null 以使用直接的 Perfect DB 生成方法
-                if 'engine' in config:
-                    config['engine'] = None
-                    print(f"  🔄 设置引擎为 null，使用直接 Perfect DB 数据生成")
+                # 强制要求引擎设置为 null
+                if 'engine' not in config:
+                    print(f"❌ 配置文件缺少必需字段: engine")
+                    print(f"   请在配置文件中添加: \"engine\": null")
+                    return None
+                elif config['engine'] is not None:
+                    print(f"❌ 配置文件中 engine 必须设置为 null")
+                    print(f"   当前值: {config['engine']}")
+                    print(f"   请修改为: \"engine\": null")
+                    return None
+                else:
+                    print(f"  ✅ 引擎已正确设置为 null，将使用直接 Perfect DB 数据生成")
                 
                 # 添加用于显示的 training 信息
                 config['training'] = {
@@ -453,6 +461,17 @@ if __name__ == '__main__':
                 print(f"  🔄 保持 train_nnue.py 管道模式配置格式")
                 return config
             else:
+                # 非管道模式也必须检查 engine 设置
+                if 'engine' not in raw_config:
+                    print(f"❌ 配置文件缺少必需字段: engine")
+                    print(f"   请在配置文件中添加: \"engine\": null")
+                    return None
+                elif raw_config['engine'] is not None:
+                    print(f"❌ 配置文件中 engine 必须设置为 null")
+                    print(f"   当前值: {raw_config['engine']}")
+                    print(f"   请修改为: \"engine\": null")
+                    return None
+                
                 # 非管道模式：转换为 easy_train 格式
                 config = {
                     'pipeline': False,
@@ -475,7 +494,7 @@ if __name__ == '__main__':
                 if 'output' in raw_config:
                     config['output'] = raw_config['output']
                 
-                print(f"  🔄 已转换为 easy_train 格式配置")
+                print(f"  ✅ 引擎已正确设置为 null，已转换为 easy_train 格式配置")
                 return config
             
         except Exception as e:
@@ -647,6 +666,45 @@ if __name__ == '__main__':
             if process.returncode == 0:
                 print("  " + "=" * 50)
                 print("  ✅ 训练完成!")
+                
+                # Auto-generate training visualization plots
+                try:
+                    from auto_plot import auto_generate_plots
+                    
+                    # Look for CSV files in common locations
+                    csv_locations = [
+                        self.project_root / "nnue_output" / "plots" / "training_metrics.csv",  # Primary location
+                        self.project_root / "plots" / "training_metrics.csv",  # Legacy fallback
+                        self.project_root / "training_metrics.csv"  # Root fallback
+                    ]
+                    
+                    csv_found = None
+                    for csv_path in csv_locations:
+                        if csv_path.exists():
+                            csv_found = csv_path
+                            break
+                    
+                    if csv_found:
+                        print(f"\n📈 生成训练可视化图表...")
+                        success = auto_generate_plots(
+                            csv_file=str(csv_found),
+                            output_dir=str(csv_found.parent),
+                            comprehensive_only=False
+                        )
+                        if success:
+                            print(f"  ✅ 训练图表已生成到: {csv_found.parent}")
+                            print(f"  🔍 可查看以下文件:")
+                            print(f"     • training_analysis_comprehensive.png")
+                            print(f"     • loss_convergence_analysis.png") 
+                            print(f"     • performance_summary.png")
+                        else:
+                            print(f"  ⚠️  图表生成失败")
+                    else:
+                        print(f"  ℹ️  未找到训练 CSV 数据，跳过图表生成")
+                        
+                except Exception as e:
+                    print(f"  ⚠️  自动图表生成失败: {e}")
+                
                 return True
             else:
                 print("  " + "=" * 50)
@@ -664,7 +722,15 @@ if __name__ == '__main__':
 
     def find_trained_model(self):
         """查找训练好的模型"""
+        # 检查 models 目录
         model_files = list(self.models_dir.glob("*.bin")) + list(self.models_dir.glob("*.pth"))
+        
+        if not model_files:
+            # 检查 nnue_output 目录（管道模式输出）
+            nnue_output_dir = self.project_root / "nnue_output"
+            if nnue_output_dir.exists():
+                model_files = list(nnue_output_dir.glob("*.bin")) + list(nnue_output_dir.glob("*.pth"))
+        
         if not model_files:
             # 也检查当前目录
             model_files = list(self.project_root.glob("nnue_model*.bin")) + list(self.project_root.glob("nnue_model*.pth"))
@@ -736,7 +802,7 @@ if __name__ == '__main__':
             
     def cleanup_temp_files(self):
         """清理临时文件"""
-        temp_patterns = ["easy_train_*_config.json", "temp_config_*.json", "temp_updated_config_*.json", "training_data_*.txt", "*.tmp"]
+        temp_patterns = ["easy_train_*_config.json", "training_data_*.txt", "*.tmp"]
         
         print("\n🧹 清理临时文件...")
         cleaned = 0
@@ -809,21 +875,19 @@ if __name__ == '__main__':
             # 5. 处理配置文件
             if args.config:
                 # 使用指定的配置文件
+                config_path = Path(args.config)
                 config = self.load_config_file(args.config)
                 if config is None:
                     return False
                     
-                # 处理设备设置
+                # 检查设备设置是否需要警告
                 if args.gpu and config.get('device', 'auto') == 'auto':
-                    config['device'] = 'cuda' if (torch and torch.cuda.is_available()) else 'cpu'
+                    print(f"  ⚠️  注意: 配置文件设备为 'auto'，但指定了 --gpu 参数")
+                    print(f"      建议在配置文件中明确设置 \"device\": \"cuda\"")
                 elif config.get('device') == 'auto':
-                    config['device'] = 'cuda' if (torch and torch.cuda.is_available()) else 'cpu'
-                    
-                # 保存配置到临时文件
-                config_path = self.project_root / f"temp_config_{time.strftime('%Y%m%d_%H%M%S')}.json"
-                with open(config_path, 'w', encoding='utf-8') as f:
-                    json.dump(config, f, indent=2, ensure_ascii=False)
-                print(f"  ✅ 临时配置文件: {config_path}")
+                    print(f"  ℹ️  设备设置为 'auto'，将自动选择最佳设备")
+                
+                print(f"  ✅ 直接使用配置文件: {config_path}")
                 
             else:
                 # 使用交互式预设配置

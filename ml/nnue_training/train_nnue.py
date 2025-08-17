@@ -1585,6 +1585,26 @@ def main():
             visualizer.save_metrics_csv()
         
         logger.info(f"Training visualizations saved to {args.plot_dir}")
+        
+        # Auto-generate additional comprehensive plots from CSV
+        try:
+            from auto_plot import auto_generate_plots
+            csv_path = Path(args.plot_dir) / "training_metrics.csv"
+            if csv_path.exists():
+                logger.info("Generating additional comprehensive visualizations...")
+                success = auto_generate_plots(
+                    csv_file=str(csv_path),
+                    output_dir=args.plot_dir,
+                    comprehensive_only=False
+                )
+                if success:
+                    logger.info("Additional visualizations generated successfully!")
+                else:
+                    logger.warning("Failed to generate additional visualizations")
+            else:
+                logger.warning(f"CSV file not found: {csv_path}")
+        except Exception as e:
+            logger.warning(f"Could not generate additional plots: {e}")
     
     # Pipeline Mode: Final model validation
     if args.pipeline:
