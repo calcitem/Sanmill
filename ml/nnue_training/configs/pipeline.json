@@ -8,6 +8,7 @@
   "engine": null,
   "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
   "output-dir": "./nnue_output",
+  "output": "./models/nnue_model.bin",
   "positions": 500,
   "threads": 0,
   
@@ -18,7 +19,7 @@
   "lr-auto-scale": true,
   
   "feature-size": 115,
-  "hidden-size": 512,
+  "hidden-size": 256,
   "val-split": 0.1,
   
   "device": "auto",

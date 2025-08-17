@@ -769,7 +769,7 @@ def validate_environment(engine_path: str, perfect_db_path: str) -> bool:
     
     # Check for required database files (basic validation)
     db_files_found = any(
-        f.endswith(('.db', '.dat', '.bin', '.idx')) 
+        f.endswith(('.db', '.dat', '.bin', '.idx', '.sec2', '.secval', '.statistics')) 
         for f in os.listdir(perfect_db_path)
     )
     
@@ -922,6 +922,10 @@ def validate_final_model(model_path: str, engine_path: str) -> bool:
     
     # Basic engine connectivity test (if possible)
     try:
+        if engine_path is None:
+            logger.info("Engine path not specified (skipping compatibility test)")
+            return True
+            
         cmd = [engine_path, "test", "model", model_path]
         result = subprocess.run(
             cmd, 
@@ -1050,7 +1054,7 @@ def train_epoch(model: nn.Module,
                 criterion: nn.Module,
                 device: torch.device,
                 max_grad_norm: float = 1.0,
-                scaler: torch.cuda.amp.GradScaler = None) -> Tuple[float, float]:
+                scaler: torch.amp.GradScaler = None) -> Tuple[float, float]:
     """Train for one epoch with gradient clipping for stability and gradient norm tracking"""
     model.train()
     total_loss = 0.0
@@ -1063,7 +1067,7 @@ def train_epoch(model: nn.Module,
         side_to_move = batch['side_to_move'].to(device, non_blocking=True)
         
         # Enable mixed precision for faster training on modern GPUs
-        with torch.cuda.amp.autocast(enabled=device.type == 'cuda'):
+        with torch.amp.autocast('cuda', enabled=device.type == 'cuda'):
             outputs = model(features, side_to_move)
             loss = criterion(outputs, targets)
         
@@ -1193,7 +1197,7 @@ def main():
                        help='Learning rate scheduler type')
     parser.add_argument('--lr-auto-scale', action='store_true', help='Automatically scale LR based on batch size')
     parser.add_argument('--feature-size', type=int, default=115, help='Input feature size')
-    parser.add_argument('--hidden-size', type=int, default=512, help='Hidden layer size')
+    parser.add_argument('--hidden-size', type=int, default=256, help='Hidden layer size')
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
@@ -1467,7 +1471,7 @@ def main():
     max_grad_norm = 1.0
     
     # Initialize gradient scaler for mixed precision training
-    scaler = torch.cuda.amp.GradScaler() if device.type == 'cuda' else None
+    scaler = torch.amp.GradScaler('cuda') if device.type == 'cuda' else None
     
     best_val_loss = float('inf')
     patience_counter = 0

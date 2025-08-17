@@ -21,6 +21,18 @@ import subprocess
 import argparse
 from pathlib import Path
 import logging
+import io
+
+# Fix Unicode encoding issues on Windows
+if sys.platform == 'win32':
+    try:
+        # Set console encoding to UTF-8
+        os.system('chcp 65001 >nul 2>&1')
+        # Set stdout and stderr to UTF-8
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+    except Exception:
+        pass  # Fallback silently if encoding setup fails
 
 try:
     import torch
