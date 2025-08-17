@@ -33,6 +33,25 @@ from train_nnue import MillNNUE
 from config_loader import load_config, merge_config_with_args
 from game.Game import Game
 
+# Import for standard notation
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'alphazero'))
+try:
+    from game.engine_adapter import move_to_engine_token
+except ImportError:
+    # Fallback if alphazero engine_adapter not available
+    def move_to_engine_token(move):
+        letters = "abcdefg"
+        if len(move) == 2:
+            x, y = move
+            return letters[x] + str(7 - y)
+        elif len(move) == 4:
+            x0, y0, x1, y1 = move
+            from_coord = letters[x0] + str(7 - y0)
+            to_coord = letters[x1] + str(7 - y1)
+            return f"{from_coord}-{to_coord}"
+        else:
+            return "?"
+
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -344,15 +363,9 @@ class NNUEGameAdapter:
             
     def is_game_over(self) -> Tuple[bool, Optional[str]]:
         """Check if game is over - reuse ml/game logic"""
-        game_result = self.game.getGameEnded(self.board, self.current_player)
-        if abs(game_result) > 1e-6:
-            # Game is over
-            if game_result > 0:
-                reason = "current_player_wins"
-            elif game_result < 0:
-                reason = "current_player_loses"
-            else:
-                reason = "draw"
+        # Use the more comprehensive check_game_over_conditions instead of getGameEnded
+        is_over, result, reason = self.board.check_game_over_conditions(self.current_player)
+        if is_over:
             return True, reason
         return False, None
         
@@ -801,26 +814,40 @@ class NNUEGameGUI:
                 fill="black", font=("Arial", 12, "bold"), anchor="center"
             )
     
-    def move_to_notation(self, move, player_name):
-        """Convert move to standard notation"""
+    def move_to_notation(self, move, player_name, is_removal=False):
+        """Convert move to standard notation using alphazero's engine notation"""
         if not move or len(move) < 2:
             return ""
-            
-        letters = "abcdefg"
         
-        def pos_to_coord(x, y):
-            return letters[x] + str(7 - y)
-        
-        if len(move) == 2 or (len(move) == 4 and move[0] == move[2] and move[1] == move[3]):
-            coord = pos_to_coord(move[0], move[1])
-            if self.game_state.phase == 3:
-                return f"Last: {player_name} removes {coord}"
+        try:
+            # Convert to standard engine notation
+            if len(move) == 4 and move[0] == move[2] and move[1] == move[3]:
+                # Convert 4-tuple place/remove to 2-tuple for engine_adapter
+                notation = move_to_engine_token([move[0], move[1]])
             else:
-                return f"Last: {player_name} places {coord}"
-        else:
-            from_coord = pos_to_coord(move[0], move[1])
-            to_coord = pos_to_coord(move[2], move[3])
-            return f"Last: {player_name} {from_coord}-{to_coord}"
+                notation = move_to_engine_token(move)
+            
+            # Add capture prefix only for actual removal moves
+            if is_removal:
+                notation = f"x{notation}"
+            
+            return f"Last: {player_name} {notation}"
+        except Exception:
+            # Fallback to simple coordinate display
+            letters = "abcdefg"
+            def pos_to_coord(x, y):
+                return letters[x] + str(7 - y)
+            
+            if len(move) == 2 or (len(move) == 4 and move[0] == move[2] and move[1] == move[3]):
+                coord = pos_to_coord(move[0], move[1])
+                if is_removal:
+                    return f"Last: {player_name} removes {coord}"
+                else:
+                    return f"Last: {player_name} places {coord}"
+            else:
+                from_coord = pos_to_coord(move[0], move[1])
+                to_coord = pos_to_coord(move[2], move[3])
+                return f"Last: {player_name} {from_coord}-{to_coord}"
     
     def get_human_perspective_evaluation(self) -> float:
         """计算从 Human 视角下的局面评估值"""
@@ -947,7 +974,17 @@ class NNUEGameGUI:
                     if self.game_state.make_move(move):
                         # Record last move
                         player_name = "Human"
-                        self.last_move_text = self.move_to_notation(move, player_name)
+                        self.last_move_text = self.move_to_notation(move, player_name, is_removal=True)
+                        
+                        # Log Human move with standard notation
+                        try:
+                            notation = move_to_engine_token([move[0], move[1]])
+                            notation = f"x{notation}"  # Add capture prefix for removal
+                            logger.info(f"Human move: {notation}")
+                        except Exception:
+                            x1, y1, x2, y2 = move
+                            logger.info(f"Human move: ({x1},{y1}) -> ({x2},{y2}) [remove]")
+                        
                         self.draw_board()
                         self.update_status()
                         self.update_evaluation_display()
@@ -962,7 +999,20 @@ class NNUEGameGUI:
                 if self.game_state.make_move(move):
                     # Record last move
                     player_name = "Human"
-                    self.last_move_text = self.move_to_notation(move, player_name)
+                    self.last_move_text = self.move_to_notation(move, player_name, is_removal=False)
+                    
+                    # Log Human move with standard notation
+                    try:
+                        if len(move) == 4 and move[0] == move[2] and move[1] == move[3]:
+                            notation = move_to_engine_token([move[0], move[1]])
+                        else:
+                            notation = move_to_engine_token(move)
+                        # Don't add 'x' prefix for placement moves, even if they lead to capture phase
+                        logger.info(f"Human move: {notation}")
+                    except Exception:
+                        x1, y1, x2, y2 = move
+                        logger.info(f"Human move: ({x1},{y1}) -> ({x2},{y2})")
+                    
                     self.draw_board()
                     self.update_status()
                     self.update_evaluation_display()
@@ -984,7 +1034,17 @@ class NNUEGameGUI:
                     if self.game_state.make_move(move):
                         # Record last move
                         player_name = "Human"
-                        self.last_move_text = self.move_to_notation(move, player_name)
+                        self.last_move_text = self.move_to_notation(move, player_name, is_removal=False)
+                        
+                        # Log Human move with standard notation
+                        try:
+                            notation = move_to_engine_token(move)
+                            # Don't add 'x' prefix for movement moves, even if they lead to capture phase
+                            logger.info(f"Human move: {notation}")
+                        except Exception:
+                            x1, y1, x2, y2 = move
+                            logger.info(f"Human move: ({x1},{y1}) -> ({x2},{y2})")
+                        
                         self.selected_pos = None
                         self.draw_board()
                         self.update_status()
@@ -1014,24 +1074,42 @@ class NNUEGameGUI:
         def ai_move_thread():
             move = self.nnue_player.get_best_move(self.game_state)
             if move:
+                # Remember the phase before making the move to determine if it's a removal
+                phase_before_move = self.game_state.phase
                 self.game_state.make_move(move)
+                # Determine if this was a removal move based on pre-move phase and move pattern
+                is_removal = (phase_before_move == 3 and len(move) == 4 and move[0] == move[2] and move[1] == move[3])
+            else:
+                is_removal = False
             
             # Update GUI in main thread
-            self.root.after(0, lambda: self.after_ai_move(move))
+            self.root.after(0, lambda: self.after_ai_move(move, is_removal))
             
         thread = threading.Thread(target=ai_move_thread, daemon=True)
         thread.start()
         
-    def after_ai_move(self, move):
+    def after_ai_move(self, move, is_removal=False):
         """Update GUI after AI move"""
         # Record last move for AI
         if move:
             player_name = "AI"
-            self.last_move_text = self.move_to_notation(move, player_name)
-            x1, y1, x2, y2 = move
-            # Log AI move and search statistics
+            self.last_move_text = self.move_to_notation(move, player_name, is_removal=is_removal)
+            
+            # Log AI move with standard notation and search statistics
             search_stats = self.nnue_player.get_search_stats()
-            logger.info(f"AI move: ({x1},{y1}) -> ({x2},{y2}) | {search_stats}")
+            try:
+                if len(move) == 4 and move[0] == move[2] and move[1] == move[3]:
+                    notation = move_to_engine_token([move[0], move[1]])
+                else:
+                    notation = move_to_engine_token(move)
+                # Only add 'x' prefix for actual removal moves
+                if is_removal:
+                    notation = f"x{notation}"
+                logger.info(f"AI move: {notation} | {search_stats}")
+            except Exception:
+                x1, y1, x2, y2 = move
+                move_type = " [remove]" if is_removal else ""
+                logger.info(f"AI move: ({x1},{y1}) -> ({x2},{y2}){move_type} | {search_stats}")
         else:
             logger.info("AI has no valid moves")
             
@@ -1076,12 +1154,12 @@ class NNUEGameGUI:
         if is_over:
             self.game_over = True
             
-            # Determine winner based on game result
-            game_result = self.game_state.game.getGameEnded(self.game_state.board, self.game_state.current_player)
-            if abs(game_result) < 1e-4:
+            # Use check_game_over_conditions to get the actual result for determining winner
+            _, result, _ = self.game_state.board.check_game_over_conditions(self.game_state.current_player)
+            if abs(result) < 1e-4:
                 # Draw
                 self.messagebox.showinfo("Game Over", f"Game ended in a draw! Reason: {reason}")
-            elif game_result > 0:
+            elif result > 0:
                 # Current player wins
                 winner = current_player
                 self.messagebox.showinfo("Game Over", f"{winner} wins! Reason: {reason}")
