@@ -1436,14 +1436,14 @@ def main():
         else:
             elapsed_str = f"{total_elapsed/3600:.1f}h"
         
-        # Use progress bar style output to reduce log spam (ASCII-safe for Windows)
+        # Use simple percentage progress output
         progress_percent = ((epoch + 1) / args.epochs) * 100
-        filled_chars = int(progress_percent // 5)
-        progress_bar = "=" * filled_chars + "-" * (20 - filled_chars)
         
         # Only log every 10 epochs or important milestones
         if (epoch + 1) % 10 == 0 or epoch == 0 or epoch == args.epochs - 1:
-            logger.info(f"[{progress_bar}] {progress_percent:5.1f}% | "
+            # Clear any existing progress line before logging
+            print()  # Ensure clean line for logger output
+            logger.info(f"{progress_percent:5.1f}% | "
                        f"Epoch {epoch+1:3d}/{args.epochs} | "
                        f"Loss: T={train_loss:.0f} V={val_loss:.0f} | "
                        f"Acc: {val_accuracy:.3f} | "
@@ -1451,7 +1451,7 @@ def main():
                        f"Time: {epoch_time:.2f}s{eta_str}")
         else:
             # Print a simple progress indicator that overwrites itself
-            print(f"\r[{progress_bar}] {progress_percent:5.1f}% | Epoch {epoch+1:3d}/{args.epochs} | Loss: {val_loss:.0f} | Acc: {val_accuracy:.3f}", end="", flush=True)
+            print(f"\r{progress_percent:5.1f}% | Epoch {epoch+1:3d}/{args.epochs} | Loss: {val_loss:.0f} | Acc: {val_accuracy:.3f}", end="", flush=True)
         
         # Update visualization
         if visualizer:
@@ -1472,10 +1472,15 @@ def main():
             save_model_c_format(model, args.output)
             # Reduce model save logging to avoid spam
             if (epoch + 1) % 20 == 0 or epoch == args.epochs - 1:
+                # Clear progress line before logging model update (may already be cleared by main log)
+                if not ((epoch + 1) % 10 == 0 or epoch == 0 or epoch == args.epochs - 1):
+                    print()
                 logger.info(f"BEST: Model updated - Val Loss {val_loss:.0f} @ Epoch {epoch+1}")
         else:
             patience_counter += 1
             if patience_counter >= max_patience:
+                # Clear progress line before logging early stopping
+                print()
                 logger.info(f"Early stopping after {epoch+1} epochs")
                 break
     
