@@ -115,49 +115,49 @@ class MultiRoundTrainer:
     def _get_round_parameters(self, round_num: int) -> Dict[str, Any]:
         """根据轮次获取参数配置"""
         
-        # 定义多轮训练策略
+        # 定义多轮训练策略 - 使用极其保守的学习率
         strategies = {
             1: {  # 探索阶段
                 "positions": 30000,
                 "epochs": 80,
-                "lr": 0.003,
+                "lr": 0.0005,  # 极低初始学习率
                 "batch-size": 4096,
-                "_description": "探索阶段：较高学习率，快速收敛"
+                "_description": "探索阶段：极稳定学习率，彻底避免梯度爆炸"
             },
             2: {  # 稳定学习阶段
                 "positions": 50000, 
                 "epochs": 120,
-                "lr": 0.002,
+                "lr": 0.0004,  # 继续降低
                 "batch-size": 6144,
-                "_description": "稳定学习：平衡数据量和学习率"
+                "_description": "稳定学习：超保守学习率"
             },
             3: {  # 深化学习
                 "positions": 80000,
                 "epochs": 150,
-                "lr": 0.0015,
+                "lr": 0.0003,  # 更低
                 "batch-size": 8192,
-                "_description": "深化学习：增加数据量，降低学习率"
+                "_description": "深化学习：增加数据量，极低学习率"
             },
             4: {  # 精细调整
                 "positions": 100000,
                 "epochs": 180,
-                "lr": 0.001,
+                "lr": 0.00025,  # 非常保守
                 "batch-size": 8192,
-                "_description": "精细调整：大数据集，适中学习率"
+                "_description": "精细调整：大数据集，非常保守学习率"
             },
             5: {  # 优化阶段
                 "positions": 120000,
                 "epochs": 200,
-                "lr": 0.0008,
+                "lr": 0.0002,  # 极低学习率
                 "batch-size": 10240,
-                "_description": "优化阶段：最大数据集，较低学习率"
+                "_description": "优化阶段：最大数据集，极低学习率"
             },
             6: {  # 收敛阶段
                 "positions": 150000,
                 "epochs": 250,
-                "lr": 0.0005,
+                "lr": 0.00015,  # 最极低学习率
                 "batch-size": 10240,
-                "_description": "收敛阶段：超大数据集，最低学习率"
+                "_description": "收敛阶段：超大数据集，最极低学习率"
             }
         }
         

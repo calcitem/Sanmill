@@ -69,10 +69,11 @@ class MillNNUE(nn.Module):
         self._init_weights()
 
     def _init_weights(self):
-        """Initialize network weights using Kaiming He initialization."""
+        """Initialize network weights with improved numerical stability."""
         for m in self.modules():
             if isinstance(m, nn.Linear):
-                nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='relu')
+                # 使用更保守的初始化，避免梯度爆炸
+                nn.init.xavier_uniform_(m.weight, gain=0.5)  # 减小初始化范围
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0)
 
@@ -843,9 +844,26 @@ class MillDataset(Dataset):
         
         self._load_data(data_file, max_samples)
         
-        # Convert to tensors
+        # Convert to tensors with target normalization for numerical stability
         self.features = torch.tensor(self.features, dtype=torch.float32)
-        self.targets = torch.tensor(self.targets, dtype=torch.float32).unsqueeze(1)
+        raw_targets = torch.tensor(self.targets, dtype=torch.float32)
+        
+        # 归一化目标值以改善数值稳定性
+        target_mean = raw_targets.mean()
+        target_std = raw_targets.std()
+        
+        # 避免除零错误
+        if target_std > 1e-6:
+            self.targets = ((raw_targets - target_mean) / target_std).unsqueeze(1)
+            logger.info(f"目标值归一化: mean={target_mean:.2f}, std={target_std:.2f}")
+        else:
+            self.targets = raw_targets.unsqueeze(1)
+            logger.warning("目标值标准差过小，跳过归一化")
+            
+        # 保存归一化参数用于后续反归一化
+        self.target_mean = target_mean
+        self.target_std = target_std if target_std > 1e-6 else 1.0
+        
         self.side_to_move = torch.tensor(self.side_to_move, dtype=torch.long)
         
         logger.info(f"Loaded {len(self.features)} training samples")
@@ -996,7 +1014,7 @@ def train_epoch(model: nn.Module,
             
             # 检查是否因为无效梯度而跳过了更新
             if scaler.get_scale() < old_scale:
-                logger.warning("检测到梯度缩放因子降低，可能存在无效梯度")
+                logger.warning(f"梯度缩放因子从 {old_scale:.0f} 降低到 {scaler.get_scale():.0f}")
                 invalid_batches += 1
             
             # 记录梯度范数（即使是无效的也要记录，用于诊断）
@@ -1031,7 +1049,11 @@ def train_epoch(model: nn.Module,
         num_batches += 1
     
     if invalid_batches > 0:
-        logger.warning(f"训练过程中跳过了 {invalid_batches} 个无效批次")
+        # 只在无效批次较多时才警告，少量无效批次是正常的
+        if invalid_batches > num_batches * 0.05:  # 超过5%的批次无效才警告
+            logger.warning(f"训练过程中跳过了 {invalid_batches}/{num_batches} 个无效批次 ({invalid_batches/num_batches*100:.1f}%)")
+        else:
+            logger.debug(f"训练过程中跳过了 {invalid_batches}/{num_batches} 个无效批次 ({invalid_batches/num_batches*100:.1f}%)")
     
     if num_batches == 0:
         logger.error("所有训练批次都包含无效数据！")
@@ -1095,7 +1117,11 @@ def validate_epoch(model: nn.Module,
             num_batches += 1
     
     if invalid_batches > 0:
-        logger.warning(f"验证过程中跳过了 {invalid_batches} 个无效批次")
+        # 只在无效批次较多时才警告
+        if invalid_batches > num_batches * 0.05:  # 超过5%的批次无效才警告
+            logger.warning(f"验证过程中跳过了 {invalid_batches}/{num_batches} 个无效批次 ({invalid_batches/num_batches*100:.1f}%)")
+        else:
+            logger.debug(f"验证过程中跳过了 {invalid_batches}/{num_batches} 个无效批次 ({invalid_batches/num_batches*100:.1f}%)")
     
     if num_batches == 0:
         logger.error("所有验证批次都包含无效数据！")
@@ -1610,14 +1636,15 @@ def main():
             logger.error(f"❌ Failed to load pretrained model: {e}")
             logger.info("Continuing with random initialization...")
     
-    # Setup training with optimized components for high-performance hardware
-    # Use AdamW optimizer with weight decay for better generalization
+    # Setup training with improved numerical stability
+    # Use AdamW optimizer with conservative settings for stability
     optimizer = optim.AdamW(
         model.parameters(), 
         lr=args.lr,
-        weight_decay=1e-5,
+        weight_decay=1e-4,  # 增加权重衰减
         betas=(0.9, 0.999),
-        eps=1e-8
+        eps=1e-8,
+        amsgrad=True  # 使用 AMSGrad 变体提高稳定性
     )
     
     # Load optimizer state if available
@@ -1679,8 +1706,8 @@ def main():
         logger.info("Intermediate plotting disabled for optimal training performance")
         logger.info("Final plots will be generated after training completion")
     
-    # Use gradient clipping for stability with larger batch sizes
-    max_grad_norm = 1.0
+    # Use very aggressive gradient clipping for numerical stability
+    max_grad_norm = 0.25  # 非常严格的梯度裁剪
     
     # Initialize gradient scaler for mixed precision training
     scaler = torch.amp.GradScaler('cuda') if device.type == 'cuda' else None

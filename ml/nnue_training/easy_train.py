@@ -169,61 +169,69 @@ class EasyMultiRoundTrainer:
         # 基础配置
         round_config = self.config.copy()
         
-        # 轮次特定的训练策略
-        strategies = {
-            1: {
-                "positions": 30000,
-                "epochs": 80,
-                "lr": 0.003,
-                "batch-size": 4096,
-                "description": "探索阶段：快速收敛"
-            },
-            2: {
-                "positions": 50000,
-                "epochs": 120,
-                "lr": 0.002,
-                "batch-size": 6144,
-                "description": "稳定学习：平衡优化"
-            },
-            3: {
-                "positions": 80000,
-                "epochs": 150,
-                "lr": 0.0015,
-                "batch-size": 8192,
-                "description": "深化学习：增加数据"
-            },
-            4: {
-                "positions": 100000,
-                "epochs": 180,
-                "lr": 0.001,
-                "batch-size": 8192,
-                "description": "精细调整：大数据集"
-            },
-            5: {
-                "positions": 120000,
-                "epochs": 200,
-                "lr": 0.0008,
-                "batch-size": 10240,
-                "description": "优化阶段：降低学习率"
-            },
-            6: {
-                "positions": 150000,
-                "epochs": 250,
-                "lr": 0.0005,
-                "batch-size": 10240,
-                "description": "收敛阶段：最终优化"
-            }
-        }
-        
-        # 应用轮次策略
-        if round_num <= len(strategies):
-            strategy = strategies[round_num]
+        # 从配置文件中读取轮次策略，如果没有则使用默认策略
+        if "round_strategies" in self.config and str(round_num) in self.config["round_strategies"]:
+            # 使用配置文件中的策略
+            strategy = self.config["round_strategies"][str(round_num)].copy()
+            self.logger.info(f"使用配置文件中的第 {round_num} 轮策略")
         else:
-            # 超出预定义策略，使用最后一个策略并继续降低学习率
-            strategy = strategies[len(strategies)].copy()
-            strategy["lr"] *= (0.8 ** (round_num - len(strategies)))
-            strategy["description"] = f"扩展轮次 {round_num}：继续优化"
+            # 使用默认的轮次策略作为后备
+            default_strategies = {
+                1: {
+                    "positions": 30000,
+                    "epochs": 80,
+                    "lr": 0.0005,
+                    "batch-size": 4096,
+                    "description": "探索阶段：极稳定收敛"
+                },
+                2: {
+                    "positions": 50000,
+                    "epochs": 120,
+                    "lr": 0.0004,
+                    "batch-size": 6144,
+                    "description": "稳定学习：超保守优化"
+                },
+                3: {
+                    "positions": 80000,
+                    "epochs": 150,
+                    "lr": 0.0003,
+                    "batch-size": 8192,
+                    "description": "深化学习：增加数据"
+                },
+                4: {
+                    "positions": 100000,
+                    "epochs": 180,
+                    "lr": 0.00025,
+                    "batch-size": 8192,
+                    "description": "精细调整：大数据集"
+                },
+                5: {
+                    "positions": 120000,
+                    "epochs": 200,
+                    "lr": 0.0002,
+                    "batch-size": 10240,
+                    "description": "优化阶段：极低学习率"
+                },
+                6: {
+                    "positions": 150000,
+                    "epochs": 250,
+                    "lr": 0.00015,
+                    "batch-size": 10240,
+                    "description": "收敛阶段：最终微调"
+                }
+            }
+            
+            if round_num <= len(default_strategies):
+                strategy = default_strategies[round_num]
+                self.logger.info(f"使用默认的第 {round_num} 轮策略")
+            else:
+                # 超出预定义轮次，使用最后一轮的策略并继续降低学习率
+                strategy = default_strategies[len(default_strategies)].copy()
+                strategy["lr"] *= 0.8 ** (round_num - len(default_strategies))
+                strategy["description"] = f"扩展轮次 {round_num}：继续优化"
+                self.logger.info(f"使用扩展策略，学习率调整为 {strategy['lr']:.6f}")
         
+        # 应用策略到配置中
         round_config.update(strategy)
         
         # 设置输出路径

@@ -16,11 +16,11 @@
   "max_rounds": 6,
   "auto_transfer_learning": true,
   
-  "_comment_training": "基础训练参数 - 每轮会自动调整",
-  "positions": 500,
-  "epochs": 150,
-  "lr": 0.002,
-  "batch-size": 8192,
+  "_comment_training": "基础训练参数 - 会被轮次策略覆盖，这里是后备默认值",
+  "positions": 30000,
+  "epochs": 80,
+  "lr": 0.0005,
+  "batch-size": 4096,
   
   "lr-scheduler": "adaptive",
   "lr-auto-scale": false,
@@ -38,6 +38,16 @@
   "save-csv": true,
   "show-plots": false,
   
+  "_comment_additional_params": "训练脚本需要的其他参数",
+  "max-samples": null,
+  "resume-from": null,
+  "transfer-from": null,
+  "transfer-strategy": "full",
+  "transfer-lr-scale": 0.5,
+  "load-model-only": false,
+  "force-regenerate": false,
+  "validate-model": true,
+  
   "_hardware_requirements": {
     "_description": "硬件要求说明",
     "minimum_ram": "8GB",
@@ -46,21 +56,68 @@
     "disk_space": "10GB+"
   },
   
-  "_training_strategy": {
-    "_description": "多轮训练策略说明",
-    "round_1": "探索阶段：30k位置，80轮，lr=0.003，完全迁移",
-    "round_2": "稳定学习：50k位置，120轮，lr=0.002，完全迁移",
-    "round_3": "深化学习：80k位置，150轮，lr=0.0015，完全迁移",
-    "round_4": "精细调整：100k位置，180轮，lr=0.001，微调",
-    "round_5": "优化阶段：120k位置，200轮，lr=0.0008，微调",
-    "round_6": "收敛阶段：150k位置，250轮，lr=0.0005，微调"
+  "round_strategies": {
+    "_description": "多轮训练策略配置 - 可自定义每轮的具体参数",
+    "1": {
+      "positions": 30000,
+      "epochs": 80,
+      "lr": 0.0005,
+      "batch-size": 4096,
+      "description": "探索阶段：极稳定收敛"
+    },
+    "2": {
+      "positions": 50000,
+      "epochs": 120,
+      "lr": 0.0004,
+      "batch-size": 6144,
+      "description": "稳定学习：超保守优化"
+    },
+    "3": {
+      "positions": 80000,
+      "epochs": 150,
+      "lr": 0.0003,
+      "batch-size": 8192,
+      "description": "深化学习：增加数据"
+    },
+    "4": {
+      "positions": 100000,
+      "epochs": 180,
+      "lr": 0.00025,
+      "batch-size": 8192,
+      "description": "精细调整：大数据集"
+    },
+    "5": {
+      "positions": 120000,
+      "epochs": 200,
+      "lr": 0.0002,
+      "batch-size": 10240,
+      "description": "优化阶段：极低学习率"
+    },
+    "6": {
+      "positions": 150000,
+      "epochs": 250,
+      "lr": 0.00015,
+      "batch-size": 10240,
+      "description": "收敛阶段：最终微调"
+    }
   },
   
   "_usage_instructions": {
     "_description": "使用说明",
     "step_1": "修改 perfect-db 路径为你的 Perfect Database 目录",
-    "step_2": "根据硬件调整 batch-size 和 positions",
-    "step_3": "直接运行 python easy_train.py",
-    "step_4": "训练会自动完成 6 轮迭代，每轮使用迁移学习"
+    "step_2": "根据需要调整 round_strategies 中的学习率和其他参数",
+    "step_3": "根据硬件情况调整 batch-size (建议范围: 2048-10240)",
+    "step_4": "直接运行: python easy_train.py",
+    "step_5": "训练会自动完成 6 轮迭代，每轮使用迁移学习",
+    "note": "如果出现梯度爆炸警告，请降低相应轮次的学习率"
+  },
+  
+  "_learning_rate_guide": {
+    "_description": "学习率调整指南",
+    "stable_range": "推荐学习率范围: 0.0001 - 0.001",
+    "too_high_signs": "梯度爆炸、损失为 inf、大量无效批次警告",
+    "too_low_signs": "训练进展极慢、损失下降缓慢",
+    "adjustment_rule": "出现问题时，将学习率乘以 0.5-0.7 倍",
+    "current_strategy": "当前策略已经过优化，适合大多数情况"
   }
 }
