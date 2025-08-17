@@ -309,8 +309,25 @@ std::pair<sec_val, field2_t> Sector::extract_value(int i)
 
 void Sector::allocate_hash()
 {
+    // Calculate memory requirements before allocation
+    size_t estimated_memory = (1LL << (24 - W)) * sizeof(int);
+    if (estimated_memory > 100 * 1024 * 1024) { // > 100MB
+        LOG("Large memory allocation for %s: ~%.1f MB\n", fileName, estimated_memory / (1024.0 * 1024.0));
+    }
+    
+    LOG("Allocating hash table for %s (W=%d, B=%d, estimated: %.1f MB)...\n", 
+        fileName, W, B, estimated_memory / (1024.0 * 1024.0));
+    
+    auto start_time = std::chrono::high_resolution_clock::now();
+    
     // and read em_set (should be renamed)
     hash = new Hash(W, B, this);
+    
+    auto end_time = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    
+    LOG("Hash allocation completed for %s in %lld ms\n", fileName, duration.count());
+    
 #ifdef DD
     eval_size = hash->hash_count * eval_struct_size;
 #else

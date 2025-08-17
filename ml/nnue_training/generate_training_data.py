@@ -16,6 +16,15 @@ from typing import List, Tuple, Dict
 from tqdm import tqdm
 from collections import defaultdict
 
+# Optional psutil import for memory monitoring
+try:
+    import psutil
+    HAS_PSUTIL = True
+except ImportError:
+    HAS_PSUTIL = False
+    logger = logging.getLogger(__name__)
+    logger.warning("psutil not available - memory monitoring will be disabled")
+
 # Add parent directories to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
@@ -302,7 +311,8 @@ def scan_perfect_db_sectors(perfect_db_path: str) -> Dict[str, List[Tuple[int, i
 
 def generate_positions_from_sectors(pdb: 'PerfectDB', game: Game, 
                                   sectors_by_phase: Dict[str, List[Tuple[int, int, int, int]]],
-                                  num_samples: int) -> List[Tuple[Board, int]]:
+                                  num_samples: int, 
+                                  progress_callback=None) -> List[Tuple[Board, int]]:
     """
     Generate random positions by sampling from Perfect DB sectors directly.
     
@@ -369,6 +379,11 @@ def generate_positions_from_sectors(pdb: 'PerfectDB', game: Game,
                     # Random side to move
                     player = random.choice([1, -1])
                     phase_positions.append((board, player))
+                    
+                    # Update progress if callback provided
+                    if progress_callback:
+                        total_generated = len(positions) + len(phase_positions)
+                        progress_callback(total_generated)
                     
             except Exception as e:
                 logger.debug(f"Failed to generate position for sector std_{W}_{B}_{WF}_{BF}: {e}")
@@ -615,8 +630,21 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
     pdb = PerfectDB()
     
     try:
+        # Monitor memory usage during initialization (if psutil available)
+        if HAS_PSUTIL:
+            process = psutil.Process()
+            initial_memory = process.memory_info().rss / 1024 / 1024  # MB
+            logger.info(f"Initial memory usage: {initial_memory:.1f} MB")
+        
         pdb.init(perfect_db_path)
-        logger.info(f"Perfect DB initialized with path: {perfect_db_path}")
+        
+        if HAS_PSUTIL:
+            after_init_memory = process.memory_info().rss / 1024 / 1024  # MB
+            logger.info(f"Perfect DB initialized with path: {perfect_db_path}")
+            logger.info(f"Memory after init: {after_init_memory:.1f} MB (delta: +{after_init_memory - initial_memory:.1f} MB)")
+        else:
+            logger.info(f"Perfect DB initialized with path: {perfect_db_path}")
+        
     except Exception as e:
         logger.error(f"Failed to initialize Perfect DB: {e}")
         return False
@@ -669,11 +697,24 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
             return False
         
         logger.info("Phase 2: Generating positions from sectors...")
+        
+        # Add detailed progress for position generation
+        logger.info(f"Target positions: {num_positions:,}")
+        logger.info("This may take time for large position counts due to Perfect DB sector loading...")
+        
         positions = []
         with tqdm(total=num_positions, desc="Generating positions", 
-                 unit="pos", ncols=100, ascii=True) as pbar:
-            positions = generate_positions_from_sectors(pdb, game, sectors_by_phase, num_positions)
-            pbar.update(len(positions))
+                 unit="pos", ncols=100, ascii=True, 
+                 bar_format='{l_bar}{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]') as pbar:
+            
+            # Add a callback to track progress during generation
+            def progress_callback(current_count):
+                pbar.n = current_count
+                pbar.refresh()
+            
+            positions = generate_positions_from_sectors(pdb, game, sectors_by_phase, num_positions, progress_callback)
+            pbar.n = len(positions)
+            pbar.refresh()
         
         if not positions:
             logger.error("No positions were generated")

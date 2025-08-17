@@ -13,24 +13,24 @@
 
 extern "C" {
 
-// 初始化标准九子棋 Perfect DB（std, 9 子）
-// db_path: 包含 std_*.sec2 与 std.secval 的目录
-// 返回 1 表示成功，0 表示失败
+// Initialize the standard Nine Men's Perfect DB (std, 9 pieces)
+// db_path: directory containing std_*.sec2 and std.secval
+// Returns 1 for success, 0 for failure
 PD_API int pd_init_std(const char* db_path);
 
-// 反初始化并释放资源
+// Deinitialize and release resources
 PD_API void pd_deinit();
 
-// 使用 Perfect DB 评估一个局面
-// 输入:
-//  - whiteBits, blackBits: 24 位位板（第 i 位对应 perfect 索引 i）
-//  - whiteStonesToPlace, blackStonesToPlace: 手中剩余待落子数
-//  - playerToMove: 0=白走, 1=黑走
-//  - onlyStoneTaking: 非 0 表示处于吃子子阶段
-// 输出:
-//  - outWdl: 1=胜, 0=和, -1=负
-//  - outSteps: 到达结果的步数，未知为 -1
-// 返回 1 表示成功（数据库有效），否则 0
+// Evaluate a position using Perfect DB
+// Input:
+// - whiteBits, blackBits: 24-bit bitboard (bit i corresponds to perfect index i)
+// - whiteStonesToPlace, blackStonesToPlace: Number of stones remaining in hand
+// - playerToMove: 0 = White moves, 1 = Black moves
+// - onlyStoneTaking: Non-zero indicates capturing
+// Output:
+// - outWdl: 1 = win, 0 = draw, -1 = loss
+// - outSteps: Number of steps to reach the result, -1 if unknown
+// Returns 1 if successful (database valid), 0 otherwise
 PD_API int pd_evaluate(int whiteBits,
                        int blackBits,
                        int whiteStonesToPlace,
@@ -40,9 +40,9 @@ PD_API int pd_evaluate(int whiteBits,
                        int* outWdl,
                        int* outSteps);
 
-// 查询一个最佳着法，返回引擎风格的 token 字符串
-// 输出格式: "a1"（落子）、"a1-a4"（走子）、"xg7"（吃子）
-// 返回 1 表示成功，0 表示失败
+// Query a best move and return an engine-style token string
+// Output format: "a1" (place), "a1-a4" (move), "xg7" (remove)
+// Returns 1 for success, 0 for failure
 PD_API int pd_best_move(int whiteBits,
                         int blackBits,
                         int whiteStonesToPlace,
