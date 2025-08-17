@@ -942,16 +942,41 @@ def train_epoch(model: nn.Module,
     total_loss = 0.0
     total_grad_norm = 0.0
     num_batches = 0
+    invalid_batches = 0
     
     for batch in dataloader:
         features = batch['features'].to(device, non_blocking=True)
         targets = batch['target'].to(device, non_blocking=True)
         side_to_move = batch['side_to_move'].to(device, non_blocking=True)
         
+        # Check for invalid inputs
+        if torch.isnan(features).any() or torch.isinf(features).any():
+            logger.warning("发现无效的特征值 (NaN/Inf)，跳过此批次")
+            invalid_batches += 1
+            continue
+            
+        if torch.isnan(targets).any() or torch.isinf(targets).any():
+            logger.warning("发现无效的目标值 (NaN/Inf)，跳过此批次")
+            invalid_batches += 1
+            continue
+        
         # Enable mixed precision for faster training on modern GPUs
         with torch.amp.autocast('cuda', enabled=device.type == 'cuda'):
             outputs = model(features, side_to_move)
+            
+            # Check for invalid outputs
+            if torch.isnan(outputs).any() or torch.isinf(outputs).any():
+                logger.warning("模型输出包含无效值 (NaN/Inf)，跳过此批次")
+                invalid_batches += 1
+                continue
+            
             loss = criterion(outputs, targets)
+            
+            # Check for invalid loss
+            if torch.isnan(loss) or torch.isinf(loss):
+                logger.warning(f"发现无效损失值: {loss.item()}，跳过此批次")
+                invalid_batches += 1
+                continue
         
         optimizer.zero_grad()
         
@@ -959,20 +984,66 @@ def train_epoch(model: nn.Module,
         if device.type == 'cuda' and scaler is not None:
             scaler.scale(loss).backward()
             
+            # Check for invalid gradients before clipping
+            has_invalid_grad = False
+            for param in model.parameters():
+                if param.grad is not None and (torch.isnan(param.grad).any() or torch.isinf(param.grad).any()):
+                    has_invalid_grad = True
+                    break
+            
+            if has_invalid_grad:
+                logger.warning("发现无效梯度 (NaN/Inf)，跳过此批次")
+                scaler.update()  # 更新 scaler 但不执行优化步骤
+                invalid_batches += 1
+                continue
+            
             # Gradient clipping for training stability with large batch sizes
             scaler.unscale_(optimizer)
             grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            
+            # 检查梯度范数是否有效
+            if torch.isnan(grad_norm) or torch.isinf(grad_norm):
+                logger.warning(f"发现无效梯度范数: {grad_norm}，跳过此批次")
+                scaler.update()
+                invalid_batches += 1
+                continue
             
             scaler.step(optimizer)
             scaler.update()
         else:
             loss.backward()
+            
+            # Check for invalid gradients
+            has_invalid_grad = False
+            for param in model.parameters():
+                if param.grad is not None and (torch.isnan(param.grad).any() or torch.isinf(param.grad).any()):
+                    has_invalid_grad = True
+                    break
+            
+            if has_invalid_grad:
+                logger.warning("发现无效梯度 (NaN/Inf)，跳过此批次")
+                invalid_batches += 1
+                continue
+            
             grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
+            
+            if torch.isnan(grad_norm) or torch.isinf(grad_norm):
+                logger.warning(f"发现无效梯度范数: {grad_norm}，跳过此批次")
+                invalid_batches += 1
+                continue
+                
             optimizer.step()
         
         total_loss += loss.item()
         total_grad_norm += grad_norm.item() if isinstance(grad_norm, torch.Tensor) else grad_norm
         num_batches += 1
+    
+    if invalid_batches > 0:
+        logger.warning(f"训练过程中跳过了 {invalid_batches} 个无效批次")
+    
+    if num_batches == 0:
+        logger.error("所有训练批次都包含无效数据！")
+        return float('inf'), float('inf')
     
     avg_loss = total_loss / num_batches
     avg_grad_norm = total_grad_norm / num_batches
@@ -982,11 +1053,12 @@ def validate_epoch(model: nn.Module,
                   dataloader: DataLoader, 
                   criterion: nn.Module,
                   device: torch.device) -> Tuple[float, float]:
-    """Validate for one epoch"""
+    """Validate for one epoch with numerical stability checks"""
     model.eval()
     total_loss = 0.0
     total_accuracy = 0.0
     num_batches = 0
+    invalid_batches = 0
     
     with torch.no_grad():
         for batch in dataloader:
@@ -994,8 +1066,32 @@ def validate_epoch(model: nn.Module,
             targets = batch['target'].to(device)
             side_to_move = batch['side_to_move'].to(device)
             
+            # Check for invalid inputs
+            if torch.isnan(features).any() or torch.isinf(features).any():
+                logger.warning("发现无效的特征值 (NaN/Inf)，跳过此批次")
+                invalid_batches += 1
+                continue
+                
+            if torch.isnan(targets).any() or torch.isinf(targets).any():
+                logger.warning("发现无效的目标值 (NaN/Inf)，跳过此批次")
+                invalid_batches += 1
+                continue
+            
             outputs = model(features, side_to_move)
+            
+            # Check for invalid outputs
+            if torch.isnan(outputs).any() or torch.isinf(outputs).any():
+                logger.warning("模型输出包含无效值 (NaN/Inf)，跳过此批次")
+                invalid_batches += 1
+                continue
+                
             loss = criterion(outputs, targets)
+            
+            # Check for invalid loss
+            if torch.isnan(loss) or torch.isinf(loss):
+                logger.warning(f"发现无效损失值: {loss.item()}，跳过此批次")
+                invalid_batches += 1
+                continue
             
             # Calculate accuracy (for win/loss/draw predictions)
             predictions = torch.sign(outputs)
@@ -1005,6 +1101,13 @@ def validate_epoch(model: nn.Module,
             total_loss += loss.item()
             total_accuracy += accuracy.item()
             num_batches += 1
+    
+    if invalid_batches > 0:
+        logger.warning(f"验证过程中跳过了 {invalid_batches} 个无效批次")
+    
+    if num_batches == 0:
+        logger.error("所有验证批次都包含无效数据！")
+        return float('inf'), 0.0
     
     return total_loss / num_batches, total_accuracy / num_batches
 

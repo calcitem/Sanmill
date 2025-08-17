@@ -26,14 +26,18 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
         if (loaded_hashes.size() == 8) {
             // release one if there are too many
             ::Sector *to_release = loaded_hashes.begin()->second;
+#ifdef DEBUG
             LOG("Releasing hash: %s\n", to_release->id.to_string().c_str());
+#endif
             to_release->release_hash();
             loaded_hashes.erase(loaded_hashes.begin());
             loaded_hashes_inv.erase(to_release);
         }
 
         // load new one
+#ifdef DEBUG
         LOG("Loading hash: %s\n", s->id.to_string().c_str());
+#endif
         s->allocate_hash();
     } else {
         // update access time

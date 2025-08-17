@@ -423,26 +423,63 @@ class EasyMultiRoundTrainer:
             round_dir = self.output_dir / f"round_{round_num:02d}"
             
             # 查找 CSV 文件获取验证损失
-            csv_files = list(round_dir.glob("*.csv"))
+            csv_files = list(round_dir.glob("plots/*.csv"))
+            if not csv_files:
+                csv_files = list(round_dir.glob("*.csv"))
+                
             if csv_files:
                 try:
                     import pandas as pd
                     df = pd.read_csv(csv_files[0])
-                    if 'val_loss' in df.columns and len(df) > 0:
-                        results["val_loss"] = float(df['val_loss'].iloc[-1])
-                        results["success"] = True
+                    
+                    # 检查列名（支持大小写变体）
+                    val_loss_col = None
+                    if 'Val_Loss' in df.columns:
+                        val_loss_col = 'Val_Loss'
+                    elif 'val_loss' in df.columns:
+                        val_loss_col = 'val_loss'
+                    
+                    if val_loss_col and len(df) > 0:
+                        # 获取最后一个非无穷大的验证损失值
+                        val_loss_series = df[val_loss_col]
+                        # 过滤掉无穷大和NaN值
+                        valid_losses = val_loss_series[~val_loss_series.isin([float('inf'), float('-inf')]) & val_loss_series.notna()]
+                        if len(valid_losses) > 0:
+                            results["val_loss"] = float(valid_losses.iloc[-1])
+                            results["success"] = True
+                            self.logger.info(f"Round {round_num}: 成功读取验证损失 {results['val_loss']:.6f}")
+                        else:
+                            self.logger.warning(f"Round {round_num}: CSV文件中没有有效的验证损失值")
+                            
                 except ImportError:
-                    # 如果没有 pandas，手动解析 CSV
+                    self.logger.warning("pandas 未安装，使用手动解析 CSV")
+                    # 手动解析 CSV 文件
                     with open(csv_files[0], 'r') as f:
                         lines = f.readlines()
                         if len(lines) > 1:  # 有数据行
                             header = lines[0].strip().split(',')
-                            if 'val_loss' in header:
+                            val_loss_idx = -1
+                            if 'Val_Loss' in header:
+                                val_loss_idx = header.index('Val_Loss')
+                            elif 'val_loss' in header:
                                 val_loss_idx = header.index('val_loss')
-                                last_line = lines[-1].strip().split(',')
-                                if len(last_line) > val_loss_idx:
-                                    results["val_loss"] = float(last_line[val_loss_idx])
-                                    results["success"] = True
+                            
+                            if val_loss_idx >= 0:
+                                # 从最后一行开始向前查找有效的验证损失值
+                                for line in reversed(lines[1:]):
+                                    parts = line.strip().split(',')
+                                    if len(parts) > val_loss_idx:
+                                        try:
+                                            val_loss = float(parts[val_loss_idx])
+                                            if not (val_loss == float('inf') or val_loss == float('-inf') or val_loss != val_loss):  # 检查是否为inf或NaN
+                                                results["val_loss"] = val_loss
+                                                results["success"] = True
+                                                self.logger.info(f"Round {round_num}: 手动解析得到验证损失 {val_loss:.6f}")
+                                                break
+                                        except ValueError:
+                                            continue
+                except Exception as e:
+                    self.logger.error(f"解析 CSV 文件时出错: {e}")
             
             # 查找模型文件
             model_files = list(round_dir.glob("*.bin"))
