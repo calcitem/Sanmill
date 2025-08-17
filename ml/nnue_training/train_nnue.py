@@ -767,58 +767,58 @@ def validate_final_model(model_path: str, engine_path: str) -> bool:
     """
     Validate the trained model works with the engine
     """
-    logger.info("🔍 Starting model validation...")
-    logger.info(f"🔍 Checking model file: {model_path}")
+    logger.info("VALIDATE: Starting model validation...")
+    logger.info(f"VALIDATE: Checking model file: {model_path}")
     
     if not os.path.exists(model_path):
         logger.error(f"Model file not found: {model_path}")
         return False
     
-    logger.info("🔍 Model file exists, checking size...")
+    logger.info("VALIDATE: Model file exists, checking size...")
     model_size = os.path.getsize(model_path)
     if model_size == 0:
         logger.error(f"Model file is empty: {model_path}")
         return False
     
-    logger.info(f"🔍 Model validation passed: {model_path} ({model_size} bytes)")
+    logger.info(f"VALIDATE: Model validation passed: {model_path} ({model_size} bytes)")
     
     # Basic engine connectivity test (if possible) - with aggressive timeout
-    logger.info("🔍 Starting engine compatibility test...")
+    logger.info("VALIDATE: Starting engine compatibility test...")
     try:
         if engine_path is None:
-            logger.info("🔍 Engine path not specified (skipping compatibility test)")
-            logger.info("🔍 Model validation completed (no engine test)")
+            logger.info("VALIDATE: Engine path not specified (skipping compatibility test)")
+            logger.info("VALIDATE: Model validation completed (no engine test)")
             return True
         
-        logger.info(f"🔍 Testing engine compatibility with: {engine_path}")
-        logger.info("🔍 Preparing engine test command...")
+        logger.info(f"VALIDATE: Testing engine compatibility with: {engine_path}")
+        logger.info("VALIDATE: Preparing engine test command...")
         cmd = [engine_path, "test", "model", model_path]
-        logger.info(f"🔍 Running command: {' '.join(cmd)}")
+        logger.info(f"VALIDATE: Running command: {' '.join(cmd)}")
         
         # Reduce timeout to prevent hanging
-        logger.info("🔍 Executing subprocess with 3-second timeout...")
+        logger.info("VALIDATE: Executing subprocess with 3-second timeout...")
         result = subprocess.run(
             cmd, 
             capture_output=True, 
             text=True, 
             timeout=3  # Further reduced to 3 seconds
         )
-        logger.info(f"🔍 Subprocess completed with return code: {result.returncode}")
+        logger.info(f"VALIDATE: Subprocess completed with return code: {result.returncode}")
         
         if result.returncode == 0:
-            logger.info("🔍 Engine model compatibility test passed")
+            logger.info("VALIDATE: Engine model compatibility test passed")
         else:
-            logger.warning("🔍 Engine model compatibility test failed (model may still be usable)")
-            logger.warning(f"🔍 Engine output: {result.stderr}")
+            logger.warning("VALIDATE: Engine model compatibility test failed (model may still be usable)")
+            logger.warning(f"VALIDATE: Engine output: {result.stderr}")
         
     except FileNotFoundError:
-        logger.info("🔍 Engine test command not available (skipping compatibility test)")
+        logger.info("VALIDATE: Engine test command not available (skipping compatibility test)")
     except subprocess.TimeoutExpired:
-        logger.warning("🔍 Engine compatibility test timed out after 3 seconds")
+        logger.warning("VALIDATE: Engine compatibility test timed out after 3 seconds")
     except Exception as e:
-        logger.warning(f"🔍 Engine compatibility test failed: {e}")
+        logger.warning(f"VALIDATE: Engine compatibility test failed: {e}")
     
-    logger.info("🔍 Model validation completed successfully")
+    logger.info("VALIDATE: Model validation completed successfully")
     return True
 
 
@@ -1017,14 +1017,14 @@ def backup_existing_model(filepath: str) -> bool:
     if os.path.exists(bin_file):
         backup_bin = f"{bin_file}.backup_{timestamp}"
         shutil.copy2(bin_file, backup_bin)
-        logger.info(f"Backed up existing model: {backup_bin}")
+        # Reduced backup logging to avoid spam
         backup_created = True
     
     # Backup .pytorch file if exists  
     if os.path.exists(pytorch_file):
         backup_pytorch = f"{pytorch_file}.backup_{timestamp}"
         shutil.copy2(pytorch_file, backup_pytorch)
-        logger.info(f"Backed up existing checkpoint: {backup_pytorch}")
+        # Reduced backup logging to avoid spam
         backup_created = True
         
     return backup_created
@@ -1075,7 +1075,8 @@ def save_model_c_format(model: nn.Module, filepath: str):
         # 4) output_bias: single int32
         f.write(output_bias_int32.tobytes())
 
-    logger.info(f"Model saved in C++ format to {filepath}")
+    # Reduce logging frequency to avoid spam - only log for important saves
+    pass  # Removed frequent C++ format save logging
 
 
 def main():
@@ -1382,6 +1383,7 @@ def main():
     epoch_times = []
     
     logger.info("Starting training...")
+    logger.info("Progress: [--------------------] 0% | Detailed logs every 10 epochs")
     
     for epoch in range(args.epochs):
         start_time = time.time()
@@ -1434,14 +1436,22 @@ def main():
         else:
             elapsed_str = f"{total_elapsed/3600:.1f}h"
         
-        logger.info(f"Epoch {epoch+1}/{args.epochs}: "
-                   f"Train Loss: {train_loss:.6f}, "
-                   f"Val Loss: {val_loss:.6f}, "
-                   f"Val Acc: {val_accuracy:.4f}, "
-                   f"LR: {current_lr:.6f}, "
-                   f"Grad Norm: {avg_grad_norm:.4f}, "
-                   f"Time: {epoch_time:.2f}s, "
-                   f"Elapsed: {elapsed_str}{eta_str}")
+        # Use progress bar style output to reduce log spam (ASCII-safe for Windows)
+        progress_percent = ((epoch + 1) / args.epochs) * 100
+        filled_chars = int(progress_percent // 5)
+        progress_bar = "=" * filled_chars + "-" * (20 - filled_chars)
+        
+        # Only log every 10 epochs or important milestones
+        if (epoch + 1) % 10 == 0 or epoch == 0 or epoch == args.epochs - 1:
+            logger.info(f"[{progress_bar}] {progress_percent:5.1f}% | "
+                       f"Epoch {epoch+1:3d}/{args.epochs} | "
+                       f"Loss: T={train_loss:.0f} V={val_loss:.0f} | "
+                       f"Acc: {val_accuracy:.3f} | "
+                       f"LR: {current_lr:.1e} | "
+                       f"Time: {epoch_time:.2f}s{eta_str}")
+        else:
+            # Print a simple progress indicator that overwrites itself
+            print(f"\r[{progress_bar}] {progress_percent:5.1f}% | Epoch {epoch+1:3d}/{args.epochs} | Loss: {val_loss:.0f} | Acc: {val_accuracy:.3f}", end="", flush=True)
         
         # Update visualization
         if visualizer:
@@ -1460,12 +1470,17 @@ def main():
             backup_existing_model(args.output)
             torch.save(model.state_dict(), f"{args.output}.pytorch")
             save_model_c_format(model, args.output)
-            logger.info(f"New best model saved: {args.output} (validation loss: {val_loss:.6f})")
+            # Reduce model save logging to avoid spam
+            if (epoch + 1) % 20 == 0 or epoch == args.epochs - 1:
+                logger.info(f"BEST: Model updated - Val Loss {val_loss:.0f} @ Epoch {epoch+1}")
         else:
             patience_counter += 1
             if patience_counter >= max_patience:
                 logger.info(f"Early stopping after {epoch+1} epochs")
                 break
+    
+    # Ensure progress bar line is completed
+    print()  # New line after progress bar
     
     # Calculate and display total training time
     total_training_time = time.time() - training_start_time
@@ -1509,19 +1524,19 @@ def main():
     # Pipeline Mode: Final model validation
     if args.pipeline:
         logger.info("=== Step 4: Model Validation ===")
-        logger.info("🚀 About to call validate_final_model...")
+        logger.info("PIPELINE: About to call validate_final_model...")
         
         validation_start = time.time()
         success = validate_final_model(args.output, args.engine)
         validation_end = time.time()
         
-        logger.info(f"🚀 validate_final_model completed in {validation_end - validation_start:.2f} seconds")
+        logger.info(f"PIPELINE: validate_final_model completed in {validation_end - validation_start:.2f} seconds")
         
         if not success:
             logger.error("Model validation failed")
             return 1
         
-        logger.info("🚀 Starting pipeline completion summary...")
+        logger.info("PIPELINE: Starting pipeline completion summary...")
         # Pipeline completion summary
         logger.info("=== Pipeline Completed Successfully ===")
         logger.info(f"Training data: {args.data}")
@@ -1531,9 +1546,9 @@ def main():
         logger.info(f"  setoption name UseNNUE value true")
         logger.info(f"  setoption name NNUEModelPath value {args.output}")
         logger.info(f"  setoption name NNUEWeight value 90")
-        logger.info("🚀 Pipeline summary completed")
+        logger.info("PIPELINE: Pipeline summary completed")
     
-    logger.info("🚀 About to return from main function...")
+    logger.info("PIPELINE: About to return from main function...")
     return 0
 
 if __name__ == '__main__':
