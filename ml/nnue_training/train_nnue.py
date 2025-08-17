@@ -1206,7 +1206,8 @@ def main():
                     args.perfect_db,
                     args.data,
                     args.positions,
-                    args.threads
+                    args.threads,
+                    batch_size=1000  # Add batch processing optimization
                 )
             else:
                 # Use legacy engine-based generation

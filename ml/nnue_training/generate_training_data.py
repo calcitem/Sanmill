@@ -345,16 +345,135 @@ def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -
     
     return positions
 
+def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logger, stats: dict) -> List[str]:
+    """
+    Batch evaluate positions grouped by sector to minimize file switching.
+    
+    Args:
+        pdb: PerfectDB instance
+        positions_data: List of (board, player, features) tuples
+        logger: Logger instance
+        stats: Statistics dictionary to update
+    
+    Returns:
+        List of training data lines for valid positions
+    """
+    # Group positions by sector hash to minimize file switching
+    sector_groups = defaultdict(list)
+    
+    for i, (board, player, features) in enumerate(positions_data):
+        w_count = board.count(1)
+        b_count = board.count(-1)
+        w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
+        b_place = max(0, 9 - (board.put_pieces // 2))
+        sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
+        sector_groups[sector_hash].append((i, board, player, features))
+    
+    logger.info(f"Batch processing {len(positions_data)} positions across {len(sector_groups)} sectors")
+    
+    # Process each sector group
+    results = {}
+    valid_count = 0
+    
+    for sector_hash, sector_positions in sector_groups.items():
+        logger.debug(f"Processing sector {sector_hash} with {len(sector_positions)} positions")
+        
+        for pos_idx, board, player, features in sector_positions:
+            try:
+                # Get Perfect DB evaluation
+                only_take = (board.period == 3)
+                wdl, steps = pdb.evaluate(board, player, only_take)
+                
+                # Update WDL statistics
+                if wdl > 0:
+                    stats['wdl_distribution']['wins'] += 1
+                elif wdl < 0:
+                    stats['wdl_distribution']['losses'] += 1
+                else:
+                    stats['wdl_distribution']['draws'] += 1
+                
+                # Update steps statistics
+                if steps > 0:
+                    stats['steps_distribution'][steps] += 1
+                else:
+                    stats['steps_distribution']['unknown'] += 1
+                
+                # Convert WDL and steps to evaluation score using enhanced method
+                BASE_SCORE = 500.0
+                
+                if wdl > 0:  # Win
+                    if steps > 0:
+                        # Win: BASE_SCORE - steps (closer win = higher score)
+                        evaluation = BASE_SCORE - float(steps)
+                    else:
+                        # Unknown steps - minimal positive score
+                        evaluation = 1.0
+                elif wdl < 0:  # Loss
+                    if steps > 0:
+                        # Loss: -(BASE_SCORE - steps) (farther loss = higher score)
+                        evaluation = -(BASE_SCORE - float(steps))
+                    else:
+                        # Unknown steps - high negative score
+                        evaluation = -499.0
+                else:  # Draw
+                    evaluation = 0.0
+                
+                # Track evaluation values for statistics
+                stats['evaluation_stats']['values'].append(evaluation)
+                
+                # Categorize evaluation ranges based on WDL result, not evaluation score
+                if wdl > 0:  # Win
+                    if steps > 0 and steps <= 10:
+                        stats['evaluation_stats']['ranges']['strong_win'] += 1
+                    elif steps > 0 and steps <= 50:
+                        stats['evaluation_stats']['ranges']['weak_win'] += 1
+                    else:
+                        stats['evaluation_stats']['ranges']['win_unknown_steps'] += 1
+                elif wdl < 0:  # Loss
+                    if steps > 0 and steps <= 10:
+                        stats['evaluation_stats']['ranges']['strong_loss'] += 1
+                    elif steps > 0 and steps <= 50:
+                        stats['evaluation_stats']['ranges']['weak_loss'] += 1
+                    else:
+                        stats['evaluation_stats']['ranges']['loss_unknown_steps'] += 1
+                else:  # Draw (wdl == 0)
+                    stats['evaluation_stats']['ranges']['draw'] += 1
+                
+                # Create training data line
+                feature_str = ' '.join(f'{f:.6f}' for f in features)
+                target_str = f'{evaluation:.6f}'
+                side_str = '1.0' if player == 1 else '0.0'
+                training_line = f"{feature_str} {target_str} {side_str}\n"
+                
+                results[pos_idx] = training_line
+                valid_count += 1
+                
+            except Exception as e:
+                logger.warning(f"Failed to evaluate position {pos_idx} in sector {sector_hash}: {e}")
+                continue
+    
+    # Return results in original order
+    training_data = []
+    for i in range(len(positions_data)):
+        if i in results:
+            training_data.append(results[i])
+    
+    logger.info(f"Batch processing completed: {valid_count}/{len(positions_data)} positions valid")
+    return training_data
+
 def generate_training_data_with_perfect_db(perfect_db_path: str, 
                                          output_file: str,
                                          num_positions: int = 50000,
-                                         num_threads: int = 0) -> bool:
+                                         num_threads: int = 0,
+                                         batch_size: int = 1000) -> bool:
     """
     Generate training data using Perfect Database DLL directly.
     Uses enhanced evaluation with Distance to Victory/Loss (DTV/DTL) for fine-grained scoring.
+    Optimized with batch processing to reduce sector file switching.
     No longer depends on sanmill executable.
     """
     logger.info(f"Generating {num_positions} training positions using Perfect DB...")
+    logger.info(f"Using batch processing with batch size: {batch_size}")
     
     # Initialize game and Perfect DB
     game = Game()
@@ -391,7 +510,18 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         'wdl_distribution': {'wins': 0, 'losses': 0, 'draws': 0},
         'steps_distribution': defaultdict(int),
         'error_types': defaultdict(int),
-        'evaluation_stats': {'values': [], 'ranges': defaultdict(int)}
+        'evaluation_stats': {
+            'values': [], 
+            'ranges': {
+                'strong_win': 0,      # Win in ≤10 steps
+                'weak_win': 0,        # Win in 11-50 steps  
+                'win_unknown_steps': 0, # Win with unknown steps
+                'draw': 0,            # Draw (wdl == 0)
+                'weak_loss': 0,       # Loss in 11-50 steps
+                'strong_loss': 0,     # Loss in ≤10 steps
+                'loss_unknown_steps': 0 # Loss with unknown steps
+            }
+        }
     }
     
     try:
@@ -409,122 +539,77 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         
         logger.info(f"✓ Generated {len(positions)} random positions")
         
-        # Phase 2: Evaluate positions with Perfect DB
+        # Phase 2: Evaluate positions with Perfect DB (using batch processing)
         training_data = []
         valid_positions = 0
         
         logger.info("Phase 2: Evaluating positions with Perfect Database...")
+        logger.info(f"Using batch processing with batch size: {batch_size}")
+        
+        # Process positions in batches to optimize sector file access
+        total_batches = (len(positions) + batch_size - 1) // batch_size
         
         with tqdm(total=len(positions), desc="Evaluating positions", 
                  unit="pos", ncols=100, ascii=True) as pbar:
-            for i, (board, player) in enumerate(positions):
-                try:
-                    # Extract features
-                    features = extract_features_from_board(board, player)
-                    
-                    # Track hash access for statistics
-                    w_count = board.count(1)
-                    b_count = board.count(-1)
-                    w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
-                    b_place = max(0, 9 - (board.put_pieces // 2))
-                    sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
-                    stats['hash_access_count'][sector_hash] += 1
-                    
-                    # Get Perfect DB evaluation
-                    only_take = (board.period == 3)
-                    wdl, steps = pdb.evaluate(board, player, only_take)
-                    
-                    # Update WDL statistics
-                    if wdl > 0:
-                        stats['wdl_distribution']['wins'] += 1
-                    elif wdl < 0:
-                        stats['wdl_distribution']['losses'] += 1
-                    else:
-                        stats['wdl_distribution']['draws'] += 1
-                    
-                    # Update steps statistics
-                    if steps > 0:
-                        stats['steps_distribution'][steps] += 1
-                    else:
-                        stats['steps_distribution']['unknown'] += 1
-                    
-                    # Convert WDL and steps to evaluation score using enhanced method
-                    # Base score of 500, subtract steps for more precise evaluation
-                    BASE_SCORE = 500.0
-                    
-                    if wdl > 0:  # Win
-                        if steps > 0:
-                            # Win: BASE_SCORE - steps (1 step = +499, 100 steps = +400)
-                            evaluation = BASE_SCORE - float(steps)
-                        else:
-                            # Unknown or invalid steps - use minimal positive score for uncertain wins
-                            # This is normal for Perfect DB when step count is unavailable
-                            evaluation = 1.0  # Minimal win value for unknown steps
-                            
-                    elif wdl < 0:  # Loss
-                        if steps > 0:
-                            # Loss: -(BASE_SCORE - steps) (1 step = -499, 100 steps = -400)
-                            evaluation = -(BASE_SCORE - float(steps))
-                        else:
-                            # Unknown or invalid steps - use high negative score for uncertain losses
-                            # This is normal for Perfect DB when step count is unavailable
-                            evaluation = -499.0  # High negative value for unknown steps (BASE_SCORE - 1)
-                            
-                    else:  # Draw
-                        evaluation = 0.0
-                    
-                    # Track evaluation statistics
-                    stats['evaluation_stats']['values'].append(evaluation)
+            
+            for batch_idx in range(total_batches):
+                start_idx = batch_idx * batch_size
+                end_idx = min(start_idx + batch_size, len(positions))
+                batch_positions = positions[start_idx:end_idx]
                 
-                    # Get best move if available
-                    best_move_token = ""
+                logger.debug(f"Processing batch {batch_idx + 1}/{total_batches} "
+                           f"(positions {start_idx}-{end_idx-1})")
+                
+                # Prepare batch data with feature extraction
+                batch_data = []
+                for i, (board, player) in enumerate(batch_positions):
                     try:
-                        best_moves = pdb.good_moves_tokens(board, player, only_take)
-                        if best_moves:
-                            best_move_token = best_moves[0]
-                    except:
-                        pass  # Best move not critical for NNUE training
-                    
-                    # Format: features | evaluation | phase | fen  (to match train_nnue.py expectation)
-                    # Features should be integers (0 or 1), not floats
-                    feature_str = " ".join(str(int(f)) for f in features)
-                    # Generate proper FEN using the board's to_fen method
-                    fen_str = board.to_fen(player)
-                    line = f"{feature_str} | {evaluation:.6f} | {board.period} | {fen_str}\n"
-                    training_data.append(line)
-                    valid_positions += 1
-                    
-                except Exception as e:
-                    # Track error types for statistics
-                    error_type = str(type(e).__name__)
-                    stats['error_types'][error_type] += 1
-                    
-                    # Only log genuine API failures, not normal "unavailable steps" cases
-                    if "return code 0" in str(e) or "failed" in str(e).lower():
-                        # Get FEN and sector info for debugging
-                        try:
-                            fen_str = board.to_fen(player)
-                            w_count = board.count(1)
-                            b_count = board.count(-1)
-                            w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
-                            b_place = max(0, 9 - (board.put_pieces // 2))
-                            sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
-                            
-                            error_msg = f"PerfectDB.evaluate failed for position {i}: {e} | FEN: {fen_str} | Hash: {sector_hash}"
-                        except:
-                            error_msg = f"PerfectDB.evaluate failed for position {i}: {e} | FEN: [failed to generate] | Hash: [unknown]"
+                        # Extract features
+                        features = extract_features_from_board(board, player)
+                        batch_data.append((board, player, features))
                         
-                        error_logger.warning(error_msg)
-                    
-                    discarded_positions += 1
+                        # Track hash access for statistics
+                        w_count = board.count(1)
+                        b_count = board.count(-1)
+                        w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
+                        b_place = max(0, 9 - (board.put_pieces // 2))
+                        sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
+                        stats['hash_access_count'][sector_hash] += 1
+                        
+                    except Exception as e:
+                        discarded_positions += 1
+                        stats['error_types'][str(type(e).__name__)] += 1
+                        
+                        # Log detailed error information
+                        error_logger.warning(f"Position {start_idx + i}: Failed to extract features. "
+                                           f"Error: {e}. Board state: period={board.period}, "
+                                           f"put_pieces={board.put_pieces}, "
+                                           f"W={board.count(1)}, B={board.count(-1)}")
+                        continue
+                
+                # Batch evaluate positions
+                if batch_data:
+                    try:
+                        batch_results = evaluate_positions_batch(pdb, batch_data, logger, stats)
+                        training_data.extend(batch_results)
+                        valid_positions += len(batch_results)
+                        
+                    except Exception as e:
+                        logger.error(f"Batch evaluation failed for batch {batch_idx + 1}: {e}")
+                        discarded_positions += len(batch_data)
+                        stats['error_types']['batch_evaluation_error'] += 1
                 
                 # Update progress bar
-                pbar.update(1)
+                batch_processed = end_idx - start_idx
+                pbar.update(batch_processed)
                 pbar.set_postfix({
                     'Valid': valid_positions,
                     'Discarded': discarded_positions,
-                    'Success%': f"{(valid_positions/(i+1)*100):.1f}" if i >= 0 else "0.0"
+                    'Success%': f"{(valid_positions/end_idx*100):.1f}" if end_idx > 0 else "0.0",
+                    'Batch': f"{batch_idx + 1}/{total_batches}"
                 })
+        
+
         
         # Phase 3: Write training data file
         logger.info("Phase 3: Writing training data to file...")
@@ -593,7 +678,7 @@ def generate_training_data(engine_path: str,
     Now redirects to Perfect DB implementation.
     """
     logger.warning("Legacy generate_training_data called - redirecting to Perfect DB implementation")
-    return generate_training_data_with_perfect_db(perfect_db_path, output_file, num_positions, num_threads)
+    return generate_training_data_with_perfect_db(perfect_db_path, output_file, num_positions, num_threads, batch_size=1000)
 
 def validate_training_data(data_file: str, feature_size: int) -> bool:
     """
@@ -683,7 +768,8 @@ def main():
         args.perfect_db,
         args.output, 
         args.positions, 
-        args.threads
+        args.threads,
+        batch_size=1000  # Add batch processing optimization
     )
     
     if not success:
