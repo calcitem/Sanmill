@@ -733,26 +733,111 @@ if __name__ == '__main__':
             return False
 
 
-    def find_trained_model(self):
-        """查找训练好的模型"""
-        # 检查 models 目录
+    def find_trained_model(self, show_details=True):
+        """查找训练好的模型，优先检查 models 目录"""
+        if show_details:
+            print("\n🔍 查找已训练的模型...")
+        
+        found_models = []
+        
+        # 1. 优先检查 models 目录（推荐位置）
+        if show_details:
+            print("  📁 检查 models/ 目录...")
         model_files = list(self.models_dir.glob("*.bin")) + list(self.models_dir.glob("*.pth"))
-        
-        if not model_files:
-            # 检查 nnue_output 目录（管道模式输出）
-            nnue_output_dir = self.project_root / "nnue_output"
-            if nnue_output_dir.exists():
-                model_files = list(nnue_output_dir.glob("*.bin")) + list(nnue_output_dir.glob("*.pth"))
-        
-        if not model_files:
-            # 也检查当前目录
-            model_files = list(self.project_root.glob("nnue_model*.bin")) + list(self.project_root.glob("nnue_model*.pth"))
-            
         if model_files:
-            # 返回最新的模型
-            latest_model = max(model_files, key=lambda f: f.stat().st_mtime)
-            return latest_model
-        return None
+            for f in model_files:
+                found_models.append(('models', f))
+                if show_details:
+                    size_mb = f.stat().st_size / (1024 * 1024)
+                    mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(f.stat().st_mtime))
+                    print(f"    ✅ {f.name} ({size_mb:.1f}MB, 修改时间: {mtime})")
+        
+        # 2. 检查 nnue_output 目录（旧的管道输出）
+        if show_details:
+            print("  📁 检查 nnue_output/ 目录...")
+        nnue_output_dir = self.project_root / "nnue_output"
+        if nnue_output_dir.exists():
+            output_files = list(nnue_output_dir.glob("*.bin")) + list(nnue_output_dir.glob("*.pth"))
+            if output_files:
+                for f in output_files:
+                    found_models.append(('nnue_output', f))
+                    if show_details:
+                        size_mb = f.stat().st_size / (1024 * 1024)
+                        mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(f.stat().st_mtime))
+                        print(f"    ⚠️  {f.name} ({size_mb:.1f}MB, 修改时间: {mtime}) [旧位置]")
+            elif show_details:
+                print("    📭 无模型文件")
+        elif show_details:
+            print("    📭 目录不存在")
+        
+        # 3. 检查项目根目录
+        if show_details:
+            print("  📁 检查项目根目录...")
+        root_files = list(self.project_root.glob("nnue_model*.bin")) + list(self.project_root.glob("nnue_model*.pth"))
+        if root_files:
+            for f in root_files:
+                found_models.append(('root', f))
+                if show_details:
+                    size_mb = f.stat().st_size / (1024 * 1024)
+                    mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(f.stat().st_mtime))
+                    print(f"    ⚠️  {f.name} ({size_mb:.1f}MB, 修改时间: {mtime}) [根目录]")
+        elif show_details:
+            print("    📭 无模型文件")
+            
+        if not found_models:
+            if show_details:
+                print("  ❌ 未找到任何模型文件")
+            return None
+            
+        # 优先选择 models 目录中的最新文件，其次是其他位置
+        models_dir_files = [f for loc, f in found_models if loc == 'models']
+        if models_dir_files:
+            latest_model = max(models_dir_files, key=lambda f: f.stat().st_mtime)
+            if show_details:
+                print(f"  ✅ 选择 models/ 目录中的最新模型: {latest_model.name}")
+        else:
+            # 如果 models 目录没有文件，选择其他位置的最新文件
+            latest_model = max([f for loc, f in found_models], key=lambda f: f.stat().st_mtime)
+            if show_details:
+                print(f"  ✅ 选择最新模型: {latest_model} (建议移动到 models/ 目录)")
+                
+        return latest_model
+    
+    def should_load_model(self, load_model_setting, checkpoint_dir=None):
+        """
+        根据设置和检查点目录状态决定是否加载模型
+        根据记忆要求：检查 checkpoint 目录中是否有任何 .tar 文件
+        - 如果没有 .tar 文件，忽略 load_model 设置
+        - 如果有 .tar 文件，尊重 load_model 设置，但要求目标文件存在
+        """
+        if checkpoint_dir is None:
+            checkpoint_dir = self.models_dir
+            
+        # 检查是否有任何 .tar 文件
+        tar_files = list(checkpoint_dir.glob("*.tar"))
+        
+        if not tar_files:
+            print("  📭 检查点目录中无 .tar 文件，跳过模型加载")
+            return False, None
+            
+        print(f"  📦 找到 {len(tar_files)} 个 .tar 检查点文件")
+        for tar_file in tar_files:
+            size_mb = tar_file.stat().st_size / (1024 * 1024)
+            mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(tar_file.stat().st_mtime))
+            print(f"    📦 {tar_file.name} ({size_mb:.1f}MB, {mtime})")
+        
+        if not load_model_setting:
+            print("  ⏭️  load_model 设置为 False，跳过加载")
+            return False, None
+            
+        # 尊重 load_model 设置，但检查目标文件是否存在
+        model_file = self.find_trained_model(show_details=False)
+        if model_file is None:
+            print("  ❌ load_model 为 True 但未找到可加载的模型文件")
+            return False, None
+            
+        print(f"  ✅ 将加载模型: {model_file}")
+        return True, model_file
         
     def validate_model(self, model_path):
         """验证训练的模型"""

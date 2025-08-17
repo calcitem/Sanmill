@@ -1139,6 +1139,36 @@ def validate_epoch(model: nn.Module,
     return total_loss / num_batches, total_accuracy / num_batches
 
 
+def backup_existing_model(filepath: str) -> bool:
+    """
+    Backup existing model files with timestamp before saving new ones.
+    Returns True if backup was created, False if no existing model.
+    """
+    import time
+    import shutil
+    
+    bin_file = filepath
+    pytorch_file = f"{filepath}.pytorch"
+    
+    backup_created = False
+    timestamp = time.strftime("%Y%m%d_%H%M%S")
+    
+    # Backup .bin file if exists
+    if os.path.exists(bin_file):
+        backup_bin = f"{bin_file}.backup_{timestamp}"
+        shutil.copy2(bin_file, backup_bin)
+        logger.info(f"Backed up existing model: {backup_bin}")
+        backup_created = True
+    
+    # Backup .pytorch file if exists  
+    if os.path.exists(pytorch_file):
+        backup_pytorch = f"{pytorch_file}.backup_{timestamp}"
+        shutil.copy2(pytorch_file, backup_pytorch)
+        logger.info(f"Backed up existing checkpoint: {backup_pytorch}")
+        backup_created = True
+        
+    return backup_created
+
 def save_model_c_format(model: nn.Module, filepath: str):
     """
     Saves the model in a binary format that is compatible with the C++ engine.
@@ -1270,9 +1300,12 @@ def main():
         if not args.data:
             args.data = os.path.join(args.output_dir, "training_data.txt")
         
-        # Update output path for pipeline
+        # Update output path for pipeline - always prefer models/ directory
         if args.output == 'nnue_model.bin':  # Default output
-            args.output = os.path.join(args.output_dir, "nnue_model.bin")
+            # Ensure models directory exists
+            os.makedirs('./models', exist_ok=True)
+            args.output = './models/nnue_model.bin'
+            logger.info(f"Pipeline mode: Model will be saved to {args.output} for consistent management")
             
         # Update plot directory for pipeline
         if args.plot_dir == 'plots':  # Default plot dir
@@ -1568,9 +1601,11 @@ def main():
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             patience_counter = 0
-            # Save best model
+            # Save best model with automatic backup
+            backup_existing_model(args.output)
             torch.save(model.state_dict(), f"{args.output}.pytorch")
             save_model_c_format(model, args.output)
+            logger.info(f"New best model saved: {args.output} (validation loss: {val_loss:.6f})")
         else:
             patience_counter += 1
             if patience_counter >= max_patience:
