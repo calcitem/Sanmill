@@ -1396,6 +1396,11 @@ def main():
     training_start_time = time.time()
     epoch_times = []
     
+    # Backup existing model only once at the start of training
+    initial_backup_created = backup_existing_model(args.output)
+    if initial_backup_created:
+        logger.info(f"Existing model backed up before training starts")
+    
     logger.info("Starting training...")
     logger.info("Progress: [--------------------] 0% | Detailed logs every 10 epochs")
     
@@ -1480,8 +1485,7 @@ def main():
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             patience_counter = 0
-            # Save best model with automatic backup
-            backup_existing_model(args.output)
+            # Save best model (backup was already done at start of training)
             torch.save(model.state_dict(), f"{args.output}.pytorch")
             save_model_c_format(model, args.output)
             # Reduce model save logging to avoid spam
