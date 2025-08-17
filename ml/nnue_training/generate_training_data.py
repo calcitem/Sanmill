@@ -173,6 +173,7 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                                          num_threads: int = 0) -> bool:
     """
     Generate training data using Perfect Database DLL directly.
+    Uses enhanced evaluation with Distance to Victory/Loss (DTV/DTL) for fine-grained scoring.
     No longer depends on sanmill executable.
     """
     logger.info(f"Generating {num_positions} training positions using Perfect DB...")
@@ -188,7 +189,23 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         logger.error(f"Failed to initialize Perfect DB: {e}")
         return False
     
+    # Set up error logging for failed positions
+    error_log_dir = Path(__file__).parent / "training_data"
+    error_log_dir.mkdir(exist_ok=True)
+    error_log_file = error_log_dir / f"error_log_{time.strftime('%Y%m%d_%H%M%S')}.txt"
+    
+    # Create error logger
+    error_logger = logging.getLogger('error_logger')
+    error_logger.setLevel(logging.WARNING)
+    # Clear any existing handlers
+    error_logger.handlers.clear()
+    error_handler = logging.FileHandler(error_log_file)
+    error_formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+    error_handler.setFormatter(error_formatter)
+    error_logger.addHandler(error_handler)
+    
     start_time = time.time()
+    discarded_positions = 0
     
     try:
         # Generate random positions
@@ -212,13 +229,52 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                 only_take = (board.period == 3)
                 wdl, steps = pdb.evaluate(board, player, only_take)
                 
-                # Convert WDL to evaluation score
-                if wdl > 0:
-                    evaluation = 1.0  # Win
-                elif wdl < 0:
-                    evaluation = -1.0  # Loss
-                else:
-                    evaluation = 0.0  # Draw
+                # Convert WDL and steps to evaluation score using enhanced method
+                # Base score of 500, subtract steps for more precise evaluation
+                BASE_SCORE = 500.0
+                
+                if wdl > 0:  # Win
+                    if steps > 0:
+                        # Win: BASE_SCORE - steps (1 step = +499, 100 steps = +400)
+                        evaluation = BASE_SCORE - float(steps)
+                    else:
+                        # Unknown steps - discard this position
+                        # Get FEN and sector info for debugging
+                        fen_str = board.to_fen(player)
+                        w_count = board.count(1)
+                        b_count = board.count(-1)
+                        w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
+                        b_place = max(0, 9 - (board.put_pieces // 2))
+                        sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
+                        
+                        error_msg = f"PerfectDB.evaluate failed for position {i}: Unknown steps for winning position (WDL={wdl}, steps={steps}) | FEN: {fen_str} | Hash: {sector_hash}"
+                        logger.warning(error_msg)
+                        error_logger.warning(error_msg)
+                        discarded_positions += 1
+                        continue
+                        
+                elif wdl < 0:  # Loss
+                    if steps > 0:
+                        # Loss: -(BASE_SCORE - steps) (1 step = -499, 100 steps = -400)
+                        evaluation = -(BASE_SCORE - float(steps))
+                    else:
+                        # Unknown steps - discard this position
+                        # Get FEN and sector info for debugging
+                        fen_str = board.to_fen(player)
+                        w_count = board.count(1)
+                        b_count = board.count(-1)
+                        w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
+                        b_place = max(0, 9 - (board.put_pieces // 2))
+                        sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
+                        
+                        error_msg = f"PerfectDB.evaluate failed for position {i}: Unknown steps for losing position (WDL={wdl}, steps={steps}) | FEN: {fen_str} | Hash: {sector_hash}"
+                        logger.warning(error_msg)
+                        error_logger.warning(error_msg)
+                        discarded_positions += 1
+                        continue
+                        
+                else:  # Draw
+                    evaluation = 0.0
                 
                 # Get best move if available
                 best_move_token = ""
@@ -241,8 +297,31 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                 if (i + 1) % 1000 == 0:
                     logger.info(f"Processed {i + 1}/{len(positions)} positions, {valid_positions} valid")
                     
+                # Log evaluation distribution every 5000 positions for analysis
+                if (i + 1) % 5000 == 0 and valid_positions > 0:
+                    evaluations = [float(line.split(' | ')[1]) for line in training_data[-min(1000, len(training_data)):]]
+                    if evaluations:
+                        logger.info(f"Recent evaluation stats: min={min(evaluations):.2f}, "
+                                  f"max={max(evaluations):.2f}, mean={np.mean(evaluations):.2f}, "
+                                  f"std={np.std(evaluations):.2f}")
+                    
             except Exception as e:
-                logger.debug(f"Skipping position {i}: {e}")
+                # Get FEN and sector info for debugging
+                try:
+                    fen_str = board.to_fen(player)
+                    w_count = board.count(1)
+                    b_count = board.count(-1)
+                    w_place = max(0, 9 - ((board.put_pieces + 1) // 2))
+                    b_place = max(0, 9 - (board.put_pieces // 2))
+                    sector_hash = f"std_{w_count}_{b_count}_{w_place}_{b_place}"
+                    
+                    error_msg = f"PerfectDB.evaluate failed for position {i}: {e} | FEN: {fen_str} | Hash: {sector_hash}"
+                except:
+                    error_msg = f"PerfectDB.evaluate failed for position {i}: {e} | FEN: [failed to generate] | Hash: [unknown]"
+                
+                logger.debug(error_msg)
+                error_logger.warning(error_msg)
+                discarded_positions += 1
                 continue
         
         # Write training data file
@@ -258,9 +337,33 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
             for line in training_data:
                 f.write(line)
         
+        # Analyze final evaluation distribution
+        if training_data:
+            all_evaluations = [float(line.split(' | ')[1]) for line in training_data]
+            wins = [e for e in all_evaluations if e > 0]
+            losses = [e for e in all_evaluations if e < 0]
+            draws = [e for e in all_evaluations if e == 0]
+            
+            logger.info("=== Enhanced Evaluation Distribution Analysis ===")
+            logger.info(f"Total positions: {len(all_evaluations)}")
+            logger.info(f"Wins: {len(wins)} ({len(wins)/len(all_evaluations)*100:.1f}%)")
+            logger.info(f"Losses: {len(losses)} ({len(losses)/len(all_evaluations)*100:.1f}%)")
+            logger.info(f"Draws: {len(draws)} ({len(draws)/len(all_evaluations)*100:.1f}%)")
+            
+            if wins:
+                logger.info(f"Win evaluations - min: {min(wins):.2f}, max: {max(wins):.2f}, mean: {np.mean(wins):.2f}")
+            if losses:
+                logger.info(f"Loss evaluations - min: {min(losses):.2f}, max: {max(losses):.2f}, mean: {np.mean(losses):.2f}")
+            
+            logger.info(f"Overall evaluation range: [{min(all_evaluations):.2f}, {max(all_evaluations):.2f}]")
+            logger.info(f"Standard deviation: {np.std(all_evaluations):.2f}")
+        
         end_time = time.time()
         logger.info(f"Training data generation completed in {end_time - start_time:.2f} seconds")
         logger.info(f"Generated {valid_positions} valid training positions")
+        logger.info(f"Discarded {discarded_positions} positions due to evaluation failures")
+        if discarded_positions > 0:
+            logger.info(f"Error details saved to: {error_log_file}")
         
         if os.path.exists(output_file):
             file_size = os.path.getsize(output_file)
@@ -273,6 +376,14 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
     finally:
         try:
             pdb.deinit()
+        except:
+            pass
+        
+        # Clean up error logger
+        try:
+            for handler in error_logger.handlers[:]:
+                handler.close()
+                error_logger.removeHandler(handler)
         except:
             pass
 
@@ -369,6 +480,8 @@ def main():
     # Show deprecation warning if engine argument is used
     if args.engine:
         logger.warning("--engine argument is deprecated. Now using Perfect DB DLL directly.")
+    
+    logger.info("Using enhanced evaluation with DTV/DTL steps for fine-grained scoring")
     
     # Generate training data using Perfect DB
     success = generate_training_data_with_perfect_db(
