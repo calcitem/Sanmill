@@ -592,6 +592,7 @@ if __name__ == '__main__':
         config["perfect_db"] = "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
         
         config["plot"] = True
+        config["plot_interval"] = 25       # 减少图表更新频率，避免阻塞
         config["save_checkpoint"] = True
         config["checkpoint_interval"] = 10  # 每10个epoch保存一次检查点
         config["backup_models"] = True      # 自动备份现有模型

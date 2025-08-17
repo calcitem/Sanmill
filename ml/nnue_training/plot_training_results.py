@@ -230,7 +230,7 @@ class TrainingResultsPlotter:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
         logger.info(f"Comprehensive training plot saved to {save_path}")
         
         if show_plot:
@@ -298,7 +298,7 @@ class TrainingResultsPlotter:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
         logger.info(f"Loss convergence plot saved to {save_path}")
         
         if show_plot:
@@ -396,7 +396,7 @@ Training Summary Statistics:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=300, bbox_inches='tight', facecolor='white')
+        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
         logger.info(f"Performance summary saved to {save_path}")
         
         if show_plot:

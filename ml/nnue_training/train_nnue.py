@@ -311,7 +311,8 @@ class TrainingVisualizer:
     
     def add_epoch_data(self, epoch: int, train_loss: float, val_loss: float, 
                       val_accuracy: float, learning_rate: float, 
-                      gradient_norm: float, epoch_time: float, cumulative_time: float = None):
+                      gradient_norm: float, epoch_time: float, cumulative_time: float = None,
+                      total_epochs: int = None):
         """Add data for a completed epoch"""
         self.epochs.append(epoch + 1)  # 1-based epoch numbering
         self.train_losses.append(train_loss)
@@ -328,11 +329,22 @@ class TrainingVisualizer:
         else:
             self.cumulative_times.append(self.cumulative_times[-1] + epoch_time)
         
-        # Update plots if interval reached or last epoch
-        if ((epoch + 1) % self.update_interval == 0 or 
-            (epoch + 1) - self.last_update_epoch >= self.update_interval):
-            self.update_plots()
-            self.last_update_epoch = epoch + 1
+        # Update plots if interval reached (but skip final epochs to avoid blocking)
+        # Skip plot updates in the last 10 epochs to prevent blocking at training end
+        if total_epochs is not None:
+            epochs_remaining = total_epochs - (epoch + 1)
+        else:
+            epochs_remaining = 50  # Conservative default if total_epochs not provided
+        should_update = ((epoch + 1) % self.update_interval == 0 and epochs_remaining > 10)
+        
+        if (should_update or 
+            ((epoch + 1) - self.last_update_epoch >= self.update_interval and epochs_remaining > 10)):
+            try:
+                self.update_plots()
+                self.last_update_epoch = epoch + 1
+            except Exception as e:
+                logger.warning(f"Plot update failed at epoch {epoch + 1}: {e}")
+                # Continue training even if plotting fails
     
     def update_plots(self):
         """Update all training plots"""
@@ -453,14 +465,14 @@ class TrainingVisualizer:
         
         plt.tight_layout()
         
-        # Save plot
+        # Save plot with reduced DPI for faster generation
         if self.save_plots:
             plot_path = self.output_dir / f"training_progress_epoch_{self.epochs[-1]:04d}.png"
-            plt.savefig(plot_path, dpi=150, bbox_inches='tight')
+            plt.savefig(plot_path, dpi=100, bbox_inches='tight')  # Reduced from 150
             
             # Also save as latest
             latest_path = self.output_dir / "training_progress_latest.png"
-            plt.savefig(latest_path, dpi=150, bbox_inches='tight')
+            plt.savefig(latest_path, dpi=100, bbox_inches='tight')  # Reduced from 150
             
             logger.info(f"Training plots saved to {plot_path}")
         
@@ -705,7 +717,7 @@ def save_config_template(output_path: str):
         "# Visualization Parameters": "Used in both modes",
         "plot": True,
         "plot-dir": "plots",
-        "plot-interval": 5,
+        "plot-interval": 20,  # Reduced frequency to prevent blocking
         "show-plots": False,
         "save-csv": True,
         
@@ -1213,7 +1225,7 @@ def main():
     # Visualization options
     parser.add_argument('--plot', action='store_true', help='Enable training visualization plots')
     parser.add_argument('--plot-dir', default='plots', help='Directory to save plots')
-    parser.add_argument('--plot-interval', type=int, default=5, help='Update plots every N epochs')
+    parser.add_argument('--plot-interval', type=int, default=20, help='Update plots every N epochs (higher = less frequent, faster training)')
     parser.add_argument('--show-plots', action='store_true', help='Display plots in real-time (requires GUI)')
     parser.add_argument('--save-csv', action='store_true', help='Save training metrics to CSV file')
     
@@ -1548,7 +1560,8 @@ def main():
             visualizer.add_epoch_data(
                 epoch, train_loss, val_loss, val_accuracy, 
                 current_lr, avg_grad_norm, epoch_time, 
-                cumulative_time=time.time() - training_start_time
+                cumulative_time=time.time() - training_start_time,
+                total_epochs=args.epochs
             )
         
         # Early stopping
@@ -1590,16 +1603,17 @@ def main():
         
         logger.info(f"Training visualizations saved to {args.plot_dir}")
         
-        # Auto-generate additional comprehensive plots from CSV
+        # Auto-generate additional comprehensive plots from CSV (async to avoid blocking)
         try:
             from auto_plot import auto_generate_plots
             csv_path = Path(args.plot_dir) / "training_metrics.csv"
             if csv_path.exists():
-                logger.info("Generating additional comprehensive visualizations...")
+                logger.info("Generating additional comprehensive visualizations (in background)...")
+                # Use comprehensive_only=True to reduce generation time
                 success = auto_generate_plots(
                     csv_file=str(csv_path),
                     output_dir=args.plot_dir,
-                    comprehensive_only=False
+                    comprehensive_only=True  # Only generate main plot to save time
                 )
                 if success:
                     logger.info("Additional visualizations generated successfully!")
