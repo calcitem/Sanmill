@@ -222,128 +222,257 @@ def extract_features_from_board(board: Board, player: int) -> List[float]:
     
     return features
 
-def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -> List[Tuple[Board, int]]:
+def classify_game_phase(W: int, B: int, WF: int, BF: int) -> str:
     """
-    Generate random game positions following Nine Men's Morris actual game distribution.
-    Uses stratified sampling to ensure diverse position types with realistic proportions.
-    Returns list of (board, current_player) tuples.
-    """
-    positions = []
-    attempts = 0
-    max_attempts = num_samples * 3
+    Classify game phase based on sector parameters from sec2 filename.
     
-    # Define game phase distributions based on actual Nine Men's Morris games
-    phase_distribution = {
-        'early_placement': 0.15,    # First 4 rounds of placing phase (8 pieces placed)
-        'late_placement': 0.25,     # Remaining rounds of placing phase (10 more pieces)
-        'moving_phase': 0.35,      # Moving phase excluding flying (both players >3 pieces)
-        'flying_phase': 0.25       # Flying phase: when any player has ≤3 pieces on board
+    Args:
+        W: White pieces on board
+        B: Black pieces on board  
+        WF: White pieces in hand (Free)
+        BF: Black pieces in hand (Free)
+    
+    Returns:
+        Game phase string: 'placement', 'moving', or 'flying'
+        
+    Note: Endgame positions (W<2 or B<2) are invalid and don't exist in Perfect DB
+    """
+    total_placed = W + B
+    total_in_hand = WF + BF
+    
+    # Invalid positions: either player has < 2 pieces (game would be over)
+    if W < 2 or B < 2:
+        raise ValueError(f"Invalid sector: W={W}, B={B} (game over, no such sec2 file exists)")
+    
+    # Placement phase: pieces still in hand
+    if total_in_hand > 0:
+        return 'placement'
+    
+    # Flying phase: at least one player has ≤3 pieces (and no pieces in hand)
+    if W <= 3 or B <= 3:
+        return 'flying'
+    
+    # Moving phase: both players have >3 pieces on board, no pieces in hand
+    return 'moving'
+
+
+def scan_perfect_db_sectors(perfect_db_path: str) -> Dict[str, List[Tuple[int, int, int, int]]]:
+    """
+    Scan Perfect DB directory for available sec2 files and classify them by game phase.
+    
+    Args:
+        perfect_db_path: Path to Perfect Database directory
+        
+    Returns:
+        Dictionary mapping phase names to lists of (W, B, WF, BF) tuples
+    """
+    import glob
+    import re
+    
+    # Find all sec2 files in the directory
+    sec2_pattern = os.path.join(perfect_db_path, "*.sec2")
+    sec2_files = glob.glob(sec2_pattern)
+    
+    # Parse filename pattern: std_W_B_WF_BF.sec2
+    filename_pattern = re.compile(r'std_(\d+)_(\d+)_(\d+)_(\d+)\.sec2$')
+    
+    phase_sectors = defaultdict(list)
+    
+    for filepath in sec2_files:
+        filename = os.path.basename(filepath)
+        match = filename_pattern.match(filename)
+        
+        if match:
+            W, B, WF, BF = map(int, match.groups())
+            try:
+                phase = classify_game_phase(W, B, WF, BF)
+                phase_sectors[phase].append((W, B, WF, BF))
+            except ValueError as e:
+                # Skip invalid sectors (shouldn't exist in real Perfect DB)
+                logger.debug(f"Skipping invalid sector {filename}: {e}")
+                continue
+    
+    # Log discovered sectors
+    logger.info(f"Scanned {len(sec2_files)} sec2 files in {perfect_db_path}")
+    for phase, sectors in phase_sectors.items():
+        logger.info(f"  {phase}: {len(sectors)} sectors")
+    
+    return dict(phase_sectors)
+
+
+def generate_positions_from_sectors(pdb: 'PerfectDB', game: Game, 
+                                  sectors_by_phase: Dict[str, List[Tuple[int, int, int, int]]],
+                                  num_samples: int) -> List[Tuple[Board, int]]:
+    """
+    Generate random positions by sampling from Perfect DB sectors directly.
+    
+    Args:
+        pdb: PerfectDB instance  
+        game: Game instance for creating board objects
+        sectors_by_phase: Dictionary mapping phases to sector parameters
+        num_samples: Total number of positions to generate
+        
+    Returns:
+        List of (board, current_player) tuples
+    """
+    # Define simplified phase distribution (easier to adjust)
+    phase_weights = {
+        'placement': 0.45,   # Placement phase (increased from 0.40)
+        'moving': 0.35,      # Moving phase  
+        'flying': 0.20,      # Flying phase (endgame removed, redistributed)
     }
     
-    # Track samples per phase
-    phase_targets = {phase: int(num_samples * ratio) for phase, ratio in phase_distribution.items()}
-    phase_counts = {phase: 0 for phase in phase_targets.keys()}
+    # Calculate target counts per phase
+    phase_targets = {}
+    for phase, weight in phase_weights.items():
+        if phase in sectors_by_phase and len(sectors_by_phase[phase]) > 0:
+            phase_targets[phase] = int(num_samples * weight)
+        else:
+            logger.warning(f"No sectors found for phase '{phase}', skipping")
     
-    logger.info(f"Sampling {num_samples} positions with realistic game distribution:")
+    # Redistribute any missing phases proportionally
+    total_target = sum(phase_targets.values())
+    if total_target < num_samples:
+        remaining = num_samples - total_target
+        for phase in phase_targets:
+            phase_targets[phase] += remaining // len(phase_targets)
+    
+    logger.info(f"Target distribution for {num_samples} positions:")
     for phase, target in phase_targets.items():
-        logger.info(f"  {phase}: {target} positions ({phase_distribution[phase]*100:.0f}%)")
+        percentage = target / num_samples * 100
+        logger.info(f"  {phase}: {target} positions ({percentage:.1f}%)")
     
-    while sum(phase_counts.values()) < num_samples and attempts < max_attempts:
-        attempts += 1
-        
-        # Choose target phase based on remaining needs
-        available_phases = [p for p, count in phase_counts.items() 
-                          if count < phase_targets[p]]
-        if not available_phases:
-            break
-            
-        target_phase = random.choice(available_phases)
-        
-        # Generate position for target phase
-        board = game.getInitBoard()
-        player = 1
-        
-        # Define ply ranges for each phase
-        if target_phase == 'early_placement':
-            # First 4 rounds (8 pieces): 2-8 plies
-            num_plies = random.randint(2, 8)
-        elif target_phase == 'late_placement':
-            # Remaining placement rounds: 9-18 plies  
-            num_plies = random.randint(9, 18)
-        elif target_phase == 'moving_phase':
-            # Moving phase without flying: 19-50 plies
-            num_plies = random.randint(19, 50)
-        else:  # flying_phase
-            # Flying phase: 30+ plies to reach flying conditions
-            num_plies = random.randint(30, max_plies)
-        
-        # Play random game
-        game_ended = False
-        for ply in range(num_plies):
-            if game.getGameEnded(board, player) != 0:
-                game_ended = True
-                break
-                
-            valid_moves = game.getValidMoves(board, player)
-            legal_actions = np.where(valid_moves == 1)[0]
-            
-            if len(legal_actions) == 0:
-                game_ended = True
-                break
-                
-            action = random.choice(legal_actions)
-            board, player = game.getNextState(board, player, action)
-        
-        # Validate position matches target phase
-        w_count = board.count(1)
-        b_count = board.count(-1)
-        total_pieces = w_count + b_count
-        w_in_hand = max(0, 9 - ((board.put_pieces + 1) // 2))
-        b_in_hand = max(0, 9 - (board.put_pieces // 2))
-        
-        phase_valid = False
-        if target_phase == 'early_placement' and board.period == 0 and board.put_pieces <= 8:
-            # Early placement: first 4 rounds (8 pieces total)
-            phase_valid = True
-        elif target_phase == 'late_placement' and board.period == 0 and board.put_pieces > 8:
-            # Late placement: remaining placement rounds 
-            phase_valid = True
-        elif target_phase == 'moving_phase' and board.period in [1, 2] and w_count > 3 and b_count > 3:
-            # Moving phase: both players have >3 pieces (no flying yet)
-            phase_valid = True
-        elif target_phase == 'flying_phase' and board.period in [1, 2] and (w_count <= 3 or b_count <= 3) and w_count >= 2 and b_count >= 2:
-            # Flying phase: at least one player has ≤3 pieces on board
-            phase_valid = True
-        
-        # Accept position with some tolerance for phase boundaries
-        if phase_valid or (not game_ended and total_pieces >= 4):
-            # Apply balanced acceptance rate - stricter for overrepresented phases
-            current_ratio = phase_counts[target_phase] / max(1, sum(phase_counts.values()))
-            target_ratio = phase_distribution[target_phase]
-            
-            # Higher acceptance rate if we're behind target, lower if ahead
-            acceptance_rate = min(0.8, target_ratio / max(0.1, current_ratio))
-            
-            if random.random() < acceptance_rate:
-                positions.append((board, player))
-                phase_counts[target_phase] += 1
-        
-        # Progress logging
-        total_generated = sum(phase_counts.values())
-        if total_generated % 1000 == 0 and total_generated > 0:
-            logger.info(f"Generated {total_generated}/{num_samples} positions")
-            for phase, count in phase_counts.items():
-                percentage = count / max(1, total_generated) * 100
-                logger.info(f"  {phase}: {count} ({percentage:.1f}%)")
+    positions = []
     
-    total_generated = sum(phase_counts.values())
-    logger.info(f"Final distribution from {attempts} attempts:")
-    for phase, count in phase_counts.items():
-        percentage = count / max(1, total_generated) * 100
-        target_pct = phase_distribution[phase] * 100
-        logger.info(f"  {phase}: {count}/{phase_targets[phase]} ({percentage:.1f}%, target {target_pct:.1f}%)")
+    # Sample from each phase
+    for phase, target_count in phase_targets.items():
+        if target_count == 0:
+            continue
+            
+        available_sectors = sectors_by_phase[phase]
+        logger.info(f"Sampling {target_count} positions from {len(available_sectors)} '{phase}' sectors")
+        
+        phase_positions = []
+        max_attempts = target_count * 3
+        attempts = 0
+        
+        while len(phase_positions) < target_count and attempts < max_attempts:
+            attempts += 1
+            
+            # Randomly select a sector from this phase
+            W, B, WF, BF = random.choice(available_sectors)
+            
+            try:
+                # Generate a random board position for this sector
+                board = create_random_board_for_sector(W, B, WF, BF, game)
+                if board is not None:
+                    # Random side to move
+                    player = random.choice([1, -1])
+                    phase_positions.append((board, player))
+                    
+            except Exception as e:
+                logger.debug(f"Failed to generate position for sector std_{W}_{B}_{WF}_{BF}: {e}")
+                continue
+        
+        logger.info(f"Generated {len(phase_positions)}/{target_count} positions for '{phase}' phase")
+        positions.extend(phase_positions)
     
+    logger.info(f"Total positions generated: {len(positions)}")
     return positions
+
+
+def create_random_board_for_sector(W: int, B: int, WF: int, BF: int, game: Game) -> Board:
+    """
+    Create a random board position matching the given sector parameters.
+    
+    Args:
+        W: White pieces on board
+        B: Black pieces on board
+        WF: White pieces in hand
+        BF: Black pieces in hand
+        game: Game instance
+        
+    Returns:
+        Board instance or None if generation failed
+    """
+    board = game.getInitBoard()
+    
+    # Calculate total pieces placed
+    total_placed = W + B
+    
+    # Set board state based on sector parameters
+    if WF > 0 or BF > 0:
+        # Placement phase
+        board.period = 0
+        board.put_pieces = total_placed
+    else:
+        # Moving/Flying phase
+        if W <= 3 or B <= 3:
+            board.period = 2  # Flying phase
+        else:
+            board.period = 1  # Moving phase
+        board.put_pieces = 18  # All pieces have been placed
+    
+    # Get valid positions on the board
+    valid_positions = []
+    for x in range(7):
+        for y in range(7):
+            if board.allowed_places[x][y]:
+                valid_positions.append((x, y))
+    
+    if len(valid_positions) < total_placed:
+        logger.debug(f"Not enough positions for {total_placed} pieces")
+        return None
+    
+    # Clear the board first
+    for x in range(7):
+        for y in range(7):
+            board.pieces[x][y] = 0
+    
+    # Randomly place pieces on the board
+    selected_positions = random.sample(valid_positions, total_placed)
+    
+    # Distribute pieces between white and black
+    white_positions = selected_positions[:W]
+    black_positions = selected_positions[W:W+B]
+    
+    # Place white pieces
+    for x, y in white_positions:
+        board.pieces[x][y] = 1
+    
+    # Place black pieces  
+    for x, y in black_positions:
+        board.pieces[x][y] = -1
+    
+    # Validate the board state
+    actual_w = board.count(1)
+    actual_b = board.count(-1)
+    
+    if actual_w != W or actual_b != B:
+        logger.debug(f"Board validation failed: expected W={W}, B={B}, got W={actual_w}, B={actual_b}")
+        return None
+    
+    return board
+
+
+def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -> List[Tuple[Board, int]]:
+    """
+    Generate random game positions by sampling from Perfect Database sectors directly.
+    This is an optimized version that avoids game simulation.
+    
+    Args:
+        game: Game instance  
+        num_samples: Number of positions to generate
+        max_plies: Unused (kept for compatibility)
+        
+    Returns:
+        List of (board, current_player) tuples
+    """
+    # This function now serves as a compatibility wrapper
+    # The actual position generation will be done by the new sector-based method
+    # in generate_training_data_with_perfect_db
+    logger.warning("sample_random_positions called - this will be replaced by sector-based sampling")
+    return []
 
 def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logger, stats: dict) -> List[str]:
     """
@@ -531,25 +660,32 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
     }
     
     try:
-        # Phase 1: Generate random positions
-        logger.info("Phase 1: Generating random positions...")
+        # Phase 1: Scan Perfect DB sectors and generate positions
+        logger.info("Phase 1: Scanning Perfect Database sectors...")
+        sectors_by_phase = scan_perfect_db_sectors(perfect_db_path)
+        
+        if not sectors_by_phase:
+            logger.error("No Perfect DB sectors found")
+            return False
+        
+        logger.info("Phase 2: Generating positions from sectors...")
         positions = []
         with tqdm(total=num_positions, desc="Generating positions", 
                  unit="pos", ncols=100, ascii=True) as pbar:
-            positions = sample_random_positions(game, num_positions)
-            pbar.update(num_positions)
+            positions = generate_positions_from_sectors(pdb, game, sectors_by_phase, num_positions)
+            pbar.update(len(positions))
         
         if not positions:
             logger.error("No positions were generated")
             return False
         
-        logger.info(f"✓ Generated {len(positions)} random positions")
+        logger.info(f"✓ Generated {len(positions)} positions from Perfect DB sectors")
         
-        # Phase 2: Evaluate positions with Perfect DB (using batch processing)
+        # Phase 3: Evaluate positions with Perfect DB (using batch processing)
         training_data = []
         valid_positions = 0
         
-        logger.info("Phase 2: Evaluating positions with Perfect Database...")
+        logger.info("Phase 3: Evaluating positions with Perfect Database...")
         logger.info(f"Using batch processing with batch size: {batch_size}")
         
         # Process positions in batches to optimize sector file access
@@ -617,8 +753,8 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         
 
         
-        # Phase 3: Write training data file
-        logger.info("Phase 3: Writing training data to file...")
+        # Phase 4: Write training data file
+        logger.info("Phase 4: Writing training data to file...")
         
         with tqdm(total=valid_positions + 5, desc="Writing data file", 
                  unit="lines", ncols=100, ascii=True) as pbar:
