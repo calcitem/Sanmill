@@ -1009,6 +1009,98 @@ def validate_epoch(model: nn.Module,
     return total_loss / num_batches, total_accuracy / num_batches
 
 
+def apply_transfer_learning(model: nn.Module, pretrained_state: dict, strategy: str) -> bool:
+    """
+    Apply transfer learning strategy to the model
+    
+    Args:
+        model: Target model to transfer to
+        pretrained_state: Pretrained model state dict
+        strategy: Transfer learning strategy
+    
+    Returns:
+        bool: Success status
+    """
+    try:
+        current_state = model.state_dict()
+        
+        if strategy == 'full':
+            # Full transfer: load all compatible weights
+            logger.info("🔄 Applying full transfer learning")
+            
+            compatible_keys = []
+            incompatible_keys = []
+            
+            for key in pretrained_state.keys():
+                if key in current_state and current_state[key].shape == pretrained_state[key].shape:
+                    current_state[key] = pretrained_state[key]
+                    compatible_keys.append(key)
+                else:
+                    incompatible_keys.append(key)
+            
+            model.load_state_dict(current_state)
+            
+            logger.info(f"✅ Transferred {len(compatible_keys)} layers")
+            if incompatible_keys:
+                logger.info(f"⚠️ Skipped {len(incompatible_keys)} incompatible layers: {incompatible_keys}")
+                
+        elif strategy == 'freeze-input':
+            # Freeze input layer, fine-tune hidden and output
+            logger.info("🔄 Applying freeze-input transfer learning")
+            
+            # Load all compatible weights first
+            for key in pretrained_state.keys():
+                if key in current_state and current_state[key].shape == pretrained_state[key].shape:
+                    current_state[key] = pretrained_state[key]
+            
+            model.load_state_dict(current_state)
+            
+            # Freeze input layer parameters
+            for name, param in model.named_parameters():
+                if 'input_to_hidden' in name:
+                    param.requires_grad = False
+                    logger.info(f"🔒 Frozen parameter: {name}")
+                    
+        elif strategy == 'freeze-hidden':
+            # Freeze hidden layers, fine-tune input and output
+            logger.info("🔄 Applying freeze-hidden transfer learning")
+            
+            # Load all compatible weights first
+            for key in pretrained_state.keys():
+                if key in current_state and current_state[key].shape == pretrained_state[key].shape:
+                    current_state[key] = pretrained_state[key]
+            
+            model.load_state_dict(current_state)
+            
+            # Freeze hidden layer parameters
+            for name, param in model.named_parameters():
+                if 'hidden' in name and 'input_to_hidden' not in name and 'hidden_to_output' not in name:
+                    param.requires_grad = False
+                    logger.info(f"🔒 Frozen parameter: {name}")
+                    
+        elif strategy == 'fine-tune':
+            # Fine-tuning: load weights but use very small learning rate
+            logger.info("🔄 Applying fine-tuning transfer learning")
+            
+            # Load all compatible weights
+            for key in pretrained_state.keys():
+                if key in current_state and current_state[key].shape == pretrained_state[key].shape:
+                    current_state[key] = pretrained_state[key]
+            
+            model.load_state_dict(current_state)
+            logger.info("✅ All compatible weights loaded for fine-tuning")
+            
+        else:
+            logger.error(f"❌ Unknown transfer learning strategy: {strategy}")
+            return False
+            
+        return True
+        
+    except Exception as e:
+        logger.error(f"❌ Transfer learning failed: {e}")
+        return False
+
+
 def backup_existing_model(filepath: str) -> bool:
     """
     Backup existing model files with timestamp before saving new ones.
@@ -1114,6 +1206,19 @@ def main():
     parser.add_argument('--max-samples', type=int, help='Maximum training samples')
     parser.add_argument('--val-split', type=float, default=0.1, help='Validation split ratio')
     parser.add_argument('--device', default='auto', help='Device to use (cpu/cuda/auto)')
+    
+    # Checkpoint and resume parameters
+    parser.add_argument('--resume-from', type=str, help='Resume training from checkpoint file')
+    parser.add_argument('--load-model-only', action='store_true', 
+                       help='Load only model weights, not optimizer/scheduler state')
+    
+    # Transfer learning parameters
+    parser.add_argument('--transfer-from', type=str, help='Transfer learning from pretrained model')
+    parser.add_argument('--transfer-strategy', default='full', 
+                       choices=['full', 'freeze-input', 'freeze-hidden', 'fine-tune'],
+                       help='Transfer learning strategy')
+    parser.add_argument('--transfer-lr-scale', type=float, default=0.1,
+                       help='Learning rate scale factor for transfer learning (default: 0.1)')
     
     # Pipeline-specific parameters
     parser.add_argument('--engine', help='Path to Sanmill engine executable (required for --pipeline)')
@@ -1344,6 +1449,72 @@ def main():
     model = MillNNUE(feature_size=args.feature_size, hidden_size=args.hidden_size).to(device)
     logger.info(f"Model created with {sum(p.numel() for p in model.parameters())} parameters")
     
+    # Load checkpoint if specified
+    start_epoch = 0
+    loaded_best_val_loss = float('inf')
+    checkpoint_scheduler_state = None
+    checkpoint_optimizer_state = None
+    
+    if args.resume_from:
+        logger.info(f"Loading checkpoint from {args.resume_from}")
+        try:
+            checkpoint = torch.load(args.resume_from, map_location=device)
+            
+            # Load model state
+            model.load_state_dict(checkpoint['model_state_dict'])
+            logger.info("✅ Model state loaded successfully")
+            
+            if not args.load_model_only:
+                # Load training state
+                start_epoch = checkpoint.get('epoch', 0)
+                loaded_best_val_loss = checkpoint.get('best_val_loss', float('inf'))
+                checkpoint_scheduler_state = checkpoint.get('scheduler_state_dict')
+                checkpoint_optimizer_state = checkpoint.get('optimizer_state_dict')
+                
+                # Override learning rate if specified in checkpoint
+                if 'learning_rate' in checkpoint and not hasattr(args, '_lr_overridden'):
+                    args.lr = checkpoint['learning_rate']
+                    logger.info(f"✅ Inherited learning rate: {args.lr:.6f}")
+                
+                logger.info(f"✅ Checkpoint loaded: epoch {start_epoch}, best val loss: {loaded_best_val_loss:.6f}")
+            else:
+                logger.info("✅ Model weights loaded (optimizer/scheduler state ignored)")
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to load checkpoint: {e}")
+            logger.info("Continuing with fresh training...")
+    
+    # Transfer learning from pretrained model
+    if args.transfer_from and args.transfer_from != args.resume_from:
+        logger.info(f"🔄 Loading pretrained model for transfer learning: {args.transfer_from}")
+        try:
+            pretrained_checkpoint = torch.load(args.transfer_from, map_location=device)
+            
+            # Extract model state dict
+            if isinstance(pretrained_checkpoint, dict) and 'model_state_dict' in pretrained_checkpoint:
+                pretrained_state = pretrained_checkpoint['model_state_dict']
+                pretrained_val_loss = pretrained_checkpoint.get('best_val_loss', float('inf'))
+                logger.info(f"Pretrained model validation loss: {pretrained_val_loss:.6f}")
+            else:
+                pretrained_state = pretrained_checkpoint
+            
+            # Apply transfer learning strategy
+            transfer_success = apply_transfer_learning(model, pretrained_state, args.transfer_strategy)
+            
+            if transfer_success:
+                logger.info(f"✅ Transfer learning applied successfully using '{args.transfer_strategy}' strategy")
+                
+                # Scale learning rate for transfer learning
+                if args.transfer_lr_scale != 1.0:
+                    args.lr *= args.transfer_lr_scale
+                    logger.info(f"🔧 Learning rate scaled for transfer learning: {args.lr:.6f}")
+            else:
+                logger.warning("⚠️ Transfer learning failed, continuing with random initialization")
+                
+        except Exception as e:
+            logger.error(f"❌ Failed to load pretrained model: {e}")
+            logger.info("Continuing with random initialization...")
+    
     # Setup training with optimized components for high-performance hardware
     # Use AdamW optimizer with weight decay for better generalization
     optimizer = optim.AdamW(
@@ -1353,6 +1524,14 @@ def main():
         betas=(0.9, 0.999),
         eps=1e-8
     )
+    
+    # Load optimizer state if available
+    if checkpoint_optimizer_state is not None:
+        try:
+            optimizer.load_state_dict(checkpoint_optimizer_state)
+            logger.info("✅ Optimizer state loaded successfully")
+        except Exception as e:
+            logger.warning(f"⚠️ Failed to load optimizer state: {e}")
     
     criterion = nn.MSELoss()
     
@@ -1367,6 +1546,13 @@ def main():
             warmup_epochs=5,
             cooldown_epochs=3
         )
+        # Load scheduler state if available
+        if checkpoint_scheduler_state is not None:
+            try:
+                scheduler.load_state_dict(checkpoint_scheduler_state)
+                logger.info("✅ Adaptive scheduler state loaded successfully")
+            except Exception as e:
+                logger.warning(f"⚠️ Failed to load scheduler state: {e}")
         logger.info("Using adaptive learning rate scheduler")
     elif args.lr_scheduler == 'cosine':
         scheduler = optim.lr_scheduler.CosineAnnealingWarmRestarts(
@@ -1404,13 +1590,16 @@ def main():
     # Initialize gradient scaler for mixed precision training
     scaler = torch.amp.GradScaler('cuda') if device.type == 'cuda' else None
     
-    best_val_loss = float('inf')
+    best_val_loss = loaded_best_val_loss if loaded_best_val_loss != float('inf') else float('inf')
     patience_counter = 0
     max_patience = 50  # Increased patience for longer training
     
     # Training time tracking for ETA calculation
     training_start_time = time.time()
     epoch_times = []
+    
+    if start_epoch > 0:
+        logger.info(f"🔄 Resuming training from epoch {start_epoch + 1}, best val loss: {best_val_loss:.6f}")
     
     # Backup existing model only once at the start of training
     initial_backup_created = backup_existing_model(args.output)
@@ -1420,7 +1609,7 @@ def main():
     logger.info("Starting training...")
     logger.info("Progress: [--------------------] 0% | Detailed logs every 10 epochs")
     
-    for epoch in range(args.epochs):
+    for epoch in range(start_epoch, args.epochs):
         start_time = time.time()
         
         # Train
@@ -1501,7 +1690,25 @@ def main():
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             patience_counter = 0
-            # Save best model (backup was already done at start of training)
+            # Save best model with complete training state
+            checkpoint = {
+                'epoch': epoch + 1,
+                'model_state_dict': model.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict(),
+                'best_val_loss': best_val_loss,
+                'train_loss': train_loss,
+                'val_loss': val_loss,
+                'learning_rate': current_lr,
+                'args': vars(args)
+            }
+            
+            # Save scheduler state if using adaptive scheduler
+            if args.lr_scheduler == 'adaptive' and hasattr(scheduler, 'state_dict'):
+                checkpoint['scheduler_state_dict'] = scheduler.state_dict()
+            
+            # Save complete checkpoint
+            torch.save(checkpoint, f"{args.output}.checkpoint")
+            # Save model state only for compatibility
             torch.save(model.state_dict(), f"{args.output}.pytorch")
             save_model_c_format(model, args.output)
             # Reduce model save logging to avoid spam

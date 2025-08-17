@@ -1,0 +1,66 @@
+{
+  "_description": "Easy 多轮训练配置文件 - 自动化多轮迭代与迁移学习",
+  "_version": "1.0",
+  "_author": "Auto-generated for easy_train.py",
+  
+  "pipeline": true,
+  
+  "engine": null,
+  "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
+  "_comment_perfect_db": "请修改为你的 Perfect Database 路径",
+  
+  "output-dir": "./easy_multiround_output",
+  "output": "./models/easy_nnue_model.bin",
+  
+  "_comment_multiround": "多轮训练配置 - 自动优化的轮次策略",
+  "max_rounds": 6,
+  "auto_transfer_learning": true,
+  
+  "_comment_training": "基础训练参数 - 每轮会自动调整",
+  "positions": 50000,
+  "epochs": 150,
+  "lr": 0.002,
+  "batch-size": 8192,
+  
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": false,
+  "_comment_lr_auto_scale": "多轮训练使用手动学习率管理",
+  
+  "feature-size": 115,
+  "hidden-size": 256,
+  "val-split": 0.1,
+  
+  "device": "auto",
+  "threads": 0,
+  
+  "plot": true,
+  "plot-interval": 10,
+  "save-csv": true,
+  "show-plots": false,
+  
+  "_hardware_requirements": {
+    "_description": "硬件要求说明",
+    "minimum_ram": "8GB",
+    "recommended_ram": "16GB",
+    "gpu_memory": "6GB+",
+    "disk_space": "10GB+"
+  },
+  
+  "_training_strategy": {
+    "_description": "多轮训练策略说明",
+    "round_1": "探索阶段：30k位置，80轮，lr=0.003，完全迁移",
+    "round_2": "稳定学习：50k位置，120轮，lr=0.002，完全迁移",
+    "round_3": "深化学习：80k位置，150轮，lr=0.0015，完全迁移",
+    "round_4": "精细调整：100k位置，180轮，lr=0.001，微调",
+    "round_5": "优化阶段：120k位置，200轮，lr=0.0008，微调",
+    "round_6": "收敛阶段：150k位置，250轮，lr=0.0005，微调"
+  },
+  
+  "_usage_instructions": {
+    "_description": "使用说明",
+    "step_1": "修改 perfect-db 路径为你的 Perfect Database 目录",
+    "step_2": "根据硬件调整 batch-size 和 positions",
+    "step_3": "直接运行 python easy_train.py",
+    "step_4": "训练会自动完成 6 轮迭代，每轮使用迁移学习"
+  }
+}
