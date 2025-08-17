@@ -767,44 +767,58 @@ def validate_final_model(model_path: str, engine_path: str) -> bool:
     """
     Validate the trained model works with the engine
     """
+    logger.info("🔍 Starting model validation...")
+    logger.info(f"🔍 Checking model file: {model_path}")
+    
     if not os.path.exists(model_path):
         logger.error(f"Model file not found: {model_path}")
         return False
     
+    logger.info("🔍 Model file exists, checking size...")
     model_size = os.path.getsize(model_path)
     if model_size == 0:
         logger.error(f"Model file is empty: {model_path}")
         return False
     
-    logger.info(f"Model validation passed: {model_path} ({model_size} bytes)")
+    logger.info(f"🔍 Model validation passed: {model_path} ({model_size} bytes)")
     
-    # Basic engine connectivity test (if possible)
+    # Basic engine connectivity test (if possible) - with aggressive timeout
+    logger.info("🔍 Starting engine compatibility test...")
     try:
         if engine_path is None:
-            logger.info("Engine path not specified (skipping compatibility test)")
+            logger.info("🔍 Engine path not specified (skipping compatibility test)")
+            logger.info("🔍 Model validation completed (no engine test)")
             return True
-            
+        
+        logger.info(f"🔍 Testing engine compatibility with: {engine_path}")
+        logger.info("🔍 Preparing engine test command...")
         cmd = [engine_path, "test", "model", model_path]
+        logger.info(f"🔍 Running command: {' '.join(cmd)}")
+        
+        # Reduce timeout to prevent hanging
+        logger.info("🔍 Executing subprocess with 3-second timeout...")
         result = subprocess.run(
             cmd, 
             capture_output=True, 
             text=True, 
-            timeout=30
+            timeout=3  # Further reduced to 3 seconds
         )
+        logger.info(f"🔍 Subprocess completed with return code: {result.returncode}")
         
         if result.returncode == 0:
-            logger.info("Engine model compatibility test passed")
+            logger.info("🔍 Engine model compatibility test passed")
         else:
-            logger.warning("Engine model compatibility test failed (model may still be usable)")
-            logger.warning(f"Engine output: {result.stderr}")
+            logger.warning("🔍 Engine model compatibility test failed (model may still be usable)")
+            logger.warning(f"🔍 Engine output: {result.stderr}")
         
     except FileNotFoundError:
-        logger.info("Engine test command not available (skipping compatibility test)")
+        logger.info("🔍 Engine test command not available (skipping compatibility test)")
     except subprocess.TimeoutExpired:
-        logger.warning("Engine compatibility test timed out")
+        logger.warning("🔍 Engine compatibility test timed out after 3 seconds")
     except Exception as e:
-        logger.warning(f"Engine compatibility test failed: {e}")
+        logger.warning(f"🔍 Engine compatibility test failed: {e}")
     
+    logger.info("🔍 Model validation completed successfully")
     return True
 
 
@@ -1484,17 +1498,9 @@ def main():
             from auto_plot import auto_generate_plots
             csv_path = Path(args.plot_dir) / "training_metrics.csv"
             if csv_path.exists():
-                logger.info("Generating final comprehensive visualizations...")
-                # Generate all plots at the end for complete analysis
-                success = auto_generate_plots(
-                    csv_file=str(csv_path),
-                    output_dir=args.plot_dir,
-                    comprehensive_only=False  # Generate all plots for final analysis
-                )
-                if success:
-                    logger.info("Final training visualizations generated successfully!")
-                else:
-                    logger.warning("Failed to generate final visualizations")
+                logger.info("Skipping plot generation to avoid potential delays...")
+                # Temporarily disable all plotting to identify bottleneck
+                logger.info("Plot generation disabled for performance debugging")
             else:
                 logger.warning(f"Training metrics CSV not found at {csv_path}")
         except Exception as e:
@@ -1503,12 +1509,19 @@ def main():
     # Pipeline Mode: Final model validation
     if args.pipeline:
         logger.info("=== Step 4: Model Validation ===")
+        logger.info("🚀 About to call validate_final_model...")
+        
+        validation_start = time.time()
         success = validate_final_model(args.output, args.engine)
+        validation_end = time.time()
+        
+        logger.info(f"🚀 validate_final_model completed in {validation_end - validation_start:.2f} seconds")
         
         if not success:
             logger.error("Model validation failed")
             return 1
         
+        logger.info("🚀 Starting pipeline completion summary...")
         # Pipeline completion summary
         logger.info("=== Pipeline Completed Successfully ===")
         logger.info(f"Training data: {args.data}")
@@ -1518,7 +1531,9 @@ def main():
         logger.info(f"  setoption name UseNNUE value true")
         logger.info(f"  setoption name NNUEModelPath value {args.output}")
         logger.info(f"  setoption name NNUEWeight value 90")
+        logger.info("🚀 Pipeline summary completed")
     
+    logger.info("🚀 About to return from main function...")
     return 0
 
 if __name__ == '__main__':

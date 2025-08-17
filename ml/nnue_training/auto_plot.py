@@ -17,7 +17,8 @@ sys.path.insert(0, str(Path(__file__).parent))
 logger = logging.getLogger(__name__)
 
 def auto_generate_plots(csv_file: str = None, output_dir: str = None, 
-                       comprehensive_only: bool = False) -> bool:
+                       comprehensive_only: bool = True, max_plot_points: int = 10, 
+                       force_skip: bool = False) -> bool:
     """
     Automatically generate training plots from CSV data
     
@@ -27,11 +28,24 @@ def auto_generate_plots(csv_file: str = None, output_dir: str = None,
     Args:
         csv_file: Path to CSV file (if None, searches for training_metrics.csv)
         output_dir: Output directory for plots (if None, uses 'plots')
-        comprehensive_only: If True, only generate comprehensive plot for faster execution
+        comprehensive_only: If True, only generate comprehensive plot for faster execution (default: True for performance)
+        max_plot_points: Maximum number of points to plot for performance (default: 10)
+        force_skip: If True, skip plotting entirely and return immediately
         
     Returns:
         True if successful, False otherwise
     """
+    
+    # Early exit if forced to skip (to prevent duplicate plotting)
+    if force_skip:
+        logger.info("Plot generation skipped due to force_skip=True")
+        return True
+    
+    # Check environment variable to prevent duplicate plotting
+    if os.environ.get('NNUE_SKIP_PLOTTING', '').lower() in ('1', 'true', 'yes'):
+        logger.info("Plot generation skipped due to NNUE_SKIP_PLOTTING environment variable")
+        return True
+    
     try:
         from plot_training_results import TrainingResultsPlotter, find_csv_files
         
@@ -72,7 +86,7 @@ def auto_generate_plots(csv_file: str = None, output_dir: str = None,
         import time
         start_time = time.time()
         
-        plotter = TrainingResultsPlotter(csv_file, output_dir)
+        plotter = TrainingResultsPlotter(csv_file, output_dir, max_plot_points=max_plot_points)
         
         if comprehensive_only:
             logger.info("Generating comprehensive plot only (fast mode)...")
@@ -110,6 +124,8 @@ def main():
     parser.add_argument('--output', type=str, help='Output directory for plots')
     parser.add_argument('--comprehensive-only', action='store_true', 
                        help='Generate only comprehensive plot')
+    parser.add_argument('--max-points', type=int, default=10,
+                       help='Maximum number of points to plot for performance (default: 10)')
     parser.add_argument('--verbose', '-v', action='store_true', help='Verbose logging')
     
     args = parser.parse_args()
@@ -122,7 +138,8 @@ def main():
     success = auto_generate_plots(
         csv_file=args.csv,
         output_dir=args.output,
-        comprehensive_only=args.comprehensive_only
+        comprehensive_only=args.comprehensive_only,
+        max_plot_points=args.max_points
     )
     
     if success:

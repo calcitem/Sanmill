@@ -66,13 +66,14 @@ class TrainingResultsPlotter:
     Comprehensive visualization tool for NNUE training results
     """
     
-    def __init__(self, csv_file: str, output_dir: str = "plots"):
+    def __init__(self, csv_file: str, output_dir: str = "plots", max_plot_points: int = 10):
         if not PLOTTING_AVAILABLE:
             raise ImportError("Matplotlib is required for plotting. Install with: pip install matplotlib")
         
         self.csv_file = Path(csv_file)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
+        self.max_plot_points = max_plot_points  # Maximum points to plot for performance
         
         # Load data
         self.data = self.load_training_data()
@@ -80,6 +81,14 @@ class TrainingResultsPlotter:
             raise ValueError(f"Failed to load training data from {csv_file}")
         
         logger.info(f"Loaded training data: {len(self.data)} epochs")
+        
+        # Create sampled data for faster plotting
+        if len(self.data) > self.max_plot_points:
+            self.sampled_data = self.sample_data_for_plotting()
+            logger.info(f"Data sampled from {len(self.data)} to {len(self.sampled_data)} points for faster plotting")
+        else:
+            self.sampled_data = self.data.copy()
+            logger.info("Data size is small, using all points for plotting")
         
     def load_training_data(self) -> Optional[pd.DataFrame]:
         """Load training metrics from CSV file"""
@@ -123,94 +132,121 @@ class TrainingResultsPlotter:
             logger.error(f"Error loading CSV file: {e}")
             return None
     
+    def sample_data_for_plotting(self) -> pd.DataFrame:
+        """
+        Sample data to reduce plotting points for better performance
+        Uses uniform sampling to maintain data distribution
+        """
+        total_points = len(self.data)
+        if total_points <= self.max_plot_points:
+            return self.data.copy()
+        
+        # Calculate sampling step
+        step = max(1, total_points // self.max_plot_points)
+        
+        # Sample data uniformly with some strategic points
+        sampled_indices = []
+        
+        # Always include first and last points
+        sampled_indices.append(0)
+        
+        # Add uniformly sampled points
+        for i in range(step, total_points - step, step):
+            sampled_indices.append(i)
+        
+        # Always include the last point
+        if sampled_indices[-1] != total_points - 1:
+            sampled_indices.append(total_points - 1)
+        
+        # Also include best validation loss point for important reference
+        best_val_idx = self.data['Val_Loss'].idxmin()
+        if best_val_idx not in sampled_indices:
+            sampled_indices.append(best_val_idx)
+        
+        # Sort indices and create sampled dataframe
+        sampled_indices = sorted(set(sampled_indices))
+        sampled_data = self.data.iloc[sampled_indices].copy()
+        
+        return sampled_data
+    
     def create_comprehensive_plot(self, save_path: Optional[str] = None, 
                                 show_plot: bool = False) -> str:
         """Create a comprehensive 6-panel training analysis plot"""
         
-        # Create figure with subplots
-        fig, axes = plt.subplots(2, 3, figsize=(18, 12))
-        fig.suptitle('NNUE Training Results Analysis', fontsize=16, fontweight='bold')
+        # Create figure with subplots - reduced size for faster rendering
+        fig, axes = plt.subplots(2, 3, figsize=(12, 8), dpi=80)  # Reduced DPI for faster rendering
+        fig.suptitle('NNUE Training Results Analysis', fontsize=14, fontweight='bold')
         
-        # 1. Loss Curves
+        # 1. Loss Curves (using sampled data for performance, simplified)
         ax1 = axes[0, 0]
-        ax1.plot(self.data['Epoch'], self.data['Train_Loss'], 'b-', linewidth=2, label='Training Loss', alpha=0.8)
-        ax1.plot(self.data['Epoch'], self.data['Val_Loss'], 'r-', linewidth=2, label='Validation Loss', alpha=0.8)
+        ax1.plot(self.sampled_data['Epoch'], self.sampled_data['Train_Loss'], 'b-', linewidth=1.5, label='Train', marker='o', markersize=2)
+        ax1.plot(self.sampled_data['Epoch'], self.sampled_data['Val_Loss'], 'r-', linewidth=1.5, label='Val', marker='s', markersize=2)
         ax1.set_xlabel('Epoch')
         ax1.set_ylabel('Loss')
         ax1.set_title('Loss Curves')
         ax1.legend()
-        ax1.grid(True, alpha=0.3)
+        ax1.grid(True, alpha=0.2)
         ax1.set_yscale('log')  # Log scale for better visualization
         
-        # Add best validation loss annotation
+        # Add simple best validation loss text (simplified for performance)
         best_val_idx = self.data['Val_Loss'].idxmin()
         best_val_loss = self.data['Val_Loss'].iloc[best_val_idx]
         best_epoch = self.data['Epoch'].iloc[best_val_idx]
-        ax1.annotate(f'Best Val Loss: {best_val_loss:.6f}\nEpoch: {best_epoch:.0f}', 
-                    xy=(best_epoch, best_val_loss), xytext=(0.7, 0.8),
-                    textcoords='axes fraction', fontsize=10,
-                    bbox=dict(boxstyle='round', facecolor='yellow', alpha=0.7),
-                    arrowprops=dict(arrowstyle='->', color='red'))
+        ax1.text(0.02, 0.98, f'Best: {best_val_loss:.4f} @ {best_epoch:.0f}', 
+                transform=ax1.transAxes, verticalalignment='top', fontsize=8,
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
-        # 2. Validation Accuracy
+        # 2. Validation Accuracy (using sampled data for performance, simplified)
         ax2 = axes[0, 1]
-        ax2.plot(self.data['Epoch'], self.data['Val_Accuracy'], 'g-', linewidth=2, alpha=0.8)
+        ax2.plot(self.sampled_data['Epoch'], self.sampled_data['Val_Accuracy'], 'g-', linewidth=1.5, marker='d', markersize=2)
         ax2.set_xlabel('Epoch')
         ax2.set_ylabel('Accuracy')
-        ax2.set_title('Validation Accuracy')
-        ax2.grid(True, alpha=0.3)
+        ax2.set_title('Val Accuracy')
+        ax2.grid(True, alpha=0.2)
         ax2.set_ylim([0, 1])
         
-        # Add best accuracy annotation
+        # Add simple best accuracy text (simplified for performance)
         best_acc = self.data['Val_Accuracy'].max()
         best_acc_epoch = self.data['Epoch'].iloc[self.data['Val_Accuracy'].idxmax()]
-        ax2.annotate(f'Best Accuracy: {best_acc:.4f}\nEpoch: {best_acc_epoch:.0f}', 
-                    xy=(best_acc_epoch, best_acc), xytext=(0.05, 0.8),
-                    textcoords='axes fraction', fontsize=10,
-                    bbox=dict(boxstyle='round', facecolor='lightgreen', alpha=0.7),
-                    arrowprops=dict(arrowstyle='->', color='green'))
+        ax2.text(0.02, 0.98, f'Best: {best_acc:.4f} @ {best_acc_epoch:.0f}', 
+                transform=ax2.transAxes, verticalalignment='top', fontsize=8,
+                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
-        # 3. Learning Rate Schedule
+        # 3. Learning Rate Schedule (simplified)
         ax3 = axes[0, 2]
-        ax3.plot(self.data['Epoch'], self.data['Learning_Rate'], 'purple', linewidth=2, alpha=0.8)
+        ax3.plot(self.sampled_data['Epoch'], self.sampled_data['Learning_Rate'], 'purple', linewidth=1.5, marker='^', markersize=2)
         ax3.set_xlabel('Epoch')
         ax3.set_ylabel('Learning Rate')
-        ax3.set_title('Learning Rate Schedule')
-        ax3.grid(True, alpha=0.3)
+        ax3.set_title('Learning Rate')
+        ax3.grid(True, alpha=0.2)
         ax3.set_yscale('log')
         
-        # 4. Gradient Norms
+        # 4. Gradient Norms (simplified)
         ax4 = axes[1, 0]
-        ax4.plot(self.data['Epoch'], self.data['Gradient_Norm'], 'orange', linewidth=2, alpha=0.8)
+        ax4.plot(self.sampled_data['Epoch'], self.sampled_data['Gradient_Norm'], 'orange', linewidth=1.5, marker='v', markersize=2)
         ax4.set_xlabel('Epoch')
         ax4.set_ylabel('Gradient Norm')
         ax4.set_title('Gradient Norms')
-        ax4.grid(True, alpha=0.3)
+        ax4.grid(True, alpha=0.2)
         
-        # Add warning zones for gradient issues
-        ax4.axhline(y=10.0, color='red', linestyle='--', alpha=0.5, label='High Gradient Warning')
-        ax4.axhline(y=0.001, color='blue', linestyle='--', alpha=0.5, label='Low Gradient Warning')
-        ax4.legend(fontsize=8)
-        
-        # 5. Training Time Analysis
+        # 5. Training Time Analysis (simplified)
         ax5 = axes[1, 1]
-        ax5.plot(self.data['Epoch'], self.data['Epoch_Time'], 'brown', linewidth=2, alpha=0.8)
+        ax5.plot(self.sampled_data['Epoch'], self.sampled_data['Epoch_Time'], 'brown', linewidth=1.5, marker='>', markersize=2)
         ax5.set_xlabel('Epoch')
-        ax5.set_ylabel('Time (seconds)')
-        ax5.set_title('Epoch Training Time')
-        ax5.grid(True, alpha=0.3)
+        ax5.set_ylabel('Time (s)')
+        ax5.set_title('Epoch Time')
+        ax5.grid(True, alpha=0.2)
         
-        # Add average time line
+        # Add simple average time text
         avg_time = self.data['Epoch_Time'].mean()
-        ax5.axhline(y=avg_time, color='red', linestyle='--', alpha=0.7)
         ax5.text(0.02, 0.98, f'Avg: {avg_time:.1f}s', 
-                transform=ax5.transAxes, verticalalignment='top', fontsize=10,
+                transform=ax5.transAxes, verticalalignment='top', fontsize=8,
                 bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
         
-        # 6. Overfitting Analysis (Val/Train Loss Ratio)
+        # 6. Overfitting Analysis (simplified)
         ax6 = axes[1, 2]
-        loss_ratios = self.data['Val_Loss'] / self.data['Train_Loss']
-        ax6.plot(self.data['Epoch'], loss_ratios, 'teal', linewidth=2, alpha=0.8)
+        loss_ratios = self.sampled_data['Val_Loss'] / self.sampled_data['Train_Loss']
+        ax6.plot(self.sampled_data['Epoch'], loss_ratios, 'teal', linewidth=1.5, marker='<', markersize=2)
         ax6.set_xlabel('Epoch')
         ax6.set_ylabel('Val Loss / Train Loss')
         ax6.set_title('Overfitting Indicator')
@@ -230,7 +266,7 @@ class TrainingResultsPlotter:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
+        plt.savefig(save_path, dpi=80, bbox_inches='tight', facecolor='white')  # Further reduced DPI for faster rendering
         logger.info(f"Comprehensive training plot saved to {save_path}")
         
         if show_plot:
@@ -247,18 +283,18 @@ class TrainingResultsPlotter:
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(15, 10))
         fig.suptitle('Loss Convergence Analysis', fontsize=16, fontweight='bold')
         
-        # 1. Linear scale loss
-        ax1.plot(self.data['Epoch'], self.data['Train_Loss'], 'b-', linewidth=2, label='Training Loss', alpha=0.8)
-        ax1.plot(self.data['Epoch'], self.data['Val_Loss'], 'r-', linewidth=2, label='Validation Loss', alpha=0.8)
+        # 1. Linear scale loss (using sampled data for performance)
+        ax1.plot(self.sampled_data['Epoch'], self.sampled_data['Train_Loss'], 'b-', linewidth=2, label='Training Loss', alpha=0.8, marker='o', markersize=3)
+        ax1.plot(self.sampled_data['Epoch'], self.sampled_data['Val_Loss'], 'r-', linewidth=2, label='Validation Loss', alpha=0.8, marker='s', markersize=3)
         ax1.set_xlabel('Epoch')
         ax1.set_ylabel('Loss')
         ax1.set_title('Loss Curves (Linear Scale)')
         ax1.legend()
         ax1.grid(True, alpha=0.3)
         
-        # 2. Log scale loss
-        ax2.plot(self.data['Epoch'], self.data['Train_Loss'], 'b-', linewidth=2, label='Training Loss', alpha=0.8)
-        ax2.plot(self.data['Epoch'], self.data['Val_Loss'], 'r-', linewidth=2, label='Validation Loss', alpha=0.8)
+        # 2. Log scale loss (using sampled data for performance)
+        ax2.plot(self.sampled_data['Epoch'], self.sampled_data['Train_Loss'], 'b-', linewidth=2, label='Training Loss', alpha=0.8, marker='o', markersize=3)
+        ax2.plot(self.sampled_data['Epoch'], self.sampled_data['Val_Loss'], 'r-', linewidth=2, label='Validation Loss', alpha=0.8, marker='s', markersize=3)
         ax2.set_xlabel('Epoch')
         ax2.set_ylabel('Loss (Log Scale)')
         ax2.set_title('Loss Curves (Log Scale)')
@@ -266,24 +302,19 @@ class TrainingResultsPlotter:
         ax2.legend()
         ax2.grid(True, alpha=0.3)
         
-        # 3. Loss difference
-        loss_diff = self.data['Val_Loss'] - self.data['Train_Loss']
-        ax3.plot(self.data['Epoch'], loss_diff, 'purple', linewidth=2, alpha=0.8)
+        # 3. Loss difference (using sampled data for performance)
+        loss_diff = self.sampled_data['Val_Loss'] - self.sampled_data['Train_Loss']
+        ax3.plot(self.sampled_data['Epoch'], loss_diff, 'purple', linewidth=2, alpha=0.8, marker='d', markersize=3)
         ax3.set_xlabel('Epoch')
         ax3.set_ylabel('Val Loss - Train Loss')
         ax3.set_title('Loss Difference (Val - Train)')
         ax3.grid(True, alpha=0.3)
         ax3.axhline(y=0, color='black', linestyle='-', alpha=0.3)
         
-        # 4. Moving average of losses (smoothed trends)
-        window = max(5, len(self.data) // 20)  # Adaptive window size
-        train_ma = self.data['Train_Loss'].rolling(window=window, center=True).mean()
-        val_ma = self.data['Val_Loss'].rolling(window=window, center=True).mean()
-        
-        ax4.plot(self.data['Epoch'], train_ma, 'b-', linewidth=3, label=f'Train MA({window})', alpha=0.8)
-        ax4.plot(self.data['Epoch'], val_ma, 'r-', linewidth=3, label=f'Val MA({window})', alpha=0.8)
-        ax4.plot(self.data['Epoch'], self.data['Train_Loss'], 'b-', linewidth=1, alpha=0.3)
-        ax4.plot(self.data['Epoch'], self.data['Val_Loss'], 'r-', linewidth=1, alpha=0.3)
+        # 4. Simplified trend view (no moving average to improve performance)
+        # Just show the sampled data with trend lines
+        ax4.plot(self.sampled_data['Epoch'], self.sampled_data['Train_Loss'], 'b-', linewidth=1.5, label='Train', marker='o', markersize=2)
+        ax4.plot(self.sampled_data['Epoch'], self.sampled_data['Val_Loss'], 'r-', linewidth=1.5, label='Val', marker='s', markersize=2)
         ax4.set_xlabel('Epoch')
         ax4.set_ylabel('Loss')
         ax4.set_title('Smoothed Loss Trends')
@@ -298,7 +329,7 @@ class TrainingResultsPlotter:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
+        plt.savefig(save_path, dpi=80, bbox_inches='tight', facecolor='white')  # Further reduced DPI for faster rendering
         logger.info(f"Loss convergence plot saved to {save_path}")
         
         if show_plot:
@@ -396,7 +427,7 @@ Training Summary Statistics:
         else:
             save_path = Path(save_path)
         
-        plt.savefig(save_path, dpi=150, bbox_inches='tight', facecolor='white')  # Reduced from 300
+        plt.savefig(save_path, dpi=80, bbox_inches='tight', facecolor='white')  # Further reduced DPI for faster rendering
         logger.info(f"Performance summary saved to {save_path}")
         
         if show_plot:
