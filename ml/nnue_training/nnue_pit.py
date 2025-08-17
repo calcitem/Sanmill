@@ -56,8 +56,24 @@ class NNUEModelLoader:
         """Load NNUE model from file"""
         if not os.path.exists(self.model_path):
             raise FileNotFoundError(f"NNUE model file not found: {self.model_path}")
+        
+        # Detect dimensions from model file
+        if self.model_path.endswith('.bin'):
+            detected_feature_size, detected_hidden_size = self._detect_binary_dimensions()
+        elif self.model_path.endswith('.pth') or self.model_path.endswith('.tar'):
+            detected_feature_size, detected_hidden_size = self._detect_pytorch_dimensions()
+        else:
+            detected_feature_size, detected_hidden_size = self.feature_size, self.hidden_size
             
-        # Create model instance
+        # Update dimensions if needed
+        if detected_feature_size != self.feature_size:
+            logger.warning(f"Updating feature size from {self.feature_size} to {detected_feature_size}")
+            self.feature_size = detected_feature_size
+        if detected_hidden_size != self.hidden_size:
+            logger.warning(f"Updating hidden size from {self.hidden_size} to {detected_hidden_size}")
+            self.hidden_size = detected_hidden_size
+            
+        # Create model instance with correct dimensions
         self.model = MillNNUE(feature_size=self.feature_size, hidden_size=self.hidden_size)
         
         if self.model_path.endswith('.bin'):
@@ -69,8 +85,45 @@ class NNUEModelLoader:
             
         self.model.to(self.device)
         self.model.eval()
-        logger.info(f"✅ Loaded NNUE model: {self.model_path}")
+        logger.info(f"✅ Loaded NNUE model: {self.model_path} (feature_size={self.feature_size}, hidden_size={self.hidden_size})")
         return self.model
+    
+    def _detect_binary_dimensions(self) -> tuple:
+        """Detect model dimensions from binary file header"""
+        try:
+            with open(self.model_path, 'rb') as f:
+                # Read header
+                header = f.read(8)
+                if header != b'SANMILL1':
+                    raise ValueError(f"Invalid header: {header}")
+                
+                # Read dimensions
+                feature_size, hidden_size = struct.unpack('<II', f.read(8))
+                return feature_size, hidden_size
+        except Exception as e:
+            logger.warning(f"Failed to detect dimensions from binary file: {e}")
+            return self.feature_size, self.hidden_size
+    
+    def _detect_pytorch_dimensions(self) -> tuple:
+        """Detect model dimensions from PyTorch checkpoint"""
+        try:
+            checkpoint = torch.load(self.model_path, map_location='cpu')
+            if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
+                state_dict = checkpoint['model_state_dict']
+            else:
+                state_dict = checkpoint
+            
+            # Extract dimensions from the state dict
+            if 'input_to_hidden.weight' in state_dict:
+                input_weight_shape = state_dict['input_to_hidden.weight'].shape
+                hidden_size, feature_size = input_weight_shape
+                return feature_size, hidden_size
+            else:
+                raise ValueError("Cannot find input_to_hidden.weight in state dict")
+                
+        except Exception as e:
+            logger.warning(f"Failed to detect dimensions from PyTorch file: {e}")
+            return self.feature_size, self.hidden_size
         
     def _load_binary_model(self):
         """Load from C++ compatible binary format"""
@@ -81,13 +134,12 @@ class NNUEModelLoader:
                 if header != b'SANMILL1':
                     raise ValueError(f"Invalid header: {header}")
                 
-                # Read dimensions
+                # Read dimensions (already detected and model created with correct size)
                 feature_size, hidden_size = struct.unpack('<II', f.read(8))
                 
-                # Verify dimensions match
-                if feature_size != self.feature_size or hidden_size != self.hidden_size:
-                    logger.warning(f"Model dimensions ({feature_size}, {hidden_size}) "
-                                 f"differ from expected ({self.feature_size}, {self.hidden_size})")
+                # Dimensions should match now since we detected them earlier
+                assert feature_size == self.feature_size and hidden_size == self.hidden_size, \
+                    f"Dimension mismatch: file has ({feature_size}, {hidden_size}), model has ({self.feature_size}, {self.hidden_size})"
                 
                 # Read input weights
                 input_weights_size = feature_size * hidden_size * 2  # int16
@@ -1013,7 +1065,7 @@ Examples:
     parser.add_argument('--depth', type=int, default=8, help='AI search depth')
     parser.add_argument('--random', action='store_true', help='Enable random move selection among equal best moves')
     parser.add_argument('--feature-size', type=int, default=115, help='NNUE feature size')
-    parser.add_argument('--hidden-size', type=int, default=512, help='NNUE hidden size')
+    parser.add_argument('--hidden-size', type=int, default=256, help='NNUE hidden size')
     parser.add_argument('--use-gpu', action='store_true', help='Force GPU usage (not recommended for NNUE)')
     parser.add_argument('--create-config', type=str, help='Create sample config file')
     
