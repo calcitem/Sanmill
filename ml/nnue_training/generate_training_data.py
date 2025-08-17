@@ -517,8 +517,8 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
         sector_groups[sector_hash].append((i, board, player, features))
     
     # 使用 debug 级别避免与进度条冲突
-    logger.debug(f"Batch processing {len(positions_data)} positions across {len(sector_groups)} sectors")
-    logger.debug(f"Sector distribution: {[(k, len(v)) for k, v in sector_groups.items()]}")
+    # logger.debug(f"Batch processing {len(positions_data)} positions across {len(sector_groups)} sectors")
+    # logger.debug(f"Sector distribution: {[(k, len(v)) for k, v in sector_groups.items()]}")
     
     # Process each sector group
     results = {}
@@ -527,7 +527,7 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
     last_error_log = 0
     
     for sector_hash, sector_positions in sector_groups.items():
-        logger.debug(f"Processing sector {sector_hash} with {len(sector_positions)} positions")
+        # logger.debug(f"Processing sector {sector_hash} with {len(sector_positions)} positions")
         
         for pos_idx, board, player, features in sector_positions:
             try:
@@ -607,7 +607,8 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
                 if error_count <= 3 or error_count - last_error_log >= 500:
                     #logger.warning(f"Failed to evaluate position {pos_idx} in sector {sector_hash}: {e}")
                     if error_count > 3:
-                        logger.warning(f"(Suppressing similar errors, total so far: {error_count})")
+                        # logger.warning(f"(Suppressing similar errors, total so far: {error_count})")
+                        pass  # Suppress error logging to avoid interference with progress bar
                     last_error_log = error_count
                 continue
     
@@ -618,12 +619,14 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
             training_data.append(results[i])
     
     # 使用 debug 级别避免与进度条冲突
-    logger.debug(f"Batch processing completed: {valid_count}/{len(positions_data)} positions valid")
+    # logger.debug(f"Batch processing completed: {valid_count}/{len(positions_data)} positions valid")
     if error_count > 0:
-        logger.debug(f"Total evaluation errors: {error_count}")
-    logger.debug(f"Final training_data length: {len(training_data)}")
+        # logger.debug(f"Total evaluation errors: {error_count}")
+        pass # Suppress error logging to avoid interference with progress bar
+    # logger.debug(f"Final training_data length: {len(training_data)}")
     if training_data:
-        logger.debug(f"Sample training line: {training_data[0][:100]}...")
+        # logger.debug(f"Sample training line: {training_data[0][:100]}...")
+        pass # Suppress debug logging to avoid interference with progress bar
     return training_data
 
 def generate_training_data_with_perfect_db(perfect_db_path: str, 
@@ -756,21 +759,32 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         # Process positions in batches to optimize sector file access
         total_batches = (len(positions) + batch_size - 1) // batch_size
         
+        # Temporarily disable all logging to prevent interference with progress bar
+        original_log_level = logging.getLogger().level
+        logging.getLogger().setLevel(logging.CRITICAL)  # Only show critical errors
+        
+        # Redirect C++ stdout to suppress Perfect DB progress output
+        import os
+        original_stdout_fd = os.dup(1)  # Save original stdout
+        devnull_fd = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull_fd, 1)  # Redirect stdout to devnull
+        
         with tqdm(total=len(positions), desc="Evaluating positions", 
-                 unit="pos", ncols=100, ascii=True,
-                 mininterval=2.0,   # 2秒刷新一次，更频繁更新
-                 maxinterval=10.0,  # 最多10秒强制刷新
-                 miniters=500,      # 每500次更新才刷新，减少频率
-                 dynamic_ncols=True, # 动态调整列宽
-                 leave=True) as pbar:  # 完成后保留进度条
+                 unit="pos", ascii=True, ncols=80,
+                 mininterval=5.0,   # 5秒刷新一次，大幅减少刷新频率
+                 maxinterval=30.0,  # 最多30秒强制刷新
+                 miniters=5000,     # 每5000次更新才刷新，大幅减少频率
+                 dynamic_ncols=False, # 固定宽度
+                 leave=True, file=sys.stderr, disable=False,  # 使用stderr避免被重定向
+                 bar_format='{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]') as pbar:  # 简化格式
             
             for batch_idx in range(total_batches):
                 start_idx = batch_idx * batch_size
                 end_idx = min(start_idx + batch_size, len(positions))
                 batch_positions = positions[start_idx:end_idx]
                 
-                logger.debug(f"Processing batch {batch_idx + 1}/{total_batches} "
-                           f"(positions {start_idx}-{end_idx-1})")
+                # logger.debug(f"Processing batch {batch_idx + 1}/{total_batches} "
+                #           f"(positions {start_idx}-{end_idx-1})")
                 
                 # Prepare batch data with feature extraction
                 batch_data = []
@@ -793,10 +807,10 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                         stats['error_types'][str(type(e).__name__)] += 1
                         
                         # Log detailed error information
-                        error_logger.warning(f"Position {start_idx + i}: Failed to extract features. "
-                                           f"Error: {e}. Board state: period={board.period}, "
-                                           f"put_pieces={board.put_pieces}, "
-                                           f"W={board.count(1)}, B={board.count(-1)}")
+                        # error_logger.warning(f"Position {start_idx + i}: Failed to extract features. "
+                        #                    f"Error: {e}. Board state: period={board.period}, "
+                        #                    f"put_pieces={board.put_pieces}, "
+                        #                    f"W={board.count(1)}, B={board.count(-1)}")
                         continue
                 
                 # Batch evaluate positions
@@ -807,32 +821,32 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
                         valid_positions += len(batch_results)
                         
                     except Exception as e:
-                        logger.error(f"Batch evaluation failed for batch {batch_idx + 1}: {e}")
+                        # logger.error(f"Batch evaluation failed for batch {batch_idx + 1}: {e}")
                         discarded_positions += len(batch_data)
                         stats['error_types']['batch_evaluation_error'] += 1
                 
                 # Update progress bar
                 batch_processed = end_idx - start_idx
                 pbar.update(batch_processed)
-                pbar.set_postfix({
-                    'Valid': valid_positions,
-                    'Discarded': discarded_positions,
-                    'Success%': f"{(valid_positions/end_idx*100):.1f}" if end_idx > 0 else "0.0",
-                    'Batch': f"{batch_idx + 1}/{total_batches}"
-                })
+                # 移除postfix更新以避免换行问题
         
-
+        # Restore original stdout and logging level
+        os.dup2(original_stdout_fd, 1)  # Restore stdout
+        os.close(devnull_fd)  # Close devnull
+        os.close(original_stdout_fd)  # Close the duplicate
+        logging.getLogger().setLevel(original_log_level)
         
         # Phase 4: Write training data file
         logger.info("Phase 4: Writing training data to file...")
         
         with tqdm(total=valid_positions + 5, desc="Writing data file", 
-                 unit="lines", ncols=100, ascii=True,
-                 mininterval=2.0,   # 2秒刷新一次
-                 maxinterval=10.0,  # 最多10秒强制刷新
-                 miniters=5000,     # 每5000次更新才刷新
-                 dynamic_ncols=True,
-                 leave=True) as pbar:
+                 unit="lines", ascii=True, ncols=80,
+                 mininterval=5.0,   # 5秒刷新一次
+                 maxinterval=30.0,  # 最多30秒强制刷新
+                 miniters=10000,    # 每10000次更新才刷新
+                 dynamic_ncols=False,
+                 leave=True, file=sys.stdout, disable=False,
+                 bar_format='{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]') as pbar:
             with open(output_file, 'w') as f:
                 # Write header
                 f.write(f"# NNUE Training Data Generated by Perfect DB\n")

@@ -176,7 +176,7 @@ class PerfectDB:
             # Skip the problematic sector std_3_9_0_0.sec2
             if w_count == 3 and b_count == 9 and w_place == 0 and b_place == 0:
                 if not hasattr(self, '_skip_sector_warned'):
-                    print(f"⚠️  Skipping problematic sector {sector_name} (will skip silently from now on)")
+                    # print(f"⚠️  Skipping problematic sector {sector_name} (will skip silently from now on)")
                     self._skip_sector_warned = True
                 # Return default values: draw with unknown steps
                 res = (0, -1)  # draw, steps unknown
@@ -257,7 +257,7 @@ class PerfectDB:
             # Skip the problematic sector std_3_9_0_0.sec2
             if w_count == 3 and b_count == 9 and w_place == 0 and b_place == 0:
                 if not hasattr(self, '_skip_sector_warned'):
-                    print(f"⚠️  Skipping problematic sector std_{w_count}_{b_count}_{w_place}_{b_place}.sec2 (will skip silently from now on)")
+                    # print(f"⚠️  Skipping problematic sector std_{w_count}_{b_count}_{w_place}_{b_place}.sec2 (will skip silently from now on)")
                     self._skip_sector_warned = True
                 # Return empty moves list for this problematic sector
                 self._best_cache[key] = ""

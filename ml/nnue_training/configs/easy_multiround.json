@@ -17,7 +17,7 @@
   "auto_transfer_learning": true,
   
   "_comment_debug": "调试模式 - 快速验证训练流程",
-  "debug_mode": true,
+  "debug_mode": false,
   "_comment_debug_mode": "设为 true 时使用极小的数据量和轮数，用于快速测试",
   
   "_comment_training": "基础训练参数 - 会被轮次策略覆盖，这里是后备默认值",
