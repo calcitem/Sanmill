@@ -363,15 +363,17 @@ class Board:
         
         return False
 
-    def get_position_hash(self):
+    def get_position_hash(self, current_player=None):
         """
         Generate a hash representing the current board position.
         Used for detecting threefold repetition.
 
         IMPORTANT: Include side-to-move information to match C++ Zobrist key.
-        We only record history after MOVE-type moves, for which the side-to-move
-        is the opponent of the last mover (unless in capture, which is excluded
-        from history). Thus, side_to_move is derived from _last_move_player.
+        The current_player parameter should be provided to ensure consistency.
+        
+        Args:
+            current_player: The player whose turn it is (1 for white, -1 for black).
+                           If None, will try to derive from _last_move_player.
         """
         # Create a string representation of the board state
         board_str = ""
@@ -380,28 +382,39 @@ class Board:
                 if self.allowed_places[x][y]:
                     board_str += str(self.pieces[x][y])
 
-        # Derive side to move: after a MOVE, opponent moves next. If unknown, default to 1.
-        side_to_move = 1 if self._last_move_player is None else -self._last_move_player
+        # Use provided current_player, or derive from _last_move_player as fallback
+        if current_player is not None:
+            side_to_move = current_player
+        else:
+            # Fallback: derive side to move from last move player
+            side_to_move = 1 if self._last_move_player is None else -self._last_move_player
 
         # Include both period and side_to_move in the key
         position_key = f"{board_str}_{self.period}_stm{side_to_move}"
         return hash(position_key)
 
-    def has_repeated_position(self):
+    def has_repeated_position(self, current_player=None):
         """
         Check if the current position has occurred before (for threefold repetition).
         Following C++ logic: position.cpp:has_game_cycle() returns count >= 3.
+        
+        Args:
+            current_player: The player whose turn it is (1 for white, -1 for black).
+                           Required for consistent position hashing.
         """
         if not self.threefold_repetition_rule:
             return False
             
-        current_hash = self.get_position_hash()
+        current_hash = self.get_position_hash(current_player)
         
         # Count occurrences of current position in history
-        # In C++, count includes current position, so >= 3 means third repetition
-        count = self.position_history.count(current_hash) + 1  # +1 for current position
+        # For true threefold repetition: current position must have appeared 2 times before
+        # This means count >= 2 in history + current = 3 total occurrences
+        count = self.position_history.count(current_hash)
         
-        # Return True if this is the third occurrence (count >= 3)
+        # Use strict threefold repetition: count >= 3
+        # This means position appeared 3 times before + current = 4 total occurrences
+        # More conservative to avoid false positives
         return count >= 3
 
     def is_draw_by_nmove_rules(self):
@@ -434,8 +447,8 @@ class Board:
         if is_draw:
             return True, reason
         
-        # Check threefold repetition
-        if self.has_repeated_position():
+        # Check threefold repetition - use None to let method derive side_to_move
+        if self.has_repeated_position(None):
             return True, "drawThreefoldRepetition"
         
         return False, None
@@ -534,13 +547,16 @@ class Board:
         # Game continues
         return False, 0.0, None
 
-    def check_threefold_repetition_after_move(self):
+    def check_threefold_repetition_after_move(self, current_player=None):
         """
         Check threefold repetition immediately after a move execution.
         This matches C++ behavior where threefold is checked after move, not in check_if_game_is_over().
         Returns tuple (is_draw, reason) or (False, None).
+        
+        Args:
+            current_player: The player whose turn it is after the move.
         """
-        if self.has_repeated_position():
+        if self.has_repeated_position(current_player):
             return True, "drawThreefoldRepetition"
         return False, None
 
@@ -568,10 +584,12 @@ class Board:
         # Only update position history for MOVE-type moves (length 5 in C++)
         # Clear history for PLACE and REMOVE moves (length != 5 in C++)
         if move_type == "MOVE":
-            current_hash = self.get_position_hash()
-            # Only add if different from last hash (avoids duplicate entries)
-            if not self.position_history or self.position_history[-1] != current_hash:
-                self.position_history.append(current_hash)
+            # For MOVE moves, record the position after the move
+            # The side-to-move after a MOVE is the opponent of _last_move_player
+            side_to_move_after_move = -self._last_move_player if self._last_move_player else 1
+            current_hash = self.get_position_hash(side_to_move_after_move)
+            # Always add to history (matching C++ behavior)
+            self.position_history.append(current_hash)
         else:
             # Clear position history for non-MOVE moves (matches C++ behavior)
             self.position_history.clear()
@@ -626,7 +644,9 @@ class Board:
         # Check for threefold repetition after MOVE-type moves (matches C++ behavior)
         # In C++, threefold repetition is checked immediately after move execution
         if move_type == "MOVE" and self.threefold_repetition_rule:
-            is_repetition, reason = self.check_threefold_repetition_after_move()
+            # After a MOVE, the side-to-move is the opponent of the player who just moved
+            next_player = -player
+            is_repetition, reason = self.check_threefold_repetition_after_move(next_player)
             if is_repetition:
                 # Set a flag to indicate threefold repetition was detected
                 # This will be picked up by the game ending logic
