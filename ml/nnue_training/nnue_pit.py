@@ -24,6 +24,9 @@ import threading
 import time
 import random
 from copy import deepcopy
+import hashlib
+from enum import Enum
+from dataclasses import dataclass
 
 # Add current directory to path for imports
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -55,6 +58,207 @@ except ImportError:
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+class TTEntryType(Enum):
+    """Transposition Table entry type"""
+    EXACT = 0      # Exact value
+    LOWER_BOUND = 1  # Alpha cutoff (fail-high)
+    UPPER_BOUND = 2  # Beta cutoff (fail-low)
+
+
+@dataclass
+class TTEntry:
+    """Transposition Table entry"""
+    hash_key: int
+    depth: int
+    score: float
+    entry_type: TTEntryType
+    best_move: Optional[Tuple[int, int, int, int]]
+    age: int  # For replacement strategy
+
+
+class TranspositionTable:
+    """Transposition Table for caching search results"""
+    
+    def __init__(self, size_mb: int = 64):
+        """Initialize transposition table
+        
+        Args:
+            size_mb: Size in megabytes (default 64MB)
+        """
+        # Calculate number of entries based on size
+        # Each entry is roughly 64 bytes (hash_key=8, depth=4, score=8, entry_type=4, best_move=32, age=4, overhead=4)
+        entry_size = 64
+        self.max_entries = (size_mb * 1024 * 1024) // entry_size
+        self.table = {}
+        self.current_age = 0
+        
+        # Statistics
+        self.hits = 0
+        self.misses = 0
+        self.collisions = 0
+        self.overwrites = 0
+        
+        logger.info(f"Initialized Transposition Table: {size_mb}MB, max {self.max_entries} entries")
+    
+    def clear(self):
+        """Clear the transposition table"""
+        self.table.clear()
+        self.hits = 0
+        self.misses = 0
+        self.collisions = 0
+        self.overwrites = 0
+        self.current_age += 1
+        
+    def probe(self, hash_key: int, depth: int, alpha: float, beta: float) -> Tuple[bool, Optional[float], Optional[Tuple[int, int, int, int]]]:
+        """Probe the transposition table
+        
+        Args:
+            hash_key: Position hash key
+            depth: Search depth
+            alpha: Alpha value
+            beta: Beta value
+            
+        Returns:
+            (found, score, best_move): found indicates if usable entry was found
+        """
+        if hash_key not in self.table:
+            self.misses += 1
+            return False, None, None
+        
+        entry = self.table[hash_key]
+        
+        # Check if entry is from sufficient depth
+        if entry.depth < depth:
+            self.misses += 1
+            return False, None, entry.best_move  # Return move hint even if depth insufficient
+        
+        self.hits += 1
+        
+        # Check if we can use the stored score
+        if entry.entry_type == TTEntryType.EXACT:
+            return True, entry.score, entry.best_move
+        elif entry.entry_type == TTEntryType.LOWER_BOUND and entry.score >= beta:
+            return True, entry.score, entry.best_move
+        elif entry.entry_type == TTEntryType.UPPER_BOUND and entry.score <= alpha:
+            return True, entry.score, entry.best_move
+        
+        # Entry exists but score not usable, return move hint
+        return False, None, entry.best_move
+    
+    def store(self, hash_key: int, depth: int, score: float, entry_type: TTEntryType, 
+              best_move: Optional[Tuple[int, int, int, int]] = None):
+        """Store entry in transposition table
+        
+        Args:
+            hash_key: Position hash key
+            depth: Search depth
+            score: Position score
+            entry_type: Type of bound
+            best_move: Best move found
+        """
+        # Check if we need to evict entries
+        if len(self.table) >= self.max_entries and hash_key not in self.table:
+            self._evict_entry()
+        
+        # Check for replacement
+        if hash_key in self.table:
+            old_entry = self.table[hash_key]
+            # Replace if: deeper search, or same depth but newer age, or different hash (collision)
+            if (depth >= old_entry.depth or 
+                (depth == old_entry.depth and self.current_age > old_entry.age) or
+                old_entry.hash_key != hash_key):
+                if old_entry.hash_key != hash_key:
+                    self.collisions += 1
+                else:
+                    self.overwrites += 1
+            else:
+                # Don't replace with inferior entry
+                return
+        
+        # Store new entry
+        self.table[hash_key] = TTEntry(
+            hash_key=hash_key,
+            depth=depth,
+            score=score,
+            entry_type=entry_type,
+            best_move=best_move,
+            age=self.current_age
+        )
+    
+    def _evict_entry(self):
+        """Evict an entry using age-based replacement"""
+        if not self.table:
+            return
+            
+        # Find oldest entry
+        oldest_key = min(self.table.keys(), key=lambda k: self.table[k].age)
+        del self.table[oldest_key]
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get transposition table statistics"""
+        total_probes = self.hits + self.misses
+        hit_rate = (self.hits / max(1, total_probes)) * 100
+        
+        return {
+            "size": len(self.table),
+            "max_size": self.max_entries,
+            "usage_percent": (len(self.table) / self.max_entries) * 100,
+            "hits": self.hits,
+            "misses": self.misses,
+            "hit_rate_percent": hit_rate,
+            "collisions": self.collisions,
+            "overwrites": self.overwrites
+        }
+
+
+class PositionHasher:
+    """Fast position hashing using Zobrist hashing technique"""
+    
+    def __init__(self):
+        # Initialize Zobrist hash tables for each piece type and position
+        # We need random numbers for: 24 positions * 2 players + side_to_move + phases
+        np.random.seed(42)  # Fixed seed for reproducible hashes
+        
+        # Hash values for pieces (24 valid positions * 2 piece types)
+        self.piece_hashes = np.random.randint(0, 2**63, size=(24, 2), dtype=np.int64)
+        
+        # Hash values for side to move
+        self.side_to_move_hash = np.random.randint(0, 2**63, dtype=np.int64)
+        
+        # Hash values for game phases
+        self.phase_hashes = np.random.randint(0, 2**63, size=4, dtype=np.int64)
+        
+        # Hash values for piece counts (to distinguish positions with same piece placement but different hand counts)
+        self.piece_count_hashes = np.random.randint(0, 2**63, size=(10, 10), dtype=np.int64)  # 10x10 for white/black hand counts
+        
+    def hash_position(self, game_state: 'NNUEGameAdapter') -> int:
+        """Compute hash for game position"""
+        hash_value = 0
+        
+        # Hash piece positions
+        for i, (x, y) in enumerate(sorted(game_state.valid_positions)):
+            piece = game_state.board.pieces[x][y]
+            if piece == 1:  # White piece
+                hash_value ^= self.piece_hashes[i][0]
+            elif piece == -1:  # Black piece
+                hash_value ^= self.piece_hashes[i][1]
+        
+        # Hash side to move
+        if game_state.side_to_move == 1:  # Black to move
+            hash_value ^= self.side_to_move_hash
+        
+        # Hash game phase
+        hash_value ^= self.phase_hashes[min(game_state.phase, 3)]
+        
+        # Hash piece counts to distinguish positions with same board but different hand counts
+        white_hand = min(game_state.white_pieces_in_hand, 9)
+        black_hand = min(game_state.black_pieces_in_hand, 9)
+        hash_value ^= self.piece_count_hashes[white_hand][black_hand]
+        
+        # Ensure positive hash value
+        return abs(hash_value)
 
 
 class NNUEModelLoader:
@@ -393,16 +597,23 @@ class NNUEGameAdapter:
 
 
 class NNUEPlayer:
-    """AI player using NNUE model for evaluation - uses ml/game logic"""
+    """AI player using NNUE model for evaluation with Transposition Table - uses ml/game logic"""
     
-    def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 8, use_randomness: bool = False):
+    def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 8, use_randomness: bool = False, tt_size_mb: int = 64):
         self.model = model_loader.load_model()
         self.device = model_loader.device
         self.search_depth = search_depth
         self.use_randomness = use_randomness
+        
+        # Initialize Transposition Table and Position Hasher
+        self.transposition_table = TranspositionTable(size_mb=tt_size_mb)
+        self.position_hasher = PositionHasher()
+        
         # Statistics for performance monitoring
         self.nodes_searched = 0
         self.cutoffs = 0
+        self.tt_hits = 0
+        self.tt_misses = 0
         
     def evaluate_position(self, game_state: NNUEGameAdapter) -> float:
         """Evaluate position using NNUE model"""
@@ -414,13 +625,26 @@ class NNUEPlayer:
             evaluation = self.model(features_tensor, side_to_move_tensor)
             return float(evaluation.squeeze().cpu())
             
-    def order_moves(self, game_state: NNUEGameAdapter, moves: List[Tuple[int, int, int, int]]) -> List[Tuple[int, int, int, int]]:
-        """Order moves based on NNUE evaluation for better Alpha-Beta pruning"""
+    def order_moves(self, game_state: NNUEGameAdapter, moves: List[Tuple[int, int, int, int]], 
+                   tt_best_move: Optional[Tuple[int, int, int, int]] = None) -> List[Tuple[int, int, int, int]]:
+        """Order moves based on TT best move and NNUE evaluation for better Alpha-Beta pruning"""
         if len(moves) <= 1:
             return moves
+        
+        # Put TT best move first if it exists and is valid
+        ordered_moves = []
+        remaining_moves = moves.copy()
+        
+        if tt_best_move and tt_best_move in remaining_moves:
+            ordered_moves.append(tt_best_move)
+            remaining_moves.remove(tt_best_move)
             
+        if not remaining_moves:
+            return ordered_moves
+            
+        # Score remaining moves using NNUE evaluation
         move_scores = []
-        for move in moves:
+        for move in remaining_moves:
             temp_state = game_state.copy()
             if temp_state.make_move(move):
                 # Use NNUE evaluation to score the resulting position
@@ -436,38 +660,67 @@ class NNUEPlayer:
         else:  # Black (minimizing) 
             move_scores.sort(key=lambda x: x[1], reverse=False)
             
-        return [move for move, score in move_scores]
+        # Combine TT best move with ordered remaining moves
+        ordered_moves.extend([move for move, score in move_scores])
+        return ordered_moves
 
     def get_best_move(self, game_state: NNUEGameAdapter) -> Optional[Tuple[int, int, int, int]]:
-        """Get best move using Alpha-Beta pruning with NNUE evaluation"""
+        """Get best move using Alpha-Beta pruning with Transposition Table and NNUE evaluation"""
         
         # Reset statistics
         self.nodes_searched = 0
         self.cutoffs = 0
+        self.tt_hits = 0
+        self.tt_misses = 0
+        
+        # Increment TT age for new search
+        self.transposition_table.current_age += 1
         
         valid_moves = game_state.get_valid_moves()
         if not valid_moves:
             return None
+        
+        # Check transposition table for move ordering hint
+        position_hash = self.position_hasher.hash_position(game_state)
+        tt_found, tt_score, tt_best_move = self.transposition_table.probe(
+            position_hash, self.search_depth, float('-inf'), float('inf'))
             
-        # Order moves using NNUE evaluation for better pruning
-        ordered_moves = self.order_moves(game_state, valid_moves)
+        # Order moves using TT best move and NNUE evaluation for better pruning
+        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move)
         
         # Collect all moves with their scores
         move_scores = []
         alpha = float('-inf')
         beta = float('inf')
+        best_move = None
         
         for move in ordered_moves:
             temp_state = game_state.copy()
             if temp_state.make_move(move):
                 if game_state.side_to_move == 0:  # White (maximizing)
                     score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, False)
+                    move_scores.append((move, score))
+                    if score > alpha:
+                        alpha = score
+                        best_move = move
                 else:  # Black (minimizing)
                     score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, True)
-                move_scores.append((move, score))
+                    move_scores.append((move, score))
+                    if score < beta:
+                        beta = score
+                        best_move = move
         
         if not move_scores:
             return None
+        
+        # Store result in transposition table
+        if game_state.side_to_move == 0:  # White (maximizing)
+            final_score = alpha
+        else:  # Black (minimizing)
+            final_score = beta
+            
+        self.transposition_table.store(
+            position_hash, self.search_depth, final_score, TTEntryType.EXACT, best_move)
             
         # Find the best score
         if game_state.side_to_move == 0:  # White (maximizing)
@@ -489,45 +742,81 @@ class NNUEPlayer:
         
     def _alpha_beta(self, game_state: NNUEGameAdapter, depth: int, 
                     alpha: float, beta: float, maximizing: bool) -> float:
-        """Alpha-Beta pruning search with NNUE evaluation"""
+        """Alpha-Beta pruning search with Transposition Table and NNUE evaluation"""
         self.nodes_searched += 1
+        original_alpha = alpha
+        
+        # Probe transposition table
+        position_hash = self.position_hasher.hash_position(game_state)
+        tt_found, tt_score, tt_best_move = self.transposition_table.probe(
+            position_hash, depth, alpha, beta)
+        
+        if tt_found:
+            self.tt_hits += 1
+            return tt_score
+        else:
+            self.tt_misses += 1
         
         # Check if game is over or reached depth limit
         is_over, reason = game_state.is_game_over()
         if is_over or depth == 0:
-            return self.evaluate_position(game_state)
+            leaf_score = self.evaluate_position(game_state)
+            # Store leaf evaluation in TT
+            self.transposition_table.store(
+                position_hash, depth, leaf_score, TTEntryType.EXACT, None)
+            return leaf_score
             
         valid_moves = game_state.get_valid_moves()
         if not valid_moves:
-            return self.evaluate_position(game_state)
+            leaf_score = self.evaluate_position(game_state)
+            self.transposition_table.store(
+                position_hash, depth, leaf_score, TTEntryType.EXACT, None)
+            return leaf_score
             
-        # Order moves using NNUE evaluation for better pruning
-        ordered_moves = self.order_moves(game_state, valid_moves)
+        # Order moves using TT best move hint and NNUE evaluation for better pruning
+        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move)
+        
+        best_move = None
+        best_score = float('-inf') if maximizing else float('inf')
             
         if maximizing:
-            max_eval = float('-inf')
             for move in ordered_moves:
                 temp_state = game_state.copy()
                 if temp_state.make_move(move):
                     eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, False)
-                    max_eval = max(max_eval, eval_score)
+                    if eval_score > best_score:
+                        best_score = eval_score
+                        best_move = move
                     alpha = max(alpha, eval_score)
                     if beta <= alpha:
                         self.cutoffs += 1
                         break  # Beta cutoff - pruning
-            return max_eval
         else:
-            min_eval = float('inf')
             for move in ordered_moves:
                 temp_state = game_state.copy()
                 if temp_state.make_move(move):
                     eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, True)
-                    min_eval = min(min_eval, eval_score)
+                    if eval_score < best_score:
+                        best_score = eval_score
+                        best_move = move
                     beta = min(beta, eval_score)
                     if beta <= alpha:
                         self.cutoffs += 1
                         break  # Alpha cutoff - pruning
-            return min_eval
+        
+        # Determine entry type for transposition table
+        if best_score <= original_alpha:
+            entry_type = TTEntryType.UPPER_BOUND  # Fail-low
+        elif best_score >= beta:
+            entry_type = TTEntryType.LOWER_BOUND  # Fail-high
+        else:
+            entry_type = TTEntryType.EXACT  # Exact score
+        
+        # Store result in transposition table
+        self.transposition_table.store(
+            position_hash, depth, best_score, entry_type, best_move)
+        
+        return best_score
 
     def set_search_depth(self, depth: int):
         """Set search depth dynamically"""
@@ -536,15 +825,33 @@ class NNUEPlayer:
     def set_randomness(self, use_randomness: bool):
         """Set randomness behavior dynamically"""
         self.use_randomness = use_randomness
+    
+    def clear_transposition_table(self):
+        """Clear the transposition table (useful for new games)"""
+        self.transposition_table.clear()
+        logger.info("Transposition table cleared")
+    
+    def get_tt_statistics(self) -> Dict[str, Any]:
+        """Get detailed transposition table statistics"""
+        return self.transposition_table.get_statistics()
 
     def get_search_stats(self) -> str:
-        """Get search statistics for performance monitoring"""
+        """Get search statistics for performance monitoring including TT stats"""
         if self.nodes_searched == 0:
             return "No search performed yet"
         
         cutoff_rate = (self.cutoffs / max(1, self.nodes_searched)) * 100
+        tt_total = self.tt_hits + self.tt_misses
+        tt_hit_rate = (self.tt_hits / max(1, tt_total)) * 100
         randomness_str = "Random" if self.use_randomness else "Deterministic"
-        return f"Depth: {self.search_depth}, Nodes: {self.nodes_searched}, Cutoffs: {self.cutoffs} ({cutoff_rate:.1f}%), Mode: {randomness_str}"
+        
+        tt_stats = self.transposition_table.get_statistics()
+        
+        return (f"Depth: {self.search_depth}, Nodes: {self.nodes_searched}, "
+                f"Cutoffs: {self.cutoffs} ({cutoff_rate:.1f}%), "
+                f"TT Hits: {self.tt_hits}/{tt_total} ({tt_hit_rate:.1f}%), "
+                f"TT Size: {tt_stats['size']}/{tt_stats['max_size']} ({tt_stats['usage_percent']:.1f}%), "
+                f"Mode: {randomness_str}")
 
 
 class NNUEGameGUI:
@@ -1251,6 +1558,10 @@ class NNUEGameGUI:
         self.selected_pos = None
         self.game_over = False
         self.last_move_text = ""  # Clear last move
+        
+        # Clear transposition table for fresh start
+        self.nnue_player.clear_transposition_table()
+        
         self.draw_board()
         self.update_status()
         self.update_evaluation_display()
@@ -1271,7 +1582,8 @@ def create_config_file(filename: str):
         "use_randomness": False,
         "human_first": True,
         "gui": True,
-        "log_level": "INFO"
+        "log_level": "INFO",
+        "tt_size_mb": 64  # Transposition Table size in megabytes
     }
     
     with open(filename, 'w') as f:
@@ -1304,6 +1616,7 @@ Examples:
     parser.add_argument('--feature-size', type=int, default=115, help='NNUE feature size')
     parser.add_argument('--hidden-size', type=int, default=256, help='NNUE hidden size')
     parser.add_argument('--use-gpu', action='store_true', help='Force GPU usage (not recommended for NNUE)')
+    parser.add_argument('--tt-size', type=int, default=64, help='Transposition table size in MB')
     parser.add_argument('--create-config', type=str, help='Create sample config file')
     
     args = parser.parse_args()
@@ -1337,13 +1650,15 @@ Examples:
     force_cpu = not (args.use_gpu or config.get('use_gpu', False))
     human_first = (args.first == 'human') if args.first else config.get('human_first', True)
     use_gui = args.gui or config.get('gui', False)
+    tt_size_mb = args.tt_size or config.get('tt_size_mb', 64)
     
     try:
         # Load NNUE model
         device_str = "CPU (forced)" if force_cpu else ("GPU" if torch.cuda.is_available() else "CPU")
         logger.info(f"Loading NNUE model from {model_path} on {device_str}")
+        logger.info(f"Transposition Table size: {tt_size_mb}MB")
         model_loader = NNUEModelLoader(model_path, feature_size, hidden_size, force_cpu)
-        nnue_player = NNUEPlayer(model_loader, search_depth, use_randomness)
+        nnue_player = NNUEPlayer(model_loader, search_depth, use_randomness, tt_size_mb)
         
         if use_gui:
             # Start GUI game
