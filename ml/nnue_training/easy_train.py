@@ -90,6 +90,9 @@ class EasyMultiRoundTrainer:
         # 迁移学习状态
         self.last_checkpoint = None
         
+        # 时间估算历史（用于改进预测准确性）
+        self.time_estimation_history = []
+        
     def initialize(self) -> bool:
         """初始化训练器"""
         print("🚀 Easy NNUE 多轮训练器 v2.0")
@@ -247,6 +250,57 @@ class EasyMultiRoundTrainer:
         
         return round_config, strategy["description"]
     
+    def _estimate_training_time(self, positions: int, epochs: int, batch_size: int, round_num: int) -> float:
+        """智能估算训练时间"""
+        
+        if len(self.time_estimation_history) == 0:
+            # 首次估算：基于经验公式
+            base_time_per_1k_samples = 0.8  # 每1000个样本约0.8秒
+            estimated_seconds = (positions * epochs * base_time_per_1k_samples) / 1000
+            return max(0.5, estimated_seconds / 60)
+        
+        # 基于历史数据的线性回归估算
+        if len(self.time_estimation_history) >= 2:
+            # 计算每个样本的平均处理时间
+            total_samples = sum(h['positions'] * h['epochs'] for h in self.time_estimation_history)
+            total_time = sum(h['actual_time'] for h in self.time_estimation_history)
+            
+            if total_samples > 0:
+                time_per_sample = total_time / total_samples
+                estimated_seconds = positions * epochs * time_per_sample
+                return max(0.5, estimated_seconds / 60)
+        
+        # 使用最近一次的数据进行估算
+        last_history = self.time_estimation_history[-1]
+        last_time_per_sample = last_history['actual_time'] / (last_history['positions'] * last_history['epochs'])
+        
+        # 考虑数据量增长的影响（稍微增加时间）
+        scale_factor = 1.0 + (positions - last_history['positions']) / last_history['positions'] * 0.1
+        
+        estimated_seconds = positions * epochs * last_time_per_sample * scale_factor
+        return max(0.5, estimated_seconds / 60)
+    
+    def _update_time_estimation_history(self, round_num: int, round_config: Dict[str, Any], actual_time: float):
+        """更新时间估算历史数据"""
+        history_entry = {
+            'round': round_num,
+            'positions': round_config['positions'],
+            'epochs': round_config['epochs'],
+            'batch_size': round_config['batch-size'],
+            'actual_time': actual_time / 60,  # 转换为分钟
+            'samples_per_second': (round_config['positions'] * round_config['epochs']) / actual_time
+        }
+        
+        self.time_estimation_history.append(history_entry)
+        
+        # 保持历史记录不超过5条（避免过度拟合）
+        if len(self.time_estimation_history) > 5:
+            self.time_estimation_history.pop(0)
+        
+        # 记录实际性能数据
+        samples_per_sec = history_entry['samples_per_second']
+        self.logger.info(f"📊 实际处理速度: {samples_per_sec:,.0f} 样本/秒")
+    
     def _run_single_round(self, round_num: int) -> bool:
         """执行单轮训练"""
         self.logger.info(f"\n{'='*60}")
@@ -291,7 +345,20 @@ class EasyMultiRoundTrainer:
             ])
         
         self.logger.info(f"⚡ 开始执行第 {round_num} 轮训练...")
-        self.logger.info(f"⏰ 预计训练时间: {round_config['epochs']} 轮次，约 {round_config['epochs'] * round_config['positions'] / 50000:.0f} 分钟")
+        
+        # 更准确的时间估算（基于实际观测数据）
+        # 考虑因素：GPU性能、数据量、批量大小
+        positions = round_config['positions']
+        epochs = round_config['epochs']
+        batch_size = round_config['batch-size']
+        
+        # 智能时间估算
+        estimated_minutes = self._estimate_training_time(positions, epochs, batch_size, round_num)
+        
+        if len(self.time_estimation_history) > 0:
+            self.logger.info(f"⏰ 预计训练时间: {epochs} 轮次，约 {estimated_minutes:.1f} 分钟 (基于历史数据)")
+        else:
+            self.logger.info(f"⏰ 预计训练时间: {epochs} 轮次，约 {estimated_minutes:.1f} 分钟 (初步估算)")
         
         # 执行训练
         round_start_time = time.time()
@@ -314,6 +381,9 @@ class EasyMultiRoundTrainer:
             self.logger.info("=" * 50)
             if result.returncode == 0:
                 self.logger.info(f"✅ 第 {round_num} 轮训练完成，耗时: {round_time/60:.1f} 分钟")
+                
+                # 更新时间估算历史
+                self._update_time_estimation_history(round_num, round_config, round_time)
                 
                 # 分析训练结果
                 round_results = self._analyze_round_results(round_num, round_time)
@@ -454,6 +524,13 @@ class EasyMultiRoundTrainer:
         if best_result and best_result.get("model_path"):
             self.logger.info(f"\n🎯 最佳模型位置:")
             self.logger.info(f"  {best_result['model_path']}")
+        
+        # 时间估算准确性分析
+        if len(self.time_estimation_history) > 0:
+            avg_samples_per_sec = sum(h['samples_per_second'] for h in self.time_estimation_history) / len(self.time_estimation_history)
+            self.logger.info(f"\n⚡ 训练性能分析:")
+            self.logger.info(f"  平均处理速度: {avg_samples_per_sec:,.0f} 样本/秒")
+            self.logger.info(f"  GPU利用效率: {'高' if avg_samples_per_sec > 50000 else '中' if avg_samples_per_sec > 20000 else '低'}")
     
     def run(self) -> bool:
         """运行多轮训练"""
