@@ -574,15 +574,39 @@ class NNUEGameGUI:
         self._last_move_canvas_id = None
         self.last_move_text = ""
         
+        # Evaluation display
+        self.current_evaluation = 0.0
+        
     def start_gui(self):
         """Start the GUI game"""
         self.root = self.tk.Tk()
         self.root.title("Sanmill NNUE - Human vs AI")
-        self.root.geometry("700x800")
+        self.root.geometry("700x850")  # 增加高度以容纳评估显示
         
         # Status label
         self.status_label = self.tk.Label(self.root, text="Game started", font=("Arial", 12))
         self.status_label.pack(pady=10)
+        
+        # NNUE Evaluation display frame
+        eval_frame = self.tk.Frame(self.root)
+        eval_frame.pack(pady=5)
+        
+        # Evaluation label
+        self.eval_label = self.tk.Label(eval_frame, text="NNUE 评估: 计算中...", 
+                                       font=("Arial", 14, "bold"), fg="#333")
+        self.eval_label.pack()
+        
+        # Evaluation progress bar (visual representation)
+        eval_bar_frame = self.tk.Frame(eval_frame)
+        eval_bar_frame.pack(pady=5)
+        
+        self.eval_canvas = self.tk.Canvas(eval_bar_frame, width=300, height=20, bg="#ddd")
+        self.eval_canvas.pack()
+        
+        # Human perspective indicator
+        self.perspective_label = self.tk.Label(eval_frame, text="(Human 视角)", 
+                                             font=("Arial", 10), fg="#666")
+        self.perspective_label.pack()
         
         # Canvas for board
         # Updated canvas for professional board layout
@@ -649,6 +673,7 @@ class NNUEGameGUI:
         # Draw initial board
         self.draw_board()
         self.update_status()
+        self.update_evaluation_display()
         
         # If AI goes first, make AI move - use AlphaZero logic
         initial_player_obj = self.players[self.game_state.current_player + 1]  # current_player starts as 1
@@ -796,6 +821,96 @@ class NNUEGameGUI:
             from_coord = pos_to_coord(move[0], move[1])
             to_coord = pos_to_coord(move[2], move[3])
             return f"Last: {player_name} {from_coord}-{to_coord}"
+    
+    def get_human_perspective_evaluation(self) -> float:
+        """计算从 Human 视角下的局面评估值"""
+        if self.game_over:
+            return 0.0
+            
+        # 获取原始 NNUE 评估
+        raw_evaluation = self.nnue_player.evaluate_position(self.game_state)
+        
+        # 转换为 Human 视角的评估值
+        # Human 玩家的 player_value 是 self.human_player_value (1 或 -1)
+        # 如果 Human 是白棋 (player_value = 1)，直接使用评估值
+        # 如果 Human 是黑棋 (player_value = -1)，取相反数
+        if self.human_player_value == 1:
+            # Human 是白棋，正数对 Human 有利
+            return raw_evaluation
+        else:
+            # Human 是黑棋，负数对 Human 有利，所以取相反数
+            return -raw_evaluation
+    
+    def update_evaluation_display(self):
+        """更新评估值显示"""
+        if self.game_over:
+            self.eval_label.config(text="NNUE 评估: 游戏结束")
+            self.eval_canvas.delete("all")
+            return
+            
+        # 计算 Human 视角的评估值
+        self.current_evaluation = self.get_human_perspective_evaluation()
+        
+        # 格式化显示文本
+        if abs(self.current_evaluation) > 10:
+            # 极端优势
+            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (决定性优势)"
+        elif abs(self.current_evaluation) > 3:
+            # 明显优势
+            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (明显优势)"
+        elif abs(self.current_evaluation) > 1:
+            # 轻微优势
+            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (轻微优势)"
+        else:
+            # 均势
+            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (均势)"
+            
+        self.eval_label.config(text=eval_text)
+        
+        # 更新评估进度条
+        self.draw_evaluation_bar()
+    
+    def draw_evaluation_bar(self):
+        """绘制评估值进度条"""
+        self.eval_canvas.delete("all")
+        
+        # 进度条配置
+        bar_width = 300
+        bar_height = 20
+        
+        # 将评估值映射到 [-1, 1] 范围，使用 tanh 函数平滑映射
+        import math
+        normalized_eval = math.tanh(self.current_evaluation / 3.0)  # 3.0 是缩放因子
+        
+        # 计算进度条位置
+        center_x = bar_width // 2
+        bar_position = center_x + (normalized_eval * center_x * 0.9)  # 0.9 留边距
+        
+        # 绘制背景
+        self.eval_canvas.create_rectangle(0, 0, bar_width, bar_height, 
+                                        fill="#e0e0e0", outline="#ccc")
+        
+        # 绘制中线
+        self.eval_canvas.create_line(center_x, 0, center_x, bar_height, 
+                                   fill="#888", width=2)
+        
+        # 绘制评估值指示器
+        if normalized_eval > 0:
+            # Human 优势，绿色
+            color = "#4CAF50"
+            self.eval_canvas.create_rectangle(center_x, 2, bar_position, bar_height - 2,
+                                            fill=color, outline=color)
+        else:
+            # Human 劣势，红色  
+            color = "#f44336"
+            self.eval_canvas.create_rectangle(bar_position, 2, center_x, bar_height - 2,
+                                            fill=color, outline=color)
+        
+        # 添加刻度标记
+        for i in [-1, -0.5, 0, 0.5, 1]:
+            x = center_x + (i * center_x * 0.9)
+            self.eval_canvas.create_line(x, bar_height - 5, x, bar_height, 
+                                       fill="#666", width=1)
                                   
     def on_click(self, event):
         """Handle mouse click on board"""
@@ -835,6 +950,7 @@ class NNUEGameGUI:
                         self.last_move_text = self.move_to_notation(move, player_name)
                         self.draw_board()
                         self.update_status()
+                        self.update_evaluation_display()
                         if not self.game_over:
                             # Check if it's AI's turn using AlphaZero logic
                             current_player_obj = self.players[self.game_state.current_player + 1]
@@ -849,6 +965,7 @@ class NNUEGameGUI:
                     self.last_move_text = self.move_to_notation(move, player_name)
                     self.draw_board()
                     self.update_status()
+                    self.update_evaluation_display()
                     if not self.game_over:
                         # Check if it's AI's turn using AlphaZero logic
                         current_player_obj = self.players[self.game_state.current_player + 1]
@@ -871,6 +988,7 @@ class NNUEGameGUI:
                         self.selected_pos = None
                         self.draw_board()
                         self.update_status()
+                        self.update_evaluation_display()
                         if not self.game_over:
                             # Check if it's AI's turn using AlphaZero logic
                             current_player_obj = self.players[self.game_state.current_player + 1]
@@ -919,6 +1037,7 @@ class NNUEGameGUI:
             
         self.draw_board()
         self.update_status()
+        self.update_evaluation_display()
         
         # Check if it's now human's turn and trigger AI if needed
         if not self.game_over:
@@ -1017,6 +1136,7 @@ class NNUEGameGUI:
         self.last_move_text = ""  # Clear last move
         self.draw_board()
         self.update_status()
+        self.update_evaluation_display()
         
         # Check if AI should go first using AlphaZero logic
         initial_player_obj = self.players[self.game_state.current_player + 1]  # current_player starts as 1
