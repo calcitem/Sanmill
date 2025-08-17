@@ -17,7 +17,7 @@
   "auto_transfer_learning": true,
   
   "_comment_training": "基础训练参数 - 每轮会自动调整",
-  "positions": 50000,
+  "positions": 500,
   "epochs": 150,
   "lr": 0.002,
   "batch-size": 8192,

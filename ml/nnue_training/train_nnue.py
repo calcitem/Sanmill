@@ -984,32 +984,24 @@ def train_epoch(model: nn.Module,
         if device.type == 'cuda' and scaler is not None:
             scaler.scale(loss).backward()
             
-            # Check for invalid gradients before clipping
-            has_invalid_grad = False
-            for param in model.parameters():
-                if param.grad is not None and (torch.isnan(param.grad).any() or torch.isinf(param.grad).any()):
-                    has_invalid_grad = True
-                    break
-            
-            if has_invalid_grad:
-                logger.warning("发现无效梯度 (NaN/Inf)，跳过此批次")
-                scaler.update()  # 更新 scaler 但不执行优化步骤
-                invalid_batches += 1
-                continue
-            
             # Gradient clipping for training stability with large batch sizes
             scaler.unscale_(optimizer)
             grad_norm = torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
             
-            # 检查梯度范数是否有效
-            if torch.isnan(grad_norm) or torch.isinf(grad_norm):
-                logger.warning(f"发现无效梯度范数: {grad_norm}，跳过此批次")
-                scaler.update()
-                invalid_batches += 1
-                continue
+            # 记录优化步骤前的参数状态，用于检测是否成功更新
+            old_scale = scaler.get_scale()
             
             scaler.step(optimizer)
             scaler.update()
+            
+            # 检查是否因为无效梯度而跳过了更新
+            if scaler.get_scale() < old_scale:
+                logger.warning("检测到梯度缩放因子降低，可能存在无效梯度")
+                invalid_batches += 1
+            
+            # 记录梯度范数（即使是无效的也要记录，用于诊断）
+            if torch.isnan(grad_norm) or torch.isinf(grad_norm):
+                grad_norm = torch.tensor(float('inf'))  # 标记为无效但不中断训练
         else:
             loss.backward()
             
