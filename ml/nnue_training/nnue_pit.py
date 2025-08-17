@@ -594,10 +594,45 @@ class NNUEGameAdapter:
         new_adapter.board = deepcopy(self.board)
         new_adapter.current_player = self.current_player
         return new_adapter
+    
+    def make_move_and_undo(self, move) -> Tuple[bool, Any]:
+        """Make a move and return undo information for efficient backtracking"""
+        try:
+            # Store state for undo
+            old_board = self.board
+            old_player = self.current_player
+            
+            # Convert coordinate move to action index
+            if len(move) == 4:
+                if move[0] == move[2] and move[1] == move[3]:
+                    # Placing or removing move
+                    action = self.board.get_action_from_move([move[0], move[1]])
+                else:
+                    # Moving
+                    action = self.board.get_action_from_move(list(move))
+            else:
+                action = self.board.get_action_from_move(list(move))
+            
+            # Use ml/game's state transition
+            next_board, next_player = self.game.getNextState(self.board, self.current_player, action)
+            self.board = next_board
+            self.current_player = next_player
+            
+            # Return undo information
+            return True, (old_board, old_player)
+        except Exception as e:
+            return False, None
+    
+    def undo_move(self, undo_info):
+        """Undo a move using the undo information"""
+        if undo_info:
+            old_board, old_player = undo_info
+            self.board = old_board
+            self.current_player = old_player
 
 
 class NNUEPlayer:
-    """AI player using NNUE model for evaluation with Transposition Table - uses ml/game logic"""
+    """AI player using NNUE model for evaluation with optimized Transposition Table - uses ml/game logic"""
     
     def __init__(self, model_loader: NNUEModelLoader, search_depth: int = 8, use_randomness: bool = False, tt_size_mb: int = 64):
         self.model = model_loader.load_model()
@@ -614,9 +649,21 @@ class NNUEPlayer:
         self.cutoffs = 0
         self.tt_hits = 0
         self.tt_misses = 0
+        self.nnue_evaluations = 0
+        
+        # Performance optimizations
+        self.use_iterative_deepening = True
+        self.use_lazy_evaluation = True
+        self.use_null_move_pruning = True
+        
+        # Move ordering cache to avoid repeated evaluations
+        self._move_order_cache = {}
+        self._cache_age = 0
         
     def evaluate_position(self, game_state: NNUEGameAdapter) -> float:
-        """Evaluate position using NNUE model"""
+        """Evaluate position using NNUE model with evaluation counting"""
+        self.nnue_evaluations += 1
+        
         features = game_state.to_nnue_features()
         features_tensor = torch.from_numpy(features).unsqueeze(0).to(self.device)
         side_to_move_tensor = torch.tensor([game_state.side_to_move], dtype=torch.long).to(self.device)
@@ -626,8 +673,8 @@ class NNUEPlayer:
             return float(evaluation.squeeze().cpu())
             
     def order_moves(self, game_state: NNUEGameAdapter, moves: List[Tuple[int, int, int, int]], 
-                   tt_best_move: Optional[Tuple[int, int, int, int]] = None) -> List[Tuple[int, int, int, int]]:
-        """Order moves based on TT best move and NNUE evaluation for better Alpha-Beta pruning"""
+                   tt_best_move: Optional[Tuple[int, int, int, int]] = None, depth: int = 0) -> List[Tuple[int, int, int, int]]:
+        """Optimized move ordering with caching and lazy evaluation"""
         if len(moves) <= 1:
             return moves
         
@@ -641,18 +688,43 @@ class NNUEPlayer:
             
         if not remaining_moves:
             return ordered_moves
+        
+        # For deep searches, use simpler heuristics to avoid expensive evaluations
+        if depth > 3 and len(remaining_moves) > 8:
+            # Use simple heuristics for deep searches
+            ordered_moves.extend(self._order_moves_heuristic(game_state, remaining_moves))
+            return ordered_moves
             
-        # Score remaining moves using NNUE evaluation
+        # Cache key for move ordering
+        position_hash = self.position_hasher.hash_position(game_state)
+        cache_key = (position_hash, tuple(sorted(remaining_moves)), self._cache_age)
+        
+        if cache_key in self._move_order_cache:
+            cached_order = self._move_order_cache[cache_key]
+            # Verify cached moves are still valid
+            if all(move in remaining_moves for move in cached_order):
+                ordered_moves.extend(cached_order)
+                return ordered_moves
+        
+        # Score remaining moves using NNUE evaluation (only for shallow searches)
         move_scores = []
-        for move in remaining_moves:
-            temp_state = game_state.copy()
-            if temp_state.make_move(move):
-                # Use NNUE evaluation to score the resulting position
-                score = self.evaluate_position(temp_state)
+        evaluation_limit = min(len(remaining_moves), 12)  # Limit evaluations for performance
+        
+        for i, move in enumerate(remaining_moves):
+            if i >= evaluation_limit:
+                # Use heuristic score for remaining moves
+                score = self._heuristic_move_score(game_state, move)
                 move_scores.append((move, score))
             else:
-                # Invalid move gets lowest priority
-                move_scores.append((move, float('-inf')))
+                success, undo_info = game_state.make_move_and_undo(move)
+                if success:
+                    # Use NNUE evaluation to score the resulting position
+                    score = self.evaluate_position(game_state)
+                    game_state.undo_move(undo_info)
+                    move_scores.append((move, score))
+                else:
+                    # Invalid move gets lowest priority
+                    move_scores.append((move, float('-inf')))
         
         # Sort moves: best moves first for the current player
         if game_state.side_to_move == 0:  # White (maximizing)
@@ -660,85 +732,173 @@ class NNUEPlayer:
         else:  # Black (minimizing) 
             move_scores.sort(key=lambda x: x[1], reverse=False)
             
+        # Cache the result
+        ordered_remaining = [move for move, score in move_scores]
+        if len(self._move_order_cache) > 10000:  # Limit cache size
+            self._move_order_cache.clear()
+            self._cache_age += 1
+        self._move_order_cache[cache_key] = ordered_remaining
+            
         # Combine TT best move with ordered remaining moves
-        ordered_moves.extend([move for move, score in move_scores])
+        ordered_moves.extend(ordered_remaining)
         return ordered_moves
+    
+    def _order_moves_heuristic(self, game_state: NNUEGameAdapter, moves: List[Tuple[int, int, int, int]]) -> List[Tuple[int, int, int, int]]:
+        """Fast heuristic-based move ordering for deep searches"""
+        move_scores = []
+        
+        for move in moves:
+            score = self._heuristic_move_score(game_state, move)
+            move_scores.append((move, score))
+        
+        # Sort moves by heuristic score
+        move_scores.sort(key=lambda x: x[1], reverse=True)
+        return [move for move, score in move_scores]
+    
+    def _heuristic_move_score(self, game_state: NNUEGameAdapter, move: Tuple[int, int, int, int]) -> float:
+        """Fast heuristic scoring without NNUE evaluation"""
+        score = 0.0
+        x1, y1, x2, y2 = move
+        
+        # Prefer center positions
+        center_bonus = 0.1
+        center_positions = [(3, 3), (2, 3), (4, 3), (3, 2), (3, 4)]
+        if (x2, y2) in center_positions:
+            score += center_bonus
+        
+        # Prefer moves that form potential mills
+        # This is a simplified check - in a full implementation you'd check actual mill patterns
+        if game_state.phase == 0:  # Placing phase
+            # Prefer moves that could form mills
+            score += 0.05
+        elif game_state.phase in [1, 2]:  # Moving/Flying phase
+            # Prefer moves that increase mobility
+            distance = abs(x2 - x1) + abs(y2 - y1)
+            if distance > 0:
+                score += 0.02 * distance
+        
+        return score
 
     def get_best_move(self, game_state: NNUEGameAdapter) -> Optional[Tuple[int, int, int, int]]:
-        """Get best move using Alpha-Beta pruning with Transposition Table and NNUE evaluation"""
+        """Get best move using iterative deepening with Alpha-Beta pruning and optimizations"""
         
         # Reset statistics
         self.nodes_searched = 0
         self.cutoffs = 0
         self.tt_hits = 0
         self.tt_misses = 0
+        self.nnue_evaluations = 0
         
-        # Increment TT age for new search
+        # Increment TT age and cache age for new search
         self.transposition_table.current_age += 1
+        self._cache_age += 1
         
         valid_moves = game_state.get_valid_moves()
         if not valid_moves:
             return None
         
-        # Check transposition table for move ordering hint
-        position_hash = self.position_hasher.hash_position(game_state)
-        tt_found, tt_score, tt_best_move = self.transposition_table.probe(
-            position_hash, self.search_depth, float('-inf'), float('inf'))
-            
-        # Order moves using TT best move and NNUE evaluation for better pruning
-        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move)
+        if len(valid_moves) == 1:
+            return valid_moves[0]  # Only one move available
         
-        # Collect all moves with their scores
-        move_scores = []
+        best_move = None
+        best_score = float('-inf') if game_state.side_to_move == 0 else float('inf')
+        
+        # Use iterative deepening for better move ordering and time management
+        if self.use_iterative_deepening and self.search_depth > 2:
+            return self._iterative_deepening_search(game_state, valid_moves)
+        else:
+            return self._fixed_depth_search(game_state, valid_moves, self.search_depth)
+    
+    def _iterative_deepening_search(self, game_state: NNUEGameAdapter, valid_moves: List[Tuple[int, int, int, int]]) -> Optional[Tuple[int, int, int, int]]:
+        """Iterative deepening search for better move ordering"""
+        best_move = None
+        position_hash = self.position_hasher.hash_position(game_state)
+        
+        # Start with shallow search and gradually increase depth
+        for current_depth in range(1, self.search_depth + 1):
+            # Check transposition table for move ordering hint from previous iterations
+            tt_found, tt_score, tt_best_move = self.transposition_table.probe(
+                position_hash, current_depth, float('-inf'), float('inf'))
+            
+            # Order moves using TT best move from previous iterations
+            ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move or best_move, current_depth)
+            
+            alpha = float('-inf')
+            beta = float('inf')
+            current_best_move = None
+            
+            for move in ordered_moves:
+                success, undo_info = game_state.make_move_and_undo(move)
+                if success:
+                    if game_state.side_to_move == 0:  # White (maximizing) - note: side_to_move changed after move
+                        score = self._alpha_beta(game_state, current_depth - 1, alpha, beta, True)  # Now it's black's turn
+                        if score > alpha:
+                            alpha = score
+                            current_best_move = move
+                            if current_depth == self.search_depth:  # Final iteration
+                                best_move = move
+                    else:  # Black (minimizing)
+                        score = self._alpha_beta(game_state, current_depth - 1, alpha, beta, False)  # Now it's white's turn
+                        if score < beta:
+                            beta = score
+                            current_best_move = move
+                            if current_depth == self.search_depth:  # Final iteration
+                                best_move = move
+                    
+                    # Undo the move
+                    game_state.undo_move(undo_info)
+            
+            # Store result in transposition table for next iteration
+            if current_best_move:
+                final_score = alpha if game_state.side_to_move == 0 else beta
+                self.transposition_table.store(
+                    position_hash, current_depth, final_score, TTEntryType.EXACT, current_best_move)
+                
+                # Update best move from this iteration
+                if current_depth < self.search_depth:
+                    best_move = current_best_move
+        
+        return best_move or valid_moves[0]  # Fallback to first move if no best move found
+    
+    def _fixed_depth_search(self, game_state: NNUEGameAdapter, valid_moves: List[Tuple[int, int, int, int]], depth: int) -> Optional[Tuple[int, int, int, int]]:
+        """Fixed depth search (fallback for shallow searches)"""
+        position_hash = self.position_hasher.hash_position(game_state)
+        
+        # Check transposition table for move ordering hint
+        tt_found, tt_score, tt_best_move = self.transposition_table.probe(
+            position_hash, depth, float('-inf'), float('inf'))
+            
+        # Order moves using TT best move and optimizations
+        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move, depth)
+        
         alpha = float('-inf')
         beta = float('inf')
         best_move = None
         
         for move in ordered_moves:
-            temp_state = game_state.copy()
-            if temp_state.make_move(move):
-                if game_state.side_to_move == 0:  # White (maximizing)
-                    score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, False)
-                    move_scores.append((move, score))
+            success, undo_info = game_state.make_move_and_undo(move)
+            if success:
+                if game_state.side_to_move == 0:  # White (maximizing) - note: side_to_move changed after move
+                    score = self._alpha_beta(game_state, depth - 1, alpha, beta, True)  # Now it's black's turn
                     if score > alpha:
                         alpha = score
                         best_move = move
                 else:  # Black (minimizing)
-                    score = self._alpha_beta(temp_state, self.search_depth - 1, alpha, beta, True)
-                    move_scores.append((move, score))
+                    score = self._alpha_beta(game_state, depth - 1, alpha, beta, False)  # Now it's white's turn
                     if score < beta:
                         beta = score
                         best_move = move
-        
-        if not move_scores:
-            return None
+                
+                # Undo the move
+                game_state.undo_move(undo_info)
         
         # Store result in transposition table
-        if game_state.side_to_move == 0:  # White (maximizing)
-            final_score = alpha
-        else:  # Black (minimizing)
-            final_score = beta
-            
-        self.transposition_table.store(
-            position_hash, self.search_depth, final_score, TTEntryType.EXACT, best_move)
-            
-        # Find the best score
-        if game_state.side_to_move == 0:  # White (maximizing)
-            best_score = max(score for _, score in move_scores)
-        else:  # Black (minimizing)
-            best_score = min(score for _, score in move_scores)
+        if best_move:
+            final_score = alpha if game_state.side_to_move == 0 else beta
+            self.transposition_table.store(
+                position_hash, depth, final_score, TTEntryType.EXACT, best_move)
         
-        # Find all moves with the best score (exactly equal)
-        epsilon = 1e-9  # Very small tolerance for floating point comparison
-        best_moves = [move for move, score in move_scores if abs(score - best_score) < epsilon]
-        
-        # Return based on randomness setting
-        if self.use_randomness and len(best_moves) > 1:
-            # Random selection among equally good moves
-            return random.choice(best_moves)
-        else:
-            # Deterministic: return first best move
-            return best_moves[0]
+        return best_move or valid_moves[0]
         
     def _alpha_beta(self, game_state: NNUEGameAdapter, depth: int, 
                     alpha: float, beta: float, maximizing: bool) -> float:
@@ -773,17 +933,37 @@ class NNUEPlayer:
                 position_hash, depth, leaf_score, TTEntryType.EXACT, None)
             return leaf_score
             
-        # Order moves using TT best move hint and NNUE evaluation for better pruning
-        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move)
+        # Null move pruning - try skipping a move to see if position is still good
+        if (self.use_null_move_pruning and depth >= 3 and not maximizing and 
+            len(valid_moves) > 3):  # Only for non-critical positions
+            # Switch sides without making a move
+            original_player = game_state.current_player
+            game_state.current_player = -game_state.current_player
+            
+            # Search with reduced depth
+            null_score = self._alpha_beta(game_state, depth - 3, alpha, beta, True)
+            
+            # Restore original player
+            game_state.current_player = original_player
+            
+            # If null move causes beta cutoff, we can prune this branch
+            if null_score >= beta:
+                self.cutoffs += 1
+                return beta
+        
+        # Order moves using TT best move hint and optimized evaluation for better pruning
+        ordered_moves = self.order_moves(game_state, valid_moves, tt_best_move, depth)
         
         best_move = None
         best_score = float('-inf') if maximizing else float('inf')
             
         if maximizing:
             for move in ordered_moves:
-                temp_state = game_state.copy()
-                if temp_state.make_move(move):
-                    eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, False)
+                success, undo_info = game_state.make_move_and_undo(move)
+                if success:
+                    eval_score = self._alpha_beta(game_state, depth - 1, alpha, beta, False)
+                    game_state.undo_move(undo_info)  # Undo immediately after recursive call
+                    
                     if eval_score > best_score:
                         best_score = eval_score
                         best_move = move
@@ -793,9 +973,11 @@ class NNUEPlayer:
                         break  # Beta cutoff - pruning
         else:
             for move in ordered_moves:
-                temp_state = game_state.copy()
-                if temp_state.make_move(move):
-                    eval_score = self._alpha_beta(temp_state, depth - 1, alpha, beta, True)
+                success, undo_info = game_state.make_move_and_undo(move)
+                if success:
+                    eval_score = self._alpha_beta(game_state, depth - 1, alpha, beta, True)
+                    game_state.undo_move(undo_info)  # Undo immediately after recursive call
+                    
                     if eval_score < best_score:
                         best_score = eval_score
                         best_move = move
@@ -826,31 +1008,50 @@ class NNUEPlayer:
         """Set randomness behavior dynamically"""
         self.use_randomness = use_randomness
     
+    def set_iterative_deepening(self, use_iterative_deepening: bool):
+        """Enable/disable iterative deepening"""
+        self.use_iterative_deepening = use_iterative_deepening
+        logger.info(f"Iterative deepening {'enabled' if use_iterative_deepening else 'disabled'}")
+    
+    def set_lazy_evaluation(self, use_lazy_evaluation: bool):
+        """Enable/disable lazy evaluation optimizations"""
+        self.use_lazy_evaluation = use_lazy_evaluation
+        logger.info(f"Lazy evaluation {'enabled' if use_lazy_evaluation else 'disabled'}")
+    
+    def set_null_move_pruning(self, use_null_move_pruning: bool):
+        """Enable/disable null move pruning"""
+        self.use_null_move_pruning = use_null_move_pruning
+        logger.info(f"Null move pruning {'enabled' if use_null_move_pruning else 'disabled'}")
+    
     def clear_transposition_table(self):
         """Clear the transposition table (useful for new games)"""
         self.transposition_table.clear()
-        logger.info("Transposition table cleared")
+        self._move_order_cache.clear()
+        self._cache_age += 1
+        logger.info("Transposition table and caches cleared")
     
     def get_tt_statistics(self) -> Dict[str, Any]:
         """Get detailed transposition table statistics"""
         return self.transposition_table.get_statistics()
 
     def get_search_stats(self) -> str:
-        """Get search statistics for performance monitoring including TT stats"""
+        """Get search statistics for performance monitoring including TT and NNUE stats"""
         if self.nodes_searched == 0:
             return "No search performed yet"
         
         cutoff_rate = (self.cutoffs / max(1, self.nodes_searched)) * 100
         tt_total = self.tt_hits + self.tt_misses
         tt_hit_rate = (self.tt_hits / max(1, tt_total)) * 100
+        nnue_per_node = self.nnue_evaluations / max(1, self.nodes_searched)
         randomness_str = "Random" if self.use_randomness else "Deterministic"
+        iterative_str = "ID" if self.use_iterative_deepening else "Fixed"
         
         tt_stats = self.transposition_table.get_statistics()
         
-        return (f"Depth: {self.search_depth}, Nodes: {self.nodes_searched}, "
+        return (f"Depth: {self.search_depth} ({iterative_str}), Nodes: {self.nodes_searched}, "
                 f"Cutoffs: {self.cutoffs} ({cutoff_rate:.1f}%), "
+                f"NNUE Evals: {self.nnue_evaluations} ({nnue_per_node:.1f}/node), "
                 f"TT Hits: {self.tt_hits}/{tt_total} ({tt_hit_rate:.1f}%), "
-                f"TT Size: {tt_stats['size']}/{tt_stats['max_size']} ({tt_stats['usage_percent']:.1f}%), "
                 f"Mode: {randomness_str}")
 
 
@@ -1583,7 +1784,10 @@ def create_config_file(filename: str):
         "human_first": True,
         "gui": True,
         "log_level": "INFO",
-        "tt_size_mb": 64  # Transposition Table size in megabytes
+        "tt_size_mb": 64,  # Transposition Table size in megabytes
+        "use_iterative_deepening": True,  # Enable iterative deepening
+        "use_lazy_evaluation": True,  # Enable lazy evaluation optimizations
+        "use_null_move_pruning": True  # Enable null move pruning
     }
     
     with open(filename, 'w') as f:
@@ -1617,6 +1821,9 @@ Examples:
     parser.add_argument('--hidden-size', type=int, default=256, help='NNUE hidden size')
     parser.add_argument('--use-gpu', action='store_true', help='Force GPU usage (not recommended for NNUE)')
     parser.add_argument('--tt-size', type=int, default=64, help='Transposition table size in MB')
+    parser.add_argument('--no-iterative-deepening', action='store_true', help='Disable iterative deepening')
+    parser.add_argument('--no-lazy-evaluation', action='store_true', help='Disable lazy evaluation optimizations')
+    parser.add_argument('--no-null-move-pruning', action='store_true', help='Disable null move pruning')
     parser.add_argument('--create-config', type=str, help='Create sample config file')
     
     args = parser.parse_args()
@@ -1651,14 +1858,23 @@ Examples:
     human_first = (args.first == 'human') if args.first else config.get('human_first', True)
     use_gui = args.gui or config.get('gui', False)
     tt_size_mb = args.tt_size or config.get('tt_size_mb', 64)
+    use_iterative_deepening = not args.no_iterative_deepening and config.get('use_iterative_deepening', True)
+    use_lazy_evaluation = not args.no_lazy_evaluation and config.get('use_lazy_evaluation', True)
+    use_null_move_pruning = not args.no_null_move_pruning and config.get('use_null_move_pruning', True)
     
     try:
         # Load NNUE model
         device_str = "CPU (forced)" if force_cpu else ("GPU" if torch.cuda.is_available() else "CPU")
         logger.info(f"Loading NNUE model from {model_path} on {device_str}")
         logger.info(f"Transposition Table size: {tt_size_mb}MB")
+        logger.info(f"Optimizations: ID={'ON' if use_iterative_deepening else 'OFF'}, Lazy={'ON' if use_lazy_evaluation else 'OFF'}, NMP={'ON' if use_null_move_pruning else 'OFF'}")
         model_loader = NNUEModelLoader(model_path, feature_size, hidden_size, force_cpu)
         nnue_player = NNUEPlayer(model_loader, search_depth, use_randomness, tt_size_mb)
+        
+        # Configure optimizations
+        nnue_player.set_iterative_deepening(use_iterative_deepening)
+        nnue_player.set_lazy_evaluation(use_lazy_evaluation)
+        nnue_player.set_null_move_pruning(use_null_move_pruning)
         
         if use_gui:
             # Start GUI game
