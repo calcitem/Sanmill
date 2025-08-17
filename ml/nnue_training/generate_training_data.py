@@ -234,10 +234,10 @@ def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -
     
     # Define game phase distributions based on actual Nine Men's Morris games
     phase_distribution = {
-        'early_placement': 0.20,    # Pieces 0-12: opening placement phase
-        'late_placement': 0.25,     # Pieces 13-18: late placement + early moves  
-        'midgame': 0.35,           # Main tactical phase with moves and captures
-        'endgame': 0.20            # Few pieces remaining, endgame tactics
+        'early_placement': 0.15,    # First 4 rounds of placing phase (8 pieces placed)
+        'late_placement': 0.25,     # Remaining rounds of placing phase (10 more pieces)
+        'moving_phase': 0.35,      # Moving phase excluding flying (both players >3 pieces)
+        'flying_phase': 0.25       # Flying phase: when any player has ≤3 pieces on board
     }
     
     # Track samples per phase
@@ -265,13 +265,17 @@ def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -
         
         # Define ply ranges for each phase
         if target_phase == 'early_placement':
-            num_plies = random.randint(2, 12)
+            # First 4 rounds (8 pieces): 2-8 plies
+            num_plies = random.randint(2, 8)
         elif target_phase == 'late_placement':
-            num_plies = random.randint(13, 25)
-        elif target_phase == 'midgame':
-            num_plies = random.randint(20, 60)
-        else:  # endgame
-            num_plies = random.randint(40, max_plies)
+            # Remaining placement rounds: 9-18 plies  
+            num_plies = random.randint(9, 18)
+        elif target_phase == 'moving_phase':
+            # Moving phase without flying: 19-50 plies
+            num_plies = random.randint(19, 50)
+        else:  # flying_phase
+            # Flying phase: 30+ plies to reach flying conditions
+            num_plies = random.randint(30, max_plies)
         
         # Play random game
         game_ended = False
@@ -294,15 +298,21 @@ def sample_random_positions(game: Game, num_samples: int, max_plies: int = 80) -
         w_count = board.count(1)
         b_count = board.count(-1)
         total_pieces = w_count + b_count
+        w_in_hand = max(0, 9 - ((board.put_pieces + 1) // 2))
+        b_in_hand = max(0, 9 - (board.put_pieces // 2))
         
         phase_valid = False
-        if target_phase == 'early_placement' and board.put_pieces <= 12 and total_pieces >= 4:
+        if target_phase == 'early_placement' and board.period == 0 and board.put_pieces <= 8:
+            # Early placement: first 4 rounds (8 pieces total)
             phase_valid = True
-        elif target_phase == 'late_placement' and 10 <= board.put_pieces <= 18 and total_pieces >= 6:
+        elif target_phase == 'late_placement' and board.period == 0 and board.put_pieces > 8:
+            # Late placement: remaining placement rounds 
             phase_valid = True
-        elif target_phase == 'midgame' and total_pieces >= 8 and w_count >= 3 and b_count >= 3:
+        elif target_phase == 'moving_phase' and board.period in [1, 2] and w_count > 3 and b_count > 3:
+            # Moving phase: both players have >3 pieces (no flying yet)
             phase_valid = True
-        elif target_phase == 'endgame' and 4 <= total_pieces <= 10 and w_count >= 2 and b_count >= 2:
+        elif target_phase == 'flying_phase' and board.period in [1, 2] and (w_count <= 3 or b_count <= 3) and w_count >= 2 and b_count >= 2:
+            # Flying phase: at least one player has ≤3 pieces on board
             phase_valid = True
         
         # Accept position with some tolerance for phase boundaries
