@@ -370,6 +370,7 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
         sector_groups[sector_hash].append((i, board, player, features))
     
     logger.info(f"Batch processing {len(positions_data)} positions across {len(sector_groups)} sectors")
+    logger.debug(f"Sector distribution: {[(k, len(v)) for k, v in sector_groups.items()]}")
     
     # Process each sector group
     results = {}
@@ -439,11 +440,13 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
                 else:  # Draw (wdl == 0)
                     stats['evaluation_stats']['ranges']['draw'] += 1
                 
-                # Create training data line
-                feature_str = ' '.join(f'{f:.6f}' for f in features)
+                # Create training data line in the expected format
+                # Format: features | evaluation | phase | fen
+                feature_str = ' '.join(str(int(f)) for f in features)  # Convert to integers as expected
                 target_str = f'{evaluation:.6f}'
-                side_str = '1.0' if player == 1 else '0.0'
-                training_line = f"{feature_str} {target_str} {side_str}\n"
+                phase_str = str(board.period)
+                fen_str = board.to_fen(player)
+                training_line = f"{feature_str} | {target_str} | {phase_str} | {fen_str}\n"
                 
                 results[pos_idx] = training_line
                 valid_count += 1
@@ -459,6 +462,9 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
             training_data.append(results[i])
     
     logger.info(f"Batch processing completed: {valid_count}/{len(positions_data)} positions valid")
+    logger.debug(f"Final training_data length: {len(training_data)}")
+    if training_data:
+        logger.debug(f"Sample training line: {training_data[0][:100]}...")
     return training_data
 
 def generate_training_data_with_perfect_db(perfect_db_path: str, 
@@ -648,6 +654,17 @@ def generate_training_data_with_perfect_db(perfect_db_path: str,
         if os.path.exists(output_file):
             file_size = os.path.getsize(output_file)
             logger.info(f"Training data saved to {output_file} ({file_size} bytes)")
+            
+            # Quick diagnostic: check first few lines of the file
+            with open(output_file, 'r') as f:
+                lines = f.readlines()
+                logger.info(f"File contains {len(lines)} total lines")
+                if len(lines) > 5:
+                    logger.info("First 3 data lines:")
+                    for i, line in enumerate(lines[:3]):
+                        if not line.startswith('#'):
+                            logger.info(f"  Line {i}: {line.strip()[:100]}...")
+            
             return True
         else:
             logger.error("Training data file was not created")

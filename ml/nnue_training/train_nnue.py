@@ -875,9 +875,15 @@ class MillDataset(Dataset):
             if i % 10000 == 0:
                 logger.info(f"Processed {i}/{len(data_lines)} samples")
             
+            # Debug: show first few lines to understand format
+            if i < 3:
+                logger.info(f"Sample line {i}: {line.strip()[:100]}...")
+            
             try:
                 parts = line.strip().split(' | ')
                 if len(parts) < 4:
+                    if i < 10:  # Only log first 10 mismatches to avoid spam
+                        logger.warning(f"Line {i} has {len(parts)} parts, expected 4: {line.strip()[:100]}...")
                     continue
                 
                 # Parse features
@@ -1112,6 +1118,7 @@ def main():
     parser.add_argument('--positions', type=int, default=500000, help='Number of training positions to generate')
     parser.add_argument('--threads', type=int, default=0, help='Number of threads for data generation (0=auto)')
     parser.add_argument('--validate-only', action='store_true', help='Only validate environment (pipeline mode)')
+    parser.add_argument('--force-regenerate', action='store_true', help='Force regeneration of training data even if file exists')
     
     # Visualization options
     parser.add_argument('--plot', action='store_true', help='Enable final training visualization plots (generated after training)')
@@ -1197,7 +1204,13 @@ def main():
         
         # Step 2: Generate training data
         logger.info("=== Step 2: Training Data Generation ===")
-        if not os.path.exists(args.data) or os.path.getsize(args.data) == 0:
+        
+        # Check if we should regenerate data (force regeneration if file exists but is potentially old format)
+        should_regenerate = (not os.path.exists(args.data) or 
+                           os.path.getsize(args.data) == 0 or
+                           args.force_regenerate)
+        
+        if should_regenerate:
             logger.info(f"Generating training data: {args.data}")
             if args.engine is None:
                 # Use direct Perfect DB generation (new approach)
