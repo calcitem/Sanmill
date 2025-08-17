@@ -121,6 +121,14 @@ class EasyMultiRoundTrainer:
         log_file = self.output_dir / "easy_training.log"
         self.logger = setup_logging(log_file)
         
+        # 检查调试模式
+        debug_mode = self.config.get("debug_mode", False)
+        if debug_mode:
+            print("🐛 调试模式已启用")
+            print("   - 使用极小数据量进行快速验证")
+            print("   - 预计总训练时间：5-10分钟")
+            print("   - 仅用于测试配置和环境")
+        
         # 验证环境
         return self._validate_environment()
     
@@ -169,9 +177,41 @@ class EasyMultiRoundTrainer:
         # 基础配置
         round_config = self.config.copy()
         
-        # 从配置文件中读取轮次策略，如果没有则使用默认策略
-        if "round_strategies" in self.config and str(round_num) in self.config["round_strategies"]:
-            # 使用配置文件中的策略
+        # 检查是否为调试模式
+        debug_mode = self.config.get("debug_mode", False)
+        
+        if debug_mode:
+            # 调试模式：使用调试策略或限制正常策略
+            if "debug_strategies" in self.config and str(round_num) in self.config["debug_strategies"]:
+                strategy = self.config["debug_strategies"][str(round_num)].copy()
+                self.logger.info(f"🐛 调试模式：使用调试策略第 {round_num} 轮")
+            else:
+                # 如果没有调试策略，限制正常策略的数据量
+                if "round_strategies" in self.config and str(round_num) in self.config["round_strategies"]:
+                    strategy = self.config["round_strategies"][str(round_num)].copy()
+                    # 大幅减少数据量和训练轮数
+                    strategy["positions"] = min(strategy["positions"], 2000)
+                    strategy["epochs"] = min(strategy["epochs"], 10)
+                    strategy["batch-size"] = min(strategy["batch-size"], 1024)
+                    strategy["description"] = f"调试模式：{strategy.get('description', '快速验证')}"
+                    self.logger.info(f"🐛 调试模式：限制第 {round_num} 轮数据量")
+                else:
+                    # 使用默认调试策略
+                    default_debug_strategies = {
+                        1: {"positions": 1000, "epochs": 5, "lr": 0.001, "batch-size": 512, "description": "调试轮次1"},
+                        2: {"positions": 1500, "epochs": 8, "lr": 0.0008, "batch-size": 1024, "description": "调试轮次2"},
+                        3: {"positions": 2000, "epochs": 10, "lr": 0.0006, "batch-size": 1024, "description": "调试轮次3"}
+                    }
+                    if round_num <= len(default_debug_strategies):
+                        strategy = default_debug_strategies[round_num]
+                        self.logger.info(f"🐛 调试模式：使用默认调试策略第 {round_num} 轮")
+                    else:
+                        strategy = default_debug_strategies[len(default_debug_strategies)].copy()
+                        strategy["lr"] *= 0.8 ** (round_num - len(default_debug_strategies))
+                        strategy["description"] = f"调试扩展轮次 {round_num}"
+                        self.logger.info(f"🐛 调试模式：扩展策略第 {round_num} 轮")
+        elif "round_strategies" in self.config and str(round_num) in self.config["round_strategies"]:
+            # 正常模式：使用配置文件中的策略
             strategy = self.config["round_strategies"][str(round_num)].copy()
             self.logger.info(f"使用配置文件中的第 {round_num} 轮策略")
         else:
@@ -255,6 +295,12 @@ class EasyMultiRoundTrainer:
             else:
                 round_config["transfer-strategy"] = "fine-tune"
                 round_config["transfer-lr-scale"] = 0.1
+        else:
+            # 第1轮或没有检查点时，清理迁移学习参数
+            transfer_keys = ["transfer-from", "transfer-strategy", "transfer-lr-scale"]
+            for key in transfer_keys:
+                if key in round_config:
+                    del round_config[key]
         
         return round_config, strategy["description"]
     
@@ -341,14 +387,14 @@ class EasyMultiRoundTrainer:
             str(self.project_root / "train_nnue.py"),
             "--config", str(config_file),
             "--pipeline",
-            "--perfect-db", round_config["perfect-db"]
+            "--perfect-db", str(round_config["perfect-db"])
         ]
         
         # 添加迁移学习参数
-        if "transfer-from" in round_config:
+        if "transfer-from" in round_config and round_config["transfer-from"] is not None:
             cmd.extend([
-                "--transfer-from", round_config["transfer-from"],
-                "--transfer-strategy", round_config["transfer-strategy"],
+                "--transfer-from", str(round_config["transfer-from"]),
+                "--transfer-strategy", str(round_config["transfer-strategy"]),
                 "--transfer-lr-scale", str(round_config["transfer-lr-scale"])
             ])
         

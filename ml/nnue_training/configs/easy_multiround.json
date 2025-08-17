@@ -16,6 +16,10 @@
   "max_rounds": 6,
   "auto_transfer_learning": true,
   
+  "_comment_debug": "调试模式 - 快速验证训练流程",
+  "debug_mode": true,
+  "_comment_debug_mode": "设为 true 时使用极小的数据量和轮数，用于快速测试",
+  
   "_comment_training": "基础训练参数 - 会被轮次策略覆盖，这里是后备默认值",
   "positions": 30000,
   "epochs": 80,
@@ -102,14 +106,50 @@
     }
   },
   
+  "_comment_debug_strategies": "调试模式下的快速训练策略",
+  "debug_strategies": {
+    "_description": "调试模式策略 - 极小数据量，快速验证流程",
+    "1": {
+      "positions": 100,
+      "epochs": 5,
+      "lr": 0.001,
+      "batch-size": 512,
+      "description": "调试轮次1：快速验证"
+    },
+    "2": {
+      "positions": 150,
+      "epochs": 8,
+      "lr": 0.0008,
+      "batch-size": 1024,
+      "description": "调试轮次2：迁移学习测试"
+    },
+    "3": {
+      "positions": 200,
+      "epochs": 10,
+      "lr": 0.0006,
+      "batch-size": 1024,
+      "description": "调试轮次3：完整流程验证"
+    }
+  },
+  
   "_usage_instructions": {
     "_description": "使用说明",
-    "step_1": "修改 perfect-db 路径为你的 Perfect Database 目录",
-    "step_2": "根据需要调整 round_strategies 中的学习率和其他参数",
-    "step_3": "根据硬件情况调整 batch-size (建议范围: 2048-10240)",
-    "step_4": "直接运行: python easy_train.py",
-    "step_5": "训练会自动完成 6 轮迭代，每轮使用迁移学习",
-    "note": "如果出现梯度爆炸警告，请降低相应轮次的学习率"
+    "normal_mode": {
+      "step_1": "修改 perfect-db 路径为你的 Perfect Database 目录",
+      "step_2": "根据需要调整 round_strategies 中的学习率和其他参数",
+      "step_3": "根据硬件情况调整 batch-size (建议范围: 2048-10240)",
+      "step_4": "直接运行: python easy_train.py",
+      "step_5": "训练会自动完成 6 轮迭代，每轮使用迁移学习",
+      "note": "如果出现梯度爆炸警告，请降低相应轮次的学习率"
+    },
+    "debug_mode": {
+      "step_1": "修改 perfect-db 路径为你的 Perfect Database 目录",
+      "step_2": "设置 debug_mode: true",
+      "step_3": "运行: python easy_train.py",
+      "step_4": "将使用极小数据量快速验证训练流程（约5-10分钟完成）",
+      "purpose": "用于快速测试配置、验证环境、调试问题",
+      "data_size": "每轮仅使用 1000-2000 个位置，5-10 个 epochs"
+    }
   },
   
   "_learning_rate_guide": {
