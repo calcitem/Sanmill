@@ -19,6 +19,11 @@ sec_val virt_loss_val = 0, virt_win_val = 0;
 
 void init_sec_vals()
 {
+    static bool called = false;
+    if (called)
+        return;
+    called = true;
+
 #ifdef DD
 #ifndef STONE_DIFF
     FILE *f = nullptr;
