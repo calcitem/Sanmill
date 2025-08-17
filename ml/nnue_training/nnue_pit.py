@@ -680,13 +680,16 @@ class NNUEGameGUI:
         restart_btn = self.tk.Button(button_frame, text="Restart", command=self.restart_game)
         restart_btn.pack(side=self.tk.LEFT, padx=5)
         
-        quit_btn = self.tk.Button(button_frame, text="Quit", command=self.root.quit)
+        quit_btn = self.tk.Button(button_frame, text="Quit", command=self.safe_quit)
         quit_btn.pack(side=self.tk.LEFT, padx=5)
         
         # Draw initial board
         self.draw_board()
         self.update_status()
         self.update_evaluation_display()
+        
+        # Set up window close protocol to use safe quit
+        self.root.protocol("WM_DELETE_WINDOW", self.safe_quit)
         
         # If AI goes first, make AI move - use AlphaZero logic
         initial_player_obj = self.players[self.game_state.current_player + 1]  # current_player starts as 1
@@ -1205,6 +1208,42 @@ class NNUEGameGUI:
                 self.update_status()
         except Exception as e:
             logger.error(f"Error changing randomness setting: {e}")
+
+    def safe_quit(self):
+        """Safely quit the application to avoid Tkinter theme change errors"""
+        try:
+            if self.root and self.root.winfo_exists():
+                # Cancel any pending after() calls to prevent ThemeChanged errors
+                try:
+                    # Try to cancel all pending after calls
+                    self.root.after_cancel("all")
+                except:
+                    pass
+                
+                # Unbind all events to prevent further callbacks
+                try:
+                    self.root.unbind_all("<Key>")
+                    self.root.unbind_all("<Button>")
+                except:
+                    pass
+                
+                # Withdraw the window first to hide it immediately
+                try:
+                    self.root.withdraw()
+                except:
+                    pass
+                
+                # Then destroy the window properly
+                self.root.destroy()
+        except Exception as e:
+            # If destroy fails, try quit as last resort
+            try:
+                if self.root:
+                    self.root.quit()
+            except:
+                # If everything fails, exit the process
+                import sys
+                sys.exit(0)
 
     def restart_game(self):
         """Restart the game"""

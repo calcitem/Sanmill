@@ -10,7 +10,7 @@
   "output-dir": "./nnue_output",
   "output": "./models/nnue_model.bin",
   "_comment_output": "All models save to models/ directory for consistent management",
-  "positions": 1000000,
+  "positions": 100000000,
   "threads": 0,
   
   "epochs": 300,
