@@ -279,17 +279,15 @@ class AdaptiveLRScheduler:
 
 class TrainingVisualizer:
     """
-    Real-time training visualization for NNUE training
-    Creates dynamic plots showing loss curves, learning rate, and gradient norms
+    Training data collector for NNUE training
+    Collects training metrics during training and saves to CSV for final plotting
+    No intermediate plotting to ensure optimal training performance
     """
     
-    def __init__(self, output_dir: str = "plots", update_interval: int = 5, 
-                 save_plots: bool = True, show_plots: bool = False):
+    def __init__(self, output_dir: str = "plots"):
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(exist_ok=True)
-        self.update_interval = update_interval
-        self.save_plots = save_plots
-        self.show_plots = show_plots
+        # Only data collection - no intermediate plotting to avoid training interruptions
         
         # Training metrics storage
         self.epochs = []
@@ -300,20 +298,12 @@ class TrainingVisualizer:
         self.gradient_norms = []
         self.epoch_times = []
         self.cumulative_times = []  # For tracking total elapsed time
-        
-        # Plot state
-        self.last_update_epoch = 0
-        
-        if not PLOTTING_AVAILABLE and (save_plots or show_plots):
-            logger.warning("Matplotlib not available. Install with: pip install matplotlib seaborn")
-            self.save_plots = False
-            self.show_plots = False
     
     def add_epoch_data(self, epoch: int, train_loss: float, val_loss: float, 
                       val_accuracy: float, learning_rate: float, 
                       gradient_norm: float, epoch_time: float, cumulative_time: float = None,
                       total_epochs: int = None):
-        """Add data for a completed epoch"""
+        """Add data for a completed epoch - only stores data, no intermediate plotting"""
         self.epochs.append(epoch + 1)  # 1-based epoch numbering
         self.train_losses.append(train_loss)
         self.val_losses.append(val_loss)
@@ -329,157 +319,14 @@ class TrainingVisualizer:
         else:
             self.cumulative_times.append(self.cumulative_times[-1] + epoch_time)
         
-        # Update plots if interval reached (but skip final epochs to avoid blocking)
-        # Skip plot updates in the last 10 epochs to prevent blocking at training end
-        if total_epochs is not None:
-            epochs_remaining = total_epochs - (epoch + 1)
-        else:
-            epochs_remaining = 50  # Conservative default if total_epochs not provided
-        should_update = ((epoch + 1) % self.update_interval == 0 and epochs_remaining > 10)
-        
-        if (should_update or 
-            ((epoch + 1) - self.last_update_epoch >= self.update_interval and epochs_remaining > 10)):
-            try:
-                self.update_plots()
-                self.last_update_epoch = epoch + 1
-            except Exception as e:
-                logger.warning(f"Plot update failed at epoch {epoch + 1}: {e}")
-                # Continue training even if plotting fails
+        # No intermediate plotting - only data collection for final CSV generation
+        # This eliminates training interruptions caused by frequent plotting
     
     def update_plots(self):
-        """Update all training plots"""
-        if not PLOTTING_AVAILABLE or not (self.save_plots or self.show_plots):
-            return
-        
-        if len(self.epochs) < 2:
-            return  # Need at least 2 points to plot
-        
-        # Create comprehensive training dashboard
-        fig = plt.figure(figsize=(16, 12))
-        
-        # 1. Loss curves (main plot)
-        ax1 = plt.subplot(2, 3, 1)
-        plt.plot(self.epochs, self.train_losses, 'b-', label='Training Loss', linewidth=2)
-        plt.plot(self.epochs, self.val_losses, 'r-', label='Validation Loss', linewidth=2)
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.title('Training and Validation Loss')
-        plt.legend()
-        plt.grid(True, alpha=0.3)
-        
-        # Add trend lines for recent epochs
-        if len(self.epochs) >= 10:
-            recent_epochs = self.epochs[-10:]
-            recent_train = self.train_losses[-10:]
-            recent_val = self.val_losses[-10:]
-            
-            # Fit trend lines
-            train_trend = np.polyfit(recent_epochs, recent_train, 1)
-            val_trend = np.polyfit(recent_epochs, recent_val, 1)
-            
-            train_trend_line = np.poly1d(train_trend)(recent_epochs)
-            val_trend_line = np.poly1d(val_trend)(recent_epochs)
-            
-            plt.plot(recent_epochs, train_trend_line, 'b--', alpha=0.7, label='Train Trend')
-            plt.plot(recent_epochs, val_trend_line, 'r--', alpha=0.7, label='Val Trend')
-            plt.legend()
-        
-        # 2. Validation accuracy
-        ax2 = plt.subplot(2, 3, 2)
-        plt.plot(self.epochs, self.val_accuracies, 'g-', linewidth=2)
-        plt.xlabel('Epoch')
-        plt.ylabel('Accuracy')
-        plt.title('Validation Accuracy')
-        plt.grid(True, alpha=0.3)
-        
-        # Add best accuracy line
-        best_acc = max(self.val_accuracies)
-        best_epoch = self.epochs[self.val_accuracies.index(best_acc)]
-        plt.axhline(y=best_acc, color='g', linestyle='--', alpha=0.7)
-        plt.text(0.02, 0.98, f'Best: {best_acc:.4f} @ Epoch {best_epoch}', 
-                transform=ax2.transAxes, verticalalignment='top', fontsize=10,
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-        
-        # 3. Learning rate schedule
-        ax3 = plt.subplot(2, 3, 3)
-        plt.plot(self.epochs, self.learning_rates, 'orange', linewidth=2)
-        plt.xlabel('Epoch')
-        plt.ylabel('Learning Rate')
-        plt.title('Learning Rate Schedule')
-        plt.yscale('log')  # Log scale for better visualization
-        plt.grid(True, alpha=0.3)
-        
-        # Highlight learning rate changes
-        lr_changes = []
-        for i in range(1, len(self.learning_rates)):
-            if abs(self.learning_rates[i] - self.learning_rates[i-1]) > 1e-7:
-                lr_changes.append((self.epochs[i], self.learning_rates[i]))
-        
-        for epoch, lr in lr_changes:
-            plt.axvline(x=epoch, color='red', linestyle=':', alpha=0.7)
-            plt.text(epoch, lr, f'{lr:.2e}', rotation=90, fontsize=8)
-        
-        # 4. Gradient norms
-        ax4 = plt.subplot(2, 3, 4)
-        plt.plot(self.epochs, self.gradient_norms, 'purple', linewidth=2)
-        plt.xlabel('Epoch')
-        plt.ylabel('Gradient Norm')
-        plt.title('Gradient Norms')
-        plt.grid(True, alpha=0.3)
-        
-        # Add warning zones for gradient issues
-        plt.axhline(y=1e-5, color='red', linestyle='--', alpha=0.5, label='Vanishing Threshold')
-        plt.axhline(y=10.0, color='orange', linestyle='--', alpha=0.5, label='Exploding Threshold')
-        plt.legend(fontsize=8)
-        
-        # 5. Training speed
-        ax5 = plt.subplot(2, 3, 5)
-        plt.plot(self.epochs, self.epoch_times, 'brown', linewidth=2)
-        plt.xlabel('Epoch')
-        plt.ylabel('Time (seconds)')
-        plt.title('Epoch Training Time')
-        plt.grid(True, alpha=0.3)
-        
-        # Add average time
-        avg_time = np.mean(self.epoch_times)
-        plt.axhline(y=avg_time, color='brown', linestyle='--', alpha=0.7)
-        plt.text(0.02, 0.98, f'Avg: {avg_time:.1f}s', 
-                transform=ax5.transAxes, verticalalignment='top', fontsize=10,
-                bbox=dict(boxstyle='round', facecolor='white', alpha=0.8))
-        
-        # 6. Loss ratio and convergence metrics
-        ax6 = plt.subplot(2, 3, 6)
-        if len(self.val_losses) > 0:
-            loss_ratios = [v/t for v, t in zip(self.val_losses, self.train_losses)]
-            plt.plot(self.epochs, loss_ratios, 'teal', linewidth=2)
-            plt.xlabel('Epoch')
-            plt.ylabel('Val Loss / Train Loss')
-            plt.title('Overfitting Indicator')
-            plt.grid(True, alpha=0.3)
-            
-            # Add ideal ratio line
-            plt.axhline(y=1.0, color='green', linestyle='--', alpha=0.7, label='Ideal Ratio')
-            plt.axhline(y=1.2, color='orange', linestyle='--', alpha=0.5, label='Warning')
-            plt.axhline(y=1.5, color='red', linestyle='--', alpha=0.5, label='Overfitting')
-            plt.legend(fontsize=8)
-        
-        plt.tight_layout()
-        
-        # Save plot with reduced DPI for faster generation
-        if self.save_plots:
-            plot_path = self.output_dir / f"training_progress_epoch_{self.epochs[-1]:04d}.png"
-            plt.savefig(plot_path, dpi=100, bbox_inches='tight')  # Reduced from 150
-            
-            # Also save as latest
-            latest_path = self.output_dir / "training_progress_latest.png"
-            plt.savefig(latest_path, dpi=100, bbox_inches='tight')  # Reduced from 150
-            
-            logger.info(f"Training plots saved to {plot_path}")
-        
-        if self.show_plots:
-            plt.show()
-        else:
-            plt.close()
+        """Placeholder method - intermediate plotting disabled for performance"""
+        # No intermediate plotting to avoid training interruptions
+        # Final plots will be generated from CSV data after training completion
+        pass
     
     def create_summary_plot(self):
         """Create a final summary plot at the end of training"""
@@ -714,12 +561,10 @@ def save_config_template(output_path: str):
         "val-split": 0.1,
         "device": "auto",
         
-        "# Visualization Parameters": "Used in both modes",
-        "plot": True,
+        "# Visualization Parameters": "Used in both modes - optimized for performance",
+        "plot": True,  # Generate final plots after training completion
         "plot-dir": "plots",
-        "plot-interval": 20,  # Reduced frequency to prevent blocking
-        "show-plots": False,
-        "save-csv": True,
+        "save-csv": True,  # Save training metrics to CSV for plotting
         
         "# Usage Examples": {
             "training-only": "python train_nnue.py --config config.json",
@@ -738,7 +583,8 @@ def save_config_template(output_path: str):
             "training-mode": "Train from existing data file",
             "lr-auto-scale": "Automatically scale LR based on batch size and dataset size",
             "adaptive-scheduler": "Recommended for most users - automatically adjusts LR",
-            "plot-interval": "Update plots every N epochs (lower = more frequent updates)",
+            "plot": "Generate visualization plots after training completion (no intermediate plotting)",
+            "save-csv": "Save training metrics to CSV file for analysis and plotting",
             "hidden-size": "Larger networks may perform better but train slower",
             "batch-size": "Powers of 2 work best (1024, 2048, 4096, 8192, 16384)"
         }
@@ -1253,10 +1099,8 @@ def main():
     parser.add_argument('--validate-only', action='store_true', help='Only validate environment (pipeline mode)')
     
     # Visualization options
-    parser.add_argument('--plot', action='store_true', help='Enable training visualization plots')
-    parser.add_argument('--plot-dir', default='plots', help='Directory to save plots')
-    parser.add_argument('--plot-interval', type=int, default=20, help='Update plots every N epochs (higher = less frequent, faster training)')
-    parser.add_argument('--show-plots', action='store_true', help='Display plots in real-time (requires GUI)')
+    parser.add_argument('--plot', action='store_true', help='Enable final training visualization plots (generated after training)')
+    parser.add_argument('--plot-dir', default='plots', help='Directory to save plots and CSV metrics')
     parser.add_argument('--save-csv', action='store_true', help='Save training metrics to CSV file')
     
     args = parser.parse_args()
@@ -1501,16 +1345,13 @@ def main():
     
     logger.info(f"Initial learning rate: {args.lr:.6f}")
     
-    # Initialize training visualizer if requested
+    # Initialize training visualizer for data collection only
     visualizer = None
     if args.plot or args.save_csv:
-        visualizer = TrainingVisualizer(
-            output_dir=args.plot_dir,
-            update_interval=args.plot_interval,
-            save_plots=args.plot,
-            show_plots=args.show_plots
-        )
-        logger.info(f"Training visualization enabled - plots will be saved to {args.plot_dir}")
+        visualizer = TrainingVisualizer(output_dir=args.plot_dir)
+        logger.info(f"Training data collection enabled - metrics will be saved to CSV")
+        logger.info("Intermediate plotting disabled for optimal training performance")
+        logger.info("Final plots will be generated after training completion")
     
     # Use gradient clipping for stability with larger batch sizes
     max_grad_norm = 1.0
@@ -1638,26 +1479,26 @@ def main():
         
         logger.info(f"Training visualizations saved to {args.plot_dir}")
         
-        # Auto-generate additional comprehensive plots from CSV (async to avoid blocking)
+        # Generate final comprehensive plots after training completion
         try:
             from auto_plot import auto_generate_plots
             csv_path = Path(args.plot_dir) / "training_metrics.csv"
             if csv_path.exists():
-                logger.info("Generating additional comprehensive visualizations (in background)...")
-                # Use comprehensive_only=True to reduce generation time
+                logger.info("Generating final comprehensive visualizations...")
+                # Generate all plots at the end for complete analysis
                 success = auto_generate_plots(
                     csv_file=str(csv_path),
                     output_dir=args.plot_dir,
-                    comprehensive_only=True  # Only generate main plot to save time
+                    comprehensive_only=False  # Generate all plots for final analysis
                 )
                 if success:
-                    logger.info("Additional visualizations generated successfully!")
+                    logger.info("Final training visualizations generated successfully!")
                 else:
-                    logger.warning("Failed to generate additional visualizations")
+                    logger.warning("Failed to generate final visualizations")
             else:
-                logger.warning(f"CSV file not found: {csv_path}")
+                logger.warning(f"Training metrics CSV not found at {csv_path}")
         except Exception as e:
-            logger.warning(f"Could not generate additional plots: {e}")
+            logger.warning(f"Failed to generate final plots: {e}")
     
     # Pipeline Mode: Final model validation
     if args.pipeline:

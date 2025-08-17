@@ -21,10 +21,13 @@ def auto_generate_plots(csv_file: str = None, output_dir: str = None,
     """
     Automatically generate training plots from CSV data
     
+    This function is optimized to be called only AFTER training completion
+    to avoid interrupting the training process with frequent plotting.
+    
     Args:
         csv_file: Path to CSV file (if None, searches for training_metrics.csv)
         output_dir: Output directory for plots (if None, uses 'plots')
-        comprehensive_only: If True, only generate comprehensive plot
+        comprehensive_only: If True, only generate comprehensive plot for faster execution
         
     Returns:
         True if successful, False otherwise
@@ -65,16 +68,28 @@ def auto_generate_plots(csv_file: str = None, output_dir: str = None,
         logger.info(f"Generating plots from: {csv_file}")
         logger.info(f"Output directory: {output_dir}")
         
-        # Create plotter and generate plots
+        # Create plotter and generate plots with performance timing
+        import time
+        start_time = time.time()
+        
         plotter = TrainingResultsPlotter(csv_file, output_dir)
         
         if comprehensive_only:
+            logger.info("Generating comprehensive plot only (fast mode)...")
             plot_file = plotter.create_comprehensive_plot()
             logger.info(f"Generated comprehensive plot: {plot_file}")
         else:
+            logger.info("Generating all training visualization plots...")
             generated_files = plotter.generate_all_plots()
-            logger.info(f"Generated {len(generated_files)} plots successfully")
+            if generated_files:
+                logger.info(f"Successfully generated {len(generated_files)} visualization plots:")
+                for plot_file in generated_files:
+                    logger.info(f"  • {plot_file}")
+            else:
+                logger.warning("No plots were generated")
         
+        elapsed_time = time.time() - start_time
+        logger.info(f"Plot generation completed in {elapsed_time:.2f} seconds")
         return True
         
     except ImportError as e:
