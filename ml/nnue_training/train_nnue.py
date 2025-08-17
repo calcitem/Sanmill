@@ -1211,6 +1211,18 @@ def main():
                            args.force_regenerate)
         
         if should_regenerate:
+            # Backup existing training data if it exists and force regeneration is requested
+            if args.force_regenerate and os.path.exists(args.data) and os.path.getsize(args.data) > 0:
+                from datetime import datetime
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                backup_file = f"{args.data}.backup_{timestamp}"
+                try:
+                    import shutil
+                    shutil.copy2(args.data, backup_file)
+                    logger.info(f"Backed up existing training data: {backup_file}")
+                except Exception as e:
+                    logger.warning(f"Failed to backup training data: {e}")
+            
             logger.info(f"Generating training data: {args.data}")
             if args.engine is None:
                 # Use direct Perfect DB generation (new approach)
