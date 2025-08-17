@@ -848,10 +848,12 @@ void SearchEngine::runAnalyze()
             val = perfectEval.value;
 
             // Debug: Log perfect database evaluation in debug mode
+#if 0            
             debugPrintf("Perfect DB evaluation for move %s: value=%d, "
                         "steps=%d\n",
                         moveStr.c_str(), static_cast<int>(val),
                         perfectEval.stepCount);
+#endif                        
 
             // Adjust for current player's perspective
             if (newPos.side_to_move() != rootSide) {

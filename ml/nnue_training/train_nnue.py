@@ -38,6 +38,10 @@ except ImportError:
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Reduce noise from other loggers to minimize console spam
+logging.getLogger('perfect.perfect_db_reader').setLevel(logging.ERROR)
+logging.getLogger('generate_training_data').setLevel(logging.INFO)
+
 
 class MillNNUE(nn.Module):
     """

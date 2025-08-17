@@ -37,6 +37,9 @@ from perfect.perfect_db_reader import PerfectDB
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Reduce noise from other loggers
+logging.getLogger('perfect.perfect_db_reader').setLevel(logging.ERROR)  # Suppress PerfectDB debug logs
+
 def print_statistics_tables(stats: dict, valid_positions: int, discarded_positions: int, 
                            total_time: float) -> None:
     """
@@ -519,6 +522,8 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
     # Process each sector group
     results = {}
     valid_count = 0
+    error_count = 0
+    last_error_log = 0
     
     for sector_hash, sector_positions in sector_groups.items():
         logger.debug(f"Processing sector {sector_hash} with {len(sector_positions)} positions")
@@ -596,7 +601,13 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
                 valid_count += 1
                 
             except Exception as e:
-                logger.warning(f"Failed to evaluate position {pos_idx} in sector {sector_hash}: {e}")
+                # Throttle error logging to avoid spam - only log every 500 errors or first 3 errors
+                error_count += 1
+                if error_count <= 3 or error_count - last_error_log >= 500:
+                    logger.warning(f"Failed to evaluate position {pos_idx} in sector {sector_hash}: {e}")
+                    if error_count > 3:
+                        logger.warning(f"(Suppressing similar errors, total so far: {error_count})")
+                    last_error_log = error_count
                 continue
     
     # Return results in original order
@@ -606,6 +617,8 @@ def evaluate_positions_batch(pdb: 'PerfectDB', positions_data: List[Tuple], logg
             training_data.append(results[i])
     
     logger.info(f"Batch processing completed: {valid_count}/{len(positions_data)} positions valid")
+    if error_count > 0:
+        logger.info(f"Total evaluation errors: {error_count}")
     logger.debug(f"Final training_data length: {len(training_data)}")
     if training_data:
         logger.debug(f"Sample training line: {training_data[0][:100]}...")

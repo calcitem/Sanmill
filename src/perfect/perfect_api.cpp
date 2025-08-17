@@ -215,7 +215,7 @@ MalomSolutionAccess::get_detailed_evaluation(const GameState &gameState)
     std::string evalStr = evalResult.to_string();
 
     // Debug: Log the evaluation string format
-    debugPrintf("Perfect DB evaluation string: '%s'\n", evalStr.c_str());
+    //debugPrintf("Perfect DB evaluation string: '%s'\n", evalStr.c_str());
 
     Value gameValue = VALUE_NONE;
     int stepCount = -1;
@@ -273,8 +273,8 @@ MalomSolutionAccess::get_detailed_evaluation(const GameState &gameState)
                     if (negative && stepCount != -1) {
                         stepCount = -stepCount;
                     }
-                    debugPrintf("Parsed step count: %d from string: '%s'\n",
-                                stepCount, stepSub.c_str());
+                    //debugPrintf("Parsed step count: %d from string: '%s'\n",
+                    //            stepCount, stepSub.c_str());
                 }
             }
         }

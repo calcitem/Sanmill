@@ -81,6 +81,9 @@ class PerfectDB:
         # Simple in-memory caches keyed by (wBits,bBits,wPlace,bPlace,stm,onlyTake)
         self._eval_cache: dict[tuple, tuple[int, int]] = {}
         self._best_cache: dict[tuple, str] = {}
+        # Error logging throttle
+        self._error_count = 0
+        self._last_error_log = 0
 
         # int pd_init_std(const char* db_path)
         self._dll.pd_init_std.argtypes = [ctypes.c_char_p]
@@ -203,10 +206,14 @@ class PerfectDB:
             return res
             
         except Exception as e:
-            # Log the problematic position and re-raise
-            log.warning(f"PerfectDB.evaluate failed for position: period={board.period}, "
-                       f"W={board.count(1)}, B={board.count(-1)}, WF={w_place}, BF={b_place}, "
-                       f"side_to_move={side_to_move}, only_take={only_take}, error: {e}")
+            # Count errors but don't log at this level - let the caller handle logging
+            # This avoids duplicate error messages
+            self._error_count += 1
+            # Only log the first few errors for debugging, then suppress
+            if self._error_count <= 3:
+                log.debug(f"PerfectDB.evaluate failed for position: period={board.period}, "
+                         f"W={board.count(1)}, B={board.count(-1)}, WF={w_place}, BF={b_place}, "
+                         f"side_to_move={side_to_move}, only_take={only_take}, error: {e}")
             raise
 
     def good_moves_tokens(self, board, side_to_move: int, only_take: bool, buf_len: int = 4096) -> List[str]:
