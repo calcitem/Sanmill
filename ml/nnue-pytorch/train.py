@@ -499,11 +499,13 @@ def main():
 
     # Try to use TensorBoard logger, fallback to None if not available
     try:
+        # Test tensorboard import first
+        from torch.utils.tensorboard import SummaryWriter
         tb_logger = pl_loggers.TensorBoardLogger(logdir)
         print("✅ TensorBoard logger initialized")
-    except (ImportError, ModuleNotFoundError):
+    except (ImportError, ModuleNotFoundError) as e:
         tb_logger = None
-        print("⚠️  TensorBoard not available, training without logging")
+        print(f"⚠️  TensorBoard not available, training without logging: {e}")
         
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         save_last=args.save_last_network,
@@ -517,7 +519,7 @@ def main():
         devices=[int(x) for x in args.gpus.rstrip(",").split(",") if x]
         if args.gpus
         else "auto",
-        logger=tb_logger,
+        logger=tb_logger if tb_logger else False,  # Disable logging if TensorBoard not available
         callbacks=[
             checkpoint_callback,
             TQDMProgressBar(refresh_rate=300),

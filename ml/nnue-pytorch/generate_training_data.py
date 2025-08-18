@@ -26,8 +26,15 @@ import numpy as np
 from tqdm import tqdm
 
 # Add paths for importing from ml/perfect and ml/game
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'perfect'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'game'))
+current_dir = os.path.dirname(os.path.abspath(__file__))
+ml_dir = os.path.join(current_dir, '..')
+perfect_dir = os.path.join(current_dir, '..', 'perfect')
+game_dir = os.path.join(current_dir, '..', 'game')
+
+# Add ml directory first so that "game.standard_rules" import works
+sys.path.insert(0, ml_dir)
+sys.path.insert(0, perfect_dir)
+sys.path.insert(0, game_dir)
 
 # Set up logging first
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -35,12 +42,26 @@ logger = logging.getLogger(__name__)
 
 try:
     from perfect_db_reader import PerfectDB
-    from Game import Game
-    from GameLogic import Board
 except ImportError as e:
-    logger.error(f"Failed to import required modules: {e}")
-    logger.error("Please ensure you are running from the correct directory and ml/perfect, ml/game are available")
+    logger.error(f"Failed to import PerfectDB: {e}")
+    logger.error(f"Perfect directory path: {perfect_dir}")
+    logger.error("Please ensure perfect_db_reader.py is available in ml/perfect/")
     sys.exit(1)
+
+try:
+    from game.Game import Game
+    from game.GameLogic import Board
+except ImportError as e:
+    # Try alternative import path
+    try:
+        sys.path.insert(0, os.path.join(current_dir, '..'))
+        from game.Game import Game
+        from game.GameLogic import Board
+    except ImportError as e2:
+        logger.error(f"Failed to import Game modules: {e}, {e2}")
+        logger.error(f"Game directory path: {game_dir}")
+        logger.error("Please ensure Game.py and GameLogic.py are available in ml/game/")
+        sys.exit(1)
 
 # Coordinate system mappings
 def create_coordinate_mappings():
