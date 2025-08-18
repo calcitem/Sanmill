@@ -6,18 +6,20 @@ from feature_transformer import DoubleFeatureTransformerSlice
 from dataclasses import dataclass
 
 # 3 layer fully connected network
-L1 = 3072
-L2 = 15
-L3 = 32
+# Adjusted for Nine Men's Morris (smaller board, fewer pieces)
+L1 = 1536  # Reduced from 3072 for smaller feature space
+L2 = 15    # Keep same
+L3 = 32    # Keep same
 
 
 # parameters needed for the definition of the loss
+# Adjusted for Nine Men's Morris evaluation scale
 @dataclass
 class LossParams:
-    in_offset: float = 270
-    out_offset: float = 270
-    in_scaling: float = 340
-    out_scaling: float = 380
+    in_offset: float = 100    # Reduced for Nine Men's Morris scale
+    out_offset: float = 100   # Reduced for Nine Men's Morris scale
+    in_scaling: float = 150   # Reduced for Nine Men's Morris scale
+    out_scaling: float = 150  # Reduced for Nine Men's Morris scale
     start_lambda: float = 1.0
     end_lambda: float = 1.0
     pow_exp: float = 2.5
@@ -187,10 +189,11 @@ class NNUE(pl.LightningModule):
         self.lr = lr
         self.param_index = param_index
 
-        self.nnue2score = 600.0
-        self.weight_scale_hidden = 64.0
-        self.weight_scale_out = 16.0
-        self.quantized_one = 127.0
+        # Adjusted scaling factors for Nine Men's Morris
+        self.nnue2score = 200.0      # Reduced from 600.0 for Nine Men's Morris scale
+        self.weight_scale_hidden = 64.0  # Keep same
+        self.weight_scale_out = 16.0     # Keep same
+        self.quantized_one = 127.0       # Keep same
 
         max_hidden_weight = self.quantized_one / self.weight_scale_hidden
         max_out_weight = (self.quantized_one * self.quantized_one) / (

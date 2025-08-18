@@ -52,38 +52,23 @@ def make_data_loaders(
     epoch_size,
     val_size,
 ):
-    # Epoch and validation sizes are arbitrary
-    features_name = feature_set.name
-    train_infinite = nnue_dataset.SparseBatchDataset(
-        features_name,
+    # Use Nine Men's Morris data loader for training data
+    from data_loader import create_mill_data_loader
+    
+    print("Using Nine Men's Morris data loader")
+    train = create_mill_data_loader(
         train_filenames,
-        batch_size,
-        num_workers=num_workers,
-        config=config,
-        device=main_device,
+        feature_set,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=0  # Set to 0 for Nine Men's Morris
     )
-    val_infinite = nnue_dataset.SparseBatchDataset(
-        features_name,
+    val = create_mill_data_loader(
         val_filenames,
-        batch_size,
-        config=config,
-        device=main_device,
-    )
-    # num_workers has to be 0 for sparse, and 1 for dense
-    # it currently cannot work in parallel mode but it shouldn't need to
-    train = DataLoader(
-        nnue_dataset.FixedNumBatchesDataset(
-            train_infinite, (epoch_size + batch_size - 1) // batch_size
-        ),
-        batch_size=None,
-        batch_sampler=None,
-    )
-    val = DataLoader(
-        nnue_dataset.FixedNumBatchesDataset(
-            val_infinite, (val_size + batch_size - 1) // batch_size
-        ),
-        batch_size=None,
-        batch_sampler=None,
+        feature_set,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=0
     )
     return train, val
 
@@ -114,12 +99,12 @@ def get_model_with_fixed_offset(model, batch_size, main_device):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Trains the network.")
+    parser = argparse.ArgumentParser(description="Trains Nine Men's Morris NNUE networks.")
     parser.add_argument(
         "datasets",
         action="append",
         nargs="+",
-        help="Training datasets (.binpack). Interleaved at chunk level if multiple specified. Same data is used for training and validation if not validation data is specified.",
+        help="Training datasets (Nine Men's Morris training data files). Interleaved at chunk level if multiple specified. Same data is used for training and validation if not validation data is specified.",
     )
     parser.add_argument(
         "--default_root_dir",
@@ -155,7 +140,7 @@ def main():
         action="append",
         nargs="+",
         dest="validation_datasets",
-        help="Validation data to use for validation instead of the training data.",
+        help="Validation data to use for validation instead of the training data (Nine Men's Morris training data files).",
     )
     parser.add_argument(
         "--lambda",
@@ -194,31 +179,31 @@ def main():
     )
     parser.add_argument(
         "--in-offset",
-        default=270,
+        default=100,
         type=float,
         dest="in_offset",
-        help="offset for conversion to win on input (default=270.0)",
+        help="offset for conversion to win on input (default=100.0 for Nine Men's Morris)",
     )
     parser.add_argument(
         "--out-offset",
-        default=270,
+        default=100,
         type=float,
         dest="out_offset",
-        help="offset for conversion to win on input (default=270.0)",
+        help="offset for conversion to win on input (default=100.0 for Nine Men's Morris)",
     )
     parser.add_argument(
         "--in-scaling",
-        default=340,
+        default=150,
         type=float,
         dest="in_scaling",
-        help="scaling for conversion to win on input (default=340.0)",
+        help="scaling for conversion to win on input (default=150.0 for Nine Men's Morris)",
     )
     parser.add_argument(
         "--out-scaling",
-        default=380,
+        default=150,
         type=float,
         dest="out_scaling",
-        help="scaling for conversion to win on input (default=380.0)",
+        help="scaling for conversion to win on input (default=150.0 for Nine Men's Morris)",
     )
     parser.add_argument(
         "--gamma",
@@ -232,17 +217,17 @@ def main():
     )
     parser.add_argument(
         "--num-workers",
-        default=1,
+        default=0,
         type=int,
         dest="num_workers",
-        help="Number of worker threads to use for data loading. Currently only works well for binpack.",
+        help="Number of worker threads to use for data loading. Set to 0 for Nine Men's Morris (multi-threading not currently supported).",
     )
     parser.add_argument(
         "--batch-size",
         default=-1,
         type=int,
         dest="batch_size",
-        help="Number of positions per batch / per iteration. Default on GPU = 8192 on CPU = 128.",
+        help="Number of positions per batch / per iteration. Default on GPU = 8192 on CPU = 512 (adjusted for Nine Men's Morris).",
     )
     parser.add_argument(
         "--threads",
@@ -375,7 +360,8 @@ def main():
 
     batch_size = args.batch_size
     if batch_size <= 0:
-        batch_size = 16384
+        # Adjust default batch size for Nine Men's Morris (smaller than chess)
+        batch_size = 8192 if torch.cuda.is_available() else 512
     print("Using batch size {}".format(batch_size))
 
     feature_set = features.get_feature_set_from_name(args.features)
@@ -475,7 +461,7 @@ def main():
     nnue = torch.compile(nnue, backend=args.compile_backend)
     nnue.to(device=main_device)
 
-    print("Using c++ data loader")
+    # Automatically choose data loader based on file format
     train, val = make_data_loaders(
         train_datasets,
         val_datasets,

@@ -1,35 +1,21 @@
+#!/bin/bash
+
+# Nine Men's Morris NNUE Training Example
+# This script demonstrates how to train a Nine Men's Morris NNUE network
+
 python easy_train.py \
-    --training-dataset=/home/vondele/chess/vondele/gensfen/gensfen_2021_09_02/nodes5000pv2_UHO.binpack \
-    --validation-dataset=/home/vondele/chess/vondele/gensfen/gensfen_2021_09_02/nodes5000pv2_UHO.binpack \
-    --num-workers=4 \
+    --training-dataset=mill_training_data.txt \
+    --validation-dataset=mill_validation_data.txt \
+    --num-workers=0 \
     --threads=2 \
-    --gpus="0," \
-    --runs-per-gpu=2 \
-    --batch-size=16384 \
-    --max_epoch=10 \
-    --do-network-training=True \
-    --do-network-testing=True \
-    --tui=True \
-    --network-save-period=1 \
-    --random-fen-skipping=3 \
-    --start-lambda=1.0 \
-    --end-lambda=0.75 \
-    --fail-on-experiment-exists=False \
-    --build-engine-arch=x86-64-modern \
-    --build-threads=2 \
-    --epoch-size=1638400 \
-    --validation-size=16384 \
-    --network-testing-threads=24 \
-    --network-testing-explore-factor=1.5 \
-    --network-testing-book="https://github.com/official-stockfish/books/raw/master/UHO_Lichess_4852_v1.epd.zip" \
-    --network-testing-nodes-per-move=20000 \
-    --network-testing-hash-mb=8 \
-    --network-testing-games-per-round=200 \
-    --engine-base-branch=official-stockfish/Stockfish/master \
-    --engine-test-branch=official-stockfish/Stockfish/master \
-    --nnue-pytorch-branch=vondele/nnue-pytorch/easy_train \
-    --workspace-path=./easy_train_data \
-    --experiment-name=test \
-    --additional-training-arg="--auto_lr_find=False" \
-    --additional-training-arg="--detect_anomaly=False" \
-    --features="HalfKAv2_hm^"
+    --gpus="0" \
+    --batch-size=4096 \
+    --max-epochs=200 \
+    --lr=8.75e-4 \
+    --gamma=0.992 \
+    --lambda=1.0 \
+    --workspace-path=./mill_train_data \
+    --experiment-name=mill_test \
+    --features="NineMill" \
+    --factorized=false \
+    --max-positions=1000000

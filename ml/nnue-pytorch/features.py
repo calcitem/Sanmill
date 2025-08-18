@@ -9,13 +9,17 @@ Each module that defines feature blocks must be imported here and
 added to the _feature_modules list. Each such module must define a
 function `get_feature_block_clss` at module scope that returns the list
 of feature block classes in that module.
-"""
-import halfkp
-import halfka
-import halfka_v2
-import halfka_v2_hm
 
-_feature_modules = [halfkp, halfka, halfka_v2, halfka_v2_hm]
+Note: Chess-specific modules (halfkp, halfka, etc.) have been replaced
+with Nine Men's Morris specific features.
+"""
+import features_mill
+
+# Only include Nine Men's Morris features
+_feature_modules = [features_mill]
+
+# Default feature set for Nine Men's Morris
+_default_feature_set_name = "NineMill"
 
 _feature_blocks_by_name = dict()
 
@@ -55,12 +59,12 @@ def get_available_feature_blocks_names():
 
 
 def add_argparse_args(parser):
-    _default_feature_set_name = "HalfKAv2_hm^"
+    _default_feature_set_name = "NineMill"
     parser.add_argument(
         "--features",
         dest="features",
         default=_default_feature_set_name,
-        help='The feature set to use. Can be a union of feature blocks (for example P+HalfKP). "^" denotes a factorized block. Currently available feature blocks are: '
+        help='The feature set to use for Nine Men\'s Morris. Can be a union of feature blocks. "^" denotes a factorized block. Currently available feature blocks are: '
         + ", ".join(get_available_feature_blocks_names()),
     )
     parser.add_argument("--l1", type=int, default=M.L1, action=SetNetworkSize)

@@ -1969,7 +1969,7 @@ def parse_cli_args():
         metavar="PATH",
         dest="training_datasets",
         required=True,
-        help="Path to a training dataset. Supports .binpack files.",
+        help="Path to a training dataset. Supports Nine Men's Morris training data files.",
     )
     parser.add_argument(
         "--validation-dataset",
@@ -1978,7 +1978,7 @@ def parse_cli_args():
         nargs="+",
         metavar="PATH",
         dest="validation_datasets",
-        help="Path to a validation dataset. Supports .binpack files.",
+        help="Path to a validation dataset. Supports Nine Men's Morris training data files.",
     )
     parser.add_argument(
         "--lambda",
@@ -2053,27 +2053,27 @@ def parse_cli_args():
     )
     parser.add_argument(
         "--smart-fen-skipping",
-        default=True,
+        default=False,
         type=str2bool,
         metavar="BOOL",
         dest="smart_fen_skipping",
-        help="Whether to perform smart fen skipping. This attempts to heuristically skip non-quiet positions during training.",
+        help="Whether to perform smart position skipping. This attempts to heuristically skip certain positions during training. Default disabled for Nine Men's Morris.",
     )
     parser.add_argument(
         "--wld-fen-skipping",
-        default=True,
+        default=False,
         type=str2bool,
         metavar="BOOL",
         dest="wld_fen_skipping",
-        help="Whether to perform position skipping during training that increases correlation between evaluations and results.",
+        help="Whether to perform position skipping during training that increases correlation between evaluations and results. Default disabled for Nine Men's Morris.",
     )
     parser.add_argument(
         "--random-fen-skipping",
-        default=3,
+        default=1,
         type=int,
         metavar="INTEGER",
         dest="random_fen_skipping",
-        help="Skip on average random_fen_skipping positions during training before using one. Increases diversity for data that is not fully shuffled.",
+        help="Skip on average random_fen_skipping positions during training before using one. Reduces to 1 for Nine Men's Morris to preserve limited training data.",
     )
     parser.add_argument(
         "--early-fen-skipping",
@@ -2081,7 +2081,7 @@ def parse_cli_args():
         type=int,
         metavar="INTEGER",
         dest="early_fen_skipping",
-        help="Skip all fens from training game plies <= the given number.",
+        help="Skip all positions from training game plies <= the given number. -1 disables this feature.",
     )
     parser.add_argument(
         "--start-from-model",
@@ -2125,10 +2125,10 @@ def parse_cli_args():
     )
     parser.add_argument(
         "--features",
-        default=None,
+        default="NineMill",
         type=str,
         metavar="FEATURESET",
-        help="The feature set to use. If not specified then will be inferred from the cloned nnue-pytorch repo.",
+        help="The feature set to use. Default is NineMill for Nine Men's Morris.",
     )
     parser.add_argument(
         "--max_epoch",
@@ -2739,9 +2739,14 @@ def main():
     )
 
     if args.features is None:
-        args.features = get_default_feature_set_from_nnue_pytorch(
-            nnue_pytorch_directory
-        )
+        try:
+            args.features = get_default_feature_set_from_nnue_pytorch(
+                nnue_pytorch_directory
+            )
+        except:
+            # Default to Nine Men's Morris features if unable to infer
+            args.features = "NineMill"
+            LOGGER.info("Using default Nine Men's Morris feature set: NineMill")
 
     LOGGER.info("Initialization completed.")
 
