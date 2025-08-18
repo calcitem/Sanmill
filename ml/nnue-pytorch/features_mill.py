@@ -162,13 +162,62 @@ class FactorizedNineMillFeatures(FeatureBlock):
 
     def get_active_features(self, board_state):
         """
-        This method is not used during training with C++ data loader.
-        The factorization is handled automatically during training.
+        Extract active features from a Nine Men's Morris board state.
+        This implementation supports both Python and C++ data loaders.
+        
+        Args:
+            board_state: Dictionary containing:
+                - 'white_pieces': list of feature positions (0-23) with white pieces
+                - 'black_pieces': list of feature positions (0-23) with black pieces  
+                - 'side_to_move': 'white' or 'black'
+        
+        Returns:
+            Tuple of (white_perspective_features, black_perspective_features)
         """
-        raise Exception(
-            "Factorized features require C++ data loader for training. "
-            "Use NineMillFeatures for Python-based feature extraction."
-        )
+        # Use the same logic as NineMillFeatures for compatibility with Python data loader
+        def piece_features(perspective_color):
+            indices = torch.zeros(NUM_PLANES * NUM_SQ)
+            
+            # For each piece on the board
+            for pos in board_state.get('white_pieces', []):
+                # Ensure position is in valid range
+                if 0 <= pos < NUM_SQ:
+                    feature_idx = self._get_feature_index(pos, 0, perspective_color)  # 0 for white
+                    indices[feature_idx] = 1.0
+                
+            for pos in board_state.get('black_pieces', []):
+                if 0 <= pos < NUM_SQ:
+                    feature_idx = self._get_feature_index(pos, 1, perspective_color)  # 1 for black
+                    indices[feature_idx] = 1.0
+                    
+            return indices
+        
+        # Return features from both perspectives
+        white_features = piece_features('white')
+        black_features = piece_features('black')
+        
+        return white_features, black_features
+
+    def _get_feature_index(self, position, piece_type, perspective_color):
+        """
+        Calculate the feature index for a piece at a given position from a perspective.
+        This uses the same logic as NineMillFeatures for consistency.
+        
+        Args:
+            position: Board position (0-23)
+            piece_type: 0 for white, 1 for black
+            perspective_color: 'white' or 'black' - which player's perspective
+            
+        Returns:
+            Feature index in the range [0, NUM_PLANES * NUM_SQ)
+        """
+        # Same logic as NineMillFeatures._get_feature_index
+        if perspective_color == 'black':
+            # From black's perspective, flip piece colors
+            piece_type = 1 - piece_type
+            
+        # Feature index calculation: piece_type * NUM_SQ + position
+        return piece_type * NUM_SQ + position
 
     def get_feature_factors(self, idx):
         """
