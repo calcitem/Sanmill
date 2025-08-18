@@ -1,0 +1,29 @@
+{
+  "_description": "Fast training configuration - for quick experiments and testing",
+  "_use_case": "Rapid prototyping, hyperparameter testing, CI/CD pipelines",
+  "_mode": "Training-only mode (requires existing training data)",
+  
+  "pipeline": false,
+  
+  "data": "training_data.txt",
+  "output": "nnue_model_fast.bin",
+  
+  "epochs": 50,
+  "batch-size": 4096,
+  "lr": 0.003,
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": true,
+  
+  "feature-size": 115,
+  "hidden-size": 256,
+  "val-split": 0.15,
+  "max-samples": 100000,
+  
+  "device": "auto",
+  
+  "plot": true,
+  "plot-dir": "plots_fast",
+  "plot-interval": 5,
+  "save-csv": false,
+  "show-plots": false
+}

@@ -1,0 +1,42 @@
+{
+  "_description": "多轮训练基础配置模板",
+  "_mode": "Multi-round training base configuration",
+  "_usage": "python train_multiround.py --config configs/multiround_base.json",
+  
+  "pipeline": true,
+  
+  "engine": null,
+  "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
+  
+  "_comment_rounds": "以下参数会被每轮训练动态覆盖",
+  "positions": 50000,
+  "epochs": 150,
+  "lr": 0.002,
+  "batch-size": 8192,
+  
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": false,
+  "_comment_lr_auto_scale": "多轮训练中使用手动学习率管理",
+  
+  "feature-size": 115,
+  "hidden-size": 256,
+  "val-split": 0.1,
+  
+  "device": "auto",
+  "threads": 0,
+  
+  "plot": true,
+  "plot-interval": 10,
+  "save-csv": true,
+  "show-plots": false,
+  
+  "_multiround_strategy": {
+    "_description": "多轮训练策略说明",
+    "round_1": "探索阶段：30k位置，80轮，lr=0.003",
+    "round_2": "稳定学习：50k位置，120轮，lr=0.002", 
+    "round_3": "深化学习：80k位置，150轮，lr=0.0015",
+    "round_4": "精细调整：100k位置，180轮，lr=0.001",
+    "round_5": "优化阶段：120k位置，200轮，lr=0.0008",
+    "round_6": "收敛阶段：150k位置，250轮，lr=0.0005"
+  }
+}

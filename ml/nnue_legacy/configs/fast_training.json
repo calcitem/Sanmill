@@ -1,0 +1,37 @@
+{
+  "_comment": "Fast training configuration with optimized plotting to prevent blocking",
+  
+  "training": {
+    "epochs": 300,
+    "batch_size": 2048,
+    "learning_rate": 0.01,
+    "hidden_size": 256,
+    "l2_regularization": 1e-6,
+    "dropout": 0.1,
+    "early_stopping_patience": 50
+  },
+  
+  "data_generation": {
+    "num_positions": 100000,
+    "threads": 2,
+    "time_per_position": 0.1,
+    "perfect_db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
+  },
+  
+  "visualization": {
+    "plot": true,
+    "plot_interval": 25,
+    "save_csv": true,
+    "show_plots": false,
+    "plot_dir": "nnue_output/plots"
+  },
+  
+  "checkpoint": {
+    "save_checkpoint": true,
+    "checkpoint_interval": 25,
+    "backup_models": true
+  },
+  
+  "output": "models/nnue_model.bin",
+  "device": "auto"
+}

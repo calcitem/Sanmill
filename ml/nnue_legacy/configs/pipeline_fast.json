@@ -1,0 +1,30 @@
+{
+  "_description": "Fast pipeline configuration - quick data generation + training",
+  "_hardware": "Any system with GPU",
+  "_mode": "Pipeline mode (complete end-to-end training, fast version)",
+  
+  "pipeline": true,
+  
+  "engine": "../../sanmill",
+  "perfect-db": "E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted",
+  "output-dir": "./nnue_output_fast",
+  "positions": 50000,
+  "threads": 0,
+  
+  "epochs": 100,
+  "batch-size": 4096,
+  "lr": 0.003,
+  "lr-scheduler": "adaptive",
+  "lr-auto-scale": true,
+  
+  "feature-size": 115,
+  "hidden-size": 256,
+  "val-split": 0.15,
+  
+  "device": "auto",
+  
+  "plot": true,
+  "plot-interval": 10,
+  "save-csv": false,
+  "show-plots": false
+}
