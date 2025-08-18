@@ -1,0 +1,20 @@
+{
+  "model_path": "logs/lightning_logs/version_7/checkpoints/last.ckpt",
+  "feature_set": "NineMill",
+  "feature_size": 1152,
+  "hidden_size": 256,
+  "search_depth": 3,
+  "human_first": true,
+  "gui": true,
+  "games": 1,
+  "log_level": "INFO",
+  "show_evaluation": true,
+  "show_thinking_time": true,
+  "time_per_move": 3.0,
+  "use_time_management": false,
+  "device": "auto",
+  "batch_size": 1,
+  "temperature": 1.0,
+  "use_pytorch_lightning": true,
+  "perfect_db_format": true
+}
