@@ -568,6 +568,22 @@ class PerfectDBTrainingDataGenerator:
         else:  # Draw
             return 0.0
     
+    def _evaluation_to_game_result(self, evaluation: float) -> float:
+        """Convert evaluation score to game result for NNUE training.
+        
+        Args:
+            evaluation: Position evaluation score
+            
+        Returns:
+            Game result: 1.0 for win, -1.0 for loss, 0.0 for draw
+        """
+        if evaluation > 0:
+            return 1.0
+        elif evaluation < 0:
+            return -1.0
+        else:
+            return 0.0
+    
     def board_state_to_fen_format(self, board_state: Dict) -> str:
         """
         Convert board state to FEN format compatible with nnue-pytorch.
@@ -675,7 +691,18 @@ class PerfectDBTrainingDataGenerator:
                             
                             # Add base position
                             fen = self.board_state_to_fen_format(board_state)
-                            training_data.append(f"{fen} {evaluation:.6f} {best_move} 0.0")
+                            # Calculate game result based on evaluation
+                            game_result = self._evaluation_to_game_result(evaluation)
+                            training_data.append(f"{fen} {evaluation:.6f} {best_move} {game_result}")
+                            
+                            # Update statistics
+                            self.stats['positions_evaluated'] += 1
+                            if game_result > 0:
+                                self.stats['wdl_distribution']['wins'] += 1
+                            elif game_result < 0:
+                                self.stats['wdl_distribution']['losses'] += 1
+                            else:
+                                self.stats['wdl_distribution']['draws'] += 1
                             
                             # Add symmetries if requested
                             if use_symmetries:
@@ -688,7 +715,9 @@ class PerfectDBTrainingDataGenerator:
                                         
                                         sym_eval, sym_best_move = self.evaluate_position_with_perfect_db(sym_board, sym_player)
                                         sym_fen = self.board_state_to_fen_format(sym_state)
-                                        training_data.append(f"{sym_fen} {sym_eval:.6f} {sym_best_move} 0.0")
+                                        # Calculate game result based on evaluation
+                                        sym_game_result = self._evaluation_to_game_result(sym_eval)
+                                        training_data.append(f"{sym_fen} {sym_eval:.6f} {sym_best_move} {sym_game_result}")
                                         
                                         self.stats['symmetries_generated'] += 1
                                         
