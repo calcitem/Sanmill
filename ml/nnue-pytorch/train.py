@@ -1,6 +1,6 @@
 import argparse
 import model as M
-import nnue_dataset
+# import nnue_dataset  # Commented out - not needed for Nine Men's Morris
 import pytorch_lightning as pl
 import features
 import os
@@ -47,30 +47,63 @@ def make_data_loaders(
     feature_set,
     num_workers,
     batch_size,
-    config: nnue_dataset.DataloaderSkipConfig,
-    main_device,
-    epoch_size,
-    val_size,
+    config=None,  # Simplified - skip config not used for Nine Men's Morris
+    main_device="cpu",
+    epoch_size=None,
+    val_size=None,
 ):
     # Use Nine Men's Morris data loader for training data
     from data_loader import create_mill_data_loader
     
     print("Using Nine Men's Morris data loader")
-    train = create_mill_data_loader(
-        train_filenames,
-        feature_set,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=0  # Set to 0 for Nine Men's Morris
-    )
-    val = create_mill_data_loader(
-        val_filenames,
-        feature_set,
-        batch_size=batch_size,
-        shuffle=False,
-        num_workers=0
-    )
-    return train, val
+    try:
+        # Create data loaders with drop_last=True for consistent batch sizes
+        train_dataset = create_mill_data_loader(
+            train_filenames,
+            feature_set,
+            batch_size=batch_size,
+            shuffle=True,
+            num_workers=0  # Set to 0 for Nine Men's Morris
+        )
+        
+        val_dataset = create_mill_data_loader(
+            val_filenames,
+            feature_set,
+            batch_size=batch_size,
+            shuffle=False,
+            num_workers=0
+        )
+        
+        # Recreate with drop_last=True to ensure consistent batch sizes
+        from torch.utils.data import DataLoader
+        from data_loader import collate_mill_batch
+        
+        train = DataLoader(
+            train_dataset.dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            collate_fn=collate_mill_batch,
+            num_workers=0,
+            drop_last=True,  # Important for consistent batch sizes
+            pin_memory=True
+        )
+        
+        val = DataLoader(
+            val_dataset.dataset,
+            batch_size=batch_size,
+            shuffle=False,
+            collate_fn=collate_mill_batch,
+            num_workers=0,
+            drop_last=True,
+            pin_memory=True
+        )
+        
+        return train, val
+    except Exception as e:
+        print(f"❌ Error creating Nine Men's Morris data loaders: {e}")
+        print("   Make sure your training data files are in the correct format:")
+        print("   Line format: 'FEN evaluation best_move result'")
+        raise
 
 
 def str2bool(v):
@@ -89,13 +122,44 @@ def flatten_once(lst):
 
 
 def get_model_with_fixed_offset(model, batch_size, main_device):
+    """Initialize model with fixed batch size offset."""
     model.layer_stacks.idx_offset = torch.arange(
         0,
         batch_size * model.layer_stacks.count,
         model.layer_stacks.count,
         device=main_device,
     )
+    print(f"✅ Initialized model idx_offset for batch size {batch_size}")
     return model
+
+class FixedBatchNNUE(M.NNUE):
+    """NNUE model that handles fixed batch sizes for Nine Men's Morris."""
+    
+    def __init__(self, feature_set, batch_size=8, **kwargs):
+        super().__init__(feature_set, **kwargs)
+        self.fixed_batch_size = batch_size
+        
+    def setup(self, stage=None):
+        """Initialize idx_offset when model is set up."""
+        if hasattr(self, 'layer_stacks') and self.layer_stacks.idx_offset is None:
+            device = next(self.parameters()).device
+            self.layer_stacks.idx_offset = torch.arange(
+                0,
+                self.fixed_batch_size * self.layer_stacks.count,
+                self.layer_stacks.count,
+                device=device
+            )
+            print(f"✅ Model setup: initialized idx_offset for batch size {self.fixed_batch_size}")
+        
+    def on_train_start(self):
+        """Ensure idx_offset is initialized when training starts."""
+        if hasattr(self, 'layer_stacks') and self.layer_stacks.idx_offset is None:
+            self.setup()
+            
+    def on_validation_start(self):
+        """Ensure idx_offset is initialized when validation starts.""" 
+        if hasattr(self, 'layer_stacks') and self.layer_stacks.idx_offset is None:
+            self.setup()
 
 
 def main():
@@ -381,8 +445,9 @@ def main():
 
     max_epoch = args.max_epochs or 800
     if args.resume_from_model is None:
-        nnue = M.NNUE(
+        nnue = FixedBatchNNUE(
             feature_set=feature_set,
+            batch_size=batch_size,
             loss_params=loss_params,
             max_epoch=max_epoch,
             num_batches_per_epoch=args.epoch_size / batch_size,
@@ -393,6 +458,7 @@ def main():
     else:
         nnue = torch.load(args.resume_from_model, weights_only=False)
         nnue.set_feature_set(feature_set)
+        nnue.fixed_batch_size = batch_size  # Set batch size for loaded model
         nnue.loss_params = loss_params
         nnue.max_epoch = max_epoch
         nnue.num_batches_per_epoch = args.epoch_size / batch_size
@@ -427,7 +493,14 @@ def main():
     logdir = args.default_root_dir if args.default_root_dir else "logs/"
     print("Using log dir {}".format(logdir), flush=True)
 
-    tb_logger = pl_loggers.TensorBoardLogger(logdir)
+    # Try to use TensorBoard logger, fallback to None if not available
+    try:
+        tb_logger = pl_loggers.TensorBoardLogger(logdir)
+        print("✅ TensorBoard logger initialized")
+    except (ImportError, ModuleNotFoundError):
+        tb_logger = None
+        print("⚠️  TensorBoard not available, training without logging")
+        
     checkpoint_callback = pl.callbacks.ModelCheckpoint(
         save_last=args.save_last_network,
         every_n_epochs=args.network_save_period,
@@ -458,27 +531,24 @@ def main():
     )
 
     nnue = get_model_with_fixed_offset(nnue, batch_size, main_device)
-    nnue = torch.compile(nnue, backend=args.compile_backend)
+    
+    # Disable torch.compile for Nine Men's Morris (Triton dependency issues)
+    # nnue = torch.compile(nnue, backend=args.compile_backend)
+    print("⚠️  torch.compile disabled (Triton not available)")
+    
     nnue.to(device=main_device)
 
-    # Automatically choose data loader based on file format
+    # Create Nine Men's Morris data loaders
     train, val = make_data_loaders(
         train_datasets,
         val_datasets,
         feature_set,
         args.num_workers,
         batch_size,
-        nnue_dataset.DataloaderSkipConfig(
-            filtered=not args.no_smart_fen_skipping,
-            random_fen_skipping=args.random_fen_skipping,
-            wld_filtered=not args.no_wld_fen_skipping,
-            early_fen_skipping=args.early_fen_skipping,
-            simple_eval_skipping=args.simple_eval_skipping,
-            param_index=args.param_index,
-        ),
-        main_device,
-        args.epoch_size,
-        args.validation_size,
+        config=None,  # Skip config not used for Nine Men's Morris
+        main_device=main_device,
+        epoch_size=args.epoch_size,
+        val_size=args.validation_size,
     )
 
     if args.resume_from_checkpoint:

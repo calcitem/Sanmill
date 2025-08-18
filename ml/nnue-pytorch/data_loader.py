@@ -136,14 +136,19 @@ class MillTrainingDataset(Dataset):
                     
                     try:
                         # Expected format: "FEN evaluation best_move result"
+                        # where FEN contains spaces, so we parse from the end
                         parts = line.split()
                         if len(parts) < 4:
                             continue
-                            
-                        fen = parts[0]
-                        evaluation = float(parts[1])
-                        best_move = parts[2]
-                        result = float(parts[3])
+                        
+                        # Parse from end: result, best_move, evaluation
+                        result = float(parts[-1])
+                        best_move = parts[-2]
+                        evaluation = float(parts[-3])
+                        
+                        # Remaining parts form the FEN string
+                        fen_parts = parts[:-3]
+                        fen = ' '.join(fen_parts)
                         
                         pos = parse_mill_fen(fen)
                         pos.evaluation = evaluation
@@ -194,12 +199,12 @@ class MillTrainingDataset(Dataset):
         them = torch.tensor([1.0 if pos.side_to_move == 1 else 0.0], dtype=torch.float32)
         
         # PSQT and layer stack indices (simplified for Nine Men's Morris)
-        psqt_indices = torch.tensor([0], dtype=torch.long)  # Single bucket for now
-        layer_stack_indices = torch.tensor([0], dtype=torch.long)  # Single bucket for now
+        psqt_indices = torch.tensor(0, dtype=torch.long)  # Single bucket for now
+        layer_stack_indices = torch.tensor(0, dtype=torch.long)  # Single bucket for now
         
         # Target values
-        evaluation = torch.tensor([pos.evaluation], dtype=torch.float32)
-        result = torch.tensor([pos.game_result], dtype=torch.float32)
+        evaluation = torch.tensor(pos.evaluation, dtype=torch.float32)
+        result = torch.tensor(pos.game_result, dtype=torch.float32)
         
         return {
             'us': us,
@@ -251,18 +256,21 @@ def collate_mill_batch(batch):
             black_indices[i, :b_len] = item['black_indices']
             black_values[i, :b_len] = item['black_values']
     
-    return {
-        'us': us,
-        'them': them,
-        'white_indices': white_indices,
-        'white_values': white_values,
-        'black_indices': black_indices,
-        'black_values': black_values,
-        'psqt_indices': psqt_indices,
-        'layer_stack_indices': layer_stack_indices,
-        'evaluation': evaluations,
-        'result': results
-    }
+    # Return tuple format expected by NNUE model
+    # (us, them, white_indices, white_values, black_indices, black_values,
+    #  outcome, score, psqt_indices, layer_stack_indices)
+    return (
+        us,
+        them,
+        white_indices.int(),  # Convert to int32 for C++ compatibility
+        white_values,
+        black_indices.int(),  # Convert to int32 for C++ compatibility  
+        black_values,
+        results,  # outcome
+        evaluations,  # score
+        psqt_indices,
+        layer_stack_indices
+    )
 
 
 def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int = 16384, 
