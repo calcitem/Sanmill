@@ -405,6 +405,8 @@ desktop.ini
 *.7z
 *.diagsession
 enc_temp_folder
+*.exp
+*.lib
 
 # Database
 plyInfo.dat
