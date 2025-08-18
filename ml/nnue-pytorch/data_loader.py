@@ -4,7 +4,12 @@ from torch.utils.data import Dataset, DataLoader
 import struct
 import os
 import random
+import sys
 from typing import List, Dict, Tuple, Optional
+
+# Add paths for importing from ml/perfect
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'perfect'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'game'))
 
 
 class MillPosition:
@@ -28,10 +33,11 @@ def parse_mill_fen(fen_string: str) -> MillPosition:
     """
     Parse a Nine Men's Morris FEN string into a MillPosition object.
     
-    FEN format matches C++ Position class format:
-    "board_state side phase action white_on_board white_in_hand black_on_board black_in_hand 
-     white_to_remove black_to_remove white_mill_from white_mill_to black_mill_from black_mill_to 
-     mills_bitmask rule50 fullmove"
+    Supports both Perfect DB generated format and C++ Position class format:
+    - Perfect DB format: "FEN evaluation best_move result"
+    - C++ format: "board_state side phase action white_on_board white_in_hand black_on_board black_in_hand 
+                   white_to_remove black_to_remove white_mill_from white_mill_to black_mill_from black_mill_to 
+                   mills_bitmask rule50 fullmove"
     """
     pos = MillPosition()
     parts = fen_string.split()
@@ -42,25 +48,27 @@ def parse_mill_fen(fen_string: str) -> MillPosition:
     # 1. Parse board state - matches C++ Position::set()
     board_state = parts[0]
     
-    # C++ parses character by character, starting from SQ_A1 = 8
-    # Remove '/' separators and parse sequentially
-    board_chars = board_state.replace('/', '')
+    # Handle both formats: with and without '/' separators
+    if '/' in board_state:
+        # Format with separators (Perfect DB generated)
+        board_chars = board_state.replace('/', '')
+    else:
+        # Format without separators (legacy)
+        board_chars = board_state
     
-    cpp_square = 8  # Start from SQ_A1 = 8 (SQ_BEGIN)
-    for piece_char in board_chars:
-        if piece_char == 'O':
-            # White piece - convert C++ square to feature index
-            feature_pos = cpp_square - 8
-            pos.white_pieces.append(feature_pos)
-        elif piece_char == '@':
-            # Black piece - convert C++ square to feature index
-            feature_pos = cpp_square - 8
-            pos.black_pieces.append(feature_pos)
-        # '*' = empty, 'X' = marked (ignored for training)
-        
-        cpp_square += 1
-        if cpp_square >= 32:  # SQ_END = 32
+    # Parse board positions
+    # Convert C++ square indices (8-31) to feature indices (0-23)
+    for i, piece_char in enumerate(board_chars):
+        if i >= 24:  # Only process first 24 positions
             break
+            
+        if piece_char == 'O':
+            # White piece - direct feature index mapping
+            pos.white_pieces.append(i)
+        elif piece_char == '@':
+            # Black piece - direct feature index mapping
+            pos.black_pieces.append(i)
+        # '*' = empty, 'X' = marked (ignored for training)
     
     # 2. Active color
     pos.side_to_move = 0 if parts[1] == 'w' else 1
@@ -101,22 +109,32 @@ def parse_mill_fen(fen_string: str) -> MillPosition:
 class MillTrainingDataset(Dataset):
     """
     Dataset for Nine Men's Morris training data.
+    Supports both legacy format and Perfect Database generated format.
     """
     
-    def __init__(self, data_files: List[str], feature_set, max_positions: Optional[int] = None):
+    def __init__(self, data_files: List[str], feature_set, max_positions: Optional[int] = None, 
+                 use_perfect_db_format: bool = True):
         self.feature_set = feature_set
+        self.use_perfect_db_format = use_perfect_db_format
         self.positions = []
         self.evaluations = []
         self.results = []
         
         # Load training data from files
-        total_loaded = 0
-        for file_path in data_files:
-            if max_positions and total_loaded >= max_positions:
-                break
-                
-            positions_from_file = self._load_from_file(file_path, max_positions - total_loaded if max_positions else None)
-            total_loaded += len(positions_from_file)
+        if use_perfect_db_format:
+            # Use Perfect DB data loader
+            self.positions = load_perfect_db_training_data(data_files, max_positions)
+            self.evaluations = [pos.evaluation for pos in self.positions]
+            self.results = [pos.game_result for pos in self.positions]
+        else:
+            # Use legacy loader
+            total_loaded = 0
+            for file_path in data_files:
+                if max_positions and total_loaded >= max_positions:
+                    break
+                    
+                positions_from_file = self._load_from_file(file_path, max_positions - total_loaded if max_positions else None)
+                total_loaded += len(positions_from_file)
             
         print(f"Loaded {len(self.positions)} training positions")
     
@@ -273,9 +291,91 @@ def collate_mill_batch(batch):
     )
 
 
+def parse_perfect_db_training_line(line: str) -> Optional[MillPosition]:
+    """
+    Parse a training data line generated by Perfect Database.
+    
+    Expected format: "FEN evaluation best_move result"
+    where FEN is the full Nine Men's Morris FEN string.
+    
+    Args:
+        line: Training data line
+        
+    Returns:
+        MillPosition object or None if parsing failed
+    """
+    line = line.strip()
+    if not line or line.startswith('#'):
+        return None
+    
+    try:
+        # Split line and parse from the end
+        parts = line.split()
+        if len(parts) < 19:  # FEN (15 parts) + evaluation + best_move + result
+            return None
+        
+        # Parse from end: result, best_move, evaluation
+        result = float(parts[-1])
+        best_move = parts[-2]
+        evaluation = float(parts[-3])
+        
+        # Remaining parts form the FEN string
+        fen_parts = parts[:-3]
+        fen = ' '.join(fen_parts)
+        
+        # Parse FEN to position
+        pos = parse_mill_fen(fen)
+        pos.evaluation = evaluation
+        pos.best_move = best_move
+        pos.game_result = result
+        
+        return pos
+        
+    except (ValueError, IndexError) as e:
+        return None
+
+
+def load_perfect_db_training_data(data_files: List[str], max_positions: Optional[int] = None) -> List[MillPosition]:
+    """
+    Load training data generated by Perfect Database.
+    
+    Args:
+        data_files: List of training data file paths
+        max_positions: Maximum number of positions to load
+        
+    Returns:
+        List of MillPosition objects
+    """
+    positions = []
+    total_loaded = 0
+    
+    for file_path in data_files:
+        if max_positions and total_loaded >= max_positions:
+            break
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                for line_num, line in enumerate(f):
+                    if max_positions and total_loaded >= max_positions:
+                        break
+                    
+                    pos = parse_perfect_db_training_line(line)
+                    if pos is not None:
+                        positions.append(pos)
+                        total_loaded += 1
+                        
+        except FileNotFoundError:
+            print(f"Warning: Training data file not found: {file_path}")
+        except Exception as e:
+            print(f"Error loading training data from {file_path}: {e}")
+    
+    print(f"Loaded {len(positions)} training positions from Perfect Database data")
+    return positions
+
+
 def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int = 16384, 
                            max_positions: Optional[int] = None, shuffle: bool = True, 
-                           num_workers: int = 0) -> DataLoader:
+                           num_workers: int = 0, use_perfect_db_format: bool = True) -> DataLoader:
     """
     Create a DataLoader for Nine Men's Morris training data.
     
@@ -286,11 +386,12 @@ def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int 
         max_positions: Maximum number of positions to load (None for all)
         shuffle: Whether to shuffle the data
         num_workers: Number of worker processes for data loading
+        use_perfect_db_format: Whether to use Perfect DB generated format
         
     Returns:
         DataLoader instance
     """
-    dataset = MillTrainingDataset(data_files, feature_set, max_positions)
+    dataset = MillTrainingDataset(data_files, feature_set, max_positions, use_perfect_db_format)
     
     return DataLoader(
         dataset,
@@ -299,6 +400,36 @@ def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int 
         collate_fn=collate_mill_batch,
         num_workers=num_workers,
         pin_memory=True
+    )
+
+
+def create_perfect_db_data_loader(data_files: List[str], feature_set, batch_size: int = 16384,
+                                 max_positions: Optional[int] = None, shuffle: bool = True,
+                                 num_workers: int = 0) -> DataLoader:
+    """
+    Create a DataLoader specifically for Perfect Database generated training data.
+    
+    This is a convenience function that automatically uses the Perfect DB format.
+    
+    Args:
+        data_files: List of Perfect DB training data file paths
+        feature_set: Feature set to use for encoding positions
+        batch_size: Batch size for training
+        max_positions: Maximum number of positions to load
+        shuffle: Whether to shuffle the data
+        num_workers: Number of worker processes for data loading
+        
+    Returns:
+        DataLoader instance
+    """
+    return create_mill_data_loader(
+        data_files=data_files,
+        feature_set=feature_set,
+        batch_size=batch_size,
+        max_positions=max_positions,
+        shuffle=shuffle,
+        num_workers=num_workers,
+        use_perfect_db_format=True
     )
 
 

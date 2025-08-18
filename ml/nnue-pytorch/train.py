@@ -51,11 +51,13 @@ def make_data_loaders(
     main_device="cpu",
     epoch_size=None,
     val_size=None,
+    use_perfect_db_format=True,  # Support Perfect DB generated data
 ):
     # Use Nine Men's Morris data loader for training data
     from data_loader import create_mill_data_loader
     
-    print("Using Nine Men's Morris data loader")
+    format_type = "Perfect Database" if use_perfect_db_format else "Legacy"
+    print(f"Using Nine Men's Morris data loader with {format_type} format")
     try:
         # Create data loaders with drop_last=True for consistent batch sizes
         train_dataset = create_mill_data_loader(
@@ -63,7 +65,8 @@ def make_data_loaders(
             feature_set,
             batch_size=batch_size,
             shuffle=True,
-            num_workers=0  # Set to 0 for Nine Men's Morris
+            num_workers=0,  # Set to 0 for Nine Men's Morris
+            use_perfect_db_format=use_perfect_db_format
         )
         
         val_dataset = create_mill_data_loader(
@@ -71,7 +74,8 @@ def make_data_loaders(
             feature_set,
             batch_size=batch_size,
             shuffle=False,
-            num_workers=0
+            num_workers=0,
+            use_perfect_db_format=use_perfect_db_format
         )
         
         # Recreate with drop_last=True to ensure consistent batch sizes
