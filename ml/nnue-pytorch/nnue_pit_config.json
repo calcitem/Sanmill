@@ -1,5 +1,5 @@
 {
-  "model_path": "logs/lightning_logs/version_7/checkpoints/last.ckpt",
+  "model_path": "logs/checkpoints/last.ckpt",
   "feature_set": "NineMill",
   "feature_size": 1152,
   "hidden_size": 256,
@@ -16,5 +16,6 @@
   "batch_size": 1,
   "temperature": 1.0,
   "use_pytorch_lightning": true,
-  "perfect_db_format": true
+  "perfect_db_format": true,
+  "use_gpu": true
 }

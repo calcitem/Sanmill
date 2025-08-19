@@ -807,17 +807,24 @@ class NNUEPlayer:
         black_indices = torch.nonzero(black_features, as_tuple=False).flatten()
         black_values = black_features[black_indices]
         
-        # Ensure we have at least one feature to avoid empty tensors
-        if len(white_indices) == 0:
-            white_indices = torch.tensor([0], dtype=torch.long)
-            white_values = torch.tensor([0.0], dtype=torch.float32)
-        if len(black_indices) == 0:
-            black_indices = torch.tensor([0], dtype=torch.long)
-            black_values = torch.tensor([0.0], dtype=torch.float32)
-        
         # Get model device - use batch size = 1 for inference
         model_device = next(self.model.parameters()).device
         batch_size = 1
+        
+        # Ensure we have at least one feature to avoid empty tensors and move to device
+        if len(white_indices) == 0:
+            white_indices = torch.tensor([0], dtype=torch.long, device=model_device)
+            white_values = torch.tensor([0.0], dtype=torch.float32, device=model_device)
+        else:
+            white_indices = white_indices.to(model_device)
+            white_values = white_values.to(model_device)
+            
+        if len(black_indices) == 0:
+            black_indices = torch.tensor([0], dtype=torch.long, device=model_device)
+            black_values = torch.tensor([0.0], dtype=torch.float32, device=model_device)
+        else:
+            black_indices = black_indices.to(model_device)
+            black_values = black_values.to(model_device)
         
         # Create batch format (batch size = 1)
         us = torch.tensor([1.0 if game_state.side_to_move == 0 else 0.0], dtype=torch.float32).unsqueeze(0).to(model_device)  # [1, 1]
@@ -836,11 +843,11 @@ class NNUEPlayer:
         n_black = min(len(black_indices), max_features)
         
         if n_white > 0:
-            white_indices_batch[0, :n_white] = white_indices[:n_white].int().to(model_device)
-            white_values_batch[0, :n_white] = white_values[:n_white].to(model_device)
+            white_indices_batch[0, :n_white] = white_indices[:n_white].int()
+            white_values_batch[0, :n_white] = white_values[:n_white]
         if n_black > 0:
-            black_indices_batch[0, :n_black] = black_indices[:n_black].int().to(model_device)
-            black_values_batch[0, :n_black] = black_values[:n_black].to(model_device)
+            black_indices_batch[0, :n_black] = black_indices[:n_black].int()
+            black_values_batch[0, :n_black] = black_values[:n_black]
         
         # PSQT and layer stack indices (batch size = 1)
         psqt_indices = torch.zeros(batch_size, dtype=torch.long).to(model_device)
