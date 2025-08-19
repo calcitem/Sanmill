@@ -71,9 +71,10 @@ class NNUEWriter:
 
         self.buf = bytearray()
 
-        # NOTE: model._clip_weights() should probably be called here. It's not necessary now
-        # because it doesn't have more restrictive bounds than these defined by quantization,
-        # but it might be necessary in the future.
+        # Apply weight clipping before serialization to ensure weights are within valid bounds
+        if hasattr(model, '_clip_weights'):
+            model._clip_weights()
+        
         fc_hash = self.fc_hash(model)
         self.write_header(model, fc_hash, description)
         self.int32(model.feature_set.hash ^ (M.L1 * 2))  # Feature transformer hash

@@ -97,7 +97,13 @@ class LayerStacks(nn.Module):
         self.output.bias = nn.Parameter(output_bias)
 
     def forward(self, x, ls_indices):
-        assert self.idx_offset is not None and self.idx_offset.shape[0] == x.shape[0]
+        # Initialize idx_offset on first forward pass if needed
+        if self.idx_offset is None or self.idx_offset.shape[0] != x.shape[0]:
+            batch_size = x.shape[0]
+            self.idx_offset = torch.arange(
+                0, batch_size * self.count, self.count, 
+                device=x.device, dtype=ls_indices.dtype
+            )
 
         indices = ls_indices.flatten() + self.idx_offset
 
@@ -444,6 +450,11 @@ class NNUE(pl.LightningModule):
 
     def test_step(self, batch, batch_idx):
         self.step_(batch, batch_idx, "test_loss")
+
+    def on_fit_end(self):
+        """Called at the very end of fit."""
+        # Ensure weights are clipped after the final training step
+        self._clip_weights()
 
     def configure_optimizers(self):
         LR = self.lr

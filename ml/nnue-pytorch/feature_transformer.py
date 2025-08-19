@@ -332,10 +332,11 @@ class FeatureTransformerSliceFunction(autograd.Function):
         assert len(bias.shape) == 1
         assert bias.dtype == torch.float32
 
-        assert feature_indices.is_cuda
-        assert feature_values.is_cuda
-        assert weight.is_cuda
-        assert bias.is_cuda
+        # Check if all tensors are on the same device (either CPU or CUDA)
+        device = feature_indices.device
+        assert feature_values.device == device
+        assert weight.device == device
+        assert bias.device == device
 
         assert feature_values.device == feature_indices.device
         assert weight.device == feature_indices.device
@@ -359,19 +360,34 @@ class FeatureTransformerSliceFunction(autograd.Function):
             requires_grad=True,
         )
 
-        kernel = make_feature_transformer_slice_forward_kernel(
-            max_active_features, output_size
-        )
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices.data_ptr(),
-                feature_values.data_ptr(),
-                weight.data_ptr(),
-                bias.data_ptr(),
-                output.data_ptr(),
-            ),
-        )
+        if device.type == 'cuda':
+            # Use CUDA kernel for GPU
+            kernel = make_feature_transformer_slice_forward_kernel(
+                max_active_features, output_size
+            )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices.data_ptr(),
+                    feature_values.data_ptr(),
+                    weight.data_ptr(),
+                    bias.data_ptr(),
+                    output.data_ptr(),
+                ),
+            )
+        else:
+            # CPU fallback implementation
+            output = bias.unsqueeze(0).expand(batch_size, -1).clone()
+            for b in range(batch_size):
+                for k in range(max_active_features):
+                    feature_idx = feature_indices[b, k].item()
+                    if feature_idx == -1:
+                        break
+                    # Add boundary check for feature index
+                    if feature_idx < 0 or feature_idx >= weight.shape[0]:
+                        raise ValueError(f"Feature index {feature_idx} out of bounds for weight matrix of shape {weight.shape}")
+                    feature_val = feature_values[b, k]
+                    output[b] += weight[feature_idx] * feature_val
 
         return output
 
@@ -394,19 +410,34 @@ class FeatureTransformerSliceFunction(autograd.Function):
         )
         bias_grad = torch.zeros(output_size, dtype=torch.float32, device=device)
 
-        kernel = make_feature_transformer_slice_backward_kernel(
-            max_active_features, output_size
-        )
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices.data_ptr(),
-                feature_values.data_ptr(),
-                weight_grad.data_ptr(),
-                bias_grad.data_ptr(),
-                grad_output.data_ptr(),
-            ),
-        )
+        if device.type == 'cuda':
+            # Use CUDA kernel for GPU
+            kernel = make_feature_transformer_slice_backward_kernel(
+                max_active_features, output_size
+            )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices.data_ptr(),
+                    feature_values.data_ptr(),
+                    weight_grad.data_ptr(),
+                    bias_grad.data_ptr(),
+                    grad_output.data_ptr(),
+                ),
+            )
+        else:
+            # CPU fallback implementation
+            bias_grad = grad_output.sum(dim=0)
+            for b in range(batch_size):
+                for k in range(max_active_features):
+                    feature_idx = feature_indices[b, k].item()
+                    if feature_idx == -1:
+                        break
+                    # Add boundary check for feature index
+                    if feature_idx < 0 or feature_idx >= weight_grad.shape[0]:
+                        raise ValueError(f"Feature index {feature_idx} out of bounds for weight_grad matrix of shape {weight_grad.shape}")
+                    feature_val = feature_values[b, k]
+                    weight_grad[feature_idx] += grad_output[b] * feature_val
 
         return None, None, weight_grad, bias_grad
 
@@ -451,12 +482,13 @@ class DoubleFeatureTransformerSliceFunction(autograd.Function):
         assert len(bias.shape) == 1
         assert bias.dtype == torch.float32
 
-        assert feature_indices_0.is_cuda
-        assert feature_values_0.is_cuda
-        assert feature_indices_1.is_cuda
-        assert feature_values_1.is_cuda
-        assert weight.is_cuda
-        assert bias.is_cuda
+        # Check if all tensors are on the same device (either CPU or CUDA)
+        device = feature_indices_0.device
+        assert feature_values_0.device == device
+        assert feature_indices_1.device == device
+        assert feature_values_1.device == device
+        assert weight.device == device
+        assert bias.device == device
 
         assert feature_values_0.device == feature_indices_0.device
         assert feature_values_1.device == feature_indices_1.device
@@ -491,30 +523,50 @@ class DoubleFeatureTransformerSliceFunction(autograd.Function):
             requires_grad=True,
         )
 
-        kernel = make_feature_transformer_slice_forward_kernel(
-            max_active_features, output_size
-        )
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices_0.data_ptr(),
-                feature_values_0.data_ptr(),
-                weight.data_ptr(),
-                bias.data_ptr(),
-                output0.data_ptr(),
-            ),
-        )
+        if device.type == 'cuda':
+            # Use CUDA kernel for GPU
+            kernel = make_feature_transformer_slice_forward_kernel(
+                max_active_features, output_size
+            )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices_0.data_ptr(),
+                    feature_values_0.data_ptr(),
+                    weight.data_ptr(),
+                    bias.data_ptr(),
+                    output0.data_ptr(),
+                ),
+            )
 
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices_1.data_ptr(),
-                feature_values_1.data_ptr(),
-                weight.data_ptr(),
-                bias.data_ptr(),
-                output1.data_ptr(),
-            ),
-        )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices_1.data_ptr(),
+                    feature_values_1.data_ptr(),
+                    weight.data_ptr(),
+                    bias.data_ptr(),
+                    output1.data_ptr(),
+                ),
+            )
+        else:
+            # CPU fallback implementation
+            output0 = bias.unsqueeze(0).expand(batch_size, -1).clone()
+            output1 = bias.unsqueeze(0).expand(batch_size, -1).clone()
+            
+            for b in range(batch_size):
+                for k in range(max_active_features):
+                    # Process first set of features
+                    feature_idx = feature_indices_0[b, k].item()
+                    if feature_idx != -1:
+                        feature_val = feature_values_0[b, k]
+                        output0[b] += weight[feature_idx] * feature_val
+                    
+                    # Process second set of features
+                    feature_idx = feature_indices_1[b, k].item()
+                    if feature_idx != -1:
+                        feature_val = feature_values_1[b, k]
+                        output1[b] += weight[feature_idx] * feature_val
 
         return output0, output1
 
@@ -545,30 +597,49 @@ class DoubleFeatureTransformerSliceFunction(autograd.Function):
         )
         bias_grad = torch.zeros(output_size, dtype=torch.float32, device=device)
 
-        kernel = make_feature_transformer_slice_backward_kernel(
-            max_active_features, output_size
-        )
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices_0.data_ptr(),
-                feature_values_0.data_ptr(),
-                weight_grad.data_ptr(),
-                bias_grad.data_ptr(),
-                grad_output_0.data_ptr(),
-            ),
-        )
+        if device.type == 'cuda':
+            # Use CUDA kernel for GPU
+            kernel = make_feature_transformer_slice_backward_kernel(
+                max_active_features, output_size
+            )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices_0.data_ptr(),
+                    feature_values_0.data_ptr(),
+                    weight_grad.data_ptr(),
+                    bias_grad.data_ptr(),
+                    grad_output_0.data_ptr(),
+                ),
+            )
 
-        kernel(
-            grid=(batch_size,),
-            args=(
-                feature_indices_1.data_ptr(),
-                feature_values_1.data_ptr(),
-                weight_grad.data_ptr(),
-                bias_grad.data_ptr(),
-                grad_output_1.data_ptr(),
-            ),
-        )
+            kernel(
+                grid=(batch_size,),
+                args=(
+                    feature_indices_1.data_ptr(),
+                    feature_values_1.data_ptr(),
+                    weight_grad.data_ptr(),
+                    bias_grad.data_ptr(),
+                    grad_output_1.data_ptr(),
+                ),
+            )
+        else:
+            # CPU fallback implementation
+            bias_grad = grad_output_0.sum(dim=0) + grad_output_1.sum(dim=0)
+            
+            for b in range(batch_size):
+                for k in range(max_active_features):
+                    # Process gradients for first set of features
+                    feature_idx = feature_indices_0[b, k].item()
+                    if feature_idx != -1:
+                        feature_val = feature_values_0[b, k]
+                        weight_grad[feature_idx] += grad_output_0[b] * feature_val
+                    
+                    # Process gradients for second set of features
+                    feature_idx = feature_indices_1[b, k].item()
+                    if feature_idx != -1:
+                        feature_val = feature_values_1[b, k]
+                        weight_grad[feature_idx] += grad_output_1[b] * feature_val
 
         return None, None, None, None, weight_grad, bias_grad
 

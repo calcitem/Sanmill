@@ -113,19 +113,18 @@ class MillTrainingDataset(Dataset):
     """
     
     def __init__(self, data_files: List[str], feature_set, max_positions: Optional[int] = None, 
-                 use_perfect_db_format: bool = True):
+                 use_perfect_db_format: bool = True, batch_load_size: int = 100000):
         self.feature_set = feature_set
         self.use_perfect_db_format = use_perfect_db_format
         self.positions = []
         self.evaluations = []
         self.results = []
+        self.batch_load_size = batch_load_size  # Load data in batches to manage memory
         
         # Load training data from files
         if use_perfect_db_format:
-            # Use Perfect DB data loader
-            self.positions = load_perfect_db_training_data(data_files, max_positions)
-            self.evaluations = [pos.evaluation for pos in self.positions]
-            self.results = [pos.game_result for pos in self.positions]
+            # Use Perfect DB data loader with batch loading
+            self._load_perfect_db_data_in_batches(data_files, max_positions)
         else:
             # Use legacy loader
             total_loaded = 0
@@ -137,6 +136,53 @@ class MillTrainingDataset(Dataset):
                 total_loaded += len(positions_from_file)
             
         print(f"Loaded {len(self.positions)} training positions")
+    
+    def _load_perfect_db_data_in_batches(self, data_files: List[str], max_positions: Optional[int] = None):
+        """Load Perfect DB data in batches to manage memory usage."""
+        total_loaded = 0
+        
+        for file_path in data_files:
+            if max_positions and total_loaded >= max_positions:
+                break
+            
+            try:
+                with open(file_path, 'r', encoding='utf-8') as f:
+                    batch = []
+                    for line_num, line in enumerate(f):
+                        if max_positions and total_loaded >= max_positions:
+                            break
+                        
+                        pos = parse_perfect_db_training_line(line)
+                        if pos is not None:
+                            batch.append(pos)
+                            
+                            # Process batch when it reaches the batch size
+                            if len(batch) >= self.batch_load_size:
+                                self._process_batch(batch)
+                                total_loaded += len(batch)
+                                batch = []  # Clear batch to free memory
+                                
+                                # Force garbage collection periodically
+                                if total_loaded % (self.batch_load_size * 10) == 0:
+                                    import gc
+                                    gc.collect()
+                    
+                    # Process remaining items in batch
+                    if batch:
+                        self._process_batch(batch)
+                        total_loaded += len(batch)
+                        
+            except FileNotFoundError:
+                print(f"Warning: Training data file not found: {file_path}")
+            except Exception as e:
+                print(f"Error loading training data from {file_path}: {e}")
+    
+    def _process_batch(self, batch: List[MillPosition]):
+        """Process a batch of positions and add to the dataset."""
+        for pos in batch:
+            self.positions.append(pos)
+            self.evaluations.append(pos.evaluation)
+            self.results.append(pos.game_result)
     
     def _load_from_file(self, file_path: str, max_count: Optional[int] = None) -> List[MillPosition]:
         """Load training data from a single file."""
@@ -194,7 +240,19 @@ class MillTrainingDataset(Dataset):
     
     def __getitem__(self, idx):
         """Get a training sample."""
+        # Add boundary check for idx
+        if idx < 0 or idx >= len(self.positions):
+            raise IndexError(f"Index {idx} out of bounds for dataset of size {len(self.positions)}")
+            
         pos = self.positions[idx]
+        
+        # Validate position pieces are within board bounds
+        for piece_pos in pos.white_pieces:
+            if piece_pos < 0 or piece_pos >= 24:
+                raise ValueError(f"White piece position {piece_pos} out of board bounds [0, 23]")
+        for piece_pos in pos.black_pieces:
+            if piece_pos < 0 or piece_pos >= 24:
+                raise ValueError(f"Black piece position {piece_pos} out of board bounds [0, 23]")
         
         # Convert position to feature representation
         board_state = {
@@ -313,9 +371,9 @@ def collate_mill_batch(batch):
     return (
         us,
         them,
-        white_indices.int(),  # Convert to int32 for C++ compatibility
+        white_indices.long(),  # Keep as int64 for consistency
         white_values,
-        black_indices.int(),  # Convert to int32 for C++ compatibility  
+        black_indices.long(),  # Keep as int64 for consistency
         black_values,
         results,  # outcome
         evaluations,  # score
@@ -344,7 +402,7 @@ def parse_perfect_db_training_line(line: str) -> Optional[MillPosition]:
     try:
         # Split line and parse from the end
         parts = line.split()
-        if len(parts) < 19:  # FEN (15 parts) + evaluation + best_move + result
+        if len(parts) < 4:  # At least need FEN parts + evaluation + best_move + result
             return None
         
         # Parse from end: result, best_move, evaluation
