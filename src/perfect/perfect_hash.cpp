@@ -88,19 +88,20 @@ Hash::Hash(int the_w, int the_b, Sector *sec)
     // Calculate g_lookup array size and allocate with progress indication
     size_t g_size = 1LL << (24 - W);
     size_t g_memory = g_size * sizeof(int);
-    
+
     if (g_memory > 10 * 1024 * 1024) { // > 10MB
-        LOG("Allocating large g_lookup array: %zu elements (%.1f MB)...\n", 
+        LOG("Allocating large g_lookup array: %zu elements (%.1f MB)...\n",
             g_size, g_memory / (1024.0 * 1024.0));
     }
-    
+
     try {
         g_lookup = new int[g_size];
         if (g_memory > 10 * 1024 * 1024) {
             LOG("g_lookup allocation successful\n");
         }
-    } catch (const std::bad_alloc&) {
-        LOG("Failed to allocate g_lookup array of size %.1f MB\n", g_memory / (1024.0 * 1024.0));
+    } catch (const std::bad_alloc &) {
+        LOG("Failed to allocate g_lookup array of size %.1f MB\n",
+            g_memory / (1024.0 * 1024.0));
         throw;
     }
 

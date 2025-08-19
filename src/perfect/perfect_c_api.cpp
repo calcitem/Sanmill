@@ -17,7 +17,7 @@ static bool g_pd_inited = false;
 
 extern "C" {
 
-PD_API int pd_init_std(const char* db_path)
+PD_API int pd_init_std(const char *db_path)
 {
     using namespace PerfectErrors;
     clearError();
@@ -26,8 +26,8 @@ PD_API int pd_init_std(const char* db_path)
         return 0;
 
     // Configure rule variant to std (9 pieces)
-    // perfect_init() + MalomSolutionAccess::initialize_if_needed() will read globals
-    // but we also ensure gameOptions are set
+    // perfect_init() + MalomSolutionAccess::initialize_if_needed() will read
+    // globals but we also ensure gameOptions are set
     gameOptions.setPerfectDatabasePath(std::string(db_path));
     gameOptions.setUsePerfectDatabase(true);
 
@@ -62,14 +62,9 @@ static inline int to_wdl(Value v)
     return 0;
 }
 
-PD_API int pd_evaluate(int whiteBits,
-                       int blackBits,
-                       int whiteStonesToPlace,
-                       int blackStonesToPlace,
-                       int playerToMove,
-                       int onlyStoneTaking,
-                       int* outWdl,
-                       int* outSteps)
+PD_API int pd_evaluate(int whiteBits, int blackBits, int whiteStonesToPlace,
+                       int blackStonesToPlace, int playerToMove,
+                       int onlyStoneTaking, int *outWdl, int *outSteps)
 {
     using namespace PerfectErrors;
     clearError();
@@ -92,14 +87,9 @@ PD_API int pd_evaluate(int whiteBits,
     return 1;
 }
 
-PD_API int pd_best_move(int whiteBits,
-                        int blackBits,
-                        int whiteStonesToPlace,
-                        int blackStonesToPlace,
-                        int playerToMove,
-                        int onlyStoneTaking,
-                        char* outBuf,
-                        int outBufLen)
+PD_API int pd_best_move(int whiteBits, int blackBits, int whiteStonesToPlace,
+                        int blackStonesToPlace, int playerToMove,
+                        int onlyStoneTaking, char *outBuf, int outBufLen)
 {
     using namespace PerfectErrors;
     clearError();
@@ -119,18 +109,24 @@ PD_API int pd_best_move(int whiteBits,
 
     auto popcnt = [](unsigned int x) {
         unsigned int c = 0;
-        while (x) { x &= (x - 1); ++c; }
+        while (x) {
+            x &= (x - 1);
+            ++c;
+        }
         return (int)c;
     };
 
     const int cnt = popcnt((unsigned int)bb);
-    const unsigned int us = (playerToMove == 0 ? (unsigned int)whiteBits : (unsigned int)blackBits);
-    const unsigned int them = (playerToMove == 0 ? (unsigned int)blackBits : (unsigned int)whiteBits);
+    const unsigned int us = (playerToMove == 0 ? (unsigned int)whiteBits :
+                                                 (unsigned int)blackBits);
+    const unsigned int them = (playerToMove == 0 ? (unsigned int)blackBits :
+                                                   (unsigned int)whiteBits);
 
     int fromIdx = -1, toIdx = -1, remIdx = -1;
     for (int i = 0; i < 24; ++i) {
         unsigned int mask = 1U << i;
-        if (!(bb & mask)) continue;
+        if (!(bb & mask))
+            continue;
         bool usHas = (us & mask) != 0;
         bool themHas = (them & mask) != 0;
         bool emptyBefore = !usHas && !themHas;
@@ -144,23 +140,25 @@ PD_API int pd_best_move(int whiteBits,
                 fromIdx = i;
             }
         } else {
-            if (usHas) fromIdx = i;
-            else if (emptyBefore) toIdx = i;
-            else if (themHas) remIdx = i;
+            if (usHas)
+                fromIdx = i;
+            else if (emptyBefore)
+                toIdx = i;
+            else if (themHas)
+                remIdx = i;
         }
     }
 
     auto idx_to_token = [](int idx) -> std::string {
         // Map perfect index -> Square -> token as in UCI::square
-        const char* map[40] = {
-            "","","","","","","","",
-            "d5","e5","e4","e3","d3","c3","c4","c5",
-            "d6","f6","f4","f2","d2","b2","b4","b6",
-            "d7","g7","g4","g1","d1","a1","a4","a7",
-            "","","","","","","",""
-        };
+        const char *map[40] = {"",   "",   "",   "",   "",   "",   "",   "",
+                               "d5", "e5", "e4", "e3", "d3", "c3", "c4", "c5",
+                               "d6", "f6", "f4", "f2", "d2", "b2", "b4", "b6",
+                               "d7", "g7", "g4", "g1", "d1", "a1", "a4", "a7",
+                               "",   "",   "",   "",   "",   "",   "",   ""};
         auto sq = from_perfect_square((uint32_t)idx);
-        if (sq < 0 || sq >= 40) return std::string();
+        if (sq < 0 || sq >= 40)
+            return std::string();
         return std::string(map[sq]);
     };
 
@@ -173,7 +171,8 @@ PD_API int pd_best_move(int whiteBits,
         }
     } else if (cnt == 2) {
         if (fromIdx >= 0 && toIdx >= 0 && remIdx < 0) {
-            token = idx_to_token(fromIdx) + std::string("-") + idx_to_token(toIdx);
+            token = idx_to_token(fromIdx) + std::string("-") +
+                    idx_to_token(toIdx);
         } else if (fromIdx < 0 && toIdx >= 0 && remIdx >= 0) {
             // place + remove -> return place only
             token = idx_to_token(toIdx);
@@ -181,7 +180,8 @@ PD_API int pd_best_move(int whiteBits,
     } else if (cnt == 3) {
         // move + remove -> return move token
         if (fromIdx >= 0 && toIdx >= 0) {
-            token = idx_to_token(fromIdx) + std::string("-") + idx_to_token(toIdx);
+            token = idx_to_token(fromIdx) + std::string("-") +
+                    idx_to_token(toIdx);
         }
     }
 
@@ -193,7 +193,4 @@ PD_API int pd_best_move(int whiteBits,
     outBuf[outBufLen - 1] = '\0';
     return 1;
 }
-
 }
-
-
