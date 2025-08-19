@@ -60,6 +60,11 @@ static Position buildPositionDD(Sector *sector, int i, bool blackToMove)
     pos.construct_key();
     pos.reset();
 
+    if (!sector->hash) {
+        LOG("Error: hash not initialized for sector in buildPosition\n");
+        return pos; // Return empty position
+    }
+
     const board raw = sector->hash->inverse_hash(i);
     const uint32_t whiteBits = (uint32_t)(raw & mask24);
     const uint32_t blackBits = (uint32_t)((raw >> 24) & mask24);
@@ -125,6 +130,11 @@ static void stripSectorDD(Sector *sector)
     // Write the header (64 bytes)
     sector->write_header(fNew); // Includes version, eval_struct_size,
                                 // field2Offset, stone_diff_flag, etc.
+
+    if (!sector->hash) {
+        LOG("Error: hash not initialized for sector in stripSectorDD\n");
+        return;
+    }
 
     const int totalCount = sector->hash->hash_count;
     const int itemSize = eval_struct_size; //=3

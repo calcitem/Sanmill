@@ -49,6 +49,13 @@ std::pair<int, Wrappers::gui_eval_elem2> Wrappers::WSector::hash(board a)
 
     timestamp++;
 
+    if (!s->hash) {
+        LOG("Error: hash not initialized for sector %s\n",
+            s->id.to_string().c_str());
+        return std::make_pair(-1,
+                              Wrappers::gui_eval_elem2(eval_elem2(val()), s));
+    }
+
     auto e = s->hash->hash(a);
     return std::make_pair(e.first, Wrappers::gui_eval_elem2(e.second, s));
 }

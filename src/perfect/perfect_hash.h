@@ -40,6 +40,8 @@ public:
 
     void check_hash_init_consistency();
 
+    bool is_initialized() const { return g_lookup != nullptr; }
+
     ~Hash();
 };
 

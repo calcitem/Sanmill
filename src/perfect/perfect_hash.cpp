@@ -94,15 +94,15 @@ Hash::Hash(int the_w, int the_b, Sector *sec)
             g_size, g_memory / (1024.0 * 1024.0));
     }
 
-    try {
-        g_lookup = new int[g_size];
-        if (g_memory > 10 * 1024 * 1024) {
-            LOG("g_lookup allocation successful\n");
-        }
-    } catch (const std::bad_alloc &) {
+    g_lookup = new int[g_size];
+    if (g_lookup == nullptr) {
         LOG("Failed to allocate g_lookup array of size %.1f MB\n",
             g_memory / (1024.0 * 1024.0));
-        throw;
+        return;
+    }
+
+    if (g_memory > 10 * 1024 * 1024) {
+        LOG("g_lookup allocation successful\n");
     }
 
     memset(f_lookup, -1, sizeof(f_lookup));

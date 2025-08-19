@@ -326,6 +326,13 @@ void Sector::allocate_hash()
     // and read em_set (should be renamed)
     hash = new Hash(W, B, this);
 
+    if (!hash->is_initialized()) {
+        LOG("Hash initialization failed for %s, cleaning up...\n", fileName);
+        delete hash;
+        hash = nullptr;
+        return;
+    }
+
     auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
         end_time - start_time);
@@ -336,9 +343,9 @@ void Sector::allocate_hash()
 #endif
 
 #ifdef DD
-    eval_size = hash->hash_count * eval_struct_size;
+    eval_size = hash ? hash->hash_count * eval_struct_size : 0;
 #else
-    eval_size = hash->hash_count;
+    eval_size = hash ? hash->hash_count : 0;
 #endif
 
 #ifdef WRAPPER
