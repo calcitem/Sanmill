@@ -99,7 +99,7 @@ Hash::Hash(int the_w, int the_b, Sector *sec)
         if (g_memory > 10 * 1024 * 1024) {
             LOG("g_lookup allocation successful\n");
         }
-    } catch (const std::bad_alloc& e) {
+    } catch (const std::bad_alloc&) {
         LOG("Failed to allocate g_lookup array of size %.1f MB\n", g_memory / (1024.0 * 1024.0));
         throw;
     }
