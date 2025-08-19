@@ -1,1 +1,0 @@
-python nnue_pit.py --model models\nnue_model.bin --gui --first human
