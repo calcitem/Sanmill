@@ -216,9 +216,42 @@ class MillTrainingDataset(Dataset):
         us = torch.tensor([1.0 if pos.side_to_move == 0 else 0.0], dtype=torch.float32)
         them = torch.tensor([1.0 if pos.side_to_move == 1 else 0.0], dtype=torch.float32)
         
-        # PSQT and layer stack indices (simplified for Nine Men's Morris)
-        psqt_indices = torch.tensor(0, dtype=torch.long)  # Single bucket for now
-        layer_stack_indices = torch.tensor(0, dtype=torch.long)  # Single bucket for now
+        # PSQT and layer stack indices (bucketization with counts + coarse mobility)
+        # Buckets: 1..7 (0 unused). Design:
+        #  - Placing phase: based on 'us' in-hand counts
+        #      * in_hand >= 6 -> 1,  3..5 -> 2,  0..2 -> 3
+        #  - Non-placing (moving/flying/capture):
+        #      * flying condition (us_on_board <= 3) -> 4
+        #      * else mobility by empties (24 - on_board_sum):
+        #           empties >= 8 -> 5,  7 -> 6,  <=6 -> 7
+        us_is_white = (pos.side_to_move == 0)
+        white_on_board = len(pos.white_pieces)
+        black_on_board = len(pos.black_pieces)
+        us_on_board = white_on_board if us_is_white else black_on_board
+        us_in_hand = int(pos.white_in_hand if us_is_white else pos.black_in_hand)
+        placing = (pos.white_in_hand > 0) or (pos.black_in_hand > 0)
+        empties = 24 - (white_on_board + black_on_board)
+
+        if placing:
+            if us_in_hand >= 6:
+                bucket = 1
+            elif us_in_hand >= 3:
+                bucket = 2
+            else:
+                bucket = 3
+        else:
+            if us_on_board <= 3:
+                bucket = 4  # flying-like high mobility
+            else:
+                if empties >= 8:
+                    bucket = 5
+                elif empties == 7:
+                    bucket = 6
+                else:
+                    bucket = 7
+
+        psqt_indices = torch.tensor(bucket, dtype=torch.long)
+        layer_stack_indices = torch.tensor(bucket, dtype=torch.long)
         
         # Target values
         evaluation = torch.tensor(pos.evaluation, dtype=torch.float32)

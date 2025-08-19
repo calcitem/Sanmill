@@ -830,28 +830,57 @@ class NNUEPlayer:
         us = torch.tensor([1.0 if game_state.side_to_move == 0 else 0.0], dtype=torch.float32).unsqueeze(0).to(model_device)  # [1, 1]
         them = torch.tensor([1.0 if game_state.side_to_move == 1 else 0.0], dtype=torch.float32).unsqueeze(0).to(model_device)  # [1, 1]
         
-        # Pad sparse features to reasonable max size
-        max_features = 64  # Reasonable maximum for Nine Men's Morris
-        
-        white_indices_batch = torch.zeros((batch_size, max_features), dtype=torch.int32).to(model_device)
-        white_values_batch = torch.zeros((batch_size, max_features), dtype=torch.float32).to(model_device)
-        black_indices_batch = torch.zeros((batch_size, max_features), dtype=torch.int32).to(model_device)
-        black_values_batch = torch.zeros((batch_size, max_features), dtype=torch.float32).to(model_device)
-        
-        # Fill actual values (limit to max_features)
-        n_white = min(len(white_indices), max_features)
-        n_black = min(len(black_indices), max_features)
-        
+        # Build tightly-sized sparse batches to include all active features
+        n_white = int(len(white_indices))
+        n_black = int(len(black_indices))
+        # Guard against empty tensors by enforcing at least 1 column
+        wf = max(1, n_white)
+        bf = max(1, n_black)
+
+        white_indices_batch = torch.zeros((batch_size, wf), dtype=torch.int32, device=model_device)
+        white_values_batch = torch.zeros((batch_size, wf), dtype=torch.float32, device=model_device)
+        black_indices_batch = torch.zeros((batch_size, bf), dtype=torch.int32, device=model_device)
+        black_values_batch = torch.zeros((batch_size, bf), dtype=torch.float32, device=model_device)
+
         if n_white > 0:
-            white_indices_batch[0, :n_white] = white_indices[:n_white].int()
-            white_values_batch[0, :n_white] = white_values[:n_white]
+            white_indices_batch[0, :n_white] = white_indices.int()
+            white_values_batch[0, :n_white] = white_values
+        # else keep the single zero padding
         if n_black > 0:
-            black_indices_batch[0, :n_black] = black_indices[:n_black].int()
-            black_values_batch[0, :n_black] = black_values[:n_black]
+            black_indices_batch[0, :n_black] = black_indices.int()
+            black_values_batch[0, :n_black] = black_values
         
-        # PSQT and layer stack indices (batch size = 1)
-        psqt_indices = torch.zeros(batch_size, dtype=torch.long).to(model_device)
-        layer_stack_indices = torch.zeros(batch_size, dtype=torch.long).to(model_device)
+        # PSQT and layer stack indices (batch size = 1); match training bucketization
+        # Buckets: 1..7 (0 unused)
+        # Placing: based on current side in-hand counts; Non-placing: flying or empties
+        white_on_board = game_state.white_pieces_on_board
+        black_on_board = game_state.black_pieces_on_board
+        empties = 24 - (white_on_board + black_on_board)
+        us_is_white = (game_state.side_to_move == 0)
+        us_in_hand = game_state.white_pieces_in_hand if us_is_white else game_state.black_pieces_in_hand
+        us_on_board = white_on_board if us_is_white else black_on_board
+        placing = (game_state.white_pieces_in_hand > 0) or (game_state.black_pieces_in_hand > 0)
+
+        if placing:
+            if us_in_hand >= 6:
+                bucket = 1
+            elif us_in_hand >= 3:
+                bucket = 2
+            else:
+                bucket = 3
+        else:
+            if us_on_board <= 3:
+                bucket = 4
+            else:
+                if empties >= 8:
+                    bucket = 5
+                elif empties == 7:
+                    bucket = 6
+                else:
+                    bucket = 7
+
+        psqt_indices = torch.full((batch_size,), bucket, dtype=torch.long, device=model_device)
+        layer_stack_indices = torch.full((batch_size,), bucket, dtype=torch.long, device=model_device)
         
         with torch.no_grad():
             # Call model with expected input format

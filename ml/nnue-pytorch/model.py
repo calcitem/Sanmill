@@ -16,10 +16,10 @@ L3 = 32    # Keep same
 # Adjusted for Nine Men's Morris evaluation scale
 @dataclass
 class LossParams:
-    in_offset: float = 100    # Reduced for Nine Men's Morris scale
-    out_offset: float = 100   # Reduced for Nine Men's Morris scale
-    in_scaling: float = 150   # Reduced for Nine Men's Morris scale
-    out_scaling: float = 150  # Reduced for Nine Men's Morris scale
+    in_offset: float = 0      # Match ±500 label scale to avoid sigmoid saturation
+    out_offset: float = 0     # Match ±500 label scale to avoid sigmoid saturation
+    in_scaling: float = 300   # Tuned for ±500 label scale
+    out_scaling: float = 300  # Tuned for ±500 label scale
     start_lambda: float = 1.0
     end_lambda: float = 1.0
     pow_exp: float = 2.5

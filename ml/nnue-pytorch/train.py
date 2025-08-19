@@ -247,31 +247,31 @@ def main():
     )
     parser.add_argument(
         "--in-offset",
-        default=100,
+        default=0,
         type=float,
         dest="in_offset",
-        help="offset for conversion to win on input (default=100.0 for Nine Men's Morris)",
+        help="offset for conversion to win on input (default=0 to match ±500-scale labels)",
     )
     parser.add_argument(
         "--out-offset",
-        default=100,
+        default=0,
         type=float,
         dest="out_offset",
-        help="offset for conversion to win on input (default=100.0 for Nine Men's Morris)",
+        help="offset for conversion to win on input (default=0 to match ±500-scale labels)",
     )
     parser.add_argument(
         "--in-scaling",
-        default=150,
+        default=300,
         type=float,
         dest="in_scaling",
-        help="scaling for conversion to win on input (default=150.0 for Nine Men's Morris)",
+        help="scaling for conversion to win on input (default=300 for ±500-scale labels)",
     )
     parser.add_argument(
         "--out-scaling",
-        default=150,
+        default=300,
         type=float,
         dest="out_scaling",
-        help="scaling for conversion to win on input (default=150.0 for Nine Men's Morris)",
+        help="scaling for conversion to win on input (default=300 for ±500-scale labels)",
     )
     parser.add_argument(
         "--gamma",
