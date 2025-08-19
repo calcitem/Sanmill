@@ -168,12 +168,15 @@ class Position {
   }
 
   bool _movePiece(int from, int to) {
-    try {
-      _selectPiece(from);
-      return _putPiece(to);
-    } on GameResponse {
+    // Ensure selecting the piece succeeds before placing it.
+    // Previously this method ignored the return value of _selectPiece
+    // and relied on exceptions, which _selectPiece does not throw.
+    final GameResponse selectResult = _selectPiece(from);
+    if (selectResult is! GameResponseOK) {
       return false;
     }
+
+    return _putPiece(to);
   }
 
   /// Returns a FEN representation of the position.
@@ -1617,35 +1620,41 @@ class Position {
   @visibleForTesting
   String? get movesSinceLastRemove {
     final GameRecorder recorder = GameController().gameRecorder;
-    final List<ExtMove> moves = recorder.mainlineMoves;
-    if (moves.isEmpty) {
+
+    // Build the move list up to (and including) the activeNode, not beyond it.
+    final List<ExtMove> pathMoves = <ExtMove>[];
+    PgnNode<ExtMove>? cur = recorder.activeNode;
+    while (cur != null && cur.parent != null) {
+      if (cur.data != null) {
+        pathMoves.add(cur.data!);
+      }
+      cur = cur.parent;
+    }
+    if (pathMoves.isEmpty) {
       return null;
     }
 
-    // 1) Start from the *end* of mainlineMoves
+    // Reverse to go from root -> activeNode
+    final List<ExtMove> moves = pathMoves.reversed.toList();
+
+    // 1) Start from the end of the truncated list
     int idx = moves.length - 1;
 
-    // 2) Go backwards until we see a remove move (starts with 'x') or run out
+    // 2) Go backwards until the last remove (starts with 'x')
     while (idx >= 0 && !moves[idx].move.startsWith('x')) {
       idx--;
     }
 
-    // 3) Now move one step forward from that remove, so that we collect
-    //    everything *after* the remove
+    // 3) Collect everything after that remove
     idx++;
 
-    // 4) Gather the moves from that point to the end
     final StringBuffer buffer = StringBuffer();
     for (int i = idx; i < moves.length; i++) {
       buffer.writeSpace(moves[i].move);
     }
 
     final String result = buffer.toString();
-    if (result.isEmpty) {
-      return null;
-    }
-
-    return result;
+    return result.isEmpty ? null : result;
   }
 
   // ----------------------------------------------------------------------------------------
