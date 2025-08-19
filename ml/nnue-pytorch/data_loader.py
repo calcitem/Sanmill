@@ -348,9 +348,9 @@ def collate_mill_batch(batch):
     max_black_features = max(len(item['black_indices']) for item in batch)
     
     # Pad sparse features
-    white_indices = torch.zeros((batch_size, max_white_features), dtype=torch.long)
+    white_indices = torch.zeros((batch_size, max_white_features), dtype=torch.int32)
     white_values = torch.zeros((batch_size, max_white_features), dtype=torch.float32)
-    black_indices = torch.zeros((batch_size, max_black_features), dtype=torch.long)
+    black_indices = torch.zeros((batch_size, max_black_features), dtype=torch.int32)
     black_values = torch.zeros((batch_size, max_black_features), dtype=torch.float32)
     
     for i, item in enumerate(batch):
@@ -371,9 +371,9 @@ def collate_mill_batch(batch):
     return (
         us,
         them,
-        white_indices.long(),  # Keep as int64 for consistency
+        white_indices,  # Already int32 from initialization
         white_values,
-        black_indices.long(),  # Keep as int64 for consistency
+        black_indices,  # Already int32 from initialization
         black_values,
         results,  # outcome
         evaluations,  # score
