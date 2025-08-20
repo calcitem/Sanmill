@@ -2290,20 +2290,21 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
         // Helper function to transform rank coordinates for rotation
         auto transformRankForRotation = [&](char rank,
                                             int rotationDegrees) -> char {
-            int r = rank - '1'; // Convert to 0-based index (0-7)
+            int rankIndex = rank - '1'; // Convert to 0-based index (0-7)
 
             if (rotationDegrees == 2) {
                 // Rotate up by 2 positions
-                r = (r + 2) % 8;
+                rankIndex = (rankIndex + 2) % 8;
             } else if (rotationDegrees == 6) {
                 // Rotate down by 2 positions
-                r = (r + 6) % 8;
+                rankIndex = (rankIndex + 6) % 8;
             } else if (rotationDegrees == 4) {
                 // Rotate by 4 positions (opposite)
-                r = (r + 4) % 8;
+                rankIndex = (rankIndex + 4) % 8;
             }
 
-            return static_cast<char>('1' + r); // Convert back to character
+            return static_cast<char>('1' + rankIndex); // Convert back to
+                                                       // character
         };
 
         // Transform move notation string
