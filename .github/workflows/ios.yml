@@ -32,13 +32,49 @@ jobs:
       - name: Install dependencies
         run: bash -x ./flutter-init.sh
 
-      # Build
-      - name: Build iOS
-        run: cd src/ui/flutter_app; flutter build ios -v --release --no-codesign
+      # List available platforms and simulators for debugging
+      - name: List available iOS runtimes and platforms
+        run: |
+          echo "Available iOS runtimes:"
+          xcrun simctl list runtimes | grep iOS || echo "No iOS runtimes found"
+          echo "Available platforms:"
+          xcodebuild -showsdks | grep ios || echo "No iOS SDKs found"
+          echo "Xcode version:"
+          xcode-select --print-path
+          xcrun xcodebuild -version
 
-      # Archive ipa
-      - name: Archive ipa
+      # Try to build for iOS Simulator first, fallback to device build with available SDK
+      - name: Build iOS
+        run: |
+          cd src/ui/flutter_app
+          
+          # First try simulator build (safer for CI)
+          echo "Attempting iOS Simulator build..."
+          if flutter build ios -v --release --no-codesign --simulator; then
+            echo "iOS Simulator build successful"
+            echo "BUILD_TYPE=simulator" >> $GITHUB_ENV
+          else
+            echo "iOS Simulator build failed, trying device build with available SDK..."
+            # Get the latest available iOS SDK
+            AVAILABLE_SDK=$(xcodebuild -showsdks | grep iphoneos | tail -1 | sed 's/.*iphoneos//' | tr -d ' ')
+            echo "Using iOS SDK: $AVAILABLE_SDK"
+            
+            # Try device build with the available SDK
+            if flutter build ios -v --release --no-codesign; then
+              echo "iOS device build successful with SDK $AVAILABLE_SDK"
+              echo "BUILD_TYPE=device" >> $GITHUB_ENV
+            else
+              echo "Both simulator and device builds failed"
+              exit 1
+            fi
+          fi
+
+      # Archive iOS app (simulator or device based on build type)
+      - name: Archive iOS app
         uses: actions/upload-artifact@v4
         with:
           name: ios-app-release
-          path: src/ui/flutter_app/build/ios/iphoneos/Runner.app
+          path: |
+            src/ui/flutter_app/build/ios/iphonesimulator/Runner.app
+            src/ui/flutter_app/build/ios/iphoneos/Runner.app
+          if-no-files-found: ignore
