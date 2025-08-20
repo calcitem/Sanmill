@@ -12,6 +12,7 @@
 #include "tt.h"
 #include "mills.h"
 #include "search.h"
+#include "evaluate.h"
 
 using std::string;
 
@@ -191,6 +192,20 @@ static void on_threefoldRepetitionRule(const Option &o)
     rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
 
+// NNUE options
+static void on_useNNUE(const Option &o)
+{
+    Eval::useNNUE = static_cast<bool>(o);
+}
+
+static void on_evalFile(const Option &o)
+{
+    Eval::evalFile = static_cast<std::string>(o);
+    if (!Eval::evalFile.empty() && Eval::useNNUE) {
+        Eval::init_nnue();
+    }
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string &s1, const string &s2) const
 {
@@ -267,6 +282,10 @@ void init(OptionsMap &o)
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
+    
+    // NNUE options
+    o["UseNNUE"] << Option(false, on_useNNUE);
+    o["EvalFile"] << Option("", on_evalFile);
 }
 
 /// operator<<() is used to print all the options default values in

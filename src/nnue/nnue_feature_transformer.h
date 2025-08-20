@@ -405,11 +405,16 @@ namespace Stockfish::Eval::NNUE {
         // Gather all features to be updated.
         const Square ksq = SQ_A1; // Unused anchor for Nine Men's Morris
         IndexList removed[2], added[2];
+        ValueListInserter<IndexType> removed_inserter0(removed[0]);
+        ValueListInserter<IndexType> added_inserter0(added[0]);
+        ValueListInserter<IndexType> removed_inserter1(removed[1]);
+        ValueListInserter<IndexType> added_inserter1(added[1]);
+        
         FeatureSet::append_changed_indices(
-          ksq, next, perspective, removed[0], added[0], pos);
+          ksq, next, perspective, removed_inserter0, added_inserter0, pos);
         for (StateInfo *st2 = pos.state(); st2 != next; st2 = st2->previous)
           FeatureSet::append_changed_indices(
-            ksq, st2, perspective, removed[1], added[1], pos);
+            ksq, st2, perspective, removed_inserter1, added_inserter1, pos);
 
         // Mark the accumulators as computed.
         next->accumulator.computed[perspective] = true;
@@ -535,7 +540,8 @@ namespace Stockfish::Eval::NNUE {
         auto& accumulator = pos.state()->accumulator;
         accumulator.computed[perspective] = true;
         IndexList active;
-        FeatureSet::append_active_indices(pos, perspective, active);
+        ValueListInserter<IndexType> active_inserter(active);
+        FeatureSet::append_active_indices(pos, perspective, active_inserter);
 
   #ifdef VECTOR
         for (IndexType j = 0; j < HalfDimensions / TileHeight; ++j)

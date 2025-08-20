@@ -71,6 +71,7 @@ add_library( # Sets the name of the library.
         ../../../../thread_pool.cpp
         ../../../../opening_book.cpp
         ../../../../nnue/features/nine_mill.cpp
+        ../../../../nnue/evaluate_nnue.cpp
         ../../../../perfect/perfect_adaptor.cpp
         ../../../../perfect/perfect_api.cpp
         ../../../../perfect/perfect_common.cpp

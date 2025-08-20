@@ -34,7 +34,8 @@ PGOBENCH = ./$(EXE) bench
 
 ### Source and object files
 PERFECT_SRCS = $(wildcard perfect/*.cpp)
-SRCS = $(PERFECT_SRCS) $(wildcard *.cpp)
+NNUE_SRCS = $(wildcard nnue/*.cpp) $(wildcard nnue/features/*.cpp)
+SRCS = $(PERFECT_SRCS) $(NNUE_SRCS) $(wildcard *.cpp)
 
 OBJS = $(SRCS:.cpp=.o)
 

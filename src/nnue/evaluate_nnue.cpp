@@ -59,7 +59,11 @@ namespace Stockfish::Eval::NNUE {
   void initialize(LargePagePtr<T>& pointer) {
 
     static_assert(alignof(T) <= 4096, "aligned_large_pages_alloc() may fail for such a big alignment requirement of T");
+#ifdef ALIGNED_LARGE_PAGES
     pointer.reset(reinterpret_cast<T*>(aligned_large_pages_alloc(sizeof(T))));
+#else
+    pointer.reset(reinterpret_cast<T*>(std_aligned_alloc(alignof(T), sizeof(T))));
+#endif
     std::memset(pointer.get(), 0, sizeof(T));
   }
 
@@ -140,6 +144,7 @@ namespace Stockfish::Eval::NNUE {
 
   // Evaluation function. Perform differential calculation.
   Value evaluate(const Position& pos, bool adjusted) {
+    (void)adjusted; // Suppress unused parameter warning
 
     // We manually align the arrays on the stack because with gcc < 9.3
     // overaligning stack variables with alignas() doesn't work correctly.
@@ -333,6 +338,8 @@ namespace Stockfish::Eval::NNUE {
         Piece pc = pos.piece_on(sq);
         Piece unpromotedPc = pc;
         bool isPromoted = false;
+        (void)unpromotedPc; // Suppress unused variable warning
+        (void)isPromoted;   // Suppress unused variable warning
         Value v = VALUE_NONE;
 
         if (pc != NO_PIECE)

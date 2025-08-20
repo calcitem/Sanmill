@@ -9,6 +9,29 @@
 #include "thread.h"
 #include "position.h"
 #include "perfect_api.h"
+#include "nnue/evaluate_nnue.h"
+#include "nnue/nnue_common.h"
+#include <iostream>
+#include <fstream>
+
+namespace Eval {
+
+// NNUE evaluation settings
+bool useNNUE = false;
+std::string evalFile = "";
+
+void init_nnue()
+{
+    if (!evalFile.empty()) {
+        std::ifstream stream(evalFile, std::ios::binary);
+        // Use assert to surface errors rather than mask them
+        assert(stream.is_open() && "Failed to open NNUE model file");
+        assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
+        sync_cout << "info string NNUE model loaded from " << evalFile << sync_endl;
+    }
+}
+
+} // namespace Eval
 
 namespace {
 
@@ -150,5 +173,29 @@ Value Evaluation::value() const
 
 Value Eval::evaluate(Position &pos)
 {
+    // First try perfect database if available
+    if (gameOptions.getUsePerfectDatabase()) {
+        Value perfectValue = PerfectAPI::getValue(pos);
+        if (perfectValue != VALUE_NONE) {
+            return perfectValue;
+        }
+    }
+    
+    // Then try NNUE evaluation if enabled
+    if (useNNUE && !evalFile.empty()) {
+        // Ensure NNUE is initialized
+        static bool nnueInitialized = false;
+        if (!nnueInitialized) {
+            std::ifstream stream(evalFile, std::ios::binary);
+            // Use assert to surface errors rather than mask them
+            assert(stream.is_open() && "Failed to open NNUE model file");
+            assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
+            nnueInitialized = true;
+        }
+        
+        return Stockfish::Eval::NNUE::evaluate(pos, false);
+    }
+    
+    // Fall back to traditional evaluation only if NNUE is disabled
     return Evaluation(pos).value();
 }

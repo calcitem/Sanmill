@@ -44,7 +44,11 @@ namespace Stockfish::Eval::NNUE {
   struct LargePageDeleter {
     void operator()(T* ptr) const {
       ptr->~T();
+#ifdef ALIGNED_LARGE_PAGES
       aligned_large_pages_free(ptr);
+#else
+      std_aligned_free(ptr);
+#endif
     }
   };
 
@@ -53,6 +57,12 @@ namespace Stockfish::Eval::NNUE {
 
   template <typename T>
   using LargePagePtr = std::unique_ptr<T, LargePageDeleter<T>>;
+
+  // Function declarations
+  void initialize();
+  bool load_eval(std::string name, std::istream& stream);
+  bool save_eval(std::ostream& stream);
+  Value evaluate(const Position& pos, bool adjusted = false);
 
 }  // namespace Stockfish::Eval::NNUE
 

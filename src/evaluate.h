@@ -16,6 +16,11 @@ namespace Eval {
 
 Value evaluate(Position &pos);
 
+// NNUE evaluation
+extern bool useNNUE;
+extern std::string evalFile;
+void init_nnue();
+
 }
 
 #endif // #ifndef EVALUATE_H_INCLUDED

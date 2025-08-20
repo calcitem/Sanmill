@@ -63,6 +63,9 @@ source_group("Source Files\\Test" FILES ${SOURCES_TEST})
 file(GLOB SOURCES_PERFECT ../../perfect/*.cpp ../../perfect/*.h)
 source_group("Source Files\\Perfect" FILES ${SOURCES_PERFECT})
 
+file(GLOB SOURCES_NNUE ../../nnue/*.cpp ../../nnue/*.h ../../nnue/features/*.cpp ../../nnue/features/*.h)
+source_group("Source Files\\NNUE" FILES ${SOURCES_NNUE})
+
 file(GLOB FORMS *.ui)
 file(GLOB RESOURCE_FILES *.rc *.qrc)
 
@@ -93,6 +96,7 @@ set(all_sources
 )
 
 list(APPEND all_sources ${SOURCES_PERFECT})
+list(APPEND all_sources ${SOURCES_NNUE})
 
 # Link libraries and set properties for automatic Qt handling
 add_executable(${PROJECT_NAME} ${all_sources})
