@@ -2,10 +2,10 @@
   NNUE feature set for Nine Men's Morris
 
   This feature set mirrors ml/nnue-pytorch/features_mill.py (NineMillFeatures):
-  - Board has 24 valid points (indices SQ_8..SQ_31 → 0..23 here)
+  - Board has 24 valid points (indices SQ_8..SQ_31 -> 0..23 here)
   - Two piece types (white/black stones)
   - Anchored representation: for each anchor (24), encode all piece placements
-    in planes of size (2 piece types × 24 positions) → 24 × (2 × 24) = 1152
+    in planes of size (2 piece types x 24 positions) -> 24 x (2 x 24) = 1152
     input features per perspective
 */
 
@@ -14,6 +14,7 @@
 
 #include "../nnue_common.h"
 
+// Include position.h for complete type definitions needed by inline methods
 #include "../../position.h"
 
 namespace Stockfish::Eval::NNUE::Features {
@@ -32,7 +33,7 @@ namespace Stockfish::Eval::NNUE::Features {
     // Total feature dimensions per perspective
     static constexpr IndexType Dimensions = NumSquares * NumPlanes;     // 24 * 48 = 1152
 
-    // We activate one feature per (anchor, piece) → at most 24 anchors × 24 pieces = 576
+    // We activate one feature per (anchor, piece) -> at most 24 anchors x 24 pieces = 576
     static constexpr IndexType MaxActiveDimensions = 24 * 24;           // 576
 
     static IndexType get_dimensions() { return Dimensions; }
@@ -45,7 +46,7 @@ namespace Stockfish::Eval::NNUE::Features {
     {
       (void)perspective; // Perspective does not change indices for symmetric stones
 
-      // Iterate all board anchors (SQ_8..SQ_31 → 0..23)
+      // Iterate all board anchors (SQ_8..SQ_31 -> 0..23)
       for (Square anchorSq = SQ_BEGIN; anchorSq < SQ_END; ++anchorSq) {
         const IndexType anchor = static_cast<IndexType>(anchorSq - SQ_BEGIN);
 
