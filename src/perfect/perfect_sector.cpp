@@ -321,7 +321,9 @@ void Sector::allocate_hash()
         fileName, W, B, estimated_memory / (1024.0 * 1024.0));
 #endif
 
+#ifdef DEBUG
     auto start_time = std::chrono::high_resolution_clock::now();
+#endif
 
     // and read em_set (should be renamed)
     hash = new Hash(W, B, this);
@@ -333,9 +335,8 @@ void Sector::allocate_hash()
         return;
     }
 
-    auto end_time = std::chrono::high_resolution_clock::now();
-
 #ifdef DEBUG
+    auto end_time = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
         end_time - start_time);
     LOG("Hash allocation completed for %s in %lld ms\n", fileName,
