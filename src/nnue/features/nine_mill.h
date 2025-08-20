@@ -14,8 +14,9 @@
 
 #include "../nnue_common.h"
 
-// Include position.h for complete type definitions needed by inline methods
-#include "../../position.h"
+// Forward declarations to avoid circular includes. Full definitions are in position.h
+class Position;
+struct StateInfo;
 
 namespace Stockfish::Eval::NNUE::Features {
 
@@ -42,50 +43,22 @@ namespace Stockfish::Eval::NNUE::Features {
     static void append_active_indices(
       const Position& pos,
       Color perspective,
-      ValueListInserter<IndexType> active)
-    {
-      (void)perspective; // Perspective does not change indices for symmetric stones
-
-      // Iterate all board anchors (SQ_8..SQ_31 -> 0..23)
-      for (Square anchorSq = SQ_BEGIN; anchorSq < SQ_END; ++anchorSq) {
-        const IndexType anchor = static_cast<IndexType>(anchorSq - SQ_BEGIN);
-
-        // Enumerate stones on board once and emit per-anchor indices
-        for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
-          const Piece pc = pos.piece_on(s);
-          if (pc == NO_PIECE || pc == MARKED_PIECE) continue;
-
-          const Color c = color_of(pc);
-          const IndexType pieceType = (c == WHITE ? 0 : 1); // 0=white,1=black
-          const IndexType piecePos = static_cast<IndexType>(s - SQ_BEGIN); // 0..23
-
-          const IndexType idx = anchor * NumPlanes
-                               + pieceType * NumSquares
-                               + piecePos;
-          active.push_back(idx);
-        }
-      }
-    }
+      ValueListInserter<IndexType> active);
 
     // For simplicity we force full refreshes. No incremental update list.
     static void append_changed_indices(
-      Square /*ksq*/,
-      StateInfo* /*st*/,
-      Color /*perspective*/,
-      ValueListInserter<IndexType> /*removed*/,
-      ValueListInserter<IndexType> /*added*/,
-      const Position& /*pos*/)
-    {
-      // Intentionally left empty. We will always refresh the accumulator.
-    }
+      Square ksq,
+      StateInfo* st,
+      Color perspective,
+      ValueListInserter<IndexType> removed,
+      ValueListInserter<IndexType> added,
+      const Position& pos);
 
-    static int update_cost(StateInfo* /*st*/) { return 0; }
-    static int refresh_cost(const Position& /*pos*/) { return static_cast<int>(MaxActiveDimensions); }
+    static int update_cost(StateInfo* st);
+    static int refresh_cost(const Position& pos);
 
     // Always refresh for Nine Men's Morris; we do not track dirty pieces here.
-    static bool requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& /*pos*/) {
-      return true;
-    }
+    static bool requires_refresh(StateInfo* st, Color perspective, const Position& pos);
   };
 
 } // namespace Stockfish::Eval::NNUE::Features

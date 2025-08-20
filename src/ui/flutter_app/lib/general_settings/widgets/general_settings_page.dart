@@ -94,6 +94,13 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag aiIsLazy: $value");
   }
 
+  /// Toggle NNUE engine evaluation
+  void _setNnueEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(nnueEnabled: value);
+
+    logger.t("$_logTag nnueEnabled: $value");
+  }
+
   void _setAlgorithm(BuildContext context, GeneralSettings generalSettings) {
     void callback(SearchAlgorithm? searchAlgorithm) {
       DB().generalSettings =
@@ -432,6 +439,19 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).usePerfectDatabase,
                 subtitleString: perfectDatabaseDescriptionFistLine,
+              ),
+            if (!kIsWeb)
+              SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_use_nnue'),
+                value: generalSettings.nnueEnabled,
+                onChanged: (bool val) {
+                  _setNnueEnabled(generalSettings, val);
+                },
+                titleString: 'Use NNUE',
+                // Show a concise explanation; localized strings can be added later if needed
+                subtitleString:
+                    'Enable neural network evaluation if a model is available',
               ),
             SettingsListTile.switchTile(
               key: const Key(

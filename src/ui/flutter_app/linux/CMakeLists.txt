@@ -123,7 +123,7 @@ add_executable(${BINARY_NAME}
   "../../../opening_book.cpp"
   "../../../search_engine.cpp"
   "../../../thread_pool.cpp"
-  "../../../perfect/perfect_adaptor.cpp"
+  "../../../nnue/features/nine_mill.cpp"
   "../../../perfect/perfect_api.cpp"
   "../../../perfect/perfect_adaptor.cpp"
   "../../../perfect/perfect_common.cpp"
