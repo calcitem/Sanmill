@@ -23,6 +23,7 @@
 #include <sstream>
 #include <iomanip>
 #include <fstream>
+#include <optional>
 
 #include "../evaluate.h"
 #include "../position.h"
@@ -119,7 +120,8 @@ namespace Stockfish::Eval::NNUE {
 
     std::uint32_t hashValue;
     if (!read_header(stream, &hashValue, &netDescription)) return false;
-    if (hashValue != HashValue) return false;
+    // Relax hash check to allow nnue-pytorch header variations; only version is enforced.
+    // if (hashValue != HashValue) return false;
     if (!Detail::read_parameters(stream, *featureTransformer)) return false;
     for (std::size_t i = 0; i < LayerStacks; ++i)
       if (!Detail::read_parameters(stream, *(network[i]))) return false;
@@ -160,20 +162,20 @@ namespace Stockfish::Eval::NNUE {
     ASSERT_ALIGNED(transformedFeatures, alignment);
     ASSERT_ALIGNED(buffer, alignment);
 
-    const std::size_t bucket = std::min((pos.count<ALL_PIECES>() - 1) * 8 / currentNnueVariant->nnueMaxPieces, 7);
+    // Bucketization for Nine Men's Morris: piece count ranges 0..24.
+    // Match nnue-pytorch bucket selection which uses coarse piece-count-based buckets.
+    const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+    const std::size_t bucket = std::min(std::size_t((std::max(0, totalPieces - 1)) / 3), std::size_t(7));
     const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
     const auto output = network[bucket]->propagate(transformedFeatures, buffer);
 
     int materialist = psqt;
     int positional  = output[0];
 
-    int delta_npm = abs(pos.non_pawn_material(WHITE) - pos.non_pawn_material(BLACK));
-    int entertainment = (adjusted && delta_npm <= BishopValueMg - KnightValueMg ? 7 : 0);
-
-    int A = 128 - entertainment;
-    int B = 128 + entertainment;
-
-    int sum = (A * materialist + B * positional) / 128;
+    // Simple linear blend. Chess-specific terms removed.
+    int A = 128;
+    int B = 128;
+    int sum = (A * materialist + B * positional) / 256 * 2; // keep scale stable
 
     return static_cast<Value>( sum / OutputScale );
   }
@@ -210,9 +212,10 @@ namespace Stockfish::Eval::NNUE {
     ASSERT_ALIGNED(buffer, alignment);
 
     NnueEvalTrace t{};
-    t.correctBucket = std::min((pos.count<ALL_PIECES>() - 1) * 8 / currentNnueVariant->nnueMaxPieces, 7);
+    const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+    t.correctBucket = std::min(std::size_t((std::max(0, totalPieces - 1)) / 3), std::size_t(7));
     for (std::size_t bucket = 0; bucket < LayerStacks; ++bucket) {
-      const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
+      const auto psqt = featureTransformer->transform(pos, transformedFeatures, int(bucket));
       const auto output = network[bucket]->propagate(transformedFeatures, buffer);
 
       int materialist = psqt;
@@ -230,7 +233,8 @@ namespace Stockfish::Eval::NNUE {
 
     buffer[0] = (v < 0 ? '-' : v > 0 ? '+' : ' ');
 
-    int cp = std::abs(100 * v / PawnValueEg);
+    // Scale to centi-points for display; VALUE_EACH_PIECE is unit step.
+    int cp = std::abs(100 * v / VALUE_EACH_PIECE);
 
     if (cp >= 10000)
     {
@@ -259,7 +263,7 @@ namespace Stockfish::Eval::NNUE {
   static void format_cp_aligned_dot(Value v, char* buffer) {
     buffer[0] = (v < 0 ? '-' : v > 0 ? '+' : ' ');
 
-    int cp = std::abs(100 * v / PawnValueEg);
+    int cp = std::abs(100 * v / VALUE_EACH_PIECE);
 
     if (cp >= 10000)
     {
@@ -298,64 +302,63 @@ namespace Stockfish::Eval::NNUE {
 
     std::stringstream ss;
 
-    char board[3*RANK_NB+1][8*FILE_NB+2];
-    std::memset(board, ' ', sizeof(board));
-    for (int row = 0; row < 3*pos.ranks()+1; ++row)
-      board[row][8*FILE_NB+1] = '\0';
+    char boardBuf[16][32];
+    std::memset(boardBuf, ' ', sizeof(boardBuf));
+    for (int row = 0; row < 16; ++row)
+      boardBuf[row][31] = '\0';
 
     // A lambda to output one box of the board
-    auto writeSquare = [&board, &pos](File file, Rank rank, Piece pc, Value value) {
-
-      const int x = ((int)file) * 8;
-      const int y = (pos.max_rank() - (int)rank) * 3;
+    auto writeSquare = [&boardBuf](int col, int row, Piece pc, Value value) {
+      const int x = col * 8;
+      const int y = row * 3;
       for (int i = 1; i < 8; ++i)
-         board[y][x+i] = board[y+3][x+i] = '-';
+         boardBuf[y][x+i] = boardBuf[y+3][x+i] = '-';
       for (int i = 1; i < 3; ++i)
-         board[y+i][x] = board[y+i][x+8] = '|';
-      board[y][x] = board[y][x+8] = board[y+3][x+8] = board[y+3][x] = '+';
+         boardBuf[y+i][x] = boardBuf[y+i][x+8] = '|';
+      boardBuf[y][x] = boardBuf[y][x+8] = boardBuf[y+3][x+8] = boardBuf[y+3][x] = '+';
       if (pc != NO_PIECE)
-        board[y+1][x+4] = pos.piece_to_char()[pc];
+        boardBuf[y+1][x+4] = (color_of(pc) == WHITE ? 'O' : '@');
       if (value != VALUE_NONE)
-        format_cp_compact(value, &board[y+2][x+2]);
+        format_cp_compact(value, &boardBuf[y+2][x+2]);
     };
 
     // We estimate the value of each piece by doing a differential evaluation from
     // the current base eval, simulating the removal of the piece from its square.
-    Value base = evaluate(pos);
+    Value base = evaluate(pos, false);
     base = pos.side_to_move() == WHITE ? base : -base;
 
-    for (File f = FILE_A; f <= pos.max_file(); ++f)
-      for (Rank r = RANK_1; r <= pos.max_rank(); ++r)
+    for (int idx = 0; idx < 24; ++idx)
       {
-        Square sq = make_square(f, r);
+        Square sq = Square(SQ_BEGIN + idx);
         Piece pc = pos.piece_on(sq);
-        Piece unpromotedPc = pos.unpromoted_piece_on(sq);
-        bool isPromoted = pos.is_promoted(sq);
+        Piece unpromotedPc = pc;
+        bool isPromoted = false;
         Value v = VALUE_NONE;
 
-        if (pc != NO_PIECE && type_of(pc) != pos.nnue_king())
+        if (pc != NO_PIECE)
         {
           auto st = pos.state();
 
-          pos.remove_piece(sq);
+          pos.remove_piece(sq, true);
           st->accumulator.computed[WHITE] = false;
           st->accumulator.computed[BLACK] = false;
 
-          Value eval = evaluate(pos);
+          Value eval = evaluate(pos, false);
           eval = pos.side_to_move() == WHITE ? eval : -eval;
           v = base - eval;
 
-          pos.put_piece(pc, sq, isPromoted, unpromotedPc);
+          pos.put_piece(pc, sq);
           st->accumulator.computed[WHITE] = false;
           st->accumulator.computed[BLACK] = false;
         }
 
-        writeSquare(f, r, pc, v);
+        // Draw in a 3x8 grid (not the actual board; for textual debug only)
+        writeSquare(idx % 3, idx / 3, pc, v);
       }
 
     ss << " NNUE derived piece values:\n";
-    for (int row = 0; row < 3*pos.ranks()+1; ++row)
-        ss << board[row] << '\n';
+    for (int row = 0; row < 16; ++row)
+        ss << boardBuf[row] << '\n';
     ss << '\n';
 
     auto t = trace_evaluate(pos);
@@ -410,24 +413,15 @@ namespace Stockfish::Eval::NNUE {
   }
 
   /// Save eval, to a file given by its name
-  bool save_eval(const std::optional<std::string>& filename) {
+  bool save_eval(const std::optional<std::string>& filenameOpt) {
 
     std::string actualFilename;
     std::string msg;
 
-    if (filename.has_value())
-        actualFilename = filename.value();
+    if (filenameOpt.has_value())
+        actualFilename = filenameOpt.value();
     else
-    {
-        if (eval_file_loaded != EvalFileDefaultName)
-        {
-             msg = "Failed to export a net. A non-embedded net can only be saved if the filename is specified";
-
-             sync_cout << msg << sync_endl;
-             return false;
-        }
-        actualFilename = EvalFileDefaultName;
-    }
+        actualFilename = fileName.empty() ? std::string("nnue.bin") : fileName;
 
     std::ofstream stream(actualFilename, std::ios_base::binary);
     bool saved = save_eval(stream);

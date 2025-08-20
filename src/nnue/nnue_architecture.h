@@ -23,7 +23,7 @@
 
 #include "nnue_common.h"
 
-#include "features/half_ka_v2_variants.h"
+#include "features/nine_mill.h"
 
 #include "layers/input_slice.h"
 #include "layers/affine_transform.h"
@@ -31,11 +31,14 @@
 
 namespace Stockfish::Eval::NNUE {
 
-  // Input features used in evaluation function
-  using FeatureSet = Features::HalfKAv2Variants;
+  // Input features used in evaluation function (Nine Men's Morris)
+  using FeatureSet = Features::NineMill;
 
   // Number of input feature dimensions after conversion
-  constexpr IndexType TransformedFeatureDimensions = 512;
+  // Transformed feature width per perspective. Must match PyTorch L1.
+  // Nine Men's Morris trainer uses L1 = 1536 (per perspective), so total input
+  // to the first FC is 2 * 1536.
+  constexpr IndexType TransformedFeatureDimensions = 1536;
   constexpr IndexType PSQTBuckets = 8;
   constexpr IndexType LayerStacks = 8;
 
@@ -43,6 +46,7 @@ namespace Stockfish::Eval::NNUE {
 
     // Define network structure
     using InputLayer = InputSlice<TransformedFeatureDimensions * 2>;
+    // Hidden sizes matched to smaller Nine Men's Morris model
     using HiddenLayer1 = ClippedReLU<AffineTransform<InputLayer, 16>>;
     using HiddenLayer2 = ClippedReLU<AffineTransform<HiddenLayer1, 32>>;
     using OutputLayer = AffineTransform<HiddenLayer2, 1>;

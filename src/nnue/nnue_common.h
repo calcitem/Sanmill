@@ -25,6 +25,7 @@
 #include <iostream>
 
 #include "../misc.h"  // for IsLittleEndian
+#include "../types.h"  // for basic engine types
 
 #if defined(USE_AVX2)
 #include <immintrin.h>
@@ -46,11 +47,44 @@
 #endif
 
 namespace Stockfish::Eval::NNUE {
+  // Lightweight fixed-capacity list of indices used during feature collection.
+  template <typename T, std::size_t Capacity>
+  struct ValueList {
+    T data[Capacity];
+    std::size_t size_ {0};
+    void push_back(T v) {
+      // Use asserts to surface misuse during development
+      assert(size_ < Capacity);
+      data[size_++] = v;
+    }
+    const T* begin() const { return data; }
+    const T* end() const { return data + size_; }
+  };
+
+  // Inserter compatible with ValueList; template parameter is element type.
+  template <typename T>
+  struct ValueListInserter {
+    T* data {nullptr};
+    std::size_t* size_ptr {nullptr};
+    std::size_t capacity {0};
+
+    template <std::size_t N>
+    explicit ValueListInserter(ValueList<T, N>& list)
+      : data(list.data), size_ptr(&list.size_), capacity(N) {}
+
+    void push_back(T v) {
+      assert(*size_ptr < capacity);
+      data[(*size_ptr)++] = v;
+    }
+    const T* begin() const { return data; }
+    const T* end() const { return data + *size_ptr; }
+  };
 
   // Version of the evaluation file
   constexpr std::uint32_t Version = 0x7AF32F20u;
 
   // Constant used in evaluation value calculation
+  // Scale factor adapted for Nine Men's Morris models serialized by nnue-pytorch
   constexpr int OutputScale = 16;
   constexpr int WeightScaleBits = 6;
 

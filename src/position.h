@@ -20,6 +20,7 @@
 #include "stack.h"
 #include "types.h"
 #include "movegen.h"
+#include "nnue/nnue_accumulator.h"
 
 #ifdef NNUE_GENERATE_TRAINING_DATA
 #include <ostream>
@@ -42,6 +43,10 @@ struct StateInfo
 
     // Not copied when making a move (will be recomputed anyhow)
     Key key;
+
+    // NNUE support: previous pointer for incremental chains and accumulator
+    StateInfo* previous {nullptr};
+    Stockfish::Eval::NNUE::Accumulator accumulator {};
 };
 
 /// Position class stores information regarding the board representation as
@@ -106,6 +111,9 @@ public:
     bool has_game_cycle() const;
     bool has_repeated(Sanmill::Stack<Position> &ss) const;
     unsigned int rule50_count() const;
+
+    // NNUE support
+    inline StateInfo* state() const { return const_cast<StateInfo*>(&st); }
 
     /// Mill Game
 
