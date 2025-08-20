@@ -399,6 +399,34 @@ class Engine {
 
     // Control via environment configuration
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
+
+    // NNUE options
+    // If enabled and no path provided, try to deploy bundled asset to app storage.
+    if (generalSettings.nnueEnabled) {
+      String modelPath = generalSettings.nnueModelPath;
+      if (modelPath.isEmpty) {
+        try {
+          final String? deployed =
+              await NnueModelService.ensureNnueModelDeployed();
+          if (deployed != null && deployed.isNotEmpty) {
+            // Persist discovered path to settings to avoid repeated copies on next startup
+            DB().generalSettings = DB().generalSettings.copyWith(
+                  nnueModelPath: deployed,
+                );
+            modelPath = deployed;
+          }
+        } catch (e) {
+          logger.w("$_logTag NNUE deploy failed: $e");
+        }
+      }
+
+      await _sendOptions("UseNNUE", true);
+      if (modelPath.isNotEmpty) {
+        await _sendOptions("EvalFile", modelPath);
+      }
+    } else {
+      await _sendOptions("UseNNUE", false);
+    }
   }
 
   Future<void> setRuleOptions() async {

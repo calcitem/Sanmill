@@ -51,6 +51,7 @@ import "gif_share/gif_share.dart";
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
 import 'player_timer.dart';
+import '../../shared/services/nnue_model_service.dart';
 
 part 'controller/game_controller.dart';
 part 'controller/game_recorder.dart';

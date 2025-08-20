@@ -6,6 +6,8 @@ python generate_training_data.py --perfect-db "E:\Malom\Malom_Standard_Ultra-str
 
 python train.py training_data.txt --validation-data validation_data.txt --features "NineMill" --batch-size 8192 --max_epochs 400 --in-offset 0 --out-offset 0 --in-scaling 300 --out-scaling 300
 
-python nnue_pit.py --config nnue_pit_config.json --gui  
+python nnue_pit.py --config nnue_pit_config.json --gui
+
+python serialize.py logs/checkpoints/last.ckpt ../../src/ui/flutter_app/assets/nnue/mill.nnue --features NineMill --ft_compression leb128
 
 @pause

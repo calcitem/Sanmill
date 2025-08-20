@@ -157,6 +157,9 @@ class GeneralSettings {
     this.llmApiKey = '',
     this.llmBaseUrl = '',
     this.llmTemperature = 0.7,
+    // NNUE: enable/disable and optional bundled model asset target path once deployed
+    this.nnueEnabled = false,
+    this.nnueModelPath = '',
   });
 
   /// Encodes a Json style map into a [GeneralSettings] object
@@ -294,6 +297,14 @@ class GeneralSettings {
 
   @HiveField(39, defaultValue: 0.7)
   final double llmTemperature;
+
+  /// NNUE enable toggle
+  @HiveField(40, defaultValue: false)
+  final bool nnueEnabled;
+
+  /// Deployed NNUE model path (absolute). Stored to avoid repeated copying on startup.
+  @HiveField(41, defaultValue: "")
+  final String nnueModelPath;
 
   /// Decodes a Json from a [GeneralSettings] object
   Map<String, dynamic> toJson() => _$GeneralSettingsToJson(this);
