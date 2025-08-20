@@ -334,10 +334,10 @@ void Sector::allocate_hash()
     }
 
     auto end_time = std::chrono::high_resolution_clock::now();
-    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
-        end_time - start_time);
 
 #ifdef DEBUG
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(
+        end_time - start_time);
     LOG("Hash allocation completed for %s in %lld ms\n", fileName,
         duration.count());
 #endif
