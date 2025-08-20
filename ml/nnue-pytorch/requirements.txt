@@ -4,7 +4,9 @@ GPUtil
 python-chess==0.31.4
 matplotlib
 tensorboard
+protobuf>=3.20.0
 numba
 numpy<2.0
 requests
 pytorch-lightning
+triton>=2.0.0

@@ -113,13 +113,15 @@ class MillTrainingDataset(Dataset):
     """
     
     def __init__(self, data_files: List[str], feature_set, max_positions: Optional[int] = None, 
-                 use_perfect_db_format: bool = True, batch_load_size: int = 100000):
+                 use_perfect_db_format: bool = True, batch_load_size: int = 100000, 
+                 dataset_type: str = "training"):
         self.feature_set = feature_set
         self.use_perfect_db_format = use_perfect_db_format
         self.positions = []
         self.evaluations = []
         self.results = []
         self.batch_load_size = batch_load_size  # Load data in batches to manage memory
+        self.dataset_type = dataset_type  # "training" or "validation"
         
         # Load training data from files
         if use_perfect_db_format:
@@ -135,7 +137,7 @@ class MillTrainingDataset(Dataset):
                 positions_from_file = self._load_from_file(file_path, max_positions - total_loaded if max_positions else None)
                 total_loaded += len(positions_from_file)
             
-        print(f"Loaded {len(self.positions)} training positions")
+        print(f"Loaded {len(self.positions)} {self.dataset_type} positions")
     
     def _load_perfect_db_data_in_batches(self, data_files: List[str], max_positions: Optional[int] = None):
         """Load Perfect DB data in batches to manage memory usage."""
@@ -466,7 +468,8 @@ def load_perfect_db_training_data(data_files: List[str], max_positions: Optional
 
 def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int = 16384, 
                            max_positions: Optional[int] = None, shuffle: bool = True, 
-                           num_workers: int = 0, use_perfect_db_format: bool = True) -> DataLoader:
+                           num_workers: int = 0, use_perfect_db_format: bool = True,
+                           dataset_type: str = "training") -> DataLoader:
     """
     Create a DataLoader for Nine Men's Morris training data.
     
@@ -478,11 +481,13 @@ def create_mill_data_loader(data_files: List[str], feature_set, batch_size: int 
         shuffle: Whether to shuffle the data
         num_workers: Number of worker processes for data loading
         use_perfect_db_format: Whether to use Perfect DB generated format
+        dataset_type: Type of dataset ("training" or "validation")
         
     Returns:
         DataLoader instance
     """
-    dataset = MillTrainingDataset(data_files, feature_set, max_positions, use_perfect_db_format)
+    dataset = MillTrainingDataset(data_files, feature_set, max_positions, use_perfect_db_format, 
+                                 batch_load_size=100000, dataset_type=dataset_type)
     
     return DataLoader(
         dataset,

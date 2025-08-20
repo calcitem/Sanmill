@@ -13,6 +13,11 @@ from torch.utils.data import DataLoader, Dataset
 import time
 from datetime import timedelta
 
+# Enable Tensor Cores optimization for better performance on CUDA devices
+if torch.cuda.is_available():
+    torch.set_float32_matmul_precision('high')
+    print("✅ Tensor Cores optimization enabled (float32 matmul precision set to 'high')")
+
 import warnings
 
 warnings.filterwarnings("ignore", ".*does not have many workers.*")
@@ -66,7 +71,8 @@ def make_data_loaders(
             batch_size=batch_size,
             shuffle=True,
             num_workers=0,  # Set to 0 for Nine Men's Morris
-            use_perfect_db_format=use_perfect_db_format
+            use_perfect_db_format=use_perfect_db_format,
+            dataset_type="training"
         )
         
         val_dataset = create_mill_data_loader(
@@ -75,7 +81,8 @@ def make_data_loaders(
             batch_size=batch_size,
             shuffle=False,
             num_workers=0,
-            use_perfect_db_format=use_perfect_db_format
+            use_perfect_db_format=use_perfect_db_format,
+            dataset_type="validation"
         )
         
         # Recreate with drop_last=True to ensure consistent batch sizes
