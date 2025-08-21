@@ -44,10 +44,10 @@ namespace Stockfish::Eval::NNUE {
 
   namespace Layers {
 
-    // Define network structure
-    using InputLayer = InputSlice<TransformedFeatureDimensions * 2>;
-    // Hidden sizes matched to smaller Nine Men's Morris model
-    using HiddenLayer1 = ClippedReLU<AffineTransform<InputLayer, 16>>;
+    // Define network structure  
+    using InputLayer = InputSlice<TransformedFeatureDimensions>;
+    // Hidden sizes matched to Nine Men's Morris model (1536 input -> 15 -> 32 -> 1)
+    using HiddenLayer1 = ClippedReLU<AffineTransform<InputLayer, 15>>;
     using HiddenLayer2 = ClippedReLU<AffineTransform<HiddenLayer1, 32>>;
     using OutputLayer = AffineTransform<HiddenLayer2, 1>;
 

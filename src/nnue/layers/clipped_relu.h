@@ -182,6 +182,10 @@ namespace Stockfish::Eval::NNUE::Layers {
       return output;
     }
 
+    // Expose previous layer for nested readers/writers
+    PreviousLayer& previous() { return previousLayer; }
+    const PreviousLayer& previous() const { return previousLayer; }
+
    private:
     PreviousLayer previousLayer;
   };

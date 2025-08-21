@@ -25,12 +25,65 @@
 #include "nnue_architecture.h"
 
 #include <cstring> // std::memset()
+#include <vector>
 
 namespace Stockfish::Eval::NNUE {
 
   using BiasType       = std::int16_t;
   using WeightType     = std::int16_t;
   using PSQTWeightType = std::int32_t;
+  // Helper: read tensor possibly encoded with COMPRESSED_LEB128, otherwise raw little-endian array
+  template <typename IntType>
+  inline bool read_array_maybe_compressed(std::istream& stream, IntType* out, std::size_t count) {
+    static constexpr char kMagic[] = "COMPRESSED_LEB128";
+    static constexpr std::size_t kMagicLen = sizeof(kMagic) - 1; // no terminating null in file
+
+    // Remember current position and probe for magic header
+    const std::streampos pos = stream.tellg();
+    char header[kMagicLen];
+    stream.read(header, static_cast<std::streamsize>(kMagicLen));
+    const bool canProbe = static_cast<std::size_t>(stream.gcount()) == kMagicLen;
+    const bool isCompressed = canProbe && std::memcmp(header, kMagic, kMagicLen) == 0;
+
+    // Reset stream to the beginning of this tensor block
+    stream.clear();
+    stream.seekg(pos);
+
+    if (!isCompressed) {
+      // Raw little-endian array
+      read_little_endian<IntType>(stream, out, count);
+      return !stream.fail();
+    }
+
+    // Skip magic and read compressed byte-count
+    stream.seekg(pos + static_cast<std::streamoff>(kMagicLen));
+    const std::uint32_t byteLen = read_little_endian<std::uint32_t>(stream);
+    std::vector<unsigned char> buf;
+    buf.resize(byteLen);
+    stream.read(reinterpret_cast<char*>(buf.data()), static_cast<std::streamsize>(byteLen));
+    if (stream.fail()) return false;
+
+    // Decode signed LEB128 into int32 then cast to target type
+    std::size_t k = 0;
+    for (std::size_t i = 0; i < count; ++i) {
+      std::int32_t r = 0;
+      int shift = 0;
+      while (true) {
+        if (k >= buf.size()) return false; // truncated
+        const unsigned char byte = buf[k++];
+        r |= static_cast<std::int32_t>(byte & 0x7F) << shift;
+        shift += 7;
+        if ((byte & 0x80) == 0) {
+          // Sign extend if needed (top bit of last byte indicates negative)
+          if (byte & 0x40)
+            r |= ~((1 << shift) - 1);
+          break;
+        }
+      }
+      out[i] = static_cast<IntType>(r);
+    }
+    return true;
+  }
 
   // If vector instructions are enabled, we update and refresh the
   // accumulator tile by tile such that each tile fits in the CPU's
@@ -197,9 +250,10 @@ namespace Stockfish::Eval::NNUE {
     // Read network parameters
     bool read_parameters(std::istream& stream) {
 
-      read_little_endian<BiasType      >(stream, biases     , HalfDimensions                  );
-      read_little_endian<WeightType    >(stream, weights    , HalfDimensions * FeatureSet::get_dimensions());
-      read_little_endian<PSQTWeightType>(stream, psqtWeights, PSQTBuckets    * FeatureSet::get_dimensions());
+      // Support both raw and LEB128-compressed tensors written by nnue-pytorch serializer
+      if (!read_array_maybe_compressed<BiasType>(stream, biases, HalfDimensions)) return false;
+      if (!read_array_maybe_compressed<WeightType>(stream, weights, HalfDimensions * FeatureSet::get_dimensions())) return false;
+      if (!read_array_maybe_compressed<PSQTWeightType>(stream, psqtWeights, PSQTBuckets * FeatureSet::get_dimensions())) return false;
 
       return !stream.fail();
     }

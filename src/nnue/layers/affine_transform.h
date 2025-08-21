@@ -23,6 +23,7 @@
 
 #include <iostream>
 #include "../nnue_common.h"
+#include "input_slice.h"
 
 namespace Stockfish::Eval::NNUE::Layers {
 
@@ -67,20 +68,60 @@ namespace Stockfish::Eval::NNUE::Layers {
     // Read network parameters
     bool read_parameters(std::istream& stream) {
       if (!previousLayer.read_parameters(stream)) return false;
-      for (std::size_t i = 0; i < OutputDimensions; ++i)
-        biases[i] = read_little_endian<BiasType>(stream);
-      for (std::size_t i = 0; i < OutputDimensions * PaddedInputDimensions; ++i)
+
+      // Compatibility: nnue-pytorch serializer writes L1 layer with (L2+1) outputs.
+      // When PreviousLayer is InputSlice<TransformedFeatureDimensions> and OutDims==15,
+      // read one extra row from file and discard it.
+      if constexpr (std::is_same<PreviousLayer, Layers::InputSlice<TransformedFeatureDimensions>>::value && OutputDimensions == 15)
+      {
+        const IndexType fileOutputDimensions = OutputDimensions + 1;
+        // Biases (int32)
+        for (IndexType row = 0; row < fileOutputDimensions; ++row) {
+          const BiasType b = read_little_endian<BiasType>(stream);
+          if (row < OutputDimensions)
+            biases[row] = b;
+        }
+        if (stream.fail()) return false;
+
+        // Weights (int8) row-major with 32-padding
+        for (IndexType row = 0; row < fileOutputDimensions; ++row) {
+          for (IndexType col = 0; col < PaddedInputDimensions; ++col) {
+            const WeightType w = read_little_endian<WeightType>(stream);
+            if (row < OutputDimensions) {
 #if !defined (USE_SSSE3)
-        weights[i] = read_little_endian<WeightType>(stream);
+              const IndexType dest = row * PaddedInputDimensions + col;
+              weights[dest] = w;
 #else
-        weights[
-          (i / 4) % (PaddedInputDimensions / 4) * OutputDimensions * 4 +
-          i / PaddedInputDimensions * 4 +
-          i % 4
-        ] = read_little_endian<WeightType>(stream);
+              const IndexType i = row * PaddedInputDimensions + col;
+              const IndexType dest =
+                (i / 4) % (PaddedInputDimensions / 4) * OutputDimensions * 4 +
+                (i / PaddedInputDimensions) * 4 +
+                (i % 4);
+              weights[dest] = w;
+#endif
+            }
+          }
+        }
+
+        return !stream.fail();
+      }
+      else
+      {
+        for (std::size_t i = 0; i < OutputDimensions; ++i)
+          biases[i] = read_little_endian<BiasType>(stream);
+        for (std::size_t i = 0; i < OutputDimensions * PaddedInputDimensions; ++i)
+#if !defined (USE_SSSE3)
+          weights[i] = read_little_endian<WeightType>(stream);
+#else
+          weights[
+            (i / 4) % (PaddedInputDimensions / 4) * OutputDimensions * 4 +
+            i / PaddedInputDimensions * 4 +
+            i % 4
+          ] = read_little_endian<WeightType>(stream);
 #endif
 
-      return !stream.fail();
+        return !stream.fail();
+      }
     }
 
     // Write network parameters
@@ -418,6 +459,45 @@ namespace Stockfish::Eval::NNUE::Layers {
 #endif
 
       return output;
+    }
+
+    // Expose previous layer for compatibility loaders
+    PreviousLayer& previous() { return previousLayer; }
+    const PreviousLayer& previous() const { return previousLayer; }
+
+    // Compatibility read: read a flat FC layer block (biases int32 then weights int8),
+    // possibly with more output rows in the file than this layer expects (we discard extras).
+    // This matches the layout produced by ml/nnue-pytorch/serialize.py write_fc_layer().
+    bool read_parameters_flat(std::istream& stream, IndexType fileOutputDimensions) {
+      // Read biases (int32)
+      for (IndexType row = 0; row < fileOutputDimensions; ++row) {
+        const BiasType b = read_little_endian<BiasType>(stream);
+        if (row < OutputDimensions)
+          biases[row] = b;
+      }
+      if (stream.fail()) return false;
+
+      // Read weights (int8) row-major with 32-padding; reorder if SSSE3 is enabled
+      for (IndexType row = 0; row < fileOutputDimensions; ++row) {
+        for (IndexType col = 0; col < PaddedInputDimensions; ++col) {
+          const WeightType w = read_little_endian<WeightType>(stream);
+          if (row < OutputDimensions) {
+#if !defined (USE_SSSE3)
+            const IndexType dest = row * PaddedInputDimensions + col;
+            weights[dest] = w;
+#else
+            const IndexType i = row * PaddedInputDimensions + col;
+            const IndexType dest =
+              (i / 4) % (PaddedInputDimensions / 4) * OutputDimensions * 4 +
+              (i / PaddedInputDimensions) * 4 +
+              (i % 4);
+            weights[dest] = w;
+#endif
+          }
+        }
+      }
+
+      return !stream.fail();
     }
 
    private:

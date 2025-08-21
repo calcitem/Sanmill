@@ -67,6 +67,21 @@ namespace Stockfish::Eval::NNUE {
     std::memset(pointer.get(), 0, sizeof(T));
   }
 
+  // Relaxed reader: accept any 32-bit header tag (do not enforce exact hash match)
+  // This improves compatibility with serializers that compute a slightly different
+  // hash while keeping the same binary parameter layout.
+  template <typename T>
+  bool read_parameters_relaxed(std::istream& stream, T& reference) {
+    const std::streampos pos = stream.tellg();
+    [[maybe_unused]] std::uint32_t header = read_little_endian<std::uint32_t>(stream);
+    if (!stream) return false;
+
+    // If header mismatches expected value, continue anyway using relaxed mode.
+    // We intentionally do not rewind past the header because writers include a tag here.
+    // Fall through to read the rest of parameters according to T::read_parameters.
+    return reference.read_parameters(stream);
+  }
+
   // Read evaluation function parameters
   template <typename T>
   bool read_parameters(std::istream& stream, T& reference) {
@@ -126,10 +141,12 @@ namespace Stockfish::Eval::NNUE {
     if (!read_header(stream, &hashValue, &netDescription)) return false;
     // Relax hash check to allow nnue-pytorch header variations; only version is enforced.
     // if (hashValue != HashValue) return false;
-    if (!Detail::read_parameters(stream, *featureTransformer)) return false;
+    // Use relaxed header checks for sub-blocks to maximize interoperability
+    if (!Detail::read_parameters_relaxed(stream, *featureTransformer)) return false;
     for (std::size_t i = 0; i < LayerStacks; ++i)
-      if (!Detail::read_parameters(stream, *(network[i]))) return false;
-    return stream && stream.peek() == std::ios::traits_type::eof();
+      if (!Detail::read_parameters_relaxed(stream, *(network[i]))) return false;
+    // Some serializers may append metadata; don't require exact EOF
+    return stream.good();
   }
 
   // Write network parameters

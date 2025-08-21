@@ -131,9 +131,108 @@ void init_nnue()
         checkNNUEFileHeader(normalizedPath);
         
         // Try to load the model
+        sync_cout << "info string Initializing NNUE structures..." << sync_endl;
+        Stockfish::Eval::NNUE::initialize();
+        
+        sync_cout << "info string Reading NNUE parameters..." << sync_endl;
+        // Reset stream to beginning after header check
+        stream.clear();
+        stream.seekg(0, std::ios::beg);
+        
         bool loadResult = Stockfish::Eval::NNUE::load_eval(normalizedPath, stream);
         if (!loadResult) {
-            sync_cout << "info string ERROR: Failed to load NNUE model - invalid format or corrupted file" << sync_endl;
+            sync_cout << "info string ERROR: Failed to load NNUE model - checking specific failure point..." << sync_endl;
+            
+            // Try to diagnose the specific failure
+            stream.clear();
+            stream.seekg(0, std::ios::beg);
+            
+            // Check if we can read the header again
+            std::uint32_t testVersion = readLittleEndianUint32(stream);
+            std::uint32_t testHashValue = readLittleEndianUint32(stream);
+            std::uint32_t testDescSize = readLittleEndianUint32(stream);
+            
+            sync_cout << "info string Diagnostic - Version: 0x" << std::hex << testVersion 
+                      << ", Hash: 0x" << testHashValue 
+                      << ", DescSize: " << std::dec << testDescSize << sync_endl;
+            
+            if (testDescSize > 0 && testDescSize < 1000) {
+                stream.seekg(testDescSize, std::ios::cur); // Skip description
+            }
+            
+            // Check current stream position after header
+            std::streampos currentPos = stream.tellg();
+            sync_cout << "info string Current stream position after header: " << currentPos << sync_endl;
+            
+            // Check remaining bytes
+            stream.seekg(0, std::ios::end);
+            std::streampos endPos = stream.tellg();
+            sync_cout << "info string Remaining bytes for parameters: " << (endPos - currentPos) << sync_endl;
+            
+            // Check if the issue is with FeatureTransformer dimensions
+            sync_cout << "info string Expected FeatureTransformer input dimensions: " 
+                      << Stockfish::Eval::NNUE::FeatureSet::Dimensions << sync_endl;
+            sync_cout << "info string Expected TransformedFeatureDimensions: " 
+                      << Stockfish::Eval::NNUE::TransformedFeatureDimensions << sync_endl;
+            
+            // Calculate expected parameter sizes
+            const auto featureDims = Stockfish::Eval::NNUE::FeatureSet::Dimensions;
+            const auto transformedDims = Stockfish::Eval::NNUE::TransformedFeatureDimensions;
+            const auto psqtBuckets = Stockfish::Eval::NNUE::PSQTBuckets;
+            
+            sync_cout << "info string Expected parameter sizes:" << sync_endl;
+            sync_cout << "info string - Biases: " << transformedDims << " elements" << sync_endl;
+            sync_cout << "info string - Weights: " << (transformedDims * featureDims) << " elements" << sync_endl;
+            sync_cout << "info string - PSQT Weights: " << (psqtBuckets * featureDims) << " elements" << sync_endl;
+            
+            // Calculate expected bytes (actual serializer writes int16 bias and int16 FT weights, int32 PSQT)
+            const size_t biasBytes = transformedDims * 2;  // int16_t
+            const size_t weightBytes = transformedDims * featureDims * 2;  // int16_t
+            const size_t psqtBytes = psqtBuckets * featureDims * 4;  // int32_t
+            const size_t totalFeatureTransformerBytes = biasBytes + weightBytes + psqtBytes;
+            
+            sync_cout << "info string Expected FeatureTransformer bytes:" << sync_endl;
+            sync_cout << "info string - Biases: " << biasBytes << " bytes" << sync_endl;
+            sync_cout << "info string - Weights: " << weightBytes << " bytes" << sync_endl;
+            sync_cout << "info string - PSQT Weights: " << psqtBytes << " bytes" << sync_endl;
+            sync_cout << "info string - Total FeatureTransformer: " << totalFeatureTransformerBytes << " bytes" << sync_endl;
+            
+            // Calculate network layer bytes (InputLayer: 1536 -> HiddenLayer1: 15 -> HiddenLayer2: 32 -> OutputLayer: 1)
+            // Each layer has biases (int32_t, 4 bytes) and weights (int8_t, 1 byte)
+            const size_t layer1BiasBytes = 15 * 4;  // 15 biases, int32_t
+            // nnue-pytorch writes an extra (L2+1) row in L1; account for it in expected size
+            const size_t layer1WeightBytes = (15 + 1) * transformedDims * 1;  // 16 * 1536
+            const size_t layer2BiasBytes = 32 * 4;  // 32 biases, int32_t  
+            const size_t layer2WeightBytes = 32 * 15 * 1;  // 32 * 15 weights, int8_t
+            const size_t layer3BiasBytes = 1 * 4;   // 1 bias, int32_t
+            const size_t layer3WeightBytes = 1 * 32 * 1;   // 1 * 32 weights, int8_t
+            
+            const size_t totalNetworkBytes = layer1BiasBytes + layer1WeightBytes + 
+                                           layer2BiasBytes + layer2WeightBytes + 
+                                           layer3BiasBytes + layer3WeightBytes;
+            
+            sync_cout << "info string Expected Network layer bytes:" << sync_endl;
+            sync_cout << "info string - Layer1 (1536->15): " << (layer1BiasBytes + layer1WeightBytes) << " bytes" << sync_endl;
+            sync_cout << "info string - Layer2 (15->32): " << (layer2BiasBytes + layer2WeightBytes) << " bytes" << sync_endl;
+            sync_cout << "info string - Layer3 (32->1): " << (layer3BiasBytes + layer3WeightBytes) << " bytes" << sync_endl;
+            sync_cout << "info string - Total Network: " << totalNetworkBytes << " bytes" << sync_endl;
+            
+            const size_t totalExpectedBytes = totalFeatureTransformerBytes + totalNetworkBytes * Stockfish::Eval::NNUE::LayerStacks;
+            sync_cout << "info string Total expected bytes (with " << Stockfish::Eval::NNUE::LayerStacks << " layer stacks): " << totalExpectedBytes << " bytes" << sync_endl;
+            sync_cout << "info string Available bytes: " << (endPos - currentPos) << " bytes" << sync_endl;
+            
+            if (featureDims != 1152) {
+                sync_cout << "info string WARNING: FeatureSet dimensions (" << featureDims 
+                          << ") do not match expected Nine Men's Morris dimensions (1152)" << sync_endl;
+            }
+            
+            if (transformedDims != featureDims) {
+                sync_cout << "info string ERROR: TransformedFeatureDimensions (" << transformedDims 
+                          << ") does not match FeatureSet dimensions (" << featureDims << ")" << sync_endl;
+            } else {
+                sync_cout << "info string OK: Dimensions are consistent (" << transformedDims << ")" << sync_endl;
+            }
+            
             assert(false && "Failed to load NNUE model");
             return;
         }
