@@ -15,11 +15,16 @@ class Position;
 namespace Eval {
 
 Value evaluate(Position &pos);
+Value evaluate(Position &pos, Depth depth);  // Overload with depth info for hybrid evaluation
 
 // NNUE evaluation
 extern bool useNNUE;
 extern std::string evalFile;
+extern bool nnueInitialized;
+extern int nnueMinDepth;
 void init_nnue();
+
+
 
 // Path normalization utility
 std::string normalizePath(const std::string& path);

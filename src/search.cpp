@@ -42,8 +42,24 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
                       Depth originDepth, Value alpha, Value beta,
                       Move &bestMove)
 {
-    // Evaluate the current position
-    Value stand_pat = Eval::evaluate(*pos);
+    Value stand_pat = VALUE_NONE;
+    
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    // Try to get evaluation from transposition table first
+    TTEntry tte;
+    const Key posKey = pos->key();
+    bool ttHit = TranspositionTable::search(posKey, tte);
+    
+    if (ttHit && tte.depth() >= depth) {
+        // Use TT value as initial estimate if depth is sufficient
+        stand_pat = tte.value();
+    }
+#endif
+    
+    // If no suitable TT entry, evaluate the position
+    if (stand_pat == VALUE_NONE) {
+        stand_pat = Eval::evaluate(*pos, depth);
+    }
 
     static uint64_t nodeCounter = 0; // TODO: thread_local
     const unsigned checkMask = (depth >= -1) ? 255 : 1023;
@@ -146,7 +162,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     // Check for terminal position or search abortion
     if (unlikely(pos->phase == Phase::gameOver) ||
         searchEngine.searchAborted.load(std::memory_order_relaxed)) {
-        bestValue = Eval::evaluate(*pos);
+        bestValue = Eval::evaluate(*pos, depth);
 
         // Adjust evaluation to prefer quicker wins or slower losses
         if (bestValue > 0) {

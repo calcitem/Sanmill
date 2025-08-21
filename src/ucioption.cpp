@@ -206,6 +206,11 @@ static void on_evalFile(const Option &o)
     }
 }
 
+static void on_nnueMinDepth(const Option &o)
+{
+    Eval::nnueMinDepth = static_cast<int>(o);
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string &s1, const string &s2) const
 {
@@ -286,6 +291,7 @@ void init(OptionsMap &o)
     // NNUE options
     o["UseNNUE"] << Option(false, on_useNNUE);
     o["EvalFile"] << Option("", on_evalFile);
+    o["NNUEMinDepth"] << Option(3, 0, 10, on_nnueMinDepth);
 }
 
 /// operator<<() is used to print all the options default values in

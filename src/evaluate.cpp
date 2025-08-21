@@ -15,12 +15,17 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>
+#include <cstring>
 
 namespace Eval {
 
 // NNUE evaluation settings
 bool useNNUE = false;
 std::string evalFile = "";
+bool nnueInitialized = false;
+
+// Hybrid evaluation settings
+int nnueMinDepth = 1;  // Minimum depth to use NNUE evaluation
 
 // Normalize file path separators for the current platform
 std::string normalizePath(const std::string& path)
@@ -238,6 +243,9 @@ void init_nnue()
         }
         
         sync_cout << "info string NNUE model successfully loaded from " << normalizedPath << sync_endl;
+        nnueInitialized = true;
+    } else {
+        nnueInitialized = false;
     }
 }
 
@@ -392,54 +400,38 @@ Value Eval::evaluate(Position &pos)
     }
     
     // Then try NNUE evaluation if enabled
-    if (useNNUE && !evalFile.empty()) {
-        // Ensure NNUE is initialized
-        static bool nnueInitialized = false;
-        if (!nnueInitialized) {
-            // Normalize the file path to use correct separators for the current platform
-            std::string normalizedPath = normalizePath(evalFile);
-            
-            std::ifstream stream(normalizedPath, std::ios::binary);
-            
-            // Log both original and normalized paths for debugging
-            sync_cout << "info string Original NNUE model path: " << evalFile << sync_endl;
-            sync_cout << "info string Normalized NNUE model path: " << normalizedPath << sync_endl;
-            sync_cout << "info string Attempting to load NNUE model from: " << normalizedPath << sync_endl;
-            
-            // Check if file can be opened
-            if (!stream.is_open()) {
-                sync_cout << "info string ERROR: Failed to open NNUE model file: " << normalizedPath << sync_endl;
-                assert(false && "Failed to open NNUE model file");
-                return VALUE_NONE;
-            }
-            
-            // Check file size
-            stream.seekg(0, std::ios::end);
-            std::streampos fileSize = stream.tellg();
-            stream.seekg(0, std::ios::beg);
-            sync_cout << "info string NNUE model file size: " << fileSize << " bytes" << sync_endl;
-            
-            if (fileSize == 0) {
-                sync_cout << "info string ERROR: NNUE model file is empty" << sync_endl;
-                assert(false && "NNUE model file is empty");
-                return VALUE_NONE;
-            }
-            
-            // Try to load the model
-            bool loadResult = Stockfish::Eval::NNUE::load_eval(normalizedPath, stream);
-            if (!loadResult) {
-                sync_cout << "info string ERROR: Failed to load NNUE model - invalid format or corrupted file" << sync_endl;
-                assert(false && "Failed to load NNUE model");
-                return VALUE_NONE;
-            }
-            
-            sync_cout << "info string NNUE model successfully loaded from " << normalizedPath << sync_endl;
-            nnueInitialized = true;
-        }
-        
+    if (useNNUE && nnueInitialized) {
         return Stockfish::Eval::NNUE::evaluate(pos, false);
     }
     
     // Fall back to traditional evaluation only if NNUE is disabled
+    return Evaluation(pos).value();
+}
+
+/// Hybrid evaluation function with depth information
+/// Uses traditional evaluation for shallow depths and NNUE for deeper analysis
+Value Eval::evaluate(Position &pos, Depth depth)
+{
+    // First try perfect database if available
+    if (gameOptions.getUsePerfectDatabase()) {
+        Value perfectValue = PerfectAPI::getValue(pos);
+        if (perfectValue != VALUE_NONE) {
+            return perfectValue;
+        }
+    }
+    
+    // Use hybrid evaluation strategy
+    if (useNNUE && nnueInitialized) {
+        // Use traditional evaluation for very shallow depths to save computation
+        if (depth < nnueMinDepth) {
+            // Use traditional evaluation for shallow searches
+            return Evaluation(pos).value();
+        }
+        
+        // For deeper searches, use NNUE
+        return Stockfish::Eval::NNUE::evaluate(pos, false);
+    }
+    
+    // Fall back to traditional evaluation
     return Evaluation(pos).value();
 }
