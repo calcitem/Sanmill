@@ -24,10 +24,14 @@ void init_nnue()
 {
     if (!evalFile.empty()) {
         std::ifstream stream(evalFile, std::ios::binary);
+        
+        // Log the file path for debugging
+        sync_cout << "info string Attempting to load NNUE model from: " << evalFile << sync_endl;
+        
         // Use assert to surface errors rather than mask them
         assert(stream.is_open() && "Failed to open NNUE model file");
         assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
-        sync_cout << "info string NNUE model loaded from " << evalFile << sync_endl;
+        sync_cout << "info string NNUE model successfully loaded from " << evalFile << sync_endl;
     }
 }
 
@@ -187,9 +191,14 @@ Value Eval::evaluate(Position &pos)
         static bool nnueInitialized = false;
         if (!nnueInitialized) {
             std::ifstream stream(evalFile, std::ios::binary);
+            
+            // Log the file path for debugging
+            sync_cout << "info string Attempting to load NNUE model from: " << evalFile << sync_endl;
+            
             // Use assert to surface errors rather than mask them
             assert(stream.is_open() && "Failed to open NNUE model file");
             assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
+            sync_cout << "info string NNUE model successfully loaded from " << evalFile << sync_endl;
             nnueInitialized = true;
         }
         

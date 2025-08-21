@@ -39,13 +39,18 @@ class NnueModelService {
     if (kIsWeb) return null;
 
     try {
-      final Directory? dir = Platform.isAndroid
-          ? await getExternalStorageDirectory()
-          : await getApplicationDocumentsDirectory();
-      if (dir == null) return null;
+      // Use internal app directory which doesn't require special permissions
+      // This works on both Android and iOS without any storage permissions
+      // On Android: typically /data/data/com.calcitem.sanmill/files/
+      // On iOS: typically <app_home>/Library/Application Support/
+      // Unlike getExternalStorageDirectory(), this doesn't require WRITE_EXTERNAL_STORAGE permission
+      final Directory dir = await getApplicationSupportDirectory();
 
       final String targetDir = '${dir.path}/nnue';
       await Directory(targetDir).create(recursive: true);
+
+      logger.i('[nnue] Using app support directory: ${dir.path}');
+      logger.i('[nnue] Target NNUE directory: $targetDir');
 
       for (final String asset in _candidateAssets) {
         final String fileName = asset.split('/').last;
@@ -66,7 +71,8 @@ class NnueModelService {
             }
           }
 
-          logger.i('[nnue] Deployed NNUE model to $targetPath');
+          logger.i(
+              '[nnue] Successfully deployed NNUE model to $targetPath (size: ${bytes.length} bytes)');
           return targetPath;
         } catch (e) {
           // Asset not found or copy failure; try next candidate
