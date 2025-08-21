@@ -16,10 +16,10 @@ class LoadService {
     Directory? dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
-    final String path = '${dir?.path ?? ""}/records';
+    final String recordsPath = path.join(dir?.path ?? "", 'records');
 
     // Ensure the folder exists
-    dir = Directory(path);
+    dir = Directory(recordsPath);
     if (!dir.existsSync()) {
       await dir.create(recursive: true);
     }
@@ -40,8 +40,9 @@ class LoadService {
       resultLabel = "$resultLabel.pgn";
     }
 
-    final String filePath =
-        resultLabel.startsWith(path) ? resultLabel : "$path/$resultLabel";
+    final String filePath = resultLabel.startsWith(recordsPath)
+        ? resultLabel
+        : path.join(recordsPath, resultLabel);
 
     return filePath;
   }
@@ -53,10 +54,10 @@ class LoadService {
     dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
-    final String path = '${dir?.path ?? ""}/records';
+    final String recordsPath = path.join(dir?.path ?? "", 'records');
 
     // Ensure the folder exists
-    dir = Directory(path);
+    dir = Directory(recordsPath);
     if (!dir.existsSync()) {
       await dir.create(recursive: true);
     }
@@ -72,7 +73,8 @@ class LoadService {
 
       for (final FileSystemEntity entity in entities) {
         if (entity is File && entity.path.endsWith('.pgn')) {
-          final String newPath = entity.path.replaceAll(appDocPath, path);
+          final String newPath =
+              entity.path.replaceAll(appDocPath, recordsPath);
           final File newFile = File(newPath);
 
           if (!newFile.existsSync()) {

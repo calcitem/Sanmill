@@ -7,6 +7,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -89,11 +90,11 @@ class GifShare {
     final String time = DateTime.now().millisecondsSinceEpoch.toString();
     final String gifFileName = "Mill-$time.gif";
     final Directory docDir = await getApplicationDocumentsDirectory();
-    final File imgGif = File('${docDir.path}/$gifFileName');
+    final File imgGif = File(path.join(docDir.path, gifFileName));
     await imgGif.writeAsBytes(gif);
     SharePlus.instance.share(
       ShareParams(
-        files: <XFile>[XFile('${docDir.path}/$gifFileName')],
+        files: <XFile>[XFile(path.join(docDir.path, gifFileName))],
       ),
     );
     return true;

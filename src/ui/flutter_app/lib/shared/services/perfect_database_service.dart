@@ -8,6 +8,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import 'logger.dart';
@@ -24,7 +25,7 @@ Future<bool> copyPerfectDatabaseFiles() async {
     return false;
   }
 
-  final String perfectDatabasePath = '${dir?.path}/strong';
+  final String perfectDatabasePath = path.join(dir?.path ?? '', 'strong');
   final Directory directory = Directory(perfectDatabasePath);
 
   try {
@@ -60,7 +61,7 @@ Future<bool> copyPerfectDatabaseFiles() async {
 
   for (final String asset in assetFiles) {
     try {
-      final File file = File('${directory.path}/${asset.split('/').last}');
+      final File file = File(path.join(directory.path, asset.split('/').last));
       if (!await _exists(file)) {
         final ByteData byteData = await rootBundle.load(asset);
         final ByteBuffer buffer = byteData.buffer;

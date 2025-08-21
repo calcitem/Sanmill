@@ -3,10 +3,11 @@
 
 // nnue_model_service.dart
 
-import 'dart:io' show Directory, File, Platform;
+import 'dart:io' show Directory, File;
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart' show rootBundle, ByteData;
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import 'logger.dart';
@@ -36,7 +37,9 @@ class NnueModelService {
   /// Ensures an NNUE model asset is deployed to the app's writable storage and
   /// returns its absolute path. Returns null if no known asset is bundled.
   static Future<String?> ensureNnueModelDeployed() async {
-    if (kIsWeb) return null;
+    if (kIsWeb) {
+      return null;
+    }
 
     try {
       // Use internal app directory which doesn't require special permissions
@@ -46,7 +49,7 @@ class NnueModelService {
       // Unlike getExternalStorageDirectory(), this doesn't require WRITE_EXTERNAL_STORAGE permission
       final Directory dir = await getApplicationSupportDirectory();
 
-      final String targetDir = '${dir.path}/nnue';
+      final String targetDir = path.join(dir.path, 'nnue');
       await Directory(targetDir).create(recursive: true);
 
       logger.i('[nnue] Using app support directory: ${dir.path}');
@@ -54,7 +57,7 @@ class NnueModelService {
 
       for (final String asset in _candidateAssets) {
         final String fileName = asset.split('/').last;
-        final String targetPath = '$targetDir/$fileName';
+        final String targetPath = path.join(targetDir, fileName);
         try {
           // Try to load the asset. If it does not exist, this throws.
           final ByteData data = await rootBundle.load(asset);
@@ -62,7 +65,7 @@ class NnueModelService {
 
           // Write only if absent or size differs.
           final List<int> bytes = data.buffer.asUint8List();
-          if (!await out.exists()) {
+          if (!out.existsSync()) {
             await out.writeAsBytes(bytes, flush: true);
           } else {
             final int existingLen = await out.length();

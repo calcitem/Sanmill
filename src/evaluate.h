@@ -21,6 +21,12 @@ extern bool useNNUE;
 extern std::string evalFile;
 void init_nnue();
 
+// Path normalization utility
+std::string normalizePath(const std::string& path);
+
+// NNUE file header checking utility
+bool checkNNUEFileHeader(const std::string& filePath);
+
 }
 
 #endif // #ifndef EVALUATE_H_INCLUDED

@@ -96,14 +96,14 @@ class Engine {
       final Directory directory = await getApplicationDocumentsDirectory();
 
       // Define the path to 'fen.txt'.
-      final String path = '${directory.path}/fen.txt';
+      final String filePath = path.join(directory.path, 'fen.txt');
 
-      final File file = File(path);
+      final File file = File(filePath);
 
       // Append the FEN string with a newline. If the file doesn't exist, it will be created.
       await file.writeAsString('$fen\n', mode: FileMode.append);
 
-      logger.i("Successfully saved FEN to $path");
+      logger.i("Successfully saved FEN to $filePath");
     } catch (e) {
       logger.e("Failed to save FEN to file: $e");
       // Handle the error as needed, possibly rethrow or notify the user.
@@ -382,7 +382,7 @@ class Engine {
     final Directory? dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
-    final String perfectDatabasePath = '${dir?.path ?? ""}/strong';
+    final String perfectDatabasePath = path.join(dir?.path ?? "", 'strong');
     await _sendOptions(
       "PerfectDatabasePath",
       perfectDatabasePath,

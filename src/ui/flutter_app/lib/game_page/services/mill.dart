@@ -21,6 +21,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:vibration/vibration.dart';
 
@@ -35,6 +36,7 @@ import '../../shared/database/database.dart';
 import '../../shared/services/environment_config.dart';
 import '../../shared/services/logger.dart';
 import '../../shared/services/native_methods.dart';
+import '../../shared/services/nnue_model_service.dart';
 import '../../shared/services/screenshot_service.dart';
 import '../../shared/themes/app_theme.dart';
 import '../../shared/utils/helpers/array_helpers/array_helper.dart';
@@ -47,11 +49,10 @@ import 'analysis_mode.dart';
 import 'animation/animation_manager.dart';
 import 'annotation/annotation_manager.dart';
 import 'engine/bitboard.dart';
-import "gif_share/gif_share.dart";
+import 'gif_share/gif_share.dart';
 import 'import_export/import_helpers.dart';
 import 'import_export/pgn.dart';
 import 'player_timer.dart';
-import '../../shared/services/nnue_model_service.dart';
 
 part 'controller/game_controller.dart';
 part 'controller/game_recorder.dart';

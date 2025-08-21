@@ -114,7 +114,7 @@ namespace Stockfish::Eval::NNUE {
   {
     write_little_endian<std::uint32_t>(stream, Version);
     write_little_endian<std::uint32_t>(stream, hashValue);
-    write_little_endian<std::uint32_t>(stream, desc.size());
+    write_little_endian<std::uint32_t>(stream, static_cast<std::uint32_t>(desc.size()));
     stream.write(&desc[0], desc.size());
     return !stream.fail();
   }
@@ -171,7 +171,7 @@ namespace Stockfish::Eval::NNUE {
     // Match nnue-pytorch bucket selection which uses coarse piece-count-based buckets.
     const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
     const std::size_t bucket = std::min(std::size_t((std::max(0, totalPieces - 1)) / 3), std::size_t(7));
-    const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
+    const auto psqt = featureTransformer->transform(pos, transformedFeatures, static_cast<int>(bucket));
     const auto output = network[bucket]->propagate(transformedFeatures, buffer);
 
     int materialist = psqt;
@@ -243,24 +243,24 @@ namespace Stockfish::Eval::NNUE {
 
     if (cp >= 10000)
     {
-      buffer[1] = '0' + cp / 10000; cp %= 10000;
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
+      buffer[1] = static_cast<char>('0' + cp / 10000); cp %= 10000;
+      buffer[2] = static_cast<char>('0' + cp / 1000); cp %= 1000;
+      buffer[3] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[4] = ' ';
     }
     else if (cp >= 1000)
     {
-      buffer[1] = '0' + cp / 1000; cp %= 1000;
-      buffer[2] = '0' + cp / 100; cp %= 100;
+      buffer[1] = static_cast<char>('0' + cp / 1000); cp %= 1000;
+      buffer[2] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[3] = '.';
-      buffer[4] = '0' + cp / 10;
+      buffer[4] = static_cast<char>('0' + cp / 10);
     }
     else
     {
-      buffer[1] = '0' + cp / 100; cp %= 100;
+      buffer[1] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[2] = '.';
-      buffer[3] = '0' + cp / 10; cp %= 10;
-      buffer[4] = '0' + cp / 1;
+      buffer[3] = static_cast<char>('0' + cp / 10); cp %= 10;
+      buffer[4] = static_cast<char>('0' + cp / 1);
     }
   }
 
@@ -272,30 +272,30 @@ namespace Stockfish::Eval::NNUE {
 
     if (cp >= 10000)
     {
-      buffer[1] = '0' + cp / 10000; cp %= 10000;
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
+      buffer[1] = static_cast<char>('0' + cp / 10000); cp %= 10000;
+      buffer[2] = static_cast<char>('0' + cp / 1000); cp %= 1000;
+      buffer[3] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp;
+      buffer[5] = static_cast<char>('0' + cp / 10); cp %= 10;
+      buffer[6] = static_cast<char>('0' + cp);
     }
     else if (cp >= 1000)
     {
       buffer[1] = ' ';
-      buffer[2] = '0' + cp / 1000; cp %= 1000;
-      buffer[3] = '0' + cp / 100; cp %= 100;
+      buffer[2] = static_cast<char>('0' + cp / 1000); cp %= 1000;
+      buffer[3] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp;
+      buffer[5] = static_cast<char>('0' + cp / 10); cp %= 10;
+      buffer[6] = static_cast<char>('0' + cp);
     }
     else
     {
       buffer[1] = ' ';
       buffer[2] = ' ';
-      buffer[3] = '0' + cp / 100; cp %= 100;
+      buffer[3] = static_cast<char>('0' + cp / 100); cp %= 100;
       buffer[4] = '.';
-      buffer[5] = '0' + cp / 10; cp %= 10;
-      buffer[6] = '0' + cp / 1;
+      buffer[5] = static_cast<char>('0' + cp / 10); cp %= 10;
+      buffer[6] = static_cast<char>('0' + cp / 1);
     }
   }
 

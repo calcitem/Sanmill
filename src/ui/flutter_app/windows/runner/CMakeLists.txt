@@ -48,6 +48,7 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../search_engine.cpp"
   "../../../../thread_pool.cpp"
   "../../../../nnue/features/nine_mill.cpp"
+  "../../../../nnue/evaluate_nnue.cpp"
   "../../../../perfect/perfect_api.cpp"
   "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_common.cpp"

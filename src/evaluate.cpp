@@ -13,6 +13,8 @@
 #include "nnue/nnue_common.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <iomanip>
 
 namespace Eval {
 
@@ -20,18 +22,123 @@ namespace Eval {
 bool useNNUE = false;
 std::string evalFile = "";
 
+// Normalize file path separators for the current platform
+std::string normalizePath(const std::string& path)
+{
+    std::string normalized = path;
+    
+#ifdef _WIN32
+    // On Windows, replace forward slashes with backslashes
+    std::replace(normalized.begin(), normalized.end(), '/', '\\');
+#else
+    // On Unix-like systems, replace backslashes with forward slashes
+    std::replace(normalized.begin(), normalized.end(), '\\', '/');
+#endif
+    
+    return normalized;
+}
+
+// Utility function to read little-endian uint32 from stream
+std::uint32_t readLittleEndianUint32(std::istream& stream)
+{
+    std::uint32_t value = 0;
+    char bytes[4];
+    stream.read(bytes, 4);
+    if (stream.gcount() == 4) {
+        value = static_cast<std::uint32_t>(static_cast<unsigned char>(bytes[0])) |
+                (static_cast<std::uint32_t>(static_cast<unsigned char>(bytes[1])) << 8) |
+                (static_cast<std::uint32_t>(static_cast<unsigned char>(bytes[2])) << 16) |
+                (static_cast<std::uint32_t>(static_cast<unsigned char>(bytes[3])) << 24);
+    }
+    return value;
+}
+
+// Check NNUE file header information
+bool checkNNUEFileHeader(const std::string& filePath)
+{
+    std::ifstream stream(filePath, std::ios::binary);
+    if (!stream.is_open()) {
+        sync_cout << "info string ERROR: Cannot open file for header check: " << filePath << sync_endl;
+        return false;
+    }
+    
+    // Read version
+    std::uint32_t fileVersion = readLittleEndianUint32(stream);
+    sync_cout << "info string NNUE file version: 0x" << std::hex << fileVersion << std::dec << sync_endl;
+    
+    // Expected version from nnue_common.h
+    const std::uint32_t expectedVersion = 0x7AF32F20u;
+    sync_cout << "info string Expected version: 0x" << std::hex << expectedVersion << std::dec << sync_endl;
+    
+    if (fileVersion != expectedVersion) {
+        sync_cout << "info string WARNING: Version mismatch! File version: 0x" << std::hex << fileVersion 
+                  << ", Expected: 0x" << expectedVersion << std::dec << sync_endl;
+    }
+    
+    // Read hash value
+    std::uint32_t hashValue = readLittleEndianUint32(stream);
+    sync_cout << "info string NNUE file hash value: 0x" << std::hex << hashValue << std::dec << sync_endl;
+    
+    // Read description size
+    std::uint32_t descSize = readLittleEndianUint32(stream);
+    sync_cout << "info string NNUE description size: " << descSize << " bytes" << sync_endl;
+    
+    if (descSize > 0 && descSize < 1000) { // Reasonable size check
+        std::string description(descSize, '\0');
+        stream.read(&description[0], descSize);
+        if (stream.gcount() == static_cast<std::streamsize>(descSize)) {
+            sync_cout << "info string NNUE description: " << description << sync_endl;
+        }
+    }
+    
+    return stream.good();
+}
+
 void init_nnue()
 {
     if (!evalFile.empty()) {
-        std::ifstream stream(evalFile, std::ios::binary);
+        // Normalize the file path to use correct separators for the current platform
+        std::string normalizedPath = normalizePath(evalFile);
         
-        // Log the file path for debugging
-        sync_cout << "info string Attempting to load NNUE model from: " << evalFile << sync_endl;
+        std::ifstream stream(normalizedPath, std::ios::binary);
         
-        // Use assert to surface errors rather than mask them
-        assert(stream.is_open() && "Failed to open NNUE model file");
-        assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
-        sync_cout << "info string NNUE model successfully loaded from " << evalFile << sync_endl;
+        // Log both original and normalized paths for debugging
+        sync_cout << "info string Original NNUE model path: " << evalFile << sync_endl;
+        sync_cout << "info string Normalized NNUE model path: " << normalizedPath << sync_endl;
+        sync_cout << "info string Attempting to load NNUE model from: " << normalizedPath << sync_endl;
+        
+        // Check if file can be opened
+        if (!stream.is_open()) {
+            sync_cout << "info string ERROR: Failed to open NNUE model file: " << normalizedPath << sync_endl;
+            assert(false && "Failed to open NNUE model file");
+            return;
+        }
+        
+        // Check file size
+        stream.seekg(0, std::ios::end);
+        std::streampos fileSize = stream.tellg();
+        stream.seekg(0, std::ios::beg);
+        sync_cout << "info string NNUE model file size: " << fileSize << " bytes" << sync_endl;
+        
+        if (fileSize == 0) {
+            sync_cout << "info string ERROR: NNUE model file is empty" << sync_endl;
+            assert(false && "NNUE model file is empty");
+            return;
+        }
+        
+        // Check file header information
+        sync_cout << "info string Checking NNUE file header..." << sync_endl;
+        checkNNUEFileHeader(normalizedPath);
+        
+        // Try to load the model
+        bool loadResult = Stockfish::Eval::NNUE::load_eval(normalizedPath, stream);
+        if (!loadResult) {
+            sync_cout << "info string ERROR: Failed to load NNUE model - invalid format or corrupted file" << sync_endl;
+            assert(false && "Failed to load NNUE model");
+            return;
+        }
+        
+        sync_cout << "info string NNUE model successfully loaded from " << normalizedPath << sync_endl;
     }
 }
 
@@ -190,15 +297,44 @@ Value Eval::evaluate(Position &pos)
         // Ensure NNUE is initialized
         static bool nnueInitialized = false;
         if (!nnueInitialized) {
-            std::ifstream stream(evalFile, std::ios::binary);
+            // Normalize the file path to use correct separators for the current platform
+            std::string normalizedPath = normalizePath(evalFile);
             
-            // Log the file path for debugging
-            sync_cout << "info string Attempting to load NNUE model from: " << evalFile << sync_endl;
+            std::ifstream stream(normalizedPath, std::ios::binary);
             
-            // Use assert to surface errors rather than mask them
-            assert(stream.is_open() && "Failed to open NNUE model file");
-            assert(Stockfish::Eval::NNUE::load_eval(evalFile, stream) && "Failed to load NNUE model");
-            sync_cout << "info string NNUE model successfully loaded from " << evalFile << sync_endl;
+            // Log both original and normalized paths for debugging
+            sync_cout << "info string Original NNUE model path: " << evalFile << sync_endl;
+            sync_cout << "info string Normalized NNUE model path: " << normalizedPath << sync_endl;
+            sync_cout << "info string Attempting to load NNUE model from: " << normalizedPath << sync_endl;
+            
+            // Check if file can be opened
+            if (!stream.is_open()) {
+                sync_cout << "info string ERROR: Failed to open NNUE model file: " << normalizedPath << sync_endl;
+                assert(false && "Failed to open NNUE model file");
+                return VALUE_NONE;
+            }
+            
+            // Check file size
+            stream.seekg(0, std::ios::end);
+            std::streampos fileSize = stream.tellg();
+            stream.seekg(0, std::ios::beg);
+            sync_cout << "info string NNUE model file size: " << fileSize << " bytes" << sync_endl;
+            
+            if (fileSize == 0) {
+                sync_cout << "info string ERROR: NNUE model file is empty" << sync_endl;
+                assert(false && "NNUE model file is empty");
+                return VALUE_NONE;
+            }
+            
+            // Try to load the model
+            bool loadResult = Stockfish::Eval::NNUE::load_eval(normalizedPath, stream);
+            if (!loadResult) {
+                sync_cout << "info string ERROR: Failed to load NNUE model - invalid format or corrupted file" << sync_endl;
+                assert(false && "Failed to load NNUE model");
+                return VALUE_NONE;
+            }
+            
+            sync_cout << "info string NNUE model successfully loaded from " << normalizedPath << sync_endl;
             nnueInitialized = true;
         }
         
