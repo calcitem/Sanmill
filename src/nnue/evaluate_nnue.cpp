@@ -72,7 +72,7 @@ namespace Stockfish::Eval::NNUE {
   // hash while keeping the same binary parameter layout.
   template <typename T>
   bool read_parameters_relaxed(std::istream& stream, T& reference) {
-    const std::streampos pos = stream.tellg();
+    [[maybe_unused]] const std::streampos pos = stream.tellg();
     [[maybe_unused]] std::uint32_t header = read_little_endian<std::uint32_t>(stream);
     if (!stream) return false;
 

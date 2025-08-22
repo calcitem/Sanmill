@@ -70,9 +70,9 @@ namespace Stockfish::Eval::NNUE::Layers {
       if (!previousLayer.read_parameters(stream)) return false;
 
       // Compatibility: nnue-pytorch serializer writes L1 layer with (L2+1) outputs.
-      // When PreviousLayer is InputSlice<TransformedFeatureDimensions> and OutDims==15,
+      // When this is the first hidden layer (OutputDimensions == 15), 
       // read one extra row from file and discard it.
-      if constexpr (std::is_same<PreviousLayer, Layers::InputSlice<TransformedFeatureDimensions>>::value && OutputDimensions == 15)
+      if constexpr (OutputDimensions == 15)
       {
         const IndexType fileOutputDimensions = OutputDimensions + 1;
         // Biases (int32)
