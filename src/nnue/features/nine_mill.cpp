@@ -4,6 +4,7 @@
 #include "nine_mill.h"
 
 #include "../../position.h"
+#include <algorithm>
 
 namespace Stockfish::Eval::NNUE::Features {
 
@@ -36,22 +37,82 @@ namespace Stockfish::Eval::NNUE::Features {
 
   void NineMill::append_changed_indices(
       Square /*ksq*/, StateInfo* /*st*/, Color /*perspective*/,
-      ValueListInserter<IndexType> /*removed*/,
-      ValueListInserter<IndexType> /*added*/,
-      const Position& /*pos*/) {
-    // We always perform a full refresh for Nine Men's Morris features.
+      ValueListInserter<IndexType> removed,
+      ValueListInserter<IndexType> added,
+      const Position& pos) {
+    // Delegate to local implementation that inspects the last move.
+    // If the move is unsupported for incremental update, the inserters
+    // remain empty and the caller will fall back to refresh.
+    auto index_for = [](IndexType anchor, IndexType pieceType /*0=white,1=black*/, IndexType piecePos) -> IndexType {
+      return anchor * NineMill::NumPlanes + pieceType * NineMill::NumSquares + piecePos;
+    };
+
+    const Move m = pos.move;
+    if (m == MOVE_NONE)
+      return;
+
+    const MoveType mt = type_of(m);
+    if (mt == MOVETYPE_REMOVE)
+      return; // Force refresh for removals
+
+    if (mt == MOVETYPE_MOVE) {
+      const Square from = from_sq(m);
+      const Square to   = to_sq(m);
+
+      const Piece pcTo = pos.piece_on(to);
+      if (pcTo == NO_PIECE || pcTo == MARKED_PIECE)
+        return;
+
+      const IndexType pieceType = (color_of(pcTo) == WHITE ? 0 : 1);
+      const IndexType fromIdx   = static_cast<IndexType>(from - SQ_BEGIN);
+      const IndexType toIdx     = static_cast<IndexType>(to   - SQ_BEGIN);
+
+      for (IndexType anchor = 0; anchor < NineMill::NumSquares; ++anchor) {
+        removed.push_back(index_for(anchor, pieceType, fromIdx));
+        added.push_back(index_for(anchor, pieceType, toIdx));
+      }
+    } else if (mt == MOVETYPE_PLACE) {
+      const Square to = to_sq(m);
+      const Piece pc  = pos.piece_on(to);
+      if (pc == NO_PIECE || pc == MARKED_PIECE)
+        return;
+
+      const IndexType pieceType = (color_of(pc) == WHITE ? 0 : 1);
+      const IndexType toIdx     = static_cast<IndexType>(to - SQ_BEGIN);
+
+      for (IndexType anchor = 0; anchor < NineMill::NumSquares; ++anchor)
+        added.push_back(index_for(anchor, pieceType, toIdx));
+    }
   }
 
-  int NineMill::update_cost(StateInfo* /*st*/) { return 0; }
-
-  int NineMill::refresh_cost(const Position& /*pos*/) {
-    return static_cast<int>(MaxActiveDimensions);
+  int NineMill::update_cost(StateInfo* /*st*/) {
+    // Heuristic: a typical non-capture move toggles two feature columns
+    // across all anchors (remove-from and add-to), i.e. ~2 * NumSquares.
+    // Returning a small constant encourages incremental updates over refresh.
+    return static_cast<int>(2 * NumSquares);
   }
 
-  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& /*pos*/) {
-    // Always refresh for simplicity.
-    return true;
+  int NineMill::refresh_cost(const Position& pos) {
+    // Estimate active features as (#stones on board) * (#anchors).
+    const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+    const int estimate = totalPieces * static_cast<int>(NumSquares);
+    return std::min(estimate, static_cast<int>(MaxActiveDimensions));
   }
+
+  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& pos) {
+    // Force refresh on capture/removal or unknown last move; otherwise
+    // allow incremental update.
+    const Move m = pos.move;
+    if (m == MOVE_NONE)
+      return true;
+
+    const MoveType mt = type_of(m);
+    return mt == MOVETYPE_REMOVE;
+  }
+
+  // Incremental update helper used by FeatureTransformer.
+  // Compute changed feature indices for the last applied move in pos.
+  // (helper removed; logic inlined into append_changed_indices above)
 
 } // namespace Stockfish::Eval::NNUE::Features
 

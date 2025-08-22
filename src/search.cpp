@@ -5,6 +5,7 @@
 
 #include "search.h"
 #include "evaluate.h"
+#include "nnue/evaluate_nnue.h"
 #include "mcts.h"
 #include "movepick.h"
 #include "option.h"
@@ -58,6 +59,13 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
     
     // If no suitable TT entry, evaluate the position
     if (stand_pat == VALUE_NONE) {
+        // Ensure NNUE parent accumulator is computed once for incremental updates
+        if (Eval::useNNUE && Eval::nnueInitialized) {
+            if (!pos->state()->accumulator.computed[WHITE]
+                || !pos->state()->accumulator.computed[BLACK]) {
+                (void)Stockfish::Eval::NNUE::evaluate(*pos, false);
+            }
+        }
         stand_pat = Eval::evaluate(*pos, depth);
     }
 
@@ -118,6 +126,10 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
+        // Link NNUE incremental chain to previous state's accumulator and mark as dirty
+        pos->state()->previous = &ss.top()->st; // assert ss.top() valid
+        pos->state()->accumulator.computed[WHITE] = false; // force recompute
+        pos->state()->accumulator.computed[BLACK] = false; // force recompute
         const Color after = pos->sideToMove;
 
         // Recursively call qsearch
@@ -279,6 +291,14 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     Value value;
     Depth epsilon;
 
+    // Ensure NNUE parent accumulator is computed once for incremental updates
+    if (Eval::useNNUE && Eval::nnueInitialized) {
+        if (!pos->state()->accumulator.computed[WHITE]
+            || !pos->state()->accumulator.computed[BLACK]) {
+            (void)Stockfish::Eval::NNUE::evaluate(*pos, false);
+        }
+    }
+
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);
     const Move nextMove = mp.next_move<LEGAL>();
@@ -345,6 +365,10 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
+        // Link NNUE incremental chain to previous state's accumulator and mark as dirty
+        pos->state()->previous = &ss.top()->st;
+        pos->state()->accumulator.computed[WHITE] = false;
+        pos->state()->accumulator.computed[BLACK] = false;
         const Color after = pos->sideToMove;
 
         // Determine the depth extension
