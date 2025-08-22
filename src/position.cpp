@@ -322,7 +322,13 @@ Position& Position::operator=(const Position& other)
         return *this;
     }
     
-    // Copy all members except st and startState
+    // Ensure our st pointer is properly initialized
+    if (!st) {
+        st = &startState;
+        st->previous = nullptr;
+    }
+    
+    // Copy all members
     std::memcpy(board, other.board, sizeof(board));
     std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
     std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
@@ -337,13 +343,12 @@ Position& Position::operator=(const Position& other)
     sideToMove = other.sideToMove;
     thisThread = other.thisThread;
     
-    // Copy StateInfo content to our own startState, but keep st pointing to our startState
-    startState = other.startState;
-    if (other.st != &other.startState) {
-        // If other.st points to a different StateInfo, copy its content too
+    // Copy StateInfo content to our own startState
+    if (other.st) {
         startState = *other.st;
     }
     st = &startState;  // Always point to our own startState
+    st->previous = nullptr;  // Clear previous pointer for safety
     
     // Copy other game-specific members
     them = other.them;

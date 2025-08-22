@@ -141,6 +141,11 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 
         // Undo the move
         pos->undo_move(ss);
+        
+        // Debug: verify position state after undo
+        if (pos->get_action() == Action::none) {
+            debugPrintf("WARNING: Position action became Action::none after undo_move!\n");
+        }
 
         // If the value is better than alpha, update alpha
         if (value > alpha) {
@@ -388,6 +393,11 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Undo the move
         pos->undo_move(ss);
+        
+        // Debug: verify position state after undo
+        if (pos->get_action() == Action::none) {
+            debugPrintf("WARNING: Position action became Action::none after undo_move!\n");
+        }
 
         // Update best value and best move if necessary
         if (value > bestValue) {
