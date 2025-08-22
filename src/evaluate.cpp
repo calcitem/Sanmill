@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <cstring>
+#include <mutex>
 
 namespace Eval {
 
@@ -26,6 +27,10 @@ bool nnueInitialized = false;
 
 // Hybrid evaluation settings
 int nnueMinDepth = 1;  // Minimum depth to use NNUE evaluation
+
+// Guard concurrent or repeated NNUE initialization
+static std::mutex nnueInitMutex;
+static std::string loadedNnuePathNormalized;
 
 // Normalize file path separators for the current platform
 std::string normalizePath(const std::string& path)
@@ -102,8 +107,16 @@ bool checkNNUEFileHeader(const std::string& filePath)
 void init_nnue()
 {
     if (!evalFile.empty()) {
+        std::lock_guard<std::mutex> lock(nnueInitMutex);
+
         // Normalize the file path to use correct separators for the current platform
         std::string normalizedPath = normalizePath(evalFile);
+
+        // If already initialized with the same model, skip re-initialization
+        if (nnueInitialized && normalizedPath == loadedNnuePathNormalized) {
+            sync_cout << "info string NNUE already initialized with the same model; skipping re-init" << sync_endl;
+            return;
+        }
         
         std::ifstream stream(normalizedPath, std::ios::binary);
         
@@ -115,7 +128,8 @@ void init_nnue()
         // Check if file can be opened
         if (!stream.is_open()) {
             sync_cout << "info string ERROR: Failed to open NNUE model file: " << normalizedPath << sync_endl;
-            assert(false && "Failed to open NNUE model file");
+            sync_cout << "info string NNUE initialization failed - model file not accessible" << sync_endl;
+            nnueInitialized = false;
             return;
         }
         
@@ -127,7 +141,8 @@ void init_nnue()
         
         if (fileSize == 0) {
             sync_cout << "info string ERROR: NNUE model file is empty" << sync_endl;
-            assert(false && "NNUE model file is empty");
+            sync_cout << "info string NNUE initialization failed - empty model file" << sync_endl;
+            nnueInitialized = false;
             return;
         }
         
@@ -238,12 +253,15 @@ void init_nnue()
                 sync_cout << "info string OK: Dimensions are consistent (" << transformedDims << ")" << sync_endl;
             }
             
-            assert(false && "Failed to load NNUE model");
+            sync_cout << "info string NNUE model loading failed - parameters could not be loaded" << sync_endl;
+            nnueInitialized = false;
             return;
         }
         
         sync_cout << "info string NNUE model successfully loaded from " << normalizedPath << sync_endl;
+        sync_cout << "info string NNUE evaluation is now active" << sync_endl;
         nnueInitialized = true;
+        loadedNnuePathNormalized = normalizedPath;
     } else {
         nnueInitialized = false;
     }
@@ -399,12 +417,18 @@ Value Eval::evaluate(Position &pos)
         }
     }
     
-    // Then try NNUE evaluation if enabled
-    if (useNNUE && nnueInitialized) {
-        return Stockfish::Eval::NNUE::evaluate(pos, false);
+    // If NNUE is enabled, only use NNUE evaluation
+    if (useNNUE) {
+        if (nnueInitialized) {
+            return Stockfish::Eval::NNUE::evaluate(pos, false);
+        } else {
+            sync_cout << "info string ERROR: NNUE is enabled but not initialized properly" << sync_endl;
+            // Return a neutral evaluation when NNUE fails to load
+            return VALUE_DRAW;
+        }
     }
     
-    // Fall back to traditional evaluation only if NNUE is disabled
+    // Only use traditional evaluation if NNUE is explicitly disabled
     return Evaluation(pos).value();
 }
 
@@ -420,18 +444,17 @@ Value Eval::evaluate(Position &pos, Depth depth)
         }
     }
     
-    // Use hybrid evaluation strategy
-    if (useNNUE && nnueInitialized) {
-        // Use traditional evaluation for very shallow depths to save computation
-        if (depth < nnueMinDepth) {
-            // Use traditional evaluation for shallow searches
-            return Evaluation(pos).value();
+    // If NNUE is enabled, always use NNUE evaluation (no depth-based fallback)
+    if (useNNUE) {
+        if (nnueInitialized) {
+            return Stockfish::Eval::NNUE::evaluate(pos, false);
+        } else {
+            sync_cout << "info string ERROR: NNUE is enabled but not initialized properly" << sync_endl;
+            // Return a neutral evaluation when NNUE fails to load
+            return VALUE_DRAW;
         }
-        
-        // For deeper searches, use NNUE
-        return Stockfish::Eval::NNUE::evaluate(pos, false);
     }
     
-    // Fall back to traditional evaluation
+    // Only use traditional evaluation if NNUE is explicitly disabled
     return Evaluation(pos).value();
 }

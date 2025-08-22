@@ -402,6 +402,7 @@ class Engine {
 
     // NNUE options
     // If enabled and no path provided, try to deploy bundled asset to app storage.
+    logger.i("$_logTag NNUE enabled: ${generalSettings.nnueEnabled}");
     if (generalSettings.nnueEnabled) {
       String modelPath = generalSettings.nnueModelPath;
       if (modelPath.isEmpty) {
@@ -420,9 +421,13 @@ class Engine {
         }
       }
 
+      logger.i("$_logTag Sending UseNNUE: true");
       await _sendOptions("UseNNUE", true);
       if (modelPath.isNotEmpty) {
+        logger.i("$_logTag Sending EvalFile: $modelPath");
         await _sendOptions("EvalFile", modelPath);
+      } else {
+        logger.w("$_logTag NNUE enabled but no model path available");
       }
     } else {
       await _sendOptions("UseNNUE", false);
