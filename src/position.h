@@ -224,8 +224,6 @@ public:
     int gamePly {0};
     Color sideToMove {NOBODY};
     Thread *thisThread {nullptr};
-    StateInfo* st;
-    StateInfo startState;  // Root state for the position
 
     /// Mill Game
     Color them {NOBODY};
@@ -254,6 +252,10 @@ public:
     char record[RECORD_LEN_MAX] {'\0'};
 
     Move move {MOVE_NONE};
+    
+    // NNUE support - placed at end to avoid breaking existing memory layout
+    StateInfo* st;
+    StateInfo startState;  // Root state for the position
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);

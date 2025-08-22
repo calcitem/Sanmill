@@ -328,19 +328,32 @@ Position& Position::operator=(const Position& other)
         st->previous = nullptr;
     }
     
-    // Copy all members
+    // Use simple member-by-member assignment to avoid memcpy alignment issues
+    // Copy board and bitboards
     std::memcpy(board, other.board, sizeof(board));
     std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
     std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
-    std::memcpy(pieceInHandCount, other.pieceInHandCount, sizeof(pieceInHandCount));
-    std::memcpy(pieceOnBoardCount, other.pieceOnBoardCount, sizeof(pieceOnBoardCount));
-    std::memcpy(pieceToRemoveCount, other.pieceToRemoveCount, sizeof(pieceToRemoveCount));
     
+    // Copy piece counts
+    pieceInHandCount[WHITE] = other.pieceInHandCount[WHITE];
+    pieceInHandCount[BLACK] = other.pieceInHandCount[BLACK];
+    pieceInHandCount[NOBODY] = other.pieceInHandCount[NOBODY];
+    pieceOnBoardCount[WHITE] = other.pieceOnBoardCount[WHITE];
+    pieceOnBoardCount[BLACK] = other.pieceOnBoardCount[BLACK];
+    pieceOnBoardCount[NOBODY] = other.pieceOnBoardCount[NOBODY];
+    pieceToRemoveCount[WHITE] = other.pieceToRemoveCount[WHITE];
+    pieceToRemoveCount[BLACK] = other.pieceToRemoveCount[BLACK];
+    pieceToRemoveCount[NOBODY] = other.pieceToRemoveCount[NOBODY];
+    
+    // Copy boolean flags
     isNeedStalemateRemoval = other.isNeedStalemateRemoval;
     isStalemateRemoving = other.isStalemateRemoving;
+    
+    // Copy game state
     mobilityDiff = other.mobilityDiff;
     gamePly = other.gamePly;
     sideToMove = other.sideToMove;
+    them = other.them;
     thisThread = other.thisThread;
     
     // Copy StateInfo content to our own startState
@@ -350,21 +363,46 @@ Position& Position::operator=(const Position& other)
     st = &startState;  // Always point to our own startState
     st->previous = nullptr;  // Clear previous pointer for safety
     
-    // Copy other game-specific members
-    them = other.them;
+    // Copy game-specific enums and state
     winner = other.winner;
     gameOverReason = other.gameOverReason;
     phase = other.phase;
     action = other.action;
     
-    std::memcpy(score, other.score, sizeof(score));
+    // Validate critical enum values to catch corruption early
+    if (static_cast<int>(phase) < 0 || static_cast<int>(phase) > 4) {
+        debugPrintf("ERROR: Invalid phase value %d in Position assignment!\n", static_cast<int>(phase));
+        phase = Phase::ready;  // Reset to safe value
+    }
+    if (static_cast<int>(action) < 0 || static_cast<int>(action) > 3) {
+        debugPrintf("ERROR: Invalid action value %d in Position assignment!\n", static_cast<int>(action));
+        action = Action::place;  // Reset to safe value
+    }
+    if (static_cast<int>(sideToMove) < 0 || static_cast<int>(sideToMove) > 2) {
+        debugPrintf("ERROR: Invalid sideToMove value %d in Position assignment!\n", static_cast<int>(sideToMove));
+        sideToMove = WHITE;  // Reset to safe value
+    }
+    
+    // Copy scores
+    score[WHITE] = other.score[WHITE];
+    score[BLACK] = other.score[BLACK];
+    score[NOBODY] = other.score[NOBODY];
     score_draw = other.score_draw;
     bestvalue = other.bestvalue;
     
-    std::memcpy(currentSquare, other.currentSquare, sizeof(currentSquare));
-    std::memcpy(lastMillFromSquare, other.lastMillFromSquare, sizeof(lastMillFromSquare));
-    std::memcpy(lastMillToSquare, other.lastMillToSquare, sizeof(lastMillToSquare));
-    std::memcpy(formedMillsBB, other.formedMillsBB, sizeof(formedMillsBB));
+    // Copy position-specific data
+    currentSquare[WHITE] = other.currentSquare[WHITE];
+    currentSquare[BLACK] = other.currentSquare[BLACK];
+    currentSquare[NOBODY] = other.currentSquare[NOBODY];
+    lastMillFromSquare[WHITE] = other.lastMillFromSquare[WHITE];
+    lastMillFromSquare[BLACK] = other.lastMillFromSquare[BLACK];
+    lastMillFromSquare[NOBODY] = other.lastMillFromSquare[NOBODY];
+    lastMillToSquare[WHITE] = other.lastMillToSquare[WHITE];
+    lastMillToSquare[BLACK] = other.lastMillToSquare[BLACK];
+    lastMillToSquare[NOBODY] = other.lastMillToSquare[NOBODY];
+    
+    formedMillsBB[WHITE] = other.formedMillsBB[WHITE];
+    formedMillsBB[BLACK] = other.formedMillsBB[BLACK];
     
     gamesPlayedCount = other.gamesPlayedCount;
     std::memcpy(record, other.record, sizeof(record));
