@@ -308,10 +308,16 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Handle case when no moves are available
     if (moveCount == 0) {
-        // This can happen in terminal positions (gameOver, stalemate, etc.)
-        // where generate<LEGAL> returns no moves
+        // Debug: print position state when no moves are found
+        debugPrintf("No legal moves found: phase=%d, action=%d, sideToMove=%d, pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, pieceInHand[W]=%d, pieceInHand[B]=%d\n",
+                   static_cast<int>(pos->get_phase()), static_cast<int>(pos->get_action()), 
+                   static_cast<int>(pos->side_to_move()),
+                   pos->piece_on_board_count(WHITE), pos->piece_on_board_count(BLACK),
+                   pos->piece_in_hand_count(WHITE), pos->piece_in_hand_count(BLACK));
+        
         if (depth == originDepth) {
             bestMove = MOVE_NONE;
+            debugPrintf("Warning: Search found no legal moves at root depth\n");
         }
         // Return static evaluation for terminal position
         return Eval::evaluate(*pos, depth);
@@ -503,11 +509,13 @@ Value Search::random_search(Position *pos, Move &bestMove)
     MoveList<LEGAL> ml(*pos);
 
     if (ml.size() == 0) {
-#ifdef _WIN32
-#ifdef _DEBUG
-        assert(false);
-#endif
-#endif
+        // Debug: print position state when no moves are found
+        debugPrintf("random_search: No legal moves found: phase=%d, action=%d, sideToMove=%d, pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, pieceInHand[W]=%d, pieceInHand[B]=%d\n",
+                   static_cast<int>(pos->get_phase()), static_cast<int>(pos->get_action()), 
+                   static_cast<int>(pos->side_to_move()),
+                   pos->piece_on_board_count(WHITE), pos->piece_on_board_count(BLACK),
+                   pos->piece_in_hand_count(WHITE), pos->piece_in_hand_count(BLACK));
+        
         bestMove = MOVE_NONE;
         debugPrintf("Warning: random_search found no legal moves\n");
         return VALUE_DRAW;

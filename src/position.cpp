@@ -256,6 +256,10 @@ Position::Position()
     st = &startState;
     st->previous = nullptr;
     
+    // Initialize accumulator as not computed
+    st->accumulator.computed[WHITE] = false;
+    st->accumulator.computed[BLACK] = false;
+    
     construct_key();
 
     reset();
@@ -267,9 +271,49 @@ Position::Position(const Position& other)
 {
     // Initialize our own state pointer first
     st = &startState;
+    st->previous = nullptr;
     
-    // Copy all other members
-    *this = other;
+    // Manually copy all members to avoid recursion
+    std::memcpy(board, other.board, sizeof(board));
+    std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
+    std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
+    std::memcpy(pieceInHandCount, other.pieceInHandCount, sizeof(pieceInHandCount));
+    std::memcpy(pieceOnBoardCount, other.pieceOnBoardCount, sizeof(pieceOnBoardCount));
+    std::memcpy(pieceToRemoveCount, other.pieceToRemoveCount, sizeof(pieceToRemoveCount));
+    
+    isNeedStalemateRemoval = other.isNeedStalemateRemoval;
+    isStalemateRemoving = other.isStalemateRemoving;
+    mobilityDiff = other.mobilityDiff;
+    gamePly = other.gamePly;
+    sideToMove = other.sideToMove;
+    thisThread = other.thisThread;
+    
+    // Copy StateInfo content to our own startState
+    if (other.st) {
+        startState = *other.st;
+    }
+    // Ensure previous pointer is cleared for the copy
+    st->previous = nullptr;
+    
+    // Copy other game-specific members
+    them = other.them;
+    winner = other.winner;
+    gameOverReason = other.gameOverReason;
+    phase = other.phase;
+    action = other.action;
+    
+    std::memcpy(score, other.score, sizeof(score));
+    score_draw = other.score_draw;
+    bestvalue = other.bestvalue;
+    
+    std::memcpy(currentSquare, other.currentSquare, sizeof(currentSquare));
+    std::memcpy(lastMillFromSquare, other.lastMillFromSquare, sizeof(lastMillFromSquare));
+    std::memcpy(lastMillToSquare, other.lastMillToSquare, sizeof(lastMillToSquare));
+    std::memcpy(formedMillsBB, other.formedMillsBB, sizeof(formedMillsBB));
+    
+    gamesPlayedCount = other.gamesPlayedCount;
+    std::memcpy(record, other.record, sizeof(record));
+    move = other.move;
 }
 
 Position& Position::operator=(const Position& other)
