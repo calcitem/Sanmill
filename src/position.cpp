@@ -252,11 +252,76 @@ void Position::init()
 
 Position::Position()
 {
+    // Initialize state pointer to point to the start state
+    st = &startState;
+    st->previous = nullptr;
+    
     construct_key();
 
     reset();
 
     score[WHITE] = score[BLACK] = score_draw = gamesPlayedCount = 0;
+}
+
+Position::Position(const Position& other)
+{
+    // Initialize our own state pointer first
+    st = &startState;
+    
+    // Copy all other members
+    *this = other;
+}
+
+Position& Position::operator=(const Position& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+    
+    // Copy all members except st and startState
+    std::memcpy(board, other.board, sizeof(board));
+    std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
+    std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
+    std::memcpy(pieceInHandCount, other.pieceInHandCount, sizeof(pieceInHandCount));
+    std::memcpy(pieceOnBoardCount, other.pieceOnBoardCount, sizeof(pieceOnBoardCount));
+    std::memcpy(pieceToRemoveCount, other.pieceToRemoveCount, sizeof(pieceToRemoveCount));
+    
+    isNeedStalemateRemoval = other.isNeedStalemateRemoval;
+    isStalemateRemoving = other.isStalemateRemoving;
+    mobilityDiff = other.mobilityDiff;
+    gamePly = other.gamePly;
+    sideToMove = other.sideToMove;
+    thisThread = other.thisThread;
+    
+    // Copy StateInfo content to our own startState, but keep st pointing to our startState
+    startState = other.startState;
+    if (other.st != &other.startState) {
+        // If other.st points to a different StateInfo, copy its content too
+        startState = *other.st;
+    }
+    st = &startState;  // Always point to our own startState
+    
+    // Copy other game-specific members
+    them = other.them;
+    winner = other.winner;
+    gameOverReason = other.gameOverReason;
+    phase = other.phase;
+    action = other.action;
+    
+    std::memcpy(score, other.score, sizeof(score));
+    score_draw = other.score_draw;
+    bestvalue = other.bestvalue;
+    
+    std::memcpy(currentSquare, other.currentSquare, sizeof(currentSquare));
+    std::memcpy(lastMillFromSquare, other.lastMillFromSquare, sizeof(lastMillFromSquare));
+    std::memcpy(lastMillToSquare, other.lastMillToSquare, sizeof(lastMillToSquare));
+    std::memcpy(formedMillsBB, other.formedMillsBB, sizeof(formedMillsBB));
+    
+    gamesPlayedCount = other.gamesPlayedCount;
+    std::memcpy(record, other.record, sizeof(record));
+    move = other.move;
+    
+    return *this;
 }
 
 /// Position::set() initializes the position object with the given FEN string.
@@ -386,7 +451,7 @@ Position &Position::set(const string &fenStr)
     setFormedMillsBB(mb);
 
     // 7-8. Halfmove clock and fullmove number
-    ss >> std::skipws >> st.rule50 >> gamePly;
+    ss >> std::skipws >> st->rule50 >> gamePly;
 
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
@@ -480,7 +545,7 @@ string Position::fen() const
                   formedMillsBB[BLACK];
     ss << fm << " ";
 
-    ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
+    ss << st->rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
     return ss.str();
 }
@@ -523,20 +588,20 @@ void Position::do_move(Move m)
         ret = remove_piece(to_sq(m));
         if (ret) {
             // Reset rule 50 counter
-            st.rule50 = 0;
+            st->rule50 = 0;
         }
         break;
     case MOVETYPE_MOVE:
         ret = move_piece(from_sq(m), to_sq(m));
         if (ret) {
-            ++st.rule50;
+            ++st->rule50;
         }
         break;
     case MOVETYPE_PLACE:
         ret = put_piece(to_sq(m));
         if (ret) {
             // Reset rule 50 counter
-            st.rule50 = 0;
+            st->rule50 = 0;
         }
         break;
     }
@@ -547,7 +612,7 @@ void Position::do_move(Move m)
 
     // Increment ply counters. In particular
     ++gamePly;
-    ++st.pliesFromNull;
+    ++st->pliesFromNull;
 
     move = m;
 }
@@ -567,7 +632,7 @@ void Position::undo_move(Sanmill::Stack<Position> &ss)
 
 Key Position::key_after(Move m) const
 {
-    Key k = st.key;
+    Key k = st->key;
     const auto s = to_sq(m);
     const MoveType mt = type_of(m);
 
@@ -609,7 +674,7 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
         if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
             break;
         }
-        if (key() == ss[i].st.key) {
+        if (key() == ss[i].st->key) {
             return true;
         }
     }
@@ -638,7 +703,7 @@ bool Position::has_game_cycle() const
 bool Position::reset()
 {
     gamePly = 0;
-    st.rule50 = 0;
+    st->rule50 = 0;
 
     set_side_to_move(WHITE);
     phase = Phase::ready;
@@ -651,7 +716,7 @@ bool Position::reset()
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
 
-    st.key = 0;
+    st->key = 0;
 
     pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
     pieceInHandCount[WHITE] = pieceInHandCount[BLACK] = rule.pieceCount;
@@ -952,7 +1017,7 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         snprintf(record, RECORD_LEN_MAX, "%s-%s",
                  UCI::square(currentSquare[sideToMove]).c_str(),
                  UCI::square(s).c_str());
-        st.rule50++;
+        st->rule50++;
     }
 
     const Piece pc = board[currentSquare[sideToMove]];
@@ -1073,7 +1138,7 @@ bool Position::remove_piece(Square s, bool updateRecord)
 
     if (updateRecord) {
         snprintf(record, RECORD_LEN_MAX, "x%s", UCI::square(s).c_str());
-        st.rule50 = 0; // TODO(calcitem): Need to move out?
+        st->rule50 = 0; // TODO(calcitem): Need to move out?
     }
 
     pieceOnBoardCount[them]--;
@@ -1433,7 +1498,7 @@ inline void Position::set_side_to_move(Color c)
     if (sideToMove != c) {
         sideToMove = c;
         // us = c;
-        st.key ^= Zobrist::side;
+        st->key ^= Zobrist::side;
     }
 
     them = ~sideToMove;
@@ -1467,9 +1532,9 @@ inline Key Position::update_key(Square s)
 {
     const int pieceType = color_on(s);
 
-    st.key ^= Zobrist::psq[pieceType][s];
+    st->key ^= Zobrist::psq[pieceType][s];
 
-    return st.key;
+    return st->key;
 }
 
 inline Key Position::revert_key(Square s)
@@ -1479,7 +1544,7 @@ inline Key Position::revert_key(Square s)
 
 Key Position::update_key_misc()
 {
-    st.key = st.key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
+    st->key = st->key << Zobrist::KEY_MISC_BIT >> Zobrist::KEY_MISC_BIT;
 
     // TODO: pieceToRemoveCount[sideToMove] or
     // abs(pieceToRemoveCount[sideToMove] - pieceToRemoveCount[~sideToMove])?
@@ -1488,10 +1553,10 @@ Key Position::update_key_misc()
     //  if it is greater than 3, since only 2 bits are left,
     //  the storage will be truncated or directly get 0,
     //  and the original value cannot be completely retained.
-    st.key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
+    st->key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
-    return st.key;
+    return st->key;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

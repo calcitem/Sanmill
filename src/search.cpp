@@ -126,10 +126,10 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
-        // Link NNUE incremental chain to previous state's accumulator and mark as dirty
-        pos->state()->previous = &ss.top()->st; // assert ss.top() valid
-        pos->state()->accumulator.computed[WHITE] = false; // force recompute
-        pos->state()->accumulator.computed[BLACK] = false; // force recompute
+        
+        // Mark NNUE accumulator as dirty - will force full refresh
+        pos->state()->accumulator.computed[WHITE] = false;
+        pos->state()->accumulator.computed[BLACK] = false;
         const Color after = pos->sideToMove;
 
         // Recursively call qsearch
@@ -291,7 +291,14 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     Value value;
     Depth epsilon;
 
+    // Initialize MovePicker to order and select moves
+    MovePicker mp(*pos, ttMove);
+    const Move nextMove = mp.next_move<LEGAL>();
+    const int moveCount = mp.move_count();
+
     // Ensure NNUE parent accumulator is computed once for incremental updates
+    // This must happen AFTER MovePicker initialization to avoid issues if
+    // MovePicker needs evaluation during move generation/scoring
     if (Eval::useNNUE && Eval::nnueInitialized) {
         if (!pos->state()->accumulator.computed[WHITE]
             || !pos->state()->accumulator.computed[BLACK]) {
@@ -299,23 +306,15 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
         }
     }
 
-    // Initialize MovePicker to order and select moves
-    MovePicker mp(*pos, ttMove);
-    const Move nextMove = mp.next_move<LEGAL>();
-    const int moveCount = mp.move_count();
-
     // Handle case when no moves are available
     if (moveCount == 0) {
-#ifdef _WIN32
-#ifdef _DEBUG
-        assert(false);
-#endif
-#endif
+        // This can happen in terminal positions (gameOver, stalemate, etc.)
+        // where generate<LEGAL> returns no moves
         if (depth == originDepth) {
             bestMove = MOVE_NONE;
-            debugPrintf("Warning: Search found no legal moves at root depth\n");
         }
-        return bestValue;
+        // Return static evaluation for terminal position
+        return Eval::evaluate(*pos, depth);
     }
 
 #ifndef NNUE_GENERATE_TRAINING_DATA
@@ -365,8 +364,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Make the move on the board
         pos->do_move(move);
-        // Link NNUE incremental chain to previous state's accumulator and mark as dirty
-        pos->state()->previous = &ss.top()->st;
+        
+        // Mark NNUE accumulator as dirty - will force full refresh
         pos->state()->accumulator.computed[WHITE] = false;
         pos->state()->accumulator.computed[BLACK] = false;
         const Color after = pos->sideToMove;

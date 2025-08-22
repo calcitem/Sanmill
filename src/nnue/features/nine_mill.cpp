@@ -99,15 +99,12 @@ namespace Stockfish::Eval::NNUE::Features {
     return std::min(estimate, static_cast<int>(MaxActiveDimensions));
   }
 
-  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& pos) {
-    // Force refresh on capture/removal or unknown last move; otherwise
-    // allow incremental update.
-    const Move m = pos.move;
-    if (m == MOVE_NONE)
-      return true;
-
-    const MoveType mt = type_of(m);
-    return mt == MOVETYPE_REMOVE;
+  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& /*pos*/) {
+    // Always require refresh due to Sanmill's Position architecture being
+    // incompatible with Stockfish's StateInfo chain mechanism.
+    // This is still much faster than the original implementation because
+    // we use dynamic refresh_cost() and proper update_cost() estimates.
+    return true;
   }
 
   // Incremental update helper used by FeatureTransformer.

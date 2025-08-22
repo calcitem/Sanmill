@@ -448,9 +448,9 @@ int SearchEngine::executeSearch()
 
     if (rootPos->get_phase() == Phase::placing && !rule.mayMoveInPlacingPhase) {
         posKeyHistory.clear();
-        rootPos->st.rule50 = 0;
+        rootPos->st->rule50 = 0;
     } else if (isMovingOrMayMoveInPlacing) {
-        rootPos->st.rule50 = static_cast<unsigned>(posKeyHistory.size());
+        rootPos->st->rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
 
     MoveList<LEGAL>::shuffle();

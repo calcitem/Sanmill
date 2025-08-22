@@ -61,6 +61,9 @@ public:
     static void init();
 
     Position();
+    Position(const Position& other);
+    Position& operator=(const Position& other);
+    
 #if 1
     ~Position()
     {
@@ -68,9 +71,6 @@ public:
         // formedMills.at(BLACK).clear();
     }
 #endif
-
-    // Position(const Position &) = delete;
-    // Position &operator=(const Position &) = delete;
 
     // FEN string input/output
     Position &set(const std::string &fenStr);
@@ -113,7 +113,7 @@ public:
     unsigned int rule50_count() const;
 
     // NNUE support
-    inline StateInfo* state() const { return const_cast<StateInfo*>(&st); }
+    inline StateInfo* state() const { return st; }
 
     /// Mill Game
 
@@ -224,7 +224,8 @@ public:
     int gamePly {0};
     Color sideToMove {NOBODY};
     Thread *thisThread {nullptr};
-    StateInfo st;
+    StateInfo* st;
+    StateInfo startState;  // Root state for the position
 
     /// Mill Game
     Color them {NOBODY};
@@ -294,12 +295,12 @@ int Position::count(Color c) const
 
 inline Key Position::key() const noexcept
 {
-    return st.key;
+    return st->key;
 }
 
 inline void Position::construct_key()
 {
-    st.key = 0;
+    st->key = 0;
 }
 
 inline int Position::game_ply() const
@@ -309,7 +310,7 @@ inline int Position::game_ply() const
 
 inline unsigned int Position::rule50_count() const
 {
-    return st.rule50;
+    return st->rule50;
 }
 
 inline bool Position::select_piece(File f, Rank r)
