@@ -289,12 +289,12 @@ Position::Position(const Position& other)
     sideToMove = other.sideToMove;
     thisThread = other.thisThread;
     
-    // Copy StateInfo content to our own startState
+    // Copy StateInfo content to our own startState (but not the previous pointer)
     if (other.st) {
         startState = *other.st;
+        startState.previous = nullptr;  // Clear previous pointer immediately after copy
     }
-    // Ensure previous pointer is cleared for the copy
-    st->previous = nullptr;
+    st->previous = nullptr;  // Ensure our st pointer is also clear
     
     // Copy other game-specific members
     them = other.them;
@@ -357,12 +357,13 @@ Position& Position::operator=(const Position& other)
     them = other.them;
     thisThread = other.thisThread;
     
-    // Copy StateInfo content to our own startState
+    // Copy StateInfo content to our own startState (but not the previous pointer)
     if (other.st) {
         startState = *other.st;
+        startState.previous = nullptr;  // Clear previous pointer immediately after copy
     }
     st = &startState;  // Always point to our own startState
-    st->previous = nullptr;  // Clear previous pointer for safety
+    st->previous = nullptr;  // Ensure our st pointer is also clear
     
     // Copy game-specific enums and state
     winner = other.winner;

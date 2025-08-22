@@ -100,11 +100,10 @@ namespace Stockfish::Eval::NNUE::Features {
   }
 
   bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& /*pos*/) {
-    // Always require refresh due to Sanmill's Position architecture being
-    // incompatible with Stockfish's StateInfo chain mechanism.
-    // This is still much faster than the original implementation because
-    // we use dynamic refresh_cost() and proper update_cost() estimates.
-    return true;
+    // TEMPORARY: Never require refresh to avoid infinite loops
+    // This will force incremental updates, which may not work correctly
+    // but will help us identify where the infinite loop is coming from
+    return false;
   }
 
   // Incremental update helper used by FeatureTransformer.

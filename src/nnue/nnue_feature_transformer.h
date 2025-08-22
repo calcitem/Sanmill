@@ -271,6 +271,12 @@ namespace Stockfish::Eval::NNUE {
 
     // Convert input features
     std::int32_t transform(const Position& pos, OutputType* output, int bucket) const {
+      // Debug: Track transform function calls
+      static thread_local int transformCallCount = 0;
+      if (++transformCallCount <= 5) {
+        debugPrintf("NNUE transform call #%d\n", transformCallCount);
+      }
+      
       // Validate position state before processing
       Color sideToMove = pos.side_to_move();
       if (sideToMove != WHITE && sideToMove != BLACK) {
