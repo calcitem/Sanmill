@@ -23,6 +23,7 @@
 
 #include "nnue_common.h"
 #include "nnue_architecture.h"
+#include "../debug.h"  // for debugPrintf
 
 #include <cstring> // std::memset()
 #include <vector>
@@ -419,6 +420,11 @@ namespace Stockfish::Eval::NNUE {
 
    private:
     void update_accumulator(const Position& pos, const Color perspective) const {
+      // Debug: track accumulator updates to detect infinite loops
+      static thread_local int updateCount = 0;
+      if (++updateCount % 1000 == 0) {
+        debugPrintf("NNUE accumulator update count: %d (perspective=%d)\n", updateCount, static_cast<int>(perspective));
+      }
 
       // The size must be enough to contain the largest possible update.
       // That might depend on the feature set and generally relies on the
@@ -437,7 +443,10 @@ namespace Stockfish::Eval::NNUE {
       // of the estimated gain in terms of features to be added/subtracted.
       StateInfo *st = pos.state(), *next = nullptr;
       int gain = FeatureSet::refresh_cost(pos);
-      while (st->previous && !st->accumulator.computed[perspective])
+      int chainDepth = 0;
+      const int MAX_CHAIN_DEPTH = 64;  // Prevent infinite loops
+      
+      while (st->previous && !st->accumulator.computed[perspective] && chainDepth < MAX_CHAIN_DEPTH)
       {
         // This governs when a full feature refresh is needed and how many
         // updates are better than just one full refresh.
@@ -446,6 +455,13 @@ namespace Stockfish::Eval::NNUE {
           break;
         next = st;
         st = st->previous;
+        ++chainDepth;
+      }
+      
+      if (chainDepth >= MAX_CHAIN_DEPTH) {
+        debugPrintf("NNUE: Chain depth limit reached, forcing refresh\n");
+        st = pos.state();  // Force refresh from current position
+        next = nullptr;
       }
 
       if (st->accumulator.computed[perspective])

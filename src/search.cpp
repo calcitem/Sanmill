@@ -6,6 +6,7 @@
 #include "search.h"
 #include "evaluate.h"
 #include "nnue/evaluate_nnue.h"
+#include <chrono>
 #include "mcts.h"
 #include "movepick.h"
 #include "option.h"
@@ -59,13 +60,7 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
     
     // If no suitable TT entry, evaluate the position
     if (stand_pat == VALUE_NONE) {
-        // Ensure NNUE parent accumulator is computed once for incremental updates
-        if (Eval::useNNUE && Eval::nnueInitialized) {
-            if (!pos->state()->accumulator.computed[WHITE]
-                || !pos->state()->accumulator.computed[BLACK]) {
-                (void)Stockfish::Eval::NNUE::evaluate(*pos, false);
-            }
-        }
+        // For Sanmill, NNUE evaluation is computed fresh when needed
         stand_pat = Eval::evaluate(*pos, depth);
     }
 
@@ -127,9 +122,8 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
         // Make the move on the board
         pos->do_move(move);
         
-        // Mark NNUE accumulator as dirty - will force full refresh
-        pos->state()->accumulator.computed[WHITE] = false;
-        pos->state()->accumulator.computed[BLACK] = false;
+        // For Sanmill's architecture, we don't use incremental NNUE updates
+        // The accumulator will be computed fresh when needed
         const Color after = pos->sideToMove;
 
         // Recursively call qsearch
@@ -301,15 +295,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     const Move nextMove = mp.next_move<LEGAL>();
     const int moveCount = mp.move_count();
 
-    // Ensure NNUE parent accumulator is computed once for incremental updates
-    // This must happen AFTER MovePicker initialization to avoid issues if
-    // MovePicker needs evaluation during move generation/scoring
-    if (Eval::useNNUE && Eval::nnueInitialized) {
-        if (!pos->state()->accumulator.computed[WHITE]
-            || !pos->state()->accumulator.computed[BLACK]) {
-            (void)Stockfish::Eval::NNUE::evaluate(*pos, false);
-        }
-    }
+    // For Sanmill, we use fresh NNUE evaluation for each position
+    // No need to pre-compute accumulators since we always refresh
 
     // Handle case when no moves are available
     if (moveCount == 0) {
@@ -376,9 +363,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
         // Make the move on the board
         pos->do_move(move);
         
-        // Mark NNUE accumulator as dirty - will force full refresh
-        pos->state()->accumulator.computed[WHITE] = false;
-        pos->state()->accumulator.computed[BLACK] = false;
+        // For Sanmill's architecture, we don't use incremental NNUE updates
+        // The accumulator will be computed fresh when needed
         const Color after = pos->sideToMove;
 
         // Determine the depth extension
