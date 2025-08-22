@@ -257,8 +257,9 @@ Position::Position()
     st->previous = nullptr;
     
     // Initialize accumulator as not computed
-    st->accumulator.computed[WHITE] = false;
-    st->accumulator.computed[BLACK] = false;
+    // Map Sanmill Color to NNUE array indices: WHITE(1)->0, BLACK(2)->1
+    st->accumulator.computed[0] = false;  // WHITE -> 0
+    st->accumulator.computed[1] = false;  // BLACK -> 1
     
     construct_key();
 

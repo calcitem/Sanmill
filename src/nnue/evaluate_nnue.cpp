@@ -364,16 +364,18 @@ namespace Stockfish::Eval::NNUE {
           auto st = pos.state();
 
           pos.remove_piece(sq, true);
-          st->accumulator.computed[WHITE] = false;
-          st->accumulator.computed[BLACK] = false;
+          // Map Sanmill Color to NNUE array indices
+          st->accumulator.computed[0] = false;  // WHITE -> 0
+          st->accumulator.computed[1] = false;  // BLACK -> 1
 
           Value eval = evaluate(pos, false);
           eval = pos.side_to_move() == WHITE ? eval : -eval;
           v = base - eval;
 
           pos.put_piece(pc, sq);
-          st->accumulator.computed[WHITE] = false;
-          st->accumulator.computed[BLACK] = false;
+          // Map Sanmill Color to NNUE array indices
+          st->accumulator.computed[0] = false;  // WHITE -> 0
+          st->accumulator.computed[1] = false;  // BLACK -> 1
         }
 
         // Draw in a 3x8 grid (not the actual board; for textual debug only)
