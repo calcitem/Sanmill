@@ -271,16 +271,31 @@ namespace Stockfish::Eval::NNUE {
 
     // Convert input features
     std::int32_t transform(const Position& pos, OutputType* output, int bucket) const {
+      // Validate position state before processing
+      Color sideToMove = pos.side_to_move();
+      if (sideToMove != WHITE && sideToMove != BLACK) {
+        debugPrintf("ERROR: Invalid sideToMove %d in NNUE transform\n", static_cast<int>(sideToMove));
+        sideToMove = WHITE;  // Default to WHITE
+      }
+      
       update_accumulator(pos, WHITE);
       update_accumulator(pos, BLACK);
 
-      const Color perspectives[2] = {pos.side_to_move(), ~pos.side_to_move()};
+      // Ensure perspectives are valid colors for NNUE
+      Color perspective0 = (sideToMove == WHITE || sideToMove == BLACK) ? sideToMove : WHITE;
+      Color perspective1 = (perspective0 == WHITE) ? BLACK : WHITE;
+      
+      // Map to NNUE array indices (0 and 1)
+      const int nnueIndex0 = (perspective0 == WHITE) ? 0 : 1;
+      const int nnueIndex1 = (perspective1 == WHITE) ? 0 : 1;
+      const int nnueIndices[2] = {nnueIndex0, nnueIndex1};
+      
       const auto& accumulation = pos.state()->accumulator.accumulation;
       const auto& psqtAccumulation = pos.state()->accumulator.psqtAccumulation;
 
       const auto psqt = (
-            psqtAccumulation[perspectives[0]][bucket]
-          - psqtAccumulation[perspectives[1]][bucket]
+            psqtAccumulation[nnueIndex0][bucket]
+          - psqtAccumulation[nnueIndex1][bucket]
         ) / 2;
 
 
@@ -298,9 +313,9 @@ namespace Stockfish::Eval::NNUE {
           for (IndexType j = 0; j < NumChunks; ++j)
           {
               __m512i sum0 = _mm512_load_si512(&reinterpret_cast<const __m512i*>
-                                              (accumulation[perspectives[p]])[j * 2 + 0]);
+                                              (accumulation[nnueIndices[p]])[j * 2 + 0]);
               __m512i sum1 = _mm512_load_si512(&reinterpret_cast<const __m512i*>
-                                              (accumulation[perspectives[p]])[j * 2 + 1]);
+                                              (accumulation[nnueIndices[p]])[j * 2 + 1]);
 
               _mm512_store_si512(&out[j], _mm512_permutexvar_epi64(Control,
                                  _mm512_max_epi8(_mm512_packs_epi16(sum0, sum1), Zero)));
@@ -321,9 +336,9 @@ namespace Stockfish::Eval::NNUE {
           for (IndexType j = 0; j < NumChunks; ++j)
           {
               __m256i sum0 = _mm256_load_si256(&reinterpret_cast<const __m256i*>
-                                              (accumulation[perspectives[p]])[j * 2 + 0]);
+                                              (accumulation[nnueIndices[p]])[j * 2 + 0]);
               __m256i sum1 = _mm256_load_si256(&reinterpret_cast<const __m256i*>
-                                              (accumulation[perspectives[p]])[j * 2 + 1]);
+                                              (accumulation[nnueIndices[p]])[j * 2 + 1]);
 
               _mm256_store_si256(&out[j], _mm256_permute4x64_epi64(
                                  _mm256_max_epi8(_mm256_packs_epi16(sum0, sum1), Zero), Control));
@@ -348,9 +363,9 @@ namespace Stockfish::Eval::NNUE {
           for (IndexType j = 0; j < NumChunks; ++j)
           {
               __m128i sum0 = _mm_load_si128(&reinterpret_cast<const __m128i*>
-                                           (accumulation[perspectives[p]])[j * 2 + 0]);
+                                           (accumulation[nnueIndices[p]])[j * 2 + 0]);
               __m128i sum1 = _mm_load_si128(&reinterpret_cast<const __m128i*>
-                                           (accumulation[perspectives[p]])[j * 2 + 1]);
+                                           (accumulation[nnueIndices[p]])[j * 2 + 1]);
               const __m128i packedbytes = _mm_packs_epi16(sum0, sum1);
 
               #ifdef USE_SSE41
@@ -373,8 +388,8 @@ namespace Stockfish::Eval::NNUE {
           auto out = reinterpret_cast<__m64*>(&output[offset]);
           for (IndexType j = 0; j < NumChunks; ++j)
           {
-              __m64 sum0 = *(&reinterpret_cast<const __m64*>(accumulation[perspectives[p]])[j * 2 + 0]);
-              __m64 sum1 = *(&reinterpret_cast<const __m64*>(accumulation[perspectives[p]])[j * 2 + 1]);
+              __m64 sum0 = *(&reinterpret_cast<const __m64*>(accumulation[nnueIndices[p]])[j * 2 + 0]);
+              __m64 sum1 = *(&reinterpret_cast<const __m64*>(accumulation[nnueIndices[p]])[j * 2 + 1]);
               const __m64 packedbytes = _mm_packs_pi16(sum0, sum1);
               out[j] = _mm_subs_pi8(_mm_adds_pi8(packedbytes, k0x80s), k0x80s);
           }
@@ -393,7 +408,7 @@ namespace Stockfish::Eval::NNUE {
           const auto out = reinterpret_cast<int8x8_t*>(&output[offset]);
           for (IndexType j = 0; j < NumChunks; ++j)
           {
-              int16x8_t sum = reinterpret_cast<const int16x8_t*>(accumulation[perspectives[p]])[j];
+              int16x8_t sum = reinterpret_cast<const int16x8_t*>(accumulation[nnueIndices[p]])[j];
               out[j] = vmax_s8(vqmovn_s16(sum), Zero);
           }
       }
@@ -406,7 +421,7 @@ namespace Stockfish::Eval::NNUE {
           const IndexType offset = HalfDimensions * p;
           for (IndexType j = 0; j < HalfDimensions; ++j)
           {
-              BiasType sum = accumulation[perspectives[p]][j];
+              BiasType sum = accumulation[nnueIndices[p]][j];
               output[offset + j] = static_cast<OutputType>(std::max<int>(0, std::min<int>(127, sum)));
           }
       }
@@ -420,10 +435,23 @@ namespace Stockfish::Eval::NNUE {
 
    private:
     void update_accumulator(const Position& pos, const Color perspective) const {
+      // Validate perspective - NNUE only supports WHITE(1) and BLACK(2) in Sanmill
+      if (perspective != WHITE && perspective != BLACK) {
+        debugPrintf("ERROR: Invalid NNUE perspective %d, skipping accumulator update\n", static_cast<int>(perspective));
+        return;
+      }
+      
+      // Map Sanmill Color values to NNUE array indices
+      // Sanmill: WHITE=1, BLACK=2 -> NNUE: WHITE=0, BLACK=1
+      const int nnuePerspective = (perspective == WHITE) ? 0 : 1;
+      
+      // We'll manually replace perspective with nnuePerspective in array accesses
+      
       // Debug: track accumulator updates to detect infinite loops
       static thread_local int updateCount = 0;
       if (++updateCount % 1000 == 0) {
-        debugPrintf("NNUE accumulator update count: %d (perspective=%d)\n", updateCount, static_cast<int>(perspective));
+        debugPrintf("NNUE accumulator update count: %d (sanmill_perspective=%d, nnue_index=%d)\n", 
+                   updateCount, static_cast<int>(perspective), nnuePerspective);
       }
 
       // The size must be enough to contain the largest possible update.
@@ -446,7 +474,7 @@ namespace Stockfish::Eval::NNUE {
       int chainDepth = 0;
       const int MAX_CHAIN_DEPTH = 64;  // Prevent infinite loops
       
-      while (st->previous && !st->accumulator.computed[perspective] && chainDepth < MAX_CHAIN_DEPTH)
+      while (st->previous && !st->accumulator.computed[nnuePerspective] && chainDepth < MAX_CHAIN_DEPTH)
       {
         // This governs when a full feature refresh is needed and how many
         // updates are better than just one full refresh.
@@ -464,7 +492,7 @@ namespace Stockfish::Eval::NNUE {
         next = nullptr;
       }
 
-      if (st->accumulator.computed[perspective])
+      if (st->accumulator.computed[nnuePerspective])
       {
         if (next == nullptr)
           return;
@@ -487,8 +515,8 @@ namespace Stockfish::Eval::NNUE {
             ksq, st2, perspective, removed_inserter1, added_inserter1, pos);
 
         // Mark the accumulators as computed.
-        next->accumulator.computed[perspective] = true;
-        pos.state()->accumulator.computed[perspective] = true;
+        next->accumulator.computed[nnuePerspective] = true;
+        pos.state()->accumulator.computed[nnuePerspective] = true;
 
         // Now update the accumulators listed in states_to_update[], where the last element is a sentinel.
         StateInfo *states_to_update[3] =
@@ -498,7 +526,7 @@ namespace Stockfish::Eval::NNUE {
         {
           // Load accumulator
           auto accTile = reinterpret_cast<vec_t*>(
-            &st->accumulator.accumulation[perspective][j * TileHeight]);
+            &st->accumulator.accumulation[nnuePerspective][j * TileHeight]);
           for (IndexType k = 0; k < NumRegs; ++k)
             acc[k] = vec_load(&accTile[k]);
 
@@ -524,7 +552,7 @@ namespace Stockfish::Eval::NNUE {
 
             // Store accumulator
             accTile = reinterpret_cast<vec_t*>(
-              &states_to_update[i]->accumulator.accumulation[perspective][j * TileHeight]);
+              &states_to_update[i]->accumulator.accumulation[nnuePerspective][j * TileHeight]);
             for (IndexType k = 0; k < NumRegs; ++k)
               vec_store(&accTile[k], acc[k]);
           }
@@ -534,7 +562,7 @@ namespace Stockfish::Eval::NNUE {
         {
           // Load accumulator
           auto accTilePsqt = reinterpret_cast<psqt_vec_t*>(
-            &st->accumulator.psqtAccumulation[perspective][j * PsqtTileHeight]);
+            &st->accumulator.psqtAccumulation[nnuePerspective][j * PsqtTileHeight]);
           for (std::size_t k = 0; k < NumPsqtRegs; ++k)
             psqt[k] = vec_load_psqt(&accTilePsqt[k]);
 
@@ -560,7 +588,7 @@ namespace Stockfish::Eval::NNUE {
 
             // Store accumulator
             accTilePsqt = reinterpret_cast<psqt_vec_t*>(
-              &states_to_update[i]->accumulator.psqtAccumulation[perspective][j * PsqtTileHeight]);
+              &states_to_update[i]->accumulator.psqtAccumulation[nnuePerspective][j * PsqtTileHeight]);
             for (std::size_t k = 0; k < NumPsqtRegs; ++k)
               vec_store_psqt(&accTilePsqt[k], psqt[k]);
           }
@@ -569,12 +597,12 @@ namespace Stockfish::Eval::NNUE {
   #else
         for (IndexType i = 0; states_to_update[i]; ++i)
         {
-          std::memcpy(states_to_update[i]->accumulator.accumulation[perspective],
-              st->accumulator.accumulation[perspective],
+          std::memcpy(states_to_update[i]->accumulator.accumulation[nnuePerspective],
+              st->accumulator.accumulation[nnuePerspective],
               HalfDimensions * sizeof(BiasType));
 
           for (std::size_t k = 0; k < PSQTBuckets; ++k)
-            states_to_update[i]->accumulator.psqtAccumulation[perspective][k] = st->accumulator.psqtAccumulation[perspective][k];
+            states_to_update[i]->accumulator.psqtAccumulation[nnuePerspective][k] = st->accumulator.psqtAccumulation[nnuePerspective][k];
 
           st = states_to_update[i];
 
@@ -584,10 +612,10 @@ namespace Stockfish::Eval::NNUE {
             const IndexType offset = HalfDimensions * index;
 
             for (IndexType j = 0; j < HalfDimensions; ++j)
-              st->accumulator.accumulation[perspective][j] -= weights[offset + j];
+              st->accumulator.accumulation[nnuePerspective][j] -= weights[offset + j];
 
             for (std::size_t k = 0; k < PSQTBuckets; ++k)
-              st->accumulator.psqtAccumulation[perspective][k] -= psqtWeights[index * PSQTBuckets + k];
+              st->accumulator.psqtAccumulation[nnuePerspective][k] -= psqtWeights[index * PSQTBuckets + k];
           }
 
           // Difference calculation for the activated features
@@ -596,10 +624,10 @@ namespace Stockfish::Eval::NNUE {
             const IndexType offset = HalfDimensions * index;
 
             for (IndexType j = 0; j < HalfDimensions; ++j)
-              st->accumulator.accumulation[perspective][j] += weights[offset + j];
+              st->accumulator.accumulation[nnuePerspective][j] += weights[offset + j];
 
             for (std::size_t k = 0; k < PSQTBuckets; ++k)
-              st->accumulator.psqtAccumulation[perspective][k] += psqtWeights[index * PSQTBuckets + k];
+              st->accumulator.psqtAccumulation[nnuePerspective][k] += psqtWeights[index * PSQTBuckets + k];
           }
         }
   #endif
@@ -608,7 +636,7 @@ namespace Stockfish::Eval::NNUE {
       {
         // Refresh the accumulator
         auto& accumulator = pos.state()->accumulator;
-        accumulator.computed[perspective] = true;
+        accumulator.computed[nnuePerspective] = true;
         IndexList active;
         ValueListInserter<IndexType> active_inserter(active);
         FeatureSet::append_active_indices(pos, perspective, active_inserter);
@@ -631,7 +659,7 @@ namespace Stockfish::Eval::NNUE {
           }
 
           auto accTile = reinterpret_cast<vec_t*>(
-              &accumulator.accumulation[perspective][j * TileHeight]);
+              &accumulator.accumulation[nnuePerspective][j * TileHeight]);
           for (unsigned k = 0; k < NumRegs; k++)
             vec_store(&accTile[k], acc[k]);
         }
@@ -651,27 +679,27 @@ namespace Stockfish::Eval::NNUE {
           }
 
           auto accTilePsqt = reinterpret_cast<psqt_vec_t*>(
-            &accumulator.psqtAccumulation[perspective][j * PsqtTileHeight]);
+            &accumulator.psqtAccumulation[nnuePerspective][j * PsqtTileHeight]);
           for (std::size_t k = 0; k < NumPsqtRegs; ++k)
             vec_store_psqt(&accTilePsqt[k], psqt[k]);
         }
 
   #else
-        std::memcpy(accumulator.accumulation[perspective], biases,
+        std::memcpy(accumulator.accumulation[nnuePerspective], biases,
             HalfDimensions * sizeof(BiasType));
 
         for (std::size_t k = 0; k < PSQTBuckets; ++k)
-          accumulator.psqtAccumulation[perspective][k] = 0;
+          accumulator.psqtAccumulation[nnuePerspective][k] = 0;
 
         for (const auto index : active)
         {
           const IndexType offset = HalfDimensions * index;
 
           for (IndexType j = 0; j < HalfDimensions; ++j)
-            accumulator.accumulation[perspective][j] += weights[offset + j];
+            accumulator.accumulation[nnuePerspective][j] += weights[offset + j];
 
           for (std::size_t k = 0; k < PSQTBuckets; ++k)
-            accumulator.psqtAccumulation[perspective][k] += psqtWeights[index * PSQTBuckets + k];
+            accumulator.psqtAccumulation[nnuePerspective][k] += psqtWeights[index * PSQTBuckets + k];
         }
   #endif
       }
@@ -679,6 +707,8 @@ namespace Stockfish::Eval::NNUE {
   #if defined(USE_MMX)
       _mm_empty();
   #endif
+      
+      // No need to undef since we didn't use macro
     }
 
     alignas(CacheLineSize) BiasType biases[HalfDimensions];
