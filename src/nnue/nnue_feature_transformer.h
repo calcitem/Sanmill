@@ -271,9 +271,21 @@ namespace Stockfish::Eval::NNUE {
 
     // Convert input features
     std::int32_t transform(const Position& pos, OutputType* output, int bucket) const {
+      // CRITICAL: Prevent infinite recursion
+      static thread_local bool inTransform = false;
+      if (inTransform) {
+        debugPrintf("NNUE: RECURSION DETECTED! Blocking recursive transform call\n");
+        // Return a default PSQT value to break recursion
+        std::memset(output, 0, HalfDimensions * 2 * sizeof(OutputType));
+        return 0;
+      }
+      
+      // Set recursion guard
+      inTransform = true;
+      
       // Debug: Track transform function calls
       static thread_local int transformCallCount = 0;
-      if (++transformCallCount <= 5) {
+      if (++transformCallCount <= 10) {
         debugPrintf("NNUE transform call #%d\n", transformCallCount);
       }
       
@@ -431,6 +443,9 @@ namespace Stockfish::Eval::NNUE {
               output[offset + j] = static_cast<OutputType>(std::max<int>(0, std::min<int>(127, sum)));
           }
       }
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #endif
@@ -667,6 +682,12 @@ namespace Stockfish::Eval::NNUE {
         accumulator.computed[nnuePerspective] = true;
         debugPrintf("NNUE: Set computed[%d]=true for full refresh (st=%p)\n", 
                    nnuePerspective, pos.state());
+        
+        // CRITICAL DEBUG: Verify the value is actually set
+        debugPrintf("NNUE: Verification - computed[%d] is now %s (st=%p)\n",
+                   nnuePerspective, 
+                   pos.state()->accumulator.computed[nnuePerspective] ? "true" : "false",
+                   pos.state());
         IndexList active;
         ValueListInserter<IndexType> active_inserter(active);
         FeatureSet::append_active_indices(pos, perspective, active_inserter);
