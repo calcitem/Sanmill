@@ -348,6 +348,9 @@ namespace Stockfish::Eval::NNUE {
                                  _mm512_max_epi8(_mm512_packs_epi16(sum0, sum1), Zero)));
           }
       }
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #elif defined(USE_AVX2)
@@ -371,6 +374,9 @@ namespace Stockfish::Eval::NNUE {
                                  _mm256_max_epi8(_mm256_packs_epi16(sum0, sum1), Zero), Control));
           }
       }
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #elif defined(USE_SSE2)
@@ -402,6 +408,9 @@ namespace Stockfish::Eval::NNUE {
               #endif
           }
       }
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #elif defined(USE_MMX)
@@ -422,6 +431,9 @@ namespace Stockfish::Eval::NNUE {
           }
       }
       _mm_empty();
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #elif defined(USE_NEON)
@@ -439,6 +451,9 @@ namespace Stockfish::Eval::NNUE {
               out[j] = vmax_s8(vqmovn_s16(sum), Zero);
           }
       }
+      
+      // Clear recursion guard before returning
+      inTransform = false;
       return psqt;
 
   #else
@@ -517,7 +532,7 @@ namespace Stockfish::Eval::NNUE {
       StateInfo *st = pos.state(), *next = nullptr;
       int gain = FeatureSet::refresh_cost(pos);
       int chainDepth = 0;
-      const int MAX_CHAIN_DEPTH = 16;  // Keep chain short to reduce overhead
+      const int MAX_CHAIN_DEPTH = 32;  // Allow deeper reuse to reduce refresh frequency
       
       while (st->previous && !st->accumulator.computed[nnuePerspective] && chainDepth < MAX_CHAIN_DEPTH)
       {

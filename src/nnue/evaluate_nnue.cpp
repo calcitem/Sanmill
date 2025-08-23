@@ -163,6 +163,38 @@ namespace Stockfish::Eval::NNUE {
   Value evaluate(const Position& pos, bool adjusted) {
     (void)adjusted; // Suppress unused parameter warning
 
+    // Simple cache to avoid repeated evaluation of the same position
+    struct EvalCacheEntry {
+      Key positionKey;
+      Value value;
+      int bucket;
+    };
+    
+    static thread_local EvalCacheEntry evalCache[256];
+    static thread_local bool cacheInitialized = false;
+    
+    if (!cacheInitialized) {
+      for (auto& entry : evalCache) {
+        entry.positionKey = 0;
+        entry.value = VALUE_NONE;
+        entry.bucket = -1;
+      }
+      cacheInitialized = true;
+    }
+
+    // Calculate bucket first for cache key
+    const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+    const int bucket = std::min((std::max(0, totalPieces - 1)) / 3, 7);
+    
+    // Create a simple cache key from position key and bucket
+    const Key posKey = pos.key();
+    const int cacheIndex = static_cast<int>((posKey ^ static_cast<Key>(bucket)) & 255);
+    
+    // Check cache hit
+    if (evalCache[cacheIndex].positionKey == posKey && evalCache[cacheIndex].bucket == bucket) {
+      return evalCache[cacheIndex].value;
+    }
+
     // We manually align the arrays on the stack because with gcc < 9.3
     // overaligning stack variables with alignas() doesn't work correctly.
 
@@ -184,11 +216,8 @@ namespace Stockfish::Eval::NNUE {
     ASSERT_ALIGNED(transformedFeatures, alignment);
     ASSERT_ALIGNED(buffer, alignment);
 
-    // Bucketization for Nine Men's Morris: piece count ranges 0..24.
-    // Match nnue-pytorch bucket selection which uses coarse piece-count-based buckets.
-    const int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
-    const std::size_t bucket = std::min(std::size_t((std::max(0, totalPieces - 1)) / 3), std::size_t(7));
-    const auto psqt = featureTransformer->transform(pos, transformedFeatures, static_cast<int>(bucket));
+    // Use the bucket already calculated above
+    const auto psqt = featureTransformer->transform(pos, transformedFeatures, bucket);
     const auto output = network[bucket]->propagate(transformedFeatures, buffer);
 
     int materialist = psqt;
@@ -199,7 +228,14 @@ namespace Stockfish::Eval::NNUE {
     int B = 128;
     int sum = (A * materialist + B * positional) / 256 * 2; // keep scale stable
 
-    return static_cast<Value>( sum / OutputScale );
+    const Value result = static_cast<Value>(sum / OutputScale);
+    
+    // Store result in cache
+    evalCache[cacheIndex].positionKey = posKey;
+    evalCache[cacheIndex].value = result;
+    evalCache[cacheIndex].bucket = bucket;
+    
+    return result;
   }
 
   struct NnueEvalTrace {

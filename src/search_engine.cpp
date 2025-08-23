@@ -406,8 +406,10 @@ int SearchEngine::executeSearch()
         originDepth = d;
     }
 
-    // Only initialize random seed when shuffling is enabled or using random algorithm
-    if (gameOptions.getShufflingEnabled() || gameOptions.getAlgorithm() == 4 /* Random */) {
+    // Only initialize random seed when shuffling is enabled or using random
+    // algorithm
+    if (gameOptions.getShufflingEnabled() ||
+        gameOptions.getAlgorithm() == 4 /* Random */) {
         const time_t time0 = time(nullptr);
         srand(static_cast<unsigned int>(time0));
     }
