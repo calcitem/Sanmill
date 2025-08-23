@@ -190,7 +190,7 @@ enum Value : int16_t {
     VALUE_EACH_PIECE_ONBOARD = VALUE_EACH_PIECE,
     VALUE_EACH_PIECE_NEEDREMOVE = VALUE_EACH_PIECE,
 
-    VALUE_MTDF_WINDOW = 1,
+    VALUE_MTDF_WINDOW = 25,  // Increased from 1 to prevent convergence to boundary values
     VALUE_PVS_WINDOW = 1,
 
     VALUE_PLACING_WINDOW = VALUE_EACH_PIECE_NEEDREMOVE +

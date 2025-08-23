@@ -600,6 +600,18 @@ void Position::do_move(Move m, StateInfo &newSt)
     newSt.prevCurrentSquare[WHITE] = currentSquare[WHITE];
     newSt.prevCurrentSquare[BLACK] = currentSquare[BLACK];
 
+    // Save mobility diff for undo
+    newSt.prevMobilityDiff = mobilityDiff;
+
+    // Save mill-related state for undo
+    newSt.prevLastMillFromSquare[WHITE] = lastMillFromSquare[WHITE];
+    newSt.prevLastMillFromSquare[BLACK] = lastMillFromSquare[BLACK];
+    newSt.prevLastMillToSquare[WHITE] = lastMillToSquare[WHITE];
+    newSt.prevLastMillToSquare[BLACK] = lastMillToSquare[BLACK];
+    newSt.prevFormedMillsBB[WHITE] = formedMillsBB[WHITE];
+    newSt.prevFormedMillsBB[BLACK] = formedMillsBB[BLACK];
+    newSt.prevMove = move;
+
     // Update position's StateInfo pointer
     st = &newSt;
 
@@ -744,6 +756,18 @@ void Position::undo_move(Move m)
     // Restore current square array
     currentSquare[WHITE] = st->prevCurrentSquare[WHITE];
     currentSquare[BLACK] = st->prevCurrentSquare[BLACK];
+
+    // Restore mobility diff
+    mobilityDiff = st->prevMobilityDiff;
+
+    // Restore mill-related state
+    lastMillFromSquare[WHITE] = st->prevLastMillFromSquare[WHITE];
+    lastMillFromSquare[BLACK] = st->prevLastMillFromSquare[BLACK];
+    lastMillToSquare[WHITE] = st->prevLastMillToSquare[WHITE];
+    lastMillToSquare[BLACK] = st->prevLastMillToSquare[BLACK];
+    formedMillsBB[WHITE] = st->prevFormedMillsBB[WHITE];
+    formedMillsBB[BLACK] = st->prevFormedMillsBB[BLACK];
+    move = st->prevMove;
 
     // Restore StateInfo pointer to previous
     st = st->previous;

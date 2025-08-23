@@ -69,6 +69,11 @@ struct StateInfo
     Square prevCurrentSquare[COLOR_NB];
     bool prevIsNeedStalemateRemoval;
     bool prevIsStalemateRemoving;
+    int prevMobilityDiff;
+    Square prevLastMillFromSquare[COLOR_NB];
+    Square prevLastMillToSquare[COLOR_NB];
+    Bitboard prevFormedMillsBB[COLOR_NB];
+    Move prevMove;
 };
 
 /// Position class stores information regarding the board representation as

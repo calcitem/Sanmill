@@ -378,6 +378,8 @@ Value Evaluation::value() const
     int pieceOnBoardDiffCount;
     const int pieceToRemoveDiffCount = pos.piece_to_remove_count(WHITE) -
                                        pos.piece_to_remove_count(BLACK);
+    
+
 
     switch (pos.get_phase()) {
     case Phase::none:
@@ -390,14 +392,14 @@ Value Evaluation::value() const
             if (pos.get_action() == Action::remove) {
                 value += VALUE_EACH_PIECE_NEEDREMOVE * pieceToRemoveDiffCount;
             } else {
-                value += pos.mills_pieces_count_difference();
+                value += static_cast<Value>(pos.mills_pieces_count_difference());
             }
             break;
         }
         [[fallthrough]];
     case Phase::moving:
         if (pos.shouldConsiderMobility()) {
-            value += pos.get_mobility_diff();
+            value += static_cast<Value>(pos.get_mobility_diff());
         }
 
         if (!pos.shouldFocusOnBlockingPaths()) {

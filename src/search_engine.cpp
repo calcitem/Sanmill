@@ -486,6 +486,12 @@ int SearchEngine::executeSearch()
 
         const Depth depthBegin = (originDepth >= 2) ? 2 : 1;
         Value lastValue = VALUE_ZERO;
+        
+        // For MTD(f), use static evaluation as initial guess on first iteration
+        if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
+            value = Eval::evaluate(*rootPos, originDepth);
+            debugPrintf("MTD(f) initial guess: %d\n", static_cast<int>(value));
+        }
 
         const TimePoint startTime = now();
 
@@ -589,7 +595,9 @@ next:
     if (!searchAborted.load(std::memory_order_relaxed) ||
         bestMoveSoFar == MOVE_NONE) {
         if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-            value = Search::MTDF(*this, rootPos, value, originDepth,
+            // Use static evaluation as initial guess for MTD(f) to improve convergence
+            Value staticEval = Eval::evaluate(*rootPos, originDepth);
+            value = Search::MTDF(*this, rootPos, staticEval, originDepth,
                                  originDepth, bestMove);
         } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
             value = monte_carlo_tree_search(rootPos, bestMove);
