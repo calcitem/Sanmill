@@ -31,7 +31,8 @@ MovePicker::MovePicker(Position &p, Move ttm, int ply) noexcept
 { }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
-/// for sorting.
+/// for sorting. Combines Mill Game domain knowledge (RATING_XXX) with 
+/// Stockfish-style history tables for adaptive learning.
 template <GenType Type>
 void MovePicker::score()
 {
@@ -44,14 +45,19 @@ void MovePicker::score()
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
         
-        // Give TT move the highest priority
+        // Initialize with base score
+        cur->value = 0;
+        
+        // Give TT move the highest priority (Stockfish-style)
         if (m == ttMove) {
-            cur->value = RATING_TT;
+            cur->value = VALUE_TT_MOVE; // High priority like Stockfish
             continue;
         }
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);
+        
+        // Base tactical score using domain knowledge (RATING_XXX)
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
         // no mill, so need |from| to judge
@@ -63,13 +69,13 @@ void MovePicker::score()
         if (type_of(m) != MOVETYPE_REMOVE) {
             // all phrase, check if place sq can close mill
             if (ourMillsCount > 0) {
-                cur->value += RATING_ONE_MILL * ourMillsCount;
+                cur->value += VALUE_ONE_MILL * ourMillsCount;
             } else if (pos.get_phase() == Phase::placing &&
                        !rule.mayMoveInPlacingPhase) {
                 // original logic for placing phase without move allowed
                 theirMillsCount = pos.potential_mills_count(
                     to, ~pos.side_to_move());
-                cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
+                cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
             } else if (pos.get_phase() == Phase::moving ||
                        (pos.get_phase() == Phase::placing &&
                         rule.mayMoveInPlacingPhase)) {
@@ -86,9 +92,9 @@ void MovePicker::score()
                                                 emptyCount);
 
                     if (to % 2 == 0 && theirPiecesCount == 3) {
-                        cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
+                        cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
                     } else if (to % 2 == 1 && theirPiecesCount == 2) {
-                        cur->value += RATING_BLOCK_ONE_MILL * theirMillsCount;
+                        cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
                     }
                 }
             }
@@ -102,7 +108,7 @@ void MovePicker::score()
                 pos.count<ON_BOARD>(BLACK) < 2 && // patch: only when black 2nd
                 // move
                 Position::is_star_square(static_cast<Square>(m))) {
-                cur->value += RATING_STAR_SQUARE;
+                cur->value += VALUE_STAR_SQUARE;
             }
         } else {
             // Remove
@@ -145,16 +151,36 @@ void MovePicker::score()
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
 
-        // Add history scores for move ordering (before final scoring)
+        // Enhanced move ordering: combine domain knowledge with adaptive learning
         if (Type == LEGAL) {
-            // Check for killer moves (high priority)
-            if (Search::is_killer_move(m, currentPly)) {
-                cur->value += 10000; // High priority for killer moves
-            }
+            // Scale the tactical rating (preserve domain knowledge as base)
+            int tacticalScore = cur->value * 100; // Amplify tactical knowledge
             
-            // Add history score
-            int historyScore = Search::move_history_score(&pos, m);
-            cur->value += historyScore / 16; // Scale down history score
+            // Check for killer moves (Stockfish-style priority)
+            if (Search::is_killer_move(m, currentPly)) {
+                cur->value = tacticalScore + 15000; // Very high priority
+            } else {
+                // Add adaptive history score (Stockfish approach)
+                int historyScore = Search::move_history_score(&pos, m);
+                
+                // Combine tactical knowledge with learned patterns
+                // Tactical score has higher weight to preserve domain expertise
+                cur->value = tacticalScore + (historyScore / 4);
+                
+                // Bonus for moves that create threats or defensive patterns
+                // This is similar to Stockfish's continuation history
+                if (type_of(m) != MOVETYPE_REMOVE) {
+                    // Bonus for moves to important squares
+                    if (Position::is_star_square(to)) {
+                        cur->value += 200;
+                    }
+                    
+                    // Bonus for moves that improve piece mobility
+                    if (pos.get_phase() == Phase::moving) {
+                        cur->value += emptyCount * 50; // Mobility bonus
+                    }
+                }
+            }
         }
     }
 
@@ -220,7 +246,9 @@ Move MovePicker::next_move_legacy()
 /// list of generated moves.
 Move MovePicker::next_move()
 {
-    constexpr int goodQuietThreshold = -5000;
+    // Dynamic threshold based on game phase and position (Stockfish approach)
+    const int goodQuietThreshold = pos.get_phase() == Phase::placing ? -3000 : 
+                                   pos.get_phase() == Phase::moving ? -5000 : -8000;
 
 top:
     switch (stage) {
@@ -239,10 +267,11 @@ top:
         goto top;
 
     case GOOD_CAPTURE:
-        // For Mill game, prioritize mill-forming moves
+        // For Mill game, prioritize mill-forming and tactical moves
+        // Enhanced threshold considers both domain knowledge and learned patterns
         if (select([&]() {
-            // Mill-forming moves or high-value tactical moves
-            return cur->value > RATING_BLOCK_ONE_MILL - 1;
+            // High-priority tactical moves (mills, blocks) or historically good moves
+            return cur->value > (VALUE_BLOCK_ONE_MILL * 100 - 200);
         })) {
             return *(cur - 1);
         }

@@ -165,7 +165,7 @@ enum Bound : uint8_t {
     BOUND_EXACT = BOUND_UPPER | BOUND_LOWER
 };
 
-enum Value : int8_t {
+enum Value : int16_t {
     VALUE_ZERO = 0,
     VALUE_DRAW = 0,
 
@@ -198,32 +198,28 @@ enum Value : int8_t {
                             VALUE_EACH_PIECE_INHAND) +
                            1,
     VALUE_MOVING_WINDOW = VALUE_EACH_PIECE_NEEDREMOVE + 1,
-};
 
-enum Rating : int8_t {
-    RATING_ZERO = 0,
+    // Move ordering priorities (formerly RATING_XXX, now unified)
+    // These values are used for move sorting, not position evaluation
+    VALUE_BLOCK_ONE_MILL = 210,
+    VALUE_ONE_MILL = 211,
+    VALUE_STAR_SQUARE = 211,
 
-    RATING_BLOCK_ONE_MILL = 10,
-    RATING_ONE_MILL = 11,
+    VALUE_BLOCK_TWO_MILLS = 420,
+    VALUE_TWO_MILLS = 422,
 
-    RATING_STAR_SQUARE = 11,
+    VALUE_BLOCK_THREE_MILLS = 630,
+    VALUE_THREE_MILLS = 633,
 
-    RATING_BLOCK_TWO_MILLS = RATING_BLOCK_ONE_MILL * 2,
-    RATING_TWO_MILLS = RATING_ONE_MILL * 2,
+    VALUE_REMOVE_ONE_MILL = VALUE_ONE_MILL,
+    VALUE_REMOVE_TWO_MILLS = VALUE_TWO_MILLS,
+    VALUE_REMOVE_THREE_MILLS = VALUE_THREE_MILLS,
 
-    RATING_BLOCK_THREE_MILLS = RATING_BLOCK_ONE_MILL * 3,
-    RATING_THREE_MILLS = RATING_ONE_MILL * 3,
+    VALUE_REMOVE_THEIR_ONE_MILL = -VALUE_REMOVE_ONE_MILL,
+    VALUE_REMOVE_THEIR_TWO_MILLS = -VALUE_REMOVE_TWO_MILLS,
+    VALUE_REMOVE_THEIR_THREE_MILLS = -VALUE_REMOVE_THREE_MILLS,
 
-    RATING_REMOVE_ONE_MILL = RATING_ONE_MILL,
-    RATING_REMOVE_TWO_MILLS = RATING_TWO_MILLS,
-    RATING_REMOVE_THREE_MILLS = RATING_THREE_MILLS,
-
-    RATING_REMOVE_THEIR_ONE_MILL = -RATING_REMOVE_ONE_MILL,
-    RATING_REMOVE_THEIR_TWO_MILLS = -RATING_REMOVE_TWO_MILLS,
-    RATING_REMOVE_THEIR_THREE_MILLS = -RATING_REMOVE_THREE_MILLS,
-
-    RATING_TT = 100,
-    RATING_MAX = INT8_MAX,
+    VALUE_TT_MOVE = 32000,  // Transposition table move priority
 };
 
 enum PieceType : uint16_t {
@@ -529,7 +525,7 @@ constexpr File file_of(Square s)
 
 constexpr Rank rank_of(Square s)
 {
-    return static_cast<Rank>((s & 0x07) + 1);
+    return static_cast<Rank>((static_cast<int>(s) & 0x07) + 1);
 }
 
 constexpr Square from_sq(Move m)

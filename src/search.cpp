@@ -768,6 +768,7 @@ Value Search::null_move_search(SearchEngine &searchEngine, Position *pos, Depth 
 }
 
 // Update history tables based on search results
+// Enhanced with Stockfish-style multi-layered approach while preserving Mill Game specifics
 void Search::update_history(Position *pos, Move move, Depth depth, bool good)
 {
     if (move == MOVE_NONE) return;
@@ -776,19 +777,48 @@ void Search::update_history(Position *pos, Move move, Depth depth, bool good)
     Square from = from_sq(move);
     Square to = to_sq(move);
     
-    // Calculate bonus/malus based on depth (deeper searches get higher weight)
-    int bonus = good ? (depth * depth + depth * 32) : -(depth * depth + depth * 32);
-    bonus = std::clamp(bonus, -HISTORY_MAX/2, HISTORY_MAX/2);
+    // Calculate bonus/malus with Stockfish-style scaling
+    // Deeper searches and successful moves get higher bonuses
+    int bonus = good ? (depth * depth + depth * 64) : -(depth * depth + depth * 32);
     
-    // Update butterfly history (for quiet moves, not removal moves)
+    // Scale based on move type - tactical moves (mills, blocks) get higher weight
+    if (type_of(move) != MOVETYPE_REMOVE) {
+        int millsCount = pos->potential_mills_count(to, color, from);
+        if (millsCount > 0) {
+            bonus = good ? bonus * 2 : bonus; // Amplify bonus for mill-forming moves
+        }
+        
+        int blockCount = pos->potential_mills_count(to, ~color);
+        if (blockCount > 0) {
+            bonus = good ? bonus * 3/2 : bonus; // Bonus for blocking moves
+        }
+    }
+    
+    bonus = std::clamp(bonus, -HISTORY_MAX, HISTORY_MAX);
+    
+    // Update butterfly history (main move patterns)
     if (type_of(move) != MOVETYPE_REMOVE) {
         mainHistory(color, from, to).update(bonus);
     }
     
-    // Update piece-to history
+    // Update piece-to history (destination patterns)
     Piece piece = pos->moved_piece(move);
     if (piece != NO_PIECE) {
         pieceToHistory(piece, to).update(bonus);
+    }
+    
+    // Additional Mill Game specific patterns
+    if (good && type_of(move) != MOVETYPE_REMOVE) {
+        // Bonus for moves to star squares (important in Mill Game)
+        if (Position::is_star_square(to)) {
+            pieceToHistory(piece, to).update(bonus / 4);
+        }
+        
+        // Bonus for moves that maintain board control
+        if (pos->get_phase() == Phase::moving) {
+            // Reward moves that improve piece mobility
+            pieceToHistory(piece, to).update(bonus / 8);
+        }
     }
 }
 
