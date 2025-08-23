@@ -88,7 +88,7 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
     }
 
     static uint64_t nodeCounter = 0; // TODO: thread_local
-    const unsigned checkMask = (depth >= -1) ? 255 : 1023;
+    const unsigned checkMask = (depth >= -1) ? 511 : 2047;
 
     if ((++nodeCounter & checkMask) == 0 &&
         !searchEngine.searchAborted.load(std::memory_order_relaxed)) {
@@ -108,7 +108,13 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
     // Limit quiescence search depth based on the position-specific search depth
     // This ensures qsearch depth is proportional to the main search depth
     const Depth maxSearchDepth = Mills::get_search_depth(pos);
-    const int MAX_QUIESCENCE_DEPTH = std::max(1, static_cast<int>(maxSearchDepth / 2));
+    int MAX_QUIESCENCE_DEPTH = std::max(1, static_cast<int>(maxSearchDepth / 2));
+    
+    // Further limit quiescence depth in capture-heavy positions
+    if (pos->get_action() == Action::remove) {
+        MAX_QUIESCENCE_DEPTH = std::min(MAX_QUIESCENCE_DEPTH, 2);
+    }
+    
     if (depth <= -MAX_QUIESCENCE_DEPTH) {
         return stand_pat;
     }
@@ -443,8 +449,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
     for (int i = 0; i < moveCount; i++) {
         static uint64_t nodeCounter = 0; // TODO: thread_local
 
-        const unsigned checkMask = (depth <= 3) ? 31 :
-                                                  ((depth <= 6) ? 127 : 511);
+        const unsigned checkMask = (depth <= 3) ? 63 :
+                                                  ((depth <= 6) ? 255 : 1023);
 
         if ((++nodeCounter & checkMask) == 0 &&
             searchEngine.searchAborted.load(std::memory_order_relaxed) ==
@@ -467,8 +473,12 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
         // The accumulator will be computed fresh when needed
         const Color after = pos->sideToMove;
 
-        // Determine the depth extension
-        epsilon = (gameOptions.getDepthExtension() && moveCount == 1) ? 1 : 0;
+        // Determine the depth extension - be more conservative in endgame and capture phases
+        const bool isEndgame = (pos->piece_on_board_count(WHITE) + pos->piece_on_board_count(BLACK)) <= 6;
+        const bool isCapturePath = (pos->get_action() == Action::remove) || 
+                                (pos->get_phase() == Phase::moving && 
+                                type_of(move) == MOVETYPE_REMOVE);
+        epsilon = (gameOptions.getDepthExtension() && moveCount == 1 && !isEndgame && !isCapturePath) ? 1 : 0;
 
         // Perform recursive search
         value = (after != before) ?
