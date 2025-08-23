@@ -15,35 +15,70 @@ HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-// Constants for generation management (similar to Stockfish)
-static constexpr unsigned GENERATION_BITS = 2;
-static constexpr int GENERATION_DELTA = (1 << GENERATION_BITS);
-static constexpr int GENERATION_CYCLE = 255 + GENERATION_DELTA;
-static constexpr int GENERATION_MASK = (0xFF << GENERATION_BITS) & 0xFF;
+// Generation management constants are now defined in tt.h
 
-// TTEntry::save implementation with better replacement strategy
+// TTEntry::save implementation with better replacement strategy (Stockfish-inspired)
 void TTEntry::save(Key k, Value v, Value e, bool pv, Bound b, Depth d, Move m, uint8_t generation8)
 {
-#ifdef TT_MOVE_ENABLE
-    // Preserve the old ttmove if we don't have a new one
-    if (m != MOVE_NONE || !is_occupied()) {
-        ttMove = static_cast<uint16_t>(m);
+    // Check if we should overwrite this entry (Stockfish replacement scheme)
+    // 1. If entry is empty, always overwrite
+    // 2. If same position (key match), always overwrite
+    // 3. If we have exact bound, overwrite (exact scores are valuable)
+    // 4. If new depth is greater than old depth plus some margin for PV nodes
+    // 5. If entry is from old generation (aged entry)
+    
+    const uint16_t newKey16 = static_cast<uint16_t>(k);
+    const uint8_t newDepth8 = static_cast<uint8_t>(d - DEPTH_OFFSET);
+    
+    bool replace = false;
+    
+    if (!is_occupied()) {
+        // Empty entry, always replace
+        replace = true;
     }
-#endif
+    else if (key16_ == newKey16) {
+        // Same position, always replace
+        replace = true;
+    }
+    else if (b == BOUND_EXACT) {
+        // Exact bound is very valuable
+        replace = true;
+    }
+    else {
+        // Calculate replacement priority based on depth, PV status, and age
+        const int oldPriority = depth8 - 4 * relative_age(generation8);
+        const int newPriority = newDepth8 + 2 * static_cast<int>(pv);
+        
+        replace = (newPriority > oldPriority);
+    }
 
-    // Overwrite less valuable entries (inspired by Stockfish logic)
-    if (b == BOUND_EXACT || !is_occupied() || d - DEPTH_OFFSET + 2 * pv > depth8 - 4) {
-        key16_ = static_cast<uint16_t>(k);  // Store key for verification
+    if (replace) {
+        key16_ = newKey16;
         value16 = static_cast<int16_t>(v);
         eval16 = static_cast<int16_t>(e);
-        depth8 = static_cast<uint8_t>(d - DEPTH_OFFSET);
+        depth8 = newDepth8;
         
         // Pack generation and bound into genBound8
         genBound8 = static_cast<uint8_t>((generation8 & 0xFC) | static_cast<uint8_t>(b));
+        
+#ifdef TT_MOVE_ENABLE
+        // Always save move if we have one, or preserve old move if we don't
+        if (m != MOVE_NONE) {
+            ttMove = static_cast<uint16_t>(m);
+        }
+        // If we don't have a move but entry is new, clear the old move
+        else if (key16_ != newKey16) {
+            ttMove = MOVE_NONE;
+        }
+#endif
     }
-    // If we can't replace, but depth is significant and bound isn't exact, age the entry
-    else if (depth8 + DEPTH_OFFSET >= 5 && bound() != BOUND_EXACT) {
-        depth8--;
+    else {
+        // Don't replace, but preserve TT move if we have a good one
+#ifdef TT_MOVE_ENABLE
+        if (m != MOVE_NONE && key16_ == newKey16) {
+            ttMove = static_cast<uint16_t>(m);
+        }
+#endif
     }
 }
 

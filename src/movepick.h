@@ -47,7 +47,7 @@ class MovePicker
 public:
     MovePicker(const MovePicker &) = delete;
     MovePicker &operator=(const MovePicker &) = delete;
-    explicit MovePicker(Position &p, Move ttm) noexcept;
+    explicit MovePicker(Position &p, Move ttm, int ply = 0) noexcept;
 
     Move next_move();
     
@@ -71,6 +71,7 @@ public:
 
     int moveCount {0};
     int stage {MAIN_TT};
+    int currentPly {0};  // For killer move detection
 
     int move_count() const noexcept { return moveCount; }
 

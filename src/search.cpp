@@ -6,6 +6,7 @@
 #include "search.h"
 #include "evaluate.h"
 #include "nnue/evaluate_nnue.h"
+#include <algorithm>
 #include <chrono>
 #include "mcts.h"
 #include "movepick.h"
@@ -25,7 +26,22 @@ using Eval::evaluate;
 using std::string;
 
 /// Search::init() is called at startup
-void Search::init() noexcept { }
+void Search::init() noexcept {
+    // Initialize history tables
+    clear();
+    
+    debugPrintf("Search engine initialized with enhanced features:\n");
+    debugPrintf("  - Improved transposition table with better replacement strategy\n");
+    debugPrintf("  - Null move search for pruning\n");
+    debugPrintf("  - History heuristic for move ordering\n");
+    debugPrintf("  - Killer move heuristic\n");
+}
+
+// History tables definitions
+ButterflyHistory Search::mainHistory;
+PieceToHistory Search::pieceToHistory;
+KillerMoves Search::killerMoves;
+CounterMoves Search::counterMoves;
 
 /// Search::clear() resets search state to its initial value
 void Search::clear()
@@ -35,6 +51,12 @@ void Search::clear()
 #ifdef TRANSPOSITION_TABLE_ENABLE
     TT.clear();
 #endif
+
+    // Clear history tables
+    mainHistory.clear();
+    pieceToHistory.clear();
+    killerMoves.clear();
+    counterMoves.clear();
 }
 
 // Position repetition is now tracked via StateInfo chain; the UI still
@@ -107,7 +129,8 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
     }
 
     // Generate remove moves
-    MovePicker mp(*pos, MOVE_NONE);
+    const int currentPly = originDepth - depth;
+    MovePicker mp(*pos, MOVE_NONE, currentPly);
     mp.next_move_legacy<REMOVE>();
     const int moveCount = mp.move_count();
 
@@ -331,8 +354,11 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
     // 3. This saves significant performance overhead
     // 4. Matches Stockfish's approach of relying on MovePicker's built-in protection
 
+    // Calculate current ply for move ordering
+    const int currentPly = originDepth - depth;
+    
     // Initialize MovePicker to order and select moves
-    MovePicker mp(*pos, ttMove);
+    MovePicker mp(*pos, ttMove, currentPly);
     mp.next_move_legacy<LEGAL>();
     const int moveCount = mp.move_count();
 
@@ -391,6 +417,19 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
                          !pos->state()->accumulator.computed[1])) {
         (void)Eval::evaluate(*pos, depth);
     }
+
+    // Try null move search for pruning (before move loop)
+    // Be more conservative in Mill Game due to potential consecutive moves from mills
+    if (depth >= 4 && moveCount > 2 && !ttHit && 
+        pos->get_action() == Action::none) {  // Only in neutral state
+        Value nullValue = null_move_search(searchEngine, pos, depth, originDepth, alpha, beta, bestMove);
+        if (nullValue != VALUE_UNKNOWN && nullValue >= beta) {
+            // Null move cutoff - current position is too good for opponent
+            return nullValue;
+        }
+    }
+
+    // Current ply already calculated above for MovePicker
 
     // Iterate through all possible moves
     for (int i = 0; i < moveCount; i++) {
@@ -453,10 +492,23 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
                 if (value < beta) {
                     // Update alpha to the new best value
                     alpha = value;
+                    // Update history for good moves
+                    update_history(pos, move, depth, true);
                 } else {
                     assert(value >= beta); // Fail high
+                    // Update killer moves for beta cutoff
+                    update_killers(move, currentPly);
+                    // Update history for good moves that cause cutoff
+                    update_history(pos, move, depth, true);
+                    // Update history for previous moves that failed to cause cutoff
+                    for (int j = 0; j < i; j++) {
+                        update_history(pos, mp.moves[j].move, depth, false);
+                    }
                     break;                 // Fail high
                 }
+            } else {
+                // Update history for moves that didn't improve alpha
+                update_history(pos, move, depth, false);
             }
         }
 
@@ -598,4 +650,183 @@ Value Search::random_search(Position *pos, Move &bestMove)
     debugPrintf("random_search selected move: %s\n",
                 UCI::move(bestMove).c_str());
     return VALUE_ZERO;
+}
+
+// Null move search implementation (adapted for Mill Game)
+Value Search::null_move_search(SearchEngine &searchEngine, Position *pos, Depth depth,
+                              Depth originDepth, Value alpha, Value beta, Move &bestMove)
+{
+    // Mill Game specific null move pruning conditions:
+    // 1. Depth is sufficient (at least 3)
+    // 2. Static eval is above beta (indicating a strong position)
+    // 3. Not in a removing phase (where player must remove opponent's piece)
+    // 4. Not in endgame with very few pieces
+    // 5. Not in a position where forming mills might give consecutive moves
+
+    if (pos->phase == Phase::gameOver || 
+        searchEngine.searchAborted.load(std::memory_order_relaxed)) {
+        return evaluate(*pos, depth);
+    }
+
+    // Don't do null move in very shallow depths
+    if (depth < 3) {
+        return VALUE_UNKNOWN;
+    }
+
+    // CRITICAL: Only do null move in neutral state (Action::none)
+    // All other actions are mandatory:
+    // - Action::remove: must remove opponent's piece
+    // - Action::select: player already selected a piece, must move it
+    // - Action::place: player must complete placing/moving
+    if (pos->get_action() != Action::none) {
+        return VALUE_UNKNOWN;
+    }
+
+    // Don't do null move in placing phase if very few pieces placed
+    // (opening positions are too tactical)
+    if (pos->get_phase() == Phase::placing && 
+        pos->piece_on_board_count(WHITE) + pos->piece_on_board_count(BLACK) < 6) {
+        return VALUE_UNKNOWN;
+    }
+
+    // Evaluate current position
+    Value staticEval = evaluate(*pos, depth);
+    
+    // Only try null move if we're significantly above beta
+    if (staticEval < beta + 50) {
+        return VALUE_UNKNOWN;
+    }
+
+    // Don't use null move in very simple endgames (less than 6 pieces total)
+    int totalPieces = pos->piece_on_board_count(WHITE) + pos->piece_on_board_count(BLACK);
+    if (totalPieces <= 6) {
+        return VALUE_UNKNOWN;
+    }
+
+    // Check if current position might lead to mill formation
+    // If so, avoid null move as it might give consecutive moves
+    bool nearMill = false;
+    if (pos->get_phase() == Phase::placing || pos->get_phase() == Phase::moving) {
+        // Simple heuristic: check if we're close to forming a mill
+        // This is conservative but safer for Mill Game dynamics
+        int totalMills = 0;
+        for (Square sq = SQ_A1; sq <= SQ_C7; ++sq) {
+            if (pos->potential_mills_count(sq, pos->sideToMove) > 0) {
+                totalMills++;
+            }
+        }
+        // If too many potential mill-forming squares, be conservative
+        if (totalMills > 3) {
+            nearMill = true;
+        }
+    }
+
+    if (nearMill) {
+        return VALUE_UNKNOWN;
+    }
+
+    // Store original game state
+    Color originalSide = pos->sideToMove;
+    
+    // Create a null move: switch sides without making a move
+    // This simulates "passing the turn" which doesn't exist in Mill Game
+    // but helps with pruning in positions where the current player 
+    // doesn't have threatening moves
+    pos->sideToMove = ~pos->sideToMove;
+    
+    // Note: In Mill Game, Action states are:
+    // - none: neutral state
+    // - select: player has selected a piece (in moving phase)  
+    // - place: player is placing/moving a piece
+    // - remove: player must remove opponent's piece
+    // 
+    // For null move, we keep the action unchanged since we're just
+    // switching the active player without actually making a move
+    
+    // Calculate reduction (less aggressive than chess due to Mill Game dynamics)
+    Depth reduction = 2 + depth / 5;  // Less aggressive reduction
+    if (staticEval >= beta + 200) {
+        reduction++; // Extra reduction for very good positions
+    }
+    
+    Depth nullDepth = (depth > reduction) ? (depth - reduction) : Depth(0);
+    
+    // Perform null window search
+    Value nullValue = -search(searchEngine, pos, nullDepth, originDepth, -beta, -beta + 1, bestMove);
+    
+    // Restore original game state
+    pos->sideToMove = originalSide;
+    // Note: action should remain the same as we didn't actually change it
+    
+    // Return early if null move search indicates beta cutoff
+    if (nullValue >= beta) {
+        // Don't return mate scores from null move
+        return (nullValue >= VALUE_MATE - MAX_PLY) ? beta : nullValue;
+    }
+    
+    return VALUE_UNKNOWN;
+}
+
+// Update history tables based on search results
+void Search::update_history(Position *pos, Move move, Depth depth, bool good)
+{
+    if (move == MOVE_NONE) return;
+    
+    Color color = pos->sideToMove;
+    Square from = from_sq(move);
+    Square to = to_sq(move);
+    
+    // Calculate bonus/malus based on depth (deeper searches get higher weight)
+    int bonus = good ? (depth * depth + depth * 32) : -(depth * depth + depth * 32);
+    bonus = std::clamp(bonus, -HISTORY_MAX/2, HISTORY_MAX/2);
+    
+    // Update butterfly history (for quiet moves, not removal moves)
+    if (type_of(move) != MOVETYPE_REMOVE) {
+        mainHistory(color, from, to).update(bonus);
+    }
+    
+    // Update piece-to history
+    Piece piece = pos->moved_piece(move);
+    if (piece != NO_PIECE) {
+        pieceToHistory(piece, to).update(bonus);
+    }
+}
+
+// Update killer moves when a move causes beta cutoff
+void Search::update_killers(Move move, int ply)
+{
+    if (move != MOVE_NONE) {
+        killerMoves.add(move, ply);
+    }
+}
+
+// Get history score for move ordering
+int Search::move_history_score(Position *pos, Move move)
+{
+    if (move == MOVE_NONE) return 0;
+    
+    Color color = pos->sideToMove;
+    Square from = from_sq(move);
+    Square to = to_sq(move);
+    
+    int score = 0;
+    
+    // Add butterfly history score (for quiet moves, not removal moves)
+    if (type_of(move) != MOVETYPE_REMOVE) {
+        score += mainHistory(color, from, to);
+    }
+    
+    // Add piece-to history score
+    Piece piece = pos->moved_piece(move);
+    if (piece != NO_PIECE) {
+        score += pieceToHistory(piece, to);
+    }
+    
+    return score;
+}
+
+// Check if move is a killer move
+bool Search::is_killer_move(Move move, int ply)
+{
+    return killerMoves.is_killer(move, ply);
 }

@@ -13,6 +13,7 @@
 #include "types.h"
 #include "misc.h"
 #include "stack.h"
+#include "history.h"
 
 #ifdef CYCLE_STAT
 #include "stopwatch.h"
@@ -26,6 +27,12 @@ namespace Search {
 
 void init() noexcept;
 void clear();
+
+// History tables (global for all searches)
+extern ButterflyHistory mainHistory;
+extern PieceToHistory pieceToHistory;
+extern KillerMoves killerMoves;
+extern CounterMoves counterMoves;
 
 // Search algorithms
 Value MTDF(SearchEngine &searchEngine, Position *pos, Value firstguess,
@@ -43,6 +50,20 @@ Value random_search(Position *pos, Move &bestMove);
 // Quiescence Search
 Value qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
               Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+// Null move search (adapted for Mill Game dynamics)
+// Special considerations:
+// - Avoids null move during remove actions (mandatory moves)
+// - Conservative near mill formations (potential consecutive moves)
+// - Reduced aggressiveness compared to chess engines
+Value null_move_search(SearchEngine &searchEngine, Position *pos, Depth depth,
+                      Depth originDepth, Value alpha, Value beta, Move &bestMove);
+
+// History and move ordering utilities
+void update_history(Position *pos, Move move, Depth depth, bool good);
+void update_killers(Move move, int ply);
+int move_history_score(Position *pos, Move move);
+bool is_killer_move(Move move, int ply);
 
 } // namespace Search
 

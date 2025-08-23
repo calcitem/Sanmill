@@ -5,6 +5,7 @@
 
 #include "movepick.h"
 #include "option.h"
+#include "search.h"
 
 // partial_insertion_sort() sorts moves in descending order up to and including
 // a given limit. The order of moves smaller than the limit is left unspecified.
@@ -23,9 +24,10 @@ void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit)
 /// Constructors of the MovePicker class.
 
 /// MovePicker constructor for the main search
-MovePicker::MovePicker(Position &p, Move ttm) noexcept
+MovePicker::MovePicker(Position &p, Move ttm, int ply) noexcept
     : pos(p)
     , ttMove(ttm)
+    , currentPly(ply)
 { }
 
 /// MovePicker::score() assigns a numerical value to each move in a list, used
@@ -142,6 +144,18 @@ void MovePicker::score()
             cur->value += emptyCount;
         }
 #endif // !SORT_MOVE_WITHOUT_HUMAN_KNOWLEDGE
+
+        // Add history scores for move ordering (before final scoring)
+        if (Type == LEGAL) {
+            // Check for killer moves (high priority)
+            if (Search::is_killer_move(m, currentPly)) {
+                cur->value += 10000; // High priority for killer moves
+            }
+            
+            // Add history score
+            int historyScore = Search::move_history_score(&pos, m);
+            cur->value += historyScore / 16; // Scale down history score
+        }
     }
 
     if (!pos.shouldFocusOnBlockingPaths()) {

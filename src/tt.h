@@ -13,19 +13,26 @@ using CTSL::HashMap;
 
 #ifdef TRANSPOSITION_TABLE_ENABLE
 
+// Constants for generation management (similar to Stockfish)
+static constexpr unsigned GENERATION_BITS = 2;
+static constexpr int GENERATION_DELTA = (1 << GENERATION_BITS);
+static constexpr int GENERATION_CYCLE = 255 + GENERATION_DELTA;
+static constexpr int GENERATION_MASK = (0xFF << GENERATION_BITS) & 0xFF;
+
 /// TTEntry struct is the transposition table entry, inspired by Stockfish design:
 ///
+/// key16               16 bit  (for verification)
 /// value               16 bit
 /// eval                16 bit  
 /// depth               8 bit
 /// bound type & age    8 bit
 /// move               16 bit
 ///
-/// Total: 8 bytes when TT_MOVE_ENABLE, otherwise 6 bytes
+/// Total: 10 bytes when TT_MOVE_ENABLE, otherwise 8 bytes
 
 struct TTEntry
 {
-    TTEntry() { }
+    TTEntry() = default;
 
     Value value() const noexcept { return static_cast<Value>(value16); }
     Value eval() const noexcept { return static_cast<Value>(eval16); }
@@ -45,14 +52,24 @@ struct TTEntry
     uint8_t age() const noexcept { return (genBound8 >> 2) & 0x3F; }
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    // Save entry to TT with better replacement strategy
+    // Save entry to TT with better replacement strategy (Stockfish-inspired)
     void save(Key k, Value v, Value e, bool pv, Bound b, Depth d, Move m, uint8_t generation8);
     
-    // Check if entry is occupied (non-zero depth)
-    bool is_occupied() const noexcept { return depth8 != 0; }
+    // Check if entry is occupied (non-zero depth or key)
+    bool is_occupied() const noexcept { return depth8 != 0 || key16_ != 0; }
     
     // Get stored key (for verification)
     uint16_t key16() const noexcept { return key16_; }
+    
+    // Relative age for replacement strategy
+    uint8_t relative_age(uint8_t generation8) const noexcept {
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+        // Calculate age difference, handling wraparound
+        return ((generation8 - age()) / GENERATION_DELTA) & 0x3F;
+#else
+        return 0;
+#endif
+    }
 
 private:
     friend class TranspositionTable;
