@@ -8,6 +8,7 @@
 
 #include <string>
 #include "position.h"
+#include <deque>
 
 class SearchEngine;
 
@@ -30,6 +31,12 @@ private:
 
     // Analyze position
     Position analyzePos;
+
+    // Persistent StateInfo chains to keep Position::state() previous links
+    // valid
+    std::deque<StateInfo> posStates_;
+    std::deque<StateInfo> searchStates_;
+    std::deque<StateInfo> analyzeStates_;
 
     SearchEngine &searchEngine_;
 

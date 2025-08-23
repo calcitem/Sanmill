@@ -54,15 +54,15 @@ static bool compareEvalDD(const eval_elem2 &dbEval, Value abVal)
 /// 2) Build Position from sector->hash->inverse_hash(i)
 ///    If sector->id.W != ... => blackMove, etc. (you can customize this
 ///    judgment)
-static Position buildPositionDD(Sector *sector, int i, bool blackToMove)
+static void buildPositionDD(Sector *sector, int i, bool blackToMove,
+                            Position &pos)
 {
-    Position pos;
     pos.construct_key();
     pos.reset();
 
     if (!sector->hash) {
         LOG("Error: hash not initialized for sector in buildPosition\n");
-        return pos; // Return empty position
+        return; // Return without modifying position
     }
 
     const board raw = sector->hash->inverse_hash(i);
@@ -86,19 +86,16 @@ static Position buildPositionDD(Sector *sector, int i, bool blackToMove)
         pos.set_side_to_move(WHITE);
     else
         pos.set_side_to_move(BLACK);
-
-    return pos;
 }
 
 /// 3) Use a simple Alpha-Beta search
 static Value callAlphaBetaDD(Position &pos)
 {
-    Sanmill::Stack<Position> ss;
     Move best = MOVE_NONE;
     Depth depth = 8; // Can be adjusted as needed
 
     SearchEngine engine;
-    Value v = Search::search(engine, &pos, ss, depth, depth, -VALUE_INFINITE,
+    Value v = Search::search(engine, &pos, depth, depth, -VALUE_INFINITE,
                              VALUE_INFINITE, best);
     return v;
 }
@@ -166,7 +163,8 @@ static void stripSectorDD(Sector *sector)
         if (sector->B > sector->W)
             blackMove = true;
 
-        Position pos = buildPositionDD(sector, i, blackMove);
+        Position pos;
+        buildPositionDD(sector, i, blackMove, pos);
         Value abVal = callAlphaBetaDD(pos);
 
         if (!compareEvalDD(dbVal, abVal)) {

@@ -13,6 +13,9 @@
 #include <atomic>
 #include <mutex>
 #include <condition_variable>
+#include <vector>
+#include <deque>
+#include <memory>
 #ifdef QT_GUI_LIB
 #include <QObject>
 #endif
@@ -44,6 +47,13 @@ public:
     int executeSearch();
     std::string get_value() const;
 
+    // Stockfish-style interface
+    void set_position(const std::string &fen,
+                      const std::vector<std::string> &moves);
+    void go();   // Start search with current position
+    void stop(); // Stop current search
+
+    // Legacy interface for compatibility
     void setRootPosition(Position *p);
     std::string getBestMoveString() const;
     void setBestMoveString(const std::string &move);
@@ -54,6 +64,11 @@ public:
     void runSearch();
     void runAnalyze();
 
+    // Internal position and state management (Stockfish-style)
+    Position pos;
+    std::unique_ptr<std::deque<StateInfo>> states;
+
+    // Legacy external position pointer for backward compatibility
     Position *rootPos {nullptr};
 
     /// Timeout check

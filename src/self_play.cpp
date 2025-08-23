@@ -30,7 +30,8 @@ int playOneGame()
     EngineCommands::init_start_fen();
     Position pos;
     pos.set(EngineCommands::StartFEN);
-    posKeyHistory.clear();
+
+    // Engine no longer uses global posKeyHistory; repetition handled internally
 
     // 2) Loop until the engine reports Phase::gameOver
     while (pos.get_phase() != Phase::gameOver) {
@@ -67,7 +68,8 @@ int playOneGame()
                     break;
                 }
 
-                pos.do_move(best);
+                StateInfo st;
+                pos.do_move(best, st);
             }
         }
 

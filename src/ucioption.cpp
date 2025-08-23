@@ -196,7 +196,8 @@ static void on_threefoldRepetitionRule(const Option &o)
 static void on_useNNUE(const Option &o)
 {
     Eval::useNNUE = static_cast<bool>(o);
-    sync_cout << "info string UseNNUE set to: " << (Eval::useNNUE ? "true" : "false") << sync_endl;
+    sync_cout << "info string UseNNUE set to: "
+              << (Eval::useNNUE ? "true" : "false") << sync_endl;
 }
 
 static void on_evalFile(const Option &o)
@@ -204,7 +205,8 @@ static void on_evalFile(const Option &o)
     Eval::evalFile = static_cast<std::string>(o);
     sync_cout << "info string EvalFile set to: " << Eval::evalFile << sync_endl;
     if (!Eval::evalFile.empty() && Eval::useNNUE) {
-        sync_cout << "info string Initializing NNUE with file: " << Eval::evalFile << sync_endl;
+        sync_cout << "info string Initializing NNUE with file: "
+                  << Eval::evalFile << sync_endl;
         Eval::init_nnue();
     }
 }
@@ -290,7 +292,7 @@ void init(OptionsMap &o)
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
-    
+
     // NNUE options
     o["UseNNUE"] << Option(false, on_useNNUE);
     o["EvalFile"] << Option("", on_evalFile);

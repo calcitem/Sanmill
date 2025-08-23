@@ -8,8 +8,9 @@
 
 #include <string>
 #include <sstream>
+#include <deque>
+#include "position.h"
 
-class Position;
 class SearchEngine;
 
 namespace EngineCommands {
@@ -21,7 +22,10 @@ void go(SearchEngine &searchEngine, Position *pos);
 void analyze(SearchEngine &searchEngine, Position *pos);
 
 /// Handles the "position" UCI command to set up the board position.
-void position(Position *pos, std::istringstream &is);
+/// The caller must provide a persistent StateInfo deque whose element addresses
+/// remain stable across push_back, to keep the Position::state() chain valid.
+void position(Position *pos, std::istringstream &is,
+              std::deque<StateInfo> &states);
 
 /// Initializes the starting FEN based on piece count.
 void init_start_fen();

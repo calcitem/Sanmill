@@ -36,28 +36,28 @@ void Search::clear()
 #endif
 }
 
-vector<Key> posKeyHistory;
+// Position repetition is now tracked via StateInfo chain; the UI still
+// manages its own history separately when needed. No engine-level vector here.
 
 // Quiescence Search
-Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
-                      Sanmill::Stack<Position> &ss, Depth depth,
+Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
                       Depth originDepth, Value alpha, Value beta,
                       Move &bestMove)
 {
     Value stand_pat = VALUE_NONE;
-    
+
 #ifdef TRANSPOSITION_TABLE_ENABLE
     // Try to get evaluation from transposition table first
     TTEntry tte;
     const Key posKey = pos->key();
     bool ttHit = TranspositionTable::search(posKey, tte);
-    
+
     if (ttHit && tte.depth() >= depth) {
         // Use TT value as initial estimate if depth is sufficient
         stand_pat = tte.value();
     }
 #endif
-    
+
     // If no suitable TT entry, evaluate the position
     if (stand_pat == VALUE_NONE) {
         // For Sanmill, NNUE evaluation is computed fresh when needed
@@ -115,39 +115,38 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 
     // Ensure NNUE accumulator is computed at parent node so that children
     // can reuse it via the StateInfo previous-chain
-    if (pos->state() && (!pos->state()->accumulator.computed[0]
-                      || !pos->state()->accumulator.computed[1])) {
+    if (pos->state() && (!pos->state()->accumulator.computed[0] ||
+                         !pos->state()->accumulator.computed[1])) {
         (void)Eval::evaluate(*pos, depth);
     }
 
     // For each capture move
     for (int i = 0; i < moveCount; i++) {
-        ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
 
-        // Child nodes will link their NNUE StateInfo via Position::do_move()
+        // Use Stockfish-style StateInfo for proper NNUE and undo
+        StateInfo st;
+        pos->do_move(move, st);
 
-        // Make the move on the board
-        pos->do_move(move);
-        
         // For Sanmill's architecture, we don't use incremental NNUE updates
         // The accumulator will be computed fresh when needed
         const Color after = pos->sideToMove;
 
         // Recursively call qsearch
         Value value = (after != before) ?
-                          -qsearch(searchEngine, pos, ss, depth - 1,
-                                   originDepth, -beta, -alpha, bestMove) :
-                          qsearch(searchEngine, pos, ss, depth - 1, originDepth,
+                          -qsearch(searchEngine, pos, depth - 1, originDepth,
+                                   -beta, -alpha, bestMove) :
+                          qsearch(searchEngine, pos, depth - 1, originDepth,
                                   alpha, beta, bestMove);
 
         // Undo the move
-        pos->undo_move(ss);
-        
+        pos->undo_move(move);
+
         // Debug: verify position state after undo
         if (pos->get_action() == Action::none) {
-            debugPrintf("WARNING: Position action became Action::none after undo_move!\n");
+            debugPrintf("WARNING: Position action became Action::none after "
+                        "undo_move!\n");
         }
 
         // If the value is better than alpha, update alpha
@@ -173,8 +172,7 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
 }
 
 /// Search function that performs recursive search with alpha-beta pruning
-Value Search::search(SearchEngine &searchEngine, Position *pos,
-                     Sanmill::Stack<Position> &ss, Depth depth,
+Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
                      Depth originDepth, Value alpha, Value beta, Move &bestMove)
 {
     Value bestValue = -VALUE_INFINITE;
@@ -196,7 +194,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     if (depth <= 0) {
         // Call quiescence search when depth limit is reached
-        return qsearch(searchEngine, pos, ss, depth, originDepth, alpha, beta,
+        return qsearch(searchEngine, pos, depth, originDepth, alpha, beta,
                        bestMove);
     }
 
@@ -214,7 +212,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
 #ifdef THREEFOLD_REPETITION_TEST
     // Check for threefold repetition excluding root depth
-    if (depth != originDepth && pos->has_repeated(ss)) {
+    if (depth != originDepth && pos->has_repeated()) {
         alpha = VALUE_DRAW;
         if (alpha >= beta) {
             return alpha;
@@ -291,7 +289,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Check for threefold repetition excluding root depth
     if (rule.threefoldRepetitionRule && depth != originDepth &&
-        pos->has_repeated(ss)) {
+        pos->has_repeated()) {
         // Add a small component to draw evaluations to avoid 3-fold blindness
         return VALUE_DRAW + 1;
     }
@@ -310,12 +308,17 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
     // Handle case when no moves are available
     if (moveCount == 0) {
         // Debug: print position state when no moves are found
-        debugPrintf("No legal moves found: phase=%d, action=%d, sideToMove=%d, pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, pieceInHand[W]=%d, pieceInHand[B]=%d\n",
-                   static_cast<int>(pos->get_phase()), static_cast<int>(pos->get_action()), 
-                   static_cast<int>(pos->side_to_move()),
-                   pos->piece_on_board_count(WHITE), pos->piece_on_board_count(BLACK),
-                   pos->piece_in_hand_count(WHITE), pos->piece_in_hand_count(BLACK));
-        
+        debugPrintf("No legal moves found: phase=%d, action=%d, sideToMove=%d, "
+                    "pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, "
+                    "pieceInHand[W]=%d, pieceInHand[B]=%d\n",
+                    static_cast<int>(pos->get_phase()),
+                    static_cast<int>(pos->get_action()),
+                    static_cast<int>(pos->side_to_move()),
+                    pos->piece_on_board_count(WHITE),
+                    pos->piece_on_board_count(BLACK),
+                    pos->piece_in_hand_count(WHITE),
+                    pos->piece_in_hand_count(BLACK));
+
         if (depth == originDepth) {
             bestMove = MOVE_NONE;
             debugPrintf("Warning: Search found no legal moves at root depth\n");
@@ -350,8 +353,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Lazily precompute NNUE accumulator at parent node so that children can
     // build incremental updates from it. This avoids repeated full refreshes.
-    if (pos->state() && (!pos->state()->accumulator.computed[0]
-                      || !pos->state()->accumulator.computed[1])) {
+    if (pos->state() && (!pos->state()->accumulator.computed[0] ||
+                         !pos->state()->accumulator.computed[1])) {
         (void)Eval::evaluate(*pos, depth);
     }
 
@@ -372,15 +375,13 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
             }
         }
 
-        ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
 
-        // Child nodes will link their NNUE StateInfo via Position::do_move()
+        // Use Stockfish-style StateInfo for proper NNUE and undo
+        StateInfo st;
+        pos->do_move(move, st);
 
-        // Make the move on the board
-        pos->do_move(move);
-        
         // For Sanmill's architecture, we don't use incremental NNUE updates
         // The accumulator will be computed fresh when needed
         const Color after = pos->sideToMove;
@@ -390,17 +391,18 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
         // Perform recursive search
         value = (after != before) ?
-                    -search(searchEngine, pos, ss, depth - 1 + epsilon,
-                            originDepth, -beta, -alpha, bestMove) :
-                    search(searchEngine, pos, ss, depth - 1 + epsilon,
-                           originDepth, alpha, beta, bestMove);
+                    -search(searchEngine, pos, depth - 1 + epsilon, originDepth,
+                            -beta, -alpha, bestMove) :
+                    search(searchEngine, pos, depth - 1 + epsilon, originDepth,
+                           alpha, beta, bestMove);
 
         // Undo the move
-        pos->undo_move(ss);
-        
+        pos->undo_move(move);
+
         // Debug: verify position state after undo
         if (pos->get_action() == Action::none) {
-            debugPrintf("WARNING: Position action became Action::none after undo_move!\n");
+            debugPrintf("WARNING: Position action became Action::none after "
+                        "undo_move!\n");
         }
 
         // Update best value and best move if necessary
@@ -452,9 +454,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 }
 
 /// MTDF function implementing the MTD(f) search algorithm
-Value Search::MTDF(SearchEngine &searchEngine, Position *pos,
-                   Sanmill::Stack<Position> &ss, Value firstguess, Depth depth,
-                   Depth originDepth, Move &bestMove)
+Value Search::MTDF(SearchEngine &searchEngine, Position *pos, Value firstguess,
+                   Depth depth, Depth originDepth, Move &bestMove)
 {
     Value g = firstguess;
     Value lowerbound = -VALUE_INFINITE;
@@ -468,7 +469,7 @@ Value Search::MTDF(SearchEngine &searchEngine, Position *pos,
             beta = g;
         }
 
-        g = search(searchEngine, pos, ss, depth, originDepth,
+        g = search(searchEngine, pos, depth, originDepth,
                    beta - VALUE_MTDF_WINDOW, beta, bestMove);
 
         if (g < beta) {
@@ -482,34 +483,33 @@ Value Search::MTDF(SearchEngine &searchEngine, Position *pos,
 }
 
 /// Function that performs Principal Variation Search (PVS)
-Value Search::pvs(SearchEngine &searchEngine, Position *pos,
-                  Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth,
-                  Value alpha, Value beta, Move &bestMove, int i,
-                  const Color before, const Color after)
+Value Search::pvs(SearchEngine &searchEngine, Position *pos, Depth depth,
+                  Depth originDepth, Value alpha, Value beta, Move &bestMove,
+                  int i, const Color before, const Color after)
 {
     Value value;
 
     if (i == 0) {
         // First move: full window search
         value = (after != before) ?
-                    -search(searchEngine, pos, ss, depth, originDepth, -beta,
+                    -search(searchEngine, pos, depth, originDepth, -beta,
                             -alpha, bestMove) :
-                    search(searchEngine, pos, ss, depth, originDepth, alpha,
-                           beta, bestMove);
+                    search(searchEngine, pos, depth, originDepth, alpha, beta,
+                           bestMove);
     } else {
         // Subsequent moves: null window search (PVS)
         value = (after != before) ?
-                    -search(searchEngine, pos, ss, depth, originDepth,
+                    -search(searchEngine, pos, depth, originDepth,
                             -alpha - VALUE_PVS_WINDOW, -alpha, bestMove) :
-                    search(searchEngine, pos, ss, depth, originDepth, alpha,
+                    search(searchEngine, pos, depth, originDepth, alpha,
                            alpha + VALUE_PVS_WINDOW, bestMove);
 
         // Re-search if the value is within the search window
         if (value > alpha && value < beta) {
             value = (after != before) ?
-                        -search(searchEngine, pos, ss, depth, originDepth,
-                                -beta, -alpha, bestMove) :
-                        search(searchEngine, pos, ss, depth, originDepth, alpha,
+                        -search(searchEngine, pos, depth, originDepth, -beta,
+                                -alpha, bestMove) :
+                        search(searchEngine, pos, depth, originDepth, alpha,
                                beta, bestMove);
         }
     }
@@ -524,12 +524,17 @@ Value Search::random_search(Position *pos, Move &bestMove)
 
     if (ml.size() == 0) {
         // Debug: print position state when no moves are found
-        debugPrintf("random_search: No legal moves found: phase=%d, action=%d, sideToMove=%d, pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, pieceInHand[W]=%d, pieceInHand[B]=%d\n",
-                   static_cast<int>(pos->get_phase()), static_cast<int>(pos->get_action()), 
-                   static_cast<int>(pos->side_to_move()),
-                   pos->piece_on_board_count(WHITE), pos->piece_on_board_count(BLACK),
-                   pos->piece_in_hand_count(WHITE), pos->piece_in_hand_count(BLACK));
-        
+        debugPrintf("random_search: No legal moves found: phase=%d, action=%d, "
+                    "sideToMove=%d, pieceOnBoard[W]=%d, pieceOnBoard[B]=%d, "
+                    "pieceInHand[W]=%d, pieceInHand[B]=%d\n",
+                    static_cast<int>(pos->get_phase()),
+                    static_cast<int>(pos->get_action()),
+                    static_cast<int>(pos->side_to_move()),
+                    pos->piece_on_board_count(WHITE),
+                    pos->piece_on_board_count(BLACK),
+                    pos->piece_in_hand_count(WHITE),
+                    pos->piece_in_hand_count(BLACK));
+
         bestMove = MOVE_NONE;
         debugPrintf("Warning: random_search found no legal moves\n");
         return VALUE_DRAW;

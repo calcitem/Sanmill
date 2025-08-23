@@ -28,28 +28,22 @@ void init() noexcept;
 void clear();
 
 // Search algorithms
-Value MTDF(SearchEngine &searchEngine, Position *pos,
-           Sanmill::Stack<Position> &ss, Value firstguess, Depth depth,
-           Depth originDepth, Move &bestMove);
+Value MTDF(SearchEngine &searchEngine, Position *pos, Value firstguess,
+           Depth depth, Depth originDepth, Move &bestMove);
 
-Value pvs(SearchEngine &searchEngine, Position *pos,
-          Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth,
-          Value alpha, Value beta, Move &bestMove, int i, const Color before,
-          const Color after);
+Value pvs(SearchEngine &searchEngine, Position *pos, Depth depth,
+          Depth originDepth, Value alpha, Value beta, Move &bestMove, int i,
+          const Color before, const Color after);
 
-Value search(SearchEngine &searchEngine, Position *pos,
-             Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth,
-             Value alpha, Value beta, Move &bestMove);
+Value search(SearchEngine &searchEngine, Position *pos, Depth depth,
+             Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 Value random_search(Position *pos, Move &bestMove);
 
 // Quiescence Search
-Value qsearch(SearchEngine &searchEngine, Position *pos,
-              Sanmill::Stack<Position> &ss, Depth depth, Depth originDepth,
-              Value alpha, Value beta, Move &bestMove);
+Value qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
+              Depth originDepth, Value alpha, Value beta, Move &bestMove);
 
 } // namespace Search
-
-extern vector<Key> posKeyHistory;
 
 #endif // SEARCH_H_INCLUDED

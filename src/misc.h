@@ -17,9 +17,10 @@
 
 // Check if the machine is little endian (C++17 compatible)
 // Most modern systems are little endian, but we use a runtime check for safety
-inline bool is_little_endian() {
+inline bool is_little_endian()
+{
     const uint16_t test = 0x0001;
-    return *reinterpret_cast<const uint8_t*>(&test) == 0x01;
+    return *reinterpret_cast<const uint8_t *>(&test) == 0x01;
 }
 const bool IsLittleEndian = is_little_endian();
 

@@ -11,6 +11,9 @@
 #include "position.h"
 #include "uci.h"
 #include "search_engine.h"
+#include "types.h"
+#include "option.h"
+#include "debug.h"
 
 #include <string>
 #include <cstring>
@@ -123,7 +126,8 @@ void analyze(SearchEngine &searchEngine, Position *pos)
 // The function sets up the position described in the given FEN string ("fen")
 // or the starting position ("startpos") and then makes the moves given in the
 // following move list ("moves").
-void position(Position *pos, std::istringstream &is)
+void position(Position *pos, std::istringstream &is,
+              std::deque<StateInfo> &states)
 {
     Move m;
     string token, fen;
@@ -142,19 +146,18 @@ void position(Position *pos, std::istringstream &is)
         return;
     }
 
-    posKeyHistory.clear();
+    // Engine no longer clears posKeyHistory; StateInfo chain handles repetition
 
-    pos->set(fen);
+    // Stockfish-style: recreate states and use first StateInfo for set()
+    states.clear();
+    states.emplace_back(); // Create initial StateInfo for set()
+    pos->set(fen, &states.back());
 
     // Parse move list (if any)
     while (is >> token && (UCI::to_move(pos, token)) != MOVE_NONE) {
         m = UCI::to_move(pos, token);
-        pos->do_move(m);
-        if (type_of(m) == MOVETYPE_MOVE) {
-            posKeyHistory.push_back(pos->key());
-        } else {
-            posKeyHistory.clear();
-        }
+        states.emplace_back();
+        pos->do_move(m, states.back());
     }
 
     // TODO: Old：Threads.main()->us = pos->sideToMove;

@@ -36,7 +36,7 @@ bool Game::applyMoveListUntilRow(int row)
     // Remove debug output that causes "rows: 1 current: 0" message at startup
     // debugPrintf("rows: %d current: %d\n", moveListModel.rowCount(), row);
 
-    // posKeyHistory.clear();
+    // UI no longer maintains engine's posKeyHistory
 
     // Apply each command up to 'row' to the Position
     for (int i = 0; i <= row; i++) {
@@ -166,12 +166,8 @@ bool Game::command(const std::string &command, bool update /*= true*/)
 
     // TODO: It means that the 50 rule is only calculated at the beginning of
     // the moving phase, and it is not sure whether it complies with the rules.
-    // For standard notation: move moves have length 5
-    if (strlen(moveStr) == 5) {
-        posKeyHistory.push_back(position.key());
-    } else {
-        posKeyHistory.clear();
-    }
+    // UI no longer updates engine's posKeyHistory; repetition handled
+    // internally
 
     // Send the command to the Position
     if (!position.command(cmd.c_str())) {

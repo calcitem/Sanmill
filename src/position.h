@@ -17,7 +17,7 @@
 #include "bitboard.h"
 #include "option.h"
 #include "rule.h"
-#include "stack.h"
+
 #include "types.h"
 #include "movegen.h"
 #include "nnue/nnue_accumulator.h"
@@ -45,8 +45,26 @@ struct StateInfo
     Key key;
 
     // NNUE support: previous pointer for incremental chains and accumulator
-    StateInfo* previous {nullptr};
+    StateInfo *previous {nullptr};
     Stockfish::Eval::NNUE::Accumulator accumulator {};
+    // Repetition helper: count or marker; semantics aligned to engine usage
+    int repetition {0};
+
+    // Minimal undo information specific to Nine Men's Morris
+    Move lastMove {MOVE_NONE};
+    Piece capturedPiece {NO_PIECE};
+    Square capturedSquare {SQ_NONE};
+    Phase prevPhase;
+    Action prevAction;
+    Color prevSideToMove;
+    Color prevThem;
+    int prevPieceInHandCount[COLOR_NB];
+    int prevPieceOnBoardCount[COLOR_NB];
+    int prevPieceToRemoveCount[COLOR_NB];
+    int prevGamePly;
+    Square prevCurrentSquare[COLOR_NB];
+    bool prevIsNeedStalemateRemoval;
+    bool prevIsStalemateRemoving;
 };
 
 /// Position class stores information regarding the board representation as
@@ -61,9 +79,9 @@ public:
     static void init();
 
     Position();
-    Position(const Position& other);
-    Position& operator=(const Position& other);
-    
+    Position(const Position &) = delete;
+    Position &operator=(const Position &) = delete;
+
 #if 1
     ~Position()
     {
@@ -74,6 +92,7 @@ public:
 
     // FEN string input/output
     Position &set(const std::string &fenStr);
+    Position &set(const std::string &fenStr, StateInfo *si);
     std::string fen() const;
 #ifdef NNUE_GENERATE_TRAINING_DATA
     string Position::nnueGetOpponentGameResult();
@@ -93,9 +112,9 @@ public:
     bool legal(Move m) const;
     Piece moved_piece(Move m) const;
 
-    // Doing and undoing moves
-    void do_move(Move m);
-    void undo_move(Sanmill::Stack<Position> &ss);
+    // Doing and undoing moves (Stockfish-style)
+    void do_move(Move m, StateInfo &newSt);
+    void undo_move(Move m);
 
     // Accessing hash keys
     Key key() const noexcept;
@@ -109,11 +128,11 @@ public:
     Color side_to_move() const;
     int game_ply() const;
     bool has_game_cycle() const;
-    bool has_repeated(Sanmill::Stack<Position> &ss) const;
+    bool has_repeated() const;
     unsigned int rule50_count() const;
 
     // NNUE support
-    inline StateInfo* state() const { return st; }
+    inline StateInfo *state() const { return st; }
 
     /// Mill Game
 
@@ -252,12 +271,17 @@ public:
     char record[RECORD_LEN_MAX] {'\0'};
 
     Move move {MOVE_NONE};
-    
+
     // NNUE support - placed at end to avoid breaking existing memory layout
-    StateInfo* st;
-    StateInfo startState;  // Root state for the position
-    // Maintain an internal StateInfo stack to build a proper previous-chain
-    Sanmill::Stack<StateInfo, 1024> stateStack;
+    StateInfo *st;
+    StateInfo startState; // Root state for the position
+
+    // No internal state pool - caller manages StateInfo lifecycle
+    // (Stockfish-style)
+
+    // Stockfish-style undo: minimal state stored in StateInfo, no full
+    // snapshots Each StateInfo captures only what's needed to reverse the
+    // specific move
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);

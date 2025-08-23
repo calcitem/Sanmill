@@ -30,7 +30,10 @@ SearchEngine::SearchEngine(
 #ifdef QT_GUI_LIB
     : QObject(parent)
 #endif
-{ }
+{
+    // Initialize Stockfish-style state management
+    states = std::make_unique<std::deque<StateInfo>>();
+}
 
 void SearchEngine::emitCommand()
 {
@@ -73,15 +76,8 @@ void SearchEngine::emitCommand()
 #ifdef UCI_DO_BEST_MOVE
     if (rootPos) {
         rootPos->command(ss.str());
-        // 'thread' pointer might not exist anymore.
-        // If you had 'thread->us = rootPos->side_to_move();'
-        // you need a new approach or remove it.
-        // For standard notation: move moves have length 5
-        if (bestMoveString.size() == 5) {
-            posKeyHistory.push_back(rootPos->key());
-        } else {
-            posKeyHistory.clear();
-        }
+        // Engine no longer updates posKeyHistory here; repetition and rule50
+        // are handled by the internal StateInfo chain.
     }
 #endif
 
@@ -428,13 +424,14 @@ int SearchEngine::executeSearch()
 
     if (isMovingOrMayMoveInPlacing) {
 #ifdef RULE_50
-        if (posKeyHistory.size() >= rule.nMoveRule) {
+        // Approximate legacy behavior: map StateInfo-based counters to UI score
+        // hints
+        if (rootPos->rule50_count() >= rule.nMoveRule) {
             return 50;
         }
-
         if (rule.endgameNMoveRule < rule.nMoveRule &&
             rootPos->is_three_endgame() &&
-            posKeyHistory.size() >= rule.endgameNMoveRule) {
+            rootPos->rule50_count() >= rule.endgameNMoveRule) {
             return 10;
         }
 #endif // RULE_50
@@ -442,15 +439,10 @@ int SearchEngine::executeSearch()
         if (rule.threefoldRepetitionRule && rootPos->has_game_cycle()) {
             return 3;
         }
-
-        assert(posKeyHistory.size() < 256);
     }
 
     if (rootPos->get_phase() == Phase::placing && !rule.mayMoveInPlacingPhase) {
-        posKeyHistory.clear();
         rootPos->st->rule50 = 0;
-    } else if (isMovingOrMayMoveInPlacing) {
-        rootPos->st->rule50 = static_cast<unsigned>(posKeyHistory.size());
     }
 
     MoveList<LEGAL>::shuffle();
@@ -507,13 +499,13 @@ int SearchEngine::executeSearch()
             }
 
             if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-                value = Search::MTDF(*this, rootPos, ss, value, i, i, bestMove);
+                value = Search::MTDF(*this, rootPos, value, i, i, bestMove);
             } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
                 value = monte_carlo_tree_search(rootPos, bestMove);
             } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
                 value = Search::random_search(rootPos, bestMove);
             } else {
-                value = Search::search(*this, rootPos, ss, i, i, alpha, beta,
+                value = Search::search(*this, rootPos, i, i, alpha, beta,
                                        bestMove);
             }
 
@@ -587,15 +579,15 @@ next:
     if (!searchAborted.load(std::memory_order_relaxed) ||
         bestMoveSoFar == MOVE_NONE) {
         if (gameOptions.getAlgorithm() == 2 /* MTD(f) */) {
-            value = Search::MTDF(*this, rootPos, ss, value, originDepth,
+            value = Search::MTDF(*this, rootPos, value, originDepth,
                                  originDepth, bestMove);
         } else if (gameOptions.getAlgorithm() == 3 /* MCTS */) {
             value = monte_carlo_tree_search(rootPos, bestMove);
         } else if (gameOptions.getAlgorithm() == 4 /* Random */) {
             value = Search::random_search(rootPos, bestMove);
         } else {
-            value = Search::search(*this, rootPos, ss, d, originDepth, alpha,
-                                   beta, bestMove);
+            value = Search::search(*this, rootPos, d, originDepth, alpha, beta,
+                                   bestMove);
         }
 
         bestMoveSoFar = bestMove;
@@ -642,11 +634,9 @@ next:
 #endif
 #endif
         // Use quick search with depth 4 instead of random search
-        Sanmill::Stack<Position> quickSs;
         Move quickBestMove = MOVE_NONE;
-        bestValSoFar = Search::search(*this, rootPos, quickSs, 4, 4,
-                                      -VALUE_INFINITE, VALUE_INFINITE,
-                                      quickBestMove);
+        bestValSoFar = Search::search(*this, rootPos, 4, 4, -VALUE_INFINITE,
+                                      VALUE_INFINITE, quickBestMove);
         if (quickBestMove != MOVE_NONE) {
             bestMoveSoFar = quickBestMove;
         } else {
@@ -733,9 +723,8 @@ void SearchEngine::runSearch()
 #endif
 #endif
                 // Use quick search with depth 4 instead of random search
-                Sanmill::Stack<Position> quickSs;
                 Move quickBestMove = MOVE_NONE;
-                Search::search(*this, rootPos, quickSs, 4, 4, -VALUE_INFINITE,
+                Search::search(*this, rootPos, 4, 4, -VALUE_INFINITE,
                                VALUE_INFINITE, quickBestMove);
                 if (quickBestMove != MOVE_NONE) {
                     bestMove = quickBestMove;
@@ -834,8 +823,11 @@ void SearchEngine::runAnalyze()
     ss << "info analysis";
 
     for (const auto &m : list) {
-        Position newPos = *rootPos;
-        newPos.do_move(m.move);
+        // Create new Position manually since copy constructor is deleted
+        Position newPos;
+        newPos.set(rootPos->fen()); // Copy state via FEN
+        StateInfo st;
+        newPos.do_move(m.move, st);
 
         std::string moveStr = UCI::move(m.move);
         Value val = VALUE_NONE;
@@ -902,11 +894,8 @@ void SearchEngine::runAnalyze()
         Depth searchDepth = 4;
 
         Move tempBest = MOVE_NONE;
-        Sanmill::Stack<Position> tempStack;
-
-        val = Search::search(tempEngine, &newPos, tempStack, searchDepth,
-                             searchDepth, -VALUE_INFINITE, VALUE_INFINITE,
-                             tempBest);
+        val = Search::search(tempEngine, &newPos, searchDepth, searchDepth,
+                             -VALUE_INFINITE, VALUE_INFINITE, tempBest);
 
         if (newPos.side_to_move() != rootSide) {
             val = -val;
@@ -931,4 +920,39 @@ void SearchEngine::runAnalyze()
 
     // Only call println once with the complete result
     emitAnalyze();
+}
+
+// Stockfish-style interface implementations
+void SearchEngine::set_position(const std::string &fen,
+                                const std::vector<std::string> &moves)
+{
+    // Initialize states and set position
+    states->clear();
+    states->emplace_back();
+    pos.set(fen, &states->back());
+
+    // Apply moves
+    for (const auto &moveStr : moves) {
+        Move m = UCI::to_move(&pos, moveStr);
+        if (m == MOVE_NONE)
+            break;
+
+        states->emplace_back();
+        pos.do_move(m, states->back());
+    }
+
+    // Update legacy pointer for backward compatibility
+    rootPos = &pos;
+}
+
+void SearchEngine::go()
+{
+    // Use internal position for search
+    beginNewSearch(&pos);
+    runSearch();
+}
+
+void SearchEngine::stop()
+{
+    searchAborted.store(true, std::memory_order_relaxed);
 }

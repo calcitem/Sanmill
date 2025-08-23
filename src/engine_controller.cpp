@@ -34,10 +34,15 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
     is >> token;
 
     if (token == "go") {
-        searchPos = *pos;
+        // Build searchPos from current pos and persist its StateInfo chain
+        searchPos.set(pos->fen());
+        // Rebuild moves if provided after 'go' (optional UCI variant)
+        // We do not parse extra moves here; searchPos must already be up to
+        // date
+        searchStates_.clear();
         EngineCommands::go(searchEngine_, &searchPos);
     } else if (token == "position") {
-        EngineCommands::position(pos, is);
+        EngineCommands::position(pos, is, posStates_);
     } else if (token == "ucinewgame") {
         Search::clear(); // Clear the search state for a new game
         // Additional custom non-UCI commands, mainly for debugging.
@@ -49,8 +54,8 @@ void EngineController::handleCommand(const std::string &cmd, Position *pos)
         // Output compiler information
         sync_cout << compiler_info() << sync_endl;
     } else if (token == "analyze") {
-        analyzePos = *pos;
-        EngineCommands::position(&analyzePos, is);
+        analyzePos.set(pos->fen());
+        EngineCommands::position(&analyzePos, is, analyzeStates_);
         // Call the analyze function instead of analyze_position
         EngineCommands::analyze(searchEngine_, &analyzePos);
     } else {

@@ -114,13 +114,8 @@ void Game::refreshMoveList()
     // Add the new move
     gameMoveList.emplace_back(position.record);
 
-    // Update position key history
-    // For standard notation: move moves have length 5
-    if (strlen(position.record) == 5) {
-        posKeyHistory.push_back(position.key());
-    } else {
-        posKeyHistory.clear();
-    }
+    // UI may still track its own move history for display purposes.
+    // Engine repetition is now handled via Position's StateInfo chain.
 }
 
 // Update the list model that holds the moves

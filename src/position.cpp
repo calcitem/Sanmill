@@ -16,11 +16,12 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <cstddef> // for offsetof
 
 using std::string;
 using std::vector;
 
-extern vector<Key> posKeyHistory;
+// Engine no longer maintains global posKeyHistory; using StateInfo chain
 
 namespace Zobrist {
 constexpr int KEY_MISC_BIT = 2;
@@ -255,14 +256,13 @@ Position::Position()
     // Initialize state pointer to point to the start state
     st = &startState;
     st->previous = nullptr;
-    stateStack.clear();
-    stateStack.push(startState);
-    
+    // No state pool management needed
+
     // Initialize accumulator as not computed
     // Map Sanmill Color to NNUE array indices: WHITE(1)->0, BLACK(2)->1
-    st->accumulator.computed[0] = false;  // WHITE -> 0
-    st->accumulator.computed[1] = false;  // BLACK -> 1
-    
+    st->accumulator.computed[0] = false; // WHITE -> 0
+    st->accumulator.computed[1] = false; // BLACK -> 1
+
     construct_key();
 
     reset();
@@ -270,154 +270,10 @@ Position::Position()
     score[WHITE] = score[BLACK] = score_draw = gamesPlayedCount = 0;
 }
 
-Position::Position(const Position& other)
-{
-    // Initialize our own state pointer first
-    st = &startState;
-    st->previous = nullptr;
-    stateStack.clear();
-    stateStack.push(startState);
-    
-    // Manually copy all members to avoid recursion
-    std::memcpy(board, other.board, sizeof(board));
-    std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
-    std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
-    std::memcpy(pieceInHandCount, other.pieceInHandCount, sizeof(pieceInHandCount));
-    std::memcpy(pieceOnBoardCount, other.pieceOnBoardCount, sizeof(pieceOnBoardCount));
-    std::memcpy(pieceToRemoveCount, other.pieceToRemoveCount, sizeof(pieceToRemoveCount));
-    
-    isNeedStalemateRemoval = other.isNeedStalemateRemoval;
-    isStalemateRemoving = other.isStalemateRemoving;
-    mobilityDiff = other.mobilityDiff;
-    gamePly = other.gamePly;
-    sideToMove = other.sideToMove;
-    thisThread = other.thisThread;
-    
-    // Copy StateInfo content to our own startState (but not the previous pointer)
-    if (other.st) {
-        startState = *other.st;
-        startState.previous = nullptr;  // Clear previous pointer immediately after copy
-    }
-    st->previous = nullptr;  // Ensure our st pointer is also clear
-    
-    // Copy other game-specific members
-    them = other.them;
-    winner = other.winner;
-    gameOverReason = other.gameOverReason;
-    phase = other.phase;
-    action = other.action;
-    
-    std::memcpy(score, other.score, sizeof(score));
-    score_draw = other.score_draw;
-    bestvalue = other.bestvalue;
-    
-    std::memcpy(currentSquare, other.currentSquare, sizeof(currentSquare));
-    std::memcpy(lastMillFromSquare, other.lastMillFromSquare, sizeof(lastMillFromSquare));
-    std::memcpy(lastMillToSquare, other.lastMillToSquare, sizeof(lastMillToSquare));
-    std::memcpy(formedMillsBB, other.formedMillsBB, sizeof(formedMillsBB));
-    
-    gamesPlayedCount = other.gamesPlayedCount;
-    std::memcpy(record, other.record, sizeof(record));
-    move = other.move;
-}
+// Position copy constructor deleted - use proper StateInfo-based undo instead
 
-Position& Position::operator=(const Position& other)
-{
-    if (this == &other) {
-        return *this;
-    }
-    
-    // Ensure our st pointer is properly initialized
-    if (!st) {
-        st = &startState;
-        st->previous = nullptr;
-    }
-    
-    // Use simple member-by-member assignment to avoid memcpy alignment issues
-    // Copy board and bitboards
-    std::memcpy(board, other.board, sizeof(board));
-    std::memcpy(byTypeBB, other.byTypeBB, sizeof(byTypeBB));
-    std::memcpy(byColorBB, other.byColorBB, sizeof(byColorBB));
-    
-    // Copy piece counts
-    pieceInHandCount[WHITE] = other.pieceInHandCount[WHITE];
-    pieceInHandCount[BLACK] = other.pieceInHandCount[BLACK];
-    pieceInHandCount[NOBODY] = other.pieceInHandCount[NOBODY];
-    pieceOnBoardCount[WHITE] = other.pieceOnBoardCount[WHITE];
-    pieceOnBoardCount[BLACK] = other.pieceOnBoardCount[BLACK];
-    pieceOnBoardCount[NOBODY] = other.pieceOnBoardCount[NOBODY];
-    pieceToRemoveCount[WHITE] = other.pieceToRemoveCount[WHITE];
-    pieceToRemoveCount[BLACK] = other.pieceToRemoveCount[BLACK];
-    pieceToRemoveCount[NOBODY] = other.pieceToRemoveCount[NOBODY];
-    
-    // Copy boolean flags
-    isNeedStalemateRemoval = other.isNeedStalemateRemoval;
-    isStalemateRemoving = other.isStalemateRemoving;
-    
-    // Copy game state
-    mobilityDiff = other.mobilityDiff;
-    gamePly = other.gamePly;
-    sideToMove = other.sideToMove;
-    them = other.them;
-    thisThread = other.thisThread;
-    
-    // Copy StateInfo content to our own startState (but not the previous pointer)
-    if (other.st) {
-        startState = *other.st;
-        startState.previous = nullptr;  // Clear previous pointer immediately after copy
-    }
-    st = &startState;  // Always point to our own startState
-    st->previous = nullptr;  // Ensure our st pointer is also clear
-    stateStack.clear();
-    stateStack.push(startState);
-    
-    // Copy game-specific enums and state
-    winner = other.winner;
-    gameOverReason = other.gameOverReason;
-    phase = other.phase;
-    action = other.action;
-    
-    // Validate critical enum values to catch corruption early
-    if (static_cast<int>(phase) < 0 || static_cast<int>(phase) > 4) {
-        debugPrintf("ERROR: Invalid phase value %d in Position assignment!\n", static_cast<int>(phase));
-        phase = Phase::ready;  // Reset to safe value
-    }
-    if (static_cast<int>(action) < 0 || static_cast<int>(action) > 3) {
-        debugPrintf("ERROR: Invalid action value %d in Position assignment!\n", static_cast<int>(action));
-        action = Action::place;  // Reset to safe value
-    }
-    if (static_cast<int>(sideToMove) < 0 || static_cast<int>(sideToMove) > 2) {
-        debugPrintf("ERROR: Invalid sideToMove value %d in Position assignment!\n", static_cast<int>(sideToMove));
-        sideToMove = WHITE;  // Reset to safe value
-    }
-    
-    // Copy scores
-    score[WHITE] = other.score[WHITE];
-    score[BLACK] = other.score[BLACK];
-    score[NOBODY] = other.score[NOBODY];
-    score_draw = other.score_draw;
-    bestvalue = other.bestvalue;
-    
-    // Copy position-specific data
-    currentSquare[WHITE] = other.currentSquare[WHITE];
-    currentSquare[BLACK] = other.currentSquare[BLACK];
-    currentSquare[NOBODY] = other.currentSquare[NOBODY];
-    lastMillFromSquare[WHITE] = other.lastMillFromSquare[WHITE];
-    lastMillFromSquare[BLACK] = other.lastMillFromSquare[BLACK];
-    lastMillFromSquare[NOBODY] = other.lastMillFromSquare[NOBODY];
-    lastMillToSquare[WHITE] = other.lastMillToSquare[WHITE];
-    lastMillToSquare[BLACK] = other.lastMillToSquare[BLACK];
-    lastMillToSquare[NOBODY] = other.lastMillToSquare[NOBODY];
-    
-    formedMillsBB[WHITE] = other.formedMillsBB[WHITE];
-    formedMillsBB[BLACK] = other.formedMillsBB[BLACK];
-    
-    gamesPlayedCount = other.gamesPlayedCount;
-    std::memcpy(record, other.record, sizeof(record));
-    move = other.move;
-    
-    return *this;
-}
+// Position assignment operator deleted - use proper StateInfo-based undo
+// instead
 
 /// Position::set() initializes the position object with the given FEN string.
 /// This function is not very robust - make sure that input FENs are correct,
@@ -463,7 +319,8 @@ Position &Position::set(const string &fenStr)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
-    *this = Position();
+    // Reset to initial state manually since copy assignment is deleted
+    reset();
 
     ss >> std::noskipws;
 
@@ -562,6 +419,19 @@ Position &Position::set(const string &fenStr)
     }
 #endif
 
+    // Reset state pointer to startState (Stockfish-style)
+    st = &startState;
+    st->previous = nullptr;
+
+    return *this;
+}
+
+Position &Position::set(const std::string &fenStr, StateInfo *si)
+{
+    // Stockfish-style: caller provides StateInfo to use
+    set(fenStr);            // Use existing implementation
+    st = si;                // Override st pointer to use caller's StateInfo
+    st->previous = nullptr; // Root state has no previous
     return *this;
 }
 
@@ -672,17 +542,68 @@ bool Position::legal(Move m) const
 /// to a StateInfo object. The move is assumed to be legal. Pseudo-legal
 /// moves should be filtered out before this function is called.
 
-void Position::do_move(Move m)
+// Removed single-parameter do_move - use do_move(Move, StateInfo&) like
+// Stockfish
+
+void Position::do_move(Move m, StateInfo &newSt)
 {
-    bool ret = false;
+    assert(&newSt != st);
+
+    // Stockfish-style: Copy inheritable fields only up to key
+    std::memcpy(&newSt, st, offsetof(StateInfo, key));
+
+    // Set up NNUE chain and Sanmill-specific undo info
+    newSt.previous = st;
+    newSt.accumulator.computed[0] = false;
+    newSt.accumulator.computed[1] = false;
+
+    // Save Sanmill-specific state for undo (optimized for minimal copies)
+    newSt.lastMove = m;
+    newSt.prevPhase = phase;
+    newSt.prevAction = action;
+    newSt.prevSideToMove = sideToMove;
+    newSt.prevThem = them;
+    newSt.prevGamePly = gamePly;
+    newSt.prevIsNeedStalemateRemoval = isNeedStalemateRemoval;
+    newSt.prevIsStalemateRemoving = isStalemateRemoving;
+
+    // Copy piece count arrays efficiently
+    // These arrays are small (3 ints each = 12 bytes), so assignment is fast
+    newSt.prevPieceInHandCount[WHITE] = pieceInHandCount[WHITE];
+    newSt.prevPieceInHandCount[BLACK] = pieceInHandCount[BLACK];
+    newSt.prevPieceInHandCount[NOBODY] = pieceInHandCount[NOBODY];
+
+    newSt.prevPieceOnBoardCount[WHITE] = pieceOnBoardCount[WHITE];
+    newSt.prevPieceOnBoardCount[BLACK] = pieceOnBoardCount[BLACK];
+    newSt.prevPieceOnBoardCount[NOBODY] = pieceOnBoardCount[NOBODY];
+
+    newSt.prevPieceToRemoveCount[WHITE] = pieceToRemoveCount[WHITE];
+    newSt.prevPieceToRemoveCount[BLACK] = pieceToRemoveCount[BLACK];
+    newSt.prevPieceToRemoveCount[NOBODY] = pieceToRemoveCount[NOBODY];
+
+    // Copy current square array (2 squares = 8 bytes)
+    newSt.prevCurrentSquare[WHITE] = currentSquare[WHITE];
+    newSt.prevCurrentSquare[BLACK] = currentSquare[BLACK];
+
+    // Update position's StateInfo pointer
+    st = &newSt;
 
     const MoveType mt = type_of(m);
+    bool ret = false;
+
+    // Store captured piece info for undo
+    if (mt == MOVETYPE_REMOVE) {
+        newSt.capturedSquare = to_sq(m);
+        newSt.capturedPiece = board[to_sq(m)];
+    } else {
+        newSt.capturedSquare = SQ_NONE;
+        newSt.capturedPiece = NO_PIECE;
+    }
 
     switch (mt) {
     case MOVETYPE_REMOVE:
         ret = remove_piece(to_sq(m));
         if (ret) {
-            // Reset rule 50 counter
             st->rule50 = 0;
         }
         break;
@@ -695,48 +616,104 @@ void Position::do_move(Move m)
     case MOVETYPE_PLACE:
         ret = put_piece(to_sq(m));
         if (ret) {
-            // Reset rule 50 counter
             st->rule50 = 0;
         }
         break;
     }
 
     if (!ret) {
+        // Restore StateInfo pointer on failure
+        st = newSt.previous;
         return;
     }
 
-    // Increment ply counters. In particular
+    // Increment ply counters
     ++gamePly;
     ++st->pliesFromNull;
-
     move = m;
-
-    // Push a new StateInfo onto our chain for the next ply
-    StateInfo newState = *st;         // copy current as base
-    newState.previous = st;           // link back
-    // Mark NNUE accumulator dirty for both perspectives
-    newState.accumulator.computed[0] = false;
-    newState.accumulator.computed[1] = false;
-    stateStack.push(newState);
-    st = stateStack.top();
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
 /// be restored to exactly the same state as before the move was made.
 
-void Position::undo_move(Sanmill::Stack<Position> &ss)
+void Position::undo_move(Move m)
 {
-    // Restore board/state via existing copy-restore for now
-    *this = *ss.top();
-    ss.pop();
+    assert(st->lastMove == m);
 
-    // Pop our internal StateInfo chain to match restored board
-    if (!stateStack.empty()) {
-        stateStack.pop();
-        st = stateStack.empty() ? &startState : stateStack.top();
-    } else {
-        st = &startState;
+    const MoveType mt = type_of(m);
+
+    // Reverse the board changes
+    switch (mt) {
+    case MOVETYPE_REMOVE:
+        // Restore the captured piece
+        if (st->capturedPiece != NO_PIECE) {
+            board[st->capturedSquare] = st->capturedPiece;
+            SET_BIT(byTypeBB[type_of(st->capturedPiece)], st->capturedSquare);
+            SET_BIT(byColorBB[color_of(st->capturedPiece)], st->capturedSquare);
+            SET_BIT(byTypeBB[ALL_PIECES], st->capturedSquare);
+        }
+        break;
+    case MOVETYPE_MOVE:
+        // Move piece back
+        {
+            const Square from = from_sq(m);
+            const Square to = to_sq(m);
+            const Piece pc = board[to];
+
+            board[from] = pc;
+            board[to] = NO_PIECE;
+
+            CLEAR_BIT(byTypeBB[ALL_PIECES], to);
+            CLEAR_BIT(byTypeBB[type_of(pc)], to);
+            CLEAR_BIT(byColorBB[color_of(pc)], to);
+
+            SET_BIT(byTypeBB[ALL_PIECES], from);
+            SET_BIT(byTypeBB[type_of(pc)], from);
+            SET_BIT(byColorBB[color_of(pc)], from);
+        }
+        break;
+    case MOVETYPE_PLACE:
+        // Remove the placed piece
+        {
+            const Square to = to_sq(m);
+            const Piece pc = board[to];
+
+            board[to] = NO_PIECE;
+            CLEAR_BIT(byTypeBB[ALL_PIECES], to);
+            CLEAR_BIT(byTypeBB[type_of(pc)], to);
+            CLEAR_BIT(byColorBB[color_of(pc)], to);
+        }
+        break;
     }
+
+    // Restore position state from StateInfo (optimized restoration)
+    phase = st->prevPhase;
+    action = st->prevAction;
+    sideToMove = st->prevSideToMove;
+    them = st->prevThem;
+    gamePly = st->prevGamePly;
+    isNeedStalemateRemoval = st->prevIsNeedStalemateRemoval;
+    isStalemateRemoving = st->prevIsStalemateRemoving;
+
+    // Restore piece count arrays efficiently
+    pieceInHandCount[WHITE] = st->prevPieceInHandCount[WHITE];
+    pieceInHandCount[BLACK] = st->prevPieceInHandCount[BLACK];
+    pieceInHandCount[NOBODY] = st->prevPieceInHandCount[NOBODY];
+
+    pieceOnBoardCount[WHITE] = st->prevPieceOnBoardCount[WHITE];
+    pieceOnBoardCount[BLACK] = st->prevPieceOnBoardCount[BLACK];
+    pieceOnBoardCount[NOBODY] = st->prevPieceOnBoardCount[NOBODY];
+
+    pieceToRemoveCount[WHITE] = st->prevPieceToRemoveCount[WHITE];
+    pieceToRemoveCount[BLACK] = st->prevPieceToRemoveCount[BLACK];
+    pieceToRemoveCount[NOBODY] = st->prevPieceToRemoveCount[NOBODY];
+
+    // Restore current square array
+    currentSquare[WHITE] = st->prevCurrentSquare[WHITE];
+    currentSquare[BLACK] = st->prevCurrentSquare[BLACK];
+
+    // Restore StateInfo pointer to previous
+    st = st->previous;
 }
 
 /// Position::key_after() computes the new hash key after the given move. Needed
@@ -773,25 +750,18 @@ Key Position::key_after(Move m) const
 // Position::has_repeated() tests whether there has been at least one repetition
 // of positions since the last remove.
 
-bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
+bool Position::has_repeated() const
 {
-    for (int i = static_cast<int>(posKeyHistory.size()) - 2; i >= 0; i--) {
-        if (key() == posKeyHistory[i]) {
+    // Detect whether current position key has occurred since the last
+    // irreversible change, walking back within the rule50/pliesFromNull window.
+    const Key currentKey = key();
+    int remain = std::min(static_cast<int>(st->rule50), st->pliesFromNull);
+    StateInfo *cur = st->previous;
+    while (cur && remain-- > 0) {
+        if (cur->key == currentKey)
             return true;
-        }
+        cur = cur->previous;
     }
-
-    const int size = ss.size();
-
-    for (int i = size - 1; i >= 0; i--) {
-        if (type_of(ss[i].move) == MOVETYPE_REMOVE) {
-            break;
-        }
-        if (key() == ss[i].st->key) {
-            return true;
-        }
-    }
-
     return false;
 }
 
@@ -800,15 +770,17 @@ bool Position::has_repeated(Sanmill::Stack<Position> &ss) const
 
 bool Position::has_game_cycle() const
 {
-    ptrdiff_t count = std::count(posKeyHistory.begin(), posKeyHistory.end(),
-                                 key());
-
-    // TODO: Maintain consistent interface behavior
-#ifdef QT_GUI_LIB
-    return count >= 2;
-#else
-    return count >= 3;
-#endif
+    // Approximate threefold repetition using the StateInfo chain:
+    // current occurrence + two earlier matches => cycle.
+    const Key currentKey = key();
+    int matches = 0;
+    int remain = std::min(static_cast<int>(st->rule50), st->pliesFromNull);
+    for (StateInfo *cur = st->previous; cur && remain-- > 0;
+         cur = cur->previous) {
+        if (cur->key == currentKey && ++matches >= 2)
+            return true;
+    }
+    return false;
 }
 
 /// Mill Game
@@ -1477,13 +1449,13 @@ void Position::update_score()
 bool Position::check_if_game_is_over()
 {
 #ifdef RULE_50
-    if (rule.nMoveRule > 0 && posKeyHistory.size() >= rule.nMoveRule) {
+    if (rule.nMoveRule > 0 && st->rule50 >= rule.nMoveRule) {
         set_gameover(DRAW, GameOverReason::drawFiftyMove);
         return true;
     }
 
     if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame() &&
-        posKeyHistory.size() >= rule.endgameNMoveRule) {
+        st->rule50 >= rule.endgameNMoveRule) {
         set_gameover(DRAW, GameOverReason::drawEndgameFiftyMove);
         return true;
     }
@@ -1667,7 +1639,7 @@ Key Position::update_key_misc()
     //  the storage will be truncated or directly get 0,
     //  and the original value cannot be completely retained.
     st->key |= static_cast<Key>(pieceToRemoveCount[sideToMove])
-              << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
+               << (CHAR_BIT * sizeof(Key) - Zobrist::KEY_MISC_BIT);
 
     return st->key;
 }

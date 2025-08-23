@@ -179,9 +179,12 @@ Node *expand(Node *node)
 
     // Add child nodes for each sorted legal move
     for (int i = 0; i < moveCount; i++) {
-        Position *child_position = new Position(*pos);
+        // Create new Position manually since copy constructor is deleted
+        Position *child_position = new Position();
+        child_position->set(pos->fen()); // Copy state via FEN
+        StateInfo st;
         const Move move = mp.moves[i].move;
-        child_position->do_move(move);
+        child_position->do_move(move, st);
 
         Node *child = new Node(child_position, move, node, i);
         node->add_child(child);
@@ -197,7 +200,7 @@ bool simulate(Node *node, Sanmill::Stack<Position> &ss)
 
     Move bestMove {MOVE_NONE};
 
-    Value value = Search::search(searchEngine, pos, ss, ALPHA_BETA_DEPTH,
+    Value value = Search::search(searchEngine, pos, ALPHA_BETA_DEPTH,
                                  ALPHA_BETA_DEPTH, -VALUE_INFINITE,
                                  VALUE_INFINITE, bestMove);
     return value > 0;
@@ -273,7 +276,10 @@ void mcts_worker(Position *pos, int max_iterations,
 {
     Sanmill::Stack<Position> ss;
 
-    Node *root = new Node(new Position(*pos), MOVE_NONE, nullptr, 0);
+    // Create root node manually since copy constructor is deleted
+    Position *root_pos = new Position();
+    root_pos->set(pos->fen()); // Copy state via FEN
+    Node *root = new Node(root_pos, MOVE_NONE, nullptr, 0);
 
     int iteration = 0;
 

@@ -6,13 +6,14 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <memory>
 
 #include "thread.h"
 #include "thread_pool.h"
 #include "uci.h"
 #include "misc.h"
-#include "engine_controller.h"
 #include "search_engine.h"
+#include "search.h"
 #include "self_play.h"
 
 #ifdef FLUTTER_UI
@@ -76,13 +77,15 @@ void setoption(istringstream &is)
 
 void UCI::loop(int argc, char *argv[])
 {
-    const auto pos = new Position;
     string token, cmd;
 
+    // Stockfish-style: single SearchEngine manages everything
     SearchEngine searchEngine;
-    EngineController engineController(searchEngine);
 
-    initialize_engine(pos);
+    // Initialize with default position
+    searchEngine.set_position("********/********/******** w p p 0 9 0 9 0 0 0 "
+                              "0 0 0 0 0 1",
+                              {});
 
     for (int i = 1; i < argc; ++i)
         cmd += std::string(argv[i]) + " ";
@@ -129,11 +132,45 @@ void UCI::loop(int argc, char *argv[])
         else if (token == "setoption")
             setoption(is);
 
-        else if (token == "go" || token == "position" ||
-                 token == "ucinewgame" || token == "d" || token == "compiler" ||
-                 token == "analyze") {
-            // Pass the entire command to EngineController
-            engineController.handleCommand(cmd, pos);
+        else if (token == "position") {
+            // Parse position command directly (Stockfish-style)
+            istringstream posIs(cmd);
+            posIs >> token; // consume "position"
+            posIs >> token; // get next token
+
+            string fen;
+            if (token == "startpos") {
+                fen = "********/********/******** w p p 0 9 0 9 0 0 0 0 0 0 0 "
+                      "0 1";
+                posIs >> token; // consume "moves" if present
+            } else if (token == "fen") {
+                while (posIs >> token && token != "moves") {
+                    fen += token + " ";
+                }
+            }
+
+            vector<string> moves;
+            while (posIs >> token) {
+                moves.push_back(token);
+            }
+
+            searchEngine.set_position(fen, moves);
+        } else if (token == "go") {
+            searchEngine.go();
+        } else if (token == "ucinewgame") {
+            Search::clear(); // Clear the search state for a new game
+            searchEngine.set_position("********/********/******** w p p 0 9 0 "
+                                      "9 0 0 0 0 0 0 0 0 1",
+                                      {});
+        } else if (token == "d") {
+            // Output the current position state
+            sync_cout << searchEngine.pos << sync_endl;
+        } else if (token == "compiler") {
+            // Output compiler information
+            sync_cout << compiler_info() << sync_endl;
+        } else if (token == "analyze") {
+            // TODO: Implement analyze command
+            sync_cout << "analyze command not yet implemented" << sync_endl;
         }
 #ifdef SELF_PLAY
         else if (token == "selfplay") {
@@ -181,7 +218,7 @@ void UCI::loop(int argc, char *argv[])
     // its internal mutexes are destroyed.
     Threads.stop_all();
 
-    delete pos;
+    // pos is now managed by SearchEngine, no need to delete
 }
 
 /// UCI::value() converts a Value to a string suitable for use with the UCI
@@ -257,9 +294,23 @@ string UCI::move(Move m)
 
 Move UCI::to_move(Position *pos, const string &str)
 {
-    for (const auto &m : MoveList<LEGAL>(*pos))
-        if (str == move(m))
-            return m;
+    // Debug: Print current position state when looking for moves
+    debugPrintf("UCI::to_move searching for '%s', position: phase=%d, "
+                "action=%d, sideToMove=%d\n",
+                str.c_str(), static_cast<int>(pos->get_phase()),
+                static_cast<int>(pos->get_action()),
+                static_cast<int>(pos->side_to_move()));
 
+    int moveCount = 0;
+    for (const auto &m : MoveList<LEGAL>(*pos)) {
+        moveCount++;
+        const string moveStr = move(m);
+        debugPrintf("  Legal move #%d: %s\n", moveCount, moveStr.c_str());
+        if (str == moveStr)
+            return m;
+    }
+
+    debugPrintf("UCI::to_move found %d legal moves, but '%s' not found!\n",
+                moveCount, str.c_str());
     return MOVE_NONE;
 }
