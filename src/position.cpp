@@ -642,6 +642,21 @@ void Position::do_move(Move m, StateInfo &newSt)
     ++gamePly;
     ++st->pliesFromNull;
     move = m;
+
+    // Calculate repetition info (similar to Stockfish)
+    // This helps with more accurate repetition detection
+    st->repetition = 0;
+    int end = std::min(static_cast<int>(st->rule50), st->pliesFromNull);
+    if (end >= 4) {
+        StateInfo *stp = st->previous->previous;
+        for (int i = 4; i <= end; i += 2) {
+            stp = stp->previous->previous;
+            if (stp && stp->key == st->key) {
+                st->repetition = stp->repetition ? -i : i;
+                break;
+            }
+        }
+    }
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
@@ -792,6 +807,38 @@ bool Position::has_game_cycle() const
             return true;
     }
     return false;
+}
+
+/// Position::is_repetition() tests whether the position is repeated
+/// Aligned with Stockfish implementation pattern
+bool Position::is_repetition(int ply) const
+{
+    // Use StateInfo repetition field if available (like Stockfish)
+    if (st->repetition != 0) {
+        return st->repetition && st->repetition < ply;
+    }
+    
+    // Fallback to traditional threefold repetition check
+    return has_game_cycle();
+}
+
+/// Position::is_draw() tests whether the position is drawn by repetition or N-move rule
+/// Similar to Stockfish's is_draw() function
+bool Position::is_draw(int ply) const
+{
+    // Check N-move rule (similar to 50-move rule in chess)
+    if (rule.nMoveRule > 0 && st->rule50 >= rule.nMoveRule) {
+        return true;
+    }
+
+    // Check endgame N-move rule for positions with ≤3 pieces
+    if (rule.endgameNMoveRule < rule.nMoveRule && is_three_endgame() &&
+        st->rule50 >= rule.endgameNMoveRule) {
+        return true;
+    }
+    
+    // Check for threefold repetition
+    return is_repetition(ply);
 }
 
 /// Mill Game

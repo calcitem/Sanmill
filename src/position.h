@@ -48,6 +48,8 @@ struct StateInfo
     StateInfo *previous {nullptr};
     Stockfish::Eval::NNUE::Accumulator accumulator {};
     // Repetition helper: count or marker; semantics aligned to engine usage
+    // Positive value = ply distance to previous occurrence
+    // Negative value = ply distance to previous occurrence (threefold case)
     int repetition {0};
 
     // Minimal undo information specific to Nine Men's Morris
@@ -129,6 +131,8 @@ public:
     int game_ply() const;
     bool has_game_cycle() const;
     bool has_repeated() const;
+    bool is_repetition(int ply = 0) const;
+    bool is_draw(int ply = 0) const;
     unsigned int rule50_count() const;
 
     // NNUE support

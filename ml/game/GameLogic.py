@@ -396,7 +396,8 @@ class Board:
     def has_repeated_position(self, current_player=None):
         """
         Check if the current position has occurred before (for threefold repetition).
-        Following C++ logic: position.cpp:has_game_cycle() returns count >= 3.
+        Following Stockfish logic: threefold repetition means the same position 
+        appears 3 times total (current + 2 previous occurrences).
         
         Args:
             current_player: The player whose turn it is (1 for white, -1 for black).
@@ -412,10 +413,10 @@ class Board:
         # This means count >= 2 in history + current = 3 total occurrences
         count = self.position_history.count(current_hash)
         
-        # Use strict threefold repetition: count >= 3
-        # This means position appeared 3 times before + current = 4 total occurrences
-        # More conservative to avoid false positives
-        return count >= 3
+        # Correct threefold repetition: count >= 2
+        # This means position appeared 2 times before + current = 3 total occurrences
+        # Aligned with Stockfish and C++ Sanmill logic
+        return count >= 2
 
     def is_draw_by_nmove_rules(self):
         """
