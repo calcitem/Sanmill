@@ -170,8 +170,10 @@ namespace Stockfish::Eval::NNUE {
       int bucket;
     };
     
-    static thread_local EvalCacheEntry evalCache[256];
+    static thread_local EvalCacheEntry evalCache[1024];  // Increased from 256 to 1024
     static thread_local bool cacheInitialized = false;
+    static thread_local int cacheHits = 0;
+    static thread_local int cacheMisses = 0;
     
     if (!cacheInitialized) {
       for (auto& entry : evalCache) {
@@ -188,12 +190,26 @@ namespace Stockfish::Eval::NNUE {
     
     // Create a simple cache key from position key and bucket
     const Key posKey = pos.key();
-    const int cacheIndex = static_cast<int>((posKey ^ static_cast<Key>(bucket)) & 255);
+    const int cacheIndex = static_cast<int>((posKey ^ static_cast<Key>(bucket)) & 1023);  // Changed mask to 1023
     
     // Check cache hit
     if (evalCache[cacheIndex].positionKey == posKey && evalCache[cacheIndex].bucket == bucket) {
+      ++cacheHits;
+      
+      // Print cache statistics every 1000 evaluations
+      if ((cacheHits + cacheMisses) % 1000 == 0) {
+        const int total = cacheHits + cacheMisses;
+        const double hitRate = static_cast<double>(cacheHits) / total * 100.0;
+        debugPrintf("NNUE Cache: %d/%d hits (%.1f%%) - Phase: %s\n", 
+                   cacheHits, total, hitRate,
+                   pos.get_phase() == Phase::placing ? "Placing" :
+                   pos.get_phase() == Phase::moving ? "Moving" : "Unknown");
+      }
+      
       return evalCache[cacheIndex].value;
     }
+    
+    ++cacheMisses;
 
     // We manually align the arrays on the stack because with gcc < 9.3
     // overaligning stack variables with alignas() doesn't work correctly.
