@@ -262,19 +262,41 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
 #endif // TT_MOVE_ENABLE
     );
 
-    if (probeVal != VALUE_UNKNOWN) {
+    // TT cutoff logic (inspired by Stockfish but adapted for Mill Game)
+    bool ttHit = (probeVal != VALUE_UNKNOWN);
+    
+    if (ttHit) {
 #ifdef TRANSPOSITION_TABLE_DEBUG
         Threads.main()->ttHitCount++;
 #endif
 
+        // More conservative TT cutoffs to preserve search quality
+        bool canCutoff = false;
+        
         if (type == BOUND_EXACT) {
-            return probeVal;
+            canCutoff = true;
+        } else if (type == BOUND_LOWER && probeVal >= beta) {
+            canCutoff = true;
+        } else if (type == BOUND_UPPER && probeVal <= alpha) {
+            canCutoff = true;
         }
+        
+        // Apply cutoff only if conditions are met
+        if (canCutoff) {
+            // For Mill Game, be more conservative about early cutoffs
+            // Avoid cutoffs in critical phases or shallow depths
+            if (depth >= 3 || type == BOUND_EXACT) {
+                return probeVal;
+            }
+        }
+        
+        // Update bounds even if not cutting off
         if (type == BOUND_LOWER) {
             alpha = std::max(alpha, probeVal);
         } else if (type == BOUND_UPPER) {
             beta = std::min(beta, probeVal);
         }
+        
         if (alpha >= beta) {
             return probeVal;
         }
@@ -297,6 +319,12 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
 
     Value value;
     Depth epsilon;
+
+    // Note: ttMove validation is not needed here because:
+    // 1. MovePicker only scores moves from the legal move list
+    // 2. Illegal ttMoves will never be selected by MovePicker
+    // 3. This saves significant performance overhead
+    // 4. Matches Stockfish's approach of relying on MovePicker's built-in protection
 
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);

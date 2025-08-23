@@ -50,10 +50,14 @@ struct TTEntry
     
     // Check if entry is occupied (non-zero depth)
     bool is_occupied() const noexcept { return depth8 != 0; }
+    
+    // Get stored key (for verification)
+    uint16_t key16() const noexcept { return key16_; }
 
 private:
     friend class TranspositionTable;
 
+    uint16_t key16_ {0};    // Store 16 bits of key for verification
     int16_t value16 {0};
     int16_t eval16 {0};
     uint8_t depth8 {0};

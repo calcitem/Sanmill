@@ -33,6 +33,7 @@ void TTEntry::save(Key k, Value v, Value e, bool pv, Bound b, Depth d, Move m, u
 
     // Overwrite less valuable entries (inspired by Stockfish logic)
     if (b == BOUND_EXACT || !is_occupied() || d - DEPTH_OFFSET + 2 * pv > depth8 - 4) {
+        key16_ = static_cast<uint16_t>(k);  // Store key for verification
         value16 = static_cast<int16_t>(v);
         eval16 = static_cast<int16_t>(e);
         depth8 = static_cast<uint8_t>(d - DEPTH_OFFSET);
@@ -54,35 +55,42 @@ Value TranspositionTable::probe(Key key, Depth depth, Bound &type, Value &eval
 )
 {
     TTEntry tte {};
+    
+    // Initialize outputs
+    type = BOUND_NONE;
+    eval = VALUE_NONE;
+#ifdef TT_MOVE_ENABLE
+    ttMove = MOVE_NONE;
+#endif
 
     if (!TT.find(key, tte)) {
-        eval = VALUE_NONE;
+        return VALUE_UNKNOWN;
+    }
+
+    // CRITICAL: Verify the key matches (like Stockfish)
+    if (tte.key16() != static_cast<uint16_t>(key)) {
         return VALUE_UNKNOWN;
     }
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
     // Check if entry is from current generation
     if ((tte.genBound8 & GENERATION_MASK) != (transpositionTableAge & GENERATION_MASK)) {
-        eval = VALUE_NONE;
         return VALUE_UNKNOWN;
     }
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-    // Always return the stored evaluation for better search guidance
+    // Entry found and verified - always get eval and ttMove for move ordering
     eval = tte.eval();
-
-    if (tte.depth() >= depth) {
-        type = tte.bound();
-#ifdef TT_MOVE_ENABLE
-        ttMove = tte.tt_move();
-#endif
-        return tte.value();
-    }
-
-    // Even if depth is insufficient, we can still use the ttMove and eval
 #ifdef TT_MOVE_ENABLE
     ttMove = tte.tt_move();
 #endif
+
+    // Only return TT value if depth is sufficient
+    if (tte.depth() >= depth && tte.is_occupied()) {
+        type = tte.bound();
+        return tte.value();
+    }
+
     return VALUE_UNKNOWN;
 }
 
