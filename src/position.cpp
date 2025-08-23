@@ -255,6 +255,8 @@ Position::Position()
     // Initialize state pointer to point to the start state
     st = &startState;
     st->previous = nullptr;
+    stateStack.clear();
+    stateStack.push(startState);
     
     // Initialize accumulator as not computed
     // Map Sanmill Color to NNUE array indices: WHITE(1)->0, BLACK(2)->1
@@ -273,6 +275,8 @@ Position::Position(const Position& other)
     // Initialize our own state pointer first
     st = &startState;
     st->previous = nullptr;
+    stateStack.clear();
+    stateStack.push(startState);
     
     // Manually copy all members to avoid recursion
     std::memcpy(board, other.board, sizeof(board));
@@ -364,6 +368,8 @@ Position& Position::operator=(const Position& other)
     }
     st = &startState;  // Always point to our own startState
     st->previous = nullptr;  // Ensure our st pointer is also clear
+    stateStack.clear();
+    stateStack.push(startState);
     
     // Copy game-specific enums and state
     winner = other.winner;
@@ -704,6 +710,15 @@ void Position::do_move(Move m)
     ++st->pliesFromNull;
 
     move = m;
+
+    // Push a new StateInfo onto our chain for the next ply
+    StateInfo newState = *st;         // copy current as base
+    newState.previous = st;           // link back
+    // Mark NNUE accumulator dirty for both perspectives
+    newState.accumulator.computed[0] = false;
+    newState.accumulator.computed[1] = false;
+    stateStack.push(newState);
+    st = stateStack.top();
 }
 
 /// Position::undo_move() unmakes a move. When it returns, the position should
@@ -711,8 +726,17 @@ void Position::do_move(Move m)
 
 void Position::undo_move(Sanmill::Stack<Position> &ss)
 {
+    // Restore board/state via existing copy-restore for now
     *this = *ss.top();
     ss.pop();
+
+    // Pop our internal StateInfo chain to match restored board
+    if (!stateStack.empty()) {
+        stateStack.pop();
+        st = stateStack.empty() ? &startState : stateStack.top();
+    } else {
+        st = &startState;
+    }
 }
 
 /// Position::key_after() computes the new hash key after the given move. Needed

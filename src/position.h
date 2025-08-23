@@ -256,6 +256,8 @@ public:
     // NNUE support - placed at end to avoid breaking existing memory layout
     StateInfo* st;
     StateInfo startState;  // Root state for the position
+    // Maintain an internal StateInfo stack to build a proper previous-chain
+    Sanmill::Stack<StateInfo, 1024> stateStack;
 };
 
 extern std::ostream &operator<<(std::ostream &os, const Position &pos);

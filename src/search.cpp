@@ -113,11 +113,20 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos,
         TranspositionTable::prefetch(pos->key_after(mp.moves[i].move));
     }
 
+    // Ensure NNUE accumulator is computed at parent node so that children
+    // can reuse it via the StateInfo previous-chain
+    if (pos->state() && (!pos->state()->accumulator.computed[0]
+                      || !pos->state()->accumulator.computed[1])) {
+        (void)Eval::evaluate(*pos, depth);
+    }
+
     // For each capture move
     for (int i = 0; i < moveCount; i++) {
         ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
+
+        // Child nodes will link their NNUE StateInfo via Position::do_move()
 
         // Make the move on the board
         pos->do_move(move);
@@ -339,6 +348,13 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 #endif // !DISABLE_PREFETCH
 #endif // TRANSPOSITION_TABLE_ENABLE
 
+    // Lazily precompute NNUE accumulator at parent node so that children can
+    // build incremental updates from it. This avoids repeated full refreshes.
+    if (pos->state() && (!pos->state()->accumulator.computed[0]
+                      || !pos->state()->accumulator.computed[1])) {
+        (void)Eval::evaluate(*pos, depth);
+    }
+
     // Iterate through all possible moves
     for (int i = 0; i < moveCount; i++) {
         static uint64_t nodeCounter = 0; // TODO: thread_local
@@ -359,6 +375,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
         ss.push(*pos);
         const Color before = pos->sideToMove;
         const Move move = mp.moves[i].move;
+
+        // Child nodes will link their NNUE StateInfo via Position::do_move()
 
         // Make the move on the board
         pos->do_move(move);

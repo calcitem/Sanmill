@@ -99,10 +99,17 @@ namespace Stockfish::Eval::NNUE::Features {
     return std::min(estimate, static_cast<int>(MaxActiveDimensions));
   }
 
-  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& /*pos*/) {
-    // TEMPORARY: Never require refresh to avoid infinite loops
-    // This will force incremental updates, which may not work correctly
-    // but will help us identify where the infinite loop is coming from
+  bool NineMill::requires_refresh(StateInfo* /*st*/, Color /*perspective*/, const Position& pos) {
+    // Prefer incremental updates except when a removal happened
+    // Removals fundamentally change feature counts; do a full refresh
+    const Move m = pos.move;
+    if (m == MOVE_NONE)
+      return false;
+
+    const MoveType mt = type_of(m);
+    if (mt == MOVETYPE_REMOVE)
+      return true;
+
     return false;
   }
 

@@ -269,12 +269,19 @@ namespace Stockfish::Eval::NNUE {
       return !stream.fail();
     }
 
+    // Optional NNUE verbose logging (default off)
+    #ifndef NNUE_DEBUG_LOG
+    #define NNUE_DEBUG_LOG 0
+    #endif
+
     // Convert input features
     std::int32_t transform(const Position& pos, OutputType* output, int bucket) const {
       // CRITICAL: Prevent infinite recursion
       static thread_local bool inTransform = false;
       if (inTransform) {
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: RECURSION DETECTED! Blocking recursive transform call\n");
+#endif
         // Return a default PSQT value to break recursion
         std::memset(output, 0, HalfDimensions * 2 * sizeof(OutputType));
         return 0;
@@ -284,10 +291,12 @@ namespace Stockfish::Eval::NNUE {
       inTransform = true;
       
       // Debug: Track transform function calls
+#if NNUE_DEBUG_LOG
       static thread_local int transformCallCount = 0;
       if (++transformCallCount <= 10) {
         debugPrintf("NNUE transform call #%d\n", transformCallCount);
       }
+#endif
       
       // Validate position state before processing
       Color sideToMove = pos.side_to_move();
@@ -468,6 +477,7 @@ namespace Stockfish::Eval::NNUE {
       
       // We'll manually replace perspective with nnuePerspective in array accesses
       
+#if NNUE_DEBUG_LOG
       // Get state pointer for debugging
       StateInfo *currentState = pos.state();
       
@@ -478,13 +488,16 @@ namespace Stockfish::Eval::NNUE {
                    callCount, static_cast<int>(perspective), 
                    nnuePerspective, currentState->accumulator.computed[nnuePerspective] ? "true" : "false");
       }
+#endif
       
       // Debug: track accumulator updates to detect infinite loops
+#if NNUE_DEBUG_LOG
       static thread_local int updateCount = 0;
-      if (++updateCount % 50000 == 0) {
+      if (++updateCount % 500000 == 0) {
         debugPrintf("NNUE accumulator update count: %d (sanmill_perspective=%d, nnue_index=%d)\n", 
                    updateCount, static_cast<int>(perspective), nnuePerspective);
       }
+#endif
 
       // The size must be enough to contain the largest possible update.
       // That might depend on the feature set and generally relies on the
@@ -504,16 +517,18 @@ namespace Stockfish::Eval::NNUE {
       StateInfo *st = pos.state(), *next = nullptr;
       int gain = FeatureSet::refresh_cost(pos);
       int chainDepth = 0;
-      const int MAX_CHAIN_DEPTH = 64;  // Prevent infinite loops
+      const int MAX_CHAIN_DEPTH = 16;  // Keep chain short to reduce overhead
       
       while (st->previous && !st->accumulator.computed[nnuePerspective] && chainDepth < MAX_CHAIN_DEPTH)
       {
-        if (chainDepth < 5) {  // Print first 5 iterations to see what's happening
+#if NNUE_DEBUG_LOG
+        if (chainDepth < 5) {
           debugPrintf("NNUE: Chain traversal depth=%d, computed[%d]=%s, st=%p, previous=%p\n", 
                      chainDepth, nnuePerspective, 
                      st->accumulator.computed[nnuePerspective] ? "true" : "false",
                      st, st->previous);
         }
+#endif
         // This governs when a full feature refresh is needed and how many
         // updates are better than just one full refresh.
         if (   FeatureSet::requires_refresh(st, perspective, pos)
@@ -525,14 +540,18 @@ namespace Stockfish::Eval::NNUE {
       }
       
       if (chainDepth >= MAX_CHAIN_DEPTH) {
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: Chain depth limit reached, forcing refresh\n");
+#endif
         st = pos.state();  // Force refresh from current position
         next = nullptr;
       }
 
       if (st->accumulator.computed[nnuePerspective])
       {
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: Accumulator already computed[%d]=true, next=%p\n", nnuePerspective, next);
+#endif
         if (next == nullptr)
           return;
 
@@ -556,8 +575,10 @@ namespace Stockfish::Eval::NNUE {
         // Mark the accumulators as computed.
         next->accumulator.computed[nnuePerspective] = true;
         pos.state()->accumulator.computed[nnuePerspective] = true;
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: Set computed[%d]=true for incremental update (next=%p, current=%p)\n", 
                    nnuePerspective, next, pos.state());
+#endif
 
         // Now update the accumulators listed in states_to_update[], where the last element is a sentinel.
         StateInfo *states_to_update[3] =
@@ -675,11 +696,15 @@ namespace Stockfish::Eval::NNUE {
       }
       else
       {
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: Starting full refresh for perspective=%d, nnuePerspective=%d\n", 
                    static_cast<int>(perspective), nnuePerspective);
+#endif
         // Refresh the accumulator
         auto& accumulator = pos.state()->accumulator;
         accumulator.computed[nnuePerspective] = true;
+        
+#if NNUE_DEBUG_LOG
         debugPrintf("NNUE: Set computed[%d]=true for full refresh (st=%p)\n", 
                    nnuePerspective, pos.state());
         
@@ -688,6 +713,7 @@ namespace Stockfish::Eval::NNUE {
                    nnuePerspective, 
                    pos.state()->accumulator.computed[nnuePerspective] ? "true" : "false",
                    pos.state());
+#endif
         IndexList active;
         ValueListInserter<IndexType> active_inserter(active);
         FeatureSet::append_active_indices(pos, perspective, active_inserter);
