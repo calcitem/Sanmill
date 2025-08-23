@@ -46,7 +46,9 @@ struct StateInfo
 
     // NNUE support: previous pointer for incremental chains and accumulator
     StateInfo *previous {nullptr};
-    Stockfish::Eval::NNUE::Accumulator accumulator {};
+    // Avoid expensive zero-initialization when NNUE is disabled; fields are
+    // only touched when Eval::useNNUE is true.
+    Stockfish::Eval::NNUE::Accumulator accumulator;
     // Repetition helper: count or marker; semantics aligned to engine usage
     // Positive value = ply distance to previous occurrence
     // Negative value = ply distance to previous occurrence (threefold case)

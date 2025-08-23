@@ -560,13 +560,17 @@ void Position::do_move(Move m, StateInfo &newSt)
 {
     assert(&newSt != st);
 
-    // Stockfish-style: Copy inheritable fields only up to key
-    std::memcpy(&newSt, st, offsetof(StateInfo, key));
-
-    // Set up NNUE chain and Sanmill-specific undo info
+    // Optimize for NNUE disabled case: only copy essential fields
+    // This avoids copying the large NNUE accumulator when NNUE is not used
+    newSt.rule50 = st->rule50;
+    newSt.pliesFromNull = st->pliesFromNull;
+    
+    // Set up NNUE chain; avoid touching accumulator unless NNUE enabled
     newSt.previous = st;
-    newSt.accumulator.computed[0] = false;
-    newSt.accumulator.computed[1] = false;
+    if (Eval::useNNUE) {
+        newSt.accumulator.computed[0] = false;
+        newSt.accumulator.computed[1] = false;
+    }
 
     // Save Sanmill-specific state for undo (optimized for minimal copies)
     newSt.lastMove = m;

@@ -320,6 +320,34 @@ top:
     return MOVE_NONE;
 }
 
+// Template specialization for REMOVE scoring - lightweight version
+template <>
+void MovePicker::score<REMOVE>()
+{
+    // Lightweight removal scoring: prioritize based on opponent/own mill potential only
+    for (cur = moves; cur->move != MOVE_NONE; cur++) {
+        Move m = cur->move;
+        cur->value = 0;
+        if (m == ttMove) {
+            cur->value = VALUE_TT_MOVE;
+            continue;
+        }
+        const Square s = to_sq(m);
+        // Prioritize removing pieces that block opponent's potential mills
+        int theirMillsCount = pos.potential_mills_count(s, ~pos.side_to_move());
+        if (theirMillsCount > 0) cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
+        // Secondary consideration: slightly penalize if piece is part of our potential mill
+        int ourMillsCount = pos.potential_mills_count(s, pos.side_to_move());
+        if (ourMillsCount > 0) cur->value -= 1;
+    }
+
+    if (!pos.shouldFocusOnBlockingPaths()) {
+        for (cur = moves; cur->move != MOVE_NONE; cur++) {
+            cur->value = -cur->value;
+        }
+    }
+}
+
 // Explicit instantiations for legacy functions
 template Move MovePicker::next_move_legacy<LEGAL>();
 template Move MovePicker::next_move_legacy<PLACE>();

@@ -128,6 +128,12 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
         return stand_pat;
     }
 
+    // Quiescence search only expands when removal is mandatory.
+    // In non-removal states, return current alpha (stand pat already applied).
+    if (pos->get_action() != Action::remove) {
+        return alpha;
+    }
+
     // Generate remove moves
     const int currentPly = originDepth - depth;
     MovePicker mp(*pos, MOVE_NONE, currentPly);
@@ -141,8 +147,9 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
 
     // Ensure NNUE accumulator is computed at parent node so that children
     // can reuse it via the StateInfo previous-chain
-    if (pos->state() && (!pos->state()->accumulator.computed[0] ||
-                         !pos->state()->accumulator.computed[1])) {
+    if (Eval::useNNUE && pos->state() &&
+        (!pos->state()->accumulator.computed[0] ||
+         !pos->state()->accumulator.computed[1])) {
         (void)Eval::evaluate(*pos, depth);
     }
 
@@ -413,8 +420,9 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
 
     // Lazily precompute NNUE accumulator at parent node so that children can
     // build incremental updates from it. This avoids repeated full refreshes.
-    if (pos->state() && (!pos->state()->accumulator.computed[0] ||
-                         !pos->state()->accumulator.computed[1])) {
+    if (Eval::useNNUE && pos->state() &&
+        (!pos->state()->accumulator.computed[0] ||
+         !pos->state()->accumulator.computed[1])) {
         (void)Eval::evaluate(*pos, depth);
     }
 
