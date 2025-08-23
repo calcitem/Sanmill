@@ -15,6 +15,7 @@
 #include "thread.h"
 #include "thread_pool.h"
 #include "search_engine.h"
+#include "mills.h"
 
 #ifdef GABOR_MALOM_PERFECT_AI
 #include "perfect_adaptor.h"
@@ -82,8 +83,10 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
         stand_pat -= depth;
     }
 
-    // If depth limit reached, return stand_pat
-    const int MAX_QUIESCENCE_DEPTH = 0; // TODO: Set to 1 or more
+    // Limit quiescence search depth based on the position-specific search depth
+    // This ensures qsearch depth is proportional to the main search depth
+    const Depth maxSearchDepth = Mills::get_search_depth(pos);
+    const int MAX_QUIESCENCE_DEPTH = std::max(1, static_cast<int>(maxSearchDepth / 2));
     if (depth <= -MAX_QUIESCENCE_DEPTH) {
         return stand_pat;
     }
@@ -141,6 +144,8 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
                                   alpha, beta, bestMove);
 
         // Undo the move
+        // Ensure pos->st points to our local st before undo
+        pos->st = &st;
         pos->undo_move(move);
 
         // Debug: verify position state after undo
@@ -426,6 +431,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
                            alpha, beta, bestMove);
 
         // Undo the move
+        // Ensure pos->st points to our local st before undo
+        pos->st = &st;
         pos->undo_move(move);
 
         // Debug: verify position state after undo

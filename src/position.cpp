@@ -664,6 +664,9 @@ void Position::do_move(Move m, StateInfo &newSt)
 
 void Position::undo_move(Move m)
 {
+    // Sanmill-specific: Check that we're undoing the correct move
+    // This helps catch StateInfo management issues
+    assert(st != nullptr);
     assert(st->lastMove == m);
 
     const MoveType mt = type_of(m);
