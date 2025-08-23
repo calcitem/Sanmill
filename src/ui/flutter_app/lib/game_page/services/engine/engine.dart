@@ -316,6 +316,11 @@ class Engine {
     final String? response = await _read();
 
     if (response != null) {
+      // Check for trap detection info messages first
+      if (response.startsWith("info trap detected")) {
+        _processTrapInfo(response);
+      }
+
       for (final String prefix in prefixes) {
         if (response.contains(prefix)) {
           return response;
@@ -396,6 +401,8 @@ class Engine {
         "FocusOnBlockingPaths", generalSettings.focusOnBlockingPaths);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+    await _sendOptions(
+        "TrapStrategyEnabled", generalSettings.trapStrategyEnabled);
 
     // Control via environment configuration
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
@@ -632,6 +639,111 @@ class Engine {
       logger.e("$_logTag Error during analysis: $e");
       return PositionAnalysisResult.error("Error during analysis: $e");
     }
+  }
+
+  /// Process trap information from the engine
+  void _processTrapInfo(String trapInfo) {
+    try {
+      // Parse trap info: "info trap detected selfmill blockmill wdl -1 steps 3"
+      final List<String> parts = trapInfo.split(' ');
+
+      if (parts.length < 3 ||
+          parts[0] != "info" ||
+          parts[1] != "trap" ||
+          parts[2] != "detected") {
+        return;
+      }
+
+      bool hasSelfMillTrap = false;
+      bool hasBlockMillTrap = false;
+      int? wdlValue;
+      int? stepCount;
+
+      for (int i = 3; i < parts.length; i++) {
+        final String part = parts[i];
+        switch (part) {
+          case "selfmill":
+            hasSelfMillTrap = true;
+            break;
+          case "blockmill":
+            hasBlockMillTrap = true;
+            break;
+          case "wdl":
+            if (i + 1 < parts.length) {
+              wdlValue = int.tryParse(parts[i + 1]);
+              i++; // Skip next part
+            }
+            break;
+          case "steps":
+            if (i + 1 < parts.length) {
+              stepCount = int.tryParse(parts[i + 1]);
+              i++; // Skip next part
+            }
+            break;
+        }
+      }
+
+      // Show appropriate trap warning
+      _showTrapWarning(hasSelfMillTrap, hasBlockMillTrap, wdlValue, stepCount);
+    } catch (e) {
+      logger.e("$_logTag Error processing trap info: $e");
+    }
+  }
+
+  /// Show trap warning notification to the user
+  void _showTrapWarning(bool hasSelfMillTrap, bool hasBlockMillTrap,
+      int? wdlValue, int? stepCount) {
+    final StringBuffer message = StringBuffer();
+
+    if (hasSelfMillTrap && hasBlockMillTrap) {
+      message.write(
+          "⚠️ Trap Position: Forming a mill or blocking opponent's mill leads to loss!");
+    } else if (hasSelfMillTrap) {
+      message.write("⚠️ Mill Trap: Forming a mill here will lead to loss!");
+    } else if (hasBlockMillTrap) {
+      message.write(
+          "⚠️ Block Trap: Blocking opponent's mill here will lead to loss!");
+    } else {
+      message.write("⚠️ Trap Position Detected");
+    }
+
+    // Add additional context if available
+    if (wdlValue != null) {
+      if (wdlValue == -1) {
+        message.write(" This position leads to loss.");
+      } else if (wdlValue == 0) {
+        message.write(" This position leads to draw.");
+      } else if (wdlValue == 1) {
+        message.write(" This position leads to win.");
+      }
+    }
+
+    if (stepCount != null && stepCount > 0) {
+      message.write(" ($stepCount moves)");
+    }
+
+    // Display the warning via snackbar
+    rootScaffoldMessengerKey.currentState?.showSnackBar(
+      SnackBar(
+        content: Text(
+          message.toString(),
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Colors.orange[700],
+        duration: const Duration(seconds: 8),
+        behavior: SnackBarBehavior.floating,
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.white,
+          onPressed: () {
+            rootScaffoldMessengerKey.currentState?.hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+
+    // Also show in header tip for additional visibility
+    GameController().headerTipNotifier.showTip(message.toString());
   }
 
   /// Parse the outcome string from the engine

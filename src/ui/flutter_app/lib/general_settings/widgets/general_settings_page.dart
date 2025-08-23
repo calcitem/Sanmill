@@ -192,6 +192,11 @@ class GeneralSettingsPage extends StatelessWidget {
     logger.t("$_logTag shufflingEnabled: $value");
   }
 
+  void _setTrapStrategyEnabled(GeneralSettings generalSettings, bool value) {
+    DB().generalSettings = generalSettings.copyWith(trapStrategyEnabled: value);
+    logger.t("$_logTag trapStrategyEnabled: $value");
+  }
+
   void _setTone(GeneralSettings generalSettings, bool value) {
     DB().generalSettings = generalSettings.copyWith(toneEnabled: value);
 
@@ -463,16 +468,28 @@ class GeneralSettingsPage extends StatelessWidget {
               titleString: S.of(context).focusOnBlockingPaths,
               subtitleString: S.of(context).focusOnBlockingPaths_Detail,
             ),
+            if (DB().ruleSettings.isLikelyNineMensMorris())
+              SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_trap_strategy_enabled'),
+                value: generalSettings.trapStrategyEnabled,
+                onChanged: (bool val) {
+                  _setTrapStrategyEnabled(generalSettings, val);
+                },
+                titleString: 'Trap-aware strategy',
+                subtitleString:
+                    'Avoid self-traps and prefer setting traps for opponent.'
+                    ' Works with or without Perfect DB.',
+              ),
             SettingsListTile.switchTile(
-              key: const Key(
-                  'general_settings_page_settings_card_ais_play_style_ai_is_lazy'),
-              value: generalSettings.aiIsLazy,
-              onChanged: (bool val) {
-                _setAiIsLazy(generalSettings, val);
-              },
-              titleString: S.of(context).passive,
-              subtitleString: S.of(context).passiveDetail,
-            ),
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_ai_is_lazy'),
+                value: generalSettings.aiIsLazy,
+                onChanged: (bool val) {
+                  _setAiIsLazy(generalSettings, val);
+                },
+                titleString: S.of(context).passive,
+                subtitleString: S.of(context).passiveDetail),
             SettingsListTile.switchTile(
                 key: const Key(
                     'general_settings_page_settings_card_ais_play_style_shuffling_enabled'),

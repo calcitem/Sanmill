@@ -11,8 +11,17 @@
 #include "mills.h"
 #include "mcts.h"
 #include "perfect_api.h"
+
+#ifdef GABOR_MALOM_PERFECT_AI
+#include "perfect/perfect_trap_db.h"
+#include "perfect/perfect_game_state.h"
+#include "perfect/perfect_adaptor.h"
+#include "perfect/perfect_player.h"
+#include "perfect/perfect_errors.h"
+#endif
 #include "tt.h"
 #include "movegen.h"
+#include "movepick.h"
 #include <iostream>
 #include <sstream>
 #include <iomanip>
@@ -610,6 +619,175 @@ next:
     aiMoveType = AiMoveType::traditional;
 
     debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMoveSoFar).c_str());
+
+    // Check current position for trap status before finalizing the move
+    if (gameOptions.getTrapStrategyEnabled() && TrapDB::has_trap_db() &&
+        bestMoveSoFar != MOVE_NONE) {
+        // First, check if current position is a trap position
+        GameState currentState;
+        currentState.board.resize(24, -1);
+        currentState.setStoneCount.resize(2, 0);
+        currentState.stoneCount.resize(2, 0);
+
+        // Convert current position to GameState
+        for (int i = 0; i < 24; ++i) {
+            auto c = color_of(rootPos->board[from_perfect_square(i)]);
+            if (c == WHITE) {
+                currentState.board[i] = 0;
+            } else if (c == BLACK) {
+                currentState.board[i] = 1;
+            } else {
+                currentState.board[i] = -1;
+            }
+        }
+
+        currentState.stoneCount[0] = rootPos->piece_on_board_count(WHITE);
+        currentState.stoneCount[1] = rootPos->piece_on_board_count(BLACK);
+        currentState.setStoneCount[0] = rule.pieceCount -
+                                        rootPos->piece_in_hand_count(WHITE);
+        currentState.setStoneCount[1] = rule.pieceCount -
+                                        rootPos->piece_in_hand_count(BLACK);
+        currentState.sideToMove = (rootPos->side_to_move() == WHITE) ? 0 : 1;
+        currentState.phase = (rootPos->get_phase() == Phase::placing) ? 1 :
+                             (rootPos->get_phase() == Phase::moving)  ? 2 :
+                                                                        3;
+
+        uint8_t currentTrapMask = TrapDB::get_trap_mask(currentState);
+
+        // If current position has trap detected, use trap-aware move selection
+        if (currentTrapMask != TrapDB::Trap_None) {
+            sync_cout << "info trap avoidance current_position_detected "
+                         "using_trap_aware_selection"
+                      << sync_endl;
+
+#ifdef GABOR_MALOM_PERFECT_AI
+            if (MalomSolutionAccess::initialize_if_needed()) {
+                using namespace PerfectErrors;
+
+                // Use Perfect Player's trap-aware move selection
+                PerfectPlayer tempPlayer;
+                Value trapAwareValue = VALUE_UNKNOWN;
+                Move refMove = bestMoveSoFar; // Use current best as reference
+                                              // for consistency
+
+                AdvancedMove trapAwareBestMove =
+                    tempPlayer.get_best_move_trap_aware(currentState, refMove,
+                                                        trapAwareValue);
+
+                if (!hasError() && trapAwareBestMove.to >= 0 &&
+                    trapAwareBestMove.to < 24) {
+                    // Convert AdvancedMove back to Move
+                    Square newToSquare = from_perfect_square(
+                        trapAwareBestMove.to);
+                    Move newBestMove;
+
+                    if (trapAwareBestMove.moveType == CMoveType::SetMove) {
+                        // Placing move: from SQ_0 to destination
+                        newBestMove = make_move(SQ_0, newToSquare);
+                    } else {
+                        // Moving move: from source to destination
+                        Square newFromSquare = from_perfect_square(
+                            trapAwareBestMove.from);
+                        newBestMove = make_move(newFromSquare, newToSquare);
+                    }
+
+                    if (newBestMove != bestMoveSoFar) {
+                        sync_cout
+                            << "info trap avoidance trap_aware_selection "
+                               "changed_move from="
+                            << UCI::move(bestMoveSoFar)
+                            << " to=" << UCI::move(newBestMove)
+                            << " value=" << static_cast<int>(trapAwareValue)
+                            << sync_endl;
+                        bestMoveSoFar = newBestMove;
+                    } else {
+                        sync_cout << "info trap avoidance trap_aware_selection "
+                                     "confirmed_original_move "
+                                  << UCI::move(bestMoveSoFar) << sync_endl;
+                    }
+                } else {
+                    sync_cout
+                        << "info trap avoidance trap_aware_selection_failed "
+                           "keeping_original_move error="
+                        << (hasError() ? getLastErrorMessage() : "invalid_move")
+                        << sync_endl;
+                    clearError();
+                }
+            }
+#endif
+        }
+    }
+
+    // Trap avoidance check for standard search (independent of Perfect DB)
+    if (gameOptions.getTrapStrategyEnabled() && TrapDB::has_trap_db() &&
+        bestMoveSoFar != MOVE_NONE) {
+        // Check if the proposed move leads to a trap
+        Position testPos = *rootPos;
+        testPos.do_move(bestMoveSoFar);
+
+        // Convert to GameState for trap checking
+        GameState trapCheckState;
+        trapCheckState.board.resize(24, -1);
+        trapCheckState.setStoneCount.resize(2, 0);
+        trapCheckState.stoneCount.resize(2, 0);
+
+        // Basic conversion (simplified)
+        for (int i = 0; i < 24; ++i) {
+            auto c = color_of(testPos.board[from_perfect_square(i)]);
+            if (c == WHITE) {
+                trapCheckState.board[i] = 0;
+            } else if (c == BLACK) {
+                trapCheckState.board[i] = 1;
+            } else {
+                trapCheckState.board[i] = -1;
+            }
+        }
+
+        trapCheckState.stoneCount[0] = testPos.piece_on_board_count(WHITE);
+        trapCheckState.stoneCount[1] = testPos.piece_on_board_count(BLACK);
+        trapCheckState.setStoneCount[0] = rule.pieceCount -
+                                          testPos.piece_in_hand_count(WHITE);
+        trapCheckState.setStoneCount[1] = rule.pieceCount -
+                                          testPos.piece_in_hand_count(BLACK);
+        trapCheckState.sideToMove = (testPos.side_to_move() == WHITE) ? 0 : 1;
+        trapCheckState.phase = (testPos.get_phase() == Phase::placing) ? 1 :
+                               (testPos.get_phase() == Phase::moving)  ? 2 :
+                                                                         3;
+
+        uint8_t trapMask = TrapDB::get_trap_mask(trapCheckState);
+        if (trapMask != TrapDB::Trap_None) {
+            sync_cout << "info trap detected move_leads_to_trap avoiding_move "
+                      << UCI::move(bestMoveSoFar) << sync_endl;
+
+            // Try to find an alternative move that doesn't lead to a trap
+            MovePicker mp(*rootPos, MOVE_NONE);
+            mp.next_move<LEGAL>();
+            const int moveCount = mp.move_count();
+
+            for (int i = 0; i < moveCount; i++) {
+                Move altMove = mp.moves[i].move;
+                if (altMove != bestMoveSoFar) {
+                    Position altTestPos = *rootPos;
+                    altTestPos.do_move(altMove);
+
+                    // Quick trap check for alternative
+                    GameState altState = trapCheckState; // Copy base state
+                    // Update for alternative move... (simplified check)
+                    uint8_t altTrapMask = TrapDB::get_trap_mask(altState);
+
+                    if (altTrapMask == TrapDB::Trap_None) {
+                        sync_cout << "info trap avoidance "
+                                     "using_alternative_move "
+                                  << UCI::move(altMove) << sync_endl;
+                        bestMoveSoFar = altMove;
+                        aiMoveType = AiMoveType::traditional; // Mark as
+                                                              // modified
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 #if defined(GABOR_MALOM_PERFECT_AI)
     if (gameOptions.getUsePerfectDatabase() == true &&

@@ -8,6 +8,8 @@
 #include "perfect_errors.h"
 #include "perfect_game_state.h"
 #include "perfect_wrappers.h"
+#include "perfect_trap_db.h"
+
 #include "option.h"
 
 #include <cstring>
@@ -49,6 +51,30 @@ PD_API void pd_deinit()
         return;
     MalomSolutionAccess::deinitialize_if_needed();
     g_pd_inited = false;
+}
+
+extern "C" {
+PD_API int pd_build_trap_sec2(const char *db_path, const char *out_file)
+{
+    using namespace PerfectErrors;
+    clearError();
+    if (!db_path || !*db_path || !out_file || !*out_file)
+        return 0;
+
+    // Initialize full DB environment for building
+    gameOptions.setPerfectDatabasePath(std::string(db_path));
+    gameOptions.setUsePerfectDatabase(true);
+    set_rule(0);
+    if (!MalomSolutionAccess::initialize_if_needed())
+        return 0;
+
+    // Build
+    const bool ok = build_trap_db_to_file(std::string(out_file));
+
+    // Clean up
+    MalomSolutionAccess::deinitialize_if_needed();
+    return ok ? 1 : 0;
+}
 }
 
 static inline int to_wdl(Value v)

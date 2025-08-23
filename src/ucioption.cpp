@@ -97,6 +97,11 @@ static void on_developerMode(const Option &o)
     gameOptions.setDeveloperMode(o);
 }
 
+static void on_trapStrategyEnabled(const Option &o)
+{
+    gameOptions.setTrapStrategyEnabled(static_cast<bool>(o));
+}
+
 // Rules
 
 static void on_piecesCount(const Option &o)
@@ -232,6 +237,7 @@ void init(OptionsMap &o)
     o["DrawOnHumanExperience"] << Option(true, on_drawOnHumanExperience);
     o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["FocusOnBlockingPaths"] << Option(true, on_focusOnBlockingPaths);
+    o["TrapStrategyEnabled"] << Option(true, on_trapStrategyEnabled);
     o["DeveloperMode"] << Option(true, on_developerMode);
 
     // Rules

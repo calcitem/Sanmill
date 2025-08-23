@@ -10,15 +10,15 @@
 #include "perfect_game_state.h"
 #include "perfect_player.h"
 #include "perfect_adaptor.h"
+#include "perfect_trap_db.h"
 
 #include <cctype>
+#include <filesystem>
 #include <string>
 #include <regex>
 
 #if defined(__APPLE__)
 #include <unistd.h>
-#else
-#include <filesystem>
 #endif
 
 extern int perfect_init();
@@ -140,9 +140,16 @@ bool MalomSolutionAccess::initialize_if_needed()
     Rules::init_rules();
     set_variant_stripped();
 
-    if (!Sectors::has_database()) {
-        std::string currentPath;
+    // Try to load trap DB early so we can allow trap-only operation.
+    TrapDB::load_from_directory(secValPath);
 
+    // Allow initialization to succeed if either full sectors exist,
+    // or trap-aware strategy is enabled and trap DB is present.
+    const bool hasSectors = Sectors::has_database();
+    const bool allowTrapOnly = gameOptions.getTrapStrategyEnabled() &&
+                               TrapDB::has_trap_db();
+    if (!hasSectors && !allowTrapOnly) {
+        std::string currentPath;
 #if defined(__APPLE__)
         char buffer[PATH_MAX];
         if (getcwd(buffer, sizeof(buffer)) != NULL) {
@@ -154,14 +161,17 @@ bool MalomSolutionAccess::initialize_if_needed()
         currentPath = std::filesystem::current_path().string();
 #endif
 
-        SET_ERROR_MESSAGE(PE_DATABASE_NOT_FOUND, "Database files not found in "
-                                                 "the current working "
-                                                 "directory (" +
-                                                     currentPath + ")");
+        SET_ERROR_CODE(PE_DATABASE_NOT_FOUND, ("Database files not found in "
+                                               "the current working "
+                                               "directory (" +
+                                               currentPath + ")")
+                                                  .c_str());
         return false;
     }
 
     perfectPlayer = new PerfectPlayer();
+
+    // Trap DB was attempted above; nothing else required here.
     return true;
 }
 
@@ -177,19 +187,24 @@ int MalomSolutionAccess::get_move_from_database(const GameState &s,
         return 0;
     }
 
-    // Get good moves from database - no exceptions expected
+    // Trap-first selection when enabled and trap DB is present.
+    if (gameOptions.getTrapStrategyEnabled() && TrapDB::has_trap_db()) {
+        AdvancedMove chosen = perfectPlayer->get_best_move_trap_aware(
+            s, refMove, value);
+        if (hasError()) {
+            return 0;
+        }
+        return chosen.toBitBoard();
+    }
+
+    // Fallback: original Perfect DB logic
     std::vector<AdvancedMove> goodMoves = perfectPlayer->get_good_moves(s,
                                                                         value);
-
     if (goodMoves.empty()) {
         SET_ERROR_CODE(PE_RUNTIME_ERROR, "No good moves found in database");
         return 0;
     }
-
-    // Use chooseRandom to select the best move - no exceptions expected
     AdvancedMove bestMove = perfectPlayer->chooseRandom(goodMoves, refMove);
-
-    // Convert to bitboard format and return
     return bestMove.toBitBoard();
 }
 
@@ -202,6 +217,14 @@ MalomSolutionAccess::get_detailed_evaluation(const GameState &gameState)
     if (perfectPlayer == nullptr) {
         SET_ERROR_CODE(PE_RUNTIME_ERROR, "Perfect player not initialized");
         return PerfectEvaluation(); // Invalid result
+    }
+
+    // If only trap DB is available and indicates a loss, return fast path
+    if (TrapDB::has_trap_db()) {
+        const uint8_t mask = TrapDB::get_trap_mask(gameState);
+        if (mask & (TrapDB::Trap_SelfMillLoss | TrapDB::Trap_BlockMillLoss)) {
+            return PerfectEvaluation(-VALUE_MATE, -1);
+        }
     }
 
     // Get detailed evaluation from perfect player - no exceptions expected

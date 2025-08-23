@@ -13,7 +13,9 @@
 #include "perfect_rules.h"
 
 #include "perfect_wrappers.h"
+#include "perfect_trap_db.h"
 
+#include <algorithm>
 #include <bitset>
 #include <cassert> // for assert
 #include <cstdint> // for int64_t
@@ -24,10 +26,12 @@
 #include <map>
 #include <mutex>
 #include <random>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include "option.h"
+#include "misc.h"
 
 class GameState;
 
@@ -95,7 +99,7 @@ void Player::quit()
 
 PerfectPlayer::PerfectPlayer()
 {
-    assert(Sectors::has_database());
+    // Allow running with trap-only DB (no sectors present)
     secs = Sectors::get_sectors();
 }
 
@@ -510,6 +514,18 @@ Wrappers::gui_eval_elem2 PerfectPlayer::evaluate(GameState s)
         return Wrappers::gui_eval_elem2::virt_loss_val();
     }
 
+    // If we have a trap DB and it marks this position as a trap leading to
+    // loss, return a decisively losing evaluation immediately to steer move
+    // selection.
+    if (TrapDB::has_trap_db()) {
+        const uint8_t mask = TrapDB::get_trap_mask(s);
+        if (mask & (TrapDB::Trap_SelfMillLoss | TrapDB::Trap_BlockMillLoss)) {
+            // Represent strong loss. Keep steps unknown; consumers only need
+            // WDL.
+            return Wrappers::gui_eval_elem2::virt_loss_val();
+        }
+    }
+
     Wrappers::WSector *sec = get_sector(s);
     if (PerfectErrors::hasError()) {
         return Wrappers::gui_eval_elem2::min_value(nullptr);
@@ -548,7 +564,272 @@ Wrappers::gui_eval_elem2 PerfectPlayer::evaluate(GameState s)
     return Wrappers::gui_eval_elem2(raw_eval, sec->s);
 }
 
+bool PerfectPlayer::blocks_opponent_mill(const GameState &s,
+                                         const AdvancedMove &m)
+{
+    if (m.onlyTaking)
+        return false;
+    GameState before = s;
+    GameState after = make_move_in_state(s, const_cast<AdvancedMove &>(m));
+    if (PerfectErrors::hasError()) {
+        PerfectErrors::clearError();
+        return false;
+    }
+    GameState sOpp = before;
+    sOpp.sideToMove = 1 - before.sideToMove;
+    int cntBefore = 0;
+    for (auto &mm : get_move_list(sOpp)) {
+        if (mm.withTaking)
+            cntBefore++;
+    }
+    if (cntBefore == 0)
+        return false;
+    GameState sOppAfter = after;
+    sOppAfter.sideToMove = 1 - after.sideToMove;
+    int cntAfter = 0;
+    for (auto &mm : get_move_list(sOppAfter)) {
+        if (mm.withTaking)
+            cntAfter++;
+    }
+    return cntAfter < cntBefore;
+}
+
 int64_t PerfectPlayer::negate_board(int64_t a)
 {
     return ((a & mask24) << 24) | ((a & (mask24 << 24)) >> 24);
+}
+
+AdvancedMove PerfectPlayer::get_best_move_trap_aware(const GameState &s,
+                                                     const Move &refMove,
+                                                     Value &value)
+{
+    using namespace PerfectErrors;
+
+    // Generate all legal moves from current position
+    std::vector<AdvancedMove> allMoves = get_move_list(s);
+    if (allMoves.empty()) {
+        SET_ERROR_CODE(PE_RUNTIME_ERROR, "No legal moves available");
+        return AdvancedMove {};
+    }
+
+    // Read the current trap mask for the side to move
+    const uint8_t curMask = TrapDB::has_trap_db() ? TrapDB::get_trap_mask(s) :
+                                                    0;
+
+    // Send trap information to GUI via UCI info command
+    if (curMask != TrapDB::Trap_None && TrapDB::has_trap_db()) {
+        std::ostringstream trapInfo;
+        trapInfo << "info trap detected";
+
+        if (curMask & TrapDB::Trap_SelfMillLoss) {
+            trapInfo << " selfmill";
+        }
+        if (curMask & TrapDB::Trap_BlockMillLoss) {
+            trapInfo << " blockmill";
+        }
+
+        // Add WDL and steps information if available
+        int8_t trapWdl = TrapDB::get_trap_wdl(s);
+        int16_t trapSteps = TrapDB::get_trap_steps(s);
+
+        if (trapWdl != 0) {
+            trapInfo << " wdl " << static_cast<int>(trapWdl);
+        }
+        if (trapSteps > 0) {
+            trapInfo << " steps " << trapSteps;
+        }
+
+        sync_cout << trapInfo.str() << sync_endl;
+    }
+
+    // Step 1: filter out self-trap moves based on the current mask
+    std::vector<AdvancedMove> safeMoves;
+    safeMoves.reserve(allMoves.size());
+    for (auto m : allMoves) {
+        bool isSelfTrap = false;
+
+        // Self-mill-loss traps: avoid forming a mill if the mask says so
+        if ((curMask & TrapDB::Trap_SelfMillLoss) && m.withTaking) {
+            isSelfTrap = true;
+        }
+
+        // Block-mill-loss traps: avoid moves that reduce opponent's mill-making
+        // if mask says so
+        if (!isSelfTrap && (curMask & TrapDB::Trap_BlockMillLoss) &&
+            blocks_opponent_mill(s, m)) {
+            isSelfTrap = true;
+        }
+
+        if (!isSelfTrap) {
+            safeMoves.push_back(m);
+        }
+    }
+
+    if (safeMoves.empty()) {
+        // No safe moves remain. As a fallback, pick from all moves
+        // to ensure the engine remains functional under zugzwang-like
+        // conditions, even if the policy cannot avoid a trap.
+        const bool shuffleAll = gameOptions.getShufflingEnabled();
+        return shuffleAll ? chooseRandom(allMoves, refMove) : allMoves.front();
+    }
+
+    // Step 2: among safe moves, prefer those that create a trap for the
+    // opponent Use a struct to track both move and its priority (steps to force
+    // trap)
+    struct TrapMove
+    {
+        AdvancedMove move;
+        int16_t steps;  // Step count to reach trap result
+        bool isWinTrap; // true if trap leads to win, false if draw
+
+        TrapMove(const AdvancedMove &m, int16_t s, bool w)
+            : move(m)
+            , steps(s)
+            , isWinTrap(w)
+        { }
+    };
+
+    std::vector<TrapMove> oppTrapMoves; // All moves that create opponent traps
+
+    for (auto m : safeMoves) {
+        GameState s2 = make_move_in_state(s, m);
+        if (hasError()) {
+            clearError();
+            continue;
+        }
+        // After our move, it's opponent to move in s2. If s2 has any trap flags
+        // for the side to move (the opponent), then this move creates a trap.
+        const uint8_t oppMask = TrapDB::has_trap_db() ?
+                                    TrapDB::get_trap_mask(s2) :
+                                    0;
+        if (oppMask != TrapDB::Trap_None) {
+            // Determine theoretical value of s2 for prioritizing trap-creating
+            // moves
+            bool isWin = false;
+            bool isDraw = true;
+            int stepCount = -1; // For move prioritization based on forcing
+                                // speed
+
+            // First check if we have WDL and steps from TrapDB for the opponent
+            // position
+            if (TrapDB::has_trap_db()) {
+                int8_t trapWdl = TrapDB::get_trap_wdl(s2);
+                int16_t trapSteps = TrapDB::get_trap_steps(s2);
+
+                if (trapWdl == 1) { // Win for opponent = Loss for us = Good
+                                    // trap
+                    isWin = true;
+                    isDraw = false;
+                    stepCount = trapSteps;
+                } else if (trapWdl == 0) { // Draw for opponent = Neutral trap
+                    isWin = false;
+                    isDraw = true;
+                    stepCount = trapSteps;
+                } else if (trapWdl == -1) { // Loss for opponent = Win for us =
+                                            // Excellent trap
+                    isWin = true;
+                    isDraw = false;
+                    stepCount = trapSteps;
+                }
+            }
+
+            // Fallback to Perfect DB evaluation if TrapDB doesn't have this
+            // position
+            if (stepCount == -1 && Sectors::has_database()) {
+                auto e2 = evaluate(s2);
+                std::string str = e2.to_string();
+                if (!str.empty()) {
+                    char c = str[0];
+                    if (c == 'W') {
+                        isWin = true;
+                        isDraw = false;
+                    } else if (c == 'D' || c == '0' || c == 'N') {
+                        isWin = false;
+                        isDraw = true;
+                    } else if (c == 'L') {
+                        isWin = false;
+                        isDraw = false;
+                    }
+                }
+            }
+
+            // Add this trap-creating move to our collection with step-based
+            // priority
+            if (isWin || isDraw) { // Only collect moves that don't lead to
+                                   // immediate loss
+                oppTrapMoves.emplace_back(m, stepCount, isWin);
+            }
+        }
+    }
+
+    const bool shuffle = gameOptions.getShufflingEnabled();
+
+    // Step 2a: Sort trap moves by priority if we have step information
+    if (!oppTrapMoves.empty()) {
+        // Sort by priority: win traps first, then by fewer steps (faster
+        // forcing)
+        std::sort(oppTrapMoves.begin(), oppTrapMoves.end(),
+                  [](const TrapMove &a, const TrapMove &b) {
+                      // Primary: win traps beat draw traps
+                      if (a.isWinTrap != b.isWinTrap) {
+                          return a.isWinTrap > b.isWinTrap;
+                      }
+                      // Secondary: among same trap type, prefer faster forcing
+                      // (fewer steps) Handle unknown steps (-1) by treating
+                      // them as worst (highest value)
+                      int16_t aSteps = (a.steps == -1) ? 32767 : a.steps;
+                      int16_t bSteps = (b.steps == -1) ? 32767 : b.steps;
+                      return aSteps < bSteps;
+                  });
+
+        // Set appropriate value based on best trap type found
+        value = oppTrapMoves[0].isWinTrap ? VALUE_MAKE_TRAP_WIN :
+                                            VALUE_MAKE_TRAP_DRAW;
+
+        if (shuffle) {
+            // If shuffling, pick randomly from moves with the same priority as
+            // the best
+            std::vector<AdvancedMove> samePriorityMoves;
+            bool bestIsWin = oppTrapMoves[0].isWinTrap;
+            int16_t bestSteps = oppTrapMoves[0].steps;
+
+            for (const auto &trapMove : oppTrapMoves) {
+                if (trapMove.isWinTrap == bestIsWin &&
+                    trapMove.steps == bestSteps) {
+                    samePriorityMoves.push_back(trapMove.move);
+                } else {
+                    break; // Since sorted, we can stop at first different
+                           // priority
+                }
+            }
+            return chooseRandom(samePriorityMoves, refMove);
+        } else {
+            return oppTrapMoves[0].move;
+        }
+    }
+
+    // Step 3: no trap can be created. Fall back to the Perfect DB selection if
+    // available.
+    if (Sectors::has_database()) {
+        Value dummy = VALUE_ZERO;
+        std::vector<AdvancedMove> best = get_all_max_by(
+            std::function<Wrappers::gui_eval_elem2(AdvancedMove)>(
+                [this, &s](AdvancedMove mEval) {
+                    return move_value(s, mEval);
+                }),
+            safeMoves, Wrappers::gui_eval_elem2::min_value(get_sector(s)),
+            dummy);
+
+        if (best.empty()) {
+            SET_ERROR_CODE(PE_RUNTIME_ERROR, "Perfect DB selection failed on "
+                                             "safe moves");
+            return shuffle ? chooseRandom(safeMoves, refMove) :
+                             safeMoves.front();
+        }
+        value = dummy;
+        return chooseRandom(best, refMove);
+    }
+
+    // No sectors: pick among safe moves by policy (value stays intact)
+    return shuffle ? chooseRandom(safeMoves, refMove) : safeMoves.front();
 }

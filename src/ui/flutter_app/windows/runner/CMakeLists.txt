@@ -49,7 +49,6 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../thread_pool.cpp"
   "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_api.cpp"
-  "../../../../perfect/perfect_adaptor.cpp"
   "../../../../perfect/perfect_common.cpp"
   "../../../../perfect/perfect_debug.cpp"
   "../../../../perfect/perfect_errors.cpp"
@@ -66,7 +65,10 @@ add_executable(${BINARY_NAME} WIN32
   "../../../../perfect/perfect_sector_graph.cpp"
   "../../../../perfect/perfect_symmetries.cpp"
   "../../../../perfect/perfect_symmetries_slow.cpp"
+  "../../../../perfect/perfect_trap_db.cpp"
   "../../../../perfect/perfect_wrappers.cpp"
+  "../../../../perfect/perfect_c_api.cpp"
+  "../../../../perfect/perfect_trap_builder.cpp"
 
   "${FLUTTER_MANAGED_DIR}/generated_plugin_registrant.cc"
   "Runner.rc"
@@ -76,6 +78,17 @@ add_executable(${BINARY_NAME} WIN32
 # Apply the standard set of build settings. This can be removed for applications
 # that need different build settings.
 apply_standard_settings(${BINARY_NAME})
+
+# Check if the Microsoft Visual C++ compiler is being used
+if(MSVC)
+  # If it is, then add compile options for the target ${BINARY_NAME}, using /wd4244 to disable
+  # warning 4244
+  # /wd4244 is a MSVC specific compiler option used to disable warning 4244
+  # This warning generally occurs during potential numeric conversions, where a variable is
+  # converted from a larger numeric type (like double or float) to a smaller numeric type
+  # (like int)
+  target_compile_options(${BINARY_NAME} PRIVATE /wd4244)
+endif()
 
 # Add preprocessor definitions for the build version.
 target_compile_definitions(${BINARY_NAME} PRIVATE "FLUTTER_VERSION=\"${FLUTTER_VERSION}\"")
@@ -91,6 +104,13 @@ target_link_options(${BINARY_NAME} PRIVATE "$<$<OR:$<CONFIG:Release>,$<CONFIG:Pr
 # Disable Windows macros that collide with C++ standard library functions.
 target_compile_definitions(${BINARY_NAME} PRIVATE "NOMINMAX")
 
+# Disable security warnings for older C functions (e.g., fopen, strncpy)
+# and data conversion warnings that are common in cross-platform code.
+if(MSVC)
+  target_compile_options(${BINARY_NAME} PRIVATE /wd4267)
+  target_compile_definitions(${BINARY_NAME} PRIVATE "_CRT_SECURE_NO_WARNINGS")
+endif()
+
 # Add dependency libraries and include directories. Add any application-specific
 # dependencies here.
 target_link_libraries(${BINARY_NAME} PRIVATE flutter flutter_wrapper_app)
@@ -98,14 +118,3 @@ target_include_directories(${BINARY_NAME} PRIVATE "${CMAKE_SOURCE_DIR}")
 
 # Run the Flutter tool portions of the build. This must not be removed.
 add_dependencies(${BINARY_NAME} flutter_assemble)
-
-# Check if the Microsoft Visual C++ compiler is being used
-#if(MSVC)
-  # If it is, then add compile options for the target ${BINARY_NAME}, using /wd4244 to disable
-  # warning 4244
-  # /wd4244 is a MSVC specific compiler option used to disable warning 4244
-  # This warning generally occurs during potential numeric conversions, where a variable is
-  # converted from a larger numeric type (like double or float) to a smaller numeric type
-  # (like int)
-# target_compile_options(${BINARY_NAME} PRIVATE /wd4244)
-#endif()

@@ -21,6 +21,8 @@ echo Building perfect_db.dll...
 
 :: Compile all source files and link into DLL
 cl /nologo /LD /O2 /EHsc /MD /std:c++17 ^
+   perfect_trap_db.cpp ^
+   perfect_trap_builder.cpp ^
    perfect_c_api.cpp ^
    perfect_api.cpp ^
    perfect_adaptor.cpp ^

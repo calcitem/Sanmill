@@ -42,4 +42,10 @@ PD_API int pd_evaluate(int whiteBits, int blackBits, int whiteStonesToPlace,
 PD_API int pd_best_move(int whiteBits, int blackBits, int whiteStonesToPlace,
                         int blackStonesToPlace, int playerToMove,
                         int onlyStoneTaking, char *outBuf, int outBufLen);
+
+// Build a compact trap database file from a full Perfect DB directory.
+// db_path: directory containing std_*.sec2 and std.secval
+// out_file: output file path for the generated trap DB (e.g., std_traps.sec2)
+// Returns 1 on success, 0 on failure
+PD_API int pd_build_trap_sec2(const char *db_path, const char *out_file);
 }

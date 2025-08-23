@@ -55,7 +55,8 @@ Future<bool> copyPerfectDatabaseFiles() async {
     'assets/databases/std_3_4_5_5.sec2',
     'assets/databases/std_3_4_6_5.sec2',
     'assets/databases/std_4_3_5_5.sec2',
-    'assets/databases/std_4_4_5_5.sec2'
+    'assets/databases/std_4_4_5_5.sec2',
+    'assets/databases/std_traps.sec2' // Trap database for lightweight trap-aware strategy
   ];
 
   for (final String asset in assetFiles) {

@@ -223,6 +223,14 @@ public:
         return perfectDatabasePath;
     }
 
+    // Trap-aware strategy toggle: when enabled, the engine will avoid
+    // self-trap moves and prefer moves that set traps for the opponent.
+    void setTrapStrategyEnabled(bool enabled) noexcept
+    {
+        trapStrategyEnabled = enabled;
+    }
+    bool getTrapStrategyEnabled() const noexcept { return trapStrategyEnabled; }
+
     // DrawOnHumanExperience
 
     void setDrawOnHumanExperience(bool enabled) noexcept
@@ -284,6 +292,9 @@ private:
     bool considerMobility {true};
     bool focusOnBlockingPaths {false};
     bool developerMode {false};
+
+    // Default to enabled so std_traps.sec2 takes effect out-of-the-box.
+    bool trapStrategyEnabled {true};
 
     // TODO: Set this to the correct path
 #ifdef _DEBUG

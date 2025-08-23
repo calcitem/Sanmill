@@ -373,6 +373,12 @@ void Game::setShuffling(bool enabled) const
     settings->setValue("Options/Shuffling", enabled);
 }
 
+void Game::setTrapStrategyEnabled(bool enabled) const
+{
+    gameOptions.setTrapStrategyEnabled(enabled);
+    settings->setValue("Options/TrapStrategyEnabled", enabled);
+}
+
 void Game::setLearnEndgame(bool enabled) const
 {
     gameOptions.setLearnEndgameEnabled(enabled);

@@ -7,6 +7,7 @@
 #include "perfect_eval_elem.h"
 #include "perfect_common.h"
 
+#include <algorithm>
 #include <cassert>
 
 eval_elem_sym::eval_elem_sym(cas the_c, int the_x)
@@ -188,7 +189,10 @@ eval_elem_sym2::eval_elem_sym2(const eval_elem2 &o)
 
 eval_elem2 eval_elem2::corr(int corr)
 {
-    sec_val new_key1 = static_cast<int16_t>(key1 + corr);
+    // Safely compute key1 + corr and clamp to int16_t range
+    int temp = static_cast<int>(key1) + corr;
+    temp = (std::max)(-32768, (std::min)(32767, temp));
+    sec_val new_key1 = static_cast<int16_t>(temp);
 
     // magic, don't touch!
     return eval_elem2 {new_key1, sign((long long)new_key1 * key1) * key2};

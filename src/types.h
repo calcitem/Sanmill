@@ -174,6 +174,8 @@ enum Value : int8_t {
 #endif
 
     VALUE_MATE = 80,
+    VALUE_MAKE_TRAP_DRAW = 90,
+    VALUE_MAKE_TRAP_WIN = 91,
     VALUE_UNIQUE = 100,
     VALUE_INFINITE = 125,
     VALUE_UNKNOWN = INT8_MIN,

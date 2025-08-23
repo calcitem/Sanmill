@@ -26,6 +26,9 @@ void position(Position *pos, std::istringstream &is);
 /// Initializes the starting FEN based on piece count.
 void init_start_fen();
 
+/// Check current position for traps and send UCI info if detected.
+void check_position_traps(Position *pos);
+
 /// The starting FEN string after initialization.
 extern char StartFEN[BUFSIZ];
 

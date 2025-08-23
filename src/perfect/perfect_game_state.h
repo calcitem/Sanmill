@@ -8,6 +8,7 @@
 #define PERFECT_GAME_STATE_H_INCLUDED
 
 #include <sstream>
+#include <vector>
 
 class CMove; // forward declaration, implement this
 

@@ -159,6 +159,9 @@ public:
     // Assuming gui_eval_elem2 and get_sector functions are defined somewhere
     Wrappers::gui_eval_elem2 move_value(const GameState &s, AdvancedMove &m);
 
+    // Detect if a move reduces immediate opponent mill-making opportunities.
+    bool blocks_opponent_mill(const GameState &s, const AdvancedMove &m);
+
     template <typename T, typename K>
     std::vector<T> get_all_max_by(std::function<K(T)> f,
                                   const std::vector<T> &l, K minValue,
@@ -239,6 +242,20 @@ out:
     Wrappers::gui_eval_elem2 evaluate(GameState s);
 
     int64_t negate_board(int64_t a);
+
+    // Trap-aware best move selection that works with or without full sectors.
+    // Policy:
+    // 1) Filter out self-trap moves (forming a mill if Trap_SelfMillLoss; or
+    //    blocking opponent's mill if Trap_BlockMillLoss) based on the current
+    //    position trap mask from std_traps.sec2.
+    // 2) Among the remaining safe moves, prefer moves that lead to a position
+    //    where the opponent is in a trap.
+    // 3) If multiple such moves exist, honor shuffling (Move Randomly) by
+    //    picking a random one; otherwise pick the first.
+    // 4) If no trap can be set, fall back to the Perfect DB selection when
+    //    sectors are available; otherwise select among safe moves per policy.
+    AdvancedMove get_best_move_trap_aware(const GameState &s,
+                                          const Move &refMove, Value &value);
 };
 
 #endif // PERFECT_PLAYER_H_INCLUDED
