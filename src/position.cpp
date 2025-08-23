@@ -1513,6 +1513,12 @@ void Position::update_score()
 
 bool Position::check_if_game_is_over()
 {
+    // Check for threefold repetition
+    if (rule.threefoldRepetitionRule && has_game_cycle()) {
+        set_gameover(DRAW, GameOverReason::drawThreefoldRepetition);
+        return true;
+    }
+
 #ifdef RULE_50
     if (rule.nMoveRule > 0 && st->rule50 >= rule.nMoveRule) {
         set_gameover(DRAW, GameOverReason::drawFiftyMove);

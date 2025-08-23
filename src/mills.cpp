@@ -459,6 +459,12 @@ Depth get_search_depth(const Position *pos)
 
     const int pieces = pw + pb;
 
+#ifdef FLUTTER_UI
+    LOGD("get_search_depth: level=%d, phase=%d, developerMode=%s, pw=%d, pb=%d\n", 
+         level, static_cast<int>(pos->phase), 
+         gameOptions.getDeveloperMode() ? "true" : "false", pw, pb);
+#endif
+
     if (!gameOptions.getDeveloperMode()) {
         if (pos->phase == Phase::placing) {
             // TODO: Lasker Morris
@@ -663,7 +669,7 @@ Depth get_search_depth(const Position *pos)
     assert(d <= 32);
 
 #ifdef FLUTTER_UI
-    LOGD("Search depth: %d\n", d);
+    LOGD("Final search depth: %d (before adjust: %d)\n", d, d - DEPTH_ADJUST);
 #endif // FLUTTER_UI
 
     return d;

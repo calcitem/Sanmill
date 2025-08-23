@@ -484,12 +484,12 @@ int SearchEngine::executeSearch()
     if (gameOptions.getMoveTime() > 0 || gameOptions.getIDSEnabled()) {
         debugPrintf("IDS: ");
 
-        constexpr Depth depthBegin = 2;
+        const Depth depthBegin = (originDepth >= 2) ? 2 : 1;
         Value lastValue = VALUE_ZERO;
 
         const TimePoint startTime = now();
 
-        for (Depth i = depthBegin; i < originDepth; i += 1) {
+        for (Depth i = depthBegin; i <= originDepth; i += 1) {
 #ifdef TRANSPOSITION_TABLE_ENABLE
 #ifdef CLEAR_TRANSPOSITION_TABLE
             TranspositionTable::clear();
