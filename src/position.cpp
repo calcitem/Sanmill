@@ -319,6 +319,12 @@ Position &Position::set(const string &fenStr)
     Square sq = SQ_A1;
     std::istringstream ss(fenStr);
 
+    // Ensure st is properly set before reset - if not set, use startState
+    if (st == nullptr) {
+        st = &startState;
+        st->previous = nullptr;
+    }
+
     // Reset to initial state manually since copy assignment is deleted
     reset();
 
@@ -419,9 +425,11 @@ Position &Position::set(const string &fenStr)
     }
 #endif
 
-    // Reset state pointer to startState (Stockfish-style)
-    st = &startState;
-    st->previous = nullptr;
+    // Only reset state pointer to startState if we're using internal state
+    // If external StateInfo was provided, don't override it
+    if (st == &startState) {
+        st->previous = nullptr;
+    }
 
     return *this;
 }
@@ -429,9 +437,12 @@ Position &Position::set(const string &fenStr)
 Position &Position::set(const std::string &fenStr, StateInfo *si)
 {
     // Stockfish-style: caller provides StateInfo to use
-    set(fenStr);            // Use existing implementation
-    st = si;                // Override st pointer to use caller's StateInfo
+    // First clear and set the StateInfo pointer before calling set(fenStr)
+    std::memset(si, 0, sizeof(StateInfo));
+    st = si;                // Set st pointer to caller's StateInfo first
     st->previous = nullptr; // Root state has no previous
+
+    set(fenStr); // Now call set with st properly initialized
     return *this;
 }
 
