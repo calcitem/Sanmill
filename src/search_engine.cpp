@@ -406,8 +406,11 @@ int SearchEngine::executeSearch()
         originDepth = d;
     }
 
-    const time_t time0 = time(nullptr);
-    srand(static_cast<unsigned int>(time0));
+    // Only initialize random seed when shuffling is enabled or using random algorithm
+    if (gameOptions.getShufflingEnabled() || gameOptions.getAlgorithm() == 4 /* Random */) {
+        const time_t time0 = time(nullptr);
+        srand(static_cast<unsigned int>(time0));
+    }
 
 #ifdef TIME_STAT
     auto timeStart = std::chrono::steady_clock::now();

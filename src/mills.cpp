@@ -399,15 +399,12 @@ void move_priority_list_shuffle()
 
     if (gameOptions.getShufflingEnabled()) {
         const auto seed = static_cast<uint32_t>(now());
+        std::default_random_engine rng(seed);
 
-        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(),
-                     std::default_random_engine(seed));
-        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(),
-                     std::default_random_engine(seed));
-        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(),
-                     std::default_random_engine(seed));
-        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(),
-                     std::default_random_engine(seed));
+        std::shuffle(movePriorityList0.begin(), movePriorityList0.end(), rng);
+        std::shuffle(movePriorityList1.begin(), movePriorityList1.end(), rng);
+        std::shuffle(movePriorityList2.begin(), movePriorityList2.end(), rng);
+        std::shuffle(movePriorityList3.begin(), movePriorityList3.end(), rng);
     }
 
     for (size_t i = 0; i < 4; i++) {
