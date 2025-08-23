@@ -392,13 +392,21 @@ Value Evaluation::value() const
             if (pos.get_action() == Action::remove) {
                 value += VALUE_EACH_PIECE_NEEDREMOVE * pieceToRemoveDiffCount;
             } else {
-                value += static_cast<Value>(pos.mills_pieces_count_difference());
+                // BUGFIX: Avoid mill count evaluation in very early game
+                // to prevent artificial opening imbalances
+                int totalPieces = pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK);
+                if (totalPieces >= 4) {
+                    value += static_cast<Value>(pos.mills_pieces_count_difference());
+                }
             }
             break;
         }
         [[fallthrough]];
     case Phase::moving:
-        if (pos.shouldConsiderMobility()) {
+        // BUGFIX: Avoid mobility evaluation in early placing phase
+        // Mobility differences in opening can cause artificial imbalances
+        if (pos.shouldConsiderMobility() && 
+            (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK)) >= 6) {
             value += static_cast<Value>(pos.get_mobility_diff());
         }
 
@@ -444,6 +452,33 @@ Value Evaluation::value() const
 
         break;
     }
+
+    // ENHANCEMENT: Add mill threat evaluation for better tactical awareness
+    // TEMPORARILY DISABLED: This was causing opening imbalances with negative scores
+    // TODO: Re-enable with proper tuning once the main engine logic is stable
+    /*
+    if ((pos.get_phase() == Phase::placing || pos.get_phase() == Phase::moving) &&
+        (pos.piece_on_board_count(WHITE) + pos.piece_on_board_count(BLACK)) >= 6) {
+        Value millThreatValue = VALUE_ZERO;
+        
+        // Count immediate mill threats for both sides
+        int whiteThreats = 0, blackThreats = 0;
+        
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (pos.get_board()[sq] == NO_PIECE) {
+                int whiteMills = pos.potential_mills_count(sq, WHITE);
+                int blackMills = pos.potential_mills_count(sq, BLACK);
+                
+                if (whiteMills > 0) whiteThreats += whiteMills;
+                if (blackMills > 0) blackThreats += blackMills;
+            }
+        }
+        
+        const Value MILL_THREAT_VALUE = static_cast<Value>(5);
+        millThreatValue = MILL_THREAT_VALUE * (whiteThreats - blackThreats);
+        value += millThreatValue;
+    }
+    */
 
     if (pos.side_to_move() == BLACK) {
         value = -value;

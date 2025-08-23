@@ -84,17 +84,16 @@ void MovePicker::score()
                     to, ~pos.side_to_move());
 
                 if (theirMillsCount) {
-                    ourPieceCount = theirPiecesCount = markedCount =
-                        emptyCount = 0;
-
-                    pos.surrounded_pieces_count(to, ourPieceCount,
-                                                theirPiecesCount, markedCount,
-                                                emptyCount);
-
-                    if (to % 2 == 0 && theirPiecesCount == 3) {
-                        cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
-                    } else if (to % 2 == 1 && theirPiecesCount == 2) {
-                        cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
+                    // BUGFIX: Improved mill blocking logic
+                    // The original logic was too restrictive and only blocked mills
+                    // under very specific piece count conditions. 
+                    // New logic: Always prioritize blocking opponent's potential mills
+                    cur->value += VALUE_BLOCK_ONE_MILL * theirMillsCount;
+                    
+                    // Additional tactical consideration: 
+                    // Give extra bonus for blocking multiple potential mills
+                    if (theirMillsCount > 1) {
+                        cur->value += VALUE_BLOCK_ONE_MILL * (theirMillsCount - 1) / 2;
                     }
                 }
             }
@@ -184,9 +183,15 @@ void MovePicker::score()
         }
     }
 
-    if (!pos.shouldFocusOnBlockingPaths()) {
-        cur->value = -cur->value;
-    }
+    // BUGFIX: Removed the erroneous value negation that was causing the engine
+    // to prefer low-value moves over high-value moves. This was a critical bug
+    // that severely weakened the engine's playing strength.
+    // The shouldFocusOnBlockingPaths() logic was incorrectly implemented.
+    // 
+    // Original broken code:
+    // if (!pos.shouldFocusOnBlockingPaths()) {
+    //     cur->value = -cur->value;
+    // }
 }
 
 // Helper function for selecting moves based on a predicate
@@ -341,11 +346,15 @@ void MovePicker::score<REMOVE>()
         if (ourMillsCount > 0) cur->value -= 1;
     }
 
-    if (!pos.shouldFocusOnBlockingPaths()) {
-        for (cur = moves; cur->move != MOVE_NONE; cur++) {
-            cur->value = -cur->value;
-        }
-    }
+    // BUGFIX: Removed the second instance of erroneous value negation in init_captures()
+    // This was another location where the same critical bug was present.
+    // 
+    // Original broken code:
+    // if (!pos.shouldFocusOnBlockingPaths()) {
+    //     for (cur = moves; cur->move != MOVE_NONE; cur++) {
+    //         cur->value = -cur->value;
+    //     }
+    // }
 }
 
 // Explicit instantiations for legacy functions

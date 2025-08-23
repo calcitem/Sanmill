@@ -721,20 +721,33 @@ Value Search::null_move_search(SearchEngine &searchEngine, Position *pos, Depth 
         return VALUE_UNKNOWN;
     }
 
+    // BUGFIX: Improved mill formation detection for null move pruning
     // Check if current position might lead to mill formation
     // If so, avoid null move as it might give consecutive moves
     bool nearMill = false;
     if (pos->get_phase() == Phase::placing || pos->get_phase() == Phase::moving) {
-        // Simple heuristic: check if we're close to forming a mill
-        // This is conservative but safer for Mill Game dynamics
-        int totalMills = 0;
-        for (Square sq = SQ_A1; sq <= SQ_C7; ++sq) {
-            if (pos->potential_mills_count(sq, pos->sideToMove) > 0) {
-                totalMills++;
+        // Check if we can form a mill in one move
+        int immediateMillThreats = 0;
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (pos->get_board()[sq] == NO_PIECE) {  // Empty square
+                if (pos->potential_mills_count(sq, pos->sideToMove) > 0) {
+                    immediateMillThreats++;
+                }
             }
         }
-        // If too many potential mill-forming squares, be conservative
-        if (totalMills > 3) {
+        
+        // Also check if opponent has immediate mill threats we need to block
+        int opponentThreats = 0;
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (pos->get_board()[sq] == NO_PIECE) {  // Empty square
+                if (pos->potential_mills_count(sq, ~pos->sideToMove) > 0) {
+                    opponentThreats++;
+                }
+            }
+        }
+        
+        // Avoid null move if there are immediate tactical threats
+        if (immediateMillThreats > 0 || opponentThreats > 0) {
             nearMill = true;
         }
     }
