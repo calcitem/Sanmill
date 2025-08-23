@@ -36,12 +36,7 @@ extern vector<string> setup_bench(Position *, istream &);
 
 namespace {
 
-void initialize_engine(Position *pos)
-{
-    // Delegate initialization to EngineCommands
-    EngineCommands::init_start_fen();
-    pos->set(EngineCommands::StartFEN);
-}
+
 
 // setoption() is called when engine receives the "setoption" UCI command. The
 // function updates the UCI option ("name") to the given value ("value").

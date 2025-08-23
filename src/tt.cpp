@@ -15,7 +15,38 @@ HashMap<Key, TTEntry> TT(TRANSPOSITION_TABLE_SIZE);
 uint8_t transpositionTableAge;
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
 
-Value TranspositionTable::probe(Key key, Depth depth, Bound &type
+// Constants for generation management (similar to Stockfish)
+static constexpr unsigned GENERATION_BITS = 2;
+static constexpr int GENERATION_DELTA = (1 << GENERATION_BITS);
+static constexpr int GENERATION_CYCLE = 255 + GENERATION_DELTA;
+static constexpr int GENERATION_MASK = (0xFF << GENERATION_BITS) & 0xFF;
+
+// TTEntry::save implementation with better replacement strategy
+void TTEntry::save(Key k, Value v, Value e, bool pv, Bound b, Depth d, Move m, uint8_t generation8)
+{
+#ifdef TT_MOVE_ENABLE
+    // Preserve the old ttmove if we don't have a new one
+    if (m != MOVE_NONE || !is_occupied()) {
+        ttMove = static_cast<uint16_t>(m);
+    }
+#endif
+
+    // Overwrite less valuable entries (inspired by Stockfish logic)
+    if (b == BOUND_EXACT || !is_occupied() || d - DEPTH_OFFSET + 2 * pv > depth8 - 4) {
+        value16 = static_cast<int16_t>(v);
+        eval16 = static_cast<int16_t>(e);
+        depth8 = static_cast<uint8_t>(d - DEPTH_OFFSET);
+        
+        // Pack generation and bound into genBound8
+        genBound8 = static_cast<uint8_t>((generation8 & 0xFC) | static_cast<uint8_t>(b));
+    }
+    // If we can't replace, but depth is significant and bound isn't exact, age the entry
+    else if (depth8 + DEPTH_OFFSET >= 5 && bound() != BOUND_EXACT) {
+        depth8--;
+    }
+}
+
+Value TranspositionTable::probe(Key key, Depth depth, Bound &type, Value &eval
 #ifdef TT_MOVE_ENABLE
                                 ,
                                 Move &ttMove
@@ -25,20 +56,20 @@ Value TranspositionTable::probe(Key key, Depth depth, Bound &type
     TTEntry tte {};
 
     if (!TT.find(key, tte)) {
+        eval = VALUE_NONE;
         return VALUE_UNKNOWN;
     }
 
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
-    if (tte.bound() != BOUND_EXACT) {
-#endif
-        if (tte.age8 != transpositionTableAge) {
-            return VALUE_UNKNOWN;
-        }
-#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN_NOT_EXACT_ONLY
+    // Check if entry is from current generation
+    if ((tte.genBound8 & GENERATION_MASK) != (transpositionTableAge & GENERATION_MASK)) {
+        eval = VALUE_NONE;
+        return VALUE_UNKNOWN;
     }
-#endif
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+
+    // Always return the stored evaluation for better search guidance
+    eval = tte.eval();
 
     if (tte.depth() >= depth) {
         type = tte.bound();
@@ -48,6 +79,10 @@ Value TranspositionTable::probe(Key key, Depth depth, Bound &type
         return tte.value();
     }
 
+    // Even if depth is insufficient, we can still use the ttMove and eval
+#ifdef TT_MOVE_ENABLE
+    ttMove = tte.tt_move();
+#endif
     return VALUE_UNKNOWN;
 }
 
@@ -61,7 +96,7 @@ void TranspositionTable::prefetch(Key key)
     TT.prefetchValue(key);
 }
 
-int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
+int TranspositionTable::save(Value value, Value staticEval, Depth depth, Bound type, Key key
 #ifdef TT_MOVE_ENABLE
                              ,
                              const Move &ttMove
@@ -69,12 +104,15 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 )
 {
     TTEntry tte {};
+    bool found = search(key, tte);
 
-    if (search(key, tte)) {
+    // Don't overwrite entries with higher depth unless we have better information
+    if (found) {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-        if (tte.age8 == transpositionTableAge) {
+        // Check if entry is from current generation
+        if ((tte.genBound8 & GENERATION_MASK) == (transpositionTableAge & GENERATION_MASK)) {
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
-            if (tte.genBound8 != BOUND_NONE && tte.depth() > depth) {
+            if (tte.bound() != BOUND_NONE && tte.depth() > depth && type != BOUND_EXACT) {
                 return -1;
             }
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
@@ -82,32 +120,55 @@ int TranspositionTable::save(Value value, Depth depth, Bound type, Key key
 #endif // TRANSPOSITION_TABLE_FAKE_CLEAN
     }
 
-    tte.value8 = static_cast<int8_t>(value);
-    tte.depth8 = static_cast<int8_t>(depth - DEPTH_OFFSET);
-    tte.genBound8 = static_cast<uint8_t>(type);
-
-#ifdef TT_MOVE_ENABLE
-    tte.ttMove = ttMove;
-#endif // TT_MOVE_ENABLE
-
+    // Use the improved save method
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    tte.age8 = transpositionTableAge;
-#endif // TRANSPOSITION_TABLE_FAKE_CLEAN
+    tte.save(key, value, staticEval, false, type, depth, 
+#ifdef TT_MOVE_ENABLE
+             ttMove,
+#else
+             MOVE_NONE,
+#endif
+             transpositionTableAge);
+#else
+    tte.save(key, value, staticEval, false, type, depth,
+#ifdef TT_MOVE_ENABLE
+             ttMove,
+#else
+             MOVE_NONE,
+#endif
+             0);
+#endif
 
     TT.insert(key, tte);
-
     return 0;
+}
+
+void TranspositionTable::new_search()
+{
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    // Advance generation for new search
+    transpositionTableAge += GENERATION_DELTA;
+#endif
+}
+
+uint8_t TranspositionTable::generation()
+{
+#ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
+    return transpositionTableAge;
+#else
+    return 0;
+#endif
 }
 
 void TranspositionTable::clear()
 {
 #ifdef TRANSPOSITION_TABLE_FAKE_CLEAN
-    if (transpositionTableAge == std::numeric_limits<uint8_t>::max()) {
+    if (transpositionTableAge >= 252) { // Leave some margin for generation cycle
         debugPrintf("Clean TT\n");
         TT.clear();
         transpositionTableAge = 0;
     } else {
-        transpositionTableAge++;
+        transpositionTableAge += GENERATION_DELTA;
     }
 #else
     TT.clear();

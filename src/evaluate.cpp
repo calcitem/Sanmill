@@ -515,7 +515,7 @@ Value Eval::evaluate(Position &pos)
 
 /// Hybrid evaluation function with depth information
 /// Uses traditional evaluation for shallow depths and NNUE for deeper analysis
-Value Eval::evaluate(Position &pos, Depth depth)
+Value Eval::evaluate(Position &pos, Depth /*depth*/)
 {
     // First try perfect database if available
     if (gameOptions.getUsePerfectDatabase()) {

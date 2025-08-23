@@ -172,7 +172,7 @@ Node *expand(Node *node)
     Position *pos = node->position;
 
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move<LEGAL>(); // Sort moves
+    mp.next_move_legacy<LEGAL>(); // Sort moves
     // const int moveCount = std::max(mp.move_count() / SEARCH_PRUNING_FACTOR,
     // 1);
     const int moveCount = mp.move_count();
@@ -194,7 +194,7 @@ Node *expand(Node *node)
 }
 
 // Simulate a game from the given node and return whether it resulted in a win
-bool simulate(Node *node, Sanmill::Stack<Position> &ss)
+bool simulate(Node *node, Sanmill::Stack<Position> & /*ss*/)
 {
     Position *pos = node->position;
 
@@ -374,7 +374,7 @@ Value monte_carlo_tree_search(Position *pos, Move &bestMove)
     }
 
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move<LEGAL>();
+    mp.next_move_legacy<LEGAL>();
 
     int best_move_index = 0;
     uint32_t max_visits = 0;

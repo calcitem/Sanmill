@@ -19,6 +19,23 @@ struct ExtMove;
 
 void partial_insertion_sort(ExtMove *begin, const ExtMove *end, int limit);
 
+// Move ordering stages inspired by Stockfish
+enum Stage {
+    // Main search stages
+    MAIN_TT,
+    CAPTURE_INIT,
+    GOOD_CAPTURE,
+    QUIET_INIT, 
+    GOOD_QUIET,
+    BAD_CAPTURE,
+    BAD_QUIET,
+    
+    // Quiescence search stages
+    QSEARCH_TT,
+    QCAPTURE_INIT,
+    QCAPTURE
+};
+
 /// MovePicker class is used to pick one pseudo legal move at a time from the
 /// current position. The most important method is next_move(), which returns a
 /// new pseudo legal move each time it is called, until there are no moves left,
@@ -32,8 +49,10 @@ public:
     MovePicker &operator=(const MovePicker &) = delete;
     explicit MovePicker(Position &p, Move ttm) noexcept;
 
-    template <GenType>
     Move next_move();
+    
+    template <GenType>
+    Move next_move_legacy();  // For backward compatibility
 
     template <GenType>
     void score();
@@ -46,11 +65,21 @@ public:
     Move ttMove {MOVE_NONE};
     ExtMove *cur {nullptr};
     ExtMove *endMoves {nullptr};
+    ExtMove *endBadCaptures {nullptr};
+    ExtMove *endCaptures {nullptr};
     ExtMove moves[MAX_MOVES] {{MOVE_NONE, 0}};
 
     int moveCount {0};
+    int stage {MAIN_TT};
 
     int move_count() const noexcept { return moveCount; }
+
+private:
+    template<typename Pred>
+    Move select(Pred filter);
+    
+    void init_captures();
+    void init_quiets();
 };
 
 #endif // #ifndef MOVEPICK_H_INCLUDED

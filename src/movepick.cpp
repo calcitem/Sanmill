@@ -41,13 +41,12 @@ void MovePicker::score()
 
     for (cur = moves; cur->move != MOVE_NONE; cur++) {
         Move m = cur->move;
-
-#ifdef TT_MOVE_ENABLE
+        
+        // Give TT move the highest priority
         if (m == ttMove) {
             cur->value = RATING_TT;
             continue;
         }
-#endif // TT_MOVE_ENABLE
 
         const Square to = to_sq(m);
         const Square from = from_sq(m);
@@ -150,12 +149,47 @@ void MovePicker::score()
     }
 }
 
-/// MovePicker::next_move() is the most important method of the MovePicker
-/// class. It returns a new pseudo legal move every time it is called until
-/// there are no more moves left, picking the move with the highest score from a
-/// list of generated moves.
+// Helper function for selecting moves based on a predicate
+template<typename Pred>
+Move MovePicker::select(Pred filter) {
+    for (; cur < endMoves; ++cur) {
+        if (*cur != ttMove && filter()) {
+            return *cur++;
+        }
+    }
+    return MOVE_NONE;
+}
+
+// Initialize capture moves
+void MovePicker::init_captures() {
+    if (pos.get_action() == Action::remove) {
+        endMoves = generate<REMOVE>(pos, moves);
+    } else {
+        // For Mill game, "captures" are moves that form mills (tactical moves)
+        endMoves = generate<LEGAL>(pos, moves);
+    }
+    
+    cur = endBadCaptures = moves;
+    endCaptures = endMoves;
+    moveCount = static_cast<int>(endMoves - moves);
+    
+    score<LEGAL>();
+    partial_insertion_sort(cur, endMoves, std::numeric_limits<int>::min());
+}
+
+// Initialize quiet moves  
+void MovePicker::init_quiets() {
+    endMoves = generate<LEGAL>(pos, moves);
+    cur = endCaptures;
+    moveCount = static_cast<int>(endMoves - moves);
+    
+    score<LEGAL>();
+    partial_insertion_sort(cur, endMoves, -10000); // Threshold for "good" quiet moves
+}
+
+/// MovePicker::next_move_legacy() - legacy implementation for backward compatibility
 template <GenType Type>
-Move MovePicker::next_move()
+Move MovePicker::next_move_legacy()
 {
     endMoves = generate<Type>(pos, moves);
     moveCount = static_cast<int>(endMoves - moves);
@@ -166,7 +200,85 @@ Move MovePicker::next_move()
     return *moves;
 }
 
-template Move MovePicker::next_move<LEGAL>();
-template Move MovePicker::next_move<PLACE>();
-template Move MovePicker::next_move<MOVE>();
-template Move MovePicker::next_move<REMOVE>();
+/// MovePicker::next_move() is the most important method of the MovePicker
+/// class. It returns a new pseudo legal move every time it is called until
+/// there are no more moves left, picking the move with the highest score from a
+/// list of generated moves.
+Move MovePicker::next_move()
+{
+    constexpr int goodQuietThreshold = -5000;
+
+top:
+    switch (stage) {
+    case MAIN_TT:
+    case QSEARCH_TT:
+        ++stage;
+        if (ttMove != MOVE_NONE) {
+            return ttMove;
+        }
+        goto top;
+
+    case CAPTURE_INIT:
+    case QCAPTURE_INIT:
+        init_captures();
+        ++stage;
+        goto top;
+
+    case GOOD_CAPTURE:
+        // For Mill game, prioritize mill-forming moves
+        if (select([&]() {
+            // Mill-forming moves or high-value tactical moves
+            return cur->value > RATING_BLOCK_ONE_MILL - 1;
+        })) {
+            return *(cur - 1);
+        }
+        
+        // Prepare for quiet moves
+        cur = endCaptures;
+        ++stage;
+        goto top;
+
+    case QUIET_INIT:
+        if (stage == QUIET_INIT) {
+            init_quiets();
+        }
+        ++stage;
+        // fallthrough
+
+    case GOOD_QUIET:
+        if (select([&]() { return cur->value > goodQuietThreshold; })) {
+            return *(cur - 1);
+        }
+        
+        // Prepare for bad captures
+        cur = moves;
+        endMoves = endBadCaptures;
+        ++stage;
+        // fallthrough
+
+    case BAD_CAPTURE:
+        if (select([]() { return true; })) {
+            return *(cur - 1);
+        }
+        
+        // Prepare for bad quiets
+        cur = endCaptures;
+        endMoves = generate<LEGAL>(pos, moves) - (endCaptures - moves);
+        ++stage;
+        // fallthrough
+
+    case BAD_QUIET:
+        return select([&]() { return cur->value <= goodQuietThreshold; });
+
+    case QCAPTURE:
+        return select([]() { return true; });
+    }
+
+    return MOVE_NONE;
+}
+
+// Explicit instantiations for legacy functions
+template Move MovePicker::next_move_legacy<LEGAL>();
+template Move MovePicker::next_move_legacy<PLACE>();
+template Move MovePicker::next_move_legacy<MOVE>();
+template Move MovePicker::next_move_legacy<REMOVE>();

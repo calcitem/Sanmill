@@ -105,7 +105,7 @@ Value Search::qsearch(SearchEngine &searchEngine, Position *pos, Depth depth,
 
     // Generate remove moves
     MovePicker mp(*pos, MOVE_NONE);
-    mp.next_move<REMOVE>();
+    mp.next_move_legacy<REMOVE>();
     const int moveCount = mp.move_count();
 
     // Prefetch transposition table entries for all moves
@@ -254,7 +254,8 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
                                   // and no available moves
     Bound type = BOUND_NONE;
 
-    const Value probeVal = TranspositionTable::probe(posKey, depth, type
+    Value ttEval = VALUE_NONE;
+    const Value probeVal = TranspositionTable::probe(posKey, depth, type, ttEval
 #ifdef TT_MOVE_ENABLE
                                                      ,
                                                      ttMove
@@ -299,7 +300,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
 
     // Initialize MovePicker to order and select moves
     MovePicker mp(*pos, ttMove);
-    const Move nextMove = mp.next_move<LEGAL>();
+    mp.next_move_legacy<LEGAL>();
     const int moveCount = mp.move_count();
 
     // For Sanmill, we use fresh NNUE evaluation for each position
@@ -330,7 +331,7 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
 #ifndef NNUE_GENERATE_TRAINING_DATA
     // If only one legal move and at root depth, select it as best move
     if (moveCount == 1 && depth == originDepth) {
-        bestMove = nextMove;
+        bestMove = mp.moves[0].move;
         bestValue = VALUE_UNIQUE;
         return bestValue;
     }
@@ -441,7 +442,9 @@ Value Search::search(SearchEngine &searchEngine, Position *pos, Depth depth,
         ttBound = BOUND_EXACT;
 
     // Save the result in the transposition table
-    TranspositionTable::save(bestValue, depth, ttBound, posKey
+    // Use ttEval if available, otherwise compute static evaluation
+    Value staticEval = (ttEval != VALUE_NONE) ? ttEval : Eval::evaluate(*pos, depth);
+    TranspositionTable::save(bestValue, staticEval, depth, ttBound, posKey
 #ifdef TT_MOVE_ENABLE
                              ,
                              bestMove

@@ -473,6 +473,11 @@ int SearchEngine::executeSearch()
         beta = VALUE_INFINITE;
     }
 
+    // Advance TT generation for new search
+#ifdef TRANSPOSITION_TABLE_ENABLE
+    TranspositionTable::new_search();
+#endif
+
     // ---------------------------------------------------------------------
     // IDS
     // ---------------------------------------------------------------------
