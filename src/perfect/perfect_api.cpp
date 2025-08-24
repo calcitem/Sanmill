@@ -498,14 +498,9 @@ PerfectEvaluation getDetailedEvaluation(const Position &position)
         whiteBitboard, blackBitboard, whiteStonesToPlace, blackStonesToPlace,
         playerToMove, onlyStoneTaking);
 
-    // Adjust evaluation based on current player's perspective if needed
-    if (result.isValid && position.side_to_move() == BLACK &&
-        result.value != VALUE_DRAW) {
-        // The perfect database returns values from white's perspective
-        // If it's black to move, we need to negate for the current position
-        // analysis
-        result.value = -result.value;
-    }
+    // Keep evaluation as returned by the database. The value should be
+    // interpreted by the caller based on the side to move. Do not adjust
+    // perspective here to avoid double-negation in higher layers.
 
     return result;
 }

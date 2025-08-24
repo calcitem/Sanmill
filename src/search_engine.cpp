@@ -854,31 +854,25 @@ void SearchEngine::runAnalyze()
                         moveStr.c_str(), static_cast<int>(val),
                         perfectEval.stepCount);
 
-            // Adjust for current player's perspective
+            // The perfectEval.value is from the perspective of
+            // newPos.side_to_move() This is the evaluation of the position
+            // AFTER the move We need to interpret this from the perspective of
+            // the player who made the move (rootSide)
+
+            // The perfect DB value is from the perspective of the side to move
+            // in newPos. Convert to the perspective of the player who just
+            // moved (rootSide). If they differ, negate once.
             if (newPos.side_to_move() != rootSide) {
                 val = -val;
             }
 
-            // Determine outcome string based on evaluation from current
-            // player's perspective The logic depends on which side is currently
-            // to move
-            if (rootSide == WHITE) {
-                // For white's perspective
-                if (val == VALUE_MATE)
-                    outcome = "loss";
-                else if (val == -VALUE_MATE)
-                    outcome = "win";
-                else
-                    outcome = "draw";
-            } else {
-                // For black's perspective
-                if (val == VALUE_MATE)
-                    outcome = "win";
-                else if (val == -VALUE_MATE)
-                    outcome = "loss";
-                else
-                    outcome = "draw";
-            }
+            // Now val represents how good this move is for rootSide
+            if (val == VALUE_MATE)
+                outcome = "win"; // This move leads to a win for rootSide
+            else if (val == -VALUE_MATE)
+                outcome = "loss"; // This move leads to a loss for rootSide
+            else
+                outcome = "draw";
 
             // Format result with step count information if available
             if (perfectEval.stepCount >= 0) {
