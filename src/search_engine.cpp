@@ -786,7 +786,8 @@ uint64_t SearchEngine::beginNewAnalyze(Position *p)
 // Emit analyze results
 void SearchEngine::emitAnalyze()
 {
-    // No need to adjust values based on side to move for Analyze
+    // Analysis results are already adjusted to current player's perspective in
+    // runAnalyze()
 
     std::string result = analyzeResult;
 
@@ -858,13 +859,26 @@ void SearchEngine::runAnalyze()
                 val = -val;
             }
 
-            // Determine outcome string based on evaluation
-            if (val == VALUE_MATE)
-                outcome = "loss";
-            else if (val == -VALUE_MATE)
-                outcome = "win";
-            else
-                outcome = "draw";
+            // Determine outcome string based on evaluation from current
+            // player's perspective The logic depends on which side is currently
+            // to move
+            if (rootSide == WHITE) {
+                // For white's perspective
+                if (val == VALUE_MATE)
+                    outcome = "loss";
+                else if (val == -VALUE_MATE)
+                    outcome = "win";
+                else
+                    outcome = "draw";
+            } else {
+                // For black's perspective
+                if (val == VALUE_MATE)
+                    outcome = "win";
+                else if (val == -VALUE_MATE)
+                    outcome = "loss";
+                else
+                    outcome = "draw";
+            }
 
             // Format result with step count information if available
             if (perfectEval.stepCount >= 0) {
