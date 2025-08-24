@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Stærð innri hrings borðsins",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Borðskuggi",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Gildruvitund",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Lýstu gildruhreyfingum með þykkum hringjum og örvum meðan á greiningu stendur",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Gildra er til staðar. Gildruhreyfingar: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

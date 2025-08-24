@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Binne-ringgrootte van die bord",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Bordskadu",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Lokvalbewustheid",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Beklemtoon lokvalskuiwe met vet sirkels en pyle tydens ontleding",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Lokval bestaan. Lokvalskuiwe: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

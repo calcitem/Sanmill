@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Veličina unutarnog prstena ploče",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Sjenka ploče",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Prepoznavanje zamki",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Istakni poteze zamke podebljanim krugovima i strelicama tokom analize",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Postoji zamka. Potezi zamke: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

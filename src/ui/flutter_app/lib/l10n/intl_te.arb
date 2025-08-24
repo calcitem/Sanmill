@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "బోర్డు లోపలి రింగ్ పరిమాణం",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "బోర్డు నీడ",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "ఉచ్చు గుర్తింపు",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "విశ్లేషణ సమయంలో మందమైన వృత్తాలు మరియు బాణాలతో ఉచ్చు కదలికలను హైలైట్ చేయండి",
+  "@trapAwarenessDescription": {},
+  "trapExists": "ఉచ్చు ఉంది. ఉచ్చు కదలికలు: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

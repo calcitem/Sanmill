@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "बोर्ड की भीतरी रिंग का आकार",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "बोर्ड की छाया",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "फंदा पहचान",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "विश्लेषण के दौरान मोटे वृत्त और तीरों से फंदे वाली चालों को हाइलाइट करें",
+  "@trapAwarenessDescription": {},
+  "trapExists": "फंदा मौजूद है। फंदे वाली चालें: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

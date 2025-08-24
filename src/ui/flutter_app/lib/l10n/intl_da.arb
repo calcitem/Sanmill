@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Størrelse på den indre ring på brættet",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Brætskygge",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Fældedetektion",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Fremhæv fældetræk med tykke cirkler og pile under analysen",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Der er en fælde. Fældetræk: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

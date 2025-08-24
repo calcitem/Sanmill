@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Ukubwa wa pete ya ndani ya ubao",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Kivuli cha ubao",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Utambuzi wa mtego",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Onyesha kwa wazi michezo ya mtego kwa miduara na mishale minene wakati wa uchanganuzi",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Kuna mtego. Michezo ya mtego: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

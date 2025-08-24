@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "બોર્ડની અંદરની રિંગનું કદ",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "બોર્ડનો છાયો",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "ફાંસાની જાગૃતિ",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "વિશ્લેષણ દરમિયાન જાડા વર્તુળો અને તીરો સાથે ફાંસાના ચાલોને હાઇલાઇટ કરો",
+  "@trapAwarenessDescription": {},
+  "trapExists": "ફાંસો હાજર છે. ફાંસાના ચાલ: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

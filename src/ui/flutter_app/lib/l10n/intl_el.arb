@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Μέγεθος του εσωτερικού δακτυλίου του ταμπλό",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Σκιά ταμπλό",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Εντοπισμός παγίδων",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Επισήμανση κινήσεων παγίδας με έντονους κύκλους και βέλη κατά την ανάλυση",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Υπάρχει παγίδα. Κινήσεις παγίδας: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

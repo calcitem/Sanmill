@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Kích thước vòng trong của bàn cờ",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Bóng của bàn cờ",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Nhận diện bẫy",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Làm nổi bật các nước đi bẫy bằng vòng tròn và mũi tên đậm trong quá trình phân tích",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Có bẫy. Nước đi bẫy: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

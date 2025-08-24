@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "የቦርዱ ውስጣዊ ቀለበት መጠን",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "ሰሌዳ ጥላ",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "የወጥመድ ግንዛቤ",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "በትንታኔ ጊዜ የወጥመድ እንቅስቃሴዎችን በወፍራም ክብ እና ቀስቶች ያበራሩ",
+  "@trapAwarenessDescription": {},
+  "trapExists": "ወጥመድ አለ። የወጥመድ እንቅስቃሴዎች: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

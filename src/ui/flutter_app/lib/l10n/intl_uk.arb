@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Розмір внутрішнього кільця дошки",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Тінь дошки",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Виявлення пасток",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Підсвічуйте ходи-пастки під час аналізу жирними колами та стрілками",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Є пастка. Ходи-пастки: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

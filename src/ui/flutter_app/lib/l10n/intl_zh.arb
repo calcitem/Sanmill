@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "棋盘内圈大小",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "棋盘阴影",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "陷阱感知",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "在分析过程中用粗圆圈和箭头高亮陷阱着法",
+  "@trapAwarenessDescription": {},
+  "trapExists": "存在陷阱。陷阱着法: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

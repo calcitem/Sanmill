@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "حجم الحلقة الداخلية للوحة",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "ظل اللوحة",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "الوعي بالفخاخ",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "تسليط الضوء على نقلات الفخ بدوائر وسهام عريضة أثناء التحليل",
+  "@trapAwarenessDescription": {},
+  "trapExists": "يوجد فخ. نقلات الفخ: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

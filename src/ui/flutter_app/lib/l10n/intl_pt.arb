@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Tamanho do anel interno do tabuleiro",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Sombra do tabuleiro",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Detecção de armadilhas",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Realce os movimentos de armadilha com círculos e setas em negrito durante a análise",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Há uma armadilha. Movimentos de armadilha: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

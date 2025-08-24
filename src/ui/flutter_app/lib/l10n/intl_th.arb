@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "ขนาดวงแหวนด้านในของกระดาน",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "เงาของกระดาน",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "การตรวจจับกับดัก",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "ไฮไลต์หมากกับดักด้วยวงกลมและลูกศรหนาระหว่างการวิเคราะห์",
+  "@trapAwarenessDescription": {},
+  "trapExists": "มีกับดักอยู่ การเดินหมากกับดัก: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

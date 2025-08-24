@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Usayizi wendandatho yangaphakathi yebhodi",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Umthunzi webhodi",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Ukuqaphela ugibe",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Gqamisa ukuhamba kogibe ngama-siyingi aminyene nemicibisholo ngesikhathi sokuhlaziywa",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Kukhona ugibe. Ukuhamba kogibe: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

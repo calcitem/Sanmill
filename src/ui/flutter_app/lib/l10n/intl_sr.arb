@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Величина унутрашњег прстена табле",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Сенка табле",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Откривање замки",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Истакни потезе замке дебелим круговима и стрелицама током анализе",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Постоји замка. Потези замке: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

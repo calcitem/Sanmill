@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Størrelse på den indre ringen på brettet",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Brettskygge",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Felledeteksjon",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Fremhev felle-trekk med fete sirkler og piler under analysen",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Det finnes en felle. Felle-trekk: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

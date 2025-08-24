@@ -99,7 +99,7 @@ class AnalysisRenderer {
 
             // Draw mark based on the outcome (win/draw/loss)
             _drawOutcomeMark(canvas, position, result.outcome, squareSize * 0.4,
-                isTopResult);
+                isTopResult, result.move);
           } else {
             logger.w("Failed to parse place move: ${result.move}");
           }
@@ -204,11 +204,18 @@ class AnalysisRenderer {
         outcome == GameOutcome.disadvantage;
   }
 
-  /// Get stroke width based on outcome and whether it's a top result
-  static double _getStrokeWidth(GameOutcome outcome, bool isTopResult) {
+  /// Get stroke width based on outcome, whether it's a top result, and if it's a trap move
+  static double _getStrokeWidth(GameOutcome outcome, bool isTopResult,
+      {String? move}) {
     // Base stroke width
     const double normalWidth = 2.5;
     const double reducedWidth = 1.5;
+    const double trapWidth = 4.0; // Bold width for trap moves
+
+    // Check if this is a trap move and make it bold
+    if (move != null && AnalysisMode.isTrapMove(move)) {
+      return trapWidth;
+    }
 
     // For advantage/disadvantage, use normal width only for top results
     if (outcome == GameOutcome.advantage ||
@@ -227,9 +234,11 @@ class AnalysisRenderer {
     GameOutcome outcome,
     double radius,
     bool isTopResult,
+    String move,
   ) {
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth = _getStrokeWidth(outcome, isTopResult);
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: move);
 
     final Paint paint = Paint()
       ..color = AnalysisMode.getColorForOutcome(outcome).withValues(alpha: 0.7)
@@ -311,8 +320,9 @@ class AnalysisRenderer {
     // Determine if dashed pattern should be used
     final bool useDashPattern = _shouldUseDashPattern(outcome);
 
-    // Get stroke width based on importance
-    final double strokeWidth = _getStrokeWidth(outcome, isTopResult);
+    // Get stroke width based on importance and trap status
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: moveStr);
 
     // Draw arrow
     _drawArrow(
@@ -415,7 +425,8 @@ class AnalysisRenderer {
 
     // Determine if dashed pattern should be used and get stroke width
     final bool useDashPattern = _shouldUseDashPattern(outcome);
-    final double strokeWidth = _getStrokeWidth(outcome, isTopResult);
+    final double strokeWidth =
+        _getStrokeWidth(outcome, isTopResult, move: moveStr);
 
     // Draw a circle with appropriate line style to highlight removal candidate
     if (useDashPattern) {

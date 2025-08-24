@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Vidinio lentos žiedo dydis",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Lentos šešėlis",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Spąstų atpažinimas",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Analizės metu paryškinkite spąstų ėjimus storais apskritimais ir rodyklėmis",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Yra spąstai. Spąstų ėjimai: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

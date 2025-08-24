@@ -13,6 +13,7 @@ import '../services/mill.dart';
 class AnalysisMode {
   static bool _isEnabled = false;
   static List<MoveAnalysisResult> _analysisResults = <MoveAnalysisResult>[];
+  static List<String> _trapMoves = <String>[];
 
   // Add a flag to track when analysis is in progress
   static bool _isAnalyzing = false;
@@ -29,9 +30,17 @@ class AnalysisMode {
   /// Get current analysis results
   static List<MoveAnalysisResult> get analysisResults => _analysisResults;
 
+  /// Get current trap moves
+  static List<String> get trapMoves => _trapMoves;
+
+  /// Check if a move is a trap move
+  static bool isTrapMove(String move) => _trapMoves.contains(move);
+
   /// Enable analysis mode with the given results
-  static void enable(List<MoveAnalysisResult> results) {
+  static void enable(List<MoveAnalysisResult> results,
+      {List<String> trapMoves = const <String>[]}) {
     _analysisResults = results;
+    _trapMoves = trapMoves;
     _isEnabled = true;
     _isAnalyzing = false;
     // Notify listeners when analysis mode is enabled
@@ -41,6 +50,7 @@ class AnalysisMode {
   /// Disable analysis mode
   static void disable() {
     _analysisResults = <MoveAnalysisResult>[];
+    _trapMoves = <String>[];
     _isEnabled = false;
     _isAnalyzing = false;
     // Notify listeners when analysis mode is disabled

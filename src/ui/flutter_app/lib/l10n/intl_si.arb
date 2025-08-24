@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "පුවරුවේ අභ්‍යන්තර වළල්ලේ ප්‍රමාණය",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "පුවරුවේ හෙවනැල්ල",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Trap awareness",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Highlight trap moves with bold circles and arrows during analysis",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Trap exists. Trap moves: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

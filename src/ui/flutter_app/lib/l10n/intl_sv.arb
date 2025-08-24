@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Storlek på brädans inre ring",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Brädskugga",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Fälligenkänning",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Markera fäll-drag med tjocka cirklar och pilar under analysen",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Det finns en fälla. Fälldrag: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

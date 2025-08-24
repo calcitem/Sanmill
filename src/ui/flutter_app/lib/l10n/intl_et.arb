@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Laua sisemise rõnga suurus",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Laua vari",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Lõksude tuvastamine",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Tõsta analüüsi ajal lõksukäigud esile paksude ringide ja nooltega",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Lõks on olemas. Lõksukäigud: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

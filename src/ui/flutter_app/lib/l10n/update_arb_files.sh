@@ -60,7 +60,7 @@ update_file() {
 # Read lines from new-items.txt
 while IFS= read -r line || [[ -n "$line" ]]; do
     # Detect a comment line with the ARB filename, e.g., // intl_en.arb
-    if [[ "$line" =~ ^//[[:space:]]*([^[:space:]]+\.arb)$ ]]; then
+    if [[ "$line" =~ ^//[[:space:]]*([^[:space:]]+\.arb) ]]; then
         if [[ -n "$block" ]]; then
             update_file
             block=""

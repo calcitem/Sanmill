@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Տախտակի ներքին օղակի չափը",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Տախտակի ստվեր",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Որոգայթների հայտնաբերում",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Վերլուծության ընթացքում ընդգծել որոգայթի քայլերը հաստ շրջաններով և սլաքներով",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Կա որոգայթ։ Որոգայթի քայլեր՝ {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

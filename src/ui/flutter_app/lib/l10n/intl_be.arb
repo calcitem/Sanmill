@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Памер унутранага кольца дошкі",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Цень дошкі",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Вызначэнне пастак",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Падсвятляйце хады-пасткі тоўстымі коламі і стрэлкамі падчас аналізу",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Ёсць пастка. Хады-пасткі: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Dimensiunea inelului interior al tablei",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Umbra tablei",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Detectare capcane",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Evidențiază mutările-capcană cu cercuri și săgeți îngroșate în timpul analizei",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Există o capcană. Mutări-capcană: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

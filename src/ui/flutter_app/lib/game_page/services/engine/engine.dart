@@ -396,6 +396,7 @@ class Engine {
         "FocusOnBlockingPaths", generalSettings.focusOnBlockingPaths);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+    await _sendOptions("TrapAwareness", generalSettings.trapAwareness);
 
     // Control via environment configuration
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);
@@ -544,8 +545,23 @@ class Engine {
         logger.i("$_logTag Raw analysis response: $response");
       }
 
-      final List<String> rawParts =
-          response.replaceFirst("info analysis ", "").split(" ");
+      // First, check if there's trap information in the response
+      final List<String> trapMoves = <String>[];
+      String analysisData = response.replaceFirst("info analysis ", "");
+
+      // Check if trap information exists
+      final int trapIndex = analysisData.indexOf(" trap ");
+      if (trapIndex != -1) {
+        // Extract trap moves
+        final String trapData =
+            analysisData.substring(trapIndex + 6); // Skip " trap "
+        trapMoves.addAll(trapData.split(" ").where((String s) => s.isNotEmpty));
+
+        // Remove trap data from analysis data
+        analysisData = analysisData.substring(0, trapIndex);
+      }
+
+      final List<String> rawParts = analysisData.split(" ");
 
       // Reconstruct move=outcome(...) segments that may contain spaces
       final List<String> parts = <String>[];
@@ -627,7 +643,10 @@ class Engine {
         return PositionAnalysisResult.error("No analysis results available");
       }
 
-      return PositionAnalysisResult(possibleMoves: results);
+      return PositionAnalysisResult(
+        possibleMoves: results,
+        trapMoves: trapMoves,
+      );
     } catch (e) {
       logger.e("$_logTag Error during analysis: $e");
       return PositionAnalysisResult.error("Error during analysis: $e");
@@ -863,6 +882,7 @@ class MoveAnalysisResult {
 class PositionAnalysisResult {
   PositionAnalysisResult({
     required this.possibleMoves,
+    this.trapMoves = const <String>[],
     this.isValid = true,
     this.errorMessage,
   });
@@ -876,6 +896,7 @@ class PositionAnalysisResult {
   }
 
   final List<MoveAnalysisResult> possibleMoves;
+  final List<String> trapMoves;
   final bool isValid;
   final String? errorMessage;
 }

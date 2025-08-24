@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Размер на вътрешния пръстен на дъската",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Сянка на дъската",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Разпознаване на капани",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Подчертавай ходовете-капан с дебели кръгове и стрелки по време на анализа",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Има капан. Ходове-капан: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

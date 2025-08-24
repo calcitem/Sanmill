@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Velikost notranjega obroča deske",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Senca plošče",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Zaznavanje pasti",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Med analizo poudari poteze pasti z odebeljenimi krogi in puščicami",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Past obstaja. Poteze pasti: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Dēļa iekšējā gredzena izmērs",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Dēļa ēna",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Slazdu noteikšana",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Analīzes laikā izcel slazdu gājienus ar trekniem apļiem un bultām",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Pastāv slazds. Slazdu gājieni: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

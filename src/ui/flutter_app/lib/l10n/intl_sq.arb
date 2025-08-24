@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Madhësia e unazës së brendshme të tabelës",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Hija e tabelës",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Zbulimi i kurtheve",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Thekso lëvizjet-kurth me rrethe dhe shigjeta të trasha gjatë analizës",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Ekziston një kurth. Lëvizje-kurth: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

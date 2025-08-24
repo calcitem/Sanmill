@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "A tábla belső gyűrűjének mérete",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Tábla árnyéka",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Csapdaészlelés",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Elemzés közben emeld ki a csapdalépéseket vastag körökkel és nyilakkal",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Csapda van. Csapdalépések: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

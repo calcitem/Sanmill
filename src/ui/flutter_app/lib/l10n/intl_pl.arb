@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Rozmiar wewnętrznego pierścienia planszy",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Cień planszy",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Wykrywanie pułapek",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Podświetlaj ruchy-pułapki grubymi okręgami i strzałkami podczas analizy",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Istnieje pułapka. Ruchy-pułapki: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Velikost vnitřního kroužku hrací desky",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Stín desky",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Detekce pastí",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Zvýrazňuj tahy do pasti tučnými kruhy a šipkami během analýzy",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Existuje past. Tahy do pasti: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

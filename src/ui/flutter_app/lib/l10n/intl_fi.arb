@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Laudan sisemmän renkaan koko",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Laudan varjo",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Ansojen tunnistus",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Korosta ansasiirrot paksuilla ympyröillä ja nuolilla analyysin aikana",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Ansa havaittu. Ansasiirrot: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

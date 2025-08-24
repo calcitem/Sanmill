@@ -2066,5 +2066,17 @@
   "boardInnerRingSize": "Mida de l'anell interior del tauler",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Ombra del tauler",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Detecció de paranys",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Ressalta els moviments de parany amb cercles i fletxes gruixuts durant l'anàlisi",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Hi ha un parany. Moviments de parany: {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

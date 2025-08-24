@@ -17,6 +17,7 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include <vector>
 
 #ifdef FLUTTER_UI
 #include "engine_main.h"
@@ -932,6 +933,107 @@ void SearchEngine::runAnalyze()
         // Add numerical value to the outcome
         ss << " " << moveStr << "=" << outcome << "(" << static_cast<int>(val)
            << ")";
+    }
+
+    // Trap awareness analysis if enabled and perfect database is available
+    if (gameOptions.getTrapAwareness() && gameOptions.getUsePerfectDatabase()) {
+        std::vector<std::string> trapMoves;
+
+        // Check if we have at least one move with evaluation
+        bool hasWin = false;
+        bool hasDraw = false;
+        bool hasLoss = false;
+
+        // First pass: categorize outcomes
+        for (const auto &m : list) {
+            Position newPos = *rootPos;
+            newPos.do_move(m.move);
+
+            // Try to get evaluation from perfect database
+            PerfectEvaluation perfectEval = PerfectAPI::getDetailedEvaluation(
+                newPos);
+
+            if (perfectEval.isValid) {
+                Value val = perfectEval.value;
+
+                // Convert to perspective of the player who made the move
+                if (newPos.side_to_move() != rootSide) {
+                    val = -val;
+                }
+
+                if (val == VALUE_MATE) {
+                    hasWin = true;
+                } else if (val == -VALUE_MATE) {
+                    hasLoss = true;
+                } else {
+                    hasDraw = true;
+                }
+            }
+        }
+
+        // Don't report traps if all moves have same outcome
+        bool allDraw = !hasWin && hasDraw && !hasLoss;
+        bool allLoss = !hasWin && hasLoss && !hasDraw;
+
+        if (!allDraw && !allLoss) {
+            // Second pass: find trap moves (aggressive moves with worse
+            // outcomes)
+            for (const auto &m : list) {
+                Square to = to_sq(m.move);
+                Square from = from_sq(m.move);
+
+                // Check if move is aggressive (forms own mill or blocks
+                // opponent's mill)
+                int ourMillsCount = rootPos->potential_mills_count(to, rootSide,
+                                                                   from);
+                int theirMillsCount = rootPos->potential_mills_count(
+                    to, ~rootSide, from);
+
+                bool isAggressive = (ourMillsCount > 0 || theirMillsCount > 0);
+
+                if (isAggressive) {
+                    Position newPos = *rootPos;
+                    newPos.do_move(m.move);
+
+                    PerfectEvaluation perfectEval =
+                        PerfectAPI::getDetailedEvaluation(newPos);
+
+                    if (perfectEval.isValid) {
+                        Value val = perfectEval.value;
+
+                        // Convert to perspective of the player who made the
+                        // move
+                        if (newPos.side_to_move() != rootSide) {
+                            val = -val;
+                        }
+
+                        // Check if this move is worse than alternatives
+                        bool isWorseChoice = false;
+
+                        if (val == -VALUE_MATE && (hasWin || hasDraw)) {
+                            // Loss when there are win/draw alternatives
+                            isWorseChoice = true;
+                        } else if (val != VALUE_MATE && val != -VALUE_MATE &&
+                                   hasWin) {
+                            // Draw when there are win alternatives
+                            isWorseChoice = true;
+                        }
+
+                        if (isWorseChoice) {
+                            trapMoves.push_back(UCI::move(m.move));
+                        }
+                    }
+                }
+            }
+        }
+
+        // Append trap information to analysis result
+        if (!trapMoves.empty()) {
+            ss << " trap";
+            for (const auto &trapMove : trapMoves) {
+                ss << " " << trapMove;
+            }
+        }
     }
 
     analyzeResult = ss.str();

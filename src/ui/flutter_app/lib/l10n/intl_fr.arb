@@ -1965,5 +1965,17 @@
   "boardInnerRingSize": "Taille de l'anneau intérieur du plateau",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Ombre du plateau",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "trapAwareness": "Détection des pièges",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Mettre en évidence les coups piège avec des cercles et des flèches en gras pendant l'analyse",
+  "@trapAwarenessDescription": {},
+  "trapExists": "Un piège existe. Coups piège : {trapMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "trapMoves": {
+        "type": "String"
+      }
+    }
+  }
 }
