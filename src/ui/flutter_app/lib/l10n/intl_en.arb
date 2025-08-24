@@ -2066,5 +2066,27 @@
   "boardInnerRingSize": "Board inner ring size",
   "@boardInnerRingSize": {},
   "boardShadowEnabled": "Board shadow",
-  "@boardShadowEnabled": {}
+  "@boardShadowEnabled": {},
+  "usePerfectDatabaseFirst": "Please enable 'Use perfect database' first.",
+  "@usePerfectDatabaseFirst": {},
+  "trapAwareness": "Trap awareness",
+  "@trapAwareness": {},
+  "trapAwarenessDescription": "Analyze traps with Perfect DB when position changes",
+  "@trapAwarenessDescription": {},
+  "trapSprung": "Trap sprung. Risky move taken: {riskyMoves}",
+  "@trapSprung": {
+    "placeholders": {
+      "riskyMoves": {
+        "type": "String"
+      }
+    }
+  },
+  "trapExists": "Trap exists. Risky moves: {riskyMoves}",
+  "@trapExists": {
+    "placeholders": {
+      "riskyMoves": {
+        "type": "String"
+      }
+    }
+  }
 }

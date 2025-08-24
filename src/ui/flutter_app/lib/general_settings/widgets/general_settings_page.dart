@@ -155,6 +155,13 @@ class GeneralSettingsPage extends StatelessWidget {
     }
   }
 
+  void _setTrapAwareness(GeneralSettings generalSettings, bool value) {
+    // Enable or disable trap awareness
+    DB().generalSettings = generalSettings.copyWith(trapAwareness: value);
+
+    logger.t("$_logTag trapAwareness: $value");
+  }
+
   void _showUsePerfectDatabaseDialog(BuildContext context) => showDialog(
         context: context,
         builder: (_) => const _UsePerfectDatabaseDialog(),
@@ -432,6 +439,23 @@ class GeneralSettingsPage extends StatelessWidget {
                 },
                 titleString: S.of(context).usePerfectDatabase,
                 subtitleString: perfectDatabaseDescriptionFistLine,
+              ),
+            if (!kIsWeb)
+              SettingsListTile.switchTile(
+                key: const Key(
+                    'general_settings_page_settings_card_ais_play_style_trap_awareness'),
+                value: generalSettings.trapAwareness,
+                onChanged: (bool val) {
+                  if (DB().generalSettings.usePerfectDatabase &&
+                      isRuleSupportingPerfectDatabase()) {
+                    _setTrapAwareness(generalSettings, val);
+                  } else {
+                    rootScaffoldMessengerKey.currentState!.showSnackBarClear(
+                        S.of(context).usePerfectDatabaseFirst);
+                  }
+                },
+                titleString: S.of(context).trapAwareness,
+                subtitleString: S.of(context).trapAwarenessDescription,
               ),
             SettingsListTile.switchTile(
               key: const Key(

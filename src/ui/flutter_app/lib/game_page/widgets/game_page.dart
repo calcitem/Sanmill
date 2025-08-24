@@ -429,6 +429,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
     // Enable analysis mode with the results
     AnalysisMode.enable(result.possibleMoves);
 
+    // Trap awareness: also show snackbar if enabled and not AI vs AI
+    if (TrapAnalyzer.shouldShowTrapAwareness(
+        GameController().gameInstance.gameMode)) {
+      unawaited(GameController().maybeShowTrapSnackbar());
+    }
+
     // setState is still called here to ensure board is repainted
     // when user explicitly clicks the analysis button
     if (mounted) {

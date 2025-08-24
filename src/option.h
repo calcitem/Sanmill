@@ -262,6 +262,10 @@ public:
 
     bool getDeveloperMode() const noexcept { return developerMode; }
 
+    // Trap awareness
+    void setTrapAwareness(bool enabled) noexcept { trapAwareness = enabled; }
+    bool getTrapAwareness() const noexcept { return trapAwareness; }
+
 private:
     int skillLevel {1};
     int moveTime {1};
@@ -284,6 +288,7 @@ private:
     bool considerMobility {true};
     bool focusOnBlockingPaths {false};
     bool developerMode {false};
+    bool trapAwareness {false};
 
     // TODO: Set this to the correct path
 #ifdef _DEBUG

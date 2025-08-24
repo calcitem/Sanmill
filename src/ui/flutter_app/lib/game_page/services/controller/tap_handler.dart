@@ -600,6 +600,18 @@ class TapHandler {
         PlayerTimer().start();
       }
 
+      // Trap awareness after a move (only for non AI vs AI modes)
+      if (TrapAnalyzer.shouldShowTrapAwareness(
+          GameController().gameInstance.gameMode)) {
+        // Show "trap sprung" if the just-played move was one of previously cached traps
+        final String played = GameController().position._record?.move ?? '';
+        if (played.isNotEmpty) {
+          GameController().maybeShowTrapSprungForMove(played);
+        }
+        // Then analyze new position and possibly show "trap exists" for next side
+        unawaited(GameController().maybeShowTrapSnackbar());
+      }
+
       // Check if the next player is AI and needs to start thinking
       if (_isGameRunning && GameController().gameInstance.isAiSideToMove) {
         return GameController().engineToGo(context, isMoveNow: false);

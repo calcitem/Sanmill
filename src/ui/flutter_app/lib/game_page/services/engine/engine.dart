@@ -396,6 +396,7 @@ class Engine {
         "FocusOnBlockingPaths", generalSettings.focusOnBlockingPaths);
     await _sendOptions("AiIsLazy", generalSettings.aiIsLazy);
     await _sendOptions("Shuffling", generalSettings.shufflingEnabled);
+    await _sendOptions("TrapAwareness", generalSettings.trapAwareness);
 
     // Control via environment configuration
     await _sendOptions("DeveloperMode", EnvironmentConfig.devMode);

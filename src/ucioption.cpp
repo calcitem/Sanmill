@@ -97,6 +97,11 @@ static void on_developerMode(const Option &o)
     gameOptions.setDeveloperMode(o);
 }
 
+static void on_trapAwareness(const Option &o)
+{
+    gameOptions.setTrapAwareness(o);
+}
+
 // Rules
 
 static void on_piecesCount(const Option &o)
@@ -233,6 +238,7 @@ void init(OptionsMap &o)
     o["ConsiderMobility"] << Option(true, on_considerMobility);
     o["FocusOnBlockingPaths"] << Option(true, on_focusOnBlockingPaths);
     o["DeveloperMode"] << Option(true, on_developerMode);
+    o["TrapAwareness"] << Option(false, on_trapAwareness);
 
     // Rules
     o["PiecesCount"] << Option(9, 9, 12, on_piecesCount);

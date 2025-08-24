@@ -22,6 +22,33 @@ class GameController {
     _init(GameMode.humanVsAi);
   }
 
+  /// Run analysis and show trap awareness snackbar if a trap exists or was just sprung.
+  Future<void> maybeShowTrapSnackbar() async {
+    try {
+      // Capture BuildContext and S instance before async operation
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final S? localizations = context != null ? S.of(context) : null;
+
+      final PositionAnalysisResult result = await engine.analyzePosition();
+
+      // Compute trap moves for the current side to move and cache them
+      final List<String> trapMoves =
+          TrapAnalyzer.findTrapMoves(result, position);
+      _cachedTrapMovesForCurrentPosition = trapMoves;
+
+      // Show "trap exists" snackbar for the current position using pre-captured localizations
+      if (trapMoves.isNotEmpty && localizations != null) {
+        final String riskyMovesStr = trapMoves.join(', ');
+        final String message = localizations.trapExists(riskyMovesStr);
+        rootScaffoldMessengerKey.currentState!
+            .showSnackBar(CustomSnackBar(message));
+      }
+    } catch (e) {
+      // Silent fail, keep UX smooth
+      logger.t("$_logTag Trap awareness check failed: $e");
+    }
+  }
+
   static const String _logTag = "[Controller]";
 
   NetworkService? networkService;
@@ -97,6 +124,30 @@ class GameController {
 
   @visibleForTesting
   static GameController instance = GameController._();
+
+  // Cache of trap moves for the current position (for the side to move)
+  List<String> _cachedTrapMovesForCurrentPosition = <String>[];
+
+  /// Check if the given move just played was one of the previously cached trap moves.
+  /// If so, show a "Trap sprung" snackbar. This must be called right after a move
+  /// and before calling [maybeShowTrapSnackbar] (which refreshes the cache for the
+  /// next side to move).
+  void maybeShowTrapSprungForMove(String playedMoveNotation) {
+    if (_cachedTrapMovesForCurrentPosition.isEmpty) {
+      return;
+    }
+    if (!_cachedTrapMovesForCurrentPosition.contains(playedMoveNotation)) {
+      return;
+    }
+
+    final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+    if (context == null) {
+      return;
+    }
+    final String message = S.of(context).trapSprung(playedMoveNotation);
+    rootScaffoldMessengerKey.currentState!
+        .showSnackBar(CustomSnackBar(message));
+  }
 
   /// S.of(context).starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> startController() async {
@@ -810,6 +861,18 @@ class GameController {
 
         // Record game start time for AI vs AI mode on first move
         _recordGameStartTime();
+
+        // Trap awareness snackbar: after any move, evaluate the new position if enabled.
+        // Skip for AI vs AI mode; run for Human Vs AI and Human Vs Human.
+        if (TrapAnalyzer.shouldShowTrapAwareness(gameMode)) {
+          // First, show if AI just fell into a previously known trap (played move)
+          final String played = engineRet.extMove?.notation ?? '';
+          if (played.isNotEmpty) {
+            maybeShowTrapSprungForMove(played);
+          }
+          // Then, analyze new position and possibly show traps for human side
+          unawaited(maybeShowTrapSnackbar());
+        }
 
         // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {

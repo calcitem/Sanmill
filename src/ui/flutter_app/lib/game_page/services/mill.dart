@@ -78,6 +78,7 @@ part 'notifiers/setup_position_notifier.dart';
 part 'save_load/save_load_service.dart';
 part 'sounds/sound_manager.dart';
 part 'sounds/vibration_manager.dart';
+part 'trap_analyzer.dart';
 
 /// Move quality evaluation from analysis
 enum MoveQuality {
