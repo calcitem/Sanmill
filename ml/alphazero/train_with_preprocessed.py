@@ -11,7 +11,10 @@ import sys
 import argparse
 import logging
 import time
+import glob
+import json
 from pathlib import Path
+from typing import Optional, Dict, Any, List
 
 # Add paths for imports
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -21,14 +24,15 @@ sys.path.insert(0, os.path.join(os.path.dirname(current_dir), 'game'))
 try:
     from fast_data_loader import FastDataLoader, create_fast_training_pipeline
     from trainer import AlphaZeroTrainer
-    from config import get_default_config, get_fast_training_config
+    from config import (get_default_config, get_fast_training_config,
+                       get_preprocessed_training_config, AlphaZeroConfig)
     from neural_network import AlphaZeroNetworkWrapper
     import torch
     import numpy as np
 except ImportError as e:
     print(f"❌ Import Error: {e}")
     print("Please ensure you are running in the correct directory:")
-    print("  cd D:\\Repo\\Sanmill\\ml\\alphazero")
+    print("  cd ml\\alphazero")
     sys.exit(1)
 
 logger = logging.getLogger(__name__)
@@ -45,6 +49,238 @@ def setup_logging(verbose: bool = False):
             logging.FileHandler('preprocessed_training.log', encoding='utf-8')
         ]
     )
+
+
+def load_config_from_file(config_path: str) -> AlphaZeroConfig:
+    """Load configuration from file."""
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"Configuration file not found: {config_path}")
+
+    try:
+        config = AlphaZeroConfig.load(config_path)
+        print(f"✅ Configuration loaded from: {config_path}")
+        return config
+    except Exception as e:
+        raise ValueError(f"Failed to load configuration from {config_path}: {e}")
+
+
+class CheckpointManager:
+    """Manages training checkpoints for incremental training."""
+
+    def __init__(self, checkpoint_dir: str, keep_n_checkpoints: int = 3):
+        self.checkpoint_dir = Path(checkpoint_dir)
+        self.keep_n_checkpoints = keep_n_checkpoints
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    def get_latest_checkpoint(self) -> Optional[str]:
+        """Get the path to the latest checkpoint."""
+        checkpoint_pattern = self.checkpoint_dir / "checkpoint_epoch_*.tar"
+        checkpoints = glob.glob(str(checkpoint_pattern))
+
+        if not checkpoints:
+            return None
+
+        # Sort by epoch number
+        def extract_epoch(path):
+            try:
+                filename = Path(path).stem
+                return int(filename.split('_')[-1])
+            except (ValueError, IndexError):
+                return 0
+
+        latest = max(checkpoints, key=extract_epoch)
+        return latest
+
+    def save_checkpoint(self, neural_network, epoch: int, optimizer_state: Dict,
+                       loss_history: List[float], config: Dict[str, Any]) -> str:
+        """Save a training checkpoint."""
+        checkpoint_path = self.checkpoint_dir / f"checkpoint_epoch_{epoch}.tar"
+
+        # Save the neural network
+        neural_network.save(str(checkpoint_path))
+
+        # Save additional training state
+        state_path = self.checkpoint_dir / f"training_state_epoch_{epoch}.json"
+        training_state = {
+            'epoch': epoch,
+            'optimizer_state_dict': optimizer_state,
+            'loss_history': loss_history,
+            'config': config
+        }
+
+        with open(state_path, 'w') as f:
+            json.dump(training_state, f, indent=2, default=str)
+
+        # Clean up old checkpoints
+        self._cleanup_old_checkpoints()
+
+        return str(checkpoint_path)
+
+    def load_checkpoint(self, neural_network, checkpoint_path: str) -> Dict[str, Any]:
+        """Load a training checkpoint."""
+        # Load the neural network
+        neural_network.load(checkpoint_path)
+
+        # Load training state
+        epoch = self._extract_epoch_from_path(checkpoint_path)
+        state_path = self.checkpoint_dir / f"training_state_epoch_{epoch}.json"
+
+        if state_path.exists():
+            with open(state_path, 'r') as f:
+                training_state = json.load(f)
+            return training_state
+        else:
+            # Fallback for old checkpoints without training state
+            return {
+                'epoch': epoch,
+                'optimizer_state_dict': {},
+                'loss_history': [],
+                'config': {}
+            }
+
+    def _extract_epoch_from_path(self, checkpoint_path: str) -> int:
+        """Extract epoch number from checkpoint path."""
+        try:
+            filename = Path(checkpoint_path).stem
+            return int(filename.split('_')[-1])
+        except (ValueError, IndexError):
+            return 0
+
+    def _cleanup_old_checkpoints(self):
+        """Remove old checkpoints to save disk space."""
+        checkpoint_pattern = self.checkpoint_dir / "checkpoint_epoch_*.tar"
+        state_pattern = self.checkpoint_dir / "training_state_epoch_*.json"
+
+        checkpoints = glob.glob(str(checkpoint_pattern))
+        states = glob.glob(str(state_pattern))
+
+        if len(checkpoints) <= self.keep_n_checkpoints:
+            return
+
+        # Sort by epoch and keep only the latest N
+        def extract_epoch(path):
+            try:
+                filename = Path(path).stem
+                return int(filename.split('_')[-1])
+            except (ValueError, IndexError):
+                return 0
+
+        checkpoints.sort(key=extract_epoch)
+        states.sort(key=extract_epoch)
+
+        # Remove old checkpoints
+        for checkpoint in checkpoints[:-self.keep_n_checkpoints]:
+            try:
+                os.remove(checkpoint)
+                logger.info(f"Removed old checkpoint: {checkpoint}")
+            except OSError:
+                pass
+
+        # Remove corresponding state files
+        for state in states[:-self.keep_n_checkpoints]:
+            try:
+                os.remove(state)
+            except OSError:
+                pass
+
+
+def merge_config_with_args(config: AlphaZeroConfig, args) -> AlphaZeroConfig:
+    """Merge configuration file settings with command line arguments."""
+    # Command line arguments take precedence over config file
+    if config.preprocessed_training is None:
+        # If no preprocessed training config in file, create default
+        config.preprocessed_training = get_preprocessed_training_config().preprocessed_training
+
+    # Override with command-line arguments if provided
+    preprocessed_config = config.preprocessed_training
+
+    # Data parameters
+    if args.data_dir:
+        preprocessed_config.data_dir = args.data_dir
+    if args.max_positions is not None:
+        preprocessed_config.max_positions = args.max_positions
+    if args.trap_ratio is not None:
+        preprocessed_config.trap_ratio = args.trap_ratio
+    if args.phase_filter:
+        preprocessed_config.phase_filter = args.phase_filter
+
+    # Training parameters
+    if args.epochs is not None:
+        preprocessed_config.epochs = args.epochs
+    if args.batch_size is not None:
+        preprocessed_config.batch_size = args.batch_size
+    if args.learning_rate is not None:
+        preprocessed_config.learning_rate = args.learning_rate
+    if args.policy_loss:
+        preprocessed_config.policy_loss = args.policy_loss
+
+    # System parameters
+    if args.cpu is not None:
+        preprocessed_config.cpu = args.cpu
+    if args.num_workers is not None:
+        preprocessed_config.num_workers = args.num_workers
+    if args.checkpoint_dir:
+        preprocessed_config.checkpoint_dir = args.checkpoint_dir
+
+    # Memory management
+    if args.memory_conservative is not None:
+        preprocessed_config.memory_conservative = args.memory_conservative
+    if args.high_performance is not None:
+        preprocessed_config.high_performance = args.high_performance
+    if args.force_small_dataset is not None:
+        preprocessed_config.force_small_dataset = args.force_small_dataset
+    if args.no_swap is not None:
+        preprocessed_config.no_swap = args.no_swap
+    if args.memory_threshold is not None:
+        preprocessed_config.memory_threshold = args.memory_threshold
+
+    # Mode selection
+    if args.fast_mode is not None:
+        preprocessed_config.fast_mode = args.fast_mode
+
+    # Debug options
+    if args.verbose is not None:
+        preprocessed_config.verbose = args.verbose
+    if args.metadata_debug is not None:
+        preprocessed_config.metadata_debug = args.metadata_debug
+
+    # Incremental training options
+    if hasattr(args, 'resume_training') and args.resume_training is not None:
+        preprocessed_config.resume_from_checkpoint = args.resume_training
+    if hasattr(args, 'resume_checkpoint') and args.resume_checkpoint:
+        preprocessed_config.resume_checkpoint_path = args.resume_checkpoint
+    if hasattr(args, 'save_every_n_epochs') and args.save_every_n_epochs is not None:
+        preprocessed_config.save_checkpoint_every_n_epochs = args.save_every_n_epochs
+
+    # Data traversal options
+    if hasattr(args, 'full_traversal') and args.full_traversal is not None:
+        preprocessed_config.full_dataset_traversal = args.full_traversal
+    if hasattr(args, 'no_shuffle') and args.no_shuffle:
+        preprocessed_config.shuffle_data = False
+    if hasattr(args, 'data_workers') and args.data_workers is not None:
+        preprocessed_config.data_loading_workers = args.data_workers
+
+    # Advanced training options
+    if hasattr(args, 'mixed_precision') and args.mixed_precision is not None:
+        preprocessed_config.mixed_precision = args.mixed_precision
+    if hasattr(args, 'compile_model') and args.compile_model is not None:
+        preprocessed_config.compile_model = args.compile_model
+    if hasattr(args, 'gradient_accumulation') and args.gradient_accumulation is not None:
+        preprocessed_config.gradient_accumulation_steps = args.gradient_accumulation
+
+    # Also update network config if fast mode is enabled
+    if preprocessed_config.fast_mode:
+        config.network.num_filters = 128
+        config.network.num_residual_blocks = 5
+    elif preprocessed_config.high_performance:
+        config.network.num_filters = 768  # Updated for RTX4090
+        config.network.num_residual_blocks = 20
+        config.network.dropout_rate = 0.2
+    elif preprocessed_config.memory_conservative:
+        config.network.num_filters = 128
+        config.network.num_residual_blocks = 8
+
+    return config
 
 
 def validate_preprocessed_data(data_dir: str) -> bool:
@@ -79,61 +315,122 @@ def validate_preprocessed_data(data_dir: str) -> bool:
 
 def create_training_config(args):
     """Create the training configuration."""
-    if args.fast_mode:
-        config = get_fast_training_config()
-        print("⚡ Using fast training configuration")
+    # Load configuration from file if provided
+    if hasattr(args, 'config_file') and args.config_file:
+        try:
+            config = load_config_from_file(args.config_file)
+            config = merge_config_with_args(config, args)
+            print(f"📁 Using configuration from file: {args.config_file}")
+        except (FileNotFoundError, ValueError) as e:
+            print(f"❌ Configuration file error: {e}")
+            print("📊 Falling back to default configuration")
+            config = get_default_config()
     else:
-        config = get_default_config()
-        print("📊 Using standard training configuration")
+        # Use preset configurations
+        if args.fast_mode:
+            config = get_fast_training_config()
+            print("⚡ Using fast training configuration")
+        else:
+            config = get_default_config()
+            print("📊 Using standard training configuration")
 
-    # Override with command-line arguments
-    if args.iterations:
-        config.training.iterations = args.iterations
-    if args.batch_size:
-        config.training.train_batch_size = args.batch_size
-    if args.learning_rate:
-        config.training.train_lr = args.learning_rate
-    if args.epochs:
-        config.training.train_epochs = args.epochs
+        # Override with command-line arguments for legacy compatibility
+        if args.iterations:
+            config.training.iterations = args.iterations
+        if args.batch_size:
+            config.training.train_batch_size = args.batch_size
+        if args.learning_rate:
+            config.training.train_lr = args.learning_rate
+        if args.epochs:
+            config.training.train_epochs = args.epochs
 
     # Disable traditional Perfect DB pre-training (we are using preprocessed data)
     config.training.use_pretraining = False
 
-    # GPU settings
-    if not args.cpu:
-        config.training.cuda = torch.cuda.is_available()
-        if config.training.cuda:
-            print(f"🚀 Using GPU: {torch.cuda.get_device_name()}")
+    # GPU settings - use preprocessed config if available, otherwise legacy logic
+    if config.preprocessed_training:
+        if not config.preprocessed_training.cpu:
+            config.training.cuda = torch.cuda.is_available()
+            if config.training.cuda:
+                print(f"🚀 Using GPU: {torch.cuda.get_device_name()}")
+            else:
+                print("⚠️  CUDA not available, using CPU")
         else:
-            print("⚠️  CUDA not available, using CPU")
+            config.training.cuda = False
+            print("💻 Forcing CPU usage")
     else:
-        config.training.cuda = False
-        print("💻 Forcing CPU usage")
+        # Legacy GPU settings
+        if not args.cpu:
+            config.training.cuda = torch.cuda.is_available()
+            if config.training.cuda:
+                print(f"🚀 Using GPU: {torch.cuda.get_device_name()}")
+            else:
+                print("⚠️  CUDA not available, using CPU")
+        else:
+            config.training.cuda = False
+            print("💻 Forcing CPU usage")
 
     return config
 
 
-def train_with_preprocessed_data(args):
+def train_with_preprocessed_data(args, config=None):
     """Train using the preprocessed data."""
     print("🚀 Starting Alpha Zero training with preprocessed data")
     print("=" * 60)
 
-    # 1. Validate data
-    if not validate_preprocessed_data(args.data_dir):
-        return False
+    # 1. Create configuration if not provided
+    if config is None:
+        config = create_training_config(args)
 
-    # 2. Create configuration
-    config = create_training_config(args)
+    # Use config parameters if available, otherwise fall back to args
+    if config.preprocessed_training:
+        pc = config.preprocessed_training  # preprocessed config shorthand
+        data_dir = pc.data_dir or args.data_dir
+        batch_size = pc.batch_size
+        trap_ratio = pc.trap_ratio
+        phase_filter = pc.phase_filter
+        epochs = pc.epochs
+        learning_rate = pc.learning_rate
+        checkpoint_dir = pc.checkpoint_dir
+        max_positions = pc.max_positions
+        num_workers = pc.num_workers
+        policy_loss = pc.policy_loss
+        metadata_debug = pc.metadata_debug
+        memory_conservative = pc.memory_conservative
+        high_performance = pc.high_performance
+        force_small_dataset = pc.force_small_dataset
+        no_swap = pc.no_swap
+    else:
+        # Fall back to args for backward compatibility
+        data_dir = args.data_dir
+        batch_size = args.batch_size
+        trap_ratio = args.trap_ratio
+        phase_filter = args.phase_filter
+        epochs = args.epochs
+        learning_rate = args.learning_rate
+        checkpoint_dir = args.checkpoint_dir
+        max_positions = args.max_positions
+        num_workers = args.num_workers
+        policy_loss = args.policy_loss
+        metadata_debug = args.metadata_debug
+        memory_conservative = args.memory_conservative
+        high_performance = args.high_performance
+        force_small_dataset = args.force_small_dataset
+        no_swap = args.no_swap
+
+    # 2. Validate data
+    if not validate_preprocessed_data(data_dir):
+        return False
 
     # 3. Create data loader
     print(f"\n📦 Creating data loader...")
-    print(f"  Data directory: {args.data_dir}")
-    print(f"  Batch size: {args.batch_size}")
-    print(f"  Trap ratio: {args.trap_ratio}")
-    print(f"  Game phase filter: {args.phase_filter or 'All'}")
+    print(f"  Data directory: {data_dir}")
+    print(f"  Batch size: {batch_size}")
+    print(f"  Trap ratio: {trap_ratio}")
+    print(f"  Game phase filter: {phase_filter or 'All'}")
 
     try:
-        loader = FastDataLoader(args.data_dir)
+        loader = FastDataLoader(data_dir)
 
         # Get data statistics
         stats = loader.get_statistics()
@@ -149,10 +446,10 @@ def train_with_preprocessed_data(args):
         available_memory_gb = psutil.virtual_memory().available / (1024**3)
 
         # Smart memory management strategy - optimized for high-end hardware
-        if args.force_small_dataset:
-            safe_max_positions = min(args.max_positions or 100000, 100000)
+        if force_small_dataset:
+            safe_max_positions = min(max_positions or 100000, 100000)
             logger.warning(f"🔒 Force small dataset mode: limiting to {safe_max_positions:,} positions")
-        elif args.high_performance:
+        elif high_performance:
             # High-performance mode: designed for RTX4090 + 192GB+ memory configurations
             # Strictly avoid using virtual memory to prevent running out of disk space
 
@@ -184,7 +481,7 @@ def train_with_preprocessed_data(args):
             safe_positions_by_memory = int(usable_memory_gb * 1024**3 / bytes_per_position / 2)
 
             safe_max_positions = min(
-                args.max_positions or 50000000,  # User-specified or default 50 million
+                max_positions or 50000000,  # User-specified or default 50 million
                 safe_positions_by_memory         # Memory limit
             )
 
@@ -210,7 +507,7 @@ def train_with_preprocessed_data(args):
             available_disk_gb = disk_usage.free / (1024**3)
 
             # --no-swap option: strictly avoid virtual memory
-            if args.no_swap:
+            if no_swap:
                 logger.info("🔒 Strict no-swap mode: further restricting memory usage")
                 # Stricter limit: use only 50% of available memory, reserve more buffer
                 stricter_memory_gb = min(usable_memory_gb * 0.5, available_memory_gb * 0.4)
@@ -222,14 +519,14 @@ def train_with_preprocessed_data(args):
 
             if available_disk_gb < estimated_memory_gb * 2:  # Need 2x space for a safe buffer
                 logger.warning(f"⚠️  Disk space might be insufficient (Available: {available_disk_gb:.1f}GB, Possibly required: {estimated_memory_gb*2:.1f}GB)")
-                if args.no_swap:
+                if no_swap:
                     logger.info("✅ --no-swap is enabled, no need to worry about disk space")
                 else:
                     logger.warning(f"   Consider adding the --no-swap option or reducing --max-positions")
-        elif args.memory_conservative:
+        elif memory_conservative:
             # Conservative mode: suitable for low-memory environments
             conservative_positions = int(available_memory_gb * 1000)  # Approx. 1000 positions per GB
-            safe_max_positions = min(args.max_positions or 200000, conservative_positions)
+            safe_max_positions = min(max_positions or 200000, conservative_positions)
             logger.warning(f"🛡️  Conservative memory mode: limiting to {safe_max_positions:,} positions "
                            f"(available memory: {available_memory_gb:.1f} GB)")
         elif available_memory_gb >= 100:
@@ -237,7 +534,7 @@ def train_with_preprocessed_data(args):
             # Each position actually needs ~4KB, but reserve 2x buffer for processing and conversion
             positions_per_gb = 2000  # Approx. 2000 positions per GB (conservative but fully utilizes)
             safe_max_positions = min(
-                args.max_positions or 20000000,  # Default 20 million positions
+                max_positions or 20000000,  # Default 20 million positions
                 int(available_memory_gb * 0.6 * positions_per_gb)  # Use 60% of available memory
             )
             logger.info(f"🚀 High-performance mode (RTX4090+ config): loading up to {safe_max_positions:,} positions "
@@ -246,7 +543,7 @@ def train_with_preprocessed_data(args):
             # Mid-to-high-end configuration: reasonable memory utilization
             positions_per_gb = 1500  # Approx. 1500 positions per GB
             safe_max_positions = min(
-                args.max_positions or 10000000,  # Default 10 million positions
+                max_positions or 10000000,  # Default 10 million positions
                 int(available_memory_gb * 0.5 * positions_per_gb)  # Use 50% of available memory
             )
             logger.info(f"🔧 Mid-high-end mode: loading up to {safe_max_positions:,} positions "
@@ -255,7 +552,7 @@ def train_with_preprocessed_data(args):
             # Mid-range configuration: cautious memory usage
             positions_per_gb = 1000  # Approx. 1000 positions per GB
             safe_max_positions = min(
-                args.max_positions or 2000000,  # Default 2 million positions
+                max_positions or 2000000,  # Default 2 million positions
                 int(available_memory_gb * 0.4 * positions_per_gb)  # Use 40% of available memory
             )
             logger.info(f"🔧 Mid-range mode: loading up to {safe_max_positions:,} positions "
@@ -264,19 +561,49 @@ def train_with_preprocessed_data(args):
             # Low-end configuration: strictly limit memory usage
             positions_per_gb = 500  # Approx. 500 positions per GB
             safe_max_positions = min(
-                args.max_positions or 500000,  # Default 500,000 positions
+                max_positions or 500000,  # Default 500,000 positions
                 int(available_memory_gb * 0.3 * positions_per_gb)  # Use 30% of available memory
             )
             logger.warning(f"🛡️  Low-memory mode: limiting to {safe_max_positions:,} positions "
                            f"(available memory: {available_memory_gb:.1f} GB)")
 
+        # Configure data loading based on traversal mode
+        if config.preprocessed_training and config.preprocessed_training.full_dataset_traversal:
+            # Full dataset traversal mode - use all data without sampling
+            actual_max_positions = None  # Use all available data
+            shuffle_data = config.preprocessed_training.shuffle_data
+            actual_trap_ratio = 0.0  # No trap sampling in full traversal mode
+            actual_num_workers = config.preprocessed_training.data_loading_workers
+            prefetch_factor = config.preprocessed_training.prefetch_factor
+            pin_memory = config.preprocessed_training.pin_memory
+
+            print(f"🔄 Full dataset traversal mode enabled")
+            print(f"  Using entire dataset (~207GB)")
+            print(f"  Data shuffle: {'Enabled' if shuffle_data else 'Disabled'}")
+            print(f"  Data workers: {actual_num_workers}")
+            print(f"  Prefetch factor: {prefetch_factor}")
+        else:
+            # Legacy sampling mode
+            actual_max_positions = safe_max_positions
+            shuffle_data = True
+            actual_trap_ratio = trap_ratio
+            actual_num_workers = num_workers
+            prefetch_factor = 2
+            pin_memory = False
+
+            print(f"📊 Sampling mode (legacy)")
+            print(f"  Max positions: {actual_max_positions:,}")
+            print(f"  Trap ratio: {actual_trap_ratio}")
+
         dataloader = loader.create_dataloader(
-            phase_filter=args.phase_filter,
-            max_positions=safe_max_positions,
-            batch_size=args.batch_size,
-            shuffle=True,
-            trap_ratio=args.trap_ratio,
-            num_workers=args.num_workers
+            phase_filter=phase_filter,
+            max_positions=actual_max_positions,
+            batch_size=batch_size,
+            shuffle=shuffle_data,
+            trap_ratio=actual_trap_ratio,
+            num_workers=actual_num_workers,
+            pin_memory=pin_memory if hasattr(loader, 'pin_memory') else False,
+            prefetch_factor=prefetch_factor if hasattr(loader, 'prefetch_factor') else 2
         )
 
         print(f"✅ DataLoader created successfully:")
@@ -303,13 +630,37 @@ def train_with_preprocessed_data(args):
         device = 'cuda' if config.training.cuda else 'cpu'
         neural_network = AlphaZeroNetworkWrapper(model_args, device)
 
+        # Apply advanced optimizations for high-performance training
+        if config.preprocessed_training:
+            pc = config.preprocessed_training
+
+            # Enable model compilation for PyTorch 2.0+
+            if pc.compile_model and hasattr(torch, 'compile'):
+                try:
+                    neural_network.net = torch.compile(neural_network.net)
+                    print("✅ Model compilation enabled (PyTorch 2.0+)")
+                except Exception as e:
+                    print(f"⚠️  Model compilation failed: {e}")
+
+            # Configure mixed precision training
+            if pc.mixed_precision and device == 'cuda':
+                try:
+                    from torch.amp import GradScaler
+                    scaler = GradScaler('cuda')
+                    print("✅ Mixed precision training enabled")
+                except ImportError:
+                    scaler = None
+                    print("⚠️  Mixed precision not available")
+            else:
+                scaler = None
+
         # Create trainer (simplified version, specialized for preprocessed data)
         trainer_args = {
             'cuda': config.training.cuda,
             'train_batch_size': config.training.train_batch_size,
             'train_epochs': config.training.train_epochs,
             'train_lr': config.training.train_lr,
-            'checkpoint_dir': args.checkpoint_dir,
+            'checkpoint_dir': checkpoint_dir,
             'checkpoint_interval': 5
         }
 
@@ -319,11 +670,51 @@ def train_with_preprocessed_data(args):
         print(f"❌ Failed to create neural network: {e}")
         return False
 
-    # 5. Start training
+    # 5. Initialize checkpoint manager and resume training if needed
+    checkpoint_manager = None
+    start_epoch = 0
+    loss_history = []
+
+    if config.preprocessed_training:
+        pc = config.preprocessed_training
+        checkpoint_manager = CheckpointManager(
+            checkpoint_dir,
+            keep_n_checkpoints=pc.keep_n_checkpoints
+        )
+
+        # Handle checkpoint resumption
+        if pc.resume_from_checkpoint:
+            if pc.resume_checkpoint_path:
+                resume_path = pc.resume_checkpoint_path
+            else:
+                resume_path = checkpoint_manager.get_latest_checkpoint()
+
+            if resume_path:
+                print(f"🔄 Resuming training from checkpoint: {resume_path}")
+                try:
+                    training_state = checkpoint_manager.load_checkpoint(neural_network, resume_path)
+                    start_epoch = training_state.get('epoch', 0)
+                    loss_history = training_state.get('loss_history', [])
+                    print(f"✅ Resumed from epoch {start_epoch}")
+                except Exception as e:
+                    print(f"⚠️  Failed to resume from checkpoint: {e}")
+                    print("Starting fresh training...")
+            else:
+                print("🔄 Resume requested but no checkpoint found, starting fresh training")
+
+    # 6. Start training
     print(f"\n🎯 Starting training with preprocessed data...")
-    print(f"  Epochs: {args.epochs}")
-    print(f"  Learning rate: {args.learning_rate}")
-    print(f"  Checkpoint directory: {args.checkpoint_dir}")
+    print(f"  Total epochs: {epochs}")
+    print(f"  Starting from epoch: {start_epoch + 1}")
+    print(f"  Learning rate: {learning_rate}")
+    print(f"  Batch size: {batch_size}")
+    print(f"  Checkpoint directory: {checkpoint_dir}")
+    if config.preprocessed_training:
+        pc = config.preprocessed_training
+        print(f"  Gradient accumulation steps: {pc.gradient_accumulation_steps}")
+        print(f"  Mixed precision: {'Enabled' if pc.mixed_precision else 'Disabled'}")
+        print(f"  Model compilation: {'Enabled' if pc.compile_model else 'Disabled'}")
+        print(f"  Save checkpoint every: {pc.save_checkpoint_every_n_epochs} epochs")
 
     start_time = time.time()
 
@@ -335,12 +726,21 @@ def train_with_preprocessed_data(args):
         if neural_network.optimizer is None:
             neural_network.optimizer = torch.optim.Adam(
                 neural_network.net.parameters(),
-                lr=args.learning_rate
+                lr=learning_rate,
+                weight_decay=1e-4  # Add weight decay for better generalization
             )
+
+        # Set up learning rate scheduler for long training
+        if config.preprocessed_training and config.preprocessed_training.high_performance:
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                neural_network.optimizer, T_0=5, T_mult=2, eta_min=1e-5
+            )
+        else:
+            scheduler = None
 
         total_batches = len(dataloader)
 
-        for epoch in range(args.epochs):
+        for epoch in range(start_epoch, epochs):
             epoch_start = time.time()
             epoch_loss = 0.0
             epoch_policy_loss = 0.0
@@ -353,7 +753,7 @@ def train_with_preprocessed_data(args):
             swap_info = psutil.swap_memory()
             swap_usage_mb = swap_info.used / (1024**2)
 
-            print(f"\n📈 Epoch {epoch + 1}/{args.epochs}")
+            print(f"\n📈 Epoch {epoch + 1}/{epochs}")
             print(f"   Available Memory: {current_memory:.1f} GB")
             print(f"   Memory Usage: {memory_usage_percent:.1f}%")
             print(f"   Swap Usage: {swap_usage_mb:.1f} MB")
@@ -364,7 +764,7 @@ def train_with_preprocessed_data(args):
                 logger.warning("   Recommend monitoring memory usage")
 
             # Strict memory monitoring
-            if args.high_performance:
+            if high_performance:
                 if memory_usage_percent > 85:
                     logger.error(f"🚨 Memory usage too high ({memory_usage_percent:.1f}%), training may become unstable")
                     logger.error("   Recommend immediately reducing --max-positions or batch size")
@@ -373,19 +773,19 @@ def train_with_preprocessed_data(args):
 
                 # Set different swap thresholds based on whether --no-swap is enabled
                 # Get baseline swap usage (normal system usage before training starts)
-                if not hasattr(args, '_baseline_swap_mb'):
-                    args._baseline_swap_mb = swap_usage_mb
-                    logger.info(f"📊 Baseline Swap Usage: {args._baseline_swap_mb:.1f} MB")
+                if not hasattr(config, '_baseline_swap_mb'):
+                    config._baseline_swap_mb = swap_usage_mb
+                    logger.info(f"📊 Baseline Swap Usage: {config._baseline_swap_mb:.1f} MB")
 
                 # Calculate the increase relative to the baseline
-                swap_increase_mb = swap_usage_mb - args._baseline_swap_mb
+                swap_increase_mb = swap_usage_mb - config._baseline_swap_mb
 
-                if args.no_swap:
+                if no_swap:
                     # NO-SWAP mode: allow baseline usage + 2GB increase
-                    swap_threshold = args._baseline_swap_mb + 2048
+                    swap_threshold = config._baseline_swap_mb + 2048
                     if swap_usage_mb > swap_threshold:
                         logger.error(f"🚨 NO-SWAP mode: Swap memory has increased too much")
-                        logger.error(f"   Current: {swap_usage_mb:.1f} MB, Baseline: {args._baseline_swap_mb:.1f} MB")
+                        logger.error(f"   Current: {swap_usage_mb:.1f} MB, Baseline: {config._baseline_swap_mb:.1f} MB")
                         logger.error(f"   Increase: {swap_increase_mb:.1f} MB (Threshold: 2048 MB)")
                         raise RuntimeError("NO-SWAP mode: Virtual memory increased too much during training")
                 else:
@@ -398,9 +798,18 @@ def train_with_preprocessed_data(args):
                     logger.warning(f"⚠️  Available memory is low ({current_memory:.1f} GB)")
                     logger.warning("Consider reducing batch size or enabling memory cleanup")
 
+            # Configure gradient accumulation
+            gradient_accumulation_steps = 1
+            if config.preprocessed_training:
+                gradient_accumulation_steps = config.preprocessed_training.gradient_accumulation_steps
+
+            accumulated_loss = 0.0
+            accumulated_policy_loss = 0.0
+            accumulated_value_loss = 0.0
+
             for batch_idx, (boards, policies, values, metadata) in enumerate(dataloader):
                 # Metadata and channel feature debugging (only output for the first batch to avoid polluting logs)
-                if args.metadata_debug and batch_idx == 0:
+                if metadata_debug and batch_idx == 0:
                     try:
                         print("\n🔎 Feature Channel Check (first batch):")
                         print(f"  boards tensor shape: {tuple(boards.shape)}")
@@ -439,47 +848,103 @@ def train_with_preprocessed_data(args):
                         if torch.cuda.is_available():
                             torch.cuda.empty_cache()
                 # Move data to device
-                boards = boards.to(device)
-                values = values.to(device)
+                boards = boards.to(device, non_blocking=True)
+                values = values.to(device, non_blocking=True)
+                policies = policies.to(device, non_blocking=True)
 
-                # Handle policy target dimension mismatch issue
-                policies = policies.to(device)
+                # Mixed precision forward pass
+                if scaler is not None:
+                    with torch.amp.autocast('cuda'):
+                        # Forward pass
+                        pred_policies, pred_values = neural_network.net(boards)
 
-                # Forward pass
-                pred_policies, pred_values = neural_network.net(boards)
+                        # Adjust policy target dimensions to match network output
+                        if policies.shape[1] != pred_policies.shape[1]:
+                            batch_size = policies.shape[0]
+                            num_actions = pred_policies.shape[1]
+                            expanded = torch.zeros(batch_size, num_actions, device=device)
+                            to_copy = min(24, num_actions)
+                            expanded[:, :to_copy] = policies[:, :to_copy]
+                            sums = expanded.sum(dim=1, keepdim=True)
+                            fallback = torch.full_like(expanded, 1.0 / num_actions)
+                            policies = torch.where(sums > 0, expanded / sums, fallback)
 
-                # Adjust policy target dimensions to match network output
-                if policies.shape[1] != pred_policies.shape[1]:
-                    # Preprocessed data is usually 24-dimensional (24 valid position distributions), network outputs to a larger action space
-                    batch_size = policies.shape[0]
-                    num_actions = pred_policies.shape[1]
-                    expanded = torch.zeros(batch_size, num_actions, device=device)
-                    to_copy = min(24, num_actions)
-                    expanded[:, :to_copy] = policies[:, :to_copy]
-                    # Normalize to a probability distribution; if all zeros, fallback to a uniform distribution
-                    sums = expanded.sum(dim=1, keepdim=True)
-                    fallback = torch.full_like(expanded, 1.0 / num_actions)
-                    policies = torch.where(sums > 0, expanded / sums, fallback)
+                        # Calculate loss
+                        if policy_loss == 'kld':
+                            log_probs = torch.nn.functional.log_softmax(pred_policies, dim=1)
+                            policy_loss_value = torch.nn.functional.kl_div(log_probs, policies, reduction='batchmean')
+                        else:
+                            probs = torch.nn.functional.softmax(pred_policies, dim=1)
+                            policy_loss_value = torch.nn.functional.mse_loss(probs, policies)
+                        value_loss_value = torch.nn.functional.mse_loss(pred_values.squeeze(), values)
+                        total_loss = policy_loss_value + value_loss_value
 
-                # Calculate loss
-                if args.policy_loss == 'kld':
-                    log_probs = torch.nn.functional.log_softmax(pred_policies, dim=1)
-                    policy_loss = torch.nn.functional.kl_div(log_probs, policies, reduction='batchmean')
+                        # Scale loss for gradient accumulation
+                        total_loss = total_loss / gradient_accumulation_steps
                 else:
-                    probs = torch.nn.functional.softmax(pred_policies, dim=1)
-                    policy_loss = torch.nn.functional.mse_loss(probs, policies)
-                value_loss = torch.nn.functional.mse_loss(pred_values.squeeze(), values)
-                total_loss = policy_loss + value_loss
+                    # Standard precision forward pass
+                    pred_policies, pred_values = neural_network.net(boards)
 
-                # Backpropagation
-                neural_network.optimizer.zero_grad()
-                total_loss.backward()
-                neural_network.optimizer.step()
+                    # Adjust policy target dimensions to match network output
+                    if policies.shape[1] != pred_policies.shape[1]:
+                        batch_size = policies.shape[0]
+                        num_actions = pred_policies.shape[1]
+                        expanded = torch.zeros(batch_size, num_actions, device=device)
+                        to_copy = min(24, num_actions)
+                        expanded[:, :to_copy] = policies[:, :to_copy]
+                        sums = expanded.sum(dim=1, keepdim=True)
+                        fallback = torch.full_like(expanded, 1.0 / num_actions)
+                        policies = torch.where(sums > 0, expanded / sums, fallback)
 
-                # Statistics
-                epoch_loss += total_loss.item()
-                epoch_policy_loss += policy_loss.item()
-                epoch_value_loss += value_loss.item()
+                    # Calculate loss
+                    if policy_loss == 'kld':
+                        log_probs = torch.nn.functional.log_softmax(pred_policies, dim=1)
+                        policy_loss_value = torch.nn.functional.kl_div(log_probs, policies, reduction='batchmean')
+                    else:
+                        probs = torch.nn.functional.softmax(pred_policies, dim=1)
+                        policy_loss_value = torch.nn.functional.mse_loss(probs, policies)
+                    value_loss_value = torch.nn.functional.mse_loss(pred_values.squeeze(), values)
+                    total_loss = policy_loss_value + value_loss_value
+
+                    # Scale loss for gradient accumulation
+                    total_loss = total_loss / gradient_accumulation_steps
+
+                # Backward pass with gradient accumulation
+                if scaler is not None:
+                    # Mixed precision backward pass
+                    scaler.scale(total_loss).backward()
+
+                    if (batch_idx + 1) % gradient_accumulation_steps == 0:
+                        # Gradient clipping for stability
+                        scaler.unscale_(neural_network.optimizer)
+                        torch.nn.utils.clip_grad_norm_(neural_network.net.parameters(), max_norm=1.0)
+
+                        scaler.step(neural_network.optimizer)
+                        scaler.update()
+                        neural_network.optimizer.zero_grad()
+                else:
+                    # Standard backward pass
+                    total_loss.backward()
+
+                    if (batch_idx + 1) % gradient_accumulation_steps == 0:
+                        # Gradient clipping for stability
+                        torch.nn.utils.clip_grad_norm_(neural_network.net.parameters(), max_norm=1.0)
+
+                        neural_network.optimizer.step()
+                        neural_network.optimizer.zero_grad()
+
+                # Statistics (scale back for logging)
+                actual_loss = total_loss.item() * gradient_accumulation_steps
+                actual_policy_loss = policy_loss_value.item() * gradient_accumulation_steps
+                actual_value_loss = value_loss_value.item() * gradient_accumulation_steps
+
+                accumulated_loss += actual_loss
+                accumulated_policy_loss += actual_policy_loss
+                accumulated_value_loss += actual_value_loss
+
+                epoch_loss += actual_loss
+                epoch_policy_loss += actual_policy_loss
+                epoch_value_loss += actual_value_loss
 
                 # Display progress
                 if batch_idx % 100 == 0 or batch_idx == total_batches - 1:
@@ -498,21 +963,49 @@ def train_with_preprocessed_data(args):
             print(f"  Policy Loss: {avg_policy_loss:.4f}")
             print(f"  Value Loss: {avg_value_loss:.4f}")
 
-            # Save checkpoint
-            if (epoch + 1) % 5 == 0:
-                checkpoint_path = Path(args.checkpoint_dir) / f"preprocessed_epoch_{epoch + 1}.tar"
-                checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
-                neural_network.save(str(checkpoint_path))
-                print(f"💾 Checkpoint saved: {checkpoint_path}")
+            # Update learning rate scheduler
+            if scheduler is not None:
+                scheduler.step()
+                current_lr = scheduler.get_last_lr()[0]
+                print(f"  Learning rate: {current_lr:.6f}")
+
+            # Add loss to history
+            loss_history.append(avg_loss)
+
+            # Save checkpoint using checkpoint manager
+            if checkpoint_manager is not None:
+                save_interval = config.preprocessed_training.save_checkpoint_every_n_epochs
+                if (epoch + 1) % save_interval == 0 or (epoch + 1) == epochs:
+                    try:
+                        optimizer_state = neural_network.optimizer.state_dict()
+                        config_dict = config.to_dict()
+
+                        checkpoint_path = checkpoint_manager.save_checkpoint(
+                            neural_network,
+                            epoch + 1,
+                            optimizer_state,
+                            loss_history,
+                            config_dict
+                        )
+                        print(f"💾 Checkpoint saved: {checkpoint_path}")
+                    except Exception as e:
+                        print(f"⚠️  Failed to save checkpoint: {e}")
+            else:
+                # Legacy checkpoint saving
+                if (epoch + 1) % 5 == 0:
+                    checkpoint_path = Path(checkpoint_dir) / f"preprocessed_epoch_{epoch + 1}.tar"
+                    checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
+                    neural_network.save(str(checkpoint_path))
+                    print(f"💾 Checkpoint saved: {checkpoint_path}")
 
         # Training finished
         total_time = time.time() - start_time
         print(f"\n🎉 Training complete!")
         print(f"  Total time: {total_time:.1f}s ({total_time/60:.1f}min)")
-        print(f"  Average time per epoch: {total_time/args.epochs:.1f}s")
+        print(f"  Average time per epoch: {total_time/epochs:.1f}s")
 
         # Save final model
-        final_model_path = Path(args.checkpoint_dir) / "final_preprocessed_model.tar"
+        final_model_path = Path(checkpoint_dir) / "final_preprocessed_model.tar"
         final_model_path.parent.mkdir(parents=True, exist_ok=True)
         neural_network.save(str(final_model_path))
         print(f"💾 Final model saved: {final_model_path}")
@@ -536,10 +1029,22 @@ def main():
         epilog="""
 Example Usage:
 
-  # Basic Training
+  # Using Configuration Files (Recommended)
+  python train_with_preprocessed.py --config train_with_preprocessed_config.json
+  python train_with_preprocessed.py --config train_with_preprocessed_fast.json
+  python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json
+  python train_with_preprocessed.py --config train_with_preprocessed_conservative.json
+
+  # Override config file settings with command line
+  python train_with_preprocessed.py \\
+    --config train_with_preprocessed_config.json \\
+    --data-dir "G:\\preprocessed_data" \\
+    --epochs 15
+
+  # Legacy Mode (without config file)
   python train_with_preprocessed.py --data-dir "G:\\preprocessed_data"
 
-  # Advanced Options
+  # Advanced Options (Legacy)
   python train_with_preprocessed.py \\
     --data-dir "G:\\preprocessed_data" \\
     --batch-size 128 \\
@@ -548,20 +1053,20 @@ Example Usage:
     --trap-ratio 0.4 \\
     --phase-filter "placement"
 
-  # Fast Test Mode
+  # Fast Test Mode (Legacy)
   python train_with_preprocessed.py \\
     --data-dir "G:\\preprocessed_data" \\
     --fast-mode \\
     --max-positions 10000
 
-  # High-Performance Mode (for RTX4090 + 192GB+ RAM)
+  # High-Performance Mode (Legacy)
   python train_with_preprocessed.py \\
     --data-dir "G:\\preprocessed_data" \\
     --high-performance \\
     --batch-size 256 \\
     --epochs 10
 
-  # Memory-Conservative Mode (for large datasets)
+  # Memory-Conservative Mode (Legacy)
   python train_with_preprocessed.py \\
     --data-dir "G:\\preprocessed_data" \\
     --memory-conservative \\
@@ -570,8 +1075,12 @@ Example Usage:
         """
     )
 
-    # Required arguments
-    parser.add_argument('--data-dir', required=True,
+    # Configuration file
+    parser.add_argument('--config', '--config-file', dest='config_file',
+                        help='Path to configuration file (JSON or YAML)')
+
+    # Required arguments (optional if config file is provided)
+    parser.add_argument('--data-dir',
                         help='Path to the preprocessed data directory (containing .npz files)')
 
     # Training parameters
@@ -627,6 +1136,37 @@ Example Usage:
                         help='Print metadata and feature channel stats for the first batch for verification')
     parser.add_argument('--policy-loss', choices=['kld', 'mse'], default='kld',
                         help='Policy loss function type: kld or mse (default: kld)')
+
+    # Incremental training options
+    parser.add_argument('--resume-training', action='store_true',
+                        help='Resume training from the latest checkpoint')
+    parser.add_argument('--resume-checkpoint', type=str,
+                        help='Specific checkpoint path to resume from')
+    parser.add_argument('--save-every-n-epochs', type=int,
+                        help='Save checkpoint every N epochs (overrides config)')
+
+    # Data traversal options
+    parser.add_argument('--full-traversal', action='store_true',
+                        help='Use full dataset traversal without sampling')
+    parser.add_argument('--no-shuffle', action='store_true',
+                        help='Disable data shuffling between epochs')
+    parser.add_argument('--data-workers', type=int,
+                        help='Number of data loading workers (separate from training workers)')
+
+    # Advanced training options
+    parser.add_argument('--mixed-precision', action='store_true',
+                        help='Enable automatic mixed precision training')
+    parser.add_argument('--no-mixed-precision', dest='mixed_precision', action='store_false',
+                        help='Disable mixed precision training')
+    parser.add_argument('--compile-model', action='store_true',
+                        help='Enable PyTorch 2.0+ model compilation')
+    parser.add_argument('--no-compile-model', dest='compile_model', action='store_false',
+                        help='Disable model compilation')
+    parser.add_argument('--gradient-accumulation', type=int,
+                        help='Number of gradient accumulation steps')
+
+    # Set defaults for mixed precision and compilation
+    parser.set_defaults(mixed_precision=None, compile_model=None)
 
     args = parser.parse_args()
 
@@ -692,13 +1232,19 @@ Example Usage:
         print("")
 
     # Validate arguments
-    if not Path(args.data_dir).exists():
+    if not args.config_file and not args.data_dir:
+        print("❌ Either --config-file or --data-dir must be provided")
+        return 1
+
+    if args.data_dir and not Path(args.data_dir).exists():
         print(f"❌ Data directory does not exist: {args.data_dir}")
         return 1
 
     # Display configuration
     print(f"📋 Training Configuration:")
-    print(f"  Data Directory: {args.data_dir}")
+    if args.config_file:
+        print(f"  Config File: {args.config_file}")
+    print(f"  Data Directory: {args.data_dir or 'From config file'}")
     print(f"  Epochs: {args.epochs}")
     print(f"  Batch Size: {args.batch_size}")
     print(f"  Learning Rate: {args.learning_rate}")
@@ -707,7 +1253,7 @@ Example Usage:
     print(f"  Game Phase: {args.phase_filter or 'All'}")
     print(f"  Device: {'CPU' if args.cpu else 'GPU (if available)'}")
     print(f"  Workers: {args.num_workers}")
-    print(f"  Memory Safe Mode: {'Enabled' if args.memory_safe else 'Disabled'}")
+    print(f"  Memory Safe Mode: {'Enabled' if hasattr(args, 'memory_safe') and args.memory_safe else 'Disabled'}")
     print(f"  Memory Threshold: {args.memory_threshold} GB")
     print(f"  Conservative Memory: {'Enabled' if args.memory_conservative else 'Disabled'}")
     print(f"  High Performance: {'Enabled' if args.high_performance else 'Disabled'}")

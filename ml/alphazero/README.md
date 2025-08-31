@@ -221,3 +221,11 @@ python train.py --use-preprocessed-data "preprocessed_data"
 ```
 
 Now you can enjoy **complete and ultra-fast** training data! 🚀
+
+## Train
+
+python train_with_preprocessed.py --config train_with_preprocessed_config.json --data-dir "G:\preprocessed_data"
+
+python train_with_preprocessed.py --config train_with_preprocessed_fast.json --data-dir "G:\preprocessed_data"
+
+python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --epochs 15

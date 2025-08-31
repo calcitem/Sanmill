@@ -92,30 +92,92 @@ class PerfectDBConfig:
 
 
 @dataclass
+class PreprocessedTrainingConfig:
+    """Configuration for training with preprocessed data."""
+    # Data parameters
+    data_dir: str = ""
+    max_positions: Optional[int] = None
+    trap_ratio: float = 0.3
+    phase_filter: Optional[str] = None  # placement, moving, flying, or None for all
+
+    # Training parameters
+    epochs: int = 10
+    batch_size: int = 64
+    learning_rate: float = 1e-3
+    policy_loss: str = "kld"  # kld or mse
+
+    # Incremental training parameters
+    resume_from_checkpoint: bool = False
+    resume_checkpoint_path: Optional[str] = None
+    save_checkpoint_every_n_epochs: int = 5
+    keep_n_checkpoints: int = 3  # Keep only the last N checkpoints to save disk space
+
+    # Data traversal parameters
+    full_dataset_traversal: bool = False  # If True, traverse entire dataset without sampling
+    shuffle_data: bool = True  # Shuffle data between epochs
+    data_loading_workers: int = 4  # Separate from training workers
+    prefetch_factor: int = 2  # Number of batches to prefetch per worker
+    pin_memory: bool = True  # Pin memory for faster GPU transfer
+
+    # Advanced training parameters
+    gradient_accumulation_steps: int = 1  # Accumulate gradients over multiple batches
+    mixed_precision: bool = True  # Use automatic mixed precision for faster training
+    compile_model: bool = True  # Use torch.compile for optimization (PyTorch 2.0+)
+
+    # System parameters
+    cpu: bool = False
+    num_workers: int = 2  # Kept for backward compatibility
+    checkpoint_dir: str = "checkpoints_preprocessed"
+
+    # Memory management
+    memory_conservative: bool = False
+    high_performance: bool = False
+    force_small_dataset: bool = False
+    no_swap: bool = False
+    memory_threshold: float = 16.0
+
+    # Mode selection
+    fast_mode: bool = False
+
+    # Debug options
+    verbose: bool = False
+    metadata_debug: bool = False
+
+
+@dataclass
 class AlphaZeroConfig:
     """Complete Alpha Zero configuration."""
     network: NetworkConfig
     mcts: MCTSConfig
     training: TrainingConfig
     perfect_db: PerfectDBConfig
+    preprocessed_training: Optional[PreprocessedTrainingConfig] = None
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
-        return {
+        result = {
             'network': asdict(self.network),
             'mcts': asdict(self.mcts),
             'training': asdict(self.training),
             'perfect_db': asdict(self.perfect_db)
         }
+        if self.preprocessed_training:
+            result['preprocessed_training'] = asdict(self.preprocessed_training)
+        return result
 
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> 'AlphaZeroConfig':
         """Create from dictionary."""
+        preprocessed_training = None
+        if 'preprocessed_training' in data:
+            preprocessed_training = PreprocessedTrainingConfig(**data['preprocessed_training'])
+
         return cls(
             network=NetworkConfig(**data.get('network', {})),
             mcts=MCTSConfig(**data.get('mcts', {})),
             training=TrainingConfig(**data.get('training', {})),
-            perfect_db=PerfectDBConfig(**data.get('perfect_db', {}))
+            perfect_db=PerfectDBConfig(**data.get('perfect_db', {})),
+            preprocessed_training=preprocessed_training
         )
 
     def save(self, filepath: str):
@@ -239,6 +301,84 @@ def get_gpu_optimized_config() -> AlphaZeroConfig:
     return config
 
 
+def get_preprocessed_training_config(mode: str = "default") -> AlphaZeroConfig:
+    """Get configuration for training with preprocessed data."""
+    config = get_default_config()
+
+    if mode == "fast":
+        preprocessed_config = PreprocessedTrainingConfig(
+            epochs=5,
+            batch_size=32,
+            learning_rate=1e-3,
+            fast_mode=True,
+            max_positions=10000,
+            checkpoint_dir="checkpoints_preprocessed_fast"
+        )
+        # Also adjust network for fast training
+        config.network.num_filters = 128
+        config.network.num_residual_blocks = 5
+    elif mode == "high_performance":
+        preprocessed_config = PreprocessedTrainingConfig(
+            # Training parameters optimized for Ryzen 7950x + 192GB RAM + RTX4090
+            epochs=30,
+            batch_size=512,  # Large batch size to utilize RTX4090 fully
+            learning_rate=2e-3,  # Slightly higher LR for large batches
+            high_performance=True,
+
+            # Data parameters for 207GB dataset
+            max_positions=None,  # Use entire dataset (207GB)
+            full_dataset_traversal=True,  # Complete traversal without sampling
+            shuffle_data=True,
+
+            # Incremental training support
+            resume_from_checkpoint=True,
+            save_checkpoint_every_n_epochs=2,  # More frequent saves for large training
+            keep_n_checkpoints=5,
+
+            # Advanced training optimizations
+            gradient_accumulation_steps=1,  # No accumulation needed with large batch
+            mixed_precision=True,  # Essential for RTX4090
+            compile_model=True,  # PyTorch 2.0+ optimization
+
+            # Data loading optimized for high-end hardware
+            data_loading_workers=12,  # Utilize Ryzen 7950x (16 cores)
+            prefetch_factor=4,  # Aggressive prefetching with 192GB RAM
+            pin_memory=True,
+
+            # System settings
+            num_workers=2,  # Keep legacy compatibility
+            no_swap=True,  # Strict memory management with 192GB
+            memory_threshold=32.0,  # Higher threshold for high-end system
+            checkpoint_dir="checkpoints_preprocessed_hp"
+        )
+        # Larger network for high performance - optimized for RTX4090
+        config.network.num_filters = 768  # Increased from 512
+        config.network.num_residual_blocks = 20  # Increased from 15
+        config.network.dropout_rate = 0.2  # Reduced dropout for larger dataset
+    elif mode == "conservative":
+        preprocessed_config = PreprocessedTrainingConfig(
+            epochs=10,
+            batch_size=32,
+            learning_rate=1e-3,
+            memory_conservative=True,
+            max_positions=200000,
+            checkpoint_dir="checkpoints_preprocessed_conservative"
+        )
+        # Smaller network for conservative mode
+        config.network.num_filters = 128
+        config.network.num_residual_blocks = 8
+    else:  # default
+        preprocessed_config = PreprocessedTrainingConfig(
+            epochs=10,
+            batch_size=64,
+            learning_rate=1e-3,
+            checkpoint_dir="checkpoints_preprocessed"
+        )
+
+    config.preprocessed_training = preprocessed_config
+    return config
+
+
 def validate_config(config: AlphaZeroConfig) -> List[str]:
     """
     Validate configuration and return list of warnings/errors.
@@ -290,7 +430,11 @@ def create_example_configs():
         'fast_training': get_fast_training_config(),
         'production': get_production_config(),
         'cpu_optimized': get_cpu_optimized_config(),
-        'gpu_optimized': get_gpu_optimized_config()
+        'gpu_optimized': get_gpu_optimized_config(),
+        'preprocessed_default': get_preprocessed_training_config("default"),
+        'preprocessed_fast': get_preprocessed_training_config("fast"),
+        'preprocessed_high_performance': get_preprocessed_training_config("high_performance"),
+        'preprocessed_conservative': get_preprocessed_training_config("conservative")
     }
 
     for name, config in configs.items():
