@@ -1182,7 +1182,10 @@ class ChunkedTrainingProgressDisplay:
             total_chunk_samples = sum(phase_counts.values())
             print(f"      Game Phases:")
             
-            for phase, count in sorted(phase_counts.items()):
+            # Display phases in logical game progression order (only phases present in data)
+            phase_order = ['placement', 'moving', 'flying']
+            for phase in phase_order:
+                count = phase_counts.get(phase, 0)
                 percentage = (count / total_chunk_samples * 100) if total_chunk_samples > 0 else 0
                 progress_bar = self._create_mini_progress_bar(percentage, 20)
                 print(f"        {phase.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
@@ -1193,21 +1196,16 @@ class ChunkedTrainingProgressDisplay:
             print(f"      Position Types:")
             total_positions = sum(position_types.values())
             
-            for pos_type, count in sorted(position_types.items()):
+            # Display position types in logical order
+            position_order = ['opening_positions', 'trap_positions', 'critical_positions', 'endgame_positions']
+            for pos_type in position_order:
+                count = position_types.get(pos_type, 0)
                 percentage = (count / total_positions * 100) if total_positions > 0 else 0
                 progress_bar = self._create_mini_progress_bar(percentage, 20)
-                print(f"        {pos_type.replace('_', ' ').title():<15}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
+                display_name = pos_type.replace('_', ' ').title()
+                print(f"        {display_name:<18}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
         
-        # Difficulty distribution
-        difficulty_dist = chunk_metadata.get('difficulty_distribution', {})
-        if difficulty_dist:
-            print(f"      Difficulty Levels:")
-            total_difficulty = sum(difficulty_dist.values())
-            
-            for level, count in sorted(difficulty_dist.items()):
-                percentage = (count / total_difficulty * 100) if total_difficulty > 0 else 0
-                progress_bar = self._create_mini_progress_bar(percentage, 20)
-                print(f"        {level.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
+        # Note: Difficulty distribution removed since all samples have difficulty=0.0 (not meaningful)
     
     def _create_mini_progress_bar(self, percentage: float, width: int = 20) -> str:
         """Create a small progress bar for composition display."""
@@ -1660,8 +1658,8 @@ class DatasetScanner:
         total_samples = 0
         file_stats = []
         
-        # Phase distribution tracking
-        phase_distribution = {'placement': 0, 'moving': 0, 'flying': 0, 'removal': 0}
+        # Phase distribution tracking (only phases present in current data)
+        phase_distribution = {'placement': 0, 'moving': 0, 'flying': 0}
         
         print(f"📊 Scanning {self.total_files} NPZ files for composition analysis...")
         
@@ -1754,23 +1752,26 @@ class DatasetScanner:
     
     def _analyze_file_phase_distribution(self, metadata_list) -> Dict[str, int]:
         """Analyze phase distribution in a single file."""
-        phase_counts = {'placement': 0, 'moving': 0, 'flying': 0, 'removal': 0}
+        phase_counts = {'placement': 0, 'moving': 0, 'flying': 0}
         
         for metadata in metadata_list:
             if isinstance(metadata, dict):
-                # Determine game phase from metadata
-                pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
-                pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
-                is_removal = metadata.get('is_removal_phase', False)
+                # Use existing game_phase field if available
+                game_phase = metadata.get('game_phase', '').lower()
                 
-                if is_removal:
-                    phase_counts['removal'] += 1
-                elif pieces_in_hand > 0:
-                    phase_counts['placement'] += 1
-                elif pieces_on_board <= 6:  # 3 pieces per side or less
-                    phase_counts['flying'] += 1
+                if game_phase in ['placement', 'moving', 'flying']:
+                    phase_counts[game_phase] += 1
                 else:
-                    phase_counts['moving'] += 1
+                    # Fallback to calculation if game_phase is not available
+                    pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
+                    pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
+                    
+                    if pieces_in_hand > 0:
+                        phase_counts['placement'] += 1
+                    elif pieces_on_board <= 6:  # 3 pieces per side or less
+                        phase_counts['flying'] += 1
+                    else:
+                        phase_counts['moving'] += 1
         
         return phase_counts
     
@@ -1977,10 +1978,10 @@ class ChunkedDataLoader:
         if not metadata_list:
             return {}
         
-        # Initialize counters
-        phase_counts = {'placement': 0, 'moving': 0, 'flying': 0, 'removal': 0}
+        # Initialize counters - only track phases that actually exist in data
+        phase_counts = {'placement': 0, 'moving': 0, 'flying': 0}
         position_types = {'trap_positions': 0, 'critical_positions': 0, 'endgame_positions': 0, 'opening_positions': 0}
-        difficulty_dist = {'easy': 0, 'medium': 0, 'hard': 0, 'expert': 0}
+        # Remove difficulty distribution since all samples have difficulty=0.0 (not meaningful)
         
         # Analyze each sample's metadata
         for metadata in metadata_list:
@@ -1995,56 +1996,50 @@ class ChunkedDataLoader:
                     print(f"🔍 Sample metadata #{total_classified}: game_phase='{game_phase}', sector_file='{metadata.get('sector_filename', 'N/A')}'")
                     print(f"    Full metadata keys: {list(metadata.keys())}")
                 
-                if game_phase in ['placement', 'moving', 'flying', 'removal']:
-                    # Use the existing game_phase classification
+                if game_phase in ['placement', 'moving', 'flying']:
+                    # Use the existing game_phase classification (removal not supported in current data)
                     phase_counts[game_phase] += 1
                 else:
                     # Fallback to calculation if game_phase is not available or invalid
                     pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
                     pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
-                    is_removal = metadata.get('is_removal_phase', False)
                     
-                    if is_removal:
-                        phase_counts['removal'] += 1
-                    elif pieces_in_hand > 0:
+                    if pieces_in_hand > 0:
                         phase_counts['placement'] += 1
                     elif pieces_on_board <= 6:  # 3 pieces per side or less
                         phase_counts['flying'] += 1
                     else:
                         phase_counts['moving'] += 1
                 
-                # Position type analysis
+                # Position type analysis - simplified classification based on game phase and trap detection
                 is_trap = metadata.get('is_trap', False)
-                difficulty = metadata.get('difficulty', 0.0)
                 steps_to_result = metadata.get('steps_to_result', -1)
                 
-                # Get pieces info for position type classification
-                pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
-                pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
-                
+                # Priority-based classification: trap > critical > phase-based
                 if is_trap:
                     position_types['trap_positions'] += 1
                 elif steps_to_result >= 0 and steps_to_result <= 5:
                     position_types['critical_positions'] += 1
-                elif pieces_on_board <= 8:
-                    position_types['endgame_positions'] += 1
-                elif pieces_in_hand >= 6:
-                    position_types['opening_positions'] += 1
-                
-                # Difficulty classification
-                if difficulty == 0.0:
-                    difficulty_dist['easy'] += 1
-                elif difficulty < 1.0:
-                    difficulty_dist['medium'] += 1
-                elif difficulty < 2.0:
-                    difficulty_dist['hard'] += 1
                 else:
-                    difficulty_dist['expert'] += 1
+                    # Classify based on game phase for logical consistency
+                    if game_phase == 'placement':
+                        position_types['opening_positions'] += 1
+                    elif game_phase == 'flying':
+                        position_types['endgame_positions'] += 1
+                    elif game_phase == 'moving':
+                        # Moving phase can be mid-game or endgame, use piece count
+                        pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
+                        if pieces_on_board <= 8:
+                            position_types['endgame_positions'] += 1
+                        else:
+                            position_types['opening_positions'] += 1
+                    else:
+                        # Default to opening for unknown phases
+                        position_types['opening_positions'] += 1
         
         return {
             'phase_distribution': phase_counts,
             'position_types': position_types,
-            'difficulty_distribution': difficulty_dist,
             'total_samples': len(metadata_list)
         }
 
