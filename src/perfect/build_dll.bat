@@ -48,7 +48,9 @@ cl /nologo /LD /O2 /EHsc /MD /std:c++17 ^
 
 if %ERRORLEVEL% EQU 0 (
     echo Success! perfect_db.dll created.
+    echo DLL location:
     dir perfect_db.dll
+    echo.
 ) else (
     echo Build failed with error %ERRORLEVEL%
 )

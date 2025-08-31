@@ -8,9 +8,12 @@
 #include "perfect_errors.h"
 #include "perfect_game_state.h"
 #include "perfect_wrappers.h"
+#include "perfect_sector.h"
+#include "perfect_hash.h"
 #include "option.h"
 
 #include <cstring>
+#include <map>
 
 // We keep a tiny init flag to avoid double init/deinit in the same process
 static bool g_pd_inited = false;
@@ -192,5 +195,189 @@ PD_API int pd_best_move(int whiteBits, int blackBits, int whiteStonesToPlace,
     std::strncpy(outBuf, token.c_str(), outBufLen);
     outBuf[outBufLen - 1] = '\0';
     return 1;
+}
+
+// Structure for maintaining sector iteration state
+struct SectorIteratorState
+{
+    Sector *sector;
+    Hash *hash;
+    int current_index;
+    int total_count;
+    Id sector_id;
+    bool is_valid;
+
+    SectorIteratorState()
+        : sector(nullptr)
+        , hash(nullptr)
+        , current_index(0)
+        , total_count(0)
+        , is_valid(false)
+    { }
+};
+
+// Global table for managing sector iterator handles
+static std::map<int, SectorIteratorState> g_sector_handles;
+static int g_next_handle_id = 1;
+
+PD_API int pd_open_sector(int W, int B, int WF, int BF)
+{
+    using namespace PerfectErrors;
+    clearError();
+
+    if (!g_pd_inited)
+        return 0;
+
+    try {
+        // Create sector ID
+        Id sector_id;
+        sector_id.W = W;
+        sector_id.B = B;
+        sector_id.WF = WF;
+        sector_id.BF = BF;
+
+        // Get or create sector
+        Sector *sector = sectors(sector_id);
+        if (!sector) {
+            // Try to create new sector
+            sector = new Sector(sector_id);
+            if (!sector) {
+                return 0;
+            }
+            sectors(sector_id) = sector;
+        }
+
+        // Ensure hash is allocated
+        if (!sector->hash) {
+            sector->allocate_hash();
+        }
+
+        if (!sector->hash || !sector->hash->is_initialized()) {
+            return 0;
+        }
+
+        // Create iterator state
+        SectorIteratorState state;
+        state.sector = sector;
+        state.hash = sector->hash;
+        state.current_index = 0;
+        state.total_count = sector->hash->hash_count;
+        state.sector_id = sector_id;
+        state.is_valid = true;
+
+        // Assign handle
+        int handle = g_next_handle_id++;
+        g_sector_handles[handle] = state;
+
+        return handle;
+
+    } catch (...) {
+        return 0;
+    }
+}
+
+PD_API int pd_close_sector(int handle)
+{
+    auto it = g_sector_handles.find(handle);
+    if (it != g_sector_handles.end()) {
+        g_sector_handles.erase(it);
+        return 1; // Success
+    }
+    return 0; // Handle not found
+}
+
+PD_API int pd_sector_count(int handle)
+{
+    auto it = g_sector_handles.find(handle);
+    if (it == g_sector_handles.end() || !it->second.is_valid) {
+        return 0;
+    }
+    return it->second.total_count;
+}
+
+PD_API int pd_sector_next(int handle, int *outWhiteBits, int *outBlackBits,
+                          int *outWdl, int *outSteps)
+{
+    using namespace PerfectErrors;
+    clearError();
+
+    auto it = g_sector_handles.find(handle);
+    if (it == g_sector_handles.end() || !it->second.is_valid) {
+        return 0;
+    }
+
+    SectorIteratorState &state = it->second;
+
+    if (!outWhiteBits || !outBlackBits || !outWdl || !outSteps) {
+        return 0;
+    }
+
+    // Use a loop instead of recursion to avoid stack overflow
+    while (state.current_index < state.total_count) {
+        try {
+            // Get the board state from inverse hash
+            board b = state.hash->inverse_hash(state.current_index);
+
+            // Extract bitboards from board representation (board format: low 24
+            // bits = white, high 24 bits = black)
+            const uint32_t mask24 = 0xFFFFFF;
+            int whiteBits = (int)(b & mask24);         // Low 24 bits
+            int blackBits = (int)((b >> 24) & mask24); // High 24 bits
+
+            // Get evaluation from sector (handle symmetry correctly)
+            eval_elem_sym2 eval_sym = state.sector->get_eval_inner(
+                state.current_index);
+
+            // Handle symmetry cases like in perfect_hash.cpp
+            if (eval_sym.cas() != eval_elem_sym2::Sym) {
+                // Direct conversion is safe
+                eval_elem2 eval(eval_sym);
+
+                // Handle different evaluation types correctly
+                if (eval.cas() == eval_elem2::Val) {
+                    // This is a value (WDL + steps)
+                    val v = eval.value();
+
+                    // Convert to WDL and steps
+                    *outWdl = 0; // Draw by default
+                    if (v.key1 > 0) {
+                        *outWdl = 1; // Win
+                    } else if (v.key1 < 0) {
+                        *outWdl = -1; // Loss
+                    }
+
+                    *outSteps = v.key2; // Steps to result
+                } else {
+                    // This is a count - not a game result
+                    // For training purposes, we might want to skip count
+                    // entries or handle them differently
+                    *outWdl = 0;   // Neutral
+                    *outSteps = 0; // No steps info
+                }
+
+                // Found a valid non-symmetric position
+                *outWhiteBits = whiteBits;
+                *outBlackBits = blackBits;
+
+                // Advance to next position for next call
+                state.current_index++;
+
+                return 1; // Success
+            } else {
+                // This position has symmetry - skip it and continue with the
+                // loop Instead of recursion, we continue the loop
+                state.current_index++;
+                continue; // Skip this symmetric position and try the next one
+            }
+
+        } catch (...) {
+            // If there's an error with current position, try to skip it
+            state.current_index++;
+            continue;
+        }
+    }
+
+    // Reached end of iteration
+    return 0;
 }
 }

@@ -9,7 +9,12 @@ Squares are stored and manipulated as (x, y) tuples where x is the column and y 
 """
 
 import numpy as np
-from .standard_rules import xy_to_coord, coord_to_xy, adjacent
+# Handle both relative and absolute imports
+try:
+    from .standard_rules import xy_to_coord, coord_to_xy, adjacent
+except ImportError:
+    # Fallback to absolute imports
+    from standard_rules import xy_to_coord, coord_to_xy, adjacent
 
 
 class Board:

@@ -242,12 +242,12 @@ fi
 echo ""
 echo "Multi-language support:"
 if ls translations/*.qm 1> /dev/null 2>&1; then
-    echo "  ✓ Translation files available in both Debug and Release builds"
-    echo "  ✓ Supported languages: English, German, Hungarian, Simplified Chinese"
-    echo "  ✓ Translation files location: translations/ directory in build output"
+    echo "  [OK] Translation files available in both Debug and Release builds"
+    echo "  [OK] Supported languages: English, German, Hungarian, Simplified Chinese"
+    echo "  [OK] Translation files location: translations/ directory in build output"
 else
-    echo "  ✗ Translation files not found - multi-language features may not work"
-    echo "  ℹ Run ./build_translations.sh to compile translation files"
+    echo "  [WARN] Translation files not found - multi-language features may not work"
+    echo "  [INFO] Run ./build_translations.sh to compile translation files"
 fi
 
 echo ""

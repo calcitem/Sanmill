@@ -42,4 +42,17 @@ PD_API int pd_evaluate(int whiteBits, int blackBits, int whiteStonesToPlace,
 PD_API int pd_best_move(int whiteBits, int blackBits, int whiteStonesToPlace,
                         int blackStonesToPlace, int playerToMove,
                         int onlyStoneTaking, char *outBuf, int outBufLen);
+
+// Sequential sector enumeration API (for training data extraction)
+// Open a sector identified by W,B,WF,BF and return a handle (>0) or 0 on
+// failure
+PD_API int pd_open_sector(int W, int B, int WF, int BF);
+// Close a previously opened sector handle
+PD_API int pd_close_sector(int handle);
+// Get total number of hashed positions in the sector
+PD_API int pd_sector_count(int handle);
+// Iterate next position; returns 1 if a position is produced, 0 if end or error
+// Outputs canonical 24-bit bitboards and evaluation in (wdl, steps)
+PD_API int pd_sector_next(int handle, int *outWhiteBits, int *outBlackBits,
+                          int *outWdl, int *outSteps);
 }

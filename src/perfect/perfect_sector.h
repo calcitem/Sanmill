@@ -68,6 +68,10 @@ public:
 
 public:
     sec_val sval;
+
+    // Expose evaluation entry count and inverse hashing for iteration
+    int eval_count() const;
+    board inverse_hash_board(int h);
 };
 
 extern std::vector<std::vector<std::vector<std::vector<Sector *>>>> sectors;

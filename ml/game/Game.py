@@ -2,8 +2,14 @@ from __future__ import print_function
 from copy import deepcopy
 import numpy as np
 
-from .GameLogic import Board
-from .standard_rules import coord_to_xy, xy_to_coord, mills
+# Handle both relative and absolute imports
+try:
+    from .GameLogic import Board
+    from .standard_rules import coord_to_xy, xy_to_coord, mills
+except ImportError:
+    # Fallback to absolute imports
+    from GameLogic import Board
+    from standard_rules import coord_to_xy, xy_to_coord, mills
 
 
 class Game:
@@ -19,10 +25,11 @@ class Game:
     @staticmethod
     def _get_piece_symbols():
         """
-        控制台棋盘使用不同形状区分双方：
-        - 白方：实心点 ●
-        - 黑方：空心点 ○
-        保持 ANSI 颜色以便可读（若终端不支持颜色，仍能通过形状区分）。
+        Use different shapes for players on the console board:
+        - White: hollow circle ○
+        - Black: solid circle ●
+        Kept ANSI colors for readability (if terminal doesn't support colors,
+        shapes still differentiate).
         """
         # ANSI color codes
         YELLOW = "\033[93m"  # Bright yellow
@@ -30,9 +37,9 @@ class Game:
         RESET = "\033[0m"    # Reset to default color
         
         return {
-            -1: f"{BLUE}●{RESET}",    # 后手方（-1）：实心点
-            +0: "·",                   # Empty squares (no color)
-            +1: f"{YELLOW}○{RESET}"    # 先手方（+1）：空心点
+            -1: f"{BLUE}●{RESET}",    # Player 2 (-1): solid circle
+            +0: "·",                  # Empty squares (no color)
+            +1: f"{YELLOW}○{RESET}"    # Player 1 (+1): hollow circle
         }
 
 
@@ -219,19 +226,21 @@ class Game:
     def stringRepresentation(self, board):
         """Stable bytes key for MCTS caches.
 
-        为避免不同历史计数（影响终局判定）但同布局/同阶段的状态产生命中，
-        将下列会影响 `getGameEnded` 的历史量纳入键：
-        - put_pieces（精确值）
+        To prevent cache hits for states with the same layout/period but
+        different history counts (which affect game-end checks), include the
+        following history-dependent quantities that affect `getGameEnded` in the key:
+        - put_pieces (exact value)
         - rule50_counter
         - move_counter
-        - _threefold_detected（布尔）
-        这样同样棋形但历史不同不会共用 `Es/Ps/Vs/Ns/Qsa` 条目，消除缓存不一致。
+        - _threefold_detected (boolean)
+        This ensures that identical board positions with different histories do not
+        share Es/Ps/Vs/Ns/Qsa entries, eliminating cache inconsistencies.
         """
-        # 基本断言，确保必要字段存在
+        # Basic assertions to ensure necessary fields exist
         assert hasattr(board, 'pieces'), "Board missing 'pieces'"
         assert hasattr(board, 'period'), "Board missing 'period'"
         assert hasattr(board, 'put_pieces'), "Board missing 'put_pieces'"
-        # 历史相关字段：若不存在则按安全默认值处理
+        # History-related fields: use safe defaults if they don't exist
         rule50_counter = getattr(board, 'rule50_counter', 0)
         move_counter = getattr(board, 'move_counter', 0)
         threefold_detected = int(getattr(board, '_threefold_detected', False))
@@ -261,8 +270,8 @@ class Game:
         - Rows are labeled 7..1 from top to bottom (rank-like)
         - Columns are labeled a..g from left to right (file-like)
         - Pieces: Colored circles for clear distinction
-          * White player: Yellow ● (bright, visible on any background)  
-          * Black player: Blue ● (good contrast on any background)
+          * White player (+1): Yellow ○ (bright, visible on any background)
+          * Black player (-1): Blue ● (good contrast on any background)
           * Empty squares: · (neutral)
         - Shows connecting lines between adjacent points
         """
@@ -294,27 +303,27 @@ class Game:
         
         # Middle ring (rank 6)
         y = 1
-        print(f"6  │   {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}   │")
-        print(f"   │   │       │       │   │")
+        print(f"6  │  {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}  │")
+        print(f"   │  │       │       │  │")
         
         # Inner ring (rank 5)
         y = 2
-        print(f"5  │   │   {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}   │   │")
-        print(f"   │   │   │       │   │   │")
+        print(f"5  │  │  {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}  │  │")
+        print(f"   │  │  │       │  │  │")
         
         # Middle horizontal line (rank 4)
         y = 3
         print(f"4  {get_piece_at(0,y)}───{get_piece_at(1,y)}───{get_piece_at(2,y)}       {get_piece_at(4,y)}───{get_piece_at(5,y)}───{get_piece_at(6,y)}")
-        print(f"   │   │   │       │   │   │")
+        print(f"   │  │  │       │  │  │")
         
         # Inner ring (rank 3)
         y = 4
-        print(f"3  │   │   {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}   │   │")
-        print(f"   │   │       │       │   │")
+        print(f"3  │  │  {get_piece_at(2,y)}───{get_piece_at(3,y)}───{get_piece_at(4,y)}  │  │")
+        print(f"   │  │       │       │  │")
         
         # Middle ring (rank 2)
         y = 5
-        print(f"2  │   {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}   │")
+        print(f"2  │  {get_piece_at(1,y)}───────{get_piece_at(3,y)}───────{get_piece_at(5,y)}  │")
         print(f"   │           │           │")
         
         # Outer ring (rank 1)
@@ -342,5 +351,3 @@ class Game:
                 if board.pieces[ay][ax] == board.pieces[by][bx] == board.pieces[cy][cx] != 0:
                     return True
         return False
-
-

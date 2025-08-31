@@ -399,7 +399,7 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(
     }
 #if 0
         // If we are in a stone-removal (KLE) sub-position the DB does
-        // not provide a stable evaluation for the main move – skip with
+        // not provide a stable evaluation for the main move - skip with
         // fallback and avoid assert in PerfectPlayer::evaluate().
         if (onlyStoneTaking) {
             // We cannot compute a meaningful step count here; return invalid so caller falls back.

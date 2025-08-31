@@ -120,10 +120,10 @@ void test_gamestate_string_compatibility()
     }
 
     if (success) {
-        std::cout << "✅ GameState string serialization test PASSED!"
+        std::cout << "[PASS] GameState string serialization test PASSED!"
                   << std::endl;
     } else {
-        std::cout << "❌ GameState string serialization test FAILED!"
+        std::cout << "[FAIL] GameState string serialization test FAILED!"
                   << std::endl;
     }
 }

@@ -58,7 +58,7 @@ bool Game::isValidBoardClick(QPointF p, File &f, Rank &r)
     // g_activeAiTasks > 0 (this covers the short time gap before
     // handleAiSearchCompleted() resets the counter).
     if (isAiSideToMove()) {
-        // It's AI's turn – human shouldn't click.
+        // It's AI's turn - human shouldn't click.
         return false;
     }
 

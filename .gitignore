@@ -402,6 +402,7 @@ desktop.ini
 *.swp
 *.zip
 *.rar
+*.tar*
 *.7z
 *.diagsession
 enc_temp_folder
