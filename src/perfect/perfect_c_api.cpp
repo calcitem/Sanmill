@@ -228,52 +228,47 @@ PD_API int pd_open_sector(int W, int B, int WF, int BF)
     if (!g_pd_inited)
         return 0;
 
-    try {
-        // Create sector ID
-        Id sector_id;
-        sector_id.W = W;
-        sector_id.B = B;
-        sector_id.WF = WF;
-        sector_id.BF = BF;
+    // Create sector ID
+    Id sector_id;
+    sector_id.W = W;
+    sector_id.B = B;
+    sector_id.WF = WF;
+    sector_id.BF = BF;
 
-        // Get or create sector
-        Sector *sector = sectors(sector_id);
+    // Get or create sector
+    Sector *sector = sectors(sector_id);
+    if (!sector) {
+        // Try to create new sector
+        sector = new Sector(sector_id);
         if (!sector) {
-            // Try to create new sector
-            sector = new Sector(sector_id);
-            if (!sector) {
-                return 0;
-            }
-            sectors(sector_id) = sector;
-        }
-
-        // Ensure hash is allocated
-        if (!sector->hash) {
-            sector->allocate_hash();
-        }
-
-        if (!sector->hash || !sector->hash->is_initialized()) {
             return 0;
         }
+        sectors(sector_id) = sector;
+    }
 
-        // Create iterator state
-        SectorIteratorState state;
-        state.sector = sector;
-        state.hash = sector->hash;
-        state.current_index = 0;
-        state.total_count = sector->hash->hash_count;
-        state.sector_id = sector_id;
-        state.is_valid = true;
+    // Ensure hash is allocated
+    if (!sector->hash) {
+        sector->allocate_hash();
+    }
 
-        // Assign handle
-        int handle = g_next_handle_id++;
-        g_sector_handles[handle] = state;
-
-        return handle;
-
-    } catch (...) {
+    if (!sector->hash || !sector->hash->is_initialized()) {
         return 0;
     }
+
+    // Create iterator state
+    SectorIteratorState state;
+    state.sector = sector;
+    state.hash = sector->hash;
+    state.current_index = 0;
+    state.total_count = sector->hash->hash_count;
+    state.sector_id = sector_id;
+    state.is_valid = true;
+
+    // Assign handle
+    int handle = g_next_handle_id++;
+    g_sector_handles[handle] = state;
+
+    return handle;
 }
 
 PD_API int pd_close_sector(int handle)
@@ -314,66 +309,66 @@ PD_API int pd_sector_next(int handle, int *outWhiteBits, int *outBlackBits,
 
     // Use a loop instead of recursion to avoid stack overflow
     while (state.current_index < state.total_count) {
-        try {
-            // Get the board state from inverse hash
-            board b = state.hash->inverse_hash(state.current_index);
+        // Get the board state from inverse hash
+        board b = state.hash->inverse_hash(state.current_index);
 
-            // Extract bitboards from board representation (board format: low 24
-            // bits = white, high 24 bits = black)
-            const uint32_t mask24 = 0xFFFFFF;
-            int whiteBits = (int)(b & mask24);         // Low 24 bits
-            int blackBits = (int)((b >> 24) & mask24); // High 24 bits
-
-            // Get evaluation from sector (handle symmetry correctly)
-            eval_elem_sym2 eval_sym = state.sector->get_eval_inner(
-                state.current_index);
-
-            // Handle symmetry cases like in perfect_hash.cpp
-            if (eval_sym.cas() != eval_elem_sym2::Sym) {
-                // Direct conversion is safe
-                eval_elem2 eval(eval_sym);
-
-                // Handle different evaluation types correctly
-                if (eval.cas() == eval_elem2::Val) {
-                    // This is a value (WDL + steps)
-                    val v = eval.value();
-
-                    // Convert to WDL and steps
-                    *outWdl = 0; // Draw by default
-                    if (v.key1 > 0) {
-                        *outWdl = 1; // Win
-                    } else if (v.key1 < 0) {
-                        *outWdl = -1; // Loss
-                    }
-
-                    *outSteps = v.key2; // Steps to result
-                } else {
-                    // This is a count - not a game result
-                    // For training purposes, we might want to skip count
-                    // entries or handle them differently
-                    *outWdl = 0;   // Neutral
-                    *outSteps = 0; // No steps info
-                }
-
-                // Found a valid non-symmetric position
-                *outWhiteBits = whiteBits;
-                *outBlackBits = blackBits;
-
-                // Advance to next position for next call
-                state.current_index++;
-
-                return 1; // Success
-            } else {
-                // This position has symmetry - skip it and continue with the
-                // loop Instead of recursion, we continue the loop
-                state.current_index++;
-                continue; // Skip this symmetric position and try the next one
-            }
-
-        } catch (...) {
-            // If there's an error with current position, try to skip it
+        // Check if inverse_hash operation was successful
+        // (假设 inverse_hash 在出错时返回特殊值或设置错误标志)
+        if (!state.hash || state.current_index >= state.total_count) {
             state.current_index++;
             continue;
+        }
+
+        // Extract bitboards from board representation (board format: low 24
+        // bits = white, high 24 bits = black)
+        const uint32_t local_mask24 = 0xFFFFFF;
+        int whiteBits = (int)(b & local_mask24);         // Low 24 bits
+        int blackBits = (int)((b >> 24) & local_mask24); // High 24 bits
+
+        // Get evaluation from sector (handle symmetry correctly)
+        eval_elem_sym2 eval_sym = state.sector->get_eval_inner(
+            state.current_index);
+
+        // Handle symmetry cases like in perfect_hash.cpp
+        if (eval_sym.cas() != eval_elem_sym2::Sym) {
+            // Direct conversion is safe
+            eval_elem2 eval(eval_sym);
+
+            // Handle different evaluation types correctly
+            if (eval.cas() == eval_elem2::Val) {
+                // This is a value (WDL + steps)
+                val v = eval.value();
+
+                // Convert to WDL and steps
+                *outWdl = 0; // Draw by default
+                if (v.key1 > 0) {
+                    *outWdl = 1; // Win
+                } else if (v.key1 < 0) {
+                    *outWdl = -1; // Loss
+                }
+
+                *outSteps = v.key2; // Steps to result
+            } else {
+                // This is a count - not a game result
+                // For training purposes, we might want to skip count
+                // entries or handle them differently
+                *outWdl = 0;   // Neutral
+                *outSteps = 0; // No steps info
+            }
+
+            // Found a valid non-symmetric position
+            *outWhiteBits = whiteBits;
+            *outBlackBits = blackBits;
+
+            // Advance to next position for next call
+            state.current_index++;
+
+            return 1; // Success
+        } else {
+            // This position has symmetry - skip it and continue with the
+            // loop Instead of recursion, we continue the loop
+            state.current_index++;
+            continue; // Skip this symmetric position and try the next one
         }
     }
 
