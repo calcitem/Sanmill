@@ -119,6 +119,10 @@ class ChunkedTrainingProgressDisplay:
         self.plateau_min_history = 200
         self.plateau_rel_std_threshold = 0.005
         self.plateau_warmup_batches = 1000
+        # Oscillating loss detection configuration (tunable)
+        self.osc_min_history = 100
+        self.osc_rel_std_threshold = 0.5
+        self.osc_warmup_batches = 2000
         
         # Warning statistics for display
         self.warning_stats = {
@@ -623,13 +627,14 @@ class ChunkedTrainingProgressDisplay:
         
         recent_losses = self.loss_history[-20:]
         
-        # Oscillating losses (high variance)
-        loss_std = np.std(recent_losses)
-        loss_mean = np.mean(recent_losses)
-        
-        if loss_mean > 0 and loss_std / loss_mean > 2.0 and "oscillating_loss" not in self.loss_warnings_shown:
-            self._show_anomaly_warning("oscillating_loss", loss_std, loss_mean)
-            self.loss_warnings_shown.add("oscillating_loss")
+        # Oscillating losses (high variance) with warm-up and relative threshold
+        if (len(self.loss_history) >= max(self.osc_min_history, 20)
+            and self.samples_processed >= self.osc_warmup_batches):
+            loss_std = np.std(recent_losses)
+            loss_mean = np.mean(recent_losses)
+            if loss_mean > 0 and (loss_std / loss_mean) > self.osc_rel_std_threshold and "oscillating_loss" not in self.loss_warnings_shown:
+                self._show_anomaly_warning("oscillating_loss", loss_std, loss_mean)
+                self.loss_warnings_shown.add("oscillating_loss")
         
         # Sudden loss spikes
         if len(self.loss_history) >= 5:
@@ -2113,7 +2118,8 @@ class ChunkedTrainer:
                      auto_resume: bool = True,
                      scheduler_type: str = "cosine",
                      scheduler_params: Optional[Dict[str, Any]] = None,
-                     plateau_detection_params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                     plateau_detection_params: Optional[Dict[str, Any]] = None,
+                     stability_detection_params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Train the neural network using chunked approach.
         
@@ -2248,6 +2254,17 @@ class ChunkedTrainer:
                     progress_display.plateau_window = int(plateau_detection_params["window"])
                 except Exception:
                     pass
+        # Apply oscillation detection params if provided
+        if stability_detection_params:
+            try:
+                if 'osc_min_history' in stability_detection_params:
+                    progress_display.osc_min_history = int(stability_detection_params['osc_min_history'])
+                if 'osc_rel_std_threshold' in stability_detection_params:
+                    progress_display.osc_rel_std_threshold = float(stability_detection_params['osc_rel_std_threshold'])
+                if 'osc_warmup_batches' in stability_detection_params:
+                    progress_display.osc_warmup_batches = int(stability_detection_params['osc_warmup_batches'])
+            except Exception:
+                pass
             if "min_history" in plateau_detection_params:
                 try:
                     progress_display.plateau_min_history = int(plateau_detection_params["min_history"])

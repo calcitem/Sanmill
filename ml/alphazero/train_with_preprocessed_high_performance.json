@@ -95,6 +95,11 @@
       "min_history": 400,
       "rel_std_threshold": 0.004,
       "warmup_batches": 5000
+    },
+    "stability_detection": {
+      "osc_min_history": 300,
+      "osc_rel_std_threshold": 0.8,
+      "osc_warmup_batches": 5000
     }
   }
 }

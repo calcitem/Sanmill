@@ -502,6 +502,9 @@ def train_with_chunked_approach(args, config):
                     if plateau_detection_params is None:
                         plateau_detection_params = {}
                     plateau_detection_params.update(pc.plateau_detection)
+                stability_detection_params = None
+                if hasattr(pc, 'stability_detection') and isinstance(pc.stability_detection, dict):
+                    stability_detection_params = dict(pc.stability_detection)
         except Exception:
             pass
 
@@ -523,6 +526,7 @@ def train_with_chunked_approach(args, config):
             scheduler_type=scheduler_type,
             scheduler_params=scheduler_params,
             plateau_detection_params=plateau_detection_params
+            ,stability_detection_params=stability_detection_params
         )
         
         print(f"\n🎉 Chunked training completed successfully!")

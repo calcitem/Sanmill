@@ -148,6 +148,7 @@ class PreprocessedTrainingConfig:
     # Optional advanced scheduler and anomaly detection configuration
     scheduler: Optional[Dict[str, Any]] = None
     plateau_detection: Optional[Dict[str, Any]] = None
+    stability_detection: Optional[Dict[str, Any]] = None
 
 
 @dataclass
