@@ -223,6 +223,7 @@ def merge_config_with_args(config: AlphaZeroConfig, args) -> AlphaZeroConfig:
         preprocessed_config.checkpoint_dir = args.checkpoint_dir
 
     # Memory management
+    # Only override config file settings if explicitly specified on command line
     if args.memory_conservative is not None:
         preprocessed_config.memory_conservative = args.memory_conservative
     if args.high_performance is not None:
@@ -413,9 +414,9 @@ def train_with_preprocessed_data(args, config=None):
         num_workers = args.num_workers
         policy_loss = args.policy_loss
         metadata_debug = args.metadata_debug
-        memory_conservative = args.memory_conservative
-        high_performance = args.high_performance
-        force_small_dataset = args.force_small_dataset
+        memory_conservative = args.memory_conservative or False
+        high_performance = args.high_performance or False
+        force_small_dataset = args.force_small_dataset or False
         no_swap = args.no_swap
 
     # 2. Validate data
@@ -1131,11 +1132,11 @@ Example Usage:
                         help='Enable memory-safe mode (strictly controls physical memory usage)')
     parser.add_argument('--memory-threshold', type=float, default=16.0,
                         help='Physical memory safety threshold (in GB, default: 16.0)')
-    parser.add_argument('--force-small-dataset', action='store_true',
+    parser.add_argument('--force-small-dataset', action='store_true', default=None,
                         help='Force using a small dataset mode (max 100,000 positions)')
-    parser.add_argument('--memory-conservative', action='store_true',
+    parser.add_argument('--memory-conservative', action='store_true', default=None,
                         help='Use the most conservative memory settings (suitable for large datasets)')
-    parser.add_argument('--high-performance', action='store_true',
+    parser.add_argument('--high-performance', action='store_true', default=None,
                         help='High-performance mode (for RTX4090 + 192GB+ RAM configurations)')
     parser.add_argument('--no-swap', action='store_true',
                         help='Limit swap memory growth (allows system baseline usage + 2GB increase)')
@@ -1187,47 +1188,47 @@ Example Usage:
     conflict_warnings = []
 
     # Check for memory mode conflicts
-    memory_modes = [args.memory_conservative, args.high_performance, args.force_small_dataset]
+    memory_modes = [args.memory_conservative or False, args.high_performance or False, args.force_small_dataset or False]
     active_memory_modes = sum(memory_modes)
 
     if active_memory_modes > 1:
-        if args.high_performance and args.memory_conservative:
+        if (args.high_performance or False) and (args.memory_conservative or False):
             conflict_warnings.append("⚠️  Conflict detected: --high-performance and --memory-conservative specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing high-performance mode (ignoring conservative mode)")
             args.memory_conservative = False
 
-        if args.high_performance and args.force_small_dataset:
+        if (args.high_performance or False) and (args.force_small_dataset or False):
             conflict_warnings.append("⚠️  Conflict detected: --high-performance and --force-small-dataset specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing high-performance mode (ignoring small dataset mode)")
             args.force_small_dataset = False
 
-        if args.memory_conservative and args.force_small_dataset:
+        if (args.memory_conservative or False) and (args.force_small_dataset or False):
             conflict_warnings.append("⚠️  Conflict detected: --memory-conservative and --force-small-dataset specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing small dataset mode (stricter limit)")
             args.memory_conservative = False
 
     # Check compatibility of max-positions with memory modes
     if args.max_positions:
-        if args.memory_conservative and args.max_positions > 500000:
+        if (args.memory_conservative or False) and args.max_positions > 500000:
             conflict_warnings.append(f"⚠️  Conflict detected: --max-positions ({args.max_positions:,}) is too large for --memory-conservative mode")
             conflict_warnings.append(f"   Suggestion: Conservative mode recommends not exceeding 500,000 positions")
 
-        if args.force_small_dataset and args.max_positions > 100000:
+        if (args.force_small_dataset or False) and args.max_positions > 100000:
             conflict_warnings.append(f"⚠️  Conflict detected: --max-positions ({args.max_positions:,}) is too large for --force-small-dataset mode")
             conflict_warnings.append(f"   Resolution: Limiting to 100,000 positions")
             args.max_positions = 100000
 
-        if args.high_performance and args.max_positions < 1000000:
+        if (args.high_performance or False) and args.max_positions < 1000000:
             conflict_warnings.append(f"⚠️  Notice: A small --max-positions ({args.max_positions:,}) was specified in --high-performance mode")
             conflict_warnings.append(f"   Suggestion: High-performance mode recommends at least 1,000,000 positions to fully utilize hardware")
 
     # Check compatibility of batch size with memory modes
     if args.batch_size:
-        if args.memory_conservative and args.batch_size > 64:
+        if (args.memory_conservative or False) and args.batch_size > 64:
             conflict_warnings.append(f"⚠️  Conflict detected: --batch-size ({args.batch_size}) is too large for --memory-conservative mode")
             conflict_warnings.append(f"   Suggestion: Conservative mode recommends a batch size no larger than 64")
 
-        if args.high_performance and args.batch_size < 128:
+        if (args.high_performance or False) and args.batch_size < 128:
             conflict_warnings.append(f"⚠️  Notice: A small --batch-size ({args.batch_size}) was specified in --high-performance mode")
             conflict_warnings.append(f"   Suggestion: High-performance mode recommends a batch size of at least 128 to fully utilize the GPU")
 
@@ -1268,10 +1269,10 @@ Example Usage:
     print(f"  Workers: {args.num_workers}")
     print(f"  Memory Safe Mode: {'Enabled' if hasattr(args, 'memory_safe') and args.memory_safe else 'Disabled'}")
     print(f"  Memory Threshold: {args.memory_threshold} GB")
-    print(f"  Conservative Memory: {'Enabled' if args.memory_conservative else 'Disabled'}")
-    print(f"  High Performance: {'Enabled' if args.high_performance else 'Disabled'}")
+    print(f"  Conservative Memory: {'Enabled' if (args.memory_conservative or False) else 'Disabled'}")
+    print(f"  High Performance: {'Enabled' if (args.high_performance or False) else 'Disabled'}")
     print(f"  Disable Swap: {'Enabled' if args.no_swap else 'Disabled'}")
-    print(f"  Force Small Dataset: {'Enabled' if args.force_small_dataset else 'Disabled'}")
+    print(f"  Force Small Dataset: {'Enabled' if (args.force_small_dataset or False) else 'Disabled'}")
     print(f"  Metadata Debug: {'Enabled' if args.metadata_debug else 'Disabled'}")
     print(f"  Policy Loss: {args.policy_loss.upper()}")
 
