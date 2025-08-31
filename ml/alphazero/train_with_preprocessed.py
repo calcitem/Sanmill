@@ -390,8 +390,8 @@ def train_with_chunked_approach(args, config):
         checkpoint_dir = pc.checkpoint_dir
         max_positions = pc.max_positions
         phase_filter = pc.phase_filter
-        memory_threshold = getattr(args, 'memory_threshold', 32.0)
-        chunk_memory = getattr(args, 'chunk_memory', 16.0)
+        memory_threshold = getattr(pc, 'memory_threshold', None) or getattr(args, 'memory_threshold', 32.0)
+        chunk_memory = getattr(pc, 'chunk_memory', None) or getattr(args, 'chunk_memory', 16.0)
     else:
         # Fallback to args
         data_dir = args.data_dir
@@ -513,6 +513,10 @@ def train_with_preprocessed_data(args, config=None):
     
     # 2. Check if chunked training should be used
     use_chunked_training = getattr(args, 'chunked_training', False) or getattr(args, 'force_chunked', False)
+    
+    # Also check config file for chunked training setting
+    if not use_chunked_training and config.preprocessed_training:
+        use_chunked_training = getattr(config.preprocessed_training, 'chunked_training', False)
     
     # Auto-enable chunked training for high-performance mode or large datasets
     if not use_chunked_training and hasattr(args, 'high_performance') and args.high_performance:
@@ -803,6 +807,7 @@ def train_with_preprocessed_data(args, config=None):
                     print("   Continuing without model compilation...")
 
             # Configure mixed precision training
+            scaler = None
             if pc.mixed_precision and device == 'cuda':
                 try:
                     from torch.amp import GradScaler
@@ -810,7 +815,7 @@ def train_with_preprocessed_data(args, config=None):
                     print("✅ Mixed precision training enabled")
                 except ImportError:
                     scaler = None
-                    print("⚠️  Mixed precision not available")
+                    print("⚠️ Mixed precision not available, using standard training")
             else:
                 scaler = None
 

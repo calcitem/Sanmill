@@ -1952,8 +1952,11 @@ class ChunkedDataLoader:
         # Collect source file information from metadata
         source_files = set()
         for metadata in metadata_list:
-            if isinstance(metadata, dict) and 'source_file' in metadata:
-                source_files.add(metadata['source_file'])
+            if isinstance(metadata, dict):
+                # Try different possible field names for source file
+                source_file = metadata.get('source_file') or metadata.get('sector_filename') or metadata.get('filename')
+                if source_file:
+                    source_files.add(source_file)
         
         # Analyze chunk composition
         chunk_metadata = self._analyze_chunk_composition(metadata_list)
@@ -1983,30 +1986,41 @@ class ChunkedDataLoader:
         for metadata in metadata_list:
             # Game phase analysis
             if isinstance(metadata, dict):
-                # Determine game phase from metadata
-                pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
-                pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
-                is_removal = metadata.get('is_removal_phase', False)
+                # Use existing game_phase field if available, otherwise fall back to calculation
+                game_phase = metadata.get('game_phase', '').lower()
                 
                 # Debug: Print some sample metadata to understand the issue
                 total_classified = sum(phase_counts.values())
                 if total_classified < 5:
-                    print(f"🔍 Sample metadata #{total_classified}: pieces_in_hand={pieces_in_hand}, pieces_on_board={pieces_on_board}, is_removal={is_removal}")
+                    print(f"🔍 Sample metadata #{total_classified}: game_phase='{game_phase}', sector_file='{metadata.get('sector_filename', 'N/A')}'")
                     print(f"    Full metadata keys: {list(metadata.keys())}")
                 
-                if is_removal:
-                    phase_counts['removal'] += 1
-                elif pieces_in_hand > 0:
-                    phase_counts['placement'] += 1
-                elif pieces_on_board <= 6:  # 3 pieces per side or less
-                    phase_counts['flying'] += 1
+                if game_phase in ['placement', 'moving', 'flying', 'removal']:
+                    # Use the existing game_phase classification
+                    phase_counts[game_phase] += 1
                 else:
-                    phase_counts['moving'] += 1
+                    # Fallback to calculation if game_phase is not available or invalid
+                    pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
+                    pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
+                    is_removal = metadata.get('is_removal_phase', False)
+                    
+                    if is_removal:
+                        phase_counts['removal'] += 1
+                    elif pieces_in_hand > 0:
+                        phase_counts['placement'] += 1
+                    elif pieces_on_board <= 6:  # 3 pieces per side or less
+                        phase_counts['flying'] += 1
+                    else:
+                        phase_counts['moving'] += 1
                 
                 # Position type analysis
                 is_trap = metadata.get('is_trap', False)
                 difficulty = metadata.get('difficulty', 0.0)
                 steps_to_result = metadata.get('steps_to_result', -1)
+                
+                # Get pieces info for position type classification
+                pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
+                pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
                 
                 if is_trap:
                     position_types['trap_positions'] += 1

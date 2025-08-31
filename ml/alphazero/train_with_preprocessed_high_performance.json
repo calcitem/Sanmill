@@ -74,6 +74,8 @@
     "force_small_dataset": false,
     "no_swap": true,
     "memory_threshold": 32.0,
+    "chunked_training": true,
+    "chunk_memory": 16.0,
     "fast_mode": false,
     "verbose": false,
     "metadata_debug": false

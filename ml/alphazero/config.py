@@ -135,6 +135,8 @@ class PreprocessedTrainingConfig:
     force_small_dataset: bool = False
     no_swap: bool = False
     memory_threshold: float = 16.0
+    chunked_training: bool = False
+    chunk_memory: float = 16.0
 
     # Mode selection
     fast_mode: bool = False
