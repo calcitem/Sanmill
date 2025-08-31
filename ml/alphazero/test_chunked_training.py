@@ -35,13 +35,59 @@ def test_time_formatting():
     print("\n✅ Time formatting test completed!")
     print()
 
+def test_loss_anomaly_detection():
+    """Test the loss anomaly detection system."""
+    print("🧪 Testing Loss Anomaly Detection")
+    print("=" * 50)
+    
+    # Create a dummy progress display to test loss detection
+    progress_display = ChunkedTrainingProgressDisplay(1, 1, 1000)
+    
+    print("Testing various loss scenarios:")
+    
+    # Test 1: Normal losses
+    print("\n1. Normal losses (should be fine):")
+    for i in range(5):
+        loss = 1.5 - i * 0.1  # Decreasing loss
+        progress_display._check_loss_anomalies(loss)
+        print(f"   Batch {i+1}: Loss = {loss:.3f}")
+    
+    # Test 2: Zero losses (should trigger warning)
+    print("\n2. Zero losses (should trigger warning):")
+    for i in range(7):
+        loss = 0.0
+        progress_display._check_loss_anomalies(loss)
+        print(f"   Batch {i+1}: Loss = {loss:.3f}")
+    
+    # Test 3: NaN loss (should trigger warning)
+    print("\n3. NaN loss (should trigger warning):")
+    import math
+    progress_display._check_loss_anomalies(math.nan)
+    print(f"   Batch 1: Loss = NaN")
+    
+    # Test 4: Loss explosion (should trigger warning)
+    print("\n4. Loss explosion (should trigger warning):")
+    progress_display._check_loss_anomalies(150.0)
+    print(f"   Batch 1: Loss = 150.0")
+    
+    # Test 5: Check warning statistics
+    print("\n5. Warning statistics summary:")
+    warning_summary = progress_display._get_warning_summary()
+    detailed_summary = progress_display._get_detailed_warning_summary()
+    print(f"   Compact summary: {warning_summary}")
+    print(f"   Detailed summary: {detailed_summary}")
+    
+    print("\n✅ Loss anomaly detection test completed!")
+    print()
+
+
 def test_progress_display():
     """Test the chunked training progress display."""
     
     # Simulate training parameters
-    total_epochs = 3
-    total_chunks = 4
-    total_samples = 10000
+    total_epochs = 2  # Reduced for faster testing
+    total_chunks = 3  # Reduced for faster testing
+    total_samples = 5000  # Reduced for faster testing
     batch_size = 64
     
     # Initialize progress display
@@ -122,6 +168,9 @@ if __name__ == '__main__':
     try:
         # Test time formatting first
         test_time_formatting()
+        
+        # Test loss anomaly detection
+        test_loss_anomaly_detection()
         
         # Then test progress display
         test_progress_display()

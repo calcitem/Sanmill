@@ -475,7 +475,9 @@ def train_with_chunked_approach(args, config):
             max_positions=max_positions,
             phase_filter=phase_filter,
             gradient_accumulation_steps=getattr(config.preprocessed_training, 'gradient_accumulation_steps', 1) if config.preprocessed_training else 1,
-            save_checkpoint_every=5
+            save_checkpoint_every=getattr(config.preprocessed_training, 'save_checkpoint_every_n_epochs', 5) if config.preprocessed_training else 5,
+            checkpoint_dir=checkpoint_dir,
+            auto_resume=True
         )
         
         print(f"\n🎉 Chunked training completed successfully!")
