@@ -1084,6 +1084,126 @@ class ChunkedTrainingProgressDisplay:
             }
         except Exception:
             return {'total_gb': 0, 'available_gb': 0, 'usage_percent': 0}
+    
+    def update_phase_statistics(self, phase: str, samples_count: int, loss_value: float, training_time: float):
+        """Update statistics for a specific game phase."""
+        if phase in self.phase_stats:
+            stats = self.phase_stats[phase]
+            stats['samples_trained'] += samples_count
+            
+            # Update moving average of loss
+            if stats['samples_trained'] > 0:
+                prev_total_loss = stats['avg_loss'] * (stats['samples_trained'] - samples_count)
+                new_total_loss = prev_total_loss + (loss_value * samples_count)
+                stats['avg_loss'] = new_total_loss / stats['samples_trained']
+            
+            stats['training_time'] += training_time
+    
+    def update_position_type_statistics(self, position_type: str, samples_count: int, loss_value: float):
+        """Update statistics for specific position types."""
+        if position_type in self.position_type_stats:
+            stats = self.position_type_stats[position_type]
+            stats['samples_trained'] += samples_count
+            
+            # Update moving average of loss
+            if stats['samples_trained'] > 0:
+                prev_total_loss = stats['avg_loss'] * (stats['samples_trained'] - samples_count)
+                new_total_loss = prev_total_loss + (loss_value * samples_count)
+                stats['avg_loss'] = new_total_loss / stats['samples_trained']
+    
+    def set_phase_totals(self, phase_totals: Dict[str, int]):
+        """Set total sample counts for each phase from dataset analysis."""
+        for phase, total in phase_totals.items():
+            if phase in self.phase_stats:
+                self.phase_stats[phase]['total_samples'] = total
+    
+    def display_training_progress_by_phase(self):
+        """Display detailed training progress breakdown by game phase."""
+        print(f"\n🎯 Training Progress by Game Phase:")
+        print("-" * 80)
+        
+        total_trained = sum(stats['samples_trained'] for stats in self.phase_stats.values())
+        total_available = sum(stats['total_samples'] for stats in self.phase_stats.values())
+        
+        for phase, stats in self.phase_stats.items():
+            trained = stats['samples_trained']
+            total = stats['total_samples']
+            avg_loss = stats['avg_loss']
+            training_time = stats['training_time']
+            
+            if total > 0:
+                progress_percent = (trained / total) * 100
+                progress_bar = self._create_progress_bar(progress_percent, 30)
+                time_per_sample = training_time / trained if trained > 0 else 0
+                
+                print(f"  📍 {phase.capitalize():<10}: {trained:8,}/{total:8,} ({progress_percent:5.1f}%) {progress_bar}")
+                print(f"     Loss: {avg_loss:.6f} | Time: {training_time:6.1f}s | Speed: {time_per_sample*1000:.2f}ms/sample")
+            else:
+                print(f"  📍 {phase.capitalize():<10}: No data available")
+        
+        if total_available > 0:
+            overall_progress = (total_trained / total_available) * 100
+            print(f"\n📊 Overall Progress: {total_trained:,}/{total_available:,} ({overall_progress:.1f}%)")
+            
+            # Identify phases that need more training
+            phases_needing_training = []
+            for phase, stats in self.phase_stats.items():
+                if stats['total_samples'] > 0:
+                    progress = (stats['samples_trained'] / stats['total_samples']) * 100
+                    if progress < 80:  # Less than 80% complete
+                        remaining = stats['total_samples'] - stats['samples_trained']
+                        phases_needing_training.append((phase, progress, remaining))
+            
+            if phases_needing_training:
+                print(f"\n🎯 Phases Requiring More Training:")
+                phases_needing_training.sort(key=lambda x: x[1])  # Sort by progress percentage
+                for phase, progress, remaining in phases_needing_training:
+                    print(f"   • {phase.capitalize()}: {progress:.1f}% complete, {remaining:,} samples remaining")
+            else:
+                print(f"\n✅ All game phases have sufficient training coverage")
+    
+    def _display_chunk_composition(self, chunk_metadata: Dict[str, Any]):
+        """Display the composition of game phases and position types in current chunk."""
+        print(f"   📊 Chunk Composition Analysis:")
+        
+        # Game phase distribution
+        phase_counts = chunk_metadata.get('phase_distribution', {})
+        if phase_counts:
+            total_chunk_samples = sum(phase_counts.values())
+            print(f"      Game Phases:")
+            
+            for phase, count in sorted(phase_counts.items()):
+                percentage = (count / total_chunk_samples * 100) if total_chunk_samples > 0 else 0
+                progress_bar = self._create_mini_progress_bar(percentage, 20)
+                print(f"        {phase.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
+        
+        # Position type distribution
+        position_types = chunk_metadata.get('position_types', {})
+        if position_types:
+            print(f"      Position Types:")
+            total_positions = sum(position_types.values())
+            
+            for pos_type, count in sorted(position_types.items()):
+                percentage = (count / total_positions * 100) if total_positions > 0 else 0
+                progress_bar = self._create_mini_progress_bar(percentage, 20)
+                print(f"        {pos_type.replace('_', ' ').title():<15}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
+        
+        # Difficulty distribution
+        difficulty_dist = chunk_metadata.get('difficulty_distribution', {})
+        if difficulty_dist:
+            print(f"      Difficulty Levels:")
+            total_difficulty = sum(difficulty_dist.values())
+            
+            for level, count in sorted(difficulty_dist.items()):
+                percentage = (count / total_difficulty * 100) if total_difficulty > 0 else 0
+                progress_bar = self._create_mini_progress_bar(percentage, 20)
+                print(f"        {level.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
+    
+    def _create_mini_progress_bar(self, percentage: float, width: int = 20) -> str:
+        """Create a small progress bar for composition display."""
+        filled_length = int(width * percentage / 100)
+        bar = '█' * filled_length + '░' * (width - filled_length)
+        return f"|{bar}|"
 
 
 class MemoryMonitor:
@@ -1203,136 +1323,6 @@ class MemoryMonitor:
         status = self.get_memory_status()
         logger.info(f"After cleanup: {status['available_gb']:.1f} GB available")
     
-    def _display_chunk_composition(self, chunk_metadata: Dict[str, Any]):
-        """Display the composition of game phases and position types in current chunk."""
-        print(f"   📊 Chunk Composition Analysis:")
-        
-        # Game phase distribution
-        phase_counts = chunk_metadata.get('phase_distribution', {})
-        if phase_counts:
-            total_chunk_samples = sum(phase_counts.values())
-            print(f"      Game Phases:")
-            
-            for phase, count in sorted(phase_counts.items()):
-                percentage = (count / total_chunk_samples * 100) if total_chunk_samples > 0 else 0
-                progress_bar = self._create_mini_progress_bar(percentage, 20)
-                print(f"        {phase.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
-        
-        # Position type distribution
-        position_types = chunk_metadata.get('position_types', {})
-        if position_types:
-            print(f"      Position Types:")
-            total_positions = sum(position_types.values())
-            
-            for pos_type, count in sorted(position_types.items()):
-                percentage = (count / total_positions * 100) if total_positions > 0 else 0
-                progress_bar = self._create_mini_progress_bar(percentage, 20)
-                print(f"        {pos_type.replace('_', ' ').title():<15}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
-        
-        # Difficulty distribution
-        difficulty_dist = chunk_metadata.get('difficulty_distribution', {})
-        if difficulty_dist:
-            print(f"      Difficulty Levels:")
-            total_difficulty = sum(difficulty_dist.values())
-            
-            for level, count in sorted(difficulty_dist.items()):
-                percentage = (count / total_difficulty * 100) if total_difficulty > 0 else 0
-                progress_bar = self._create_mini_progress_bar(percentage, 20)
-                print(f"        {level.capitalize():<10}: {count:6,} samples ({percentage:5.1f}%) {progress_bar}")
-    
-    def _create_mini_progress_bar(self, percentage: float, width: int = 20) -> str:
-        """Create a small progress bar for composition display."""
-        filled_length = int(width * percentage / 100)
-        bar = '█' * filled_length + '░' * (width - filled_length)
-        return f"|{bar}|"
-    
-    def update_phase_statistics(self, phase: str, samples_count: int, loss_value: float, training_time: float):
-        """Update statistics for a specific game phase."""
-        if phase in self.phase_stats:
-            stats = self.phase_stats[phase]
-            stats['samples_trained'] += samples_count
-            
-            # Update moving average of loss
-            if stats['samples_trained'] > 0:
-                prev_total_loss = stats['avg_loss'] * (stats['samples_trained'] - samples_count)
-                new_total_loss = prev_total_loss + (loss_value * samples_count)
-                stats['avg_loss'] = new_total_loss / stats['samples_trained']
-            
-            stats['training_time'] += training_time
-    
-    def update_position_type_statistics(self, position_type: str, samples_count: int, loss_value: float):
-        """Update statistics for specific position types."""
-        if position_type in self.position_type_stats:
-            stats = self.position_type_stats[position_type]
-            stats['samples_trained'] += samples_count
-            
-            # Update moving average of loss
-            if stats['samples_trained'] > 0:
-                prev_total_loss = stats['avg_loss'] * (stats['samples_trained'] - samples_count)
-                new_total_loss = prev_total_loss + (loss_value * samples_count)
-                stats['avg_loss'] = new_total_loss / stats['samples_trained']
-    
-    def set_phase_totals(self, phase_totals: Dict[str, int]):
-        """Set total sample counts for each phase from dataset analysis."""
-        for phase, total in phase_totals.items():
-            if phase in self.phase_stats:
-                self.phase_stats[phase]['total_samples'] = total
-    
-    def display_training_progress_by_phase(self):
-        """Display detailed training progress breakdown by game phase."""
-        print(f"\n🎯 Training Progress by Game Phase:")
-        print("-" * 80)
-        
-        total_trained = sum(stats['samples_trained'] for stats in self.phase_stats.values())
-        total_available = sum(stats['total_samples'] for stats in self.phase_stats.values())
-        
-        for phase, stats in self.phase_stats.items():
-            trained = stats['samples_trained']
-            total = stats['total_samples']
-            avg_loss = stats['avg_loss']
-            time_spent = stats['training_time']
-            
-            if total > 0:
-                progress_pct = (trained / total) * 100
-                remaining = total - trained
-                
-                # Create progress bar
-                progress_bar = self._create_progress_bar(progress_pct)
-                
-                # Estimate remaining time for this phase
-                if trained > 0 and time_spent > 0:
-                    avg_time_per_sample = time_spent / trained
-                    estimated_remaining_time = remaining * avg_time_per_sample
-                    remaining_time_str = self._format_time(estimated_remaining_time)
-                else:
-                    remaining_time_str = "Unknown"
-                
-                print(f"   {phase.capitalize():<10} {progress_bar} {progress_pct:5.1f}%")
-                print(f"      Trained: {trained:8,} / {total:8,} samples | Remaining: {remaining:8,}")
-                print(f"      Avg Loss: {avg_loss:8.6f} | Time Spent: {self._format_time(time_spent)}")
-                print(f"      Est. Remaining Time: {remaining_time_str}")
-                print()
-        
-        # Overall progress summary
-        if total_available > 0:
-            overall_progress = (total_trained / total_available) * 100
-            print(f"   📈 Overall Phase Progress: {overall_progress:.1f}% ({total_trained:,} / {total_available:,})")
-        
-        # Identify phases that need more training
-        phases_needing_training = []
-        for phase, stats in self.phase_stats.items():
-            if stats['total_samples'] > 0:
-                progress_pct = (stats['samples_trained'] / stats['total_samples']) * 100
-                if progress_pct < 80:  # Less than 80% complete
-                    phases_needing_training.append((phase, progress_pct, stats['total_samples'] - stats['samples_trained']))
-        
-        if phases_needing_training:
-            print(f"\n🎯 Phases Requiring More Training:")
-            phases_needing_training.sort(key=lambda x: x[1])  # Sort by progress percentage
-            for phase, progress, remaining in phases_needing_training:
-                print(f"   • {phase.capitalize()}: {progress:.1f}% complete, {remaining:,} samples remaining")
-        else:
-            print(f"\n✅ All game phases have sufficient training coverage")
 
 
 class ChunkedCheckpointManager:
