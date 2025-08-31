@@ -1166,6 +1166,16 @@ class ChunkedTrainingProgressDisplay:
         """Display the composition of game phases and position types in current chunk."""
         print(f"   📊 Chunk Composition Analysis:")
         
+        # Display source files if available
+        source_files = chunk_metadata.get('source_files', [])
+        if source_files:
+            print(f"      Source Files: {len(source_files)} files")
+            # Show first few file names for debugging
+            for i, filename in enumerate(source_files[:3]):
+                print(f"        {i+1}. {filename}")
+            if len(source_files) > 3:
+                print(f"        ... and {len(source_files) - 3} more files")
+        
         # Game phase distribution
         phase_counts = chunk_metadata.get('phase_distribution', {})
         if phase_counts:
@@ -1939,8 +1949,18 @@ class ChunkedDataLoader:
         policy_targets = torch.FloatTensor(policy_targets)
         value_targets = torch.FloatTensor(value_targets)
         
+        # Collect source file information from metadata
+        source_files = set()
+        for metadata in metadata_list:
+            if isinstance(metadata, dict) and 'source_file' in metadata:
+                source_files.add(metadata['source_file'])
+        
         # Analyze chunk composition
         chunk_metadata = self._analyze_chunk_composition(metadata_list)
+        
+        # Add source file information to chunk metadata
+        if source_files:
+            chunk_metadata['source_files'] = sorted(list(source_files))
         
         # Verify memory status after loading
         status = self.memory_monitor.get_memory_status()
@@ -1967,6 +1987,12 @@ class ChunkedDataLoader:
                 pieces_in_hand = metadata.get('white_pieces_in_hand', 0) + metadata.get('black_pieces_in_hand', 0)
                 pieces_on_board = metadata.get('white_pieces_on_board', 0) + metadata.get('black_pieces_on_board', 0)
                 is_removal = metadata.get('is_removal_phase', False)
+                
+                # Debug: Print some sample metadata to understand the issue
+                total_classified = sum(phase_counts.values())
+                if total_classified < 5:
+                    print(f"🔍 Sample metadata #{total_classified}: pieces_in_hand={pieces_in_hand}, pieces_on_board={pieces_on_board}, is_removal={is_removal}")
+                    print(f"    Full metadata keys: {list(metadata.keys())}")
                 
                 if is_removal:
                     phase_counts['removal'] += 1
