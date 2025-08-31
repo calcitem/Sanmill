@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "ફાંસાની જાગૃતિ",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "વિશ્લેષણ દરમિયાન જાડા વર્તુળો અને તીરો સાથે ફાંસાના ચાલોને હાઇલાઇટ કરો",
+  "trapAwarenessDescription": "વિશ્લેષણ દરમિયાન જાડા વર્તુળો અને તીરો સાથે ફાંસાના ચાલોને હાઇલાઇટ કરો।",
   "@trapAwarenessDescription": {},
   "trapExists": "ફાંસો હાજર છે. ફાંસાના ચાલ: {trapMoves}",
   "@trapExists": {

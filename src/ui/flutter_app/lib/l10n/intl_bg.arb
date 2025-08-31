@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Разпознаване на капани",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Подчертавай ходовете-капан с дебели кръгове и стрелки по време на анализа",
+  "trapAwarenessDescription": "Подчертавай ходовете-капан с дебели кръгове и стрелки по време на анализа.",
   "@trapAwarenessDescription": {},
   "trapExists": "Има капан. Ходове-капан: {trapMoves}",
   "@trapExists": {

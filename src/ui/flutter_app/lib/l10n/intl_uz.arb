@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Tuzoqni aniqlash",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Tahlil vaqtida tuzoq yurishlarini qalin doiralar va o‘qlar bilan ajratib ko‘rsating",
+  "trapAwarenessDescription": "Tahlil vaqtida tuzoq yurishlarini qalin doiralar va o‘qlar bilan ajratib ko‘rsating.",
   "@trapAwarenessDescription": {},
   "trapExists": "Tuzoq mavjud. Tuzoq yurishlari: {trapMoves}",
   "@trapExists": {

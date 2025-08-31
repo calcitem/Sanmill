@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Detección de trampas",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Resalta los movimientos trampa con círculos y flechas en negrita durante el análisis",
+  "trapAwarenessDescription": "Resalta los movimientos trampa con círculos y flechas en negrita durante el análisis.",
   "@trapAwarenessDescription": {},
   "trapExists": "Existe una trampa. Movimientos trampa: {trapMoves}",
   "@trapExists": {

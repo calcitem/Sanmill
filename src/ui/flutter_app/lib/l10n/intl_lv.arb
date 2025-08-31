@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Slazdu noteikšana",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Analīzes laikā izcel slazdu gājienus ar trekniem apļiem un bultām",
+  "trapAwarenessDescription": "Analīzes laikā izcel slazdu gājienus ar trekniem apļiem un bultām.",
   "@trapAwarenessDescription": {},
   "trapExists": "Pastāv slazds. Slazdu gājieni: {trapMoves}",
   "@trapExists": {

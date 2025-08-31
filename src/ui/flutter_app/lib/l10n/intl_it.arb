@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Rilevamento trappole",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Evidenzia le mosse trappola con cerchi e frecce in grassetto durante l'analisi",
+  "trapAwarenessDescription": "Evidenzia le mosse trappola con cerchi e frecce in grassetto durante l'analisi.",
   "@trapAwarenessDescription": {},
   "trapExists": "Esiste una trappola. Mosse trappola: {trapMoves}",
   "@trapExists": {

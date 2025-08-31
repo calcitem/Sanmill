@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "함정 감지",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "분석 중 굵은 원과 화살표로 함정 수를 강조 표시합니다",
+  "trapAwarenessDescription": "분석 중 굵은 원과 화살표로 함정 수를 강조 표시합니다.",
   "@trapAwarenessDescription": {},
   "trapExists": "함정이 있습니다. 함정 수: {trapMoves}",
   "@trapExists": {

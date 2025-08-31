@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Вызначэнне пастак",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Падсвятляйце хады-пасткі тоўстымі коламі і стрэлкамі падчас аналізу",
+  "trapAwarenessDescription": "Падсвятляйце хады-пасткі тоўстымі коламі і стрэлкамі падчас аналізу.",
   "@trapAwarenessDescription": {},
   "trapExists": "Ёсць пастка. Хады-пасткі: {trapMoves}",
   "@trapExists": {

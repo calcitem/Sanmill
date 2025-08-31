@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Ansojen tunnistus",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Korosta ansasiirrot paksuilla ympyröillä ja nuolilla analyysin aikana",
+  "trapAwarenessDescription": "Korosta ansasiirrot paksuilla ympyröillä ja nuolilla analyysin aikana.",
   "@trapAwarenessDescription": {},
   "trapExists": "Ansa havaittu. Ansasiirrot: {trapMoves}",
   "@trapExists": {

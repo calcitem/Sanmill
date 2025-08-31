@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Виявлення пасток",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Підсвічуйте ходи-пастки під час аналізу жирними колами та стрілками",
+  "trapAwarenessDescription": "Підсвічуйте ходи-пастки під час аналізу жирними колами та стрілками.",
   "@trapAwarenessDescription": {},
   "trapExists": "Є пастка. Ходи-пастки: {trapMoves}",
   "@trapExists": {

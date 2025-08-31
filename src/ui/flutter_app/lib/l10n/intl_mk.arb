@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Откривање замки",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Истакни ги потезите-замка со дебели кругови и стрели за време на анализата",
+  "trapAwarenessDescription": "Истакни ги потезите-замка со дебели кругови и стрели за време на анализата.",
   "@trapAwarenessDescription": {},
   "trapExists": "Постои замка. Потези-замка: {trapMoves}",
   "@trapExists": {

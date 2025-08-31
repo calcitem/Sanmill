@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Deteksi jebakan",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Sorot langkah jebakan dengan lingkaran dan panah tebal saat analisis",
+  "trapAwarenessDescription": "Sorot langkah jebakan dengan lingkaran dan panah tebal saat analisis.",
   "@trapAwarenessDescription": {},
   "trapExists": "Ada jebakan. Langkah jebakan: {trapMoves}",
   "@trapExists": {

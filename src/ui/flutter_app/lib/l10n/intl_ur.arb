@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "جال کی شناخت",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "تجزیے کے دوران موٹے دائروں اور تیروں کے ساتھ جال کی چالوں کو نمایاں کریں",
+  "trapAwarenessDescription": "تجزیے کے دوران موٹے دائروں اور تیروں کے ساتھ جال کی چالوں کو نمایاں کریں.",
   "@trapAwarenessDescription": {},
   "trapExists": "جال موجود ہے۔ جال کی چالیں: {trapMoves}",
   "@trapExists": {

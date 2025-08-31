@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Detekce pastí",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Zvýrazňuj tahy do pasti tučnými kruhy a šipkami během analýzy",
+  "trapAwarenessDescription": "Zvýrazňuj tahy do pasti tučnými kruhy a šipkami během analýzy.",
   "@trapAwarenessDescription": {},
   "trapExists": "Existuje past. Tahy do pasti: {trapMoves}",
   "@trapExists": {

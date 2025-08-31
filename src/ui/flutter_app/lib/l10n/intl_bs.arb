@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Prepoznavanje zamki",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Istakni poteze zamke podebljanim krugovima i strelicama tokom analize",
+  "trapAwarenessDescription": "Istakni poteze zamke podebljanim krugovima i strelicama tokom analize.",
   "@trapAwarenessDescription": {},
   "trapExists": "Postoji zamka. Potezi zamke: {trapMoves}",
   "@trapExists": {

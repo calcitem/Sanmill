@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Felledeteksjon",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Fremhev felle-trekk med fete sirkler og piler under analysen",
+  "trapAwarenessDescription": "Fremhev felle-trekk med fete sirkler og piler under analysen.",
   "@trapAwarenessDescription": {},
   "trapExists": "Det finnes en felle. Felle-trekk: {trapMoves}",
   "@trapExists": {

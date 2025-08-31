@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Fallen-Erkennung",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Markiere Fallen-Züge während der Analyse mit fetten Kreisen und Pfeilen",
+  "trapAwarenessDescription": "Markiere Fallen-Züge während der Analyse mit fetten Kreisen und Pfeilen.",
   "@trapAwarenessDescription": {},
   "trapExists": "Es gibt eine Falle. Fallen-Züge: {trapMoves}",
   "@trapExists": {

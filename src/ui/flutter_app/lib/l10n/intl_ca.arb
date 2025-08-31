@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Detecció de paranys",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Ressalta els moviments de parany amb cercles i fletxes gruixuts durant l'anàlisi",
+  "trapAwarenessDescription": "Ressalta els moviments de parany amb cercles i fletxes gruixuts durant l'anàlisi.",
   "@trapAwarenessDescription": {},
   "trapExists": "Hi ha un parany. Moviments de parany: {trapMoves}",
   "@trapExists": {

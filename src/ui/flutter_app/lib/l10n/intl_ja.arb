@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "罠認識",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "解析中に太い円と矢印で罠の手を強調表示する",
+  "trapAwarenessDescription": "解析中に太い円と矢印で罠の手を強調表示する。",
   "@trapAwarenessDescription": {},
   "trapExists": "罠が存在します。罠の手: {trapMoves}",
   "@trapExists": {

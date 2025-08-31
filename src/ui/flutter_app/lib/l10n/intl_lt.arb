@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Spąstų atpažinimas",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Analizės metu paryškinkite spąstų ėjimus storais apskritimais ir rodyklėmis",
+  "trapAwarenessDescription": "Analizės metu paryškinkite spąstų ėjimus storais apskritimais ir rodyklėmis.",
   "@trapAwarenessDescription": {},
   "trapExists": "Yra spąstai. Spąstų ėjimai: {trapMoves}",
   "@trapExists": {

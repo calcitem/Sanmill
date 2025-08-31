@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Pengesanan perangkap",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Sorot gerakan perangkap dengan bulatan dan anak panah tebal semasa analisis",
+  "trapAwarenessDescription": "Sorot gerakan perangkap dengan bulatan dan anak panah tebal semasa analisis.",
   "@trapAwarenessDescription": {},
   "trapExists": "Terdapat perangkap. Gerakan perangkap: {trapMoves}",
   "@trapExists": {

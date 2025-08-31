@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "ಬಲೆ ಗುರುತಿಸುವಿಕೆ",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "ವಿಶ್ಲೇಷಣೆ ಸಮಯದಲ್ಲಿ ದಪ್ಪ ವೃತ್ತಗಳು ಮತ್ತು ಬಾಣಗಳೊಂದಿಗೆ ಬಲೆಯ ಚಲನೆಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ",
+  "trapAwarenessDescription": "ವಿಶ್ಲೇಷಣೆ ಸಮಯದಲ್ಲಿ ದಪ್ಪ ವೃತ್ತಗಳು ಮತ್ತು ಬಾಣಗಳೊಂದಿಗೆ ಬಲೆಯ ಚಲನೆಗಳನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ.",
   "@trapAwarenessDescription": {},
   "trapExists": "ಬಲೆ ಇದೆ. ಬಲೆಯ ಚಲನೆಗಳು: {trapMoves}",
   "@trapExists": {

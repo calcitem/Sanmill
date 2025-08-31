@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Zaznavanje pasti",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Med analizo poudari poteze pasti z odebeljenimi krogi in puščicami",
+  "trapAwarenessDescription": "Med analizo poudari poteze pasti z odebeljenimi krogi in puščicami.",
   "@trapAwarenessDescription": {},
   "trapExists": "Past obstaja. Poteze pasti: {trapMoves}",
   "@trapExists": {

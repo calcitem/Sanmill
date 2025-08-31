@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Обнаружение ловушек",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Выделяйте ходы-ловушки жирными кругами и стрелками во время анализа",
+  "trapAwarenessDescription": "Выделяйте ходы-ловушки жирными кругами и стрелками во время анализа.",
   "@trapAwarenessDescription": {},
   "trapExists": "Есть ловушка. Ходы-ловушки: {trapMoves}",
   "@trapExists": {

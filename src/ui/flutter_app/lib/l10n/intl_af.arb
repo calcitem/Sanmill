@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Lokvalbewustheid",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Beklemtoon lokvalskuiwe met vet sirkels en pyle tydens ontleding",
+  "trapAwarenessDescription": "Beklemtoon lokvalskuiwe met vet sirkels en pyle tydens ontleding.",
   "@trapAwarenessDescription": {},
   "trapExists": "Lokval bestaan. Lokvalskuiwe: {trapMoves}",
   "@trapExists": {

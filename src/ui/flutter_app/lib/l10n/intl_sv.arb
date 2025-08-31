@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Fälligenkänning",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Markera fäll-drag med tjocka cirklar och pilar under analysen",
+  "trapAwarenessDescription": "Markera fäll-drag med tjocka cirklar och pilar under analysen.",
   "@trapAwarenessDescription": {},
   "trapExists": "Det finns en fälla. Fälldrag: {trapMoves}",
   "@trapExists": {

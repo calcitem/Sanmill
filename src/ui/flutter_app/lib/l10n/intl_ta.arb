@@ -2068,7 +2068,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "வலை கண்டறிதல்",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "பகுப்பாய்வின் போது தடிமனான வட்டங்கள் மற்றும் அம்புகளால் வலையின் நகர்வுகளை வெளிப்படுத்து",
+  "trapAwarenessDescription": "பகுப்பாய்வின் போது தடிமனான வட்டங்கள் மற்றும் அம்புகளால் வலையின் நகர்வுகளை வெளிப்படுத்து.",
   "@trapAwarenessDescription": {},
   "trapExists": "வலை உள்ளது. வலை நகர்வுகள்: {trapMoves}",
   "@trapExists": {

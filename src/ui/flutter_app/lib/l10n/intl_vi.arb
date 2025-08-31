@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Nhận diện bẫy",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Làm nổi bật các nước đi bẫy bằng vòng tròn và mũi tên đậm trong quá trình phân tích",
+  "trapAwarenessDescription": "Làm nổi bật các nước đi bẫy bằng vòng tròn và mũi tên đậm trong quá trình phân tích.",
   "@trapAwarenessDescription": {},
   "trapExists": "Có bẫy. Nước đi bẫy: {trapMoves}",
   "@trapExists": {

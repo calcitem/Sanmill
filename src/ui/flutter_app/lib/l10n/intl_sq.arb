@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Zbulimi i kurtheve",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Thekso lëvizjet-kurth me rrethe dhe shigjeta të trasha gjatë analizës",
+  "trapAwarenessDescription": "Thekso lëvizjet-kurth me rrethe dhe shigjeta të trasha gjatë analizës.",
   "@trapAwarenessDescription": {},
   "trapExists": "Ekziston një kurth. Lëvizje-kurth: {trapMoves}",
   "@trapExists": {

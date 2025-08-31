@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Détection des pièges",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Mettre en évidence les coups piège avec des cercles et des flèches en gras pendant l'analyse",
+  "trapAwarenessDescription": "Mettre en évidence les coups piège avec des cercles et des flèches en gras pendant l'analyse.",
   "@trapAwarenessDescription": {},
   "trapExists": "Un piège existe. Coups piège : {trapMoves}",
   "@trapExists": {

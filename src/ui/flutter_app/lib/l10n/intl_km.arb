@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "រកឃើញអន្ទាក់",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "រំលេចចលនាអន្ទាក់ដោយរង្វង់ និងព្រួញដ៏ដិត ក្នុងអំឡុងការវិភាគ",
+  "trapAwarenessDescription": "រំលេចចលនាអន្ទាក់ដោយរង្វង់ និងព្រួញដ៏ដិត ក្នុងអំឡុងការវិភាគ.",
   "@trapAwarenessDescription": {},
   "trapExists": "មានអន្ទាក់។ ចលនាអន្ទាក់: {trapMoves}",
   "@trapExists": {

@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "လှောင်ချောက် အသိအမြင်",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "ခွဲခြမ်းလေ့လာစဉ် လှောင်ချောက် လှုပ်ရှားမှုများကို စက်ဝိုင်းနှင့် မြားများကို ထင်ရှားအောင် ပြပါ",
+  "trapAwarenessDescription": "ခွဲခြမ်းလေ့လာစဉ် လှောင်ချောက် လှုပ်ရှားမှုများကို စက်ဝိုင်းနှင့် မြားများကို ထင်ရှားအောင် ပြပါ.",
   "@trapAwarenessDescription": {},
   "trapExists": "လှောင်ချောက် ရှိနေသည်။ လှောင်ချောက် လှုပ်ရှားမှုများ: {trapMoves}",
   "@trapExists": {

@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "تشخیص تله",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "در طول تحلیل، حرکات تله را با دایره‌ها و پیکان‌های پررنگ برجسته کن",
+  "trapAwarenessDescription": "در طول تحلیل، حرکات تله را با دایره‌ها و پیکان‌های پررنگ برجسته کن.",
   "@trapAwarenessDescription": {},
   "trapExists": "تله وجود دارد. حرکات تله: {trapMoves}",
   "@trapExists": {

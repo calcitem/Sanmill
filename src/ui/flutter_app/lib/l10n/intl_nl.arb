@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Valdetectie",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Markeer valzetten met vette cirkels en pijlen tijdens de analyse",
+  "trapAwarenessDescription": "Markeer valzetten met vette cirkels en pijlen tijdens de analyse.",
   "@trapAwarenessDescription": {},
   "trapExists": "Er is een val. Valzetten: {trapMoves}",
   "@trapExists": {

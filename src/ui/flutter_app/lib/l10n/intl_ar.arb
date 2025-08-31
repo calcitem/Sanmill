@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "الوعي بالفخاخ",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "تسليط الضوء على نقلات الفخ بدوائر وسهام عريضة أثناء التحليل",
+  "trapAwarenessDescription": "تسليط الضوء على نقلات الفخ بدوائر وسهام عريضة أثناء التحليل.",
   "@trapAwarenessDescription": {},
   "trapExists": "يوجد فخ. نقلات الفخ: {trapMoves}",
   "@trapExists": {

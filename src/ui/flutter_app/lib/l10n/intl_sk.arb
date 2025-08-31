@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Detekcia pascí",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Zvýrazňuj ťahy-pasce hrubými kruhmi a šípkami počas analýzy",
+  "trapAwarenessDescription": "Zvýrazňuj ťahy-pasce hrubými kruhmi a šípkami počas analýzy.",
   "@trapAwarenessDescription": {},
   "trapExists": "Existuje pasca. Ťahy-pasce: {trapMoves}",
   "@trapExists": {

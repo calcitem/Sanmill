@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Tələ xəbərdarlığı",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Analiz zamanı tələ gedişlərini qalın dairələr və oxlarla vurğulayın",
+  "trapAwarenessDescription": "Analiz zamanı tələ gedişlərini qalın dairələr və oxlarla vurğulayın.",
   "@trapAwarenessDescription": {},
   "trapExists": "Tələ mövcuddur. Tələ gedişləri: {trapMoves}",
   "@trapExists": {

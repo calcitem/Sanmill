@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Tuzak tespiti",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Analiz sırasında tuzak hamlelerini kalın daireler ve oklarla vurgula",
+  "trapAwarenessDescription": "Analiz sırasında tuzak hamlelerini kalın daireler ve oklarla vurgula.",
   "@trapAwarenessDescription": {},
   "trapExists": "Tuzak var. Tuzak hamleleri: {trapMoves}",
   "@trapExists": {

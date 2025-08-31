@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Utambuzi wa mtego",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Onyesha kwa wazi michezo ya mtego kwa miduara na mishale minene wakati wa uchanganuzi",
+  "trapAwarenessDescription": "Onyesha kwa wazi michezo ya mtego kwa miduara na mishale minene wakati wa uchanganuzi.",
   "@trapAwarenessDescription": {},
   "trapExists": "Kuna mtego. Michezo ya mtego: {trapMoves}",
   "@trapExists": {

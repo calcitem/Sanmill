@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "זיהוי מלכודות",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "הדגש מהלכי מלכודת בעזרת עיגולים וחצים מודגשים במהלך הניתוח",
+  "trapAwarenessDescription": "הדגש מהלכי מלכודת בעזרת עיגולים וחצים מודגשים במהלך הניתוח.",
   "@trapAwarenessDescription": {},
   "trapExists": "קיימת מלכודת. מהלכי מלכודת: {trapMoves}",
   "@trapExists": {

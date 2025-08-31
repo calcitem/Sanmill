@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "ফাঁদ সচেতনতা",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "বিশ্লেষণের সময় মোটা বৃত্ত ও তীর দিয়ে ফাঁদের চালগুলো হাইলাইট করুন",
+  "trapAwarenessDescription": "বিশ্লেষণের সময় মোটা বৃত্ত ও তীর দিয়ে ফাঁদের চালগুলো হাইলাইট করুন।",
   "@trapAwarenessDescription": {},
   "trapExists": "ফাঁদ রয়েছে। ফাঁদের চাল: {trapMoves}",
   "@trapExists": {

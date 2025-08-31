@@ -1968,7 +1968,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Fældedetektion",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Fremhæv fældetræk med tykke cirkler og pile under analysen",
+  "trapAwarenessDescription": "Fremhæv fældetræk med tykke cirkler og pile under analysen.",
   "@trapAwarenessDescription": {},
   "trapExists": "Der er en fælde. Fældetræk: {trapMoves}",
   "@trapExists": {

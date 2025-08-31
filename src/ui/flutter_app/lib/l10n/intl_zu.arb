@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Ukuqaphela ugibe",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Gqamisa ukuhamba kogibe ngama-siyingi aminyene nemicibisholo ngesikhathi sokuhlaziywa",
+  "trapAwarenessDescription": "Gqamisa ukuhamba kogibe ngama-siyingi aminyene nemicibisholo ngesikhathi sokuhlaziywa.",
   "@trapAwarenessDescription": {},
   "trapExists": "Kukhona ugibe. Ukuhamba kogibe: {trapMoves}",
   "@trapExists": {
