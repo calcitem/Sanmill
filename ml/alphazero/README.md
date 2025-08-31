@@ -229,3 +229,5 @@ python train_with_preprocessed.py --config train_with_preprocessed_config.json -
 python train_with_preprocessed.py --config train_with_preprocessed_fast.json --data-dir "G:\preprocessed_data"
 
 python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --epochs 15
+
+python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --chunked-training --chunk-memory 16.0 --memory-threshold 32.0 --no-swap --checkpoint-dir "G:\models_from_npz"

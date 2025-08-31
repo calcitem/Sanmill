@@ -27,6 +27,7 @@ try:
     from config import (get_default_config, get_fast_training_config,
                        get_preprocessed_training_config, AlphaZeroConfig)
     from neural_network import AlphaZeroNetworkWrapper
+    from chunked_training_manager import ChunkedTrainer, MemoryMonitor
     import torch
     import numpy as np
 except ImportError as e:
@@ -374,6 +375,131 @@ def create_training_config(args):
     return config
 
 
+def train_with_chunked_approach(args, config):
+    """Train using chunked approach to prevent memory overflow."""
+    print("🧩 Using chunked training approach for memory safety")
+    print("=" * 60)
+    
+    # Get configuration parameters
+    if config.preprocessed_training:
+        pc = config.preprocessed_training
+        data_dir = pc.data_dir or args.data_dir
+        batch_size = pc.batch_size
+        epochs = pc.epochs
+        learning_rate = pc.learning_rate
+        checkpoint_dir = pc.checkpoint_dir
+        max_positions = pc.max_positions
+        phase_filter = pc.phase_filter
+        memory_threshold = getattr(args, 'memory_threshold', 32.0)
+        chunk_memory = getattr(args, 'chunk_memory', 16.0)
+    else:
+        # Fallback to args
+        data_dir = args.data_dir
+        batch_size = args.batch_size
+        epochs = args.epochs
+        learning_rate = args.learning_rate
+        checkpoint_dir = args.checkpoint_dir
+        max_positions = args.max_positions
+        phase_filter = args.phase_filter
+        memory_threshold = args.memory_threshold
+        chunk_memory = args.chunk_memory
+    
+    print(f"📋 Chunked Training Configuration:")
+    print(f"  Data Directory: {data_dir}")
+    print(f"  Memory Threshold: {memory_threshold:.1f} GB")
+    print(f"  Chunk Memory Target: {chunk_memory:.1f} GB")
+    print(f"  Batch Size: {batch_size}")
+    print(f"  Epochs: {epochs}")
+    print(f"  Max Positions: {max_positions or 'All'}")
+    
+    # Validate data directory
+    if not validate_preprocessed_data(data_dir):
+        return False
+    
+    # Create data loader
+    print(f"\n📦 Creating data loader...")
+    try:
+        loader = FastDataLoader(data_dir)
+        stats = loader.get_statistics()
+        if stats:
+            print(f"📊 Data Statistics:")
+            print(f"  Total positions: {stats.get('total_positions', 0):,}")
+            print(f"  Processing speed: {stats.get('positions_per_second', 0):.0f} pos/s")
+    except Exception as e:
+        print(f"❌ Failed to create data loader: {e}")
+        return False
+    
+    # Create neural network
+    print(f"\n🧠 Creating neural network...")
+    try:
+        model_args = {
+            'input_channels': 19,
+            'num_filters': config.network.num_filters,
+            'num_residual_blocks': config.network.num_residual_blocks,
+            'action_size': 1000,
+            'dropout_rate': config.network.dropout_rate
+        }
+        
+        device = 'cuda' if config.training.cuda else 'cpu'
+        neural_network = AlphaZeroNetworkWrapper(model_args, device)
+        
+        print(f"✅ Neural network created successfully ({device})")
+        print(f"  Filters: {config.network.num_filters}")
+        print(f"  Residual blocks: {config.network.num_residual_blocks}")
+        
+    except Exception as e:
+        print(f"❌ Failed to create neural network: {e}")
+        return False
+    
+    # Create chunked trainer
+    print(f"\n🧩 Initializing chunked trainer...")
+    try:
+        chunked_trainer = ChunkedTrainer(
+            neural_network=neural_network,
+            data_loader=loader,
+            memory_threshold_gb=memory_threshold,
+            target_chunk_memory_gb=chunk_memory
+        )
+        print(f"✅ Chunked trainer initialized")
+    except Exception as e:
+        print(f"❌ Failed to create chunked trainer: {e}")
+        return False
+    
+    # Start chunked training
+    print(f"\n🚀 Starting chunked training...")
+    try:
+        training_stats = chunked_trainer.train_chunked(
+            epochs=epochs,
+            batch_size=batch_size,
+            learning_rate=learning_rate,
+            max_positions=max_positions,
+            phase_filter=phase_filter,
+            gradient_accumulation_steps=getattr(config.preprocessed_training, 'gradient_accumulation_steps', 1) if config.preprocessed_training else 1,
+            save_checkpoint_every=5
+        )
+        
+        print(f"\n🎉 Chunked training completed successfully!")
+        print(f"📊 Final Statistics:")
+        print(f"  Epochs completed: {training_stats['epochs_completed']}")
+        print(f"  Chunks processed: {training_stats['chunks_processed']}")
+        print(f"  Total samples: {training_stats['samples_processed']:,}")
+        print(f"  Average loss: {training_stats['total_loss'] / max(training_stats['epochs_completed'], 1):.6f}")
+        print(f"  Training time: {training_stats['training_time']:.1f}s")
+        
+        # Save final model
+        final_model_path = Path(checkpoint_dir) / "final_chunked_model.tar"
+        final_model_path.parent.mkdir(parents=True, exist_ok=True)
+        neural_network.save(str(final_model_path))
+        print(f"💾 Final model saved: {final_model_path}")
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ Chunked training failed: {e}")
+        logger.exception("Chunked training failed with exception")
+        return False
+
+
 def train_with_preprocessed_data(args, config=None):
     """Train using the preprocessed data."""
     print("🚀 Starting Alpha Zero training with preprocessed data")
@@ -382,6 +508,24 @@ def train_with_preprocessed_data(args, config=None):
     # 1. Create configuration if not provided
     if config is None:
         config = create_training_config(args)
+    
+    # 2. Check if chunked training should be used
+    use_chunked_training = getattr(args, 'chunked_training', False) or getattr(args, 'force_chunked', False)
+    
+    # Auto-enable chunked training for high-performance mode or large datasets
+    if not use_chunked_training and hasattr(args, 'high_performance') and args.high_performance:
+        # Check available memory and dataset size
+        import psutil
+        memory_info = psutil.virtual_memory()
+        available_gb = memory_info.available / (1024**3)
+        
+        # Enable chunked training if memory is limited or dataset is large
+        if available_gb < 64 or (hasattr(args, 'max_positions') and args.max_positions and args.max_positions > 10000000):
+            use_chunked_training = True
+            print("🔄 Auto-enabling chunked training for memory safety")
+    
+    if use_chunked_training:
+        return train_with_chunked_approach(args, config)
 
     # Use config parameters if available, otherwise fall back to args
     if config.preprocessed_training:
@@ -1086,6 +1230,21 @@ Example Usage:
     --memory-conservative \\
     --batch-size 32 \\
     --epochs 5
+
+  # Chunked Training Mode (Memory Safe)
+  python train_with_preprocessed.py \\
+    --config train_with_preprocessed_high_performance.json \\
+    --data-dir "G:\\preprocessed_data" \\
+    --chunked-training \\
+    --chunk-memory 16.0 \\
+    --memory-threshold 32.0
+
+  # Force Chunked Training (Even for Small Datasets)
+  python train_with_preprocessed.py \\
+    --data-dir "G:\\preprocessed_data" \\
+    --force-chunked \\
+    --chunk-memory 8.0 \\
+    --batch-size 64
         """
     )
 
@@ -1140,6 +1299,14 @@ Example Usage:
                         help='High-performance mode (for RTX4090 + 192GB+ RAM configurations)')
     parser.add_argument('--no-swap', action='store_true',
                         help='Limit swap memory growth (allows system baseline usage + 2GB increase)')
+    
+    # Chunked training options
+    parser.add_argument('--chunked-training', action='store_true',
+                        help='Enable chunked training to prevent memory overflow')
+    parser.add_argument('--chunk-memory', type=float, default=16.0,
+                        help='Target memory usage per chunk (in GB, default: 16.0)')
+    parser.add_argument('--force-chunked', action='store_true',
+                        help='Force chunked training even for smaller datasets')
 
     # Other options
     parser.add_argument('--verbose', '-v', action='store_true',
@@ -1275,6 +1442,9 @@ Example Usage:
     print(f"  Force Small Dataset: {'Enabled' if (args.force_small_dataset or False) else 'Disabled'}")
     print(f"  Metadata Debug: {'Enabled' if args.metadata_debug else 'Disabled'}")
     print(f"  Policy Loss: {args.policy_loss.upper()}")
+    print(f"  Chunked Training: {'Enabled' if getattr(args, 'chunked_training', False) or getattr(args, 'force_chunked', False) else 'Disabled'}")
+    if getattr(args, 'chunked_training', False) or getattr(args, 'force_chunked', False):
+        print(f"    Chunk Memory Target: {getattr(args, 'chunk_memory', 16.0):.1f} GB")
 
     # Display current memory status
     import psutil
