@@ -50,30 +50,30 @@ def setup_logging(verbose: bool = False):
 def validate_preprocessed_data(data_dir: str) -> bool:
     """Validate the integrity of the preprocessed data."""
     data_path = Path(data_dir)
-    
+
     if not data_path.exists():
         print(f"❌ Data directory not found: {data_dir}")
         return False
-    
+
     # Check for metadata.json
     metadata_file = data_path / "metadata.json"
     if not metadata_file.exists():
         print(f"❌ Missing metadata file: {metadata_file}")
         return False
-    
+
     # Check for .npz files
     npz_files = list(data_path.glob("*.npz"))
     if not npz_files:
         print(f"❌ No .npz files found in: {data_dir}")
         return False
-    
+
     print(f"✅ Found {len(npz_files)} preprocessed files")
-    
+
     # Calculate total size
     total_size = sum(f.stat().st_size for f in npz_files + [metadata_file])
     total_size_mb = total_size / (1024 * 1024)
     print(f"📊 Total data size: {total_size_mb:.1f} MB")
-    
+
     return True
 
 
@@ -85,7 +85,7 @@ def create_training_config(args):
     else:
         config = get_default_config()
         print("📊 Using standard training configuration")
-    
+
     # Override with command-line arguments
     if args.iterations:
         config.training.iterations = args.iterations
@@ -95,10 +95,10 @@ def create_training_config(args):
         config.training.train_lr = args.learning_rate
     if args.epochs:
         config.training.train_epochs = args.epochs
-    
+
     # Disable traditional Perfect DB pre-training (we are using preprocessed data)
     config.training.use_pretraining = False
-    
+
     # GPU settings
     if not args.cpu:
         config.training.cuda = torch.cuda.is_available()
@@ -109,7 +109,7 @@ def create_training_config(args):
     else:
         config.training.cuda = False
         print("💻 Forcing CPU usage")
-    
+
     return config
 
 
@@ -117,24 +117,24 @@ def train_with_preprocessed_data(args):
     """Train using the preprocessed data."""
     print("🚀 Starting Alpha Zero training with preprocessed data")
     print("=" * 60)
-    
+
     # 1. Validate data
     if not validate_preprocessed_data(args.data_dir):
         return False
-    
+
     # 2. Create configuration
     config = create_training_config(args)
-    
+
     # 3. Create data loader
     print(f"\n📦 Creating data loader...")
     print(f"  Data directory: {args.data_dir}")
     print(f"  Batch size: {args.batch_size}")
     print(f"  Trap ratio: {args.trap_ratio}")
     print(f"  Game phase filter: {args.phase_filter or 'All'}")
-    
+
     try:
         loader = FastDataLoader(args.data_dir)
-        
+
         # Get data statistics
         stats = loader.get_statistics()
         if stats:
@@ -142,12 +142,12 @@ def train_with_preprocessed_data(args):
             print(f"  Processed sectors: {stats.get('total_sectors', 0):,}")
             print(f"  Total positions: {stats.get('total_positions', 0):,}")
             print(f"  Average processing speed: {stats.get('positions_per_second', 0):.0f} pos/s")
-        
+
         # Create DataLoader (memory-safe mode)
         # When memory is low, limit the amount of data loaded at once
         import psutil
         available_memory_gb = psutil.virtual_memory().available / (1024**3)
-        
+
         # Smart memory management strategy - optimized for high-end hardware
         if args.force_small_dataset:
             safe_max_positions = min(args.max_positions or 100000, 100000)
@@ -155,43 +155,43 @@ def train_with_preprocessed_data(args):
         elif args.high_performance:
             # High-performance mode: designed for RTX4090 + 192GB+ memory configurations
             # Strictly avoid using virtual memory to prevent running out of disk space
-            
+
             # Get system memory information
             import psutil
             memory_info = psutil.virtual_memory()
             total_memory_gb = memory_info.total / (1024**3)
-            
+
             # More conservative calculation: considers system overhead, GPU VRAM, buffers, etc.
             # Actual memory requirement per position: 19*7*7*4 bytes ≈ 3.7KB, but considering Python object overhead ≈ 8KB
             bytes_per_position = 8192  # 8KB per position (conservative estimate)
-            
+
             # Strict memory limit policy:
             # 1. Use no more than 60% of available memory (leaving 40% for the system and other processes)
             # 2. Reserve at least 32GB for the system (to prevent swapping)
             # 3. Account for temporary memory overhead during data conversion (2x factor)
-            
+
             usable_memory_gb = min(
                 available_memory_gb * 0.6,  # Use at most 60% of available memory
                 available_memory_gb - 32,   # Reserve at least 32GB
                 total_memory_gb * 0.5       # 50% of total memory as an upper limit
             )
-            
+
             if usable_memory_gb < 16:
                 logger.error(f"❌ High-performance mode requires at least 48GB of available memory (currently available: {available_memory_gb:.1f}GB)")
                 usable_memory_gb = available_memory_gb * 0.3  # Fallback to a more conservative strategy
-            
+
             # Calculate the safe maximum number of positions (considering 2x memory overhead for data conversion)
             safe_positions_by_memory = int(usable_memory_gb * 1024**3 / bytes_per_position / 2)
-            
+
             safe_max_positions = min(
                 args.max_positions or 50000000,  # User-specified or default 50 million
                 safe_positions_by_memory         # Memory limit
             )
-            
+
             # Estimate memory usage
             estimated_memory_gb = safe_max_positions * bytes_per_position * 2 / (1024**3)
             memory_utilization = estimated_memory_gb / available_memory_gb * 100
-            
+
             logger.info(f"🚀🚀 HIGH-PERFORMANCE MODE (Physical Memory Priority):")
             logger.info(f"   Total Memory: {total_memory_gb:.1f} GB")
             logger.info(f"   Available Memory: {available_memory_gb:.1f} GB")
@@ -199,16 +199,16 @@ def train_with_preprocessed_data(args):
             logger.info(f"   Positions to Load: {safe_max_positions:,}")
             logger.info(f"   Estimated Memory Usage: {estimated_memory_gb:.1f} GB")
             logger.info(f"   Memory Utilization: {memory_utilization:.1f}%")
-            
+
             # Virtual memory warning
             if memory_utilization > 50:
                 logger.warning(f"⚠️  High memory utilization ({memory_utilization:.1f}%), monitor swap usage")
-            
+
             # Disk space check (to prevent large swap files)
             import shutil
             disk_usage = shutil.disk_usage('/')
             available_disk_gb = disk_usage.free / (1024**3)
-            
+
             # --no-swap option: strictly avoid virtual memory
             if args.no_swap:
                 logger.info("🔒 Strict no-swap mode: further restricting memory usage")
@@ -219,7 +219,7 @@ def train_with_preprocessed_data(args):
                 estimated_memory_gb = safe_max_positions * bytes_per_position * 2 / (1024**3)
                 logger.info(f"   Strict Mode Positions: {safe_max_positions:,}")
                 logger.info(f"   Strict Mode Memory: {estimated_memory_gb:.1f} GB")
-            
+
             if available_disk_gb < estimated_memory_gb * 2:  # Need 2x space for a safe buffer
                 logger.warning(f"⚠️  Disk space might be insufficient (Available: {available_disk_gb:.1f}GB, Possibly required: {estimated_memory_gb*2:.1f}GB)")
                 if args.no_swap:
@@ -269,7 +269,7 @@ def train_with_preprocessed_data(args):
             )
             logger.warning(f"🛡️  Low-memory mode: limiting to {safe_max_positions:,} positions "
                            f"(available memory: {available_memory_gb:.1f} GB)")
-        
+
         dataloader = loader.create_dataloader(
             phase_filter=args.phase_filter,
             max_positions=safe_max_positions,
@@ -278,18 +278,18 @@ def train_with_preprocessed_data(args):
             trap_ratio=args.trap_ratio,
             num_workers=args.num_workers
         )
-        
+
         print(f"✅ DataLoader created successfully:")
         print(f"  Dataset size: {len(dataloader.dataset):,}")
         print(f"  Number of batches: {len(dataloader):,}")
-        
+
     except Exception as e:
         print(f"❌ Failed to create data loader: {e}")
         return False
-    
+
     # 4. Create trainer
     print(f"\n🧠 Creating neural network and trainer...")
-    
+
     try:
         # Create neural network
         model_args = {
@@ -299,10 +299,10 @@ def train_with_preprocessed_data(args):
             'action_size': 1000,  # From Game.getActionSize()
             'dropout_rate': config.network.dropout_rate
         }
-        
+
         device = 'cuda' if config.training.cuda else 'cpu'
         neural_network = AlphaZeroNetworkWrapper(model_args, device)
-        
+
         # Create trainer (simplified version, specialized for preprocessed data)
         trainer_args = {
             'cuda': config.training.cuda,
@@ -312,57 +312,57 @@ def train_with_preprocessed_data(args):
             'checkpoint_dir': args.checkpoint_dir,
             'checkpoint_interval': 5
         }
-        
+
         print(f"✅ Neural network created successfully ({device})")
-        
+
     except Exception as e:
         print(f"❌ Failed to create neural network: {e}")
         return False
-    
+
     # 5. Start training
     print(f"\n🎯 Starting training with preprocessed data...")
     print(f"  Epochs: {args.epochs}")
     print(f"  Learning rate: {args.learning_rate}")
     print(f"  Checkpoint directory: {args.checkpoint_dir}")
-    
+
     start_time = time.time()
-    
+
     try:
         # Training loop
         neural_network.net.train()
-        
+
         # Set up optimizer
         if neural_network.optimizer is None:
             neural_network.optimizer = torch.optim.Adam(
-                neural_network.net.parameters(), 
+                neural_network.net.parameters(),
                 lr=args.learning_rate
             )
-        
+
         total_batches = len(dataloader)
-        
+
         for epoch in range(args.epochs):
             epoch_start = time.time()
             epoch_loss = 0.0
             epoch_policy_loss = 0.0
             epoch_value_loss = 0.0
-            
+
             # Check memory status at the start of training
             memory_info = psutil.virtual_memory()
             current_memory = memory_info.available / (1024**3)
             memory_usage_percent = memory_info.percent
             swap_info = psutil.swap_memory()
             swap_usage_mb = swap_info.used / (1024**2)
-            
+
             print(f"\n📈 Epoch {epoch + 1}/{args.epochs}")
             print(f"   Available Memory: {current_memory:.1f} GB")
             print(f"   Memory Usage: {memory_usage_percent:.1f}%")
             print(f"   Swap Usage: {swap_usage_mb:.1f} MB")
-            
+
             # More reasonable swap usage warning threshold
             if swap_usage_mb > 5120:  # Warn only if above 5GB
                 logger.warning(f"⚠️  High swap usage: {swap_usage_mb:.1f} MB")
                 logger.warning("   Recommend monitoring memory usage")
-            
+
             # Strict memory monitoring
             if args.high_performance:
                 if memory_usage_percent > 85:
@@ -370,19 +370,19 @@ def train_with_preprocessed_data(args):
                     logger.error("   Recommend immediately reducing --max-positions or batch size")
                 elif memory_usage_percent > 75:
                     logger.warning(f"⚠️  High memory usage ({memory_usage_percent:.1f}%), monitor closely")
-                
+
                 # Set different swap thresholds based on whether --no-swap is enabled
                 # Get baseline swap usage (normal system usage before training starts)
                 if not hasattr(args, '_baseline_swap_mb'):
                     args._baseline_swap_mb = swap_usage_mb
                     logger.info(f"📊 Baseline Swap Usage: {args._baseline_swap_mb:.1f} MB")
-                
+
                 # Calculate the increase relative to the baseline
                 swap_increase_mb = swap_usage_mb - args._baseline_swap_mb
-                
+
                 if args.no_swap:
                     # NO-SWAP mode: allow baseline usage + 2GB increase
-                    swap_threshold = args._baseline_swap_mb + 2048  
+                    swap_threshold = args._baseline_swap_mb + 2048
                     if swap_usage_mb > swap_threshold:
                         logger.error(f"🚨 NO-SWAP mode: Swap memory has increased too much")
                         logger.error(f"   Current: {swap_usage_mb:.1f} MB, Baseline: {args._baseline_swap_mb:.1f} MB")
@@ -397,7 +397,7 @@ def train_with_preprocessed_data(args):
                 if current_memory < 8.0:
                     logger.warning(f"⚠️  Available memory is low ({current_memory:.1f} GB)")
                     logger.warning("Consider reducing batch size or enabling memory cleanup")
-            
+
             for batch_idx, (boards, policies, values, metadata) in enumerate(dataloader):
                 # Metadata and channel feature debugging (only output for the first batch to avoid polluting logs)
                 if args.metadata_debug and batch_idx == 0:
@@ -441,13 +441,13 @@ def train_with_preprocessed_data(args):
                 # Move data to device
                 boards = boards.to(device)
                 values = values.to(device)
-                
+
                 # Handle policy target dimension mismatch issue
                 policies = policies.to(device)
-                
+
                 # Forward pass
                 pred_policies, pred_values = neural_network.net(boards)
-                
+
                 # Adjust policy target dimensions to match network output
                 if policies.shape[1] != pred_policies.shape[1]:
                     # Preprocessed data is usually 24-dimensional (24 valid position distributions), network outputs to a larger action space
@@ -460,7 +460,7 @@ def train_with_preprocessed_data(args):
                     sums = expanded.sum(dim=1, keepdim=True)
                     fallback = torch.full_like(expanded, 1.0 / num_actions)
                     policies = torch.where(sums > 0, expanded / sums, fallback)
-                
+
                 # Calculate loss
                 if args.policy_loss == 'kld':
                     log_probs = torch.nn.functional.log_softmax(pred_policies, dim=1)
@@ -470,55 +470,55 @@ def train_with_preprocessed_data(args):
                     policy_loss = torch.nn.functional.mse_loss(probs, policies)
                 value_loss = torch.nn.functional.mse_loss(pred_values.squeeze(), values)
                 total_loss = policy_loss + value_loss
-                
+
                 # Backpropagation
                 neural_network.optimizer.zero_grad()
                 total_loss.backward()
                 neural_network.optimizer.step()
-                
+
                 # Statistics
                 epoch_loss += total_loss.item()
                 epoch_policy_loss += policy_loss.item()
                 epoch_value_loss += value_loss.item()
-                
+
                 # Display progress
                 if batch_idx % 100 == 0 or batch_idx == total_batches - 1:
                     progress = (batch_idx + 1) / total_batches * 100
                     print(f"  Batch {batch_idx + 1:,}/{total_batches:,} ({progress:.1f}%) - "
                           f"Loss: {total_loss.item():.4f}")
-            
+
             # End of epoch statistics
             epoch_time = time.time() - epoch_start
             avg_loss = epoch_loss / total_batches
             avg_policy_loss = epoch_policy_loss / total_batches
             avg_value_loss = epoch_value_loss / total_batches
-            
+
             print(f"✅ Epoch {epoch + 1} completed ({epoch_time:.1f}s)")
             print(f"  Average Loss: {avg_loss:.4f}")
             print(f"  Policy Loss: {avg_policy_loss:.4f}")
             print(f"  Value Loss: {avg_value_loss:.4f}")
-            
+
             # Save checkpoint
             if (epoch + 1) % 5 == 0:
                 checkpoint_path = Path(args.checkpoint_dir) / f"preprocessed_epoch_{epoch + 1}.tar"
                 checkpoint_path.parent.mkdir(parents=True, exist_ok=True)
                 neural_network.save(str(checkpoint_path))
                 print(f"💾 Checkpoint saved: {checkpoint_path}")
-        
+
         # Training finished
         total_time = time.time() - start_time
         print(f"\n🎉 Training complete!")
         print(f"  Total time: {total_time:.1f}s ({total_time/60:.1f}min)")
         print(f"  Average time per epoch: {total_time/args.epochs:.1f}s")
-        
+
         # Save final model
         final_model_path = Path(args.checkpoint_dir) / "final_preprocessed_model.tar"
         final_model_path.parent.mkdir(parents=True, exist_ok=True)
         neural_network.save(str(final_model_path))
         print(f"💾 Final model saved: {final_model_path}")
-        
+
         return True
-        
+
     except KeyboardInterrupt:
         print(f"\n⏹️  Training interrupted by user")
         return False
@@ -569,11 +569,11 @@ Example Usage:
     --epochs 5
         """
     )
-    
+
     # Required arguments
-    parser.add_argument('--data-dir', required=True, 
+    parser.add_argument('--data-dir', required=True,
                         help='Path to the preprocessed data directory (containing .npz files)')
-    
+
     # Training parameters
     parser.add_argument('--epochs', type=int, default=10,
                         help='Number of training epochs (default: 10)')
@@ -583,7 +583,7 @@ Example Usage:
                         help='Learning rate (default: 0.001)')
     parser.add_argument('--iterations', type=int,
                         help='Total training iterations (overrides epochs)')
-    
+
     # Data filtering parameters
     parser.add_argument('--max-positions', type=int,
                         help='Maximum number of positions to train on (for testing)')
@@ -591,7 +591,7 @@ Example Usage:
                         help='Ratio of trap positions (default: 0.3)')
     parser.add_argument('--phase-filter', choices=['placement', 'moving', 'flying'],
                         help='Only train on a specific game phase')
-    
+
     # System parameters
     parser.add_argument('--cpu', action='store_true',
                         help='Force CPU usage (do not use GPU)')
@@ -599,11 +599,11 @@ Example Usage:
                         help='Number of worker processes for data loading (default: 2)')
     parser.add_argument('--checkpoint-dir', default='checkpoints_preprocessed',
                         help='Directory to save checkpoints (default: checkpoints_preprocessed)')
-    
+
     # Mode selection
     parser.add_argument('--fast-mode', action='store_true',
                         help='Fast training mode (smaller network and parameters)')
-    
+
     # Memory management options
     parser.add_argument('--memory-safe', action='store_true',
                         help='Enable memory-safe mode (strictly controls physical memory usage)')
@@ -617,7 +617,7 @@ Example Usage:
                         help='High-performance mode (for RTX4090 + 192GB+ RAM configurations)')
     parser.add_argument('--no-swap', action='store_true',
                         help='Limit swap memory growth (allows system baseline usage + 2GB increase)')
-    
+
     # Other options
     parser.add_argument('--verbose', '-v', action='store_true',
                         help='Verbose output')
@@ -627,75 +627,75 @@ Example Usage:
                         help='Print metadata and feature channel stats for the first batch for verification')
     parser.add_argument('--policy-loss', choices=['kld', 'mse'], default='kld',
                         help='Policy loss function type: kld or mse (default: kld)')
-    
+
     args = parser.parse_args()
-    
+
     # Check for option conflicts and resolve them automatically
     conflict_warnings = []
-    
+
     # Check for memory mode conflicts
     memory_modes = [args.memory_conservative, args.high_performance, args.force_small_dataset]
     active_memory_modes = sum(memory_modes)
-    
+
     if active_memory_modes > 1:
         if args.high_performance and args.memory_conservative:
             conflict_warnings.append("⚠️  Conflict detected: --high-performance and --memory-conservative specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing high-performance mode (ignoring conservative mode)")
             args.memory_conservative = False
-        
+
         if args.high_performance and args.force_small_dataset:
             conflict_warnings.append("⚠️  Conflict detected: --high-performance and --force-small-dataset specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing high-performance mode (ignoring small dataset mode)")
             args.force_small_dataset = False
-            
+
         if args.memory_conservative and args.force_small_dataset:
             conflict_warnings.append("⚠️  Conflict detected: --memory-conservative and --force-small-dataset specified simultaneously")
             conflict_warnings.append("   Resolution: Prioritizing small dataset mode (stricter limit)")
             args.memory_conservative = False
-    
+
     # Check compatibility of max-positions with memory modes
     if args.max_positions:
         if args.memory_conservative and args.max_positions > 500000:
             conflict_warnings.append(f"⚠️  Conflict detected: --max-positions ({args.max_positions:,}) is too large for --memory-conservative mode")
             conflict_warnings.append(f"   Suggestion: Conservative mode recommends not exceeding 500,000 positions")
-            
+
         if args.force_small_dataset and args.max_positions > 100000:
             conflict_warnings.append(f"⚠️  Conflict detected: --max-positions ({args.max_positions:,}) is too large for --force-small-dataset mode")
             conflict_warnings.append(f"   Resolution: Limiting to 100,000 positions")
             args.max_positions = 100000
-            
+
         if args.high_performance and args.max_positions < 1000000:
             conflict_warnings.append(f"⚠️  Notice: A small --max-positions ({args.max_positions:,}) was specified in --high-performance mode")
             conflict_warnings.append(f"   Suggestion: High-performance mode recommends at least 1,000,000 positions to fully utilize hardware")
-    
+
     # Check compatibility of batch size with memory modes
     if args.batch_size:
         if args.memory_conservative and args.batch_size > 64:
             conflict_warnings.append(f"⚠️  Conflict detected: --batch-size ({args.batch_size}) is too large for --memory-conservative mode")
             conflict_warnings.append(f"   Suggestion: Conservative mode recommends a batch size no larger than 64")
-            
+
         if args.high_performance and args.batch_size < 128:
             conflict_warnings.append(f"⚠️  Notice: A small --batch-size ({args.batch_size}) was specified in --high-performance mode")
             conflict_warnings.append(f"   Suggestion: High-performance mode recommends a batch size of at least 128 to fully utilize the GPU")
-    
+
     # Set up logging
     setup_logging(args.verbose)
-    
+
     print("🎯 Alpha Zero Preprocessed Data Training Tool")
     print("=" * 50)
-    
+
     # Display conflict warnings
     if conflict_warnings:
         print("\n🚨 Option Conflict Detection:")
         for warning in conflict_warnings:
             print(warning)
         print("")
-    
+
     # Validate arguments
     if not Path(args.data_dir).exists():
         print(f"❌ Data directory does not exist: {args.data_dir}")
         return 1
-    
+
     # Display configuration
     print(f"📋 Training Configuration:")
     print(f"  Data Directory: {args.data_dir}")
@@ -715,7 +715,7 @@ Example Usage:
     print(f"  Force Small Dataset: {'Enabled' if args.force_small_dataset else 'Disabled'}")
     print(f"  Metadata Debug: {'Enabled' if args.metadata_debug else 'Disabled'}")
     print(f"  Policy Loss: {args.policy_loss.upper()}")
-    
+
     # Display current memory status
     import psutil
     memory_info = psutil.virtual_memory()
@@ -725,15 +725,15 @@ Example Usage:
     print(f"  Total Memory: {total_gb:.1f} GB")
     print(f"  Available Memory: {available_gb:.1f} GB")
     print(f"  Usage: {memory_info.percent:.1f}%")
-    
+
     # Memory warning
     if available_gb < args.memory_threshold:
         print(f"⚠️  Warning: Available memory ({available_gb:.1f} GB) is below the threshold ({args.memory_threshold} GB)")
         print(f"   Consider enabling memory-safe mode: --memory-safe")
-    
+
     # Start training
     success = train_with_preprocessed_data(args)
-    
+
     if success:
         print("\n🎉 Training completed successfully!")
         return 0

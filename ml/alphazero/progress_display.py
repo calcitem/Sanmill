@@ -46,7 +46,7 @@ class ProgressBar:
     def __init__(self, width: int = 50):
         """
         Initializes the progress bar.
-        
+
         Args:
             width: The width of the progress bar.
         """
@@ -55,12 +55,12 @@ class ProgressBar:
     def render(self, percentage: float, prefix: str = "", suffix: str = "") -> str:
         """
         Renders the progress bar.
-        
+
         Args:
             percentage: The progress percentage (0-100).
             prefix: The text prefix.
             suffix: The text suffix.
-            
+
         Returns:
             A formatted progress bar string.
         """
@@ -75,7 +75,7 @@ class TrainingProgressDisplay:
     def __init__(self, show_file_details: bool = True, update_interval: float = 0.5):
         """
         Initializes the progress display monitor.
-        
+
         Args:
             show_file_details: Whether to show detailed file information.
             update_interval: The update interval in seconds.
@@ -139,7 +139,7 @@ class TrainingProgressDisplay:
     def set_total_files(self, file_paths: List[Path]):
         """
         Sets the list of total files.
-        
+
         Args:
             file_paths: A list of file paths.
         """
@@ -166,7 +166,7 @@ class TrainingProgressDisplay:
     def start_file(self, filename: str):
         """
         Starts processing a file.
-        
+
         Args:
             filename: The name of the file.
         """
@@ -179,7 +179,7 @@ class TrainingProgressDisplay:
     def update_file_progress(self, filename: str, processed_bytes: int):
         """
         Updates the file processing progress.
-        
+
         Args:
             filename: The name of the file.
             processed_bytes: The number of bytes processed so far.
@@ -195,7 +195,7 @@ class TrainingProgressDisplay:
     def complete_file(self, filename: str, success: bool = True):
         """
         Completes the processing of a file.
-        
+
         Args:
             filename: The name of the file.
             success: Whether the processing was successful.
@@ -420,10 +420,10 @@ class TrainingProgressDisplay:
     def _format_time(self, seconds: float) -> str:
         """
         Formats the time for display.
-        
+
         Args:
             seconds: The number of seconds.
-            
+
         Returns:
             A formatted time string.
         """
@@ -451,7 +451,7 @@ class CompactProgressDisplay:
     def update(self, current: int, total: int, current_file: str = "", extra_info: str = ""):
         """
         Updates the progress display.
-        
+
         Args:
             current: The current progress count.
             total: The total count.
@@ -500,7 +500,7 @@ class CompactProgressDisplay:
     def finish(self, message: str = "Complete!"):
         """
         Finalizes the display.
-        
+
         Args:
             message: The completion message.
         """
@@ -522,7 +522,7 @@ class CompactProgressDisplay:
 def with_progress_display(display_type: str = "full"):
     """
     A decorator for displaying progress.
-    
+
     Args:
         display_type: The type of display ('full', 'compact').
     """

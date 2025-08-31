@@ -1,7 +1,7 @@
 """
 Alpha Zero implementation for Nine Men's Morris
 
-This package contains a pure Alpha Zero implementation optimized for 
+This package contains a pure Alpha Zero implementation optimized for
 Nine Men's Morris, including efficient Perfect Database integration.
 """
 
@@ -15,7 +15,7 @@ from perfect_db_loader import EfficientPerfectDBLoader
 
 __all__ = [
     'AlphaZeroNet',
-    'MCTS', 
+    'MCTS',
     'AlphaZeroTrainer',
     'EfficientPerfectDBLoader'
 ]
