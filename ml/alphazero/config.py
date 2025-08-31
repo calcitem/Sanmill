@@ -145,6 +145,10 @@ class PreprocessedTrainingConfig:
     verbose: bool = False
     metadata_debug: bool = False
 
+    # Optional advanced scheduler and anomaly detection configuration
+    scheduler: Optional[Dict[str, Any]] = None
+    plateau_detection: Optional[Dict[str, Any]] = None
+
 
 @dataclass
 class AlphaZeroConfig:

@@ -78,6 +78,23 @@
     "chunk_memory": 16.0,
     "fast_mode": false,
     "verbose": false,
-    "metadata_debug": false
+    "metadata_debug": false,
+    "scheduler": {
+      "type": "reduce_on_plateau",
+      "params": {
+        "mode": "min",
+        "factor": 0.5,
+        "patience": 2,
+        "threshold": 0.0005,
+        "cooldown": 0,
+        "min_lr": 1e-6
+      }
+    },
+    "plateau_detection": {
+      "window": 400,
+      "min_history": 400,
+      "rel_std_threshold": 0.004,
+      "warmup_batches": 5000
+    }
   }
 }

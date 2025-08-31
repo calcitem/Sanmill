@@ -113,6 +113,12 @@ class ChunkedTrainingProgressDisplay:
         self.learning_rate_history = []
         self.accuracy_history = []  # If available
         self.last_checkpoint_time = time.time()
+        # Loss plateau detection configuration (tunable)
+        # Warm-up to avoid early false positives; use windowed std/mean ratio
+        self.plateau_window = 200
+        self.plateau_min_history = 200
+        self.plateau_rel_std_threshold = 0.005
+        self.plateau_warmup_batches = 1000
         
         # Warning statistics for display
         self.warning_stats = {
@@ -671,9 +677,10 @@ class ChunkedTrainingProgressDisplay:
         # Add to loss history
         self.loss_history.append(current_loss)
         
-        # Keep only recent history (last 100 losses)
-        if len(self.loss_history) > 100:
-            self.loss_history = self.loss_history[-100:]
+        # Keep only recent history with sufficient window for plateau detection
+        _cap = max(100, getattr(self, 'plateau_window', 100))
+        if len(self.loss_history) > _cap:
+            self.loss_history = self.loss_history[-_cap:]
         
         # Check for various anomalies
         is_zero = abs(current_loss) < 1e-8
@@ -714,14 +721,16 @@ class ChunkedTrainingProgressDisplay:
                 self._show_loss_warning("loss_explosion", current_loss)
                 self.loss_warnings_shown.add("loss_explosion")
             
-            # Check for loss plateau (no improvement)
-            if len(self.loss_history) >= 50:
-                recent_50 = self.loss_history[-50:]
-                loss_std = np.std(recent_50)
-                loss_mean = np.mean(recent_50)
-                
-                # If standard deviation is very small relative to mean, might be stuck
-                if loss_mean > 0 and loss_std / loss_mean < 0.01 and "loss_plateau" not in self.loss_warnings_shown:
+            # Check for loss plateau (no improvement) with warm-up and windowed threshold
+            if (len(self.loss_history) >= max(self.plateau_min_history, self.plateau_window)
+                and self.samples_processed >= self.plateau_warmup_batches):
+                recent_window = self.loss_history[-self.plateau_window:]
+                loss_std = np.std(recent_window)
+                loss_mean = np.mean(recent_window)
+                # Very small relative variance suggests plateau
+                if (loss_mean > 0
+                    and (loss_std / loss_mean) < self.plateau_rel_std_threshold
+                    and "loss_plateau" not in self.loss_warnings_shown):
                     self._show_loss_warning("loss_plateau", loss_std, loss_mean)
                     self.loss_warnings_shown.add("loss_plateau")
     
@@ -1712,7 +1721,7 @@ class DatasetScanner:
         print()  # New line after progress
         
         self.total_size_bytes = total_size
-        self.total_samples_estimate = total_samples
+        self.total_samples_estimate = max(0, total_samples or 0)  # Ensure it's never None
         
         scan_time = time.time() - start_time
         
@@ -1786,7 +1795,8 @@ class DatasetScanner:
             'avg_samples_per_file': 0,
             'scan_time_seconds': 0,
             'file_stats': [],
-            'bytes_per_sample_actual': 12000
+            'bytes_per_sample_actual': 12000,
+            'phase_distribution': {'placement': 0, 'moving': 0, 'flying': 0}
         }
     
     def estimate_training_time(self, 
@@ -1804,15 +1814,19 @@ class DatasetScanner:
         Returns:
             Dictionary with time estimates
         """
-        if self.total_samples_estimate == 0:
-            return {'total_hours': 0, 'total_minutes': 0, 'per_epoch_minutes': 0}
+        # Defensive check for None values
+        _epochs = epochs if epochs is not None else 10
+        _batch_size = batch_size if batch_size is not None else 64
+
+        if self.total_samples_estimate is None or self.total_samples_estimate == 0:
+            return {'total_hours': 0, 'total_minutes': 0, 'per_epoch_minutes': 0, 'total_batches': 0, 'batches_per_epoch': 0}
         
-        total_batches = (self.total_samples_estimate + batch_size - 1) // batch_size
-        total_batches_all_epochs = total_batches * epochs
+        total_batches = (self.total_samples_estimate + _batch_size - 1) // _batch_size
+        total_batches_all_epochs = total_batches * _epochs
         
         # Estimate time in seconds
-        estimated_seconds = self.total_samples_estimate * epochs / estimated_samples_per_second
-        
+        estimated_seconds = (self.total_samples_estimate * _epochs / estimated_samples_per_second) if estimated_samples_per_second > 0 else float('inf')
+
         # Add overhead for chunk switching, memory cleanup, etc. (20% overhead)
         estimated_seconds_with_overhead = estimated_seconds * 1.2
         
@@ -1820,8 +1834,8 @@ class DatasetScanner:
             'total_seconds': estimated_seconds_with_overhead,
             'total_minutes': estimated_seconds_with_overhead / 60,
             'total_hours': estimated_seconds_with_overhead / 3600,
-            'per_epoch_seconds': estimated_seconds_with_overhead / epochs,
-            'per_epoch_minutes': estimated_seconds_with_overhead / epochs / 60,
+            'per_epoch_seconds': estimated_seconds_with_overhead / _epochs if _epochs > 0 else 0,
+            'per_epoch_minutes': (estimated_seconds_with_overhead / _epochs / 60) if _epochs > 0 else 0,
             'total_batches': total_batches_all_epochs,
             'batches_per_epoch': total_batches
         }
@@ -2096,7 +2110,10 @@ class ChunkedTrainer:
                      gradient_accumulation_steps: int = 1,
                      save_checkpoint_every: int = 5,
                      checkpoint_dir: str = "checkpoints_chunked",
-                     auto_resume: bool = True) -> Dict[str, Any]:
+                     auto_resume: bool = True,
+                     scheduler_type: str = "cosine",
+                     scheduler_params: Optional[Dict[str, Any]] = None,
+                     plateau_detection_params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Train the neural network using chunked approach.
         
@@ -2160,10 +2177,26 @@ class ChunkedTrainer:
             weight_decay=1e-4
         )
         
-        # Learning rate scheduler
-        scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
-            optimizer, T_0=5, T_mult=2, eta_min=1e-5
-        )
+        # Learning rate scheduler (configurable)
+        if scheduler_params is None:
+            scheduler_params = {}
+        if isinstance(scheduler_type, str):
+            scheduler_type = scheduler_type.lower()
+
+        if scheduler_type == "reduce_on_plateau":
+            scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+                optimizer,
+                mode=scheduler_params.get("mode", "min"),
+                factor=scheduler_params.get("factor", 0.5),
+                patience=scheduler_params.get("patience", 3),
+                threshold=scheduler_params.get("threshold", 1e-3),
+                cooldown=scheduler_params.get("cooldown", 0),
+                min_lr=scheduler_params.get("min_lr", 1e-6)
+            )
+        else:
+            scheduler = torch.optim.lr_scheduler.CosineAnnealingWarmRestarts(
+                optimizer, T_0=scheduler_params.get("T_0", 5), T_mult=scheduler_params.get("T_mult", 2), eta_min=scheduler_params.get("eta_min", 1e-5)
+            )
         
         # Initialize checkpoint manager
         self.checkpoint_manager = ChunkedCheckpointManager(
@@ -2208,6 +2241,28 @@ class ChunkedTrainer:
             total_chunks=len(chunks),
             total_samples=total_samples
         )
+        # Apply plateau detection custom parameters if provided
+        if plateau_detection_params:
+            if "window" in plateau_detection_params:
+                try:
+                    progress_display.plateau_window = int(plateau_detection_params["window"])
+                except Exception:
+                    pass
+            if "min_history" in plateau_detection_params:
+                try:
+                    progress_display.plateau_min_history = int(plateau_detection_params["min_history"])
+                except Exception:
+                    pass
+            if "rel_std_threshold" in plateau_detection_params:
+                try:
+                    progress_display.plateau_rel_std_threshold = float(plateau_detection_params["rel_std_threshold"])
+                except Exception:
+                    pass
+            if "warmup_batches" in plateau_detection_params:
+                try:
+                    progress_display.plateau_warmup_batches = int(plateau_detection_params["warmup_batches"])
+                except Exception:
+                    pass
         
         # Set phase totals from dataset scan for progress tracking
         if scan_results.get('phase_distribution'):
@@ -2304,8 +2359,12 @@ class ChunkedTrainer:
                 progress_display.complete_epoch(avg_epoch_loss)
                 
                 # Update learning rate
-                scheduler.step()
-                current_lr = scheduler.get_last_lr()[0]
+                if scheduler_type == "reduce_on_plateau":
+                    scheduler.step(avg_epoch_loss)
+                    current_lr = optimizer.param_groups[0]['lr']
+                else:
+                    scheduler.step()
+                    current_lr = scheduler.get_last_lr()[0]
                 logger.info(f"Learning Rate updated to: {current_lr:.6f}")
                 
                 # Add to loss history

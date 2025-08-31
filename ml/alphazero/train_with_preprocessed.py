@@ -468,6 +468,48 @@ def train_with_chunked_approach(args, config):
     # Start chunked training
     print(f"\n🚀 Starting chunked training...")
     try:
+        # Build scheduler and plateau params from config (if present)
+        scheduler_type = "cosine"
+        scheduler_params = {}
+        plateau_detection_params = None
+        if config.preprocessed_training and config.preprocessed_training.high_performance:
+            scheduler_type = "reduce_on_plateau"
+            scheduler_params = {
+                'mode': 'min',
+                'factor': 0.5,
+                'patience': 2,
+                'threshold': 5e-4,
+                'cooldown': 0,
+                'min_lr': 1e-6
+            }
+            plateau_detection_params = {
+                'window': 400,
+                'min_history': 400,
+                'rel_std_threshold': 0.004,
+                'warmup_batches': 5000
+            }
+
+        # Prefer JSON-config overrides if provided
+        try:
+            if config.preprocessed_training:
+                pc = config.preprocessed_training
+                if hasattr(pc, 'scheduler') and isinstance(pc.scheduler, dict):
+                    sch = pc.scheduler
+                    scheduler_type = str(sch.get('type', scheduler_type))
+                    if isinstance(sch.get('params'), dict):
+                        scheduler_params.update(sch['params'])
+                if hasattr(pc, 'plateau_detection') and isinstance(pc.plateau_detection, dict):
+                    if plateau_detection_params is None:
+                        plateau_detection_params = {}
+                    plateau_detection_params.update(pc.plateau_detection)
+        except Exception:
+            pass
+
+        # Defensive defaults: ensure epochs, batch_size, learning_rate are valid
+        epochs = epochs if (epochs is not None and epochs > 0) else (config.preprocessed_training.epochs if config.preprocessed_training else 10)
+        batch_size = batch_size if (batch_size is not None and batch_size > 0) else (config.preprocessed_training.batch_size if config.preprocessed_training else 64)
+        learning_rate = learning_rate if (learning_rate is not None and learning_rate > 0) else (config.preprocessed_training.learning_rate if config.preprocessed_training else 1e-3)
+
         training_stats = chunked_trainer.train_chunked(
             epochs=epochs,
             batch_size=batch_size,
@@ -477,7 +519,10 @@ def train_with_chunked_approach(args, config):
             gradient_accumulation_steps=getattr(config.preprocessed_training, 'gradient_accumulation_steps', 1) if config.preprocessed_training else 1,
             save_checkpoint_every=getattr(config.preprocessed_training, 'save_checkpoint_every_n_epochs', 5) if config.preprocessed_training else 5,
             checkpoint_dir=checkpoint_dir,
-            auto_resume=True
+            auto_resume=True,
+            scheduler_type=scheduler_type,
+            scheduler_params=scheduler_params,
+            plateau_detection_params=plateau_detection_params
         )
         
         print(f"\n🎉 Chunked training completed successfully!")
@@ -1264,11 +1309,11 @@ Example Usage:
                         help='Path to the preprocessed data directory (containing .npz files)')
 
     # Training parameters
-    parser.add_argument('--epochs', type=int, default=10,
+    parser.add_argument('--epochs', type=int,
                         help='Number of training epochs (default: 10)')
-    parser.add_argument('--batch-size', type=int, default=64,
+    parser.add_argument('--batch-size', type=int,
                         help='Batch size (default: 64)')
-    parser.add_argument('--learning-rate', type=float, default=1e-3,
+    parser.add_argument('--learning-rate', type=float,
                         help='Learning rate (default: 0.001)')
     parser.add_argument('--iterations', type=int,
                         help='Total training iterations (overrides epochs)')
@@ -1284,9 +1329,9 @@ Example Usage:
     # System parameters
     parser.add_argument('--cpu', action='store_true',
                         help='Force CPU usage (do not use GPU)')
-    parser.add_argument('--num-workers', type=int, default=2,
+    parser.add_argument('--num-workers', type=int,
                         help='Number of worker processes for data loading (default: 2)')
-    parser.add_argument('--checkpoint-dir', default='checkpoints_preprocessed',
+    parser.add_argument('--checkpoint-dir',
                         help='Directory to save checkpoints (default: checkpoints_preprocessed)')
 
     # Mode selection
@@ -1296,7 +1341,7 @@ Example Usage:
     # Memory management options
     parser.add_argument('--memory-safe', action='store_true',
                         help='Enable memory-safe mode (strictly controls physical memory usage)')
-    parser.add_argument('--memory-threshold', type=float, default=16.0,
+    parser.add_argument('--memory-threshold', type=float,
                         help='Physical memory safety threshold (in GB, default: 16.0)')
     parser.add_argument('--force-small-dataset', action='store_true', default=None,
                         help='Force using a small dataset mode (max 100,000 positions)')
@@ -1310,7 +1355,7 @@ Example Usage:
     # Chunked training options
     parser.add_argument('--chunked-training', action='store_true',
                         help='Enable chunked training to prevent memory overflow')
-    parser.add_argument('--chunk-memory', type=float, default=16.0,
+    parser.add_argument('--chunk-memory', type=float,
                         help='Target memory usage per chunk (in GB, default: 16.0)')
     parser.add_argument('--force-chunked', action='store_true',
                         help='Force chunked training even for smaller datasets')
@@ -1433,16 +1478,16 @@ Example Usage:
     if args.config_file:
         print(f"  Config File: {args.config_file}")
     print(f"  Data Directory: {args.data_dir or 'From config file'}")
-    print(f"  Epochs: {args.epochs}")
-    print(f"  Batch Size: {args.batch_size}")
-    print(f"  Learning Rate: {args.learning_rate}")
+    print(f"  Epochs: {args.epochs if args.epochs is not None else 'From config'}")
+    print(f"  Batch Size: {args.batch_size if args.batch_size is not None else 'From config'}")
+    print(f"  Learning Rate: {args.learning_rate if args.learning_rate is not None else 'From config'}")
     print(f"  Trap Ratio: {args.trap_ratio}")
     print(f"  Max Positions: {args.max_positions or 'Unlimited'}")
     print(f"  Game Phase: {args.phase_filter or 'All'}")
     print(f"  Device: {'CPU' if args.cpu else 'GPU (if available)'}")
-    print(f"  Workers: {args.num_workers}")
+    print(f"  Workers: {args.num_workers if args.num_workers is not None else 'From config'}")
     print(f"  Memory Safe Mode: {'Enabled' if hasattr(args, 'memory_safe') and args.memory_safe else 'Disabled'}")
-    print(f"  Memory Threshold: {args.memory_threshold} GB")
+    print(f"  Memory Threshold: {args.memory_threshold if args.memory_threshold is not None else 'From config'} GB")
     print(f"  Conservative Memory: {'Enabled' if (args.memory_conservative or False) else 'Disabled'}")
     print(f"  High Performance: {'Enabled' if (args.high_performance or False) else 'Disabled'}")
     print(f"  Disable Swap: {'Enabled' if args.no_swap else 'Disabled'}")
