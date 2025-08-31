@@ -11,7 +11,12 @@
 #include "thread_pool.h"
 #include "uci.h"
 #include "misc.h"
+#include "position.h"
+#include "rule.h"
 #include "engine_controller.h"
+
+// External declaration for global rule variable
+extern Rule rule;
 #include "search_engine.h"
 #include "self_play.h"
 
@@ -226,8 +231,9 @@ std::string UCI::square(Square s)
 }
 
 /// UCI::move() converts a Move to a string in standard notation (a1-a4, etc.).
+/// For Zhuolu Chess, includes special piece characters when applicable.
 
-string UCI::move(Move m)
+string UCI::move(Move m, const Position *pos)
 {
     if (m == MOVE_NONE)
         return "none";
@@ -240,14 +246,44 @@ string UCI::move(Move m)
 
     if (m < 0) {
         // Remove move
+        if (pos && rule.zhuoluMode) {
+            // Check if the piece being removed is a special piece
+            SpecialPieceType specialType = pos->special_piece_on(to);
+            if (specialType != NORMAL_PIECE) {
+                Color pieceColor = color_of(pos->piece_on(to));
+                return "x" + SpecialPieceToChar(specialType, pieceColor);
+            }
+        }
         return "x" + toStr;
     } else if (m & 0x7f00) {
         // Regular move
         const Square from = from_sq(m);
         const string fromStr = square(from);
+
+        if (pos && rule.zhuoluMode) {
+            // Check if the piece being moved is a special piece
+            SpecialPieceType specialType = pos->special_piece_on(from);
+            if (specialType != NORMAL_PIECE) {
+                Color pieceColor = color_of(pos->piece_on(from));
+                return SpecialPieceToChar(specialType, pieceColor) + "-" +
+                       toStr;
+            }
+        }
         return fromStr + "-" + toStr;
     } else {
         // Place move
+        if (pos && rule.zhuoluMode) {
+            // For Zhuolu Chess, check if the move contains special piece
+            // information
+            if (has_special_piece(m)) {
+                SpecialPieceType specialType = static_cast<SpecialPieceType>(
+                    special_piece_type_of(m));
+                if (specialType != NORMAL_PIECE) {
+                    Color c = pos->side_to_move();
+                    return SpecialPieceToChar(specialType, c) + toStr;
+                }
+            }
+        }
         return toStr;
     }
 }
@@ -258,7 +294,7 @@ string UCI::move(Move m)
 Move UCI::to_move(Position *pos, const string &str)
 {
     for (const auto &m : MoveList<LEGAL>(*pos))
-        if (str == move(m))
+        if (str == move(m, pos))
             return m;
 
     return MOVE_NONE;

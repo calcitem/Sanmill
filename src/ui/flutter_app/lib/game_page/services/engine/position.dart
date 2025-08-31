@@ -10,9 +10,11 @@ List<int> posKeyHistory = <int>[];
 class SquareAttribute {
   SquareAttribute({
     required this.placedPieceNumber,
+    this.specialPiece,
   });
 
   int placedPieceNumber;
+  SpecialPiece? specialPiece;
 }
 
 class StateInfo {
@@ -72,6 +74,117 @@ class Position {
   bool isNeedStalemateRemoval = false;
   bool isStalemateRemoving = false;
 
+  /// Special piece selection bitmask for Zhuolu Chess (64-bit)
+  /// Bits 0-23: White player's 6 selected pieces (4 bits each)
+  /// Bits 24-47: Black player's 6 selected pieces (4 bits each)
+  /// Bits 48-63: Reserved for future use
+  int _specialPieceSelectionMask = 0;
+
+  /// Available special pieces bitmask for each player
+  /// Each bit represents one of the 15 special pieces (0-14)
+  final Map<PieceColor, int> _availableSpecialPiecesMask = <PieceColor, int>{
+    PieceColor.white: 0,
+    PieceColor.black: 0,
+  };
+
+  /// Currently selected piece type for placement (null = normal piece)
+  SpecialPiece? _selectedPieceForPlacement;
+
+  /// Zhuolu Chess capture statistics for game over display
+  ZhuoluCaptureStats? _zhuoluCaptureStats;
+
+  /// Return true if every playable square has no empty piece (marked counts as occupied)
+  bool _isBoardFullyOccupied() {
+    final List<int> emptySquares = <int>[];
+    for (int s = sqBegin; s < sqEnd; s++) {
+      if (_board[s] == PieceColor.none) {
+        emptySquares.add(s);
+      }
+    }
+    if (emptySquares.isNotEmpty) {
+      logger.i("[Board Check] Board not full. Empty squares: $emptySquares");
+      return false;
+    }
+    logger.i("[Board Check] Board is fully occupied.");
+    return true;
+  }
+
+  /// Check if board is full and handle game ending if needed
+  bool _checkAndHandleBoardFull() {
+    logger.i("[Board Check] Calling _checkAndHandleBoardFull().");
+    // Check if board is full
+    if (_isBoardFullyOccupied()) {
+      logger.i("[Board Check] Board is full, triggering game end.");
+      if (DB().ruleSettings.zhuoluMode) {
+        // In Zhuolu mode: end the game early and determine the result by counting captured pieces
+        _endGameByCapturedCountsZhuolu();
+        return true;
+      } else if (DB().ruleSettings.piecesCount == 12) {
+        // Legacy branch for classic 12-piece rules
+        switch (DB().ruleSettings.boardFullAction) {
+          case BoardFullAction.firstPlayerLose:
+            setGameOver(PieceColor.black, GameOverReason.loseFullBoard);
+            return true;
+          case BoardFullAction.firstAndSecondPlayerRemovePiece:
+            pieceToRemoveCount[PieceColor.white] =
+                pieceToRemoveCount[PieceColor.black] = 1;
+            changeSideToMove();
+            break;
+          case BoardFullAction.secondAndFirstPlayerRemovePiece:
+            pieceToRemoveCount[PieceColor.white] =
+                pieceToRemoveCount[PieceColor.black] = 1;
+            keepSideToMove();
+            break;
+          case BoardFullAction.sideToMoveRemovePiece:
+            _sideToMove = DB().ruleSettings.isDefenderMoveFirst
+                ? PieceColor.black
+                : PieceColor.white;
+            pieceToRemoveCount[sideToMove] = 1;
+            keepSideToMove();
+            break;
+          case BoardFullAction.agreeToDraw:
+            setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
+            return true;
+          case null:
+            logger.e("[position] putPiece: Invalid BoardFullAction.");
+            break;
+        }
+      }
+    }
+    return false;
+  }
+
+  /// Ends the game by comparing captured counts so far in Zhuolu mode.
+  /// Winner is the player who lost fewer pieces; equal means draw.
+  void _endGameByCapturedCountsZhuolu() {
+    final int initialPieces = DB().ruleSettings.piecesCount;
+    final int whiteRemaining = pieceOnBoardCount[PieceColor.white]! +
+        pieceInHandCount[PieceColor.white]!;
+    final int blackRemaining = pieceOnBoardCount[PieceColor.black]! +
+        pieceInHandCount[PieceColor.black]!;
+    final int whiteCaptured = initialPieces - whiteRemaining;
+    final int blackCaptured = initialPieces - blackRemaining;
+
+    logger.i(
+        "[position] Zhuolu game ending - White captured: $whiteCaptured, Black captured: $blackCaptured");
+
+    // Store capture statistics for UI display
+    _zhuoluCaptureStats = ZhuoluCaptureStats(
+      whiteCaptured: whiteCaptured,
+      blackCaptured: blackCaptured,
+    );
+
+    if (whiteCaptured > blackCaptured) {
+      // White lost more pieces, Black wins
+      setGameOver(PieceColor.black, GameOverReason.zhuoluCaptureVictory);
+    } else if (blackCaptured > whiteCaptured) {
+      // Black lost more pieces, White wins
+      setGameOver(PieceColor.white, GameOverReason.zhuoluCaptureVictory);
+    } else {
+      setGameOver(PieceColor.draw, GameOverReason.zhuoluCaptureDraw);
+    }
+  }
+
   bool isNoDraw() {
     if (score[PieceColor.white]! > 0 || score[PieceColor.black]! > 0) {
       return true;
@@ -100,6 +213,9 @@ class Position {
 
   /// The reason for game over, if any.
   GameOverReason? get reason => gameOverReason;
+
+  /// Zhuolu Chess capture statistics, if available.
+  ZhuoluCaptureStats? get zhuoluCaptureStats => _zhuoluCaptureStats;
 
   Phase phase = Phase.placing;
   Act action = Act.place;
@@ -162,6 +278,145 @@ class Position {
 
   PieceColor get sideToMove => _sideToMove;
 
+  /// Convert special piece type to character for Zhuolu Chess
+  String _specialPieceToChar(SpecialPiece specialType, PieceColor color) {
+    if (specialType == null) {
+      // Return normal piece character based on color
+      return color.string;
+    }
+
+    // Map special pieces to their assigned letters
+    // White pieces use uppercase, black pieces use lowercase
+    switch (specialType) {
+      case SpecialPiece.huangDi:
+        return (color == PieceColor.white) ? "Y" : "y"; // Yellow Emperor
+      case SpecialPiece.nuBa:
+        return (color == PieceColor.white) ? "N" : "n"; // Nüba
+      case SpecialPiece.yanDi:
+        return (color == PieceColor.white) ? "F" : "f"; // Flame Emperor
+      case SpecialPiece.chiYou:
+        return (color == PieceColor.white) ? "C" : "c"; // Chiyou
+      case SpecialPiece.changXian:
+        return (color == PieceColor.white) ? "A" : "a"; // Changxian
+      case SpecialPiece.xingTian:
+        return (color == PieceColor.white)
+            ? "T"
+            : "t"; // Xingtian (using T to avoid conflict with MARKED_PIECE 'X')
+      case SpecialPiece.zhuRong:
+        return (color == PieceColor.white) ? "Z" : "z"; // Zhurong
+      case SpecialPiece.yuShi:
+        return (color == PieceColor.white) ? "U" : "u"; // Yushi
+      case SpecialPiece.fengHou:
+        return (color == PieceColor.white) ? "E" : "e"; // Fenghou
+      case SpecialPiece.gongGong:
+        return (color == PieceColor.white) ? "G" : "g"; // Gonggong
+      case SpecialPiece.nuWa:
+        return (color == PieceColor.white) ? "W" : "w"; // Nüwa
+      case SpecialPiece.fuXi:
+        return (color == PieceColor.white) ? "I" : "i"; // Fuxi
+      case SpecialPiece.kuaFu:
+        return (color == PieceColor.white) ? "K" : "k"; // Kuafu
+      case SpecialPiece.yingLong:
+        return (color == PieceColor.white) ? "L" : "l"; // Yinglong
+      case SpecialPiece.fengBo:
+        return (color == PieceColor.white) ? "B" : "b"; // Fengbo
+    }
+  }
+
+  /// Get piece character for FEN, considering special pieces for Zhuolu Chess
+  String _pieceToCharForFEN(int square) {
+    final PieceColor piece = pieceOnGrid(squareToIndex[square]!);
+
+    // Handle empty squares and marked pieces
+    if (piece == PieceColor.none) {
+      return "*";
+    }
+    if (piece == PieceColor.marked) {
+      return "X";
+    }
+
+    // For Zhuolu Chess, check if this square has a special piece
+    if (DB().ruleSettings.zhuoluMode) {
+      final SpecialPiece? specialType = getSpecialPieceAt(square);
+      if (specialType != null) {
+        return _specialPieceToChar(specialType, piece);
+      }
+    }
+
+    // Normal pieces
+    return piece.string;
+  }
+
+  /// Convert character to special piece type for Zhuolu Chess
+  SpecialPiece? _charToSpecialPieceType(String ch) {
+    switch (ch) {
+      // Both uppercase and lowercase map to same special piece type
+      case 'Y':
+      case 'y':
+        return SpecialPiece.huangDi; // Yellow Emperor
+      case 'N':
+      case 'n':
+        return SpecialPiece.nuBa; // Nüba
+      case 'F':
+      case 'f':
+        return SpecialPiece.yanDi; // Flame Emperor
+      case 'C':
+      case 'c':
+        return SpecialPiece.chiYou; // Chiyou
+      case 'A':
+      case 'a':
+        return SpecialPiece.changXian; // Changxian
+      case 'T':
+      case 't':
+        return SpecialPiece
+            .xingTian; // Xingtian (using T to avoid conflict with MARKED_PIECE 'X')
+      case 'Z':
+      case 'z':
+        return SpecialPiece.zhuRong; // Zhurong
+      case 'U':
+      case 'u':
+        return SpecialPiece.yuShi; // Yushi
+      case 'E':
+      case 'e':
+        return SpecialPiece.fengHou; // Fenghou
+      case 'G':
+      case 'g':
+        return SpecialPiece.gongGong; // Gonggong
+      case 'W':
+      case 'w':
+        return SpecialPiece.nuWa; // Nüwa
+      case 'I':
+      case 'i':
+        return SpecialPiece.fuXi; // Fuxi
+      case 'K':
+      case 'k':
+        return SpecialPiece.kuaFu; // Kuafu
+      case 'L':
+      case 'l':
+        return SpecialPiece.yingLong; // Yinglong
+      case 'B':
+      case 'b':
+        return SpecialPiece.fengBo; // Fengbo
+      default:
+        return null; // Normal piece or unrecognized character
+    }
+  }
+
+  /// Check if a character represents a special piece
+  bool _isSpecialPieceChar(String ch) {
+    return _charToSpecialPieceType(ch) != null;
+  }
+
+  /// Get color from special piece character
+  PieceColor _colorFromSpecialPieceChar(String ch) {
+    if (ch.toUpperCase() == ch && ch.toLowerCase() != ch) {
+      return PieceColor.white; // Uppercase = white
+    } else if (ch.toLowerCase() == ch && ch.toUpperCase() != ch) {
+      return PieceColor.black; // Lowercase = black
+    }
+    return PieceColor.none; // Invalid character
+  }
+
   set sideToMove(PieceColor color) {
     _sideToMove = color;
     _them = _sideToMove.opponent;
@@ -218,9 +473,8 @@ class Position {
     // Piece placement data
     for (int file = 1; file <= fileNumber; file++) {
       for (int rank = 1; rank <= rankNumber; rank++) {
-        final PieceColor piece =
-            pieceOnGrid(squareToIndex[makeSquare(file, rank)]!);
-        buffer.write(piece.string);
+        final int square = makeSquare(file, rank);
+        buffer.write(_pieceToCharForFEN(square));
       }
 
       if (file == 3) {
@@ -267,6 +521,11 @@ class Position {
 
     buffer.write("${st.rule50} ${1 + (_gamePly - sideIsBlack) ~/ 2}");
 
+    // Add special piece selection mask for Zhuolu Chess
+    if (DB().ruleSettings.zhuoluMode) {
+      buffer.writeSpace(_specialPieceSelectionMask);
+    }
+
     logger.t("FEN is $buffer");
 
     final String fen = buffer.toString();
@@ -295,10 +554,29 @@ class Position {
     // Piece placement data
     for (int file = 1; file <= fileNumber; file++) {
       for (int rank = 1; rank <= rankNumber; rank++) {
-        final PieceColor p = pieceMap[ring[file - 1][rank - 1]]!;
+        final String charAtPos = ring[file - 1][rank - 1];
         final int sq = makeSquare(file, rank);
-        _board[sq] = p;
-        _grid[squareToIndex[sq]!] = p;
+
+        PieceColor pieceColor;
+        SpecialPiece? specialType;
+
+        // Check if this is a special piece character for Zhuolu Chess
+        if (DB().ruleSettings.zhuoluMode && _isSpecialPieceChar(charAtPos)) {
+          pieceColor = _colorFromSpecialPieceChar(charAtPos);
+          specialType = _charToSpecialPieceType(charAtPos);
+
+          // Store special piece information
+          if (specialType != null) {
+            sqAttrList[sq].specialPiece = specialType;
+          }
+        } else {
+          // Normal piece or empty square
+          pieceColor = pieceMap[charAtPos]!;
+          sqAttrList[sq].specialPiece = null; // Clear special piece info
+        }
+
+        _board[sq] = pieceColor;
+        _grid[squareToIndex[sq]!] = pieceColor;
       }
     }
 
@@ -374,7 +652,18 @@ class Position {
     st.rule50 = int.parse(rule50Str);
 
     final String gamePlyStr = l[16];
-    _gamePly = int.parse(gamePlyStr);
+    // Convert fullmove (starts from 1) to internal half-move ply
+    // Formula matches C++: gamePly = max(2*(fullmove-1),0) + (sideToMove==BLACK)
+    final int fullmove = int.parse(gamePlyStr);
+    final int sideIsBlackInt = _sideToMove == PieceColor.black ? 1 : 0;
+    _gamePly = (fullmove <= 1 ? 0 : 2 * (fullmove - 1)) + sideIsBlackInt;
+
+    // Parse special piece selection mask for Zhuolu Chess
+    if (DB().ruleSettings.zhuoluMode && l.length > 17) {
+      final String specialPieceSelectionMaskStr = l[17];
+      _specialPieceSelectionMask = int.parse(specialPieceSelectionMaskStr);
+      _updateAvailablePiecesFromMask();
+    }
 
     // Misc
     winner = PieceColor.nobody;
@@ -395,11 +684,23 @@ class Position {
 
     // Part 0: Piece placement
     final String board = parts[0];
-    if (board.length != 26 ||
-        board[8] != '/' ||
-        board[17] != '/' ||
-        !RegExp(r'^[*OX@/]+$').hasMatch(board)) {
+    if (board.length != 26 || board[8] != '/' || board[17] != '/') {
       logger.e('Invalid piece placement format.');
+      return false;
+    }
+
+    // Check valid characters based on game mode
+    RegExp validCharsRegex;
+    if (DB().ruleSettings.zhuoluMode) {
+      // For Zhuolu Chess, allow special piece characters
+      validCharsRegex = RegExp(r'^[*OX@/YNFCATZUEGWIKLBynfcatzuegwiklb]+$');
+    } else {
+      // For normal mode, only basic characters
+      validCharsRegex = RegExp(r'^[*OX@/]+$');
+    }
+
+    if (!validCharsRegex.hasMatch(board)) {
+      logger.e('Invalid piece placement format for current game mode.');
       return false;
     }
 
@@ -581,21 +882,59 @@ class Position {
 
     final ExtMove m = ExtMove(move, side: _sideToMove);
 
+    // Store the special piece info from the move for AI moves in Zhuolu mode
+    if (DB().ruleSettings.zhuoluMode &&
+        GameController().gameInstance.isAiSideToMove &&
+        m.specialPiece != null) {
+      _selectedPieceForPlacement = m.specialPiece;
+      logger.i(
+          "[position] AI move $move parsed as ${m.specialPiece} to square ${m.to} (${ExtMove.sqToNotation(m.to)})");
+    }
+
     // TODO: [Leptopoda] The below functions should all throw exceptions so the ret and conditional stuff can be removed
     switch (m.type) {
       case MoveType.remove:
-        if (_removePiece(m.to) == const GameResponseOK()) {
-          ret = true;
-          st.rule50 = 0;
-
-          GameController().gameInstance.removeIndex = squareToIndex[m.to];
-          GameController().animationManager.animateRemove();
+        // Handle special case where m.to is -1 for special piece removal
+        if (m.to == -1 &&
+            DB().ruleSettings.zhuoluMode &&
+            m.specialPiece != null) {
+          // For Zhuolu special piece removal, find the actual square to remove
+          final int actualSquare =
+              _findSpecialPieceSquare(m.specialPiece!, sideToMove.opponent);
+          if (actualSquare != -1) {
+            if (_removePiece(actualSquare) == const GameResponseOK()) {
+              ret = true;
+              st.rule50 = 0;
+              GameController().gameInstance.removeIndex =
+                  squareToIndex[actualSquare];
+              GameController().animationManager.animateRemove();
+            } else {
+              return false;
+            }
+          } else {
+            logger.e(
+                "[position] Cannot find special piece ${m.specialPiece} to remove");
+            return false;
+          }
+        } else if (m.to >= 0 && m.to < _board.length) {
+          // Normal removal with valid square index
+          if (_removePiece(m.to) == const GameResponseOK()) {
+            ret = true;
+            st.rule50 = 0;
+            GameController().gameInstance.removeIndex = squareToIndex[m.to];
+            GameController().animationManager.animateRemove();
+          } else {
+            return false;
+          }
         } else {
+          logger.e("[position] Invalid square index for removal: ${m.to}");
           return false;
         }
 
-        GameController().gameRecorder.lastPositionWithRemove =
-            GameController().position.fen;
+        if (_isGameControllerInitialized()) {
+          GameController().gameRecorder.lastPositionWithRemove =
+              GameController().position.fen;
+        }
 
         break;
       case MoveType.move:
@@ -622,6 +961,12 @@ class Position {
       case MoveType.none:
         // ignore: only_throw_errors
         throw const EngineNoBestMove();
+    }
+
+    // Clear the temporary selection after processing
+    if (DB().ruleSettings.zhuoluMode &&
+        GameController().gameInstance.isAiSideToMove) {
+      _selectedPieceForPlacement = null;
     }
 
     if (!ret) {
@@ -666,13 +1011,53 @@ class Position {
 
     if (phase == Phase.gameOver ||
         !(sqBegin <= s && s < sqEnd) ||
-        _board[s] == us.opponent ||
-        _board[s] == PieceColor.marked) {
+        _board[s] == us.opponent) {
       return false;
     }
 
-    if (!canMoveDuringPlacingPhase() && _board[s] != PieceColor.none) {
-      return false;
+    // Check special piece placement rules for Zhuolu Chess
+    if (DB().ruleSettings.zhuoluMode) {
+      final List<SpecialPiece> availablePieces = getAvailableSpecialPieces(us);
+      SpecialPiece? targetSpecialPiece;
+
+      // For AI moves, use the piece specified by the engine
+      if (GameController().gameInstance.isAiSideToMove &&
+          _selectedPieceForPlacement != null) {
+        targetSpecialPiece = _selectedPieceForPlacement;
+      } else {
+        // For human moves or fallback, use first available
+        targetSpecialPiece =
+            availablePieces.isNotEmpty ? availablePieces.first : null;
+      }
+
+      if (!_canPlaceSpecialPieceAt(s, targetSpecialPiece)) {
+        logger.w(
+            "[position] Cannot place special piece $targetSpecialPiece at square $s (${ExtMove.sqToNotation(s)}). Square state: ${_board[s]}");
+        return false;
+      }
+    } else {
+      // Normal placement rules
+      if (_board[s] == PieceColor.marked) {
+        return false;
+      }
+    }
+
+    // For Zhuolu Chess, check special piece placement rules first
+    if (DB().ruleSettings.zhuoluMode) {
+      // Special pieces might have different placement rules
+      final SpecialPiece? targetPiece = _selectedPieceForPlacement;
+      if (targetPiece != null) {
+        // Special piece placement - use _canPlaceSpecialPieceAt result
+        // (already checked above)
+      } else if (_board[s] != PieceColor.none) {
+        // Normal piece trying to place on occupied square
+        return false;
+      }
+    } else {
+      // Standard game mode
+      if (!canMoveDuringPlacingPhase() && _board[s] != PieceColor.none) {
+        return false;
+      }
     }
 
     if (DB().ruleSettings.restrictRepeatedMillsFormation &&
@@ -688,6 +1073,20 @@ class Position {
     }
 
     isNeedStalemateRemoval = false;
+
+    // Check if this is the first move in Zhuolu Chess and special pieces need to be selected
+    if (DB().ruleSettings.zhuoluMode &&
+        _gamePly == 0 &&
+        !hasCompleteSpecialPieceSelections) {
+      // Need to select special pieces first - this will be handled by tap handler
+      rootScaffoldMessengerKey.currentState?.showSnackBar(
+        const SnackBar(
+          content: Text('请先完成特殊棋子选择'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return false; // Prevent placement until selection is complete
+    }
 
     if (phase == Phase.placing && action == Act.place) {
       if (canMoveDuringPlacingPhase()) {
@@ -740,16 +1139,91 @@ class Position {
       _currentSquare[sideToMove] = 0;
       _lastMillFromSquare[sideToMove] = _lastMillToSquare[sideToMove] = 0;
 
-      // Record includes boardLayout
-      _record = ExtMove(
-        ExtMove.sqToNotation(s),
-        side: us,
-        boardLayout: generateBoardLayoutAfterThisMove(),
-        moveIndex: _gamePly,
-        roundIndex: _roundNumber,
-      );
-
+      // Defer constructing record until we know if a special piece was placed
       _updateKey(s);
+
+      // Handle special piece placement for Zhuolu Chess
+      SpecialPiece? placedSpecialPiece;
+      if (DB().ruleSettings.zhuoluMode) {
+        final List<SpecialPiece> availablePieces =
+            getAvailableSpecialPieces(us);
+        final bool isAIMove = GameController().gameInstance.isAiSideToMove;
+
+        if (isAIMove) {
+          // For AI moves, the special piece type MUST be specified by the engine
+          // No fallback evaluation should be performed on Flutter side
+          if (_selectedPieceForPlacement != null &&
+              availablePieces.contains(_selectedPieceForPlacement)) {
+            // Use the piece type specified by the engine via doMove
+            placedSpecialPiece = _selectedPieceForPlacement;
+
+            sqAttrList[s].specialPiece = placedSpecialPiece;
+            if (placedSpecialPiece != null) {
+              _removeSpecialPieceFromAvailable(us, placedSpecialPiece);
+            }
+
+            // Trigger placement ability
+            if (placedSpecialPiece != null) {
+              _triggerPlacementAbility(s, placedSpecialPiece);
+            }
+
+            // Update move record with special piece info
+            _record?.specialPiece = placedSpecialPiece;
+          } else {
+            // AI move without special piece specification - place normal piece
+            // This should only happen if C++ engine decided normal piece is best
+            placedSpecialPiece = null; // Normal piece
+
+            // Log this for debugging
+            logger.w(
+                "[position] AI move without special piece info: placing normal piece at ${ExtMove.sqToNotation(s)}");
+          }
+        } else if (!isAIMove &&
+            _selectedPieceForPlacement != null &&
+            availablePieces.contains(_selectedPieceForPlacement)) {
+          // Human selected a special piece
+          placedSpecialPiece = _selectedPieceForPlacement;
+          sqAttrList[s].specialPiece = placedSpecialPiece;
+          _removeSpecialPieceFromAvailable(us, placedSpecialPiece!);
+
+          // Trigger placement ability
+          if (placedSpecialPiece != null) {
+            _triggerPlacementAbility(s, placedSpecialPiece);
+          }
+
+          // Update move record with special piece info
+          _record?.specialPiece = placedSpecialPiece;
+        }
+        // Normal piece placement (human chose normal or no special pieces available)
+        // No notification needed for piece placement in Zhuolu mode
+
+        // Clear human selection after placement
+        if (!isAIMove) {
+          _selectedPieceForPlacement = null;
+        }
+      }
+
+      // Build move record for placing moves (including Zhuolu Chess special pieces)
+      {
+        String moveNotation;
+        if (DB().ruleSettings.zhuoluMode && placedSpecialPiece != null) {
+          final String pieceChar =
+              _specialPieceToChar(placedSpecialPiece, sideToMove);
+          moveNotation = "$pieceChar${ExtMove.sqToNotation(s)}";
+        } else {
+          // Standard coordinate placement
+          moveNotation = ExtMove.sqToNotation(s);
+        }
+
+        _record = ExtMove(
+          moveNotation,
+          side: sideToMove,
+          boardLayout: generateBoardLayoutAfterThisMove(),
+          moveIndex: _gamePly,
+          roundIndex: _roundNumber,
+          specialPiece: placedSpecialPiece,
+        );
+      }
 
       final int n = _millsCount(s);
 
@@ -786,40 +1260,9 @@ class Position {
 
         // Begin of set side to move
 
-        // Board is full at the end of Placing phase
-        if (DB().ruleSettings.piecesCount == 12 &&
-            (pieceOnBoardCount[PieceColor.white]! +
-                    pieceOnBoardCount[PieceColor.black]! >=
-                rankNumber * fileNumber)) {
-          // TODO: BoardFullAction: Support other actions
-          switch (DB().ruleSettings.boardFullAction) {
-            case BoardFullAction.firstPlayerLose:
-              setGameOver(PieceColor.black, GameOverReason.loseFullBoard);
-              return true;
-            case BoardFullAction.firstAndSecondPlayerRemovePiece:
-              pieceToRemoveCount[PieceColor.white] =
-                  pieceToRemoveCount[PieceColor.black] = 1;
-              changeSideToMove();
-              break;
-            case BoardFullAction.secondAndFirstPlayerRemovePiece:
-              pieceToRemoveCount[PieceColor.white] =
-                  pieceToRemoveCount[PieceColor.black] = 1;
-              keepSideToMove();
-              break;
-            case BoardFullAction.sideToMoveRemovePiece:
-              _sideToMove = DB().ruleSettings.isDefenderMoveFirst
-                  ? PieceColor.black
-                  : PieceColor.white;
-              pieceToRemoveCount[sideToMove] = 1;
-              keepSideToMove();
-              break;
-            case BoardFullAction.agreeToDraw:
-              setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
-              return true;
-            case null:
-              logger.e("[position] putPiece: Invalid BoardFullAction.");
-              break;
-          }
+        // Check if board is full during the placing phase
+        if (_checkAndHandleBoardFull()) {
+          return true;
         } else {
           // Board is not full at the end of Placing phase
           if (!handlePlacingPhaseEnd()) {
@@ -847,6 +1290,11 @@ class Position {
 
         GameController().gameInstance.focusIndex = squareToIndex[s];
         SoundManager().playTone(Sound.mill);
+
+        // Trigger special piece mill ability for Zhuolu Chess
+        if (placedSpecialPiece != null) {
+          _triggerMillAbility(placedSpecialPiece);
+        }
 
         if ((DB().ruleSettings.millFormationActionInPlacingPhase ==
                     MillFormationActionInPlacingPhase
@@ -886,6 +1334,11 @@ class Position {
             }
           }
 
+          // Check if board is full after mill formation
+          if (_checkAndHandleBoardFull()) {
+            return true;
+          }
+
           if (!handlePlacingPhaseEnd()) {
             if (DB().ruleSettings.millFormationActionInPlacingPhase ==
                 MillFormationActionInPlacingPhase
@@ -902,6 +1355,11 @@ class Position {
               MillFormationActionInPlacingPhase.removalBasedOnMillCounts) {
             if (pieceInHandCount[PieceColor.white]! == 0 &&
                 pieceInHandCount[PieceColor.black]! == 0) {
+              // Check if board is full after mill formation (when all pieces placed)
+              if (_checkAndHandleBoardFull()) {
+                return true;
+              }
+
               if (!handlePlacingPhaseEnd()) {
                 changeSideToMove();
               }
@@ -912,6 +1370,10 @@ class Position {
               }
               return true;
             } else {
+              // Check if board is full even when not all pieces are placed
+              if (_checkAndHandleBoardFull()) {
+                return true;
+              }
               changeSideToMove();
             }
           } else {
@@ -961,7 +1423,19 @@ class Position {
 
     // Include boardLayout
     _record = ExtMove(
-      "${ExtMove.sqToNotation(_currentSquare[sideToMove]!)}-${ExtMove.sqToNotation(s)}",
+      (() {
+        // If moving a special piece in Zhuolu, encode as "Y-a1"
+        if (DB().ruleSettings.zhuoluMode) {
+          final SpecialPiece? movingSpecial =
+              getSpecialPieceAt(_currentSquare[sideToMove]!);
+          if (movingSpecial != null) {
+            final String pieceChar =
+                _specialPieceToChar(movingSpecial, sideToMove);
+            return "$pieceChar-${ExtMove.sqToNotation(s)}";
+          }
+        }
+        return "${ExtMove.sqToNotation(_currentSquare[sideToMove]!)}-${ExtMove.sqToNotation(s)}";
+      })(),
       side: sideToMove,
       boardLayout: generateBoardLayoutAfterThisMove(),
       moveIndex: _gamePly,
@@ -1035,6 +1509,15 @@ class Position {
           DB().ruleSettings.mayRemoveMultiple ? n : 1;
       _updateKeyMisc();
       action = Act.remove;
+
+      // Trigger special piece mill ability for Zhuolu Chess in moving phase
+      if (DB().ruleSettings.zhuoluMode) {
+        final SpecialPiece? movedSpecialType = getSpecialPieceAt(s);
+        if (movedSpecialType != null) {
+          _triggerMillAbility(movedSpecialType);
+        }
+      }
+
       GameController().gameInstance.focusIndex = squareToIndex[s];
       SoundManager().playTone(Sound.mill);
     }
@@ -1073,6 +1556,14 @@ class Position {
       return const CanNotRemoveMill();
     }
 
+    // Check special piece protection for Zhuolu Chess
+    if (DB().ruleSettings.zhuoluMode) {
+      if (!_canRemoveSpecialPiece(s)) {
+        // TODO: Add specific error message for protected special pieces
+        return const CanNotRemoveMill(); // Reusing existing error for now
+      }
+    }
+
     _revertKey(s);
 
     if (DB().ruleSettings.millFormationActionInPlacingPhase ==
@@ -1086,14 +1577,37 @@ class Position {
       _board[s] = _grid[squareToIndex[s]!] = PieceColor.none;
     }
 
-    // Record includes boardLayout
-    _record = ExtMove(
-      "x${ExtMove.sqToNotation(s)}",
-      side: sideToMove,
-      boardLayout: generateBoardLayoutAfterThisMove(),
-      moveIndex: _gamePly,
-      roundIndex: _roundNumber,
-    );
+    // If removing a special piece in Zhuolu, encode as "xY"; otherwise use coordinate
+    if (DB().ruleSettings.zhuoluMode) {
+      final SpecialPiece? removedSpecial = getSpecialPieceAt(s);
+      if (removedSpecial != null) {
+        final String pieceChar =
+            _specialPieceToChar(removedSpecial, sideToMove.opponent);
+        _record = ExtMove.fromZhuoluNotation(
+          "x$pieceChar",
+          side: sideToMove,
+          boardLayout: generateBoardLayoutAfterThisMove(),
+          moveIndex: _gamePly,
+          roundIndex: _roundNumber,
+        );
+      } else {
+        _record = ExtMove(
+          "x${ExtMove.sqToNotation(s)}",
+          side: sideToMove,
+          boardLayout: generateBoardLayoutAfterThisMove(),
+          moveIndex: _gamePly,
+          roundIndex: _roundNumber,
+        );
+      }
+    } else {
+      _record = ExtMove(
+        "x${ExtMove.sqToNotation(s)}",
+        side: sideToMove,
+        boardLayout: generateBoardLayoutAfterThisMove(),
+        moveIndex: _gamePly,
+        roundIndex: _roundNumber,
+      );
+    }
     st.rule50 = 0; // TODO: Need to move out?
 
     if (pieceOnBoardCount[_them] != null) {
@@ -1210,6 +1724,30 @@ class Position {
         // Ignore
         return false;
       }
+    }
+
+    // Check if game should end after placing phase (Zhuolu Chess rule)
+    if (DB().ruleSettings.zhuoluMode) {
+      // Calculate captured pieces to determine winner
+      final int initialPieces = DB().ruleSettings.piecesCount;
+      final int whiteRemaining = pieceOnBoardCount[PieceColor.white]! +
+          pieceInHandCount[PieceColor.white]!;
+      final int blackRemaining = pieceOnBoardCount[PieceColor.black]! +
+          pieceInHandCount[PieceColor.black]!;
+      final int whiteCaptured = initialPieces - whiteRemaining;
+      final int blackCaptured = initialPieces - blackRemaining;
+
+      if (whiteCaptured > blackCaptured) {
+        // White lost more pieces, Black wins
+        setGameOver(PieceColor.black, GameOverReason.loseFewerThanThree);
+      } else if (blackCaptured > whiteCaptured) {
+        // Black lost more pieces, White wins
+        setGameOver(PieceColor.white, GameOverReason.loseFewerThanThree);
+      } else {
+        // Equal captures, draw
+        setGameOver(PieceColor.draw, GameOverReason.drawFullBoard);
+      }
+      return true;
     }
 
     setSideToMove(DB().ruleSettings.isDefenderMoveFirst == true
@@ -1619,6 +2157,9 @@ class Position {
 
   @visibleForTesting
   String? get movesSinceLastRemove {
+    if (!_isGameControllerInitialized()) {
+      return null;
+    }
     final GameRecorder recorder = GameController().gameRecorder;
 
     // Build the move list up to (and including) the activeNode, not beyond it.
@@ -1650,6 +2191,10 @@ class Position {
 
     final StringBuffer buffer = StringBuffer();
     for (int i = idx; i < moves.length; i++) {
+      // Skip special piece selection records - they are already encoded in FEN
+      if (moves[i].move.contains("Special Pieces")) {
+        continue;
+      }
       buffer.writeSpace(moves[i].move);
     }
 
@@ -1665,10 +2210,26 @@ class Position {
   /// each ring has 8 positions, representing the outer/middle/inner ring.
   /// For example: "OO***@**/@@**O@*@/O@O*@*O*"
   /// 'O' means White, '@' means Black, '*' means None or empty.
+  /// For Zhuolu Chess, special pieces are represented by their assigned letters.
   String generateBoardLayoutAfterThisMove() {
-    // <-- ADDED
-    // Helper to map PieceColor to a single char
-    String pieceChar(PieceColor c) {
+    // Helper to map PieceColor to a char, considering special pieces
+    String pieceChar(PieceColor c, int square) {
+      if (c == PieceColor.none) {
+        return '*';
+      }
+      if (c == PieceColor.marked) {
+        return 'X';
+      }
+
+      // For Zhuolu Chess, check if this square has a special piece
+      if (DB().ruleSettings.zhuoluMode) {
+        final SpecialPiece? specialType = getSpecialPieceAt(square);
+        if (specialType != null) {
+          return _specialPieceToChar(specialType, c);
+        }
+      }
+
+      // Normal pieces
       if (c == PieceColor.white) {
         return 'O';
       }
@@ -1682,8 +2243,9 @@ class Position {
     String ringToString(int startIndex) {
       final StringBuffer sb = StringBuffer();
       for (int i = 0; i < 8; i++) {
-        final PieceColor p = _board[startIndex + i];
-        sb.write(pieceChar(p));
+        final int square = startIndex + i;
+        final PieceColor p = _board[square];
+        sb.write(pieceChar(p, square));
       }
       return sb.toString();
     }
@@ -1735,6 +2297,14 @@ extension SetupPosition on Position {
     pieceToRemoveCount[PieceColor.white] = 0;
     pieceToRemoveCount[PieceColor.black] = 0;
 
+    // Reset special piece selections for Zhuolu Chess (do not auto-initialize)
+    if (DB().ruleSettings.zhuoluMode) {
+      _specialPieceSelectionMask = 0; // Clear selections, wait for user choice
+      _availableSpecialPiecesMask[PieceColor.white] = 0;
+      _availableSpecialPiecesMask[PieceColor.black] = 0;
+      _zhuoluCaptureStats = null;
+    }
+
     isNeedStalemateRemoval = false;
     isStalemateRemoving = false;
 
@@ -1742,6 +2312,7 @@ extension SetupPosition on Position {
     selectedPieceNumber = 0;
     for (int i = 0; i < sqNumber; i++) {
       sqAttrList[i].placedPieceNumber = 0;
+      sqAttrList[i].specialPiece = null;
     }
 
     for (int i = 0; i < sqNumber; i++) {
@@ -1815,7 +2386,15 @@ extension SetupPosition on Position {
     selectedPieceNumber = pos.selectedPieceNumber;
     for (int i = 0; i < sqNumber; i++) {
       sqAttrList[i].placedPieceNumber = pos.sqAttrList[i].placedPieceNumber;
+      sqAttrList[i].specialPiece = pos.sqAttrList[i].specialPiece;
     }
+
+    // Copy special piece data
+    _specialPieceSelectionMask = pos._specialPieceSelectionMask;
+    _availableSpecialPiecesMask[PieceColor.white] =
+        pos._availableSpecialPiecesMask[PieceColor.white] ?? 0;
+    _availableSpecialPiecesMask[PieceColor.black] =
+        pos._availableSpecialPiecesMask[PieceColor.black] ?? 0;
 
     for (int i = 0; i < sqNumber; i++) {
       _board[i] = pos._board[i];
@@ -1874,6 +2453,17 @@ extension SetupPosition on Position {
 
     _grid[squareToIndex[s]!] = piece;
     _board[s] = piece;
+
+    // Handle special piece placement for Zhuolu Chess setup
+    if (DB().ruleSettings.zhuoluMode &&
+        GameController().setupPositionToolbarState != null) {
+      final dynamic toolbarState = GameController().setupPositionToolbarState;
+      final SpecialPiece? selectedSpecialPiece =
+          toolbarState?.selectedSpecialPiece as SpecialPiece?;
+      if (selectedSpecialPiece != null) {
+        sqAttrList[s].specialPiece = selectedSpecialPiece;
+      }
+    }
 
     //GameController().gameInstance.focusIndex = squareToIndex[s];
     SoundManager().playTone(GameController().isPositionSetupMarkedPiece
@@ -1984,5 +2574,649 @@ extension SetupPosition on Position {
     }
 
     return false;
+  }
+
+  /// Set special piece selections for both players
+  void setSpecialPieceSelections({
+    required List<SpecialPiece> whiteSelection,
+    required List<SpecialPiece> blackSelection,
+  }) {
+    // Generate bitmask from selections
+    int mask = 0;
+
+    // Encode white player's selection (bits 0-23)
+    for (int i = 0; i < 6 && i < whiteSelection.length; i++) {
+      final int pieceIndex = whiteSelection[i].index;
+      mask |= pieceIndex << (i * 4);
+    }
+
+    // Encode black player's selection (bits 24-47)
+    for (int i = 0; i < 6 && i < blackSelection.length; i++) {
+      final int pieceIndex = blackSelection[i].index;
+      mask |= pieceIndex << (24 + i * 4);
+    }
+
+    setSpecialPieceSelectionMask(mask);
+    _updateAvailablePiecesFromMask();
+
+    // Record special piece selections in move history for Zhuolu Chess
+    _recordSpecialPieceSelections(whiteSelection, blackSelection);
+  }
+
+  /// Record the special piece selections at the start of Zhuolu Chess game
+  void _recordSpecialPieceSelections(
+    List<SpecialPiece> whiteSelection,
+    List<SpecialPiece> blackSelection,
+  ) {
+    // Avoid circular dependency during GameController initialization
+    // Check if GameController is already initialized to prevent infinite recursion
+    if (!_isGameControllerInitialized()) {
+      return;
+    }
+
+    // Create a special record for white's selection
+    final ExtMove whiteSelectionRecord = ExtMove(
+      'White Special Pieces',
+      side: PieceColor.white,
+      moveIndex: 0,
+      roundIndex: 0,
+      comments: <String>[
+        'Selected: ${whiteSelection.map((SpecialPiece p) => '${p.chineseName}(${p.englishName})').join(', ')}'
+      ],
+    );
+
+    // Create a special record for black's selection
+    final ExtMove blackSelectionRecord = ExtMove(
+      'Black Special Pieces',
+      side: PieceColor.black,
+      moveIndex: 0,
+      roundIndex: 0,
+      comments: <String>[
+        'Selected: ${blackSelection.map((SpecialPiece p) => '${p.chineseName}(${p.englishName})').join(', ')}'
+      ],
+    );
+
+    // Add to game recorder
+    GameController().gameRecorder.appendMove(whiteSelectionRecord);
+    GameController().gameRecorder.appendMove(blackSelectionRecord);
+  }
+
+  /// Check if GameController is already initialized to avoid circular dependency
+  bool _isGameControllerInitialized() {
+    try {
+      // Check if game logic is initialized to avoid circular dependency
+      return GameController.instance.gameLogicInitialized;
+    } catch (e) {
+      // If there's any error accessing the instance, assume it's not initialized
+      return false;
+    }
+  }
+
+  /// Check if special piece selections are complete
+  bool get hasCompleteSpecialPieceSelections {
+    if (!DB().ruleSettings.zhuoluMode) {
+      return true;
+    }
+    return _specialPieceSelectionMask != 0;
+  }
+
+  /// Get the current special piece selection (converted from bitmask)
+  SpecialPieceSelection? get specialPieceSelection {
+    if (_specialPieceSelectionMask == 0) {
+      return null;
+    }
+
+    final List<SpecialPiece> whiteSelection = <SpecialPiece>[];
+    final List<SpecialPiece> blackSelection = <SpecialPiece>[];
+
+    // Extract white selection (bits 0-23)
+    for (int i = 0; i < 6; i++) {
+      final int pieceIndex = (_specialPieceSelectionMask >> (i * 4)) & 0xF;
+      if (pieceIndex < 15) {
+        whiteSelection.add(SpecialPiece.values[pieceIndex]);
+      }
+    }
+
+    // Extract black selection (bits 24-47)
+    for (int i = 0; i < 6; i++) {
+      final int pieceIndex = (_specialPieceSelectionMask >> (24 + i * 4)) & 0xF;
+      if (pieceIndex < 15) {
+        blackSelection.add(SpecialPiece.values[pieceIndex]);
+      }
+    }
+
+    return SpecialPieceSelection(
+      whiteSelection: whiteSelection,
+      blackSelection: blackSelection,
+      isRevealed: true,
+    );
+  }
+
+  /// Check if a square has a special piece
+  SpecialPiece? getSpecialPieceAt(int square) {
+    return sqAttrList[square].specialPiece;
+  }
+
+  /// Find the square where a specific special piece of a given color is located
+  int _findSpecialPieceSquare(SpecialPiece piece, PieceColor color) {
+    for (int square = sqBegin; square < sqEnd; square++) {
+      if (_board[square] == color && getSpecialPieceAt(square) == piece) {
+        return square;
+      }
+    }
+    return -1; // Not found
+  }
+
+  /// Get available special pieces for a player
+  List<SpecialPiece> getAvailableSpecialPieces(PieceColor player) {
+    final int mask = _availableSpecialPiecesMask[player] ?? 0;
+    final List<SpecialPiece> pieces = <SpecialPiece>[];
+
+    for (int i = 0; i < 15; i++) {
+      if ((mask & (1 << i)) != 0) {
+        pieces.add(SpecialPiece.values[i]);
+      }
+    }
+
+    return pieces;
+  }
+
+  /// Set the selected piece type for next placement
+  set selectedPieceForPlacement(SpecialPiece? piece) {
+    _selectedPieceForPlacement = piece;
+  }
+
+  /// Get the currently selected piece for placement
+  SpecialPiece? get selectedPieceForPlacement => _selectedPieceForPlacement;
+
+  /// Set special piece selections using bitmask
+  void setSpecialPieceSelectionMask(int mask) {
+    _specialPieceSelectionMask = mask;
+    _updateAvailablePiecesFromMask();
+  }
+
+  /// Get special piece selections as bitmask
+  int get specialPieceSelectionMask => _specialPieceSelectionMask;
+
+  /// Update available pieces from the selection mask
+  void _updateAvailablePiecesFromMask() {
+    for (final PieceColor player in <PieceColor>[
+      PieceColor.white,
+      PieceColor.black
+    ]) {
+      final int startBit = player == PieceColor.white ? 0 : 24;
+      int mask = 0;
+
+      // Extract 6 pieces (4 bits each) for this player and mark as available
+      for (int i = 0; i < 6; i++) {
+        final int pieceIndex =
+            (_specialPieceSelectionMask >> (startBit + i * 4)) & 0xF;
+        if (pieceIndex < 15) {
+          // Valid special piece index - mark as available
+          mask |= 1 << pieceIndex;
+        }
+      }
+
+      _availableSpecialPiecesMask[player] = mask;
+    }
+  }
+
+  /// Remove a special piece from available pieces
+  void _removeSpecialPieceFromAvailable(PieceColor player, SpecialPiece piece) {
+    final int pieceIndex = piece.index;
+    _availableSpecialPiecesMask[player] =
+        _availableSpecialPiecesMask[player]! & ~(1 << pieceIndex);
+  }
+
+  /// Reveal special piece selections to both players
+  void revealSpecialPieceSelections() {
+    // Special piece selections are automatically revealed when set via bitmask
+  }
+
+  /// Check if a piece can be placed on a specific square (considering special piece rules)
+  bool _canPlaceSpecialPieceAt(int square, SpecialPiece? specialPiece) {
+    if (specialPiece == null) {
+      return true;
+    }
+
+    final PieceColor squareState = _board[square];
+
+    switch (specialPiece) {
+      case SpecialPiece.gongGong:
+        // Can ONLY be placed on abandoned squares
+        return squareState == PieceColor.marked;
+      case SpecialPiece.fengHou:
+        // Can be placed on abandoned squares (in addition to normal squares)
+        return squareState == PieceColor.none ||
+            squareState == PieceColor.marked;
+      case SpecialPiece.huangDi:
+      case SpecialPiece.nuBa:
+      case SpecialPiece.yanDi:
+      case SpecialPiece.chiYou:
+      case SpecialPiece.changXian:
+      case SpecialPiece.xingTian:
+      case SpecialPiece.zhuRong:
+      case SpecialPiece.yuShi:
+      case SpecialPiece.nuWa:
+      case SpecialPiece.fuXi:
+      case SpecialPiece.kuaFu:
+      case SpecialPiece.yingLong:
+      case SpecialPiece.fengBo:
+        // Normal placement rules apply
+        return squareState == PieceColor.none;
+    }
+  }
+
+  /// Check if a piece can be removed (considering special piece protection)
+  bool _canRemoveSpecialPiece(int square) {
+    final SpecialPiece? specialPiece = getSpecialPieceAt(square);
+    if (specialPiece == null) {
+      return true;
+    }
+
+    switch (specialPiece) {
+      case SpecialPiece.kuaFu:
+        // Cannot be removed by opponent
+        return false;
+      case SpecialPiece.yingLong:
+        // Cannot be removed when adjacent to own pieces
+        return !_hasAdjacentOwnPieces(square);
+      case SpecialPiece.huangDi:
+      case SpecialPiece.nuBa:
+      case SpecialPiece.yanDi:
+      case SpecialPiece.chiYou:
+      case SpecialPiece.changXian:
+      case SpecialPiece.xingTian:
+      case SpecialPiece.zhuRong:
+      case SpecialPiece.yuShi:
+      case SpecialPiece.fengHou:
+      case SpecialPiece.gongGong:
+      case SpecialPiece.nuWa:
+      case SpecialPiece.fuXi:
+      case SpecialPiece.fengBo:
+        return true;
+    }
+  }
+
+  /// Check if a square has adjacent pieces of the same color
+  bool _hasAdjacentOwnPieces(int square) {
+    final PieceColor pieceColor = _board[square];
+    final List<int> adjacent = _getAdjacentSquares(square);
+
+    for (final int adjSquare in adjacent) {
+      if (_board[adjSquare] == pieceColor) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /// Get all adjacent squares to a given square
+  List<int> _getAdjacentSquares(int square) {
+    final List<int> adjacent = <int>[];
+
+    // Use the existing adjacency logic from Mills
+    for (int d = 0; d < 4; d++) {
+      final int adjSquare = Position._adjacentSquares[square][d];
+      if (adjSquare != 0) {
+        adjacent.add(adjSquare);
+      }
+    }
+
+    return adjacent;
+  }
+
+  /// Trigger special piece ability when placing
+  void _triggerPlacementAbility(int square, SpecialPiece specialPiece) {
+    final PieceColor player = sideToMove;
+    final PieceColor opponent = player.opponent;
+    final List<int> adjacent = _getAdjacentSquares(square);
+
+    switch (specialPiece) {
+      case SpecialPiece.huangDi:
+        // Convert all adjacent opponent pieces to own pieces
+        for (final int adjSquare in adjacent) {
+          if (_board[adjSquare] == opponent) {
+            _board[adjSquare] = player;
+            _grid[squareToIndex[adjSquare]!] = player;
+          }
+        }
+        break;
+
+      case SpecialPiece.nuBa:
+        // Can convert one adjacent opponent piece to own piece
+        final List<int> opponentAdjacent =
+            adjacent.where((int sq) => _board[sq] == opponent).toList();
+        if (opponentAdjacent.isNotEmpty) {
+          // For now, convert the first found adjacent opponent piece
+          // TODO: Allow user to choose which piece to convert
+          final int targetSquare = opponentAdjacent.first;
+          _board[targetSquare] = player;
+          _grid[squareToIndex[targetSquare]!] = player;
+        }
+        break;
+
+      case SpecialPiece.yanDi:
+        // Remove all adjacent opponent pieces
+        for (final int adjSquare in adjacent) {
+          if (_board[adjSquare] == opponent) {
+            _removeOpponentPiece(adjSquare);
+          }
+        }
+        break;
+
+      case SpecialPiece.chiYou:
+        // Convert all adjacent empty squares to abandoned squares
+        for (final int adjSquare in adjacent) {
+          if (_board[adjSquare] == PieceColor.none) {
+            _board[adjSquare] = PieceColor.marked;
+            _grid[squareToIndex[adjSquare]!] = PieceColor.marked;
+          }
+        }
+        break;
+
+      case SpecialPiece.changXian:
+        // Can remove any opponent piece on the board
+        // For now, remove the first found opponent piece
+        for (int i = sqBegin; i < sqEnd; i++) {
+          if (_board[i] == opponent) {
+            _removeOpponentPiece(i);
+            break;
+          }
+        }
+        break;
+
+      case SpecialPiece.xingTian:
+        // Can remove one adjacent opponent piece
+        for (final int adjSquare in adjacent) {
+          if (_board[adjSquare] == opponent) {
+            _removeOpponentPiece(adjSquare);
+            break; // Only remove one piece
+          }
+        }
+        break;
+
+      case SpecialPiece.nuWa:
+        // Convert all adjacent abandoned squares to own pieces
+        for (final int adjSquare in adjacent) {
+          if (_board[adjSquare] == PieceColor.marked) {
+            _board[adjSquare] = player;
+            _grid[squareToIndex[adjSquare]!] = player;
+            pieceOnBoardCount[player] = pieceOnBoardCount[player]! + 1;
+          }
+        }
+        break;
+
+      case SpecialPiece.fuXi:
+        // Can convert any abandoned square to own piece
+        // For now, convert the first found abandoned square
+        for (int i = sqBegin; i < sqEnd; i++) {
+          if (_board[i] == PieceColor.marked) {
+            _board[i] = player;
+            _grid[squareToIndex[i]!] = player;
+            pieceOnBoardCount[player] = pieceOnBoardCount[player]! + 1;
+            break;
+          }
+        }
+        break;
+
+      case SpecialPiece.fengBo:
+        // Destroy any opponent piece without leaving abandoned square
+        for (int i = sqBegin; i < sqEnd; i++) {
+          if (_board[i] == opponent) {
+            _board[i] = PieceColor.none;
+            _grid[squareToIndex[i]!] = PieceColor.none;
+            pieceOnBoardCount[opponent] = pieceOnBoardCount[opponent]! - 1;
+            break;
+          }
+        }
+        break;
+      case SpecialPiece.zhuRong:
+      case SpecialPiece.yuShi:
+      case SpecialPiece.fengHou:
+      case SpecialPiece.gongGong:
+      case SpecialPiece.kuaFu:
+      case SpecialPiece.yingLong:
+        // No special placement ability
+        break;
+    }
+  }
+
+  /// Trigger special piece ability when forming mill
+  void _triggerMillAbility(SpecialPiece specialPiece) {
+    final PieceColor player = sideToMove;
+    final PieceColor opponent = player.opponent;
+
+    switch (specialPiece) {
+      case SpecialPiece.zhuRong:
+        // Fire God Zhu Rong: When forming mill, can additionally remove any opponent piece
+        // This increases the removal count by 1, allowing consecutive removals
+        if (pieceOnBoardCount[opponent]! > 0) {
+          pieceToRemoveCount[sideToMove] = pieceToRemoveCount[sideToMove]! + 1;
+          _updateKeyMisc();
+        }
+        break;
+
+      case SpecialPiece.yuShi:
+        // Can convert any empty square to abandoned square
+        for (int i = sqBegin; i < sqEnd; i++) {
+          if (_board[i] == PieceColor.none) {
+            _board[i] = PieceColor.marked;
+            _grid[squareToIndex[i]!] = PieceColor.marked;
+            break;
+          }
+        }
+        break;
+      case SpecialPiece.huangDi:
+      case SpecialPiece.nuBa:
+      case SpecialPiece.yanDi:
+      case SpecialPiece.chiYou:
+      case SpecialPiece.changXian:
+      case SpecialPiece.xingTian:
+      case SpecialPiece.fengHou:
+      case SpecialPiece.gongGong:
+      case SpecialPiece.nuWa:
+      case SpecialPiece.fuXi:
+      case SpecialPiece.kuaFu:
+      case SpecialPiece.yingLong:
+      case SpecialPiece.fengBo:
+        // No special mill ability
+        break;
+    }
+  }
+
+  /// Helper method to remove an opponent piece
+  void _removeOpponentPiece(int square) {
+    final PieceColor opponent = _board[square];
+    if (opponent != PieceColor.none && opponent != PieceColor.marked) {
+      if (DB().ruleSettings.zhuoluMode) {
+        _board[square] = PieceColor.marked;
+        _grid[squareToIndex[square]!] = PieceColor.marked;
+      } else {
+        _board[square] = PieceColor.none;
+        _grid[squareToIndex[square]!] = PieceColor.none;
+      }
+      pieceOnBoardCount[opponent] = pieceOnBoardCount[opponent]! - 1;
+    }
+  }
+
+  /// AI algorithm to select the best piece type for placement
+  /// DEPRECATED: This function should not be used anymore.
+  /// All AI decisions should be made by the C++ search engine.
+  SpecialPiece? _getAISelectedPiece(
+      PieceColor player, int square, List<SpecialPiece> availablePieces) {
+    // This function is deprecated and should not be called
+    // All AI special piece selection should be handled by C++ search engine
+    logger.e("[position] DEPRECATED: _getAISelectedPiece should not be called. "
+        "AI decisions should come from C++ search engine.");
+
+    // Return null to force normal piece placement
+    return null;
+  }
+
+  /// Evaluate the value of placing a specific piece type at a square
+  double _evaluatePiecePlacement(
+      PieceColor player, int square, SpecialPiece? piece) {
+    double score = 0.0;
+    final PieceColor opponent = player.opponent;
+    final List<int> adjacent = _getAdjacentSquares(square);
+
+    if (piece == null) {
+      // Normal piece - base score
+      score = 10.0;
+
+      // Bonus for potential mills
+      if (_potentialMillsCount(square, player) > 0) {
+        score += 20.0;
+      }
+
+      return score;
+    }
+
+    // Special piece evaluation
+    switch (piece) {
+      case SpecialPiece.huangDi:
+        {
+          // Convert all adjacent opponent pieces - valuable only with adjacency
+          final int opponentAdjacent =
+              adjacent.where((int sq) => _board[sq] == opponent).length;
+          if (opponentAdjacent == 0) {
+            score = 5.0; // Avoid wasting early when no target
+          } else {
+            score = 50.0 + opponentAdjacent * 30.0;
+          }
+          break;
+        }
+
+      case SpecialPiece.yanDi:
+        {
+          // Remove all adjacent opponent pieces - needs adjacency
+          final int opponentToRemove =
+              adjacent.where((int sq) => _board[sq] == opponent).length;
+          if (opponentToRemove == 0) {
+            score = 6.0;
+          } else {
+            score = 40.0 + opponentToRemove * 25.0;
+          }
+          break;
+        }
+
+      case SpecialPiece.changXian:
+        {
+          // Can remove any opponent piece - more valuable when opponent has few pieces
+          final int totalOpponentPieces = pieceOnBoardCount[opponent]!;
+          score = totalOpponentPieces <= 5 ? 60.0 : 30.0;
+          break;
+        }
+
+      case SpecialPiece.kuaFu:
+        // Cannot be removed - valuable in endgame
+        final int totalPieces =
+            pieceOnBoardCount[player]! + pieceOnBoardCount[opponent]!;
+        score = totalPieces > 15 ? 15.0 : 40.0; // More valuable in endgame
+        break;
+
+      case SpecialPiece.fengHou:
+      case SpecialPiece.gongGong:
+        {
+          // Synergy with abandoned squares; prefer when they exist
+          final int markedSquares =
+              _board.where((PieceColor p) => p == PieceColor.marked).length;
+          if (markedSquares == 0) {
+            score = 8.0;
+          } else {
+            // Small bonus per available marked square
+            score = 20.0 + markedSquares * 6.0;
+          }
+          break;
+        }
+
+      case SpecialPiece.zhuRong:
+      case SpecialPiece.yuShi:
+        {
+          // Mill-triggered abilities - valuable if likely to form mills
+          final int millPotential = _potentialMillsCount(square, player);
+          score = 25.0 + millPotential * 15.0;
+          break;
+        }
+
+      case SpecialPiece.nuBa:
+        {
+          final int oppAdj =
+              adjacent.where((int sq) => _board[sq] == opponent).length;
+          score = oppAdj > 0 ? 28.0 + 18.0 : 7.0;
+          // Positional support bonus
+          score +=
+              adjacent.where((int sq) => _board[sq] == player).length * 2.0;
+          break;
+        }
+      case SpecialPiece.chiYou:
+        {
+          // ChiYou converts adjacent empty squares to MARKED squares
+          // This is rarely beneficial early in the game
+          final int emptyAdj =
+              adjacent.where((int sq) => _board[sq] == PieceColor.none).length;
+          if (emptyAdj == 0) {
+            score = 2.0; // No empty squares to convert
+          } else {
+            // Very low base value - creating MARKED squares is rarely beneficial early
+            score = 8.0 + 3.0 * emptyAdj;
+
+            // Discourage early use
+            final int totalPieces =
+                pieceOnBoardCount[player]! + pieceOnBoardCount[opponent]!;
+            if (totalPieces <= 6) {
+              // Early game
+              score -= 5.0;
+            }
+
+            // Only valuable if we have pieces that benefit from MARKED squares
+            final List<SpecialPiece> available =
+                getAvailableSpecialPieces(player);
+            if (available.contains(SpecialPiece.fengHou) ||
+                available.contains(SpecialPiece.gongGong) ||
+                available.contains(SpecialPiece.nuWa)) {
+              score += 10.0; // Synergy bonus
+            }
+          }
+          break;
+        }
+      case SpecialPiece.xingTian:
+        {
+          final int oppAdj =
+              adjacent.where((int sq) => _board[sq] == opponent).length;
+          score = oppAdj > 0 ? 32.0 + 18.0 : 7.0;
+          break;
+        }
+      case SpecialPiece.nuWa:
+      case SpecialPiece.fuXi:
+      case SpecialPiece.yingLong:
+      case SpecialPiece.fengBo:
+        // Default moderate scores with small positional bonus
+        score = 25.0 + adjacent.length * 2.0;
+        break;
+    }
+
+    // Add positional bonus
+    score += _getPositionalBonus(square);
+
+    return score;
+  }
+
+  /// Get positional bonus for a square (center squares are more valuable)
+  double _getPositionalBonus(int square) {
+    // Center squares (middle ring) are more valuable
+    final List<int> centerSquares = <int>[9, 10, 11, 12, 13, 14, 15, 16];
+    if (centerSquares.contains(square)) {
+      return 5.0;
+    }
+
+    // Corner squares are less valuable
+    final List<int> cornerSquares = <int>[8, 16, 24];
+    if (cornerSquares.contains(square)) {
+      return -2.0;
+    }
+
+    return 0.0;
   }
 }

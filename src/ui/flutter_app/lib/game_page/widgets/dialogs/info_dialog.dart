@@ -128,6 +128,42 @@ class InfoDialog extends StatelessWidget {
       "${S.of(context).draw}: ${Position.score[PieceColor.draw]}",
     );
 
+    // Add special pieces information for Zhuolu Chess
+    if (DB().ruleSettings.zhuoluMode) {
+      buffer.writeln();
+      buffer.writeln();
+      buffer.writeln("特殊棋子信息:");
+
+      final SpecialPieceSelection? selection = pos.specialPieceSelection;
+      if (selection != null && selection.isRevealed) {
+        // White player's special pieces
+        buffer.writeln();
+        buffer.writeln("${S.of(context).player1}:");
+        for (final SpecialPiece piece in selection.whiteSelection) {
+          final bool isAvailable =
+              pos.getAvailableSpecialPieces(PieceColor.white).contains(piece);
+          final String status = isAvailable ? "可用" : "已用";
+          buffer.writeln(
+              "${piece.localizedName(context)} (${piece.englishName}) - $status");
+          buffer.writeln("  ${piece.localizedDescription(context)}");
+        }
+
+        // Black player's special pieces
+        buffer.writeln();
+        buffer.writeln("${S.of(context).player2}:");
+        for (final SpecialPiece piece in selection.blackSelection) {
+          final bool isAvailable =
+              pos.getAvailableSpecialPieces(PieceColor.black).contains(piece);
+          final String status = isAvailable ? "可用" : "已用";
+          buffer.writeln(
+              "${piece.localizedName(context)} (${piece.englishName}) - $status");
+          buffer.writeln("  ${piece.localizedDescription(context)}");
+        }
+      } else {
+        buffer.writeln("特殊棋子尚未选择或未公开");
+      }
+    }
+
     return buffer.toString();
   }
 

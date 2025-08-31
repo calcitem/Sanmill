@@ -3,8 +3,9 @@
 
 // language_locale_mapping.dart
 
-import 'package:flutter/material.dart';
+import 'dart:ui';
 
+import '../../game_page/services/mill.dart';
 import '../../generated/intl/l10n_af.dart';
 import '../../generated/intl/l10n_am.dart';
 import '../../generated/intl/l10n_ar.dart';
@@ -65,6 +66,7 @@ import '../../generated/intl/l10n_uz.dart';
 import '../../generated/intl/l10n_vi.dart';
 import '../../generated/intl/l10n_zh.dart';
 import '../../generated/intl/l10n_zu.dart';
+import '../database/database.dart';
 
 Map<Locale, String> localeToLanguageName = <Locale, String>{
   const Locale("af"): SAf().languageName, // Afrikaans
@@ -131,3 +133,120 @@ Map<Locale, String> localeToLanguageName = <Locale, String>{
       SZhHant().languageName, // Chinese (Traditional),
   const Locale("zu"): SZu().languageName, // Zulu
 };
+
+/// Get the effective locale, considering system default when app locale is null
+Locale getEffectiveLocale() {
+  final Locale? appLocale = DB().displaySettings.locale;
+  if (appLocale != null) {
+    return appLocale;
+  }
+
+  // App is set to follow system, get system locale
+  try {
+    return PlatformDispatcher.instance.locale;
+  } catch (e) {
+    // Fallback to English if system locale is not available
+    return const Locale('en');
+  }
+}
+
+/// Check if the current locale should display Chinese names for Zhuolu Chess pieces
+/// Returns true for Chinese, Japanese, and Korean locales
+/// Handles both app-set locale and system default locale
+bool shouldUseChinese(Locale locale) {
+  final String languageCode = locale.languageCode.toLowerCase();
+
+  // Chinese locales (simplified and traditional)
+  if (languageCode == 'zh') {
+    return true;
+  }
+
+  // Japanese locale
+  if (languageCode == 'ja') {
+    return true;
+  }
+
+  // Korean locale
+  if (languageCode == 'ko') {
+    return true;
+  }
+
+  return false;
+}
+
+/// Check if should use Chinese names considering both app and system locale
+bool shouldUseChineseForCurrentSetting() {
+  final Locale effectiveLocale = getEffectiveLocale();
+  return shouldUseChinese(effectiveLocale);
+}
+
+/// Generate a tip message for Zhuolu Chess piece placement
+/// Shows coordinates and piece ability description
+String generateZhuoluPlacementTip(String notation, SpecialPiece? specialPiece) {
+  final StringBuffer buffer = StringBuffer();
+
+  // Add coordinates
+  buffer.write('Placed at $notation');
+
+  // Add special piece ability if applicable
+  if (specialPiece != null) {
+    if (shouldUseChineseForCurrentSetting()) {
+      // Use Chinese names and descriptions
+      final Map<SpecialPiece, String> chineseDescriptions =
+          <SpecialPiece, String>{
+        SpecialPiece.huangDi: '落子同化相邻敌子为己方',
+        SpecialPiece.nuBa: '落子同化单体相邻敌子',
+        SpecialPiece.yanDi: '落子提取所有相邻敌子',
+        SpecialPiece.chiYou: '落子令相邻空位转弃位',
+        SpecialPiece.changXian: '落子全图提取任意一子',
+        SpecialPiece.xingTian: '落子相邻单体提取',
+        SpecialPiece.zhuRong: '成三时额外提取一子',
+        SpecialPiece.yuShi: '成三时将任意空位变弃位',
+        SpecialPiece.fengHou: '可选择在弃位落子',
+        SpecialPiece.gongGong: '仅能在弃位落子',
+        SpecialPiece.nuWa: '落子令相邻弃位转己子',
+        SpecialPiece.fuXi: '落子令任意弃位转己子',
+        SpecialPiece.kuaFu: '不可被提取',
+        SpecialPiece.yingLong: '相邻有己子时不可被提取',
+        SpecialPiece.fengBo: '落子消灭任意一子，不留弃位',
+      };
+
+      buffer.write(
+          ' - ${specialPiece.chineseName}: ${chineseDescriptions[specialPiece] ?? ''}');
+    } else {
+      // Use English names and descriptions
+      final Map<SpecialPiece, String> englishDescriptions =
+          <SpecialPiece, String>{
+        SpecialPiece.huangDi: 'Converts adjacent opponent pieces',
+        SpecialPiece.nuBa: 'Converts one adjacent opponent piece',
+        SpecialPiece.yanDi: 'Removes all adjacent opponent pieces',
+        SpecialPiece.chiYou: 'Converts adjacent empty squares to abandoned',
+        SpecialPiece.changXian: 'Removes any opponent piece on board',
+        SpecialPiece.xingTian: 'Removes one adjacent opponent piece',
+        SpecialPiece.zhuRong: 'Extra removal when forming mill',
+        SpecialPiece.yuShi:
+            'Converts empty square to abandoned when forming mill',
+        SpecialPiece.fengHou: 'Can be placed on abandoned squares',
+        SpecialPiece.gongGong: 'Can ONLY be placed on abandoned squares',
+        SpecialPiece.nuWa: 'Converts adjacent abandoned squares to own pieces',
+        SpecialPiece.fuXi: 'Converts any abandoned square to own piece',
+        SpecialPiece.kuaFu: 'Cannot be removed by opponent',
+        SpecialPiece.yingLong: 'Cannot be removed when adjacent to own pieces',
+        SpecialPiece.fengBo:
+            'Destroys opponent piece without leaving abandoned square',
+      };
+
+      buffer.write(
+          ' - ${specialPiece.emoji} ${specialPiece.englishName}: ${englishDescriptions[specialPiece] ?? ''}');
+    }
+  } else {
+    // Normal piece
+    if (shouldUseChineseForCurrentSetting()) {
+      buffer.write(' - 普通棋子');
+    } else {
+      buffer.write(' - ⚫ Normal piece');
+    }
+  }
+
+  return buffer.toString();
+}

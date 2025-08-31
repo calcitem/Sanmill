@@ -42,6 +42,17 @@ class Square {
         return Square(str);
       }
     }
+
+    // Zhuolu Chess special piece characters (single character)
+    if (str.length == 1 && isZhuoluSpecialPieceChar(str)) {
+      return Square(str);
+    }
+
+    // Zhuolu Chess normal pieces
+    if (str.length == 1 && (str == "O" || str == "@")) {
+      return Square(str);
+    }
+
     return null;
   }
 
@@ -887,9 +898,12 @@ class _PgnParser {
                 return;
               }
             }
-            // Adapted Nine Men's Morris token regex:
+            // Adapted Nine Men's Morris and Zhuolu Chess token regex:
             final RegExp tokenRegex = RegExp(
-                r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*))'
+                r'(?:p|(?:[a-g][1-7](?:[-x][a-g][1-7])*)|(?:x[a-g][1-7](?:[-x][a-g][1-7])*)'
+                r'|(?:[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb](?:-[a-g][1-7])?)'
+                r'|(?:x[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb])'
+                r'|[O@])'
                 r'|{|;|\$\d{1,4}|[?!]{1,2}|\(|\)|\*|1-0|0-1|1\/2-1\/2');
             final Iterable<RegExpMatch> matches = tokenRegex.allMatches(line);
             for (final RegExpMatch match in matches) {

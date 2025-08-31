@@ -2069,7 +2069,7 @@
   "@boardShadowEnabled": {},
   "trapAwareness": "Trap awareness",
   "@trapAwareness": {},
-  "trapAwarenessDescription": "Highlight trap moves with bold circles and arrows during analysis.",
+  "trapAwarenessDescription": "Highlight trap moves with bold circles and arrows during analysis",
   "@trapAwarenessDescription": {},
   "trapExists": "Trap exists. Trap moves: {trapMoves}",
   "@trapExists": {
@@ -2078,5 +2078,139 @@
         "type": "String"
       }
     }
+  },
+  "zhuolu": "Zhuolu Chess",
+  "@zhuolu": {},
+  "endAfterPlacing": "End After Placing",
+  "@endAfterPlacing": {},
+  "endAfterPlacing_Detail": "Game ends after placing phase, winner determined by captured pieces",
+  "@endAfterPlacing_Detail": {},
+  "removeLeavesMarked": "Remove Leaves Marked",
+  "@removeLeavesMarked": {},
+  "removeLeavesMarked_Detail": "Removed pieces leave permanently abandoned squares",
+  "@removeLeavesMarked_Detail": {},  
+  "huangDi": "Yellow Emperor",
+  "@huangDi": {
+    "description": "Zhuolu Chess special piece: Yellow Emperor"
+  },
+  "huangDiDescription": "When placed, converts all adjacent opponent pieces to own pieces",
+  "@huangDiDescription": {
+    "description": "Description of Yellow Emperor's ability"
+  },
+  "nuBa": "Nüba",
+  "@nuBa": {
+    "description": "Zhuolu Chess special piece: Drought Demon"
+  },
+  "nuBaDescription": "When placed, can convert one adjacent opponent piece to own piece",
+  "@nuBaDescription": {
+    "description": "Description of Nüba's ability"
+  },
+  "yanDi": "Flame Emperor",
+  "@yanDi": {
+    "description": "Zhuolu Chess special piece: Flame Emperor"
+  },
+  "yanDiDescription": "When placed, can remove all adjacent opponent pieces",
+  "@yanDiDescription": {
+    "description": "Description of Flame Emperor's ability"
+  },
+  "chiYou": "Chiyou",
+  "@chiYou": {
+    "description": "Zhuolu Chess special piece: War God"
+  },
+  "chiYouDescription": "When placed, can convert all adjacent empty squares to abandoned squares",
+  "@chiYouDescription": {
+    "description": "Description of Chiyou's ability"
+  },
+  "changXian": "Changxian",
+  "@changXian": {
+    "description": "Zhuolu Chess special piece: Always First"
+  },
+  "changXianDescription": "When placed, can remove any opponent piece on the board",
+  "@changXianDescription": {
+    "description": "Description of Changxian's ability"
+  },
+  "xingTian": "Xingtian",
+  "@xingTian": {
+    "description": "Zhuolu Chess special piece: Punishment Heaven"
+  },
+  "xingTianDescription": "When placed, can remove one adjacent opponent piece",
+  "@xingTianDescription": {
+    "description": "Description of Xingtian's ability"
+  },
+  "zhuRong": "Zhurong",
+  "@zhuRong": {
+    "description": "Zhuolu Chess special piece: Fire God"
+  },
+  "zhuRongDescription": "When forming mill, can additionally remove any opponent piece",
+  "@zhuRongDescription": {
+    "description": "Description of Zhurong's ability"
+  },
+  "yuShi": "Yushi",
+  "@yuShi": {
+    "description": "Zhuolu Chess special piece: Rain Master"
+  },
+  "yuShiDescription": "When forming mill, can convert any empty square to abandoned square",
+  "@yuShiDescription": {
+    "description": "Description of Yushi's ability"
+  },
+  "fengHou": "Fenghou",
+  "@fengHou": {
+    "description": "Zhuolu Chess special piece: Wind Empress"
+  },
+  "fengHouDescription": "Can be placed on abandoned squares",
+  "@fengHouDescription": {
+    "description": "Description of Fenghou's ability"
+  },
+  "gongGong": "Gonggong",
+  "@gongGong": {
+    "description": "Zhuolu Chess special piece: Flood God"
+  },
+  "gongGongDescription": "Can ONLY be placed on abandoned squares",
+  "@gongGongDescription": {
+    "description": "Description of Gonggong's ability"
+  },
+  "nuWa": "Nüwa",
+  "@nuWa": {
+    "description": "Zhuolu Chess special piece: Creator Goddess"
+  },
+  "nuWaDescription": "When placed, can convert all adjacent abandoned squares to own pieces",
+  "@nuWaDescription": {
+    "description": "Description of Nüwa's ability"
+  },
+  "fuXi": "Fuxi",
+  "@fuXi": {
+    "description": "Zhuolu Chess special piece: Creator God"
+  },
+  "fuXiDescription": "When placed, can convert any abandoned square to own piece",
+  "@fuXiDescription": {
+    "description": "Description of Fuxi's ability"
+  },
+  "kuaFu": "Kuafu",
+  "@kuaFu": {
+    "description": "Zhuolu Chess special piece: Giant"
+  },
+  "kuaFuDescription": "Cannot be removed by opponent",
+  "@kuaFuDescription": {
+    "description": "Description of Kuafu's ability"
+  },
+  "yingLong": "Yinglong",
+  "@yingLong": {
+    "description": "Zhuolu Chess special piece: Responding Dragon"
+  },
+  "yingLongDescription": "Cannot be removed when adjacent to own pieces",
+  "@yingLongDescription": {
+    "description": "Description of Yinglong's ability"
+  },
+  "fengBo": "Fengbo",
+  "@fengBo": {
+    "description": "Zhuolu Chess special piece: Wind Earl"
+  },
+  "fengBoDescription": "When placed, destroys any opponent piece without leaving abandoned square",
+  "@fengBoDescription": {
+    "description": "Description of Fengbo's ability"
+  },
+  "normalPiece": "Normal Piece",
+  "@normalPiece": {
+    "description": "Normal piece in Zhuolu Chess"
   }
 }

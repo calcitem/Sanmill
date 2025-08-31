@@ -196,6 +196,11 @@ static void on_threefoldRepetitionRule(const Option &o)
     rule.threefoldRepetitionRule = static_cast<bool>(o);
 }
 
+static void on_zhuoluMode(const Option &o)
+{
+    rule.zhuoluMode = static_cast<bool>(o);
+}
+
 /// Our case insensitive less() function as required by UCI protocol
 bool CaseInsensitiveLess::operator()(const string &s1, const string &s2) const
 {
@@ -273,6 +278,7 @@ void init(OptionsMap &o)
     o["NMoveRule"] << Option(100, 10, 200, on_nMoveRule);
     o["EndgameNMoveRule"] << Option(100, 5, 200, on_endgameNMoveRule);
     o["ThreefoldRepetitionRule"] << Option(true, on_threefoldRepetitionRule);
+    o["ZhuoluMode"] << Option(false, on_zhuoluMode);
 }
 
 /// operator<<() is used to print all the options default values in

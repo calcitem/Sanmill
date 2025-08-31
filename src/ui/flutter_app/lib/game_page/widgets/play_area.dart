@@ -20,6 +20,7 @@ import 'game_page.dart';
 import 'modals/game_options_modal.dart';
 import 'moves_list_page.dart';
 import 'toolbars/game_toolbar.dart';
+import 'zhuolu_hand_pieces_display.dart';
 
 /// The PlayArea widget is the main content of the game page.
 class PlayArea extends StatefulWidget {
@@ -543,12 +544,25 @@ class PlayAreaState extends State<PlayArea> {
                   // The top game header with hints, icons, etc.
                   GameHeader(key: const Key('play_area_game_header')),
 
+                  // Opponent's hand pieces display for Zhuolu Chess (above board)
+                  if (DB().ruleSettings.zhuoluMode)
+                    ZhuoluHandPiecesDisplay(
+                      player: GameController().position.sideToMove ==
+                              PieceColor.white
+                          ? PieceColor.black
+                          : PieceColor.white, // Opponent's color
+                      isOpponent: true,
+                    ),
+
                   // Piece counts or spacing if not used
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
                       !(Constants.isSmallScreen(context) == true &&
-                          DB().ruleSettings.piecesCount > 9))
+                          DB().ruleSettings.piecesCount > 9) &&
+                      !DB()
+                          .ruleSettings
+                          .zhuoluMode) // Don't show if Zhuolu mode
                     _buildPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),
@@ -565,12 +579,22 @@ class PlayAreaState extends State<PlayArea> {
                     ),
                   ),
 
+                  // Player's hand pieces display for Zhuolu Chess (below board)
+                  if (DB().ruleSettings.zhuoluMode)
+                    ZhuoluHandPiecesDisplay(
+                      player: GameController().position.sideToMove,
+                      isOpponent: false,
+                    ),
+
                   // Removed pieces row or spacing
                   if ((DB().displaySettings.isUnplacedAndRemovedPiecesShown ||
                           GameController().gameInstance.gameMode ==
                               GameMode.setupPosition) &&
                       !(Constants.isSmallScreen(context) == true &&
-                          DB().ruleSettings.piecesCount > 9))
+                          DB().ruleSettings.piecesCount > 9) &&
+                      !DB()
+                          .ruleSettings
+                          .zhuoluMode) // Don't show if Zhuolu mode
                     _buildRemovedPieceCountRow()
                   else
                     const SizedBox(height: AppTheme.boardMargin),

@@ -270,11 +270,26 @@ Value Search::search(SearchEngine &searchEngine, Position *pos,
 
     // Handle case when no moves are available
     if (moveCount == 0) {
-#ifdef _WIN32
-#ifdef _DEBUG
-        assert(false);
-#endif
-#endif
+        // Log detailed information about the position when no moves are found
+        debugPrintf("Warning: No legal moves found - phase=%d, action=%d, "
+                    "sideToMove=%d\n",
+                    static_cast<int>(pos->phase), static_cast<int>(pos->action),
+                    pos->sideToMove);
+        debugPrintf("pieceToRemoveCount: WHITE=%d, BLACK=%d\n",
+                    pos->pieceToRemoveCount[WHITE],
+                    pos->pieceToRemoveCount[BLACK]);
+        debugPrintf("pieceOnBoardCount: WHITE=%d, BLACK=%d\n",
+                    pos->pieceOnBoardCount[WHITE],
+                    pos->pieceOnBoardCount[BLACK]);
+        debugPrintf("pieceInHandCount: WHITE=%d, BLACK=%d\n",
+                    pos->pieceInHandCount[WHITE], pos->pieceInHandCount[BLACK]);
+
+        // Check if game should be over
+        if (pos->phase != Phase::gameOver) {
+            debugPrintf("Warning: Game should probably be over but phase is "
+                        "not gameOver\n");
+        }
+
         if (depth == originDepth) {
             bestMove = MOVE_NONE;
             debugPrintf("Warning: Search found no legal moves at root depth\n");
@@ -492,6 +507,6 @@ Value Search::random_search(Position *pos, Move &bestMove)
     }
 
     debugPrintf("random_search selected move: %s\n",
-                UCI::move(bestMove).c_str());
+                UCI::move(bestMove, pos).c_str());
     return VALUE_ZERO;
 }

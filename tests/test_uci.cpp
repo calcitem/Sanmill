@@ -161,14 +161,16 @@ TEST_F(UCITest, MoveStringConversion)
     Move m1 = make_move(SQ_8, SQ_9);
     // SQ_8 => "d5", SQ_9 => "e5"
     // "-" indicates a move in standard notation
-    EXPECT_EQ(UCI::move(m1), "d5-e5") << "Should produce standard move "
-                                         "notation like d5-e5.";
+    EXPECT_EQ(UCI::move(m1, nullptr), "d5-e5") << "Should produce standard "
+                                                  "move "
+                                                  "notation like d5-e5.";
 
     // Test a "remove" type move (negative move)
     // Let's say removing SQ_10 => "e4". Negative means MOVETYPE_REMOVE
     Move m2 = static_cast<Move>(-SQ_10);
-    EXPECT_EQ(UCI::move(m2), "xe4") << "Remove moves have 'x' prefix and "
-                                       "standard square notation.";
+    EXPECT_EQ(UCI::move(m2, nullptr), "xe4") << "Remove moves have 'x' prefix "
+                                                "and "
+                                                "standard square notation.";
 
     // Test a "place" type move
     // This means from_sq(m) = to_sq(m) in code's logic, but let's confirm
@@ -176,9 +178,10 @@ TEST_F(UCITest, MoveStringConversion)
     // For instance, to place to SQ_25 => "g7"
     Move m3 = make_move(SQ_0, SQ_25); // from == 0 => "place" style in code
     // But the code sees from_sq(m) is 0 => "move is place"
-    EXPECT_EQ(UCI::move(m3), "g7") << "Place moves just produce the "
-                                      "destination in standard notation like "
-                                      "g7.";
+    EXPECT_EQ(UCI::move(m3, nullptr), "g7") << "Place moves just produce the "
+                                               "destination in standard "
+                                               "notation like "
+                                               "g7.";
 }
 
 /**

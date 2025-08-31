@@ -88,6 +88,15 @@ class _GamePageInner extends StatefulWidget {
 }
 
 class _GamePageInnerState extends State<_GamePageInner> {
+  /// Initialize the game, including special piece selection for Zhuolu Chess
+  Future<void> _initializeGame(
+      BuildContext context, GameController controller) async {
+    // Start the controller first
+    await controller.startController();
+
+    // Zhuolu Chess special piece selection will be handled when game actually starts
+  }
+
   // GlobalKey to reference the real board's RenderBox
   final GlobalKey _gameBoardKey = GlobalKey();
 
@@ -334,12 +343,12 @@ class _GamePageInnerState extends State<_GamePageInner> {
           alignment: isLandscape ? Alignment.center : Alignment.topCenter,
           child: FutureBuilder<void>(
             key: const Key('game_page_future_builder'),
-            future: controller.startController(),
+            future: _initializeGame(context, controller),
             builder: (BuildContext context, AsyncSnapshot<Object?> snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   key: Key('game_page_center_loading'),
-                  // Optionally add a CircularProgressIndicator here
+                  child: CircularProgressIndicator(),
                 );
               }
 

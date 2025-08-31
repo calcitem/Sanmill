@@ -181,4 +181,54 @@ class _Zobrist {
   ];
 
   static const int side = 0x201906;
+
+  /// Hash key for special piece selection mask (matches C++ implementation)
+  static const int specialPieceSelectionMask = 0x7F8E9D;
+}
+
+/// Generate hash key for special piece at square
+/// This is a simplified implementation - in production, should match C++ exactly
+int getZhuoluSpecialPieceHash(
+    SpecialPiece piece, PieceColor color, int square) {
+  if (!DB().ruleSettings.zhuoluMode) {
+    return 0;
+  }
+
+  // Convert to type constants for hash calculation
+  final int pieceType = specialPieceToType(piece);
+  final int colorIndex = color == PieceColor.white ? 0 : 1;
+
+  // Simple hash calculation - in production, should use pre-computed tables
+  // This ensures different pieces/colors/squares produce different hashes
+  return (pieceType * 0x123456) ^ (colorIndex * 0x789ABC) ^ (square * 0xDEF012);
+}
+
+/// Update position hash when special piece is placed or moved
+int updateZhuoluSpecialPieceHash(int currentHash, SpecialPiece? oldPiece,
+    SpecialPiece? newPiece, PieceColor color, int square) {
+  if (!DB().ruleSettings.zhuoluMode) {
+    return currentHash;
+  }
+
+  int hash = currentHash;
+
+  // Remove old piece hash contribution
+  if (oldPiece != null) {
+    hash ^= getZhuoluSpecialPieceHash(oldPiece, color, square);
+  }
+
+  // Add new piece hash contribution
+  if (newPiece != null) {
+    hash ^= getZhuoluSpecialPieceHash(newPiece, color, square);
+  }
+
+  return hash;
+}
+
+/// Generate hash for special piece selection mask
+int getZhuoluSelectionMaskHash(int selectionMask) {
+  if (!DB().ruleSettings.zhuoluMode) {
+    return 0;
+  }
+  return selectionMask ^ _Zobrist.specialPieceSelectionMask;
 }

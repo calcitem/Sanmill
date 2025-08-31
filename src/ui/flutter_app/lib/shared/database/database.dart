@@ -21,6 +21,7 @@ import '../../statistics/model/stats_settings.dart';
 import '../config/constants.dart';
 import '../services/logger.dart';
 import 'adapters/adapters.dart';
+import 'hive_repair_utils.dart';
 
 part 'database_migration.dart';
 
@@ -128,8 +129,8 @@ class Database {
     Hive.registerAdapter<SoundTheme>(SoundThemeAdapter());
     Hive.registerAdapter<LlmProvider>(LlmProviderAdapter());
     Hive.registerAdapter<GeneralSettings>(GeneralSettingsAdapter());
-    _generalSettingsBox =
-        await Hive.openBox<GeneralSettings>(_generalSettingsBoxName);
+    _generalSettingsBox = await HiveRepairUtils.safeOpenBox<GeneralSettings>(
+        _generalSettingsBoxName);
   }
 
   /// Listens to changes inside the settings Box
@@ -155,7 +156,26 @@ class Database {
     Hive.registerAdapter<BoardFullAction>(BoardFullActionAdapter());
     Hive.registerAdapter<StalemateAction>(StalemateActionAdapter());
     Hive.registerAdapter<RuleSettings>(RuleSettingsAdapter());
-    _ruleSettingsBox = await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
+
+    try {
+      _ruleSettingsBox =
+          await HiveRepairUtils.safeOpenBox<RuleSettings>(_ruleSettingsBoxName);
+
+      // Validate box integrity after opening
+      final bool isValid =
+          await HiveRepairUtils.validateBoxIntegrity(_ruleSettingsBox);
+      if (!isValid) {
+        logger.w("Rule settings box integrity check failed, repairing...");
+        await HiveRepairUtils.repairRuleSettingsBox();
+        _ruleSettingsBox =
+            await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
+      }
+    } catch (e) {
+      logger.e("Failed to initialize rule settings: $e");
+      // Last resort: try to repair and reopen
+      await HiveRepairUtils.repairRuleSettingsBox();
+      _ruleSettingsBox = await Hive.openBox<RuleSettings>(_ruleSettingsBoxName);
+    }
   }
 
   /// Listens to changes inside the settings Box

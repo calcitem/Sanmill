@@ -21,6 +21,15 @@
 #include "types.h"
 #include "movegen.h"
 
+// Forward declaration of Zobrist namespace
+namespace Zobrist {
+extern Key psq[PIECE_TYPE_NB][SQUARE_EXT_NB];
+extern Key side;
+extern Key specialPiece[16][COLOR_NB][SQUARE_EXT_NB];
+extern Key specialPieceSelectionMask;
+constexpr int KEY_MISC_BIT = 2;
+} // namespace Zobrist
+
 #ifdef NNUE_GENERATE_TRAINING_DATA
 #include <ostream>
 #include <sstream>
@@ -29,6 +38,9 @@ using std::ostream;
 using std::ostringstream;
 using std::string;
 #endif /* NNUE_GENERATE_TRAINING_DATA */
+
+// Forward declarations for special piece functions
+std::string SpecialPieceToChar(SpecialPieceType specialType, Color c);
 
 /// StateInfo struct stores information needed to restore a Position object to
 /// its previous state when we retract a move. Whenever a move is made on the
@@ -124,6 +136,32 @@ public:
     void update_score();
     bool check_if_game_is_over();
     void remove_marked_pieces();
+
+    // Zhuolu Chess special piece methods
+    void update_available_special_pieces_from_selection();
+    bool has_available_special_piece(Color c, SpecialPieceType piece) const;
+    SpecialPieceType get_best_special_piece_for_placement(Color c,
+                                                          Square) const;
+    void use_special_piece(Color c, SpecialPieceType piece);
+    SpecialPieceType special_piece_on(Square s) const;
+    void set_special_piece(Square s, SpecialPieceType type);
+    Key update_special_piece_key(Square s, SpecialPieceType oldType,
+                                 SpecialPieceType newType);
+
+    // New methods for move-based special piece selection
+    uint16_t get_available_special_pieces_mask(Color c) const;
+    bool can_place_special_piece_at(SpecialPieceType piece, Square s) const;
+
+    // Bitboard helper functions for special pieces
+    Bitboard special_piece_bb(SpecialPieceType type) const;
+    Bitboard special_pieces_bb() const;
+    bool has_special_piece(SpecialPieceType type) const;
+    std::string pretty_special_pieces() const;
+
+    // Special piece ability triggers for Zhuolu Chess
+    void trigger_mill_ability(Square s, SpecialPieceType specialType);
+    void trigger_placement_ability(Square s, SpecialPieceType specialType);
+
     void set_side_to_move(Color c);
     void keep_side_to_move();
 
@@ -185,6 +223,10 @@ public:
     void put_piece(Piece pc, Square s);
     bool put_piece(File f, Rank r);
     bool put_piece(Square s, bool updateRecord = false);
+    bool put_piece_from_move(Move m, bool updateRecord = false); // New method
+                                                                 // for
+                                                                 // move-based
+                                                                 // placement
     bool handle_moving_phase_for_put_piece(Square s, bool updateRecord);
 
     bool remove_piece(File f, Rank r);
@@ -207,6 +249,10 @@ public:
     Piece board[SQUARE_EXT_NB];
     Bitboard byTypeBB[PIECE_TYPE_NB];
     Bitboard byColorBB[COLOR_NB];
+
+    // Bitboards for special pieces in Zhuolu Chess
+    // [SpecialPieceType] - tracks squares occupied by each special piece type
+    Bitboard specialPieceBB[16]; // 16 special piece types (0-14 + NORMAL_PIECE)
     int pieceInHandCount[COLOR_NB] {0, 9, 9};
     int pieceOnBoardCount[COLOR_NB] {0, 0, 0};
     int pieceToRemoveCount[COLOR_NB] {0, 0, 0};
@@ -238,6 +284,21 @@ public:
     Square lastMillToSquare[COLOR_NB] {SQ_NONE, SQ_NONE, SQ_NONE};
 
     Bitboard formedMillsBB[COLOR_NB] {0};
+
+    // Special piece selection mask for Zhuolu Chess (64-bit)
+    // Bits 0-23: White player's 6 selected pieces (4 bits each)
+    // Bits 24-47: Black player's 6 selected pieces (4 bits each)
+    // Bits 48-63: Reserved for future use
+    uint64_t specialPieceSelectionMask {0};
+
+    // Available special pieces bitmask for each player (which pieces can still
+    // be used)
+    uint16_t availableSpecialPiecesMask[COLOR_NB] {0, 0, 0};
+
+    // Special piece type for each square (for Zhuolu Chess)
+    // NORMAL_PIECE means it's a normal piece, other values indicate special
+    // piece type
+    SpecialPieceType specialPieceBoard[SQUARE_EXT_NB];
 
     int gamesPlayedCount {0};
 
@@ -292,6 +353,33 @@ inline Key Position::key() const noexcept
 inline void Position::construct_key()
 {
     st.key = 0;
+
+    // Hash all pieces on the board
+    for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+        const int pieceType = color_on(s);
+        if (pieceType != NOBODY) {
+            st.key ^= Zobrist::psq[pieceType][s];
+
+            // For Zhuolu Chess, also include special piece information
+            if (rule.zhuoluMode) {
+                SpecialPieceType specialType = specialPieceBoard[s];
+                if (specialType != NORMAL_PIECE) {
+                    st.key ^= Zobrist::specialPiece[specialType][pieceType][s];
+                }
+            }
+        }
+    }
+
+    // Hash side to move
+    if (sideToMove == BLACK) {
+        st.key ^= Zobrist::side;
+    }
+
+    // For Zhuolu Chess, include special piece selection mask in hash
+    if (rule.zhuoluMode && specialPieceSelectionMask != 0) {
+        st.key ^= Zobrist::specialPieceSelectionMask ^
+                  static_cast<Key>(specialPieceSelectionMask);
+    }
 }
 
 inline int Position::game_ply() const
@@ -415,6 +503,12 @@ inline int Position::mills_pieces_count_difference() const
 
 inline bool Position::shouldFocusOnBlockingPaths() const
 {
+    // Disable blocking paths focus for Zhuolu Chess
+    // Special piece abilities can bypass traditional blocking strategies
+    if (rule.zhuoluMode) {
+        return false;
+    }
+
     if (get_phase() == Phase::placing) {
         return gameOptions.getFocusOnBlockingPaths();
     } else if (get_phase() == Phase::moving) {
@@ -429,6 +523,13 @@ inline bool Position::shouldFocusOnBlockingPaths() const
 
 inline bool Position::shouldConsiderMobility() const
 {
+    // Disable mobility calculation for Zhuolu Chess
+    // Special pieces and unique rules make traditional mobility evaluation less
+    // relevant
+    if (rule.zhuoluMode) {
+        return false;
+    }
+
     // Note: Either consider mobility or focus on blocking paths
     return gameOptions.getConsiderMobility() ||
            gameOptions.getFocusOnBlockingPaths();

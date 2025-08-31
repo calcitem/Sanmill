@@ -171,7 +171,7 @@ std::string SearchEngine::next_move() const
 #endif // TRANSPOSITION_TABLE_DEBUG
 #endif // TRANSPOSITION_TABLE_ENABLE
 
-    return UCI::move(bestMove);
+    return UCI::move(bestMove, rootPos);
 }
 
 void SearchEngine::analyze(Color c) const
@@ -530,7 +530,7 @@ int SearchEngine::executeSearch()
             aiMoveType = AiMoveType::traditional;
 
             debugPrintf("Algorithm bestMove = %s\n",
-                        UCI::move(bestMove).c_str());
+                        UCI::move(bestMove, rootPos).c_str());
 
 #if defined(GABOR_MALOM_PERFECT_AI)
             if (gameOptions.getUsePerfectDatabase() == true) {
@@ -538,7 +538,7 @@ int SearchEngine::executeSearch()
                 if (v2 != VALUE_UNKNOWN) {
                     debugPrintf("perfect_search OK.\n");
                     debugPrintf("DB bestMove = %s\n",
-                                UCI::move(bestMove).c_str());
+                                UCI::move(bestMove, rootPos).c_str());
                     if (bestMove == fallbackMove) {
                         aiMoveType = AiMoveType::consensus;
                     } else {
@@ -610,7 +610,8 @@ next:
 
     aiMoveType = AiMoveType::traditional;
 
-    debugPrintf("Algorithm bestMove = %s\n", UCI::move(bestMoveSoFar).c_str());
+    debugPrintf("Algorithm bestMove = %s\n",
+                UCI::move(bestMoveSoFar, rootPos).c_str());
 
 #if defined(GABOR_MALOM_PERFECT_AI)
     if (gameOptions.getUsePerfectDatabase() == true &&
@@ -618,7 +619,8 @@ next:
         Value v3 = perfect_search(rootPos, bestMoveSoFar);
         if (v3 != VALUE_UNKNOWN) {
             debugPrintf("perfect_search OK.\n");
-            debugPrintf("DB bestMove = %s\n", UCI::move(bestMoveSoFar).c_str());
+            debugPrintf("DB bestMove = %s\n",
+                        UCI::move(bestMoveSoFar, rootPos).c_str());
             if (bestMoveSoFar == fallbackMove) {
                 aiMoveType = AiMoveType::consensus;
             } else {
@@ -746,7 +748,7 @@ void SearchEngine::runSearch()
                                 "search.\n");
                     Search::random_search(rootPos, bestMove);
                 }
-                setBestMoveString(UCI::move(bestMove));
+                setBestMoveString(UCI::move(bestMove, rootPos));
             }
             emitCommand();
         }
@@ -839,7 +841,7 @@ void SearchEngine::runAnalyze()
         Position newPos = *rootPos;
         newPos.do_move(m.move);
 
-        std::string moveStr = UCI::move(m.move);
+        std::string moveStr = UCI::move(m.move, &newPos);
         Value val = VALUE_NONE;
 
         // Try to get detailed evaluation from perfect database first
@@ -1020,7 +1022,7 @@ void SearchEngine::runAnalyze()
                         }
 
                         if (isWorseChoice) {
-                            trapMoves.push_back(UCI::move(m.move));
+                            trapMoves.push_back(UCI::move(m.move, rootPos));
                         }
                     }
                 }

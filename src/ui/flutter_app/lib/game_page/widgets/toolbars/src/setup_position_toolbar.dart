@@ -24,6 +24,12 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   };
   int newPlaced = 0; // For White
 
+  // Zhuolu Chess specific setup state
+  SpecialPiece?
+      selectedSpecialPiece; // Currently selected special piece for placement
+  bool isPlacingSpecialPiece =
+      false; // Whether we're in special piece placement mode
+
   late GameMode gameModeBackup;
   final Position position = GameController().position;
   late Position positionBackup;
@@ -31,6 +37,9 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   void initContext() {
     gameModeBackup = GameController().gameInstance.gameMode;
     GameController().gameInstance.gameMode = GameMode.setupPosition;
+
+    // Set reference to this state for Zhuolu Chess special piece handling
+    GameController().setupPositionToolbarState = this;
 
     positionBackup = GameController().position.clone();
     //GameController().position.reset();
@@ -113,6 +122,10 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   void setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
     GameController().isPositionSetupMarkedPiece = false; // WAR
 
+    // Reset special piece selection when switching to normal piece mode
+    selectedSpecialPiece = null;
+    isPlacingSpecialPiece = false;
+
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
     } else if (pieceColor == PieceColor.black) {
@@ -154,6 +167,115 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
     setState(() {});
 
     return;
+  }
+
+  /// Set special piece for Zhuolu Chess setup
+  void setSetupPositionSpecialPiece(
+      SpecialPiece? specialPiece, PieceColor pieceColor) {
+    selectedSpecialPiece = specialPiece;
+    isPlacingSpecialPiece = specialPiece != null;
+
+    // Set the piece color for the special piece
+    newPieceColor = pieceColor;
+    position.action = Act.place;
+
+    GameController().position.sideToSetup = pieceColor;
+    GameController().position.sideToMove = pieceColor;
+
+    _updateSetupPositionIcons();
+
+    // Show tip about selected special piece
+    if (specialPiece != null) {
+      final String pieceName = shouldUseChineseForCurrentSetting()
+          ? specialPiece.chineseName
+          : '${specialPiece.emoji} ${specialPiece.englishName}';
+      GameController().headerTipNotifier.showTip('Setup: Place $pieceName');
+    } else {
+      GameController().headerTipNotifier.showTip('Setup: Place normal piece');
+    }
+
+    setState(() {});
+  }
+
+  /// Show special piece selection dialog for Zhuolu Chess setup
+  Future<void> _showSpecialPieceSelectionDialog(BuildContext context) async {
+    const List<SpecialPiece> allSpecialPieces = SpecialPiece.values;
+
+    final SpecialPiece? selected = await showDialog<SpecialPiece?>(
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(shouldUseChineseForCurrentSetting()
+            ? '选择特殊棋子'
+            : 'Select Special Piece'),
+        content: SizedBox(
+          width: double.maxFinite,
+          height: 400,
+          child: GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+            ),
+            itemCount: allSpecialPieces.length,
+            itemBuilder: (BuildContext context, int index) {
+              final SpecialPiece piece = allSpecialPieces[index];
+              final bool isSelected = selectedSpecialPiece == piece;
+
+              return Card(
+                color:
+                    isSelected ? Theme.of(context).colorScheme.primary : null,
+                child: InkWell(
+                  onTap: () => Navigator.of(context).pop(piece),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          shouldUseChineseForCurrentSetting()
+                              ? piece.chineseName
+                              : piece.emoji,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : null,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          shouldUseChineseForCurrentSetting()
+                              ? piece.chineseName
+                              : piece.englishName,
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isSelected
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : null,
+                          ),
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(shouldUseChineseForCurrentSetting() ? '取消' : 'Cancel'),
+          ),
+        ],
+      ),
+    );
+
+    if (selected != null) {
+      setSetupPositionSpecialPiece(selected, newPieceColor);
+    }
   }
 
   void setSetupPositionPhase(BuildContext context, Phase phase) {
@@ -949,6 +1071,53 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
       Expanded(child: cancelButton),
     ];
 
+    // Zhuolu Chess special piece selection row
+    final List<Widget> row4 = <Widget>[];
+    if (DB().ruleSettings.zhuoluMode) {
+      // Add special piece selection button
+      final ToolbarItem specialPieceButton = ToolbarItem.icon(
+        key: const Key('special_piece_button'),
+        onPressed: () => _showSpecialPieceSelectionDialog(context),
+        icon: Icon(
+          selectedSpecialPiece != null
+              ? FluentIcons.star_24_filled
+              : FluentIcons.star_24_regular,
+          color: itemColor,
+        ),
+        label: Text(
+          selectedSpecialPiece != null
+              ? (shouldUseChineseForCurrentSetting()
+                  ? selectedSpecialPiece!.chineseName
+                  : selectedSpecialPiece!.emoji)
+              : 'Special',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+
+      // Add normal piece button for Zhuolu Chess
+      final ToolbarItem normalPieceButton = ToolbarItem.icon(
+        key: const Key('normal_piece_button'),
+        onPressed: () => setSetupPositionSpecialPiece(null, newPieceColor),
+        icon: Icon(
+          FluentIcons.circle_24_regular,
+          color: itemColor,
+        ),
+        label: Text(
+          shouldUseChineseForCurrentSetting() ? '普通' : 'Normal',
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+
+      row4.addAll(<Widget>[
+        Expanded(child: specialPieceButton),
+        Expanded(child: normalPieceButton),
+        const Expanded(child: SizedBox.shrink()), // Empty space
+        const Expanded(child: SizedBox.shrink()), // Empty space
+      ]);
+    }
+
     return Column(
       children: <Widget>[
         SetupPositionButtonsContainer(
@@ -975,6 +1144,16 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
           itemColor: itemColor,
           child: row3,
         ),
+        // Add Zhuolu Chess special piece row if enabled
+        if (DB().ruleSettings.zhuoluMode)
+          SetupPositionButtonsContainer(
+            key: const Key('setup_position_buttons_container_row4_zhuolu'),
+            backgroundColor: backgroundColor,
+            margin: _margin,
+            padding: _padding,
+            itemColor: itemColor,
+            child: row4,
+          ),
       ],
     );
   }
@@ -994,6 +1173,8 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
 
   @override
   void dispose() {
+    // Clear reference to this state
+    GameController().setupPositionToolbarState = null;
     super.dispose();
   }
 }

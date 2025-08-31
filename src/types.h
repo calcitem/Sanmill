@@ -108,8 +108,8 @@ using Key = uint32_t;
 
 using Bitboard = uint32_t;
 
-constexpr int MAX_MOVES = 72; // (24 - 4 - 3) * 4 = 68
-constexpr int MAX_PLY = 48;
+constexpr int MAX_MOVES = 168;
+constexpr int MAX_PLY = 24;
 
 enum Move : int32_t { MOVE_NONE, MOVE_NULL = 65 };
 
@@ -156,6 +156,26 @@ enum class GameOverReason {
     drawEndgameFiftyMove,
     drawFullBoard,
     drawStalemateCondition,
+};
+
+// Special pieces for Zhuolu Chess (values 0-14 to fit in 4 bits)
+enum SpecialPieceType : uint8_t {
+    NORMAL_PIECE = 15, // Normal piece (not special)
+    HUANG_DI = 0,      // Yellow Emperor
+    NU_BA = 1,         // Drought Demon
+    YAN_DI = 2,        // Flame Emperor
+    CHI_YOU = 3,       // War God
+    CHANG_XIAN = 4,    // Always First
+    XING_TIAN = 5,     // Punishment Heaven
+    ZHU_RONG = 6,      // Fire God
+    YU_SHI = 7,        // Rain Master
+    FENG_HOU = 8,      // Wind Empress
+    GONG_GONG = 9,     // Flood God
+    NU_WA = 10,        // Creator Goddess
+    FU_XI = 11,        // Creator God
+    KUA_FU = 12,       // Giant
+    YING_LONG = 13,    // Responding Dragon
+    FENG_BO = 14,      // Wind Earl
 };
 
 enum Bound : uint8_t {
@@ -462,6 +482,7 @@ ENABLE_INCR_OPERATORS_ON(Square)
 ENABLE_INCR_OPERATORS_ON(File)
 ENABLE_INCR_OPERATORS_ON(Rank)
 ENABLE_INCR_OPERATORS_ON(MoveDirection)
+ENABLE_INCR_OPERATORS_ON(Color)
 
 #undef ENABLE_FULL_OPERATORS_ON
 #undef ENABLE_INCR_OPERATORS_ON
@@ -529,7 +550,7 @@ constexpr File file_of(Square s)
 
 constexpr Rank rank_of(Square s)
 {
-    return static_cast<Rank>((s & 0x07) + 1);
+    return static_cast<Rank>((static_cast<int>(s) & 0x07) + 1);
 }
 
 constexpr Square from_sq(Move m)
@@ -537,7 +558,16 @@ constexpr Square from_sq(Move m)
     if (m < 0)
         m = static_cast<Move>(-m);
 
-    return static_cast<Square>(m >> 8);
+    // For special piece placement moves, bits 12-15 contain special piece info
+    // and bits 8-12 (5 bits) for a from-square are not set. In that case there
+    // is no from-square encoded.
+    if ((m & 0xF000) && !(m & 0x1F00)) {
+        // This is a special piece placement move - no from square
+        return SQ_NONE;
+    }
+
+    // Extract 5 bits for the from-square (supports 24 board squares 8..31)
+    return static_cast<Square>((m >> 8) & 0x1F);
 }
 
 constexpr Square to_sq(Move m)
@@ -553,16 +583,53 @@ constexpr MoveType type_of(Move m)
     if (m < 0) {
         return MOVETYPE_REMOVE;
     }
-    if (m & 0x1f00) {
+    // Check bits 8-11 for regular moves (from square)
+    if ((m & 0x0F00) && !(m & 0xF000)) {
         return MOVETYPE_MOVE;
     }
+    // If bits 12-15 are set, it could be a special piece placement
+    // or a regular move. We distinguish by checking if bits 8-11 are clear
+    if ((m & 0xF000) && !(m & 0x0F00)) {
+        return MOVETYPE_PLACE; // Special piece placement
+    }
+    if (m & 0x1F00) {
+        return MOVETYPE_MOVE; // Regular move with potential special piece info
+    }
 
-    return MOVETYPE_PLACE; // m & 0x00ff
+    return MOVETYPE_PLACE; // Regular placement (m & 0x00ff)
 }
 
 constexpr Move make_move(Square from, Square to)
 {
     return static_cast<Move>((from << 8) + to);
+}
+
+// Extended move creation for Zhuolu Chess with special piece information
+// Bits layout for placement moves with special pieces:
+// 31-16: Reserved for future use
+// 15-12: Special piece type (0-15, where 15 = NORMAL_PIECE)
+// 11-8:  Unused for placement moves (should be 0)
+// 7-0:   Target square
+constexpr Move make_special_place_move(Square to, int specialPieceType)
+{
+    return static_cast<Move>((specialPieceType << 12) + to);
+}
+
+// Extract special piece type from a move
+constexpr int special_piece_type_of(Move m)
+{
+    if (m < 0)
+        return 15; // NORMAL_PIECE for remove moves
+    return (m >> 12) & 0x0F;
+}
+
+// Check if a move contains special piece information
+constexpr bool has_special_piece(Move m)
+{
+    if (m < 0)
+        return false; // Remove moves don't have special piece info in move
+                      // encoding
+    return ((m >> 12) & 0x0F) != 15; // 15 = NORMAL_PIECE
 }
 
 constexpr Move reverse_move(Move m)

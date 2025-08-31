@@ -68,6 +68,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
 }
 
 /// generate<PLACE> generates all places.
+/// For Zhuolu Chess, generates separate moves for each available special piece.
 /// Returns a pointer to the end of the move list.
 template <>
 ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
@@ -79,9 +80,37 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
         return cur;
     }
 
-    for (auto s : MoveList<LEGAL>::movePriorityList) {
-        if (!pos.get_board()[s]) {
-            *cur++ = static_cast<Move>(s);
+    // For Zhuolu Chess, generate moves for each special piece type
+    if (rule.zhuoluMode) {
+        // Get available special pieces for current player
+        const uint16_t availableMask = pos.get_available_special_pieces_mask(
+            us);
+
+        for (auto s : MoveList<LEGAL>::movePriorityList) {
+            if (!pos.get_board()[s]) {
+                // Generate moves for each available special piece
+                // No heuristic filtering - let search algorithm decide
+                for (int pieceType = 0; pieceType < 15; ++pieceType) {
+                    if (availableMask & (1 << pieceType)) {
+                        // Check basic placement validity only
+                        if (pos.can_place_special_piece_at(
+                                static_cast<SpecialPieceType>(pieceType), s)) {
+                            *cur++ = make_special_place_move(s, pieceType);
+                        }
+                    }
+                }
+
+                // Always generate normal piece placement as an option
+                // Let search algorithm decide between special and normal pieces
+                *cur++ = make_special_place_move(s, 15); // 15 = NORMAL_PIECE
+            }
+        }
+    } else {
+        // Standard Nine Men's Morris - only normal pieces
+        for (auto s : MoveList<LEGAL>::movePriorityList) {
+            if (!pos.get_board()[s]) {
+                *cur++ = static_cast<Move>(s);
+            }
         }
     }
 
@@ -103,6 +132,19 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
     const Color removeColor = removeOwnPieces ? us : them;
 
     ExtMove *cur = moveList;
+
+    // Debug output for Zhuolu mode
+    if (rule.zhuoluMode) {
+        debugPrintf("[REMOVE DEBUG] us=%d, them=%d, removeColor=%d, "
+                    "removeOwnPieces=%s\n",
+                    us, them, removeColor, removeOwnPieces ? "true" : "false");
+        debugPrintf("[REMOVE DEBUG] pieceToRemoveCount[us]=%d\n",
+                    pos.pieceToRemoveCount[us]);
+        debugPrintf("[REMOVE DEBUG] is_stalemate_removal=%s, "
+                    "is_all_in_mills=%s\n",
+                    pos.is_stalemate_removal() ? "true" : "false",
+                    pos.is_all_in_mills(removeColor) ? "true" : "false");
+    }
 
     // Handle stalemate removal
     if (pos.is_stalemate_removal()) {
@@ -129,18 +171,34 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
     // Handle removal when all opponent's pieces are in mills
     if (pos.is_all_in_mills(removeColor)) {
+        if (rule.zhuoluMode) {
+            debugPrintf("[REMOVE DEBUG] All pieces in mills - checking "
+                        "squares\n");
+        }
         for (int i = SQUARE_NB - 1; i >= 0; i--) {
             Square s = MoveList<LEGAL>::movePriorityList[i];
 
             // Check if the square has a piece of the color to remove
             if (pos.get_board()[s] & make_piece(removeColor)) {
+                if (rule.zhuoluMode) {
+                    debugPrintf("[REMOVE DEBUG] Adding remove move for square "
+                                "%d\n",
+                                s);
+                }
                 *cur++ = static_cast<Move>(-s);
             }
+        }
+        if (rule.zhuoluMode) {
+            debugPrintf("[REMOVE DEBUG] Generated %d moves (all in mills)\n",
+                        (int)(cur - moveList));
         }
         return cur;
     }
 
     // Handle general removal (not all in mills)
+    if (rule.zhuoluMode) {
+        debugPrintf("[REMOVE DEBUG] General removal - checking squares\n");
+    }
     for (int i = SQUARE_NB - 1; i >= 0; i--) {
         const Square s = MoveList<LEGAL>::movePriorityList[i];
 
@@ -150,11 +208,24 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
             // or the piece is not part of a potential mill, allow removal
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
+                if (rule.zhuoluMode) {
+                    debugPrintf("[REMOVE DEBUG] Adding general remove move for "
+                                "square %d\n",
+                                s);
+                }
                 *cur++ = static_cast<Move>(-s);
+            } else if (rule.zhuoluMode) {
+                debugPrintf("[REMOVE DEBUG] Cannot remove square %d (in "
+                            "mill)\n",
+                            s);
             }
         }
     }
 
+    if (rule.zhuoluMode) {
+        debugPrintf("[REMOVE DEBUG] Generated %d moves total\n",
+                    (int)(cur - moveList));
+    }
     return cur;
 }
 

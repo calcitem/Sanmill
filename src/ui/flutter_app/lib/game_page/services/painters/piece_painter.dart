@@ -239,19 +239,22 @@ class PiecePainter extends CustomPainter {
         );
       }
 
-      // Draw numbers on pieces if enabled.
-      if (DB().displaySettings.isNumbersOnPiecesShown &&
+      // Draw special piece names for Zhuolu Chess or numbers for other variants
+      if ((DB().ruleSettings.zhuoluMode ||
+              DB().displaySettings.isNumbersOnPiecesShown) &&
           piece.squareAttribute?.placedPieceNumber != null &&
           piece.squareAttribute!.placedPieceNumber > 0) {
         // Text Drawing:
         final TextPainter textPainter = TextPainter(
           text: TextSpan(
-            text: piece.squareAttribute?.placedPieceNumber.toString(),
+            text: _getPieceDisplayText(piece),
             style: TextStyle(
               color: piece.pieceColor.mainColor.computeLuminance() > 0.5
                   ? Colors.black
                   : Colors.white,
-              fontSize: piece.diameter * 0.5,
+              fontSize: piece.squareAttribute?.specialPiece != null
+                  ? piece.diameter * 0.3 // Smaller for Chinese characters
+                  : piece.diameter * 0.5, // Normal for numbers
             ),
           ),
           textAlign: TextAlign.center,
@@ -315,19 +318,22 @@ class PiecePainter extends CustomPainter {
         );
       }
 
-      // Draw numbers on pieces if enabled.
-      if (DB().displaySettings.isNumbersOnPiecesShown &&
+      // Draw special piece names for Zhuolu Chess or numbers for other variants
+      if ((DB().ruleSettings.zhuoluMode ||
+              DB().displaySettings.isNumbersOnPiecesShown) &&
           piece.squareAttribute?.placedPieceNumber != null &&
           piece.squareAttribute!.placedPieceNumber > 0) {
         // Text Drawing:
         final TextPainter textPainter = TextPainter(
           text: TextSpan(
-            text: piece.squareAttribute?.placedPieceNumber.toString(),
+            text: _getPieceDisplayText(piece),
             style: TextStyle(
               color: piece.pieceColor.mainColor.computeLuminance() > 0.5
                   ? Colors.black
                   : Colors.white,
-              fontSize: piece.diameter * 0.5,
+              fontSize: piece.squareAttribute?.specialPiece != null
+                  ? piece.diameter * 0.3 // Smaller for Chinese characters
+                  : piece.diameter * 0.5, // Normal for numbers
             ),
           ),
           textAlign: TextAlign.center,
@@ -386,4 +392,36 @@ class PiecePainter extends CustomPainter {
       placeAnimationValue != oldDelegate.placeAnimationValue ||
       moveAnimationValue != oldDelegate.moveAnimationValue ||
       removeAnimationValue != oldDelegate.removeAnimationValue;
+
+  /// Get the display text for a piece (special piece name, "普" for normal, or number)
+  String _getPieceDisplayText(Piece piece) {
+    if (DB().ruleSettings.zhuoluMode) {
+      // In Zhuolu Chess mode
+      if (piece.squareAttribute?.specialPiece != null) {
+        // Special piece - check locale to decide display format
+        if (shouldUseChineseForCurrentSetting()) {
+          // Show Chinese name for Chinese, Japanese, Korean locales (including system default)
+          return piece.squareAttribute!.specialPiece!.chineseName;
+        } else {
+          // Show emoji for other locales
+          return piece.squareAttribute!.specialPiece!.emoji;
+        }
+      } else {
+        // Normal piece - show "普" character for Chinese locales, emoji for others
+        if (shouldUseChineseForCurrentSetting()) {
+          return '普';
+        } else {
+          return '⚫'; // Simple circle emoji for normal pieces
+        }
+      }
+    } else {
+      // Other game modes - show piece number if enabled
+      if (DB().displaySettings.isNumbersOnPiecesShown &&
+          piece.squareAttribute?.placedPieceNumber != null &&
+          piece.squareAttribute!.placedPieceNumber > 0) {
+        return piece.squareAttribute!.placedPieceNumber.toString();
+      }
+      return '';
+    }
+  }
 }

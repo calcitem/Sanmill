@@ -103,6 +103,12 @@ struct Rule
     // The threefold repetition rule (also known as repetition of position)
     // states that the game is drawn if the same position occurs three times.
     bool threefoldRepetitionRule;
+
+    // Enable Zhuolu Chess mode with special pieces and unique rules:
+    // - Game ends after placing phase, winner determined by captured pieces
+    // - Removed pieces leave permanently abandoned squares
+    // - Special pieces with unique abilities are used
+    bool zhuoluMode;
 };
 
 constexpr auto N_RULES = 11;

@@ -9,6 +9,34 @@ const String _logTag = "[NotationParsing]";
 
 // TODO: Remove this function
 String _wmdNotationToMoveString(String wmd) {
+  // Handle Zhuolu Chess special piece notation
+  if (DB().ruleSettings.zhuoluMode) {
+    // Special piece placement: single character like "Y", "y"
+    if (wmd.length == 1 && isZhuoluSpecialPieceChar(wmd)) {
+      return wmd;
+    }
+
+    // Special piece removal: "xY", "xy"
+    if (wmd.startsWith('x') &&
+        wmd.length == 2 &&
+        isZhuoluSpecialPieceChar(wmd[1])) {
+      return wmd;
+    }
+
+    // Special piece move: "Y-a1", "y-a1"
+    if (wmd.length == 4 &&
+        wmd[1] == '-' &&
+        isZhuoluSpecialPieceChar(wmd[0]) &&
+        RegExp(r'^[a-g][1-7]$').hasMatch(wmd.substring(2))) {
+      return wmd;
+    }
+
+    // Normal piece notation for Zhuolu Chess: "O", "@"
+    if (wmd.length == 1 && (wmd == "O" || wmd == "@")) {
+      return wmd;
+    }
+  }
+
   // Validate standard notation format
   if (wmd.startsWith('x') && wmd.length == 3) {
     // Remove move format: "xa1", "xd5", etc.

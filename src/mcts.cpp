@@ -249,7 +249,7 @@ void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
         uint32_t wins = shared_visits.wins(i);
         double win_rate = static_cast<double>(wins) / visits;
 
-        std::string move_str = UCI::move(mp.moves[i].move);
+        std::string move_str = UCI::move(mp.moves[i].move, nullptr);
 
         std::cout << std::setw(5) << move_str << "    " << std::setw(9)
                   << std::fixed << std::setprecision(6) << win_rate << "    "
@@ -257,7 +257,7 @@ void print_stats(const MovePicker &mp, ThreadSafeNodeVisits &shared_visits,
                   << '\n';
     }
     std::cout << "----------------------------------------\n";
-    std::cout << "Best Move: " << UCI::move(bestMove) << '\n';
+    std::cout << "Best Move: " << UCI::move(bestMove, nullptr) << '\n';
     std::cout << "Best Move Win Score: " << std::fixed << std::setprecision(6)
               << win_score << "\n";
     std::cout << "Best Move Value: " << (int)best_value << '\n';

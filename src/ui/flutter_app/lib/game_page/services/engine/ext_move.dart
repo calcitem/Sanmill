@@ -7,24 +7,196 @@ part of '../mill.dart';
 
 enum MoveType { place, move, remove, draw, none }
 
+/// Check if a character represents a special piece for Zhuolu Chess
+bool isZhuoluSpecialPieceChar(String char) {
+  const Set<String> specialChars = <String>{
+    'Y',
+    'y',
+    'N',
+    'n',
+    'F',
+    'f',
+    'C',
+    'c',
+    'A',
+    'a',
+    'T',
+    't',
+    'Z',
+    'z',
+    'U',
+    'u',
+    'E',
+    'e',
+    'G',
+    'g',
+    'W',
+    'w',
+    'I',
+    'i',
+    'K',
+    'k',
+    'L',
+    'l',
+    'B',
+    'b'
+  };
+  return specialChars.contains(char);
+}
+
+/// Convert character to SpecialPiece enum
+SpecialPiece? charToZhuoluSpecialPiece(String char) {
+  switch (char.toLowerCase()) {
+    case 'y':
+      return SpecialPiece.huangDi; // Yellow Emperor
+    case 'n':
+      return SpecialPiece.nuBa; // Nüba
+    case 'f':
+      return SpecialPiece.yanDi; // Flame Emperor
+    case 'c':
+      return SpecialPiece.chiYou; // Chiyou
+    case 'a':
+      return SpecialPiece.changXian; // Changxian
+    case 't':
+      return SpecialPiece.xingTian; // Xingtian
+    case 'z':
+      return SpecialPiece.zhuRong; // Zhurong
+    case 'u':
+      return SpecialPiece.yuShi; // Yushi
+    case 'e':
+      return SpecialPiece.fengHou; // Fenghou
+    case 'g':
+      return SpecialPiece.gongGong; // Gonggong
+    case 'w':
+      return SpecialPiece.nuWa; // Nüwa
+    case 'i':
+      return SpecialPiece.fuXi; // Fuxi
+    case 'k':
+      return SpecialPiece.kuaFu; // Kuafu
+    case 'l':
+      return SpecialPiece.yingLong; // Yinglong
+    case 'b':
+      return SpecialPiece.fengBo; // Fengbo
+    default:
+      return null;
+  }
+}
+
+/// Convert SpecialPiece enum to character with color
+String zhuoluSpecialPieceToChar(SpecialPiece piece, PieceColor color) {
+  final bool isWhite = color == PieceColor.white;
+
+  switch (piece) {
+    case SpecialPiece.huangDi:
+      return isWhite ? "Y" : "y";
+    case SpecialPiece.nuBa:
+      return isWhite ? "N" : "n";
+    case SpecialPiece.yanDi:
+      return isWhite ? "F" : "f";
+    case SpecialPiece.chiYou:
+      return isWhite ? "C" : "c";
+    case SpecialPiece.changXian:
+      return isWhite ? "A" : "a";
+    case SpecialPiece.xingTian:
+      return isWhite ? "T" : "t";
+    case SpecialPiece.zhuRong:
+      return isWhite ? "Z" : "z";
+    case SpecialPiece.yuShi:
+      return isWhite ? "U" : "u";
+    case SpecialPiece.fengHou:
+      return isWhite ? "E" : "e";
+    case SpecialPiece.gongGong:
+      return isWhite ? "G" : "g";
+    case SpecialPiece.nuWa:
+      return isWhite ? "W" : "w";
+    case SpecialPiece.fuXi:
+      return isWhite ? "I" : "i";
+    case SpecialPiece.kuaFu:
+      return isWhite ? "K" : "k";
+    case SpecialPiece.yingLong:
+      return isWhite ? "L" : "l";
+    case SpecialPiece.fengBo:
+      return isWhite ? "B" : "b";
+  }
+}
+
+/// Get color from special piece character
+PieceColor getColorFromZhuoluChar(String char) {
+  if (char.toUpperCase() == char && char.toLowerCase() != char) {
+    return PieceColor.white; // Uppercase = white
+  } else if (char.toLowerCase() == char && char.toUpperCase() != char) {
+    return PieceColor.black; // Lowercase = black
+  }
+  return PieceColor.none; // Invalid character
+}
+
 class MoveParser {
+  /// Check if a character represents a special piece for Zhuolu Chess
+  static bool _isZhuoluSpecialPieceChar(String char) {
+    return isZhuoluSpecialPieceChar(char);
+  }
+
   MoveType parseMoveType(String move) {
-    if (move.startsWith("x") && move.length == 3) {
-      return MoveType.remove;
-    } else if (move.contains("-") && move.length == 5) {
-      return MoveType.move;
-    } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move) && move.length == 2) {
+    // Handle special records for Zhuolu Chess piece selection
+    if (move.contains("Special Pieces")) {
+      return MoveType.none;
+    }
+
+    // Handle removal moves (starting with 'x')
+    if (move.startsWith("x")) {
+      if (move.length == 2 && _isZhuoluSpecialPieceChar(move[1])) {
+        // Zhuolu Chess special piece removal like "xY" or "xy"
+        return MoveType.remove;
+      } else if (move.length == 3 && RegExp(r'^x[a-g][1-8]$').hasMatch(move)) {
+        // Standard coordinate removal like "xa1"
+        return MoveType.remove;
+      }
+    }
+
+    // Handle move operations (containing '-')
+    if (move.contains("-")) {
+      if (move.length == 4 &&
+          _isZhuoluSpecialPieceChar(move[0]) &&
+          RegExp(r'^[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb]-[a-g][1-8]$')
+              .hasMatch(move)) {
+        // Zhuolu Chess special piece move like "Y-a1" or "y-a1"
+        return MoveType.move;
+      } else if (move.length == 5 &&
+          RegExp(r'^[a-g][1-8]-[a-g][1-8]$').hasMatch(move)) {
+        // Standard coordinate move like "a1-a4"
+        return MoveType.move;
+      }
+    }
+
+    // Handle placement moves
+    if (move.length == 1 && _isZhuoluSpecialPieceChar(move)) {
+      // Zhuolu Chess special piece placement like "Y" or "y"
       return MoveType.place;
-    } else if (move == "draw") {
+    } else if (move.length == 3 &&
+        _isZhuoluSpecialPieceChar(move[0]) &&
+        RegExp(r'^[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb][a-g][1-7]$')
+            .hasMatch(move)) {
+      // Zhuolu Chess special piece placement with coordinate like "Yf2"
+      return MoveType.place;
+    } else if (move.length == 2 && RegExp(r'^[a-g][1-8]$').hasMatch(move)) {
+      // Standard coordinate placement like "a1"
+      return MoveType.place;
+    } else if (move.length == 2 && (move == "O@" || move == "@O")) {
+      // Normal piece placement for Zhuolu Chess
+      return MoveType.place;
+    }
+
+    // Handle special cases
+    if (move == "draw") {
       logger.i("[TODO] Computer request draw");
       return MoveType.draw;
     } else if (move == "(none)" || move == "none") {
       logger.i("MoveType is (none).");
       return MoveType.none;
-    } else {
-      // TODO: If Setup Position is illegal
-      throw const FormatException();
     }
+
+    // If no pattern matches, throw format exception
+    throw const FormatException();
   }
 }
 
@@ -45,6 +217,7 @@ class ExtMove extends PgnNodeData {
     this.boardLayout,
     this.moveIndex,
     this.roundIndex,
+    this.specialPiece,
     super.nags,
     super.startingComments,
     super.comments,
@@ -55,7 +228,57 @@ class ExtMove extends PgnNodeData {
           // ...then call super(...) last
           san: move,
         ) {
+    // Auto-extract special piece if not provided (e.g., "Yf2", "xY", "Y-a1")
+    specialPiece ??= _extractSpecialPieceFromNotation(move, side);
     _checkLegal(move);
+  }
+
+  /// Constructor for creating ExtMove from Zhuolu Chess special piece notation
+  ExtMove.fromZhuoluNotation(
+    String notation, {
+    required this.side,
+    this.boardLayout,
+    this.moveIndex,
+    this.roundIndex,
+    super.nags,
+    super.startingComments,
+    super.comments,
+  })  : move = notation,
+        type = MoveParser().parseMoveType(notation),
+        to = _parseToSquare(notation),
+        specialPiece = _extractSpecialPieceFromNotation(notation, side),
+        super(san: notation) {
+    _checkLegal(notation);
+  }
+
+  /// Extract SpecialPiece from Zhuolu Chess notation
+  static SpecialPiece? _extractSpecialPieceFromNotation(
+      String notation, PieceColor side) {
+    // Handle placement moves like "Y" or "y"
+    if (notation.length == 1 && isZhuoluSpecialPieceChar(notation)) {
+      return charToZhuoluSpecialPiece(notation);
+    }
+
+    // Handle removal moves like "xY" or "xy"
+    if (notation.startsWith("x") &&
+        notation.length == 2 &&
+        isZhuoluSpecialPieceChar(notation[1])) {
+      return charToZhuoluSpecialPiece(notation[1]);
+    }
+
+    // Handle move operations like "Y-a1" or "y-a1"
+    if (notation.contains("-") &&
+        notation.length == 4 &&
+        isZhuoluSpecialPieceChar(notation[0])) {
+      return charToZhuoluSpecialPiece(notation[0]);
+    }
+
+    // Handle placement with coordinate like "Yf2"
+    if (notation.length == 3 && isZhuoluSpecialPieceChar(notation[0])) {
+      return charToZhuoluSpecialPiece(notation[0]);
+    }
+
+    return null;
   }
 
   /// The standard notation move string, e.g. "a1", "a1-a4", "xa1"
@@ -84,6 +307,9 @@ class ExtMove extends PgnNodeData {
   /// this round index. Thus, each cycle (White half + Black half)
   /// forms one complete round.
   int? roundIndex;
+
+  /// Special piece type used for this move (Zhuolu Chess)
+  SpecialPiece? specialPiece;
 
   /// Move quality evaluation
   MoveQuality? quality;
@@ -176,12 +402,17 @@ class ExtMove extends PgnNodeData {
       return -1;
     }
 
-    // Check if it's standard notation
-    if (move.contains("-") && move.length == 5 && !move.contains("(")) {
-      // Move notation like "a1-a4"
-      final List<String> parts = move.split("-");
-      if (parts.length == 2) {
-        return _standardNotationToSquare(parts[0].trim());
+    // Handle Zhuolu Chess special piece moves
+    if (move.contains("-")) {
+      if (move.length == 4 && MoveParser._isZhuoluSpecialPieceChar(move[0])) {
+        // Zhuolu Chess special piece move like "Y-a1" - from square is determined by special piece location
+        return -1; // Special piece from square needs to be determined by game state
+      } else if (move.length == 5 && !move.contains("(")) {
+        // Standard move notation like "a1-a4"
+        final List<String> parts = move.split("-");
+        if (parts.length == 2) {
+          return _standardNotationToSquare(parts[0].trim());
+        }
       }
     }
 
@@ -191,19 +422,47 @@ class ExtMove extends PgnNodeData {
   static int _parseToSquare(String move) {
     MoveParser().parseMoveType(move);
 
-    // Check if it's standard notation
-    if (move.startsWith("x") && move.length == 3) {
+    // Handle special records for Zhuolu Chess
+    if (move.contains("Special Pieces")) {
+      return -1; // No specific square for special piece selection records
+    }
+
+    // Handle Zhuolu Chess special piece notation
+    if (move.startsWith("x") &&
+        move.length == 2 &&
+        MoveParser._isZhuoluSpecialPieceChar(move[1])) {
+      // Remove notation like "xY" - for special pieces, we don't have a specific square
+      return -1; // Special piece removal doesn't map to a specific square
+    } else if (move.startsWith("x") && move.length == 3) {
       // Remove notation like "xa1"
       final String target = move.substring(1).trim();
       return _standardNotationToSquare(target);
-    } else if (move.contains("-") && move.length == 5) {
-      // Move notation like "a1-a4"
-      final List<String> parts = move.split("-");
-      if (parts.length == 2) {
-        return _standardNotationToSquare(parts[1].trim());
+    } else if (move.contains("-")) {
+      if (move.length == 4 && MoveParser._isZhuoluSpecialPieceChar(move[0])) {
+        // Zhuolu Chess special piece move like "Y-a1"
+        final List<String> parts = move.split("-");
+        if (parts.length == 2) {
+          return _standardNotationToSquare(parts[1].trim());
+        }
+      } else if (move.length == 5) {
+        // Standard move notation like "a1-a4"
+        final List<String> parts = move.split("-");
+        if (parts.length == 2) {
+          return _standardNotationToSquare(parts[1].trim());
+        }
       }
+    } else if (move.length == 1 && MoveParser._isZhuoluSpecialPieceChar(move)) {
+      // Zhuolu Chess special piece placement like "Y" - no specific square
+      return -1; // Special piece placement doesn't map to a specific square initially
+    } else if (move.length == 3 &&
+        MoveParser._isZhuoluSpecialPieceChar(move[0]) &&
+        RegExp(r'^[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb][a-g][1-7]$')
+            .hasMatch(move)) {
+      // Zhuolu Chess special piece placement with coordinate like "Yf2"
+      final String target = move.substring(1).trim();
+      return _standardNotationToSquare(target);
     } else if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
-      // Place notation like "a1"
+      // Standard place notation like "a1"
       return _standardNotationToSquare(move);
     }
 
@@ -262,24 +521,58 @@ class ExtMove extends PgnNodeData {
 
   /// Validate the move string format.
   static void _checkLegal(String move) {
-    // TODO: Which one?
+    // Handle special cases first
     if (move == "draw" || move == "(none)" || move == "none") {
       return; // no further checks
     }
 
+    // Allow special records for Zhuolu Chess
+    if (move.contains("Special Pieces")) {
+      return; // Special records are always valid
+    }
+
+    // Check Zhuolu Chess special piece notation patterns
+    if (move.length == 1 && MoveParser._isZhuoluSpecialPieceChar(move)) {
+      // Zhuolu Chess special piece placement like "Y" or "y"
+      return;
+    }
+
+    if (move.startsWith("x") &&
+        move.length == 2 &&
+        MoveParser._isZhuoluSpecialPieceChar(move[1])) {
+      // Zhuolu Chess special piece removal like "xY" or "xy"
+      return;
+    }
+
+    if (move.length == 4 &&
+        MoveParser._isZhuoluSpecialPieceChar(move[0]) &&
+        RegExp(r'^[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb]-[a-g][1-8]$')
+            .hasMatch(move)) {
+      // Zhuolu Chess special piece move like "Y-a1" or "y-a1"
+      return;
+    }
+
+    if (move.length == 3 &&
+        MoveParser._isZhuoluSpecialPieceChar(move[0]) &&
+        RegExp(r'^[YyNnFfCcAaTtZzUuEeGgWwIiKkLlBb][a-g][1-7]$')
+            .hasMatch(move)) {
+      // Zhuolu Chess special piece placement with coordinate like "Yf2"
+      return;
+    }
+
     // Check standard notation patterns
     if (RegExp(r'^[a-g][1-7]$').hasMatch(move)) {
-      // Place move like "a1"
+      // Standard place move like "a1"
       return;
     }
 
     if (move.startsWith("x") && RegExp(r'^x[a-g][1-7]$').hasMatch(move)) {
-      // Remove move like "xa1"
+      // Standard remove move like "xa1"
       return;
     }
 
     if (RegExp(r'^[a-g][1-7]-[a-g][1-7]$').hasMatch(move)) {
-      // Move like "a1-a4"
+      // Standard move like "a1-a4"
       final List<String> parts = move.split("-");
       if (parts[0] == parts[1]) {
         throw Exception(
@@ -288,29 +581,106 @@ class ExtMove extends PgnNodeData {
       return;
     }
 
+    // Check normal piece notation for Zhuolu Chess
+    if (move.length == 1 && (move == "O" || move == "@")) {
+      // Normal piece placement for Zhuolu Chess
+      return;
+    }
+
     throw FormatException("$_logTag Invalid Move: ", move);
+  }
+
+  /// Get the special piece character for Zhuolu Chess notation
+  /// Returns the assigned letter based on piece type and color
+  String? get _specialPieceChar {
+    if (specialPiece == null) {
+      return null;
+    }
+    return zhuoluSpecialPieceToChar(specialPiece!, side);
   }
 
   /// The standard notation for the move,
   /// e.g. "d6", "d6??", "d5-c5", "xg4", etc.
+  /// For Zhuolu Chess, uses special piece characters instead of coordinates when applicable.
   String get notation {
+    // Handle special records for Zhuolu Chess piece selection
+    if (move.contains("Special Pieces")) {
+      return move; // Return the original move string for special records
+    }
+
     final bool useUpperCase = DB().generalSettings.screenReaderSupport;
     final int f = from;
     final String? fromStr = _squareToWmdNotation[f];
     final String? toStr = _squareToWmdNotation[to];
+
+    String baseNotation;
     switch (type) {
       case MoveType.remove:
-        return useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
+        // For Zhuolu Chess special pieces, use piece character
+        if (DB().ruleSettings.zhuoluMode && specialPiece != null) {
+          final String? pieceChar = _specialPieceChar;
+          if (pieceChar != null) {
+            baseNotation =
+                useUpperCase ? "x${pieceChar.toUpperCase()}" : "x$pieceChar";
+          } else {
+            baseNotation =
+                useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
+          }
+        } else {
+          baseNotation = useUpperCase ? "x${toStr?.toUpperCase()}" : "x$toStr";
+        }
+        break;
       case MoveType.move:
         final String sep = useUpperCase ? "-" : "-";
-        return useUpperCase
-            ? "${fromStr?.toUpperCase()}$sep${toStr?.toUpperCase()}"
-            : "$fromStr$sep$toStr";
+        // For Zhuolu Chess special pieces, use piece character for from/to squares
+        if (DB().ruleSettings.zhuoluMode && specialPiece != null) {
+          final String? pieceChar = _specialPieceChar;
+          if (pieceChar != null) {
+            // Use piece character for the piece being moved
+            final String fromPiece =
+                useUpperCase ? pieceChar.toUpperCase() : pieceChar;
+            final String toSquare =
+                useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+            baseNotation = "$fromPiece$sep$toSquare";
+          } else {
+            baseNotation = useUpperCase
+                ? "${fromStr?.toUpperCase()}$sep${toStr?.toUpperCase()}"
+                : "$fromStr$sep$toStr";
+          }
+        } else {
+          baseNotation = useUpperCase
+              ? "${fromStr?.toUpperCase()}$sep${toStr?.toUpperCase()}"
+              : "$fromStr$sep$toStr";
+        }
+        break;
       case MoveType.place:
+        // For Zhuolu Chess special pieces, use piece character instead of coordinate
+        if (DB().ruleSettings.zhuoluMode && specialPiece != null) {
+          final String? pieceChar = _specialPieceChar;
+          if (pieceChar != null) {
+            // If the raw move already encodes piece+coordinate (e.g. "Yf2"), prefer it
+            if (move.length == 3 && isZhuoluSpecialPieceChar(move[0])) {
+              baseNotation = useUpperCase ? move.toUpperCase() : move;
+            } else {
+              baseNotation = useUpperCase ? pieceChar.toUpperCase() : pieceChar;
+            }
+          } else {
+            // Fallback to normal piece notation
+            final bool isWhite = side == PieceColor.white;
+            baseNotation = isWhite ? "O" : "@";
+          }
+        } else {
+          baseNotation =
+              useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+        }
+        break;
       case MoveType.draw:
       case MoveType.none:
-        return useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+        baseNotation = useUpperCase ? toStr?.toUpperCase() ?? "" : toStr ?? "";
+        break;
     }
+
+    return baseNotation;
   }
 }
 

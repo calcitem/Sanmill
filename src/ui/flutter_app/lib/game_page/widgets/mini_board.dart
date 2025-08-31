@@ -7,6 +7,7 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/database/database.dart';
+import '../../shared/services/language_locale_mapping.dart';
 import '../services/mill.dart';
 import 'game_page.dart';
 
@@ -14,6 +15,10 @@ import 'game_page.dart';
 /// When the board is tapped, an overlay navigation icon (FluentIcons.arrow_undo_48_regular)
 /// appears in the center and "breathes" (pulses). Tapping the icon triggers navigation
 /// to the corresponding move. Only one MiniBoard at a time can display the icon.
+///
+/// For Zhuolu Chess, the widget also displays special piece names (Chinese characters)
+/// or emojis based on the current locale setting, and handles the extended board layout
+/// format that includes special piece information.
 class MiniBoard extends StatefulWidget {
   const MiniBoard({
     super.key,
@@ -221,12 +226,17 @@ class MiniBoardState extends State<MiniBoard>
 /// - Highlight circle on the piece if placing
 /// - Highlight arrow from origin to destination if moving
 /// - Highlight X on removed piece if removing
+///
+/// For Zhuolu Chess, it also renders special piece names or emojis on top of pieces
+/// based on the current locale setting, and parses the extended board layout format
+/// that includes special piece character encoding.
 class MiniBoardPainter extends CustomPainter {
   MiniBoardPainter({
     required this.boardLayout,
     this.extMove,
   }) {
     boardState = _parseBoardLayout(boardLayout);
+    specialPieceState = _parseSpecialPieceLayout(boardLayout);
   }
 
   final String boardLayout;
@@ -236,6 +246,9 @@ class MiniBoardPainter extends CustomPainter {
 
   /// Holds the parsed board layout (24 squares).
   late final List<PieceColor> boardState;
+
+  /// Holds special piece information for Zhuolu Chess (24 squares).
+  late final List<SpecialPiece?> specialPieceState;
 
   /// Parse the board layout string into 24 PieceColors.
   /// Format: "outer/middle/inner", each 8 chars.
@@ -277,6 +290,7 @@ class MiniBoardPainter extends CustomPainter {
   }
 
   /// Convert character to piece color: 'O' => white, '@' => black, 'X' => "marked", else => none.
+  /// For Zhuolu Chess, also handles special piece characters.
   static PieceColor _charToPieceColor(String ch) {
     switch (ch) {
       case 'O':
@@ -286,8 +300,44 @@ class MiniBoardPainter extends CustomPainter {
       case 'X':
         return PieceColor.marked;
       default:
+        // Check if it's a Zhuolu Chess special piece character
+        if (isZhuoluSpecialPieceChar(ch)) {
+          // Uppercase = white, lowercase = black
+          return ch == ch.toUpperCase() ? PieceColor.white : PieceColor.black;
+        }
         return PieceColor.none;
     }
+  }
+
+  /// Parse special piece information from board layout for Zhuolu Chess.
+  /// Returns a list of SpecialPiece? for each of the 24 squares.
+  static List<SpecialPiece?> _parseSpecialPieceLayout(String layout) {
+    final List<String> parts = layout.split('/');
+    if (parts.length != 3 ||
+        parts[0].length != 8 ||
+        parts[1].length != 8 ||
+        parts[2].length != 8) {
+      // Invalid format => no special pieces
+      return List<SpecialPiece?>.filled(24, null);
+    }
+
+    final List<SpecialPiece?> specialPieces = <SpecialPiece?>[];
+
+    // Parse in the same order as _parseBoardLayout:
+    // Inner ring from parts[0] (indices 0-7)
+    for (int i = 0; i < 8; i++) {
+      specialPieces.add(charToZhuoluSpecialPiece(parts[0][i]));
+    }
+    // Middle ring from parts[1] (indices 8-15)
+    for (int i = 0; i < 8; i++) {
+      specialPieces.add(charToZhuoluSpecialPiece(parts[1][i]));
+    }
+    // Outer ring from parts[2] (indices 16-23)
+    for (int i = 0; i < 8; i++) {
+      specialPieces.add(charToZhuoluSpecialPiece(parts[2][i]));
+    }
+
+    return specialPieces;
   }
 
   @override
@@ -458,6 +508,69 @@ class MiniBoardPainter extends CustomPainter {
         paint.style = PaintingStyle.fill;
         paint.color = borderColor.withValues(alpha: opacity);
         canvas.drawCircle(pos, circleInnerRadius, paint);
+      }
+
+      // Draw special piece names/emojis for Zhuolu Chess
+      if (DB().ruleSettings.zhuoluMode) {
+        final SpecialPiece? specialPiece = specialPieceState[i];
+        String? displayText;
+
+        if (specialPiece != null) {
+          // Special piece - show name or emoji based on locale
+          if (shouldUseChineseForCurrentSetting()) {
+            displayText = specialPiece.chineseName;
+          } else {
+            displayText = specialPiece.emoji;
+          }
+        } else if (pc != PieceColor.none && pc != PieceColor.marked) {
+          // Normal piece - show "普" or circle emoji
+          if (shouldUseChineseForCurrentSetting()) {
+            displayText = '普';
+          } else {
+            displayText = '⚫';
+          }
+        }
+
+        // Draw the text if we have something to display
+        if (displayText != null) {
+          // Determine text color based on piece background color
+          Color textColor;
+          if (pc == PieceColor.white) {
+            textColor =
+                DB().colorSettings.whitePieceColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white;
+          } else if (pc == PieceColor.black) {
+            textColor =
+                DB().colorSettings.blackPieceColor.computeLuminance() > 0.5
+                    ? Colors.black
+                    : Colors.white;
+          } else {
+            textColor = Colors.white; // Default for marked pieces
+          }
+
+          final TextPainter textPainter = TextPainter(
+            text: TextSpan(
+              text: displayText,
+              style: TextStyle(
+                color: textColor,
+                fontSize: pieceRadius * 0.6, // Smaller font for mini board
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            textAlign: TextAlign.center,
+            textDirection: TextDirection.ltr,
+          );
+          textPainter.layout();
+
+          // Calculate offset for centering the text
+          final Offset textOffset = Offset(
+            pos.dx - textPainter.width / 2,
+            pos.dy - textPainter.height / 2,
+          );
+
+          textPainter.paint(canvas, textOffset);
+        }
       }
 
       // --- End: piece painter style code. ---

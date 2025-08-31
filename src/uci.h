@@ -58,7 +58,7 @@ void init(OptionsMap &);
 void loop(int argc, char *argv[]);
 std::string value(Value v);
 std::string square(Square s);
-std::string move(Move m);
+std::string move(Move m, const Position *pos = nullptr);
 Move to_move(Position *pos, const std::string &str);
 
 } // namespace UCI

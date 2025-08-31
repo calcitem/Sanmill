@@ -96,6 +96,15 @@ class TapHandler {
       return const EngineResponseSkip();
     }
 
+    // Check if Zhuolu Chess special piece selection is needed
+    if (DB().ruleSettings.zhuoluMode &&
+        GameController().position._gamePly == 0 &&
+        !GameController().position.hasCompleteSpecialPieceSelections) {
+      logger.i("$_logTag Starting Zhuolu Chess special piece selection.");
+      await _handleZhuoluSpecialPieceSelection();
+      return const EngineResponseSkip();
+    }
+
     // Handle LAN-specific logic
     if (GameController().gameInstance.gameMode == GameMode.humanVsLAN) {
       if (GameController().isLanOpponentTurn) {
@@ -264,6 +273,17 @@ class TapHandler {
               }
             }
           }
+
+          // Show enhanced tip for Zhuolu Chess piece placement
+          if (DB().ruleSettings.zhuoluMode) {
+            final String notation = ExtMove.sqToNotation(sq);
+            final SpecialPiece? placedPiece =
+                GameController().position.sqAttrList[sq].specialPiece;
+            final String enhancedTip =
+                generateZhuoluPlacementTip(notation, placedPiece);
+            showTip(enhancedTip);
+          }
+
           ret = true;
           logger.i("$_logTag putPiece: [$sq]");
           // Timer start logic moved to the end of the successful move block (if ret == true)
@@ -614,5 +634,133 @@ class TapHandler {
     GameController().boardSemanticsNotifier.updateSemantics();
 
     return const EngineResponseHumanOK();
+  }
+
+  /// Handle Zhuolu Chess special piece selection
+  Future<void> _handleZhuoluSpecialPieceSelection() async {
+    final GameMode gameMode = GameController().gameInstance.gameMode;
+
+    // Show information dialog
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(S.of(context).zhuolu),
+        content: Text("${S.of(context).welcome} ${S.of(context).zhuolu}!"),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text(S.of(context).ok),
+          ),
+        ],
+      ),
+    );
+
+    // Ensure the context is still mounted before using it after an async gap
+    if (!context.mounted) {
+      return;
+    }
+
+    List<SpecialPiece> whiteSelection;
+    List<SpecialPiece> blackSelection;
+
+    // Handle selection based on game mode
+    switch (gameMode) {
+      case GameMode.humanVsAi:
+        // Human selects for white, AI gets selection based on Move Randomly setting for black
+        // Ensure mounted before calling an async function that uses context
+        if (!context.mounted) {
+          return;
+        }
+        final List<SpecialPiece>? humanSelection =
+            await showSpecialPieceGridSelectionDialog(
+          context,
+          PieceColor.white,
+        );
+        if (!context.mounted) {
+          return;
+        }
+        whiteSelection =
+            humanSelection ?? SpecialPieceSelection.generateRandomSelection();
+        blackSelection = getAiSpecialPieceSelection(
+            PieceColor.black); // AI selection with strategy
+        break;
+
+      case GameMode.humanVsHuman:
+        // Both humans select
+        // Ensure mounted before calling an async function that uses context
+        if (!context.mounted) {
+          return;
+        }
+        final List<SpecialPiece>? white =
+            await showSpecialPieceGridSelectionDialog(
+          context,
+          PieceColor.white,
+        );
+        if (!context.mounted) {
+          return;
+        }
+        whiteSelection =
+            white ?? SpecialPieceSelection.generateRandomSelection();
+
+        // Ensure mounted before calling an async function that uses context
+        if (!context.mounted) {
+          return;
+        }
+        final List<SpecialPiece>? black =
+            await showSpecialPieceGridSelectionDialog(
+          context,
+          PieceColor.black,
+        );
+        if (!context.mounted) {
+          return;
+        }
+        blackSelection =
+            black ?? SpecialPieceSelection.generateRandomSelection();
+        break;
+
+      case GameMode.aiVsAi:
+        // Both AI get selections based on Move Randomly setting
+        whiteSelection = getAiSpecialPieceSelection(PieceColor.white);
+        blackSelection = getAiSpecialPieceSelection(PieceColor.black);
+        break;
+
+      case GameMode.setupPosition:
+      case GameMode.humanVsCloud:
+      case GameMode.humanVsLAN:
+      case GameMode.testViaLAN:
+        // Fallback to random
+        whiteSelection = SpecialPieceSelection.generateRandomSelection();
+        blackSelection = SpecialPieceSelection.generateRandomSelection();
+        break;
+    }
+
+    // Set selections
+    GameController().position.setSpecialPieceSelections(
+          whiteSelection: whiteSelection,
+          blackSelection: blackSelection,
+        );
+
+    // Reveal selections
+    GameController().position.revealSpecialPieceSelections();
+
+    // Show reveal dialog
+    if (GameController().position.specialPieceSelection != null) {
+      // Ensure mounted before calling an async function that uses context
+      if (!context.mounted) {
+        return;
+      }
+      await showSpecialPieceRevealDialog(
+        context,
+        GameController().position.specialPieceSelection!,
+      );
+      if (!context.mounted) {
+        return;
+      }
+    }
+
+    // Force UI update to show piece selector
+    GameController().headerIconsNotifier.showIcons();
+    GameController().boardSemanticsNotifier.updateSemantics();
   }
 }

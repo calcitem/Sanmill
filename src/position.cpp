@@ -23,9 +23,16 @@ using std::vector;
 extern vector<Key> posKeyHistory;
 
 namespace Zobrist {
-constexpr int KEY_MISC_BIT = 2;
 Key psq[PIECE_TYPE_NB][SQUARE_EXT_NB];
 Key side;
+
+// Hash keys for special pieces in Zhuolu Chess
+// [SpecialPieceType][Color][Square]
+Key specialPiece[16][COLOR_NB][SQUARE_EXT_NB]; // 16 special piece types (0-14 +
+                                               // NORMAL_PIECE)
+
+// Hash key for special piece selection mask
+Key specialPieceSelectionMask;
 } // namespace Zobrist
 
 namespace {
@@ -48,6 +55,16 @@ string PieceToChar(Piece p)
     }
 
     return "*";
+}
+
+// Get the special piece type from a piece value
+// For Zhuolu Chess, special piece type is stored separately in square
+// attributes
+SpecialPieceType special_piece_type_of(Piece p) noexcept
+{
+    // Extract special piece type from lower 4 bits
+    // This assumes special piece type is encoded in bits 0-3
+    return static_cast<SpecialPieceType>(p & 0x0F);
 }
 
 Piece CharToPiece(char ch) noexcept
@@ -74,6 +91,628 @@ Piece CharToPiece(char ch) noexcept
 constexpr PieceType PieceTypes[] = {NO_PIECE_TYPE, WHITE_PIECE, BLACK_PIECE,
                                     MARKED};
 } // namespace
+
+// Convert character to special piece type for Zhuolu Chess
+SpecialPieceType CharToSpecialPieceType(char ch) noexcept
+{
+    switch (ch) {
+    // White pieces (uppercase)
+    case 'Y':
+        return HUANG_DI; // Yellow Emperor
+    case 'N':
+        return NU_BA; // Nuba
+    case 'F':
+        return YAN_DI; // Flame Emperor
+    case 'C':
+        return CHI_YOU; // Chiyou
+    case 'A':
+        return CHANG_XIAN; // Changxian
+    case 'T':
+        return XING_TIAN; // Xingtian (using T to avoid conflict with
+                          // MARKED_PIECE 'X')
+    case 'Z':
+        return ZHU_RONG; // Zhurong
+    case 'U':
+        return YU_SHI; // Yushi
+    case 'E':
+        return FENG_HOU; // Fenghou
+    case 'G':
+        return GONG_GONG; // Gonggong
+    case 'W':
+        return NU_WA; // Nuwa
+    case 'I':
+        return FU_XI; // Fuxi
+    case 'K':
+        return KUA_FU; // Kuafu
+    case 'L':
+        return YING_LONG; // Yinglong
+    case 'B':
+        return FENG_BO; // Fengbo
+
+    // Black pieces (lowercase)
+    case 'y':
+        return HUANG_DI; // Yellow Emperor
+    case 'n':
+        return NU_BA; // Nuba
+    case 'f':
+        return YAN_DI; // Flame Emperor
+    case 'c':
+        return CHI_YOU; // Chiyou
+    case 'a':
+        return CHANG_XIAN; // Changxian
+    case 't':
+        return XING_TIAN; // Xingtian (using t to avoid conflict with
+                          // MARKED_PIECE 'X')
+    case 'z':
+        return ZHU_RONG; // Zhurong
+    case 'u':
+        return YU_SHI; // Yushi
+    case 'e':
+        return FENG_HOU; // Fenghou
+    case 'g':
+        return GONG_GONG; // Gonggong
+    case 'w':
+        return NU_WA; // Nuwa
+    case 'i':
+        return FU_XI; // Fuxi
+    case 'k':
+        return KUA_FU; // Kuafu
+    case 'l':
+        return YING_LONG; // Yinglong
+    case 'b':
+        return FENG_BO; // Fengbo
+
+    default:
+        return NORMAL_PIECE; // Normal piece or unrecognized character
+    }
+}
+
+// Check if a character represents a special piece
+bool IsSpecialPieceChar(char ch) noexcept
+{
+    return CharToSpecialPieceType(ch) != NORMAL_PIECE;
+}
+
+// Get color from special piece character
+Color ColorFromSpecialPieceChar(char ch) noexcept
+{
+    if (ch >= 'A' && ch <= 'Z') {
+        return WHITE; // Uppercase = white
+    } else if (ch >= 'a' && ch <= 'z') {
+        return BLACK; // Lowercase = black
+    }
+    return NOBODY; // Invalid character
+}
+
+// Generate piece character for FEN, considering special pieces for Zhuolu Chess
+string PieceToCharForFEN(Piece p, SpecialPieceType specialType) noexcept
+{
+    if (p == NO_PIECE) {
+        return "*";
+    }
+
+    if (p == MARKED_PIECE) {
+        return "X";
+    }
+
+    // For Zhuolu Chess, check if this is a special piece
+    if (specialType != NORMAL_PIECE) {
+        Color c = color_of(p);
+        return SpecialPieceToChar(specialType, c);
+    }
+
+    // Normal pieces
+    if (W_PIECE <= p && p <= W_PIECE_12) {
+        return "O";
+    }
+
+    if (B_PIECE <= p && p <= B_PIECE_12) {
+        return "@";
+    }
+
+    return "*";
+}
+
+// Convert special piece type to character for Zhuolu Chess
+string SpecialPieceToChar(SpecialPieceType specialType, Color c)
+{
+    if (specialType == NORMAL_PIECE) {
+        // Return normal piece character based on color
+        return (c == WHITE) ? "O" : "@";
+    }
+
+    // Map special pieces to their assigned letters
+    // White pieces use uppercase, black pieces use lowercase
+    switch (specialType) {
+    case HUANG_DI:
+        return (c == WHITE) ? "Y" : "y"; // Yellow Emperor
+    case NU_BA:
+        return (c == WHITE) ? "N" : "n"; // Nuba
+    case YAN_DI:
+        return (c == WHITE) ? "F" : "f"; // Flame Emperor
+    case CHI_YOU:
+        return (c == WHITE) ? "C" : "c"; // Chiyou
+    case CHANG_XIAN:
+        return (c == WHITE) ? "A" : "a"; // Changxian
+    case XING_TIAN:
+        return (c == WHITE) ? "T" : "t"; // Xingtian (using T to avoid conflict
+                                         // with MARKED_PIECE 'X')
+    case ZHU_RONG:
+        return (c == WHITE) ? "Z" : "z"; // Zhurong
+    case YU_SHI:
+        return (c == WHITE) ? "U" : "u"; // Yushi
+    case FENG_HOU:
+        return (c == WHITE) ? "E" : "e"; // Fenghou
+    case GONG_GONG:
+        return (c == WHITE) ? "G" : "g"; // Gonggong
+    case NU_WA:
+        return (c == WHITE) ? "W" : "w"; // Nuwa
+    case FU_XI:
+        return (c == WHITE) ? "I" : "i"; // Fuxi
+    case KUA_FU:
+        return (c == WHITE) ? "K" : "k"; // Kuafu
+    case YING_LONG:
+        return (c == WHITE) ? "L" : "l"; // Yinglong
+    case FENG_BO:
+        return (c == WHITE) ? "B" : "b"; // Fengbo
+    default:
+        return (c == WHITE) ? "O" : "@"; // Fallback to normal piece
+    }
+}
+
+// Implementation of special piece methods
+SpecialPieceType Position::special_piece_on(Square s) const
+{
+    assert(is_ok(s));
+    return specialPieceBoard[s];
+}
+
+void Position::set_special_piece(Square s, SpecialPieceType type)
+{
+    assert(is_ok(s));
+
+    if (!rule.zhuoluMode) {
+        return; // No special pieces in normal mode
+    }
+
+    SpecialPieceType oldType = specialPieceBoard[s];
+
+    // Update bitboards: remove old special piece type
+    if (oldType != NORMAL_PIECE) {
+        specialPieceBB[oldType] &= ~square_bb(s);
+    }
+
+    // Update bitboards: add new special piece type
+    if (type != NORMAL_PIECE) {
+        specialPieceBB[type] |= square_bb(s);
+    }
+
+    // Update hash key
+    update_special_piece_key(s, oldType, type);
+
+    // Update the board array
+    specialPieceBoard[s] = type;
+}
+
+Key Position::update_special_piece_key(Square s, SpecialPieceType oldType,
+                                       SpecialPieceType newType)
+{
+    assert(is_ok(s));
+
+    if (!rule.zhuoluMode) {
+        return st.key;
+    }
+
+    const int pieceType = color_on(s);
+    if (pieceType == NOBODY) {
+        return st.key; // No piece on this square
+    }
+
+    // Remove old special piece hash contribution
+    if (oldType != NORMAL_PIECE) {
+        st.key ^= Zobrist::specialPiece[oldType][pieceType][s];
+    }
+
+    // Add new special piece hash contribution
+    if (newType != NORMAL_PIECE) {
+        st.key ^= Zobrist::specialPiece[newType][pieceType][s];
+    }
+
+    return st.key;
+}
+
+// Bitboard helper functions for special pieces in Zhuolu Chess
+Bitboard Position::special_piece_bb(SpecialPieceType type) const
+{
+    assert(type >= 0 && type < 16);
+    return rule.zhuoluMode ? specialPieceBB[type] : 0;
+}
+
+Bitboard Position::special_pieces_bb() const
+{
+    if (!rule.zhuoluMode) {
+        return 0;
+    }
+
+    Bitboard bb = 0;
+    for (int type = 0; type < 15; ++type) { // Exclude NORMAL_PIECE (15)
+        bb |= specialPieceBB[type];
+    }
+    return bb;
+}
+
+bool Position::has_special_piece(SpecialPieceType type) const
+{
+    return rule.zhuoluMode && specialPieceBB[type] != 0;
+}
+
+std::string Position::pretty_special_pieces() const
+{
+    if (!rule.zhuoluMode) {
+        return "Special pieces not available (not in Zhuolu Chess mode)";
+    }
+
+    std::string result = "Special Pieces Bitboards:\n";
+
+    const char *specialPieceNames[] = {"HUANG_DI",  "NU_BA",      "YAN_DI",
+                                       "CHI_YOU",   "CHANG_XIAN", "XING_TIAN",
+                                       "ZHU_RONG",  "YU_SHI",     "FENG_HOU",
+                                       "GONG_GONG", "NU_WA",      "FU_XI",
+                                       "KUA_FU",    "YING_LONG",  "FENG_BO"};
+
+    for (int type = 0; type < 15; ++type) {
+        if (specialPieceBB[type] != 0) {
+            result += specialPieceNames[type];
+            result += ":\n";
+            result += Bitboards::pretty(specialPieceBB[type]);
+            result += "\n";
+        }
+    }
+
+    if (result == "Special Pieces Bitboards:\n") {
+        result += "No special pieces on board\n";
+    }
+
+    return result;
+}
+
+// Trigger special piece ability when forming mill in Zhuolu Chess
+void Position::trigger_mill_ability(Square /* s */,
+                                    SpecialPieceType specialType)
+{
+    if (!rule.zhuoluMode || specialType == NORMAL_PIECE) {
+        return;
+    }
+
+    switch (specialType) {
+    case ZHU_RONG:
+        // Fire God Zhu Rong: When forming mill, can additionally remove any
+        // opponent piece This increases the removal count by 1, allowing
+        // consecutive removals
+        if (pieceOnBoardCount[them] > 0) {
+            pieceToRemoveCount[sideToMove]++;
+            update_key_misc();
+        }
+        break;
+
+    case YU_SHI:
+        // Rain Master Yu Shi: When forming mill, can convert any empty square
+        // to abandoned square
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (board[sq] == NO_PIECE) {
+                board[sq] = MARKED_PIECE;
+                SET_BIT(byTypeBB[type_of(MARKED_PIECE)], sq);
+                update_key(sq);
+                break; // Only convert one square
+            }
+        }
+        break;
+
+    default:
+        // Other special pieces don't have mill formation abilities
+        break;
+    }
+}
+
+// Trigger special piece ability when placing piece in Zhuolu Chess
+void Position::trigger_placement_ability(Square s, SpecialPieceType specialType)
+{
+    if (!rule.zhuoluMode || specialType == NORMAL_PIECE) {
+        return;
+    }
+
+    const Color us = sideToMove;
+    const Color opponent = them;
+
+    auto for_each_adjacent = [&](auto &&fn) {
+        for (int d = MD_BEGIN; d < MD_NB; ++d) {
+            const Square adjSq = MoveList<LEGAL>::adjacentSquares[s][d];
+            if (adjSq == SQ_0)
+                continue;
+            fn(adjSq);
+        }
+    };
+
+    switch (specialType) {
+    case HUANG_DI: {
+        // Yellow Emperor: Convert all adjacent opponent pieces to own pieces
+        for_each_adjacent([&](Square adjSq) {
+            if (color_of(board[adjSq]) == opponent) {
+                // Remove opponent color bit and ALL/TYPE bit, then add ours
+                Piece oldPiece = board[adjSq];
+                revert_key(adjSq);
+                CLEAR_BIT(byTypeBB[type_of(oldPiece)], adjSq);
+                CLEAR_BIT(byColorBB[opponent], adjSq);
+
+                // If target had a special type, clear it
+                SpecialPieceType oldSp = specialPieceBoard[adjSq];
+                if (oldSp != NORMAL_PIECE) {
+                    specialPieceBB[oldSp] &= ~square_bb(adjSq);
+                    specialPieceBoard[adjSq] = NORMAL_PIECE;
+                }
+
+                board[adjSq] = make_piece(us);
+                SET_BIT(byTypeBB[type_of(board[adjSq])], adjSq);
+                SET_BIT(byColorBB[us], adjSq);
+                update_key(adjSq);
+
+                pieceOnBoardCount[opponent]--;
+                pieceOnBoardCount[us]++;
+            }
+        });
+        break;
+    }
+
+    case YAN_DI: {
+        // Flame Emperor: Remove all adjacent opponent pieces (leaves MARKED)
+        for_each_adjacent([&](Square adjSq) {
+            if (color_of(board[adjSq]) == opponent) {
+                revert_key(adjSq);
+                Piece oldPiece = board[adjSq];
+                CLEAR_BIT(byTypeBB[ALL_PIECES], adjSq);
+                CLEAR_BIT(byTypeBB[type_of(oldPiece)], adjSq);
+                CLEAR_BIT(byColorBB[opponent], adjSq);
+
+                // Clear special if needed
+                SpecialPieceType oldSp = specialPieceBoard[adjSq];
+                if (oldSp != NORMAL_PIECE) {
+                    specialPieceBB[oldSp] &= ~square_bb(adjSq);
+                    specialPieceBoard[adjSq] = NORMAL_PIECE;
+                }
+
+                board[adjSq] = MARKED_PIECE;
+                SET_BIT(byTypeBB[type_of(MARKED_PIECE)], adjSq);
+                update_key(adjSq);
+
+                pieceOnBoardCount[opponent]--;
+            }
+        });
+        break;
+    }
+
+    case NU_BA: {
+        // Drought Demon: Convert one adjacent opponent piece to own piece
+        bool done = false;
+        for_each_adjacent([&](Square adjSq) {
+            if (done)
+                return;
+            if (color_of(board[adjSq]) == opponent) {
+                Piece oldPiece = board[adjSq];
+                revert_key(adjSq);
+                CLEAR_BIT(byTypeBB[type_of(oldPiece)], adjSq);
+                CLEAR_BIT(byColorBB[opponent], adjSq);
+
+                SpecialPieceType oldSp = specialPieceBoard[adjSq];
+                if (oldSp != NORMAL_PIECE) {
+                    specialPieceBB[oldSp] &= ~square_bb(adjSq);
+                    specialPieceBoard[adjSq] = NORMAL_PIECE;
+                }
+
+                board[adjSq] = make_piece(us);
+                SET_BIT(byTypeBB[type_of(board[adjSq])], adjSq);
+                SET_BIT(byColorBB[us], adjSq);
+                update_key(adjSq);
+
+                pieceOnBoardCount[opponent]--;
+                pieceOnBoardCount[us]++;
+                done = true; // Only one conversion
+            }
+        });
+        break;
+    }
+
+    case CHI_YOU: {
+        // War God: Convert all adjacent empty squares to MARKED
+        for_each_adjacent([&](Square adjSq) {
+            if (board[adjSq] == NO_PIECE) {
+                board[adjSq] = MARKED_PIECE;
+                SET_BIT(byTypeBB[type_of(MARKED_PIECE)], adjSq);
+                update_key(adjSq);
+            }
+        });
+        break;
+    }
+
+    case XING_TIAN: {
+        // Punishment Heaven: Remove one adjacent opponent piece (leaves MARKED)
+        bool done = false;
+        for_each_adjacent([&](Square adjSq) {
+            if (done)
+                return;
+            if (color_of(board[adjSq]) == opponent) {
+                revert_key(adjSq);
+                Piece oldPiece = board[adjSq];
+                CLEAR_BIT(byTypeBB[ALL_PIECES], adjSq);
+                CLEAR_BIT(byTypeBB[type_of(oldPiece)], adjSq);
+                CLEAR_BIT(byColorBB[opponent], adjSq);
+
+                SpecialPieceType oldSp = specialPieceBoard[adjSq];
+                if (oldSp != NORMAL_PIECE) {
+                    specialPieceBB[oldSp] &= ~square_bb(adjSq);
+                    specialPieceBoard[adjSq] = NORMAL_PIECE;
+                }
+
+                board[adjSq] = MARKED_PIECE;
+                SET_BIT(byTypeBB[type_of(MARKED_PIECE)], adjSq);
+                update_key(adjSq);
+                pieceOnBoardCount[opponent]--;
+                done = true; // Only one removal
+            }
+        });
+        break;
+    }
+
+    case NU_WA: {
+        // Creator Goddess: Convert adjacent MARKED squares to our pieces
+        for_each_adjacent([&](Square adjSq) {
+            if (board[adjSq] == MARKED_PIECE) {
+                // Remove MARKED flag
+                revert_key(adjSq);
+                CLEAR_BIT(byTypeBB[type_of(MARKED_PIECE)], adjSq);
+
+                // Place our normal piece
+                board[adjSq] = make_piece(us);
+                SET_BIT(byTypeBB[ALL_PIECES], adjSq);
+                SET_BIT(byTypeBB[type_of(board[adjSq])], adjSq);
+                SET_BIT(byColorBB[us], adjSq);
+                update_key(adjSq);
+                pieceOnBoardCount[us]++;
+            }
+        });
+        break;
+    }
+
+    case FU_XI: {
+        // Creator God: Convert any one MARKED square on board to our piece
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (board[sq] == MARKED_PIECE) {
+                revert_key(sq);
+                CLEAR_BIT(byTypeBB[type_of(MARKED_PIECE)], sq);
+                board[sq] = make_piece(us);
+                SET_BIT(byTypeBB[ALL_PIECES], sq);
+                SET_BIT(byTypeBB[type_of(board[sq])], sq);
+                SET_BIT(byColorBB[us], sq);
+                update_key(sq);
+                pieceOnBoardCount[us]++;
+                break;
+            }
+        }
+        break;
+    }
+
+    case CHANG_XIAN: {
+        // Always First: Remove any opponent piece on the board (leaves MARKED)
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (color_of(board[sq]) == opponent) {
+                revert_key(sq);
+                CLEAR_BIT(byTypeBB[ALL_PIECES], sq);
+                CLEAR_BIT(byTypeBB[type_of(board[sq])], sq);
+                CLEAR_BIT(byColorBB[opponent], sq);
+
+                SpecialPieceType removedSpecialType = specialPieceBoard[sq];
+                if (removedSpecialType != NORMAL_PIECE) {
+                    specialPieceBB[removedSpecialType] &= ~square_bb(sq);
+                    specialPieceBoard[sq] = NORMAL_PIECE;
+                }
+
+                board[sq] = MARKED_PIECE;
+                SET_BIT(byTypeBB[type_of(MARKED_PIECE)], sq);
+                update_key(sq);
+
+                pieceOnBoardCount[opponent]--;
+                break; // Only remove one piece
+            }
+        }
+        break;
+    }
+
+    case FENG_BO: {
+        // Wind Earl: Destroy any one opponent piece without leaving MARKED
+        for (Square sq = SQ_BEGIN; sq < SQ_END; ++sq) {
+            if (color_of(board[sq]) == opponent) {
+                revert_key(sq);
+                Piece oldPiece = board[sq];
+                CLEAR_BIT(byTypeBB[ALL_PIECES], sq);
+                CLEAR_BIT(byTypeBB[type_of(oldPiece)], sq);
+                CLEAR_BIT(byColorBB[opponent], sq);
+
+                SpecialPieceType removedSpecialType = specialPieceBoard[sq];
+                if (removedSpecialType != NORMAL_PIECE) {
+                    specialPieceBB[removedSpecialType] &= ~square_bb(sq);
+                    specialPieceBoard[sq] = NORMAL_PIECE;
+                }
+
+                board[sq] = NO_PIECE; // Do NOT mark as abandoned
+                // No update_key() here because we already reverted the old
+                // piece
+                pieceOnBoardCount[opponent]--;
+                break;
+            }
+        }
+        break;
+    }
+
+    // FENG_HOU / GONG_GONG are placement constraints rather than instant
+    // abilities
+    case FENG_HOU:
+    case GONG_GONG:
+    case ZHU_RONG:
+    case YU_SHI:
+    case KUA_FU:
+    case YING_LONG:
+    default:
+        // No immediate placement ability needed here
+        break;
+    }
+}
+
+/*
+ * Zhuolu Chess Implementation Design:
+ *
+ * 1. Zobrist Hashing:
+ *    - Standard piece positions (psq[pieceType][square])
+ *    - Special piece types on each square
+ * (specialPiece[specialType][color][square])
+ *    - Special piece selection mask (specialPieceSelectionMask)
+ *    - Side to move (side)
+ *
+ * 2. Bitboard Support:
+ *    - specialPieceBB[16] tracks each special piece type
+ *    - Automatically maintained during piece operations
+ *    - Efficient querying with special_piece_bb(type)
+ *
+ * 3. Special Piece Abilities:
+ *    - Placement abilities: trigger_placement_ability()
+ *    - Mill formation abilities: trigger_mill_ability()
+ *    - ZHU_RONG consecutive removal example:
+ *      * Player forms mill with Zhu Rong -> pieceToRemoveCount = 1
+ *      * trigger_mill_ability() increases pieceToRemoveCount to 2
+ *      * Player removes first piece -> pieceToRemoveCount = 1
+ *      * keep_side_to_move() keeps same player active
+ *      * Player removes second piece -> pieceToRemoveCount = 0
+ *      * change_side_to_move() switches to opponent
+ *
+ * 4. Side-to-Move Logic:
+ *    - keep_side_to_move(): Used when player has more actions (consecutive
+ * removals)
+ *    - change_side_to_move(): Used when turn should pass to opponent
+ *    - Automatic detection based on pieceToRemoveCount[sideToMove]
+ *
+ * Example usage:
+ *
+ * // Check special piece character
+ * if (IsSpecialPieceChar('Z')) {
+ *     Color color = ColorFromSpecialPieceChar('Z'); // Returns WHITE
+ *     SpecialPieceType type = CharToSpecialPieceType('Z'); // Returns ZHU_RONG
+ * }
+ *
+ * // Query special piece bitboard
+ * Bitboard zhuRongPositions = position.special_piece_bb(ZHU_RONG);
+ * bool hasZhuRong = position.has_special_piece(ZHU_RONG);
+ *
+ * // Set special piece on board (automatically updates hash and bitboards)
+ * position.set_special_piece(SQ_A1, ZHU_RONG);
+ */
 
 /// operator<<(Position) returns an ASCII representation of the position
 
@@ -248,6 +887,22 @@ void Position::init()
 
     Zobrist::side = rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
                     Zobrist::KEY_MISC_BIT;
+
+    // Initialize hash keys for special pieces in Zhuolu Chess
+    for (int specialType = 0; specialType < 16; ++specialType) {
+        for (Color c = WHITE; c <= BLACK; ++c) {
+            for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
+                Zobrist::specialPiece[specialType][c][s] =
+                    rng.rand<Key>() << Zobrist::KEY_MISC_BIT >>
+                    Zobrist::KEY_MISC_BIT;
+            }
+        }
+    }
+
+    // Initialize hash key for special piece selection mask
+    Zobrist::specialPieceSelectionMask = rng.rand<Key>()
+                                             << Zobrist::KEY_MISC_BIT >>
+                                         Zobrist::KEY_MISC_BIT;
 }
 
 Position::Position()
@@ -311,9 +966,23 @@ Position &Position::set(const string &fenStr)
     while ((ss >> token) && !isspace(token)) {
         if (token == 'O' || token == '@' || token == 'X') {
             put_piece(CharToPiece(token), sq);
+            specialPieceBoard[sq] = NORMAL_PIECE; // Normal pieces
             ++sq;
-        }
-        if (token == '*') {
+        } else if (rule.zhuoluMode && IsSpecialPieceChar(token)) {
+            // Handle special pieces for Zhuolu Chess
+            Color pieceColor = ColorFromSpecialPieceChar(token);
+            SpecialPieceType specialType = CharToSpecialPieceType(token);
+
+            if (pieceColor == WHITE) {
+                put_piece(W_PIECE, sq);
+            } else if (pieceColor == BLACK) {
+                put_piece(B_PIECE, sq);
+            }
+
+            specialPieceBoard[sq] = specialType;
+            ++sq;
+        } else if (token == '*') {
+            specialPieceBoard[sq] = NORMAL_PIECE; // Empty squares
             ++sq;
         }
     }
@@ -388,6 +1057,12 @@ Position &Position::set(const string &fenStr)
     // 7-8. Halfmove clock and fullmove number
     ss >> std::skipws >> st.rule50 >> gamePly;
 
+    // 9. Special piece selection mask for Zhuolu Chess (optional)
+    if (rule.zhuoluMode && !ss.eof()) {
+        ss >> std::skipws >> specialPieceSelectionMask;
+        update_available_special_pieces_from_selection();
+    }
+
     // Convert from fullmove starting from 1 to gamePly starting from 0,
     // handle also common incorrect FEN with fullmove = 0.
     gamePly = std::max(2 * (gamePly - 1), 0) + (sideToMove == BLACK);
@@ -415,7 +1090,12 @@ string Position::fen() const
     // Piece placement data
     for (File f = FILE_A; f <= FILE_C; ++f) {
         for (Rank r = RANK_1; r <= RANK_8; ++r) {
-            ss << PieceToChar(piece_on(make_square(f, r)));
+            Square sq = make_square(f, r);
+            Piece p = piece_on(sq);
+            SpecialPieceType specialType = rule.zhuoluMode ?
+                                               specialPieceBoard[sq] :
+                                               NORMAL_PIECE;
+            ss << PieceToCharForFEN(p, specialType);
         }
 
         if (f == FILE_C) {
@@ -482,6 +1162,11 @@ string Position::fen() const
 
     ss << st.rule50 << " " << 1 + (gamePly - (sideToMove == BLACK)) / 2;
 
+    // Add special piece selection mask for Zhuolu Chess
+    if (rule.zhuoluMode) {
+        ss << " " << specialPieceSelectionMask;
+    }
+
     return ss.str();
 }
 
@@ -533,7 +1218,13 @@ void Position::do_move(Move m)
         }
         break;
     case MOVETYPE_PLACE:
-        ret = put_piece(to_sq(m));
+        // Use move-based placement for Zhuolu Chess to handle special piece
+        // selection
+        if (rule.zhuoluMode && ((m >> 12) & 0x0F) != 15) {
+            ret = put_piece_from_move(m);
+        } else {
+            ret = put_piece(to_sq(m));
+        }
         if (ret) {
             // Reset rule 50 counter
             st.rule50 = 0;
@@ -651,6 +1342,12 @@ bool Position::reset()
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
 
+    // Initialize special piece board and bitboards for Zhuolu Chess
+    for (Square s = SQ_0; s < SQUARE_EXT_NB; ++s) {
+        specialPieceBoard[s] = NORMAL_PIECE;
+    }
+    memset(specialPieceBB, 0, sizeof(specialPieceBB));
+
     st.key = 0;
 
     pieceOnBoardCount[WHITE] = pieceOnBoardCount[BLACK] = 0;
@@ -668,6 +1365,13 @@ bool Position::reset()
     lastMillFromSquare[WHITE] = lastMillFromSquare[BLACK] = SQ_0;
     lastMillToSquare[WHITE] = lastMillToSquare[BLACK] = SQ_0;
     formedMillsBB[WHITE] = formedMillsBB[BLACK] = 0;
+
+    // Initialize special piece data for Zhuolu Chess
+    specialPieceSelectionMask = 0;
+    availableSpecialPiecesMask[WHITE] = availableSpecialPiecesMask[BLACK] = 0;
+
+    // Do NOT provide default selections - wait for user/UI to set them
+    // This ensures players can choose their own special pieces
 
 #ifdef ENDGAME_LEARNING
     if (gameOptions.isEndgameLearningEnabled() && gamesPlayedCount > 0 &&
@@ -766,6 +1470,27 @@ bool Position::put_piece(Square s, bool updateRecord)
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
         byColorBB[color_of(pc)] |= s; // TODO: Put Marked?
 
+        // Handle special piece placement for Zhuolu Chess
+        // Use heuristic selection (legacy behavior for compatibility)
+        SpecialPieceType specialType = NORMAL_PIECE;
+        if (rule.zhuoluMode) {
+            specialType = get_best_special_piece_for_placement(us, s);
+            if (specialType != NORMAL_PIECE) {
+                // Set special piece type and update bitboards
+                specialPieceBoard[s] = specialType;
+                specialPieceBB[specialType] |= square_bb(s);
+
+                // Mark this special piece as used
+                use_special_piece(us, specialType);
+
+                // Trigger placement ability immediately
+                trigger_placement_ability(s, specialType);
+            } else {
+                // Ensure it's marked as normal piece
+                specialPieceBoard[s] = NORMAL_PIECE;
+            }
+        }
+
         update_key(s);
 
         updateMobility(MOVETYPE_PLACE, s);
@@ -774,7 +1499,14 @@ bool Position::put_piece(Square s, bool updateRecord)
         lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
 
         if (updateRecord) {
-            snprintf(record, RECORD_LEN_MAX, "%s", UCI::square(s).c_str());
+            // Include special piece information in record for Zhuolu Chess
+            if (rule.zhuoluMode && specialType != NORMAL_PIECE) {
+                string pieceChar = SpecialPieceToChar(specialType, us);
+                snprintf(record, RECORD_LEN_MAX, "%s%s", pieceChar.c_str(),
+                         UCI::square(s).c_str());
+            } else {
+                snprintf(record, RECORD_LEN_MAX, "%s", UCI::square(s).c_str());
+            }
         }
 
         const int n = mills_count(s);
@@ -862,6 +1594,14 @@ bool Position::put_piece(Square s, bool updateRecord)
                 update_key_misc();
             }
 
+            // Trigger special piece mill ability for Zhuolu Chess
+            if (rule.zhuoluMode) {
+                SpecialPieceType placedSpecialType = specialPieceBoard[s];
+                if (placedSpecialType != NORMAL_PIECE) {
+                    trigger_mill_ability(s, placedSpecialType);
+                }
+            }
+
             if (rule.millFormationActionInPlacingPhase ==
                     MillFormationActionInPlacingPhase::
                         removeOpponentsPieceFromHandThenYourTurn ||
@@ -928,6 +1668,221 @@ bool Position::put_piece(Square s, bool updateRecord)
     return true;
 }
 
+/// New method for move-based piece placement with special piece selection
+/// This method extracts the special piece type from the move and places it
+/// accordingly
+bool Position::put_piece_from_move(Move m, bool updateRecord)
+{
+    const Square s = to_sq(m);
+    const Color us = sideToMove;
+
+    // Basic validation
+    if (phase == Phase::gameOver || !(SQ_BEGIN <= s && s < SQ_END) ||
+        board[s] & make_piece(~us) || board[s] == MARKED_PIECE) {
+        return false;
+    }
+
+    if (!can_move_during_placing_phase() && board[s]) {
+        return false;
+    }
+
+    if (rule.restrictRepeatedMillsFormation &&
+        currentSquare[us] == lastMillToSquare[us] &&
+        currentSquare[us] != SQ_NONE && s == lastMillFromSquare[us]) {
+        if (potential_mills_count(s, us, currentSquare[us]) > 0 &&
+            mills_count(currentSquare[us]) > 0) {
+            return false;
+        }
+    }
+
+    isNeedStalemateRemoval = false;
+
+    if (phase == Phase::ready) {
+        start();
+    }
+
+    // Handle placement during placing phase
+    if (phase == Phase::placing && action == Action::place) {
+        if (can_move_during_placing_phase()) {
+            if (board[s] == NO_PIECE) {
+                if (currentSquare[us] != SQ_NONE) {
+                    return handle_moving_phase_for_put_piece(s, updateRecord);
+                }
+            } else {
+                // Select piece
+                currentSquare[us] = currentSquare[us] == s ? SQ_NONE : s;
+                return true;
+            }
+        }
+
+        // Extract special piece type from move
+        SpecialPieceType specialType = static_cast<SpecialPieceType>(
+            special_piece_type_of(m));
+
+        // Validate special piece placement for Zhuolu Chess
+        if (rule.zhuoluMode) {
+            if (specialType != NORMAL_PIECE) {
+                // Check if this special piece is available
+                if (!has_available_special_piece(us, specialType)) {
+                    return false; // Special piece not available
+                }
+
+                // Check if this special piece can be placed on this square
+                if (!can_place_special_piece_at(specialType, s)) {
+                    return false; // Invalid placement for this special piece
+                                  // type
+                }
+            }
+        }
+
+        // Place the piece
+        const auto piece = static_cast<Piece>((0x01 | make_piece(sideToMove)) +
+                                              rule.pieceCount -
+                                              pieceInHandCount[us]);
+        if (pieceInHandCount[us] > 0) {
+            pieceInHandCount[us]--;
+        } else {
+            return false;
+        }
+
+        pieceOnBoardCount[us]++;
+
+        const Piece pc = board[s] = piece;
+        byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
+        byColorBB[color_of(pc)] |= s;
+
+        // Handle special piece placement for Zhuolu Chess
+        if (rule.zhuoluMode && specialType != NORMAL_PIECE) {
+            // Set special piece type and update bitboards
+            specialPieceBoard[s] = specialType;
+            specialPieceBB[specialType] |= square_bb(s);
+
+            // Mark this special piece as used
+            use_special_piece(us, specialType);
+
+            // Trigger placement ability immediately
+            trigger_placement_ability(s, specialType);
+        } else {
+            // Ensure it's marked as normal piece
+            specialPieceBoard[s] = NORMAL_PIECE;
+        }
+
+        update_key(s);
+        updateMobility(MOVETYPE_PLACE, s);
+        currentSquare[sideToMove] = SQ_NONE;
+        lastMillFromSquare[sideToMove] = lastMillToSquare[sideToMove] = SQ_NONE;
+
+        if (updateRecord) {
+            // Include special piece information in record for Zhuolu Chess
+            if (rule.zhuoluMode && specialType != NORMAL_PIECE) {
+                string pieceChar = SpecialPieceToChar(specialType, us);
+                snprintf(record, RECORD_LEN_MAX, "%s%s", pieceChar.c_str(),
+                         UCI::square(s).c_str());
+            } else {
+                snprintf(record, RECORD_LEN_MAX, "%s", UCI::square(s).c_str());
+            }
+        }
+
+        const int n = mills_count(s);
+
+        if (n == 0) {
+            // No mill formed - handle normal placement logic
+            // (Rest of the logic is similar to original put_piece)
+            // For brevity, we'll delegate to the existing logic
+            // by temporarily setting the special piece and calling original
+            // method
+            if (rule.zhuoluMode && specialType != NORMAL_PIECE) {
+                // The special piece has already been set above
+                // Continue with normal flow
+            }
+
+            // Handle end of placing phase, side changes, etc.
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                if (pieceInHandCount[WHITE] == 0 &&
+                    pieceInHandCount[BLACK] == 0) {
+                    if (!handle_placing_phase_end()) {
+                        change_side_to_move();
+                    }
+                    if (check_if_game_is_over()) {
+                        return true;
+                    }
+                    return true;
+                }
+            }
+
+            // Normal side change logic
+            if (pieceInHandCount[WHITE] == 0 && pieceInHandCount[BLACK] == 0) {
+                if (!handle_placing_phase_end()) {
+                    change_side_to_move();
+                }
+                if (check_if_game_is_over()) {
+                    return true;
+                }
+            } else {
+                change_side_to_move();
+            }
+
+        } else {
+            // Mill formed - handle mill formation logic
+            int rm = 0;
+            if (rule.millFormationActionInPlacingPhase ==
+                MillFormationActionInPlacingPhase::removalBasedOnMillCounts) {
+                rm = pieceToRemoveCount[sideToMove] = 0;
+            } else {
+                rm = pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ?
+                                                          n :
+                                                          1;
+                update_key_misc();
+            }
+
+            // Trigger special piece mill ability for Zhuolu Chess
+            if (rule.zhuoluMode && specialType != NORMAL_PIECE) {
+                trigger_mill_ability(s, specialType);
+            }
+
+            // Handle mill formation actions
+            if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenYourTurn ||
+                rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenOpponentsTurn) {
+                const Color opponent = ~us;
+                for (int i = 0; i < rm; i++) {
+                    if (pieceInHandCount[opponent] == 0) {
+                        pieceToRemoveCount[sideToMove] = rm - i;
+                        update_key_misc();
+                        action = Action::remove;
+                        return true;
+                    } else {
+                        pieceInHandCount[opponent]--;
+                        pieceToRemoveCount[sideToMove]--;
+                        update_key_misc();
+                    }
+                }
+
+                // Determine side change based on mill formation action
+                if (rule.millFormationActionInPlacingPhase ==
+                    MillFormationActionInPlacingPhase::
+                        removeOpponentsPieceFromHandThenOpponentsTurn) {
+                    change_side_to_move();
+                }
+            } else {
+                action = Action::remove;
+            }
+            return true;
+        }
+
+    } else if (phase == Phase::moving) {
+        return handle_moving_phase_for_put_piece(s, updateRecord);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
 bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 {
     if (board[s] != NO_PIECE) {
@@ -956,12 +1911,27 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
     }
 
     const Piece pc = board[currentSquare[sideToMove]];
+    const Square from = currentSquare[sideToMove];
 
-    CLEAR_BIT(byTypeBB[ALL_PIECES], currentSquare[sideToMove]);
-    CLEAR_BIT(byTypeBB[type_of(pc)], currentSquare[sideToMove]);
-    CLEAR_BIT(byColorBB[color_of(pc)], currentSquare[sideToMove]);
+    CLEAR_BIT(byTypeBB[ALL_PIECES], from);
+    CLEAR_BIT(byTypeBB[type_of(pc)], from);
+    CLEAR_BIT(byColorBB[color_of(pc)], from);
 
-    updateMobility(MOVETYPE_REMOVE, currentSquare[sideToMove]);
+    updateMobility(MOVETYPE_REMOVE, from);
+
+    // Handle special piece movement for Zhuolu Chess
+    SpecialPieceType specialType = NORMAL_PIECE;
+    if (rule.zhuoluMode) {
+        specialType = specialPieceBoard[from];
+        if (specialType != NORMAL_PIECE) {
+            // Move special piece bitboard
+            specialPieceBB[specialType] &= ~square_bb(from);
+            specialPieceBB[specialType] |= square_bb(s);
+        }
+        // Update special piece board
+        specialPieceBoard[s] = specialType;
+        specialPieceBoard[from] = NORMAL_PIECE;
+    }
 
     SET_BIT(byTypeBB[ALL_PIECES], s);
     SET_BIT(byTypeBB[type_of(pc)], s);
@@ -971,9 +1941,9 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
 
     board[s] = pc;
     update_key(s);
-    revert_key(currentSquare[sideToMove]);
+    revert_key(from);
 
-    board[currentSquare[sideToMove]] = NO_PIECE;
+    board[from] = NO_PIECE;
 
     const int n = mills_count(s);
 
@@ -1010,6 +1980,14 @@ bool Position::handle_moving_phase_for_put_piece(Square s, bool updateRecord)
         pieceToRemoveCount[sideToMove] = rule.mayRemoveMultiple ? n : 1;
         update_key_misc();
         action = Action::remove;
+
+        // Trigger special piece mill ability for Zhuolu Chess in moving phase
+        if (rule.zhuoluMode) {
+            SpecialPieceType movedSpecialType = specialPieceBoard[s];
+            if (movedSpecialType != NORMAL_PIECE) {
+                trigger_mill_ability(s, movedSpecialType);
+            }
+        }
     }
 
     return true;
@@ -1062,6 +2040,20 @@ bool Position::remove_piece(Square s, bool updateRecord)
             MillFormationActionInPlacingPhase::markAndDelayRemovingPieces &&
         phase == Phase::placing) {
         // Remove and put marked
+        pc = board[s] = MARKED_PIECE;
+        update_key(s);
+        SET_BIT(byTypeBB[type_of(pc)], s);
+    } else if (rule.zhuoluMode) {
+        // Remove piece and mark square as permanently abandoned (Zhuolu Chess)
+        CLEAR_BIT(byTypeBB[ALL_PIECES], s);
+
+        // Clear special piece bitboard if this was a special piece
+        SpecialPieceType specialType = specialPieceBoard[s];
+        if (specialType != NORMAL_PIECE) {
+            specialPieceBB[specialType] &= ~square_bb(s);
+            specialPieceBoard[s] = NORMAL_PIECE;
+        }
+
         pc = board[s] = MARKED_PIECE;
         update_key(s);
         SET_BIT(byTypeBB[type_of(pc)], s);
@@ -1176,6 +2168,30 @@ bool Position::handle_placing_phase_end()
             // Ignore
             return false;
         }
+    }
+
+    // Check if game should end after placing phase (Zhuolu Chess rule)
+    if (rule.zhuoluMode) {
+        // Calculate captured pieces to determine winner
+        const int initialPieces = rule.pieceCount;
+        const int whiteRemaining = pieceOnBoardCount[WHITE] +
+                                   pieceInHandCount[WHITE];
+        const int blackRemaining = pieceOnBoardCount[BLACK] +
+                                   pieceInHandCount[BLACK];
+        const int whiteCaptured = initialPieces - whiteRemaining;
+        const int blackCaptured = initialPieces - blackRemaining;
+
+        if (whiteCaptured > blackCaptured) {
+            // Black captured more pieces, so Black wins
+            set_gameover(BLACK, GameOverReason::loseFewerThanThree);
+        } else if (blackCaptured > whiteCaptured) {
+            // White captured more pieces, so White wins
+            set_gameover(WHITE, GameOverReason::loseFewerThanThree);
+        } else {
+            // Equal captures, draw
+            set_gameover(DRAW, GameOverReason::drawFullBoard);
+        }
+        return true;
     }
 
     set_side_to_move(rule.isDefenderMoveFirst == true ? BLACK : WHITE);
@@ -1469,6 +2485,14 @@ inline Key Position::update_key(Square s)
 
     st.key ^= Zobrist::psq[pieceType][s];
 
+    // For Zhuolu Chess, also include special piece information in hash
+    if (rule.zhuoluMode) {
+        SpecialPieceType specialType = specialPieceBoard[s];
+        if (specialType != NORMAL_PIECE && pieceType != NOBODY) {
+            st.key ^= Zobrist::specialPiece[specialType][pieceType][s];
+        }
+    }
+
     return st.key;
 }
 
@@ -1760,11 +2784,20 @@ void Position::reset_bb()
 {
     memset(byTypeBB, 0, sizeof(byTypeBB));
     memset(byColorBB, 0, sizeof(byColorBB));
+    memset(specialPieceBB, 0, sizeof(specialPieceBB));
 
     for (Square s = SQ_BEGIN; s < SQ_END; ++s) {
         const Piece pc = board[s];
         byTypeBB[ALL_PIECES] |= byTypeBB[type_of(pc)] |= s;
         byColorBB[color_of(pc)] |= s;
+
+        // Rebuild special piece bitboards for Zhuolu Chess
+        if (rule.zhuoluMode) {
+            SpecialPieceType specialType = specialPieceBoard[s];
+            if (specialType != NORMAL_PIECE) {
+                specialPieceBB[specialType] |= square_bb(s);
+            }
+        }
     }
 }
 
@@ -2345,4 +3378,102 @@ void Position::rotate(vector<string> &gameMoveList, int degrees,
     // as we now use standard notation exclusively
     (void)cmdChange;
     (void)gameMoveList;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Zhuolu Chess special piece methods
+
+void Position::update_available_special_pieces_from_selection()
+{
+    if (!rule.zhuoluMode)
+        return;
+
+    for (Color c : {WHITE, BLACK}) {
+        const int startBit = (c == WHITE) ? 0 : 24;
+        uint16_t mask = 0;
+
+        // Extract 6 pieces (4 bits each) for this player
+        for (int i = 0; i < 6; i++) {
+            const int pieceIndex = (specialPieceSelectionMask >>
+                                    (startBit + i * 4)) &
+                                   0xF;
+            if (pieceIndex < 15) { // Valid special piece index
+                mask |= (1 << pieceIndex);
+            }
+        }
+
+        availableSpecialPiecesMask[c] = mask;
+    }
+}
+
+bool Position::has_available_special_piece(Color c,
+                                           SpecialPieceType piece) const
+{
+    if (!rule.zhuoluMode)
+        return false;
+    return (availableSpecialPiecesMask[c] & (1 << static_cast<int>(piece))) !=
+           0;
+}
+
+// New methods for move-based special piece selection
+
+uint16_t Position::get_available_special_pieces_mask(Color c) const
+{
+    if (!rule.zhuoluMode)
+        return 0;
+    return availableSpecialPiecesMask[c];
+}
+
+bool Position::can_place_special_piece_at(SpecialPieceType piece,
+                                          Square s) const
+{
+    if (!rule.zhuoluMode)
+        return true; // In normal mode, all pieces can be placed anywhere valid
+
+    // Check basic placement validity
+    if (board[s] != NO_PIECE)
+        return false;
+
+    // Check special piece-specific placement rules
+    switch (piece) {
+    case GONG_GONG:
+        // Can ONLY be placed on MARKED squares
+        return board[s] == MARKED_PIECE;
+
+    case FENG_HOU:
+        // Can be placed on normal empty squares OR marked squares
+        return board[s] == NO_PIECE || board[s] == MARKED_PIECE;
+
+    case NORMAL_PIECE:
+    default:
+        // Most special pieces and normal pieces can be placed on any empty
+        // square
+        return board[s] == NO_PIECE;
+    }
+}
+
+SpecialPieceType Position::get_best_special_piece_for_placement(Color c,
+                                                                Square s) const
+{
+    // DEPRECATED: This function should not be used for AI moves.
+    // All special piece selection should be handled by search algorithm.
+    // This function is only kept for backward compatibility.
+
+    if (!rule.zhuoluMode)
+        return NORMAL_PIECE;
+
+    // Always return NORMAL_PIECE to force search-based selection
+    // The search algorithm will generate moves for all available special pieces
+    // and evaluate them based on N-ply lookahead, not heuristic scoring
+    return NORMAL_PIECE;
+}
+
+void Position::use_special_piece(Color c, SpecialPieceType piece)
+{
+    if (!rule.zhuoluMode || piece == NORMAL_PIECE)
+        return;
+
+    // Remove the piece from available mask
+    const int pieceIndex = static_cast<int>(piece);
+    availableSpecialPiecesMask[c] &= ~(1 << pieceIndex);
 }

@@ -72,9 +72,9 @@ class GameResultAlertDialog extends StatelessWidget {
     final bool isTopLevel =
         DB().generalSettings.skillLevel == Constants.highestSkillLevel;
 
-    final String reason =
-        position.gameOverReason?.getName(context, position.winner) ??
-            S.of(context).gameOverUnknownReason;
+    final String reason = position.gameOverReason
+            ?.getName(context, position.winner, position.zhuoluCaptureStats) ??
+        S.of(context).gameOverUnknownReason;
 
     final StringBuffer content = StringBuffer(reason);
 
@@ -258,9 +258,9 @@ class GameResultAlertDialog extends StatelessWidget {
     }
 
     // Get game over reason
-    final String reason =
-        position.gameOverReason?.getName(context, position.winner) ??
-            S.of(context).gameOverUnknownReason;
+    final String reason = position.gameOverReason
+            ?.getName(context, position.winner, position.zhuoluCaptureStats) ??
+        S.of(context).gameOverUnknownReason;
 
     // Build content with game duration
     final StringBuffer content = StringBuffer();

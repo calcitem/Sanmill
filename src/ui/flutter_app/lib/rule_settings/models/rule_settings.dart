@@ -111,6 +111,9 @@ class RuleSettings {
         MillFormationActionInPlacingPhase.removeOpponentsPieceFromBoard,
     this.restrictRepeatedMillsFormation = false,
     this.oneTimeUseMill = false,
+    this.zhuoluMode = false,
+    this.lastWhiteSpecialPieceSelection = 0,
+    this.lastBlackSpecialPieceSelection = 0,
   });
 
   /// Encodes a Json style map into a [RuleSettings] object
@@ -183,6 +186,12 @@ class RuleSettings {
   final bool restrictRepeatedMillsFormation;
   @HiveField(20, defaultValue: false)
   final bool oneTimeUseMill;
+  @HiveField(21, defaultValue: false)
+  final bool zhuoluMode;
+  @HiveField(22, defaultValue: 0)
+  final int lastWhiteSpecialPieceSelection;
+  @HiveField(23, defaultValue: 0)
+  final int lastBlackSpecialPieceSelection;
 
   /// decodes a Json from a [RuleSettings] object
   Map<String, dynamic> toJson() => _$RuleSettingsToJson(this);
@@ -236,7 +245,8 @@ enum RuleSet {
   daSanQi,
   mulMulan,
   nerenchi,
-  elfilja
+  elfilja,
+  zhuolu
 }
 
 /// Nine Men's Morris Rules
@@ -428,6 +438,25 @@ class ELFiljaRuleSettings extends RuleSettings {
         );
 }
 
+/// Zhuolu Chess Rules
+///
+/// Ancient Chinese variant with special pieces and abandoned squares.
+/// Players select 6 special pieces from 15 available at game start.
+/// Game ends after placing phase, winner determined by captured pieces.
+class ZhuoluRuleSettings extends RuleSettings {
+  const ZhuoluRuleSettings()
+      : super(
+          piecesCount: 12,
+          hasDiagonalLines: true,
+          millFormationActionInPlacingPhase:
+              MillFormationActionInPlacingPhase.markAndDelayRemovingPieces,
+          mayRemoveMultiple: true,
+          mayRemoveFromMillsAlways: true,
+          mayFly: false,
+          zhuoluMode: true,
+        );
+}
+
 /// Rule Set Descriptions and Settings
 const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.current: 'Use the current game settings.',
@@ -445,6 +474,8 @@ const Map<RuleSet, String> ruleSetDescriptions = <RuleSet, String>{
   RuleSet.nerenchi: 'Nerenchi, a Sri Lankan adaptation of the game.',
   RuleSet.elfilja:
       'El Filja, a variant played in Algeria and parts of Morocco.',
+  RuleSet.zhuolu:
+      'Zhuolu Chess, ancient Chinese variant with special pieces and abandoned squares.',
 };
 
 /// Rule Set Properties (e.g., Number of Pieces and Rule Settings)
@@ -463,4 +494,5 @@ const Map<RuleSet, RuleSettings> ruleSetProperties = <RuleSet, RuleSettings>{
   RuleSet.mulMulan: MulMulanRuleSettings(),
   RuleSet.nerenchi: NerenchiRuleSettings(),
   RuleSet.elfilja: ELFiljaRuleSettings(),
+  RuleSet.zhuolu: ZhuoluRuleSettings(),
 };

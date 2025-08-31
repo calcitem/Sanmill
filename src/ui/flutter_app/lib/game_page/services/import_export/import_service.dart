@@ -159,6 +159,8 @@ class ImportService {
       variantTag = '[Variant "Twelve Men\'s Morris"]\r\n';
     } else if (DB().ruleSettings.isLikelyElFilja()) {
       variantTag = '[Variant "El Filja"]\r\n';
+    } else if (DB().ruleSettings.zhuoluMode) {
+      variantTag = '[Variant "Zhuolu Chess"]\r\n';
     } else {
       variantTag = '';
     }

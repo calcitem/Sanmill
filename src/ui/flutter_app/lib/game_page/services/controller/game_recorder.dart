@@ -253,8 +253,13 @@ class GameRecorder {
               boardStr, prevBoardLayout, m.side, m.type, m.from, m.to)
           : "";
 
+      // Add special piece information for Zhuolu Chess
+      final String specialPieceStr = (m.specialPiece != null)
+          ? 'specialPiece="${m.specialPiece!.chineseName}(${m.specialPiece!.englishName})", '
+          : "";
+
       // Build a details string with all extra fields and inline context.
-      return "{ side=$sideStr, type=$typeStr, ${boardStr.isNotEmpty ? 'boardLayout="$boardStr", ' : ""}${m.moveIndex != null ? "moveIndex=${m.moveIndex}, " : ""}${m.roundIndex != null ? "roundIndex=${m.roundIndex}, " : ""}${nagStr.isNotEmpty ? 'nags="$nagStr", ' : ""}${mergedComments.isNotEmpty ? 'comments="${mergedComments.replaceAll('"', r'\"')}"' : ""}${inlineCtx.isNotEmpty ? ', ctx="${inlineCtx.replaceAll('"', r'\"')}"' : ''} }";
+      return "{ side=$sideStr, type=$typeStr, ${boardStr.isNotEmpty ? 'boardLayout="$boardStr", ' : ""}$specialPieceStr${m.moveIndex != null ? "moveIndex=${m.moveIndex}, " : ""}${m.roundIndex != null ? "roundIndex=${m.roundIndex}, " : ""}${nagStr.isNotEmpty ? 'nags="$nagStr", ' : ""}${mergedComments.isNotEmpty ? 'comments="${mergedComments.replaceAll('"', r'\"')}"' : ""}${inlineCtx.isNotEmpty ? ', ctx="${inlineCtx.replaceAll('"', r'\"')}"' : ''} }";
     }
 
     // We iterate over the mainline nodes

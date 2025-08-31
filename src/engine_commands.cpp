@@ -147,8 +147,11 @@ void position(Position *pos, std::istringstream &is)
     pos->set(fen);
 
     // Parse move list (if any)
-    while (is >> token && (UCI::to_move(pos, token)) != MOVE_NONE) {
+    while (is >> token) {
         m = UCI::to_move(pos, token);
+        if (m == MOVE_NONE) {
+            break;
+        }
         pos->do_move(m);
         if (type_of(m) == MOVETYPE_MOVE) {
             posKeyHistory.push_back(pos->key());
@@ -157,7 +160,7 @@ void position(Position *pos, std::istringstream &is)
         }
     }
 
-    // TODO: Old：Threads.main()->us = pos->sideToMove;
+    // TODO: Old: Threads.main()->us = pos->sideToMove;
 }
 
 } // namespace EngineCommands

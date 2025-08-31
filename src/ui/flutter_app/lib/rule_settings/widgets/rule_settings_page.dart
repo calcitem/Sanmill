@@ -44,7 +44,8 @@ class RuleSettingsPage extends StatelessWidget {
           ruleSet == RuleSet.daSanQi ||
           ruleSet == RuleSet.mulMulan ||
           ruleSet == RuleSet.nerenchi ||
-          ruleSet == RuleSet.elfilja) {
+          ruleSet == RuleSet.elfilja ||
+          ruleSet == RuleSet.zhuolu) {
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).experimental);
       }
@@ -81,7 +82,10 @@ class RuleSettingsPage extends StatelessWidget {
           mayRemoveFromMillsAlways:
               ruleSetProperties[ruleSet]!.mayRemoveFromMillsAlways,
           mayRemoveMultiple: ruleSetProperties[ruleSet]!.mayRemoveMultiple,
-          oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill);
+          oneTimeUseMill: ruleSetProperties[ruleSet]!.oneTimeUseMill,
+
+          // Zhuolu Chess specific
+          zhuoluMode: ruleSetProperties[ruleSet]!.zhuoluMode);
     }
 
     // Display a modal bottom sheet with the available rule sets.
@@ -367,6 +371,15 @@ class RuleSettingsPage extends StatelessWidget {
     logger.t("[config] oneTimeUseMill: $value");
   }
 
+  void _setZhuoluMode(
+    RuleSettings ruleSettings,
+    bool value,
+  ) {
+    DB().ruleSettings = ruleSettings.copyWith(zhuoluMode: value);
+
+    logger.t("[config] zhuoluMode: $value");
+  }
+
   Widget _buildRuleSettings(BuildContext context, Box<RuleSettings> box, _) {
     final Locale? locale = DB().displaySettings.locale;
 
@@ -547,6 +560,22 @@ class RuleSettingsPage extends StatelessWidget {
               ),
               titleString: S.of(context).oneTimeUseMill,
               subtitleString: S.of(context).oneTimeUseMill_Detail,
+            ),
+          ],
+        ),
+        SettingsCard(
+          key: const Key('rule_settings_card_zhuolu_chess'),
+          title: Text(S.of(context).zhuolu),
+          children: <Widget>[
+            SettingsListTile.switchTile(
+              key: const Key('rule_settings_switch_zhuolu_mode'),
+              value: ruleSettings.zhuoluMode,
+              onChanged: (bool val) => _setZhuoluMode(
+                ruleSettings,
+                val,
+              ),
+              titleString: S.of(context).zhuolu,
+              subtitleString: "${S.of(context).zhuolu} ${S.of(context).game}",
             ),
           ],
         ),

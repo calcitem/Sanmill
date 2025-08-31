@@ -1977,5 +1977,139 @@
         "type": "String"
       }
     }
+  },
+  "zhuolu": "涿鹿棋",
+  "@zhuolu": {},
+  "endAfterPlacing": "放置阶段后结束",
+  "@endAfterPlacing": {},
+  "endAfterPlacing_Detail": "放置阶段结束后游戏结束，根据提子数判定胜负",
+  "@endAfterPlacing_Detail": {},
+  "removeLeavesMarked": "提子留弃位",
+  "@removeLeavesMarked": {},
+  "removeLeavesMarked_Detail": "被提取的棋子位置变为永久弃位",
+  "@removeLeavesMarked_Detail": {},
+  "huangDi": "黄帝",
+  "@huangDi": {
+    "description": "涿鹿棋特殊棋子：黄帝"
+  },
+  "huangDiDescription": "落子同化相邻敌子为己方",
+  "@huangDiDescription": {
+    "description": "黄帝能力描述"
+  },
+  "nuBa": "女魃",
+  "@nuBa": {
+    "description": "涿鹿棋特殊棋子：女魃"
+  },
+  "nuBaDescription": "落子同化单体相邻敌子",
+  "@nuBaDescription": {
+    "description": "女魃能力描述"
+  },
+  "yanDi": "炎帝",
+  "@yanDi": {
+    "description": "涿鹿棋特殊棋子：炎帝"
+  },
+  "yanDiDescription": "落子提取所有相邻敌子",
+  "@yanDiDescription": {
+    "description": "炎帝能力描述"
+  },
+  "chiYou": "蚩尤",
+  "@chiYou": {
+    "description": "涿鹿棋特殊棋子：蚩尤"
+  },
+  "chiYouDescription": "落子令相邻空位转弃位",
+  "@chiYouDescription": {
+    "description": "蚩尤能力描述"
+  },
+  "changXian": "常先",
+  "@changXian": {
+    "description": "涿鹿棋特殊棋子：常先"
+  },
+  "changXianDescription": "落子全图提取任意一子",
+  "@changXianDescription": {
+    "description": "常先能力描述"
+  },
+  "xingTian": "刑天",
+  "@xingTian": {
+    "description": "涿鹿棋特殊棋子：刑天"
+  },
+  "xingTianDescription": "落子相邻单体提取",
+  "@xingTianDescription": {
+    "description": "刑天能力描述"
+  },
+  "zhuRong": "祝融",
+  "@zhuRong": {
+    "description": "涿鹿棋特殊棋子：祝融"
+  },
+  "zhuRongDescription": "成三时额外提取一子",
+  "@zhuRongDescription": {
+    "description": "祝融能力描述"
+  },
+  "yuShi": "雨师",
+  "@yuShi": {
+    "description": "涿鹿棋特殊棋子：雨师"
+  },
+  "yuShiDescription": "成三时将任意空位变弃位",
+  "@yuShiDescription": {
+    "description": "雨师能力描述"
+  },
+  "fengHou": "风后",
+  "@fengHou": {
+    "description": "涿鹿棋特殊棋子：风后"
+  },
+  "fengHouDescription": "可选择在弃位落子",
+  "@fengHouDescription": {
+    "description": "风后能力描述"
+  },
+  "gongGong": "共工",
+  "@gongGong": {
+    "description": "涿鹿棋特殊棋子：共工"
+  },
+  "gongGongDescription": "仅能在弃位落子",
+  "@gongGongDescription": {
+    "description": "共工能力描述"
+  },
+  "nuWa": "女娲",
+  "@nuWa": {
+    "description": "涿鹿棋特殊棋子：女娲"
+  },
+  "nuWaDescription": "落子令相邻弃位转己子",
+  "@nuWaDescription": {
+    "description": "女娲能力描述"
+  },
+  "fuXi": "伏羲",
+  "@fuXi": {
+    "description": "涿鹿棋特殊棋子：伏羲"
+  },
+  "fuXiDescription": "落子令任意弃位转己子",
+  "@fuXiDescription": {
+    "description": "伏羲能力描述"
+  },
+  "kuaFu": "夸父",
+  "@kuaFu": {
+    "description": "涿鹿棋特殊棋子：夸父"
+  },
+  "kuaFuDescription": "不可被提取",
+  "@kuaFuDescription": {
+    "description": "夸父能力描述"
+  },
+  "yingLong": "应龙",
+  "@yingLong": {
+    "description": "涿鹿棋特殊棋子：应龙"
+  },
+  "yingLongDescription": "相邻有己子时不可被提取",
+  "@yingLongDescription": {
+    "description": "应龙能力描述"
+  },
+  "fengBo": "风伯",
+  "@fengBo": {
+    "description": "涿鹿棋特殊棋子：风伯"
+  },
+  "fengBoDescription": "落子消灭任意一子，不留弃位",
+  "@fengBoDescription": {
+    "description": "风伯能力描述"
+  },
+  "normalPiece": "普通棋子",
+  "@normalPiece": {
+    "description": "涿鹿棋普通棋子"
   }
 }

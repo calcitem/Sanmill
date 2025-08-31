@@ -287,10 +287,109 @@ enum GameOverReason {
   drawEndgameFiftyMove,
   drawFullBoard,
   drawStalemateCondition,
+  zhuoluCaptureVictory, // Zhuolu Chess: win by capturing more pieces
+  zhuoluCaptureDraw, // Zhuolu Chess: draw by equal captures
+}
+
+/// Special piece type constants for Zhuolu Chess (corresponding to types.h)
+/// These values match the C++ SpecialPieceType enum for consistency
+class SpecialPieceType {
+  static const int normalPiece = 15; // Normal piece (not special)
+  static const int huangDi = 0; // Yellow Emperor
+  static const int nuBa = 1; // Drought Demon
+  static const int yanDi = 2; // Flame Emperor
+  static const int chiYou = 3; // War God
+  static const int changXian = 4; // Always First
+  static const int xingTian = 5; // Punishment Heaven
+  static const int zhuRong = 6; // Fire God
+  static const int yuShi = 7; // Rain Master
+  static const int fengHou = 8; // Wind Empress
+  static const int gongGong = 9; // Flood God
+  static const int nuWa = 10; // Creator Goddess
+  static const int fuXi = 11; // Creator God
+  static const int kuaFu = 12; // Giant
+  static const int yingLong = 13; // Responding Dragon
+  static const int fengBo = 14; // Wind Earl
+}
+
+/// Convert SpecialPiece enum to SpecialPieceType constant
+int specialPieceToType(SpecialPiece piece) {
+  switch (piece) {
+    case SpecialPiece.huangDi:
+      return SpecialPieceType.huangDi;
+    case SpecialPiece.nuBa:
+      return SpecialPieceType.nuBa;
+    case SpecialPiece.yanDi:
+      return SpecialPieceType.yanDi;
+    case SpecialPiece.chiYou:
+      return SpecialPieceType.chiYou;
+    case SpecialPiece.changXian:
+      return SpecialPieceType.changXian;
+    case SpecialPiece.xingTian:
+      return SpecialPieceType.xingTian;
+    case SpecialPiece.zhuRong:
+      return SpecialPieceType.zhuRong;
+    case SpecialPiece.yuShi:
+      return SpecialPieceType.yuShi;
+    case SpecialPiece.fengHou:
+      return SpecialPieceType.fengHou;
+    case SpecialPiece.gongGong:
+      return SpecialPieceType.gongGong;
+    case SpecialPiece.nuWa:
+      return SpecialPieceType.nuWa;
+    case SpecialPiece.fuXi:
+      return SpecialPieceType.fuXi;
+    case SpecialPiece.kuaFu:
+      return SpecialPieceType.kuaFu;
+    case SpecialPiece.yingLong:
+      return SpecialPieceType.yingLong;
+    case SpecialPiece.fengBo:
+      return SpecialPieceType.fengBo;
+  }
+}
+
+/// Convert SpecialPieceType constant to SpecialPiece enum
+SpecialPiece? typeToSpecialPiece(int type) {
+  switch (type) {
+    case SpecialPieceType.huangDi:
+      return SpecialPiece.huangDi;
+    case SpecialPieceType.nuBa:
+      return SpecialPiece.nuBa;
+    case SpecialPieceType.yanDi:
+      return SpecialPiece.yanDi;
+    case SpecialPieceType.chiYou:
+      return SpecialPiece.chiYou;
+    case SpecialPieceType.changXian:
+      return SpecialPiece.changXian;
+    case SpecialPieceType.xingTian:
+      return SpecialPiece.xingTian;
+    case SpecialPieceType.zhuRong:
+      return SpecialPiece.zhuRong;
+    case SpecialPieceType.yuShi:
+      return SpecialPiece.yuShi;
+    case SpecialPieceType.fengHou:
+      return SpecialPiece.fengHou;
+    case SpecialPieceType.gongGong:
+      return SpecialPiece.gongGong;
+    case SpecialPieceType.nuWa:
+      return SpecialPiece.nuWa;
+    case SpecialPieceType.fuXi:
+      return SpecialPiece.fuXi;
+    case SpecialPieceType.kuaFu:
+      return SpecialPiece.kuaFu;
+    case SpecialPieceType.yingLong:
+      return SpecialPiece.yingLong;
+    case SpecialPieceType.fengBo:
+      return SpecialPiece.fengBo;
+    case SpecialPieceType.normalPiece:
+    default:
+      return null; // Normal piece or invalid type
+  }
 }
 
 extension GameOverReasonExtension on GameOverReason {
-  String getName(BuildContext context, PieceColor winner) {
+  String getName(BuildContext context, PieceColor winner,
+      [ZhuoluCaptureStats? captureStats]) {
     final String loserStr = winner.opponent.playerName(context);
 
     switch (this) {
@@ -314,6 +413,23 @@ extension GameOverReasonExtension on GameOverReason {
         return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
+      case GameOverReason.zhuoluCaptureVictory:
+        if (captureStats != null) {
+          final String winnerStr = winner.playerName(context);
+          return "逐鹿棋游戏结束\n"
+              "$winnerStr 获胜！\n"
+              "白方被吃掉：${captureStats.whiteCaptured} 子\n"
+              "黑方被吃掉：${captureStats.blackCaptured} 子";
+        }
+        return "逐鹿棋：${winner.playerName(context)} 吃子获胜";
+      case GameOverReason.zhuoluCaptureDraw:
+        if (captureStats != null) {
+          return "逐鹿棋游戏结束\n"
+              "平局！\n"
+              "白方被吃掉：${captureStats.whiteCaptured} 子\n"
+              "黑方被吃掉：${captureStats.blackCaptured} 子";
+        }
+        return "逐鹿棋：吃子数相等，平局";
     }
   }
 }
@@ -344,6 +460,17 @@ extension GameResultExtension on GameResult {
         return "1/2-1/2";
     }
   }
+}
+
+/// Zhuolu Chess capture statistics
+class ZhuoluCaptureStats {
+  const ZhuoluCaptureStats({
+    required this.whiteCaptured,
+    required this.blackCaptured,
+  });
+
+  final int whiteCaptured;
+  final int blackCaptured;
 }
 
 const int valueUnique = 100;

@@ -457,6 +457,7 @@ class Engine {
     );
     await _sendOptions("MayRemoveMultiple", ruleSettings.mayRemoveMultiple);
     await _sendOptions("OneTimeUseMill", ruleSettings.oneTimeUseMill);
+    await _sendOptions("ZhuoluMode", ruleSettings.zhuoluMode);
   }
 
   Future<void> setOptions() async {
@@ -478,6 +479,28 @@ class Engine {
   }
 
   String? _getPositionFen() {
+    // For Zhuolu Chess, always send the current complete position state
+    // to avoid special piece state synchronization issues
+    if (DB().ruleSettings.zhuoluMode) {
+      final String? currentFen = GameController().position.fen;
+      if (currentFen == null ||
+          GameController().position.validateFen(currentFen) == false) {
+        logger.e("Invalid current FEN: $currentFen");
+        return null;
+      }
+
+      final String ret = "position fen $currentFen";
+
+      if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
+        final Catcher2Options options = catcher.getCurrentConfig()!;
+        options.customParameters["PositionFen"] = ret;
+      }
+
+      logger.i("$_logTag Sending complete position for Zhuolu: $ret");
+      return ret;
+    }
+
+    // For standard games, use the original logic with move replay
     final String? startPosition =
         GameController().gameRecorder.lastPositionWithRemove;
 
@@ -599,7 +622,7 @@ class Engine {
                   "value: ${outcome.valueStr}, steps: ${outcome.stepCount}");
             }
 
-            // Handle standard notation formats
+            // Handle standard notation formats and Zhuolu Chess special pieces
             if (moveStr.startsWith('x') && moveStr.length == 3) {
               // Remove format: "xa1", "xd5"
               final String squareName =
@@ -610,6 +633,30 @@ class Engine {
                 outcome: outcome,
                 toSquare: pgn.Square(squareName),
               ));
+            } else if (moveStr.startsWith('x') &&
+                moveStr.length == 2 &&
+                isZhuoluSpecialPieceChar(moveStr[1])) {
+              // Zhuolu Chess special piece removal: "xY", "xy"
+              // Use a placeholder square since special pieces don't map to specific squares
+              results.add(MoveAnalysisResult(
+                move: moveStr,
+                outcome: outcome,
+                toSquare: const pgn.Square(
+                    "a1"), // Placeholder for special piece removal
+              ));
+            } else if (moveStr.contains('-') &&
+                moveStr.length == 4 &&
+                isZhuoluSpecialPieceChar(moveStr[0])) {
+              // Zhuolu Chess special piece move: "Y-a1", "y-a1"
+              final List<String> parts = moveStr.split('-');
+              if (parts.length == 2) {
+                final String toSquare = parts[1];
+                results.add(MoveAnalysisResult(
+                  move: moveStr,
+                  outcome: outcome,
+                  toSquare: pgn.Square(toSquare),
+                ));
+              }
             } else if (moveStr.contains('-') && moveStr.length == 5) {
               // Move format: "a1-a4", "d5-e5"
               final List<String> squares = moveStr.split('-');
@@ -624,6 +671,16 @@ class Engine {
                   toSquare: pgn.Square(toSquare),
                 ));
               }
+            } else if (moveStr.length == 1 &&
+                isZhuoluSpecialPieceChar(moveStr)) {
+              // Zhuolu Chess special piece placement: "Y", "y"
+              // Use a placeholder square since special piece placement doesn't map to specific square initially
+              results.add(MoveAnalysisResult(
+                move: moveStr,
+                outcome: outcome,
+                toSquare: const pgn.Square(
+                    "a1"), // Placeholder for special piece placement
+              ));
             } else if (moveStr.length == 2 &&
                 RegExp(r'^[a-g][1-8]$').hasMatch(moveStr)) {
               // Place format: "d5", "a1"
@@ -631,6 +688,16 @@ class Engine {
                 move: moveStr,
                 outcome: outcome,
                 toSquare: pgn.Square(moveStr),
+              ));
+            } else if (moveStr.length == 1 &&
+                (moveStr == "O" || moveStr == "@")) {
+              // Normal piece placement for Zhuolu Chess
+              // Use a placeholder square since normal pieces in Zhuolu Chess don't specify target square
+              results.add(MoveAnalysisResult(
+                move: moveStr,
+                outcome: outcome,
+                toSquare: const pgn.Square(
+                    "a1"), // Placeholder for normal piece placement
               ));
             } else {
               logger.w("$_logTag Unrecognized move format: $moveStr");

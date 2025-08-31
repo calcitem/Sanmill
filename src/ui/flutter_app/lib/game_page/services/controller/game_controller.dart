@@ -19,7 +19,8 @@ class GameController {
   factory GameController() => instance;
 
   GameController._() {
-    _init(GameMode.humanVsAi);
+    // Initialize with safe defaults to avoid LateInitializationError
+    _initializeDefaults();
   }
 
   static const String _logTag = "[Controller]";
@@ -72,6 +73,9 @@ class GameController {
 
   final AnnotationManager annotationManager = AnnotationManager();
 
+  // Reference to setup position toolbar state for Zhuolu Chess special piece handling
+  dynamic setupPositionToolbarState;
+
   String? _initialSharingMoveList;
   ValueNotifier<String?> initialSharingMoveListNotifier =
       ValueNotifier<String?>(null);
@@ -88,8 +92,10 @@ class GameController {
   late AnimationManager animationManager;
 
   bool _isInitialized = false;
+  bool _gameLogicInitialized = false;
 
   bool get initialized => _isInitialized;
+  bool get gameLogicInitialized => _gameLogicInitialized;
 
   bool get isPositionSetup => gameRecorder.setupPosition != null;
 
@@ -98,16 +104,44 @@ class GameController {
   @visibleForTesting
   static GameController instance = GameController._();
 
+  /// Initialize basic objects with safe defaults to avoid LateInitializationError
+  void _initializeDefaults() {
+    gameInstance = Game(gameMode: GameMode.humanVsAi);
+    engine = Engine();
+    // Initialize position without calling reset() to avoid circular dependency
+    position = Position();
+    setupPosition = Position(); // SetupPosition is an extension on Position
+    gameRecorder = GameRecorder(lastPositionWithRemove: '');
+  }
+
   /// S.of(context).starts up the controller. It will initialize the audio subsystem and heat the engine.
   Future<void> startController() async {
     if (_isInitialized) {
       return;
     }
 
+    // Complete game logic initialization if not already done
+    if (!_gameLogicInitialized) {
+      _completeInitialization();
+      _gameLogicInitialized = true;
+    }
+
     await SoundManager().loadSounds();
 
     _isInitialized = true;
     logger.i("$_logTag initialized");
+  }
+
+  /// Complete the initialization process after basic objects are created
+  void _completeInitialization() {
+    // Now it's safe to call reset() since GameController is already partially initialized
+    position.reset();
+    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
+
+    _startGame();
+
+    // Reset player timer
+    PlayerTimer().reset();
   }
 
   /// Determines the local player's color based on whether they are Host or Client
@@ -367,7 +401,17 @@ class GameController {
     }
 
     // Reinitialize game objects
-    _init(gameModeBak);
+    gameInstance = Game(gameMode: gameModeBak);
+    engine = Engine();
+    position = Position();
+    position.reset();
+    setupPosition = Position();
+    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
+
+    _startGame();
+
+    // Reset player timer
+    PlayerTimer().reset();
 
     lanHostPlaysWhite = savedHostPlaysWhite;
 
@@ -395,20 +439,17 @@ class GameController {
   ///
   /// This method is suitable to use for starting a new game.
   void _startGame() {
-    // Placeholder for future implementation
+    // For Zhuolu Chess, initialize special pieces but don't auto-select
+    if (DB().ruleSettings.zhuoluMode) {
+      // Special piece selection will be handled by the UI when the game page loads
+    }
   }
 
-  void _init(GameMode mode) {
-    position = Position();
-    position.reset();
-    gameInstance = Game(gameMode: mode);
-    engine = Engine();
-    gameRecorder = GameRecorder(lastPositionWithRemove: position.fen);
-
-    _startGame();
-
-    // Reset player timer
-    PlayerTimer().reset();
+  /// Start Zhuolu Chess with special piece selection
+  Future<void> startZhuoluGame(BuildContext context) async {
+    if (shouldStartSpecialPieceSelection()) {
+      await startSpecialPieceSelection(context);
+    }
   }
 
   /// S.of(context).starts a LAN game, either as a host or a client.
@@ -782,6 +823,8 @@ class GameController {
 
       try {
         logger.t("$tag Searching..., isMoveNow: $isMoveNow");
+
+        // For Zhuolu Chess, AI piece selection is handled by the engine
 
         if (position.pieceOnBoardCount[PieceColor.black]! > 0) {
           isEngineInDelay = true;

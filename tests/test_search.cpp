@@ -131,7 +131,7 @@ TEST_F(SearchTest, ShallowAlphaBetaSearch)
     // If no moves, search might return some fallback. bestMove might remain
     // MOVE_NONE.
     SUCCEED() << "search() returned " << static_cast<int>(val)
-              << " bestMove=" << UCI::move(bestMove);
+              << " bestMove=" << UCI::move(bestMove, nullptr);
 }
 
 // Test MTD(f) with a trivial first guess
@@ -153,7 +153,7 @@ TEST_F(SearchTest, MTDfSearch)
     EXPECT_LE(val, VALUE_INFINITE);
 
     SUCCEED() << "MTD(f) returned " << static_cast<int>(val)
-              << ", bestMove=" << UCI::move(bestMove);
+              << ", bestMove=" << UCI::move(bestMove, nullptr);
 }
 
 // (Optional) If you wish to test principal variation search specifically
@@ -183,7 +183,7 @@ TEST_F(SearchTest, PrincipalVariationSearch)
     EXPECT_GE(val, -VALUE_INFINITE);
     EXPECT_LE(val, VALUE_INFINITE);
     SUCCEED() << "pvs returned " << static_cast<int>(val)
-              << ", bestMove=" << UCI::move(bestMove);
+              << ", bestMove=" << UCI::move(bestMove, nullptr);
 }
 
 } // namespace

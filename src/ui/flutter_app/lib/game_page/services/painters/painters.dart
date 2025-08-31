@@ -18,6 +18,7 @@ import '../../../appearance_settings/models/color_settings.dart';
 import '../../../appearance_settings/models/display_settings.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/environment_config.dart';
+import '../../../shared/services/language_locale_mapping.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../widgets/board/analysis_renderer.dart';
 import '../analysis_mode.dart';

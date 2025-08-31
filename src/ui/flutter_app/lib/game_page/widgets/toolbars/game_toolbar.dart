@@ -18,6 +18,7 @@ import 'package:flutter/services.dart';
 import '../../../generated/intl/l10n.dart';
 import '../../../rule_settings/models/rule_settings.dart';
 import '../../../shared/database/database.dart';
+import '../../../shared/services/language_locale_mapping.dart';
 import '../../../shared/services/logger.dart';
 import '../../../shared/services/screenshot_service.dart';
 import '../../../shared/utils/helpers/string_helpers/string_buffer_helper.dart';
