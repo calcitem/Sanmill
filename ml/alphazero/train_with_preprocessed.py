@@ -634,13 +634,26 @@ def train_with_preprocessed_data(args, config=None):
         if config.preprocessed_training:
             pc = config.preprocessed_training
 
-            # Enable model compilation for PyTorch 2.0+
+            # Enable model compilation for PyTorch 2.0+ (with Windows compatibility check)
             if pc.compile_model and hasattr(torch, 'compile'):
                 try:
-                    neural_network.net = torch.compile(neural_network.net)
-                    print("✅ Model compilation enabled (PyTorch 2.0+)")
+                    import platform
+                    # Check if Triton is available (required for torch.compile)
+                    try:
+                        import triton
+                        triton_available = True
+                    except ImportError:
+                        triton_available = False
+                    
+                    if not triton_available and platform.system() == 'Windows':
+                        print("⚠️  Triton not available on Windows, skipping model compilation")
+                        print("   Model will run without torch.compile optimization")
+                    else:
+                        neural_network.net = torch.compile(neural_network.net)
+                        print("✅ Model compilation enabled (PyTorch 2.0+)")
                 except Exception as e:
                     print(f"⚠️  Model compilation failed: {e}")
+                    print("   Continuing without model compilation...")
 
             # Configure mixed precision training
             if pc.mixed_precision and device == 'cuda':
