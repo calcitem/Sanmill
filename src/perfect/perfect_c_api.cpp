@@ -313,7 +313,8 @@ PD_API int pd_sector_next(int handle, int *outWhiteBits, int *outBlackBits,
         board b = state.hash->inverse_hash(state.current_index);
 
         // Check if inverse_hash operation was successful
-        // (假设 inverse_hash 在出错时返回特殊值或设置错误标志)
+        // (assuming inverse_hash returns a special value or sets an error flag
+        // on error)
         if (!state.hash || state.current_index >= state.total_count) {
             state.current_index++;
             continue;
