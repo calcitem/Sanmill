@@ -26,6 +26,7 @@ import '../services/import_export/pgn.dart';
 import '../services/mill.dart';
 import 'cat_fishing_game.dart';
 import 'mini_board.dart';
+import 'saved_games_page.dart';
 
 // Key for the LLM prompt dialog screen
 const String _kLlmPromptDialogKey = 'llm_prompt_dialog';
@@ -129,10 +130,17 @@ class MovesListPageState extends State<MovesListPage> {
 
   /// Helper method to load a game, then refresh.
   Future<void> _loadGame() async {
-    await GameController.load(context, shouldPop: false);
-    // Wait briefly, then refresh our list of nodes.
+    // Navigate to SavedGamesPage to pick a PGN with previews
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) => const SavedGamesPage(),
+      ),
+    );
+    // After returning, refresh our list of nodes (game may have changed)
     await Future<void>.delayed(const Duration(milliseconds: 500));
-    setState(_refreshAllNodes);
+    if (mounted) {
+      setState(_refreshAllNodes);
+    }
   }
 
   /// Helper method to import a game, then refresh.

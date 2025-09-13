@@ -16,6 +16,7 @@ import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
 import '../../services/mill.dart';
 import '../game_page.dart';
+import '../saved_games_page.dart';
 
 // ignore: unused_element
 class GameOptionsModal extends StatelessWidget {
@@ -110,7 +111,11 @@ class GameOptionsModal extends StatelessWidget {
             key: const Key('load_game_option'),
             onPressed: () {
               GameController().loadedGameFilenamePrefix = null;
-              GameController.load(context);
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => const SavedGamesPage(),
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 2.0),
