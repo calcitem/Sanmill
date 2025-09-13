@@ -188,7 +188,7 @@ def sample_positions(game: Game, num_samples: int, max_plies: int = 60, non_opti
 
 def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: int = 256,
                                       verbose: bool = False, curriculum_stage: int = 3) -> List[Tuple[list, int, list, int]]:
-    """直接使用 Perfect DB DLL 进行标注（不再调用引擎）。
+    """Use Perfect DB DLL directly for labeling (no longer call engine).
 
     Args:
         curriculum_stage: 1=placing only, 2=moving only, 3=full rules
@@ -196,17 +196,17 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
     """
     game = Game()
     pdb = PerfectDB()
-    # 固定 std 9 子变体，路径固定
+    # Fixed std 9-piece variant, fixed path
     if not db_path:
         db_path = r"E:\\Malom\\Malom_Standard_Ultra-strong_1.1.0\\Std_DD_89adjusted"
     pdb.init(db_path)
 
     def _labels_from_db(board: Board, cur_player: int) -> Dict[str, Dict]:
-        # onlyTake: 置于吃子子阶段
+        # onlyTake: set to capture phase
         only_take = (board.period == 3)
         try:
             wdl, steps = pdb.evaluate(board, cur_player, only_take)
-            # 获取 good moves tokens
+            # Get good moves tokens
             tokens = pdb.good_moves_tokens(board, cur_player, only_take)
             labels: Dict[str, Dict] = {}
             if wdl > 0:
@@ -215,7 +215,7 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
                 lab = 'loss'
             else:
                 lab = 'draw'
-            # 均匀为相同标签；steps 同用整体返回（若不可得，为 -1）
+            # Uniform same labels; steps returned as whole (if unavailable, -1)
             for t in tokens:
                 labels[t] = {"wdl": lab, "value": 0, "steps": (None if steps < 0 else steps)}
             return labels
@@ -241,7 +241,7 @@ def build_dataset_with_perfect_labels(db_path: str, total_examples: int, batch: 
             if verbose:
                 print(f"[Verbose] Sampled {len(positions)} positions")
             for board, curPlayer, move_tokens in positions:
-                # 直接调用 Perfect DB
+                # Call Perfect DB directly
                 labels = _labels_from_db(board, curPlayer)
                 if verbose and debug_printed < 8:
                     print(f"[Verbose] DB labels: {len(labels)} entries")

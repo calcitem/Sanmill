@@ -56,11 +56,11 @@ class PerfectTeacherPlayer:
         log.info(f"[TEACHER DEBUG] Move history length: {len(engine_move_history)}, last 3: {engine_move_history[-3:]}")
         log.info(f"[TEACHER DEBUG] Board state - Put pieces: {board.put_pieces}, W: {board.count(1)}, B: {board.count(-1)}")
         
-        # 直接用 DB，不保留任何引擎兜底，异常时抛出
+        # Use DB directly, no engine fallback, throw exception on error
         labels = self._labels_from_db(board, curPlayer)
         if not labels:
             raise RuntimeError("Perfect DB returned no labels")
-        # 选优先级：win > draw > loss（与监督构造一致）
+        # Selection priority: win > draw > loss (consistent with supervised construction)
         wins = [t for t, p in labels.items() if p.get('wdl') == 'win']
         draws = [t for t, p in labels.items() if p.get('wdl') == 'draw']
         losses = [t for t, p in labels.items() if p.get('wdl') == 'loss']

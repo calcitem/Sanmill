@@ -70,7 +70,7 @@ def test_model():
 if __name__ == "__main__":
     success = test_model()
     if success:
-        print("\n🎉 训练成果测试成功！")
-        print("模型可以正常加载和推理")
+        print("\n🎉 Training result test successful!")
+        print("Model can be loaded and perform inference normally")
     else:
-        print("\n❌ 测试失败")
+        print("\n❌ Test failed")

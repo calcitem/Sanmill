@@ -1340,7 +1340,7 @@ class NNUEGameGUI:
         """Start the GUI game"""
         self.root = self.tk.Tk()
         self.root.title("Sanmill NNUE - Human vs AI")
-        self.root.geometry("700x850")  # 增加高度以容纳评估显示
+        self.root.geometry("700x850")  # Increase height to accommodate evaluation display
         
         # Status label
         self.status_label = self.tk.Label(self.root, text="Game started", font=("Arial", 12))
@@ -1351,7 +1351,7 @@ class NNUEGameGUI:
         eval_frame.pack(pady=5)
         
         # Evaluation label
-        self.eval_label = self.tk.Label(eval_frame, text="NNUE 评估: 计算中...", 
+        self.eval_label = self.tk.Label(eval_frame, text="NNUE Evaluation: Calculating...", 
                                        font=("Arial", 14, "bold"), fg="#333")
         self.eval_label.pack()
         
@@ -1363,7 +1363,7 @@ class NNUEGameGUI:
         self.eval_canvas.pack()
         
         # Human perspective indicator
-        self.perspective_label = self.tk.Label(eval_frame, text="(Human 视角)", 
+        self.perspective_label = self.tk.Label(eval_frame, text="(Human Perspective)", 
                                              font=("Arial", 10), fg="#666")
         self.perspective_label.pack()
         
@@ -1599,90 +1599,90 @@ class NNUEGameGUI:
                 return f"Last: {player_name} {from_coord}-{to_coord}"
     
     def get_human_perspective_evaluation(self) -> float:
-        """计算从 Human 视角下的局面评估值"""
+        """Calculate position evaluation from Human perspective"""
         if self.game_over:
             return 0.0
             
-        # 获取原始 NNUE 评估
+        # Get raw NNUE evaluation
         raw_evaluation = self.nnue_player.evaluate_position(self.game_state)
         
-        # 转换为 Human 视角的评估值
-        # Human 玩家的 player_value 是 self.human_player_value (1 或 -1)
-        # 如果 Human 是白棋 (player_value = 1)，直接使用评估值
-        # 如果 Human 是黑棋 (player_value = -1)，取相反数
+        # Convert to Human perspective evaluation
+        # Human player's player_value is self.human_player_value (1 or -1)
+        # If Human is white (player_value = 1), use evaluation directly
+        # If Human is black (player_value = -1), negate the evaluation
         if self.human_player_value == 1:
-            # Human 是白棋，正数对 Human 有利
+            # Human is white, positive values favor Human
             return raw_evaluation
         else:
-            # Human 是黑棋，负数对 Human 有利，所以取相反数
+            # Human is black, negative values favor Human, so negate
             return -raw_evaluation
     
     def update_evaluation_display(self):
-        """更新评估值显示"""
+        """Update evaluation display"""
         if self.game_over:
-            self.eval_label.config(text="NNUE 评估: 游戏结束")
+            self.eval_label.config(text="NNUE Evaluation: Game Over")
             self.eval_canvas.delete("all")
             return
             
-        # 计算 Human 视角的评估值
+        # Calculate Human perspective evaluation
         self.current_evaluation = self.get_human_perspective_evaluation()
         
-        # 格式化显示文本
+        # Format display text
         if abs(self.current_evaluation) > 10:
-            # 极端优势
-            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (决定性优势)"
+            # Decisive advantage
+            eval_text = f"NNUE Evaluation: {self.current_evaluation:+.1f} (Decisive)"
         elif abs(self.current_evaluation) > 3:
-            # 明显优势
-            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (明显优势)"
+            # Clear advantage
+            eval_text = f"NNUE Evaluation: {self.current_evaluation:+.1f} (Clear)"
         elif abs(self.current_evaluation) > 1:
-            # 轻微优势
-            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (轻微优势)"
+            # Slight advantage
+            eval_text = f"NNUE Evaluation: {self.current_evaluation:+.1f} (Slight)"
         else:
-            # 均势
-            eval_text = f"NNUE 评估: {self.current_evaluation:+.1f} (均势)"
+            # Equal position
+            eval_text = f"NNUE Evaluation: {self.current_evaluation:+.1f} (Equal)"
             
         self.eval_label.config(text=eval_text)
         
-        # 更新评估进度条
+        # Update evaluation bar
         self.draw_evaluation_bar()
     
     def draw_evaluation_bar(self):
-        """绘制评估值进度条"""
+        """Draw evaluation progress bar"""
         self.eval_canvas.delete("all")
         
-        # 进度条配置
+        # Progress bar configuration
         bar_width = 300
         bar_height = 20
         
-        # 将评估值映射到 [-1, 1] 范围，使用 tanh 函数平滑映射
+        # Map evaluation to [-1, 1] range using tanh function for smooth mapping
         import math
-        normalized_eval = math.tanh(self.current_evaluation / 3.0)  # 3.0 是缩放因子
+        normalized_eval = math.tanh(self.current_evaluation / 3.0)  # 3.0 is scaling factor
         
-        # 计算进度条位置
+        # Calculate progress bar position
         center_x = bar_width // 2
-        bar_position = center_x + (normalized_eval * center_x * 0.9)  # 0.9 留边距
+        bar_position = center_x + (normalized_eval * center_x * 0.9)  # 0.9 leaves margin
         
-        # 绘制背景
+        # Draw background
         self.eval_canvas.create_rectangle(0, 0, bar_width, bar_height, 
                                         fill="#e0e0e0", outline="#ccc")
         
-        # 绘制中线
+        # Draw center line
         self.eval_canvas.create_line(center_x, 0, center_x, bar_height, 
                                    fill="#888", width=2)
         
-        # 绘制评估值指示器
+        # Draw evaluation indicator
         if normalized_eval > 0:
-            # Human 优势，绿色
+            # Human advantage, green
             color = "#4CAF50"
             self.eval_canvas.create_rectangle(center_x, 2, bar_position, bar_height - 2,
                                             fill=color, outline=color)
         else:
-            # Human 劣势，红色  
+            # Human disadvantage, red
             color = "#f44336"
             self.eval_canvas.create_rectangle(bar_position, 2, center_x, bar_height - 2,
                                             fill=color, outline=color)
         
-        # 添加刻度标记
+        # Add scale marks
         for i in [-1, -0.5, 0, 0.5, 1]:
             x = center_x + (i * center_x * 0.9)
             self.eval_canvas.create_line(x, bar_height - 5, x, bar_height, 
