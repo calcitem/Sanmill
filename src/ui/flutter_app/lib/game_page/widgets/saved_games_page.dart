@@ -7,6 +7,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -49,6 +50,7 @@ class SavedGamesPage extends StatefulWidget {
 class _SavedGamesPageState extends State<SavedGamesPage> {
   final List<SavedGameEntry> _entries = <SavedGameEntry>[];
   bool _loading = true;
+  bool _isReversedOrder = false;
 
   @override
   void initState() {
@@ -79,7 +81,8 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     files.sort((File a, File b) {
       final DateTime am = a.lastModifiedSync();
       final DateTime bm = b.lastModifiedSync();
-      return bm.compareTo(am);
+      // Sort by modification time, newest first by default
+      return _isReversedOrder ? am.compareTo(bm) : bm.compareTo(am);
     });
 
     final List<SavedGameEntry> initial = files
@@ -326,6 +329,27 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
   }
 
+  /// Delete a saved game file
+  Future<void> _deleteGame(SavedGameEntry e) async {
+    try {
+      final File file = File(e.path);
+      if (file.existsSync()) {
+        await file.delete();
+        // Remove from list and refresh UI
+        setState(() {
+          _entries.remove(e);
+        });
+      }
+    } catch (error) {
+      // Show error message using existing localized text
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).error(error.toString()))),
+        );
+      }
+    }
+  }
+
   Future<void> _openGame(SavedGameEntry e) async {
     await LoadService.loadGame(context, e.path, isRunning: true);
     // Close the SavedGamesPage after loading the game
@@ -344,6 +368,31 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
           style: AppTheme.appBarTheme.titleTextStyle,
         ),
         actions: <Widget>[
+          // Sort order button
+          IconButton(
+            icon: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              transitionBuilder: (Widget child, Animation<double> anim) =>
+                  ScaleTransition(scale: anim, child: child),
+              child: _isReversedOrder
+                  ? const Icon(
+                      FluentIcons.arrow_sort_up_24_regular,
+                      key: ValueKey<String>('ascending'),
+                    )
+                  : const Icon(
+                      FluentIcons.arrow_sort_down_24_regular,
+                      key: ValueKey<String>('descending'),
+                    ),
+            ),
+            onPressed: () {
+              setState(() {
+                _isReversedOrder = !_isReversedOrder;
+              });
+              // Refresh the list with new sort order
+              _refresh();
+            },
+          ),
+          // Share button
           IconButton(
             icon: const Icon(Icons.share),
             tooltip: S.of(context).exportGame,
@@ -369,114 +418,157 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                     // Format date according to user's locale without milliseconds
                     final String subtitle =
                         DateFormat.yMd().add_Hms().format(e.modified.toLocal());
-                    return InkWell(
-                      onTap: () => _openGame(e),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 6.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: DB().colorSettings.darkBackgroundColor,
-                            borderRadius: BorderRadius.circular(4),
-                            boxShadow: const <BoxShadow>[
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 2,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: <Widget>[
-                              // Left: MiniBoard preview
-                              SizedBox(
-                                width: 100,
-                                height: 100,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: e.boardLayout != null &&
-                                          e.boardLayout!.isNotEmpty
-                                      ? MiniBoard(
-                                          boardLayout: e.boardLayout!,
-                                        )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                            color: DB()
-                                                .colorSettings
-                                                .boardBackgroundColor,
-                                            borderRadius: BorderRadius.circular(
-                                                DB()
-                                                    .displaySettings
-                                                    .boardCornerRadius),
-                                          ),
-                                          child: e.error == null
-                                              ? const SizedBox(
-                                                  width: 18,
-                                                  height: 18,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                          strokeWidth: 2),
-                                                )
-                                              : Icon(
-                                                  Icons.error_outline,
-                                                  color: DB()
-                                                      .colorSettings
-                                                      .pieceHighlightColor,
-                                                ),
-                                        ),
+                    return Dismissible(
+                      key: Key(e.path),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.only(right: 20.0),
+                        color: Colors.red,
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                      confirmDismiss: (DismissDirection direction) async {
+                        // Show confirmation dialog before deleting
+                        return await showDialog<bool>(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text(S.of(context).confirm),
+                                  content: Text(
+                                      '${S.of(context).delete} ${e.filename}'),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: Text(S.of(context).cancel),
+                                    ),
+                                    TextButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(true),
+                                      child: Text(S.of(context).delete),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ) ??
+                            false;
+                      },
+                      onDismissed: (DismissDirection direction) {
+                        _deleteGame(e);
+                      },
+                      child: InkWell(
+                        onTap: () => _openGame(e),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 6.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: DB().colorSettings.darkBackgroundColor,
+                              borderRadius: BorderRadius.circular(4),
+                              boxShadow: const <BoxShadow>[
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 2,
+                                  offset: Offset(2, 2),
                                 ),
-                              ),
-                              // Right: file info
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0, horizontal: 8.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        title,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          color: textColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 6),
-                                      Text(
-                                        subtitle,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            color: textColor.withAlpha(180),
-                                            fontSize: 12),
-                                      ),
-                                      if (e.error != null) ...<Widget>[
-                                        const SizedBox(height: 8),
-                                        Text(
-                                          e.error!,
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
+                              ],
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                // Left: MiniBoard preview
+                                SizedBox(
+                                  width: 100,
+                                  height: 100,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: e.boardLayout != null &&
+                                            e.boardLayout!.isNotEmpty
+                                        ? MiniBoard(
+                                            boardLayout: e.boardLayout!,
+                                          )
+                                        : Container(
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
                                               color: DB()
                                                   .colorSettings
-                                                  .pieceHighlightColor,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    ],
+                                                  .boardBackgroundColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(DB()
+                                                      .displaySettings
+                                                      .boardCornerRadius),
+                                            ),
+                                            child: e.error == null
+                                                ? const SizedBox(
+                                                    width: 18,
+                                                    height: 18,
+                                                    child:
+                                                        CircularProgressIndicator(
+                                                            strokeWidth: 2),
+                                                  )
+                                                : Icon(
+                                                    Icons.error_outline,
+                                                    color: DB()
+                                                        .colorSettings
+                                                        .pieceHighlightColor,
+                                                  ),
+                                          ),
                                   ),
                                 ),
-                              ),
-                              IconButton(
-                                icon: const Icon(Icons.chevron_right),
-                                color: textColor,
-                                onPressed: () => _openGame(e),
-                              ),
-                            ],
+                                // Right: file info
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 12.0, horizontal: 8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          title,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: textColor,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          subtitle,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: textColor.withAlpha(180),
+                                              fontSize: 12),
+                                        ),
+                                        if (e.error != null) ...<Widget>[
+                                          const SizedBox(height: 8),
+                                          Text(
+                                            e.error!,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color: DB()
+                                                    .colorSettings
+                                                    .pieceHighlightColor,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.chevron_right),
+                                  color: textColor,
+                                  onPressed: () => _openGame(e),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
