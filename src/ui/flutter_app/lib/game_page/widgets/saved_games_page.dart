@@ -350,6 +350,75 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     }
   }
 
+  /// Rename a saved game file
+  Future<void> _renameGame(SavedGameEntry e) async {
+    final TextEditingController controller = TextEditingController();
+    // Extract filename without extension for editing
+    final String currentName = p.basenameWithoutExtension(e.filename);
+    controller.text = currentName;
+
+    final String? newName = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(S.of(context).filename),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: S.of(context).filename,
+              suffixText: '.pgn',
+            ),
+            autofocus: true,
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text(S.of(context).cancel),
+            ),
+            TextButton(
+              onPressed: () =>
+                  Navigator.of(context).pop(controller.text.trim()),
+              child: Text(S.of(context).ok),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (newName == null || newName.isEmpty || newName == currentName) {
+      return; // User cancelled or no change
+    }
+
+    try {
+      final File oldFile = File(e.path);
+      final String newPath = p.join(p.dirname(e.path), '$newName.pgn');
+      final File newFile = File(newPath);
+
+      // Check if new filename already exists
+      if (newFile.existsSync()) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('File $newName.pgn already exists')),
+          );
+        }
+        return;
+      }
+
+      // Rename the file
+      await oldFile.rename(newPath);
+
+      // Refresh the entire list to reflect the rename
+      _refresh();
+    } catch (error) {
+      // Show error message using existing localized text
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).error(error.toString()))),
+        );
+      }
+    }
+  }
+
   Future<void> _openGame(SavedGameEntry e) async {
     await LoadService.loadGame(context, e.path, isRunning: true);
     // Close the SavedGamesPage after loading the game
@@ -420,8 +489,19 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                         DateFormat.yMd().add_Hms().format(e.modified.toLocal());
                     return Dismissible(
                       key: Key(e.path),
-                      direction: DismissDirection.endToStart,
+                      // Background for swipe right to left (delete)
                       background: Container(
+                        alignment: Alignment.centerLeft,
+                        padding: const EdgeInsets.only(left: 20.0),
+                        color: Colors.blue,
+                        child: const Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                      // Secondary background for swipe left to right (edit)
+                      secondaryBackground: Container(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.only(right: 20.0),
                         color: Colors.red,
@@ -432,33 +512,42 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                         ),
                       ),
                       confirmDismiss: (DismissDirection direction) async {
-                        // Show confirmation dialog before deleting
-                        return await showDialog<bool>(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: Text(S.of(context).confirm),
-                                  content: Text(
-                                      '${S.of(context).delete} ${e.filename}'),
-                                  actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: Text(S.of(context).cancel),
-                                    ),
-                                    TextButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: Text(S.of(context).delete),
-                                    ),
-                                  ],
-                                );
-                              },
-                            ) ??
-                            false;
+                        if (direction == DismissDirection.endToStart) {
+                          // Swipe left to right shows delete - need confirmation
+                          return await showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(S.of(context).confirm),
+                                    content: Text(
+                                        '${S.of(context).delete} ${e.filename}'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(false),
+                                        child: Text(S.of(context).cancel),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(true),
+                                        child: Text(S.of(context).delete),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ) ??
+                              false;
+                        } else {
+                          // Swipe right to left shows edit - no confirmation needed, just trigger rename
+                          _renameGame(e);
+                          return false; // Don't actually dismiss the item
+                        }
                       },
                       onDismissed: (DismissDirection direction) {
-                        _deleteGame(e);
+                        if (direction == DismissDirection.endToStart) {
+                          _deleteGame(e);
+                        }
+                        // Note: edit action is handled in confirmDismiss, so no action needed here
                       },
                       child: InkWell(
                         onTap: () => _openGame(e),
