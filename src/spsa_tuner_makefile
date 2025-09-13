@@ -1,0 +1,110 @@
+# SPSA Parameter Tuning System Makefile
+# To compile: make -f spsa_tuner_makefile
+
+CXX = g++
+CXXFLAGS = -std=c++17 -O3 -Wall -Wextra -pthread
+INCLUDES = -I. -I../include -Iperfect
+LDFLAGS = -pthread
+
+# Source files for SPSA tuner
+SPSA_SOURCES = spsa_tuner.cpp spsa_main.cpp
+CORE_SOURCES = position.cpp evaluate.cpp search.cpp search_engine.cpp \
+               movegen.cpp movepick.cpp option.cpp bitboard.cpp mills.cpp \
+               tt.cpp misc.cpp thread.cpp thread_pool.cpp rule.cpp \
+               engine_commands.cpp uci.cpp ucioption.cpp
+
+# Object files
+SPSA_OBJECTS = $(SPSA_SOURCES:.cpp=.o)
+CORE_OBJECTS = $(CORE_SOURCES:.cpp=.o)
+ALL_OBJECTS = $(SPSA_OBJECTS) $(CORE_OBJECTS)
+
+# Target executable
+TARGET = spsa_tuner
+
+# Default target
+all: $(TARGET)
+
+# Build the main executable
+$(TARGET): $(ALL_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+# Compile source files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# Clean build files
+clean:
+	rm -f $(ALL_OBJECTS) $(TARGET)
+
+# Install (copy to bin directory)
+install: $(TARGET)
+	mkdir -p ../bin
+	cp $(TARGET) ../bin/
+
+# Create example configuration files
+examples:
+	@echo "Creating example configuration files..."
+	@echo "# SPSA Configuration Example" > spsa_config_example.txt
+	@echo "# Learning rate parameter (typical range: 0.05-0.5)" >> spsa_config_example.txt
+	@echo "learning_rate=0.16" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Perturbation parameter (typical range: 0.01-0.1)" >> spsa_config_example.txt
+	@echo "perturbation=0.05" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Stability constant (typical range: 50-200)" >> spsa_config_example.txt
+	@echo "stability=100" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Learning rate decay exponent (recommended: 0.602)" >> spsa_config_example.txt
+	@echo "alpha=0.602" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Perturbation decay exponent (recommended: 0.101)" >> spsa_config_example.txt
+	@echo "gamma=0.101" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Maximum number of iterations" >> spsa_config_example.txt
+	@echo "max_iterations=1000" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Games per evaluation (more games = more accurate but slower)" >> spsa_config_example.txt
+	@echo "games_per_evaluation=100" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Maximum number of threads for parallel game playing" >> spsa_config_example.txt
+	@echo "max_threads=8" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Convergence detection parameters" >> spsa_config_example.txt
+	@echo "convergence_threshold=0.001" >> spsa_config_example.txt
+	@echo "convergence_window=50" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# File paths" >> spsa_config_example.txt
+	@echo "log_file=spsa_tuning.log" >> spsa_config_example.txt
+	@echo "checkpoint_file=spsa_checkpoint.txt" >> spsa_config_example.txt
+	@echo "checkpoint_frequency=10" >> spsa_config_example.txt
+	@echo "Created spsa_config_example.txt"
+	@echo ""
+	@echo "# Initial Parameters Example" > spsa_params_example.txt
+	@echo "# Format: name value min_value max_value perturbation_size is_integer" >> spsa_params_example.txt
+	@echo "exploration_parameter 0.500000 0.100000 2.000000 0.100000 0" >> spsa_params_example.txt
+	@echo "bias_factor 0.050000 0.000000 0.200000 0.010000 0" >> spsa_params_example.txt
+	@echo "alpha_beta_depth 6.000000 3.000000 12.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_inhand_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_onboard_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_needremove_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "mobility_weight 1.000000 0.000000 3.000000 0.100000 0" >> spsa_params_example.txt
+	@echo "Created spsa_params_example.txt"
+
+# Help target
+help:
+	@echo "SPSA Parameter Tuning System Makefile"
+	@echo ""
+	@echo "Targets:"
+	@echo "  all       - Build the SPSA tuner executable"
+	@echo "  clean     - Remove all build files"
+	@echo "  install   - Install the executable to ../bin/"
+	@echo "  examples  - Create example configuration files"
+	@echo "  help      - Show this help message"
+	@echo ""
+	@echo "Usage examples:"
+	@echo "  make -f spsa_tuner_makefile"
+	@echo "  make -f spsa_tuner_makefile examples"
+	@echo "  make -f spsa_tuner_makefile install"
+
+.PHONY: all clean install examples help

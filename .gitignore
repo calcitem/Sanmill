@@ -463,6 +463,9 @@ coverage/
 diff-files*.md
 /src/ui/flutter_app/screenshots
 
+# SPSA
+spsa_tuner
+
 # ML
 *.pth
 *.npz

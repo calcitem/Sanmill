@@ -685,6 +685,8 @@ help:
 	@echo "clean                   > Clean up"
 	@echo "test                    > Run unit tests with GoogleTest"
 	@echo "coverage                > Run tests and generate coverage report"
+	@echo "spsa                    > Build SPSA parameter tuning system"
+	@echo "spsa-examples           > Create SPSA example configuration files"
 	@echo ""
 	@echo "Supported archs:"
 	@echo ""
@@ -741,7 +743,7 @@ endif
 
 .PHONY: help build profile-build strip install clean coverage objclean profileclean \
 	config-sanity icc-profile-use icc-profile-make gcc-profile-use gcc-profile-make \
-	clang-profile-use clang-profile-make test check-gtest coverage-report net
+	clang-profile-use clang-profile-make test check-gtest coverage-report net spsa spsa-examples
 
 build: net config-sanity
 	$(MAKE) ARCH=$(ARCH) COMP=$(COMP) all
@@ -778,7 +780,7 @@ clean: objclean profileclean coverage-clean
 
 # clean binaries and objects
 objclean:
-	@rm -f $(EXE) $(TEST_EXE) *.o *.test.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o ./perfect/*.o ../tests/*.o
+	@rm -f $(EXE) $(TEST_EXE) $(SPSA_EXE) *.o *.test.o ./syzygy/*.o ./nnue/*.o ./nnue/features/*.o ./perfect/*.o ../tests/*.o
 
 # clean auxiliary profiling files and coverage data
 profileclean: coverage-clean
@@ -907,11 +909,19 @@ icc-profile-use:
 TEST_SRCS = $(wildcard ../tests/*.cpp)
 TEST_OBJS = $(TEST_SRCS:.cpp=.o)
 
+### Define SPSA tuner sources and objects
+SPSA_SRCS = spsa_tuner.cpp spsa_main.cpp
+SPSA_OBJS = $(SPSA_SRCS:.cpp=.o)
+# SPSA needs all core library objects including perfect database (excluding example and main)
+SPSA_LIB_OBJS = $(filter-out main.o spsa_tuner.o spsa_main.o spsa_example.o, $(OBJS))
+
 ### Define test executable name
 ifeq ($(COMP),mingw)
 	TEST_EXE = test_sanmill.exe
+	SPSA_EXE = spsa_tuner.exe
 else
 	TEST_EXE = test_sanmill
+	SPSA_EXE = spsa_tuner
 endif
 
 ### Define GoogleTest compiler and linker flags based on OS
@@ -1012,3 +1022,71 @@ coverage-clean:
 	@rm -f *.gcda *.gcno *.gcov
 	@rm -rf $(COVERAGE_DIR)
 	@rm -f $(COVERAGE_DIR)/coverage.html
+
+### ==========================================================================
+### Section 8. SPSA Parameter Tuning Support
+### ==========================================================================
+# The following section adds support for SPSA parameter tuning system.
+
+### Rule to build the SPSA tuner executable
+$(SPSA_EXE): $(SPSA_OBJS) $(SPSA_LIB_OBJS)
+	@echo "Linking SPSA tuner executable..."
+	$(CXX) -o $@ $(SPSA_OBJS) $(SPSA_LIB_OBJS) $(LDFLAGS)
+
+### Add a 'spsa' target to build SPSA tuner
+spsa: config-sanity $(SPSA_EXE)
+	@echo "SPSA parameter tuning system built successfully!"
+	@echo "Usage: ./$(SPSA_EXE) --help"
+
+### Add a 'spsa-examples' target to create example configuration files
+spsa-examples:
+	@echo "Creating SPSA example configuration files..."
+	@echo "# SPSA Configuration Example" > spsa_config_example.txt
+	@echo "# Learning rate parameter (typical range: 0.05-0.5)" >> spsa_config_example.txt
+	@echo "learning_rate=0.16" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Perturbation parameter (typical range: 0.01-0.1)" >> spsa_config_example.txt
+	@echo "perturbation=0.05" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Stability constant (typical range: 50-200)" >> spsa_config_example.txt
+	@echo "stability=100" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Learning rate decay exponent (recommended: 0.602)" >> spsa_config_example.txt
+	@echo "alpha=0.602" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Perturbation decay exponent (recommended: 0.101)" >> spsa_config_example.txt
+	@echo "gamma=0.101" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Maximum number of iterations" >> spsa_config_example.txt
+	@echo "max_iterations=1000" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Games per evaluation (more games = more accurate but slower)" >> spsa_config_example.txt
+	@echo "games_per_evaluation=100" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Maximum number of threads for parallel game playing" >> spsa_config_example.txt
+	@echo "max_threads=8" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# Convergence detection parameters" >> spsa_config_example.txt
+	@echo "convergence_threshold=0.001" >> spsa_config_example.txt
+	@echo "convergence_window=50" >> spsa_config_example.txt
+	@echo "" >> spsa_config_example.txt
+	@echo "# File paths" >> spsa_config_example.txt
+	@echo "log_file=spsa_tuning.log" >> spsa_config_example.txt
+	@echo "checkpoint_file=spsa_checkpoint.txt" >> spsa_config_example.txt
+	@echo "checkpoint_frequency=10" >> spsa_config_example.txt
+	@echo "Created spsa_config_example.txt"
+	@echo ""
+	@echo "# Initial Parameters Example" > spsa_params_example.txt
+	@echo "# Format: name value min_value max_value perturbation_size is_integer" >> spsa_params_example.txt
+	@echo "exploration_parameter 0.500000 0.100000 2.000000 0.100000 0" >> spsa_params_example.txt
+	@echo "bias_factor 0.050000 0.000000 0.200000 0.010000 0" >> spsa_params_example.txt
+	@echo "alpha_beta_depth 6.000000 3.000000 12.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_inhand_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_onboard_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "piece_needremove_value 5.000000 1.000000 20.000000 1.000000 1" >> spsa_params_example.txt
+	@echo "mobility_weight 1.000000 0.000000 3.000000 0.100000 0" >> spsa_params_example.txt
+	@echo "Created spsa_params_example.txt"
+	@echo ""
+	@echo "Example files created successfully!"
+	@echo "You can now run: make spsa && ./$(SPSA_EXE) --config spsa_config_example.txt --params spsa_params_example.txt"
