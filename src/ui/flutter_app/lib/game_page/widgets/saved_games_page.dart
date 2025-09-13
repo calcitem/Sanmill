@@ -6,11 +6,13 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../generated/intl/l10n.dart';
 import '../../shared/database/database.dart';
@@ -260,6 +262,70 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     return '';
   }
 
+  /// Create and share a zip file containing all PGN files from records directory
+  Future<void> _shareRecords() async {
+    try {
+      final Directory? recordsDir = await _recordsDirectory();
+      if (recordsDir == null || !recordsDir.existsSync()) {
+        // No records directory found, silently return
+        return;
+      }
+
+      // Get all PGN files
+      final List<File> pgnFiles = recordsDir
+          .listSync(recursive: true)
+          .whereType<File>()
+          .where((File f) => f.path.toLowerCase().endsWith('.pgn'))
+          .toList();
+
+      if (pgnFiles.isEmpty) {
+        // No PGN files found, silently return
+        return;
+      }
+
+      // Create zip archive
+      final Archive archive = Archive();
+
+      for (final File pgnFile in pgnFiles) {
+        final Uint8List fileBytes = await pgnFile.readAsBytes();
+        final String fileName = p.basename(pgnFile.path);
+        final ArchiveFile archiveFile =
+            ArchiveFile(fileName, fileBytes.length, fileBytes);
+        archive.addFile(archiveFile);
+      }
+
+      // Encode zip
+      final List<int> encodedBytes = ZipEncoder().encode(archive);
+      if (encodedBytes == null) {
+        throw Exception('Failed to encode archive');
+      }
+      final Uint8List zipBytes = Uint8List.fromList(encodedBytes);
+
+      // Create temporary zip file
+      final Directory tempDir = await getTemporaryDirectory();
+      final String timestamp =
+          DateFormat('yyyyMMdd_HHmmss').format(DateTime.now());
+      final String zipFileName = 'sanmill-records_$timestamp.zip';
+      final File zipFile = File(p.join(tempDir.path, zipFileName));
+      await zipFile.writeAsBytes(zipBytes);
+
+      // Share the zip file
+      await SharePlus.instance.share(
+        ShareParams(
+          files: <XFile>[XFile(zipFile.path)],
+          text: 'Sanmill saved games',
+        ),
+      );
+    } catch (e) {
+      // Show error message using existing localized text
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).error(e.toString()))),
+        );
+      }
+    }
+  }
+
   Future<void> _openGame(SavedGameEntry e) async {
     await LoadService.loadGame(context, e.path, isRunning: true);
     // Close the SavedGamesPage after loading the game
@@ -279,8 +345,9 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refresh,
+            icon: const Icon(Icons.share),
+            tooltip: S.of(context).exportGame,
+            onPressed: _shareRecords,
           ),
         ],
       ),
