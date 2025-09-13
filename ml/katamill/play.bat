@@ -1,0 +1,1 @@
+python -m pit_gui --model checkpoints/katamill/iter_1/katamill_latest.pth --mcts-sims 1600
