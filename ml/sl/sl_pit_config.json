@@ -1,5 +1,5 @@
 {
-  "model_path": "G:\\models_from_npz\\final_preprocessed_model.tar",
+  "model_path": "G:\\models_from_npz\\chunks\\chunk_checkpoint_e2_c11.tar",
   "mcts_sims": 800,
   "temperature": 0.0,
   "use_randomness": false,

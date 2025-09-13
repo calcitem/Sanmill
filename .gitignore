@@ -462,3 +462,8 @@ coverage/
 # diff-files
 diff-files*.md
 /src/ui/flutter_app/screenshots
+
+# ML
+*.pth
+*.npz
+*_report.json

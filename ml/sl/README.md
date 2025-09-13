@@ -10,7 +10,7 @@ train.bat
 
 ### Method 2: Direct Python Execution
 ```bash
-cd ml\alphazero
+cd ml\sl
 python train.py
 ```
 
@@ -19,7 +19,7 @@ python train.py
 The program automatically displays 3 training modes to choose from:
 
 1. **Quick Test** (5-10 minutes) - Verify environment setup
-2. **Standard Training** (1-2 hours) - Recommended for daily training  
+2. **Standard Training** (1-2 hours) - Recommended for daily training
 3. **Full Training** (4-8 hours) - Achieve best results
 
 ## 🔧 Encountering Issues?
@@ -33,7 +33,7 @@ python diagnose.py
 
 After training completion, model files are saved in:
 - `checkpoints_quick/` - Quick test mode
-- `checkpoints_standard/` - Standard training mode  
+- `checkpoints_standard/` - Standard training mode
 - `checkpoints_full/` - Full training mode
 
 ## 💡 Important Notes
@@ -49,7 +49,7 @@ That's it! 🚀
 ## 🚀 Complete High-Speed Preprocessing Command
 
 ```bash
-cd ml/alphazero
+cd ml/sl
 
 # Complete preprocessing of all sec2 files (no data loss)
 set AZ_PREFETCH_DB=1
@@ -123,7 +123,7 @@ echo %NUMBER_OF_PROCESSORS%
 
 # Recommended setting: 1-2 times the core count
 # 4 cores → --max-workers 4-8
-# 8 cores → --max-workers 8-16  
+# 8 cores → --max-workers 8-16
 # 16 cores → --max-workers 16-32
 ```
 
@@ -169,7 +169,7 @@ Expected output:
 
 📈 Game phase distribution:
   placement: 800 sectors, 20,000,000 positions
-  moving: 750 sectors, 25,000,000 positions  
+  moving: 750 sectors, 25,000,000 positions
   flying: 164 sectors, 8,000,000 positions
 ```
 
@@ -178,7 +178,7 @@ Expected output:
 ### 1. Disk Space Check
 ```bash
 # Check available space before preprocessing
-dir "preprocessed_data" 
+dir "preprocessed_data"
 # Ensure at least 1-2TB available space
 ```
 
@@ -221,3 +221,13 @@ python train.py --use-preprocessed-data "preprocessed_data"
 ```
 
 Now you can enjoy **complete and ultra-fast** training data! 🚀
+
+## Train
+
+python train_with_preprocessed.py --config train_with_preprocessed_config.json --data-dir "G:\preprocessed_data"
+
+python train_with_preprocessed.py --config train_with_preprocessed_fast.json --data-dir "G:\preprocessed_data"
+
+python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --epochs 15
+
+python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --checkpoint-dir "G:\models_from_npz"

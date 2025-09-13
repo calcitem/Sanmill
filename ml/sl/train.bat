@@ -32,6 +32,6 @@ echo [SUCCESS] Ready to start training
 echo.
 
 REM Run training
-python train.py
+ python train_with_preprocessed.py --config train_with_preprocessed_high_performance.json --data-dir "G:\preprocessed_data" --chunked-training --chunk-memory 16.0 --memory-threshold 32.0 --no-swap --checkpoint-dir "G:\models_from_npz"
 
 pause

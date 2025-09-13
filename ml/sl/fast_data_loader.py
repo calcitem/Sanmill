@@ -183,7 +183,9 @@ class FastDataLoader:
                           batch_size: int = 64,
                           shuffle: bool = True,
                           trap_ratio: float = 0.0,
-                          num_workers: int = 0) -> DataLoader:
+                          num_workers: int = 0,
+                          pin_memory: bool = None,
+                          prefetch_factor: int = 2) -> DataLoader:
         """
         Creates a PyTorch DataLoader.
 
