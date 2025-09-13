@@ -5,6 +5,7 @@
 
 #include "match_runner.h"
 #include "utils/logger.h"
+#include "core/sanmill_adapter.h"
 
 // Reuse existing Sanmill headers for game logic
 #include "mills.h"
@@ -123,9 +124,9 @@ GameResult MatchRunner::runGame(bool white_starts)
     Logger::debug("Starting game: White=" + white_player->getName() +
                   ", Black=" + black_player->getName());
 
-    // Initialize game position using existing Sanmill Position class
-    Position pos;
-    pos.reset(); // Initialize with default starting position
+    // Initialize game position using Sanmill adapter
+    SafePosition safe_pos;
+    Position& pos = safe_pos.get();
 
     // Use opening position if set
     if (use_opening_) {
@@ -280,18 +281,16 @@ Move MatchRunner::getEngineMove(MillEngineWrapper *engine, const Position &pos,
 
 bool MatchRunner::isGameOver(const Position &pos) const
 {
-    // Use existing Sanmill game over detection
-    // Note: check_if_game_is_over() is not const, so we create a copy
+    // Use Sanmill adapter for safe game over detection
     Position temp_pos = pos;
-    return temp_pos.check_if_game_is_over();
+    return SanmillAdapter::isGameOver(temp_pos);
 }
 
 GameResult::Result MatchRunner::evaluatePosition(const Position &pos) const
 {
-    // Use existing Sanmill position evaluation
-    // Note: evaluate() is in the Eval namespace and requires non-const Position
+    // Use Sanmill adapter for safe position evaluation
     Position temp_pos = pos;
-    Value eval = Eval::evaluate(temp_pos);
+    Value eval = SanmillAdapter::evaluatePosition(temp_pos);
 
     if (eval == VALUE_MATE) {
         return (pos.side_to_move() == WHITE) ? GameResult::Result::BLACK_WINS :
@@ -405,7 +404,7 @@ bool MatchRunner::shouldAdjudicateDraw(const Position &pos,
     // Simple draw adjudication based on move count and evaluation
     if (move_count > config_.draw_move_count) {
         Position temp_pos = pos;
-        Value eval = Eval::evaluate(temp_pos);
+        Value eval = SanmillAdapter::evaluatePosition(temp_pos);
         return std::abs(eval) < config_.draw_score_limit;
     }
 
@@ -414,10 +413,9 @@ bool MatchRunner::shouldAdjudicateDraw(const Position &pos,
 
 bool MatchRunner::shouldAdjudicateWin(const Position &pos) const
 {
-    // Use existing Sanmill win detection
-    // Note: check_if_game_is_over() is not const, so we create a copy
+    // Use Sanmill adapter for safe win detection
     Position temp_pos = pos;
-    return temp_pos.check_if_game_is_over();
+    return SanmillAdapter::isGameOver(temp_pos);
 }
 
 bool MatchRunner::isThreefoldRepetition(const Position &pos) const

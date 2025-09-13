@@ -10,6 +10,7 @@
 
 #include "mill_engine_wrapper.h"
 #include "utils/logger.h"
+#include "core/sanmill_adapter.h"
 
 #include <sstream>
 #include <thread>
@@ -461,10 +462,9 @@ Move MillEngineWrapper::parseBestMoveResponse(const std::string &line)
 
     iss >> token; // "bestmove"
     if (iss >> move_str) {
-        // Convert move string to Move using existing Sanmill functions
-        // Note: UCI::to_move requires a Position* parameter, so we return
-        // MOVE_NONE for now In a real implementation, we would need to maintain
-        // the current position
+        // For now, return MOVE_NONE as we would need the current position context
+        // In a full implementation, we would maintain the current position
+        // and use SanmillAdapter::stringToMove(move_str, current_position)
         return MOVE_NONE; // Placeholder - would need position context
     }
 

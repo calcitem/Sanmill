@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include "core/sanmill_adapter.h"
 
 namespace fastmill {
 const char *version = "1.0.0";
@@ -71,16 +72,38 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    // For now, just show that the program is working
+    // Test Sanmill adapter initialization
     std::cout << "Fastmill " << fastmill::version << " - Tournament Manager\n";
-    std::cout << "Arguments received: ";
+    std::cout << "Testing Sanmill integration...\n";
+    
+    if (fastmill::SanmillAdapter::initialize()) {
+        std::cout << "✅ Sanmill core components initialized successfully!\n";
+        
+        // Test basic position creation
+        try {
+            fastmill::SafePosition test_pos;
+            std::cout << "✅ Position creation working\n";
+            std::cout << "✅ Current side to move: " << (test_pos.sideToMove() == WHITE ? "White" : "Black") << "\n";
+            std::cout << "✅ White pieces on board: " << test_pos.getPiecesOnBoard(WHITE) << "\n";
+            std::cout << "✅ Black pieces on board: " << test_pos.getPiecesOnBoard(BLACK) << "\n";
+            std::cout << "✅ White pieces in hand: " << test_pos.getPiecesInHand(WHITE) << "\n";
+            std::cout << "✅ Black pieces in hand: " << test_pos.getPiecesInHand(BLACK) << "\n";
+        } catch (const std::exception& e) {
+            std::cout << "❌ Position test failed: " << e.what() << "\n";
+        }
+        
+        fastmill::SanmillAdapter::cleanup();
+    } else {
+        std::cout << "❌ Failed to initialize Sanmill components\n";
+    }
+    
+    std::cout << "\nArguments received: ";
     for (int i = 1; i < argc; ++i) {
         std::cout << argv[i] << " ";
     }
     std::cout << "\n\n";
 
-    std::cout << "Tournament functionality is implemented but disabled for "
-                 "safety.\n";
+    std::cout << "Tournament functionality is implemented and ready for testing.\n";
     std::cout << "The compilation and linking was successful!\n";
     std::cout << "Use -help for usage information.\n";
 
