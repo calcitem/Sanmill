@@ -1666,12 +1666,15 @@ void Position::surrounded_pieces_count(Square s, int &ourPieceCount,
                                        int &theirPieceCount, int &markedCount,
                                        int &emptyCount) const
 {
+    assert(s >= SQ_BEGIN && s < SQ_END);
     for (MoveDirection d = MD_BEGIN; d < MD_NB; ++d) {
         const Square moveSquare = MoveList<LEGAL>::adjacentSquares[s][d];
 
         if (!moveSquare) {
             continue;
         }
+
+        assert(moveSquare >= SQ_BEGIN && moveSquare < SQ_END);
 
         switch (const auto pieceType = board[moveSquare]) {
         case NO_PIECE:

@@ -40,6 +40,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
             pos.pieceInHandCount[pos.side_to_move()] == 0) {
             for (Square to = SQ_BEGIN; to < SQ_END; ++to) {
                 if (!board[to]) {
+                    assert(cur < moveList + MAX_MOVES);
                     *cur++ = make_move(from, to);
                 }
             }
@@ -58,6 +59,7 @@ ExtMove *generate<MOVE>(Position &pos, ExtMove *moveList)
                         }
                     }
 
+                    assert(cur < moveList + MAX_MOVES);
                     *cur++ = make_move(from, to);
                 }
             }
@@ -81,6 +83,7 @@ ExtMove *generate<PLACE>(Position &pos, ExtMove *moveList)
 
     for (auto s : MoveList<LEGAL>::movePriorityList) {
         if (!pos.get_board()[s]) {
+            assert(cur < moveList + MAX_MOVES);
             *cur++ = static_cast<Move>(s);
         }
     }
@@ -115,10 +118,12 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
                 // If removing own pieces, adjacency check may differ or be
                 // omitted
                 if (!removeOwnPieces && pos.is_adjacent_to(s, us)) {
+                    assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
                 }
                 // If removing own pieces, allow removal without adjacency
                 else if (removeOwnPieces) {
+                    assert(cur < moveList + MAX_MOVES);
                     *cur++ = static_cast<Move>(-s);
                 }
             }
@@ -134,6 +139,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
 
             // Check if the square has a piece of the color to remove
             if (pos.get_board()[s] & make_piece(removeColor)) {
+                assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
             }
         }
@@ -150,6 +156,7 @@ ExtMove *generate<REMOVE>(Position &pos, ExtMove *moveList)
             // or the piece is not part of a potential mill, allow removal
             if (rule.mayRemoveFromMillsAlways ||
                 !pos.potential_mills_count(s, NOBODY)) {
+                assert(cur < moveList + MAX_MOVES);
                 *cur++ = static_cast<Move>(-s);
             }
         }

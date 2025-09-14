@@ -53,6 +53,7 @@ void MovePicker::score()
 #endif // TT_MOVE_ENABLE
 
         const Square to = to_sq(m);
+        assert(to >= SQ_BEGIN && to < SQ_END);
         const Square from = from_sq(m);
 
         // if stat before moving, moving phrase maybe from @-0-@ to 0-@-@, but
