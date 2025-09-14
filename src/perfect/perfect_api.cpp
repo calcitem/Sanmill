@@ -15,6 +15,10 @@
 #include <string>
 #include <regex>
 
+#if defined(ENABLE_BENCHMARK)
+#include <mutex>
+#endif // ENABLE_BENCHMARK
+
 #if defined(__APPLE__)
 #include <unistd.h>
 #else
@@ -114,6 +118,27 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
         return 0; // Error already set by get_move_from_database
     }
 
+#if defined(ENABLE_BENCHMARK)
+    // THREAD SAFETY FIX: Remove deinitialize_if_needed() call from
+    // get_best_move
+    //
+    // PROBLEM: The original design called deinitialize_if_needed() after every
+    // get_best_move() call, which causes severe thread safety issues:
+    // - In multi-threaded benchmark, one thread calls deinitialize_if_needed()
+    // - This deletes perfectPlayer and calls Rules::cleanup_rules()
+    // - Other threads are still using these resources, causing memory
+    // corruption
+    //
+    // SOLUTION: Keep Perfect DB initialized throughout benchmark execution
+    // - Initialize once in main thread before starting worker threads
+    // - Keep resources alive during entire benchmark run
+    // - Only deinitialize when benchmark is completely finished
+    //
+    // This also fixes the performance issue mentioned in the TODO above.
+    // See: https://github.com/ggevay/malom/pull/3#discussion_r1349745071
+
+    // deinitialize_if_needed(); // REMOVED for thread safety and performance
+#else
     // TODO: Considering the performance-critical aspect of our applications,
     // it is advised to reconsider the frequent invocation of
     // deinitialize_if_needed() within each get_best_move call. Such a practice
@@ -123,9 +148,74 @@ int MalomSolutionAccess::get_best_move(int whiteBitboard, int blackBitboard,
     // should be explored to mitigate these costs.
     // https://github.com/ggevay/malom/pull/3#discussion_r1349745071
     deinitialize_if_needed();
+#endif // ENABLE_BENCHMARK
+
     return ret;
 }
 
+#if defined(ENABLE_BENCHMARK)
+// Helper function for initialization without exceptions
+// THREAD SAFETY: Uses std::call_once to ensure initialization happens only once
+bool MalomSolutionAccess::initialize_if_needed()
+{
+    using namespace PerfectErrors;
+
+    // Fast path: if already initialized, return immediately
+    if (perfectPlayer != nullptr) {
+        return true;
+    }
+
+    // Thread-safe initialization using std::call_once
+    static std::once_flag init_flag;
+    static bool init_success = false;
+
+    std::call_once(init_flag, []() {
+        clearError(); // Clear any previous errors
+
+        perfect_init();
+        secValPath = gameOptions.getPerfectDatabasePath();
+        Rules::init_rules();
+        set_variant_stripped();
+
+        if (!Sectors::has_database()) {
+            std::string currentPath;
+
+#if defined(__APPLE__)
+            char buffer[PATH_MAX];
+            if (getcwd(buffer, sizeof(buffer)) != NULL) {
+                currentPath = buffer;
+            } else {
+                currentPath = "Unknown";
+            }
+#else
+            currentPath = std::filesystem::current_path().string();
+#endif
+
+            SET_ERROR_MESSAGE(PE_DATABASE_NOT_FOUND, "Database files not found "
+                                                     "in "
+                                                     "the current working "
+                                                     "directory (" +
+                                                         currentPath + ")");
+            init_success = false;
+            return;
+        }
+
+        // Create the perfect player instance
+        // Note: No exception handling as compilation options don't support it
+        perfectPlayer = new PerfectPlayer();
+        if (perfectPlayer != nullptr) {
+            init_success = true;
+        } else {
+            // Handle allocation failure
+            SET_ERROR_MESSAGE(PE_RUNTIME_ERROR, "Failed to create "
+                                                "PerfectPlayer instance");
+            init_success = false;
+        }
+    });
+
+    return init_success && (perfectPlayer != nullptr);
+}
+#else // ENABLE_BENCHMARK
 // Helper function for initialization without exceptions
 bool MalomSolutionAccess::initialize_if_needed()
 {
@@ -164,6 +254,7 @@ bool MalomSolutionAccess::initialize_if_needed()
     perfectPlayer = new PerfectPlayer();
     return true;
 }
+#endif // ENABLE_BENCHMARK
 
 // Helper function to get move from database without exceptions
 int MalomSolutionAccess::get_move_from_database(const GameState &s,
@@ -411,7 +502,13 @@ PerfectEvaluation MalomSolutionAccess::get_detailed_evaluation(
     // Use the evaluation method without exceptions
     PerfectEvaluation result = get_detailed_evaluation(gameState);
 
+#if defined(ENABLE_BENCHMARK)
+    // THREAD SAFETY FIX: Remove deinitialize_if_needed() call
+    // Same reasoning as in get_best_move() - prevents thread safety issues
+    // deinitialize_if_needed(); // REMOVED for thread safety
+#else
     deinitialize_if_needed();
+#endif // ENABLE_BENCHMARK
 
     return result;
 }

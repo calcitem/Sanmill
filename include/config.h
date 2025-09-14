@@ -146,4 +146,8 @@ constexpr auto DEPTH_ADJUST = 0;
 #include "base.h"
 #endif
 
+#ifndef QT_GUI_LIB
+// #define ENABLE_BENCHMARK
+#endif
+
 #endif // INCLUDE_CONFIG_H_

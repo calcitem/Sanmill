@@ -15,6 +15,10 @@
 #include "search_engine.h"
 #include "self_play.h"
 
+#if defined(ENABLE_BENCHMARK)
+#include "benchmark.h"
+#endif // ENABLE_BENCHMARK
+
 #ifdef FLUTTER_UI
 #include "base.h"
 #include "command_channel.h"
@@ -134,6 +138,10 @@ void UCI::loop(int argc, char *argv[])
                  token == "analyze") {
             // Pass the entire command to EngineController
             engineController.handleCommand(cmd, pos);
+#if defined(ENABLE_BENCHMARK)
+        } else if (token == "benchmark" || token == "bench") {
+            Benchmark::run_from_cli(is);
+#endif // ENABLE_BENCHMARK
         }
 #ifdef SELF_PLAY
         else if (token == "selfplay") {

@@ -15,8 +15,17 @@
 #include <cstring>
 #include <map>
 
+// TODO: ENABLE_BENCHMARK is not required
+#if defined(ENABLE_BENCHMARK)
+#include <atomic>
+
+// We keep a tiny init flag to avoid double init/deinit in the same process
+// THREAD SAFETY: Use atomic flag to prevent race conditions
+static std::atomic<bool> g_pd_inited(false);
+#else
 // We keep a tiny init flag to avoid double init/deinit in the same process
 static bool g_pd_inited = false;
+#endif // ENABLE_BENCHMARK
 
 extern "C" {
 
