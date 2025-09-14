@@ -499,7 +499,7 @@ bool Position::legal(Move m) const
         return false;
     }
 
-    if (phase == Phase::moving && type_of(move) != MOVETYPE_REMOVE) {
+    if (phase == Phase::moving && type_of(m) != MOVETYPE_REMOVE) {
         if (color_of(moved_piece(m)) != us) {
             return false;
         }
