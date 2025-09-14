@@ -39,7 +39,10 @@ void MovePicker::score()
     int markedCount = 0;
     int emptyCount = 0;
 
-    for (cur = moves; cur->move != MOVE_NONE; cur++) {
+    // Safety fix: iterate over [moves, endMoves) instead of relying on
+    // MOVE_NONE sentinel. This avoids out-of-bounds when generate() fills
+    // exactly MAX_MOVES and no sentinel is set.
+    for (cur = moves; cur < endMoves; ++cur) {
         Move m = cur->move;
 
 #ifdef TT_MOVE_ENABLE
