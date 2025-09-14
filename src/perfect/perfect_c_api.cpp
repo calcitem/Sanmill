@@ -192,8 +192,12 @@ PD_API int pd_best_move(int whiteBits, int blackBits, int whiteStonesToPlace,
         return 0;
     if ((int)token.size() + 1 > outBufLen)
         return 0;
-    std::strncpy(outBuf, token.c_str(), outBufLen);
+#ifdef _WIN32
+    strncpy_s(outBuf, outBufLen, token.c_str(), _TRUNCATE);
+#else
+    std::strncpy(outBuf, token.c_str(), outBufLen - 1);
     outBuf[outBufLen - 1] = '\0';
+#endif
     return 1;
 }
 
