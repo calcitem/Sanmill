@@ -30,6 +30,8 @@ class SavedGameEntry {
     required this.modified,
     this.boardLayout,
     this.error,
+    this.isLoading = true,
+    this.previewTimedOut = false,
   });
 
   final String path;
@@ -37,6 +39,9 @@ class SavedGameEntry {
   final DateTime modified;
   String? boardLayout;
   String? error;
+  bool isLoading;
+  bool previewTimedOut;
+  Timer? timeoutTimer;
 }
 
 /// A page that lists saved PGN files with a MiniBoard preview.
@@ -51,6 +56,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   final List<SavedGameEntry> _entries = <SavedGameEntry>[];
   bool _loading = true;
   bool _isReversedOrder = false;
+  final Set<Timer> _previewTimeoutTimers = <Timer>{};
 
   @override
   void initState() {
@@ -58,7 +64,57 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
     _refresh();
   }
 
+  @override
+  void dispose() {
+    _cancelAllPreviewTimeouts();
+    super.dispose();
+  }
+
+  void _schedulePreviewTimeout(SavedGameEntry entry) {
+    entry.timeoutTimer?.cancel();
+    final Timer timer = Timer(const Duration(seconds: 3), () {
+      if (!mounted || !_entries.contains(entry)) {
+        _previewTimeoutTimers.remove(timer);
+        entry.timeoutTimer = null;
+        return;
+      }
+      if (!entry.isLoading) {
+        _previewTimeoutTimers.remove(timer);
+        entry.timeoutTimer = null;
+        return;
+      }
+      setState(() {
+        entry.isLoading = false;
+        entry.previewTimedOut = true;
+      });
+      _previewTimeoutTimers.remove(timer);
+      entry.timeoutTimer = null;
+    });
+    entry.timeoutTimer = timer;
+    _previewTimeoutTimers.add(timer);
+  }
+
+  void _clearEntryTimeout(SavedGameEntry entry) {
+    final Timer? timer = entry.timeoutTimer;
+    if (timer != null) {
+      timer.cancel();
+      _previewTimeoutTimers.remove(timer);
+      entry.timeoutTimer = null;
+    }
+  }
+
+  void _cancelAllPreviewTimeouts() {
+    for (final Timer timer in _previewTimeoutTimers) {
+      timer.cancel();
+    }
+    _previewTimeoutTimers.clear();
+    for (final SavedGameEntry entry in _entries) {
+      entry.timeoutTimer = null;
+    }
+  }
+
   Future<void> _refresh() async {
+    _cancelAllPreviewTimeouts();
     setState(() {
       _loading = true;
       _entries.clear();
@@ -97,6 +153,12 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
       _entries.addAll(initial);
     });
 
+    for (final SavedGameEntry entry in initial) {
+      entry.isLoading = true;
+      entry.previewTimedOut = false;
+      _schedulePreviewTimeout(entry);
+    }
+
     // Compute previews asynchronously
     for (int i = 0; i < _entries.length; i++) {
       final SavedGameEntry e = _entries[i];
@@ -106,16 +168,39 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
         if (!mounted) {
           return;
         }
-        setState(() {
-          e.boardLayout = layout ?? '';
-        });
+        if (!_entries.contains(e)) {
+          continue;
+        }
+        final String sanitizedLayout = layout ?? '';
+        if (sanitizedLayout.isNotEmpty) {
+          _clearEntryTimeout(e);
+          setState(() {
+            e.error = null;
+            e.boardLayout = sanitizedLayout;
+            e.isLoading = false;
+            e.previewTimedOut = false;
+          });
+        } else {
+          setState(() {
+            e.error = null;
+            e.boardLayout = '';
+            e.isLoading = true;
+            e.previewTimedOut = false;
+          });
+        }
       } catch (err) {
         if (!mounted) {
           return;
         }
+        if (!_entries.contains(e)) {
+          continue;
+        }
+        _clearEntryTimeout(e);
         setState(() {
           e.error = err.toString();
           e.boardLayout = '';
+          e.isLoading = false;
+          e.previewTimedOut = true;
         });
       }
     }
@@ -487,6 +572,8 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                     // Format date according to user's locale without milliseconds
                     final String subtitle =
                         DateFormat.yMd().add_Hms().format(e.modified.toLocal());
+                    final double contentOpacity =
+                        e.previewTimedOut ? 0.5 : 1.0;
                     return Dismissible(
                       key: Key(e.path),
                       // Background for swipe right to left (delete)
@@ -566,15 +653,18 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                 ),
                               ],
                             ),
-                            child: Row(
-                              children: <Widget>[
-                                // Left: MiniBoard preview
-                                SizedBox(
-                                  width: 100,
-                                  height: 100,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: e.boardLayout != null &&
+                            child: AnimatedOpacity(
+                              duration: const Duration(milliseconds: 250),
+                              opacity: contentOpacity,
+                              child: Row(
+                                children: <Widget>[
+                                  // Left: MiniBoard preview
+                                  SizedBox(
+                                    width: 100,
+                                    height: 100,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: e.boardLayout != null &&
                                             e.boardLayout!.isNotEmpty
                                         ? MiniBoard(
                                             boardLayout: e.boardLayout!,
@@ -591,13 +681,19 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                                       .boardCornerRadius),
                                             ),
                                             child: e.error == null
-                                                ? const SizedBox(
-                                                    width: 18,
-                                                    height: 18,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                            strokeWidth: 2),
-                                                  )
+                                                ? e.isLoading
+                                                    ? const SizedBox(
+                                                        width: 18,
+                                                        height: 18,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                                strokeWidth:
+                                                                    2),
+                                                      )
+                                                    : const SizedBox(
+                                                        width: 18,
+                                                        height: 18,
+                                                      )
                                                 : Icon(
                                                     Icons.error_outline,
                                                     color: DB()
@@ -605,6 +701,7 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                                         .pieceHighlightColor,
                                                   ),
                                           ),
+                                    ),
                                   ),
                                 ),
                                 // Right: file info
