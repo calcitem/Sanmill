@@ -14,3 +14,23 @@
 ## Documentation
 - After finishing your code changes, do not create new Markdown documents
   solely to summarize the modifications.
+
+## Code Quality and Style Guidelines
+
+### General Principles
+- Generated code should prioritize high maintainability, generality,
+  extensibility, and reusability.
+
+### Error Handling
+- Do not use try/catch blocks in C++ code.
+- Avoid fallback mechanisms in code to prevent hiding issues.
+- Use assertions for error handling instead of fallback schemes, so errors
+  are surfaced rather than masked.
+
+### Code Extension and Modification
+- When extending functionality, modify existing functions directly rather
+  than creating new "EnhancedXXX" functions or classes.
+- Avoid creating wrapper classes or functions with names like "EnhancedXXX"
+  as a way to extend existing code.
+- Prefer direct modification of original implementations to maintain code
+  clarity and avoid unnecessary abstraction layers.
