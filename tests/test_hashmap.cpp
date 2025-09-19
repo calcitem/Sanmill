@@ -84,6 +84,28 @@ TEST_F(HashMapTest, InsertDuplicateKey)
     EXPECT_EQ(value, 200) << "Value should be updated to the new value.";
 }
 
+// Ensure that hash maps with non-power-of-two capacities handle keys that hash
+// to different buckets correctly. Previously a bit-mask was used, which only
+// worked for power-of-two sizes and caused collisions otherwise.
+TEST_F(HashMapTest, InsertFindWithPrimeSizedTable)
+{
+    constexpr TestKeyType hashSize = 1031;
+    HashMap<TestKeyType, TestValueType> map(hashSize);
+
+    const TestKeyType keyA = 1;
+    const TestKeyType keyB = keyA + hashSize; // Both should map to distinct buckets.
+
+    map.insert(keyA, 10);
+    map.insert(keyB, 20);
+
+    TestValueType value = 0;
+    ASSERT_TRUE(map.find(keyA, value));
+    EXPECT_EQ(value, 10);
+
+    ASSERT_TRUE(map.find(keyB, value));
+    EXPECT_EQ(value, 20);
+}
+
 // Test clear functionality.
 //
 // This test checks that after inserting keys and calling clear(),

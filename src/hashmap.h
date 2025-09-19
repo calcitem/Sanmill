@@ -8,6 +8,7 @@
 
 #include "config.h"
 
+#include <cassert>
 #include <cstdint>
 #include <cstring>
 #include <fstream>
@@ -90,7 +91,7 @@ public:
     // false.
     bool find(const K &key, V &value) const
     {
-        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
+        const size_t hashValue = bucketIndex(key);
 #ifdef DISABLE_HASHBUCKET
         // A shared mutex is used to enable multiple concurrent reads
 #ifndef HASHMAP_NOLOCK
@@ -111,7 +112,7 @@ public:
 
     void prefetchValue(const K &key)
     {
-        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
+        const size_t hashValue = bucketIndex(key);
         V *addr = &(hashTable[hashValue].getValue());
 
         prefetch(static_cast<void *>(addr));
@@ -122,7 +123,7 @@ public:
     // bucket with the <key, value> pair.
     K insert(const K &key, const V &value)
     {
-        K hashValue = static_cast<hashFn>(key) & (hashSize - 1);
+        const size_t hashValue = bucketIndex(key);
 #ifdef DISABLE_HASHBUCKET
 #ifndef HASHMAP_NOLOCK
         std::unique_lock<std::shared_timed_mutex> lock(mutex_);
@@ -135,7 +136,7 @@ public:
         hashTable[hashValue].insert(key, value);
 #endif // DISABLE_HASHBUCKET
 
-        return hashValue;
+        return static_cast<K>(hashValue);
     }
 
     // Function to remove an entry from the bucket, if found
@@ -148,7 +149,7 @@ public:
 #ifdef DISABLE_HASHBUCKET
         // std::unique_lock<std::shared_timed_mutex> lock(mutex_);
 #else  // DISABLE_HASHBUCKET
-        size_t hashValue = hashFn(key) & (hashSize - 1);
+        const size_t hashValue = bucketIndex(key);
         hashTable[hashValue].erase(key);
 #endif // DISABLE_HASHBUCKET
     }
@@ -309,6 +310,13 @@ private:
 #endif /* HASHMAP_NOLOCK */
 
 #endif
+
+    size_t bucketIndex(const K &key) const
+    {
+        assert(hashSize != 0);
+        const auto hashedKey = static_cast<hashFn>(key);
+        return static_cast<size_t>(hashedKey % hashSize);
+    }
 };
 } // namespace CTSL
 #endif // HASH_MAP_H_INCLUDED
