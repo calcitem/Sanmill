@@ -71,27 +71,40 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
   }
 
   void _schedulePreviewTimeout(SavedGameEntry entry) {
-    entry.timeoutTimer?.cancel();
-    final Timer timer = Timer(const Duration(seconds: 3), () {
+    _clearEntryTimeout(entry);
+    Timer? timer;
+    timer = Timer(const Duration(seconds: 3), () {
+      final Timer? activeTimer = timer;
+      if (activeTimer == null) {
+        return;
+      }
       if (!mounted || !_entries.contains(entry)) {
-        _previewTimeoutTimers.remove(timer);
-        entry.timeoutTimer = null;
+        _previewTimeoutTimers.remove(activeTimer);
+        if (identical(entry.timeoutTimer, activeTimer)) {
+          entry.timeoutTimer = null;
+        }
         return;
       }
       if (!entry.isLoading) {
-        _previewTimeoutTimers.remove(timer);
-        entry.timeoutTimer = null;
+        _previewTimeoutTimers.remove(activeTimer);
+        if (identical(entry.timeoutTimer, activeTimer)) {
+          entry.timeoutTimer = null;
+        }
         return;
       }
       setState(() {
         entry.isLoading = false;
         entry.previewTimedOut = true;
       });
-      _previewTimeoutTimers.remove(timer);
-      entry.timeoutTimer = null;
+      _previewTimeoutTimers.remove(activeTimer);
+      if (identical(entry.timeoutTimer, activeTimer)) {
+        entry.timeoutTimer = null;
+      }
     });
     entry.timeoutTimer = timer;
-    _previewTimeoutTimers.add(timer);
+    if (timer != null) {
+      _previewTimeoutTimers.add(timer);
+    }
   }
 
   void _clearEntryTimeout(SavedGameEntry entry) {
@@ -665,95 +678,96 @@ class _SavedGamesPageState extends State<SavedGamesPage> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: e.boardLayout != null &&
-                                            e.boardLayout!.isNotEmpty
-                                        ? MiniBoard(
-                                            boardLayout: e.boardLayout!,
-                                          )
-                                        : Container(
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: DB()
-                                                  .colorSettings
-                                                  .boardBackgroundColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(DB()
-                                                      .displaySettings
-                                                      .boardCornerRadius),
-                                            ),
-                                            child: e.error == null
-                                                ? e.isLoading
-                                                    ? const SizedBox(
-                                                        width: 18,
-                                                        height: 18,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                                strokeWidth:
-                                                                    2),
-                                                      )
-                                                    : const SizedBox(
-                                                        width: 18,
-                                                        height: 18,
-                                                      )
-                                                : Icon(
-                                                    Icons.error_outline,
-                                                    color: DB()
-                                                        .colorSettings
-                                                        .pieceHighlightColor,
-                                                  ),
-                                          ),
-                                    ),
-                                  ),
-                                ),
-                                // Right: file info
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12.0, horizontal: 8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Text(
-                                          title,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: textColor,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 6),
-                                        Text(
-                                          subtitle,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                              color: textColor.withAlpha(180),
-                                              fontSize: 12),
-                                        ),
-                                        if (e.error != null) ...<Widget>[
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            e.error!,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
+                                              e.boardLayout!.isNotEmpty
+                                          ? MiniBoard(
+                                              boardLayout: e.boardLayout!,
+                                            )
+                                          : Container(
+                                              alignment: Alignment.center,
+                                              decoration: BoxDecoration(
                                                 color: DB()
                                                     .colorSettings
-                                                    .pieceHighlightColor,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      ],
+                                                    .boardBackgroundColor,
+                                                borderRadius:
+                                                    BorderRadius.circular(DB()
+                                                        .displaySettings
+                                                        .boardCornerRadius),
+                                              ),
+                                              child: e.error == null
+                                                  ? e.isLoading
+                                                      ? const SizedBox(
+                                                          width: 18,
+                                                          height: 18,
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                                  strokeWidth:
+                                                                      2),
+                                                        )
+                                                      : const SizedBox(
+                                                          width: 18,
+                                                          height: 18,
+                                                        )
+                                                  : Icon(
+                                                      Icons.error_outline,
+                                                      color: DB()
+                                                          .colorSettings
+                                                          .pieceHighlightColor,
+                                                    ),
+                                            ),
                                     ),
                                   ),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.chevron_right),
-                                  color: textColor,
-                                  onPressed: () => _openGame(e),
-                                ),
-                              ],
+                                  // Right: file info
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12.0, horizontal: 8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            title,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: textColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Text(
+                                            subtitle,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                color:
+                                                    textColor.withAlpha(180),
+                                                fontSize: 12),
+                                          ),
+                                          if (e.error != null) ...<Widget>[
+                                            const SizedBox(height: 8),
+                                            Text(
+                                              e.error!,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  color: DB()
+                                                      .colorSettings
+                                                      .pieceHighlightColor,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.chevron_right),
+                                    color: textColor,
+                                    onPressed: () => _openGame(e),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
