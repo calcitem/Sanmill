@@ -18,7 +18,8 @@ class _RatioModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       key: const Key('ratio_modal_semantics'),
-      label: S.of(context).pixelRatio, // TODO: Ratio
+      // Reuse the existing pixel ratio localization for accessibility.
+      label: S.of(context).pixelRatio,
       child: Column(
         key: const Key('ratio_modal_column'),
         mainAxisSize: MainAxisSize.min,

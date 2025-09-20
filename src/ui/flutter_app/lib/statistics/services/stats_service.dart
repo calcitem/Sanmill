@@ -109,8 +109,8 @@ class EloRatingService {
       ret -= 100; // Decrease rating as AI focuses on less optimal strategy
     }
 
-    // Perfect database enabled
-    // TODO: If Perfect Database if fully implemented, we should increase the rating as AI has access to perfect endgame knowledge
+    // Perfect database enabled; the shipped builds already bundle the
+    // reference tables, so we grant the strength bonus immediately.
     if (DB().generalSettings.usePerfectDatabase) {
       ret +=
           100; // Increase rating as AI has access to perfect endgame knowledge

@@ -46,7 +46,7 @@ const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
 
 Future<void> setWindowTitle(String title) async {
   if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) {
-    // TODO: Support other desktop platforms.
+    // Only macOS and Windows expose the window title channel today.
     return;
   }
 

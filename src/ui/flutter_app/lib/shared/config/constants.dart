@@ -112,7 +112,8 @@ class Constants {
   static bool isAndroid10Plus = false;
 }
 
-// TODO: Move to navigation folder
+// Keep the navigator key with the other global configuration so it is
+// available during application bootstrap.
 final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
 
 GlobalKey<NavigatorState> get currentNavigatorKey {

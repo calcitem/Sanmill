@@ -286,11 +286,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
 
   // Function to check if the current drawer state corresponds to a game
   bool _isGame(_DrawerIndex index) {
-    // TODO: Magic Number. The first 4 indices correspond to game modes
-    // Adjusted magic number due to addition of statistics and group items.
-    // humanVsAi, humanVsHuman, aiVsAi, humanVsLAN, setupPosition are games.
-    // Their indices are 0, 1, 2, 3, 4. So index < 5 is correct.
-    return index.index < 5;
+    switch (index) {
+      case _DrawerIndex.humanVsAi:
+      case _DrawerIndex.humanVsHuman:
+      case _DrawerIndex.aiVsAi:
+      case _DrawerIndex.humanVsLAN:
+      case _DrawerIndex.setupPosition:
+        return true;
+      default:
+        return false;
+    }
   }
 
   // Function to handle route changes
@@ -429,7 +434,8 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
         currentSelectedValue: _drawerIndex,
         onSelectionChanged: _changeIndex,
       ),
-      // TODO: Support removeOpponentsPieceFromHand
+      // Setup position does not yet model pieces in hand, so we hide it when
+      // the current rule removes stones from a player's reserve.
       if (DB().ruleSettings.millFormationActionInPlacingPhase !=
               MillFormationActionInPlacingPhase
                   .removeOpponentsPieceFromHandThenYourTurn &&

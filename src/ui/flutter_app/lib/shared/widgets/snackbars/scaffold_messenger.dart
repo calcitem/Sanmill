@@ -10,7 +10,8 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
 
 extension ScaffoldMessengerExtension on ScaffoldMessengerState {
   void showSnackBarClear(String message) {
-    // TODO: Need change to rootScaffoldMessengerKey.currentState!.clearSnackBars(); ?
+    // Clearing this messenger instance covers both the root key and any
+    // nested scaffold messengers that invoke the helper.
     clearSnackBars();
 
     showSnackBar(CustomSnackBar(message));

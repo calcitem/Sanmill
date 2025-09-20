@@ -248,14 +248,16 @@ class _DatabaseV1 {
     return null;
   }
 
-  /// Migrates the deprecated Settings to the new [LocalDatabaseService]
-  /// TODO: it won't do anything if the
+  /// Migrates the deprecated Settings to the new [LocalDatabaseService].
   static Future<void> migrateDB() async {
     logger.i("$_logTag migrate from KV to DB");
     final File? file = await _getFile();
-    assert(file != null);
+    if (file == null) {
+      logger.i("$_logTag No legacy settings file found; skipping migration.");
+      return;
+    }
 
-    final Map<String, dynamic>? json = await _loadFile(file!);
+    final Map<String, dynamic>? json = await _loadFile(file);
     if (json != null) {
       DB().generalSettings = GeneralSettings.fromJson(json);
       DB().ruleSettings = RuleSettings.fromJson(json);

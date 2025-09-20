@@ -14,6 +14,7 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
+import '../../generated/intl/l10n.dart';
 import '../../game_page/services/mill.dart';
 import '../database/database.dart';
 import '../widgets/snackbars/scaffold_messenger.dart';
@@ -147,9 +148,12 @@ class ScreenshotService {
         );
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
-        // TODO: Use S.of(context).failedToSaveImageToGallery
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        final String message = context != null
+            ? S.of(context).failedToSaveImageToGallery
+            : "Failed to save image to Gallery";
         rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
+            .showSnackBar(CustomSnackBar(message));
       }
     } else {
       logger.e("Unexpected result type");
@@ -160,7 +164,6 @@ class ScreenshotService {
 
   static Future<String?> getFilePath(String filename) async {
     Directory? directory;
-    // TODO: Change to correct path
     if (Platform.isAndroid) {
       directory = await getExternalStorageDirectory();
     } else {
@@ -168,11 +171,17 @@ class ScreenshotService {
     }
 
     // Ensure directory exists
-    if (directory != null) {
-      return path.join(directory.path, filename);
-    } else {
+    if (directory == null) {
       return null;
     }
+
+    final String fullPath = path.join(directory.path, filename);
+    final Directory parent = Directory(path.dirname(fullPath));
+    if (!await parent.exists()) {
+      await parent.create(recursive: true);
+    }
+
+    return fullPath;
   }
 
   /// Adds game info to the screenshot image.

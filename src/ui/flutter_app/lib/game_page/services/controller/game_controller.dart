@@ -32,8 +32,7 @@ class GameController {
   bool isControllerActive = false;
   bool isEngineRunning = false;
   bool isEngineInDelay = false;
-  bool isPositionSetupMarkedPiece =
-      false; // TODO: isPieceMarkedInPositionSetup?
+  bool isPieceMarkedInPositionSetup = false;
 
   bool lastMoveFromAI = false;
 

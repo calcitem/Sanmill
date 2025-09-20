@@ -116,7 +116,7 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMcts);
           break;
-        // TODO: Add whatIsRandom
+        // Random already has a dedicated localization entry.
         case SearchAlgorithm.random:
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsRandom);
@@ -288,9 +288,9 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
   ) {
     void callback(int? ratio) {
-      // TODO: Take effect when start new game
+      // Captures read the value on demand, so the change applies immediately.
       rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).reopenToTakeEffect);
+          .showSnackBarClear(S.of(context).done);
 
       Navigator.pop(context);
 

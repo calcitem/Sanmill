@@ -7,7 +7,8 @@ part of 'settings.dart';
 
 enum _SettingsTileType { standard, color, switchTile }
 
-// TODO: [Leptopoda] Maybe add link list tile as it needs a separate icon
+// Standard, color, and switch tiles cover the existing settings variants; link
+// entries reuse the standard tile so the trailing chevron remains consistent.
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
     super.key,

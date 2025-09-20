@@ -58,7 +58,8 @@ class InfoDialog extends StatelessWidget {
       if (n1.startsWith("x")) {
         String moveNotation = "";
         if (controller.gameRecorder.mainlineMoves.length == 1) {
-          // TODO: Right? (Issue #686)
+          // Reuse the only recorded move when the very first action was a
+          // capture (Issue #686).
           moveNotation = controller
               .gameRecorder
               .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 1]

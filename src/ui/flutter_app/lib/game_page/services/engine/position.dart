@@ -1837,7 +1837,7 @@ extension SetupPosition on Position {
   }
 
   bool putPieceForSetupPosition(int s) {
-    final PieceColor piece = GameController().isPositionSetupMarkedPiece
+    final PieceColor piece = GameController().isPieceMarkedInPositionSetup
         ? PieceColor.marked
         : sideToMove;
     //final us = _sideToMove;
@@ -1876,7 +1876,7 @@ extension SetupPosition on Position {
     _board[s] = piece;
 
     //GameController().gameInstance.focusIndex = squareToIndex[s];
-    SoundManager().playTone(GameController().isPositionSetupMarkedPiece
+    SoundManager().playTone(GameController().isPieceMarkedInPositionSetup
         ? Sound.remove
         : Sound.place);
 
