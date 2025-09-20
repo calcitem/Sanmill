@@ -45,13 +45,29 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
     _appliedColorsSnapshot = DB().colorSettings.toJson();
   }
 
-  bool _isSelectedCustomTheme(ColorSettings customColors) {
-    if (widget.currentTheme != ColorTheme.custom) {
-      return false;
-    }
-
-    final Map<String, dynamic> candidate = customColors.toJson();
+  /// Check if the given color settings match the currently applied colors
+  bool _matchesCurrentColors(ColorSettings colors) {
+    final Map<String, dynamic> candidate = colors.toJson();
     return mapEquals(candidate, _appliedColorsSnapshot);
+  }
+
+  /// Determine if current theme item should be selected
+  /// Always show as selected, but especially when no other theme matches
+  bool _shouldSelectCurrentTheme() {
+    return true; // Current theme is always conceptually selected
+  }
+
+  /// Determine if a built-in theme should be selected
+  bool _shouldSelectBuiltInTheme(ColorTheme theme) {
+    // Show as selected if this theme matches current colors
+    final ColorSettings themeColors = AppTheme.colorThemes[theme]!;
+    return _matchesCurrentColors(themeColors);
+  }
+
+  /// Determine if a custom theme should be selected
+  bool _shouldSelectCustomTheme(ColorSettings customColors) {
+    // Show as selected if this custom theme matches current colors
+    return _matchesCurrentColors(customColors);
   }
 
   // Add this function to share theme JSON
@@ -109,7 +125,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             return ThemePreviewItem(
               theme: ColorTheme.current,
               colors: currentColors,
-              isSelected: widget.currentTheme == ColorTheme.current,
+              isSelected: _shouldSelectCurrentTheme(),
               onTap: () {
                 // Just exit without returning a value
                 Navigator.pop(context);
@@ -141,7 +157,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             return ThemePreviewItem(
               theme: ColorTheme.custom,
               colors: customColors,
-              isSelected: _isSelectedCustomTheme(customColors),
+              isSelected: _shouldSelectCustomTheme(customColors),
               // Highlight the custom entry that matches the active colors
               onTap: () {
                 // Update the custom theme in AppTheme.colorThemes so the system can access it
@@ -179,7 +195,7 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
           return ThemePreviewItem(
             theme: theme,
             colors: colors,
-            isSelected: theme == widget.currentTheme,
+            isSelected: _shouldSelectBuiltInTheme(theme),
             onTap: () {
               Navigator.pop(context, theme);
             },
