@@ -288,9 +288,8 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
   ) {
     void callback(int? ratio) {
-      // Captures read the value on demand, so the change applies immediately.
       rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).done);
+          .showSnackBarClear(S.of(context).reopenToTakeEffect);
 
       Navigator.pop(context);
 
