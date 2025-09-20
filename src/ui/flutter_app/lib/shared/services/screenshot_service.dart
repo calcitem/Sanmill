@@ -15,6 +15,7 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../../game_page/services/mill.dart';
+import '../config/constants.dart';
 import '../database/database.dart';
 import '../widgets/snackbars/scaffold_messenger.dart';
 import 'environment_config.dart';
@@ -66,7 +67,10 @@ class ScreenshotService {
     await saveImage(finalImage, filename);
   }
 
-  static bool isSupportedPlatform() => !kIsWeb && Platform.isAndroid;
+  static bool isSupportedPlatform() =>
+      !kIsWeb &&
+      (Platform.isIOS ||
+          (Platform.isAndroid && Constants.isAndroid10Plus));
 
   static String determineFilename(String? filename, String storageLocation) {
     if (filename != null && storageLocation != 'gallery') {

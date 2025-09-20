@@ -9,9 +9,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../../generated/intl/l10n.dart';
-import '../../../shared/config/constants.dart';
 import '../../../shared/database/database.dart';
 import '../../../shared/services/logger.dart';
+import '../../../shared/services/screenshot_service.dart';
 import '../../../shared/themes/app_theme.dart';
 import '../../../shared/widgets/custom_spacer.dart';
 import '../../services/mill.dart';
@@ -165,9 +165,9 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
-        // TODO: Support other platforms (Depend on native_screenshot package)
-        if (Constants.isAndroid10Plus == true) const CustomSpacer(),
-        if (Constants.isAndroid10Plus == true)
+        // Available on Android 10+ and iOS via native_screenshot support
+        if (ScreenshotService.isSupportedPlatform()) const CustomSpacer(),
+        if (ScreenshotService.isSupportedPlatform())
           SimpleDialogOption(
             key: const Key('save_image_option'),
             onPressed: () async {
