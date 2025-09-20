@@ -77,6 +77,8 @@ When reporting an issue or a bug, please provide information about the version a
 ### Flutter App
 
 To build the Flutter app, run `./flutter-init.sh`, and then use Android Studio or Visual Studio Code to open `src/ui/flutter_app`.
+The script automatically provisions Flutter **3.29.3** in `.tools/flutter` when the required SDK
+isn't already available on your system, ensuring the repository always uses the expected version.
 
 We use compile-time environment configs to enable specific parts of the code:
 

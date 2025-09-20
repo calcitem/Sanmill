@@ -7,3 +7,4 @@
 *.m
 *.sh
 *.pl
+!ensure_flutter.sh
