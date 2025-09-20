@@ -230,11 +230,30 @@ class BoardPainter extends CustomPainter {
       return;
     }
 
-    paint.style = style;
-
     final double pointRadius = DB().displaySettings.pointWidth;
-    for (final Offset point in points) {
-      canvas.drawCircle(point, pointRadius, paint);
+
+    if (style == PaintingStyle.stroke) {
+      // For stroke style, first clear the background inside each circle to make it truly hollow
+      final Paint clearPaint = Paint()
+        ..color = DB().colorSettings.boardBackgroundColor
+        ..style = PaintingStyle.fill;
+
+      for (final Offset point in points) {
+        // Clear the area inside the circle
+        canvas.drawCircle(point, pointRadius, clearPaint);
+      }
+
+      // Then draw the stroke outline
+      paint.style = PaintingStyle.stroke;
+      for (final Offset point in points) {
+        canvas.drawCircle(point, pointRadius, paint);
+      }
+    } else {
+      // For fill style, draw normally
+      paint.style = style;
+      for (final Offset point in points) {
+        canvas.drawCircle(point, pointRadius, paint);
+      }
     }
   }
 
