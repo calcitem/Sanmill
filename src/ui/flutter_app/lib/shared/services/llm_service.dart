@@ -201,15 +201,36 @@ class LlmService {
     if (response.statusCode == 200) {
       final Map<String, dynamic> data =
           jsonDecode(response.body) as Map<String, dynamic>;
-      final List<dynamic> candidates = data['candidates'] as List<dynamic>;
+      final List<dynamic>? candidates = data['candidates'] as List<dynamic>?;
+      if (candidates == null || candidates.isEmpty) {
+        throw Exception('Google AI API error: Empty candidates in response.');
+      }
+
       final Map<String, dynamic> candidate =
-          candidates[0] as Map<String, dynamic>;
-      final Map<String, dynamic> content =
-          candidate['content'] as Map<String, dynamic>;
-      final List<dynamic> parts = content['parts'] as List<dynamic>;
-      final Map<String, dynamic> part = parts[0] as Map<String, dynamic>;
-      final String text = part['text'] as String;
-      return text;
+          candidates.first as Map<String, dynamic>;
+      final Map<String, dynamic>? content =
+          candidate['content'] as Map<String, dynamic>?;
+      if (content == null) {
+        throw Exception('Google AI API error: Missing content payload.');
+      }
+
+      final List<dynamic>? parts = content['parts'] as List<dynamic>?;
+      if (parts == null || parts.isEmpty) {
+        throw Exception('Google AI API error: Missing content parts.');
+      }
+
+      final Iterable<String> texts = parts
+          .whereType<Map<String, dynamic>>()
+          .map((Map<String, dynamic> part) => part['text'])
+          .whereType<String>()
+          .map((String text) => text.trim())
+          .where((String text) => text.isNotEmpty);
+
+      if (texts.isEmpty) {
+        throw Exception('Google AI API error: No text content provided.');
+      }
+
+      return texts.join('\n');
     } else {
       throw Exception(
           'Google AI API error: ${response.statusCode} ${response.body}');

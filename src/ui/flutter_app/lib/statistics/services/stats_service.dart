@@ -29,79 +29,41 @@ class EloRatingService {
 
   /// Fixed AI Elo ratings based on difficulty level
   static int getFixedAiEloRating(int level) {
-    int ret;
+    const List<int> baseRatings = <int>[
+      300, // Level 1: Complete beginner, often misses captures
+      500, // Level 2: Sees simple tactics but makes many mistakes
+      600, // Level 3: Some awareness, still beginner stage
+      700, // Level 4: Basic capture awareness, occasional traps
+      800, // Level 5: Serious beginners can beat this level consistently
+      900, // Level 6: Requires basic opening principles to beat
+      1000, // Level 7: Basic positional understanding and simple tactics
+      1100, // Level 8: Identifies threats but lacks comprehensive planning
+      1200, // Level 9: Amateur level with tactical patterns
+      1300, // Level 10: Average hobbyist level
+      1400, // Level 11: Some opening understanding and planning
+      1500, // Level 12: Club/school team level with experience
+      1600, // Level 13: Improved middle and endgame ability
+      1700, // Level 14: Experienced amateur with planning awareness
+      1800, // Level 15: Amateur plateau level
+      1900, // Level 16: Requires systematic knowledge and strong tactics
+      2000, // Level 17: Semi-professional with deeper study
+      2100, // Level 18: High-level amateur or low-level professional
+      2200, // Level 19: Top amateur or national master
+      2300, // Level 20: Entry international master level
+      2350, // Level 21: Lower international master level
+      2400, // Level 22: Average international master
+      2450, // Level 23: Upper IM or entry GM level
+      2500, // Level 24: Stable GM threshold
+      2550, // Level 25: Mid-level GM with international performance
+      2600, // Level 26: High-level GM competing for titles
+      2650, // Level 27: Top-ranked GM with championship potential
+      2700, // Level 28: Elite GM, "2700 club"
+      2750, // Level 29: World-class GM competitive with champions
+      2800, // Level 30: Near world champion level
+    ];
 
-    // Base ELO rating based on difficulty level
-    switch (level) {
-      case 1:
-        ret = 300; // Complete beginner level, often misses captures
-      case 2:
-        ret = 500; // Can see some simple tactics, but makes many mistakes
-      case 3:
-        ret = 600; // Has some awareness, still at beginner stage
-      case 4:
-        ret = 700; // Basic capture awareness, occasionally sees 1-2 move traps
-      case 5:
-        ret = 800; // Serious beginners can beat this level consistently
-      case 6:
-        ret = 900; // Requires basic opening principles to beat
-      case 7:
-        ret =
-            1000; // Has basic positional understanding and simple midgame tactics
-      case 8:
-        ret =
-            1100; // Can identify basic threats but lacks comprehensive planning
-      case 9:
-        ret = 1200; // Amateur common level with some tactical patterns
-      case 10:
-        ret = 1300; // Average hobbyist level
-      case 11:
-        ret =
-            1400; // Some understanding of common openings, with attack/defense ideas
-      case 12:
-        ret = 1500; // Club/school team level with some practical experience
-      case 13:
-        ret = 1600; // Improved middle and endgame ability with fewer mistakes
-      case 14:
-        ret = 1700; // "Experienced" amateur level with planning awareness
-      case 15:
-        ret = 1800; // Amateur plateau level that's difficult to surpass
-      case 16:
-        ret =
-            1900; // Requires systematic opening/endgame knowledge and stronger tactics
-      case 17:
-        ret =
-            2000; // Semi-professional level with deeper study and lower error rate
-      case 18:
-        ret = 2100; // High-level amateur or low-level professional
-      case 19:
-        ret = 2200; // Top amateur or national master level
-      case 20:
-        ret = 2300; // Entry international master level
-      case 21:
-        ret = 2350; // Lower international master level
-      case 22:
-        ret = 2400; // Average international master
-      case 23:
-        ret = 2450; // Upper IM or entry GM level
-      case 24:
-        ret = 2500; // Stable GM threshold with comprehensive skills
-      case 25:
-        ret = 2550; // Mid-level GM with competitive international performance
-      case 26:
-        ret =
-            2600; // High-level GM competing for titles in international tournaments
-      case 27:
-        ret = 2650; // Top-ranked GM with championship potential
-      case 28:
-        ret = 2700; // Elite GM, "2700 club" threshold
-      case 29:
-        ret = 2750; // World-class GM capable of competing with world champions
-      case 30:
-        ret = 2800; // Near world champion level
-      default:
-        ret = 1400; // Default to level 11 for any unspecified levels
-    }
+    final bool levelInRange = level >= 1 && level <= baseRatings.length;
+    int ret = levelInRange ? baseRatings[level - 1] : 1400;
 
     // Adjust rating based on game rules and settings
 
