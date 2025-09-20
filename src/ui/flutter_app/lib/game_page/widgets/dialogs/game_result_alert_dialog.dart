@@ -50,7 +50,11 @@ class GameResultAlertDialog extends StatelessWidget {
       return _buildAiVsAiDialog(context, position);
     }
 
-    // TODO: Why sometimes _gameResult is null?
+    if (gameMode == GameMode.setupPosition) {
+      logger.i("$_logTag Ignoring game result dialog in setup mode.");
+      return const SizedBox.shrink();
+    }
+
     position.result = _gameResult;
 
     switch (position.result) {

@@ -66,7 +66,14 @@ class ScreenshotService {
     await saveImage(finalImage, filename);
   }
 
-  static bool isSupportedPlatform() => !kIsWeb && Platform.isAndroid;
+  static bool isSupportedPlatform() {
+    if (kIsWeb) {
+      return false;
+    }
+
+    // Native screenshots are available on both Android and iOS.
+    return Platform.isAndroid || Platform.isIOS;
+  }
 
   static String determineFilename(String? filename, String storageLocation) {
     if (filename != null && storageLocation != 'gallery') {
@@ -140,9 +147,12 @@ class ScreenshotService {
         );
       } else {
         logger.e("$_logTag Failed to save image to Gallery");
-        // TODO: Use S.of(context).failedToSaveImageToGallery
+        final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+        final String message = context != null
+            ? S.of(context).failedToSaveImageToGallery
+            : "Failed to save image to Gallery";
         rootScaffoldMessengerKey.currentState!
-            .showSnackBar(CustomSnackBar("Failed to save image to Gallery"));
+            .showSnackBar(CustomSnackBar(message));
       }
     } else {
       logger.e("Unexpected result type");
@@ -153,7 +163,6 @@ class ScreenshotService {
 
   static Future<String?> getFilePath(String filename) async {
     Directory? directory;
-    // TODO: Change to correct path
     if (Platform.isAndroid) {
       directory = await getExternalStorageDirectory();
     } else {
@@ -162,7 +171,9 @@ class ScreenshotService {
 
     // Ensure directory exists
     if (directory != null) {
-      return path.join(directory.path, filename);
+      final String targetPath = path.join(directory.path, filename);
+      await Directory(path.dirname(targetPath)).create(recursive: true);
+      return targetPath;
     } else {
       return null;
     }

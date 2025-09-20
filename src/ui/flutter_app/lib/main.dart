@@ -32,6 +32,7 @@ import 'shared/services/logger.dart';
 import 'shared/services/screenshot_service.dart';
 import 'shared/themes/app_theme.dart';
 import 'shared/utils/localizations/feedback_localization.dart';
+import 'shared/navigation/navigator_keys.dart';
 import 'shared/widgets/snackbars/scaffold_messenger.dart';
 import 'statistics/services/stats_service.dart';
 
@@ -238,8 +239,9 @@ class SanmillAppState extends State<SanmillApp> {
       },
       onError: (dynamic error) {
         logger.e("Error receiving intent data stream: $error");
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            "Error receiving intent data stream: $error"); // Consider localization
+        _showRootSnackBar(
+          "Error receiving intent data stream: $error",
+        ); // Consider localization
       },
     );
 
@@ -250,8 +252,9 @@ class SanmillAppState extends State<SanmillApp> {
       },
       onError: (dynamic error) {
         logger.e("Error getting initial sharing: $error");
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            "Error getting initial sharing: $error"); // Consider localization
+        _showRootSnackBar(
+          "Error getting initial sharing: $error",
+        ); // Consider localization
       },
     );
   }
@@ -267,10 +270,26 @@ class SanmillAppState extends State<SanmillApp> {
         logger.i("Game loaded successfully from shared file.");
       }).catchError((dynamic error) {
         logger.e("Error loading game from shared file: $error");
-        rootScaffoldMessengerKey.currentState!.showSnackBarClear(
-            "Error loading game from shared file: $error"); // Consider localization
+        _showRootSnackBar(
+          "Error loading game from shared file: $error",
+        ); // Consider localization
       });
     }
+  }
+
+  void _showRootSnackBar(String message) {
+    final ScaffoldMessengerState? messenger =
+        rootScaffoldMessengerKey.currentState;
+    if (messenger == null) {
+      // During early startup the scaffold messenger might not be ready yet.
+      logger.w(
+        'Unable to show snack bar because the messenger is not ready: '
+        '$message',
+      );
+      return;
+    }
+
+    messenger.showSnackBarClear(message);
   }
 
   @override

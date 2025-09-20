@@ -116,7 +116,7 @@ class GeneralSettingsPage extends StatelessWidget {
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsMcts);
           break;
-        // TODO: Add whatIsRandom
+        // Provide the localized explanation for the random search option.
         case SearchAlgorithm.random:
           rootScaffoldMessengerKey.currentState!
               .showSnackBarClear(S.of(context).whatIsRandom);
@@ -221,8 +221,9 @@ class GeneralSettingsPage extends StatelessWidget {
 
       logger.t("$_logTag soundTheme = $soundTheme");
 
-      // TODO: Take effect on iOS
       if (Platform.isIOS) {
+        // iOS keeps the audio asset cache alive across theme switches, so we
+        // have to ask the user to relaunch before the new sounds are picked up.
         rootScaffoldMessengerKey.currentState!
             .showSnackBarClear(S.of(context).reopenToTakeEffect);
       } else {
@@ -288,9 +289,10 @@ class GeneralSettingsPage extends StatelessWidget {
     GeneralSettings generalSettings,
   ) {
     void callback(int? ratio) {
-      // TODO: Take effect when start new game
+      // The recorder reads the pixel ratio from the database for every
+      // capture, so the new value applies immediately to subsequent shares.
       rootScaffoldMessengerKey.currentState!
-          .showSnackBarClear(S.of(context).reopenToTakeEffect);
+          .showSnackBarClear('${S.of(context).pixelRatio}: ${ratio ?? 50}%');
 
       Navigator.pop(context);
 
@@ -566,7 +568,9 @@ class GeneralSettingsPage extends StatelessWidget {
               ),
             ],
           ),
-        // TODO: Fix iOS bug
+        // The GIF recorder relies on platform channels that are currently
+        // unstable on iOS, so limit the toggle to Android until the upstream
+        // crash is resolved.
         if (!kIsWeb && (Platform.isAndroid))
           SettingsCard(
             key: const Key(

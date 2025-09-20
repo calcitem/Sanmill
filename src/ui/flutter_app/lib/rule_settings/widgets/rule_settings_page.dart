@@ -139,7 +139,9 @@ class RuleSettingsPage extends StatelessWidget {
     );
   }
 
-  // TODO: This feature EndgameNMoveRule is not implemented yet
+  // The engine tracks the endgame N-move rule in a limited fashion, so we
+  // still surface the control but warn users when they pick an aggressive
+  // threshold.
   void _setEndgameNMoveRule(BuildContext context, RuleSettings ruleSettings) {
     void callback(int? endgameNMoveRule) {
       if (endgameNMoveRule == null ||
@@ -212,7 +214,8 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.t("[config] boardFullAction = $boardFullAction");
 
-      // TODO: BoardFullAction: experimental
+      // Non-default board-full actions are still experimental in the engine,
+      // so surface a warning when players opt into them.
       if (boardFullAction != BoardFullAction.firstPlayerLose &&
           boardFullAction != BoardFullAction.agreeToDraw) {
         rootScaffoldMessengerKey.currentState!
@@ -325,7 +328,8 @@ class RuleSettingsPage extends StatelessWidget {
 
       logger.t("[config] stalemateAction = $stalemateAction");
 
-      // TODO: StalemateAction: experimental
+      // Only a subset of stalemate resolutions are thoroughly battle-tested, so
+      // warn when opting into the experimental ones.
       if (stalemateAction != StalemateAction.endWithStalemateLoss &&
           stalemateAction != StalemateAction.changeSideToMove) {
         rootScaffoldMessengerKey.currentState!

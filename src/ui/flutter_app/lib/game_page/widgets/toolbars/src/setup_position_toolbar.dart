@@ -111,7 +111,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
   static double get height => (_padding.vertical + _margin.vertical) * 2;
 
   void setSetupPositionPiece(BuildContext context, PieceColor pieceColor) {
-    GameController().isPositionSetupMarkedPiece = false; // WAR
+    GameController().isPieceMarkedInPositionSetup = false; // WAR
 
     if (pieceColor == PieceColor.white) {
       newPieceColor = PieceColor.black;
@@ -120,7 +120,7 @@ class SetupPositionToolbarState extends State<SetupPositionToolbar> {
               MillFormationActionInPlacingPhase.markAndDelayRemovingPieces &&
           newPhase == Phase.placing) {
         newPieceColor = PieceColor.marked;
-        GameController().isPositionSetupMarkedPiece = true;
+        GameController().isPieceMarkedInPositionSetup = true;
       } else {
         newPieceColor = PieceColor.none;
       }

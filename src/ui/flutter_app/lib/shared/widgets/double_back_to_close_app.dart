@@ -88,19 +88,25 @@ class _DoubleBackToCloseAppState extends State<DoubleBackToCloseApp> {
       return false;
     }
 
-    if (_isSnackBarVisible || _willHandlePopInternally) {
-      SystemNavigator.pop();
-      return true;
-    } else {
-      final ScaffoldMessengerState scaffoldMessenger =
-          ScaffoldMessenger.of(context);
-      scaffoldMessenger.hideCurrentSnackBar();
-      _closedCompleter = scaffoldMessenger
-          .showSnackBar(widget.snackBar)
-          .closed
-          .wrapInCompleter();
+    if (_willHandlePopInternally) {
+      // A local history entry such as a Drawer is waiting to handle the pop
+      // event, so we must not close the application here.
       return false;
     }
+
+    if (_isSnackBarVisible) {
+      SystemNavigator.pop();
+      return true;
+    }
+
+    final ScaffoldMessengerState scaffoldMessenger =
+        ScaffoldMessenger.of(context);
+    scaffoldMessenger.hideCurrentSnackBar();
+    _closedCompleter = scaffoldMessenger
+        .showSnackBar(widget.snackBar)
+        .closed
+        .wrapInCompleter();
+    return false;
   }
 
   /// Throws a [FlutterError] if this widget was not wrapped in a [Scaffold].

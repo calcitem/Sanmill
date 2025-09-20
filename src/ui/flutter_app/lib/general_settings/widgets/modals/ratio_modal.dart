@@ -18,7 +18,9 @@ class _RatioModal extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       key: const Key('ratio_modal_semantics'),
-      label: S.of(context).pixelRatio, // TODO: Ratio
+      // Announce the setting category so screen readers understand that the
+      // following radio buttons control the pixel ratio.
+      label: S.of(context).pixelRatio,
       child: Column(
         key: const Key('ratio_modal_column'),
         mainAxisSize: MainAxisSize.min,

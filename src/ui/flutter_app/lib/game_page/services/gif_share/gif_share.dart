@@ -58,7 +58,9 @@ class GifShare {
     }
 
     if (pngs.isNotEmpty) {
-      pngs.removeRange(0, 1); // TODO: WAR
+      // Drop the initial frame captured during reset; it represents the
+      // placeholder board before pieces are rendered and makes the GIF flicker.
+      pngs.removeAt(0);
     }
 
     final img.GifEncoder encoder = img.GifEncoder(

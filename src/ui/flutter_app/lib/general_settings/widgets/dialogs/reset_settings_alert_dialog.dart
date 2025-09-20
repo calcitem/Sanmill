@@ -16,7 +16,9 @@ class _ResetSettingsAlertDialog extends StatelessWidget {
 
     Navigator.pop(context);
 
-    // TODO: Seems to need to close and reopen the program for it to work.
+    // Clearing the persisted Hive boxes only takes effect after the app
+    // rebuilds its dependency graph, so we instruct the user to restart via the
+    // snack bar before wiping the stored settings.
     await DB.reset();
 
     GameController().reset(force: true);

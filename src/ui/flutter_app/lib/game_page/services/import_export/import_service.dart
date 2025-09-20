@@ -9,6 +9,7 @@ class ImportService {
   const ImportService._();
 
   static const String _logTag = "[Importer]";
+  static final RegExp _standardSquarePattern = RegExp(r'^[a-g][1-7]$');
 
   /// Tries to import the game saved in the device's clipboard.
   static Future<void> importGame(BuildContext context,
@@ -196,8 +197,9 @@ class ImportService {
     }
 
     try {
-      // TODO: Improve this logic
       if (isPlayOkMoveList(ml)) {
+        // The helper already validates PlayOK markers and the numeric move
+        // format, so branching here avoids misclassifying standard PGN input.
         _importPlayOk(ml);
         return;
       }
@@ -498,7 +500,7 @@ class ImportService {
           continue;
         }
         try {
-          final String uciMove = _wmdNotationToMoveString(segment);
+          final String uciMove = _parseStandardSegment(segment);
           // Only attach comments, nags, and startingComments to the last segment.
           final List<int>? nags = (i == segments.length - 1) ? node.nags : null;
           final List<String>? startingComments =
@@ -534,5 +536,25 @@ class ImportService {
     if (fen != null && fen.isNotEmpty) {
       GameController().gameRecorder.setupPosition = fen;
     }
+  }
+
+  static String _parseStandardSegment(String segment) {
+    final bool isCapture =
+        segment.length == 3 &&
+        segment.startsWith('x') &&
+        _standardSquarePattern.hasMatch(segment.substring(1));
+    final bool isMove =
+        segment.length == 5 &&
+        segment[2] == '-' &&
+        _standardSquarePattern.hasMatch(segment.substring(0, 2)) &&
+        _standardSquarePattern.hasMatch(segment.substring(3));
+    final bool isPlacement = _standardSquarePattern.hasMatch(segment);
+
+    if (isCapture || isMove || isPlacement) {
+      return segment;
+    }
+
+    logger.w("$_logTag Unsupported move format: $segment");
+    throw ImportFormatException(segment);
   }
 }

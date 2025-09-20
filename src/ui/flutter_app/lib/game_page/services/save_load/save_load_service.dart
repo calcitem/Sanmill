@@ -96,8 +96,7 @@ class LoadService {
       fsType: FilesystemType.file,
       showGoUp: !kIsWeb && !Platform.isLinux,
       allowedExtensions: <String>[".pgn"],
-      fileTileSelectMode: FileTileSelectMode.checkButton,
-      // TODO: whole tile is better.
+      fileTileSelectMode: FileTileSelectMode.wholeTile,
       theme: const FilesystemPickerTheme(
         backgroundColor: Colors.greenAccent,
       ),

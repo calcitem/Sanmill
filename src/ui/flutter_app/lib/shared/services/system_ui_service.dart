@@ -7,7 +7,8 @@ part of 'package:sanmill/main.dart';
 
 /// Initializes the given [SystemChrome] ui
 Future<void> initializeUI(bool isFullScreen) async {
-  // TODO: [Leptopoda] Use layoutBuilder to add adaptiveness
+  // This runs before any widget tree exists, so we cannot rely on a
+  // LayoutBuilder-driven adaptive layout here.
   if (isFullScreen) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: <SystemUiOverlay>[]);
@@ -46,7 +47,7 @@ const MethodChannel uiMethodChannel = MethodChannel('com.calcitem.sanmill/ui');
 
 Future<void> setWindowTitle(String title) async {
   if (kIsWeb || !(Platform.isMacOS || Platform.isWindows)) {
-    // TODO: Support other desktop platforms.
+    // Only macOS and Windows expose the uiMethodChannel hook today.
     return;
   }
 

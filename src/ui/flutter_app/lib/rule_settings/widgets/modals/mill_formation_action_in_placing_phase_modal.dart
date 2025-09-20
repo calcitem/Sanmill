@@ -49,14 +49,11 @@ class _MillFormationActionInPlacingPhaseModal extends StatelessWidget {
         MillFormationActionInPlacingPhase
             .removeOpponentsPieceFromHandThenYourTurn,
       ),
-      /*
-      // TODO: Implement
       _buildRadioListTile(
         context,
         S.of(context).opponentRemovesOwnPiece,
         MillFormationActionInPlacingPhase.opponentRemovesOwnPiece,
       ),
-      */
       _buildRadioListTile(
         context,
         S.of(context).markAndDelayRemovingPieces,

@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+import 'package:flutter/foundation.dart' show mapEquals;
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -34,12 +35,23 @@ class ThemeSelectionPage extends StatefulWidget {
 class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
   // List to store custom themes
   late List<ColorSettings> _customThemes;
+  late final Map<String, dynamic> _appliedColorsSnapshot;
 
   @override
   void initState() {
     super.initState();
     // Load custom themes from database
     _customThemes = DB().customThemes;
+    _appliedColorsSnapshot = DB().colorSettings.toJson();
+  }
+
+  bool _isSelectedCustomTheme(ColorSettings customColors) {
+    if (widget.currentTheme != ColorTheme.custom) {
+      return false;
+    }
+
+    final Map<String, dynamic> candidate = customColors.toJson();
+    return mapEquals(candidate, _appliedColorsSnapshot);
   }
 
   // Add this function to share theme JSON
@@ -129,9 +141,8 @@ class _ThemeSelectionPageState extends State<ThemeSelectionPage> {
             return ThemePreviewItem(
               theme: ColorTheme.custom,
               colors: customColors,
-              isSelected:
-                  widget.currentTheme == ColorTheme.custom && customIndex == 0,
-              // Only first custom can be selected
+              isSelected: _isSelectedCustomTheme(customColors),
+              // Highlight the custom entry that matches the active colors
               onTap: () {
                 // Update the custom theme in AppTheme.colorThemes so the system can access it
                 AppTheme.updateCustomTheme(customColors);

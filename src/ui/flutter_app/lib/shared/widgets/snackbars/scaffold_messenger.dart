@@ -10,7 +10,11 @@ final GlobalKey<ScaffoldMessengerState> rootScaffoldMessengerKey =
 
 extension ScaffoldMessengerExtension on ScaffoldMessengerState {
   void showSnackBarClear(String message) {
-    // TODO: Need change to rootScaffoldMessengerKey.currentState!.clearSnackBars(); ?
+    // Clear any queued snack bars on the messenger invoking this helper so the
+    // freshly requested message is shown immediately. This intentionally uses
+    // `clearSnackBars` on the current state instead of the global
+    // `rootScaffoldMessengerKey` to support both root-level and scoped
+    // messengers.
     clearSnackBars();
 
     showSnackBar(CustomSnackBar(message));

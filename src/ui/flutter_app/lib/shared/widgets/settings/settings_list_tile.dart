@@ -7,7 +7,8 @@ part of 'settings.dart';
 
 enum _SettingsTileType { standard, color, switchTile }
 
-// TODO: [Leptopoda] Maybe add link list tile as it needs a separate icon
+// A dedicated "link" tile variant is unnecessary: callers can already provide
+// a custom trailing widget to supply any iconography they need.
 class SettingsListTile extends StatelessWidget {
   const SettingsListTile({
     super.key,
@@ -15,6 +16,7 @@ class SettingsListTile extends StatelessWidget {
     required VoidCallback onTap,
     this.subtitleString,
     this.trailingString,
+    this.trailingWidget,
   })  : _type = _SettingsTileType.standard,
         _switchValue = null,
         _switchCallback = null,
@@ -34,7 +36,8 @@ class SettingsListTile extends StatelessWidget {
         _switchCallback = null,
         _colorCallback = onChanged,
         _standardCallback = null,
-        trailingString = null;
+        trailingString = null,
+        trailingWidget = null;
 
   const SettingsListTile.switchTile({
     super.key,
@@ -48,11 +51,13 @@ class SettingsListTile extends StatelessWidget {
         _switchCallback = onChanged,
         _colorCallback = null,
         _standardCallback = null,
-        trailingString = null;
+        trailingString = null,
+        trailingWidget = null;
 
   final String titleString;
   final String? subtitleString;
   final String? trailingString;
+  final Widget? trailingWidget;
 
   final _SettingsTileType _type;
   final bool? _switchValue;
@@ -82,7 +87,9 @@ class SettingsListTile extends StatelessWidget {
         );
       case _SettingsTileType.standard:
         Widget trailing;
-        if (trailingString != null) {
+        if (trailingWidget != null) {
+          trailing = trailingWidget!;
+        } else if (trailingString != null) {
           // Use IntrinsicWidth to make the text auto size
           trailing = IntrinsicWidth(
             child: Container(

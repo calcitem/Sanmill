@@ -23,7 +23,10 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
   }
 
   void updateBoardSemantics() {
-    setState(() {}); // TODO
+    if (!mounted) {
+      return;
+    }
+    setState(() {});
   }
 
   @override
@@ -41,7 +44,8 @@ class _BoardSemanticsState extends State<_BoardSemantics> {
         (int index) => Center(
           child: Semantics(
             key: Key('board_square_$index'),
-            // TODO: [Calcitem] Add more descriptive information
+            // Each label identifies the piece occupying the point followed by
+            // its board coordinate to help screen-reader users navigate.
             label: squareDesc[index],
           ),
         ),

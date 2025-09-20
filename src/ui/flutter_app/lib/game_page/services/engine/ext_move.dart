@@ -16,13 +16,14 @@ class MoveParser {
     } else if (RegExp(r'^[a-g][1-8]$').hasMatch(move) && move.length == 2) {
       return MoveType.place;
     } else if (move == "draw") {
-      logger.i("[TODO] Computer request draw");
+      logger.i("Computer requested a draw.");
       return MoveType.draw;
     } else if (move == "(none)" || move == "none") {
       logger.i("MoveType is (none).");
       return MoveType.none;
     } else {
-      // TODO: If Setup Position is illegal
+      // Setup editor should have filtered illegal moves already; surface an
+      // error here so we can diagnose issues quickly.
       throw const FormatException();
     }
   }
@@ -227,8 +228,8 @@ class ExtMove extends PgnNodeData {
   }
 
   static final Map<int, String> _squareToWmdNotation = <int, String>{
-    -1: "(none)", // TODO: Can parse it?
-    0: "draw", // TODO: Can parse it?
+    -1: "(none)", // Sentinel used when no square is selected.
+    0: "draw", // Special token that indicates a draw offer/result.
     8: "d5",
     9: "e5",
     10: "e4",
@@ -262,7 +263,7 @@ class ExtMove extends PgnNodeData {
 
   /// Validate the move string format.
   static void _checkLegal(String move) {
-    // TODO: Which one?
+    // Allow the special tokens handled above without running regex checks.
     if (move == "draw" || move == "(none)" || move == "none") {
       return; // no further checks
     }

@@ -7,29 +7,6 @@ part of '../mill.dart';
 
 const String _logTag = "[NotationParsing]";
 
-// TODO: Remove this function
-String _wmdNotationToMoveString(String wmd) {
-  // Validate standard notation format
-  if (wmd.startsWith('x') && wmd.length == 3) {
-    // Remove move format: "xa1", "xd5", etc.
-    return wmd;
-  }
-
-  if (wmd.length == 5 && wmd[2] == '-') {
-    // Move format: "a1-a4", "d5-e5", etc.
-    return wmd;
-  }
-
-  if (wmd.length == 2 && RegExp(r'^[a-g][1-7]$').hasMatch(wmd)) {
-    // Place move format: "a1", "d5", etc.
-    return wmd;
-  }
-
-  // Unsupported format
-  logger.w("$_logTag Unsupported move format: $wmd");
-  throw ImportFormatException(wmd);
-}
-
 // Convert PlayOK notation to standard notation
 String _playOkNotationToMoveString(String playOk) {
   if (playOk.isEmpty) {

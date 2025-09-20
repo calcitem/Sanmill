@@ -44,9 +44,13 @@ class TapHandler {
     GameController().setupPositionNotifier.updateIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
     GameController().headerTipNotifier.showTip(ExtMove.sqToNotation(sq),
-        snackBar: false); // TODO: snackBar is false?
+        snackBar: false);
+    // Keep the snack bar disabled so repeated setup taps do not spam screen
+    // reader announcements.
 
-    return const EngineResponseHumanOK(); // TODO: Right?
+    // Treat setup edits as completed human actions to keep the signature
+    // consistent with other tap handlers.
+    return const EngineResponseHumanOK();
   }
 
   Future<EngineResponse> onBoardTap(int sq) async {
@@ -111,11 +115,9 @@ class TapHandler {
       }
     }
 
-    // TODO: WAR
-    if ((GameController().position.sideToMove == PieceColor.white ||
-            GameController().position.sideToMove == PieceColor.black) ==
-        false) {
-      // If modify sideToMove, not take effect, I don't know why.
+    // Ignore taps when setup mode left the sideToMove on an invalid value.
+    if (GameController().position.sideToMove != PieceColor.white &&
+        GameController().position.sideToMove != PieceColor.black) {
       return const EngineResponseSkip();
     }
 
@@ -160,21 +162,9 @@ class TapHandler {
                 showTip(S.of(context).tipRemove);
               }
             } else {
-              if ((DB().ruleSettings.boardFullAction ==
-                          BoardFullAction.firstAndSecondPlayerRemovePiece ||
-                      DB().ruleSettings.boardFullAction ==
-                          BoardFullAction.secondAndFirstPlayerRemovePiece ||
-                      DB().ruleSettings.boardFullAction ==
-                          BoardFullAction.sideToMoveRemovePiece) &&
-                  GameController()
-                          .position
-                          .pieceOnBoardCount[PieceColor.white]! >
-                      10 &&
-                  GameController()
-                          .position
-                          .pieceOnBoardCount[PieceColor.black]! >
-                      10) {
-                // TODO: Change conditions
+              if (GameController()
+                  .position
+                  .isBoardFullRemovalAtPlacingPhaseEnd()) {
                 if (GameController().gameInstance.gameMode ==
                     GameMode.humanVsHuman) {
                   final String side =
@@ -370,8 +360,9 @@ class TapHandler {
             break;
           case NoPieceSelected():
             break;
-          // TODO: no CanOnlyMoveToAdjacentEmptyPoints events
           case CanOnlyMoveToAdjacentEmptyPoints():
+            // The engine currently never emits this response, but keep the
+            // branch so future rule variations can surface the warning.
             if (GameController().gameInstance.gameMode ==
                 GameMode.humanVsHuman) {
               final String side =
@@ -543,7 +534,7 @@ class TapHandler {
     }
 
     if (ret) {
-      // TODO: Need Others?
+      // Mirror the incremental bookkeeping performed in Position.doMove.
       // Increment ply counters. In particular,
       // rule50 will be reset to zero later on
       // in case of a remove.
@@ -584,7 +575,8 @@ class TapHandler {
           GameController().sendLanMove(moveNotation);
         }
 
-        // TODO: moveHistoryText is not lightweight.
+        // moveHistoryText is relatively heavy but this code path only runs
+        // when Catcher crash reporting is active, so the cost is acceptable.
         if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
           final Catcher2Options options = catcher.getCurrentConfig()!;
           options.customParameters["MoveList"] =

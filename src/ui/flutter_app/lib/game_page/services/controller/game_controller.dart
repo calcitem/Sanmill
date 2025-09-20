@@ -32,8 +32,7 @@ class GameController {
   bool isControllerActive = false;
   bool isEngineRunning = false;
   bool isEngineInDelay = false;
-  bool isPositionSetupMarkedPiece =
-      false; // TODO: isPieceMarkedInPositionSetup?
+  bool isPieceMarkedInPositionSetup = false;
 
   bool lastMoveFromAI = false;
 
@@ -126,12 +125,16 @@ class GameController {
   /// Sends a restart request to the LAN opponent.
   /// This method is called when the local user requests a game restart.
   void requestRestart() {
-    // TODO: Use S.of(context).restartRequestSentWaitingForOpponentSResponse
     if (gameInstance.gameMode == GameMode.humanVsLAN &&
         (networkService?.isConnected ?? false)) {
       // Send a restart request message to the opponent
       networkService!.sendMove("restart:request");
-      // Optionally, show a tip that the request has been sent
+      // Notify the local player that we are waiting for the opponent.
+      final BuildContext? context = rootScaffoldMessengerKey.currentContext;
+      final String waitingMessage = context != null
+          ? S.of(context).restartRequestSentWaitingForOpponentSResponse
+          : "Restart request sent. Waiting for opponent's response...";
+      headerTipNotifier.showTip(waitingMessage);
     } else {
       // For non-LAN modes, simply reset the game.
       reset();
@@ -169,10 +172,12 @@ class GameController {
             TextButton(
               // If rejected, send rejected message and do nothing
               onPressed: () {
+                // Cache the localized string before dismissing the dialog.
+                final String rejectedMessage =
+                    S.of(dialogContext).restartRequestRejected;
                 Navigator.of(dialogContext).pop(false);
                 networkService?.sendMove("restart:rejected");
-                headerTipNotifier
-                    .showTip("S.of(context).restartRequestRejected");
+                headerTipNotifier.showTip(rejectedMessage);
               },
               child: const Text("No"),
             ),
@@ -689,8 +694,9 @@ class GameController {
     return DB().generalSettings.isAutoRestart;
   }
 
-  // TODO: [Leptopoda] The reference of this method has been removed in a few instances.
-  // We'll need to find a better way for this.
+  /// Entry point used by tap handlers and the game options dialog to trigger
+  /// an engine search. The earlier TODO about missing references is obsolete
+  /// because these call sites still rely on this method.
   Future<EngineResponse> engineToGo(
     BuildContext context, {
     required bool isMoveNow,
@@ -731,7 +737,8 @@ class GameController {
     }
 
     if (isEngineRunning && !isMoveNow) {
-      // TODO: Monkey test trigger
+      // Ignore duplicate requests while the engine is already searching so
+      // stress tests do not spam the AI with overlapping work.
       logger.t("$tag engineToGo() is still running, skip.");
       return const EngineResponseSkip();
     }
@@ -747,7 +754,7 @@ class GameController {
       PlayerTimer().start();
     }
 
-    // TODO
+    // Trace the active engine mode for debugging telemetry.
     logger.t("$tag engine type is $gameMode");
 
     if (gameMode == GameMode.humanVsAi &&
@@ -798,11 +805,9 @@ class GameController {
           break;
         }
 
-        // TODO: Unify return and throw
         if (!gameInstance.doMove(engineRet.extMove!)) {
-          // TODO: Should catch it and throw.
           isEngineRunning = false;
-          return const EngineNoBestMove();
+          throw const EngineNoBestMove();
         }
 
         loopIsFirst = false;
@@ -811,10 +816,12 @@ class GameController {
         // Record game start time for AI vs AI mode on first move
         _recordGameStartTime();
 
-        // TODO: Do not use BuildContexts across async gaps.
         if (DB().generalSettings.screenReaderSupport) {
-          rootScaffoldMessengerKey.currentState!.showSnackBar(
-              CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"));
+          final ScaffoldMessengerState? messenger =
+              rootScaffoldMessengerKey.currentState;
+          messenger?.showSnackBar(
+            CustomSnackBar("$aiStr: ${engineRet.extMove!.notation}"),
+          );
         }
       } on EngineTimeOut {
         logger.i("$tag Engine response type: timeout");
@@ -852,7 +859,8 @@ class GameController {
 
     isEngineRunning = false;
 
-    // TODO: Why need not update tip and icons?
+    // Refresh header UI elements now that the engine is idle again.
+    headerIconsNotifier.showIcons();
     boardSemanticsNotifier.updateSemantics();
 
     // After AI makes a move, start the human player's timer if needed
@@ -879,7 +887,7 @@ class GameController {
           .showSnackBarClear(S.of(context).analyzing);
     }
 
-    // TODO: WAR
+    // Skip move requests when the position is not pointing to a real side.
     if (position.sideToMove != PieceColor.white &&
         position.sideToMove != PieceColor.black) {
       return rootScaffoldMessengerKey.currentState!
@@ -896,6 +904,7 @@ class GameController {
 
     final String strTimeout = S.of(context).timeout;
     final String strNoBestMoveErr = S.of(context).error(S.of(context).noMove);
+    final String strEngineBusy = S.of(context).aiIsDelaying;
 
     GameController().disableStats = true;
 
@@ -914,7 +923,7 @@ class GameController {
         headerTipNotifier.showTip(strNoBestMoveErr);
         break;
       case EngineResponseSkip():
-        headerTipNotifier.showTip("Error: Skip"); // TODO
+        headerTipNotifier.showTip(strEngineBusy);
         break;
       default:
         logger.e("$tag Unknown engine response type.");

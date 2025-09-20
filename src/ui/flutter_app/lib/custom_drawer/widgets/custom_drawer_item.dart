@@ -32,7 +32,9 @@ class CustomDrawerItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: drawerHighlightTextColor
+    // Both selected and unselected rows render with the configured drawer text
+    // color. The highlight effect is provided by an animated background
+    // overlay, so a separate highlight text color is unnecessary.
     final Color color = isSelected
         ? DB().colorSettings.drawerTextColor
         : DB().colorSettings.drawerTextColor;

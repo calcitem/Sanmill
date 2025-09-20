@@ -1664,9 +1664,9 @@ class _BoardRecognitionDebugPageState extends State<BoardRecognitionDebugPage> {
   // Add _showRecognitionResultDialog method between other methods
   /// Shows a dialog for recognition result with cropping capability.
   ///
-  /// TODO: This method is currently not used but kept for future implementation
-  /// of enhanced recognition result visualization with cropping capability.
-  /// It can replace the current static dialog approach with interactive cropping.
+  /// This method powers the "Advanced Crop" button, rendering the detected board
+  /// area in a dialog so testers can refine the crop before applying the
+  /// recognized position.
   Future<void> _showRecognitionResultDialog() async {
     if (_lastImageBytes == null || _lastBoardPoints.isEmpty) {
       return;

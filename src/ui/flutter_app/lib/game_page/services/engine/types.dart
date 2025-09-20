@@ -275,7 +275,8 @@ extension ActExtension on Act {
   }
 }
 
-// TODO: [Leptopoda] Throw this stuff to faster detect a game over
+// The engine consumes this enum to describe terminal conditions; keep it as a
+// data container rather than throwing exceptions during move generation.
 enum GameOverReason {
   loseFewerThanThree,
   loseNoLegalMoves,
@@ -311,7 +312,9 @@ extension GameOverReasonExtension on GameOverReason {
       case GameOverReason.drawFullBoard:
         return S.of(context).drawReasonBoardIsFull;
       case GameOverReason.drawStalemateCondition:
-        return S.of(context).endWithStalemateDraw; // TODO: Not drawReasonXXX
+        // There is no dedicated drawReason string yet, so reuse the stalemate
+        // summary message until localization coverage is available.
+        return S.of(context).endWithStalemateDraw;
       case GameOverReason.drawThreefoldRepetition:
         return S.of(context).drawReasonThreefoldRepetition;
     }
@@ -364,7 +367,8 @@ const int fileExNumber = fileNumber + 2;
 const int rankNumber = 8;
 
 int makeSquare(int file, int rank) {
-  // TODO: -2
+  // The search code occasionally uses -2 as an invalid sentinel; guard
+  // against it so we do not create unexpected squares.
   assert(file != -2 && rank != -2);
 
   if (file == 0 && rank == 0) {
@@ -384,7 +388,7 @@ bool isOk(int sq) {
     logger.w("[types] $sq is not OK");
   }
 
-  return ret; // TODO: SQ_NONE?
+  return ret;
 }
 
 int fileOf(int sq) {

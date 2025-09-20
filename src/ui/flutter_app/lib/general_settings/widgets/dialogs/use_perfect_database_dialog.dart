@@ -20,7 +20,9 @@ class _UsePerfectDatabaseDialog extends StatelessWidget {
     if (isRuleSupportingPerfectDatabase() == true) {
       description = S.of(context).perfectDatabaseDescription;
 
-      // TODO: Fix Twelve Men's Morris DB has draw
+      // The Twelve Men's Morris database currently contains drawish outcomes,
+      // so flag that configuration as experimental to avoid overpromising
+      // perfect play results.
       if (DB().ruleSettings.piecesCount == 12) {
         description = '${S.of(context).experimental}\n\n$description';
       }

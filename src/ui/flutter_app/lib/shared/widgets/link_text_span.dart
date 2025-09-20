@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/environment_config.dart';
+import '../services/logger.dart';
 
 class LinkTextSpan extends TextSpan {
   LinkTextSpan({super.style, required String url, String? text})
@@ -18,14 +19,41 @@ class LinkTextSpan extends TextSpan {
               if (EnvironmentConfig.test == true) {
                 return;
               }
-              final String s = url.substring("https://".length);
-              final String authority = s.substring(0, s.indexOf('/'));
-              final String unencodedPath = s.substring(s.indexOf('/'));
-              final Uri uri = Uri.https(authority, unencodedPath);
+              final Uri? uri = _normalize(url);
+              if (uri == null) {
+                logger.e('Cannot launch invalid link: $url');
+                return;
+              }
               launchUrl(
                 uri,
                 mode: LaunchMode.externalApplication,
-              );
+              ).then((bool launched) {
+                if (!launched) {
+                  logger.e('Failed to launch URL: $uri');
+                }
+              });
             },
         );
+}
+
+Uri? _normalize(String rawUrl) {
+  final String trimmed = rawUrl.trim();
+  if (trimmed.isEmpty) {
+    return null;
+  }
+
+  Uri? uri = Uri.tryParse(trimmed);
+  if (uri == null || uri.scheme.isEmpty) {
+    uri = Uri.tryParse('https://$trimmed');
+  }
+
+  if (uri == null) {
+    return null;
+  }
+
+  if ((uri.scheme == 'http' || uri.scheme == 'https') && !uri.hasAuthority) {
+    return null;
+  }
+
+  return uri;
 }

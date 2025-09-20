@@ -36,20 +36,17 @@ class GameOptionsModal extends StatelessWidget {
           onPressed: () async {
             //Navigator.pop(context);
 
-            // TODO: If no dialog showing, When the AI is thinking,
-            //  restarting the game may cause two or three pieces to appear on the board,
-            //  sometimes it will keep displaying Thinking...
-
             GameController().loadedGameFilenamePrefix = null;
 
-            GameController().engine.stopSearching();
+            await GameController().engine.stopSearching();
+            // Ensure the UI guard reflects the halted engine state.
+            GameController().isEngineRunning = false;
 
             if (GameController().position.phase == Phase.ready ||
                 (GameController().position.phase == Phase.placing &&
                     (GameController().gameRecorder.mainlineMoves.length <=
                         3)) ||
                 GameController().position.phase == Phase.gameOver) {
-              // TODO: Called stopSearching(); so isEngineGoing is always false?
               if (GameController().isEngineRunning == false) {
                 GameController().reset(force: true);
 
@@ -150,7 +147,8 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).exportGame),
             ),
           ),
-        // TODO: Fix iOS bug
+        // GIF export is disabled on iOS because the native share pipeline is
+        // not yet available there.
         if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
           const CustomSpacer(),
         if (DB().generalSettings.gameScreenRecorderSupport && !Platform.isIOS)
@@ -165,7 +163,8 @@ class GameOptionsModal extends StatelessWidget {
               child: Text(S.of(context).shareGIF),
             ),
           ),
-        // TODO: Support other platforms (Depend on native_screenshot package)
+        // Screenshot support relies on native_screenshot_widget, which only
+        // exposes save-to-gallery hooks on Android 10+ devices.
         if (Constants.isAndroid10Plus == true) const CustomSpacer(),
         if (Constants.isAndroid10Plus == true)
           SimpleDialogOption(
@@ -205,8 +204,9 @@ class GameOptionsModal extends StatelessWidget {
           style: TextStyle(
               fontSize: AppTheme.textScaler.scale(AppTheme.defaultFontSize)),
         ),
-        onPressed: () {
-          // TODO: Called stopSearching(); so isEngineGoing is always false?
+        onPressed: () async {
+          await GameController().engine.stopSearching();
+          GameController().isEngineRunning = false;
           if (GameController().isEngineRunning == false) {
             GameController().reset(force: true);
 

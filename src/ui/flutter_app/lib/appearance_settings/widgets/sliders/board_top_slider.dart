@@ -21,6 +21,9 @@ class _BoardTopSlider extends StatelessWidget {
             DB.displaySettingsKey,
             defaultValue: const DisplaySettings(),
           )!;
+          const double maxOffset = 288.0;
+          final double clampedOffset =
+              displaySettings.boardTop.clamp(0.0, maxOffset);
 
           return Center(
             key: const Key('board_top_center'),
@@ -29,15 +32,14 @@ class _BoardTopSlider extends StatelessWidget {
               width: MediaQuery.of(context).size.width * 0.8,
               child: Slider(
                 key: const Key('board_top_slider'),
-                value: displaySettings.boardTop,
-                max: 288.0,
-                // TODO: Overflow, convert to v2 config
-                divisions: 288,
-                label: displaySettings.boardTop.toStringAsFixed(1),
+                value: clampedOffset,
+                max: maxOffset,
+                divisions: maxOffset.toInt(),
+                label: clampedOffset.toStringAsFixed(1),
                 onChanged: (double value) {
                   logger.t("[config] boardTop value: $value");
                   DB().displaySettings =
-                      displaySettings.copyWith(boardTop: value);
+                      displaySettings.copyWith(boardTop: value.clamp(0.0, maxOffset));
                 },
               ),
             ),

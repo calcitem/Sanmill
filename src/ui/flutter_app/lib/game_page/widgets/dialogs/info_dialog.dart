@@ -56,18 +56,16 @@ class InfoDialog extends StatelessWidget {
       );
 
       if (n1.startsWith("x")) {
-        String moveNotation = "";
-        if (controller.gameRecorder.mainlineMoves.length == 1) {
-          // TODO: Right? (Issue #686)
-          moveNotation = controller
-              .gameRecorder
-              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 1]
-              .notation;
-        } else if (controller.gameRecorder.mainlineMoves.length >= 2) {
-          moveNotation = controller
-              .gameRecorder
-              .mainlineMoves[controller.gameRecorder.mainlineMoves.length - 2]
-              .notation;
+        String moveNotation = n1;
+        for (int i = controller.gameRecorder.mainlineMoves.length - 1;
+            i >= 0;
+            i--) {
+          final String candidate =
+              controller.gameRecorder.mainlineMoves[i].notation;
+          if (!candidate.startsWith('x')) {
+            moveNotation = candidate;
+            break;
+          }
         }
         // Apply correct case based on screen reader setting
         moveNotation = DB().generalSettings.screenReaderSupport

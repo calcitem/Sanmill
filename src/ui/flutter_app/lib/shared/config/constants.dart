@@ -3,14 +3,7 @@
 
 // constants.dart
 
-import 'dart:io';
-
-import 'package:catcher_2/core/catcher_2.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
-import '../services/environment_config.dart';
 
 class UrlHelper {
   const UrlHelper({
@@ -84,7 +77,17 @@ class Constants {
       wikiURL.fromSubPath("Perfect-Database", "Perfect-Database-(Chinese)");
 
   static double _getWindowHeight(BuildContext context) {
-    return View.of(context).platformDispatcher.views.first.physicalSize.height;
+    final View view = View.of(context);
+    final double devicePixelRatio = view.devicePixelRatio;
+    final double physicalHeight = view.physicalSize.height;
+
+    if (devicePixelRatio <= 0) {
+      return physicalHeight;
+    }
+
+    // Convert to logical pixels so density does not misclassify phones as
+    // "large" screens when they simply have a high resolution display.
+    return physicalHeight / devicePixelRatio;
   }
 
   static const int screenSizeThreshold = 800;
@@ -102,16 +105,3 @@ class Constants {
   static bool isAndroid10Plus = false;
 }
 
-// TODO: Move to navigation folder
-final GlobalKey<NavigatorState> navigatorStateKey = GlobalKey();
-
-GlobalKey<NavigatorState> get currentNavigatorKey {
-  if (EnvironmentConfig.catcher && !kIsWeb && !Platform.isIOS) {
-    if (Catcher2.navigatorKey == null) {
-      return navigatorStateKey;
-    }
-    return Catcher2.navigatorKey;
-  } else {
-    return navigatorStateKey;
-  }
-}

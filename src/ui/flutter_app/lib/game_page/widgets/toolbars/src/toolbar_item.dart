@@ -445,7 +445,8 @@ class _ToolbarItemChild extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       key: const Key('toolbar_item_child_column'),
-      // TODO: [Calcitem] Replace with a Row for horizontal icon + text
+      // The compact toolbar layout stacks the icon above the label to minimize
+      // width, so keep the vertical arrangement.
       children: <Widget>[icon, label],
     );
   }

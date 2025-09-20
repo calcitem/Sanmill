@@ -86,8 +86,8 @@ class HistoryNavigator {
 
     final GameController controller = GameController();
 
-    // TODO: Move to the end of this function. Or change to S.of(context).waiting?
-    GameController().headerTipNotifier.showTip(S.of(context).atEnd);
+    // Show a transient waiting message while the history navigation runs.
+    GameController().headerTipNotifier.showTip(S.of(context).waiting);
     GameController().headerIconsNotifier.showIcons();
     GameController().boardSemanticsNotifier.updateSemantics();
 
@@ -129,10 +129,11 @@ class HistoryNavigator {
           GameController().boardSemanticsNotifier.updateSemantics();
         }
         break;
-      case HistoryRange(): // TODO: Impossible resp
+      case HistoryRange():
+        logger.e(
+            "$_logTag Received a range navigation request without a count.");
         rootScaffoldMessengerKey.currentState!
-            .showSnackBarClear(S.of(context).atEnd);
-        logger.i(HistoryRange);
+            .showSnackBarClear(S.of(context).movesAndRulesNotMatch);
         break;
       case HistoryRule():
       default:

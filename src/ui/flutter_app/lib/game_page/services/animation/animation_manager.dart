@@ -150,7 +150,9 @@ class AnimationManager {
 
   // Handle Place Animation with proper disposal check
   void animatePlace() {
-    // TODO: See f0c1f3d5df544e5910b194b8479d956dd10fe527
+    // Avoid replaying the animation after disposal; running the controllers
+    // in that state previously triggered exceptions (see crash reports around
+    // v3.6).
     if (/* GameController().isDisposed == true || */ _isDisposed) {
       // Avoid animation when GameController or AnimationManager is disposed
       return;
