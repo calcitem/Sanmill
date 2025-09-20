@@ -180,32 +180,41 @@ class _VersionDialog extends StatelessWidget {
           FutureBuilder<GitInfo>(
             future: gitInfo,
             builder: (BuildContext context, AsyncSnapshot<GitInfo> snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Branch: ${snapshot.data!.branch}',
-                        style: TextStyle(
-                            fontSize: AppTheme.textScaler
-                                .scale(AppTheme.defaultFontSize)),
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Revision: ${snapshot.data!.revision}',
-                        style: TextStyle(
-                            fontSize: AppTheme.textScaler
-                                .scale(AppTheme.defaultFontSize)),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
+              if (!snapshot.hasData) {
                 return const SizedBox.shrink();
               }
+
+              final GitInfo info = snapshot.data!;
+              final List<Widget> rows = <Widget>[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Branch: ${info.branch}',
+                    style: TextStyle(
+                      fontSize:
+                          AppTheme.textScaler.scale(AppTheme.defaultFontSize),
+                    ),
+                  ),
+                ),
+              ];
+
+              // Revision can be absent when no git metadata is packaged.
+              if (info.revision != null) {
+                rows.add(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Revision: ${info.revision}',
+                      style: TextStyle(
+                        fontSize: AppTheme.textScaler
+                            .scale(AppTheme.defaultFontSize),
+                      ),
+                    ),
+                  ),
+                );
+              }
+
+              return Column(children: rows);
             },
           ),
         ],
