@@ -14,8 +14,8 @@ import 'package:native_screenshot_widget/native_screenshot_widget.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-import '../../generated/intl/l10n.dart';
 import '../../game_page/services/mill.dart';
+import '../../generated/intl/l10n.dart';
 import '../database/database.dart';
 import '../widgets/snackbars/scaffold_messenger.dart';
 import 'environment_config.dart';
@@ -177,8 +177,8 @@ class ScreenshotService {
 
     final String fullPath = path.join(directory.path, filename);
     final Directory parent = Directory(path.dirname(fullPath));
-    if (!await parent.exists()) {
-      await parent.create(recursive: true);
+    if (!parent.existsSync()) {
+      parent.createSync(recursive: true);
     }
 
     return fullPath;

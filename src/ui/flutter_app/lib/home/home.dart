@@ -293,7 +293,16 @@ class HomeState extends State<Home> with TickerProviderStateMixin {
       case _DrawerIndex.humanVsLAN:
       case _DrawerIndex.setupPosition:
         return true;
-      default:
+      case _DrawerIndex.statistics:
+      case _DrawerIndex.settingsGroup:
+      case _DrawerIndex.generalSettings:
+      case _DrawerIndex.ruleSettings:
+      case _DrawerIndex.appearance:
+      case _DrawerIndex.helpGroup:
+      case _DrawerIndex.howToPlay:
+      case _DrawerIndex.feedback:
+      case _DrawerIndex.about:
+      case _DrawerIndex.exit:
         return false;
     }
   }

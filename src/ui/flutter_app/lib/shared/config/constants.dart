@@ -4,6 +4,7 @@
 // constants.dart
 
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:catcher_2/core/catcher_2.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,7 +85,7 @@ class Constants {
       wikiURL.fromSubPath("Perfect-Database", "Perfect-Database-(Chinese)");
 
   static double _getWindowHeight(BuildContext context) {
-    final View view = View.of(context);
+    final ui.FlutterView view = View.of(context);
     final double devicePixelRatio = view.devicePixelRatio;
     final double physicalHeight = view.physicalSize.height;
 
