@@ -84,7 +84,17 @@ class Constants {
       wikiURL.fromSubPath("Perfect-Database", "Perfect-Database-(Chinese)");
 
   static double _getWindowHeight(BuildContext context) {
-    return View.of(context).platformDispatcher.views.first.physicalSize.height;
+    final View view = View.of(context);
+    final double devicePixelRatio = view.devicePixelRatio;
+    final double physicalHeight = view.physicalSize.height;
+
+    if (devicePixelRatio <= 0) {
+      return physicalHeight;
+    }
+
+    // Convert to logical pixels so density does not misclassify phones as
+    // "large" screens when they simply have a high resolution display.
+    return physicalHeight / devicePixelRatio;
   }
 
   static const int screenSizeThreshold = 800;
