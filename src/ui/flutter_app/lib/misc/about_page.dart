@@ -42,25 +42,25 @@ class AboutPage extends StatelessWidget {
       FutureBuilder<PackageInfo>(
         future: PackageInfo.fromPlatform(),
         builder: (_, AsyncSnapshot<PackageInfo> data) {
-          final String version;
           if (!data.hasData) {
-            return Container();
-          } else {
-            final PackageInfo packageInfo = data.data!;
-            if (kIsWeb || Platform.isWindows || Platform.isLinux) {
-              version = packageInfo.version;
-            } else {
-              version = "${packageInfo.version} (${packageInfo.buildNumber})";
-            }
+            return const SizedBox.shrink();
           }
+
+          final PackageInfo packageInfo = data.data!;
+          final String version = (kIsWeb || Platform.isWindows || Platform.isLinux)
+              ? packageInfo.version
+              : "${packageInfo.version} (${packageInfo.buildNumber})";
+          final String subtitle =
+              "${Constants.projectName} $version ${mode ?? ''}".trim();
+
           return SettingsListTile(
             key: const Key('settings_list_tile_version_info'),
             titleString: S.of(context).versionInfo,
-            subtitleString: "${Constants.projectName} $version $mode",
+            subtitleString: subtitle,
             onTap: () => showDialog(
               context: context,
-              builder: (_) => const _VersionDialog(
-                appVersion: '',
+              builder: (_) => _VersionDialog(
+                appVersion: version,
               ),
             ),
           );

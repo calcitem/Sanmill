@@ -21,14 +21,44 @@ Future<void> launchURL(BuildContext context, UrlHelper url) async {
       ? url.baseChinese
       : url.base;
 
-  final String normalizedUrl =
-      rawUrl.contains('://') ? rawUrl : 'https://$rawUrl';
+  final String trimmedUrl = rawUrl.trim();
+  if (trimmedUrl.isEmpty) {
+    logger.e('Unable to launch URL because the provided value is empty.');
+    return;
+  }
 
-  final Uri? uri = Uri.tryParse(normalizedUrl);
-  if (uri == null || uri.host.isEmpty) {
+  Uri? uri = Uri.tryParse(trimmedUrl);
+  if (uri == null || uri.scheme.isEmpty) {
+    uri = Uri.tryParse('https://$trimmedUrl');
+  }
+
+  if (uri == null) {
     logger.e('Unable to launch invalid URL: $rawUrl');
     return;
   }
 
-  await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (_requiresAuthority(uri) && !uri.hasAuthority) {
+    logger.e('Unable to launch URL without a valid host: $rawUrl');
+    return;
+  }
+
+  final bool launched =
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (!launched) {
+    logger.e('Failed to launch URL: $uri');
+  }
+}
+
+bool _requiresAuthority(Uri uri) {
+  if (!uri.hasScheme) {
+    return false;
+  }
+
+  switch (uri.scheme.toLowerCase()) {
+    case 'http':
+    case 'https':
+      return true;
+    default:
+      return false;
+  }
 }

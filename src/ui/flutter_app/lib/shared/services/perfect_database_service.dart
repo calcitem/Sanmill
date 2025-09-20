@@ -18,13 +18,19 @@ Future<bool> copyPerfectDatabaseFiles() async {
     dir = (!kIsWeb && Platform.isAndroid)
         ? await getExternalStorageDirectory()
         : await getApplicationDocumentsDirectory();
-    logger.i('Directory obtained: ${dir?.path}');
   } catch (e) {
     logger.e('Failed to get directory: $e');
     return false;
   }
 
-  final String perfectDatabasePath = '${dir?.path}/strong';
+  if (dir == null) {
+    logger.e('Failed to resolve a storage directory for perfect database files.');
+    return false;
+  }
+
+  logger.i('Directory obtained: ${dir.path}');
+
+  final String perfectDatabasePath = '${dir.path}/strong';
   final Directory directory = Directory(perfectDatabasePath);
 
   try {
