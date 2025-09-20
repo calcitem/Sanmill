@@ -141,13 +141,25 @@ class LanConfigDialogState extends State<LanConfigDialog>
               itemCount: ips.length,
               itemBuilder: (BuildContext itemContext, int index) {
                 final String ip = ips[index];
-                return RadioListTile<String>(
+                return ListTile(
                   title: Text(ip),
-                  value: ip,
-                  groupValue: _selectedIP,
-                  onChanged: (String? value) {
+                  leading: Radio<String>(
+                    value: ip,
+                    groupValue: _selectedIP,
+                    onChanged: (String? value) {
+                      // Update selected IP when radio button is tapped
+                      setState(() {
+                        _selectedIP = value;
+                      });
+                      logger.i("Selected network interface: $_selectedIP");
+                      Navigator.of(dialogContext).pop();
+                    },
+                  ),
+                  onTap: () {
+                    // Handle tap on the entire list item, including when
+                    // the already selected item is tapped again
                     setState(() {
-                      _selectedIP = value;
+                      _selectedIP = ip;
                     });
                     logger.i("Selected network interface: $_selectedIP");
                     Navigator.of(dialogContext).pop();
